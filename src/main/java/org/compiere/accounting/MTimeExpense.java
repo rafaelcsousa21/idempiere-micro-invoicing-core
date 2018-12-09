@@ -20,7 +20,7 @@ import org.compiere.product.MPriceList;
 import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {

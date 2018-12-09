@@ -18,7 +18,7 @@ import org.compiere.production.MProduction;
 import org.compiere.util.DisplayType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 

@@ -18,7 +18,7 @@ import org.compiere.orm.X_AD_Tree;
 import org.idempiere.common.base.Service;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
 

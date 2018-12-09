@@ -17,7 +17,7 @@ import org.compiere.process.DocAction;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
 import org.idempiere.orm.PO;

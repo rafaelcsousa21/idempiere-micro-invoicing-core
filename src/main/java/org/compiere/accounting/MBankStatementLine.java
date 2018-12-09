@@ -8,7 +8,7 @@ import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
 

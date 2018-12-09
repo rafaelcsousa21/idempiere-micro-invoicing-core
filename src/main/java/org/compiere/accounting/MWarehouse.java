@@ -12,7 +12,7 @@ import org.compiere.orm.Query;
 import org.compiere.production.MLocator;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

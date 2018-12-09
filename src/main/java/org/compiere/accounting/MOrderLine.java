@@ -11,7 +11,7 @@ import org.compiere.product.MAttributeSet;
 import org.compiere.product.MUOM;
 import org.compiere.product.ProductNotOnPriceListException;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc {

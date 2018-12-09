@@ -15,7 +15,7 @@ import org.compiere.orm.Query;
 import org.compiere.product.IProductPricing;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

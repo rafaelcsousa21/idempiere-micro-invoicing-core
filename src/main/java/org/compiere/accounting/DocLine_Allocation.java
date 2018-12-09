@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import org.idempiere.common.util.DB;
+
 
 /**
  * Allocation Line

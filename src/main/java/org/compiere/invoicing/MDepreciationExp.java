@@ -16,7 +16,7 @@ import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 
 public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
 

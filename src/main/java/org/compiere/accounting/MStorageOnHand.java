@@ -15,7 +15,7 @@ import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
 import org.compiere.production.MLocator;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 

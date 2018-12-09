@@ -18,7 +18,7 @@ import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 

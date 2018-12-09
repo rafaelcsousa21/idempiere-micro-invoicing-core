@@ -1,5 +1,11 @@
 package org.compiere.invoicing;
 
+import org.compiere.order.MPaySchedule;
+import org.compiere.orm.TimeUtil;
+import org.compiere.product.MCurrency;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,12 +13,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.order.MPaySchedule;
-import org.compiere.orm.TimeUtil;
-import org.compiere.product.MCurrency;
-import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
 
 /**
  * Invoice Payment Schedule Model

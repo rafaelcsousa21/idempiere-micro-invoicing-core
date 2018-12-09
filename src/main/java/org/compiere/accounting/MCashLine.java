@@ -12,7 +12,7 @@ import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MDocType;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
 

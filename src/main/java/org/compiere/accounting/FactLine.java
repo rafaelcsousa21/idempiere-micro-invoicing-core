@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.model.I_M_Movement;
 import org.compiere.product.MCurrency;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

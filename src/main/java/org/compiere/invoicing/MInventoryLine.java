@@ -10,7 +10,7 @@ import org.compiere.orm.MDocType;
 import org.compiere.orm.Query;
 import org.compiere.process.DocAction;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

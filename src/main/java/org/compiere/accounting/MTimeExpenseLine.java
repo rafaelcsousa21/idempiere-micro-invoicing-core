@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.invoicing.MConversionRate;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 public class MTimeExpenseLine extends X_S_TimeExpenseLine {

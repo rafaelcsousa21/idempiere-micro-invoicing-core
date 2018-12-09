@@ -20,7 +20,7 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {

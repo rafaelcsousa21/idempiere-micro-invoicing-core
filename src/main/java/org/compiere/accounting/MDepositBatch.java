@@ -29,7 +29,7 @@ import org.compiere.model.IPODoc;
 import org.compiere.orm.MDocType;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

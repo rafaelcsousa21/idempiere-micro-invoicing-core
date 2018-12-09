@@ -15,7 +15,7 @@ import org.compiere.orm.MDocType;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 
 /**
  * Match Invoice (Receipt<>Invoice) Model. Accounting: - Not Invoiced Receipts (relief) - IPV

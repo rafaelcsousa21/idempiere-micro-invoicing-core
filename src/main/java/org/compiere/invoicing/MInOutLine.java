@@ -19,7 +19,7 @@ import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.MUOM;
 import org.compiere.production.MLocator;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 

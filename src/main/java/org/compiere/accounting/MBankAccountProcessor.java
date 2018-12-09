@@ -12,7 +12,7 @@ import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 
 /**
  * Bank Account Payment Processor

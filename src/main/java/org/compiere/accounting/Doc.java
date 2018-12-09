@@ -22,7 +22,7 @@ import org.compiere.validation.ModelValidator;
 import org.compiere.wf.MNote;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.Util;

@@ -9,7 +9,7 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_GL_JournalLine;
 import org.compiere.product.MCurrency;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

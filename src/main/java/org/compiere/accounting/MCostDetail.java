@@ -11,7 +11,7 @@ import org.compiere.model.I_M_Product;
 import org.compiere.orm.Query;
 import org.compiere.production.MProductionLine;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

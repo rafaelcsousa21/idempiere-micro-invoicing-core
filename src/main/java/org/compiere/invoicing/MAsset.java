@@ -18,7 +18,7 @@ import org.compiere.orm.MTable;
 import org.compiere.product.*;
 import org.compiere.production.MProject;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
 

@@ -7,7 +7,7 @@ import org.compiere.model.HasName;
 import org.compiere.product.MCurrency;
 import org.compiere.util.DisplayType;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

@@ -10,7 +10,7 @@ import org.compiere.model.I_C_TaxProvider;
 import org.compiere.order.StandardTaxProvider;
 import org.compiere.tax.IInvoiceTaxProvider;
 import org.compiere.tax.MTax;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 public class StandardInvoiceTaxProvider extends StandardTaxProvider implements IInvoiceTaxProvider {

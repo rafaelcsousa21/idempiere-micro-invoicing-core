@@ -1,7 +1,7 @@
 package org.compiere.accounting;
 
 import java.math.BigDecimal;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

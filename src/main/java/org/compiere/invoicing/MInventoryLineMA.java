@@ -13,7 +13,7 @@ import org.compiere.model.I_M_InventoryLine;
 import org.compiere.model.I_M_InventoryLineMA;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 

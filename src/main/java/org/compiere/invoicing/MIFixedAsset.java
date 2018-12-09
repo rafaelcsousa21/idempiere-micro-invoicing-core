@@ -15,7 +15,7 @@ import org.compiere.product.MAssetGroup;
 import org.compiere.product.MUOM;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 

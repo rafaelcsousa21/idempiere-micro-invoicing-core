@@ -11,7 +11,7 @@ import org.compiere.model.IFact;
 import org.compiere.order.MOrderLine;
 import org.compiere.product.MCurrency;
 import org.compiere.tax.MTax;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

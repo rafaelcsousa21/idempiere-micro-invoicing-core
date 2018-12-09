@@ -2,7 +2,7 @@ package org.compiere.accounting;
 
 import java.math.BigDecimal;
 import java.util.Properties;
-import org.idempiere.common.util.DB;
+
 
 public class MCharge extends org.compiere.order.MCharge {
 

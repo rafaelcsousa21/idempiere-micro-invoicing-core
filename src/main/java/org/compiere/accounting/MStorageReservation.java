@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import org.compiere.model.I_M_StorageReservation;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 public class MStorageReservation extends X_M_StorageReservation {

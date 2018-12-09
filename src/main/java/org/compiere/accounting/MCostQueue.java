@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

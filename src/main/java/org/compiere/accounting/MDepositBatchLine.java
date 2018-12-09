@@ -18,7 +18,7 @@ package org.compiere.accounting;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**

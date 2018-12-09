@@ -9,7 +9,7 @@ import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /** @author hengsin */

@@ -8,7 +8,7 @@ import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.MDocType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 
 /**
  * Counter Document Type Model

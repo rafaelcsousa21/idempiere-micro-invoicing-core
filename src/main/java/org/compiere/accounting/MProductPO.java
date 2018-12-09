@@ -7,7 +7,7 @@ import org.compiere.model.I_M_Product_PO;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.DBException;
-import org.idempiere.common.util.DB;
+
 
 /**
  * Product PO Model

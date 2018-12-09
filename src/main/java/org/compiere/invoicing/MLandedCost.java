@@ -7,7 +7,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 
 /**
  * Landed Cost Model

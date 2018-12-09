@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.logging.Level;
 import org.compiere.model.IDocLine;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 
 /**
