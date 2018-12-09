@@ -1,11 +1,13 @@
 package org.compiere.invoicing;
 
+import org.compiere.util.Msg;
+import org.idempiere.common.util.Env;
+
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
-import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
+
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Invoice Batch Line Model
@@ -87,7 +89,7 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
               .append("WHERE h.C_InvoiceBatch_ID=l.C_InvoiceBatch_ID AND l.IsActive='Y'),0) ")
               .append("WHERE C_InvoiceBatch_ID=")
               .append(getC_InvoiceBatch_ID());
-      DB.executeUpdate(sql.toString(), get_TrxName());
+      executeUpdate(sql.toString(), get_TrxName());
     }
     return success;
   } //	afterSave

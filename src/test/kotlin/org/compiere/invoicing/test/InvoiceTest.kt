@@ -67,7 +67,7 @@ data class MaterialMovementImportantTestAttributes(
     val amountOut: BigDecimal
 )
 
-class InvoiceTests : BaseComponentTest() {
+class InvoiceTest {
     companion object {
         const val QTY = 1
         private var index = 0
