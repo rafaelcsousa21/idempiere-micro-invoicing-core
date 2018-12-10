@@ -1,10 +1,13 @@
 package org.compiere.accounting;
 
+import org.idempiere.common.exceptions.DBException;
+import org.idempiere.common.util.CLogger;
+
 import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.idempiere.common.exceptions.DBException;
-import org.idempiere.common.util.CLogger;
+
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 
 /**

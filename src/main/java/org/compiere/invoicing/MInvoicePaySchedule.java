@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
+
 /**
  * Invoice Payment Schedule Model
  *

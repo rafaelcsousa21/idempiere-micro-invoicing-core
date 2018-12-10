@@ -1,15 +1,15 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_C_Cash;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for C_Cash
@@ -39,12 +39,6 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -594,5 +588,10 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
     Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_Cash.Table_ID;
   }
 }

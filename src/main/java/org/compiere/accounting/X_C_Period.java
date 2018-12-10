@@ -1,13 +1,13 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_C_Period;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for C_Period
@@ -41,12 +41,6 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -222,5 +216,10 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
    */
   public Timestamp getStartDate() {
     return (Timestamp) get_Value(COLUMNNAME_StartDate);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_Period.Table_ID;
   }
 }

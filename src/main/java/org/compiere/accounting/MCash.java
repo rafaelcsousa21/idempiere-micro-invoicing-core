@@ -25,6 +25,8 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
 
+import static software.hsharp.core.util.DBKt.executeUpdate;
+
 /**
  * Cash Journal Model
  *

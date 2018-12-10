@@ -1,5 +1,17 @@
 package org.compiere.accounting;
 
+import org.compiere.invoicing.MBPBankAccount;
+import org.compiere.model.I_C_Invoice;
+import org.compiere.order.X_C_Order;
+import org.compiere.orm.MDocType;
+import org.compiere.process.DocAction;
+import org.compiere.util.Msg;
+import org.idempiere.common.exceptions.AdempiereException;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Trx;
+import org.idempiere.orm.PO;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,18 +21,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.invoicing.MBPBankAccount;
-import org.compiere.model.I_C_Invoice;
-import org.compiere.order.X_C_Order;
-import org.compiere.orm.MDocType;
-import org.compiere.process.DocAction;
-import org.compiere.util.Msg;
-import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
-import org.idempiere.orm.PO;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Payment Print/Export model.

@@ -1,18 +1,20 @@
 package org.compiere.accounting;
 
+import org.compiere.model.I_M_CostDetail;
+import org.compiere.model.I_M_Product;
+import org.compiere.orm.Query;
+import org.compiere.production.MProductionLine;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.model.I_M_CostDetail;
-import org.compiere.model.I_M_Product;
-import org.compiere.orm.Query;
-import org.compiere.production.MProductionLine;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Cost Detail Model
@@ -1033,7 +1035,7 @@ public class MCostDetail extends X_M_CostDetail {
 
     MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID(), get_TrxName());
 
-    getDatabase().forUpdate(cost, 120);
+    forUpdate(cost, 120);
 
     //	if (cost == null)
     //		cost = new MCost(product, M_ASI_ID,

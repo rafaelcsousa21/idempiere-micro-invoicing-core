@@ -1,13 +1,15 @@
 package org.compiere.accounting;
 
+import org.compiere.model.I_C_PaySelectionLine;
+import org.compiere.orm.Query;
+import org.idempiere.common.util.Env;
+import org.idempiere.orm.PO;
+
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
-import org.compiere.model.I_C_PaySelectionLine;
-import org.compiere.orm.Query;
 
-import org.idempiere.common.util.Env;
-import org.idempiere.orm.PO;
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 /**
  * AP Payment Selection

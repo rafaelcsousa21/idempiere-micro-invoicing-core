@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_SubAcct;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_SubAcct
@@ -40,12 +40,6 @@ public class X_C_SubAcct extends BasePONameValue implements I_C_SubAcct, I_Persi
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -153,5 +147,10 @@ public class X_C_SubAcct extends BasePONameValue implements I_C_SubAcct, I_Persi
    */
   public String getHelp() {
     return (String) get_Value(COLUMNNAME_Help);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_SubAcct.Table_ID;
   }
 }

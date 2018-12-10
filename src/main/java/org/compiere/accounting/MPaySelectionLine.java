@@ -1,11 +1,13 @@
 package org.compiere.accounting;
 
+import org.compiere.invoicing.MInvoice;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.compiere.invoicing.MInvoice;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Payment Selection Line Model

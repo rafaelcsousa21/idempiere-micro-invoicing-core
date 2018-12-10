@@ -1761,7 +1761,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
 
     //	Update BP Statistics
     MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID(), get_TrxName());
-    getDatabase().forUpdate(bp, 0);
+    forUpdate(bp, 0);
     //	Update total revenue and balance / credit limit (reversed on AllocationLine.processIt)
     BigDecimal invAmt =
         MConversionRate.convertBase(

@@ -211,7 +211,7 @@ public class DocumentEngine implements DocAction {
       if (docPO.getId() > 0
           && docPO.get_TrxName() != null
           && docPO.get_ValueOld("DocStatus") != null) {
-        getDatabase().forUpdate(docPO, 30);
+        forUpdate(docPO, 30);
         String docStatusOriginal = (String) docPO.get_ValueOld("DocStatus");
         String statusSql =
             "SELECT DocStatus FROM "

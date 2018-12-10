@@ -1,12 +1,12 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_R_Category;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for R_Category
@@ -37,12 +37,6 @@ public class X_R_Category extends BasePOName implements I_R_Category, I_Persiste
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -150,5 +144,10 @@ public class X_R_Category extends BasePOName implements I_R_Category, I_Persiste
    */
   public String getR_Category_UU() {
     return (String) get_Value(COLUMNNAME_R_Category_UU);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_R_Category.Table_ID;
   }
 }

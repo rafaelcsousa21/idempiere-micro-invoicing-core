@@ -438,7 +438,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         if (rs.getBigDecimal(11).signum() != 0) {
           MStorageOnHand storage = new MStorageOnHand(ctx, rs, trxName);
           if (!Util.isEmpty(trxName) && forUpdate) {
-            getDatabase().forUpdate(storage, timeout);
+            forUpdate(storage, timeout);
           }
           list.add(storage);
         }
@@ -610,7 +610,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         if (rs.getBigDecimal(11).signum() != 0) {
           MStorageOnHand storage = new MStorageOnHand(ctx, rs, trxName);
           if (!Util.isEmpty(trxName) && forUpdate) {
-            getDatabase().forUpdate(storage, timeout);
+            forUpdate(storage, timeout);
           }
           list.add(storage);
         }
@@ -706,7 +706,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     MStorageOnHand retValue =
         get(ctx, M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID, dateMPolicy, trxName);
     if (retValue != null) {
-      if (forUpdate) getDatabase().forUpdate(retValue, timeout);
+      if (forUpdate) forUpdate(retValue, timeout);
       return retValue;
     }
 

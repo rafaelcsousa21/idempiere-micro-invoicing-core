@@ -1,5 +1,8 @@
 package org.compiere.invoicing;
 
+import org.idempiere.common.util.Env;
+import org.idempiere.orm.PO;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -7,8 +10,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import org.idempiere.common.util.Env;
-import org.idempiere.orm.PO;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Invoice Batch Header Model

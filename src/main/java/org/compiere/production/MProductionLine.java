@@ -222,7 +222,7 @@ public class MProductionLine extends X_M_ProductionLine {
               if (log.isLoggable(Level.FINE))
                 log.log(Level.FINE, "Saved transaction for " + toString());
             }
-            getDatabase().forUpdate(storages[sl], 120);
+            forUpdate(storages[sl], 120);
             storages[sl].addQtyOnHand(lineQty.negate());
             qtyToMove = qtyToMove.subtract(lineQty);
             if (log.isLoggable(Level.FINE))

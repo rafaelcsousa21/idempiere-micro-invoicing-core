@@ -34,8 +34,8 @@ import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.Util;
 import org.idempiere.common.util.ValueNamePair;
 
-import static software.hsharp.core.util.DBKt.close;
-import static software.hsharp.core.util.DBKt.prepareStatement;
+import static software.hsharp.core.orm.POKt.getAllIDs;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Payment Model. - retrieve and create payments for invoice
@@ -1856,7 +1856,7 @@ public class MPayment extends X_C_Payment
         && MPaymentAllocate.get(this).length == 0
         && !createdAllocationRecords) {
       MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID(), get_TrxName());
-      getDatabase().forUpdate(bp, 0);
+      forUpdate(bp, 0);
       //	Update total balance to include this payment
       BigDecimal payAmt =
           MConversionRate.convertBase(
@@ -2873,7 +2873,7 @@ public class MPayment extends X_C_Payment
     whereClause.append(" AND IsApproved='Y' AND DocStatus IN ('CO','CL') ");
     whereClause.append("ORDER BY DateTrx DESC");
 
-    return org.idempiere.orm.PO.getAllIDs(I_C_Payment.Table_Name, whereClause.toString(), trxName);
+    return getAllIDs(I_C_Payment.Table_Name, whereClause.toString());
   }
 
   // IDEMPIERE-2588

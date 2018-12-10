@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import org.compiere.accounting.MClient;
 import org.compiere.accounting.*;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
@@ -7,7 +8,6 @@ import org.compiere.model.IPODoc;
 import org.compiere.model.I_M_Production;
 import org.compiere.model.I_M_ProductionPlan;
 import org.compiere.order.MOrderLine;
-import org.compiere.orm.MClient;
 import org.compiere.orm.*;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;

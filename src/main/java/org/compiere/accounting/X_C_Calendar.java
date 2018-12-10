@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_Calendar;
 import org.compiere.orm.BasePOName;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_Calendar
@@ -35,12 +35,6 @@ public class X_C_Calendar extends BasePOName implements I_C_Calendar, I_Persiste
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -103,5 +97,10 @@ public class X_C_Calendar extends BasePOName implements I_C_Calendar, I_Persiste
    */
   public String getDescription() {
     return (String) get_Value(COLUMNNAME_Description);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_Calendar.Table_ID;
   }
 }

@@ -252,7 +252,7 @@ public class MStorageReservation extends X_M_StorageReservation {
     //	Get Storage
     MStorageReservation storage =
         getCreate(ctx, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID, isSOTrx, trxName);
-    getDatabase().forUpdate(storage, 120);
+    forUpdate(storage, 120);
     //	Verify
     if (storage.getM_Warehouse_ID() != M_Warehouse_ID
         && storage.getM_Product_ID() != M_Product_ID
