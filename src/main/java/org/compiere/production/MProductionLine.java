@@ -1,5 +1,15 @@
 package org.compiere.production;
 
+import org.compiere.accounting.*;
+import org.compiere.model.I_M_AttributeSet;
+import org.compiere.model.I_M_Cost;
+import org.compiere.model.I_M_ProductionPlan;
+import org.compiere.orm.Query;
+import org.compiere.product.MAttributeSetInstance;
+import org.idempiere.common.exceptions.AdempiereException;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Util;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,14 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.model.I_M_AttributeSet;
-import org.compiere.model.I_M_Cost;
-import org.compiere.model.I_M_ProductionPlan;
-import org.compiere.orm.Query;
-import org.compiere.product.MAttributeSetInstance;
-import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Util;
+
+import static software.hsharp.core.util.DBKt.*;
 
 public class MProductionLine extends X_M_ProductionLine {
   /** */

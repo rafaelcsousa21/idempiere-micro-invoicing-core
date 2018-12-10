@@ -1,16 +1,18 @@
 package org.compiere.accounting;
 
+import org.compiere.invoicing.MInvoice;
+import org.compiere.model.IDocLine;
+import org.compiere.util.Msg;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.invoicing.MInvoice;
-import org.compiere.model.IDocLine;
-import org.compiere.util.Msg;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Allocation Line Model

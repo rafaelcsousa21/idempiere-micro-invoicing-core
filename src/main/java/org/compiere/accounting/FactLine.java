@@ -1,5 +1,10 @@
 package org.compiere.accounting;
 
+import org.compiere.conversionrate.MConversionRate;
+import org.compiere.model.I_M_Movement;
+import org.compiere.product.MCurrency;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,11 +12,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.conversionrate.MConversionRate;
-import org.compiere.model.I_M_Movement;
-import org.compiere.product.MCurrency;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Accounting Fact Entry.

@@ -1,13 +1,13 @@
 package org.compiere.bank;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_Bank;
 import org.compiere.model.I_C_Location;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_Bank
@@ -37,12 +37,6 @@ public class X_C_Bank extends BasePOName implements I_C_Bank, I_Persistent {
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -190,5 +184,10 @@ public class X_C_Bank extends BasePOName implements I_C_Bank, I_Persistent {
    */
   public String getSwiftCode() {
     return (String) get_Value(COLUMNNAME_SwiftCode);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_Bank.Table_ID;
   }
 }

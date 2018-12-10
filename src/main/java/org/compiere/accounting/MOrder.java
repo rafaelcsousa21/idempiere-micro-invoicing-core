@@ -201,7 +201,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
   protected boolean beforeSave(boolean newRecord) {
     //	Client/Org Check
     if ( getOrgId() == 0) {
-      int context_AD_Org_ID = Env.getAD_Org_ID(getCtx());
+      int context_AD_Org_ID = Env.getOrgId(getCtx());
       if (context_AD_Org_ID != 0) {
         setAD_Org_ID(context_AD_Org_ID);
         log.warning("Changed Org to Context=" + context_AD_Org_ID);

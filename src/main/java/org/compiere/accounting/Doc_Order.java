@@ -1,5 +1,11 @@
 package org.compiere.accounting;
 
+import org.compiere.model.IFact;
+import org.compiere.order.MOrderLine;
+import org.compiere.product.MCurrency;
+import org.compiere.tax.MTax;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,12 +13,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
-import org.compiere.model.IFact;
-import org.compiere.order.MOrderLine;
-import org.compiere.product.MCurrency;
-import org.compiere.tax.MTax;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Post Order Documents.
@@ -403,17 +405,13 @@ public class Doc_Order extends Doc {
             .append("WHERE o.C_Order_ID=ol.C_Order_ID")
             .append(" AND po.M_Product_ID=ol.M_Product_ID AND po.C_BPartner_ID=o.C_BPartner_ID ");
     // jz + " AND ROWNUM=1 AND o.C_Order_ID=").append(getId()).append(") ")
-    if (isOracle()) // jz
-    {
-      sql.append(" AND ROWNUM=1 ");
-    } else
-      sql.append(" AND ol.C_OrderLine_ID = (SELECT MIN(ol1.C_OrderLine_ID) ")
-          .append("FROM C_Order o1, C_OrderLine ol1 ")
-          .append("WHERE o1.C_Order_ID=ol1.C_Order_ID")
-          .append(" AND po.M_Product_ID=ol1.M_Product_ID AND po.C_BPartner_ID=o1.C_BPartner_ID")
-          .append("  AND o1.C_Order_ID=")
-          .append(get_ID())
-          .append(") ");
+    sql.append(" AND ol.C_OrderLine_ID = (SELECT MIN(ol1.C_OrderLine_ID) ")
+        .append("FROM C_Order o1, C_OrderLine ol1 ")
+        .append("WHERE o1.C_Order_ID=ol1.C_Order_ID")
+        .append(" AND po.M_Product_ID=ol1.M_Product_ID AND po.C_BPartner_ID=o1.C_BPartner_ID")
+        .append("  AND o1.C_Order_ID=")
+        .append(get_ID())
+        .append(") ");
     sql.append("  AND o.C_Order_ID=")
         .append(get_ID())
         .append(") ")

@@ -34,6 +34,9 @@ import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.Util;
 import org.idempiere.common.util.ValueNamePair;
 
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
+
 /**
  * Payment Model. - retrieve and create payments for invoice
  *

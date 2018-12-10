@@ -1,12 +1,14 @@
 package org.compiere.accounting;
 
+import org.compiere.model.IDocLine;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.logging.Level;
-import org.compiere.model.IDocLine;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 /**
  * Standard Document Line

@@ -1,5 +1,16 @@
 package org.compiere.accounting;
 
+import org.compiere.invoicing.MInvoice;
+import org.compiere.model.*;
+import org.compiere.order.MOrder;
+import org.compiere.orm.*;
+import org.compiere.production.MProduction;
+import org.compiere.util.DisplayType;
+import org.idempiere.common.util.CCache;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Util;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,17 +21,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.invoicing.MInvoice;
-import org.compiere.model.*;
-import org.compiere.order.MOrder;
-import org.compiere.orm.*;
-import org.compiere.production.MProduction;
-import org.compiere.util.DisplayType;
-import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Util;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Calendar Period Model

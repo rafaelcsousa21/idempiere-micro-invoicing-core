@@ -1,5 +1,11 @@
 package org.compiere.accounting;
 
+import org.compiere.model.I_C_BankAccount_Processor;
+import org.compiere.orm.Query;
+import org.compiere.util.Msg;
+import org.idempiere.common.exceptions.AdempiereException;
+import org.idempiere.common.util.CLogger;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,11 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.model.I_C_BankAccount_Processor;
-import org.compiere.orm.Query;
-import org.compiere.util.Msg;
-import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.CLogger;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**

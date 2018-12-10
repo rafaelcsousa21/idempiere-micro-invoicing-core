@@ -1,10 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.logging.Level;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
@@ -14,9 +9,17 @@ import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_RMALine;
 import org.compiere.product.MCurrency;
 import org.compiere.tax.MTax;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 /**
  * Post Shipment/Receipt Documents.

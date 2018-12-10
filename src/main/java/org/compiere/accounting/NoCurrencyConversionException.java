@@ -1,14 +1,16 @@
 package org.compiere.accounting;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import org.compiere.conversionrate.MConversionType;
 import org.compiere.model.HasName;
 import org.compiere.product.MCurrency;
 import org.compiere.util.DisplayType;
 import org.idempiere.common.exceptions.AdempiereException;
-
 import org.idempiere.common.util.Env;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+
+import static software.hsharp.core.util.DBKt.getSQLValueString;
 
 /**
  * Any exception that occurs when no currency conversion rate was found

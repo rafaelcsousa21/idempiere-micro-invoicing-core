@@ -1,14 +1,5 @@
 package org.compiere.accounting;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.MConversionRate;
@@ -26,8 +17,20 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.orm.POKt.I_ZERO;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Payment Allocation Model. Allocation Trigger update C_BPartner
@@ -892,7 +895,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
       if (M_Invoice_ID > 0) isSOTrxInvoice = invoice.isSOTrx();
 
       MBPartner bpartner = new MBPartner(getCtx(), line.getC_BPartner_ID(), get_TrxName());
-      getDatabase().forUpdate(bpartner, 0);
+      forUpdate(bpartner, 0);
 
       BigDecimal allocAmt = line.getAmount().add(line.getDiscountAmt()).add(line.getWriteOffAmt());
       BigDecimal openBalanceDiff = Env.ZERO;
@@ -1240,7 +1243,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
       PO.copyValues(fromLine, line, fromLine. getClientId(), fromLine. getOrgId());
       line.setC_AllocationHdr_ID(getC_AllocationHdr_ID());
       line.setParent(this);
-      line.set_ValueNoCheck("C_AllocationLine_ID", PO.I_ZERO); // new
+      line.set_ValueNoCheck("C_AllocationLine_ID", I_ZERO); // new
 
       if (line.getC_Payment_ID() != 0) {
         MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), get_TrxName());

@@ -1,13 +1,13 @@
 package org.compiere.invoicing;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_BP_BankAccount;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_BP_BankAccount
@@ -41,12 +41,6 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -688,5 +682,10 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
    */
   public String getRoutingNo() {
     return (String) get_Value(COLUMNNAME_RoutingNo);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_BP_BankAccount.Table_ID;
   }
 }

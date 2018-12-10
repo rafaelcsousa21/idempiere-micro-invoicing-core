@@ -191,7 +191,7 @@ public class Doc_BankStatement extends Doc {
         if (fl != null) {
           if (C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
           if (AD_Org_ID != 0) fl.setAD_Org_ID(AD_Org_ID);
-          else fl.setAD_Org_ID(line.getAD_Org_ID(true)); // from payment
+          else fl.setAD_Org_ID(line.getOrgId(true)); // from payment
         }
       }
       // End Avoid usage of clearing accounts

@@ -1,15 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Savepoint;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
@@ -18,9 +8,17 @@ import org.compiere.model.IFact;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.product.MCurrency;
 import org.compiere.tax.MTax;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
+
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Post Invoice Documents.
@@ -1120,18 +1118,13 @@ public class Doc_Invoice extends Doc {
             .append("WHERE i.C_Invoice_ID=il.C_Invoice_ID")
             .append(" AND po.M_Product_ID=il.M_Product_ID AND po.C_BPartner_ID=i.C_BPartner_ID");
     // jz + " AND ROWNUM=1 AND i.C_Invoice_ID=").append(getId()).append(") ")
-    if (isOracle()) // jz
-    {
-      sql.append(" AND ROWNUM=1 ");
-    } else {
-      sql.append(" AND il.C_InvoiceLine_ID = (SELECT MIN(il1.C_InvoiceLine_ID) ")
-          .append("FROM C_Invoice i1, C_InvoiceLine il1 ")
-          .append("WHERE i1.C_Invoice_ID=il1.C_Invoice_ID")
-          .append(" AND po.M_Product_ID=il1.M_Product_ID AND po.C_BPartner_ID=i1.C_BPartner_ID")
-          .append("  AND i1.C_Invoice_ID=")
-          .append(get_ID())
-          .append(") ");
-    }
+    sql.append(" AND il.C_InvoiceLine_ID = (SELECT MIN(il1.C_InvoiceLine_ID) ")
+        .append("FROM C_Invoice i1, C_InvoiceLine il1 ")
+        .append("WHERE i1.C_Invoice_ID=il1.C_Invoice_ID")
+        .append(" AND po.M_Product_ID=il1.M_Product_ID AND po.C_BPartner_ID=i1.C_BPartner_ID")
+        .append("  AND i1.C_Invoice_ID=")
+        .append(get_ID())
+        .append(") ");
     sql.append("  AND i.C_Invoice_ID=")
         .append(get_ID())
         .append(") ")

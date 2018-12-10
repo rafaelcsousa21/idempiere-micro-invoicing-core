@@ -1,11 +1,13 @@
 package org.compiere.production;
 
-import org.compiere.accounting.MProduct;
+import org.compiere.accounting.*;
+import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_M_Production;
 import org.compiere.model.I_M_ProductionPlan;
 import org.compiere.order.MOrderLine;
+import org.compiere.orm.MClient;
 import org.compiere.orm.*;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
@@ -29,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 public class MProduction extends X_M_Production implements I_M_Production, DocAction, IPODoc {
   /** */
@@ -84,7 +88,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     setC_Activity_ID(project.getC_Activity_ID());
     setC_ProjectPhase_ID(line.getC_ProjectPhase_ID());
     setC_ProjectTask_ID(line.getC_ProjectTask_ID());
-    setMovementDate(Env.getContextAsDate(p_ctx, "#Date"));
+    setMovementDate(Env.getContextAsDate(getCtx(), "#Date"));
   }
 
   @Override
