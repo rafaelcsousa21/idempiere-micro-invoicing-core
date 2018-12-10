@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import static software.hsharp.core.util.DBKt.getSQLValue;
+
 
 /**
  * Note Model

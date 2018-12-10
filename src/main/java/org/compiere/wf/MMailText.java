@@ -18,6 +18,9 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
+
 /**
  * Request Mail Template Model. Cannot be cached as it holds PO/BPartner/User to parse
  *

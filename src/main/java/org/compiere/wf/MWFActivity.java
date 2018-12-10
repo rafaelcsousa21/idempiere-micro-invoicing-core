@@ -34,6 +34,9 @@ import org.idempiere.common.util.Trace;
 import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.Util;
 
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
+
 /**
  * Workflow Activity Model. Controlled by WF Process: set Node - startWork
  *

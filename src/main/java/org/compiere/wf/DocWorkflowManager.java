@@ -1,16 +1,19 @@
 package org.compiere.wf;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Level;
 import org.compiere.process.ProcessInfo;
 import org.compiere.util.SystemIDs;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Evaluator;
 import org.idempiere.orm.DocWorkflowMgr;
 import org.idempiere.orm.PO;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Document Workflow Manager
