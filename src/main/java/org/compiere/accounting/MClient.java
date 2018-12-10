@@ -22,6 +22,8 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
 
+import static software.hsharp.core.util.DBKt.*;
+
 /**
  * Client Model
  *
@@ -67,7 +69,7 @@ public class MClient extends org.compiere.orm.MClient {
     List<MClient> list =
         new Query(ctx, I_AD_Client.Table_Name, null, null).setOrderBy(orderBy).list();
     for (MClient client : list) {
-      s_cache.put(new Integer(client.getADClientID()), client);
+      s_cache.put(new Integer(client. getClientId()), client);
     }
     MClient[] retValue = new MClient[list.size()];
     list.toArray(retValue);
@@ -79,7 +81,7 @@ public class MClient extends org.compiere.orm.MClient {
   private static CLogger s_log = CLogger.getCLogger(MClient.class);
 
   /**
-   * Do we have Multi-Lingual Documents. Set in DB.loadOrgs
+   * Do we have Multi-Lingual Documents. Set in loadOrgs
    *
    * @param ctx context
    * @return true if multi lingual documents
@@ -112,7 +114,7 @@ public class MClient extends org.compiere.orm.MClient {
   @Override
   public MClientInfo getInfo() {
     if (m_info == null)
-      m_info = org.compiere.orm.MClientInfo.get(getCtx(), getADClientID(), get_TrxName());
+      m_info = org.compiere.orm.MClientInfo.get(getCtx(),  getClientId(), get_TrxName());
     return (MClientInfo) m_info;
   } //	getMClientInfo
 
@@ -181,7 +183,7 @@ public class MClient extends org.compiere.orm.MClient {
               .append(
                   "WHERE l.AD_Reference_ID=120 AND l.AD_Ref_List_ID=t.AD_Ref_List_ID AND l.IsActive='Y'")
               .append(" AND t.AD_Language=")
-              .append(DB.TO_STRING(language));
+              .append(TO_STRING(language));
 
     //  Tree IDs
     int AD_Tree_Org_ID = 0,
@@ -196,7 +198,7 @@ public class MClient extends org.compiere.orm.MClient {
     PreparedStatement stmt = null;
     ResultSet rs = null;
     try {
-      stmt = DB.prepareStatement(sql.toString(), get_TrxName());
+      stmt = prepareStatement(sql.toString(), get_TrxName());
       rs = stmt.executeQuery();
       MTree_Base tree = null;
       while (rs.next()) {
@@ -256,7 +258,7 @@ public class MClient extends org.compiere.orm.MClient {
       log.log(Level.SEVERE, "Trees", e1);
       success = false;
     } finally {
-      DB.close(rs, stmt);
+      close(rs, stmt);
       rs = null;
       stmt = null;
     }
@@ -304,7 +306,7 @@ public class MClient extends org.compiere.orm.MClient {
    * @return Acct Schema or null
    */
   public MAcctSchema getAcctSchema() {
-    if (m_info == null) m_info = MClientInfo.get(getCtx(), getADClientID(), get_TrxName());
+    if (m_info == null) m_info = MClientInfo.get(getCtx(),  getClientId(), get_TrxName());
     if (m_info != null) {
       int C_AcctSchema_ID = m_info.getC_AcctSchema1_ID();
       if (C_AcctSchema_ID != 0) return MAcctSchema.get(getCtx(), C_AcctSchema_ID);
@@ -318,7 +320,7 @@ public class MClient extends org.compiere.orm.MClient {
    * @return true if saved
    */
   public boolean save() {
-    if (getId() == 0 && !m_createNew) return saveUpdate();
+    if (getId() == 0 && !getCreateNew()) return saveUpdate();
     return super.save();
   } //	save
 
@@ -379,7 +381,7 @@ public class MClient extends org.compiere.orm.MClient {
                   "                FROM ASP_Field f, ASP_Tab t, ASP_Window w, ASP_Level l, ASP_ClientLevel cl ")
               .append("               WHERE w.ASP_Level_ID = l.ASP_Level_ID ")
               .append("                 AND cl.AD_Client_ID = ")
-              .append(getADClientID())
+              .append( getClientId())
               .append("                 AND cl.ASP_Level_ID = l.ASP_Level_ID ")
               .append("                 AND f.ASP_Tab_ID = t.ASP_Tab_ID ")
               .append("                 AND t.ASP_Window_ID = w.ASP_Window_ID ")
@@ -393,7 +395,7 @@ public class MClient extends org.compiere.orm.MClient {
               .append(" 				 SELECT AD_Field_ID")
               .append(" 				 FROM ASP_ClientException ce")
               .append(" 				 WHERE ce.AD_Client_ID =")
-              .append(getADClientID())
+              .append( getClientId())
               .append(" 				 AND ce.IsActive = 'Y'")
               .append("                  AND ce.AD_Field_ID IS NOT NULL")
               .append(" 				 AND ce.ASP_Status <> 'H')")
@@ -402,7 +404,7 @@ public class MClient extends org.compiere.orm.MClient {
               .append("          SELECT AD_Field_ID ")
               .append("            FROM ASP_ClientException ce ")
               .append("           WHERE ce.AD_Client_ID = ")
-              .append(getADClientID())
+              .append( getClientId())
               .append("             AND ce.IsActive = 'Y' ")
               .append("             AND ce.AD_Field_ID IS NOT NULL ")
               .append("             AND ce.ASP_Status = 'H'))")
@@ -410,13 +412,13 @@ public class MClient extends org.compiere.orm.MClient {
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = DB.prepareStatement(sqlvalidate.toString(), get_TrxName());
+        pstmt = prepareStatement(sqlvalidate.toString(), get_TrxName());
         rs = pstmt.executeQuery();
         while (rs.next()) m_fieldAccess.add(rs.getInt(1));
       } catch (Exception e) {
         log.log(Level.SEVERE, sqlvalidate.toString(), e);
       } finally {
-        DB.close(rs, pstmt);
+        close(rs, pstmt);
       }
     }
     return (Collections.binarySearch(m_fieldAccess, aDFieldID) > 0);
@@ -425,7 +427,7 @@ public class MClient extends org.compiere.orm.MClient {
   @Override
   public String getRequestUser() {
     // IDEMPIERE-722
-    if (getADClientID() != 0 && isSendCredentialsSystem()) {
+    if ( getClientId() != 0 && isSendCredentialsSystem()) {
       MClient sysclient = MClient.get(getCtx(), 0);
       return sysclient.getRequestUser();
     }
@@ -435,7 +437,7 @@ public class MClient extends org.compiere.orm.MClient {
   @Override
   public String getRequestUserPW() {
     // IDEMPIERE-722
-    if (getADClientID() != 0 && isSendCredentialsSystem()) {
+    if ( getClientId() != 0 && isSendCredentialsSystem()) {
       MClient sysclient = MClient.get(getCtx(), 0);
       return sysclient.getRequestUserPW();
     }
@@ -445,7 +447,7 @@ public class MClient extends org.compiere.orm.MClient {
   @Override
   public boolean isSmtpAuthorization() {
     // IDEMPIERE-722
-    if (getADClientID() != 0 && isSendCredentialsSystem()) {
+    if ( getClientId() != 0 && isSendCredentialsSystem()) {
       MClient sysclient = MClient.get(getCtx(), 0);
       return sysclient.isSmtpAuthorization();
     }
@@ -455,7 +457,7 @@ public class MClient extends org.compiere.orm.MClient {
   @Override
   public int getSMTPPort() {
     // IDEMPIERE-722
-    if (getADClientID() != 0 && isSendCredentialsSystem()) {
+    if ( getClientId() != 0 && isSendCredentialsSystem()) {
       MClient sysclient = MClient.get(getCtx(), 0);
       return sysclient.getSMTPPort();
     }
@@ -465,7 +467,7 @@ public class MClient extends org.compiere.orm.MClient {
   @Override
   public boolean isSecureSMTP() {
     // IDEMPIERE-722
-    if (getADClientID() != 0 && isSendCredentialsSystem()) {
+    if ( getClientId() != 0 && isSendCredentialsSystem()) {
       MClient sysclient = MClient.get(getCtx(), 0);
       return sysclient.isSecureSMTP();
     }
@@ -480,7 +482,7 @@ public class MClient extends org.compiere.orm.MClient {
   @Override
   public String getSMTPHost() {
     String s = null;
-    if (getADClientID() != 0 && isSendCredentialsSystem()) {
+    if ( getClientId() != 0 && isSendCredentialsSystem()) {
       MClient sysclient = MClient.get(getCtx(), 0);
       s = sysclient.getSMTPHost();
     } else {

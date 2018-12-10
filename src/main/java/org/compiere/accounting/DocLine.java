@@ -29,7 +29,7 @@ public class DocLine {
     m_doc = doc;
     //
     //  Document Consistency
-    if (p_po.getAD_Org_ID() == 0) p_po.setAD_Org_ID(m_doc.getAD_Org_ID());
+    if (p_po. getOrgId() == 0) p_po.setAD_Org_ID(m_doc. getOrgId());
   } //	DocLine
 
   /** Persistent Object */
@@ -463,8 +463,8 @@ public class DocLine {
    *
    * @return org
    */
-  public int getAD_Org_ID() {
-    return p_po.getAD_Org_ID();
+  public int  getOrgId() {
+    return p_po. getOrgId();
   } //	getAD_Org_ID
 
   /**
@@ -476,10 +476,10 @@ public class DocLine {
     int C_OrderLine_ID = getC_OrderLine_ID();
     if (C_OrderLine_ID != 0) {
       String sql = "SELECT AD_Org_ID FROM C_OrderLine WHERE C_OrderLine_ID=?";
-      int AD_Org_ID = DB.getSQLValue(null, sql, C_OrderLine_ID);
+      int AD_Org_ID = getSQLValue(null, sql, C_OrderLine_ID);
       if (AD_Org_ID > 0) return AD_Org_ID;
     }
-    return getAD_Org_ID();
+    return  getOrgId();
   } //	getOrder_Org_ID
 
   /**
@@ -885,7 +885,7 @@ public class DocLine {
       {
         String sql =
             "SELECT COALESCE(C_SalesRegion_ID,0) FROM C_BPartner_Location WHERE C_BPartner_Location_ID=?";
-        m_C_SalesRegion_ID = DB.getSQLValue(null, sql, getC_BPartner_Location_ID());
+        m_C_SalesRegion_ID = getSQLValue(null, sql, getC_BPartner_Location_ID());
         if (log.isLoggable(Level.FINE))
           log.fine("C_SalesRegion_ID=" + m_C_SalesRegion_ID + " (from BPL)");
         if (m_C_SalesRegion_ID == 0) m_C_SalesRegion_ID = -2; // 	don't try again

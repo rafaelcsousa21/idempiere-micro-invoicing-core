@@ -172,7 +172,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
             + "WHERE ps.C_PaySelection_ID=psl.C_PaySelection_ID AND psl.IsActive='Y') "
             + "WHERE C_PaySelection_ID="
             + getC_PaySelection_ID();
-    DB.executeUpdate(sql, get_TrxName());
+    executeUpdate(sql, get_TrxName());
   } //	setHeader
 
   /**

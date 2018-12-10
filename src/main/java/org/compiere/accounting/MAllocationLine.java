@@ -277,7 +277,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
               + "WHERE i.C_Invoice_ID="
               + C_Invoice_ID
               + ")";
-      if (DB.executeUpdate(update, get_TrxName()) > 0)
+      if (executeUpdate(update, get_TrxName()) > 0)
         if (log.isLoggable(Level.FINE))
           log.fine(
               "C_Payment_ID="
@@ -314,7 +314,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
               + "WHERE i.C_Invoice_ID="
               + C_Invoice_ID
               + ")";
-      if (DB.executeUpdate(update, get_TrxName()) > 0)
+      if (executeUpdate(update, get_TrxName()) > 0)
         if (log.isLoggable(Level.FINE))
           log.fine(
               "C_CashLine_ID="

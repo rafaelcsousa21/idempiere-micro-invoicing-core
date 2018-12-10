@@ -247,7 +247,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
 
     //	Std Period open?
     MPeriod.testPeriodOpen(
-        getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getAD_Org_ID());
+        getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition,  getOrgId());
 
     //	Add up Amounts
     int precision = MPriceList.getStandardPrecision(getCtx(), getM_PriceList_ID());
@@ -343,7 +343,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
     if (dt.isOverwriteDateOnComplete()) {
       setDateDoc(new Timestamp(System.currentTimeMillis()));
       MPeriod.testPeriodOpen(
-          getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getAD_Org_ID());
+          getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition,  getOrgId());
     }
     if (dt.isOverwriteSeqOnComplete()) {
       String value = MSequence.getDocumentNo(getC_DocType_ID(), get_TrxName(), true, this);

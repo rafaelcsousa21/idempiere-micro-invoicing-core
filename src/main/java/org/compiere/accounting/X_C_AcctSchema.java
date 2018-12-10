@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_AcctSchema
@@ -36,11 +36,6 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
    */
   protected int getAccessLevel() {
     return I_C_AcctSchema.accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    return POInfo.getPOInfo(ctx, I_C_AcctSchema.Table_ID, get_TrxName());
   }
 
   public String toString() {
@@ -700,5 +695,10 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
    */
   public String getTaxCorrectionType() {
     return (String) get_Value(I_C_AcctSchema.COLUMNNAME_TaxCorrectionType);
+  }
+
+  @Override
+  public int getTableId() {
+    return 0;
   }
 }

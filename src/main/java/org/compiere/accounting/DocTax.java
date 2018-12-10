@@ -83,7 +83,7 @@ public final class DocTax {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, m_C_Tax_ID);
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
@@ -91,7 +91,7 @@ public final class DocTax {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

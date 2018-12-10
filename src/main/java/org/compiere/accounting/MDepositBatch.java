@@ -240,7 +240,7 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
   protected boolean afterDelete(boolean success) {
     if (getC_DepositBatch_ID() != 0) {
       String sql = "UPDATE C_Payment p SET C_DepositBatch_ID= 0  WHERE p.C_DepositBatch_ID=?";
-      DB.executeUpdateEx(sql, new Object[] {getC_DepositBatch_ID()}, get_TrxName());
+      executeUpdateEx(sql, new Object[] {getC_DepositBatch_ID()}, get_TrxName());
     }
 
     return success;
@@ -258,14 +258,14 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, get_TrxName());
       pstmt.setInt(1, getC_DepositBatch_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MDepositBatchLine(getCtx(), rs, get_TrxName()));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
     }
 
     //

@@ -106,8 +106,8 @@ public class MDistributionLine extends X_GL_DistributionLine {
     MAccount acct =
         MAccount.get(
             getCtx(),
-            m_account.getADClientID(),
-            isOverwriteOrg() && getOrg_ID() != 0 ? getOrg_ID() : m_account.getAD_Org_ID(),
+            m_account. getClientId(),
+            isOverwriteOrg() && getOrg_ID() != 0 ? getOrg_ID() : m_account. getOrgId(),
             m_account.getC_AcctSchema_ID(),
             isOverwriteAcct() && getAccount_ID() != 0 ? getAccount_ID() : m_account.getAccount_ID(),
             m_account.getC_SubAcct_ID(),
@@ -198,7 +198,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 FROM GL_DistributionLine WHERE GL_Distribution_ID=?";
-      int ii = DB.getSQLValue(get_TrxName(), sql, getGL_Distribution_ID());
+      int ii = getSQLValue(get_TrxName(), sql, getGL_Distribution_ID());
       setLine(ii);
     }
     //	Reset not selected Overwrite

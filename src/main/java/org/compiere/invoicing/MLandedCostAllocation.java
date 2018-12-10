@@ -1,14 +1,17 @@
 package org.compiere.invoicing;
 
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Landed Cost Allocation Model
@@ -35,14 +38,14 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, C_InvoiceLine_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MLandedCostAllocation(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

@@ -1,13 +1,13 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_C_ElementValue;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for C_ElementValue
@@ -37,11 +37,6 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    return POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
   }
 
   public String toString() {
@@ -540,5 +535,10 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
    */
   public Timestamp getValidTo() {
     return (Timestamp) get_Value(COLUMNNAME_ValidTo);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_ElementValue.Table_ID;
   }
 }

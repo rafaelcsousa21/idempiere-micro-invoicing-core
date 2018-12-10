@@ -144,7 +144,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
               getCtx(),
               tender,
               CCType,
-              getADClientID(),
+               getClientId(),
               getC_Currency_ID(),
               getPayAmt(),
               get_TrxName());
@@ -155,7 +155,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
               getCtx(),
               tender,
               CCType,
-              getADClientID(),
+               getClientId(),
               getC_Currency_ID(),
               Env.ZERO,
               get_TrxName());
@@ -472,7 +472,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     payment.setA_Zip(getA_Zip());
     payment.setAccountNo(getAccountNo());
     payment.setIBAN(getIBAN());
-    payment.setAD_Org_ID(getAD_Org_ID());
+    payment.setAD_Org_ID( getOrgId());
     payment.setC_BankAccount_ID(getC_BankAccount_ID());
     payment.setC_BP_BankAccount_ID(getC_BP_BankAccount_ID());
     payment.setC_BPartner_ID(getC_BPartner_ID());
@@ -571,7 +571,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
       String trxName) {
     MPaymentTransaction to = new MPaymentTransaction(from.getCtx(), 0, trxName);
     to.set_TrxName(trxName);
-    PO.copyValues(from, to, from.getADClientID(), from.getAD_Org_ID());
+    PO.copyValues(from, to, from. getClientId(), from. getOrgId());
     to.set_ValueNoCheck(I_C_PaymentTransaction.COLUMNNAME_C_PaymentTransaction_ID, PO.I_ZERO);
     //
     to.setA_City(from.getA_City());
@@ -585,7 +585,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     to.setA_Zip(from.getA_Zip());
     to.setAccountNo(from.getAccountNo());
     to.setIBAN(from.getIBAN());
-    to.setAD_Org_ID(from.getAD_Org_ID());
+    to.setAD_Org_ID(from. getOrgId());
     to.setC_BankAccount_ID(from.getC_BankAccount_ID());
     to.setC_BP_BankAccount_ID(from.getC_BP_BankAccount_ID());
     to.setC_BPartner_ID(from.getC_BPartner_ID());

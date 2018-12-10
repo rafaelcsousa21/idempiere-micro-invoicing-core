@@ -23,7 +23,7 @@ import org.eevolution.model.I_PP_Cost_Collector;
 import org.eevolution.model.I_PP_Order;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
@@ -211,7 +211,7 @@ public class DocumentEngine implements DocAction {
       if (docPO.getId() > 0
           && docPO.get_TrxName() != null
           && docPO.get_ValueOld("DocStatus") != null) {
-        DB.getDatabase().forUpdate(docPO, 30);
+        getDatabase().forUpdate(docPO, 30);
         String docStatusOriginal = (String) docPO.get_ValueOld("DocStatus");
         String statusSql =
             "SELECT DocStatus FROM "
@@ -219,9 +219,9 @@ public class DocumentEngine implements DocAction {
                 + " WHERE "
                 + docPO.get_KeyColumns()[0]
                 + " = ? ";
-        String currentStatus = DB.getSQLValueString((String) null, statusSql, docPO.getId());
+        String currentStatus = getSQLValueString((String) null, statusSql, docPO.getId());
         if (!docStatusOriginal.equals(currentStatus) && currentStatus != null) {
-          currentStatus = DB.getSQLValueString(docPO.get_TrxName(), statusSql, docPO.getId());
+          currentStatus = getSQLValueString(docPO.get_TrxName(), statusSql, docPO.getId());
           if (!docStatusOriginal.equals(currentStatus)) {
             throw new IllegalStateException(
                 Msg.getMsg(docPO.getCtx(), "DocStatusChanged") + " " + docPO.toString());
@@ -337,8 +337,8 @@ public class DocumentEngine implements DocAction {
               String ignoreError =
                   DocumentEngine.postImmediate(
                       docafter.getCtx(),
-                      docafter.getADClientID(),
-                      docafter.get_Table_ID(),
+                      docafter. getClientId(),
+                      docafter.getTableId(),
                       docafter.getId(),
                       true,
                       docafter.get_TrxName());
@@ -480,8 +480,8 @@ public class DocumentEngine implements DocAction {
     String error =
         DocumentEngine.postImmediate(
             Env.getCtx(),
-            m_document.getADClientID(),
-            m_document.get_Table_ID(),
+            m_document. getClientId(),
+            m_document.getTableId(),
             m_document.getId(),
             true,
             m_document.get_TrxName());
@@ -523,7 +523,7 @@ public class DocumentEngine implements DocAction {
    */
   public boolean closeIt() {
     if (m_document != null // 	orders can be closed any time
-        && m_document.get_Table_ID() == I_C_Order.Table_ID) ;
+        && m_document.getTableId() == I_C_Order.Table_ID) ;
     else if (!isValidAction(DocAction.Companion.getACTION_Close())) return false;
     if (m_document != null) {
       if (m_document.closeIt()) {
@@ -772,7 +772,7 @@ public class DocumentEngine implements DocAction {
    *
    * @return throw exception
    */
-  public int getADClientID() {
+  public int  getClientId() {
     throw new IllegalStateException(EXCEPTION_MSG);
   }
 
@@ -781,7 +781,7 @@ public class DocumentEngine implements DocAction {
    *
    * @return throw exception
    */
-  public int getAD_Org_ID() {
+  public int  getOrgId() {
     throw new IllegalStateException(EXCEPTION_MSG);
   }
 
@@ -837,8 +837,8 @@ public class DocumentEngine implements DocAction {
    *
    * @return AD_Table_ID
    */
-  public int get_Table_ID() {
-    if (m_document != null) return m_document.get_Table_ID();
+  public int getTableId() {
+    if (m_document != null) return m_document.getTableId();
     throw new IllegalStateException(EXCEPTION_MSG);
   } //	get_Table_ID
 
@@ -1190,7 +1190,7 @@ public class DocumentEngine implements DocAction {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, DocAction.Companion.getAD_REFERENCE_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -1206,7 +1206,7 @@ public class DocumentEngine implements DocAction {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

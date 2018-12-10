@@ -203,7 +203,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     if (getM_InOutLine_ID() > 0) {
       MInOutLine line = new MInOutLine(getCtx(), getM_InOutLine_ID(), get_TrxName());
       BigDecimal matchedQty =
-          DB.getSQLValueBD(
+          getSQLValueBD(
               get_TrxName(),
               "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE M_InOutLine_ID=?",
               getM_InOutLine_ID());
@@ -221,7 +221,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     if (getC_InvoiceLine_ID() > 0) {
       MInvoiceLine line = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), get_TrxName());
       BigDecimal matchedQty =
-          DB.getSQLValueBD(
+          getSQLValueBD(
               get_TrxName(),
               "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE C_InvoiceLine_ID=?",
               getC_InvoiceLine_ID());
@@ -249,14 +249,14 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
             + "FROM C_InvoiceLine il"
             + " INNER JOIN C_Invoice i ON (i.C_Invoice_ID=il.C_Invoice_ID) "
             + "WHERE C_InvoiceLine_ID=?";
-    Timestamp invoiceDate = DB.getSQLValueTS(get_TrxName(), sql, getC_InvoiceLine_ID());
+    Timestamp invoiceDate = getSQLValueTS(get_TrxName(), sql, getC_InvoiceLine_ID());
     //
     sql =
         "SELECT io.DateAcct "
             + "FROM M_InOutLine iol"
             + " INNER JOIN M_InOut io ON (io.M_InOut_ID=iol.M_InOut_ID) "
             + "WHERE iol.M_InOutLine_ID=?";
-    Timestamp shipDate = DB.getSQLValueTS(get_TrxName(), sql, getM_InOutLine_ID());
+    Timestamp shipDate = getSQLValueTS(get_TrxName(), sql, getM_InOutLine_ID());
     //
     if (invoiceDate == null) return shipDate;
     if (shipDate == null) return invoiceDate;
@@ -272,7 +272,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
   protected boolean beforeDelete() {
     if (isPosted()) {
       MPeriod.testPeriodOpen(
-          getCtx(), getDateTrx(), MDocType.DOCBASETYPE_MatchInvoice, getAD_Org_ID());
+          getCtx(), getDateTrx(), MDocType.DOCBASETYPE_MatchInvoice,  getOrgId());
       setPosted(false);
       MFactAcct.deleteEx(I_M_MatchInv.Table_ID, getId(), get_TrxName());
     }
@@ -298,7 +298,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
   // AZ Goodwill
   private String deleteMatchInvCostDetail() {
     // Get Account Schemas to delete MCostDetail
-    MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getCtx(), getADClientID());
+    MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getCtx(),  getClientId());
     for (int asn = 0; asn < acctschemas.length; asn++) {
       MAcctSchema as = acctschemas[asn];
 
@@ -352,7 +352,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     if (this.isProcessed() && this.getReversal_ID() == 0) {
       MMatchInv reversal = new MMatchInv(getCtx(), 0, get_TrxName());
       PO.copyValues(this, reversal);
-      reversal.setAD_Org_ID(this.getAD_Org_ID());
+      reversal.setAD_Org_ID(this. getOrgId());
       reversal.setDescription("(->" + this.getDocumentNo() + ")");
       reversal.setQty(this.getQty().negate());
       reversal.setDateAcct(reversalDate);

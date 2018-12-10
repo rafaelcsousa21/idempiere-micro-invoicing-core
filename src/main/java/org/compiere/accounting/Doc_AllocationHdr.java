@@ -201,7 +201,7 @@ public class Doc_AllocationHdr extends Doc {
                   getC_Currency_ID(),
                   line.getAmtSource(),
                   null);
-          if (fl != null && payment != null) fl.setAD_Org_ID(payment.getAD_Org_ID());
+          if (fl != null && payment != null) fl.setAD_Org_ID(payment. getOrgId());
         } else {
           p_Error = "Cannot determine SO/PO";
           log.log(Level.SEVERE, p_Error);
@@ -244,7 +244,7 @@ public class Doc_AllocationHdr extends Doc {
                     getC_Currency_ID(),
                     line.getAmtSource(),
                     null);
-            if (fl != null && payment != null) fl.setAD_Org_ID(payment.getAD_Org_ID());
+            if (fl != null && payment != null) fl.setAD_Org_ID(payment. getOrgId());
           } else if (line.getC_CashLine_ID() != 0) {
             fl =
                 fact.createLine(
@@ -254,7 +254,7 @@ public class Doc_AllocationHdr extends Doc {
                     line.getAmtSource(),
                     null);
             MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID(), getTrxName());
-            if (fl != null && cashLine.getId() != 0) fl.setAD_Org_ID(cashLine.getAD_Org_ID());
+            if (fl != null && cashLine.getId() != 0) fl.setAD_Org_ID(cashLine. getOrgId());
           }
         }
         // End Avoid usage of clearing accounts
@@ -268,7 +268,7 @@ public class Doc_AllocationHdr extends Doc {
                   getC_Currency_ID(),
                   line.getDiscountAmt(),
                   null);
-          if (fl != null && payment != null) fl.setAD_Org_ID(payment.getAD_Org_ID());
+          if (fl != null && payment != null) fl.setAD_Org_ID(payment. getOrgId());
         }
         //	Write off		DR
         if (Env.ZERO.compareTo(line.getWriteOffAmt()) != 0) {
@@ -279,7 +279,7 @@ public class Doc_AllocationHdr extends Doc {
                   getC_Currency_ID(),
                   line.getWriteOffAmt(),
                   null);
-          if (fl != null && payment != null) fl.setAD_Org_ID(payment.getAD_Org_ID());
+          if (fl != null && payment != null) fl.setAD_Org_ID(payment. getOrgId());
         }
 
         //	AR Invoice Amount	CR
@@ -289,7 +289,7 @@ public class Doc_AllocationHdr extends Doc {
               fact.createLine(
                   line, bpAcct, getC_Currency_ID(), null, allocationSource); // 	payment currency
           if (fl != null) allocationAccounted = fl.getAcctBalance().negate();
-          if (fl != null && invoice != null) fl.setAD_Org_ID(invoice.getAD_Org_ID());
+          if (fl != null && invoice != null) fl.setAD_Org_ID(invoice. getOrgId());
 
           // for Realized Gain & Loss
           flForRGL =
@@ -343,7 +343,7 @@ public class Doc_AllocationHdr extends Doc {
               fact.createLine(
                   line, bpAcct, getC_Currency_ID(), allocationSource, null); // 	payment currency
           if (fl != null) allocationAccounted = fl.getAcctBalance();
-          if (fl != null && invoice != null) fl.setAD_Org_ID(invoice.getAD_Org_ID());
+          if (fl != null && invoice != null) fl.setAD_Org_ID(invoice. getOrgId());
 
           // for Realized Gain & Loss
           flForRGL =
@@ -369,7 +369,7 @@ public class Doc_AllocationHdr extends Doc {
                   getC_Currency_ID(),
                   null,
                   line.getDiscountAmt().negate());
-          if (fl != null && payment != null) fl.setAD_Org_ID(payment.getAD_Org_ID());
+          if (fl != null && payment != null) fl.setAD_Org_ID(payment. getOrgId());
         }
         //	Write off		CR
         if (Env.ZERO.compareTo(line.getWriteOffAmt()) != 0) {
@@ -380,7 +380,7 @@ public class Doc_AllocationHdr extends Doc {
                   getC_Currency_ID(),
                   null,
                   line.getWriteOffAmt().negate());
-          if (fl != null && payment != null) fl.setAD_Org_ID(payment.getAD_Org_ID());
+          if (fl != null && payment != null) fl.setAD_Org_ID(payment. getOrgId());
         }
         //	Payment/Cash	CR
         if (isUsingClearing && line.getC_Payment_ID() != 0) // Avoid usage of clearing accounts
@@ -392,7 +392,7 @@ public class Doc_AllocationHdr extends Doc {
                   getC_Currency_ID(),
                   null,
                   line.getAmtSource().negate());
-          if (fl != null && payment != null) fl.setAD_Org_ID(payment.getAD_Org_ID());
+          if (fl != null && payment != null) fl.setAD_Org_ID(payment. getOrgId());
         } else if (isUsingClearing
             && line.getC_CashLine_ID() != 0) // Avoid usage of clearing accounts
         {
@@ -404,7 +404,7 @@ public class Doc_AllocationHdr extends Doc {
                   null,
                   line.getAmtSource().negate());
           MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID(), getTrxName());
-          if (fl != null && cashLine.getId() != 0) fl.setAD_Org_ID(cashLine.getAD_Org_ID());
+          if (fl != null && cashLine.getId() != 0) fl.setAD_Org_ID(cashLine. getOrgId());
         }
       }
 
@@ -494,7 +494,7 @@ public class Doc_AllocationHdr extends Doc {
       return false;
     }
 
-    int startorg = p_lines[0].getAD_Org_ID();
+    int startorg = p_lines[0]. getOrgId();
     // validate if the allocation involves more than one org
     for (int i = 0; i < p_lines.length; i++) {
       DocLine_Allocation line = (DocLine_Allocation) p_lines[i];
@@ -502,28 +502,28 @@ public class Doc_AllocationHdr extends Doc {
       MPayment payment = null;
       if (line.getC_Payment_ID() != 0) {
         payment = new MPayment(getCtx(), line.getC_Payment_ID(), getTrxName());
-        orgpayment = payment.getAD_Org_ID();
+        orgpayment = payment. getOrgId();
       }
       int orginvoice = startorg;
       MInvoice invoice = null;
       if (line.getC_Invoice_ID() != 0) {
         invoice = new MInvoice(getCtx(), line.getC_Invoice_ID(), getTrxName());
-        orginvoice = invoice.getAD_Org_ID();
+        orginvoice = invoice. getOrgId();
       }
       int orgcashline = startorg;
       MCashLine cashline = null;
       if (line.getC_CashLine_ID() != 0) {
         cashline = new MCashLine(getCtx(), line.getC_CashLine_ID(), getTrxName());
-        orgcashline = cashline.getAD_Org_ID();
+        orgcashline = cashline. getOrgId();
       }
       int orgorder = startorg;
       MOrder order = null;
       if (line.getC_Order_ID() != 0) {
         order = new MOrder(getCtx(), line.getC_Order_ID(), getTrxName());
-        orgorder = order.getAD_Org_ID();
+        orgorder = order. getOrgId();
       }
 
-      if (line.getAD_Org_ID() != startorg
+      if (line. getOrgId() != startorg
           || orgpayment != startorg
           || orginvoice != startorg
           || orgcashline != startorg
@@ -544,8 +544,8 @@ public class Doc_AllocationHdr extends Doc {
   private boolean equalFactLineIDs(FactLine prevFactLine, FactLine factLine) {
     return (factLine.getA_Asset_ID() == prevFactLine.getA_Asset_ID()
         && factLine.getAccount_ID() == prevFactLine.getAccount_ID()
-        && factLine.getADClientID() == prevFactLine.getADClientID()
-        && factLine.getAD_Org_ID() == prevFactLine.getAD_Org_ID()
+        && factLine. getClientId() == prevFactLine. getClientId()
+        && factLine. getOrgId() == prevFactLine. getOrgId()
         && factLine.getAD_OrgTrx_ID() == prevFactLine.getAD_OrgTrx_ID()
         && factLine.getC_AcctSchema_ID() == prevFactLine.getC_AcctSchema_ID()
         && factLine.getC_Activity_ID() == prevFactLine.getC_Activity_ID()
@@ -642,7 +642,7 @@ public class Doc_AllocationHdr extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, getTrxName());
+      pstmt = prepareStatement(sql, getTrxName());
       pstmt.setInt(1, C_Payment_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -659,7 +659,7 @@ public class Doc_AllocationHdr extends Doc {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -684,7 +684,7 @@ public class Doc_AllocationHdr extends Doc {
         "SELECT c.C_CashBook_ID "
             + "FROM C_Cash c, C_CashLine cl "
             + "WHERE c.C_Cash_ID=cl.C_Cash_ID AND cl.C_CashLine_ID=?";
-    setC_CashBook_ID(DB.getSQLValue(null, sql, C_CashLine_ID));
+    setC_CashBook_ID(getSQLValue(null, sql, C_CashLine_ID));
 
     if (getC_CashBook_ID() <= 0) {
       log.log(Level.SEVERE, "NONE for C_CashLine_ID=" + C_CashLine_ID);
@@ -730,7 +730,7 @@ public class Doc_AllocationHdr extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), getTrxName());
+      pstmt = prepareStatement(sql.toString(), getTrxName());
       pstmt.setInt(1, invoice.getC_Invoice_ID());
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
@@ -741,7 +741,7 @@ public class Doc_AllocationHdr extends Doc {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -773,8 +773,8 @@ public class Doc_AllocationHdr extends Doc {
               invoice.getC_Currency_ID(),
               getDateAcct(),
               invoice.getC_ConversionType_ID(),
-              invoice.getADClientID(),
-              invoice.getAD_Org_ID());
+              invoice. getClientId(),
+              invoice. getOrgId());
       if (allocationSourceNew == null) return "Gain/Loss - No Conversion from Allocation->Invoice";
       StringBuilder d2 =
           new StringBuilder("Allocation=(")
@@ -882,7 +882,7 @@ public class Doc_AllocationHdr extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, getTrxName());
+      pstmt = prepareStatement(sql, getTrxName());
       pstmt.setInt(1, line.getC_Invoice_ID());
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
@@ -890,7 +890,7 @@ public class Doc_AllocationHdr extends Doc {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

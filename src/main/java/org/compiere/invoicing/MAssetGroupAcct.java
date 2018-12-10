@@ -99,7 +99,7 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
    */
   public MAssetGroupAcct copy(MAssetGroup grp) {
     MAssetGroupAcct newAcct = new MAssetGroupAcct(grp.getCtx(), 0, grp.get_TrxName());
-    PO.copyValues(this, newAcct, grp.getADClientID(), grp.getAD_Org_ID());
+    PO.copyValues(this, newAcct, grp. getClientId(), grp. getOrgId());
     newAcct.setA_Asset_Group_ID(grp.getA_Asset_Group_ID());
     return newAcct;
   }

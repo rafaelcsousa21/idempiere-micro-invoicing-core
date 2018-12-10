@@ -158,7 +158,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_BankStatement_ID=")
             .append(getC_BankStatement_ID());
-    int noLine = DB.executeUpdate(sql.toString(), get_TrxName());
+    int noLine = executeUpdate(sql.toString(), get_TrxName());
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine("setProcessed - " + processed + " - Lines=" + noLine);
   } //	setProcessed
@@ -287,7 +287,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
 
     //	Std Period open?
     MPeriod.testPeriodOpen(
-        getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getAD_Org_ID());
+        getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement,  getOrgId());
     MBankStatementLine[] lines = getLines(true);
     if (lines.length == 0) {
       m_processMsg = "@NoLines@";
@@ -423,7 +423,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     //	Std Period open?
     else {
       MPeriod.testPeriodOpen(
-          getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getAD_Org_ID());
+          getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement,  getOrgId());
       MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getC_BankStatement_ID(), get_TrxName());
     }
 

@@ -20,6 +20,8 @@ import org.idempiere.common.util.CLogger;
 
 import org.idempiere.common.util.Env;
 
+import static software.hsharp.core.util.DBKt.*;
+
 /**
  * Builds Tree. Creates tree structure - maintained in VTreePanel
  *
@@ -143,7 +145,7 @@ public class MTree extends MTree_Base {
               + "WHERE tr.AD_Client_ID=? AND tr.TreeType=? AND tr.IsActive='Y' AND tr.IsAllNodes='Y' AND t.TableName = ? "
               + "ORDER BY tr.AD_Tree_ID";
       int treeID =
-          DB.getSQLValueEx(
+          getSQLValueEx(
               null, query, Env.getADClientID(Env.getCtx()), TREETYPE_CustomTable, tableName);
 
       if (treeID != -1) {
@@ -163,7 +165,7 @@ public class MTree extends MTree_Base {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, AD_Client_ID);
       pstmt.setString(2, TreeType);
       rs = pstmt.executeQuery();
@@ -171,7 +173,7 @@ public class MTree extends MTree_Base {
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -240,7 +242,7 @@ public class MTree extends MTree_Base {
       // load Node details - addToTree -> getNodeDetail
       getNodeDetails();
       //
-      pstmt = DB.prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), get_TrxName());
       int idx = 1;
       if (AD_User_ID != -1 && getTreeType().equals(TREETYPE_Menu)) // IDEMPIERE 329 - nmicoud
       pstmt.setInt(idx++, AD_User_ID);
@@ -267,7 +269,7 @@ public class MTree extends MTree_Base {
       m_nodeRowSet = null;
       m_nodeIdMap = null;
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -370,7 +372,7 @@ public class MTree extends MTree_Base {
     String columnNameX = getSourceTableName(true);
     String color = getActionColorName();
     if (getTreeType().equals(TREETYPE_Menu)) {
-      boolean base = Env.isBaseLanguage(p_ctx, "AD_Menu");
+      boolean base = Env.isBaseLanguage(getCtx(), "AD_Menu");
       sourceTable = "m";
       if (base)
         sqlNode.append(
@@ -385,7 +387,7 @@ public class MTree extends MTree_Base {
       if (!base)
         sqlNode
             .append(" WHERE m.AD_Menu_ID=t.AD_Menu_ID AND t.AD_Language='")
-            .append(Env.getADLanguage(p_ctx))
+            .append(Env.getADLanguage(getCtx()))
             .append("'");
       if (!m_editable) {
         boolean hasWhere = sqlNode.indexOf(" WHERE ") != -1;
@@ -455,7 +457,7 @@ public class MTree extends MTree_Base {
           MRole.getDefault(getCtx(), false)
               .addAccessSQL(sql, sourceTable, MRole.SQL_FULLYQUALIFIED, m_editable);
     log.fine(sql);
-    m_nodeRowSet = DB.getRowSet(sql);
+    m_nodeRowSet = getRowSet(sql);
     m_nodeIdMap = new HashMap<Integer, ArrayList<Integer>>(50);
     try {
       m_nodeRowSet.beforeFirst();

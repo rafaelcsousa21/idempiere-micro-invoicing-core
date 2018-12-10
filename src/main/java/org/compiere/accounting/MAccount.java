@@ -278,8 +278,8 @@ public class MAccount extends X_C_ValidCombination {
     MAccount acct =
         get(
             fa.getCtx(),
-            fa.getADClientID(),
-            fa.getAD_Org_ID(),
+            fa. getClientId(),
+            fa. getOrgId(),
             fa.getC_AcctSchema_ID(),
             fa.getAccount_ID(),
             fa.getC_SubAcct_ID(),
@@ -368,9 +368,9 @@ public class MAccount extends X_C_ValidCombination {
     if (s_log.isLoggable(Level.FINE))
       s_log.fine(
           "Client_ID="
-              + vc.getADClientID()
+              + vc. getClientId()
               + ", Org_ID="
-              + vc.getAD_Org_ID()
+              + vc. getOrgId()
               + " - AcctSchema_ID="
               + vc.getC_AcctSchema_ID()
               + ", Account_ID="
@@ -464,11 +464,11 @@ public class MAccount extends X_C_ValidCombination {
     sb.append(getC_ValidCombination_ID());
     if (getCombination() != null) sb.append(",").append(getCombination());
     else {
-      //	.append(",Client=").append(getADClientID())
+      //	.append(",Client=").append( getClientId())
       sb.append(",Schema=")
           .append(getC_AcctSchema_ID())
           .append(",Org=")
-          .append(getAD_Org_ID())
+          .append( getOrgId())
           .append(",Acct=")
           .append(getAccount_ID())
           .append(" ");
@@ -578,8 +578,8 @@ public class MAccount extends X_C_ValidCombination {
       String descrStr = "_";
 
       if (MAcctSchemaElement.ELEMENTTYPE_Organization.equals(element.getElementType())) {
-        if (getAD_Org_ID() != 0) {
-          MOrg org = new MOrg(getCtx(), getAD_Org_ID(), get_TrxName()); // 	in Trx!
+        if ( getOrgId() != 0) {
+          MOrg org = new MOrg(getCtx(),  getOrgId(), get_TrxName()); // 	in Trx!
           combiStr = org.getValue();
           descrStr = org.getName();
         } else {

@@ -1,15 +1,8 @@
 package org.compiere.invoicing;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import org.compiere.accounting.*;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MClientInfo;
+import org.compiere.accounting.*;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.*;
 import org.compiere.orm.*;
@@ -21,9 +14,18 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 /**
  * Physical Inventory Model
@@ -251,7 +253,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     //
     final String sql = "UPDATE M_InventoryLine SET Processed=? WHERE M_Inventory_ID=?";
     int noLine =
-        DB.executeUpdateEx(sql, new Object[] {processed, getM_Inventory_ID()}, get_TrxName());
+        executeUpdateEx(sql, new Object[] {processed, getM_Inventory_ID()}, get_TrxName());
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine("Processed=" + processed + " - Lines=" + noLine);
   } //	setProcessed
@@ -311,7 +313,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
         getCtx(),
         getMovementDate(),
         MDocType.DOCBASETYPE_MaterialPhysicalInventory,
-        getAD_Org_ID());
+         getOrgId());
     MInventoryLine[] lines = getLines(false);
     if (lines.length == 0) {
       m_processMsg = "@NoLines@";
@@ -435,7 +437,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
         else if (MDocType.DOCSUBTYPEINV_CostAdjustment.equals(docSubTypeInv)) {
           if (!isReversal()) {
             BigDecimal currentCost = line.getCurrentCostPrice();
-            MClient client = MClient.get(getCtx(), getADClientID());
+            MClient client = MClient.get(getCtx(),  getClientId());
             MAcctSchema as = client.getAcctSchema();
             MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getCtx(), client.getId());
 
@@ -448,7 +450,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
 
             MCost cost =
                 product.getCostingRecord(
-                    as, getAD_Org_ID(), line.getMAttributeSetInstance_ID(), getCostingMethod());
+                    as,  getOrgId(), line.getMAttributeSetInstance_ID(), getCostingMethod());
             if (cost != null && cost.getCurrentCostPrice().compareTo(currentCost) != 0) {
               m_processMsg = "Current Cost for Line " + line.getLine() + " have changed.";
               return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -534,7 +536,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
               mtrx =
                   new MTransaction(
                       getCtx(),
-                      line.getAD_Org_ID(),
+                      line. getOrgId(),
                       m_MovementType,
                       line.getM_Locator_ID(),
                       line.getM_Product_ID(),
@@ -608,7 +610,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
             mtrx =
                 new MTransaction(
                     getCtx(),
-                    line.getAD_Org_ID(),
+                    line. getOrgId(),
                     m_MovementType,
                     line.getM_Locator_ID(),
                     line.getM_Product_ID(),
@@ -662,7 +664,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
           getCtx(),
           getMovementDate(),
           MDocType.DOCBASETYPE_MaterialPhysicalInventory,
-          getAD_Org_ID());
+           getOrgId());
     }
     if (dt.isOverwriteSeqOnComplete()) {
       String value = MSequence.getDocumentNo(getC_DocType_ID(), get_TrxName(), true, this);
@@ -750,7 +752,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
             }
           }
           if (qtyDiff.compareTo(Env.ZERO) > 0) {
-            MClientInfo m_clientInfo = MClientInfo.get(getCtx(), getADClientID(), get_TrxName());
+            MClientInfo m_clientInfo = MClientInfo.get(getCtx(),  getClientId(), get_TrxName());
             MAcctSchema acctSchema =
                 new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID(), get_TrxName());
             if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(acctSchema))) {
@@ -916,7 +918,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     } else {
       boolean accrual = false;
       try {
-        MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getC_DocType_ID(), getAD_Org_ID());
+        MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getC_DocType_ID(),  getOrgId());
       } catch (PeriodClosedException e) {
         accrual = true;
       }
@@ -988,11 +990,11 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     }
 
     MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
-    MPeriod.testPeriodOpen(getCtx(), reversalDate, dt.getDocBaseType(), getAD_Org_ID());
+    MPeriod.testPeriodOpen(getCtx(), reversalDate, dt.getDocBaseType(),  getOrgId());
 
     //	Deep Copy
     MInventory reversal = new MInventory(getCtx(), 0, get_TrxName());
-    PO.copyValues(this, reversal, getADClientID(), getAD_Org_ID());
+    PO.copyValues(this, reversal,  getClientId(),  getOrgId());
     reversal.setDocumentNo(getDocumentNo() + REVERSE_INDICATOR); // 	indicate reversals
     reversal.setMovementDate(reversalDate);
     reversal.setDocStatus(X_M_Inventory.DOCSTATUS_Drafted);
@@ -1012,7 +1014,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     for (int i = 0; i < oLines.length; i++) {
       MInventoryLine oLine = oLines[i];
       MInventoryLine rLine = new MInventoryLine(getCtx(), 0, get_TrxName());
-      PO.copyValues(oLine, rLine, oLine.getADClientID(), oLine.getAD_Org_ID());
+      PO.copyValues(oLine, rLine, oLine. getClientId(), oLine. getOrgId());
       rLine.setM_Inventory_ID(reversal.getM_Inventory_ID());
       rLine.setParent(reversal);
       // AZ Goodwill

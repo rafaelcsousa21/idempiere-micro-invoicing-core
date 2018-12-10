@@ -1,12 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
-import java.util.logging.Level;
-import org.adempiere.exceptions.FillMandatoryException;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MProduct;
 import org.compiere.model.HasName;
@@ -15,9 +8,16 @@ import org.compiere.product.MAssetGroup;
 import org.compiere.product.MUOM;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
-
+import org.idempiere.common.exceptions.FillMandatoryException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * @author Teo Sarca, SC ARHIPAC SRL
@@ -69,10 +69,10 @@ public class MIFixedAsset extends X_I_FixedAsset {
             I_I_FixedAsset.COLUMNNAME_ProductValue, HasName.Companion.getCOLUMNNAME_Name());
       }
       key = key.toUpperCase();
-      whereClause.append(DB.TO_STRING(key));
-      whereClause.append(" AND AD_Client_ID=").append(getADClientID());
+      whereClause.append(TO_STRING(key));
+      whereClause.append(" AND AD_Client_ID=").append( getClientId());
       String sql = "SELECT M_Product_ID FROM M_Product WHERE " + whereClause.toString();
-      M_Product_ID = DB.getSQLValueEx(trxName, sql);
+      M_Product_ID = getSQLValueEx(trxName, sql);
       if (log.isLoggable(Level.FINE)) log.fine("M_Product_ID=" + M_Product_ID + " -- sql=" + sql);
     }
 
@@ -95,7 +95,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
       // Default Tax Category:
       String sql =
           "SELECT C_TaxCategory_ID FROM C_TaxCategory WHERE AD_Client_ID IN (0,?) ORDER BY IsDefault DESC, AD_Client_ID DESC, C_TaxCategory_ID";
-      int C_TaxCategory_ID = DB.getSQLValueEx(null, sql, Env.getADClientID(ctx));
+      int C_TaxCategory_ID = getSQLValueEx(null, sql, Env.getADClientID(ctx));
       prod.setC_TaxCategory_ID(C_TaxCategory_ID);
       //
       prod.saveEx(trxName);

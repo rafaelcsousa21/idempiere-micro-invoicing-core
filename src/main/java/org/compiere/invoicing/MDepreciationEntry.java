@@ -83,7 +83,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
   }
 
   public void setC_Period_ID() {
-    MPeriod period = MPeriod.get(getCtx(), getDateAcct(), getAD_Org_ID(), get_TrxName());
+    MPeriod period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId(), get_TrxName());
     if (period == null) {
       throw new AdempiereException("@NotFound@ @C_Period_ID@");
     }
@@ -104,7 +104,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     if (id <= 0) { // Use old ID is current ID is missing (i.e. object was deleted)
       id = get_IDOld();
     }
-    int no = DB.executeUpdateEx(sql, new Object[] {id}, get_TrxName());
+    int no = executeUpdateEx(sql, new Object[] {id}, get_TrxName());
     if (log.isLoggable(Level.FINE)) log.fine("Updated #" + no);
   }
 
@@ -128,8 +128,8 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     ;
     Timestamp dateAcct = TimeUtil.trunc(getDateAcct(), TimeUtil.TRUNC_MONTH);
     int no =
-        DB.executeUpdateEx(
-            sql, new Object[] {getId(), dateAcct, getADClientID(), getAD_Org_ID()}, get_TrxName());
+        executeUpdateEx(
+            sql, new Object[] {getId(), dateAcct,  getClientId(),  getOrgId()}, get_TrxName());
     if (log.isLoggable(Level.FINE)) log.fine("Updated #" + no);
   }
 
@@ -192,7 +192,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
       return DocAction.Companion.getSTATUS_Invalid();
     }
 
-    MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getAD_Org_ID());
+    MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(),  getOrgId());
 
     m_justPrepared = true;
 
@@ -333,7 +333,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         new Object[] {
           I_A_Depreciation_Entry.Table_ID, depexp.getA_Depreciation_Entry_ID(), depexp.getId()
         };
-    DB.executeUpdateEx(sql, params, depexp.get_TrxName());
+    executeUpdateEx(sql, params, depexp.get_TrxName());
   }
 
   @Override

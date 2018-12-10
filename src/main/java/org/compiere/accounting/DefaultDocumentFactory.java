@@ -31,7 +31,7 @@ public class DefaultDocumentFactory implements IDocFactory {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), trxName);
+      pstmt = prepareStatement(sql.toString(), trxName);
       pstmt.setInt(1, Record_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -40,7 +40,7 @@ public class DefaultDocumentFactory implements IDocFactory {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

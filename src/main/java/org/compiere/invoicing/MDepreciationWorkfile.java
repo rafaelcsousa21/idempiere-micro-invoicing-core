@@ -215,7 +215,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
   public MDepreciationWorkfile(MAsset asset, String postingType, MAssetGroupAcct assetgrpacct) {
     this(asset.getCtx(), 0, asset.get_TrxName());
     setA_Asset_ID(asset.getA_Asset_ID());
-    setAD_Org_ID(asset.getAD_Org_ID()); // @win added
+    setAD_Org_ID(asset. getOrgId()); // @win added
     setA_Asset_Cost(asset.getA_Asset_Cost());
     setA_Accumulated_Depr(asset.getA_Accumulated_Depr());
     setA_Accumulated_Depr_F(asset.getA_Accumulated_Depr_F());
@@ -717,7 +717,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
             + MDepreciationExp.COLUMNNAME_PostingType
             + "=?";
     Object[] params = new Object[] {false, A_Current_Period, getA_Asset_ID(), getPostingType()};
-    int no = DB.executeUpdateEx(sql, params, trxName);
+    int no = executeUpdateEx(sql, params, trxName);
     if (log.isLoggable(Level.FINE)) log.fine("sql=" + sql + "\nDeleted #" + no);
   } //	truncDepreciation
 

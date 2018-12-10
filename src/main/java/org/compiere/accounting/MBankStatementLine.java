@@ -161,7 +161,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM C_BankStatementLine WHERE C_BankStatement_ID=?";
-      int ii = DB.getSQLValue(get_TrxName(), sql, getC_BankStatement_ID());
+      int ii = getSQLValue(get_TrxName(), sql, getC_BankStatement_ID());
       setLine(ii);
     }
 
@@ -225,7 +225,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
             .append("WHERE bsl.C_BankStatement_ID=bs.C_BankStatement_ID AND bsl.IsActive='Y') ")
             .append("WHERE C_BankStatement_ID=")
             .append(getC_BankStatement_ID());
-    int no = DB.executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), get_TrxName());
     if (no != 1) {
       log.warning("StatementDifference #" + no);
       return false;
@@ -235,7 +235,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
             .append(" SET EndingBalance=BeginningBalance+StatementDifference ")
             .append("WHERE C_BankStatement_ID=")
             .append(getC_BankStatement_ID());
-    no = DB.executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), get_TrxName());
     if (no != 1) {
       log.warning("Balance #" + no);
       return false;

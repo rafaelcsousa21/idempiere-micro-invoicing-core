@@ -60,7 +60,7 @@ public class MCashBook extends X_C_CashBook {
     Iterator<MCashBook> it = s_cache.values().iterator();
     while (it.hasNext()) {
       MCashBook cb = (MCashBook) it.next();
-      if (cb.getAD_Org_ID() == AD_Org_ID && cb.getC_Currency_ID() == C_Currency_ID) return cb;
+      if (cb. getOrgId() == AD_Org_ID && cb.getC_Currency_ID() == C_Currency_ID) return cb;
     }
 
     //	Get from DB

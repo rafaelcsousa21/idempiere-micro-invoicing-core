@@ -272,8 +272,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     if (amt.scale() > getPrecision()) amt = amt.setScale(getPrecision(), BigDecimal.ROUND_HALF_UP);
     setAmtAcctCr(amt);
     //	Set Line Org to Doc Org if still not set
-    if (getAD_Org_ID() <= 0) {
-      setAD_Org_ID(getParent().getAD_Org_ID());
+    if ( getOrgId() <= 0) {
+      setAD_Org_ID(getParent(). getOrgId());
     }
     return true;
   } //	beforeSave
@@ -316,12 +316,12 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 " FROM GL_JournalLine jl WHERE jl.IsActive='Y' AND j.GL_Journal_ID=jl.GL_Journal_ID) ")
             .append("WHERE GL_Journal_ID=")
             .append(getGL_Journal_ID());
-    int no = DB.executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), get_TrxName());
     if (no != 1) log.warning("afterSave - Update Journal #" + no);
 
     //	Update Batch Total
     int GL_JournalBatch_ID =
-        DB.getSQLValue(
+        getSQLValue(
             get_TrxName(),
             "SELECT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=?",
             getGL_Journal_ID());
@@ -335,7 +335,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
               .append("(SELECT DISTINCT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=")
               .append(getGL_Journal_ID())
               .append(")");
-      no = DB.executeUpdate(sql.toString(), get_TrxName());
+      no = executeUpdate(sql.toString(), get_TrxName());
       if (no != 1) log.warning("Update Batch #" + no);
     }
     return no == 1;
@@ -375,7 +375,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
           errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_BPartner_ID + "@, ";
         if (MAcctSchemaElement.ELEMENTTYPE_Campaign.equals(et) && getC_Campaign_ID() == 0)
           errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_Campaign_ID + "@, ";
-        if (MAcctSchemaElement.ELEMENTTYPE_Organization.equals(et) && getAD_Org_ID() == 0)
+        if (MAcctSchemaElement.ELEMENTTYPE_Organization.equals(et) &&  getOrgId() == 0)
           errorFields += "@" + I_GL_JournalLine.COLUMNNAME_AD_Org_ID + "@, ";
         if (MAcctSchemaElement.ELEMENTTYPE_OrgTrx.equals(et) && getAD_OrgTrx_ID() == 0)
           errorFields += "@" + I_GL_JournalLine.COLUMNNAME_AD_OrgTrx_ID + "@, ";
@@ -401,8 +401,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
       MAccount acct =
           MAccount.get(
               getCtx(),
-              getADClientID(),
-              getAD_Org_ID(),
+               getClientId(),
+               getOrgId(),
               gl.getC_AcctSchema_ID(),
               getAccount_ID(),
               getC_SubAcct_ID(),
@@ -441,7 +441,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
       setM_Product_ID(combi.getM_Product_ID() > 0 ? combi.getM_Product_ID() : 0);
       setC_BPartner_ID(combi.getC_BPartner_ID() > 0 ? combi.getC_BPartner_ID() : 0);
       setAD_OrgTrx_ID(combi.getAD_OrgTrx_ID() > 0 ? combi.getAD_OrgTrx_ID() : 0);
-      setAD_Org_ID(combi.getAD_Org_ID() > 0 ? combi.getAD_Org_ID() : 0);
+      setAD_Org_ID(combi. getOrgId() > 0 ? combi. getOrgId() : 0);
       setC_LocFrom_ID(combi.getC_LocFrom_ID() > 0 ? combi.getC_LocFrom_ID() : 0);
       setC_LocTo_ID(combi.getC_LocTo_ID() > 0 ? combi.getC_LocTo_ID() : 0);
       setC_SalesRegion_ID(combi.getC_SalesRegion_ID() > 0 ? combi.getC_SalesRegion_ID() : 0);

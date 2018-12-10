@@ -101,7 +101,7 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
    * @return true
    */
   protected boolean beforeSave(boolean newRecord) {
-    if (getAD_Org_ID() != 0) setAD_Org_ID(0);
+    if ( getOrgId() != 0) setAD_Org_ID(0);
     return true;
   } //	beforeSave
 } //	MAcctSchemaGL

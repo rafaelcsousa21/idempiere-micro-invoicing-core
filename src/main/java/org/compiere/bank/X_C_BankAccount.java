@@ -1,14 +1,14 @@
 package org.compiere.bank;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_BankAccount;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_BankAccount
@@ -38,12 +38,6 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -324,5 +318,10 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
    */
   public String getPaymentExportClass() {
     return (String) get_Value(COLUMNNAME_PaymentExportClass);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_BankAccount.Table_ID;
   }
 }

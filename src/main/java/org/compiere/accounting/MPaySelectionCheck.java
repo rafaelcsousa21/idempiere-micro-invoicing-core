@@ -47,7 +47,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, C_Payment_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -59,7 +59,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -92,7 +92,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
 
     //	Create new PaySelection
     MPaySelection ps = new MPaySelection(ctx, 0, trxName);
-    ps.setAD_Org_ID(payment.getAD_Org_ID());
+    ps.setAD_Org_ID(payment. getOrgId());
     ps.setC_BankAccount_ID(payment.getC_BankAccount_ID());
     ps.setName(Msg.translate(ctx, "C_Payment_ID") + ": " + payment.getDocumentNo());
     ps.setDescription(payment.getDescription());
@@ -191,7 +191,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, C_PaySelection_ID);
       pstmt.setString(2, PaymentRule);
       rs = pstmt.executeQuery();
@@ -202,7 +202,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -264,7 +264,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
       } else //	New Payment
       {
         payment = new MPayment(check.getCtx(), 0, trxName);
-        payment.setAD_Org_ID(check.getAD_Org_ID());
+        payment.setAD_Org_ID(check. getOrgId());
         //
         if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_Check))
           payment.setBankCheck(
@@ -637,14 +637,14 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, get_TrxName());
       pstmt.setInt(1, getC_PaySelectionCheck_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MPaySelectionLine(getCtx(), rs, get_TrxName()));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

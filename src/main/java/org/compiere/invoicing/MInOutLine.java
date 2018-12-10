@@ -1,11 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
-import org.adempiere.exceptions.FillMandatoryException;
-import org.adempiere.exceptions.WarehouseLocatorConflictException;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.MWarehouse;
@@ -19,9 +13,16 @@ import org.compiere.product.MAttributeSetInstance;
 import org.compiere.product.MUOM;
 import org.compiere.production.MLocator;
 import org.compiere.util.Msg;
-
+import org.idempiere.common.exceptions.FillMandatoryException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
+
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc {
 
@@ -146,7 +147,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM M_InOutLine WHERE M_InOut_ID=?";
-      int ii = DB.getSQLValueEx(get_TrxName(), sql, getM_InOut_ID());
+      int ii = getSQLValueEx(get_TrxName(), sql, getM_InOut_ID());
       setLine(ii);
     }
     //	UOM

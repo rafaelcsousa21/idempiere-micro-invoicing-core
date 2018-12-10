@@ -1,11 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_InvoiceTax;
@@ -14,8 +8,17 @@ import org.compiere.orm.Query;
 import org.compiere.tax.MTax;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Invoice Tax Model
@@ -170,7 +173,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, get_TrxName());
       pstmt.setInt(1, getC_Invoice_ID());
       pstmt.setInt(2, getC_Tax_ID());
       rs = pstmt.executeQuery();
@@ -196,7 +199,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

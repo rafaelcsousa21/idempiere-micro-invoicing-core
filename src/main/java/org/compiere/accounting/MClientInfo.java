@@ -1,15 +1,18 @@
 package org.compiere.accounting;
 
+import org.compiere.orm.MClient;
+import org.idempiere.common.util.CCache;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.orm.MClient;
-import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Client Info Model
@@ -68,8 +71,8 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
    * @return true if saved
    */
   public boolean save() {
-    if (getAD_Org_ID() != 0) setAD_Org_ID(0);
-    if (m_createNew) return super.save();
+    if ( getOrgId() != 0) setAD_Org_ID(0);
+    if (getCreateNew()) return super.save();
     return saveUpdate();
   } //	save
 
@@ -123,7 +126,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, AD_Client_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -133,7 +136,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

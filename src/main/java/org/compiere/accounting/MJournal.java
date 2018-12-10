@@ -1,12 +1,5 @@
 package org.compiere.accounting;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -21,8 +14,15 @@ import org.compiere.process.DocAction;
 import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
-
 import org.idempiere.common.util.Env;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * GL Journal Model
@@ -154,7 +154,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     super.setDateAcct(DateAcct);
     if (DateAcct == null) return;
     if (getC_Period_ID() != 0) return;
-    int C_Period_ID = MPeriod.getC_Period_ID(getCtx(), DateAcct, getAD_Org_ID());
+    int C_Period_ID = MPeriod.getC_Period_ID(getCtx(), DateAcct,  getOrgId());
     if (C_Period_ID == 0) log.warning("setDateAcct - Period not found");
     else setC_Period_ID(C_Period_ID);
   } //	setDateAcct
@@ -222,7 +222,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     MJournalLine[] fromLines = fromJournal.getLines(false);
     for (int i = 0; i < fromLines.length; i++) {
       MJournalLine toLine = new MJournalLine(getCtx(), 0, fromJournal.get_TrxName());
-      PO.copyValues(fromLines[i], toLine, getADClientID(), getAD_Org_ID());
+      PO.copyValues(fromLines[i], toLine,  getClientId(),  getOrgId());
       toLine.setGL_Journal_ID(getGL_Journal_ID());
       //
       if (dateAcct != null) toLine.setDateAcct(dateAcct);
@@ -261,7 +261,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
             .append((processed ? "Y" : "N"))
             .append("' WHERE GL_Journal_ID=")
             .append(getGL_Journal_ID());
-    int noLine = DB.executeUpdate(sql.toString(), get_TrxName());
+    int noLine = executeUpdate(sql.toString(), get_TrxName());
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed
 
@@ -305,7 +305,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     // Update DateAcct on lines - teo_sarca BF [ 1775358 ]
     if (is_ValueChanged(I_GL_Journal.COLUMNNAME_DateAcct)) {
       int no =
-          DB.executeUpdate(
+          executeUpdate(
               "UPDATE GL_JournalLine SET "
                   + MJournalLine.COLUMNNAME_DateAcct
                   + "=? WHERE GL_Journal_ID=?",
@@ -355,7 +355,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
                   " FROM GL_Journal j WHERE j.IsActive='Y' AND jb.GL_JournalBatch_ID=j.GL_JournalBatch_ID) ")
               .append("WHERE GL_JournalBatch_ID=")
               .append(getGL_JournalBatch_ID());
-      int no = DB.executeUpdate(sql.toString(), get_TrxName());
+      int no = executeUpdate(sql.toString(), get_TrxName());
       if (no != 1) log.warning("afterSave - Update Batch #" + no);
       return no == 1;
     }
@@ -415,7 +415,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     // Get Period
     MPeriod period = (MPeriod) getC_Period();
     if (!period.isInPeriod(getDateAcct())) {
-      period = MPeriod.get(getCtx(), getDateAcct(), getAD_Org_ID(), get_TrxName());
+      period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId(), get_TrxName());
       if (period == null) {
         log.warning("No Period for " + getDateAcct());
         m_processMsg = "@PeriodNotFound@";
@@ -604,7 +604,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         setDateDoc(new Timestamp(System.currentTimeMillis()));
         if (getDateAcct().before(getDateDoc())) {
           setDateAcct(getDateDoc());
-          MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getAD_Org_ID());
+          MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(),  getOrgId());
         }
       }
     }
@@ -844,7 +844,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     if (m_processMsg != null) return false;
 
     // teo_sarca - FR [ 1776045 ] Add ReActivate action to GL Journal
-    MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getAD_Org_ID());
+    MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(),  getOrgId());
     MFactAcct.deleteEx(MJournal.Table_ID, getId(), get_TrxName());
     setPosted(false);
     setProcessed(false);

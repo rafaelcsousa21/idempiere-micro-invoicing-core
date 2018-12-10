@@ -169,8 +169,8 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
                 getC_Currency_Report_ID(),
                 getDateExpense(),
                 0,
-                getADClientID(),
-                getAD_Org_ID()));
+                 getClientId(),
+                 getOrgId()));
       }
     }
     if (isTimeReport()) {
@@ -256,6 +256,6 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
             + "WHERE S_TimeExpense_ID="
             + getS_TimeExpense_ID();
     @SuppressWarnings("unused")
-    int no = DB.executeUpdate(sql, get_TrxName());
+    int no = executeUpdate(sql, get_TrxName());
   } //	updateHeader
 } //	MTimeExpenseLine

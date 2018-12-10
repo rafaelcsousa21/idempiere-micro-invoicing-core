@@ -170,7 +170,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
       parent =
           MCash.get(
               getCtx(),
-              parent.getAD_Org_ID(),
+              parent. getOrgId(),
               parent.getStatementDate(),
               parent.getC_Currency_ID(),
               get_TrxName());
@@ -314,13 +314,13 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
 
       //	Set Organization
       if (X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType()))
-        setAD_Org_ID(getBankAccount().getAD_Org_ID());
+        setAD_Org_ID(getBankAccount(). getOrgId());
       //	Cash Book
       else if (X_C_CashLine.CASHTYPE_Invoice.equals(getCashType()))
-        setAD_Org_ID(getCashBook().getAD_Org_ID());
+        setAD_Org_ID(getCashBook(). getOrgId());
       //	otherwise (charge) - leave it
       //	Enforce Org
-      if (getAD_Org_ID() == 0) setAD_Org_ID(getParent().getAD_Org_ID());
+      if ( getOrgId() == 0) setAD_Org_ID(getParent(). getOrgId());
     }
 
     // If CashType is not Bank Account Transfer, set C_BankAccount_ID to null - teo_sarca BF [
@@ -341,7 +341,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_CashLine WHERE C_Cash_ID=?";
-      int ii = DB.getSQLValue(get_TrxName(), sql, getC_Cash_ID());
+      int ii = getSQLValue(get_TrxName(), sql, getC_Cash_ID());
       setLine(ii);
     }
 
@@ -378,7 +378,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
             + ") "
             + "WHERE C_Cash_ID="
             + getC_Cash_ID();
-    int no = DB.executeUpdate(sql, get_TrxName());
+    int no = executeUpdate(sql, get_TrxName());
     if (no != 1) log.warning("Difference #" + no);
     //	Ending Balance
     sql =
@@ -386,7 +386,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
             + " SET EndingBalance = BeginningBalance + StatementDifference "
             + "WHERE C_Cash_ID="
             + getC_Cash_ID();
-    no = DB.executeUpdate(sql, get_TrxName());
+    no = executeUpdate(sql, get_TrxName());
     if (no != 1) log.warning("Balance #" + no);
     return no == 1;
   } //	updateHeader

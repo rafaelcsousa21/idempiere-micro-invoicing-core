@@ -120,7 +120,7 @@ public class MPeriod extends X_C_Period {
       if (period.getC_Calendar_ID() == C_Calendar_ID
           && period.isStandardPeriod()
           && period.isInPeriod(DateAcct)
-          && period.getADClientID()
+          && period. getClientId()
               == AD_Client_ID) // globalqss - CarlosRuiz - Fix [ 1820810 ] Wrong Period Assigned to
         // Fact_Acct
         return period;
@@ -139,7 +139,7 @@ public class MPeriod extends X_C_Period {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, C_Calendar_ID);
       pstmt.setTimestamp(2, TimeUtil.getDay(DateAcct));
       pstmt.setString(3, "Y");
@@ -154,7 +154,7 @@ public class MPeriod extends X_C_Period {
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, "DateAcct=" + DateAcct, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -386,7 +386,7 @@ public class MPeriod extends X_C_Period {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, C_Calendar_ID);
       pstmt.setTimestamp(2, DateAcct);
       pstmt.setString(3, "Y");
@@ -397,7 +397,7 @@ public class MPeriod extends X_C_Period {
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -480,14 +480,14 @@ public class MPeriod extends X_C_Period {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getC_Period_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MPeriodControl(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -557,7 +557,7 @@ public class MPeriod extends X_C_Period {
       return false;
     }
 
-    MAcctSchema as = MClient.get(getCtx(), getADClientID()).getAcctSchema();
+    MAcctSchema as = MClient.get(getCtx(),  getClientId()).getAcctSchema();
     if (as != null && as.isAutoPeriodControl()) {
       Timestamp today =
           TimeUtil.trunc(new Timestamp(System.currentTimeMillis()), TimeUtil.TRUNC_DAY);

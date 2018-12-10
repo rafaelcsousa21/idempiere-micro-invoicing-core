@@ -147,7 +147,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
       StringBuilder name =
           new StringBuilder(DisplayType.getDateFormat(DisplayType.Date).format(today))
               .append(" ")
-              .append(MOrg.get(ctx, getAD_Org_ID()).getValue());
+              .append(MOrg.get(ctx,  getOrgId()).getValue());
       setName(name.toString());
       setIsApproved(false);
       setPosted(false); // N
@@ -284,8 +284,8 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
    * @return true
    */
   protected boolean beforeSave(boolean newRecord) {
-    setAD_Org_ID(getCashBook().getAD_Org_ID());
-    if (getAD_Org_ID() == 0) {
+    setAD_Org_ID(getCashBook(). getOrgId());
+    if ( getOrgId() == 0) {
       log.saveError("Error", Msg.parseTranslation(getCtx(), "@AD_Org_ID@"));
       return false;
     }
@@ -346,7 +346,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
     //	Std Period open?
     if (!MPeriod.isOpen(
-        getCtx(), getDateAcct(), MDocType.DOCBASETYPE_CashJournal, getAD_Org_ID())) {
+        getCtx(), getDateAcct(), MDocType.DOCBASETYPE_CashJournal,  getOrgId())) {
       m_processMsg = "@PeriodClosed@";
       return DocAction.Companion.getSTATUS_Invalid();
     }
@@ -371,8 +371,8 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 C_Currency_ID,
                 getDateAcct(),
                 0,
-                getADClientID(),
-                getAD_Org_ID());
+                 getClientId(),
+                 getOrgId());
         if (amt == null) {
           m_processMsg = "No Conversion Rate found - @C_CashLine_ID@= " + line.getLine();
           return DocAction.Companion.getSTATUS_Invalid();
@@ -470,7 +470,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 line.getC_Currency_ID(),
                 name.toString(),
                 get_TrxName());
-        hdr.setAD_Org_ID(getAD_Org_ID());
+        hdr.setAD_Org_ID( getOrgId());
         if (!hdr.save()) {
           m_processMsg = CLogger.retrieveErrorString("Could not create Allocation Hdr");
           return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -497,7 +497,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
       } else if (MCashLine.CASHTYPE_BankAccountTransfer.equals(line.getCashType())) {
         //	Payment just as intermediate info
         MPayment pay = new MPayment(getCtx(), 0, get_TrxName());
-        pay.setAD_Org_ID(getAD_Org_ID());
+        pay.setAD_Org_ID( getOrgId());
         String documentNo = getName();
         pay.setDocumentNo(documentNo);
         pay.setR_PnRef(documentNo);
@@ -589,7 +589,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
     //	Can we delete posting
     if (!MPeriod.isOpen(
-        getCtx(), this.getDateAcct(), MPeriodControl.DOCBASETYPE_CashJournal, getAD_Org_ID()))
+        getCtx(), this.getDateAcct(), MPeriodControl.DOCBASETYPE_CashJournal,  getOrgId()))
       throw new IllegalStateException("@PeriodClosed@");
 
     //	Reverse Allocations
@@ -762,7 +762,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_Cash_ID=")
             .append(getC_Cash_ID());
-    int noLine = DB.executeUpdate(sql.toString(), get_TrxName());
+    int noLine = executeUpdate(sql.toString(), get_TrxName());
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed

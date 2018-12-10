@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-import org.adempiere.exceptions.AverageCostingZeroQtyException;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
@@ -93,7 +92,7 @@ public class Doc_Invoice extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, getTrxName());
+      pstmt = prepareStatement(sql, getTrxName());
       pstmt.setInt(1, get_ID());
       rs = pstmt.executeQuery();
       //
@@ -113,7 +112,7 @@ public class Doc_Invoice extends Doc {
       log.log(Level.SEVERE, sql, e);
       return null;
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -377,7 +376,7 @@ public class Doc_Invoice extends Doc {
       FactLine[] fLines = fact.getLines();
       for (int i = 0; i < fLines.length; i++) {
         if (fLines[i] != null) {
-          fLines[i].setLocationFromOrg(fLines[i].getAD_Org_ID(), true); //  from Loc
+          fLines[i].setLocationFromOrg(fLines[i]. getOrgId(), true); //  from Loc
           fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
         }
       }
@@ -458,7 +457,7 @@ public class Doc_Invoice extends Doc {
       FactLine[] fLines = fact.getLines();
       for (int i = 0; i < fLines.length; i++) {
         if (fLines[i] != null) {
-          fLines[i].setLocationFromOrg(fLines[i].getAD_Org_ID(), true); //  from Loc
+          fLines[i].setLocationFromOrg(fLines[i]. getOrgId(), true); //  from Loc
           fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
         }
       }
@@ -557,7 +556,7 @@ public class Doc_Invoice extends Doc {
               && line.getProduct().isService()) // 	otherwise Inv Matching
           MCostDetail.createInvoice(
                 as,
-                line.getAD_Org_ID(),
+                line. getOrgId(),
                 line.getM_Product_ID(),
                 line.getMAttributeSetInstance_ID(),
                 line.get_ID(),
@@ -573,7 +572,7 @@ public class Doc_Invoice extends Doc {
       for (int i = 0; i < fLines.length; i++) {
         if (fLines[i] != null) {
           fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
-          fLines[i].setLocationFromOrg(fLines[i].getAD_Org_ID(), false); //  to Loc
+          fLines[i].setLocationFromOrg(fLines[i]. getOrgId(), false); //  to Loc
         }
       }
 
@@ -672,7 +671,7 @@ public class Doc_Invoice extends Doc {
               && line.getProduct().isService()) // 	otherwise Inv Matching
           MCostDetail.createInvoice(
                 as,
-                line.getAD_Org_ID(),
+                line. getOrgId(),
                 line.getM_Product_ID(),
                 line.getMAttributeSetInstance_ID(),
                 line.get_ID(),
@@ -688,7 +687,7 @@ public class Doc_Invoice extends Doc {
       for (int i = 0; i < fLines.length; i++) {
         if (fLines[i] != null) {
           fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
-          fLines[i].setLocationFromOrg(fLines[i].getAD_Org_ID(), false); //  to Loc
+          fLines[i].setLocationFromOrg(fLines[i]. getOrgId(), false); //  to Loc
         }
       }
       //  Liability       DR
@@ -815,9 +814,9 @@ public class Doc_Invoice extends Doc {
       if (fLines[i] != null) {
         if (payables) {
           fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
-          fLines[i].setLocationFromOrg(fLines[i].getAD_Org_ID(), false); //  to Loc
+          fLines[i].setLocationFromOrg(fLines[i]. getOrgId(), false); //  to Loc
         } else {
-          fLines[i].setLocationFromOrg(fLines[i].getAD_Org_ID(), true); //  from Loc
+          fLines[i].setLocationFromOrg(fLines[i]. getOrgId(), true); //  from Loc
           fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
         }
       }
@@ -907,13 +906,13 @@ public class Doc_Invoice extends Doc {
                   .append("AND M_CostElement_ID=? ")
                   .append("AND AD_Client_ID=? ");
           BigDecimal otherAmt =
-              DB.getSQLValueBD(
+              getSQLValueBD(
                   getTrxName(),
                   sql.toString(),
                   lca.getM_InOutLine_ID(),
                   lca.getC_LandedCostAllocation_ID(),
                   lca.getM_CostElement_ID(),
-                  lca.getADClientID());
+                  lca. getClientId());
           if (otherAmt != null) {
             estimatedAmt = estimatedAmt.subtract(otherAmt);
             if (allocationAmt.signum() < 0) {
@@ -932,8 +931,8 @@ public class Doc_Invoice extends Doc {
                     as.getC_Currency_ID(),
                     oDateAcct,
                     getC_ConversionType_ID(),
-                    getADClientID(),
-                    getAD_Org_ID());
+                     getClientId(),
+                     getOrgId());
 
             allocationAmt =
                 MConversionRate.convert(
@@ -943,8 +942,8 @@ public class Doc_Invoice extends Doc {
                     as.getC_Currency_ID(),
                     getDateAcct(),
                     getC_ConversionType_ID(),
-                    getADClientID(),
-                    getAD_Org_ID());
+                     getClientId(),
+                     getOrgId());
             setC_Currency_ID(as.getC_Currency_ID());
             usesSchemaCurrency = true;
           }
@@ -976,8 +975,8 @@ public class Doc_Invoice extends Doc {
                       as.getC_Currency_ID(),
                       getDateAcct(),
                       getC_ConversionType_ID(),
-                      getADClientID(),
-                      getAD_Org_ID());
+                       getClientId(),
+                       getOrgId());
             if (costDetailAmt.scale() > as.getCostingPrecision())
               costDetailAmt =
                   costDetailAmt.setScale(as.getCostingPrecision(), BigDecimal.ROUND_HALF_UP);
@@ -990,7 +989,7 @@ public class Doc_Invoice extends Doc {
             costDetailAmtMap.put(key, costDetailAmt);
             if (!MCostDetail.createInvoice(
                 as,
-                lca.getAD_Org_ID(),
+                lca. getOrgId(),
                 lca.getM_Product_ID(),
                 lca.getMAttributeSetInstance_ID(),
                 C_InvoiceLine_ID,
@@ -1108,7 +1107,7 @@ public class Doc_Invoice extends Doc {
    * @param as accounting schema
    */
   protected void updateProductPO(MAcctSchema as) {
-    MClientInfo ci = MClientInfo.get(getCtx(), as.getADClientID());
+    MClientInfo ci = MClientInfo.get(getCtx(), as. getClientId());
     if (ci.getC_AcctSchema1_ID() != as.getC_AcctSchema_ID()) return;
 
     StringBuilder sql =
@@ -1121,7 +1120,7 @@ public class Doc_Invoice extends Doc {
             .append("WHERE i.C_Invoice_ID=il.C_Invoice_ID")
             .append(" AND po.M_Product_ID=il.M_Product_ID AND po.C_BPartner_ID=i.C_BPartner_ID");
     // jz + " AND ROWNUM=1 AND i.C_Invoice_ID=").append(getId()).append(") ")
-    if (DB.isOracle()) // jz
+    if (isOracle()) // jz
     {
       sql.append(" AND ROWNUM=1 ");
     } else {
@@ -1144,7 +1143,7 @@ public class Doc_Invoice extends Doc {
         .append(" AND i.C_Invoice_ID=")
         .append(get_ID())
         .append(")");
-    int no = DB.executeUpdate(sql.toString(), getTrxName());
+    int no = executeUpdate(sql.toString(), getTrxName());
     if (log.isLoggable(Level.FINE)) log.fine("Updated=" + no);
   } //	updateProductPO
 } //  Doc_Invoice

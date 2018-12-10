@@ -123,7 +123,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, M_Product_ID);
       pstmt.setInt(2, M_Locator_ID);
       rs = pstmt.executeQuery();
@@ -131,7 +131,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -425,7 +425,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, M_Locator_ID > 0 ? M_Locator_ID : M_Warehouse_ID);
       pstmt.setInt(2, M_Product_ID);
       if (!allAttributeInstances) {
@@ -438,7 +438,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         if (rs.getBigDecimal(11).signum() != 0) {
           MStorageOnHand storage = new MStorageOnHand(ctx, rs, trxName);
           if (!Util.isEmpty(trxName) && forUpdate) {
-            DB.getDatabase().forUpdate(storage, timeout);
+            getDatabase().forUpdate(storage, timeout);
           }
           list.add(storage);
         }
@@ -446,7 +446,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -596,7 +596,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     ResultSet rs = null;
     try {
       int index = 0;
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(++index, M_Locator_ID > 0 ? M_Locator_ID : M_Warehouse_ID);
       pstmt.setInt(++index, M_Product_ID);
       if (minGuaranteeDate != null) {
@@ -610,7 +610,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         if (rs.getBigDecimal(11).signum() != 0) {
           MStorageOnHand storage = new MStorageOnHand(ctx, rs, trxName);
           if (!Util.isEmpty(trxName) && forUpdate) {
-            DB.getDatabase().forUpdate(storage, timeout);
+            getDatabase().forUpdate(storage, timeout);
           }
           list.add(storage);
         }
@@ -618,7 +618,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -706,7 +706,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     MStorageOnHand retValue =
         get(ctx, M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID, dateMPolicy, trxName);
     if (retValue != null) {
-      if (forUpdate) DB.getDatabase().forUpdate(retValue, timeout);
+      if (forUpdate) getDatabase().forUpdate(retValue, timeout);
       return retValue;
     }
 
@@ -831,7 +831,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     final String sql =
         "UPDATE M_StorageOnHand SET QtyOnHand=QtyOnHand+?, Updated=SYSDATE, UpdatedBy=? "
             + "WHERE M_Product_ID=? AND M_Locator_ID=? AND M_AttributeSetInstance_ID=? AND DateMaterialPolicy=?";
-    DB.executeUpdateEx(
+    executeUpdateEx(
         sql,
         new Object[] {
           addition,
@@ -892,7 +892,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, M_Warehouse_ID);
       pstmt.setInt(2, M_Product_ID);
       pstmt.setInt(3, M_AttributeSetInstance_ID);
@@ -908,7 +908,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1000,7 +1000,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 + " AND l.M_Locator_ID=?"
                 + " AND s.M_AttributeSetInstance_ID<>?";
         BigDecimal QtyOnHand =
-            DB.getSQLValueBDEx(
+            getSQLValueBDEx(
                 get_TrxName(),
                 sql,
                 new Object[] {
@@ -1074,7 +1074,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
       params.add(M_AttributeSetInstance_ID);
     }
 
-    BigDecimal qty = DB.getSQLValueBD(trxName, sql.toString(), params);
+    BigDecimal qty = getSQLValueBD(trxName, sql.toString(), params);
     if (qty == null) qty = Env.ZERO;
 
     return qty;
@@ -1109,7 +1109,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
       params.add(M_AttributeSetInstance_ID);
     }
 
-    BigDecimal qty = DB.getSQLValueBD(trxName, sql.toString(), params);
+    BigDecimal qty = getSQLValueBD(trxName, sql.toString(), params);
     if (qty == null) qty = Env.ZERO;
 
     return qty;
@@ -1141,7 +1141,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
       params.add(M_AttributeSetInstance_ID);
     }
 
-    BigDecimal qty = DB.getSQLValueBD(trxName, sql.toString(), params);
+    BigDecimal qty = getSQLValueBD(trxName, sql.toString(), params);
     if (qty == null) qty = Env.ZERO;
 
     return qty;
@@ -1190,7 +1190,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, M_Product_ID);
       pstmt.setInt(2, M_AttributeSetInstance_ID);
 
@@ -1202,7 +1202,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
       s_log.log(Level.SEVERE, sql, ex);
 
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1228,7 +1228,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, M_Product_ID);
       pstmt.setInt(2, M_AttributeSetInstance_ID);
       pstmt.setInt(3, M_Locator_ID);
@@ -1241,7 +1241,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
       s_log.log(Level.SEVERE, sql, ex);
 
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

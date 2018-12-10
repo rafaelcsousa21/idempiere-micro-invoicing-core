@@ -1,13 +1,13 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.model.I_C_Location;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_AcctSchema_Element
@@ -38,11 +38,6 @@ public class X_C_AcctSchema_Element extends BasePOName
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    return POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
   }
 
   public String toString() {
@@ -522,5 +517,10 @@ public class X_C_AcctSchema_Element extends BasePOName
     Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_AcctSchema_Element.Table_ID;
   }
 }

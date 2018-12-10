@@ -1,9 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_Transaction;
@@ -16,9 +12,16 @@ import org.compiere.product.X_I_Product;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CCache;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 public class MProduct extends org.compiere.product.MProduct {
 
@@ -130,7 +133,7 @@ public class MProduct extends org.compiere.product.MProduct {
               //	+ " AND GuaranteeDate > SysDate"
               + "  AND M_Product_ID="
               + getM_Product_ID();
-      int no = DB.executeUpdate(sql, get_TrxName());
+      int no = executeUpdate(sql, get_TrxName());
       if (log.isLoggable(Level.FINE)) log.fine("Asset Description updated #" + no);
     }
 
@@ -168,7 +171,7 @@ public class MProduct extends org.compiere.product.MProduct {
     MCost.delete(this);
 
     // [ 1674225 ] Delete Product: Costing deletion error
-    /*MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(),getADClientID(), get_TrxName());
+    /*MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId(), get_TrxName());
     for(int i=0; i<mass.length; i++)
     {
     	// Get Cost Elements
@@ -203,7 +206,7 @@ public class MProduct extends org.compiere.product.MProduct {
   public boolean isASIMandatory(boolean isSOTrx) {
     //
     //	If CostingLevel is BatchLot ASI is always mandatory - check all client acct schemas
-    MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(), getADClientID(), get_TrxName());
+    MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(),  getClientId(), get_TrxName());
     for (MAcctSchema as : mass) {
       String cl = getCostingLevel(as);
       if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(cl)) {
@@ -335,7 +338,7 @@ public class MProduct extends org.compiere.product.MProduct {
                 get_ValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID),
                 get_TrxName());
         int cnt =
-            DB.getSQLValueEx(
+            getSQLValueEx(
                 get_TrxName(),
                 "SELECT COUNT(*) FROM M_Product WHERE M_AttributeSetInstance_ID=?",
                 oldasi.getMAttributeSetInstance_ID());

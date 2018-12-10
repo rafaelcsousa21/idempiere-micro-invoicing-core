@@ -62,7 +62,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, C_OrderLine_ID);
       pstmt.setInt(2, C_InvoiceLine_ID);
       rs = pstmt.executeQuery();
@@ -70,7 +70,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -95,7 +95,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, M_InOutLine_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
@@ -107,7 +107,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         throw new IllegalStateException(e);
       }
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
     }
 
     MMatchPO[] retValue = new MMatchPO[list.size()];
@@ -134,14 +134,14 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, M_InOut_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -169,14 +169,14 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, C_Invoice_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -202,14 +202,14 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, C_OrderLine_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -291,7 +291,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, C_OrderLine_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -332,7 +332,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
 
             // verify invoiceline not already linked to another inoutline
             int tmpInOutLineId =
-                DB.getSQLValue(
+                getSQLValue(
                     mpo.get_TrxName(),
                     "SELECT M_InOutLine_ID FROM C_InvoiceLine WHERE C_InvoiceLine_ID="
                         + C_InvoiceLine_ID);
@@ -342,7 +342,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
 
             // verify m_matchinv not created yet
             int cnt =
-                DB.getSQLValue(
+                getSQLValue(
                     mpo.get_TrxName(),
                     "SELECT Count(*) FROM M_MatchInv WHERE M_InOutLine_ID="
                         + M_InOutLine_ID
@@ -355,8 +355,8 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
               matchInv.setC_InvoiceLine_ID(C_InvoiceLine_ID);
               matchInv.setM_Product_ID(mpo.getM_Product_ID());
               matchInv.setM_InOutLine_ID(M_InOutLine_ID);
-              matchInv.setADClientID(mpo.getADClientID());
-              matchInv.setAD_Org_ID(mpo.getAD_Org_ID());
+              matchInv.setADClientID(mpo. getClientId());
+              matchInv.setAD_Org_ID(mpo. getOrgId());
               matchInv.setM_AttributeSetInstance_ID(mpo.getMAttributeSetInstance_ID());
               matchInv.setQty(mpo.getQty());
               matchInv.setDateTrx(dateTrx);
@@ -416,7 +416,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         throw new IllegalStateException(e);
       }
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
     }
 
     //	Create New
@@ -424,7 +424,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
       BigDecimal sLineMatchedQty = null;
       if (sLine != null && iLine != null) {
         sLineMatchedQty =
-            DB.getSQLValueBD(
+            getSQLValueBD(
                 sLine.get_TrxName(),
                 "SELECT Sum(Qty) FROM M_MatchPO WHERE C_OrderLine_ID="
                     + C_OrderLine_ID
@@ -666,8 +666,8 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
               orderCurrency_ID,
               invoice.getDateInvoiced(),
               invoice.getC_ConversionType_ID(),
-              getADClientID(),
-              getAD_Org_ID());
+               getClientId(),
+               getOrgId());
     }
     return priceActual;
   }
@@ -771,7 +771,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
       // validate against M_MatchInv
       if (getM_InOutLine_ID() > 0 && getC_InvoiceLine_ID() > 0) {
         int cnt =
-            DB.getSQLValue(
+            getSQLValue(
                 get_TrxName(),
                 "SELECT Count(*) FROM M_MatchInv WHERE M_InOutLine_ID="
                     + getM_InOutLine_ID()
@@ -807,7 +807,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
       if (getM_InOutLine_ID() > 0) {
         MInOutLine line = new MInOutLine(getCtx(), getM_InOutLine_ID(), get_TrxName());
         BigDecimal matchedQty =
-            DB.getSQLValueBD(
+            getSQLValueBD(
                 get_TrxName(),
                 "SELECT Coalesce(SUM(Qty),0) FROM M_MatchPO WHERE M_InOutLine_ID=?",
                 getM_InOutLine_ID());
@@ -825,7 +825,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
       if (getC_InvoiceLine_ID() > 0) {
         MInvoiceLine line = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), get_TrxName());
         BigDecimal matchedQty =
-            DB.getSQLValueBD(
+            getSQLValueBD(
                 get_TrxName(),
                 "SELECT Coalesce(SUM(Qty),0) FROM M_MatchPO WHERE C_InvoiceLine_ID=?",
                 getC_InvoiceLine_ID());
@@ -847,7 +847,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         if (validateOrderedQty) {
           MOrderLine line = new MOrderLine(getCtx(), getC_OrderLine_ID(), get_TrxName());
           BigDecimal invoicedQty =
-              DB.getSQLValueBD(
+              getSQLValueBD(
                   get_TrxName(),
                   "SELECT Coalesce(SUM(Qty),0) FROM M_MatchPO WHERE C_InvoiceLine_ID > 0 and C_OrderLine_ID=? AND Reversal_ID IS NULL",
                   getC_OrderLine_ID());
@@ -862,7 +862,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
           }
 
           BigDecimal deliveredQty =
-              DB.getSQLValueBD(
+              getSQLValueBD(
                   get_TrxName(),
                   "SELECT Coalesce(SUM(Qty),0) FROM M_MatchPO WHERE M_InOutLine_ID > 0 and C_OrderLine_ID=? AND Reversal_ID IS NULL",
                   getC_OrderLine_ID());
@@ -928,7 +928,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
               + "FROM C_InvoiceLine il"
               + " INNER JOIN C_Invoice i ON (i.C_Invoice_ID=il.C_Invoice_ID) "
               + "WHERE C_InvoiceLine_ID=?";
-      invoiceDate = DB.getSQLValueTS(null, sql, getC_InvoiceLine_ID());
+      invoiceDate = getSQLValueTS(null, sql, getC_InvoiceLine_ID());
     }
     //
     if (getM_InOutLine_ID() != 0) {
@@ -937,7 +937,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
               + "FROM M_InOutLine iol"
               + " INNER JOIN M_InOut io ON (io.M_InOut_ID=iol.M_InOut_ID) "
               + "WHERE iol.M_InOutLine_ID=?";
-      shipDate = DB.getSQLValueTS(null, sql, getM_InOutLine_ID());
+      shipDate = getSQLValueTS(null, sql, getM_InOutLine_ID());
     }
     //
     //	Assuming that order date is always earlier
@@ -955,7 +955,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
   @Override
   protected boolean beforeDelete() {
     if (isPosted()) {
-      MPeriod.testPeriodOpen(getCtx(), getDateTrx(), MDocType.DOCBASETYPE_MatchPO, getAD_Org_ID());
+      MPeriod.testPeriodOpen(getCtx(), getDateTrx(), MDocType.DOCBASETYPE_MatchPO,  getOrgId());
       setPosted(false);
       MFactAcct.deleteEx(I_M_MatchPO.Table_ID, getId(), get_TrxName());
     }
@@ -1022,7 +1022,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     int success = 0;
     int errors = 0;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, Env.getADClientID(ctx));
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -1038,7 +1038,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
                     .append(po2.getC_InvoiceLine_ID())
                     .append(" WHERE M_MatchPO_ID=")
                     .append(po1.getM_MatchPO_ID());
-            int no1 = DB.executeUpdate(s1.toString(), null);
+            int no1 = executeUpdate(s1.toString(), null);
             if (no1 != 1) {
               errors++;
               s_log.warning("Not updated M_MatchPO_ID=" + po1.getM_MatchPO_ID());
@@ -1046,9 +1046,9 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
             }
             //
             String s2 = "DELETE FROM Fact_Acct WHERE AD_Table_ID=473 AND Record_ID=?";
-            int no2 = DB.executeUpdate(s2, po2.getM_MatchPO_ID(), null);
+            int no2 = executeUpdate(s2, po2.getM_MatchPO_ID(), null);
             String s3 = "DELETE FROM M_MatchPO WHERE M_MatchPO_ID=?";
-            int no3 = DB.executeUpdate(s3, po2.getM_MatchPO_ID(), null);
+            int no3 = executeUpdate(s3, po2.getM_MatchPO_ID(), null);
             if (no2 == 0 && no3 == 1) success++;
             else {
               s_log.warning(
@@ -1061,7 +1061,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1083,7 +1083,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
       reversal.setC_InvoiceLine_ID(getC_InvoiceLine_ID());
       reversal.setM_InOutLine_ID(getM_InOutLine_ID());
       PO.copyValues(this, reversal);
-      reversal.setAD_Org_ID(this.getAD_Org_ID());
+      reversal.setAD_Org_ID(this. getOrgId());
       reversal.setDescription("(->" + this.getDocumentNo() + ")");
       reversal.setQty(this.getQty().negate());
       reversal.setDateAcct(reversalDate);

@@ -12,15 +12,18 @@ import org.compiere.accounting.MProduct;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.I_A_Asset;
 import org.compiere.model.I_A_Asset_Addition;
+import org.compiere.model.I_C_Project;
 import org.compiere.order.MInOut;
 import org.compiere.order.MInOutLine;
 import org.compiere.orm.MTable;
 import org.compiere.product.*;
-import org.compiere.production.MProject;
 import org.compiere.util.Msg;
 
 import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
+
+import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 public class MAsset extends org.compiere.product.MAsset {
 
@@ -84,7 +87,7 @@ public class MAsset extends org.compiere.product.MAsset {
   public MAsset(MIFixedAsset ifa) {
     this(ifa.getCtx(), 0, ifa.get_TrxName());
 
-    setAD_Org_ID(ifa.getAD_Org_ID()); // added by @win
+    setAD_Org_ID(ifa.getOrgId()); // added by @win
     setIsOwned(true);
     setIsInPosession(true);
 
@@ -117,7 +120,7 @@ public class MAsset extends org.compiere.product.MAsset {
    * @author Edwin Ang
    * @param project
    */
-  public MAsset(MProject project) {
+  public MAsset(I_C_Project project) {
     this(project.getCtx(), 0, project.get_TrxName());
     setIsOwned(true);
     setIsInPosession(true);
@@ -224,7 +227,7 @@ public class MAsset extends org.compiere.product.MAsset {
     if (getA_Parent_Asset_ID() <= 0) {
       int A_Asset_ID = getA_Asset_ID();
       setA_Parent_Asset_ID(A_Asset_ID);
-      DB.executeUpdateEx(
+      executeUpdateEx(
           "UPDATE A_Asset SET A_Parent_Asset_ID=A_Asset_ID WHERE A_Asset_ID=" + A_Asset_ID,
           get_TrxName());
       if (log.isLoggable(Level.FINE)) log.fine("A_Parent_Asset_ID=" + getA_Parent_Asset_ID());
@@ -236,9 +239,9 @@ public class MAsset extends org.compiere.product.MAsset {
     if (invNo == null || invNo.trim().length() == 0) {
       invNo = "" + getId();
       setInventoryNo(invNo);
-      DB.executeUpdateEx(
+      executeUpdateEx(
           "UPDATE A_Asset SET InventoryNo="
-              + DB.TO_STRING(invNo)
+              + TO_STRING(invNo)
               + " WHERE A_Asset_ID="
               + getA_Asset_ID(),
           get_TrxName());
@@ -253,7 +256,7 @@ public class MAsset extends org.compiere.product.MAsset {
       String isOwned = (assetgroup.isOwned()) ? "Y" : "N";
       setIsDepreciated(assetgroup.isDepreciated());
       setIsOwned(assetgroup.isOwned());
-      DB.executeUpdateEx(
+      executeUpdateEx(
           "UPDATE A_Asset SET IsDepreciated='"
               + isDepreciated
               + "', isOwned ='"
@@ -268,13 +271,13 @@ public class MAsset extends org.compiere.product.MAsset {
           MAssetGroupAcct.forA_Asset_Group_ID(getCtx(), getA_Asset_Group_ID())) {
         // Asset Accounting
         MAssetAcct assetacct = new MAssetAcct(this, assetgrpacct);
-        assetacct.setAD_Org_ID(getAD_Org_ID()); // added by @win
+        assetacct.setAD_Org_ID(getOrgId()); // added by @win
         assetacct.saveEx();
 
         // Asset Depreciation Workfile
         MDepreciationWorkfile assetwk =
             new MDepreciationWorkfile(this, assetacct.getPostingType(), assetgrpacct);
-        assetwk.setAD_Org_ID(getAD_Org_ID()); // added by @win
+        assetwk.setAD_Org_ID(getOrgId()); // added by @win
         assetwk.setUseLifeYears(0);
         assetwk.setUseLifeMonths(0);
         assetwk.setUseLifeYears_F(0);
@@ -301,7 +304,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + " WHERE "
               + MDepreciationWorkfile.COLUMNNAME_A_Asset_ID
               + "=?";
-      DB.executeUpdateEx(sql, new Object[] {isDepreciated(), getA_Asset_ID()}, get_TrxName());
+      executeUpdateEx(sql, new Object[] {isDepreciated(), getA_Asset_ID()}, get_TrxName());
     }
 
     return true;
@@ -319,7 +322,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + "=? AND "
               + I_A_Asset_Addition.COLUMNNAME_A_Asset_ID
               + "=?";
-      int no = DB.executeUpdateEx(sql, new Object[] {false, getA_Asset_ID()}, get_TrxName());
+      int no = executeUpdateEx(sql, new Object[] {false, getA_Asset_ID()}, get_TrxName());
       if (log.isLoggable(Level.INFO)) log.info("@A_Asset_Addition@ @Deleted@ #" + no);
     }
     //
@@ -338,7 +341,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + " WHERE "
               + MInvoiceLine.COLUMNNAME_A_Asset_ID
               + "=?";
-      int no = DB.executeUpdateEx(sql, new Object[] {null, false, getA_Asset_ID()}, get_TrxName());
+      int no = executeUpdateEx(sql, new Object[] {null, false, getA_Asset_ID()}, get_TrxName());
       if (log.isLoggable(Level.INFO)) log.info("@C_InvoiceLine@ @Updated@ #" + no);
     }
     return true;

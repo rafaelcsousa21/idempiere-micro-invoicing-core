@@ -1,24 +1,14 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
-import org.adempiere.exceptions.FillMandatoryException;
 import org.compiere.bank.MBankAccount;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.*;
-import org.compiere.invoicing.MInOut;
-import org.compiere.invoicing.MPaymentTerm;
 import org.compiere.model.*;
-import org.compiere.order.*;
 import org.compiere.order.MInOutLine;
+import org.compiere.order.MOrderPaySchedule;
+import org.compiere.order.MOrderTax;
 import org.compiere.orm.*;
-import org.compiere.orm.MOrg;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.product.MPriceList;
@@ -28,10 +18,21 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
+import org.idempiere.common.exceptions.FillMandatoryException;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
+
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 public class MOrder extends org.compiere.order.MOrder implements DocAction, IPODoc {
 
@@ -66,8 +67,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
    */
   public MOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
     this(project.getCtx(), 0, project.get_TrxName());
-    setADClientID(project.getADClientID());
-    setAD_Org_ID(project.getAD_Org_ID());
+    setADClientID(project. getClientId());
+    setAD_Org_ID(project. getOrgId());
     setC_Campaign_ID(project.getC_Campaign_ID());
     setSalesRep_ID(project.getSalesRep_ID());
     //
@@ -168,7 +169,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, get_TrxName());
       copyValues(ops, ips);
       ips.setC_Invoice_ID(invoice.getC_Invoice_ID());
-      ips.setAD_Org_ID(ops.getAD_Org_ID());
+      ips.setAD_Org_ID(ops. getOrgId());
       ips.setProcessing(ops.isProcessing());
       ips.setIsActive(ops.isActive());
       if (!ips.save()) {
@@ -199,14 +200,14 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
   @Override
   protected boolean beforeSave(boolean newRecord) {
     //	Client/Org Check
-    if (getAD_Org_ID() == 0) {
+    if ( getOrgId() == 0) {
       int context_AD_Org_ID = Env.getAD_Org_ID(getCtx());
       if (context_AD_Org_ID != 0) {
         setAD_Org_ID(context_AD_Org_ID);
         log.warning("Changed Org to Context=" + context_AD_Org_ID);
       }
     }
-    if (getADClientID() == 0) {
+    if ( getClientId() == 0) {
       m_processMsg = "AD_Client_ID = 0";
       return false;
     }
@@ -225,7 +226,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     MWarehouse wh = MWarehouse.get(getCtx(), getM_Warehouse_ID());
     //	Warehouse Org
     if (newRecord || is_ValueChanged("AD_Org_ID") || is_ValueChanged("M_Warehouse_ID")) {
-      if (wh.getAD_Org_ID() != getAD_Org_ID()) log.saveWarning("WarehouseOrgConflict", "");
+      if (wh. getOrgId() !=  getOrgId()) log.saveWarning("WarehouseOrgConflict", "");
     }
 
     boolean disallowNegInv = wh.isDisallowNegativeInv();
@@ -244,7 +245,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
     //	No Partner Info - set Template
     if (getC_BPartner_ID() == 0)
-      setBPartner(org.compiere.crm.MBPartner.getTemplate(getCtx(), getADClientID()));
+      setBPartner(org.compiere.crm.MBPartner.getTemplate(getCtx(),  getClientId()));
     if (getC_BPartner_Location_ID() == 0)
       setBPartner(new MBPartner(getCtx(), getC_BPartner_ID(), null));
     //	No Bill - get from Ship
@@ -257,12 +258,12 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     //	Default Price List
     if (getM_PriceList_ID() == 0) {
       int ii =
-          DB.getSQLValueEx(
+          getSQLValueEx(
               null,
               "SELECT M_PriceList_ID FROM M_PriceList "
                   + "WHERE AD_Client_ID=? AND IsSOPriceList=? AND IsActive=?"
                   + "ORDER BY IsDefault DESC",
-              getADClientID(),
+               getClientId(),
               isSOTrx(),
               true);
       if (ii != 0) setM_PriceList_ID(ii);
@@ -270,7 +271,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     //	Default Currency
     if (getC_Currency_ID() == 0) {
       String sql = "SELECT C_Currency_ID FROM M_PriceList WHERE M_PriceList_ID=?";
-      int ii = DB.getSQLValue(null, sql, getM_PriceList_ID());
+      int ii = getSQLValue(null, sql, getM_PriceList_ID());
       if (ii != 0) setC_Currency_ID(ii);
       else setC_Currency_ID(Env.getContextAsInt(getCtx(), "#C_Currency_ID"));
     }
@@ -291,7 +292,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       else {
         String sql =
             "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE AD_Client_ID=? AND IsDefault='Y' AND IsActive='Y'";
-        ii = DB.getSQLValue(null, sql, getADClientID());
+        ii = getSQLValue(null, sql,  getClientId());
         if (ii != 0) setC_PaymentTerm_ID(ii);
       }
     }
@@ -325,7 +326,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         && (is_ValueChanged(COLUMNNAME_M_PriceList_ID)
             || is_ValueChanged(COLUMNNAME_DateOrdered))) {
       int cnt =
-          DB.getSQLValueEx(
+          getSQLValueEx(
               get_TrxName(),
               "SELECT COUNT(*) FROM C_OrderLine WHERE C_Order_ID=? AND M_Product_ID>0",
               getC_Order_ID());
@@ -446,7 +447,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     MDocType dt = MDocType.get(getCtx(), getC_DocTypeTarget_ID());
 
     //	Std Period open?
-    if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(), getAD_Org_ID())) {
+    if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(),  getOrgId())) {
       m_processMsg = "@PeriodClosed@";
       return DocAction.Companion.getSTATUS_Invalid();
     }
@@ -569,11 +570,11 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       if (MDocType.DOCSUBTYPESO_POSOrder.equals(dt.getDocSubTypeSO())
           && PAYMENTRULE_Cash.equals(getPaymentRule())
           && !MSysConfig.getBooleanValue(
-              MSysConfig.CHECK_CREDIT_ON_CASH_POS_ORDER, true, getADClientID(), getAD_Org_ID())) {
+              MSysConfig.CHECK_CREDIT_ON_CASH_POS_ORDER, true,  getClientId(),  getOrgId())) {
         // ignore -- don't validate for Cash POS Orders depending on sysconfig parameter
       } else if (MDocType.DOCSUBTYPESO_PrepayOrder.equals(dt.getDocSubTypeSO())
           && !MSysConfig.getBooleanValue(
-              MSysConfig.CHECK_CREDIT_ON_PREPAY_ORDER, true, getADClientID(), getAD_Org_ID())) {
+              MSysConfig.CHECK_CREDIT_ON_PREPAY_ORDER, true,  getClientId(),  getOrgId())) {
         // ignore -- don't validate Prepay Orders depending on sysconfig parameter
       } else {
         MBPartner bp =
@@ -609,8 +610,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                   getC_Currency_ID(),
                   getDateOrdered(),
                   getC_ConversionType_ID(),
-                  getADClientID(),
-                  getAD_Org_ID());
+                   getClientId(),
+                   getOrgId());
           if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus(grandTotal))) {
             m_processMsg =
                 "@BPartnerOverOCreditHold@ - @TotalOpenBalance@="
@@ -672,7 +673,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       {
         if (header_M_Warehouse_ID != line.getM_Warehouse_ID())
           line.setM_Warehouse_ID(header_M_Warehouse_ID);
-        if (getAD_Org_ID() != line.getAD_Org_ID()) line.setAD_Org_ID(getAD_Org_ID());
+        if ( getOrgId() != line. getOrgId()) line.setAD_Org_ID( getOrgId());
       }
       //	Binding
       BigDecimal target = binding ? line.getQtyOrdered() : Env.ZERO;
@@ -799,7 +800,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     StringBuilder info = new StringBuilder();
 
     boolean realTimePOS =
-        MSysConfig.getBooleanValue(MSysConfig.REAL_TIME_POS, false, getADClientID());
+        MSysConfig.getBooleanValue(MSysConfig.REAL_TIME_POS, false,  getClientId());
 
     //	Create SO Shipment - Force Shipment
     MInOut shipment = null;
@@ -909,7 +910,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     String whereClause = "AD_Org_ID=? AND C_Currency_ID=?";
     MBankAccount ba =
         new Query(this.getCtx(), MBankAccount.Table_Name, whereClause, this.get_TrxName())
-            .setParameters(this.getAD_Org_ID(), this.getC_Currency_ID())
+            .setParameters(this. getOrgId(), this.getC_Currency_ID())
             .setOrderBy("IsDefault DESC")
             .first();
     if (ba == null) return "@NoAccountOrgCurrency@";
@@ -918,7 +919,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (doctypes == null || doctypes.length == 0) return "No document type for AR Receipt";
     MDocType doctype = null;
     for (MDocType doc : doctypes) {
-      if (doc.getAD_Org_ID() == this.getAD_Org_ID()) {
+      if (doc. getOrgId() == this. getOrgId()) {
         doctype = doc;
         break;
       }
@@ -934,7 +935,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       if (pp.isPostDated()) continue;
 
       MPayment payment = new MPayment(this.getCtx(), 0, this.get_TrxName());
-      payment.setAD_Org_ID(this.getAD_Org_ID());
+      payment.setAD_Org_ID(this. getOrgId());
 
       payment.setTenderType(pp.getTenderType());
       if (MPayment.TENDERTYPE_CreditCard.equals(pp.getTenderType())) {
@@ -996,7 +997,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         setDateOrdered(new Timestamp(System.currentTimeMillis()));
         if (getDateAcct().before(getDateOrdered())) {
           setDateAcct(getDateOrdered());
-          MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getAD_Org_ID());
+          MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(),  getOrgId());
         }
       }
     }
@@ -1104,7 +1105,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (getRef_Order_ID() != 0) return null;
 
     //	Org Must be linked to BPartner
-    org.compiere.orm.MOrg org = MOrg.get(getCtx(), getAD_Org_ID());
+    org.compiere.orm.MOrg org = MOrg.get(getCtx(),  getOrgId());
     int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(get_TrxName());
     if (counterC_BPartner_ID == 0) return null;
     //	Business Partner needs to be linked to Org
@@ -1514,11 +1515,11 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
   // AZ Goodwill
   protected String deleteMatchPOCostDetail(MOrderLine line) {
     // Get Account Schemas to delete MCostDetail
-    MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getCtx(), getADClientID());
+    MAcctSchema[] acctschemas = MAcctSchema.getClientAcctSchema(getCtx(),  getClientId());
     for (int asn = 0; asn < acctschemas.length; asn++) {
       MAcctSchema as = acctschemas[asn];
 
-      if (as.isSkipOrg(getAD_Org_ID())) {
+      if (as.isSkipOrg( getOrgId())) {
         continue;
       }
 

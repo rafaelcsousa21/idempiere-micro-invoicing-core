@@ -132,7 +132,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
     //	Org
     if (newRecord || is_ValueChanged("C_Invoice_ID")) {
       getInvoice();
-      if (m_invoice != null) setAD_Org_ID(m_invoice.getAD_Org_ID());
+      if (m_invoice != null) setAD_Org_ID(m_invoice. getOrgId());
     }
 
     return true;

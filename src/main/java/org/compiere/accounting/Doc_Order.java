@@ -143,7 +143,7 @@ public class Doc_Order extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, order.getC_Order_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -167,7 +167,7 @@ public class Doc_Order extends Doc {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -203,7 +203,7 @@ public class Doc_Order extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), getTrxName());
+      pstmt = prepareStatement(sql.toString(), getTrxName());
       pstmt.setInt(1, get_ID());
       rs = pstmt.executeQuery();
       //
@@ -221,7 +221,7 @@ public class Doc_Order extends Doc {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -392,7 +392,7 @@ public class Doc_Order extends Doc {
    * @param as accounting schema
    */
   private void updateProductPO(MAcctSchema as) {
-    MClientInfo ci = MClientInfo.get(getCtx(), as.getADClientID());
+    MClientInfo ci = MClientInfo.get(getCtx(), as. getClientId());
     if (ci.getC_AcctSchema1_ID() != as.getC_AcctSchema_ID()) return;
 
     StringBuilder sql =
@@ -403,7 +403,7 @@ public class Doc_Order extends Doc {
             .append("WHERE o.C_Order_ID=ol.C_Order_ID")
             .append(" AND po.M_Product_ID=ol.M_Product_ID AND po.C_BPartner_ID=o.C_BPartner_ID ");
     // jz + " AND ROWNUM=1 AND o.C_Order_ID=").append(getId()).append(") ")
-    if (DB.isOracle()) // jz
+    if (isOracle()) // jz
     {
       sql.append(" AND ROWNUM=1 ");
     } else
@@ -424,7 +424,7 @@ public class Doc_Order extends Doc {
         .append(" AND o.C_Order_ID=")
         .append(get_ID())
         .append(")");
-    int no = DB.executeUpdate(sql.toString(), getTrxName());
+    int no = executeUpdate(sql.toString(), getTrxName());
     if (log.isLoggable(Level.FINE)) log.fine("Updated=" + no);
   } //	updateProductPO
 
@@ -453,7 +453,7 @@ public class Doc_Order extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, C_InvoiceLine_ID);
       pstmt.setInt(2, C_InvoiceLine_ID);
       rs = pstmt.executeQuery();
@@ -500,7 +500,7 @@ public class Doc_Order extends Doc {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -577,7 +577,7 @@ public class Doc_Order extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, M_InOutLine_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -623,7 +623,7 @@ public class Doc_Order extends Doc {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

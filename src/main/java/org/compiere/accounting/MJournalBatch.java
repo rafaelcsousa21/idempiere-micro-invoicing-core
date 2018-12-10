@@ -58,7 +58,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
           "From Journal Batch not found GL_JournalBatch_ID=" + GL_JournalBatch_ID);
     //
     MJournalBatch to = new MJournalBatch(ctx, 0, trxName);
-    PO.copyValues(from, to, from.getADClientID(), from.getAD_Org_ID());
+    PO.copyValues(from, to, from. getClientId(), from. getOrgId());
     to.set_ValueNoCheck("DocumentNo", null);
     to.set_ValueNoCheck("C_Period_ID", null);
     to.setDateAcct(dateDoc);
@@ -157,7 +157,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     super.setDateAcct(DateAcct);
     if (DateAcct == null) return;
     if (getC_Period_ID() != 0) return;
-    int C_Period_ID = MPeriod.getC_Period_ID(getCtx(), DateAcct, getAD_Org_ID());
+    int C_Period_ID = MPeriod.getC_Period_ID(getCtx(), DateAcct,  getOrgId());
     if (C_Period_ID == 0) log.warning("Period not found");
     else setC_Period_ID(C_Period_ID);
   } //	setDateAcct
@@ -174,14 +174,14 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, get_TrxName());
       pstmt.setInt(1, getGL_JournalBatch_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MJournal(getCtx(), rs, get_TrxName()));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -204,7 +204,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     MJournal[] fromJournals = jb.getJournals(false);
     for (int i = 0; i < fromJournals.length; i++) {
       MJournal toJournal = new MJournal(getCtx(), 0, jb.get_TrxName());
-      PO.copyValues(fromJournals[i], toJournal, getADClientID(), getAD_Org_ID());
+      PO.copyValues(fromJournals[i], toJournal,  getClientId(),  getOrgId());
       toJournal.setGL_JournalBatch_ID(getGL_JournalBatch_ID());
       toJournal.set_ValueNoCheck("DocumentNo", null); // 	create new
       toJournal.set_ValueNoCheck("C_Period_ID", null);
@@ -281,7 +281,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
 
     //	Std Period open?
-    if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(), getAD_Org_ID())) {
+    if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(),  getOrgId())) {
       m_processMsg = "@PeriodClosed@";
       return DocAction.Companion.getSTATUS_Invalid();
     }
@@ -461,7 +461,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
       setDateDoc(new Timestamp(System.currentTimeMillis()));
       if (getDateAcct().before(getDateDoc())) {
         setDateAcct(getDateDoc());
-        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getAD_Org_ID());
+        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(),  getOrgId());
       }
     }
     if (dt.isOverwriteSeqOnComplete()) {

@@ -1,9 +1,5 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.MOrg;
@@ -12,8 +8,14 @@ import org.compiere.orm.Query;
 import org.compiere.production.MLocator;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
-
 import org.idempiere.common.util.Env;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 /**
  * Warehouse Model
@@ -217,15 +219,15 @@ public class MWarehouse extends X_M_Warehouse {
               + " GROUP BY M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID "
               + " HAVING SUM(s.QtyOnHand) < 0 ";
 
-      int prdid = DB.getSQLValueEx(get_TrxName(), sql, getM_Warehouse_ID());
+      int prdid = getSQLValueEx(get_TrxName(), sql, getM_Warehouse_ID());
       if (prdid > 0) {
         log.saveError("Error", Msg.translate(getCtx(), "NegativeOnhandExists"));
         return false;
       }
     }
 
-    if (getAD_Org_ID() == 0) {
-      int context_AD_Org_ID = Env.getAD_Org_ID(getCtx());
+    if ( getOrgId() == 0) {
+      int context_AD_Org_ID = Env.getOrgId(getCtx());
       if (context_AD_Org_ID != 0) {
         setAD_Org_ID(context_AD_Org_ID);
         log.warning("Changed Org to Context=" + context_AD_Org_ID);

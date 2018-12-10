@@ -1,19 +1,11 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import org.compiere.accounting.MMatchInv;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_M_InOutLine;
-import org.compiere.order.*;
 import org.compiere.order.MCharge;
+import org.compiere.order.MOrderLine;
+import org.compiere.order.MRMALine;
 import org.compiere.orm.MRole;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
@@ -25,9 +17,20 @@ import org.compiere.tax.*;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.orm.POKt.I_ZERO;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Invoice Line Model
@@ -134,7 +137,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
   public MInvoiceLine(MInvoice invoice) {
     this(invoice.getCtx(), 0, invoice.get_TrxName());
     if (invoice.getId() == 0) throw new IllegalArgumentException("Header not saved");
-    setClientOrg(invoice.getADClientID(), invoice.getAD_Org_ID());
+    setClientOrg(invoice. getClientId(), invoice. getOrgId());
     setC_Invoice_ID(invoice.getC_Invoice_ID());
     setInvoice(invoice);
   } //	MInvoiceLine
@@ -403,7 +406,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             getC_Charge_ID(),
             m_DateInvoiced,
             m_DateInvoiced,
-            getAD_Org_ID(),
+             getOrgId(),
             M_Warehouse_ID,
             m_C_BPartner_Location_ID, //	should be bill to
             m_C_BPartner_Location_ID,
@@ -707,7 +710,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = DB.prepareStatement(sql, get_TrxName());
+        pstmt = prepareStatement(sql, get_TrxName());
         pstmt.setInt(1, getC_InvoiceLine_ID());
         rs = pstmt.executeQuery();
         if (rs.next()) m_name = rs.getString(1);
@@ -715,7 +718,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       } catch (Exception e) {
         log.log(Level.SEVERE, "getName", e);
       } finally {
-        DB.close(rs, pstmt);
+        close(rs, pstmt);
         rs = null;
         pstmt = null;
       }
@@ -753,7 +756,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         "SELECT c.StdPrecision "
             + "FROM C_Currency c INNER JOIN C_Invoice x ON (x.C_Currency_ID=c.C_Currency_ID) "
             + "WHERE x.C_Invoice_ID=?";
-    int i = DB.getSQLValue(get_TrxName(), sql, getC_Invoice_ID());
+    int i = getSQLValue(get_TrxName(), sql, getC_Invoice_ID());
     if (i < 0) {
       log.warning("getPrecision = " + i + " - set to 2");
       i = 2;
@@ -770,7 +773,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
   public boolean isTaxIncluded() {
     if (m_M_PriceList_ID == 0) {
       m_M_PriceList_ID =
-          DB.getSQLValue(
+          getSQLValue(
               get_TrxName(),
               "SELECT M_PriceList_ID FROM C_Invoice WHERE C_Invoice_ID=?",
               getC_Invoice_ID());
@@ -827,7 +830,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       //	Get Line No
       if (getLine() == 0) {
         String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_InvoiceLine WHERE C_Invoice_ID=?";
-        int ii = DB.getSQLValue(get_TrxName(), sql, getC_Invoice_ID());
+        int ii = getSQLValue(get_TrxName(), sql, getC_Invoice_ID());
         setLine(ii);
       }
       //	UOM
@@ -953,7 +956,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     StringBuilder sql =
         new StringBuilder("DELETE C_LandedCostAllocation WHERE C_InvoiceLine_ID=")
             .append(getC_InvoiceLine_ID());
-    int no = DB.executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), get_TrxName());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Deleted #" + no);
     MLandedCost[] lcs = MLandedCost.getLandedCosts(this);
     if (lcs.length == 0) return "";
@@ -1174,7 +1177,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, get_TrxName());
       pstmt.setInt(1, getC_InvoiceLine_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -1184,7 +1187,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     } catch (Exception e) {
       log.log(Level.SEVERE, "getLandedCost", e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1211,10 +1214,10 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       PO.copyValues(
           fromLandedCost,
           landedCost,
-          fromLandedCost.getADClientID(),
-          fromLandedCost.getAD_Org_ID());
+          fromLandedCost. getClientId(),
+          fromLandedCost. getOrgId());
       landedCost.setC_InvoiceLine_ID(getC_InvoiceLine_ID());
-      landedCost.set_ValueNoCheck("C_LandedCost_ID", PO.I_ZERO); // new
+      landedCost.set_ValueNoCheck("C_LandedCost_ID", I_ZERO); // new
       if (landedCost.save(get_TrxName())) count++;
     }
     if (fromLandedCosts.length != count)
@@ -1231,7 +1234,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     if (!getParent().isCreditMemo()) {
       throw new AdempiereException("InvoiceNotCreditMemo");
     }
-    setAD_Org_ID(rmaLine.getAD_Org_ID());
+    setAD_Org_ID(rmaLine. getOrgId());
     setM_RMALine_ID(rmaLine.getM_RMALine_ID());
     setDescription(rmaLine.getDescription());
     setLine(rmaLine.getLine());
@@ -1251,22 +1254,6 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     setC_Campaign_ID(rmaLine.getC_Campaign_ID());
   }
 
-  /** @return matched qty */
-  public BigDecimal getMatchedQty() {
-    String sql =
-        "SELECT COALESCE(SUM("
-            + MMatchInv.COLUMNNAME_Qty
-            + "),0)"
-            + " FROM "
-            + MMatchInv.Table_Name
-            + " WHERE "
-            + MMatchInv.COLUMNNAME_C_InvoiceLine_ID
-            + "=?"
-            + " AND "
-            + MMatchInv.COLUMNNAME_Processed
-            + "=?";
-    return DB.getSQLValueBDEx(get_TrxName(), sql, getC_InvoiceLine_ID(), true);
-  }
 
   public void clearParent() {
     this.m_parent = null;

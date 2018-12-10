@@ -1,17 +1,24 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MClient;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.CCache;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Language;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Account Schema Element Object
@@ -122,7 +129,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList2)) {
       if (translated)
         return "SELECT o.Value,t.Name FROM C_ElementValue o JOIN C_ElementValue_Trl t ON (o.C_ElementValue_ID=t.C_ElementValue_ID AND t.AD_Language="
-            + DB.TO_STRING(language)
+            + TO_STRING(language)
             + ") WHERE o.C_ElementValue_ID=";
       else return "SELECT Value,Name FROM C_ElementValue WHERE C_ElementValue_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_SubAccount)) {
@@ -132,13 +139,13 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Product)) {
       if (translated)
         return "SELECT o.Value,t.Name FROM M_Product o JOIN M_Product_Trl t ON (o.M_Product_ID=t.M_Product_ID AND t.AD_Language="
-            + DB.TO_STRING(language)
+            + TO_STRING(language)
             + ") WHERE o.M_Product_ID=";
       else return "SELECT Value,Name FROM M_Product WHERE M_Product_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Activity)) {
       if (translated)
         return "SELECT Value,Name FROM C_Activity o JOIN C_Activity_Trl t ON (o.C_Activity_ID=t.C_Activity_ID AND t.AD_Language="
-            + DB.TO_STRING(language)
+            + TO_STRING(language)
             + ") WHERE o.C_Activity_ID=";
       else return "SELECT Value,Name FROM C_Activity WHERE C_Activity_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_LocationFrom)
@@ -147,7 +154,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Campaign)) {
       if (translated)
         return "SELECT Value,Name FROM C_Campaign o JOIN C_Campaign_Trl t ON (o.C_Campaign_ID=t.C_Campaign_ID AND t.AD_Language="
-            + DB.TO_STRING(language)
+            + TO_STRING(language)
             + ") WHERE o.C_Campaign_ID=";
       else return "SELECT Value,Name FROM C_Campaign WHERE C_Campaign_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx)) {
@@ -157,7 +164,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_SalesRegion)) {
       if (translated)
         return "SELECT Value,Name FROM C_SalesRegion o JOIN C_SalesRegion_Trl t ON (o.C_SalesRegion_ID=t.C_SalesRegion_ID AND t.AD_Language="
-            + DB.TO_STRING(language)
+            + TO_STRING(language)
             + ") WHERE o.C_SalesRegion_ID="; // ADEMPIERE-119 / Freepath
       else return "SELECT Value,Name FROM C_SalesRegion WHERE C_SalesRegion_ID="; // ADEMPIERE-119 /
       // Freepath
@@ -406,7 +413,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    */
   @Override
   protected boolean beforeSave(boolean newRecord) {
-    if (getAD_Org_ID() != 0) setAD_Org_ID(0);
+    if ( getOrgId() != 0) setAD_Org_ID(0);
     String et = getElementType();
     if (isMandatory()
         && (X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList1.equals(et)
@@ -488,7 +495,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
 
     //	Resequence
     if (newRecord || is_ValueChanged(I_C_AcctSchema_Element.COLUMNNAME_SeqNo)) {
-      StringBuilder msguvd = new StringBuilder("AD_Client_ID=").append(getADClientID());
+      StringBuilder msguvd = new StringBuilder("AD_Client_ID=").append( getClientId());
       MAccount.updateValueDescription(getCtx(), msguvd.toString(), get_TrxName());
     }
     return success;
@@ -512,8 +519,8 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             .append(" WHERE ")
             .append(element)
             .append(" IS NULL AND AD_Client_ID=")
-            .append(getADClientID());
-    int noC = DB.executeUpdate(sql.toString(), get_TrxName());
+            .append( getClientId());
+    int noC = executeUpdate(sql.toString(), get_TrxName());
     //
     sql =
         new StringBuilder("UPDATE Fact_Acct SET ")
@@ -524,7 +531,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             .append(element)
             .append(" IS NULL AND C_AcctSchema_ID=")
             .append(getC_AcctSchema_ID());
-    int noF = DB.executeUpdate(sql.toString(), get_TrxName());
+    int noF = executeUpdate(sql.toString(), get_TrxName());
     //
     if (log.isLoggable(Level.FINE)) log.fine("ValidCombination=" + noC + ", Fact=" + noF);
   } //	updateData
@@ -551,8 +558,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
   protected boolean afterDelete(boolean success) {
     if (!success) return success;
     //	Update Account Info
-    StringBuilder msguvd = new StringBuilder("AD_Client_ID=").append(getADClientID());
-    MAccount.updateValueDescription(getCtx(), msguvd.toString(), get_TrxName());
+    MAccount.updateValueDescription(getCtx(), "AD_Client_ID=" + getClientId(), get_TrxName());
     //
     s_cache.clear();
     return success;

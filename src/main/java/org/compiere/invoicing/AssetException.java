@@ -13,10 +13,6 @@ public class AssetException extends AdempiereException {
   /** */
   private static final long serialVersionUID = -2163958702697438015L;
 
-  public AssetException() {
-    super();
-  }
-
   public AssetException(String message) {
     super(message);
   }

@@ -105,7 +105,7 @@ public final class Fact implements IFact {
     FactLine line =
         new FactLine(
             m_doc.getCtx(),
-            m_doc.get_Table_ID(),
+            m_doc.getTableId(),
             m_doc.get_ID(),
             docLine == null ? 0 : docLine.get_ID(),
             m_trxName);
@@ -277,7 +277,7 @@ public final class Fact implements IFact {
 
     //  new line
     FactLine line =
-        new FactLine(m_doc.getCtx(), m_doc.get_Table_ID(), m_doc.get_ID(), 0, m_trxName);
+        new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0, m_trxName);
     line.setDocumentInfo(m_doc, null);
     line.setPostingType(m_postingType);
 
@@ -341,7 +341,7 @@ public final class Fact implements IFact {
       //  Add up values by key
       for (int i = 0; i < m_lines.size(); i++) {
         FactLine line = (FactLine) m_lines.get(i);
-        Integer key = new Integer(line.getAD_Org_ID());
+        Integer key = new Integer(line. getOrgId());
         BigDecimal bal = line.getSourceBalance();
         BigDecimal oldBal = (BigDecimal) map.get(key);
         if (oldBal != null) bal = bal.add(oldBal);
@@ -397,7 +397,7 @@ public final class Fact implements IFact {
       //  Add up values by key
       for (int i = 0; i < m_lines.size(); i++) {
         FactLine line = (FactLine) m_lines.get(i);
-        Integer key = new Integer(line.getAD_Org_ID());
+        Integer key = new Integer(line. getOrgId());
         //	BigDecimal balance = line.getSourceBalance();
         Balance oldBalance = (Balance) map.get(key);
         if (oldBalance == null) {
@@ -417,7 +417,7 @@ public final class Fact implements IFact {
         if (!difference.isZeroBalance()) {
           //  Create Balancing Entry
           FactLine line =
-              new FactLine(m_doc.getCtx(), m_doc.get_Table_ID(), m_doc.get_ID(), 0, m_trxName);
+              new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0, m_trxName);
           line.setDocumentInfo(m_doc, null);
           line.setPostingType(m_postingType);
           //  Amount & Account
@@ -523,7 +523,7 @@ public final class Fact implements IFact {
 
     //  Create Currency Balancing Entry
     if (m_acctSchema.isCurrencyBalancing()) {
-      line = new FactLine(m_doc.getCtx(), m_doc.get_Table_ID(), m_doc.get_ID(), 0, m_trxName);
+      line = new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0, m_trxName);
       line.setDocumentInfo(m_doc, null);
       line.setPostingType(m_postingType);
       line.setAccount(m_acctSchema, m_acctSchema.getCurrencyBalancing_Acct());
@@ -634,7 +634,7 @@ public final class Fact implements IFact {
                 dLine.getC_AcctSchema_ID(),
                 m_postingType,
                 m_doc.getC_DocType_ID(),
-                dLine.getAD_Org_ID(),
+                dLine. getOrgId(),
                 dLine.getAccount_ID(),
                 dLine.getM_Product_ID(),
                 dLine.getC_BPartner_ID(),
@@ -677,7 +677,7 @@ public final class Fact implements IFact {
         FactLine factLine =
             new FactLine(
                 m_doc.getCtx(),
-                m_doc.get_Table_ID(),
+                m_doc.getTableId(),
                 m_doc.get_ID(),
                 dLine.getLine_ID(),
                 m_trxName);

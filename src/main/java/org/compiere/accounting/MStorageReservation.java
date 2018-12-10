@@ -46,7 +46,7 @@ public class MStorageReservation extends X_M_StorageReservation {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql, trxName);
       pstmt.setInt(1, M_Warehouse_ID);
       pstmt.setInt(2, M_Product_ID);
       pstmt.setString(3, isSOTrx ? "Y" : "N");
@@ -56,7 +56,7 @@ public class MStorageReservation extends X_M_StorageReservation {
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -193,7 +193,7 @@ public class MStorageReservation extends X_M_StorageReservation {
       params.add(M_AttributeSetInstance_ID);
     }
 
-    BigDecimal qty = DB.getSQLValueBD(trxName, sql.toString(), params);
+    BigDecimal qty = getSQLValueBD(trxName, sql.toString(), params);
     if (qty == null) qty = Env.ZERO;
 
     return qty;
@@ -252,7 +252,7 @@ public class MStorageReservation extends X_M_StorageReservation {
     //	Get Storage
     MStorageReservation storage =
         getCreate(ctx, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID, isSOTrx, trxName);
-    DB.getDatabase().forUpdate(storage, 120);
+    getDatabase().forUpdate(storage, 120);
     //	Verify
     if (storage.getM_Warehouse_ID() != M_Warehouse_ID
         && storage.getM_Product_ID() != M_Product_ID
@@ -285,7 +285,7 @@ public class MStorageReservation extends X_M_StorageReservation {
     final String sql =
         "UPDATE M_StorageReservation SET Qty=Qty+?, Updated=SYSDATE, UpdatedBy=? "
             + "WHERE M_Product_ID=? AND M_Warehouse_ID=? AND M_AttributeSetInstance_ID=? AND IsSOTrx=?";
-    DB.executeUpdateEx(
+    executeUpdateEx(
         sql,
         new Object[] {
           addition,

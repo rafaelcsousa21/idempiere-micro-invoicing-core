@@ -1,5 +1,15 @@
 package org.compiere.accounting;
 
+import org.compiere.invoicing.MConversionRate;
+import org.compiere.model.I_M_Cost;
+import org.compiere.orm.MOrg;
+import org.compiere.orm.Query;
+import org.compiere.util.Msg;
+import org.idempiere.common.exceptions.DBException;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Trx;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,18 +20,9 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.adempiere.exceptions.AverageCostingNegativeQtyException;
-import org.adempiere.exceptions.AverageCostingZeroQtyException;
-import org.compiere.conversionrate.MConversionRate;
-import org.compiere.model.I_M_Cost;
-import org.compiere.orm.MOrg;
-import org.compiere.orm.Query;
-import org.compiere.util.Msg;
-import org.idempiere.common.exceptions.DBException;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Product Cost Model
@@ -147,8 +148,8 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
-      pstmt.setInt(1, product.getADClientID());
+      pstmt = prepareStatement(sql, trxName);
+      pstmt.setInt(1, product. getClientId());
       pstmt.setInt(2, Org_ID);
       pstmt.setInt(3, product.getM_Product_ID());
       pstmt.setInt(4, M_ASI_ID);
@@ -189,7 +190,7 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -369,7 +370,7 @@ public class MCost extends X_M_Cost {
                 price,
                 pos[i].getC_Currency_ID(),
                 as.getC_Currency_ID(),
-                as.getADClientID(),
+                as. getClientId(),
                 Org_ID);
         if (price != null && price.signum() != 0) {
           if (pos[i].getC_UOM_ID() != product.getC_UOM_ID()) {
@@ -407,8 +408,8 @@ public class MCost extends X_M_Cost {
     PreparedStatement st = null;
     ResultSet rs = null;
     try {
-      st = DB.prepareStatement(sql, product.get_TrxName());
-      st.setInt(1, as.getADClientID());
+      st = prepareStatement(sql, product.get_TrxName());
+      st.setInt(1, as. getClientId());
       st.setInt(2, orgID);
       st.setInt(3, product.getM_Product_ID());
       rs = st.executeQuery();
@@ -421,7 +422,7 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      DB.close(rs, st);
+      close(rs, st);
     }
     return BigDecimal.ZERO;
   }
@@ -453,7 +454,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), product.get_TrxName());
+      pstmt = prepareStatement(sql.toString(), product.get_TrxName());
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, product.getM_Product_ID());
       if (AD_Org_ID != 0) pstmt.setInt(3, AD_Org_ID);
@@ -463,7 +464,7 @@ public class MCost extends X_M_Cost {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -504,7 +505,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), product.get_TrxName());
+      pstmt = prepareStatement(sql.toString(), product.get_TrxName());
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setInt(3, product.getM_Product_ID());
@@ -518,7 +519,7 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql.toString());
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -552,7 +553,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, product.get_TrxName());
+      pstmt = prepareStatement(sql, product.get_TrxName());
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setInt(3, C_OrderLine_ID);
@@ -564,7 +565,7 @@ public class MCost extends X_M_Cost {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -583,7 +584,7 @@ public class MCost extends X_M_Cost {
    * @param client client
    */
   public static void create(MClient client) {
-    MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(client.getCtx(), client.getADClientID());
+    MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(client.getCtx(), client. getClientId());
     String trxName = client.get_TrxName();
     String trxNameUsed = trxName;
     Trx trx = null;
@@ -602,8 +603,8 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxNameUsed);
-      pstmt.setInt(1, client.getADClientID());
+      pstmt = prepareStatement(sql, trxNameUsed);
+      pstmt.setInt(1, client. getClientId());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         MProduct product = new MProduct(client.getCtx(), rs, trxNameUsed);
@@ -626,7 +627,7 @@ public class MCost extends X_M_Cost {
       s_log.log(Level.SEVERE, sql, e);
       success = false;
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -662,7 +663,7 @@ public class MCost extends X_M_Cost {
 
     MAcctSchema[] mass =
         MAcctSchema.getClientAcctSchema(
-            product.getCtx(), product.getADClientID(), product.get_TrxName());
+            product.getCtx(), product. getClientId(), product.get_TrxName());
     MOrg[] orgs = null;
 
     int M_ASI_ID = 0; // 	No Attribute
@@ -674,7 +675,7 @@ public class MCost extends X_M_Cost {
       } else if (MAcctSchema.COSTINGLEVEL_Organization.equals(cl)) {
         if (as.getAD_OrgOnly_ID() > 0
             && MOrg.get(product.getCtx(), as.getAD_OrgOnly_ID()).isSummary()) {
-          MClient client = MClient.get(product.getCtx(), product.getADClientID());
+          MClient client = MClient.get(product.getCtx(), product. getClientId());
           MClientInfo ci = client.getInfo();
           MTree vTree =
               new MTree(
@@ -692,9 +693,9 @@ public class MCost extends X_M_Cost {
 
           for (MOrg o : orgs) {
             if (o.isSummary()) continue;
-            if (as.getAD_OrgOnly_ID() == o.getAD_Org_ID() || as.getAD_OrgOnly_ID() == 0) {
+            if (as.getAD_OrgOnly_ID() == o. getOrgId() || as.getAD_OrgOnly_ID() == 0) {
               createCostingRecord(
-                  product, M_ASI_ID, as, o.getAD_Org_ID(), ce.getM_CostElement_ID());
+                  product, M_ASI_ID, as, o. getOrgId(), ce.getM_CostElement_ID());
             }
           }
         }
@@ -756,7 +757,7 @@ public class MCost extends X_M_Cost {
 
     MAcctSchema[] mass =
         MAcctSchema.getClientAcctSchema(
-            product.getCtx(), product.getADClientID(), product.get_TrxName());
+            product.getCtx(), product. getClientId(), product.get_TrxName());
     MOrg[] orgs = null;
 
     int M_ASI_ID = 0; // 	No Attribute
@@ -778,7 +779,7 @@ public class MCost extends X_M_Cost {
                     product,
                     M_ASI_ID,
                     as,
-                    o.getAD_Org_ID(),
+                    o. getOrgId(),
                     ce.getM_CostElement_ID(),
                     product.get_TrxName());
             if (cost != null) cost.deleteEx(true);
@@ -823,7 +824,7 @@ public class MCost extends X_M_Cost {
     BigDecimal newAverageAmt = Env.ZERO;
     int oldTransaction_ID = 0;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, product.getM_Product_ID());
       if (AD_Org_ID != 0) pstmt.setInt(2, AD_Org_ID);
       else if (M_AttributeSetInstance_ID != 0) pstmt.setInt(2, M_AttributeSetInstance_ID);
@@ -882,7 +883,7 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql.toString());
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -926,7 +927,7 @@ public class MCost extends X_M_Cost {
     BigDecimal newAverageAmt = Env.ZERO;
     int oldTransaction_ID = 0;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, product.getM_Product_ID());
       if (AD_Org_ID != 0) pstmt.setInt(2, AD_Org_ID);
       else if (M_AttributeSetInstance_ID != 0) pstmt.setInt(2, M_AttributeSetInstance_ID);
@@ -987,7 +988,7 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql.toString());
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1029,7 +1030,7 @@ public class MCost extends X_M_Cost {
     int oldTransaction_ID = 0;
     ArrayList<QtyCost> fifo = new ArrayList<QtyCost>();
     try {
-      pstmt = DB.prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, product.getM_Product_ID());
       if (AD_Org_ID != 0) pstmt.setInt(2, AD_Org_ID);
       else if (M_AttributeSetInstance_ID != 0) pstmt.setInt(2, M_AttributeSetInstance_ID);
@@ -1109,7 +1110,7 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql.toString());
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1153,7 +1154,7 @@ public class MCost extends X_M_Cost {
     int oldTransaction_ID = 0;
     ArrayList<QtyCost> lifo = new ArrayList<QtyCost>();
     try {
-      pstmt = DB.prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, product.getM_Product_ID());
       if (AD_Org_ID != 0) pstmt.setInt(2, AD_Org_ID);
       else if (M_AttributeSetInstance_ID != 0) pstmt.setInt(2, M_AttributeSetInstance_ID);
@@ -1220,7 +1221,7 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql.toString());
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1291,7 +1292,7 @@ public class MCost extends X_M_Cost {
     cost =
         new Query(product.getCtx(), I_M_Cost.Table_Name, whereClause, trxName)
             .setParameters(
-                product.getADClientID(),
+                product. getClientId(),
                 AD_Org_ID,
                 product.getM_Product_ID(),
                 M_AttributeSetInstance_ID,
@@ -1451,7 +1452,7 @@ public class MCost extends X_M_Cost {
       int AD_Org_ID,
       int M_CostElement_ID) {
     this(product.getCtx(), 0, product.get_TrxName());
-    setClientOrg(product.getADClientID(), AD_Org_ID);
+    setClientOrg(product. getClientId(), AD_Org_ID);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
     setM_CostType_ID(as.getM_CostType_ID());
     setM_Product_ID(product.getM_Product_ID());
@@ -1600,8 +1601,8 @@ public class MCost extends X_M_Cost {
    */
   public String toString() {
     StringBuilder sb = new StringBuilder("MCost[");
-    sb.append("AD_Client_ID=").append(getADClientID());
-    if (getAD_Org_ID() != 0) sb.append(",AD_Org_ID=").append(getAD_Org_ID());
+    sb.append("AD_Client_ID=").append( getClientId());
+    if ( getOrgId() != 0) sb.append(",AD_Org_ID=").append( getOrgId());
     sb.append(",M_Product_ID=").append(getM_Product_ID());
     if (getMAttributeSetInstance_ID() != 0)
       sb.append(",AD_ASI_ID=").append(getMAttributeSetInstance_ID());
@@ -1646,7 +1647,7 @@ public class MCost extends X_M_Cost {
       MProduct product = MProduct.get(getCtx(), getM_Product_ID());
       String CostingLevel = product.getCostingLevel(as);
       if (MAcctSchema.COSTINGLEVEL_Client.equals(CostingLevel)) {
-        if (getAD_Org_ID() != 0 || getMAttributeSetInstance_ID() != 0) {
+        if ( getOrgId() != 0 || getMAttributeSetInstance_ID() != 0) {
           log.saveError("CostingLevelClient", "");
           return false;
         }
@@ -1655,7 +1656,7 @@ public class MCost extends X_M_Cost {
           log.saveError("FillMandatory", Msg.getElement(getCtx(), "M_AttributeSetInstance_ID"));
           return false;
         }
-        if (getAD_Org_ID() != 0) setAD_Org_ID(0);
+        if ( getOrgId() != 0) setAD_Org_ID(0);
       }
     }
 

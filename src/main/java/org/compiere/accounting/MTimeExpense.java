@@ -94,7 +94,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, get_TrxName());
       pstmt.setInt(1, getS_TimeExpense_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -105,7 +105,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     } catch (SQLException ex) {
       log.log(Level.SEVERE, "getLines", ex);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -140,14 +140,14 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getM_Warehouse_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) m_M_Locator_ID = rs.getInt(1);
     } catch (SQLException ex) {
       log.log(Level.SEVERE, "getM_Locator_ID", ex);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -168,7 +168,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             + (processed ? "Y" : "N")
             + "' WHERE S_TimeExpense_ID="
             + getS_TimeExpense_ID();
-    int noLine = DB.executeUpdate(sql, get_TrxName());
+    int noLine = executeUpdate(sql, get_TrxName());
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed
@@ -262,7 +262,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
 
     //	Std Period open? - AP (Reimbursement) Invoice
     if (!MPeriod.isOpen(
-        getCtx(), getDateReport(), MDocType.DOCBASETYPE_APInvoice, getAD_Org_ID())) {
+        getCtx(), getDateReport(), MDocType.DOCBASETYPE_APInvoice,  getOrgId())) {
       m_processMsg = "@PeriodClosed@";
       return DocAction.Companion.getSTATUS_Invalid();
     }

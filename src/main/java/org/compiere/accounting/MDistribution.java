@@ -41,7 +41,7 @@ public class MDistribution extends X_GL_Distribution {
         acct.getC_AcctSchema_ID(),
         PostingType,
         C_DocType_ID,
-        acct.getAD_Org_ID(),
+        acct. getOrgId(),
         acct.getAccount_ID(),
         acct.getM_Product_ID(),
         acct.getC_BPartner_ID(),
@@ -112,7 +112,7 @@ public class MDistribution extends X_GL_Distribution {
         continue;
 
       //	Optional Elements - "non-Any"
-      if (!distribution.isAnyOrg() && distribution.getAD_Org_ID() != AD_Org_ID) continue;
+      if (!distribution.isAnyOrg() && distribution. getOrgId() != AD_Org_ID) continue;
       if (!distribution.isAnyAcct() && distribution.getAccount_ID() != Account_ID) continue;
       if (!distribution.isAnyProduct() && distribution.getM_Product_ID() != M_Product_ID) continue;
       if (!distribution.isAnyBPartner() && distribution.getC_BPartner_ID() != C_BPartner_ID)

@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.orm.BasePOName;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for M_CostElement
@@ -35,11 +35,6 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    return POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
   }
 
   public String toString() {
@@ -194,5 +189,10 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
    */
   public String getM_CostElement_UU() {
     return (String) get_Value(COLUMNNAME_M_CostElement_UU);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_M_CostElement.Table_ID;
   }
 }

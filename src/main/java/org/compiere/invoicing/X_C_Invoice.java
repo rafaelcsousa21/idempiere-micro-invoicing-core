@@ -1,16 +1,16 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for C_Invoice
@@ -53,12 +53,6 @@ public class X_C_Invoice extends PO implements I_Persistent {
    */
   protected int getAccessLevel() {
     return I_C_Invoice.accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, I_C_Invoice.Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -1563,5 +1557,10 @@ public class X_C_Invoice extends PO implements I_Persistent {
     Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_User2_ID);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_Invoice.Table_ID;
   }
 }

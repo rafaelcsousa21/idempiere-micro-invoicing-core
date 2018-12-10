@@ -399,7 +399,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     //	Create Cost Type
     if (getM_CostType_ID() == 0) {
       MCostType ct = new MCostType(getCtx(), 0, get_TrxName());
-      ct.setClientOrg(getADClientID(), 0);
+      ct.setClientOrg( getClientId(), 0);
       ct.setName(getName());
       ct.saveEx();
       setM_CostType_ID(ct.getM_CostType_ID());
@@ -532,7 +532,7 @@ public class MAcctSchema extends X_C_AcctSchema {
    * @return true
    */
   protected boolean beforeSave(boolean newRecord) {
-    if (getAD_Org_ID() != 0) setAD_Org_ID(0);
+    if ( getOrgId() != 0) setAD_Org_ID(0);
     if (super.getTaxCorrectionType() == null)
       setTaxCorrectionType(
           isDiscountCorrectsTax()
@@ -541,7 +541,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     checkCosting();
     //	Check Primary
     if (getAD_OrgOnly_ID() != 0) {
-      MClientInfo info = MClientInfo.get(getCtx(), getADClientID());
+      MClientInfo info = MClientInfo.get(getCtx(),  getClientId());
       if (info.getC_AcctSchema1_ID() == getC_AcctSchema_ID()) setAD_OrgOnly_ID(0);
     }
     return true;

@@ -149,7 +149,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         Point p = new Point(rs.getInt(1), rs.getInt(2));
@@ -163,7 +163,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -307,7 +307,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, C_UOM_From_ID);
       pstmt.setInt(2, C_UOM_To_ID);
       rs = pstmt.executeQuery();
@@ -318,7 +318,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -583,7 +583,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     }
     //	Enforce Product UOM
     if (MSysConfig.getBooleanValue(
-        MSysConfig.ProductUOMConversionUOMValidate, true, getADClientID())) {
+        MSysConfig.ProductUOMConversionUOMValidate, true,  getClientId())) {
       if (getM_Product_ID() != 0 && (newRecord || is_ValueChanged("M_Product_ID"))) {
         // Check of product must be in the same transaction as the conversion being saved
         MProduct product = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
@@ -597,7 +597,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
 
     //	The Product UoM needs to be the smallest UoM - Multiplier must be < 0; Divider must be > 0
     if (MSysConfig.getBooleanValue(
-        MSysConfig.ProductUOMConversionRateValidate, true, getADClientID())) {
+        MSysConfig.ProductUOMConversionRateValidate, true,  getClientId())) {
       if (getM_Product_ID() != 0 && getDivideRate().compareTo(Env.ONE) < 0) {
         log.saveError("ProductUOMConversionRateError", "");
         return false;

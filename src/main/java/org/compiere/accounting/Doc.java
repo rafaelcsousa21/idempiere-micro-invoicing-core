@@ -227,7 +227,7 @@ public abstract class Doc implements IDoc {
           if (!matchPo.isPosted()) {
             error =
                 postImmediate(
-                    ass, matchPo.get_Table_ID(), matchPo.getId(), force, matchPo.get_TrxName());
+                    ass, matchPo.getTableId(), matchPo.getId(), force, matchPo.get_TrxName());
             if (!Util.isEmpty(error)) break;
           }
         }
@@ -244,7 +244,7 @@ public abstract class Doc implements IDoc {
               error =
                   postImmediate(
                       ass,
-                      matchInv.get_Table_ID(),
+                      matchInv.getTableId(),
                       matchInv.getId(),
                       force,
                       matchInv.get_TrxName());
@@ -290,7 +290,7 @@ public abstract class Doc implements IDoc {
     p_Status = STATUS_Error;
     m_as = as;
     m_ctx = new Properties(m_as.getCtx());
-    m_ctx.setProperty("#AD_Client_ID", String.valueOf(m_as.getADClientID()));
+    m_ctx.setProperty("#AD_Client_ID", String.valueOf(m_as. getClientId()));
 
     String className = clazz.getName();
     className = className.substring(className.lastIndexOf('.') + 1);
@@ -418,8 +418,8 @@ public abstract class Doc implements IDoc {
    *
    * @return table id
    */
-  public int get_Table_ID() {
-    return p_po.get_Table_ID();
+  public int getTableId() {
+    return p_po.getTableId();
   } //	get_Table_ID
 
   /**
@@ -472,12 +472,12 @@ public abstract class Doc implements IDoc {
       return msgreturn.toString();
     }
     //
-    if (p_po.getADClientID() != m_as.getADClientID()) {
+    if (p_po. getClientId() != m_as. getClientId()) {
       StringBuilder error =
           new StringBuilder("AD_Client_ID Conflict - Document=")
-              .append(p_po.getADClientID())
+              .append(p_po. getClientId())
               .append(", AcctSchema=")
-              .append(m_as.getADClientID());
+              .append(m_as. getClientId());
       log.severe(error.toString());
       return error.toString();
     }
@@ -494,7 +494,7 @@ public abstract class Doc implements IDoc {
         .append(" AND Processed='Y' AND IsActive='Y'");
     if (!force) sql.append(" AND (Processing='N' OR Processing IS NULL)");
     if (!repost) sql.append(" AND Posted='N'");
-    if (DB.executeUpdate(sql.toString(), trxName) == 1) {
+    if (executeUpdate(sql.toString(), trxName) == 1) {
       if (log.isLoggable(Level.INFO)) log.info("Locked: " + get_TableName() + "_ID=" + get_ID());
     } else {
       log.log(
@@ -552,11 +552,11 @@ public abstract class Doc implements IDoc {
       boolean skip = false;
       if (m_as.getAD_OrgOnly_ID() != 0) {
         //	Header Level Org
-        skip = m_as.isSkipOrg(getAD_Org_ID());
+        skip = m_as.isSkipOrg( getOrgId());
         //	Line Level Org
         if (p_lines != null) {
           for (int line = 0; skip && line < p_lines.length; line++) {
-            skip = m_as.isSkipOrg(p_lines[line].getAD_Org_ID());
+            skip = m_as.isSkipOrg(p_lines[line]. getOrgId());
             if (!skip) break;
           }
         }
@@ -602,8 +602,8 @@ public abstract class Doc implements IDoc {
       String AD_MessageValue = "PostingError-" + p_Status;
       int AD_User_ID = p_po.getUpdatedBy();
       MNote note =
-          new MNote(getCtx(), AD_MessageValue, AD_User_ID, getADClientID(), getAD_Org_ID(), null);
-      note.setRecord(p_po.get_Table_ID(), p_po.getId());
+          new MNote(getCtx(), AD_MessageValue, AD_User_ID,  getClientId(),  getOrgId(), null);
+      note.setRecord(p_po.getTableId(), p_po.getId());
       //  Reference
       note.setReference(toString()); // 	Document
       //	Text
@@ -652,12 +652,12 @@ public abstract class Doc implements IDoc {
   protected int deleteAcct() {
     StringBuilder sql =
         new StringBuilder("DELETE Fact_Acct WHERE AD_Table_ID=")
-            .append(get_Table_ID())
+            .append(getTableId())
             .append(" AND Record_ID=")
             .append(p_po.getId())
             .append(" AND C_AcctSchema_ID=")
             .append(m_as.getC_AcctSchema_ID());
-    int no = DB.executeUpdate(sql.toString(), getTrxName());
+    int no = executeUpdate(sql.toString(), getTrxName());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("deleted=" + no);
     return no;
   } //	deleteAcct
@@ -803,7 +803,7 @@ public abstract class Doc implements IDoc {
         .append(get_TableName())
         .append("_ID=")
         .append(p_po.getId());
-    DB.executeUpdate(sql.toString(), trxName);
+    executeUpdate(sql.toString(), trxName);
   } //  unlock
 
   /**
@@ -831,7 +831,7 @@ public abstract class Doc implements IDoc {
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
       try {
-        pstmt = DB.prepareStatement(sql, null);
+        pstmt = prepareStatement(sql, null);
         pstmt.setInt(1, getC_DocType_ID());
         rsDT = pstmt.executeQuery();
         if (rsDT.next()) {
@@ -841,7 +841,7 @@ public abstract class Doc implements IDoc {
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        DB.close(rsDT, pstmt);
+        close(rsDT, pstmt);
         rsDT = null;
         pstmt = null;
       }
@@ -862,15 +862,15 @@ public abstract class Doc implements IDoc {
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
       try {
-        pstmt = DB.prepareStatement(sql.toString(), null);
-        pstmt.setInt(1, getADClientID());
+        pstmt = prepareStatement(sql.toString(), null);
+        pstmt.setInt(1,  getClientId());
         pstmt.setString(2, m_DocumentType);
         rsDT = pstmt.executeQuery();
         if (rsDT.next()) m_GL_Category_ID = rsDT.getInt(1);
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        DB.close(rsDT, pstmt);
+        close(rsDT, pstmt);
         rsDT = null;
         pstmt = null;
       }
@@ -885,14 +885,14 @@ public abstract class Doc implements IDoc {
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
       try {
-        pstmt = DB.prepareStatement(sql, null);
-        pstmt.setInt(1, getADClientID());
+        pstmt = prepareStatement(sql, null);
+        pstmt.setInt(1,  getClientId());
         rsDT = pstmt.executeQuery();
         if (rsDT.next()) m_GL_Category_ID = rsDT.getInt(1);
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        DB.close(rsDT, pstmt);
+        close(rsDT, pstmt);
         rsDT = null;
         pstmt = null;
       }
@@ -965,8 +965,8 @@ public abstract class Doc implements IDoc {
                 acctSchema.getC_Currency_ID(),
                 getDateAcct(),
                 getC_ConversionType_ID(),
-                getADClientID(),
-                getAD_Org_ID());
+                 getClientId(),
+                 getOrgId());
         if (amt == null) {
           convertible = false;
           log.warning(
@@ -1002,7 +1002,7 @@ public abstract class Doc implements IDoc {
       if (ii != null) m_period = MPeriod.get(getCtx(), ii.intValue());
     }
     if (m_period == null)
-      m_period = MPeriod.get(getCtx(), getDateAcct(), getAD_Org_ID(), m_trxName);
+      m_period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId(), m_trxName);
     //	Is Period Open?
     if (m_period != null && m_period.isOpen(getDocumentType(), getDateAcct()))
       m_C_Period_ID = m_period.getC_Period_ID();
@@ -1338,7 +1338,7 @@ public abstract class Doc implements IDoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       if (para_1 == -1) //  GL Accounts
       pstmt.setInt(1, as.getC_AcctSchema_ID());
       else {
@@ -1351,7 +1351,7 @@ public abstract class Doc implements IDoc {
       log.log(Level.SEVERE, "AcctType=" + AcctType + " - SQL=" + sql, e);
       return 0;
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1407,8 +1407,8 @@ public abstract class Doc implements IDoc {
    *
    * @return client
    */
-  public int getADClientID() {
-    return p_po.getADClientID();
+  public int  getClientId() {
+    return p_po. getClientId();
   } //	getADClientID
 
   /**
@@ -1416,8 +1416,8 @@ public abstract class Doc implements IDoc {
    *
    * @return org
    */
-  public int getAD_Org_ID() {
-    return p_po.getAD_Org_ID();
+  public int  getOrgId() {
+    return p_po. getOrgId();
   } //	getAD_Org_ID
 
   /**
@@ -1650,58 +1650,58 @@ public abstract class Doc implements IDoc {
     } else {
       if (p_po.get_TableName().equals(I_M_MatchPO.Table_Name)) {
         int docTypeId =
-            DB.getSQLValue(
+            getSQLValue(
                 (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                p_po.getADClientID(),
+                p_po. getClientId(),
                 Doc.DOCTYPE_MatMatchPO);
         if (docTypeId > 0) return docTypeId;
       } else if (p_po.get_TableName().equals(I_M_MatchInv.Table_Name)) {
         int docTypeId =
-            DB.getSQLValue(
+            getSQLValue(
                 (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                p_po.getADClientID(),
+                p_po. getClientId(),
                 Doc.DOCTYPE_MatMatchInv);
         if (docTypeId > 0) return docTypeId;
       } else if (p_po.get_TableName().equals(I_C_AllocationHdr.Table_Name)) {
         int docTypeId =
-            DB.getSQLValue(
+            getSQLValue(
                 (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                p_po.getADClientID(),
+                p_po. getClientId(),
                 Doc.DOCTYPE_Allocation);
         if (docTypeId > 0) return docTypeId;
       } else if (p_po.get_TableName().equals(I_C_BankStatement.Table_Name)) {
         int docTypeId =
-            DB.getSQLValue(
+            getSQLValue(
                 (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                p_po.getADClientID(),
+                p_po. getClientId(),
                 Doc.DOCTYPE_BankStatement);
         if (docTypeId > 0) return docTypeId;
       } else if (p_po.get_TableName().equals(I_C_Cash.Table_Name)) {
         int docTypeId =
-            DB.getSQLValue(
+            getSQLValue(
                 (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                p_po.getADClientID(),
+                p_po. getClientId(),
                 Doc.DOCTYPE_CashJournal);
         if (docTypeId > 0) return docTypeId;
       } else if (p_po.get_TableName().equals(I_C_ProjectIssue.Table_Name)) {
         int docTypeId =
-            DB.getSQLValue(
+            getSQLValue(
                 (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                p_po.getADClientID(),
+                p_po. getClientId(),
                 Doc.DOCTYPE_ProjectIssue);
         if (docTypeId > 0) return docTypeId;
       } else if (p_po.get_TableName().equals(I_M_Production.Table_Name)) {
         int docTypeId =
-            DB.getSQLValue(
+            getSQLValue(
                 (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
-                p_po.getADClientID(),
+                p_po. getClientId(),
                 Doc.DOCTYPE_MatProduction);
         if (docTypeId > 0) return docTypeId;
       }

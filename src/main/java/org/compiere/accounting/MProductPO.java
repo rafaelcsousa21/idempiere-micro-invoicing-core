@@ -82,7 +82,7 @@ public class MProductPO extends X_M_Product_PO {
                 || is_ValueChanged("C_BPartner_ID")
                 || is_ValueChanged("M_Product_ID")))) {
       int cnt =
-          DB.getSQLValue(
+          getSQLValue(
               get_TrxName(),
               "SELECT COUNT(*) FROM M_Product_PO WHERE IsActive='Y' AND IsCurrentVendor='Y' AND C_BPartner_ID!=? AND M_Product_ID=?",
               getC_BPartner_ID(),

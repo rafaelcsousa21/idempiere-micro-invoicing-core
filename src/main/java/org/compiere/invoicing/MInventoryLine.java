@@ -1,8 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.accounting.*;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_M_InventoryLine;
@@ -10,8 +7,13 @@ import org.compiere.orm.MDocType;
 import org.compiere.orm.Query;
 import org.compiere.process.DocAction;
 import org.compiere.util.Msg;
-
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
+
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 /**
  * Physical Inventory Line Model
@@ -103,7 +105,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     if (inventory.getId() == 0) throw new IllegalArgumentException("Header not saved");
     m_parent = inventory;
     setM_Inventory_ID(inventory.getM_Inventory_ID()); // 	Parent
-    setClientOrg(inventory.getADClientID(), inventory.getAD_Org_ID());
+    setClientOrg(inventory. getClientId(), inventory. getOrgId());
     setM_Locator_ID(M_Locator_ID); // 	FK
     setM_Product_ID(M_Product_ID); // 	FK
     setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
@@ -271,7 +273,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_InventoryLine WHERE M_Inventory_ID=?";
-      int ii = DB.getSQLValue(get_TrxName(), sql, getM_Inventory_ID());
+      int ii = getSQLValue(get_TrxName(), sql, getM_Inventory_ID());
       setLine(ii);
     }
 
@@ -351,7 +353,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
       }
 
       String costingMethod = getParent().getCostingMethod();
-      int AD_Org_ID = getAD_Org_ID();
+      int AD_Org_ID =  getOrgId();
       MCost cost = product.getCostingRecord(as, AD_Org_ID, M_ASI_ID, costingMethod);
       if (cost == null) {
         if (!MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod)) {
@@ -366,7 +368,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     }
 
     //	Set AD_Org to parent if not charge
-    if (getC_Charge_ID() == 0) setAD_Org_ID(getParent().getAD_Org_ID());
+    if (getC_Charge_ID() == 0) setAD_Org_ID(getParent(). getOrgId());
 
     return true;
   } //	beforeSave

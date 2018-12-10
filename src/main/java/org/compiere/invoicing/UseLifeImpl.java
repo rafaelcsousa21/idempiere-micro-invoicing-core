@@ -46,8 +46,8 @@ public class UseLifeImpl implements UseLife {
     return m_obj.getCtx();
   }
 
-  public int get_Table_ID() {
-    return m_obj.get_Table_ID();
+  public int getTableId() {
+    return m_obj.getTableId();
   }
 
   public String get_TableName() {

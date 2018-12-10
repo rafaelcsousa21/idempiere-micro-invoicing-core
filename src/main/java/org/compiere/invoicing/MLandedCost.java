@@ -1,12 +1,16 @@
 package org.compiere.invoicing;
 
+import org.compiere.util.Msg;
+import org.idempiere.common.util.CLogger;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.util.Msg;
-import org.idempiere.common.util.CLogger;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**
@@ -31,7 +35,7 @@ public class MLandedCost extends X_C_LandedCost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, il.get_TrxName());
+      pstmt = prepareStatement(sql, il.get_TrxName());
       pstmt.setInt(1, il.getC_InvoiceLine_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -40,7 +44,7 @@ public class MLandedCost extends X_C_LandedCost {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

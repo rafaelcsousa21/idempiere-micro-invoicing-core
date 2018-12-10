@@ -253,8 +253,8 @@ public class Doc_BankStatement extends Doc {
    *     false; }
    *     <p>if (p_lines.length <= 0) { // no lines return false; }
    *     <p>int startorg = getBank_Org_ID(); if (startorg == 0) startorg =
-   *     p_lines[0].getAD_Org_ID(); // validate if the allocation involves more than one org for
-   *     (int i = 0; i < p_lines.length; i++) { if (p_lines[i].getAD_Org_ID() != startorg) return
+   *     p_lines[0]. getOrgId(); // validate if the allocation involves more than one org for
+   *     (int i = 0; i < p_lines.length; i++) { if (p_lines[i]. getOrgId() != startorg) return
    *     true; }
    *     <p>return false; }
    */
@@ -268,6 +268,6 @@ public class Doc_BankStatement extends Doc {
     if (m_C_BankAccount_ID == 0) return 0;
     //
     MBankAccount ba = MBankAccount.get(getCtx(), m_C_BankAccount_ID);
-    return ba.getAD_Org_ID();
+    return ba. getOrgId();
   } //	getBank_Org_ID
 } //  Doc_Bank

@@ -25,6 +25,8 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
+import static software.hsharp.core.orm.POKt.I_ZERO;
+
 public class MInOut extends org.compiere.order.MInOut implements DocAction, IPODoc {
   public MInOut(Properties ctx, int M_InOut_ID, String trxName) {
     super(ctx, M_InOut_ID, trxName);
@@ -145,7 +147,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
       return DocAction.Companion.getSTATUS_Invalid();
     }
     //	Std Period open?
-    if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(), getAD_Org_ID())) {
+    if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(),  getOrgId())) {
       m_processMsg = "@PeriodClosed@";
       return DocAction.Companion.getSTATUS_Invalid();
     }
@@ -156,7 +158,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
       if (order != null
           && MDocType.DOCSUBTYPESO_PrepayOrder.equals(order.getC_DocType().getDocSubTypeSO())
           && !MSysConfig.getBooleanValue(
-              MSysConfig.CHECK_CREDIT_ON_PREPAY_ORDER, true, getADClientID(), getAD_Org_ID())) {
+              MSysConfig.CHECK_CREDIT_ON_PREPAY_ORDER, true,  getClientId(),  getOrgId())) {
         // ignore -- don't validate Prepay Orders depending on sysconfig parameter
       } else {
         MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID(), get_TrxName());
@@ -441,7 +443,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
               mtrx =
                   new MTransaction(
                       getCtx(),
-                      sLine.getAD_Org_ID(),
+                      sLine. getOrgId(),
                       MovementType,
                       sLine.getM_Locator_ID(),
                       sLine.getM_Product_ID(),
@@ -543,7 +545,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             mtrx =
                 new MTransaction(
                     getCtx(),
-                    sLine.getAD_Org_ID(),
+                    sLine. getOrgId(),
                     MovementType,
                     sLine.getM_Locator_ID(),
                     sLine.getM_Product_ID(),
@@ -795,7 +797,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     } else {
       boolean accrual = false;
       try {
-        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getAD_Org_ID());
+        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(),  getOrgId());
       } catch (PeriodClosedException e) {
         accrual = true;
       }
@@ -872,7 +874,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
       reversalDate = new Timestamp(System.currentTimeMillis());
     }
     Timestamp reversalMovementDate = accrual ? reversalDate : getMovementDate();
-    if (!MPeriod.isOpen(getCtx(), reversalDate, dt.getDocBaseType(), getAD_Org_ID())) {
+    if (!MPeriod.isOpen(getCtx(), reversalDate, dt.getDocBaseType(),  getOrgId())) {
       m_processMsg = "@PeriodClosed@";
       return null;
     }
@@ -1131,7 +1133,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
       setMovementDate(TimeUtil.getDay(0));
       if (getDateAcct().before(getMovementDate())) {
         setDateAcct(getMovementDate());
-        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getAD_Org_ID());
+        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(),  getOrgId());
       }
     }
     if (dt.isOverwriteSeqOnComplete()) {
@@ -1288,7 +1290,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     if (getRef_InOut_ID() != 0) return null;
 
     //	Org Must be linked to BPartner
-    MOrg org = MOrg.get(getCtx(), getAD_Org_ID());
+    MOrg org = MOrg.get(getCtx(),  getOrgId());
     int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(get_TrxName());
     if (counterC_BPartner_ID == 0) return null;
     //	Business Partner needs to be linked to Org
@@ -1476,7 +1478,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
       boolean setOrder) {
     MInOut to = new MInOut(from.getCtx(), 0, null);
     to.set_TrxName(trxName);
-    copyValues(from, to, from.getADClientID(), from.getAD_Org_ID());
+    copyValues(from, to, from. getClientId(), from. getOrgId());
     to.set_ValueNoCheck("M_InOut_ID", I_ZERO);
     to.set_ValueNoCheck("DocumentNo", null);
     //

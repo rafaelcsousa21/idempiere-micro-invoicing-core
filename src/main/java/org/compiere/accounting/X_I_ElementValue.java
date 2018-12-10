@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_I_ElementValue;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for I_ElementValue
@@ -37,12 +37,6 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -554,5 +548,10 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
       return "Y".equals(oo);
     }
     return false;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_I_ElementValue.Table_ID;
   }
 }

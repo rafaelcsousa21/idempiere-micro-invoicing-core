@@ -49,8 +49,8 @@ public class MCostQueue extends X_M_CostQueue {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, trxName);
-      pstmt.setInt(1, product.getADClientID());
+      pstmt = prepareStatement(sql, trxName);
+      pstmt.setInt(1, product. getClientId());
       pstmt.setInt(2, AD_Org_ID);
       pstmt.setInt(3, product.getM_Product_ID());
       pstmt.setInt(4, M_AttributeSetInstance_ID);
@@ -62,7 +62,7 @@ public class MCostQueue extends X_M_CostQueue {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -100,8 +100,8 @@ public class MCostQueue extends X_M_CostQueue {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), trxName);
-      pstmt.setInt(1, product.getADClientID());
+      pstmt = prepareStatement(sql.toString(), trxName);
+      pstmt.setInt(1, product. getClientId());
       pstmt.setInt(2, Org_ID);
       pstmt.setInt(3, product.getM_Product_ID());
       pstmt.setInt(4, as.getM_CostType_ID());
@@ -113,7 +113,7 @@ public class MCostQueue extends X_M_CostQueue {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -344,7 +344,7 @@ public class MCostQueue extends X_M_CostQueue {
       int M_CostElement_ID,
       String trxName) {
     this(product.getCtx(), 0, trxName);
-    setClientOrg(product.getADClientID(), AD_Org_ID);
+    setClientOrg(product. getClientId(), AD_Org_ID);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
     setM_CostType_ID(as.getM_CostType_ID());
     setM_Product_ID(product.getM_Product_ID());

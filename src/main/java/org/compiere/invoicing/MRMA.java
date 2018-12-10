@@ -1,16 +1,15 @@
 package org.compiere.invoicing;
 
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_M_RMALine;
-import org.compiere.order.*;
 import org.compiere.order.MOrder;
+import org.compiere.order.MRMALine;
+import org.compiere.order.MRMATax;
+import org.compiere.order.X_M_RMA;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
@@ -20,8 +19,13 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
-
 import org.idempiere.common.util.Env;
+
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
   /**
@@ -52,7 +56,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
       invId = shipment.getC_Invoice_ID();
     } else {
       String sqlStmt = "SELECT C_Invoice_ID FROM C_Invoice WHERE C_Order_ID=?";
-      invId = DB.getSQLValueEx(null, sqlStmt, shipment.getC_Order_ID());
+      invId = getSQLValueEx(null, sqlStmt, shipment.getC_Order_ID());
     }
 
     if (invId <= 0) {
@@ -231,7 +235,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
     if (getRef_RMA_ID() > 0) return null;
 
     //	Org Must be linked to BPartner
-    org.compiere.orm.MOrg org = MOrg.get(getCtx(), getAD_Org_ID());
+    org.compiere.orm.MOrg org = MOrg.get(getCtx(),  getOrgId());
     int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(get_TrxName());
     if (counterC_BPartner_ID == 0) return null;
     //	Business Partner needs to be linked to Org
@@ -304,7 +308,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         "SELECT COUNT(1) "
             + "FROM M_InOut "
             + "WHERE M_RMA_ID=? AND (DocStatus NOT IN ('VO','RE'))";
-    int count = DB.getSQLValueEx(get_TrxName(), validation, getM_RMA_ID());
+    int count = getSQLValueEx(get_TrxName(), validation, getM_RMA_ID());
 
     if (count == 0) {
       MRMALine lines[] = getLines(true);

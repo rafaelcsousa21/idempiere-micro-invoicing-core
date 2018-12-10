@@ -171,7 +171,7 @@ public class ProductCost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, m_M_Product_ID);
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
@@ -179,7 +179,7 @@ public class ProductCost {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -217,14 +217,14 @@ public class ProductCost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) validCombination_ID = rs.getInt(AcctType);
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -304,7 +304,7 @@ public class ProductCost {
   	ResultSet rs = null;
   	try
   	{
-  		pstmt = DB.prepareStatement(sql.toString(), null);
+  		pstmt = prepareStatement(sql.toString(), null);
   		pstmt.setInt(1, m_M_Product_ID);
   		rs = pstmt.executeQuery();
   		if (rs.next())
@@ -336,7 +336,7 @@ public class ProductCost {
   	if (price != null && price.compareTo(Env.ZERO)!=0)
   		price = MConversionRate.convert (as.getCtx(),
   			price, C_Currency_ID, as.getC_Currency_ID(),
-  			as.getADClientID(), 0);
+  			as. getClientId(), 0);
   	return price;
   }   //  getPOPrice*/
 
@@ -360,7 +360,7 @@ public class ProductCost {
   	ResultSet rs = null;
   	try
   	{
-  		pstmt = DB.prepareStatement(sql, null);
+  		pstmt = prepareStatement(sql, null);
   		pstmt.setInt(1, m_M_Product_ID);
   		rs = pstmt.executeQuery();
   		if (rs.next())
@@ -391,7 +391,7 @@ public class ProductCost {
   	//  Convert - standard precision!! - should be costing precision
   	if (cost != null && cost.compareTo(Env.ZERO)!=0)
   		cost = MConversionRate.convert (as.getCtx(),
-  			cost, C_Currency_ID, as.getC_Currency_ID(), as.getADClientID(), as.getAD_Org_ID());
+  			cost, C_Currency_ID, as.getC_Currency_ID(), as. getClientId(), as. getOrgId());
   	return cost;
   }   //  getPOCost*/
 

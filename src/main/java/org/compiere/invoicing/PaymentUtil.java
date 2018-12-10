@@ -25,7 +25,7 @@ public class PaymentUtil {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, bpartner.get_TrxName());
+      pstmt = prepareStatement(sql, bpartner.get_TrxName());
       pstmt.setInt(1, bpartner.getC_BPartner_ID());
       pstmt.setString(2, creditCardNo);
       pstmt.setInt(3, C_PaymentProcessor_ID);
@@ -34,7 +34,7 @@ public class PaymentUtil {
     } catch (Exception e) {
       logger.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
     }
 
     MBPBankAccount[] m_accounts = new MBPBankAccount[list.size()];

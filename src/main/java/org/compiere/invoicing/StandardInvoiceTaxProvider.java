@@ -54,7 +54,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
           //
           MInvoiceTax newITax = new MInvoiceTax(invoice.getCtx(), 0, invoice.get_TrxName());
           newITax.setClientOrg(invoice);
-          newITax.setAD_Org_ID(invoice.getAD_Org_ID());
+          newITax.setAD_Org_ID(invoice. getOrgId());
           newITax.setC_Invoice_ID(invoice.getC_Invoice_ID());
           newITax.setC_Tax_ID(cTax.getC_Tax_ID());
           newITax.setPrecision(invoice.getPrecision());
@@ -105,7 +105,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
             + " SET TotalLines="
             + "(SELECT COALESCE(SUM(LineNetAmt),0) FROM C_InvoiceLine il WHERE i.C_Invoice_ID=il.C_Invoice_ID) "
             + "WHERE C_Invoice_ID=?";
-    int no = DB.executeUpdateEx(sql, new Object[] {line.getC_Invoice_ID()}, line.get_TrxName());
+    int no = executeUpdateEx(sql, new Object[] {line.getC_Invoice_ID()}, line.get_TrxName());
     if (no != 1) log.warning("(1) #" + no);
 
     if (line.isTaxIncluded())
@@ -116,7 +116,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
               + " SET GrandTotal=TotalLines+"
               + "(SELECT COALESCE(SUM(TaxAmt),0) FROM C_InvoiceTax it WHERE i.C_Invoice_ID=it.C_Invoice_ID) "
               + "WHERE C_Invoice_ID=?";
-    no = DB.executeUpdateEx(sql, new Object[] {line.getC_Invoice_ID()}, line.get_TrxName());
+    no = executeUpdateEx(sql, new Object[] {line.getC_Invoice_ID()}, line.get_TrxName());
     if (no != 1) log.warning("(2) #" + no);
     line.clearParent();
 

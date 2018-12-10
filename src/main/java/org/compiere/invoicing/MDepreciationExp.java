@@ -146,7 +146,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             "@AssetDepreciationAmt@",
             assetwk);
     if (depexp != null) {
-      depexp.setAD_Org_ID(assetwk.getA_Asset().getAD_Org_ID()); // added by zuhri
+      depexp.setAD_Org_ID(assetwk.getA_Asset(). getOrgId()); // added by zuhri
       if (accumAmt != null) depexp.setA_Accumulated_Depr(accumAmt);
       if (accumAmt_F != null) depexp.setA_Accumulated_Depr_F(accumAmt_F);
       if (help != null && help.length() > 0) depexp.setHelp(help);
@@ -209,7 +209,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     // Try to delete postings
     if (isPosted()) {
       MPeriod.testPeriodOpen(
-          getCtx(), getDateAcct(), MDocType.DOCBASETYPE_GLDocument, getAD_Org_ID());
+          getCtx(), getDateAcct(), MDocType.DOCBASETYPE_GLDocument,  getOrgId());
       MDepreciationEntry.deleteFacts(this);
     }
     return true;
@@ -286,7 +286,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
               + " SET Processed=? WHERE "
               + I_A_Depreciation_Exp.COLUMNNAME_A_Depreciation_Exp_ID
               + "=?";
-      DB.executeUpdateEx(sql, new Object[] {Processed, getId()}, get_TrxName());
+      executeUpdateEx(sql, new Object[] {Processed, getId()}, get_TrxName());
     }
   }
 

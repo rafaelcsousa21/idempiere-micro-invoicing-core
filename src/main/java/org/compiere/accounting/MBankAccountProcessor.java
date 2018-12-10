@@ -97,7 +97,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), trxName);
+      pstmt = prepareStatement(sql.toString(), trxName);
       pstmt.setInt(1, AD_Client_ID);
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setBigDecimal(3, Amt);
@@ -107,7 +107,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
       s_log.log(Level.SEVERE, "find - " + sql, e);
       return null;
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

@@ -685,7 +685,7 @@ public class MCostDetail extends X_M_CostDetail {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, ID);
       pstmt.setInt(2, M_AttributeSetInstance_ID);
       if (C_AcctSchema_ID > 0) {
@@ -696,7 +696,7 @@ public class MCostDetail extends X_M_CostDetail {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql + " - " + ID, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
     }
     return retValue;
   }
@@ -824,7 +824,7 @@ public class MCostDetail extends X_M_CostDetail {
       String Description,
       String trxName) {
     this(as.getCtx(), 0, trxName);
-    setClientOrg(as.getADClientID(), AD_Org_ID);
+    setClientOrg(as. getClientId(), AD_Org_ID);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
     setM_Product_ID(M_Product_ID);
     setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
@@ -889,7 +889,7 @@ public class MCostDetail extends X_M_CostDetail {
   public boolean isVendorRMA() {
     if (!isSOTrx() && getM_InOutLine_ID() > 0) {
       String docBaseType =
-          DB.getSQLValueString((String) null, INOUTLINE_DOCBASETYPE_SQL, getM_InOutLine_ID());
+          getSQLValueString((String) null, INOUTLINE_DOCBASETYPE_SQL, getM_InOutLine_ID());
       return Doc.DOCTYPE_MatShipment.equals(docBaseType);
     }
     return false;
@@ -957,7 +957,7 @@ public class MCostDetail extends X_M_CostDetail {
     MProduct product = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
     String CostingLevel = product.getCostingLevel(as);
     //	Org Element
-    int Org_ID = getAD_Org_ID();
+    int Org_ID =  getOrgId();
     int M_ASI_ID = getMAttributeSetInstance_ID();
     if (MAcctSchema.COSTINGLEVEL_Client.equals(CostingLevel)) {
       Org_ID = 0;
@@ -1033,7 +1033,7 @@ public class MCostDetail extends X_M_CostDetail {
 
     MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID(), get_TrxName());
 
-    DB.getDatabase().forUpdate(cost, 120);
+    getDatabase().forUpdate(cost, 120);
 
     //	if (cost == null)
     //		cost = new MCost(product, M_ASI_ID,
@@ -1045,7 +1045,7 @@ public class MCostDetail extends X_M_CostDetail {
     history.setM_CostDetail_ID(this.getM_CostDetail_ID());
     history.setM_CostElement_ID(ce.getM_CostElement_ID());
     history.setM_CostType_ID(cost.getM_CostType_ID());
-    history.setClientOrg(cost.getADClientID(), cost.getAD_Org_ID());
+    history.setClientOrg(cost. getClientId(), cost. getOrgId());
     history.setOldQty(cost.getCurrentQty());
     history.setOldCostPrice(cost.getCurrentCostPrice());
     history.setOldCAmt(cost.getCumulatedAmt());

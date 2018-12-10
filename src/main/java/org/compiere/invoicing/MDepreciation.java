@@ -59,7 +59,7 @@ public class MDepreciation extends X_A_Depreciation {
     }
 
     s_cache.put(depr.getId(), depr);
-    String key = "" + depr.getADClientID() + "_" + depr.getDepreciationType();
+    String key = "" + depr. getClientId() + "_" + depr.getDepreciationType();
     s_cache_forType.put(key, depr);
   }
 

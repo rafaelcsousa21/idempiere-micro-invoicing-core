@@ -72,7 +72,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, get_TrxName());
       pstmt.setInt(1, getC_InvoiceBatch_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -81,7 +81,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -104,7 +104,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_InvoiceBatch_ID=")
             .append(getC_InvoiceBatch_ID());
-    int noLine = DB.executeUpdate("UPDATE C_InvoiceBatchLine " + set, get_TrxName());
+    int noLine = executeUpdate("UPDATE C_InvoiceBatchLine " + set, get_TrxName());
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed

@@ -129,7 +129,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
    * @return true
    */
   protected boolean beforeSave(boolean newRecord) {
-    if (getAD_Org_ID() != 0) setAD_Org_ID(0);
+    if ( getOrgId() != 0) setAD_Org_ID(0);
     return true;
   } //	beforeSave
 } //	MAcctSchemaDefault

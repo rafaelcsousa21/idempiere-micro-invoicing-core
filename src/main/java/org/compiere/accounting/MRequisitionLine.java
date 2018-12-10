@@ -235,7 +235,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 FROM M_RequisitionLine WHERE M_Requisition_ID=?";
-      int ii = DB.getSQLValueEx(get_TrxName(), sql, getM_Requisition_ID());
+      int ii = getSQLValueEx(get_TrxName(), sql, getM_Requisition_ID());
       setLine(ii);
     }
     //	Product & ASI - Charge
@@ -304,7 +304,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
             + "(SELECT COALESCE(SUM(LineNetAmt),0) FROM M_RequisitionLine rl "
             + "WHERE r.M_Requisition_ID=rl.M_Requisition_ID) "
             + "WHERE M_Requisition_ID=?";
-    int no = DB.executeUpdateEx(sql, new Object[] {getM_Requisition_ID()}, get_TrxName());
+    int no = executeUpdateEx(sql, new Object[] {getM_Requisition_ID()}, get_TrxName());
     if (no != 1) log.log(Level.SEVERE, "Header update #" + no);
     m_parent = null;
     return no == 1;

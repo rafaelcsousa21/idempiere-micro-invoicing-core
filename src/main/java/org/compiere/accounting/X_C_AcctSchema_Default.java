@@ -1,14 +1,14 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_AcctSchema_Default;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_AcctSchema_Default
@@ -52,12 +52,6 @@ public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -1336,5 +1330,10 @@ public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default
     Integer ii = (Integer) get_Value(COLUMNNAME_WriteOff_Acct);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_AcctSchema_Default.Table_ID;
   }
 }

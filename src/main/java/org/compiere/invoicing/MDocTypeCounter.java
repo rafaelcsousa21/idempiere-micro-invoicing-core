@@ -72,7 +72,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = DB.prepareStatement(sql, null);
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, C_DocType_ID);
       rs = pstmt.executeQuery();
       while (rs.next() && retValue == null) {
@@ -85,7 +85,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, "getCounterDocType", e);
     } finally {
-      DB.close(rs, pstmt);
+      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -323,7 +323,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
    * @return true
    */
   protected boolean beforeSave(boolean newRecord) {
-    if (getAD_Org_ID() != 0) setAD_Org_ID(0);
+    if ( getOrgId() != 0) setAD_Org_ID(0);
 
     if (!newRecord && (is_ValueChanged("C_DocType_ID") || is_ValueChanged("Counter_C_DocType_ID")))
       setIsValid(false);

@@ -94,7 +94,7 @@ public class Doc_InOut extends Doc {
       String sql =
           "SELECT PP_Cost_Collector_ID  FROM C_OrderLine WHERE C_OrderLine_ID=? AND PP_Cost_Collector_ID IS NOT NULL";
       int PP_Cost_Collector_ID =
-          DB.getSQLValueEx(getTrxName(), sql, new Object[] {line.getC_OrderLine_ID()});
+          getSQLValueEx(getTrxName(), sql, new Object[] {line.getC_OrderLine_ID()});
       docLine.setPP_Cost_Collector_ID(PP_Cost_Collector_ID);
       //
       if (log.isLoggable(Level.FINE)) log.fine(docLine.toString());
@@ -166,18 +166,18 @@ public class Doc_InOut extends Doc {
                   pc.setQty(QtyMA);
                   pc.setM_M_AttributeSetInstance_ID(ma.getMAttributeSetInstance_ID());
                   BigDecimal maCosts =
-                      line.getProductCosts(as, line.getAD_Org_ID(), true, "M_InOutLine_ID=?");
+                      line.getProductCosts(as, line. getOrgId(), true, "M_InOutLine_ID=?");
 
                   costs = costs.add(maCosts);
                 }
               }
             } else {
-              costs = line.getProductCosts(as, line.getAD_Org_ID(), true, "M_InOutLine_ID=?");
+              costs = line.getProductCosts(as, line. getOrgId(), true, "M_InOutLine_ID=?");
             }
           } else {
             // MZ Goodwill
             // if Shipment CostDetail exist then get Cost from Cost Detail
-            costs = line.getProductCosts(as, line.getAD_Org_ID(), true, "M_InOutLine_ID=?");
+            costs = line.getProductCosts(as, line. getOrgId(), true, "M_InOutLine_ID=?");
           }
 
           // end MZ
@@ -186,7 +186,7 @@ public class Doc_InOut extends Doc {
             if (product.isStocked()) {
               // ok if we have purchased zero cost item from vendor before
               int count =
-                  DB.getSQLValue(
+                  getSQLValue(
                       null,
                       "SELECT Count(*) FROM M_CostDetail WHERE M_Product_ID=? AND Processed='Y' AND Amt=0.00 AND Qty > 0 AND (C_OrderLine_ID > 0 OR C_InvoiceLine_ID > 0)",
                       product.getM_Product_ID());
@@ -272,7 +272,7 @@ public class Doc_InOut extends Doc {
                 MInOutLineMA ma = mas[j];
                 if (!MCostDetail.createShipment(
                     as,
-                    line.getAD_Org_ID(),
+                    line. getOrgId(),
                     line.getM_Product_ID(),
                     ma.getMAttributeSetInstance_ID(),
                     line.get_ID(),
@@ -292,7 +292,7 @@ public class Doc_InOut extends Doc {
             if (line.getM_Product_ID() != 0) {
               if (!MCostDetail.createShipment(
                   as,
-                  line.getAD_Org_ID(),
+                  line. getOrgId(),
                   line.getM_Product_ID(),
                   line.getMAttributeSetInstance_ID(),
                   line.get_ID(),
@@ -312,7 +312,7 @@ public class Doc_InOut extends Doc {
           if (line.getM_Product_ID() != 0) {
             if (!MCostDetail.createShipment(
                 as,
-                line.getAD_Org_ID(),
+                line. getOrgId(),
                 line.getM_Product_ID(),
                 line.getMAttributeSetInstance_ID(),
                 line.get_ID(),
@@ -360,18 +360,18 @@ public class Doc_InOut extends Doc {
                   pc.setQty(QtyMA);
                   pc.setM_M_AttributeSetInstance_ID(ma.getMAttributeSetInstance_ID());
                   BigDecimal maCosts =
-                      line.getProductCosts(as, line.getAD_Org_ID(), true, "M_InOutLine_ID=?");
+                      line.getProductCosts(as, line. getOrgId(), true, "M_InOutLine_ID=?");
 
                   costs = costs.add(maCosts);
                 }
               }
             } else {
-              costs = line.getProductCosts(as, line.getAD_Org_ID(), true, "M_InOutLine_ID=?");
+              costs = line.getProductCosts(as, line. getOrgId(), true, "M_InOutLine_ID=?");
             }
           } else {
             // MZ Goodwill
             // if Shipment CostDetail exist then get Cost from Cost Detail
-            costs = line.getProductCosts(as, line.getAD_Org_ID(), true, "M_InOutLine_ID=?");
+            costs = line.getProductCosts(as, line. getOrgId(), true, "M_InOutLine_ID=?");
             // end MZ
           }
           if (costs == null || costs.signum() == 0) // 	zero costs OK
@@ -425,7 +425,7 @@ public class Doc_InOut extends Doc {
                 MInOutLineMA ma = mas[j];
                 if (!MCostDetail.createShipment(
                     as,
-                    line.getAD_Org_ID(),
+                    line. getOrgId(),
                     line.getM_Product_ID(),
                     ma.getMAttributeSetInstance_ID(),
                     line.get_ID(),
@@ -444,7 +444,7 @@ public class Doc_InOut extends Doc {
             if (line.getM_Product_ID() != 0) {
               if (!MCostDetail.createShipment(
                   as,
-                  line.getAD_Org_ID(),
+                  line. getOrgId(),
                   line.getM_Product_ID(),
                   line.getMAttributeSetInstance_ID(),
                   line.get_ID(),
@@ -464,7 +464,7 @@ public class Doc_InOut extends Doc {
           if (line.getM_Product_ID() != 0) {
             if (!MCostDetail.createShipment(
                 as,
-                line.getAD_Org_ID(),
+                line. getOrgId(),
                 line.getM_Product_ID(),
                 line.getMAttributeSetInstance_ID(),
                 line.get_ID(),
@@ -571,7 +571,7 @@ public class Doc_InOut extends Doc {
             }
             //
           } else {
-            costs = line.getProductCosts(as, line.getAD_Org_ID(), false); // 	current costs
+            costs = line.getProductCosts(as, line. getOrgId(), false); // 	current costs
           }
 
           if (costs == null || costs.signum() == 0) {
@@ -723,8 +723,8 @@ public class Doc_InOut extends Doc {
                       C_Currency_ID,
                       getDateAcct(),
                       0,
-                      getADClientID(),
-                      getAD_Org_ID(),
+                       getClientId(),
+                       getOrgId(),
                       true);
             }
 
@@ -743,16 +743,16 @@ public class Doc_InOut extends Doc {
                     pc.setQty(QtyMA);
                     pc.setM_M_AttributeSetInstance_ID(ma.getMAttributeSetInstance_ID());
                     BigDecimal maCosts =
-                        line.getProductCosts(as, line.getAD_Org_ID(), true, "M_InOutLine_ID=?");
+                        line.getProductCosts(as, line. getOrgId(), true, "M_InOutLine_ID=?");
 
                     costs = costs.add(maCosts);
                   }
                 }
               } else {
-                costs = line.getProductCosts(as, line.getAD_Org_ID(), false); // 	current costs
+                costs = line.getProductCosts(as, line. getOrgId(), false); // 	current costs
               }
             } else {
-              costs = line.getProductCosts(as, line.getAD_Org_ID(), false); // 	current costs
+              costs = line.getProductCosts(as, line. getOrgId(), false); // 	current costs
             }
 
             if (costs == null || costs.signum() == 0) {
@@ -858,7 +858,7 @@ public class Doc_InOut extends Doc {
             MInOutLineMA ma = mas[j];
             if (!MCostDetail.createShipment(
                 as,
-                line.getAD_Org_ID(),
+                line. getOrgId(),
                 line.getM_Product_ID(),
                 ma.getMAttributeSetInstance_ID(),
                 line.get_ID(),
@@ -873,7 +873,7 @@ public class Doc_InOut extends Doc {
       } else {
         if (!MCostDetail.createShipment(
             as,
-            line.getAD_Org_ID(),
+            line. getOrgId(),
             line.getM_Product_ID(),
             line.getMAttributeSetInstance_ID(),
             line.get_ID(),
@@ -887,7 +887,7 @@ public class Doc_InOut extends Doc {
     } else {
       if (!MCostDetail.createShipment(
           as,
-          line.getAD_Org_ID(),
+          line. getOrgId(),
           line.getM_Product_ID(),
           line.getMAttributeSetInstance_ID(),
           line.get_ID(),
