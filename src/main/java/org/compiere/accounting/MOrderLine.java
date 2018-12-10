@@ -1,8 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.invoicing.MLandedCost;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -11,8 +8,13 @@ import org.compiere.product.MAttributeSet;
 import org.compiere.product.MUOM;
 import org.compiere.product.ProductNotOnPriceListException;
 import org.compiere.util.Msg;
-
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
+
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc {
 

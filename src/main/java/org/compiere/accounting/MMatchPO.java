@@ -23,6 +23,8 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.ValueNamePair;
 
+import static software.hsharp.core.util.DBKt.*;
+
 /**
  * Match PO Model. = Created when processing Shipment or Order - Updates Order (delivered, invoiced)
  * - Creates PPV acct

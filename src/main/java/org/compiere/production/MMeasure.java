@@ -21,6 +21,8 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
+
 /**
  * Performance Measure
  *

@@ -1,16 +1,18 @@
 package org.compiere.wf;
 
+import org.compiere.model.IProcessInfo;
+import org.compiere.orm.*;
+import org.compiere.process.DocAction;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Util;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.model.IProcessInfo;
-import org.compiere.orm.*;
-import org.compiere.process.DocAction;
 
-import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Util;
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 /**
  * Workflow Process

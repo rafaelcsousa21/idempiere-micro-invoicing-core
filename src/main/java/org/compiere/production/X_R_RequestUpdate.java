@@ -1,16 +1,16 @@
 package org.compiere.production;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_R_RequestUpdate;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for R_RequestUpdate
@@ -44,12 +44,6 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate, I_Persis
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -280,5 +274,10 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate, I_Persis
    */
   public Timestamp getStartTime() {
     return (Timestamp) get_Value(COLUMNNAME_StartTime);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_R_RequestUpdate.Table_ID;
   }
 }

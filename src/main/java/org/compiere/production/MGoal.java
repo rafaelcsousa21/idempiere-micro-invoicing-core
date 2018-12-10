@@ -20,6 +20,9 @@ import org.idempiere.common.util.CLogger;
 
 import org.idempiere.common.util.Env;
 
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
+
 /**
  * Performance Goal
  *

@@ -16,6 +16,10 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
 
+import static software.hsharp.core.orm.POKt.I_ZERO;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValue;
+
 /**
  * Cash Line Model
  *
@@ -326,7 +330,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     // If CashType is not Bank Account Transfer, set C_BankAccount_ID to null - teo_sarca BF [
     // 1760240 ]
     if (!X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType()))
-      setC_BankAccount_ID(PO.I_ZERO);
+      setC_BankAccount_ID(I_ZERO);
 
     /**
      * General fix of Currency UPDATE C_CashLine cl SET C_Currency_ID = (SELECT C_Currency_ID FROM

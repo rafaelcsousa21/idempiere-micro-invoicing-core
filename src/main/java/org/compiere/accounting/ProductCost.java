@@ -1,14 +1,17 @@
 package org.compiere.accounting;
 
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Product Cost Model. Summarizes Info in MCost

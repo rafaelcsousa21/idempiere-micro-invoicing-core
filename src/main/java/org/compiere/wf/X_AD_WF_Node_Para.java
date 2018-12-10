@@ -1,13 +1,13 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_AD_WF_Node_Para;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_WF_Node_Para
@@ -42,12 +42,6 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -230,5 +224,10 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
    */
   public String getEntityType() {
     return (String) get_Value(COLUMNNAME_EntityType);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_AD_WF_Node_Para.Table_ID;
   }
 }

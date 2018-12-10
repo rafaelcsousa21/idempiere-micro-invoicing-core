@@ -1,16 +1,19 @@
 package org.compiere.production;
 
+import org.compiere.model.I_R_Status;
+import org.idempiere.common.util.CCache;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.model.I_R_Status;
-import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogger;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Request Status Model

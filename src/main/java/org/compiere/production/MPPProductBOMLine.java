@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
+
 /**
  * PP Product BOM Line Model. <code>
  * 			MPPProductBOMLine l = new MPPProductBOMLine(bom);

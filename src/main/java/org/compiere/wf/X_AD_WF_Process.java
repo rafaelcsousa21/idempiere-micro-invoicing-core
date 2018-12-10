@@ -1,13 +1,13 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_AD_WF_Process;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_WF_Process
@@ -42,12 +42,6 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -374,5 +368,10 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
    */
   public String getWFState() {
     return (String) get_Value(COLUMNNAME_WFState);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_AD_WF_Process.Table_ID;
   }
 }

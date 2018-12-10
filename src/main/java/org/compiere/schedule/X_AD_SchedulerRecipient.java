@@ -1,13 +1,13 @@
 package org.compiere.schedule;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_AD_SchedulerRecipient;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_SchedulerRecipient
@@ -41,12 +41,6 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -183,5 +177,10 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
    */
   public KeyNamePair getKeyNamePair() {
     return new KeyNamePair(getId(), String.valueOf(getAD_User_ID()));
+  }
+
+  @Override
+  public int getTableId() {
+    return I_AD_SchedulerRecipient.Table_ID;
   }
 }

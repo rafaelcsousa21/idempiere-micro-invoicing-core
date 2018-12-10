@@ -1,14 +1,14 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_GL_Distribution;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for GL_Distribution
@@ -38,12 +38,6 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -938,5 +932,10 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_GL_Distribution.Table_ID;
   }
 }

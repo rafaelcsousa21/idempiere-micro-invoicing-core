@@ -1,19 +1,21 @@
 package org.compiere.production;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_R_RequestType;
 import org.compiere.orm.MRole;
 import org.compiere.orm.Query;
 import org.compiere.query.MQuery;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Request Type Model

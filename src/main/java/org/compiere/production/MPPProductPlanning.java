@@ -1,8 +1,5 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.orm.MOrgInfo;
 import org.compiere.orm.Query;
 import org.compiere.product.MResource;
@@ -11,8 +8,13 @@ import org.eevolution.model.I_PP_Product_Planning;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
+
+import java.sql.ResultSet;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 /**
  * Product Data Planning

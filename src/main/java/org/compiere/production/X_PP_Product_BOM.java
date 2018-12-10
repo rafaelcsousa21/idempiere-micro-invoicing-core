@@ -1,15 +1,16 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
-import org.compiere.model.*;
+import org.compiere.model.HasName;
+import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_BOM;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for PP_Product_BOM
@@ -43,12 +44,6 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -466,5 +461,10 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
    */
   public KeyNamePair getKeyNamePair() {
     return new KeyNamePair(getId(), getValue());
+  }
+
+  @Override
+  public int getTableId() {
+    return I_PP_Product_BOM.Table_ID;
   }
 }

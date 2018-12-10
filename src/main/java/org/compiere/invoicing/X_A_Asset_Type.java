@@ -1,11 +1,11 @@
 package org.compiere.invoicing;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_A_Asset_Type;
 import org.compiere.orm.BasePONameValue;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for A_Asset_Type
@@ -35,12 +35,6 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type, I
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -196,5 +190,10 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type, I
    */
   public String getIsOwned() {
     return (String) get_Value(COLUMNNAME_IsOwned);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_A_Asset_Type.Table_ID;
   }
 }

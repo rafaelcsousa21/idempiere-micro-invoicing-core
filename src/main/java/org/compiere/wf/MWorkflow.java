@@ -1,14 +1,5 @@
 package org.compiere.wf;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.HasName;
 import org.compiere.model.IProcessInfo;
 import org.compiere.model.I_AD_Workflow;
@@ -20,9 +11,20 @@ import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * WorkFlow Model
@@ -81,7 +83,7 @@ public class MWorkflow extends X_AD_Workflow {
       String oldKey = "";
       String newKey = null;
       for (MWorkflow wf : workflows) {
-        newKey = "C" + wf.getADClientID() + "T" + wf.getAD_Table_ID();
+        newKey = "C" + wf.getClientId() + "T" + wf.getAD_Table_ID();
         if (!newKey.equals(oldKey) && list.size() > 0) {
           MWorkflow[] wfs = new MWorkflow[list.size()];
           list.toArray(wfs);
@@ -239,7 +241,7 @@ public class MWorkflow extends X_AD_Workflow {
     for (int i = 0; i < m_nodes.size(); i++) {
       MWFNode node = m_nodes.get(i);
       if (!node.isActive()) continue;
-      if (node.getADClientID() == 0 || node.getADClientID() == AD_Client_ID) list.add(node);
+      if (node.getClientId() == 0 || node.getClientId() == AD_Client_ID) list.add(node);
     }
     MWFNode[] retValue = new MWFNode[list.size()];
     list.toArray(retValue);
@@ -313,7 +315,7 @@ public class MWorkflow extends X_AD_Workflow {
       for (int n = 0; n < m_nodes.size(); n++) {
         MWFNode node = (MWFNode) m_nodes.get(n);
         if (!node.isActive()) continue;
-        if (node.getADClientID() == 0 || node.getADClientID() == AD_Client_ID) {
+        if (node.getClientId() == 0 || node.getClientId() == AD_Client_ID) {
           boolean found = false;
           for (int i = 0; i < list.size(); i++) {
             MWFNode existing = (MWFNode) list.get(i);
@@ -368,13 +370,13 @@ public class MWorkflow extends X_AD_Workflow {
   private void addNodesSF(ArrayList<MWFNode> list, int AD_WF_Node_ID, int AD_Client_ID) {
     ArrayList<MWFNode> tmplist = new ArrayList<MWFNode>();
     MWFNode node = getNode(AD_WF_Node_ID);
-    if (node != null && (node.getADClientID() == 0 || node.getADClientID() == AD_Client_ID)) {
+    if (node != null && (node.getClientId() == 0 || node.getClientId() == AD_Client_ID)) {
       if (!list.contains(node)) list.add(node);
       MWFNodeNext[] nexts = node.getTransitions(AD_Client_ID);
       for (int i = 0; i < nexts.length; i++) {
         MWFNode child = getNode(nexts[i].getAD_WF_Next_ID());
         if (!child.isActive()) continue;
-        if (child.getADClientID() == 0 || child.getADClientID() == AD_Client_ID) {
+        if (child.getClientId() == 0 || child.getClientId() == AD_Client_ID) {
           if (!list.contains(child)) {
             list.add(child);
             tmplist.add(child);

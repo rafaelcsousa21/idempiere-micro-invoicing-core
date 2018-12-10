@@ -1,6 +1,16 @@
 package org.compiere.wf;
 
-import java.awt.Point;
+import org.compiere.model.I_AD_WF_Node;
+import org.compiere.orm.MColumn;
+import org.compiere.orm.MRole;
+import org.compiere.orm.Query;
+import org.compiere.util.Msg;
+import org.idempiere.common.exceptions.AdempiereException;
+import org.idempiere.common.exceptions.DBException;
+import org.idempiere.common.util.CCache;
+import org.idempiere.common.util.Env;
+
+import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,16 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.model.I_AD_WF_Node;
-import org.compiere.orm.MColumn;
-import org.compiere.orm.MRole;
-import org.compiere.orm.Query;
-import org.compiere.util.Msg;
-import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.exceptions.DBException;
-import org.idempiere.common.util.CCache;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Workflow Node Model
@@ -219,7 +222,7 @@ public class MWFNode extends X_AD_WF_Node {
     ArrayList<MWFNodeNext> list = new ArrayList<MWFNodeNext>();
     for (int i = 0; i < m_next.size(); i++) {
       MWFNodeNext next = m_next.get(i);
-      if (next.getADClientID() == 0 || next.getADClientID() == AD_Client_ID) list.add(next);
+      if (next.getClientId() == 0 || next.getClientId() == AD_Client_ID) list.add(next);
     }
     MWFNodeNext[] retValue = new MWFNodeNext[list.size()];
     list.toArray(retValue);

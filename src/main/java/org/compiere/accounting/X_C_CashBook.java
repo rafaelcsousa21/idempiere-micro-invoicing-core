@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_CashBook;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_CashBook
@@ -40,12 +40,6 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -158,5 +152,10 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
       return "Y".equals(oo);
     }
     return false;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_CashBook.Table_ID;
   }
 }

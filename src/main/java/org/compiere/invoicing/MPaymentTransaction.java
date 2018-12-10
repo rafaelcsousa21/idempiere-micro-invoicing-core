@@ -1,11 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MBankAccountProcessor;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MPayment;
@@ -23,6 +17,16 @@ import org.idempiere.common.base.Service;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.orm.POKt.I_ZERO;
+import static software.hsharp.core.orm.POKt.getAllIDs;
 
 /** @author Elaine */
 public class MPaymentTransaction extends X_C_PaymentTransaction
@@ -572,7 +576,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     MPaymentTransaction to = new MPaymentTransaction(from.getCtx(), 0, trxName);
     to.set_TrxName(trxName);
     PO.copyValues(from, to, from. getClientId(), from. getOrgId());
-    to.set_ValueNoCheck(I_C_PaymentTransaction.COLUMNNAME_C_PaymentTransaction_ID, PO.I_ZERO);
+    to.set_ValueNoCheck(I_C_PaymentTransaction.COLUMNNAME_C_PaymentTransaction_ID, I_ZERO);
     //
     to.setA_City(from.getA_City());
     to.setA_Country(from.getA_Country());
@@ -662,8 +666,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     whereClause.append(" AND IsApproved='Y' AND IsVoided='N' AND IsDelayedCapture='N' ");
     whereClause.append("ORDER BY DateTrx DESC");
 
-    return MPaymentTransaction.getAllIDs(
-        I_C_PaymentTransaction.Table_Name, whereClause.toString(), trxName);
+    return getAllIDs(
+        I_C_PaymentTransaction.Table_Name, whereClause.toString());
   }
 
   public static int[] getAuthorizationPaymentTransactionIDs(
@@ -698,8 +702,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     whereClause.append(" AND IsApproved='Y' AND IsVoided='N' AND IsDelayedCapture='N' ");
     whereClause.append("ORDER BY DateTrx DESC");
 
-    return MPaymentTransaction.getAllIDs(
-        I_C_PaymentTransaction.Table_Name, whereClause.toString(), trxName);
+    return getAllIDs(
+        I_C_PaymentTransaction.Table_Name, whereClause.toString());
   }
 
   /**

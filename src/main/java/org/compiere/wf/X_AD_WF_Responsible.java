@@ -1,14 +1,14 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.HasName;
 import org.compiere.model.I_AD_WF_Responsible;
 import org.compiere.orm.BasePOUser;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_WF_Responsible
@@ -38,12 +38,6 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
    */
   protected int getAccessLevel() {
     return I_AD_WF_Responsible.accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, I_AD_WF_Responsible.Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -216,5 +210,10 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
    */
   public String getResponsibleType() {
     return (String) get_Value(I_AD_WF_Responsible.COLUMNNAME_ResponsibleType);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_AD_WF_Responsible.Table_ID;
   }
 }

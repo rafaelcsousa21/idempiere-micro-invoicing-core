@@ -1,13 +1,13 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_AD_WF_NodeNext;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_WF_NodeNext
@@ -43,12 +43,6 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -256,5 +250,10 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
    */
   public String getTransitionCode() {
     return (String) get_Value(COLUMNNAME_TransitionCode);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_AD_WF_NodeNext.Table_ID;
   }
 }

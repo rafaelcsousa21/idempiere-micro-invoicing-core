@@ -1,12 +1,12 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_R_Status;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for R_Status
@@ -36,12 +36,6 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -358,5 +352,10 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
     Integer ii = (Integer) get_Value(COLUMNNAME_Update_Status_ID);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_R_Status.Table_ID;
   }
 }

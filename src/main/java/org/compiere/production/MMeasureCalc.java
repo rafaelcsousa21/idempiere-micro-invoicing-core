@@ -1,18 +1,20 @@
 package org.compiere.production;
 
+import org.compiere.model.I_PA_MeasureCalc;
+import org.compiere.orm.MRole;
+import org.compiere.orm.MTable;
+import org.compiere.query.MQuery;
+import org.idempiere.common.util.CCache;
+import org.idempiere.common.util.Env;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.model.I_PA_MeasureCalc;
-import org.compiere.orm.MRole;
-import org.compiere.orm.MTable;
-import org.compiere.query.MQuery;
-import org.idempiere.common.util.CCache;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Performance Measure Calculation

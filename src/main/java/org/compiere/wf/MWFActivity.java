@@ -135,7 +135,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     setAD_Table_ID(process.getAD_Table_ID());
     setRecord_ID(process.getRecord_ID());
     // modified by Rob Klein
-    setADClientID(process.getADClientID());
+    setADClientID(process.getClientId());
     setAD_Org_ID(process. getOrgId());
     //	Status
     super.setWFState(X_AD_WF_Activity.WFSTATE_NotStarted);
@@ -316,7 +316,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    */
   public int getPO_AD_Client_ID() {
     if (m_po == null) getPO(get_TrxName() != null ? Trx.get(get_TrxName(), false) : null);
-    if (m_po != null) return m_po.getADClientID();
+    if (m_po != null) return m_po.getClientId();
     return 0;
   } //	getPO_AD_Client_ID
 
@@ -588,7 +588,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                   roleAmt,
                   role.getC_Currency_ID(),
                   C_Currency_ID,
-                  getADClientID(),
+                  getClientId(),
                   AD_Org_ID);
           if (roleAmt == null || roleAmt.signum() == 0) continue;
         }
@@ -834,7 +834,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         if (contextLost) {
           Env.getCtx()
               .setProperty(
-                  "#AD_Client_ID", (m_po != null ? Integer.toString(m_po.getADClientID()) : "0"));
+                  "#AD_Client_ID", (m_po != null ? Integer.toString(m_po.getClientId()) : "0"));
           m_state = new StateEngine(X_AD_WF_Activity.WFSTATE_Running);
           setProcessed(true);
           setWFState(StateEngine.STATE_Aborted);
@@ -959,7 +959,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
           new ProcessInfo(
               m_node.getName(true), m_node.getAD_Process_ID(), getAD_Table_ID(), getRecord_ID());
       pi.setAD_User_ID(getAD_User_ID());
-      pi.setADClientID(getADClientID());
+      pi.setADClientID(getClientId());
       MPInstance pInstance = new MPInstance(process, getRecord_ID());
       pInstance.set_TrxName(trx != null ? trx.getTrxName() : null);
       fillParameter(pInstance, trx);
@@ -994,7 +994,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
           new ProcessInfo(
               m_node.getName(true), m_node.getAD_Process_ID(), getAD_Table_ID(), getRecord_ID());
       pi.setAD_User_ID(getAD_User_ID());
-      pi.setADClientID(getADClientID());
+      pi.setADClientID(getClientId());
       pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
       return process.processItWithoutTrxClose(pi, trx);
     }
@@ -1027,7 +1027,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         sendEMail();
         setTextMsg(m_emails.toString());
       } else {
-        MClient client = MClient.get(getCtx(), getADClientID());
+        MClient client = MClient.get(getCtx(), getClientId());
         MMailText mailtext = new MMailText(getCtx(), getNode().getR_MailText_ID(), null);
         mailtext.setPO(m_po, false);
 
@@ -1177,9 +1177,9 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
           // foreign key does not exist
           validValue = false;
         }
-        if (validValue && po.getADClientID() != Env.getADClientID(Env.getCtx())) {
+        if (validValue && po.getClientId() != Env.getADClientID(Env.getCtx())) {
           validValue = false;
-          if (po.getADClientID() == 0) {
+          if (po.getClientId() == 0) {
             String accessLevel = refTable.getTableAccessLevel();
             if (MTable.ACCESSLEVEL_All.equals(accessLevel)
                 || MTable.ACCESSLEVEL_SystemPlusClient.equals(accessLevel)) {
@@ -1341,7 +1341,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
         // send email
         if (to.isNotificationEMail()) {
-          MClient client = MClient.get(getCtx(), doc.getADClientID());
+          MClient client = MClient.get(getCtx(), doc.getClientId());
           client.sendEMail(
               doc.getDoc_User_ID(),
               Msg.getMsg(getCtx(), "NotApproved") + ": " + doc.getDocumentNo(),
@@ -1547,7 +1547,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         text.getMailText(true) + "\n-----\n" + doc.getDocumentInfo() + "\n" + doc.getSummary();
     File pdf = doc.createPDF();
     //
-    MClient client = MClient.get(doc.getCtx(), doc.getADClientID());
+    MClient client = MClient.get(doc.getCtx(), doc.getClientId());
 
     //	Explicit EMail
     sendEMail(client, 0, m_node.getEMail(), subject, message, pdf, text.isHtml());

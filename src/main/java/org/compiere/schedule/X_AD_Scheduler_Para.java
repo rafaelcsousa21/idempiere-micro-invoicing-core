@@ -1,12 +1,12 @@
 package org.compiere.schedule;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_AD_Scheduler_Para;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_Scheduler_Para
@@ -37,12 +37,6 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -174,5 +168,10 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
    */
   public String getParameterToDefault() {
     return (String) get_Value(COLUMNNAME_ParameterToDefault);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_AD_Scheduler_Para.Table_ID;
   }
 }

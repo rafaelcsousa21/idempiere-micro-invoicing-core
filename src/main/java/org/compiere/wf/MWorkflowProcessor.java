@@ -11,6 +11,8 @@ import org.compiere.model.I_AD_WorkflowProcessor;
 import org.compiere.orm.Query;
 import org.compiere.schedule.MSchedule;
 
+import static software.hsharp.core.util.DBKt.executeUpdate;
+
 
 /**
  * Workflow Processor Model

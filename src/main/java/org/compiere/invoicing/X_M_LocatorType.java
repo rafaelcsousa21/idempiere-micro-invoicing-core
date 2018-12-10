@@ -1,11 +1,11 @@
 package org.compiere.invoicing;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_M_LocatorType;
 import org.compiere.orm.BasePOName;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for M_LocatorType
@@ -40,12 +40,6 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -195,5 +189,10 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
    */
   public String getM_LocatorType_UU() {
     return (String) get_Value(COLUMNNAME_M_LocatorType_UU);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_M_LocatorType.Table_ID;
   }
 }
