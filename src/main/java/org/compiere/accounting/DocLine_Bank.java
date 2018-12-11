@@ -1,8 +1,10 @@
 package org.compiere.accounting;
 
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 
-import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 /**
  * Bank Statement Line

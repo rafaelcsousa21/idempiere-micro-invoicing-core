@@ -1,16 +1,19 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.util.Msg;
-
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.PO;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
+
+import static software.hsharp.core.orm.POKt.I_ZERO;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 /**
  * Bank Statement Line Model
@@ -154,8 +157,8 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
     }
     // Un-link Payment if TrxAmt is zero - teo_sarca BF [ 1896880 ]
     if (getTrxAmt().signum() == 0 && getC_Payment_ID() > 0) {
-      setC_Payment_ID(PO.I_ZERO);
-      setC_Invoice_ID(PO.I_ZERO);
+      setC_Payment_ID(I_ZERO);
+      setC_Invoice_ID(I_ZERO);
     }
     //	Set Line No
     if (getLine() == 0) {

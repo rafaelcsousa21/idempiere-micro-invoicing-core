@@ -1050,7 +1050,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       if (log.isLoggable(Level.FINE))
         log.fine("SetVariable:AD_Column_ID=" + m_node.getAD_Column_ID() + " to " + value);
       MColumn column = m_node.getColumn();
-      int dt = column.getAD_Reference_ID();
+      int dt = column.getReferenceId();
       return setVariable(value, dt, null, trx);
     } //	SetVariable
 

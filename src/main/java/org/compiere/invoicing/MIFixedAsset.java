@@ -19,6 +19,9 @@ import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
+
 /**
  * @author Teo Sarca, SC ARHIPAC SRL
  * @version $Id

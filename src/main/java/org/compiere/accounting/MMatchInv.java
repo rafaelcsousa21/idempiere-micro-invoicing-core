@@ -1,10 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -15,6 +10,15 @@ import org.compiere.orm.MDocType;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
+import static software.hsharp.core.util.DBKt.getSQLValueTS;
 
 
 /**
