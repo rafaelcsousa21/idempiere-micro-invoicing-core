@@ -1,20 +1,20 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.bank.MBankAccount;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_CashLine;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MDocType;
+import org.compiere.process.DocAction;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.PO;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 import static software.hsharp.core.orm.POKt.I_ZERO;
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -139,7 +139,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
       saveEx(trxName);
       order.setC_CashLine_ID(getC_CashLine_ID());
       // added AdempiereException by Zuhri
-      if (!order.processIt(MOrder.Companion.getACTION_WaitComplete()))
+      if (!order.processIt(DocAction.Companion.getACTION_WaitComplete()))
         throw new AdempiereException("Failed when processing document - " + order.getProcessMsg());
       // end added
       order.saveEx(trxName);

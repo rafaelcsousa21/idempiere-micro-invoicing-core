@@ -1,12 +1,12 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_PA_ColorSchema;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for PA_ColorSchema
@@ -41,12 +41,6 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -318,5 +312,10 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
    */
   public String getPA_ColorSchema_UU() {
     return (String) get_Value(COLUMNNAME_PA_ColorSchema_UU);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_PA_ColorSchema.Table_ID;
   }
 }

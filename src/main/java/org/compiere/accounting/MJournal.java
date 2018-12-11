@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
+import static software.hsharp.core.util.DBKt.executeUpdate;
+
 /**
  * GL Journal Model
  *

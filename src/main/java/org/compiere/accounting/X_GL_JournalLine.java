@@ -1,9 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_GL_JournalLine;
 import org.compiere.orm.MTable;
@@ -11,7 +7,11 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for GL_JournalLine
@@ -50,12 +50,6 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -940,5 +934,10 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
     Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_GL_JournalLine.Table_ID;
   }
 }

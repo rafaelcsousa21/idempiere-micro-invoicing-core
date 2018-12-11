@@ -1,16 +1,19 @@
 package org.compiere.accounting;
 
-import java.lang.reflect.Constructor;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Level;
 import org.compiere.model.IDocFactory;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
+
+import java.lang.reflect.Constructor;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /** @author hengsin */
 public class DefaultDocumentFactory implements IDocFactory {

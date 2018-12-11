@@ -1,16 +1,16 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_GL_JournalBatch;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for GL_JournalBatch
@@ -46,12 +46,6 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -584,5 +578,10 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TotalDr);
     if (bd == null) return Env.ZERO;
     return bd;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_GL_JournalBatch.Table_ID;
   }
 }

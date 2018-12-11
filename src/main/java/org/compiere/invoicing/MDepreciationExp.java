@@ -17,6 +17,8 @@ import org.compiere.orm.TimeUtil;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
 
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
+
 
 public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
 

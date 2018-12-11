@@ -1,12 +1,12 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_AD_WorkflowProcessorLog;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_WorkflowProcessorLog
@@ -43,10 +43,9 @@ public class X_AD_WorkflowProcessorLog extends PO
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
 
   public String toString() {

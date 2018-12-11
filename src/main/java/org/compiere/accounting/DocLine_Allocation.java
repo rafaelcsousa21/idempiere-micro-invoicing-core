@@ -3,6 +3,8 @@ package org.compiere.accounting;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import static software.hsharp.core.util.DBKt.getSQLValue;
+
 
 /**
  * Allocation Line

@@ -1,12 +1,12 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_AD_WF_ActivityApprover;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_WF_ActivityApprover
@@ -40,12 +40,6 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -146,5 +140,10 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
     Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Activity_ID);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_AD_WF_ActivityApprover.Table_ID;
   }
 }

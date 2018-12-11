@@ -1,11 +1,11 @@
 package org.compiere.schedule;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_AD_Schedule;
 import org.compiere.orm.BasePOName;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for AD_Schedule
@@ -35,12 +35,6 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
    */
   protected int getAccessLevel() {
     return I_AD_Schedule.accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, I_AD_Schedule.Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -317,5 +311,10 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
    */
   public String getWeekDay() {
     return (String) get_Value(I_AD_Schedule.COLUMNNAME_WeekDay);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_AD_Schedule.Table_ID;
   }
 }

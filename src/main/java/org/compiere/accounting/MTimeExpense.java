@@ -23,6 +23,8 @@ import org.compiere.validation.ModelValidator;
 
 import org.idempiere.common.util.Env;
 
+import static software.hsharp.core.util.DBKt.executeUpdate;
+
 public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
   /** */
   private static final long serialVersionUID = 1567303438502090279L;

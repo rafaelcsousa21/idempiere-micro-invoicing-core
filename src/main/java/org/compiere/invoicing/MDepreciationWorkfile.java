@@ -19,6 +19,8 @@ import org.idempiere.common.util.CLogger;
 
 import org.idempiere.common.util.Env;
 
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
+
 /**
  * Depreciation Workfile Model
  *

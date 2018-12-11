@@ -1,12 +1,5 @@
 package org.compiere.accounting;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.crm.MUser;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
@@ -24,6 +17,14 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Requisition Model
@@ -333,7 +334,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
 
     //
     setProcessed(true);
-    setDocAction(Companion.getACTION_Close());
+    setDocAction(DocAction.Companion.getACTION_Close());
     return new CompleteActionResult(DocAction.Companion.getSTATUS_Completed());
   } //	completeIt
 

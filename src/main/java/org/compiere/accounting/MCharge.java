@@ -3,6 +3,8 @@ package org.compiere.accounting;
 import java.math.BigDecimal;
 import java.util.Properties;
 
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
+
 
 public class MCharge extends org.compiere.order.MCharge {
 

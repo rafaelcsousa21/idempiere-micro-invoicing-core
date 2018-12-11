@@ -1,12 +1,12 @@
 package org.compiere.invoicing;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_DocTypeCounter
@@ -36,11 +36,6 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    return POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
   }
 
   public String toString() {
@@ -274,5 +269,10 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
       return "Y".equals(oo);
     }
     return false;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_C_DocTypeCounter.Table_ID;
   }
 }

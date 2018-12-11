@@ -1,11 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_Requisition;
@@ -15,8 +9,17 @@ import org.compiere.orm.Query;
 import org.compiere.product.IProductPricing;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 /**
  * Requisition Line Model

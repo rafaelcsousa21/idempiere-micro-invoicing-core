@@ -1,11 +1,11 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_M_QualityTest;
 import org.compiere.orm.BasePOName;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for M_QualityTest
@@ -35,12 +35,6 @@ public class X_M_QualityTest extends BasePOName implements I_M_QualityTest, I_Pe
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -121,5 +115,10 @@ public class X_M_QualityTest extends BasePOName implements I_M_QualityTest, I_Pe
    */
   public String getM_QualityTest_UU() {
     return (String) get_Value(COLUMNNAME_M_QualityTest_UU);
+  }
+
+  @Override
+  public int getTableId() {
+    return I_M_QualityTest.Table_ID;
   }
 }
