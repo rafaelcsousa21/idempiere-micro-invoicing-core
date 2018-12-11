@@ -1,15 +1,15 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for M_CostDetail
@@ -46,10 +46,10 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
 
   public String toString() {

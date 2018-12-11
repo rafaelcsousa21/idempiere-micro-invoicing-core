@@ -1193,7 +1193,7 @@ public class DocumentEngine implements DocAction {
     ResultSet rs = null;
     try {
       pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, DocAction.Companion.getAD_REFERENCE_ID());
+      pstmt.setInt(1, DocAction.Companion.getReferenceId());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         String value = rs.getString(1);

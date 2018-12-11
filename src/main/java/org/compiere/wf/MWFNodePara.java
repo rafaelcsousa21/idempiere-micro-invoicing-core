@@ -92,7 +92,7 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
    * @return display type
    */
   public int getDisplayType() {
-    return getProcessPara().getAD_Reference_ID();
+    return getProcessPara().getReferenceId();
   } //	getDisplayType
 
   /**

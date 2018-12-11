@@ -1,10 +1,5 @@
 package org.compiere.wf;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.MUser;
 import org.compiere.model.I_R_MailText;
@@ -14,9 +9,14 @@ import org.compiere.orm.PO;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Properties;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -211,12 +211,12 @@ public class MMailText extends X_R_MailText {
     Object value = null;
     if (col != null && col.isSecure()) {
       value = "********";
-    } else if (col.getAD_Reference_ID() == DisplayType.Date
-        || col.getAD_Reference_ID() == DisplayType.DateTime
-        || col.getAD_Reference_ID() == DisplayType.Time) {
-      SimpleDateFormat sdf = DisplayType.getDateFormat(col.getAD_Reference_ID());
+    } else if (col.getReferenceId() == DisplayType.Date
+        || col.getReferenceId() == DisplayType.DateTime
+        || col.getReferenceId() == DisplayType.Time) {
+      SimpleDateFormat sdf = DisplayType.getDateFormat(col.getReferenceId());
       value = sdf.format(po.get_Value(index));
-    } else if (col.getAD_Reference_ID() == DisplayType.YesNo) {
+    } else if (col.getReferenceId() == DisplayType.YesNo) {
       if (po.get_ValueAsBoolean(variable)) value = Msg.getMsg(Env.getCtx(), "Yes");
       else value = Msg.getMsg(Env.getCtx(), "No");
     } else {

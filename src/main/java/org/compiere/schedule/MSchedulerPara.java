@@ -56,7 +56,7 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
    */
   public int getDisplayType() {
     if (m_parameter == null) m_parameter = MProcessPara.get(getCtx(), getAD_Process_Para_ID());
-    return m_parameter.getAD_Reference_ID();
+    return m_parameter.getReferenceId();
   } //	getDisplayType
 
   /**

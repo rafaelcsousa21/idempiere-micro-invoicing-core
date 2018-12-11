@@ -1,14 +1,5 @@
 package org.compiere.invoicing;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MPeriod;
@@ -23,9 +14,20 @@ import org.compiere.process.DocAction;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
-
 import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.TrxRunnable;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 /**
  * Depreciation Entry

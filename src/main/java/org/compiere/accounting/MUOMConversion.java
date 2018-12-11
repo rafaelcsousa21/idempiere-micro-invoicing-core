@@ -1,17 +1,5 @@
 package org.compiere.accounting;
 
-import java.awt.Point;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_C_UOM_Conversion;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MSysConfig;
@@ -21,8 +9,20 @@ import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
+
+import java.awt.*;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Unit of Measure Conversion Model

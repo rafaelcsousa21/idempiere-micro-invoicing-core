@@ -1,14 +1,14 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_OrderLandedCost
@@ -45,11 +45,11 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
+
 
   public String toString() {
     StringBuffer sb = new StringBuffer("X_C_OrderLandedCost[").append(getId()).append("]");

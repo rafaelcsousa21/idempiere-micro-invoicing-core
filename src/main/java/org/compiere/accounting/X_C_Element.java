@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_Element;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_Element
@@ -38,10 +38,10 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
 
   public String toString() {
