@@ -1,13 +1,17 @@
 package org.compiere.invoicing;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.MDocType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**

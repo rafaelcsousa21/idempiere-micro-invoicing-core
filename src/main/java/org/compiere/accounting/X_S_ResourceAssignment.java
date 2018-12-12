@@ -1,15 +1,15 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_S_ResourceAssignment;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 /**
  * Generated Model for S_ResourceAssignment
@@ -40,12 +40,6 @@ public class X_S_ResourceAssignment extends BasePOName
    */
   protected int getAccessLevel() {
     return accessLevel.intValue();
-  }
-
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
   }
 
   public String toString() {
@@ -216,5 +210,10 @@ public class X_S_ResourceAssignment extends BasePOName
     Integer ii = (Integer) get_Value(COLUMNNAME_S_Resource_ID);
     if (ii == null) return 0;
     return ii;
+  }
+
+  @Override
+  public int getTableId() {
+    return I_S_ResourceAssignment.Table_ID;
   }
 }

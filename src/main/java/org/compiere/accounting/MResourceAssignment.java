@@ -1,9 +1,10 @@
 package org.compiere.accounting;
 
+import org.idempiere.common.util.Env;
+
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
-import org.idempiere.common.util.Env;
 
 /**
  * Resource Assignment Model
@@ -23,7 +24,7 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
    */
   public MResourceAssignment(Properties ctx, int S_ResourceAssignment_ID, String trxName) {
     super(ctx, S_ResourceAssignment_ID, trxName);
-    p_info.setUpdateable(true); // 	default table is not updateable
+    getP_info().setUpdateable(true); // 	default table is not updateable
     //	Default values
     if (S_ResourceAssignment_ID == 0) {
       setAssignDateFrom(new Timestamp(System.currentTimeMillis()));
