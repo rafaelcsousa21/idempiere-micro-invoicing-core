@@ -27,6 +27,7 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 
+import static software.hsharp.core.orm.MBaseColumnKt.getColumnId;
 import static software.hsharp.core.util.DBKt.*;
 
 /**
@@ -1247,7 +1248,7 @@ public class DocumentEngine implements DocAction {
       boolean force,
       String trxName) {
     // Ensure the table has Posted column / i.e. GL_JournalBatch can be completed but not posted
-    if (MColumn.getColumn_ID(MTable.getTableName(ctx, AD_Table_ID), "Posted") <= 0) return null;
+    if (getColumnId(MTable.getTableName(ctx, AD_Table_ID), "Posted") <= 0) return null;
 
     String error = null;
     if (log.isLoggable(Level.INFO)) log.info("Table=" + AD_Table_ID + ", Record=" + Record_ID);

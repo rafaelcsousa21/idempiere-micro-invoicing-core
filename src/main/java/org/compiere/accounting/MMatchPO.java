@@ -1,13 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Savepoint;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.crm.MBPGroup;
 import org.compiere.invoicing.MInvoiceLine;
@@ -18,11 +10,20 @@ import org.compiere.orm.MDocType;
 import org.compiere.orm.MSysConfig;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.ValueNamePair;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Savepoint;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static org.compiere.crm.MBaseBPGroupKt.getOfBPartner;
 import static software.hsharp.core.util.DBKt.*;
 
 /**
@@ -752,7 +753,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         difference = difference.multiply(getQty());
         setPriceMatchDifference(difference);
         //	Approval
-        MBPGroup group = MBPGroup.getOfBPartner(getCtx(), getOrderLine().getC_BPartner_ID());
+        MBPGroup group = getOfBPartner(getCtx(), getOrderLine().getC_BPartner_ID());
         BigDecimal mt = group.getPriceMatchTolerance();
         if (mt != null && mt.signum() != 0) {
           BigDecimal poAmt = poPrice.multiply(getQty());
