@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_AD_Client;
+import org.compiere.model.I_AD_User;
 import org.compiere.model.Server;
 import org.compiere.orm.MSysConfig;
 import org.compiere.orm.MTree_Base;
@@ -12,6 +13,7 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -551,4 +553,20 @@ public class MClient extends org.compiere.orm.MClient {
     if (m_info != null) return getInfo().getC_Currency_ID();
     return 0;
   } //	getC_Currency_ID
+
+  public boolean sendEMail(
+          I_AD_User from,
+          I_AD_User to,
+          String subject,
+          String message,
+          File attachment,
+          boolean isHtml) {
+    return true;
+  }
+
+  public boolean sendEMail(
+          I_AD_User from, I_AD_User to, String subject, String message, File attachment) {
+    return true;
+  }
+
 } //	MClient

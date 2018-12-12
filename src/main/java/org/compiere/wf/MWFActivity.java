@@ -1,39 +1,27 @@
 package org.compiere.wf;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Savepoint;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
+import org.compiere.accounting.MClient;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.MUser;
 import org.compiere.model.I_AD_WF_Activity;
 import org.compiere.model.I_C_BPartner;
 import org.compiere.orm.*;
-import org.compiere.orm.MRole;
 import org.compiere.process.*;
-import org.compiere.process.DocAction;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.compiere.util.SystemIDs;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.*;
 
-import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trace;
-import org.idempiere.common.util.Trx;
-import org.idempiere.common.util.Util;
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.logging.Level;
 
+import static org.compiere.crm.MBaseUserKt.getWithRole;
 import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
@@ -881,7 +869,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     setPriority(m_node.getPriority());
     String action = m_node.getAction();
 
-    /** **** Sleep (Start/End) ***** */
+    /* **** Sleep (Start/End) ***** */
     if (MWFNode.ACTION_WaitSleep.equals(action)) {
       if (log.isLoggable(Level.FINE)) log.fine("Sleep:WaitTime=" + m_node.getWaitTime());
       if (m_node.getWaitTime() == 0) // IDEMPIERE-73 Carlos Ruiz - globalqss
@@ -892,7 +880,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       return false; //	not done
     }
 
-    /** **** Document Action ***** */
+    /* **** Document Action ***** */
     else if (MWFNode.ACTION_DocumentAction.equals(action)) {
       if (log.isLoggable(Level.FINE)) log.fine("DocumentAction=" + m_node.getDocAction());
       getPO(trx);
@@ -1581,7 +1569,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       else if (resp.isRole()) {
         MRole role = resp.getRole();
         if (role != null) {
-          MUser[] users = MUser.getWithRole(role);
+          MUser[] users = getWithRole(role);
           for (int i = 0; i < users.length; i++)
             sendEMail(client, users[i].getAD_User_ID(), null, subject, message, pdf, text.isHtml());
         }
