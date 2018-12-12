@@ -1,5 +1,6 @@
 package org.compiere.accounting
 
+import mu.KotlinLogging
 import org.compiere.model.IDoc
 import org.compiere.model.IDocFactory
 import org.compiere.orm.MTable

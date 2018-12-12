@@ -1,15 +1,5 @@
 package org.compiere.docengine;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
 import org.compiere.accounting.Doc;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.model.*;
@@ -23,9 +13,19 @@ import org.eevolution.model.I_PP_Cost_Collector;
 import org.eevolution.model.I_PP_Order;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.*;
 
@@ -245,8 +245,7 @@ public class DocumentEngine implements DocAction {
     else if (processAction.equals(DocAction.Companion.getACTION_None())
         || docAction.equals(DocAction.Companion.getACTION_None())) {
       if (m_document != null)
-        m_document
-            .get_Logger()
+        m_document.get_Logger()
             .info("**** No Action (Prc=" + processAction + "/Doc=" + docAction + ") " + m_document);
       return true;
     } else {
@@ -259,8 +258,7 @@ public class DocumentEngine implements DocAction {
               + docAction);
     }
     if (m_document != null)
-      m_document
-          .get_Logger()
+      m_document.get_Logger()
           .info(
               "**** Action="
                   + m_action
