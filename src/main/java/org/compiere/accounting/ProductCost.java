@@ -323,7 +323,7 @@ public class ProductCost {
   		log.log(Level.SEVERE, sql.toString(), e);
   	}
   	finally {
-  		DB.close(rs, pstmt);
+  		close(rs, pstmt);
   		rs = null; pstmt = null;
   	}
   	//  nothing found
@@ -379,7 +379,7 @@ public class ProductCost {
   		log.log(Level.SEVERE, sql, e);
   	}
   	finally {
-  		DB.close(rs, pstmt);
+  		close(rs, pstmt);
   		rs = null; pstmt = null;
   	}
   	//  nothing found

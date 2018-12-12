@@ -272,7 +272,7 @@ class InvoiceTest: BaseComponentTest() {
                         row.sqlDate("due_previous_5business_days")
                     )
                 }.asList
-            val list = DB.current.run(loadQuery)
+            val list = current.run(loadQuery)
             assertEquals(1, list.count())
             val details = list.first()
             // TODO: fix accounting and then - assertFalse(details.reverseCharge)
@@ -371,7 +371,7 @@ class InvoiceTest: BaseComponentTest() {
                     }
                     .asList
 
-                val list = DB.current.run(loadQuery)
+                val list = current.run(loadQuery)
                 kotlin.test.assertEquals(11, list.count())
                 val standards = list.filter { it.productName.startsWith(MAT) }
                 val bom1s = list.filter { it.productName.startsWith(BOM) }

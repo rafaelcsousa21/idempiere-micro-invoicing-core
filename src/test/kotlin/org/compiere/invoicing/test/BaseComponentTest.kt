@@ -17,6 +17,7 @@ import org.compiere.bank.MBank
 import org.compiere.bank.MBankAccount
 import org.compiere.model.I_C_BankAccount
 import org.compiere.invoicing.MPaymentTerm
+import org.compiere.invoicing.test.SetupClientTests.Companion.createClient
 import org.compiere.model.I_C_PaymentTerm
 import org.compiere.order.MPaySchedule
 import org.compiere.orm.DefaultModelFactory
@@ -60,7 +61,7 @@ abstract class BaseComponentTest : BaseTest() {
         val query = Query(this.ctx, "AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID", null)
         val result = query.list<MClient>()
         if (result.isEmpty()) {
-            SetupClientTests.createClient(ctx, { loginClient(0) })
+            createClient(ctx) { loginClient(0) }
         }
 
         loginClient(NEW_AD_CLIENT_ID)
