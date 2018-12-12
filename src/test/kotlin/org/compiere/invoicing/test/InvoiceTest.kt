@@ -1,8 +1,6 @@
 package org.compiere.invoicing.test
 
-import company.bigger.test.support.BaseComponentTest
 import company.bigger.test.support.asResource
-import company.bigger.test.support.executeSql
 import company.bigger.test.support.randomString
 import org.compiere.accounting.MOrder
 import org.compiere.accounting.MOrderLine
@@ -40,9 +38,10 @@ import org.compiere.product.MDiscountSchema
 import org.compiere.production.MLocator
 import org.compiere.production.MProduction
 import org.idempiere.common.util.Env
-import org.idempiere.process.ProductionCreate
 import org.junit.Before
 import org.junit.Test
+import software.hsharp.core.util.DB
+import software.hsharp.core.util.queryOf
 import java.math.BigDecimal
 import java.sql.Date
 import java.sql.Timestamp
@@ -67,7 +66,7 @@ data class MaterialMovementImportantTestAttributes(
     val amountOut: BigDecimal
 )
 
-class InvoiceTest {
+class InvoiceTest: BaseComponentTest() {
     companion object {
         const val QTY = 1
         private var index = 0
@@ -129,7 +128,7 @@ class InvoiceTest {
         val vendor = createBPartner()
 
         val vendorShipment = MInOut(ctx, 0, null)
-        vendorShipment.setAD_Org_ID(org.aD_Org_ID)
+        vendorShipment.setAD_Org_ID(org.orgId)
         vendorShipment.setIsSOTrx(false)
         vendorShipment.movementType = X_M_InOut.MOVEMENTTYPE_VendorReceipts
         vendorShipment.setC_DocType_ID()
@@ -140,7 +139,7 @@ class InvoiceTest {
         val receipt = getById<MInOut>(vendorShipment.id, I_M_InOut.Table_Name)
         assertNotNull(receipt)
         val receiptLine = MInOutLine(receipt)
-        receiptLine.aD_Org_ID = org.aD_Org_ID
+        receiptLine.setAD_Org_ID(org.orgId)
         receiptLine.product = product
         receiptLine.movementQty = 1000000.toBigDecimal()
         receiptLine.m_Locator_ID = MLocator(ctx, MLocator(ctx, 1000000, null).id, null).id
@@ -218,7 +217,7 @@ class InvoiceTest {
         createInvoiceFromOrder(1000030, testProduct.id, BigDecimal("1.10")) {
             val payment = MPayment(ctx, 0, null)
             payment.c_BPartner_ID = it.c_BPartner_ID
-            payment.setAD_Org_ID(org.aD_Org_ID)
+            payment.setAD_Org_ID(org.orgId)
             payment.c_BankAccount_ID = bankAccount.id
             payment.setC_Currency_ID(EUR) // EUR
             payment.payAmt = 1.10.toBigDecimal()
@@ -264,13 +263,16 @@ class InvoiceTest {
 
         "/sql/invoice_details.sql".asResource {
             val sql = it.replace("\$P{RECORD_ID}", invoice1.id.toString())
-            val list = sql.executeSql {
-                InvoiceImportantTestAttributes(
-                        it.getBigDecimal("grandtotal"), it.getBigDecimal("grandtotalvat"),
-                        it.getBoolean("reverse_charge"), it.getDate("due_previous_business_day"),
-                        it.getDate("due_previous_5business_days")
-                )
-            }
+            val loadQuery =
+                queryOf(sql,listOf())
+                .map { row ->
+                    InvoiceImportantTestAttributes(
+                        row.bigDecimal("grandtotal"), row.bigDecimal("grandtotalvat"),
+                        row.boolean("reverse_charge"), row.sqlDate("due_previous_business_day"),
+                        row.sqlDate("due_previous_5business_days")
+                    )
+                }.asList
+            val list = DB.current.run(loadQuery)
             assertEquals(1, list.count())
             val details = list.first()
             // TODO: fix accounting and then - assertFalse(details.reverseCharge)
@@ -359,12 +361,17 @@ class InvoiceTest {
     fun `should have specific no of material movements after all runs`() {
         if (index == 3) {
             "/sql/recent_material_movements.sql".asResource {
-                val list = it.executeSql {
-                    MaterialMovementImportantTestAttributes(
-                            it.getString("pro_name"), it.getDate("move_date"),
-                            it.getBigDecimal("amout_in"), it.getBigDecimal("amout_out")
-                    )
-                }
+                val loadQuery =
+                    queryOf(it, listOf())
+                    .map { row ->
+                        MaterialMovementImportantTestAttributes(
+                            row.string("pro_name"), row.sqlDate("move_date"),
+                            row.bigDecimal("amout_in"), row.bigDecimal("amout_out")
+                        )
+                    }
+                    .asList
+
+                val list = DB.current.run(loadQuery)
                 kotlin.test.assertEquals(11, list.count())
                 val standards = list.filter { it.productName.startsWith(MAT) }
                 val bom1s = list.filter { it.productName.startsWith(BOM) }
