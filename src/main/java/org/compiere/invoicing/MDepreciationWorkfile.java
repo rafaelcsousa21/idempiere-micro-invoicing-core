@@ -795,4 +795,5 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     if (index < 0) return false;
     return is_ValueChanged(index);
   }
+
 } //	MDepreciationWorkfile

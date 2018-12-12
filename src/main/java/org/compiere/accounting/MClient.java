@@ -1,14 +1,5 @@
 package org.compiere.accounting;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_AD_Client;
 import org.compiere.model.Server;
 import org.compiere.orm.MSysConfig;
@@ -18,9 +9,14 @@ import org.compiere.orm.X_AD_Tree;
 import org.idempiere.common.base.Service;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.*;
 
@@ -126,7 +122,7 @@ public class MClient extends org.compiere.orm.MClient {
   public Language getLanguage() {
     if (m_language == null) {
       m_language = Language.getLanguage(getADLanguage());
-      Env.verifyLanguage(getCtx(), m_language);
+      // DAP Env.verifyLanguage(getCtx(), m_language);
     }
     return m_language;
   } //	getLanguage

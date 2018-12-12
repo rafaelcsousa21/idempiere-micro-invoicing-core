@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_Activity;
 import org.compiere.orm.BasePONameValue;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Generated Model for C_Activity
@@ -41,11 +41,11 @@ public class X_C_Activity extends BasePONameValue implements I_C_Activity, I_Per
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
+
 
   public String toString() {
     StringBuffer sb = new StringBuffer("X_C_Activity[").append(getId()).append("]");

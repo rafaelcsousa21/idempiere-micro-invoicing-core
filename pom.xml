@@ -54,6 +54,12 @@
         </dependency>
         <dependency>
             <groupId>org.idempiere</groupId>
+            <artifactId>idempiere-micro-base-interfaces</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.idempiere</groupId>
             <artifactId>idempiere-micro-model-interfaces</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
