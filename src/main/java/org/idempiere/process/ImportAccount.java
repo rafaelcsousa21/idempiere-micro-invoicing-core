@@ -27,6 +27,8 @@ import org.compiere.accounting.X_I_ElementValue;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MColumn;
 import org.compiere.process.SvrProcess;
+
+import static software.hsharp.core.orm.MBaseColumnKt.getColumnId;
 import static software.hsharp.core.util.DBKt.*;
 
 /**
@@ -717,7 +719,7 @@ public class ImportAccount extends SvrProcess {
       } //	for all default accounts
       else {
         // check if column is active before logging on SEVERE level
-        int columnID = MColumn.getColumn_ID(TableName, ColumnName);
+        int columnID = getColumnId(TableName, ColumnName);
         if (new MColumn(getCtx(), columnID, get_TrxName()).isActive())
           log.log(Level.SEVERE, "Account not found " + sql);
         else
