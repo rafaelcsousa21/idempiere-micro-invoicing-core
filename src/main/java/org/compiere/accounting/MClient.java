@@ -569,4 +569,11 @@ public class MClient extends org.compiere.orm.MClient {
     return true;
   }
 
+  public void sendEMailAttachments(
+          I_AD_User from,
+          I_AD_User user,
+          String schedulerName,
+          String mailContent,
+          List<File> fileList) {}
+
 } //	MClient

@@ -1,5 +1,22 @@
 package org.compiere.server;
 
+import org.compiere.accounting.MClient;
+import org.compiere.crm.MUser;
+import org.compiere.orm.MAttachment;
+import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MRole;
+import org.compiere.orm.TimeUtil;
+import org.compiere.process.*;
+import org.compiere.schedule.MScheduler;
+import org.compiere.schedule.MSchedulerLog;
+import org.compiere.schedule.MSchedulerPara;
+import org.compiere.util.DisplayType;
+import org.compiere.wf.MMailText;
+import org.compiere.wf.MNote;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Trx;
+import org.idempiere.common.util.Util;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -12,19 +29,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
-import org.compiere.crm.MUser;
-import org.compiere.orm.*;
-import org.compiere.process.*;
-import org.compiere.schedule.MScheduler;
-import org.compiere.schedule.MSchedulerLog;
-import org.compiere.schedule.MSchedulerPara;
-import org.compiere.util.DisplayType;
-import org.compiere.wf.MMailText;
-import org.compiere.wf.MNote;
-import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
-import org.idempiere.common.util.Util;
-import static software.hsharp.core.util.DBKt.*;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Scheduler
