@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import org.compiere.accounting.MMatchInv;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_M_InOutLine;
@@ -1261,5 +1262,22 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
 
   public void setClientOrg(IPO po) {
     super.setClientOrg(po);
+  }
+
+  /** @return matched qty */
+  public BigDecimal getMatchedQty() {
+    String sql =
+            "SELECT COALESCE(SUM("
+                    + MMatchInv.COLUMNNAME_Qty
+                    + "),0)"
+                    + " FROM "
+                    + MMatchInv.Table_Name
+                    + " WHERE "
+                    + MMatchInv.COLUMNNAME_C_InvoiceLine_ID
+                    + "=?"
+                    + " AND "
+                    + MMatchInv.COLUMNNAME_Processed
+                    + "=?";
+    return getSQLValueBDEx(get_TrxName(), sql, new Object[] {getC_InvoiceLine_ID(), true} );
   }
 } //	MInvoiceLine
