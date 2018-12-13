@@ -1168,7 +1168,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
           // foreign key does not exist
           validValue = false;
         }
-        if (validValue && po.getClientId() != Env.getADClientID(Env.getCtx())) {
+        if (validValue && po.getClientId() != Env.getClientId(Env.getCtx())) {
           validValue = false;
           if (po.getClientId() == 0) {
             String accessLevel = refTable.getTableAccessLevel();

@@ -1,18 +1,7 @@
 package org.idempiere.process;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import org.adempiere.exceptions.NoVendorForProductException;
 import org.apache.commons.collections.keyvalue.MultiKey;
-import org.compiere.accounting.MOrder;
-import org.compiere.accounting.MOrderLine;
-import org.compiere.accounting.MProduct;
-import org.compiere.accounting.MProductPO;
-import org.compiere.accounting.MRequisition;
-import org.compiere.accounting.MRequisitionLine;
+import org.compiere.accounting.*;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_BPartner;
@@ -22,6 +11,12 @@ import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Create PO from Requisition

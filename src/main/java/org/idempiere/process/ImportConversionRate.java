@@ -14,15 +14,17 @@
  */
 package org.idempiere.process;
 
+import org.compiere.conversionrate.MConversionRate;
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.process.SvrProcess;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
-import org.compiere.conversionrate.MConversionRate;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import Currency Conversion Rates

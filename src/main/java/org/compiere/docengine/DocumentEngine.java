@@ -841,7 +841,7 @@ public class DocumentEngine implements DocAction {
   public int getTableId() {
     if (m_document != null) return m_document.getTableId();
     throw new IllegalStateException(EXCEPTION_MSG);
-  } //	get_Table_ID
+  } //	getTableId
 
   /**
    * Get Logger

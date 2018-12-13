@@ -20,7 +20,7 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MTable;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Delete Data in Import Table
@@ -69,7 +69,7 @@ public class ImportDelete extends SvrProcess {
         new StringBuilder("DELETE FROM ")
             .append(tableName)
             .append(" WHERE AD_Client_ID=")
-            .append(getADClientID());
+            .append(getClientId());
     int no = executeUpdate(sql.toString(), get_TrxName());
     StringBuilder msg =
         new StringBuilder()

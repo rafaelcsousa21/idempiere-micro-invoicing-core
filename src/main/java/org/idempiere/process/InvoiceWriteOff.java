@@ -14,11 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MAllocationHdr;
 import org.compiere.accounting.MAllocationLine;
 import org.compiere.accounting.MPayment;
@@ -27,8 +22,15 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Write-off Open Invoices

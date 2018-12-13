@@ -98,7 +98,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
       // Default Tax Category:
       String sql =
           "SELECT C_TaxCategory_ID FROM C_TaxCategory WHERE AD_Client_ID IN (0,?) ORDER BY IsDefault DESC, AD_Client_ID DESC, C_TaxCategory_ID";
-      int C_TaxCategory_ID = getSQLValueEx(null, sql, Env.getADClientID(ctx));
+      int C_TaxCategory_ID = getSQLValueEx(null, sql, Env.getClientId(ctx));
       prod.setC_TaxCategory_ID(C_TaxCategory_ID);
       //
       prod.saveEx(trxName);

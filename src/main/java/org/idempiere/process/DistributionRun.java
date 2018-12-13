@@ -14,17 +14,18 @@
  */
 package org.idempiere.process;
 
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.orm.MDocType;
+import org.compiere.process.SvrProcess;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.orm.MDocType;
-import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
 
+import static software.hsharp.core.util.DBKt.*;
 /**
  * Create Distribution
  *

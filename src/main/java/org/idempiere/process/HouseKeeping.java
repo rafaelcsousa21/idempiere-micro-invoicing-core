@@ -14,6 +14,13 @@
  */
 package org.idempiere.process;
 
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.orm.GenericPO;
+import org.compiere.orm.MTable;
+import org.compiere.process.SvrProcess;
+import org.compiere.util.Msg;
+import org.idempiere.common.util.AdempiereSystemError;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.sql.PreparedStatement;
@@ -22,13 +29,8 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.orm.GenericPO;
-import org.compiere.orm.MTable;
-import org.compiere.process.SvrProcess;
-import org.compiere.util.Msg;
-import org.idempiere.common.util.AdempiereSystemError;
-import org.idempiere.common.util.DB;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * House Keeping

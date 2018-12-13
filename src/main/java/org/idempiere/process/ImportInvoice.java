@@ -14,12 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.MBPartnerLocation;
 import org.compiere.crm.MLocation;
@@ -30,8 +24,16 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.I_C_Location;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import Invoice from I_Invoice
@@ -617,7 +619,7 @@ public class ImportInvoice extends SvrProcess {
         MBPartner bp = MBPartner.get(getCtx(), imp.getBPartnerValue(), get_TrxName());
         if (bp == null) {
           bp = new MBPartner(getCtx(), -1, get_TrxName());
-          bp.setClientOrg(imp.getADClientID(), imp.getOrgId());
+          bp.setClientOrg(imp.getClientId(), imp.getOrgId());
           bp.setValue(imp.getBPartnerValue());
           bp.setName(imp.getName());
           if (!bp.save()) continue;
@@ -748,7 +750,7 @@ public class ImportInvoice extends SvrProcess {
           if (oldDocumentNo == null) oldDocumentNo = "";
           //
           invoice = new MInvoice(getCtx(), 0, null);
-          invoice.setClientOrg(imp.getADClientID(), imp.getOrgId());
+          invoice.setClientOrg(imp.getClientId(), imp.getOrgId());
           invoice.setC_DocTypeTarget_ID(imp.getC_DocType_ID());
           invoice.setIsSOTrx(imp.isSOTrx());
           if (imp.getDocumentNo() != null) invoice.setDocumentNo(imp.getDocumentNo());

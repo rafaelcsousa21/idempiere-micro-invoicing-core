@@ -14,13 +14,17 @@
  */
 package org.idempiere.process;
 
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MClient;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.wf.MMailText;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.AdempiereUserError;
+
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.TO_STRING;
 
 /**
  * Print Invoices on Paper or send PDFs
@@ -184,7 +188,7 @@ public class InvoicePrint extends SvrProcess {
     try
     {
     	pstmt = prepareStatement(sql.toString(), get_TrxName());
-    	pstmt.setInt(1, Env.getADClientID(Env.getCtx()));
+    	pstmt.setInt(1, Env.getClientId(Env.getCtx()));
     	pstmt.setInt(2, Env.getOrgId(Env.getCtx()));
     	rs = pstmt.executeQuery();
 

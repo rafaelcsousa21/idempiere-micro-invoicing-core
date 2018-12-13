@@ -115,7 +115,7 @@ public class MPeriod extends X_C_Period {
   public static MPeriod findByCalendar(
       Properties ctx, Timestamp DateAcct, int C_Calendar_ID, String trxName) {
 
-    int AD_Client_ID = Env.getADClientID(ctx);
+    int AD_Client_ID = Env.getClientId(ctx);
     //	Search in Cache first
     Iterator<MPeriod> it = s_cache.values().iterator();
     while (it.hasNext()) {

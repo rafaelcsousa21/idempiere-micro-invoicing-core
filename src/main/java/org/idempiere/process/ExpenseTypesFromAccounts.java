@@ -91,7 +91,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
     MPriceList priceList = new MPriceList(getCtx(), m_priceListId, get_TrxName());
     // Get current client id from price list since I for some reason can't read it from
     // context.
-    m_clientId = priceList.getADClientID();
+    m_clientId = priceList.getClientId();
 
     // Get active price list version
     MPriceListVersion pv = priceList.getPriceListVersion(null);

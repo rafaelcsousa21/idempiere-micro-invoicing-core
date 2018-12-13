@@ -116,7 +116,7 @@ public final class MConversionRateUtil {
       Timestamp date,
       String trxName) {
     if (convertionTypeID == 0)
-      convertionTypeID = MConversionType.getDefault(Env.getADClientID(ctx));
+      convertionTypeID = MConversionType.getDefault(Env.getClientId(ctx));
     String retValue =
         Msg.getMsg(
             ctx,

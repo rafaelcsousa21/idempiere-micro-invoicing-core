@@ -1,13 +1,13 @@
 package org.idempiere.process;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Properties;
 import org.compiere.model.I_AD_HouseKeeping;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Properties;
 
 public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeeping, I_Persistent {
 
@@ -37,11 +37,11 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
+
 
   public String toString() {
     StringBuffer sb = new StringBuffer("X_AD_HouseKeeping[").append(getId()).append("]");

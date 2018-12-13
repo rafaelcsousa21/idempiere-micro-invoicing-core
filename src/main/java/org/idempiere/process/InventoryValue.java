@@ -14,14 +14,16 @@
  */
 package org.idempiere.process;
 
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
+
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 /**
  * Inventory Valuation. Process to fill T_InventoryValue
@@ -84,7 +86,7 @@ public class InventoryValue extends SvrProcess {
               + p_M_CostElement_ID);
 
     MWarehouse wh = MWarehouse.get(getCtx(), p_M_Warehouse_ID);
-    MClient c = MClient.get(getCtx(), wh.getADClientID());
+    MClient c = MClient.get(getCtx(), wh.getClientId());
     MAcctSchema as = c.getAcctSchema();
 
     //  Delete (just to be sure)

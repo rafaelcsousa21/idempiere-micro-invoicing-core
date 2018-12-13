@@ -72,7 +72,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     }
 
     if (MSysConfig.getBooleanValue(
-        MSysConfig.IBAN_VALIDATION, true, Env.getADClientID(Env.getCtx()))) {
+        MSysConfig.IBAN_VALIDATION, true, Env.getClientId(Env.getCtx()))) {
       if (!Util.isEmpty(getIBAN())) {
         setIBAN(IBAN.normalizeIBAN(getIBAN()));
         if (!IBAN.isValid(getIBAN())) {

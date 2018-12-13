@@ -1,9 +1,5 @@
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.model.I_M_Product;
@@ -11,8 +7,14 @@ import org.compiere.orm.Query;
 import org.compiere.production.MLocator;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
+
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 public class MMovementLine extends X_M_MovementLine {
   /** */

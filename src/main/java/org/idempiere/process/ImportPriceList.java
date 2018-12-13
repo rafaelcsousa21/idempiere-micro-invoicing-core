@@ -13,20 +13,18 @@
  */
 package org.idempiere.process;
 
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.process.SvrProcess;
+import org.compiere.product.*;
+import org.idempiere.common.util.AdempiereUserError;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.process.SvrProcess;
-import org.compiere.product.MPriceList;
-import org.compiere.product.MPriceListVersion;
-import org.compiere.product.MProductPrice;
-import org.compiere.product.X_I_PriceList;
-import org.compiere.product.X_M_ProductPriceVendorBreak;
-import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import Price Lists from I_PriceList

@@ -22,7 +22,8 @@ import org.compiere.accounting.MClient;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.wf.MMailText;
-import org.idempiere.common.util.DB;
+import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Deliver Assets Electronically

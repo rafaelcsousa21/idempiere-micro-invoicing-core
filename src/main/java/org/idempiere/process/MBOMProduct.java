@@ -1,14 +1,16 @@
 package org.idempiere.process;
 
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.model.I_M_BOMProduct;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
+
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 public class MBOMProduct extends X_M_BOMProduct {
   /** */

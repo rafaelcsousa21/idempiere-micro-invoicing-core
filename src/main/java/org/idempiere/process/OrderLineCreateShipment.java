@@ -15,16 +15,18 @@
  */
 package org.idempiere.process;
 
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MInOut;
 import org.compiere.order.MInOutLine;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.getSQLValue;
 
 /**
  * Create (Generate) Invoice from Shipment

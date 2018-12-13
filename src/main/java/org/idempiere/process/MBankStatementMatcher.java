@@ -1,16 +1,19 @@
 package org.idempiere.process;
 
+import org.compiere.orm.MRole;
+import org.idempiere.common.base.Service;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.orm.MRole;
-import org.idempiere.common.base.Service;
-import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MBankStatementMatcher extends X_C_BankStatementMatcher {
   /** */
@@ -33,7 +36,7 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
                 MRole.SQL_NOTQUALIFIED,
                 MRole.SQL_RO);
     @SuppressWarnings("unused")
-    int AD_Client_ID = Env.getADClientID(ctx);
+    int AD_Client_ID = Env.getClientId(ctx);
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {

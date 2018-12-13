@@ -27,7 +27,7 @@ import org.compiere.accounting.X_I_ElementValue;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MColumn;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import Accounts from I_ElementValue

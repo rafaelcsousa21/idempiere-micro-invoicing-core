@@ -60,7 +60,7 @@ public class MGoal extends X_PA_Goal {
     ResultSet rs = null;
     try {
       pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, Env.getADClientID(ctx));
+      pstmt.setInt(1, Env.getClientId(ctx));
       pstmt.setInt(2, AD_User_ID);
       pstmt.setInt(3, AD_User_ID);
       rs = pstmt.executeQuery();
@@ -335,7 +335,7 @@ public class MGoal extends X_PA_Goal {
           MSysConfig.getIntValue(
               MSysConfig.ZK_DASHBOARD_PERFORMANCE_REFRESH_INTERVAL,
               1800000,
-              Env.getADClientID(Env.getCtx()));
+              Env.getClientId(Env.getCtx()));
       isUpdateByInterfal = (System.currentTimeMillis() - getDateLastRun().getTime()) > interval;
     }
 

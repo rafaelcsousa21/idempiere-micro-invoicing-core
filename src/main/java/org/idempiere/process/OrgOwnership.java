@@ -19,7 +19,7 @@ import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Org Ownership Process
@@ -101,7 +101,7 @@ public class OrgOwnership extends SvrProcess {
         .append(" WHERE M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
         .append(" AND AD_Client_ID=")
-        .append(getADClientID())
+        .append(getClientId())
         .append(" AND AD_Org_ID<>")
         .append(p_AD_Org_ID);
     int no = executeUpdate(sql.toString(), get_TrxName());
@@ -115,7 +115,7 @@ public class OrgOwnership extends SvrProcess {
         .append(" WHERE M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
         .append(" AND AD_Client_ID=")
-        .append(getADClientID())
+        .append(getClientId())
         .append(" AND AD_Org_ID<>")
         .append(p_AD_Org_ID);
     no = executeUpdate(sql.toString(), get_TrxName());
@@ -129,7 +129,7 @@ public class OrgOwnership extends SvrProcess {
         .append(" WHERE M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
         .append(" AND AD_Client_ID=")
-        .append(getADClientID())
+        .append(getClientId())
         .append(" AND AD_Org_ID<>")
         .append(p_AD_Org_ID);
     no = executeUpdate(sql.toString(), get_TrxName());
@@ -145,7 +145,7 @@ public class OrgOwnership extends SvrProcess {
         .append(" AND l.M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
         .append(") AND AD_Client_ID=")
-        .append(getADClientID())
+        .append(getClientId())
         .append(" AND AD_Org_ID<>")
         .append(p_AD_Org_ID);
     no = executeUpdate(sql.toString(), get_TrxName());
@@ -159,7 +159,7 @@ public class OrgOwnership extends SvrProcess {
         .append(" WHERE M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
         .append(" AND AD_Client_ID=")
-        .append(getADClientID())
+        .append(getClientId())
         .append(" AND AD_Org_ID<>")
         .append(p_AD_Org_ID);
     no = executeUpdate(sql.toString(), get_TrxName());
@@ -189,7 +189,7 @@ public class OrgOwnership extends SvrProcess {
           .append(")");
     else set.append(" WHERE M_Product_ID=").append(p_M_Product_ID);
     set.append(" AND AD_Client_ID=")
-        .append(getADClientID())
+        .append(getClientId())
         .append(" AND AD_Org_ID<>")
         .append(p_AD_Org_ID);
     if (log.isLoggable(Level.FINE)) log.fine("productOwnership - " + set);
@@ -243,7 +243,7 @@ public class OrgOwnership extends SvrProcess {
           .append(")");
     else set.append(" WHERE C_BPartner_ID=").append(p_C_BPartner_ID);
     set.append(" AND AD_Client_ID=")
-        .append(getADClientID())
+        .append(getClientId())
         .append(" AND AD_Org_ID<>")
         .append(p_AD_Org_ID);
     if (log.isLoggable(Level.FINE)) log.fine("bPartnerOwnership - " + set.toString());
@@ -286,7 +286,7 @@ public class OrgOwnership extends SvrProcess {
   private void generalOwnership() {
     StringBuilder set =
         new StringBuilder("SET AD_Org_ID=0 WHERE AD_Client_ID=")
-            .append(getADClientID())
+            .append(getClientId())
             .append(" AND AD_Org_ID<>0");
 
     //	R_ContactInterest

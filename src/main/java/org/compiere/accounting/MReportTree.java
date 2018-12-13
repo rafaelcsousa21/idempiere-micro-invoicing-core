@@ -34,7 +34,7 @@ public class MReportTree {
   public static MReportTree get(Properties ctx, int PA_Hierarchy_ID, String ElementType) {
     MRole role = MRole.getDefault();
     String key =
-        Env.getADClientID(ctx)
+        Env.getClientId(ctx)
             + "_"
             + role.getAD_Role_ID()
             + "_"
@@ -43,7 +43,7 @@ public class MReportTree {
             + ElementType;
     if (!role.isAccessAllOrgs() && role.isUseUserOrgAccess()) {
       key =
-          Env.getADClientID(ctx)
+          Env.getClientId(ctx)
               + "_"
               + Env.getAD_User_ID(ctx)
               + "_"
@@ -175,7 +175,7 @@ public class MReportTree {
    */
   protected int getDefaultAD_Tree_ID() {
     int AD_Tree_ID = 0;
-    int AD_Client_ID = Env.getADClientID(m_ctx);
+    int AD_Client_ID = Env.getClientId(m_ctx);
 
     String sql =
         "SELECT AD_Tree_ID, Name FROM AD_Tree "

@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import org.compiere.orm.M_Element;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.*;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Synchronize Column with Database

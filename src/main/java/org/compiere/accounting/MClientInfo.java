@@ -33,7 +33,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
    * @return client
    */
   public static MClientInfo get(Properties ctx) {
-    return get(ctx, Env.getADClientID(ctx), null);
+    return get(ctx, Env.getClientId(ctx), null);
   } //	get
 
   /** Logger */

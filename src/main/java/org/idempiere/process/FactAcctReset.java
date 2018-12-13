@@ -41,7 +41,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.production.MProjectIssue;
 import org.eevolution.model.I_HR_Process;
 import org.eevolution.model.I_PP_Cost_Collector;
-import org.idempiere.common.util.DB;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Accounting Fact Reset
@@ -160,7 +160,7 @@ public class FactAcctReset extends SvrProcess {
   private void delete(String TableName, int AD_Table_ID) {
     Timestamp today = TimeUtil.trunc(new Timestamp(System.currentTimeMillis()), TimeUtil.TRUNC_DAY);
 
-    MAcctSchema as = MClient.get(getCtx(), getADClientID()).getAcctSchema();
+    MAcctSchema as = MClient.get(getCtx(), getClientId()).getAcctSchema();
     boolean autoPeriod = as != null && as.isAutoPeriodControl();
     if (autoPeriod) {
       Timestamp temp = TimeUtil.addDays(today, -as.getPeriod_OpenHistory());

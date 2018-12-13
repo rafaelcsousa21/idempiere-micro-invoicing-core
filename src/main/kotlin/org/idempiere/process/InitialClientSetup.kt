@@ -240,7 +240,7 @@ class InitialClientSetup(
             addLog(ms.info)
 
             // 	Create Print Documents
-            // PrintUtil.setupPrintForm(ms.getADClientID());
+            // PrintUtil.setupPrintForm(ms.getClientId());
         } catch (e: Exception) {
             ms.rollback()
             throw e

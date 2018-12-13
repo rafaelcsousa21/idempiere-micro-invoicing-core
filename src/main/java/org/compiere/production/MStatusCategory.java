@@ -31,7 +31,7 @@ public class MStatusCategory extends X_R_StatusCategory {
    * @return status category or null
    */
   public static MStatusCategory getDefault(Properties ctx) {
-    int AD_Client_ID = Env.getADClientID(ctx);
+    int AD_Client_ID = Env.getClientId(ctx);
     String sql =
         "SELECT * FROM R_StatusCategory "
             + "WHERE AD_Client_ID in (0,?) AND IsDefault='Y' "
@@ -61,7 +61,7 @@ public class MStatusCategory extends X_R_StatusCategory {
    * @return status category or null
    */
   public static MStatusCategory createDefault(Properties ctx) {
-    int AD_Client_ID = Env.getADClientID(ctx);
+    int AD_Client_ID = Env.getClientId(ctx);
     MStatusCategory retValue = new MStatusCategory(ctx, 0, null);
     retValue.setClientOrg(AD_Client_ID, 0);
     retValue.setName(Msg.getMsg(ctx, "Standard"));

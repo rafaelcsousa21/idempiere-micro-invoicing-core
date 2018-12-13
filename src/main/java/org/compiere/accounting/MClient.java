@@ -341,7 +341,7 @@ public class MClient extends org.compiere.orm.MClient {
         MSysConfig.getValue(
             MSysConfig.CLIENT_ACCOUNTING,
             CLIENT_ACCOUNTING_QUEUE, // default
-            Env.getADClientID(Env.getCtx()));
+            Env.getClientId(Env.getCtx()));
     return (ca.equalsIgnoreCase(CLIENT_ACCOUNTING_IMMEDIATE)
         || ca.equalsIgnoreCase(CLIENT_ACCOUNTING_QUEUE));
   }
@@ -351,7 +351,7 @@ public class MClient extends org.compiere.orm.MClient {
         MSysConfig.getValue(
             MSysConfig.CLIENT_ACCOUNTING,
             CLIENT_ACCOUNTING_QUEUE, // default
-            Env.getADClientID(Env.getCtx()));
+            Env.getClientId(Env.getCtx()));
     return ca.equalsIgnoreCase(CLIENT_ACCOUNTING_QUEUE);
   }
 
@@ -500,7 +500,7 @@ public class MClient extends org.compiere.orm.MClient {
         MSysConfig.getValue(
             MSysConfig.MAIL_SEND_CREDENTIALS,
             MAIL_SEND_CREDENTIALS_USER, // default
-            Env.getADClientID(Env.getCtx()));
+            Env.getClientId(Env.getCtx()));
     return (MAIL_SEND_CREDENTIALS_CLIENT.equalsIgnoreCase(msc));
   }
 
@@ -509,7 +509,7 @@ public class MClient extends org.compiere.orm.MClient {
         MSysConfig.getValue(
             MSysConfig.MAIL_SEND_CREDENTIALS,
             MAIL_SEND_CREDENTIALS_USER, // default
-            Env.getADClientID(Env.getCtx()));
+            Env.getClientId(Env.getCtx()));
     return (MAIL_SEND_CREDENTIALS_SYSTEM.equalsIgnoreCase(msc));
   }
 
@@ -520,7 +520,7 @@ public class MClient extends org.compiere.orm.MClient {
    * @return client
    */
   public static MClient get(Properties ctx) {
-    return get(ctx, Env.getADClientID(ctx));
+    return get(ctx, Env.getClientId(ctx));
   } //	get
 
   /**

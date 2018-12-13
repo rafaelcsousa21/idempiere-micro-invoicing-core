@@ -29,8 +29,10 @@ import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Create AP Invoices from Expense Reports
@@ -87,7 +89,7 @@ public class ExpenseAPInvoice extends SvrProcess {
     try {
       pstmt = prepareStatement(sql.toString(), get_TrxName());
       int par = 1;
-      pstmt.setInt(par++, getADClientID());
+      pstmt.setInt(par++, getClientId());
       if (m_C_BPartner_ID != 0) pstmt.setInt(par++, m_C_BPartner_ID);
       if (m_DateFrom != null) pstmt.setTimestamp(par++, m_DateFrom);
       if (m_DateTo != null) pstmt.setTimestamp(par++, m_DateTo);
@@ -103,7 +105,7 @@ public class ExpenseAPInvoice extends SvrProcess {
           //
           if (log.isLoggable(Level.INFO)) log.info("New Invoice for " + bp);
           invoice = new MInvoice(getCtx(), 0, get_TrxName());
-          invoice.setClientOrg(te.getADClientID(), te.getOrgId());
+          invoice.setClientOrg(te.getClientId(), te.getOrgId());
           invoice.setC_DocTypeTarget_ID(MDocType.DOCBASETYPE_APInvoice); // 	API
           invoice.setDocumentNo(te.getDocumentNo());
           //

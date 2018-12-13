@@ -1,14 +1,17 @@
 package org.idempiere.process;
 
+import org.compiere.accounting.MProduct;
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.process.SvrProcess;
+import org.idempiere.common.util.Env;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
-import org.compiere.accounting.MProduct;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class BOMFlagValidate extends SvrProcess {
 
@@ -46,7 +49,7 @@ public class BOMFlagValidate extends SvrProcess {
     ResultSet rs = null;
     try {
       pstmt = prepareStatement(sql.toString(), get_TrxName());
-      if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getADClientID(getCtx()));
+      if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId(getCtx()));
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
 
@@ -72,7 +75,7 @@ public class BOMFlagValidate extends SvrProcess {
       if (p_M_Product_Category_ID == 0) update.append("AD_Client_ID= ?");
       else update.append("M_Product_Category_ID= ?");
       upstmt = prepareStatement(update.toString(), get_TrxName());
-      if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getADClientID(getCtx()));
+      if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
       else upstmt.setInt(1, p_M_Product_Category_ID);
       upstmt.executeUpdate();
     } catch (SQLException e) {
@@ -95,7 +98,7 @@ public class BOMFlagValidate extends SvrProcess {
     ResultSet rs = null;
     try {
       pstmt = prepareStatement(sql.toString(), get_TrxName());
-      if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getADClientID(getCtx()));
+      if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId(getCtx()));
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
 
@@ -120,7 +123,7 @@ public class BOMFlagValidate extends SvrProcess {
     PreparedStatement upstmt = null;
     try {
       upstmt = prepareStatement(update.toString(), get_TrxName());
-      if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getADClientID(getCtx()));
+      if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
       else upstmt.setInt(1, p_M_Product_Category_ID);
       upstmt.executeUpdate();
     } catch (SQLException e) {

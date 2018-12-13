@@ -1,13 +1,16 @@
 package org.idempiere.process;
 
+import org.idempiere.common.util.CCache;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MGLCategory extends X_GL_Category {
   /** */
@@ -43,7 +46,7 @@ public class MGLCategory extends X_GL_Category {
     ResultSet rs = null;
     try {
       pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, Env.getADClientID(ctx));
+      pstmt.setInt(1, Env.getClientId(ctx));
       rs = pstmt.executeQuery();
       while (rs.next()) {
         MGLCategory temp = new MGLCategory(ctx, rs, null);

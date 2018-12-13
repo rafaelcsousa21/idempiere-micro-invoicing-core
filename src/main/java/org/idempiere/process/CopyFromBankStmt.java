@@ -14,14 +14,16 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.accounting.MBankStatement;
 import org.compiere.accounting.MBankStatementLine;
 import org.compiere.accounting.MPayment;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 /**
  * Copy BankStatement Lines : - lines without payment only if bank statement is CO/CL (otherwise,

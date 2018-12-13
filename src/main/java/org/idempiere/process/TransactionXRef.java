@@ -14,11 +14,13 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
+
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Material Transaction Cross Reference

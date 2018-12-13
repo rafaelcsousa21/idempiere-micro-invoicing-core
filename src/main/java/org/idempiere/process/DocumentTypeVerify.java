@@ -23,7 +23,7 @@ import org.compiere.accounting.MPeriodControl;
 import org.compiere.orm.MDocType;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Verify Document Types. - Make sure that there is a DocumentType for all Document Base Types -
@@ -46,8 +46,8 @@ public class DocumentTypeVerify extends SvrProcess {
    * @throws Exception
    */
   protected String doIt() throws Exception {
-    createDocumentTypes(getCtx(), getADClientID(), this, get_TrxName());
-    createPeriodControls(getCtx(), getADClientID(), this, get_TrxName());
+    createDocumentTypes(getCtx(), getClientId(), this, get_TrxName());
+    createPeriodControls(getCtx(), getClientId(), this, get_TrxName());
     return "OK";
   } //	doIt
 

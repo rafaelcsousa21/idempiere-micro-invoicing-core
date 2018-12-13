@@ -735,7 +735,7 @@ public class MWorkflow extends X_AD_Workflow {
    * @return AD_Workflow_ID
    */
   public static int getWorkflowSearchKey(MProduct product) {
-    int AD_Client_ID = Env.getADClientID(product.getCtx());
+    int AD_Client_ID = Env.getClientId(product.getCtx());
     String sql =
         "SELECT AD_Workflow_ID FROM AD_Workflow " + " WHERE Value = ? AND AD_Client_ID = ?";
     return getSQLValueEx(null, sql, product.getValue(), AD_Client_ID);

@@ -1,13 +1,13 @@
 package org.idempiere.process;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_Product_Acct;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persistent {
 
@@ -40,11 +40,11 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
+
 
   public String toString() {
     StringBuffer sb = new StringBuffer("X_M_Product_Acct[").append(getId()).append("]");

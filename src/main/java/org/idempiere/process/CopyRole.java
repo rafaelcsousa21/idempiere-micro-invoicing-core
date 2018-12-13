@@ -15,15 +15,16 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_AD_Role_Included;
 import org.compiere.orm.MRole;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
 
+import java.math.BigDecimal;
+
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
 /**
  * Copy role access records
  *

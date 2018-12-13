@@ -822,7 +822,7 @@ public class ModelValidationEngine {
    *     https://sourceforge.net/tracker/index.php?func=detail&aid=1670025&group_id=176962&atid=879335
    */
   public void afterLoadPreferences(Properties ctx) {
-    int AD_Client_ID = Env.getADClientID(ctx);
+    int AD_Client_ID = Env.getClientId(ctx);
     for (int i = 0; i < m_validators.size(); i++) {
       ModelValidator validator = m_validators.get(i);
       if (AD_Client_ID == validator. getClientId() || m_globalValidators.contains(validator)) {
@@ -852,7 +852,7 @@ public class ModelValidationEngine {
 
   /** Before Save Properties for selected client. */
   public void beforeSaveProperties() {
-    int AD_Client_ID = Env.getADClientID(Env.getCtx());
+    int AD_Client_ID = Env.getClientId(Env.getCtx());
     for (int i = 0; i < m_validators.size(); i++) {
       ModelValidator validator = m_validators.get(i);
       if (AD_Client_ID == validator. getClientId() || m_globalValidators.contains(validator)) {

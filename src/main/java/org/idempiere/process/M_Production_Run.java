@@ -34,9 +34,10 @@ import org.compiere.production.X_M_ProductionLine;
 import org.compiere.production.X_M_ProductionPlan;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.ValueNamePair;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Production of BOMs 1) Creating ProductionLines when IsCreated = 'N' 2) Posting the Lines
@@ -204,7 +205,7 @@ public class M_Production_Run extends SvrProcess {
         String ignoreError =
             DocumentEngine.postImmediate(
                 getCtx(),
-                getADClientID(),
+                getClientId(),
                 production.getTableId(),
                 production.getId(),
                 true,

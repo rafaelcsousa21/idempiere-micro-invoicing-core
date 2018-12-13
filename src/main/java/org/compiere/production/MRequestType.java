@@ -60,7 +60,7 @@ public class MRequestType extends X_R_RequestType {
    * @return Request Type
    */
   public static MRequestType getDefault(Properties ctx) {
-    int AD_Client_ID = Env.getADClientID(ctx);
+    int AD_Client_ID = Env.getClientId(ctx);
 
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     final String whereClause = "AD_Client_ID IN (0," + AD_Client_ID + ")";

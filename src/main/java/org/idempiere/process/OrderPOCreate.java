@@ -14,11 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.crm.MBPartner;
@@ -27,7 +22,15 @@ import org.compiere.orm.MOrgInfo;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Generate PO from Sales Order
@@ -245,7 +248,7 @@ public class OrderPOCreate extends SvrProcess {
    */
   public MOrder createPOForVendor(int C_BPartner_ID, MOrder so) {
     MOrder po = new MOrder(getCtx(), 0, get_TrxName());
-    po.setClientOrg(so.getADClientID(), so.getOrgId());
+    po.setClientOrg(so.getClientId(), so.getOrgId());
     po.setLink_Order_ID(so.getC_Order_ID());
     po.setIsSOTrx(false);
     po.setC_DocTypeTarget_ID();

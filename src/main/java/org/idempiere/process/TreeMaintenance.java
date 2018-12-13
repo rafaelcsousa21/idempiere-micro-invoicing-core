@@ -14,21 +14,18 @@
  */
 package org.idempiere.process;
 
+import org.compiere.accounting.MTree;
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.orm.*;
+import org.compiere.process.SvrProcess;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
-import org.compiere.accounting.MTree;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.orm.MTable;
-import org.compiere.orm.MTree_Base;
-import org.compiere.orm.MTree_Node;
-import org.compiere.orm.MTree_NodeBP;
-import org.compiere.orm.MTree_NodeMM;
-import org.compiere.orm.MTree_NodePR;
-import org.compiere.orm.PO;
-import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
+
+import static software.hsharp.core.util.DBKt.*;
+
 
 /**
  * Tree Maintenance
@@ -77,7 +74,7 @@ public class TreeMaintenance extends SvrProcess {
     String nodeTableName = tree.getNodeTableName();
     String sourceTableName = tree.getSourceTableName(true);
     String sourceTableKey = sourceTableName + "_ID";
-    int AD_Client_ID = tree.getADClientID();
+    int AD_Client_ID = tree.getClientId();
     int C_Element_ID = 0;
     if (MTree.TREETYPE_ElementValue.equals(tree.getTreeType())) {
       StringBuilder sql =

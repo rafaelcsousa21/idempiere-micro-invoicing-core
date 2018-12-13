@@ -14,12 +14,16 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.accounting.MPeriod;
 import org.compiere.accounting.MPeriodControl;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.AdempiereUserError;
+import org.idempiere.common.util.CacheMgt;
+
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Open/Close all Period (Control)

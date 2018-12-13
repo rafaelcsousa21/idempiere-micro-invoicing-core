@@ -25,7 +25,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
 
 import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;

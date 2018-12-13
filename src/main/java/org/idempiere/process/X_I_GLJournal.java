@@ -37,11 +37,11 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal, I_Persistent {
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
+
 
   public String toString() {
     StringBuffer sb = new StringBuffer("X_I_GLJournal[").append(getId()).append("]");

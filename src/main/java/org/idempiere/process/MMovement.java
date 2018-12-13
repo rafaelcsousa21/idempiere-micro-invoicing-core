@@ -1,17 +1,6 @@
 package org.idempiere.process;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import org.compiere.accounting.MClient;
-import org.compiere.accounting.MPeriod;
-import org.compiere.accounting.MProduct;
-import org.compiere.accounting.MStorageOnHand;
-import org.compiere.accounting.NegativeInventoryDisallowedException;
+import org.compiere.accounting.*;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -29,8 +18,17 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 public class MMovement extends X_M_Movement implements DocAction, IPODoc {
   /** */
@@ -835,7 +833,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
 
     //	Deep Copy
     MMovement reversal = new MMovement(getCtx(), 0, get_TrxName());
-    copyValues(this, reversal, getADClientID(), getOrgId());
+    copyValues(this, reversal, getClientId(), getOrgId());
     reversal.setDocStatus(DOCSTATUS_Drafted);
     reversal.setDocAction(DOCACTION_Complete);
     reversal.setIsApproved(false);
@@ -857,7 +855,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
     for (int i = 0; i < oLines.length; i++) {
       MMovementLine oLine = oLines[i];
       MMovementLine rLine = new MMovementLine(getCtx(), 0, get_TrxName());
-      copyValues(oLine, rLine, oLine.getADClientID(), oLine.getOrgId());
+      copyValues(oLine, rLine, oLine.getClientId(), oLine.getOrgId());
       rLine.setM_Movement_ID(reversal.getM_Movement_ID());
       // AZ Goodwill
       // store original (voided/reversed) document line

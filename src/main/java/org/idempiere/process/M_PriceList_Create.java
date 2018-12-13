@@ -35,6 +35,7 @@ import org.compiere.product.MDiscountSchemaLine;
 import org.compiere.product.MProductPrice;
 import org.idempiere.common.util.*;
 import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Create PriceList by copying purchase prices (M_Product_PO) and applying product category

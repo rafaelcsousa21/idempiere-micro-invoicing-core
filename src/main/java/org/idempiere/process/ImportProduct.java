@@ -28,7 +28,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.product.MProductPrice;
 import org.compiere.product.X_I_Product;
 import org.compiere.validation.ModelValidationEngine;
-import org.idempiere.common.util.DB;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import Products from I_Product

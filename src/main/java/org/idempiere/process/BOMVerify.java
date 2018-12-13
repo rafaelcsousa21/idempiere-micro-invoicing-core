@@ -14,15 +14,19 @@
  */
 package org.idempiere.process;
 
-import java.sql.*;
-import java.util.*;
-import java.util.logging.*;
 import org.compiere.accounting.MProduct;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.product.MProductBOM;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Validate BOM
@@ -88,7 +92,7 @@ public class BOMVerify extends SvrProcess {
     else sql += "M_Product_Category_ID=? ";
     if (!p_IsReValidate) sql += "AND IsVerified<>'Y' ";
     sql += "ORDER BY Name";
-    int AD_Client_ID = Env.getADClientID(getCtx());
+    int AD_Client_ID = Env.getClientId(getCtx());
     try {
       pstmt = prepareStatement(sql, get_TrxName());
       if (p_M_Product_Category_ID == 0) pstmt.setInt(1, AD_Client_ID);

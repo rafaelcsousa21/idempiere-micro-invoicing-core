@@ -147,7 +147,7 @@ public class ProjectGenPO extends SvrProcess {
         AD_Org_ID = Env.getOrgId(getCtx());
         if (AD_Org_ID != 0) projectLine.setAD_Org_ID(AD_Org_ID);
       }
-      order.setClientOrg(projectLine.getADClientID(), AD_Org_ID);
+      order.setClientOrg(projectLine.getClientId(), AD_Org_ID);
       order.setBPartner(bp);
       order.saveEx();
       //	optionally save for consolidation
@@ -180,7 +180,7 @@ public class ProjectGenPO extends SvrProcess {
                   order.getC_Currency_ID(),
                   order.getDateAcct(),
                   order.getC_ConversionType_ID(),
-                  order.getADClientID(),
+                  order.getClientId(),
                   order.getOrgId());
         orderLine.setPrice(poPrice);
       }

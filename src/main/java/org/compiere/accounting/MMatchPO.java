@@ -846,7 +846,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
       if (getC_OrderLine_ID() > 0) {
         boolean validateOrderedQty =
             MSysConfig.getBooleanValue(
-                MSysConfig.VALIDATE_MATCHING_TO_ORDERED_QTY, true, Env.getADClientID(Env.getCtx()));
+                MSysConfig.VALIDATE_MATCHING_TO_ORDERED_QTY, true, Env.getClientId(Env.getCtx()));
         if (validateOrderedQty) {
           MOrderLine line = new MOrderLine(getCtx(), getC_OrderLine_ID(), get_TrxName());
           BigDecimal invoicedQty =
@@ -1026,7 +1026,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     int errors = 0;
     try {
       pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, Env.getADClientID(ctx));
+      pstmt.setInt(1, Env.getClientId(ctx));
       rs = pstmt.executeQuery();
       while (rs.next()) {
         MMatchPO po1 = new MMatchPO(ctx, rs, null);

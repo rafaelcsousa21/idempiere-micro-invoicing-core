@@ -157,7 +157,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
             + " AND (S_Resource_ID IN (0,?) OR S_Resource_ID IS NULL)";
     return new Query(ctx, I_PP_Product_Planning.Table_Name, whereClause, trxName)
         .setParameters(
-            Env.getADClientID(ctx), M_Product_ID, AD_Org_ID, M_Warehouse_ID, S_Resource_ID)
+            Env.getClientId(ctx), M_Product_ID, AD_Org_ID, M_Warehouse_ID, S_Resource_ID)
         .setOnlyActiveRecords(true)
         .setOrderBy(
             "COALESCE(AD_Org_ID, 0) DESC"

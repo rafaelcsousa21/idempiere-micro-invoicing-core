@@ -1,25 +1,11 @@
 package org.idempiere.process;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MPeriod;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.NegativeInventoryDisallowedException;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
-import org.compiere.model.IDoc;
-import org.compiere.model.IPODoc;
-import org.compiere.model.I_AD_User;
-import org.compiere.model.I_C_BPartner;
-import org.compiere.model.I_C_BPartner_Location;
-import org.compiere.model.I_M_Product;
+import org.compiere.model.*;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MRefList;
 import org.compiere.orm.Query;
@@ -33,9 +19,21 @@ import org.compiere.validation.ModelValidator;
 import org.eevolution.model.I_DD_Order;
 import org.eevolution.model.I_DD_OrderLine;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.orm.POKt.I_ZERO;
+import static software.hsharp.core.util.DBKt.*;
 
 public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
   /** */
@@ -63,7 +61,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
       String trxName) {
     MDDOrder to = new MDDOrder(from.getCtx(), 0, trxName);
     to.set_TrxName(trxName);
-    copyValues(from, to, from.getADClientID(), from.getOrgId());
+    copyValues(from, to, from.getClientId(), from.getOrgId());
     to.set_ValueNoCheck("DD_Order_ID", I_ZERO);
     to.set_ValueNoCheck("DocumentNo", null);
     //
@@ -145,7 +143,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
    */
   public MDDOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
     this(project.getCtx(), 0, project.get_TrxName());
-    setADClientID(project.getADClientID());
+    setADClientID(project.getClientId());
     setAD_Org_ID(project.getOrgId());
     setC_Campaign_ID(project.getC_Campaign_ID());
     setSalesRep_ID(project.getSalesRep_ID());
@@ -290,7 +288,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     int count = 0;
     for (int i = 0; i < fromLines.length; i++) {
       MDDOrderLine line = new MDDOrderLine(this);
-      copyValues(fromLines[i], line, getADClientID(), getOrgId());
+      copyValues(fromLines[i], line, getClientId(), getOrgId());
       line.setDD_Order_ID(getDD_Order_ID());
       line.setOrder(this);
       //	References
@@ -515,7 +513,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         log.warning("Changed Org to Context=" + context_AD_Org_ID);
       }
     }
-    if (getADClientID() == 0) {
+    if (getClientId() == 0) {
       m_processMsg = "AD_Client_ID = 0";
       return false;
     }
@@ -541,7 +539,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     }
 
     //	No Partner Info - set Template
-    if (getC_BPartner_ID() == 0) setBPartner(MBPartner.getTemplate(getCtx(), getADClientID()));
+    if (getC_BPartner_ID() == 0) setBPartner(MBPartner.getTemplate(getCtx(), getClientId()));
     if (getC_BPartner_Location_ID() == 0)
       setBPartner(new MBPartner(getCtx(), getC_BPartner_ID(), null));
 
@@ -786,7 +784,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                 Env.ZERO,
                 null,
                 get_TrxName())) {
-              throw new AdempiereException();
+              throw new AdempiereException("!MStorageOnHand1");
             }
 
             if (!MStorageOnHand.add(
@@ -798,7 +796,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                 Env.ZERO,
                 null,
                 get_TrxName())) {
-              throw new AdempiereException();
+              throw new AdempiereException("!MStorageOnHand2");
             }
           } //	stockec
           //	update line

@@ -14,13 +14,15 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInventoryLineMA;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;
-import org.idempiere.common.util.DB;
+
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Update existing Inventory Count List with current Book value

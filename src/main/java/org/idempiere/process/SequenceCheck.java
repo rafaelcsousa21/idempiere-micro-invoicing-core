@@ -24,6 +24,7 @@ import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.*;
 import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * System + Document Sequence Check
@@ -224,7 +225,7 @@ public class SequenceCheck extends SvrProcess {
     for (int i = 0; i < clients.length; i++) {
       MClient client = clients[i];
       if (!client.isActive()) continue;
-      MSequence.checkClientSequences(ctx, client.getADClientID(), trxName);
+      MSequence.checkClientSequences(ctx, client.getClientId(), trxName);
     } //	for all clients
   } //	checkClientSequences
 } //	SequenceCheck

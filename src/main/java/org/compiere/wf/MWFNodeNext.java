@@ -109,7 +109,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
     final String whereClause = "AD_WF_NodeNext_ID=? AND AD_Client_ID IN (0,?)";
     List<MWFNextCondition> list =
         new Query(getCtx(), MWFNextCondition.Table_Name, whereClause, get_TrxName())
-            .setParameters(new Object[] {getAD_WF_NodeNext_ID(), Env.getADClientID(Env.getCtx())})
+            .setParameters(new Object[] {getAD_WF_NodeNext_ID(), Env.getClientId(Env.getCtx())})
             .setOnlyActiveRecords(true)
             .setOrderBy(MWFNextCondition.COLUMNNAME_SeqNo)
             .list();

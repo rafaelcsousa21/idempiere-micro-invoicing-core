@@ -1,9 +1,5 @@
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Properties;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_Product;
@@ -13,8 +9,15 @@ import org.compiere.product.MUOM;
 import org.compiere.production.MLocator;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Properties;
+
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
 
 public class MDDOrderLine extends X_DD_OrderLine {
   /** */

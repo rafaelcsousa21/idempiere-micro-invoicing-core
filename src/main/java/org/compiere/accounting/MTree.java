@@ -146,7 +146,7 @@ public class MTree extends MTree_Base {
               + "ORDER BY tr.AD_Tree_ID";
       int treeID =
           getSQLValueEx(
-              null, query, Env.getADClientID(Env.getCtx()), TREETYPE_CustomTable, tableName);
+              null, query, Env.getClientId(Env.getCtx()), TREETYPE_CustomTable, tableName);
 
       if (treeID != -1) {
         tree_cache.put(key, treeID);

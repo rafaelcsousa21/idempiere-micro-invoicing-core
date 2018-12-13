@@ -14,10 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.logging.Level;
 import org.compiere.crm.MBPartner;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
@@ -29,7 +25,14 @@ import org.compiere.production.MRequestType;
 import org.compiere.production.MRequestUpdate;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereSystemError;
-import org.idempiere.common.util.DB;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Create Invoices for Requests

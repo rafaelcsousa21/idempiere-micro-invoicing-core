@@ -14,17 +14,19 @@
  */
 package org.idempiere.process;
 
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.orm.MSequence;
+import org.compiere.process.SvrProcess;
+import org.idempiere.common.exceptions.DBException;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.orm.MSequence;
-import org.compiere.process.SvrProcess;
-import org.idempiere.common.exceptions.DBException;
-import org.idempiere.common.util.DB;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import ReportLines from I_ReportLine

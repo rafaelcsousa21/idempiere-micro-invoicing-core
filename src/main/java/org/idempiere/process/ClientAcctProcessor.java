@@ -30,10 +30,10 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
-
+import static software.hsharp.core.util.DBKt.*;
 /**
  * Client Accounting Processor
  *
@@ -81,9 +81,9 @@ public class ClientAcctProcessor extends SvrProcess {
     if (!MClient.isClientAccounting())
       throw new AdempiereUserError(Msg.getMsg(getCtx(), "ClientAccountingNotEnabled"));
 
-    m_client = MClient.get(getCtx(), getADClientID());
+    m_client = MClient.get(getCtx(), getClientId());
 
-    if (p_C_AcctSchema_ID == 0) m_ass = MAcctSchema.getClientAcctSchema(getCtx(), getADClientID());
+    if (p_C_AcctSchema_ID == 0) m_ass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId());
     else //	only specific accounting schema
     m_ass = new MAcctSchema[] {new MAcctSchema(getCtx(), p_C_AcctSchema_ID, get_TrxName())};
 
@@ -128,7 +128,7 @@ public class ClientAcctProcessor extends SvrProcess {
       ResultSet rs = null;
       try {
         pstmt = prepareStatement(sql.toString(), get_TrxName());
-        pstmt.setInt(1, getADClientID());
+        pstmt.setInt(1, getClientId());
         pstmt.setBigDecimal(2, value);
         rs = pstmt.executeQuery();
         while (rs.next()) {
@@ -173,7 +173,7 @@ public class ClientAcctProcessor extends SvrProcess {
         ResultSet rs = null;
         try {
           pstmt = prepareStatement(sql.toString(), get_TrxName());
-          pstmt.setInt(1, getADClientID());
+          pstmt.setInt(1, getClientId());
           if (processedOn.compareTo(Env.ZERO) != 0) pstmt.setBigDecimal(2, processedOn);
           rs = pstmt.executeQuery();
           while (rs.next()) {

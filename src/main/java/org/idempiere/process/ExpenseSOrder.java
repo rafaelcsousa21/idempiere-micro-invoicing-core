@@ -29,8 +29,9 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Create Sales Orders from Expense Reports
@@ -100,7 +101,7 @@ public class ExpenseSOrder extends SvrProcess {
     try {
       pstmt = prepareStatement(sql.toString(), get_TrxName());
       int par = 1;
-      pstmt.setInt(par++, getADClientID());
+      pstmt.setInt(par++, getClientId());
       if (p_C_BPartner_ID != 0) pstmt.setInt(par++, p_C_BPartner_ID);
       if (p_DateFrom != null) pstmt.setTimestamp(par++, p_DateFrom);
       if (m_DateTo != null) pstmt.setTimestamp(par++, m_DateTo);
@@ -213,7 +214,7 @@ public class ExpenseSOrder extends SvrProcess {
                 price,
                 tel.getC_Currency_ID(),
                 m_order.getC_Currency_ID(),
-                m_order.getADClientID(),
+                m_order.getClientId(),
                 m_order.getOrgId());
       ol.setPrice(price);
     } else ol.setPrice();

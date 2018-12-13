@@ -14,12 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.crm.MBPartner;
@@ -31,8 +25,16 @@ import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.I_C_Location;
 import org.compiere.order.X_I_Order;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import Order from I_Order
@@ -626,7 +628,7 @@ public class ImportOrder extends SvrProcess {
         MBPartner bp = MBPartner.get(getCtx(), imp.getBPartnerValue(), get_TrxName());
         if (bp == null) {
           bp = new MBPartner(getCtx(), -1, get_TrxName());
-          bp.setClientOrg(imp.getADClientID(), imp.getOrgId());
+          bp.setClientOrg(imp.getClientId(), imp.getOrgId());
           bp.setValue(imp.getBPartnerValue());
           bp.setName(imp.getName());
           if (!bp.save()) continue;
@@ -762,7 +764,7 @@ public class ImportOrder extends SvrProcess {
           if (oldDocumentNo == null) oldDocumentNo = "";
           //
           order = new MOrder(getCtx(), 0, get_TrxName());
-          order.setClientOrg(imp.getADClientID(), imp.getOrgId());
+          order.setClientOrg(imp.getClientId(), imp.getOrgId());
           order.setC_DocTypeTarget_ID(imp.getC_DocType_ID());
           order.setIsSOTrx(imp.isSOTrx());
           if (imp.getDeliveryRule() != null) {

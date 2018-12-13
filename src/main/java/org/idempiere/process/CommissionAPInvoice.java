@@ -64,7 +64,7 @@ public class CommissionAPInvoice extends SvrProcess {
 
     	//	Create Invoice
     	MInvoice invoice = new MInvoice (getCtx(), 0, null);
-    	invoice.setClientOrg(com.getADClientID(), com.getOrgId());
+    	invoice.setClientOrg(com.getClientId(), com.getOrgId());
     	invoice.setC_DocTypeTarget_ID(MDocType.DOCBASETYPE_APInvoice);	//	API
     	invoice.setBPartner(bp);
     //	invoice.setDocumentNo (comRun.getDocumentNo());		//	may cause unique constraint

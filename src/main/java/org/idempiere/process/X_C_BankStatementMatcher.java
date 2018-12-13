@@ -1,11 +1,11 @@
 package org.idempiere.process;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_C_BankStatementMatcher;
 import org.compiere.orm.BasePOName;
 import org.idempiere.orm.I_Persistent;
-import org.idempiere.orm.POInfo;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 public class X_C_BankStatementMatcher extends BasePOName
     implements I_C_BankStatementMatcher, I_Persistent {
@@ -36,11 +36,11 @@ public class X_C_BankStatementMatcher extends BasePOName
     return accessLevel.intValue();
   }
 
-  /** Load Meta Data */
-  protected POInfo initPO(Properties ctx) {
-    POInfo poi = POInfo.getPOInfo(ctx, Table_ID, get_TrxName());
-    return poi;
+  @Override
+  public int getTableId() {
+    return Table_ID;
   }
+
 
   public String toString() {
     StringBuffer sb = new StringBuffer("X_C_BankStatementMatcher[").append(getId()).append("]");

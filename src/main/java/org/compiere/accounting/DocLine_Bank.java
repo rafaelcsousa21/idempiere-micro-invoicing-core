@@ -64,7 +64,7 @@ public class DocLine_Bank extends DocLine {
       if (id > 0) return id;
     }
     return super. getOrgId();
-  } //	getAD_Org_ID
+  } //	getOrgId
 
   /**
    * Is Reversal

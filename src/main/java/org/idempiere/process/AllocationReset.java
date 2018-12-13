@@ -14,17 +14,22 @@
  */
 package org.idempiere.process;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MAllocationHdr;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Trx;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Reset (delete) Allocations
@@ -138,7 +143,7 @@ public class AllocationReset extends SvrProcess {
       int index = 1;
       if (p_C_BPartner_ID != 0) pstmt.setInt(index++, p_C_BPartner_ID);
       else if (p_C_BP_Group_ID != 0) pstmt.setInt(index++, p_C_BP_Group_ID);
-      else pstmt.setInt(index++, Env.getADClientID(getCtx()));
+      else pstmt.setInt(index++, Env.getClientId(getCtx()));
       if (p_DateAcct_From != null) pstmt.setTimestamp(index++, p_DateAcct_From);
       if (p_DateAcct_To != null) pstmt.setTimestamp(index++, p_DateAcct_To);
       rs = pstmt.executeQuery();

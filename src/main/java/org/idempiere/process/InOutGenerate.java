@@ -14,19 +14,7 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import org.compiere.accounting.MClient;
-import org.compiere.accounting.MOrder;
-import org.compiere.accounting.MOrderLine;
-import org.compiere.accounting.MProduct;
-import org.compiere.accounting.MStorageOnHand;
+import org.compiere.accounting.*;
 import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
 import org.compiere.invoicing.MLocatorType;
@@ -37,8 +25,18 @@ import org.compiere.production.MLocator;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Generate Shipments. Manual or Automatic
@@ -170,7 +168,7 @@ public class InOutGenerate extends SvrProcess {
       pstmt = prepareStatement(m_sql.toString(), get_TrxName());
       int index = 1;
       if (p_Selection) {
-        pstmt.setInt(index++, Env.getADClientID(getCtx()));
+        pstmt.setInt(index++, Env.getClientId(getCtx()));
         pstmt.setInt(index++, getAD_PInstance_ID());
       } else {
         pstmt.setInt(index++, p_M_Warehouse_ID);

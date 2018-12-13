@@ -64,7 +64,7 @@ public class LoadBankStatement extends SvrProcess {
       else if (name.equals("FileName")) fileName = (String) para[i].getParameter();
       else log.log(Level.SEVERE, "Unknown Parameter: " + name);
     }
-    m_AD_Client_ID = Env.getADClientID(m_ctx);
+    m_AD_Client_ID = Env.getClientId(m_ctx);
     if (log.isLoggable(Level.INFO)) log.info("AD_Client_ID=" + m_AD_Client_ID);
     m_AD_Org_ID = Env.getOrgId(m_ctx);
     if (log.isLoggable(Level.INFO)) {

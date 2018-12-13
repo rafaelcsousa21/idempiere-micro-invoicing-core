@@ -1169,7 +1169,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
       params.add(C_BPartner_ID);
     } else {
       whereClause.append(" AND AD_Client_ID=?");
-      params.add(Env.getADClientID(ctx));
+      params.add(Env.getClientId(ctx));
     }
 
     POResultSet<MInvoice> rs =

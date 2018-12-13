@@ -14,11 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.logging.Level;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.invoicing.MRMA;
@@ -28,8 +23,15 @@ import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Generate invoice for Vendor RMA
@@ -81,7 +83,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
     ResultSet rs = null;
     try {
       pstmt = prepareStatement(sql, get_TrxName());
-      pstmt.setInt(1, Env.getADClientID(getCtx()));
+      pstmt.setInt(1, Env.getClientId(getCtx()));
       pstmt.setInt(2, getAD_PInstance_ID());
       rs = pstmt.executeQuery();
 

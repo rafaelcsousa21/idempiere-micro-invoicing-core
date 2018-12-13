@@ -1,11 +1,5 @@
 package org.idempiere.process;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MClient;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
@@ -13,7 +7,16 @@ import org.compiere.model.AdempiereProcessorLog;
 import org.compiere.schedule.MSchedule;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.DB;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
+
 
 public class MRequestProcessor extends X_R_RequestProcessor
     implements AdempiereProcessor, AdempiereProcessor2 {

@@ -90,7 +90,7 @@ public class MDepreciation extends X_A_Depreciation {
    * @param depreciationType depreciation type (e.g. SL)
    */
   public static MDepreciation get(Properties ctx, String depreciationType) {
-    int AD_Client_ID = Env.getADClientID(ctx);
+    int AD_Client_ID = Env.getClientId(ctx);
     String key = "" + AD_Client_ID + "_" + depreciationType;
     MDepreciation depr = s_cache_forType.get(key);
     if (depr != null) {

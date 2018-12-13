@@ -189,7 +189,7 @@ public class DunningRunCreate extends SvrProcess {
   		pstmt = prepareStatement (sql.toString(), get_TrxName());
   		pstmt.setTimestamp(1, m_run.getDunningDate());
   		pstmt.setTimestamp(2, m_run.getDunningDate());
-  		pstmt.setInt (3, m_run.getADClientID());
+  		pstmt.setInt (3, m_run.getClientId());
   		pstmt.setTimestamp(4, m_run.getDunningDate());
   		pstmt.setInt(5, level.getC_DunningLevel_ID());
   		pstmt.setTimestamp(6, m_run.getDunningDate());
@@ -398,7 +398,7 @@ public class DunningRunCreate extends SvrProcess {
   	try
   	{
   		pstmt = prepareStatement (sql.toString(), get_TrxName());
-  		pstmt.setInt (1, getADClientID());
+  		pstmt.setInt (1, getClientId());
   		pstmt.setInt (2, level.getC_DunningLevel_ID());
   		if (p_C_BPartner_ID != 0)
   			pstmt.setInt (3, p_C_BPartner_ID);

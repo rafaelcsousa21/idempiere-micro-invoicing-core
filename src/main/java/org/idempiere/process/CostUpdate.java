@@ -14,18 +14,7 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MClient;
-import org.compiere.accounting.MCost;
-import org.compiere.accounting.MCostElement;
-import org.compiere.accounting.MProduct;
+import org.compiere.accounting.*;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInventoryLine;
@@ -37,7 +26,21 @@ import org.compiere.orm.MDocType;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.AdempiereSystemError;
+import org.idempiere.common.util.AdempiereUserError;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Standard Cost Update
@@ -142,7 +145,7 @@ public class CostUpdate extends SvrProcess {
     m_ce = MCostElement.getMaterialCostElement(client, MAcctSchema.COSTINGMETHOD_StandardCosting);
     if (m_ce.getId() == 0) throw new AdempiereUserError("@NotFound@ @M_CostElement_ID@ (StdCost)");
     if (log.isLoggable(Level.CONFIG)) log.config(m_ce.toString());
-    m_ass = MAcctSchema.getClientAcctSchema(getCtx(), client.getADClientID());
+    m_ass = MAcctSchema.getClientAcctSchema(getCtx(), client.getClientId());
     for (int i = 0; i < m_ass.length; i++) createNew(m_ass[i]);
     commitEx();
 
@@ -204,7 +207,7 @@ public class CostUpdate extends SvrProcess {
       pstmt.setInt(1, as.getM_CostType_ID());
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       pstmt.setInt(3, m_ce.getM_CostElement_ID());
-      pstmt.setInt(4, as.getADClientID());
+      pstmt.setInt(4, as.getClientId());
       if (p_M_Product_Category_ID != 0) pstmt.setInt(5, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -399,7 +402,7 @@ public class CostUpdate extends SvrProcess {
       MCost xCost =
           MCost.get(
               getCtx(),
-              cost.getADClientID(),
+              cost.getClientId(),
               cost.getOrgId(),
               cost.getM_Product_ID(),
               cost.getM_CostType_ID(),
@@ -416,7 +419,7 @@ public class CostUpdate extends SvrProcess {
       MCost xCost =
           MCost.get(
               getCtx(),
-              cost.getADClientID(),
+              cost.getClientId(),
               cost.getOrgId(),
               cost.getM_Product_ID(),
               cost.getM_CostType_ID(),
@@ -434,7 +437,7 @@ public class CostUpdate extends SvrProcess {
       MCost xCost =
           MCost.get(
               getCtx(),
-              cost.getADClientID(),
+              cost.getClientId(),
               cost.getOrgId(),
               cost.getM_Product_ID(),
               cost.getM_CostType_ID(),
@@ -451,7 +454,7 @@ public class CostUpdate extends SvrProcess {
       MCost xCost =
           MCost.get(
               getCtx(),
-              cost.getADClientID(),
+              cost.getClientId(),
               cost.getOrgId(),
               cost.getM_Product_ID(),
               cost.getM_CostType_ID(),
@@ -469,7 +472,7 @@ public class CostUpdate extends SvrProcess {
       MCost xCost =
           MCost.get(
               getCtx(),
-              cost.getADClientID(),
+              cost.getClientId(),
               cost.getOrgId(),
               cost.getM_Product_ID(),
               cost.getM_CostType_ID(),
@@ -490,7 +493,7 @@ public class CostUpdate extends SvrProcess {
         MCost xCost =
             MCost.get(
                 getCtx(),
-                cost.getADClientID(),
+                cost.getClientId(),
                 cost.getOrgId(),
                 cost.getM_Product_ID(),
                 cost.getM_CostType_ID(),
@@ -519,7 +522,7 @@ public class CostUpdate extends SvrProcess {
         MCost xCost =
             MCost.get(
                 getCtx(),
-                cost.getADClientID(),
+                cost.getClientId(),
                 cost.getOrgId(),
                 cost.getM_Product_ID(),
                 cost.getM_CostType_ID(),
@@ -548,7 +551,7 @@ public class CostUpdate extends SvrProcess {
       MCost xCost =
           MCost.get(
               getCtx(),
-              cost.getADClientID(),
+              cost.getClientId(),
               cost.getOrgId(),
               cost.getM_Product_ID(),
               cost.getM_CostType_ID(),

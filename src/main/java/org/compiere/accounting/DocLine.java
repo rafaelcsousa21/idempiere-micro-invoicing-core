@@ -467,7 +467,7 @@ public class DocLine {
    */
   public int  getOrgId() {
     return p_po. getOrgId();
-  } //	getAD_Org_ID
+  } //	getOrgId
 
   /**
    * Get Order AD_Org_ID

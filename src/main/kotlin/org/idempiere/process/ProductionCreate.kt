@@ -73,7 +73,7 @@ class ProductionCreate(
         if (costPercentageDiff == null) {
             costPercentageDiff = Env.ZERO
             val msg = "Could not retrieve costs"
-            if (MSysConfig.getBooleanValue(MSysConfig.MFG_ValidateCostsOnCreate, false, adClientID)) {
+            if (MSysConfig.getBooleanValue(MSysConfig.MFG_ValidateCostsOnCreate, false, clientId)) {
                 throw AdempiereUserError(msg)
             } else {
                 log.warning(msg)
@@ -131,7 +131,7 @@ class ProductionCreate(
 
         if (!costsOK(M_Product_ID)) {
             val msg = "Excessive difference in standard costs"
-            if (MSysConfig.getBooleanValue(MSysConfig.MFG_ValidateCostsDifferenceOnCreate, false, adClientID)) {
+            if (MSysConfig.getBooleanValue(MSysConfig.MFG_ValidateCostsDifferenceOnCreate, false, clientId)) {
                 throw AdempiereUserError("Excessive difference in standard costs")
             } else {
                 log.warning(msg)

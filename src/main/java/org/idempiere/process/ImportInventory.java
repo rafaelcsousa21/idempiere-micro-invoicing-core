@@ -1,10 +1,5 @@
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MCost;
 import org.compiere.accounting.MProduct;
@@ -25,8 +20,19 @@ import org.compiere.product.MAttributeSetInstance;
 import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.AdempiereUserError;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.ValueNamePair;
 import org.idempiere.orm.PO;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import Physical Inventory from I_Inventory
@@ -411,7 +417,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
           }
           inventory = new MInventory(getCtx(), 0, get_TrxName());
           if (imp.getC_DocType_ID() > 0) inventory.setC_DocType_ID(imp.getC_DocType_ID());
-          inventory.setClientOrg(imp.getADClientID(), imp.getOrgId());
+          inventory.setClientOrg(imp.getClientId(), imp.getOrgId());
           inventory.setDescription("I " + imp.getM_Warehouse_ID() + " " + MovementDate);
           inventory.setM_Warehouse_ID(imp.getM_Warehouse_ID());
           inventory.setMovementDate(MovementDate);

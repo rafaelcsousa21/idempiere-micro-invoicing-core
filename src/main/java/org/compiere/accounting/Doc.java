@@ -418,7 +418,7 @@ public abstract class Doc implements IDoc {
    */
   public int getTableId() {
     return p_po.getTableId();
-  } //	get_Table_ID
+  } //	getTableId
 
   /**
    * Get Record_ID
@@ -1407,7 +1407,7 @@ public abstract class Doc implements IDoc {
    */
   public int  getClientId() {
     return p_po. getClientId();
-  } //	getADClientID
+  } //	getClientId
 
   /**
    * Get AD_Org_ID
@@ -1416,7 +1416,7 @@ public abstract class Doc implements IDoc {
    */
   public int  getOrgId() {
     return p_po. getOrgId();
-  } //	getAD_Org_ID
+  } //	getOrgId
 
   /**
    * Get Document No

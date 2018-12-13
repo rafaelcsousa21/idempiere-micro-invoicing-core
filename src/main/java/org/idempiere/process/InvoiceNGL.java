@@ -31,8 +31,11 @@ import org.compiere.orm.MOrg;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
+
+import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Invoice Not realized Gain & Loss. The actual data shown is T_InvoiceGL_v
@@ -373,7 +376,7 @@ public class InvoiceNGL extends SvrProcess {
       MAccount acct =
           MAccount.get(
               getCtx(),
-              asDefaultAccts.getADClientID(),
+              asDefaultAccts.getClientId(),
               AD_Org_ID,
               asDefaultAccts.getC_AcctSchema_ID(),
               base.getAccount_ID(),
@@ -406,7 +409,7 @@ public class InvoiceNGL extends SvrProcess {
       MAccount acct =
           MAccount.get(
               getCtx(),
-              asDefaultAccts.getADClientID(),
+              asDefaultAccts.getClientId(),
               AD_Org_ID,
               asDefaultAccts.getC_AcctSchema_ID(),
               base.getAccount_ID(),

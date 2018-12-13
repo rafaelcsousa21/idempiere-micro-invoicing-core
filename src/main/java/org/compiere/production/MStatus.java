@@ -87,7 +87,7 @@ public class MStatus extends X_R_Status {
    * @return Request Type
    */
   public static MStatus[] getClosed(Properties ctx) {
-    int AD_Client_ID = Env.getADClientID(ctx);
+    int AD_Client_ID = Env.getClientId(ctx);
     String sql =
         "SELECT * FROM R_Status "
             + "WHERE AD_Client_ID=? AND IsActive='Y' AND IsClosed='Y' "

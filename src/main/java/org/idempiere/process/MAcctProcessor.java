@@ -1,19 +1,18 @@
 package org.idempiere.process;
 
+import org.compiere.accounting.MClient;
+import org.compiere.model.*;
+import org.compiere.orm.Query;
+import org.compiere.schedule.MSchedule;
+import org.compiere.util.Msg;
+
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
-import org.compiere.accounting.MClient;
-import org.compiere.model.AdempiereProcessor;
-import org.compiere.model.AdempiereProcessor2;
-import org.compiere.model.AdempiereProcessorLog;
-import org.compiere.model.I_C_AcctProcessor;
-import org.compiere.model.I_C_AcctProcessorLog;
-import org.compiere.orm.Query;
-import org.compiere.schedule.MSchedule;
-import org.compiere.util.Msg;
-import org.idempiere.common.util.DB;
+
+import static software.hsharp.core.util.DBKt.executeUpdate;
+
 
 public class MAcctProcessor extends X_C_AcctProcessor
     implements AdempiereProcessor, AdempiereProcessor2 {

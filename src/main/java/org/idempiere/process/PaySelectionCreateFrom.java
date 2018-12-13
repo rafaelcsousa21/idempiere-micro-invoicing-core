@@ -14,12 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MPaySelection;
 import org.compiere.accounting.MPaySelectionLine;
 import org.compiere.model.IProcessInfoParameter;
@@ -27,8 +21,17 @@ import org.compiere.order.X_C_Order;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.exceptions.DBException;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Create Payment Selection Lines from AP Invoices
@@ -198,7 +201,7 @@ public class PaySelectionCreateFrom extends SvrProcess {
       pstmt.setInt(index++, C_CurrencyTo_ID);
       pstmt.setTimestamp(index++, psel.getPayDate());
       //
-      pstmt.setInt(index++, psel.getADClientID());
+      pstmt.setInt(index++, psel.getClientId());
       pstmt.setInt(index++, p_C_PaySelection_ID);
       if (p_PaymentRule != null) pstmt.setString(index++, p_PaymentRule);
       if (p_OnlyDiscount) pstmt.setTimestamp(index++, psel.getPayDate());

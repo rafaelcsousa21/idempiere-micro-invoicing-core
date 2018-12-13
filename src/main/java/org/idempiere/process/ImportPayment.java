@@ -14,19 +14,21 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MPayment;
 import org.compiere.accounting.X_I_Payment;
 import org.compiere.bank.MBankAccount;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import Payments
@@ -81,7 +83,7 @@ public class ImportPayment extends SvrProcess {
 
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(ba.getADClientID());
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(ba.getClientId());
 
     //	****	Prepare	****
 
@@ -99,7 +101,7 @@ public class ImportPayment extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Payment ")
             .append("SET AD_Client_ID = COALESCE (AD_Client_ID,")
-            .append(ba.getADClientID())
+            .append(ba.getClientId())
             .append("),")
             .append(" AD_Org_ID = COALESCE (AD_Org_ID,")
             .append(p_AD_Org_ID)

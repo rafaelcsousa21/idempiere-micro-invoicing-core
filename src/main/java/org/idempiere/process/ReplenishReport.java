@@ -15,7 +15,19 @@
  */
 package org.idempiere.process;
 
-import static org.idempiere.process.ReplenishReportProduction.getReplenishInterface;
+import org.compiere.accounting.*;
+import org.compiere.crm.MBPartner;
+import org.compiere.invoicing.MLocatorType;
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.ReplenishInterface;
+import org.compiere.orm.MDocType;
+import org.compiere.orm.MOrg;
+import org.compiere.process.SvrProcess;
+import org.compiere.production.MLocator;
+import org.compiere.util.Msg;
+import org.idempiere.common.util.AdempiereSystemError;
+import org.idempiere.common.util.AdempiereUserError;
+import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -23,27 +35,9 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
-import org.compiere.accounting.MClient;
-import org.compiere.accounting.MOrder;
-import org.compiere.accounting.MOrderLine;
-import org.compiere.accounting.MProduct;
-import org.compiere.accounting.MRequisition;
-import org.compiere.accounting.MRequisitionLine;
-import org.compiere.accounting.MStorageOnHand;
-import org.compiere.accounting.MWarehouse;
-import org.compiere.crm.MBPartner;
-import org.compiere.invoicing.MLocatorType;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.orm.MDocType;
-import org.compiere.orm.MOrg;
-import org.compiere.process.SvrProcess;
-import org.compiere.production.MLocator;
-import org.compiere.util.Msg;
-import org.compiere.util.ReplenishInterface;
-import org.idempiere.common.util.AdempiereSystemError;
-import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
+
+import static org.idempiere.process.ReplenishReportProduction.getReplenishInterface;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Replenishment Report
@@ -468,8 +462,8 @@ public class ReplenishReport extends SvrProcess {
         whSource = MWarehouse.get(getCtx(), replenish.getM_WarehouseSource_ID());
       if (wh == null || wh.getM_Warehouse_ID() != replenish.getM_Warehouse_ID())
         wh = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
-      if (client == null || client.getADClientID() != whSource.getADClientID())
-        client = MClient.get(getCtx(), whSource.getADClientID());
+      if (client == null || client.getClientId() != whSource.getClientId())
+        client = MClient.get(getCtx(), whSource.getClientId());
       //
       if (move == null
           || M_WarehouseSource_ID != replenish.getM_WarehouseSource_ID()
@@ -573,8 +567,8 @@ public class ReplenishReport extends SvrProcess {
         whSource = MWarehouse.get(getCtx(), replenish.getM_WarehouseSource_ID());
       if (wh == null || wh.getM_Warehouse_ID() != replenish.getM_Warehouse_ID())
         wh = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
-      if (client == null || client.getADClientID() != whSource.getADClientID())
-        client = MClient.get(getCtx(), whSource.getADClientID());
+      if (client == null || client.getClientId() != whSource.getClientId())
+        client = MClient.get(getCtx(), whSource.getClientId());
       //
       if (order == null
           || M_WarehouseSource_ID != replenish.getM_WarehouseSource_ID()

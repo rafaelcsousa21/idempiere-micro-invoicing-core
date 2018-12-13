@@ -45,6 +45,7 @@ import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.*;
 import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Generate Invoices
@@ -388,7 +389,7 @@ public class InvoiceGenerate extends SvrProcess {
         m_bp = new MBPartner(getCtx(), ship.getC_BPartner_ID(), get_TrxName());
 
       //	Reference: Delivery: 12345 - 12.12.12
-      MClient client = MClient.get(getCtx(), order.getADClientID());
+      MClient client = MClient.get(getCtx(), order.getClientId());
       String AD_Language = client.getADLanguage();
       if (client.isMultiLingualDocument() && m_bp.getADLanguage() != null)
         AD_Language = m_bp.getADLanguage();

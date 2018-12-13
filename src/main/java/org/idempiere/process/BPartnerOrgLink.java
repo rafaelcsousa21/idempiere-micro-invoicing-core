@@ -139,7 +139,7 @@ public class BPartnerOrgLink extends SvrProcess {
 
     //	Update BPartner
     bp.setAD_OrgBP_ID(p_AD_Org_ID);
-    if (bp.getOrgId() != 0) bp.setClientOrg(bp.getADClientID(), 0); // 	Shared BPartner
+    if (bp.getOrgId() != 0) bp.setClientOrg(bp.getClientId(), 0); // 	Shared BPartner
 
     //	Save BP
     if (!bp.save()) throw new Exception("Business Partner not updated");

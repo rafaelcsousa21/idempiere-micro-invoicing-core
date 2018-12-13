@@ -29,8 +29,10 @@ import org.compiere.invoicing.MInventoryLineMA;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Create Inventory Count List with current Book value

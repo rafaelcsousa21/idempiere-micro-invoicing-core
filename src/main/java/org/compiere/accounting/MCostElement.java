@@ -84,7 +84,7 @@ public class MCostElement extends X_M_CostElement {
     List<MCostElement> list =
         new Query(ctx, I_M_CostElement.Table_Name, whereClause, null)
             .setParameters(
-                Env.getADClientID(ctx), CostingMethod, X_M_CostElement.COSTELEMENTTYPE_Material)
+                Env.getClientId(ctx), CostingMethod, X_M_CostElement.COSTELEMENTTYPE_Material)
             .setOrderBy(I_M_CostElement.COLUMNNAME_AD_Org_ID)
             .list();
     MCostElement retValue = null;
@@ -109,7 +109,7 @@ public class MCostElement extends X_M_CostElement {
     List<MCostElement> list =
         new Query(ctx, I_M_CostElement.Table_Name, whereClause, null)
             .setParameters(
-                Env.getADClientID(ctx),
+                Env.getClientId(ctx),
                 CostingMethod,
                 X_M_CostElement.COSTELEMENTTYPE_Material,
                 AD_Org_ID)
@@ -206,7 +206,7 @@ public class MCostElement extends X_M_CostElement {
     final String whereClause = "AD_Client_ID = ? AND AD_Org_ID=?";
     List<MCostElement> list =
         new Query(ctx, I_M_CostElement.Table_Name, whereClause, trxName)
-            .setParameters(Env.getADClientID(ctx), AD_Org_ID)
+            .setParameters(Env.getClientId(ctx), AD_Org_ID)
             .list();
     MCostElement[] retValue = new MCostElement[list.size()];
     list.toArray(retValue);
@@ -224,7 +224,7 @@ public class MCostElement extends X_M_CostElement {
     final String whereClause = "AD_Client_ID = ? AND CostingMethod=?";
     return new Query(ctx, I_M_CostElement.Table_Name, whereClause, null)
         .setOnlyActiveRecords(true)
-        .setParameters(Env.getADClientID(ctx), CostingMethod)
+        .setParameters(Env.getClientId(ctx), CostingMethod)
         .list();
   }
 

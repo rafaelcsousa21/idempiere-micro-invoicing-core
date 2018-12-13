@@ -25,9 +25,10 @@ import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DisplayType;
 import org.idempiere.common.util.AdempiereUserError;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Language;
 import org.idempiere.orm.PO;
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Document Translation Sync
@@ -121,7 +122,7 @@ public class TranslationDocSync extends SvrProcess {
                 .append("_ID=b.")
                 .append(baseTable)
                 .append("_ID) WHERE AD_Client_ID=")
-                .append(getADClientID())
+                .append(getClientId())
                 .append(" AND AD_Language=")
                 .append(TO_STRING(client.getADLanguage()));
 
@@ -146,7 +147,7 @@ public class TranslationDocSync extends SvrProcess {
               .append("_ID=b.")
               .append(baseTable)
               .append("_ID) WHERE AD_Client_ID=")
-              .append(getADClientID());
+              .append(getClientId());
 
       int no = executeUpdate(sql.toString(), get_TrxName());
       addLog(0, null, new BigDecimal(no), baseTable);

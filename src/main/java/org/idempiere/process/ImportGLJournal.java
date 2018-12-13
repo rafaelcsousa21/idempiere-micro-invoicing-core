@@ -15,12 +15,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MAccount;
 import org.compiere.accounting.MJournal;
 import org.compiere.accounting.MJournalBatch;
@@ -28,7 +22,16 @@ import org.compiere.accounting.MJournalLine;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.TimeUtil;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.CLogger;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * Import GL Journal Batch/JournalLine from I_Journal
@@ -805,7 +808,7 @@ public class ImportGLJournal extends SvrProcess {
         if (imp.isCreateNewBatch() || (batch == null && imp.getBatchDocumentNo() != null)) {
           BatchDocumentNo = impBatchDocumentNo; // 	cannot compare real DocumentNo
           batch = new MJournalBatch(getCtx(), 0, get_TrxName());
-          batch.setClientOrg(imp.getADClientID(), imp.getAD_OrgDoc_ID());
+          batch.setClientOrg(imp.getClientId(), imp.getAD_OrgDoc_ID());
           if (imp.getBatchDocumentNo() != null && imp.getBatchDocumentNo().length() > 0)
             batch.setDocumentNo(imp.getBatchDocumentNo());
           batch.setC_DocType_ID(imp.getC_DocType_ID());
@@ -845,7 +848,7 @@ public class ImportGLJournal extends SvrProcess {
           DateAcct = impDateAcct;
           journal = new MJournal(getCtx(), 0, get_TrxName());
           if (batch != null) journal.setGL_JournalBatch_ID(batch.getGL_JournalBatch_ID());
-          journal.setClientOrg(imp.getADClientID(), imp.getAD_OrgDoc_ID());
+          journal.setClientOrg(imp.getClientId(), imp.getAD_OrgDoc_ID());
           //
           String description = imp.getBatchDescription();
           if (description == null || description.length() == 0) description = "(Import)";
@@ -889,7 +892,7 @@ public class ImportGLJournal extends SvrProcess {
           MAccount acct =
               MAccount.get(
                   getCtx(),
-                  imp.getADClientID(),
+                  imp.getClientId(),
                   imp.getOrgId(),
                   imp.getC_AcctSchema_ID(),
                   imp.getAccount_ID(),

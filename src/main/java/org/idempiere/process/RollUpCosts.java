@@ -4,8 +4,9 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
+
 import org.idempiere.common.util.Env;
+import static software.hsharp.core.util.DBKt.*;
 
 public class RollUpCosts extends SvrProcess {
 
@@ -37,7 +38,7 @@ public class RollUpCosts extends SvrProcess {
   }
 
   protected String doIt() throws Exception {
-    client_id = Env.getADClientID(getCtx());
+    client_id = Env.getClientId(getCtx());
     createArray();
     String result = rollUp();
     return result;

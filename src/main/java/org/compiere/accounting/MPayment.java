@@ -751,7 +751,7 @@ public class MPayment extends X_C_Payment
     }
 
     if (MSysConfig.getBooleanValue(
-        MSysConfig.IBAN_VALIDATION, true, Env.getADClientID(Env.getCtx()))) {
+        MSysConfig.IBAN_VALIDATION, true, Env.getClientId(Env.getCtx()))) {
       if (!Util.isEmpty(getIBAN())) {
         setIBAN(IBAN.normalizeIBAN(getIBAN()));
         if (!IBAN.isValid(getIBAN())) {
@@ -855,7 +855,7 @@ public class MPayment extends X_C_Payment
     int counter = 0;
     String sql = "SELECT * FROM C_Payment " + "WHERE IsAllocated='N' AND DocStatus IN ('CO','CL')";
     if (C_BPartner_ID > 1) sql += " AND C_BPartner_ID=?";
-    else sql += " AND AD_Client_ID=" + Env.getADClientID(ctx);
+    else sql += " AND AD_Client_ID=" + Env.getClientId(ctx);
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
@@ -1548,7 +1548,7 @@ public class MPayment extends X_C_Payment
       if (getPayAmt().compareTo(sumPaymentAllocates) != 0) {
         if (isReceipt() && getPayAmt().compareTo(sumPaymentAllocates) < 0) {
           if (MSysConfig.getBooleanValue(
-              MSysConfig.ALLOW_OVER_APPLIED_PAYMENT, false, Env.getADClientID(Env.getCtx()))) {
+              MSysConfig.ALLOW_OVER_APPLIED_PAYMENT, false, Env.getClientId(Env.getCtx()))) {
             return true;
           }
         }

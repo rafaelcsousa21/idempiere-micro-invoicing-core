@@ -14,16 +14,18 @@
  */
 package org.idempiere.process;
 
+import org.compiere.accounting.MStorageOnHand;
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.process.SvrProcess;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
-import org.compiere.accounting.MStorageOnHand;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.DB;
-import org.idempiere.common.util.Env;
+
+import static software.hsharp.core.util.DBKt.*;
 
 /**
  * StorageCleanup
@@ -92,7 +94,7 @@ public class StorageCleanup extends SvrProcess {
     int lines = 0;
     try {
       pstmt = prepareStatement(sql, get_TrxName());
-      pstmt.setInt(1, Env.getADClientID(getCtx()));
+      pstmt.setInt(1, Env.getClientId(getCtx()));
       rs = pstmt.executeQuery();
       while (rs.next()) {
         lines += move(new MStorageOnHand(getCtx(), rs, get_TrxName()));
