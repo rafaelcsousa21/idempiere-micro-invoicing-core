@@ -241,7 +241,7 @@ public class M_PriceList_Create extends SvrProcess {
     ResultSet rsCurgen = null;
     PreparedStatement stmtDiscountLine = null;
     ResultSet rsDiscountLine = null;
-    CPreparedStatement stmt = null;
+    PreparedStatement stmt = null;
     PreparedStatement pstmt = null;
     try {
       stmtCurgen = prepareStatement(sql.toString(), get_TrxName());
