@@ -2,6 +2,7 @@ package org.compiere.invoicing.test
 
 import company.bigger.test.support.BaseTest
 import company.bigger.test.support.randomString
+import kotliquery.HikariCP
 import org.compiere.model.*
 import org.compiere.orm.IModelFactory
 import org.compiere.orm.MClient
@@ -27,11 +28,19 @@ import org.compiere.tax.MTax
 import org.compiere.model.I_C_Tax
 import org.compiere.product.MProduct
 import org.compiere.product.MUOM
+import software.hsharp.core.orm.DummyEventManager
 
-abstract class BaseComponentTest : BaseTest() {
+internal val sessionUrl = System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere"
+
+abstract class BaseComponentTest {
     companion object {
         val NEW_AD_CLIENT_ID = 1000000
         const val EUR = 102
+    }
+
+    init {
+        HikariCP.default(sessionUrl, "adempiere", "adempiere")
+        DummyEventManager()
     }
 
     protected fun loginClient(idClient: Int) {

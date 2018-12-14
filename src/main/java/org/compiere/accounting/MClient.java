@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_Client;
 import org.compiere.model.I_AD_User;
 import org.compiere.model.Server;
@@ -45,6 +46,10 @@ public class MClient extends org.compiere.orm.MClient {
   public MClient(Properties ctx, int AD_Client_ID, boolean createNew, String trxName) {
     super(ctx, AD_Client_ID, createNew, trxName);
   }
+
+  public MClient(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MClient
 
   /**
    * Get all clients
