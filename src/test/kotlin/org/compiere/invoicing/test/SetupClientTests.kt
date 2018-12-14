@@ -4,7 +4,7 @@ import company.bigger.test.support.randomString
 import org.compiere.crm.MCountry
 import org.compiere.process.ProcessInfo
 import org.idempiere.common.util.ServerContext
-import org.junit.Test
+import org.idempiere.process.InitialClientSetup
 import java.util.*
 import kotlin.test.assertTrue
 

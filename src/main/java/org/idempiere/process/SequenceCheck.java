@@ -14,16 +14,20 @@
  */
 package org.idempiere.process;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MClient;
 import org.compiere.orm.MSequence;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Trx;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import static software.hsharp.core.orm.MBaseSequenceKt.doCheckClientSequences;
 import static software.hsharp.core.util.DBKt.*;
 
 /**
@@ -225,7 +229,7 @@ public class SequenceCheck extends SvrProcess {
     for (int i = 0; i < clients.length; i++) {
       MClient client = clients[i];
       if (!client.isActive()) continue;
-      checkClientSequences(ctx, client.getClientId(), trxName);
+      doCheckClientSequences(ctx, client.getClientId());
     } //	for all clients
   } //	checkClientSequences
 } //	SequenceCheck

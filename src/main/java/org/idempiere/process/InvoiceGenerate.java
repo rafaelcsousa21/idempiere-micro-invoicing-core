@@ -14,25 +14,12 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Savepoint;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
-import java.util.logging.Level;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.MLocation;
-import org.compiere.invoicing.MInOut;
-import org.compiere.invoicing.MInOutLine;
-import org.compiere.invoicing.MInvoice;
-import org.compiere.invoicing.MInvoiceLine;
-import org.compiere.invoicing.MInvoicePaySchedule;
-import org.compiere.invoicing.MInvoiceSchedule;
+import org.compiere.invoicing.*;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.orm.MDocType;
@@ -43,9 +30,18 @@ import org.compiere.product.MCurrency;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.*;
 import org.idempiere.common.util.Env;
-import static software.hsharp.core.util.DBKt.*;
+import org.idempiere.common.util.Language;
+import org.idempiere.common.util.Trx;
+
+import java.math.BigDecimal;
+import java.sql.*;
+import java.text.DecimalFormat;
+import java.util.logging.Level;
+
+import static org.compiere.crm.MBaseLocationKt.getBPLocation;
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Generate Invoices
@@ -413,7 +409,7 @@ public class InvoiceGenerate extends SvrProcess {
         throw new IllegalStateException("Could not create Invoice Comment Line (sh)");
       //	Optional Ship Address if not Bill Address
       if (order.getBill_Location_ID() != ship.getC_BPartner_Location_ID()) {
-        MLocation addr = MLocation.getBPLocation(getCtx(), ship.getC_BPartner_Location_ID(), null);
+        MLocation addr = getBPLocation(getCtx(), ship.getC_BPartner_Location_ID());
         line = new MInvoiceLine(m_invoice);
         line.setIsDescription(true);
         line.setDescription(addr.toString());
