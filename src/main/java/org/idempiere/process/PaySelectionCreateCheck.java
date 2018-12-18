@@ -64,7 +64,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
     if (log.isLoggable(Level.INFO))
       log.info("C_PaySelection_ID=" + p_C_PaySelection_ID + ", PaymentRule=" + p_PaymentRule);
 
-    MPaySelection psel = new MPaySelection(getCtx(), p_C_PaySelection_ID, get_TrxName());
+    MPaySelection psel = new MPaySelection(getCtx(), p_C_PaySelection_ID, null);
     if (psel.getId() == 0)
       throw new IllegalArgumentException("Not found C_PaySelection_ID=" + p_C_PaySelection_ID);
     if (psel.isProcessed()) throw new IllegalArgumentException("@Processed@");

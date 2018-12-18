@@ -55,13 +55,13 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
     }
 
     MMovementConfirm confirm = new MMovementConfirm(move);
-    confirm.saveEx(move.get_TrxName());
+    confirm.saveEx(null);
     MMovementLine[] moveLines = move.getLines(false);
     for (int i = 0; i < moveLines.length; i++) {
       MMovementLine mLine = moveLines[i];
       MMovementLineConfirm cLine = new MMovementLineConfirm(confirm);
       cLine.setMovementLine(mLine);
-      cLine.saveEx(move.get_TrxName());
+      cLine.saveEx(null);
     }
     return confirm;
   } //	MInOutConfirm
@@ -101,7 +101,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
    * @param move movement
    */
   public MMovementConfirm(MMovement move) {
-    this(move.getCtx(), 0, move.get_TrxName());
+    this(move.getCtx(), 0, null);
     setClientOrg(move);
     setM_Movement_ID(move.getM_Movement_ID());
   } //	MInOutConfirm
@@ -126,7 +126,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
    */
   public MMovementLineConfirm[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      set_TrxName(m_lines, get_TrxName());
+      set_TrxName(m_lines, null);
       return m_lines;
     }
     String sql = "SELECT * FROM M_MovementLineConfirm " + "WHERE M_MovementConfirm_ID=?";
@@ -134,10 +134,10 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getM_MovementConfirm_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MMovementLineConfirm(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MMovementLineConfirm(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
@@ -342,22 +342,22 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
     if (log.isLoggable(Level.INFO)) log.info("completeIt - " + toString());
     //
     m_inventoryDoc = new ArrayList<MInventory>();
-    MMovement move = new MMovement(getCtx(), getM_Movement_ID(), get_TrxName());
+    MMovement move = new MMovement(getCtx(), getM_Movement_ID(), null);
     MMovementLineConfirm[] lines = getLines(false);
     for (int i = 0; i < lines.length; i++) {
       MMovementLineConfirm confirm = lines[i];
-      confirm.set_TrxName(get_TrxName());
+      confirm.set_TrxName(null);
       if (!confirm.processLine()) {
         m_processMsg = "ShipLine not saved - " + confirm;
         return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
       }
       if (confirm.isFullyConfirmed() && confirm.getScrappedQty().signum() == 0) {
         confirm.setProcessed(true);
-        confirm.saveEx(get_TrxName());
+        confirm.saveEx(null);
       } else {
         if (createDifferenceDoc(move, confirm)) {
           confirm.setProcessed(true);
-          confirm.saveEx(get_TrxName());
+          confirm.saveEx(null);
         } else {
           log.log(
               Level.SEVERE,
@@ -435,11 +435,11 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
 
       if (m_inventoryFrom == null) {
         MWarehouse wh = MWarehouse.get(getCtx(), loc.getM_Warehouse_ID());
-        m_inventoryFrom = new MInventory(wh, get_TrxName());
+        m_inventoryFrom = new MInventory(wh, null);
         m_inventoryFrom.setDescription(
             Msg.translate(getCtx(), "M_MovementConfirm_ID") + " " + getDocumentNo());
         setInventoryDocType(m_inventoryFrom);
-        if (!m_inventoryFrom.save(get_TrxName())) {
+        if (!m_inventoryFrom.save(null)) {
           updateProcessMsg("Inventory not created");
           return false;
         }
@@ -462,7 +462,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
               confirm.getDifferenceQty(),
               Env.ZERO);
       line.setDescription(Msg.translate(getCtx(), "DifferenceQty"));
-      if (!line.save(get_TrxName())) {
+      if (!line.save(null)) {
         updateProcessMsg("Inventory Line not created");
         return false;
       }
@@ -478,11 +478,11 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
 
       if (m_inventoryTo == null) {
         MWarehouse wh = MWarehouse.get(getCtx(), loc.getM_Warehouse_ID());
-        m_inventoryTo = new MInventory(wh, get_TrxName());
+        m_inventoryTo = new MInventory(wh, null);
         m_inventoryTo.setDescription(
             Msg.translate(getCtx(), "M_MovementConfirm_ID") + " " + getDocumentNo());
         setInventoryDocType(m_inventoryTo);
-        if (!m_inventoryTo.save(get_TrxName())) {
+        if (!m_inventoryTo.save(null)) {
           updateProcessMsg("Inventory not created");
           return false;
         }
@@ -505,7 +505,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
               confirm.getScrappedQty(),
               Env.ZERO);
       line.setDescription(Msg.translate(getCtx(), "ScrappedQty"));
-      if (!line.save(get_TrxName())) {
+      if (!line.save(null)) {
         updateProcessMsg("Inventory Line not created");
         return false;
       }

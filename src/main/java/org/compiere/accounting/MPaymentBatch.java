@@ -73,7 +73,7 @@ public class MPaymentBatch extends X_C_PaymentBatch {
    * @param ps Pay Selection
    */
   public MPaymentBatch(MPaySelection ps) {
-    this(ps.getCtx(), 0, ps.get_TrxName());
+    this(ps.getCtx(), 0, null);
     setClientOrg(ps);
     setName(ps.getName());
   } //	MPaymentBatch

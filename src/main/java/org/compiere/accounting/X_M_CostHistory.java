@@ -55,7 +55,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -84,7 +84,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
   public org.compiere.model.I_M_CostDetail getM_CostDetail() throws RuntimeException {
     return (org.compiere.model.I_M_CostDetail)
         MTable.get(getCtx(), org.compiere.model.I_M_CostDetail.Table_Name)
-            .getPO(getM_CostDetail_ID(), get_TrxName());
+            .getPO(getM_CostDetail_ID(), null);
   }
 
   /**
@@ -111,7 +111,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
   public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
     return (org.compiere.model.I_M_CostElement)
         MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), get_TrxName());
+            .getPO(getM_CostElement_ID(), null);
   }
 
   /**
@@ -177,7 +177,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
   public org.compiere.model.I_M_CostType getM_CostType() throws RuntimeException {
     return (org.compiere.model.I_M_CostType)
         MTable.get(getCtx(), org.compiere.model.I_M_CostType.Table_Name)
-            .getPO(getM_CostType_ID(), get_TrxName());
+            .getPO(getM_CostType_ID(), null);
   }
 
   /**

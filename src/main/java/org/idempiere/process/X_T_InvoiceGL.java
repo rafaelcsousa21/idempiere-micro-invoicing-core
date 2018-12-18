@@ -51,7 +51,7 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
   public org.compiere.model.I_AD_PInstance getAD_PInstance() throws RuntimeException {
     return (org.compiere.model.I_AD_PInstance)
         MTable.get(getCtx(), org.compiere.model.I_AD_PInstance.Table_Name)
-            .getPO(getAD_PInstance_ID(), get_TrxName());
+            .getPO(getAD_PInstance_ID(), null);
   }
 
   /**
@@ -225,7 +225,7 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
   public org.compiere.model.I_C_ConversionType getC_ConversionTypeReval() throws RuntimeException {
     return (org.compiere.model.I_C_ConversionType)
         MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionTypeReval_ID(), get_TrxName());
+            .getPO(getC_ConversionTypeReval_ID(), null);
   }
 
   /**
@@ -252,7 +252,7 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
   public org.compiere.model.I_C_DocType getC_DocTypeReval() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocTypeReval_ID(), get_TrxName());
+            .getPO(getC_DocTypeReval_ID(), null);
   }
 
   /**
@@ -279,7 +279,7 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), get_TrxName());
+            .getPO(getC_Invoice_ID(), null);
   }
 
   /**

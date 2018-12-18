@@ -92,7 +92,7 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
    * @param M_CostElement_ID cost element
    */
   public MLandedCostAllocation(MInvoiceLine parent, int M_CostElement_ID) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setC_InvoiceLine_ID(parent.getC_InvoiceLine_ID());
     setM_CostElement_ID(M_CostElement_ID);

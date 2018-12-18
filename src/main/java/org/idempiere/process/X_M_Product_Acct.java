@@ -54,7 +54,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -99,7 +99,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -126,7 +126,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_Asset_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_Asset_Acct(), get_TrxName());
+            .getPO(getP_Asset_Acct(), null);
   }
 
   /**
@@ -152,7 +152,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_AverageCostVariance_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_AverageCostVariance_Acct(), get_TrxName());
+            .getPO(getP_AverageCostVariance_Acct(), null);
   }
 
   /**
@@ -178,7 +178,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_COGS_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_COGS_Acct(), get_TrxName());
+            .getPO(getP_COGS_Acct(), null);
   }
 
   /**
@@ -204,7 +204,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_CostAdjustment_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_CostAdjustment_Acct(), get_TrxName());
+            .getPO(getP_CostAdjustment_Acct(), null);
   }
 
   /**
@@ -230,7 +230,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_Expense_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_Expense_Acct(), get_TrxName());
+            .getPO(getP_Expense_Acct(), null);
   }
 
   /**
@@ -256,7 +256,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_InventoryClearing_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_InventoryClearing_Acct(), get_TrxName());
+            .getPO(getP_InventoryClearing_Acct(), null);
   }
 
   /**
@@ -282,7 +282,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_InvoicePriceVariance_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_InvoicePriceVariance_Acct(), get_TrxName());
+            .getPO(getP_InvoicePriceVariance_Acct(), null);
   }
 
   /**
@@ -308,7 +308,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_LandedCostClearing_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_LandedCostClearing_Acct(), get_TrxName());
+            .getPO(getP_LandedCostClearing_Acct(), null);
   }
 
   /**
@@ -334,7 +334,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_PurchasePriceVariance_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_PurchasePriceVariance_Acct(), get_TrxName());
+            .getPO(getP_PurchasePriceVariance_Acct(), null);
   }
 
   /**
@@ -361,7 +361,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_RateVariance_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_RateVariance_Acct(), get_TrxName());
+            .getPO(getP_RateVariance_Acct(), null);
   }
 
   /**
@@ -387,7 +387,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_Revenue_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_Revenue_Acct(), get_TrxName());
+            .getPO(getP_Revenue_Acct(), null);
   }
 
   /**
@@ -413,7 +413,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_TradeDiscountGrant_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_TradeDiscountGrant_Acct(), get_TrxName());
+            .getPO(getP_TradeDiscountGrant_Acct(), null);
   }
 
   /**
@@ -439,7 +439,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct, I_Persiste
   public I_C_ValidCombination getP_TradeDiscountRec_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_TradeDiscountRec_Acct(), get_TrxName());
+            .getPO(getP_TradeDiscountRec_Acct(), null);
   }
 
   /**

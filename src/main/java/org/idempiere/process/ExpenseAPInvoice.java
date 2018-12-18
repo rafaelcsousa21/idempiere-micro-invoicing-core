@@ -14,10 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MTimeExpense;
 import org.compiere.accounting.MTimeExpenseLine;
 import org.compiere.crm.MBPartner;
@@ -29,10 +25,15 @@ import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
-
 import org.idempiere.common.util.Env;
-import static software.hsharp.core.util.DBKt.*;
-import static software.hsharp.core.util.DBKt.*;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.close;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Create AP Invoices from Expense Reports
@@ -71,7 +72,7 @@ public class ExpenseAPInvoice extends SvrProcess {
         new StringBuilder("SELECT * ")
             .append("FROM S_TimeExpense e ")
             .append("WHERE e.Processed='Y'")
-            .append(" AND e.AD_Client_ID=?"); // 	#1
+            .append(" AND e.clientId=?"); // 	#1
     if (m_C_BPartner_ID != 0) sql.append(" AND e.C_BPartner_ID=?"); // 	#2
     if (m_DateFrom != null) sql.append(" AND e.DateReport >= ?"); // 	#3
     if (m_DateTo != null) sql.append(" AND e.DateReport <= ?"); // 	#4
@@ -87,7 +88,7 @@ public class ExpenseAPInvoice extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       int par = 1;
       pstmt.setInt(par++, getClientId());
       if (m_C_BPartner_ID != 0) pstmt.setInt(par++, m_C_BPartner_ID);
@@ -96,15 +97,15 @@ public class ExpenseAPInvoice extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) // 	********* Expense Line Loop
       {
-        MTimeExpense te = new MTimeExpense(getCtx(), rs, get_TrxName());
+        MTimeExpense te = new MTimeExpense(getCtx(), rs, null);
 
         //	New BPartner - New Order
         if (te.getC_BPartner_ID() != old_BPartner_ID) {
           completeInvoice(invoice);
-          MBPartner bp = new MBPartner(getCtx(), te.getC_BPartner_ID(), get_TrxName());
+          MBPartner bp = new MBPartner(getCtx(), te.getC_BPartner_ID(), null);
           //
           if (log.isLoggable(Level.INFO)) log.info("New Invoice for " + bp);
-          invoice = new MInvoice(getCtx(), 0, get_TrxName());
+          invoice = new MInvoice(getCtx(), 0, null);
           invoice.setClientOrg(te.getClientId(), te.getOrgId());
           invoice.setC_DocTypeTarget_ID(MDocType.DOCBASETYPE_APInvoice); // 	API
           invoice.setDocumentNo(te.getDocumentNo());

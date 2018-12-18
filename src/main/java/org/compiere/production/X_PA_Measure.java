@@ -70,7 +70,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
   public org.compiere.model.I_C_ProjectType getC_ProjectType() throws RuntimeException {
     return (org.compiere.model.I_C_ProjectType)
         MTable.get(getCtx(), org.compiere.model.I_C_ProjectType.Table_Name)
-            .getPO(getC_ProjectType_ID(), get_TrxName());
+            .getPO(getC_ProjectType_ID(), null);
   }
 
   /**
@@ -213,7 +213,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
   public org.compiere.model.I_PA_Benchmark getPA_Benchmark() throws RuntimeException {
     return (org.compiere.model.I_PA_Benchmark)
         MTable.get(getCtx(), org.compiere.model.I_PA_Benchmark.Table_Name)
-            .getPO(getPA_Benchmark_ID(), get_TrxName());
+            .getPO(getPA_Benchmark_ID(), null);
   }
 
   /**
@@ -240,7 +240,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
   public org.compiere.model.I_PA_Hierarchy getPA_Hierarchy() throws RuntimeException {
     return (org.compiere.model.I_PA_Hierarchy)
         MTable.get(getCtx(), org.compiere.model.I_PA_Hierarchy.Table_Name)
-            .getPO(getPA_Hierarchy_ID(), get_TrxName());
+            .getPO(getPA_Hierarchy_ID(), null);
   }
 
   /**
@@ -268,7 +268,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
   public org.compiere.model.I_PA_MeasureCalc getPA_MeasureCalc() throws RuntimeException {
     return (org.compiere.model.I_PA_MeasureCalc)
         MTable.get(getCtx(), org.compiere.model.I_PA_MeasureCalc.Table_Name)
-            .getPO(getPA_MeasureCalc_ID(), get_TrxName());
+            .getPO(getPA_MeasureCalc_ID(), null);
   }
 
   /**
@@ -334,7 +334,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
   public org.compiere.model.I_PA_Ratio getPA_Ratio() throws RuntimeException {
     return (org.compiere.model.I_PA_Ratio)
         MTable.get(getCtx(), org.compiere.model.I_PA_Ratio.Table_Name)
-            .getPO(getPA_Ratio_ID(), get_TrxName());
+            .getPO(getPA_Ratio_ID(), null);
   }
 
   /**
@@ -361,7 +361,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
   public org.compiere.model.I_R_RequestType getR_RequestType() throws RuntimeException {
     return (org.compiere.model.I_R_RequestType)
         MTable.get(getCtx(), org.compiere.model.I_R_RequestType.Table_Name)
-            .getPO(getR_RequestType_ID(), get_TrxName());
+            .getPO(getR_RequestType_ID(), null);
   }
 
   /**

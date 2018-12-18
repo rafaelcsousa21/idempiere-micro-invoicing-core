@@ -57,7 +57,7 @@ public class InventoryCountUpdate extends SvrProcess {
    */
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("M_Inventory_ID=" + p_M_Inventory_ID);
-    MInventory inventory = new MInventory(getCtx(), p_M_Inventory_ID, get_TrxName());
+    MInventory inventory = new MInventory(getCtx(), p_M_Inventory_ID, null);
     if (inventory.getId() == 0)
       throw new AdempiereSystemError("Not found: M_Inventory_ID=" + p_M_Inventory_ID);
 
@@ -73,10 +73,10 @@ public class InventoryCountUpdate extends SvrProcess {
             .append(p_M_Inventory_ID)
             .append(" GROUP BY M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID ")
             .append("HAVING COUNT(*) > 1)");
-    int multiple = executeUpdate(sql.toString(), get_TrxName());
+    int multiple = executeUpdate(sql.toString(), null);
     if (log.isLoggable(Level.INFO)) log.info("Multiple=" + multiple);
 
-    int delMA = MInventoryLineMA.deleteInventoryMA(p_M_Inventory_ID, get_TrxName());
+    int delMA = MInventoryLineMA.deleteInventoryMA(p_M_Inventory_ID, null);
     if (log.isLoggable(Level.INFO)) log.info("DeletedMA=" + delMA);
 
     //	ASI
@@ -95,7 +95,7 @@ public class InventoryCountUpdate extends SvrProcess {
             .append(" AND EXISTS (SELECT * FROM M_StorageOnHand s ")
             .append("WHERE s.M_Product_ID=l.M_Product_ID AND s.M_Locator_ID=l.M_Locator_ID")
             .append(" AND s.M_AttributeSetInstance_ID=l.M_AttributeSetInstance_ID)");
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
     if (log.isLoggable(Level.INFO)) log.info("Update with ASI=" + no);
 
     //	Set Count to Zero
@@ -105,7 +105,7 @@ public class InventoryCountUpdate extends SvrProcess {
               .append("SET QtyCount=0 ")
               .append("WHERE M_Inventory_ID=")
               .append(p_M_Inventory_ID);
-      no = executeUpdate(sql.toString(), get_TrxName());
+      no = executeUpdate(sql.toString(), null);
       if (log.isLoggable(Level.INFO)) log.info("Set Count to Zero=" + no);
     }
 

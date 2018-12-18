@@ -119,7 +119,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -149,7 +149,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
 
   public I_M_Locator getM_Locator() throws RuntimeException {
     return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), get_TrxName());
+        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
   }
 
   /**
@@ -196,7 +196,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -223,7 +223,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
   public org.compiere.model.I_M_Production getM_Production() throws RuntimeException {
     return (org.compiere.model.I_M_Production)
         MTable.get(getCtx(), org.compiere.model.I_M_Production.Table_Name)
-            .getPO(getM_Production_ID(), get_TrxName());
+            .getPO(getM_Production_ID(), null);
   }
 
   /**
@@ -303,7 +303,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
   public org.compiere.model.I_M_ProductionPlan getM_ProductionPlan() throws RuntimeException {
     return (org.compiere.model.I_M_ProductionPlan)
         MTable.get(getCtx(), org.compiere.model.I_M_ProductionPlan.Table_Name)
-            .getPO(getM_ProductionPlan_ID(), get_TrxName());
+            .getPO(getM_ProductionPlan_ID(), null);
   }
 
   /**

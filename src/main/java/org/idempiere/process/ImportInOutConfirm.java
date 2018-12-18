@@ -46,7 +46,7 @@ public class ImportInOutConfirm extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("AD_Client_ID"))
+      else if (name.equals("clientId"))
         p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("DeleteOldImported"))
         p_DeleteOldImported = "Y".equals(para[i].getParameter());
@@ -66,7 +66,7 @@ public class ImportInOutConfirm extends SvrProcess {
     if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(p_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(p_AD_Client_ID);
 
     //	Delete Old Imported
     if (p_DeleteOldImported) {
@@ -74,7 +74,7 @@ public class ImportInOutConfirm extends SvrProcess {
           new StringBuilder("DELETE I_InOutLineConfirm ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), get_TrxName());
+      no = executeUpdate(sql.toString(), null);
       if (log.isLoggable(Level.FINE)) log.fine("Delete Old Impored =" + no);
     }
 
@@ -89,18 +89,18 @@ public class ImportInOutConfirm extends SvrProcess {
             .append(" I_ErrorMsg = ' ',")
             .append(" I_IsImported = 'N' ")
             .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (log.isLoggable(Level.INFO)) log.info("Reset=" + no);
 
     //	Set Client from Name
     sql =
         new StringBuilder("UPDATE I_InOutLineConfirm i ")
-            .append("SET AD_Client_ID=COALESCE (AD_Client_ID,")
+            .append("SET clientId=COALESCE (clientId,")
             .append(p_AD_Client_ID)
             .append(") ")
-            .append("WHERE (AD_Client_ID IS NULL OR AD_Client_ID=0)")
+            .append("WHERE (clientId IS NULL OR clientId=0)")
             .append(" AND I_IsImported<>'Y'");
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("Set Client from Value=" + no);
 
     //	Error Confirmation Line
@@ -113,7 +113,7 @@ public class ImportInOutConfirm extends SvrProcess {
                 " OR NOT EXISTS (SELECT * FROM M_InOutLineConfirm c WHERE i.M_InOutLineConfirm_ID=c.M_InOutLineConfirm_ID))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (no != 0) log.warning("Invalid InOutLineConfirm=" + no);
 
     //	Error Confirmation No
@@ -123,7 +123,7 @@ public class ImportInOutConfirm extends SvrProcess {
             .append("WHERE (ConfirmationNo IS NULL OR ConfirmationNo='')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (no != 0) log.warning("Invalid ConfirmationNo=" + no);
 
     //	Qty
@@ -136,10 +136,9 @@ public class ImportInOutConfirm extends SvrProcess {
             .append(" AND c.TargetQty<>(i.ConfirmedQty+i.ScrappedQty+i.DifferenceQty))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (no != 0) log.warning("Invalid Qty=" + no);
 
-    commitEx();
 
     /** ****************************************************************** */
     PreparedStatement pstmt = null;
@@ -151,12 +150,12 @@ public class ImportInOutConfirm extends SvrProcess {
             .append(" ORDER BY I_InOutLineConfirm_ID");
     no = 0;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        X_I_InOutLineConfirm importLine = new X_I_InOutLineConfirm(getCtx(), rs, get_TrxName());
+        X_I_InOutLineConfirm importLine = new X_I_InOutLineConfirm(getCtx(), rs, null);
         MInOutLineConfirm confirmLine =
-            new MInOutLineConfirm(getCtx(), importLine.getM_InOutLineConfirm_ID(), get_TrxName());
+            new MInOutLineConfirm(getCtx(), importLine.getM_InOutLineConfirm_ID(), null);
         if (confirmLine.getId() == 0
             || confirmLine.getId() != importLine.getM_InOutLineConfirm_ID()) {
           importLine.setI_IsImported(false);

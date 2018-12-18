@@ -239,14 +239,14 @@ public class MDistribution extends X_GL_Distribution {
    */
   public MDistributionLine[] getLines(boolean reload) {
     if (m_lines != null && !reload) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     BigDecimal PercentTotal = Env.ZERO;
     // red1 Query
     final String whereClause = I_GL_DistributionLine.COLUMNNAME_GL_Distribution_ID + "=?";
     List<MDistributionLine> list =
-        new Query(getCtx(), I_GL_DistributionLine.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_GL_DistributionLine.Table_Name, whereClause, null)
             .setParameters(getGL_Distribution_ID())
             .setOrderBy("Line")
             .list();

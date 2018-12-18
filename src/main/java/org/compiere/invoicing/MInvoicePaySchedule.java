@@ -110,7 +110,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
    * @param paySchedule payment schedule
    */
   public MInvoicePaySchedule(MInvoice invoice, MPaySchedule paySchedule) {
-    super(invoice.getCtx(), 0, invoice.get_TrxName());
+    super(invoice.getCtx(), 0, null);
     m_parent = invoice;
     setClientOrg(invoice);
     setC_Invoice_ID(invoice.getC_Invoice_ID());
@@ -148,7 +148,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
 
   /** @return Returns the parent. */
   public MInvoice getParent() {
-    if (m_parent == null) m_parent = new MInvoice(getCtx(), getC_Invoice_ID(), get_TrxName());
+    if (m_parent == null) m_parent = new MInvoice(getCtx(), getC_Invoice_ID(), null);
     return m_parent;
   } //	getParent
 

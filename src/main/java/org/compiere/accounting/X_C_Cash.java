@@ -90,7 +90,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -117,7 +117,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
   public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
     return (org.compiere.model.I_C_Campaign)
         MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), get_TrxName());
+            .getPO(getC_Campaign_ID(), null);
   }
 
   /**
@@ -144,7 +144,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
   public org.compiere.model.I_C_CashBook getC_CashBook() throws RuntimeException {
     return (org.compiere.model.I_C_CashBook)
         MTable.get(getCtx(), org.compiere.model.I_C_CashBook.Table_Name)
-            .getPO(getC_CashBook_ID(), get_TrxName());
+            .getPO(getC_CashBook_ID(), null);
   }
 
   /**
@@ -210,7 +210,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -539,7 +539,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), get_TrxName());
+            .getPO(getUser1_ID(), null);
   }
 
   /**
@@ -566,7 +566,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), get_TrxName());
+            .getPO(getUser2_ID(), null);
   }
 
   /**

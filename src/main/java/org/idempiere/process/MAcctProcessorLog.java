@@ -1,8 +1,9 @@
 package org.idempiere.process;
 
+import org.compiere.model.AdempiereProcessorLog;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.compiere.model.AdempiereProcessorLog;
 
 public class MAcctProcessorLog extends X_C_AcctProcessorLog implements AdempiereProcessorLog {
 
@@ -38,7 +39,7 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
    * @param summary summary
    */
   public MAcctProcessorLog(MAcctProcessor parent, String summary) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setC_AcctProcessor_ID(parent.getC_AcctProcessor_ID());
     setSummary(summary);

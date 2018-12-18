@@ -51,7 +51,7 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
   public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException {
     return (org.compiere.model.I_AD_Role)
         MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
-            .getPO(getAD_Role_ID(), get_TrxName());
+            .getPO(getAD_Role_ID(), null);
   }
 
   /**
@@ -78,7 +78,7 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
   public org.compiere.model.I_AD_Scheduler getAD_Scheduler() throws RuntimeException {
     return (org.compiere.model.I_AD_Scheduler)
         MTable.get(getCtx(), org.compiere.model.I_AD_Scheduler.Table_Name)
-            .getPO(getAD_Scheduler_ID(), get_TrxName());
+            .getPO(getAD_Scheduler_ID(), null);
   }
 
   /**
@@ -146,7 +146,7 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**

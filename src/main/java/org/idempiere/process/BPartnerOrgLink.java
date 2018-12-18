@@ -14,7 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
@@ -27,6 +26,8 @@ import org.compiere.orm.MRoleOrgAccess;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MLocator;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.util.logging.Level;
 
 /**
  * Link Business Partner to Organization. Either to existing or create new one
@@ -50,7 +51,7 @@ public class BPartnerOrgLink extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
+      else if (name.equals("orgId")) p_AD_Org_ID = para[i].getParameterAsInt();
       else if (name.equals("AD_OrgType_ID")) p_AD_OrgType_ID = para[i].getParameterAsInt();
       else if (name.equals("AD_Role_ID")) p_AD_Role_ID = para[i].getParameterAsInt();
       else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
@@ -69,14 +70,14 @@ public class BPartnerOrgLink extends SvrProcess {
       log.info(
           "C_BPartner_ID="
               + p_C_BPartner_ID
-              + ", AD_Org_ID="
+              + ", orgId="
               + p_AD_Org_ID
               + ", AD_OrgType_ID="
               + p_AD_OrgType_ID
               + ", AD_Role_ID="
               + p_AD_Role_ID);
     if (p_C_BPartner_ID == 0) throw new AdempiereUserError("No Business Partner ID");
-    MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID, get_TrxName());
+    MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID, null);
     if (bp.getId() == 0)
       throw new AdempiereUserError("Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);
     //	BP Location
@@ -90,7 +91,7 @@ public class BPartnerOrgLink extends SvrProcess {
 
     //	Create Org
     boolean newOrg = p_AD_Org_ID == 0;
-    MOrg org = new MOrg(getCtx(), p_AD_Org_ID, get_TrxName());
+    MOrg org = new MOrg(getCtx(), p_AD_Org_ID, null);
     if (newOrg) {
       org.setValue(bp.getValue());
       org.setName(bp.getName());
@@ -98,7 +99,7 @@ public class BPartnerOrgLink extends SvrProcess {
       if (!org.save()) throw new Exception("Organization not saved");
     } else //	check if linked to already
     {
-      int C_BPartner_ID = org.getLinkedC_BPartner_ID(get_TrxName());
+      int C_BPartner_ID = org.getLinkedC_BPartner_ID(null);
       if (C_BPartner_ID > 0)
         throw new IllegalArgumentException(
             "Organization '"
@@ -123,19 +124,19 @@ public class BPartnerOrgLink extends SvrProcess {
     //	New Warehouse
     if (wh == null) {
       wh = new MWarehouse(org);
-      if (!wh.save(get_TrxName())) throw new Exception("Warehouse not saved");
+      if (!wh.save(null)) throw new Exception("Warehouse not saved");
     }
     //	Create Locator
     I_M_Locator mLoc = wh.getDefaultLocator();
     if (mLoc == null) {
       mLoc = new MLocator(wh, "Standard");
       mLoc.setIsDefault(true);
-      mLoc.saveEx(get_TrxName());
+      mLoc.saveEx(null);
     }
 
     //	Update/Save Org Info
     oInfo.setM_Warehouse_ID(wh.getM_Warehouse_ID());
-    if (!oInfo.save(get_TrxName())) throw new Exception("Organization Info not saved");
+    if (!oInfo.save(null)) throw new Exception("Organization Info not saved");
 
     //	Update BPartner
     bp.setAD_OrgBP_ID(p_AD_Org_ID);
@@ -156,7 +157,7 @@ public class BPartnerOrgLink extends SvrProcess {
       //	create access
       if (!found) {
         MRoleOrgAccess orgAccess = new MRoleOrgAccess(org, p_AD_Role_ID);
-        orgAccess.saveEx(get_TrxName());
+        orgAccess.saveEx(null);
       }
     }
 

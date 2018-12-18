@@ -221,7 +221,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
    */
   public MAllocationLine[] getLines(boolean requery) {
     if (m_lines != null && m_lines.length != 0 && !requery) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     //
@@ -230,11 +230,11 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getC_AllocationHdr_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MAllocationLine line = new MAllocationLine(getCtx(), rs, get_TrxName());
+        MAllocationLine line = new MAllocationLine(getCtx(), rs, null);
         line.setParent(this);
         list.add(line);
       }
@@ -264,7 +264,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_AllocationHdr_ID=")
             .append(getC_AllocationHdr_ID());
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - #" + no);
   } //	setProcessed
@@ -290,7 +290,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
    * @return true if acct was deleted
    */
   protected boolean beforeDelete() {
-    String trxName = get_TrxName();
+    String trxName = null;
     if (trxName == null || trxName.length() == 0) log.warning("No transaction");
     if (isPosted()) {
       MPeriod.testPeriodOpen(
@@ -395,7 +395,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                   .append(I_C_Invoice.COLUMNNAME_DocStatus)
                   .append(" NOT IN (?,?)");
           boolean InvoiceIsPaid =
-              new Query(getCtx(), I_C_Invoice.Table_Name, whereClause.toString(), get_TrxName())
+              new Query(getCtx(), I_C_Invoice.Table_Name, whereClause.toString(), null)
                   .setClient_ID()
                   .setParameters(
                       line.getC_Invoice_ID(),
@@ -808,7 +808,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
 
     if (accrual) {
       //	Deep Copy
-      MAllocationHdr reversal = copyFrom(this, reversalDate, reversalDate, get_TrxName());
+      MAllocationHdr reversal = copyFrom(this, reversalDate, reversalDate, null);
       if (reversal == null) {
         m_processMsg = "Could not create Payment Allocation Reversal";
         return false;
@@ -822,7 +822,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         rLine.setDiscountAmt(rLine.getDiscountAmt().negate());
         rLine.setWriteOffAmt(rLine.getWriteOffAmt().negate());
         rLine.setOverUnderAmt(rLine.getOverUnderAmt().negate());
-        if (!rLine.save(get_TrxName())) {
+        if (!rLine.save(null)) {
           m_processMsg = "Could not correct Payment Allocation Reversal Line";
           return false;
         }
@@ -853,7 +853,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
       if (!save() || isActive()) throw new IllegalStateException("Cannot de-activate allocation");
 
       //	Delete Posting
-      MFactAcct.deleteEx(MAllocationHdr.Table_ID, getC_AllocationHdr_ID(), get_TrxName());
+      MFactAcct.deleteEx(MAllocationHdr.Table_ID, getC_AllocationHdr_ID(), null);
 
       //	Unlink Invoices
       getLines(true);
@@ -891,10 +891,10 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
 
       boolean isSOTrxInvoice = false;
       MInvoice invoice =
-          M_Invoice_ID > 0 ? new MInvoice(getCtx(), M_Invoice_ID, get_TrxName()) : null;
+          M_Invoice_ID > 0 ? new MInvoice(getCtx(), M_Invoice_ID, null) : null;
       if (M_Invoice_ID > 0) isSOTrxInvoice = invoice.isSOTrx();
 
-      MBPartner bpartner = new MBPartner(getCtx(), line.getC_BPartner_ID(), get_TrxName());
+      MBPartner bpartner = new MBPartner(getCtx(), line.getC_BPartner_ID(), null);
       forUpdate(bpartner, 0);
 
       BigDecimal allocAmt = line.getAmount().add(line.getDiscountAmt()).add(line.getWriteOffAmt());
@@ -911,7 +911,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         int convTypeID = 0;
         Timestamp paymentDate = null;
 
-        payment = new MPayment(getCtx(), C_Payment_ID, get_TrxName());
+        payment = new MPayment(getCtx(), C_Payment_ID, null);
         convTypeID = payment.getC_ConversionType_ID();
         paymentDate = payment.getDateAcct();
         paymentProcessed = payment.isProcessed();
@@ -940,7 +940,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                       org.compiere.accounting.MClient.get(getCtx()).getC_Currency_ID(),
                       convTypeID,
                       paymentDate,
-                      get_TrxName());
+                      null);
               return false;
             }
             openBalanceDiff = openBalanceDiff.add(amt);
@@ -964,7 +964,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                       org.compiere.accounting.MClient.get(getCtx()).getC_Currency_ID(),
                       convTypeID,
                       paymentDate,
-                      get_TrxName());
+                      null);
               return false;
             }
             openBalanceDiff = openBalanceDiff.add(amt);
@@ -989,7 +989,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                     org.compiere.accounting.MClient.get(getCtx()).getC_Currency_ID(),
                     convTypeID,
                     getDateAcct(),
-                    get_TrxName());
+                    null);
             return false;
           }
 
@@ -1015,7 +1015,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                   org.compiere.accounting.MClient.get(getCtx()).getC_Currency_ID(),
                   invoice.getC_ConversionType_ID(),
                   invoice.getDateAcct(),
-                  get_TrxName());
+                  null);
           return false;
         }
         openBalanceDiff = openBalanceDiff.add(amt);
@@ -1045,7 +1045,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                     invoice.getC_Currency_ID(),
                     invoice.getC_ConversionType_ID(),
                     getDateAcct(),
-                    get_TrxName());
+                    null);
             return false;
           }
         }
@@ -1067,7 +1067,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                   org.compiere.accounting.MClient.get(getCtx()).getC_Currency_ID(),
                   invoice.getC_ConversionType_ID(),
                   invoice.getDateAcct(),
-                  get_TrxName());
+                  null);
           return false;
         }
 
@@ -1089,7 +1089,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                   MClient.get(getCtx()).getC_Currency_ID(),
                   invoice.getC_ConversionType_ID(),
                   getDateAcct(),
-                  get_TrxName());
+                  null);
           return false;
         }
 
@@ -1171,7 +1171,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
       if (newBalance.compareTo(originalBalance) != 0) bpartner.setTotalOpenBalance(newBalance);
 
       bpartner.setSOCreditStatus();
-      if (!bpartner.save(get_TrxName())) {
+      if (!bpartner.save(null)) {
         m_processMsg = "Could not update Business Partner";
         return false;
       }
@@ -1239,14 +1239,14 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     MAllocationLine[] fromLines = otherAllocation.getLines(false);
     int count = 0;
     for (MAllocationLine fromLine : fromLines) {
-      MAllocationLine line = new MAllocationLine(getCtx(), 0, get_TrxName());
+      MAllocationLine line = new MAllocationLine(getCtx(), 0, null);
       PO.copyValues(fromLine, line, fromLine. getClientId(), fromLine. getOrgId());
       line.setC_AllocationHdr_ID(getC_AllocationHdr_ID());
       line.setParent(this);
       line.set_ValueNoCheck("C_AllocationLine_ID", I_ZERO); // new
 
       if (line.getC_Payment_ID() != 0) {
-        MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), get_TrxName());
+        MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), null);
         if (X_C_AllocationHdr.DOCSTATUS_Reversed.equals(payment.getDocStatus())) {
           MPayment reversal = (MPayment) payment.getReversal();
           if (reversal != null) {

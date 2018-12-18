@@ -121,7 +121,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
    * @param original original
    */
   public MJournalBatch(MJournalBatch original) {
-    this(original.getCtx(), 0, original.get_TrxName());
+    this(original.getCtx(), 0, null);
     setClientOrg(original);
     //
     //	setC_AcctSchema_ID(original.getC_AcctSchema_ID());
@@ -177,10 +177,10 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getGL_JournalBatch_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MJournal(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MJournal(getCtx(), rs, null));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {
@@ -206,7 +206,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     int lineCount = 0;
     MJournal[] fromJournals = jb.getJournals(false);
     for (int i = 0; i < fromJournals.length; i++) {
-      MJournal toJournal = new MJournal(getCtx(), 0, jb.get_TrxName());
+      MJournal toJournal = new MJournal(getCtx(), 0, null);
       PO.copyValues(fromJournals[i], toJournal,  getClientId(),  getOrgId());
       toJournal.setGL_JournalBatch_ID(getGL_JournalBatch_ID());
       toJournal.set_ValueNoCheck("DocumentNo", null); // 	create new
@@ -468,7 +468,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
       }
     }
     if (dt.isOverwriteSeqOnComplete()) {
-      String value = MSequence.getDocumentNo(getC_DocType_ID(), get_TrxName(), true, this);
+      String value = MSequence.getDocumentNo(getC_DocType_ID(), null, true, this);
       if (value != null) setDocumentNo(value);
     }
   }
@@ -599,7 +599,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     reverse.setProcessing(false);
     reverse.setDocStatus(X_GL_JournalBatch.DOCSTATUS_Reversed);
     reverse.setDocAction(X_GL_JournalBatch.DOCACTION_None);
-    reverse.saveEx(get_TrxName());
+    reverse.saveEx(null);
     //
     msgd = new StringBuilder("(").append(reverse.getDocumentNo()).append("<-)");
     addDescription(msgd.toString());
@@ -678,7 +678,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     reverse.setProcessing(false);
     reverse.setDocStatus(X_GL_JournalBatch.DOCSTATUS_Reversed);
     reverse.setDocAction(X_GL_JournalBatch.DOCACTION_None);
-    reverse.saveEx(get_TrxName());
+    reverse.saveEx(null);
     //
     msgd = new StringBuilder("(").append(reverse.getDocumentNo()).append("<-)");
     addDescription(msgd.toString());

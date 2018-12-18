@@ -246,7 +246,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    */
   public static void confirmPrint(MPaySelectionCheck check, MPaymentBatch batch) {
     boolean localTrx = false;
-    String trxName = check.get_TrxName();
+    String trxName = null;
     Trx trx = null;
     if (trxName == null) {
       localTrx = true;
@@ -365,7 +365,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     int lastDocumentNo = 0;
 
     if (checks.length > 0) {
-      trxName = checks[0].get_TrxName();
+      trxName = null;
       Properties ctx = checks[0].getCtx();
       int c_BankAccount_ID = checks[0].getC_PaySelection().getC_BankAccount_ID();
       String paymentRule = checks[0].getPaymentRule();
@@ -500,7 +500,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    * @param PaymentRule payment rule
    */
   public MPaySelectionCheck(MPaySelectionLine line, String PaymentRule) {
-    this(line.getCtx(), 0, line.get_TrxName());
+    this(line.getCtx(), 0, null);
     setClientOrg(line);
     setC_PaySelection_ID(line.getC_PaySelection_ID());
     int C_BPartner_ID = line.getInvoice().getC_BPartner_ID();
@@ -541,7 +541,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    * @param PaymentRule payment rule
    */
   public MPaySelectionCheck(MPaySelection ps, String PaymentRule) {
-    this(ps.getCtx(), 0, ps.get_TrxName());
+    this(ps.getCtx(), 0, null);
     setClientOrg(ps);
     setC_PaySelection_ID(ps.getC_PaySelection_ID());
     setPaymentRule(PaymentRule);
@@ -580,7 +580,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    */
   public MPaySelection getParent() {
     if (m_parent == null)
-      m_parent = new MPaySelection(getCtx(), getC_PaySelection_ID(), get_TrxName());
+      m_parent = new MPaySelection(getCtx(), getC_PaySelection_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -632,7 +632,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    */
   public MPaySelectionLine[] getPaySelectionLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     ArrayList<MPaySelectionLine> list = new ArrayList<MPaySelectionLine>();
@@ -640,10 +640,10 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getC_PaySelectionCheck_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MPaySelectionLine(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MPaySelectionLine(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {

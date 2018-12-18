@@ -141,7 +141,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, 
   public org.compiere.model.I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException {
     return (org.compiere.model.I_M_ChangeNotice)
         MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_ChangeNotice_ID(), get_TrxName());
+            .getPO(getM_ChangeNotice_ID(), null);
   }
 
   /**
@@ -207,7 +207,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, 
   public org.compiere.model.I_M_ChangeNotice getM_FixChangeNotice() throws RuntimeException {
     return (org.compiere.model.I_M_ChangeNotice)
         MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_FixChangeNotice_ID(), get_TrxName());
+            .getPO(getM_FixChangeNotice_ID(), null);
   }
 
   /**
@@ -234,7 +234,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, 
   public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
     return (org.eevolution.model.I_PP_Product_BOM)
         MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-            .getPO(getPP_Product_BOM_ID(), get_TrxName());
+            .getPO(getPP_Product_BOM_ID(), null);
   }
 
   /**

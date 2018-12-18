@@ -197,7 +197,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
   public org.compiere.model.I_R_Status getNext_Status() throws RuntimeException {
     return (org.compiere.model.I_R_Status)
         MTable.get(getCtx(), org.compiere.model.I_R_Status.Table_Name)
-            .getPO(getNext_Status_ID(), get_TrxName());
+            .getPO(getNext_Status_ID(), null);
   }
 
   /**
@@ -224,7 +224,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
   public org.compiere.model.I_R_StatusCategory getR_StatusCategory() throws RuntimeException {
     return (org.compiere.model.I_R_StatusCategory)
         MTable.get(getCtx(), org.compiere.model.I_R_StatusCategory.Table_Name)
-            .getPO(getR_StatusCategory_ID(), get_TrxName());
+            .getPO(getR_StatusCategory_ID(), null);
   }
 
   /**
@@ -330,7 +330,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
   public org.compiere.model.I_R_Status getUpdate_Status() throws RuntimeException {
     return (org.compiere.model.I_R_Status)
         MTable.get(getCtx(), org.compiere.model.I_R_Status.Table_Name)
-            .getPO(getUpdate_Status_ID(), get_TrxName());
+            .getPO(getUpdate_Status_ID(), null);
   }
 
   /**

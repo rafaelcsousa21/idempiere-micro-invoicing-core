@@ -73,7 +73,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -122,7 +122,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
   public org.compiere.model.I_M_ProductionLine getM_ProductionLine() throws RuntimeException {
     return (org.compiere.model.I_M_ProductionLine)
         MTable.get(getCtx(), org.compiere.model.I_M_ProductionLine.Table_Name)
-            .getPO(getM_ProductionLine_ID(), get_TrxName());
+            .getPO(getM_ProductionLine_ID(), null);
   }
 
   /**

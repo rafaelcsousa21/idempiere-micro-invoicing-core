@@ -135,7 +135,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -162,7 +162,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -189,7 +189,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**
@@ -216,7 +216,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
   public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
     return (org.compiere.model.I_C_Period)
         MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), get_TrxName());
+            .getPO(getC_Period_ID(), null);
   }
 
   /**

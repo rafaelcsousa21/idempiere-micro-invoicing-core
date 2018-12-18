@@ -41,11 +41,11 @@ public class MReplenish extends X_M_Replenish {
    * @return A list of active replenish lines for given product.
    */
   public static List<MReplenish> getForProduct(Properties ctx, int M_ProductID, String trxName) {
-    final String whereClause = "M_Product_ID=? AND AD_Org_ID IN (0, ?) ";
+    final String whereClause = "M_Product_ID=? AND orgId IN (0, ?) ";
     return new Query(ctx, I_M_Replenish.Table_Name, whereClause, trxName)
         .setParameters(M_ProductID, Env.getOrgId(ctx))
         .setClient_ID()
-        .setOrderBy("AD_Org_ID")
+        .setOrderBy("orgId")
         .setOnlyActiveRecords(true)
         .list();
   }

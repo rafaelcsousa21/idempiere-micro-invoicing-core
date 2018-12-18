@@ -77,7 +77,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
    */
   public MDistribution getParent() {
     if (m_parent == null)
-      m_parent = new MDistribution(getCtx(), getGL_Distribution_ID(), get_TrxName());
+      m_parent = new MDistribution(getCtx(), getGL_Distribution_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -127,7 +127,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
             isOverwriteUser2() ? getUser2_ID() : m_account.getUser2_ID(),
             m_account.getUserElement1_ID(),
             m_account.getUserElement2_ID(),
-            get_TrxName());
+            null);
     return acct;
   } //	setAccount
 
@@ -200,7 +200,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 FROM GL_DistributionLine WHERE GL_Distribution_ID=?";
-      int ii = getSQLValue(get_TrxName(), sql, getGL_Distribution_ID());
+      int ii = getSQLValue(null, sql, getGL_Distribution_ID());
       setLine(ii);
     }
     //	Reset not selected Overwrite

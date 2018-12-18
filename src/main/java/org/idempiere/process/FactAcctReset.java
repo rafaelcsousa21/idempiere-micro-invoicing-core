@@ -68,7 +68,7 @@ public class FactAcctReset extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
-      else if (name.equals("AD_Client_ID"))
+      else if (name.equals("clientId"))
         p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("AD_Table_ID"))
         p_AD_Table_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -89,7 +89,7 @@ public class FactAcctReset extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO))
       log.info(
-          "AD_Client_ID="
+          "clientId="
               + p_AD_Client_ID
               + ", AD_Table_ID="
               + p_AD_Table_ID
@@ -104,7 +104,7 @@ public class FactAcctReset extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int AD_Table_ID = rs.getInt(1);
@@ -132,18 +132,18 @@ public class FactAcctReset extends SvrProcess {
     String sql =
         "UPDATE "
             + TableName
-            + " SET Processing='N' WHERE AD_Client_ID="
+            + " SET Processing='N' WHERE clientId="
             + p_AD_Client_ID
             + " AND (Processing<>'N' OR Processing IS NULL)";
-    int unlocked = executeUpdate(sql, get_TrxName());
+    int unlocked = executeUpdate(sql, null);
     //
     sql =
         "UPDATE "
             + TableName
-            + " SET Posted='N' WHERE AD_Client_ID="
+            + " SET Posted='N' WHERE clientId="
             + p_AD_Client_ID
             + " AND (Posted NOT IN ('Y','N') OR Posted IS NULL) AND Processed='Y'";
-    int invalid = executeUpdate(sql, get_TrxName());
+    int invalid = executeUpdate(sql, null);
     //
     if (unlocked + invalid != 0)
       if (log.isLoggable(Level.FINE))
@@ -266,7 +266,7 @@ public class FactAcctReset extends SvrProcess {
         "UPDATE "
             + TableName
             + " SET Posted='N', Processing='N' "
-            + "WHERE AD_Client_ID="
+            + "WHERE clientId="
             + p_AD_Client_ID
             + " AND (Posted<>'N' OR Posted IS NULL OR Processing<>'N' OR Processing IS NULL)"
             + " AND EXISTS (SELECT 1 FROM C_PeriodControl pc"
@@ -286,11 +286,11 @@ public class FactAcctReset extends SvrProcess {
 
     if (log.isLoggable(Level.FINE)) log.log(Level.FINE, sql1);
 
-    int reset = executeUpdate(sql1, get_TrxName());
+    int reset = executeUpdate(sql1, null);
     //	Fact
     String sql2 =
         "DELETE Fact_Acct "
-            + "WHERE AD_Client_ID="
+            + "WHERE clientId="
             + p_AD_Client_ID
             + " AND AD_Table_ID="
             + AD_Table_ID;
@@ -311,7 +311,7 @@ public class FactAcctReset extends SvrProcess {
 
     if (log.isLoggable(Level.FINE)) log.log(Level.FINE, sql2);
 
-    int deleted = executeUpdate(sql2, get_TrxName());
+    int deleted = executeUpdate(sql2, null);
     //
     if (log.isLoggable(Level.INFO))
       log.info(TableName + "(" + AD_Table_ID + ") - Reset=" + reset + " - Deleted=" + deleted);

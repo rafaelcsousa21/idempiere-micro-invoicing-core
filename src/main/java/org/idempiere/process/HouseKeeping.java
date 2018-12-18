@@ -56,9 +56,9 @@ public class HouseKeeping extends SvrProcess {
   protected String doIt() throws Exception {
 
     X_AD_HouseKeeping houseKeeping =
-        new X_AD_HouseKeeping(getCtx(), p_AD_HouseKeeping_ID, get_TrxName());
+        new X_AD_HouseKeeping(getCtx(), p_AD_HouseKeeping_ID, null);
     int tableID = houseKeeping.getAD_Table_ID();
-    MTable table = new MTable(getCtx(), tableID, get_TrxName());
+    MTable table = new MTable(getCtx(), tableID, null);
     String tableName = table.getTableName();
     String whereClause = houseKeeping.getWhereClause();
     int noins = 0;
@@ -73,7 +73,7 @@ public class HouseKeeping extends SvrProcess {
               .append(tableName);
       if (whereClause != null && whereClause.length() > 0)
         sql.append(" WHERE ").append(whereClause);
-      noins = executeUpdate(sql.toString(), get_TrxName());
+      noins = executeUpdate(sql.toString(), null);
       if (noins == -1) throw new AdempiereSystemError("Cannot insert into hst_" + tableName);
       addLog("@Inserted@ " + noins);
     } // saveInHistoric
@@ -91,10 +91,10 @@ public class HouseKeeping extends SvrProcess {
       ResultSet rs = null;
       StringBuffer linexml = null;
       try {
-        pstmt = prepareStatement(sql.toString(), get_TrxName());
+        pstmt = prepareStatement(sql.toString(), null);
         rs = pstmt.executeQuery();
         while (rs.next()) {
-          GenericPO po = new GenericPO(tableName, getCtx(), rs, get_TrxName());
+          GenericPO po = new GenericPO(tableName, getCtx(), rs, null);
           linexml = po.get_xmlString(linexml);
           noexp++;
         }
@@ -112,7 +112,7 @@ public class HouseKeeping extends SvrProcess {
 
     StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName);
     if (whereClause != null && whereClause.length() > 0) sql.append(" WHERE ").append(whereClause);
-    nodel = executeUpdate(sql.toString(), get_TrxName());
+    nodel = executeUpdate(sql.toString(), null);
     if (nodel == -1) throw new AdempiereSystemError("Cannot delete from " + tableName);
     Timestamp time = new Timestamp(date.getTime());
     houseKeeping.setLastRun(time);

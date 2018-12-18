@@ -102,7 +102,7 @@ public class MBOM extends X_M_BOM {
             new StringBuilder("BOMType='A' AND BOMUse='")
                 .append(getBOMUse())
                 .append("' AND IsActive='Y'");
-        MBOM[] boms = getOfProduct(getCtx(), getM_Product_ID(), get_TrxName(), msgofp.toString());
+        MBOM[] boms = getOfProduct(getCtx(), getM_Product_ID(), null, msgofp.toString());
         if (boms.length == 0 // 	only one = this
             || (boms.length == 1 && boms[0].getM_BOM_ID() == getM_BOM_ID())) ;
         else {
@@ -118,7 +118,7 @@ public class MBOM extends X_M_BOM {
       }
       //	Only one MTO
       else if (getBOMType().equals(BOMTYPE_Make_To_Order)) {
-        MBOM[] boms = getOfProduct(getCtx(), getM_Product_ID(), get_TrxName(), "IsActive='Y'");
+        MBOM[] boms = getOfProduct(getCtx(), getM_Product_ID(), null, "IsActive='Y'");
         if (boms.length == 0 // 	only one = this
             || (boms.length == 1 && boms[0].getM_BOM_ID() == getM_BOM_ID())) ;
         else {

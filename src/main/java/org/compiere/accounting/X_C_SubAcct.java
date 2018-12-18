@@ -50,7 +50,7 @@ public class X_C_SubAcct extends BasePONameValue implements I_C_SubAcct, I_Persi
   public org.compiere.model.I_C_ElementValue getC_ElementValue() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getC_ElementValue_ID(), get_TrxName());
+            .getPO(getC_ElementValue_ID(), null);
   }
 
   /**

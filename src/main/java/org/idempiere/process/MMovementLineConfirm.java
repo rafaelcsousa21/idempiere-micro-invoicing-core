@@ -1,9 +1,10 @@
 package org.idempiere.process;
 
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.idempiere.common.util.Env;
 
 public class MMovementLineConfirm extends X_M_MovementLineConfirm {
 
@@ -47,7 +48,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
    * @param parent parent
    */
   public MMovementLineConfirm(MMovementConfirm parent) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setM_MovementConfirm_ID(parent.getM_MovementConfirm_ID());
   } //	MMovementLineConfirm
@@ -73,7 +74,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
    * @return line
    */
   public MMovementLine getLine() {
-    if (m_line == null) m_line = new MMovementLine(getCtx(), getM_MovementLine_ID(), get_TrxName());
+    if (m_line == null) m_line = new MMovementLine(getCtx(), getM_MovementLine_ID(), null);
     return m_line;
   } //	getLine
 
@@ -90,7 +91,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
     line.setConfirmedQty(getConfirmedQty());
     line.setScrappedQty(getScrappedQty());
 
-    return line.save(get_TrxName());
+    return line.save(null);
   } //	processConfirmation
 
   /**

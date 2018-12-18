@@ -107,7 +107,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
   public org.compiere.model.I_AD_Column getAD_Column() throws RuntimeException {
     return (org.compiere.model.I_AD_Column)
         MTable.get(getCtx(), org.compiere.model.I_AD_Column.Table_Name)
-            .getPO(getAD_Column_ID(), get_TrxName());
+            .getPO(getAD_Column_ID(), null);
   }
 
   /**
@@ -134,7 +134,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
   public org.compiere.model.I_C_Element getC_Element() throws RuntimeException {
     return (org.compiere.model.I_C_Element)
         MTable.get(getCtx(), org.compiere.model.I_C_Element.Table_Name)
-            .getPO(getC_Element_ID(), get_TrxName());
+            .getPO(getC_Element_ID(), null);
   }
 
   /**
@@ -161,7 +161,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
   public org.compiere.model.I_C_ElementValue getC_ElementValue() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getC_ElementValue_ID(), get_TrxName());
+            .getPO(getC_ElementValue_ID(), null);
   }
 
   /**
@@ -370,7 +370,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
   public org.compiere.model.I_C_ElementValue getParentElementValue() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getParentElementValue_ID(), get_TrxName());
+            .getPO(getParentElementValue_ID(), null);
   }
 
   /**

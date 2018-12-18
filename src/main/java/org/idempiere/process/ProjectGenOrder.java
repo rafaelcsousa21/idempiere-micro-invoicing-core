@@ -54,7 +54,7 @@ public class ProjectGenOrder extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("C_Project_ID=" + m_C_Project_ID);
     if (m_C_Project_ID == 0) throw new IllegalArgumentException("C_Project_ID == 0");
-    MProject fromProject = getProject(getCtx(), m_C_Project_ID, get_TrxName());
+    MProject fromProject = getProject(getCtx(), m_C_Project_ID, null);
     Env.setSOTrx(getCtx(), true); // 	Set SO context
 
     /** @todo duplicate invoice prevention */

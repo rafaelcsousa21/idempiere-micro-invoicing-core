@@ -66,7 +66,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
    * @param project parent
    */
   public MProjectIssue(MProject project) {
-    this(project.getCtx(), 0, project.get_TrxName());
+    this(project.getCtx(), 0, null);
     setClientOrg(project. getClientId(), project. getOrgId());
     setC_Project_ID(project.getC_Project_ID()); // 	Parent
     setLine(getNextLine());
@@ -91,7 +91,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
    */
   private int getNextLine() {
     return getSQLValue(
-        get_TrxName(),
+        null,
         "SELECT COALESCE(MAX(Line),0)+10 FROM C_ProjectIssue WHERE C_Project_ID=?",
         getC_Project_ID());
   } //	getLineFromProject
@@ -116,7 +116,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
    */
   public MProject getParent() {
     if (m_parent == null && getC_Project_ID() != 0)
-      m_parent = new MProject(getCtx(), getC_Project_ID(), get_TrxName());
+      m_parent = new MProject(getCtx(), getC_Project_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -153,7 +153,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
             getMAttributeSetInstance_ID(),
             getMovementQty().negate(),
             getMovementDate(),
-            get_TrxName());
+            null);
     mTrx.setC_ProjectIssue_ID(getC_ProjectIssue_ID());
     //
     MLocator loc = MLocator.get(getCtx(), getM_Locator_ID());
@@ -163,7 +163,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     if (getMAttributeSetInstance_ID() > 0) {
       Timestamp t =
           MStorageOnHand.getDateMaterialPolicy(
-              getM_Product_ID(), getMAttributeSetInstance_ID(), get_TrxName());
+              getM_Product_ID(), getMAttributeSetInstance_ID(), null);
       if (t != null) dateMPolicy = t;
     }
 
@@ -186,7 +186,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                 MClient.MMPOLICY_FiFo.equals(MMPolicy),
                 true,
                 getM_Locator_ID(),
-                get_TrxName(),
+                null,
                 true);
         BigDecimal qtyToIssue = getMovementQty();
         for (MStorageOnHand storage : storages) {
@@ -210,7 +210,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                   getMAttributeSetInstance_ID(),
                   qtyToIssue.negate(),
                   dateMPolicy,
-                  get_TrxName());
+                  null);
         }
       } else {
         ok =
@@ -222,7 +222,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                 getMAttributeSetInstance_ID(),
                 getMovementQty().negate(),
                 dateMPolicy,
-                get_TrxName());
+                null);
       }
     } catch (NegativeInventoryDisallowedException e) {
       log.severe(e.getMessage());
@@ -233,7 +233,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     }
 
     if (ok) {
-      if (mTrx.save(get_TrxName())) {
+      if (mTrx.save(null)) {
         setProcessed(true);
         if (save()) return true;
         else log.log(Level.SEVERE, "Issue not saved"); // 	requires trx !!

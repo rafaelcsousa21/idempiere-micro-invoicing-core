@@ -34,7 +34,7 @@ class SetupClientTests : BaseComponentTest() {
                 p_Address1 = randomString(20)
             )
             val pi = ProcessInfo("", 0)
-            assertTrue(clientSetup.startProcess(ctx, pi, null))
+            assertTrue(clientSetup.startProcess(ctx, pi))
         }
     }
 }

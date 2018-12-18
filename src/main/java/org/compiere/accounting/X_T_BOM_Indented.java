@@ -43,7 +43,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
   public org.compiere.model.I_AD_PInstance getAD_PInstance() throws RuntimeException {
     return (org.compiere.model.I_AD_PInstance)
         MTable.get(getCtx(), org.compiere.model.I_AD_PInstance.Table_Name)
-            .getPO(getAD_PInstance_ID(), get_TrxName());
+            .getPO(getAD_PInstance_ID(), null);
   }
 
   /**
@@ -70,7 +70,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -257,7 +257,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
   public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
     return (org.compiere.model.I_M_CostElement)
         MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), get_TrxName());
+            .getPO(getM_CostElement_ID(), null);
   }
 
   /**
@@ -284,7 +284,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -351,7 +351,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
   public org.compiere.model.I_M_Product getSel_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getSel_Product_ID(), get_TrxName());
+            .getPO(getSel_Product_ID(), null);
   }
 
   /**

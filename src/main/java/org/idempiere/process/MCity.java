@@ -1,14 +1,15 @@
 package org.idempiere.process;
 
+import org.compiere.crm.MRegion;
+import org.compiere.model.I_C_City;
+import org.idempiere.common.util.CCache;
+import org.idempiere.common.util.CLogger;
+
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.Properties;
-import org.compiere.crm.MRegion;
-import org.compiere.model.I_C_City;
-import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogger;
 
 public class MCity extends X_C_City implements Comparator<Object>, Serializable {
   /** */
@@ -72,7 +73,7 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
    * @param CityName City Name
    */
   public MCity(MRegion region, String cityName) {
-    super(region.getCtx(), 0, region.get_TrxName());
+    super(region.getCtx(), 0, null);
     setC_Region_ID(region.getC_Region_ID());
     setName(cityName);
   } //  MCity

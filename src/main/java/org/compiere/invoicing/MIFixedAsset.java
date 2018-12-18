@@ -55,7 +55,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
    */
   public MProduct getCreateProduct() {
     Properties ctx = getCtx();
-    String trxName = get_TrxName();
+    String trxName = null;
 
     int M_Product_ID = getM_Product_ID();
     if (M_Product_ID <= 0) {
@@ -73,7 +73,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
       }
       key = key.toUpperCase();
       whereClause.append(TO_STRING(key));
-      whereClause.append(" AND AD_Client_ID=").append( getClientId());
+      whereClause.append(" AND clientId=").append( getClientId());
       String sql = "SELECT M_Product_ID FROM M_Product WHERE " + whereClause.toString();
       M_Product_ID = getSQLValueEx(trxName, sql);
       if (log.isLoggable(Level.FINE)) log.fine("M_Product_ID=" + M_Product_ID + " -- sql=" + sql);
@@ -97,7 +97,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
       }
       // Default Tax Category:
       String sql =
-          "SELECT C_TaxCategory_ID FROM C_TaxCategory WHERE AD_Client_ID IN (0,?) ORDER BY IsDefault DESC, AD_Client_ID DESC, C_TaxCategory_ID";
+          "SELECT C_TaxCategory_ID FROM C_TaxCategory WHERE clientId IN (0,?) ORDER BY IsDefault DESC, clientId DESC, C_TaxCategory_ID";
       int C_TaxCategory_ID = getSQLValueEx(null, sql, Env.getClientId(ctx));
       prod.setC_TaxCategory_ID(C_TaxCategory_ID);
       //
@@ -281,7 +281,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
 
   public MProduct getProduct() {
     if (m_product == null && getM_Product_ID() > 0) {
-      m_product = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
+      m_product = new MProduct(getCtx(), getM_Product_ID(), null);
     }
     return m_product;
   }

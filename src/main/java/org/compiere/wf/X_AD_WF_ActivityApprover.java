@@ -50,7 +50,7 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**
@@ -118,7 +118,7 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
   public org.compiere.model.I_AD_WF_Activity getAD_WF_Activity() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Activity)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Activity.Table_Name)
-            .getPO(getAD_WF_Activity_ID(), get_TrxName());
+            .getPO(getAD_WF_Activity_ID(), null);
   }
 
   /**

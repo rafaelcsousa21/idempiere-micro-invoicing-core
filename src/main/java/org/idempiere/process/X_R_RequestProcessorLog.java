@@ -127,7 +127,7 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
   public org.compiere.model.I_R_RequestProcessor getR_RequestProcessor() throws RuntimeException {
     return (org.compiere.model.I_R_RequestProcessor)
         MTable.get(getCtx(), org.compiere.model.I_R_RequestProcessor.Table_Name)
-            .getPO(getR_RequestProcessor_ID(), get_TrxName());
+            .getPO(getR_RequestProcessor_ID(), null);
   }
 
   /**

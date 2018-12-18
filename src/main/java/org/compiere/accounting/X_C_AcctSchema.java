@@ -128,7 +128,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -254,7 +254,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
   public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
     return (org.compiere.model.I_C_Period)
         MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), get_TrxName());
+            .getPO(getC_Period_ID(), null);
   }
 
   /**
@@ -562,7 +562,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
   public org.compiere.model.I_M_CostType getM_CostType() throws RuntimeException {
     return (org.compiere.model.I_M_CostType)
         MTable.get(getCtx(), org.compiere.model.I_M_CostType.Table_Name)
-            .getPO(getM_CostType_ID(), get_TrxName());
+            .getPO(getM_CostType_ID(), null);
   }
 
   /**

@@ -71,7 +71,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
                 + "FROM C_BankAccount_Processor bap, C_PaymentProcessor pp, C_BankAccount ba "
                 + "WHERE pp.C_PaymentProcessor_ID = bap.C_PaymentProcessor_ID"
                 + " AND ba.C_BankAccount_ID = bap.C_BankAccount_ID"
-                + " AND ba.AD_Client_ID=? AND pp.IsActive='Y'" //	#1
+                + " AND ba.clientId=? AND pp.IsActive='Y'" //	#1
                 + " AND ba.IsActive='Y' AND bap.IsActive='Y' "
                 + " AND (bap.C_Currency_ID IS NULL OR bap.C_Currency_ID=?)" //	#2
                 + " AND (bap.MinimumAmt IS NULL OR bap.MinimumAmt = 0 OR bap.MinimumAmt <= ?)"); //	#3
@@ -118,7 +118,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     //
     if (list.size() == 0)
       s_log.warning(
-          "find - not found - AD_Client_ID="
+          "find - not found - clientId="
               + AD_Client_ID
               + ", C_Currency_ID="
               + C_Currency_ID
@@ -128,7 +128,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
       s_log.fine(
           "find - #"
               + list.size()
-              + " - AD_Client_ID="
+              + " - clientId="
               + AD_Client_ID
               + ", C_Currency_ID="
               + C_Currency_ID
@@ -173,7 +173,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
   protected boolean beforeSave(boolean newRecord) {
     if (getC_PaymentProcessor_ID() > 0 && isActive()) {
       MPaymentProcessor pp =
-          new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), get_TrxName());
+          new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
       if (!pp.isActive())
         throw new AdempiereException(
             Msg.translate(getCtx(), "InactivePaymentProcessor") + ". " + pp.toString());
@@ -192,7 +192,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
   public boolean accepts(String TenderType, String CreditCardType) {
     if (getC_PaymentProcessor_ID() > 0) {
       MPaymentProcessor pp =
-          new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), get_TrxName());
+          new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
 
       if ((MPayment.TENDERTYPE_DirectDeposit.equals(TenderType)
               && isAcceptDirectDeposit()
@@ -253,37 +253,37 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
 
   public String getHostAddress() {
     MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), get_TrxName());
+        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
     return pp.getHostAddress();
   }
 
   public int getHostPort() {
     MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), get_TrxName());
+        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
     return pp.getHostPort();
   }
 
   public String getProxyAddress() {
     MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), get_TrxName());
+        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
     return pp.getProxyAddress();
   }
 
   public int getProxyPort() {
     MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), get_TrxName());
+        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
     return pp.getProxyPort();
   }
 
   public String getProxyLogon() {
     MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), get_TrxName());
+        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
     return pp.getProxyLogon();
   }
 
   public String getProxyPassword() {
     MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), get_TrxName());
+        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
     return pp.getProxyPassword();
   }
 }

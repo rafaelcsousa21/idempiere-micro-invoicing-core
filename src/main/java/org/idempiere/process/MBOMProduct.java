@@ -26,7 +26,7 @@ public class MBOMProduct extends X_M_BOMProduct {
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     String whereClause = "M_BOM_ID=?";
     List<MBOMProduct> list =
-        new Query(bom.getCtx(), I_M_BOMProduct.Table_Name, whereClause, bom.get_TrxName())
+        new Query(bom.getCtx(), I_M_BOMProduct.Table_Name, whereClause, null)
             .setParameters(bom.getM_BOM_ID())
             .setOrderBy("SeqNo")
             .list();
@@ -66,7 +66,7 @@ public class MBOMProduct extends X_M_BOMProduct {
    * @param bom product
    */
   public MBOMProduct(MBOM bom) {
-    this(bom.getCtx(), 0, bom.get_TrxName());
+    this(bom.getCtx(), 0, null);
     m_bom = bom;
   } //	MBOMProduct
 
@@ -149,7 +149,7 @@ public class MBOMProduct extends X_M_BOMProduct {
     //	Set Line Number
     if (getLine() == 0) {
       String sql = "SELECT NVL(MAX(Line),0)+10 FROM M_BOMProduct WHERE M_BOM_ID=?";
-      int ii = getSQLValue(get_TrxName(), sql, getM_BOM_ID());
+      int ii = getSQLValue(null, sql, getM_BOM_ID());
       setLine(ii);
     }
 

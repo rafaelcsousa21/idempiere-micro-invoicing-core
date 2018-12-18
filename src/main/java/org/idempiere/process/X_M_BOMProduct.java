@@ -215,7 +215,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -243,7 +243,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
   public org.compiere.model.I_M_BOMAlternative getM_BOMAlternative() throws RuntimeException {
     return (org.compiere.model.I_M_BOMAlternative)
         MTable.get(getCtx(), org.compiere.model.I_M_BOMAlternative.Table_Name)
-            .getPO(getM_BOMAlternative_ID(), get_TrxName());
+            .getPO(getM_BOMAlternative_ID(), null);
   }
 
   /**
@@ -270,7 +270,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
   public org.compiere.model.I_M_BOM getM_BOM() throws RuntimeException {
     return (org.compiere.model.I_M_BOM)
         MTable.get(getCtx(), org.compiere.model.I_M_BOM.Table_Name)
-            .getPO(getM_BOM_ID(), get_TrxName());
+            .getPO(getM_BOM_ID(), null);
   }
 
   /**
@@ -336,7 +336,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
   public org.compiere.model.I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException {
     return (org.compiere.model.I_M_ChangeNotice)
         MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_ChangeNotice_ID(), get_TrxName());
+            .getPO(getM_ChangeNotice_ID(), null);
   }
 
   /**
@@ -363,7 +363,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
   public org.compiere.model.I_M_Product getM_ProductBOM() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_ProductBOM_ID(), get_TrxName());
+            .getPO(getM_ProductBOM_ID(), null);
   }
 
   /**
@@ -390,7 +390,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
   public org.compiere.model.I_M_ProductOperation getM_ProductOperation() throws RuntimeException {
     return (org.compiere.model.I_M_ProductOperation)
         MTable.get(getCtx(), org.compiere.model.I_M_ProductOperation.Table_Name)
-            .getPO(getM_ProductOperation_ID(), get_TrxName());
+            .getPO(getM_ProductOperation_ID(), null);
   }
 
   /**

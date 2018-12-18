@@ -32,8 +32,8 @@ public class CopyReportProcess extends SvrProcess {
   @Override
   protected String doIt() throws Exception {
 
-    MProcess source = new MProcess(getCtx(), sourceId, get_TrxName());
-    MProcess target = new MProcess(getCtx(), targetId, get_TrxName());
+    MProcess source = new MProcess(getCtx(), sourceId, null);
+    MProcess target = new MProcess(getCtx(), targetId, null);
 
     if (sourceId <= 0 || targetId <= 0 || source == null || target == null)
       throw new AdempiereException(Msg.getMsg(getCtx(), "CopyProcessRequired"));

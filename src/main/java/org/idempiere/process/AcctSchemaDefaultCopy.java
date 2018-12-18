@@ -109,7 +109,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(p_C_AcctSchema_ID)
               .append(" AND EXISTS (SELECT * FROM M_Product_Category p ")
               .append("WHERE p.M_Product_Category_ID=pa.M_Product_Category_ID)");
-      updated = executeUpdate(sql.toString(), get_TrxName());
+      updated = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(updated), "@Updated@ @M_Product_Category_ID@");
       updatedTotal += updated;
     }
@@ -117,7 +117,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO M_Product_Category_Acct ")
             .append("(M_Product_Category_ID, C_AcctSchema_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(
                 " P_Revenue_Acct, P_Expense_Acct, P_CostAdjustment_Acct, P_InventoryClearing_Acct, P_Asset_Acct, P_CoGs_Acct,")
             .append(
@@ -125,7 +125,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
             .append(" P_TradeDiscountRec_Acct, P_TradeDiscountGrant_Acct,")
             .append(" P_RateVariance_Acct, P_LandedCostClearing_Acct) ")
             .append(" SELECT p.M_Product_Category_ID, acct.C_AcctSchema_ID,")
-            .append(" p.AD_Client_ID, p.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" p.clientId, p.orgId, 'Y', SysDate, 0, SysDate, 0,")
             .append(
                 " acct.P_Revenue_Acct, acct.P_Expense_Acct, acct.P_CostAdjustment_Acct, acct.P_InventoryClearing_Acct, acct.P_Asset_Acct, acct.P_CoGs_Acct,")
             .append(
@@ -133,13 +133,13 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
             .append(" acct.P_TradeDiscountRec_Acct, acct.P_TradeDiscountGrant_Acct,")
             .append(" acct.P_RateVariance_Acct, acct.P_LandedCostClearing_Acct ")
             .append("FROM M_Product_Category p")
-            .append(" INNER JOIN C_AcctSchema_Default acct ON (p.AD_Client_ID=acct.AD_Client_ID) ")
+            .append(" INNER JOIN C_AcctSchema_Default acct ON (p.clientId=acct.clientId) ")
             .append("WHERE acct.C_AcctSchema_ID=")
             .append(p_C_AcctSchema_ID)
             .append(" AND NOT EXISTS (SELECT * FROM M_Product_Category_Acct pa ")
             .append("WHERE pa.M_Product_Category_ID=p.M_Product_Category_ID")
             .append(" AND pa.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @M_Product_Category_ID@");
     createdTotal += created;
     if (!p_CopyOverwriteAcct) //	Insert new Products
@@ -147,7 +147,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
       sql =
           new StringBuilder("INSERT INTO M_Product_Acct ")
               .append("(M_Product_ID, C_AcctSchema_ID,")
-              .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+              .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
               .append(
                   " P_Revenue_Acct, P_Expense_Acct, P_CostAdjustment_Acct, P_InventoryClearing_Acct, P_Asset_Acct, P_CoGs_Acct,")
               .append(
@@ -155,7 +155,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(" P_TradeDiscountRec_Acct, P_TradeDiscountGrant_Acct, ")
               .append(" P_RateVariance_Acct, P_LandedCostClearing_Acct) ")
               .append("SELECT p.M_Product_ID, acct.C_AcctSchema_ID,")
-              .append(" p.AD_Client_ID, p.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+              .append(" p.clientId, p.orgId, 'Y', SysDate, 0, SysDate, 0,")
               .append(
                   " acct.P_Revenue_Acct, acct.P_Expense_Acct, acct.P_CostAdjustment_Acct, acct.P_InventoryClearing_Acct, acct.P_Asset_Acct, acct.P_CoGs_Acct,")
               .append(
@@ -171,7 +171,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(" AND NOT EXISTS (SELECT * FROM M_Product_Acct pa ")
               .append("WHERE pa.M_Product_ID=p.M_Product_ID")
               .append(" AND pa.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-      created = executeUpdate(sql.toString(), get_TrxName());
+      created = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(created), "@Created@ @M_Product_ID@");
       createdTotal += created;
     }
@@ -207,7 +207,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(p_C_AcctSchema_ID)
               .append(" AND EXISTS (SELECT * FROM C_BP_Group_Acct x ")
               .append("WHERE x.C_BP_Group_ID=a.C_BP_Group_ID)");
-      updated = executeUpdate(sql.toString(), get_TrxName());
+      updated = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(updated), "@Updated@ @C_BP_Group_ID@");
       updatedTotal += updated;
     }
@@ -215,13 +215,13 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO C_BP_Group_Acct ")
             .append("(C_BP_Group_ID, C_AcctSchema_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(" C_Receivable_Acct, C_Receivable_Services_Acct, C_PrePayment_Acct,")
             .append(" V_Liability_Acct, V_Liability_Services_Acct, V_PrePayment_Acct,")
             .append(" PayDiscount_Exp_Acct, PayDiscount_Rev_Acct, WriteOff_Acct,")
             .append(" NotInvoicedReceipts_Acct, UnEarnedRevenue_Acct) ")
             .append("SELECT x.C_BP_Group_ID, acct.C_AcctSchema_ID,")
-            .append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
             .append(
                 " acct.C_Receivable_Acct, acct.C_Receivable_Services_Acct, acct.C_PrePayment_Acct,")
             .append(
@@ -229,13 +229,13 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
             .append(" acct.PayDiscount_Exp_Acct, acct.PayDiscount_Rev_Acct, acct.WriteOff_Acct,")
             .append(" acct.NotInvoicedReceipts_Acct, acct.UnEarnedRevenue_Acct ")
             .append("FROM C_BP_Group x")
-            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
             .append("WHERE acct.C_AcctSchema_ID=")
             .append(p_C_AcctSchema_ID)
             .append(" AND NOT EXISTS (SELECT * FROM C_BP_Group_Acct a ")
             .append("WHERE a.C_BP_Group_ID=x.C_BP_Group_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_BP_Group_ID@");
     createdTotal += created;
 
@@ -251,25 +251,25 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     		.append("WHERE a.C_AcctSchema_ID=").append(p_C_AcctSchema_ID)
     		.append(" AND EXISTS (SELECT * FROM C_BP_Employee_Acct x ")
     			.append("WHERE x.C_BPartner_ID=a.C_BPartner_ID)");
-    	updated = executeUpdate(sql.toString(), get_TrxName());
+    	updated = executeUpdate(sql.toString(), null);
     	addLog(0, null, new BigDecimal(updated), "@Updated@ @C_BPartner_ID@ @IsEmployee@");
     	updatedTotal += updated;
     }
     //	Insert new Business Partner - Employee
     sql = new StringBuilder("INSERT INTO C_BP_Employee_Acct ")
     	.append("(C_BPartner_ID, C_AcctSchema_ID,")
-    	.append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+    	.append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
     	.append(" E_Expense_Acct, E_Prepayment_Acct) ")
     	.append("SELECT x.C_BPartner_ID, acct.C_AcctSchema_ID,")
-    	.append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+    	.append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
     	.append(" acct.E_Expense_Acct, acct.E_Prepayment_Acct ")
     	.append("FROM C_BPartner x")
-    	.append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+    	.append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
     	.append("WHERE acct.C_AcctSchema_ID=").append(p_C_AcctSchema_ID)
     	.append(" AND NOT EXISTS (SELECT * FROM C_BP_Employee_Acct a ")
     		.append("WHERE a.C_BPartner_ID=x.C_BPartner_ID")
     		.append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsEmployee@");
     createdTotal += created;
     */
@@ -278,10 +278,10 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
       sql =
           new StringBuilder("INSERT INTO C_BP_Customer_Acct ")
               .append("(C_BPartner_ID, C_AcctSchema_ID,")
-              .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+              .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
               .append(" C_Receivable_Acct, C_Receivable_Services_Acct, C_PrePayment_Acct) ")
               .append("SELECT p.C_BPartner_ID, acct.C_AcctSchema_ID,")
-              .append(" p.AD_Client_ID, p.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+              .append(" p.clientId, p.orgId, 'Y', SysDate, 0, SysDate, 0,")
               .append(
                   " acct.C_Receivable_Acct, acct.C_Receivable_Services_Acct, acct.C_PrePayment_Acct ")
               .append("FROM C_BPartner p")
@@ -292,17 +292,17 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(" AND NOT EXISTS (SELECT * FROM C_BP_Customer_Acct ca ")
               .append("WHERE ca.C_BPartner_ID=p.C_BPartner_ID")
               .append(" AND ca.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-      created = executeUpdate(sql.toString(), get_TrxName());
+      created = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsCustomer@");
       createdTotal += created;
       //
       sql =
           new StringBuilder("INSERT INTO C_BP_Vendor_Acct ")
               .append("(C_BPartner_ID, C_AcctSchema_ID,")
-              .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+              .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
               .append(" V_Liability_Acct, V_Liability_Services_Acct, V_PrePayment_Acct) ")
               .append("SELECT p.C_BPartner_ID, acct.C_AcctSchema_ID,")
-              .append(" p.AD_Client_ID, p.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+              .append(" p.clientId, p.orgId, 'Y', SysDate, 0, SysDate, 0,")
               .append(
                   " acct.V_Liability_Acct, acct.V_Liability_Services_Acct, acct.V_PrePayment_Acct ")
               .append("FROM C_BPartner p")
@@ -313,7 +313,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(" AND NOT EXISTS (SELECT * FROM C_BP_Vendor_Acct va ")
               .append(
                   "WHERE va.C_BPartner_ID=p.C_BPartner_ID AND va.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-      created = executeUpdate(sql.toString(), get_TrxName());
+      created = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsVendor@");
       createdTotal += created;
     }
@@ -329,7 +329,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(p_C_AcctSchema_ID)
               .append(" AND EXISTS (SELECT * FROM M_Warehouse_Acct x ")
               .append("WHERE x.M_Warehouse_ID=a.M_Warehouse_ID)");
-      updated = executeUpdate(sql.toString(), get_TrxName());
+      updated = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(updated), "@Updated@ @M_Warehouse_ID@");
       updatedTotal += updated;
     }
@@ -337,19 +337,19 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO M_Warehouse_Acct ")
             .append("(M_Warehouse_ID, C_AcctSchema_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(" W_Differences_Acct) ")
             .append("SELECT x.M_Warehouse_ID, acct.C_AcctSchema_ID,")
-            .append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
             .append(" acct.W_Differences_Acct ")
             .append("FROM M_Warehouse x")
-            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
             .append("WHERE acct.C_AcctSchema_ID=")
             .append(p_C_AcctSchema_ID)
             .append(" AND NOT EXISTS (SELECT * FROM M_Warehouse_Acct a ")
             .append("WHERE a.M_Warehouse_ID=x.M_Warehouse_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @M_Warehouse_ID@");
     createdTotal += created;
 
@@ -366,7 +366,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(p_C_AcctSchema_ID)
               .append(" AND EXISTS (SELECT * FROM C_Project_Acct x ")
               .append("WHERE x.C_Project_ID=a.C_Project_ID)");
-      updated = executeUpdate(sql.toString(), get_TrxName());
+      updated = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(updated), "@Updated@ @C_Project_ID@");
       updatedTotal += updated;
     }
@@ -374,19 +374,19 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO C_Project_Acct ")
             .append("(C_Project_ID, C_AcctSchema_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(" PJ_Asset_Acct, PJ_WIP_Acct) ")
             .append("SELECT x.C_Project_ID, acct.C_AcctSchema_ID,")
-            .append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
             .append(" acct.PJ_Asset_Acct, acct.PJ_WIP_Acct ")
             .append("FROM C_Project x")
-            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
             .append("WHERE acct.C_AcctSchema_ID=")
             .append(p_C_AcctSchema_ID)
             .append(" AND NOT EXISTS (SELECT * FROM C_Project_Acct a ")
             .append("WHERE a.C_Project_ID=x.C_Project_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_Project_ID@");
     createdTotal += created;
 
@@ -406,7 +406,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(p_C_AcctSchema_ID)
               .append(" AND EXISTS (SELECT * FROM C_Tax_Acct x ")
               .append("WHERE x.C_Tax_ID=a.C_Tax_ID)");
-      updated = executeUpdate(sql.toString(), get_TrxName());
+      updated = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(updated), "@Updated@ @C_Tax_ID@");
       updatedTotal += updated;
     }
@@ -414,19 +414,19 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO C_Tax_Acct ")
             .append("(C_Tax_ID, C_AcctSchema_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(" T_Due_Acct, T_Credit_Acct, T_Expense_Acct) ")
             .append("SELECT x.C_Tax_ID, acct.C_AcctSchema_ID,")
-            .append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
             .append(" acct.T_Due_Acct, acct.T_Credit_Acct, acct.T_Expense_Acct ")
             .append("FROM C_Tax x")
-            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
             .append("WHERE acct.C_AcctSchema_ID=")
             .append(p_C_AcctSchema_ID)
             .append(" AND NOT EXISTS (SELECT * FROM C_Tax_Acct a ")
             .append("WHERE a.C_Tax_ID=x.C_Tax_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_Tax_ID@");
     createdTotal += created;
 
@@ -451,7 +451,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(p_C_AcctSchema_ID)
               .append(" AND EXISTS (SELECT * FROM C_BankAccount_Acct x ")
               .append("WHERE x.C_BankAccount_ID=a.C_BankAccount_ID)");
-      updated = executeUpdate(sql.toString(), get_TrxName());
+      updated = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(updated), "@Updated@ @C_BankAccount_ID@");
       updatedTotal += updated;
     }
@@ -459,22 +459,22 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO C_BankAccount_Acct ")
             .append("(C_BankAccount_ID, C_AcctSchema_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(" B_InTransit_Acct, B_Asset_Acct, B_InterestRev_Acct, B_InterestExp_Acct,")
             .append(" B_UnallocatedCash_Acct, B_PaymentSelect_Acct) ")
             .append("SELECT x.C_BankAccount_ID, acct.C_AcctSchema_ID,")
-            .append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
             .append(
                 " acct.B_InTransit_Acct, acct.B_Asset_Acct, acct.B_InterestRev_Acct, acct.B_InterestExp_Acct,")
             .append(" acct.B_UnallocatedCash_Acct, acct.B_PaymentSelect_Acct ")
             .append("FROM C_BankAccount x")
-            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
             .append("WHERE acct.C_AcctSchema_ID=")
             .append(p_C_AcctSchema_ID)
             .append(" AND NOT EXISTS (SELECT * FROM C_BankAccount_Acct a ")
             .append("WHERE a.C_BankAccount_ID=x.C_BankAccount_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_BankAccount_ID@");
     createdTotal += created;
 
@@ -489,25 +489,25 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     		.append("WHERE a.C_AcctSchema_ID=").append(p_C_AcctSchema_ID)
     		.append(" AND EXISTS (SELECT * FROM C_Withholding_Acct x ")
     			.append("WHERE x.C_Withholding_ID=a.C_Withholding_ID)");
-    	updated = executeUpdate(sql.toString(), get_TrxName());
+    	updated = executeUpdate(sql.toString(), null);
     	addLog(0, null, new BigDecimal(updated), "@Updated@ @C_Withholding_ID@");
     	updatedTotal += updated;
     }
     //	Insert new Withholding
     sql = new StringBuilder("INSERT INTO C_Withholding_Acct ")
     	.append("(C_Withholding_ID, C_AcctSchema_ID,")
-    	.append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+    	.append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
     	.append("	Withholding_Acct) ")
     	.append("SELECT x.C_Withholding_ID, acct.C_AcctSchema_ID,")
-    	.append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+    	.append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
     	.append(" acct.Withholding_Acct ")
     	.append("FROM C_Withholding x")
-    	.append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+    	.append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
     	.append("WHERE acct.C_AcctSchema_ID=").append(p_C_AcctSchema_ID)
     	.append(" AND NOT EXISTS (SELECT * FROM C_Withholding_Acct a ")
     		.append("WHERE a.C_Withholding_ID=x.C_Withholding_ID")
     		.append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_Withholding_ID@");
     createdTotal += created;
     */
@@ -523,7 +523,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(p_C_AcctSchema_ID)
               .append(" AND EXISTS (SELECT * FROM C_Charge_Acct x ")
               .append("WHERE x.C_Charge_ID=a.C_Charge_ID)");
-      updated = executeUpdate(sql.toString(), get_TrxName());
+      updated = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(updated), "@Updated@ @C_Charge_ID@");
       updatedTotal += updated;
     }
@@ -531,19 +531,19 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO C_Charge_Acct ")
             .append("(C_Charge_ID, C_AcctSchema_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(" Ch_Expense_Acct) ")
             .append("SELECT x.C_Charge_ID, acct.C_AcctSchema_ID,")
-            .append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
             .append(" acct.Ch_Expense_Acct ")
             .append("FROM C_Charge x")
-            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
             .append("WHERE acct.C_AcctSchema_ID=")
             .append(p_C_AcctSchema_ID)
             .append(" AND NOT EXISTS (SELECT * FROM C_Charge_Acct a ")
             .append("WHERE a.C_Charge_ID=x.C_Charge_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_Charge_ID@");
     createdTotal += created;
 
@@ -566,7 +566,7 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
               .append(p_C_AcctSchema_ID)
               .append(" AND EXISTS (SELECT * FROM C_Cashbook_Acct x ")
               .append("WHERE x.C_Cashbook_ID=a.C_Cashbook_ID)");
-      updated = executeUpdate(sql.toString(), get_TrxName());
+      updated = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(updated), "@Updated@ @C_Cashbook_ID@");
       updatedTotal += updated;
     }
@@ -574,21 +574,21 @@ public class AcctSchemaDefaultCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO C_Cashbook_Acct ")
             .append("(C_Cashbook_ID, C_AcctSchema_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(" CB_Asset_Acct, CB_Differences_Acct, CB_CashTransfer_Acct,")
             .append(" CB_Expense_Acct, CB_Receipt_Acct) ")
             .append("SELECT x.C_Cashbook_ID, acct.C_AcctSchema_ID,")
-            .append(" x.AD_Client_ID, x.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" x.clientId, x.orgId, 'Y', SysDate, 0, SysDate, 0,")
             .append(" acct.CB_Asset_Acct, acct.CB_Differences_Acct, acct.CB_CashTransfer_Acct,")
             .append(" acct.CB_Expense_Acct, acct.CB_Receipt_Acct ")
             .append("FROM C_Cashbook x")
-            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.AD_Client_ID=acct.AD_Client_ID) ")
+            .append(" INNER JOIN C_AcctSchema_Default acct ON (x.clientId=acct.clientId) ")
             .append("WHERE acct.C_AcctSchema_ID=")
             .append(p_C_AcctSchema_ID)
             .append(" AND NOT EXISTS (SELECT * FROM C_Cashbook_Acct a ")
             .append("WHERE a.C_Cashbook_ID=x.C_Cashbook_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    created = executeUpdate(sql.toString(), get_TrxName());
+    created = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_Cashbook_ID@");
     createdTotal += created;
 

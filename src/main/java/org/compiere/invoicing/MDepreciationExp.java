@@ -1,13 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MPeriod;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_A_Depreciation_Exp;
@@ -16,6 +8,15 @@ import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
@@ -109,7 +110,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
   }
 
   private MDepreciationWorkfile getA_Depreciation_Workfile() {
-    return MDepreciationWorkfile.get(getCtx(), getA_Asset_ID(), getPostingType(), get_TrxName());
+    return MDepreciationWorkfile.get(getCtx(), getA_Asset_ID(), getPostingType(), null);
   }
 
   /**
@@ -155,7 +156,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
       depexp.setExpense_F(amt_F);
       depexp.setA_Accumulated_Depr_Delta(amt);
       depexp.setA_Accumulated_Depr_F_Delta(amt_F);
-      depexp.saveEx(assetwk.get_TrxName());
+      depexp.saveEx(null);
       list.add(depexp);
     }
     return list;
@@ -177,7 +178,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     String entryType = getA_Entry_Type();
     if (MDepreciationExp.A_ENTRY_TYPE_Depreciation.equals(entryType)) {
       checkExistsNotProcessedEntries(
-          getCtx(), getA_Asset_ID(), getDateAcct(), getPostingType(), get_TrxName());
+          getCtx(), getA_Asset_ID(), getDateAcct(), getPostingType(), null);
       //
       // Check if the asset is Active:
       if (!assetwk.getAsset().getA_Asset_Status().equals(MAsset.A_ASSET_STATUS_Activated)) {
@@ -288,7 +289,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
               + " SET Processed=? WHERE "
               + I_A_Depreciation_Exp.COLUMNNAME_A_Depreciation_Exp_ID
               + "=?";
-      executeUpdateEx(sql, new Object[] {Processed, getId()}, get_TrxName());
+      executeUpdateEx(sql, new Object[] {Processed, getId()}, null);
     }
   }
 

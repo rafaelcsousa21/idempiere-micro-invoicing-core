@@ -101,7 +101,7 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate, I_Persis
   public org.compiere.model.I_M_Product getM_ProductSpent() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_ProductSpent_ID(), get_TrxName());
+            .getPO(getM_ProductSpent_ID(), null);
   }
 
   /**
@@ -186,7 +186,7 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate, I_Persis
   public org.compiere.model.I_R_Request getR_Request() throws RuntimeException {
     return (org.compiere.model.I_R_Request)
         MTable.get(getCtx(), org.compiere.model.I_R_Request.Table_Name)
-            .getPO(getR_Request_ID(), get_TrxName());
+            .getPO(getR_Request_ID(), null);
   }
 
   /**

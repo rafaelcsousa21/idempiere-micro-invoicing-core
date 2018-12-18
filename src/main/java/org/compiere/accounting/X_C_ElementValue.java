@@ -133,7 +133,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
   public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), get_TrxName());
+            .getPO(getC_BankAccount_ID(), null);
   }
 
   /**
@@ -160,7 +160,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -187,7 +187,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
   public org.compiere.model.I_C_Element getC_Element() throws RuntimeException {
     return (org.compiere.model.I_C_Element)
         MTable.get(getCtx(), org.compiere.model.I_C_Element.Table_Name)
-            .getPO(getC_Element_ID(), get_TrxName());
+            .getPO(getC_Element_ID(), null);
   }
 
   /**

@@ -167,7 +167,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
    * @param qty matched quantity
    */
   public MMatchInv(I_C_InvoiceLine iLine, Timestamp dateTrx, BigDecimal qty) {
-    this(iLine.getCtx(), 0, iLine.get_TrxName());
+    this(iLine.getCtx(), 0, null);
     setClientOrg(iLine);
     setC_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());
     setM_InOutLine_ID(iLine.getM_InOutLine_ID());
@@ -194,7 +194,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
       setDateAcct(ts);
     }
     if (getMAttributeSetInstance_ID() == 0 && getM_InOutLine_ID() != 0) {
-      MInOutLine iol = new MInOutLine(getCtx(), getM_InOutLine_ID(), get_TrxName());
+      MInOutLine iol = new MInOutLine(getCtx(), getM_InOutLine_ID(), null);
       setM_AttributeSetInstance_ID(iol.getMAttributeSetInstance_ID());
     }
     return true;
@@ -205,10 +205,10 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     if (!success) return false;
 
     if (getM_InOutLine_ID() > 0) {
-      MInOutLine line = new MInOutLine(getCtx(), getM_InOutLine_ID(), get_TrxName());
+      MInOutLine line = new MInOutLine(getCtx(), getM_InOutLine_ID(), null);
       BigDecimal matchedQty =
           getSQLValueBD(
-              get_TrxName(),
+              null,
               "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE M_InOutLine_ID=?",
               getM_InOutLine_ID());
       if (matchedQty != null && matchedQty.compareTo(line.getMovementQty()) > 0) {
@@ -223,10 +223,10 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     }
 
     if (getC_InvoiceLine_ID() > 0) {
-      MInvoiceLine line = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), get_TrxName());
+      MInvoiceLine line = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), null);
       BigDecimal matchedQty =
           getSQLValueBD(
-              get_TrxName(),
+              null,
               "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE C_InvoiceLine_ID=?",
               getC_InvoiceLine_ID());
       if (matchedQty != null && matchedQty.compareTo(line.getQtyInvoiced()) > 0) {
@@ -253,14 +253,14 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
             + "FROM C_InvoiceLine il"
             + " INNER JOIN C_Invoice i ON (i.C_Invoice_ID=il.C_Invoice_ID) "
             + "WHERE C_InvoiceLine_ID=?";
-    Timestamp invoiceDate = getSQLValueTS(get_TrxName(), sql, getC_InvoiceLine_ID());
+    Timestamp invoiceDate = getSQLValueTS(null, sql, getC_InvoiceLine_ID());
     //
     sql =
         "SELECT io.DateAcct "
             + "FROM M_InOutLine iol"
             + " INNER JOIN M_InOut io ON (io.M_InOut_ID=iol.M_InOut_ID) "
             + "WHERE iol.M_InOutLine_ID=?";
-    Timestamp shipDate = getSQLValueTS(get_TrxName(), sql, getM_InOutLine_ID());
+    Timestamp shipDate = getSQLValueTS(null, sql, getM_InOutLine_ID());
     //
     if (invoiceDate == null) return shipDate;
     if (shipDate == null) return invoiceDate;
@@ -278,7 +278,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
       MPeriod.testPeriodOpen(
           getCtx(), getDateTrx(), MDocType.DOCBASETYPE_MatchInvoice,  getOrgId());
       setPosted(false);
-      MFactAcct.deleteEx(I_M_MatchInv.Table_ID, getId(), get_TrxName());
+      MFactAcct.deleteEx(I_M_MatchInv.Table_ID, getId(), null);
     }
     return true;
   } //	beforeDelete
@@ -313,7 +313,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
               getM_MatchInv_ID(),
               getMAttributeSetInstance_ID(),
               as.getC_AcctSchema_ID(),
-              get_TrxName());
+              null);
       if (cd != null) {
         cd.deleteEx(true);
       }
@@ -354,7 +354,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
    */
   public boolean reverse(Timestamp reversalDate) {
     if (this.isProcessed() && this.getReversal_ID() == 0) {
-      MMatchInv reversal = new MMatchInv(getCtx(), 0, get_TrxName());
+      MMatchInv reversal = new MMatchInv(getCtx(), 0, null);
       PO.copyValues(this, reversal);
       reversal.setAD_Org_ID(this. getOrgId());
       reversal.setDescription("(->" + this.getDocumentNo() + ")");

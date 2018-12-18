@@ -75,7 +75,7 @@ public class ExpenseSOrder extends SvrProcess {
   protected String doIt() throws java.lang.Exception {
     StringBuilder sql =
         new StringBuilder("SELECT * FROM S_TimeExpenseLine el ")
-            .append("WHERE el.AD_Client_ID=?") // 	#1
+            .append("WHERE el.clientId=?") // 	#1
             .append(" AND el.C_BPartner_ID>0 AND el.IsInvoiced='Y'") // 	Business Partner && to be
             // invoiced
             .append(" AND el.C_OrderLine_ID IS NULL") // 	not invoiced yet
@@ -99,7 +99,7 @@ public class ExpenseSOrder extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       int par = 1;
       pstmt.setInt(par++, getClientId());
       if (p_C_BPartner_ID != 0) pstmt.setInt(par++, p_C_BPartner_ID);
@@ -108,13 +108,13 @@ public class ExpenseSOrder extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) // 	********* Expense Line Loop
       {
-        MTimeExpenseLine tel = new MTimeExpenseLine(getCtx(), rs, get_TrxName());
+        MTimeExpenseLine tel = new MTimeExpenseLine(getCtx(), rs, null);
         if (!tel.isInvoiced()) continue;
 
         //	New BPartner - New Order
         if (oldBPartner == null || oldBPartner.getC_BPartner_ID() != tel.getC_BPartner_ID()) {
           completeOrder();
-          oldBPartner = new MBPartner(getCtx(), tel.getC_BPartner_ID(), get_TrxName());
+          oldBPartner = new MBPartner(getCtx(), tel.getC_BPartner_ID(), null);
         }
         //	New Project - New Order
         if (old_Project_ID != tel.getC_Project_ID()) {
@@ -122,7 +122,7 @@ public class ExpenseSOrder extends SvrProcess {
           old_Project_ID = tel.getC_Project_ID();
         }
         if (te == null || te.getS_TimeExpense_ID() != tel.getS_TimeExpense_ID())
-          te = new MTimeExpense(getCtx(), tel.getS_TimeExpense_ID(), get_TrxName());
+          te = new MTimeExpense(getCtx(), tel.getS_TimeExpense_ID(), null);
         //
         processLine(te, tel, oldBPartner);
       } //	********* Expense Line Loop
@@ -149,7 +149,7 @@ public class ExpenseSOrder extends SvrProcess {
     if (m_order == null) {
       if (log.isLoggable(Level.INFO))
         log.info("New Order for " + bp + ", Project=" + tel.getC_Project_ID());
-      m_order = new MOrder(getCtx(), 0, get_TrxName());
+      m_order = new MOrder(getCtx(), 0, null);
       m_order.setAD_Org_ID(tel.getOrgId());
       m_order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_OnCredit);
       //
@@ -172,7 +172,7 @@ public class ExpenseSOrder extends SvrProcess {
       if (tel.getC_Project_ID() != 0) {
         m_order.setC_Project_ID(tel.getC_Project_ID());
         //	Optionally Overwrite BP Price list from Project
-        MProject project = new MProject(getCtx(), tel.getC_Project_ID(), get_TrxName());
+        MProject project = new MProject(getCtx(), tel.getC_Project_ID(), null);
         if (project.getM_PriceList_ID() != 0)
           m_order.setM_PriceList_ID(project.getM_PriceList_ID());
       }

@@ -99,7 +99,7 @@ public class MWFNode extends X_AD_WF_Node {
    * @param Name name
    */
   public MWFNode(MWorkflow wf, String Value, String Name) {
-    this(wf.getCtx(), 0, wf.get_TrxName());
+    this(wf.getCtx(), 0, null);
     setClientOrg(wf);
     setAD_Workflow_ID(wf.getAD_Workflow_ID());
     setValue(Value);
@@ -160,7 +160,7 @@ public class MWFNode extends X_AD_WF_Node {
   /** Load Next */
   private void loadNext() {
     m_next =
-        new Query(getCtx(), MWFNodeNext.Table_Name, "AD_WF_Node_ID=?", get_TrxName())
+        new Query(getCtx(), MWFNodeNext.Table_Name, "AD_WF_Node_ID=?", null)
             .setParameters(new Object[] {getId()})
             .setOnlyActiveRecords(true)
             .setOrderBy(MWFNodeNext.COLUMNNAME_SeqNo)
@@ -181,7 +181,7 @@ public class MWFNode extends X_AD_WF_Node {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getId());
       pstmt.setString(2, Env.getADLanguage(getCtx()));
       rs = pstmt.executeQuery();
@@ -466,7 +466,7 @@ public class MWFNode extends X_AD_WF_Node {
 
   @Override
   public MWorkflow getAD_Workflow() {
-    if (get_TrxName() == null) return MWorkflow.get(getCtx(), getAD_Workflow_ID());
+    if (null == null) return MWorkflow.get(getCtx(), getAD_Workflow_ID());
     else return (MWorkflow) super.getAD_Workflow();
   }
 

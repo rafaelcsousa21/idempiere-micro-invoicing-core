@@ -1,10 +1,11 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.orm.MClient;
 import org.compiere.orm.X_AD_Tree;
 import org.compiere.util.Msg;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Accounting Element Model.
@@ -54,7 +55,7 @@ public class MElement extends X_C_Element {
    * @param AD_Tree_ID tree
    */
   public MElement(MClient client, String Name, String ElementType, int AD_Tree_ID) {
-    this(client.getCtx(), 0, client.get_TrxName());
+    this(client.getCtx(), 0, null);
     setClientOrg(client);
     setName(Name);
     setElementType(ElementType); // A
@@ -71,7 +72,7 @@ public class MElement extends X_C_Element {
    * @return tree
    */
   public X_AD_Tree getTree() {
-    if (m_tree == null) m_tree = new X_AD_Tree(getCtx(), getAD_Tree_ID(), get_TrxName());
+    if (m_tree == null) m_tree = new X_AD_Tree(getCtx(), getAD_Tree_ID(), null);
     return m_tree;
   } //	getTree
 

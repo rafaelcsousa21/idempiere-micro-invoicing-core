@@ -63,7 +63,7 @@ public class X_C_RevenueRecognition_Plan extends PO
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -90,7 +90,7 @@ public class X_C_RevenueRecognition_Plan extends PO
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -117,7 +117,7 @@ public class X_C_RevenueRecognition_Plan extends PO
   public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
     return (org.compiere.model.I_C_InvoiceLine)
         MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), get_TrxName());
+            .getPO(getC_InvoiceLine_ID(), null);
   }
 
   /**
@@ -145,7 +145,7 @@ public class X_C_RevenueRecognition_Plan extends PO
       throws RuntimeException {
     return (org.compiere.model.I_C_RevenueRecognition)
         MTable.get(getCtx(), org.compiere.model.I_C_RevenueRecognition.Table_Name)
-            .getPO(getC_RevenueRecognition_ID(), get_TrxName());
+            .getPO(getC_RevenueRecognition_ID(), null);
   }
 
   /**
@@ -225,7 +225,7 @@ public class X_C_RevenueRecognition_Plan extends PO
   public I_C_ValidCombination getP_Revenue_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getP_Revenue_Acct(), get_TrxName());
+            .getPO(getP_Revenue_Acct(), null);
   }
 
   /**
@@ -291,7 +291,7 @@ public class X_C_RevenueRecognition_Plan extends PO
   public I_C_ValidCombination getUnEarnedRevenue_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getUnEarnedRevenue_Acct(), get_TrxName());
+            .getPO(getUnEarnedRevenue_Acct(), null);
   }
 
   /**

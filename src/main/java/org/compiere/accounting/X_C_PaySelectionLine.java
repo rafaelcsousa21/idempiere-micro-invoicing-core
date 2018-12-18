@@ -57,7 +57,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), get_TrxName());
+            .getPO(getC_Invoice_ID(), null);
   }
 
   /**
@@ -84,7 +84,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
   public org.compiere.model.I_C_PaySelectionCheck getC_PaySelectionCheck() throws RuntimeException {
     return (org.compiere.model.I_C_PaySelectionCheck)
         MTable.get(getCtx(), org.compiere.model.I_C_PaySelectionCheck.Table_Name)
-            .getPO(getC_PaySelectionCheck_ID(), get_TrxName());
+            .getPO(getC_PaySelectionCheck_ID(), null);
   }
 
   /**
@@ -111,7 +111,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
   public org.compiere.model.I_C_PaySelection getC_PaySelection() throws RuntimeException {
     return (org.compiere.model.I_C_PaySelection)
         MTable.get(getCtx(), org.compiere.model.I_C_PaySelection.Table_Name)
-            .getPO(getC_PaySelection_ID(), get_TrxName());
+            .getPO(getC_PaySelection_ID(), null);
   }
 
   /**

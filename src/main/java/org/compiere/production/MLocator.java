@@ -203,7 +203,7 @@ public class MLocator extends X_M_Locator {
    * @param Value value
    */
   public MLocator(MWarehouse warehouse, String Value) {
-    this(warehouse.getCtx(), 0, warehouse.get_TrxName());
+    this(warehouse.getCtx(), 0, null);
     setClientOrg(warehouse);
     setM_Warehouse_ID(warehouse.getM_Warehouse_ID()); // 	Parent
     setValue(Value);

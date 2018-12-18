@@ -55,7 +55,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
   public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), get_TrxName());
+            .getPO(getC_BankAccount_ID(), null);
   }
 
   /**

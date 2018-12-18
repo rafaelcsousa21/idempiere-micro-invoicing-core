@@ -69,7 +69,7 @@ public class MWarehouse extends X_M_Warehouse {
    * @return warehouse
    */
   public static MWarehouse[] getForOrg(Properties ctx, int AD_Org_ID) {
-    final String whereClause = "AD_Org_ID=?";
+    final String whereClause = "orgId=?";
     List<MWarehouse> list =
         new Query(ctx, I_M_Warehouse.Table_Name, whereClause, null)
             .setParameters(AD_Org_ID)
@@ -87,7 +87,7 @@ public class MWarehouse extends X_M_Warehouse {
    * @return warehouse
    */
   public static MWarehouse[] getInTransitForOrg(Properties ctx, int AD_Org_ID) {
-    final String whereClause = "IsInTransit=? AND AD_Org_ID=?";
+    final String whereClause = "IsInTransit=? AND orgId=?";
     List<MWarehouse> list =
         new Query(ctx, I_M_Warehouse.Table_Name, whereClause, null)
             .setParameters("Y", AD_Org_ID)
@@ -134,7 +134,7 @@ public class MWarehouse extends X_M_Warehouse {
    * @param org parent
    */
   public MWarehouse(MOrg org) {
-    this(org.getCtx(), 0, org.get_TrxName());
+    this(org.getCtx(), 0, null);
     setClientOrg(org);
     setValue(org.getValue());
     setName(org.getName());
@@ -219,7 +219,7 @@ public class MWarehouse extends X_M_Warehouse {
               + " GROUP BY M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID "
               + " HAVING SUM(s.QtyOnHand) < 0 ";
 
-      int prdid = getSQLValueEx(get_TrxName(), sql, getM_Warehouse_ID());
+      int prdid = getSQLValueEx(null, sql, getM_Warehouse_ID());
       if (prdid > 0) {
         log.saveError("Error", Msg.translate(getCtx(), "NegativeOnhandExists"));
         return false;

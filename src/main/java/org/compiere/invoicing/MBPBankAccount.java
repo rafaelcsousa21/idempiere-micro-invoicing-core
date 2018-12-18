@@ -1,8 +1,5 @@
 package org.compiere.invoicing;
 
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.bank.IBAN;
 import org.compiere.bank.MBank;
 import org.compiere.crm.MBPartner;
@@ -14,6 +11,10 @@ import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * BP Bank Account Model
@@ -85,7 +86,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
    * @param location Location
    */
   public MBPBankAccount(Properties ctx, MBPartner bp, MUser bpc, MLocation location) {
-    this(ctx, 0, bp.get_TrxName());
+    this(ctx, 0, null);
     setIsACH(false);
     //
     setC_BPartner_ID(bp.getC_BPartner_ID());
@@ -137,7 +138,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
   public MBank getBank() {
     int C_Bank_ID = getC_Bank_ID();
     if (C_Bank_ID == 0) return null;
-    if (m_bank == null) m_bank = new MBank(getCtx(), C_Bank_ID, get_TrxName());
+    if (m_bank == null) m_bank = new MBank(getCtx(), C_Bank_ID, null);
     return m_bank;
   } //	getBank
 

@@ -195,7 +195,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
   public org.compiere.model.I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException {
     return (org.compiere.model.I_M_ChangeNotice)
         MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_ChangeNotice_ID(), get_TrxName());
+            .getPO(getM_ChangeNotice_ID(), null);
   }
 
   /**
@@ -222,7 +222,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**

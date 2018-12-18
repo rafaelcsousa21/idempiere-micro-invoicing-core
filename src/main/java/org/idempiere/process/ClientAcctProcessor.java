@@ -85,7 +85,7 @@ public class ClientAcctProcessor extends SvrProcess {
 
     if (p_C_AcctSchema_ID == 0) m_ass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId());
     else //	only specific accounting schema
-    m_ass = new MAcctSchema[] {new MAcctSchema(getCtx(), p_C_AcctSchema_ID, get_TrxName())};
+    m_ass = new MAcctSchema[] {new MAcctSchema(getCtx(), p_C_AcctSchema_ID, null)};
 
     postSession();
     MCost.create(m_client);
@@ -101,7 +101,7 @@ public class ClientAcctProcessor extends SvrProcess {
     listProcessedOn.add(Env.ZERO); // to include potential null values
 
     // get current time from db
-    Timestamp ts = getSQLValueTS(get_TrxName(), "SELECT CURRENT_TIMESTAMP FROM DUAL");
+    Timestamp ts = getSQLValueTS(null, "SELECT CURRENT_TIMESTAMP FROM DUAL");
 
     // go back 2 second to be safe (to avoid posting documents being completed at this precise
     // moment)
@@ -122,12 +122,12 @@ public class ClientAcctProcessor extends SvrProcess {
       StringBuilder sql =
           new StringBuilder("SELECT DISTINCT ProcessedOn FROM ")
               .append(TableName)
-              .append(" WHERE AD_Client_ID=? AND ProcessedOn<?")
+              .append(" WHERE clientId=? AND ProcessedOn<?")
               .append(" AND Processed='Y' AND Posted='N' AND IsActive='Y'");
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql.toString(), get_TrxName());
+        pstmt = prepareStatement(sql.toString(), null);
         pstmt.setInt(1, getClientId());
         pstmt.setBigDecimal(2, value);
         rs = pstmt.executeQuery();
@@ -163,7 +163,7 @@ public class ClientAcctProcessor extends SvrProcess {
         StringBuilder sql =
             new StringBuilder("SELECT * FROM ")
                 .append(TableName)
-                .append(" WHERE AD_Client_ID=? AND (ProcessedOn");
+                .append(" WHERE clientId=? AND (ProcessedOn");
         if (processedOn.compareTo(Env.ZERO) != 0) sql.append("=?");
         else sql.append(" IS NULL OR ProcessedOn=0");
         sql.append(") AND Processed='Y' AND Posted='N' AND IsActive='Y'")
@@ -172,7 +172,7 @@ public class ClientAcctProcessor extends SvrProcess {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-          pstmt = prepareStatement(sql.toString(), get_TrxName());
+          pstmt = prepareStatement(sql.toString(), null);
           pstmt.setInt(1, getClientId());
           if (processedOn.compareTo(Env.ZERO) != 0) pstmt.setBigDecimal(2, processedOn);
           rs = pstmt.executeQuery();

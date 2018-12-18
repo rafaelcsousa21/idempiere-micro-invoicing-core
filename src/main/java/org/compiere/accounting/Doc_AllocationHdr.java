@@ -889,7 +889,7 @@ public class Doc_AllocationHdr extends Doc {
       pstmt.setInt(1, line.getC_Invoice_ID());
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) tax.addInvoiceFact(new MFactAcct(getCtx(), rs, fact.get_TrxName()));
+      while (rs.next()) tax.addInvoiceFact(new MFactAcct(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {

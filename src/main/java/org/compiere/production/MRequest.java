@@ -195,7 +195,7 @@ public class MRequest extends X_R_Request {
   public MRequestAction[] getActions() {
     final String whereClause = MRequestAction.COLUMNNAME_R_Request_ID + "=?";
     List<MRequestAction> list =
-        new Query(getCtx(), I_R_RequestAction.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_R_RequestAction.Table_Name, whereClause, null)
             .setParameters(getId())
             .setOrderBy("Created DESC")
             .list();
@@ -211,7 +211,7 @@ public class MRequest extends X_R_Request {
   public MRequestUpdate[] getUpdates(String confidentialType) {
     final String whereClause = MRequestUpdate.COLUMNNAME_R_Request_ID + "=?";
     List<MRequestUpdate> listUpdates =
-        new Query(getCtx(), I_R_RequestUpdate.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_R_RequestUpdate.Table_Name, whereClause, null)
             .setParameters(getId())
             .setOrderBy("Created DESC")
             .list();
@@ -491,7 +491,7 @@ public class MRequest extends X_R_Request {
   public MUser getUser() {
     if (getAD_User_ID() == 0) return null;
     if (m_user != null && m_user.getAD_User_ID() != getAD_User_ID()) m_user = null;
-    if (m_user == null) m_user = new MUser(getCtx(), getAD_User_ID(), get_TrxName());
+    if (m_user == null) m_user = new MUser(getCtx(), getAD_User_ID(), null);
     return m_user;
   } //	getUser
 
@@ -503,7 +503,7 @@ public class MRequest extends X_R_Request {
   public MBPartner getBPartner() {
     if (getC_BPartner_ID() == 0) return null;
     if (m_partner != null && m_partner.getC_BPartner_ID() != getC_BPartner_ID()) m_partner = null;
-    if (m_partner == null) m_partner = new MBPartner(getCtx(), getC_BPartner_ID(), get_TrxName());
+    if (m_partner == null) m_partner = new MBPartner(getCtx(), getC_BPartner_ID(), null);
     return m_partner;
   } //	getBPartner
 
@@ -707,7 +707,7 @@ public class MRequest extends X_R_Request {
   			return "RequestActionEMailNoSMTP";
 
   		//  Mail To
-  		MUser to = new MUser (getCtx(), getAD_User_ID(), get_TrxName());
+  		MUser to = new MUser (getCtx(), getAD_User_ID(), null);
   		if (to == null
   			|| to.getEMail() == null
   			|| to.getEMail().length() == 0)
@@ -773,7 +773,7 @@ public class MRequest extends X_R_Request {
         MGroup newG = MGroup.get(getCtx(), getR_Group_ID());
         if (oldG.getPP_Product_BOM_ID() != newG.getPP_Product_BOM_ID()
             || oldG.getM_ChangeNotice_ID() != newG.getM_ChangeNotice_ID()) {
-          MChangeRequest ecr = new MChangeRequest(getCtx(), getM_ChangeRequest_ID(), get_TrxName());
+          MChangeRequest ecr = new MChangeRequest(getCtx(), getM_ChangeRequest_ID(), null);
           if (!ecr.isProcessed() || ecr.getM_FixChangeNotice_ID() == 0) {
             ecr.setPP_Product_BOM_ID(newG.getPP_Product_BOM_ID());
             ecr.setM_ChangeNotice_ID(newG.getM_ChangeNotice_ID());

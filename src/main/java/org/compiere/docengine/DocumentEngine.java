@@ -212,7 +212,6 @@ public class DocumentEngine implements DocAction {
     if (m_document instanceof PO) {
       PO docPO = (PO) m_document;
       if (docPO.getId() > 0
-          && docPO.get_TrxName() != null
           && docPO.get_ValueOld("DocStatus") != null) {
         forUpdate(docPO, 30);
         String docStatusOriginal = (String) docPO.get_ValueOld("DocStatus");
@@ -224,7 +223,7 @@ public class DocumentEngine implements DocAction {
                 + " = ? ";
         String currentStatus = getSQLValueString((String) null, statusSql, docPO.getId());
         if (!docStatusOriginal.equals(currentStatus) && currentStatus != null) {
-          currentStatus = getSQLValueString(docPO.get_TrxName(), statusSql, docPO.getId());
+          currentStatus = getSQLValueString(null, statusSql, docPO.getId());
           if (!docStatusOriginal.equals(currentStatus)) {
             throw new IllegalStateException(
                 Msg.getMsg(docPO.getCtx(), "DocStatusChanged") + " " + docPO.toString());
@@ -342,7 +341,7 @@ public class DocumentEngine implements DocAction {
                       docafter.getTableId(),
                       docafter.getId(),
                       true,
-                      docafter.get_TrxName());
+                      null);
             }
           }
         }
@@ -485,7 +484,7 @@ public class DocumentEngine implements DocAction {
             m_document.getTableId(),
             m_document.getId(),
             true,
-            m_document.get_TrxName());
+            null);
     if (DocAction.Companion.getACTION_Post().equals(m_action)) {
       // forced post via process - throw exception to inform the caller about the error
       if (!Util.isEmpty(error)) {
@@ -852,15 +851,6 @@ public class DocumentEngine implements DocAction {
     if (m_document != null) return m_document.get_Logger();
     throw new IllegalStateException(EXCEPTION_MSG);
   } //	get_Logger
-
-  /**
-   * Get Transaction
-   *
-   * @return trx name
-   */
-  public String get_TrxName() {
-    return null;
-  } //	get_TrxName
 
   /**
    * CreatePDF

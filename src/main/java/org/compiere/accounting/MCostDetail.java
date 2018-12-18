@@ -751,7 +751,7 @@ public class MCostDetail extends X_M_CostDetail {
         new Query(product.getCtx(), I_M_CostDetail.Table_Name, whereClause, trxName)
             .setParameters(product.getM_Product_ID(), false)
             .setOrderBy(
-                "C_AcctSchema_ID, M_CostElement_ID, AD_Org_ID, M_AttributeSetInstance_ID, Created")
+                "C_AcctSchema_ID, M_CostElement_ID, orgId, M_AttributeSetInstance_ID, Created")
             .list();
     for (MCostDetail cd : list) {
       if (cd.process()) // 	saves
@@ -956,7 +956,7 @@ public class MCostDetail extends X_M_CostDetail {
 
     //	get costing level for product
     MAcctSchema as = MAcctSchema.get(getCtx(), getC_AcctSchema_ID());
-    MProduct product = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
+    MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
     String CostingLevel = product.getCostingLevel(as);
     //	Org Element
     int Org_ID =  getOrgId();
@@ -1033,7 +1033,7 @@ public class MCostDetail extends X_M_CostDetail {
       if (ce.isAverageInvoice()) return true;
     }
 
-    MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID(), get_TrxName());
+    MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID(), null);
 
     forUpdate(cost, 120);
 
@@ -1042,7 +1042,7 @@ public class MCostDetail extends X_M_CostDetail {
     //			as, Org_ID, ce.getM_CostElement_ID());
 
     // save history for m_cost
-    X_M_CostHistory history = new X_M_CostHistory(getCtx(), 0, get_TrxName());
+    X_M_CostHistory history = new X_M_CostHistory(getCtx(), 0, null);
     history.setM_AttributeSetInstance_ID(cost.getMAttributeSetInstance_ID());
     history.setM_CostDetail_ID(this.getM_CostDetail_ID());
     history.setM_CostElement_ID(ce.getM_CostElement_ID());
@@ -1150,11 +1150,11 @@ public class MCostDetail extends X_M_CostDetail {
                 as,
                 Org_ID,
                 ce.getM_CostElement_ID(),
-                get_TrxName());
+                null);
         cq.setCosts(amt, qty, precision);
         cq.saveEx();
         //	Get Costs - costing level Org/ASI
-        MCostQueue[] cQueue = MCostQueue.getQueue(product, M_ASI_ID, as, Org_ID, ce, get_TrxName());
+        MCostQueue[] cQueue = MCostQueue.getQueue(product, M_ASI_ID, as, Org_ID, ce, null);
         if (cQueue != null && cQueue.length > 0)
           cost.setCurrentCostPrice(cQueue[0].getCurrentCostPrice());
         cost.add(amt, qty);
@@ -1273,16 +1273,16 @@ public class MCostDetail extends X_M_CostDetail {
                     as,
                     Org_ID,
                     ce.getM_CostElement_ID(),
-                    get_TrxName());
+                    null);
             cq.setCosts(amt, qty, precision);
             cq.saveEx();
           } else {
             //	Adjust Queue - costing level Org/ASI
-            MCostQueue.adjustQty(product, M_ASI_ID, as, Org_ID, ce, qty.negate(), get_TrxName());
+            MCostQueue.adjustQty(product, M_ASI_ID, as, Org_ID, ce, qty.negate(), null);
           }
           //	Get Costs - costing level Org/ASI
           MCostQueue[] cQueue =
-              MCostQueue.getQueue(product, M_ASI_ID, as, Org_ID, ce, get_TrxName());
+              MCostQueue.getQueue(product, M_ASI_ID, as, Org_ID, ce, null);
           if (cQueue != null && cQueue.length > 0)
             cost.setCurrentCostPrice(cQueue[0].getCurrentCostPrice());
           cost.setCurrentQty(cost.getCurrentQty().add(qty));
@@ -1304,7 +1304,7 @@ public class MCostDetail extends X_M_CostDetail {
         } else if (addition) {
           MProductionLine productionLine =
               getM_ProductionLine_ID() > 0
-                  ? new MProductionLine(getCtx(), getM_ProductionLine_ID(), get_TrxName())
+                  ? new MProductionLine(getCtx(), getM_ProductionLine_ID(), null)
                   : null;
           if (productionLine != null && productionLine.getProductionReversalId() > 0)
             cost.setCurrentQty(cost.getCurrentQty().add(qty));

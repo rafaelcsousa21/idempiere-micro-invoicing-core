@@ -46,7 +46,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -73,7 +73,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
   public org.compiere.model.I_C_BP_Group getC_BP_Group() throws RuntimeException {
     return (org.compiere.model.I_C_BP_Group)
         MTable.get(getCtx(), org.compiere.model.I_C_BP_Group.Table_Name)
-            .getPO(getC_BP_Group_ID(), get_TrxName());
+            .getPO(getC_BP_Group_ID(), null);
   }
 
   /**
@@ -131,7 +131,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
   public org.compiere.model.I_M_Product_Category getM_Product_Category() throws RuntimeException {
     return (org.compiere.model.I_M_Product_Category)
         MTable.get(getCtx(), org.compiere.model.I_M_Product_Category.Table_Name)
-            .getPO(getM_Product_Category_ID(), get_TrxName());
+            .getPO(getM_Product_Category_ID(), null);
   }
 
   /**
@@ -158,7 +158,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -206,7 +206,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
   public org.compiere.model.I_PA_Goal getPA_Goal() throws RuntimeException {
     return (org.compiere.model.I_PA_Goal)
         MTable.get(getCtx(), org.compiere.model.I_PA_Goal.Table_Name)
-            .getPO(getPA_Goal_ID(), get_TrxName());
+            .getPO(getPA_Goal_ID(), null);
   }
 
   /**

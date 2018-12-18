@@ -124,7 +124,7 @@ public class MTree extends MTree_Base {
     else if (keyColumnName.equals("C_ElementValue_ID")) TreeType = TREETYPE_ElementValue;
     else if (keyColumnName.equals("M_Product_ID")) TreeType = TREETYPE_Product;
     else if (keyColumnName.equals("C_BPartner_ID")) TreeType = TREETYPE_BPartner;
-    else if (keyColumnName.equals("AD_Org_ID")) TreeType = TREETYPE_Organization;
+    else if (keyColumnName.equals("orgId")) TreeType = TREETYPE_Organization;
     else if (keyColumnName.equals("C_Project_ID")) TreeType = TREETYPE_Project;
     else if (keyColumnName.equals("M_ProductCategory_ID")) TreeType = TREETYPE_ProductCategory;
     else if (keyColumnName.equals("M_BOM_ID")) TreeType = TREETYPE_BoM;
@@ -142,7 +142,7 @@ public class MTree extends MTree_Base {
           "SELECT tr.AD_Tree_ID "
               + "FROM AD_Tree tr "
               + "JOIN AD_Table t ON (tr.AD_Table_ID=t.AD_Table_ID) "
-              + "WHERE tr.AD_Client_ID=? AND tr.TreeType=? AND tr.IsActive='Y' AND tr.IsAllNodes='Y' AND t.TableName = ? "
+              + "WHERE tr.clientId=? AND tr.TreeType=? AND tr.IsActive='Y' AND tr.IsAllNodes='Y' AND t.TableName = ? "
               + "ORDER BY tr.AD_Tree_ID";
       int treeID =
           getSQLValueEx(
@@ -160,7 +160,7 @@ public class MTree extends MTree_Base {
     int AD_Tree_ID = 0;
     String sql =
         "SELECT AD_Tree_ID, Name FROM AD_Tree "
-            + "WHERE AD_Client_ID=? AND TreeType=? AND IsActive='Y' AND IsAllNodes='Y' "
+            + "WHERE clientId=? AND TreeType=? AND IsActive='Y' AND IsAllNodes='Y' "
             + "ORDER BY IsDefault DESC, AD_Tree_ID";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -242,7 +242,7 @@ public class MTree extends MTree_Base {
       // load Node details - addToTree -> getNodeDetail
       getNodeDetails();
       //
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       int idx = 1;
       if (AD_User_ID != -1 && getTreeType().equals(TREETYPE_Menu)) // IDEMPIERE 329 - nmicoud
       pstmt.setInt(idx++, AD_User_ID);

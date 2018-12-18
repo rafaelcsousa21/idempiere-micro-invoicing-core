@@ -144,7 +144,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
     return (org.compiere.model.I_C_Order)
         MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), get_TrxName());
+            .getPO(getC_Order_ID(), null);
   }
 
   /**
@@ -171,7 +171,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), get_TrxName());
+            .getPO(getC_Payment_ID(), null);
   }
 
   /**
@@ -237,7 +237,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   public org.compiere.model.I_C_POSTenderType getC_POSTenderType() throws RuntimeException {
     return (org.compiere.model.I_C_POSTenderType)
         MTable.get(getCtx(), org.compiere.model.I_C_POSTenderType.Table_Name)
-            .getPO(getC_POSTenderType_ID(), get_TrxName());
+            .getPO(getC_POSTenderType_ID(), null);
   }
 
   /**

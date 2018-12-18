@@ -61,7 +61,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -88,7 +88,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
     return (org.compiere.model.I_C_ConversionType)
         MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), get_TrxName());
+            .getPO(getC_ConversionType_ID(), null);
   }
 
   /**
@@ -115,7 +115,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -142,7 +142,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**
@@ -207,7 +207,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
     return (org.compiere.model.I_C_Period)
         MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), get_TrxName());
+            .getPO(getC_Period_ID(), null);
   }
 
   /**
@@ -429,7 +429,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_GL_Budget getGL_Budget() throws RuntimeException {
     return (org.compiere.model.I_GL_Budget)
         MTable.get(getCtx(), org.compiere.model.I_GL_Budget.Table_Name)
-            .getPO(getGL_Budget_ID(), get_TrxName());
+            .getPO(getGL_Budget_ID(), null);
   }
 
   /**
@@ -456,7 +456,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_GL_Category getGL_Category() throws RuntimeException {
     return (org.compiere.model.I_GL_Category)
         MTable.get(getCtx(), org.compiere.model.I_GL_Category.Table_Name)
-            .getPO(getGL_Category_ID(), get_TrxName());
+            .getPO(getGL_Category_ID(), null);
   }
 
   /**
@@ -483,7 +483,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_GL_JournalBatch getGL_JournalBatch() throws RuntimeException {
     return (org.compiere.model.I_GL_JournalBatch)
         MTable.get(getCtx(), org.compiere.model.I_GL_JournalBatch.Table_Name)
-            .getPO(getGL_JournalBatch_ID(), get_TrxName());
+            .getPO(getGL_JournalBatch_ID(), null);
   }
 
   /**
@@ -716,7 +716,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_GL_Journal getReversal() throws RuntimeException {
     return (org.compiere.model.I_GL_Journal)
         MTable.get(getCtx(), org.compiere.model.I_GL_Journal.Table_Name)
-            .getPO(getReversal_ID(), get_TrxName());
+            .getPO(getReversal_ID(), null);
   }
 
   /**

@@ -82,7 +82,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
   public org.compiere.model.I_AD_CtxHelp getAD_CtxHelp() throws RuntimeException {
     return (org.compiere.model.I_AD_CtxHelp)
         MTable.get(getCtx(), org.compiere.model.I_AD_CtxHelp.Table_Name)
-            .getPO(getAD_CtxHelp_ID(), get_TrxName());
+            .getPO(getAD_CtxHelp_ID(), null);
   }
 
   /**
@@ -109,7 +109,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
   public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
     return (org.compiere.model.I_AD_Table)
         MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), get_TrxName());
+            .getPO(getAD_Table_ID(), null);
   }
 
   /**
@@ -136,7 +136,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
   public org.compiere.model.I_AD_WF_Node getAD_WF_Node() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Node)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Node_ID(), get_TrxName());
+            .getPO(getAD_WF_Node_ID(), null);
   }
 
   /**
@@ -163,7 +163,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
   public org.compiere.model.I_AD_WF_Responsible getAD_WF_Responsible() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Responsible)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Responsible.Table_Name)
-            .getPO(getAD_WF_Responsible_ID(), get_TrxName());
+            .getPO(getAD_WF_Responsible_ID(), null);
   }
 
   /**
@@ -212,7 +212,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
       throws RuntimeException {
     return (org.compiere.model.I_AD_WorkflowProcessor)
         MTable.get(getCtx(), org.compiere.model.I_AD_WorkflowProcessor.Table_Name)
-            .getPO(getAD_WorkflowProcessor_ID(), get_TrxName());
+            .getPO(getAD_WorkflowProcessor_ID(), null);
   }
 
   /**
@@ -716,7 +716,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
   public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException {
     return (org.compiere.model.I_S_Resource)
         MTable.get(getCtx(), org.compiere.model.I_S_Resource.Table_Name)
-            .getPO(getS_Resource_ID(), get_TrxName());
+            .getPO(getS_Resource_ID(), null);
   }
 
   /**

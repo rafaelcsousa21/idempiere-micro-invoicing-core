@@ -77,7 +77,7 @@ public class BOMVerify extends SvrProcess {
   protected String doIt() throws Exception {
     if (p_M_Product_ID != 0) {
       if (log.isLoggable(Level.INFO)) log.info("M_Product_ID=" + p_M_Product_ID);
-      checkProduct(new MProduct(getCtx(), p_M_Product_ID, get_TrxName()));
+      checkProduct(new MProduct(getCtx(), p_M_Product_ID, null));
       return "Product Checked";
     }
     if (log.isLoggable(Level.INFO))
@@ -88,19 +88,19 @@ public class BOMVerify extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     String sql = "SELECT M_Product_ID FROM M_Product " + "WHERE IsBOM='Y' AND ";
-    if (p_M_Product_Category_ID == 0) sql += "AD_Client_ID=? ";
+    if (p_M_Product_Category_ID == 0) sql += "clientId=? ";
     else sql += "M_Product_Category_ID=? ";
     if (!p_IsReValidate) sql += "AND IsVerified<>'Y' ";
     sql += "ORDER BY Name";
     int AD_Client_ID = Env.getClientId(getCtx());
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       if (p_M_Product_Category_ID == 0) pstmt.setInt(1, AD_Client_ID);
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         p_M_Product_ID = rs.getInt(1); // ADAXA - validate the product retrieved from database
-        checkProduct(new MProduct(getCtx(), p_M_Product_ID, get_TrxName()));
+        checkProduct(new MProduct(getCtx(), p_M_Product_ID, null));
 
         counter++;
       }
@@ -140,7 +140,7 @@ public class BOMVerify extends SvrProcess {
     for (MProductBOM productsBOM : productsBOMs) {
       if (!productsBOM.isActive()) continue;
       lines++;
-      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID(), get_TrxName());
+      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID(), null);
       if (!pp.isBOM()) {
         if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
       } else {

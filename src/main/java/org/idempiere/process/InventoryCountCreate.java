@@ -109,7 +109,7 @@ public class InventoryCountCreate extends SvrProcess {
               + p_QtyRange
               + ", DeleteOld="
               + p_DeleteOld);
-    m_inventory = new MInventory(getCtx(), p_M_Inventory_ID, get_TrxName());
+    m_inventory = new MInventory(getCtx(), p_M_Inventory_ID, null);
     if (m_inventory.getId() == 0)
       throw new AdempiereSystemError("Not found: M_Inventory_ID=" + p_M_Inventory_ID);
     if (m_inventory.isProcessed()) throw new AdempiereSystemError("@M_Inventory_ID@ @Processed@");
@@ -123,7 +123,7 @@ public class InventoryCountCreate extends SvrProcess {
               .append(" AND Processed='N' AND M_Inventory_ID=")
               .append(p_M_Inventory_ID)
               .append(")");
-      int no1 = executeUpdate(sql1.toString(), get_TrxName());
+      int no1 = executeUpdate(sql1.toString(), null);
       if (log.isLoggable(Level.FINE)) log.fine("doIt - Deleted MA #" + no1);
       // End of Added Line
 
@@ -131,21 +131,21 @@ public class InventoryCountCreate extends SvrProcess {
           new StringBuilder("DELETE M_InventoryLine WHERE Processed='N' ")
               .append("AND M_Inventory_ID=")
               .append(p_M_Inventory_ID);
-      int no = executeUpdate(sql.toString(), get_TrxName());
+      int no = executeUpdate(sql.toString(), null);
       if (log.isLoggable(Level.FINE)) log.fine("doIt - Deleted #" + no);
     }
 
     //	Create Null Storage records
     if (p_QtyRange != null && p_QtyRange.equals("=")) {
       StringBuilder sql = new StringBuilder("INSERT INTO M_StorageOnHand ");
-      sql.append("(AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
+      sql.append("(clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
       sql.append(" M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID,");
       sql.append(" QtyOnHand, DateLastInventory) ");
       sql.append("SELECT l.AD_CLIENT_ID, l.AD_ORG_ID, 'Y', SysDate, 0,SysDate, 0,");
       sql.append(" l.M_Locator_ID, p.M_Product_ID, 0,");
       sql.append(" 0,null ");
       sql.append("FROM M_Locator l");
-      sql.append(" INNER JOIN M_Product p ON (l.AD_Client_ID=p.AD_Client_ID) ");
+      sql.append(" INNER JOIN M_Product p ON (l.clientId=p.clientId) ");
       sql.append("WHERE l.M_Warehouse_ID=");
       sql.append(m_inventory.getM_Warehouse_ID());
 
@@ -156,7 +156,7 @@ public class InventoryCountCreate extends SvrProcess {
           .append(" INNER JOIN M_Locator sl ON (s.M_Locator_ID=sl.M_Locator_ID) ")
           .append("WHERE sl.M_Warehouse_ID=l.M_Warehouse_ID")
           .append(" AND s.M_Product_ID=p.M_Product_ID)");
-      int no = executeUpdate(sql.toString(), get_TrxName());
+      int no = executeUpdate(sql.toString(), null);
       if (log.isLoggable(Level.FINE)) log.fine("'0' Inserted #" + no);
     }
 
@@ -203,7 +203,7 @@ public class InventoryCountCreate extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       int index = 1;
       pstmt.setInt(index++, m_inventory.getM_Warehouse_ID());
       if (p_M_Locator_ID != 0) pstmt.setInt(index++, p_M_Locator_ID);
@@ -252,7 +252,7 @@ public class InventoryCountCreate extends SvrProcess {
               .append("SET QtyCount=0 ")
               .append("WHERE M_Inventory_ID=")
               .append(p_M_Inventory_ID);
-      int no = executeUpdate(sql1.toString(), get_TrxName());
+      int no = executeUpdate(sql1.toString(), null);
       if (log.isLoggable(Level.INFO)) log.info("Set Cont to Zero=" + no);
     }
 

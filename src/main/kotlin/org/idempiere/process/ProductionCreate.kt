@@ -41,7 +41,7 @@ class ProductionCreate(
         }
 
         if (p_M_Production_ID == 0) p_M_Production_ID = record_ID
-        if (m_production == null) m_production = MProduction(ctx, p_M_Production_ID, _TrxName)
+        if (m_production == null) m_production = MProduction(ctx, p_M_Production_ID, null)
     } // prepare
 
     @Throws(Exception::class)
@@ -68,7 +68,7 @@ class ProductionCreate(
                 " WHERE cc.currentcostprice > 0 AND pp.M_Product_ID = ?" +
                 " AND ce.costingmethod='S'")
 
-        var costPercentageDiff: BigDecimal? = getSQLValueBD(_TrxName, sql, M_Product_ID)
+        var costPercentageDiff: BigDecimal? = getSQLValueBD(null, sql, M_Product_ID)
 
         if (costPercentageDiff == null) {
             costPercentageDiff = Env.ZERO
@@ -96,10 +96,10 @@ class ProductionCreate(
             if (newQty != null)
                 m_production!!.productionQty = newQty
 
-            m_production!!.deleteLines(_TrxName)
+            m_production!!.deleteLines(null)
             created = m_production!!.createLines(mustBeStocked)
         } else {
-            val planQuery = Query(ctx, I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?", _TrxName)
+            val planQuery = Query(ctx, I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?", null)
             val plans = planQuery.setParameters(m_production!!.m_Production_ID).list<MProductionPlan>()
             for (plan in plans) {
                 validateEndProduct(plan.m_Product_ID)
@@ -107,7 +107,7 @@ class ProductionCreate(
                 if (!recreate && "Y".equals(m_production!!.isCreated, ignoreCase = true))
                     throw AdempiereUserError("Production already created.")
 
-                plan.deleteLines(_TrxName)
+                plan.deleteLines(null)
                 val n = plan.createLines(mustBeStocked)
                 if (n == 0) {
                     return "Failed to create production lines"
@@ -120,7 +120,7 @@ class ProductionCreate(
         }
 
         m_production!!.isCreated = "Y"
-        m_production!!.save(_TrxName)
+        m_production!!.save(null)
         val msgreturn = StringBuilder().append(created).append(" production lines were created")
         return msgreturn.toString()
     }
@@ -141,11 +141,11 @@ class ProductionCreate(
 
     @Throws(Exception::class)
     protected fun isBom(M_Product_ID: Int) {
-        val bom = getSQLValueString(_TrxName, "SELECT isbom FROM M_Product WHERE M_Product_ID = ?", M_Product_ID)
+        val bom = getSQLValueString("", "SELECT isbom FROM M_Product WHERE M_Product_ID = ?", M_Product_ID)
         if (bom == null || bom == "N") {
             throw AdempiereUserError("Attempt to create product line for Non Bill Of Materials")
         }
-        val materials = getSQLValue(_TrxName, "SELECT count(M_Product_BOM_ID) FROM M_Product_BOM WHERE M_Product_ID = ?", M_Product_ID)
+        val materials = getSQLValue("", "SELECT count(M_Product_BOM_ID) FROM M_Product_BOM WHERE M_Product_ID = ?", M_Product_ID)
         if (materials == 0) {
             throw AdempiereUserError("Attempt to create product line for Bill Of Materials with no BOM Products")
         }

@@ -168,7 +168,7 @@ public class MMeasure extends X_PA_Measure {
     for (int i = 0; i < goals.length; i++) {
       MGoal goal = goals[i];
       goal.setMeasureActual(getManualActual());
-      goal.saveEx(get_TrxName());
+      goal.saveEx(null);
     }
     return true;
   } //	updateManualGoals
@@ -202,7 +202,7 @@ public class MMeasure extends X_PA_Measure {
         }
       }
       goal.setMeasureActual(ManualActual);
-      goal.saveEx(get_TrxName());
+      goal.saveEx(null);
     }
     return true;
   } //	updateAchievementGoals
@@ -246,7 +246,7 @@ public class MMeasure extends X_PA_Measure {
         if (log.isLoggable(Level.FINE)) log.fine("No Value = " + sql);
       }
       goal.setMeasureActual(ManualActual);
-      goal.saveEx(get_TrxName());
+      goal.saveEx(null);
     }
     return true;
   } //	updateCalculatedGoals
@@ -297,7 +297,7 @@ public class MMeasure extends X_PA_Measure {
         if (log.isLoggable(Level.FINE)) log.fine("No Value = " + sql);
       }
       goal.setMeasureActual(ManualActual);
-      goal.saveEx(get_TrxName());
+      goal.saveEx(null);
     }
     return true;
   } //	updateRequests
@@ -338,7 +338,7 @@ public class MMeasure extends X_PA_Measure {
         if (log.isLoggable(Level.FINE)) log.fine("No Value = " + sql);
       }
       goal.setMeasureActual(ManualActual);
-      goal.saveEx(get_TrxName());
+      goal.saveEx(null);
     }
     return true;
   } //	updateProjects
@@ -352,7 +352,7 @@ public class MMeasure extends X_PA_Measure {
     for (MGoal goal : goals) {
       BigDecimal amt = Env.ZERO;
       PO po =
-          (PO) new MTable(getCtx(), getTableId(), get_TrxName()).getPO(getId(), get_TrxName());
+          (PO) new MTable(getCtx(), getTableId(), null).getPO(getId(), null);
       StringTokenizer st = new StringTokenizer(getCalculationClass(), ";,", false);
       while (st.hasMoreTokens()) //  for each class
       {
@@ -412,7 +412,7 @@ public class MMeasure extends X_PA_Measure {
         }
       }
       goal.setMeasureActual(amt);
-      goal.saveEx(get_TrxName());
+      goal.saveEx(null);
     }
     return true;
   } //	updateUserDefinedGoals

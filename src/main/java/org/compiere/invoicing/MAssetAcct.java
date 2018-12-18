@@ -1,10 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Properties;
 import org.compiere.accounting.MAccount;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.ProductCost;
@@ -14,6 +9,12 @@ import org.compiere.orm.SetGetUtil;
 import org.compiere.orm.TimeUtil;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * Asset Acct Model
@@ -111,7 +112,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
    * @param assetgrpacct asset group accounting
    */
   public MAssetAcct(MAsset asset, MAssetGroupAcct assetgrpacct) {
-    this(assetgrpacct.getCtx(), 0, asset.get_TrxName());
+    this(assetgrpacct.getCtx(), 0, null);
 
     SetGetUtil.copyValues(this, assetgrpacct, null, null);
     setA_Asset_ID(asset.getA_Asset_ID());

@@ -153,7 +153,7 @@ public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion,
   public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSalesRep_ID(), get_TrxName());
+            .getPO(getSalesRep_ID(), null);
   }
 
   /**

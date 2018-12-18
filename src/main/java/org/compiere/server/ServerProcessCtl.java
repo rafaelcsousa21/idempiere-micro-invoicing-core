@@ -1,17 +1,14 @@
 package org.compiere.server;
 
-import java.io.InvalidClassException;
-import java.lang.reflect.UndeclaredThrowableException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfo;
 import org.compiere.model.Server;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.compiere.process.*;
+import org.compiere.process.DocAction;
+import org.compiere.process.MPInstance;
+import org.compiere.process.ProcessInfo;
+import org.compiere.process.ProcessUtil;
 import org.compiere.rule.MRule;
 import org.compiere.util.Msg;
 import org.compiere.wf.MWFProcess;
@@ -20,6 +17,13 @@ import org.idempiere.common.base.Service;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Trx;
+
+import java.io.InvalidClassException;
+import java.lang.reflect.UndeclaredThrowableException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Properties;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -34,7 +38,6 @@ public class ServerProcessCtl implements Runnable {
   /** Process Info */
   IProcessInfo m_pi;
 
-  private Trx m_trx;
   private boolean m_IsServerProcess = false;
 
   /**
@@ -43,9 +46,8 @@ public class ServerProcessCtl implements Runnable {
    * @param pi Process info
    * @param trx Transaction
    */
-  public ServerProcessCtl(ProcessInfo pi, Trx trx) {
+  public ServerProcessCtl(ProcessInfo pi) {
     m_pi = pi;
-    m_trx = trx; // 	handled correctly
   } //  ProcessCtl
 
   /**
@@ -90,7 +92,7 @@ public class ServerProcessCtl implements Runnable {
     }
 
     //	execute
-    ServerProcessCtl worker = new ServerProcessCtl(pi, trx);
+    ServerProcessCtl worker = new ServerProcessCtl(pi);
     worker.run();
 
     return worker;
@@ -273,7 +275,6 @@ public class ServerProcessCtl implements Runnable {
     }
     //	Run locally
     if (!started && !m_IsServerProcess) {
-      if (m_trx != null) m_pi.setTransactionName(m_trx.getTrxName());
       MWFProcess wfProcess = startWorkFlow(Env.getCtx(), m_pi, AD_Workflow_ID);
       started = wfProcess != null;
     }
@@ -338,9 +339,9 @@ public class ServerProcessCtl implements Runnable {
     //	Run locally
     if (!started && (!m_IsServerProcess || clientOnly)) {
       if (m_pi.getClassName().toLowerCase().startsWith(MRule.SCRIPT_PREFIX)) {
-        return ProcessUtil.startScriptProcess(Env.getCtx(), m_pi, m_trx);
+        return ProcessUtil.startScriptProcess(Env.getCtx(), m_pi);
       } else {
-        return ProcessUtil.startJavaProcess(Env.getCtx(), m_pi, m_trx);
+        return ProcessUtil.startJavaProcess(Env.getCtx(), m_pi);
       }
     }
     return !m_pi.isError();
@@ -366,7 +367,7 @@ public class ServerProcessCtl implements Runnable {
             column.getAD_Process_ID(),
             po.getTableId(),
             po.getId());
-    processInfo.setTransactionName(po.get_TrxName());
+    processInfo.setTransactionName(null);
     processInfo.setPO(po);
     ServerProcessCtl.process(processInfo, Trx.get(processInfo.getTransactionName(), false));
     return processInfo;

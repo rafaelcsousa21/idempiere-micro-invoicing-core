@@ -105,7 +105,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**
@@ -325,7 +325,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
   public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException {
     return (org.compiere.model.I_C_Bank)
         MTable.get(getCtx(), org.compiere.model.I_C_Bank.Table_Name)
-            .getPO(getC_Bank_ID(), get_TrxName());
+            .getPO(getC_Bank_ID(), null);
   }
 
   /**
@@ -352,7 +352,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -418,7 +418,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
   public org.compiere.model.I_C_PaymentProcessor getC_PaymentProcessor() throws RuntimeException {
     return (org.compiere.model.I_C_PaymentProcessor)
         MTable.get(getCtx(), org.compiere.model.I_C_PaymentProcessor.Table_Name)
-            .getPO(getC_PaymentProcessor_ID(), get_TrxName());
+            .getPO(getC_PaymentProcessor_ID(), null);
   }
 
   /**

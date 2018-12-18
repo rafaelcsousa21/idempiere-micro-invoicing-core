@@ -59,7 +59,7 @@ public class MYear extends X_C_Year {
    * @param calendar parent
    */
   public MYear(MCalendar calendar) {
-    this(calendar.getCtx(), 0, calendar.get_TrxName());
+    this(calendar.getCtx(), 0, null);
     setClientOrg(calendar);
     setC_Calendar_ID(calendar.getC_Calendar_ID());
     setYear();
@@ -196,7 +196,7 @@ public class MYear extends X_C_Year {
       cal.add(Calendar.DAY_OF_YEAR, -1);
       Timestamp end = new Timestamp(cal.getTimeInMillis());
       //
-      MPeriod period = MPeriod.findByCalendar(getCtx(), start, getC_Calendar_ID(), get_TrxName());
+      MPeriod period = MPeriod.findByCalendar(getCtx(), start, getC_Calendar_ID(), null);
       if (period == null) {
         period = new MPeriod(this, month + 1, name, start, end);
       } else {
@@ -209,7 +209,7 @@ public class MYear extends X_C_Year {
       if (processMonitor != null) {
         processMonitor.statusUpdate(period.toString());
       }
-      period.saveEx(get_TrxName()); // 	Creates Period Control
+      period.saveEx(null); // 	Creates Period Control
       // get first day of next month
       cal.add(Calendar.DAY_OF_YEAR, 1);
     }

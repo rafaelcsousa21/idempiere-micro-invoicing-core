@@ -323,7 +323,7 @@ class InvoiceTest: BaseComponentTest() {
 
             val productionCreate = ProductionCreate(m_production = production)
             val pi = ProcessInfo("", 0)
-            productionCreate.startProcess(ctx, pi, null)
+            productionCreate.startProcess(ctx, pi)
 
             val prod: MProduction = getById(production.id, I_M_Production.Table_Name)
 

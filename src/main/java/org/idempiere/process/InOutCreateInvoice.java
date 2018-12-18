@@ -14,20 +14,17 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
-import org.compiere.invoicing.MInOut;
-import org.compiere.invoicing.MInOutLine;
-import org.compiere.invoicing.MInvoice;
-import org.compiere.invoicing.MInvoiceLine;
-import org.compiere.invoicing.MInvoicePaySchedule;
+import org.compiere.invoicing.*;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
 import org.compiere.product.MCurrency;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
 
 /**
  * Create (Generate) Invoice from Shipment
@@ -74,7 +71,7 @@ public class InOutCreateInvoice extends SvrProcess {
               + p_InvoiceDocumentNo);
     if (p_M_InOut_ID == 0) throw new IllegalArgumentException("No Shipment");
     //
-    MInOut ship = new MInOut(getCtx(), p_M_InOut_ID, get_TrxName());
+    MInOut ship = new MInOut(getCtx(), p_M_InOut_ID, null);
     if (ship.getId() == 0) throw new IllegalArgumentException("Shipment not found");
     if (!MInOut.DOCSTATUS_Completed.equals(ship.getDocStatus()))
       throw new IllegalArgumentException("Shipment not completed");
@@ -98,17 +95,17 @@ public class InOutCreateInvoice extends SvrProcess {
     }
 
     if (invoice.getC_Order_ID() > 0) {
-      MOrder order = new MOrder(getCtx(), invoice.getC_Order_ID(), get_TrxName());
+      MOrder order = new MOrder(getCtx(), invoice.getC_Order_ID(), null);
       invoice.setPaymentRule(order.getPaymentRule());
       invoice.setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
       invoice.saveEx();
-      invoice.load(invoice.get_TrxName()); // refresh from DB
+      invoice.load(null); // refresh from DB
       // copy payment schedule from order if invoice doesn't have a current payment schedule
       MOrderPaySchedule[] opss =
-          MOrderPaySchedule.getOrderPaySchedule(getCtx(), order.getC_Order_ID(), 0, get_TrxName());
+          MOrderPaySchedule.getOrderPaySchedule(getCtx(), order.getC_Order_ID(), 0, null);
       MInvoicePaySchedule[] ipss =
           MInvoicePaySchedule.getInvoicePaySchedule(
-              getCtx(), invoice.getC_Invoice_ID(), 0, get_TrxName());
+              getCtx(), invoice.getC_Invoice_ID(), 0, null);
       if (ipss.length == 0 && opss.length > 0) {
         BigDecimal ogt = order.getGrandTotal();
         BigDecimal igt = invoice.getGrandTotal();
@@ -118,7 +115,7 @@ public class InOutCreateInvoice extends SvrProcess {
         int scale = cur.getStdPrecision();
 
         for (MOrderPaySchedule ops : opss) {
-          MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, get_TrxName());
+          MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, null);
           PO.copyValues(ops, ips);
           if (percent != Env.ONE) {
             BigDecimal propDueAmt = ops.getDueAmt().multiply(percent);

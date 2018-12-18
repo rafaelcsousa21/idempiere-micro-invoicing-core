@@ -113,7 +113,7 @@ public class RequestInvoice extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       int index = 1;
       pstmt.setInt(index++, p_R_RequestType_ID);
       if (p_R_Group_ID != 0) pstmt.setInt(index++, p_R_Group_ID);
@@ -122,7 +122,7 @@ public class RequestInvoice extends SvrProcess {
       rs = pstmt.executeQuery();
       int oldC_BPartner_ID = 0;
       while (rs.next()) {
-        MRequest request = new MRequest(getCtx(), rs, get_TrxName());
+        MRequest request = new MRequest(getCtx(), rs, null);
         if (!request.isInvoiced()) continue;
         if (oldC_BPartner_ID != request.getC_BPartner_ID()) invoiceDone();
         if (m_invoice == null) {
@@ -177,7 +177,7 @@ public class RequestInvoice extends SvrProcess {
    * @param request request
    */
   private void invoiceNew(MRequest request) {
-    m_invoice = new MInvoice(getCtx(), 0, get_TrxName());
+    m_invoice = new MInvoice(getCtx(), 0, null);
     m_invoice.setIsSOTrx(true);
 
     MBPartner partner = new MBPartner(getCtx(), request.getC_BPartner_ID(), null);

@@ -70,7 +70,7 @@ public class BOMValidate extends SvrProcess {
   protected String doIt() throws Exception {
     if (p_M_Product_ID != 0) {
       if (log.isLoggable(Level.INFO)) log.info("M_Product_ID=" + p_M_Product_ID);
-      return validateProduct(new MProduct(getCtx(), p_M_Product_ID, get_TrxName()));
+      return validateProduct(new MProduct(getCtx(), p_M_Product_ID, null));
     }
     if (log.isLoggable(Level.INFO))
       log.info(
@@ -79,20 +79,20 @@ public class BOMValidate extends SvrProcess {
     int counter = 0;
     PreparedStatement pstmt = null;
     String sql = "SELECT * FROM M_Product " + "WHERE IsBOM='Y' AND ";
-    if (p_M_Product_Category_ID == 0) sql += "AD_Client_ID=? ";
+    if (p_M_Product_Category_ID == 0) sql += "clientId=? ";
     else sql += "M_Product_Category_ID=? ";
     if (!p_IsReValidate) sql += "AND IsVerified<>'Y' ";
     sql += "ORDER BY Name";
     int AD_Client_ID = Env.getClientId(getCtx());
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       if (p_M_Product_Category_ID == 0) pstmt.setInt(1, AD_Client_ID);
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         String info =
-            validateProduct(new MProduct(getCtx(), rs.getInt("M_Product_ID"), get_TrxName()));
+            validateProduct(new MProduct(getCtx(), rs.getInt("M_Product_ID"), null));
         addBufferLog(0, null, null, info, MProduct.Table_ID, rs.getInt("M_Product_ID"));
         counter++;
       }
@@ -126,7 +126,7 @@ public class BOMValidate extends SvrProcess {
     }
 
     //	New Structure
-    MBOM[] boms = MBOM.getOfProduct(getCtx(), p_M_Product_ID, get_TrxName(), null);
+    MBOM[] boms = MBOM.getOfProduct(getCtx(), p_M_Product_ID, null, null);
     for (int i = 0; i < boms.length; i++) {
       m_products = new ArrayList<MProduct>();
       if (!validateBOM(boms[i])) {
@@ -161,7 +161,7 @@ public class BOMValidate extends SvrProcess {
     MProductBOM[] productsBOMs = MProductBOM.getBOMLines(product);
     for (int i = 0; i < productsBOMs.length; i++) {
       MProductBOM productsBOM = productsBOMs[i];
-      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID(), get_TrxName());
+      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID(), null);
       if (!pp.isBOM()) {
         if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
       } else if (!validateOldProduct(pp)) {
@@ -181,7 +181,7 @@ public class BOMValidate extends SvrProcess {
     MBOMProduct[] BOMproducts = MBOMProduct.getOfBOM(bom);
     for (int i = 0; i < BOMproducts.length; i++) {
       MBOMProduct BOMproduct = BOMproducts[i];
-      MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID(), get_TrxName());
+      MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID(), null);
       if (pp.isBOM()) return validateProduct(pp, bom.getBOMType(), bom.getBOMUse());
     }
     return true;
@@ -199,7 +199,7 @@ public class BOMValidate extends SvrProcess {
     if (!product.isBOM()) return true;
     //
     String restriction = "BOMType='" + BOMType + "' AND BOMUse='" + BOMUse + "'";
-    MBOM[] boms = MBOM.getOfProduct(getCtx(), p_M_Product_ID, get_TrxName(), restriction);
+    MBOM[] boms = MBOM.getOfProduct(getCtx(), p_M_Product_ID, null, restriction);
     if (boms.length != 1) {
       log.warning(restriction + " - Length=" + boms.length);
       return false;
@@ -215,7 +215,7 @@ public class BOMValidate extends SvrProcess {
     MBOMProduct[] BOMproducts = MBOMProduct.getOfBOM(bom);
     for (int i = 0; i < BOMproducts.length; i++) {
       MBOMProduct BOMproduct = BOMproducts[i];
-      MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID(), get_TrxName());
+      MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID(), null);
       if (pp.isBOM()) return validateProduct(pp, bom.getBOMType(), bom.getBOMUse());
     }
     return true;

@@ -48,7 +48,7 @@ public class X_C_Year extends PO implements I_C_Year, I_Persistent {
   public org.compiere.model.I_C_Calendar getC_Calendar() throws RuntimeException {
     return (org.compiere.model.I_C_Calendar)
         MTable.get(getCtx(), org.compiere.model.I_C_Calendar.Table_Name)
-            .getPO(getC_Calendar_ID(), get_TrxName());
+            .getPO(getC_Calendar_ID(), null);
   }
 
   /**

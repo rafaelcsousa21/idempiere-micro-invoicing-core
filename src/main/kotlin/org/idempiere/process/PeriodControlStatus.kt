@@ -1,11 +1,10 @@
 package org.idempiere.process
 
-import java.util.logging.Level
-
 import org.compiere.accounting.MPeriodControl
 import org.compiere.process.SvrProcess
 import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CacheMgt
+import java.util.logging.Level
 
 /**
  * Open/Close Period Control
@@ -36,7 +35,7 @@ class PeriodControlStatus(var p_C_PeriodControl_ID: Int = 0) : SvrProcess() {
     @Throws(Exception::class)
     override fun doIt(): String {
         if (log.isLoggable(Level.INFO)) log.info("C_PeriodControl_ID=$p_C_PeriodControl_ID")
-        val pc = MPeriodControl(ctx, p_C_PeriodControl_ID, _TrxName)
+        val pc = MPeriodControl(ctx, p_C_PeriodControl_ID, null)
         if (pc.id == 0)
             throw AdempiereUserError("@NotFound@  @C_PeriodControl_ID@=$p_C_PeriodControl_ID")
         // 	Permanently closed

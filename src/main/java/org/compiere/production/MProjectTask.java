@@ -1,12 +1,13 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.model.I_C_ProjectLine;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Project Phase Task Model
@@ -54,7 +55,7 @@ public class MProjectTask extends X_C_ProjectTask {
    * @param phase parent
    */
   public MProjectTask(MProjectPhase phase) {
-    this(phase.getCtx(), 0, phase.get_TrxName());
+    this(phase.getCtx(), 0, null);
     setClientOrg(phase);
     setC_ProjectPhase_ID(phase.getC_ProjectPhase_ID());
   } //	MProjectTask
@@ -86,7 +87,7 @@ public class MProjectTask extends X_C_ProjectTask {
   public MProjectLine[] getLines() {
     final String whereClause = "C_ProjectPhase_ID=? and C_ProjectTask_ID=? ";
     List<MProjectLine> list =
-        new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause, null)
             .setParameters(getC_ProjectPhase_ID(), getC_ProjectTask_ID())
             .setOrderBy("Line")
             .list();
@@ -109,7 +110,7 @@ public class MProjectTask extends X_C_ProjectTask {
     MProjectLine[] fromLines = fromTask.getLines();
     //	Copy Project Lines
     for (int i = 0; i < fromLines.length; i++) {
-      MProjectLine toLine = new MProjectLine(getCtx(), 0, get_TrxName());
+      MProjectLine toLine = new MProjectLine(getCtx(), 0, null);
       PO.copyValues(fromLines[i], toLine,  getClientId(),  getOrgId());
       toLine.setC_Project_ID(getC_Project_ID(false));
       toLine.setC_ProjectPhase_ID(getC_ProjectPhase_ID());

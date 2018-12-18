@@ -66,9 +66,9 @@ public class OrderLineCreateShipment extends SvrProcess {
     if (log.isLoggable(Level.INFO)) log.info("C_OrderLine_ID=" + p_C_OrderLine_ID);
     if (p_C_OrderLine_ID == 0) throw new IllegalArgumentException("No OrderLine");
     //
-    MOrderLine line = new MOrderLine(getCtx(), p_C_OrderLine_ID, get_TrxName());
+    MOrderLine line = new MOrderLine(getCtx(), p_C_OrderLine_ID, null);
     if (line.getId() == 0) throw new IllegalArgumentException("Order line not found");
-    MOrder order = new MOrder(getCtx(), line.getC_Order_ID(), get_TrxName());
+    MOrder order = new MOrder(getCtx(), line.getC_Order_ID(), null);
     if (!MOrder.DOCSTATUS_Completed.equals(order.getDocStatus()))
       throw new IllegalArgumentException("Order not completed");
 
@@ -77,7 +77,7 @@ public class OrderLineCreateShipment extends SvrProcess {
 
     int C_DocTypeShipment_ID =
         getSQLValue(
-            get_TrxName(),
+            null,
             "SELECT C_DocTypeShipment_ID FROM C_DocType WHERE C_DocType_ID=?",
             order.getC_DocType_ID());
 

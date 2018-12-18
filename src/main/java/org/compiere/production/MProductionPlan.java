@@ -55,10 +55,10 @@ public class MProductionPlan extends X_M_ProductionPlan {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getId());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1), get_TrxName()));
+      while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1), null));
     } catch (SQLException ex) {
       throw new AdempiereException("Unable to load production lines", ex);
     } finally {
@@ -86,7 +86,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
     int count = 0;
 
     // product to be produced
-    MProduct finishedProduct = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
+    MProduct finishedProduct = new MProduct(getCtx(), getM_Product_ID(), null);
 
     MProductionLine line = new MProductionLine(this);
     line.setLine(lineno);
@@ -127,7 +127,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
     ResultSet rs = null;
 
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
 
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -137,7 +137,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
         BigDecimal BOMQty = rs.getBigDecimal(2);
         BigDecimal BOMMovementQty = BOMQty.multiply(requiredQty);
 
-        MProduct bomproduct = new MProduct(Env.getCtx(), BOMProduct_ID, get_TrxName());
+        MProduct bomproduct = new MProduct(Env.getCtx(), BOMProduct_ID, null);
 
         if (bomproduct.isBOM() && bomproduct.isPhantom()) {
           count = count + createLines(mustBeStocked, bomproduct, BOMMovementQty, lineno);
@@ -154,7 +154,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
             BOMLine.setM_Locator_ID(defaultLocator);
             BOMLine.setQtyUsed(BOMMovementQty);
             BOMLine.setPlannedQty(BOMMovementQty);
-            BOMLine.saveEx(get_TrxName());
+            BOMLine.saveEx(null);
 
             lineno = lineno + 10;
             count++;
@@ -166,7 +166,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
             BOMLine.setM_Locator_ID(defaultLocator);
             BOMLine.setQtyUsed(BOMMovementQty);
             BOMLine.setPlannedQty(BOMMovementQty);
-            BOMLine.saveEx(get_TrxName());
+            BOMLine.saveEx(null);
 
             lineno = lineno + 10;
             count++;
@@ -197,7 +197,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                     MProductCategory.MMPOLICY_FiFo.equals(MMPolicy),
                     true,
                     0,
-                    get_TrxName());
+                    null);
 
             MProductionLine BOMLine = null;
             int prevLoc = -1;
@@ -212,13 +212,13 @@ public class MProductionPlan extends X_M_ProductionPlan {
                 int loc = storages[sl].getM_Locator_ID();
                 int slASI = storages[sl].getMAttributeSetInstance_ID();
                 int locAttribSet =
-                    new MAttributeSetInstance(getCtx(), asi, get_TrxName()).getMAttributeSet_ID();
+                    new MAttributeSetInstance(getCtx(), asi, null).getMAttributeSet_ID();
 
                 // roll up costing attributes if in the same locator
                 if (locAttribSet == 0 && previousAttribSet == 0 && prevLoc == loc) {
                   BOMLine.setQtyUsed(BOMLine.getQtyUsed().add(lineQty));
                   BOMLine.setPlannedQty(BOMLine.getQtyUsed());
-                  BOMLine.saveEx(get_TrxName());
+                  BOMLine.saveEx(null);
 
                 }
                 // otherwise create new line
@@ -231,7 +231,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                   BOMLine.setPlannedQty(lineQty);
                   if (slASI != 0 && locAttribSet != 0) // ie non costing attribute
                   BOMLine.setM_AttributeSetInstance_ID(slASI);
-                  BOMLine.saveEx(get_TrxName());
+                  BOMLine.saveEx(null);
 
                   lineno = lineno + 10;
                   count++;
@@ -252,7 +252,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                 if (previousAttribSet == 0 && prevLoc == defaultLocator) {
                   BOMLine.setQtyUsed(BOMLine.getQtyUsed().add(BOMMovementQty));
                   BOMLine.setPlannedQty(BOMLine.getQtyUsed());
-                  BOMLine.saveEx(get_TrxName());
+                  BOMLine.saveEx(null);
 
                 }
                 // otherwise create new line
@@ -264,7 +264,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                   BOMLine.setM_Locator_ID(defaultLocator);
                   BOMLine.setQtyUsed(BOMMovementQty);
                   BOMLine.setPlannedQty(BOMMovementQty);
-                  BOMLine.saveEx(get_TrxName());
+                  BOMLine.saveEx(null);
 
                   lineno = lineno + 10;
                   count++;
@@ -288,7 +288,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
 
   @Override
   protected boolean beforeDelete() {
-    deleteLines(get_TrxName());
+    deleteLines(null);
     return true;
   }
 }

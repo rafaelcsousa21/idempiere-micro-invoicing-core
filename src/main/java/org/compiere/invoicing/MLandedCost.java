@@ -35,11 +35,11 @@ public class MLandedCost extends X_C_LandedCost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, il.get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, il.getC_InvoiceLine_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        list.add(new MLandedCost(il.getCtx(), rs, il.get_TrxName()));
+        list.add(new MLandedCost(il.getCtx(), rs, null));
       }
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
@@ -111,7 +111,7 @@ public class MLandedCost extends X_C_LandedCost {
    * @return error message or ""
    */
   public String allocateCosts() {
-    MInvoiceLine il = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), get_TrxName());
+    MInvoiceLine il = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), null);
     return il.allocateLandedCosts();
   } //	allocateCosts
 

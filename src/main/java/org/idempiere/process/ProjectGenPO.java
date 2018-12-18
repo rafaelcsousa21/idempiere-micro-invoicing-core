@@ -14,9 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.accounting.MProductPO;
@@ -28,6 +25,10 @@ import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * Generate Purchase Order from Project.
@@ -81,18 +82,18 @@ public class ProjectGenPO extends SvrProcess {
               + " - Consolidate="
               + m_ConsolidateDocument);
     if (m_C_ProjectLine_ID != 0) {
-      MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID, get_TrxName());
-      MProject project = new MProject(getCtx(), projectLine.getC_Project_ID(), get_TrxName());
+      MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID, null);
+      MProject project = new MProject(getCtx(), projectLine.getC_Project_ID(), null);
       createPO(project, projectLine);
     } else if (m_C_ProjectPhase_ID != 0) {
-      MProject project = new MProject(getCtx(), m_C_Project_ID, get_TrxName());
+      MProject project = new MProject(getCtx(), m_C_Project_ID, null);
       for (MProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
         if (line.isActive()) {
           createPO(project, line);
         }
       }
     } else {
-      MProject project = new MProject(getCtx(), m_C_Project_ID, get_TrxName());
+      MProject project = new MProject(getCtx(), m_C_Project_ID, null);
       for (MProjectLine line : project.getLines()) {
         if (line.isActive()) {
           createPO(project, line);
@@ -119,7 +120,7 @@ public class ProjectGenPO extends SvrProcess {
 
     //	PO Record
     MProductPO[] pos =
-        MProductPO.getOfProduct(getCtx(), projectLine.getM_Product_ID(), get_TrxName());
+        MProductPO.getOfProduct(getCtx(), projectLine.getM_Product_ID(), null);
     if (pos == null || pos.length == 0) {
       addLog(projectLine.getLine(), null, null, "Product has no PO record");
       return;
@@ -138,12 +139,12 @@ public class ProjectGenPO extends SvrProcess {
     if (order == null) // 	create new Order
     {
       //	Vendor
-      MBPartner bp = new MBPartner(getCtx(), pos[0].getC_BPartner_ID(), get_TrxName());
+      MBPartner bp = new MBPartner(getCtx(), pos[0].getC_BPartner_ID(), null);
       //	New Order
       order = new MOrder(project, false, null);
       int AD_Org_ID = projectLine.getOrgId();
       if (AD_Org_ID == 0) {
-        log.warning("createPOfromProjectLine - AD_Org_ID=0");
+        log.warning("createPOfromProjectLine - orgId=0");
         AD_Org_ID = Env.getOrgId(getCtx());
         if (AD_Org_ID != 0) projectLine.setAD_Org_ID(AD_Org_ID);
       }

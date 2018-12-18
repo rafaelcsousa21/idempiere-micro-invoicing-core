@@ -74,7 +74,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_AllocationHdr getC_AllocationHdr() throws RuntimeException {
     return (org.compiere.model.I_C_AllocationHdr)
         MTable.get(getCtx(), org.compiere.model.I_C_AllocationHdr.Table_Name)
-            .getPO(getC_AllocationHdr_ID(), get_TrxName());
+            .getPO(getC_AllocationHdr_ID(), null);
   }
 
   /**
@@ -140,7 +140,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -167,7 +167,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_CashLine getC_CashLine() throws RuntimeException {
     return (org.compiere.model.I_C_CashLine)
         MTable.get(getCtx(), org.compiere.model.I_C_CashLine.Table_Name)
-            .getPO(getC_CashLine_ID(), get_TrxName());
+            .getPO(getC_CashLine_ID(), null);
   }
 
   /**
@@ -194,7 +194,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
     return (org.compiere.model.I_C_Charge)
         MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), get_TrxName());
+            .getPO(getC_Charge_ID(), null);
   }
 
   /**
@@ -221,7 +221,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), get_TrxName());
+            .getPO(getC_Invoice_ID(), null);
   }
 
   /**
@@ -257,7 +257,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
     return (org.compiere.model.I_C_Order)
         MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), get_TrxName());
+            .getPO(getC_Order_ID(), null);
   }
 
   /**
@@ -284,7 +284,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), get_TrxName());
+            .getPO(getC_Payment_ID(), null);
   }
 
   /**

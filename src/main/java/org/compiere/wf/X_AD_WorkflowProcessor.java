@@ -52,7 +52,7 @@ public class X_AD_WorkflowProcessor extends BasePOName
   public org.compiere.model.I_AD_Schedule getAD_Schedule() throws RuntimeException {
     return (org.compiere.model.I_AD_Schedule)
         MTable.get(getCtx(), org.compiere.model.I_AD_Schedule.Table_Name)
-            .getPO(getAD_Schedule_ID(), get_TrxName());
+            .getPO(getAD_Schedule_ID(), null);
   }
 
   /**
@@ -277,7 +277,7 @@ public class X_AD_WorkflowProcessor extends BasePOName
   public org.compiere.model.I_AD_User getSupervisor() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSupervisor_ID(), get_TrxName());
+            .getPO(getSupervisor_ID(), null);
   }
 
   /**

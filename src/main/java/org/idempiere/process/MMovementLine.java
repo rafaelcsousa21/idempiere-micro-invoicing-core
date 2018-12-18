@@ -61,7 +61,7 @@ public class MMovementLine extends X_M_MovementLine {
    * @param parent parent
    */
   public MMovementLine(MMovement parent) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setM_Movement_ID(parent.getM_Movement_ID());
   } //	MMovementLine
@@ -126,7 +126,7 @@ public class MMovementLine extends X_M_MovementLine {
    * @return Parent Movement
    */
   public MMovement getParent() {
-    if (m_parent == null) m_parent = new MMovement(getCtx(), getM_Movement_ID(), get_TrxName());
+    if (m_parent == null) m_parent = new MMovement(getCtx(), getM_Movement_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -146,7 +146,7 @@ public class MMovementLine extends X_M_MovementLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_MovementLine WHERE M_Movement_ID=?";
-      int ii = getSQLValue(get_TrxName(), sql, getM_Movement_ID());
+      int ii = getSQLValue(null, sql, getM_Movement_ID());
       setLine(ii);
     }
 

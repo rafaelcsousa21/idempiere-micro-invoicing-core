@@ -14,9 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.MTimeExpense;
 import org.compiere.accounting.MTimeExpenseLine;
@@ -28,6 +25,10 @@ import org.compiere.production.MProject;
 import org.compiere.production.MProjectIssue;
 import org.compiere.production.MProjectLine;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.logging.Level;
 
 /**
  * Issue to Project.
@@ -98,7 +99,7 @@ public class ProjectIssue extends SvrProcess {
    */
   protected String doIt() throws Exception {
     //	Check Parameter
-    m_project = new MProject(getCtx(), m_C_Project_ID, get_TrxName());
+    m_project = new MProject(getCtx(), m_C_Project_ID, null);
     if (!(MProject.PROJECTCATEGORY_WorkOrderJob.equals(m_project.getProjectCategory())
         || MProject.PROJECTCATEGORY_AssetProject.equals(m_project.getProjectCategory())))
       throw new IllegalArgumentException(
@@ -188,7 +189,7 @@ public class ProjectIssue extends SvrProcess {
    */
   private String issueExpense() {
     //	Get Expense Report
-    MTimeExpense expense = new MTimeExpense(getCtx(), m_S_TimeExpense_ID, get_TrxName());
+    MTimeExpense expense = new MTimeExpense(getCtx(), m_S_TimeExpense_ID, null);
     if (!expense.isProcessed())
       throw new IllegalArgumentException("Time+Expense not processed - " + expense);
 
@@ -247,7 +248,7 @@ public class ProjectIssue extends SvrProcess {
    * @return Message (clear text)
    */
   private String issueProjectLine() {
-    MProjectLine pl = new MProjectLine(getCtx(), m_C_ProjectLine_ID, get_TrxName());
+    MProjectLine pl = new MProjectLine(getCtx(), m_C_ProjectLine_ID, null);
     if (pl.getM_Product_ID() == 0) throw new IllegalArgumentException("Projet Line has no Product");
     if (pl.getC_ProjectIssue_ID() != 0)
       throw new IllegalArgumentException("Projet Line already been issued");

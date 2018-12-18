@@ -303,7 +303,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
             + " INNER JOIN C_UOM uomTo ON (c.C_UOM_TO_ID=uomTo.C_UOM_ID) "
             + "WHERE c.IsActive='Y' AND c.C_UOM_ID=? AND c.C_UOM_TO_ID=? " //	#1/2
             + " AND c.M_Product_ID IS NULL"
-            + " ORDER BY c.AD_Client_ID DESC, c.AD_Org_ID DESC";
+            + " ORDER BY c.clientId DESC, c.orgId DESC";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
@@ -538,7 +538,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
    * @param parent uom parent
    */
   public MUOMConversion(MUOM parent) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setC_UOM_ID(parent.getC_UOM_ID());
     setM_Product_ID(0);
@@ -554,7 +554,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
    * @param parent product parent
    */
   public MUOMConversion(MProduct parent) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setC_UOM_ID(parent.getC_UOM_ID());
     setM_Product_ID(parent.getM_Product_ID());
@@ -586,7 +586,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
         MSysConfig.ProductUOMConversionUOMValidate, true,  getClientId())) {
       if (getM_Product_ID() != 0 && (newRecord || is_ValueChanged("M_Product_ID"))) {
         // Check of product must be in the same transaction as the conversion being saved
-        MProduct product = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
+        MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
         if (product.getC_UOM_ID() != getC_UOM_ID()) {
           MUOM uom = MUOM.get(getCtx(), product.getC_UOM_ID());
           log.saveError("ProductUOMConversionUOMError", uom.getName());

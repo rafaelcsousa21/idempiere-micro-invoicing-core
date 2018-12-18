@@ -28,12 +28,12 @@ public class PaymentUtil {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, bpartner.get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, bpartner.getC_BPartner_ID());
       pstmt.setString(2, creditCardNo);
       pstmt.setInt(3, C_PaymentProcessor_ID);
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MBPBankAccount(bpartner.getCtx(), rs, bpartner.get_TrxName()));
+      while (rs.next()) list.add(new MBPBankAccount(bpartner.getCtx(), rs, null));
     } catch (Exception e) {
       logger.log(Level.SEVERE, sql, e);
     } finally {

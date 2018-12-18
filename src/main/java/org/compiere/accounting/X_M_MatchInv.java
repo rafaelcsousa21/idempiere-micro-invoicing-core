@@ -57,7 +57,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
   public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
     return (org.compiere.model.I_C_InvoiceLine)
         MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), get_TrxName());
+            .getPO(getC_InvoiceLine_ID(), null);
   }
 
   /**
@@ -165,7 +165,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -194,7 +194,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
   public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
     return (org.compiere.model.I_M_InOutLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), get_TrxName());
+            .getPO(getM_InOutLine_ID(), null);
   }
 
   /**
@@ -260,7 +260,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -397,7 +397,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
   public org.compiere.model.I_M_MatchInv getReversal() throws RuntimeException {
     return (org.compiere.model.I_M_MatchInv)
         MTable.get(getCtx(), org.compiere.model.I_M_MatchInv.Table_Name)
-            .getPO(getReversal_ID(), get_TrxName());
+            .getPO(getReversal_ID(), null);
   }
 
   /**

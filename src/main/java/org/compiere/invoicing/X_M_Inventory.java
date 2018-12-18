@@ -97,7 +97,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -124,7 +124,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
     return (org.compiere.model.I_C_Campaign)
         MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), get_TrxName());
+            .getPO(getC_Campaign_ID(), null);
   }
 
   /**
@@ -151,7 +151,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
     return (org.compiere.model.I_C_ConversionType)
         MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), get_TrxName());
+            .getPO(getC_ConversionType_ID(), null);
   }
 
   /**
@@ -178,7 +178,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -205,7 +205,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**
@@ -271,7 +271,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -535,7 +535,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_M_PerpetualInv getM_PerpetualInv() throws RuntimeException {
     return (org.compiere.model.I_M_PerpetualInv)
         MTable.get(getCtx(), org.compiere.model.I_M_PerpetualInv.Table_Name)
-            .getPO(getM_PerpetualInv_ID(), get_TrxName());
+            .getPO(getM_PerpetualInv_ID(), null);
   }
 
   /**
@@ -562,7 +562,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
     return (org.compiere.model.I_M_Warehouse)
         MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), get_TrxName());
+            .getPO(getM_Warehouse_ID(), null);
   }
 
   /**
@@ -679,7 +679,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_M_Inventory getReversal() throws RuntimeException {
     return (org.compiere.model.I_M_Inventory)
         MTable.get(getCtx(), org.compiere.model.I_M_Inventory.Table_Name)
-            .getPO(getReversal_ID(), get_TrxName());
+            .getPO(getReversal_ID(), null);
   }
 
   /**
@@ -724,7 +724,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), get_TrxName());
+            .getPO(getUser1_ID(), null);
   }
 
   /**
@@ -751,7 +751,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), get_TrxName());
+            .getPO(getUser2_ID(), null);
   }
 
   /**

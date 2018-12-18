@@ -287,7 +287,7 @@ public class X_C_BankAccount_Processor extends PO
   public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), get_TrxName());
+            .getPO(getC_BankAccount_ID(), null);
   }
 
   /**
@@ -332,7 +332,7 @@ public class X_C_BankAccount_Processor extends PO
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -359,7 +359,7 @@ public class X_C_BankAccount_Processor extends PO
   public org.compiere.model.I_C_PaymentProcessor getC_PaymentProcessor() throws RuntimeException {
     return (org.compiere.model.I_C_PaymentProcessor)
         MTable.get(getCtx(), org.compiere.model.I_C_PaymentProcessor.Table_Name)
-            .getPO(getC_PaymentProcessor_ID(), get_TrxName());
+            .getPO(getC_PaymentProcessor_ID(), null);
   }
 
   /**

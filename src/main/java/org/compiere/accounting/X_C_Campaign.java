@@ -94,7 +94,7 @@ public class X_C_Campaign extends BasePONameValue implements I_C_Campaign, I_Per
   public org.compiere.model.I_C_Channel getC_Channel() throws RuntimeException {
     return (org.compiere.model.I_C_Channel)
         MTable.get(getCtx(), org.compiere.model.I_C_Channel.Table_Name)
-            .getPO(getC_Channel_ID(), get_TrxName());
+            .getPO(getC_Channel_ID(), null);
   }
 
   /**

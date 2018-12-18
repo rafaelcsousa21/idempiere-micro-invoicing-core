@@ -60,7 +60,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException {
     return (org.compiere.model.I_A_Asset_Group)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset_Group.Table_Name)
-            .getPO(getA_Asset_Group_ID(), get_TrxName());
+            .getPO(getA_Asset_Group_ID(), null);
   }
 
   /**
@@ -87,7 +87,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
     return (org.compiere.model.I_A_Asset)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), get_TrxName());
+            .getPO(getA_Asset_ID(), null);
   }
 
   /**
@@ -114,7 +114,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_ElementValue getAccount() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getAccount_ID(), get_TrxName());
+            .getPO(getAccount_ID(), null);
   }
 
   /**
@@ -186,7 +186,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
       throws RuntimeException {
     return (org.compiere.model.I_C_ValidCombination)
         MTable.get(getCtx(), org.compiere.model.I_C_ValidCombination.Table_Name)
-            .getPO(getAlias_ValidCombination_ID(), get_TrxName());
+            .getPO(getAlias_ValidCombination_ID(), null);
   }
 
   /**
@@ -317,7 +317,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -344,7 +344,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -371,7 +371,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
     return (org.compiere.model.I_C_Campaign)
         MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), get_TrxName());
+            .getPO(getC_Campaign_ID(), null);
   }
 
   /**
@@ -398,7 +398,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
     return (org.compiere.model.I_C_ConversionType)
         MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), get_TrxName());
+            .getPO(getC_ConversionType_ID(), null);
   }
 
   /**
@@ -425,7 +425,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -452,7 +452,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_Location getC_LocFrom() throws RuntimeException {
     return (org.compiere.model.I_C_Location)
         MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocFrom_ID(), get_TrxName());
+            .getPO(getC_LocFrom_ID(), null);
   }
 
   /**
@@ -479,7 +479,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_Location getC_LocTo() throws RuntimeException {
     return (org.compiere.model.I_C_Location)
         MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocTo_ID(), get_TrxName());
+            .getPO(getC_LocTo_ID(), null);
   }
 
   /**
@@ -506,7 +506,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -533,7 +533,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_SalesRegion getC_SalesRegion() throws RuntimeException {
     return (org.compiere.model.I_C_SalesRegion)
         MTable.get(getCtx(), org.compiere.model.I_C_SalesRegion.Table_Name)
-            .getPO(getC_SalesRegion_ID(), get_TrxName());
+            .getPO(getC_SalesRegion_ID(), null);
   }
 
   /**
@@ -560,7 +560,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_SubAcct getC_SubAcct() throws RuntimeException {
     return (org.compiere.model.I_C_SubAcct)
         MTable.get(getCtx(), org.compiere.model.I_C_SubAcct.Table_Name)
-            .getPO(getC_SubAcct_ID(), get_TrxName());
+            .getPO(getC_SubAcct_ID(), null);
   }
 
   /**
@@ -587,7 +587,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
     return (org.compiere.model.I_C_UOM)
         MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), get_TrxName());
+            .getPO(getC_UOM_ID(), null);
   }
 
   /**
@@ -634,7 +634,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public I_C_ValidCombination getC_ValidCombination() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getC_ValidCombination_ID(), get_TrxName());
+            .getPO(getC_ValidCombination_ID(), null);
   }
 
   /**
@@ -697,7 +697,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_GL_Journal getGL_Journal() throws RuntimeException {
     return (org.compiere.model.I_GL_Journal)
         MTable.get(getCtx(), org.compiere.model.I_GL_Journal.Table_Name)
-            .getPO(getGL_Journal_ID(), get_TrxName());
+            .getPO(getGL_Journal_ID(), null);
   }
 
   /**
@@ -815,7 +815,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -885,7 +885,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), get_TrxName());
+            .getPO(getUser1_ID(), null);
   }
 
   /**
@@ -912,7 +912,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), get_TrxName());
+            .getPO(getUser2_ID(), null);
   }
 
   /**

@@ -1,8 +1,9 @@
 package org.compiere.wf;
 
+import org.compiere.orm.MRole;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.compiere.orm.MRole;
 
 /**
  * Worflow Access Model
@@ -50,7 +51,7 @@ public class MWorkflowAccess extends X_AD_Workflow_Access {
    * @param AD_Role_ID role id
    */
   public MWorkflowAccess(MWorkflow parent, int AD_Role_ID) {
-    super(parent.getCtx(), 0, parent.get_TrxName());
+    super(parent.getCtx(), 0, null);
     MRole role = MRole.get(parent.getCtx(), AD_Role_ID);
     setClientOrg(role);
     setAD_Workflow_ID(parent.getAD_Workflow_ID());

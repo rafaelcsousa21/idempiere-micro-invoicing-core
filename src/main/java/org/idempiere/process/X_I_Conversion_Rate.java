@@ -50,7 +50,7 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate, I_Pe
   public org.compiere.model.I_C_Conversion_Rate getC_Conversion_Rate() throws RuntimeException {
     return (org.compiere.model.I_C_Conversion_Rate)
         MTable.get(getCtx(), org.compiere.model.I_C_Conversion_Rate.Table_Name)
-            .getPO(getC_Conversion_Rate_ID(), get_TrxName());
+            .getPO(getC_Conversion_Rate_ID(), null);
   }
 
   /**
@@ -77,7 +77,7 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate, I_Pe
   public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
     return (org.compiere.model.I_C_ConversionType)
         MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), get_TrxName());
+            .getPO(getC_ConversionType_ID(), null);
   }
 
   /**
@@ -104,7 +104,7 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate, I_Pe
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -131,7 +131,7 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate, I_Pe
   public org.compiere.model.I_C_Currency getC_Currency_To() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID_To(), get_TrxName());
+            .getPO(getC_Currency_ID_To(), null);
   }
 
   /**

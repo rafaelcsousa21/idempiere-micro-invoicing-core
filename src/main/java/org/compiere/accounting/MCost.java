@@ -139,7 +139,7 @@ public class MCost extends X_M_Cost {
             + " COALESCE(SUM(c.CurrentCostPriceLL),0) " // 6
             + " FROM M_Cost c"
             + " LEFT OUTER JOIN M_CostElement ce ON (c.M_CostElement_ID=ce.M_CostElement_ID) "
-            + "WHERE c.AD_Client_ID=? AND c.AD_Org_ID=?" //	#1/2
+            + "WHERE c.clientId=? AND c.orgId=?" //	#1/2
             + " AND c.M_Product_ID=?" //	#3
             + " AND (c.M_AttributeSetInstance_ID=? OR c.M_AttributeSetInstance_ID=0)" //	#4
             + " AND c.M_CostType_ID=? AND c.C_AcctSchema_ID=?" //	#5/6
@@ -302,7 +302,7 @@ public class MCost extends X_M_Cost {
       MCostElement ce =
           MCostElement.getMaterialCostElement(as, MCostElement.COSTINGMETHOD_StandardCosting);
       MCost cost =
-          get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID(), product.get_TrxName());
+          get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID(), null);
       if (cost != null && cost.getCurrentCostPrice().signum() > 0) {
         if (s_log.isLoggable(Level.FINE)) s_log.fine(product.getName() + ", Standard - " + cost);
         return cost.getCurrentCostPrice();
@@ -359,7 +359,7 @@ public class MCost extends X_M_Cost {
 
     //	Still nothing try ProductPO
     MProductPO[] pos =
-        MProductPO.getOfProduct(product.getCtx(), product.getM_Product_ID(), product.get_TrxName());
+        MProductPO.getOfProduct(product.getCtx(), product.getM_Product_ID(), null);
     for (int i = 0; i < pos.length; i++) {
       BigDecimal price = pos[i].getPricePO();
       if (price == null || price.signum() == 0) price = pos[i].getPriceList();
@@ -403,12 +403,12 @@ public class MCost extends X_M_Cost {
         "SELECT pp.PriceList, pp.PriceStd FROM M_ProductPrice pp"
             + " INNER JOIN M_PriceList_Version plv ON (pp.M_PriceList_Version_ID = plv.M_PriceList_Version_ID AND plv.ValidFrom <= trunc(sysdate))"
             + " INNER JOIN M_PriceList pl ON (plv.M_PriceList_ID = pl.M_PriceList_ID AND pl.IsSOPriceList = 'N')"
-            + " WHERE pp.AD_Client_ID = ? AND pp.AD_Org_ID IN (0, ?) AND pp.M_Product_ID = ? AND pp.PriceList > 0 AND pp.IsActive = 'Y' "
-            + " ORDER BY pp.AD_Org_ID Desc, plv.ValidFrom Desc";
+            + " WHERE pp.clientId = ? AND pp.orgId IN (0, ?) AND pp.M_Product_ID = ? AND pp.PriceList > 0 AND pp.IsActive = 'Y' "
+            + " ORDER BY pp.orgId Desc, plv.ValidFrom Desc";
     PreparedStatement st = null;
     ResultSet rs = null;
     try {
-      st = prepareStatement(sql, product.get_TrxName());
+      st = prepareStatement(sql, null);
       st.setInt(1, as. getClientId());
       st.setInt(2, orgID);
       st.setInt(3, product.getM_Product_ID());
@@ -441,20 +441,20 @@ public class MCost extends X_M_Cost {
     BigDecimal retValue = null;
     StringBuilder sql =
         new StringBuilder(
-                "SELECT currencyConvert(il.PriceActual, i.C_Currency_ID, ?, i.DateAcct, i.C_ConversionType_ID, il.AD_Client_ID, il.AD_Org_ID) ")
+                "SELECT currencyConvert(il.PriceActual, i.C_Currency_ID, ?, i.DateAcct, i.C_ConversionType_ID, il.clientId, il.orgId) ")
             // ,il.PriceActual, il.QtyInvoiced, i.DateInvoiced, il.Line
             .append("FROM C_InvoiceLine il ")
             .append(" INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) ")
             .append("WHERE il.M_Product_ID=?")
             .append(" AND i.IsSOTrx='N'");
-    if (AD_Org_ID != 0) sql.append(" AND il.AD_Org_ID=?");
+    if (AD_Org_ID != 0) sql.append(" AND il.orgId=?");
     else if (M_ASI_ID != 0) sql.append(" AND il.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY i.DateInvoiced DESC, il.Line DESC");
     //
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), product.get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, product.getM_Product_ID());
       if (AD_Org_ID != 0) pstmt.setInt(3, AD_Org_ID);
@@ -490,22 +490,22 @@ public class MCost extends X_M_Cost {
     BigDecimal retValue = null;
     StringBuilder sql =
         new StringBuilder(
-                "SELECT currencyConvert(ol.PriceCost, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.AD_Client_ID, ol.AD_Org_ID),")
+                "SELECT currencyConvert(ol.PriceCost, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.clientId, ol.orgId),")
             .append(
-                " currencyConvert(ol.PriceActual, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.AD_Client_ID, ol.AD_Org_ID) ")
+                " currencyConvert(ol.PriceActual, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.clientId, ol.orgId) ")
             //	,ol.PriceCost,ol.PriceActual, ol.QtyOrdered, o.DateOrdered, ol.Line
             .append("FROM C_OrderLine ol")
             .append(" INNER JOIN C_Order o ON (ol.C_Order_ID=o.C_Order_ID) ")
             .append("WHERE ol.M_Product_ID=?")
             .append(" AND o.IsSOTrx='N'");
-    if (AD_Org_ID != 0) sql.append(" AND ol.AD_Org_ID=?");
+    if (AD_Org_ID != 0) sql.append(" AND ol.orgId=?");
     else if (M_ASI_ID != 0) sql.append(" AND ol.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY o.DateOrdered DESC, ol.Line DESC");
     //
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), product.get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setInt(3, product.getM_Product_ID());
@@ -542,8 +542,8 @@ public class MCost extends X_M_Cost {
   public static BigDecimal getPOPrice(MProduct product, int C_OrderLine_ID, int C_Currency_ID) {
     BigDecimal retValue = null;
     String sql =
-        "SELECT currencyConvert(ol.PriceCost, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.AD_Client_ID, ol.AD_Org_ID),"
-            + " currencyConvert(ol.PriceActual, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.AD_Client_ID, ol.AD_Org_ID) "
+        "SELECT currencyConvert(ol.PriceCost, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.clientId, ol.orgId),"
+            + " currencyConvert(ol.PriceActual, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.clientId, ol.orgId) "
             //	,ol.PriceCost,ol.PriceActual, ol.QtyOrdered, o.DateOrdered, ol.Line
             + "FROM C_OrderLine ol"
             + " INNER JOIN C_Order o ON (ol.C_Order_ID=o.C_Order_ID) "
@@ -553,7 +553,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, product.get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setInt(3, C_OrderLine_ID);
@@ -585,7 +585,7 @@ public class MCost extends X_M_Cost {
    */
   public static void create(MClient client) {
     MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(client.getCtx(), client. getClientId());
-    String trxName = client.get_TrxName();
+    String trxName = null;
     String trxNameUsed = trxName;
     Trx trx = null;
     if (trxName == null) {
@@ -597,7 +597,7 @@ public class MCost extends X_M_Cost {
     //	For all Products
     String sql =
         "SELECT * FROM M_Product p "
-            + "WHERE AD_Client_ID=?"
+            + "WHERE clientId=?"
             + " AND EXISTS (SELECT * FROM M_CostDetail cd "
             + "WHERE p.M_Product_ID=cd.M_Product_ID AND Processed='N')";
     PreparedStatement pstmt = null;
@@ -663,7 +663,7 @@ public class MCost extends X_M_Cost {
 
     MAcctSchema[] mass =
         MAcctSchema.getClientAcctSchema(
-            product.getCtx(), product. getClientId(), product.get_TrxName());
+            product.getCtx(), product. getClientId(), null);
     MOrg[] orgs = null;
 
     int M_ASI_ID = 0; // 	No Attribute
@@ -684,7 +684,7 @@ public class MCost extends X_M_Cost {
                   false,
                   true,
                   true,
-                  product.get_TrxName());
+                  null);
 
           MTreeNode root = vTree.getRoot();
           createForChildOrg(root, product, as, M_ASI_ID, ce, false);
@@ -734,7 +734,7 @@ public class MCost extends X_M_Cost {
   private static void createCostingRecord(
       MProduct product, int M_ASI_ID, MAcctSchema as, int AD_Org_ID, int M_CostElement_ID) {
     MCost cost =
-        MCost.get(product, M_ASI_ID, as, AD_Org_ID, M_CostElement_ID, product.get_TrxName());
+        MCost.get(product, M_ASI_ID, as, AD_Org_ID, M_CostElement_ID, null);
     if (cost.is_new()) {
       if (cost.save()) {
         if (s_log.isLoggable(Level.CONFIG))
@@ -757,7 +757,7 @@ public class MCost extends X_M_Cost {
 
     MAcctSchema[] mass =
         MAcctSchema.getClientAcctSchema(
-            product.getCtx(), product. getClientId(), product.get_TrxName());
+            product.getCtx(), product. getClientId(), null);
     MOrg[] orgs = null;
 
     int M_ASI_ID = 0; // 	No Attribute
@@ -767,7 +767,7 @@ public class MCost extends X_M_Cost {
       if (MAcctSchema.COSTINGLEVEL_Client.equals(cl)) {
         for (MCostElement ce : ces) {
           MCost cost =
-              MCost.get(product, M_ASI_ID, as, 0, ce.getM_CostElement_ID(), product.get_TrxName());
+              MCost.get(product, M_ASI_ID, as, 0, ce.getM_CostElement_ID(), null);
           if (cost != null) cost.deleteEx(true);
         }
       } else if (MAcctSchema.COSTINGLEVEL_Organization.equals(cl)) {
@@ -781,7 +781,7 @@ public class MCost extends X_M_Cost {
                     as,
                     o. getOrgId(),
                     ce.getM_CostElement_ID(),
-                    product.get_TrxName());
+                    null);
             if (cost != null) cost.deleteEx(true);
           }
         } //	for all orgs
@@ -807,13 +807,13 @@ public class MCost extends X_M_Cost {
     StringBuilder sql =
         new StringBuilder("SELECT t.MovementQty, mi.Qty, il.QtyInvoiced, il.PriceActual,")
             .append(
-                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.AD_Client_ID, i.AD_Org_ID, t.M_Transaction_ID ")
+                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.clientId, i.orgId, t.M_Transaction_ID ")
             .append("FROM M_Transaction t")
             .append(" INNER JOIN M_MatchInv mi ON (t.M_InOutLine_ID=mi.M_InOutLine_ID)")
             .append(" INNER JOIN C_InvoiceLine il ON (mi.C_InvoiceLine_ID=il.C_InvoiceLine_ID)")
             .append(" INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) ")
             .append("WHERE t.M_Product_ID=?");
-    if (AD_Org_ID != 0) sql.append(" AND t.AD_Org_ID=?");
+    if (AD_Org_ID != 0) sql.append(" AND t.orgId=?");
     else if (M_AttributeSetInstance_ID != 0) sql.append(" AND t.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY t.M_Transaction_ID");
 
@@ -910,13 +910,13 @@ public class MCost extends X_M_Cost {
         new StringBuilder(
                 "SELECT t.MovementQty, mp.Qty, ol.QtyOrdered, ol.PriceCost, ol.PriceActual,") //	1..5
             .append(" o.C_Currency_ID, o.DateAcct, o.C_ConversionType_ID,") // 	6..8
-            .append(" o.AD_Client_ID, o.AD_Org_ID, t.M_Transaction_ID ") // 	9..11
+            .append(" o.clientId, o.orgId, t.M_Transaction_ID ") // 	9..11
             .append("FROM M_Transaction t")
             .append(" INNER JOIN M_MatchPO mp ON (t.M_InOutLine_ID=mp.M_InOutLine_ID)")
             .append(" INNER JOIN C_OrderLine ol ON (mp.C_OrderLine_ID=ol.C_OrderLine_ID)")
             .append(" INNER JOIN C_Order o ON (ol.C_Order_ID=o.C_Order_ID) ")
             .append("WHERE t.M_Product_ID=?");
-    if (AD_Org_ID != 0) sql.append(" AND t.AD_Org_ID=?");
+    if (AD_Org_ID != 0) sql.append(" AND t.orgId=?");
     else if (M_AttributeSetInstance_ID != 0) sql.append(" AND t.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY t.M_Transaction_ID");
 
@@ -1014,13 +1014,13 @@ public class MCost extends X_M_Cost {
     StringBuilder sql =
         new StringBuilder("SELECT t.MovementQty, mi.Qty, il.QtyInvoiced, il.PriceActual,")
             .append(
-                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.AD_Client_ID, i.AD_Org_ID, t.M_Transaction_ID ")
+                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.clientId, i.orgId, t.M_Transaction_ID ")
             .append("FROM M_Transaction t")
             .append(" INNER JOIN M_MatchInv mi ON (t.M_InOutLine_ID=mi.M_InOutLine_ID)")
             .append(" INNER JOIN C_InvoiceLine il ON (mi.C_InvoiceLine_ID=il.C_InvoiceLine_ID)")
             .append(" INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) ")
             .append("WHERE t.M_Product_ID=?");
-    if (AD_Org_ID != 0) sql.append(" AND t.AD_Org_ID=?");
+    if (AD_Org_ID != 0) sql.append(" AND t.orgId=?");
     else if (M_AttributeSetInstance_ID != 0) sql.append(" AND t.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY t.M_Transaction_ID");
 
@@ -1137,13 +1137,13 @@ public class MCost extends X_M_Cost {
     StringBuilder sql =
         new StringBuilder("SELECT t.MovementQty, mi.Qty, il.QtyInvoiced, il.PriceActual,")
             .append(
-                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.AD_Client_ID, i.AD_Org_ID, t.M_Transaction_ID ")
+                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.clientId, i.orgId, t.M_Transaction_ID ")
             .append("FROM M_Transaction t")
             .append(" INNER JOIN M_MatchInv mi ON (t.M_InOutLine_ID=mi.M_InOutLine_ID)")
             .append(" INNER JOIN C_InvoiceLine il ON (mi.C_InvoiceLine_ID=il.C_InvoiceLine_ID)")
             .append(" INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) ")
             .append("WHERE t.M_Product_ID=?");
-    if (AD_Org_ID != 0) sql.append(" AND t.AD_Org_ID=?");
+    if (AD_Org_ID != 0) sql.append(" AND t.orgId=?");
     else if (M_AttributeSetInstance_ID != 0) sql.append(" AND t.M_AttributeSetInstance_ID=?");
     //	Starting point?
     sql.append(" ORDER BY t.M_Transaction_ID DESC");
@@ -1284,7 +1284,7 @@ public class MCost extends X_M_Cost {
     MCost cost = null;
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     final String whereClause =
-        "AD_Client_ID=? AND AD_Org_ID=?"
+        "clientId=? AND orgId=?"
             + " AND M_Product_ID=?"
             + " AND M_AttributeSetInstance_ID=?"
             + " AND M_CostType_ID=? AND C_AcctSchema_ID=?"
@@ -1315,7 +1315,7 @@ public class MCost extends X_M_Cost {
       int AD_Org_ID,
       int M_CostElement_ID) {
     return get(
-        product, M_AttributeSetInstance_ID, as, AD_Org_ID, M_CostElement_ID, product.get_TrxName());
+        product, M_AttributeSetInstance_ID, as, AD_Org_ID, M_CostElement_ID, null);
   }
 
   /**
@@ -1343,7 +1343,7 @@ public class MCost extends X_M_Cost {
       int M_AttributeSetInstance_ID,
       String trxName) {
     final String whereClause =
-        "AD_Client_ID=? AND AD_Org_ID=?"
+        "clientId=? AND orgId=?"
             + " AND "
             + I_M_Cost.COLUMNNAME_M_Product_ID
             + "=?"
@@ -1451,7 +1451,7 @@ public class MCost extends X_M_Cost {
       MAcctSchema as,
       int AD_Org_ID,
       int M_CostElement_ID) {
-    this(product.getCtx(), 0, product.get_TrxName());
+    this(product.getCtx(), 0, null);
     setClientOrg(product. getClientId(), AD_Org_ID);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
     setM_CostType_ID(as.getM_CostType_ID());
@@ -1601,8 +1601,8 @@ public class MCost extends X_M_Cost {
    */
   public String toString() {
     StringBuilder sb = new StringBuilder("MCost[");
-    sb.append("AD_Client_ID=").append( getClientId());
-    if ( getOrgId() != 0) sb.append(",AD_Org_ID=").append( getOrgId());
+    sb.append("clientId=").append( getClientId());
+    if ( getOrgId() != 0) sb.append(",orgId=").append( getOrgId());
     sb.append(",M_Product_ID=").append(getM_Product_ID());
     if (getMAttributeSetInstance_ID() != 0)
       sb.append(",AD_ASI_ID=").append(getMAttributeSetInstance_ID());

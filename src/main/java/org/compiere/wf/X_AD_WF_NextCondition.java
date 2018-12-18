@@ -54,7 +54,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
   public org.compiere.model.I_AD_Column getAD_Column() throws RuntimeException {
     return (org.compiere.model.I_AD_Column)
         MTable.get(getCtx(), org.compiere.model.I_AD_Column.Table_Name)
-            .getPO(getAD_Column_ID(), get_TrxName());
+            .getPO(getAD_Column_ID(), null);
   }
 
   /**
@@ -121,7 +121,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
   public org.compiere.model.I_AD_WF_NodeNext getAD_WF_NodeNext() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_NodeNext)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_NodeNext.Table_Name)
-            .getPO(getAD_WF_NodeNext_ID(), get_TrxName());
+            .getPO(getAD_WF_NodeNext_ID(), null);
   }
 
   /**

@@ -110,7 +110,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult, 
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -139,7 +139,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult, 
   public org.compiere.model.I_M_QualityTest getM_QualityTest() throws RuntimeException {
     return (org.compiere.model.I_M_QualityTest)
         MTable.get(getCtx(), org.compiere.model.I_M_QualityTest.Table_Name)
-            .getPO(getM_QualityTest_ID(), get_TrxName());
+            .getPO(getM_QualityTest_ID(), null);
   }
 
   /**

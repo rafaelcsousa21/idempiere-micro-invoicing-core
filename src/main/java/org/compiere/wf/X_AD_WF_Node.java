@@ -103,7 +103,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Column getAD_Column() throws RuntimeException {
     return (org.compiere.model.I_AD_Column)
         MTable.get(getCtx(), org.compiere.model.I_AD_Column.Table_Name)
-            .getPO(getAD_Column_ID(), get_TrxName());
+            .getPO(getAD_Column_ID(), null);
   }
 
   /**
@@ -130,7 +130,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_CtxHelp getAD_CtxHelp() throws RuntimeException {
     return (org.compiere.model.I_AD_CtxHelp)
         MTable.get(getCtx(), org.compiere.model.I_AD_CtxHelp.Table_Name)
-            .getPO(getAD_CtxHelp_ID(), get_TrxName());
+            .getPO(getAD_CtxHelp_ID(), null);
   }
 
   /**
@@ -157,7 +157,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Form getAD_Form() throws RuntimeException {
     return (org.compiere.model.I_AD_Form)
         MTable.get(getCtx(), org.compiere.model.I_AD_Form.Table_Name)
-            .getPO(getAD_Form_ID(), get_TrxName());
+            .getPO(getAD_Form_ID(), null);
   }
 
   /**
@@ -184,7 +184,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Image getAD_Image() throws RuntimeException {
     return (org.compiere.model.I_AD_Image)
         MTable.get(getCtx(), org.compiere.model.I_AD_Image.Table_Name)
-            .getPO(getAD_Image_ID(), get_TrxName());
+            .getPO(getAD_Image_ID(), null);
   }
 
   /**
@@ -211,7 +211,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_InfoWindow getAD_InfoWindow() throws RuntimeException {
     return (org.compiere.model.I_AD_InfoWindow)
         MTable.get(getCtx(), org.compiere.model.I_AD_InfoWindow.Table_Name)
-            .getPO(getAD_InfoWindow_ID(), get_TrxName());
+            .getPO(getAD_InfoWindow_ID(), null);
   }
 
   /**
@@ -238,7 +238,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Process getAD_Process() throws RuntimeException {
     return (org.compiere.model.I_AD_Process)
         MTable.get(getCtx(), org.compiere.model.I_AD_Process.Table_Name)
-            .getPO(getAD_Process_ID(), get_TrxName());
+            .getPO(getAD_Process_ID(), null);
   }
 
   /**
@@ -265,7 +265,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Task getAD_Task() throws RuntimeException {
     return (org.compiere.model.I_AD_Task)
         MTable.get(getCtx(), org.compiere.model.I_AD_Task.Table_Name)
-            .getPO(getAD_Task_ID(), get_TrxName());
+            .getPO(getAD_Task_ID(), null);
   }
 
   /**
@@ -292,7 +292,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_WF_Block getAD_WF_Block() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Block)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Block.Table_Name)
-            .getPO(getAD_WF_Block_ID(), get_TrxName());
+            .getPO(getAD_WF_Block_ID(), null);
   }
 
   /**
@@ -358,7 +358,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_WF_Responsible getAD_WF_Responsible() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Responsible)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Responsible.Table_Name)
-            .getPO(getAD_WF_Responsible_ID(), get_TrxName());
+            .getPO(getAD_WF_Responsible_ID(), null);
   }
 
   /**
@@ -385,7 +385,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Window getAD_Window() throws RuntimeException {
     return (org.compiere.model.I_AD_Window)
         MTable.get(getCtx(), org.compiere.model.I_AD_Window.Table_Name)
-            .getPO(getAD_Window_ID(), get_TrxName());
+            .getPO(getAD_Window_ID(), null);
   }
 
   /**
@@ -412,7 +412,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
     return (org.compiere.model.I_AD_Workflow)
         MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getAD_Workflow_ID(), get_TrxName());
+            .getPO(getAD_Workflow_ID(), null);
   }
 
   /**
@@ -475,7 +475,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -961,7 +961,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_R_MailText getR_MailText() throws RuntimeException {
     return (org.compiere.model.I_R_MailText)
         MTable.get(getCtx(), org.compiere.model.I_R_MailText.Table_Name)
-            .getPO(getR_MailText_ID(), get_TrxName());
+            .getPO(getR_MailText_ID(), null);
   }
 
   /**
@@ -1033,7 +1033,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException {
     return (org.compiere.model.I_S_Resource)
         MTable.get(getCtx(), org.compiere.model.I_S_Resource.Table_Name)
-            .getPO(getS_Resource_ID(), get_TrxName());
+            .getPO(getS_Resource_ID(), null);
   }
 
   /**
@@ -1208,7 +1208,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Workflow getWorkflow() throws RuntimeException {
     return (org.compiere.model.I_AD_Workflow)
         MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getWorkflow_ID(), get_TrxName());
+            .getPO(getWorkflow_ID(), null);
   }
 
   /**

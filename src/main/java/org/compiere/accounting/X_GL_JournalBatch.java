@@ -56,7 +56,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -83,7 +83,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**
@@ -148,7 +148,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
   public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
     return (org.compiere.model.I_C_Period)
         MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), get_TrxName());
+            .getPO(getC_Period_ID(), null);
   }
 
   /**
@@ -350,7 +350,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
   public org.compiere.model.I_GL_Category getGL_Category() throws RuntimeException {
     return (org.compiere.model.I_GL_Category)
         MTable.get(getCtx(), org.compiere.model.I_GL_Category.Table_Name)
-            .getPO(getGL_Category_ID(), get_TrxName());
+            .getPO(getGL_Category_ID(), null);
   }
 
   /**
@@ -516,7 +516,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
   public org.compiere.model.I_GL_JournalBatch getReversal() throws RuntimeException {
     return (org.compiere.model.I_GL_JournalBatch)
         MTable.get(getCtx(), org.compiere.model.I_GL_JournalBatch.Table_Name)
-            .getPO(getReversal_ID(), get_TrxName());
+            .getPO(getReversal_ID(), null);
   }
 
   /**

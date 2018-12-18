@@ -58,7 +58,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Accumdepreciation_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Accumdepreciation_Acct(), get_TrxName());
+            .getPO(getA_Accumdepreciation_Acct(), null);
   }
 
   /**
@@ -84,7 +84,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Asset_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Asset_Acct(), get_TrxName());
+            .getPO(getA_Asset_Acct(), null);
   }
 
   /**
@@ -158,7 +158,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
     return (org.compiere.model.I_A_Asset)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), get_TrxName());
+            .getPO(getA_Asset_ID(), null);
   }
 
   /**
@@ -185,7 +185,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public org.compiere.model.I_A_Asset_Spread getA_Asset_Spread() throws RuntimeException {
     return (org.compiere.model.I_A_Asset_Spread)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset_Spread.Table_Name)
-            .getPO(getA_Asset_Spread_ID(), get_TrxName());
+            .getPO(getA_Asset_Spread_ID(), null);
   }
 
   /**
@@ -212,7 +212,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Depreciation_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Depreciation_Acct(), get_TrxName());
+            .getPO(getA_Depreciation_Acct(), null);
   }
 
   /**
@@ -239,7 +239,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
       throws RuntimeException {
     return (org.compiere.model.I_A_Depreciation_Convention)
         MTable.get(getCtx(), org.compiere.model.I_A_Depreciation_Convention.Table_Name)
-            .getPO(getA_Depreciation_Conv_F_ID(), get_TrxName());
+            .getPO(getA_Depreciation_Conv_F_ID(), null);
   }
 
   /**
@@ -267,7 +267,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
       throws RuntimeException {
     return (org.compiere.model.I_A_Depreciation_Convention)
         MTable.get(getCtx(), org.compiere.model.I_A_Depreciation_Convention.Table_Name)
-            .getPO(getA_Depreciation_Conv_ID(), get_TrxName());
+            .getPO(getA_Depreciation_Conv_ID(), null);
   }
 
   /**
@@ -294,7 +294,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public org.compiere.model.I_A_Depreciation getA_Depreciation_F() throws RuntimeException {
     return (org.compiere.model.I_A_Depreciation)
         MTable.get(getCtx(), org.compiere.model.I_A_Depreciation.Table_Name)
-            .getPO(getA_Depreciation_F_ID(), get_TrxName());
+            .getPO(getA_Depreciation_F_ID(), null);
   }
 
   /**
@@ -321,7 +321,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public org.compiere.model.I_A_Depreciation getA_Depreciation() throws RuntimeException {
     return (org.compiere.model.I_A_Depreciation)
         MTable.get(getCtx(), org.compiere.model.I_A_Depreciation.Table_Name)
-            .getPO(getA_Depreciation_ID(), get_TrxName());
+            .getPO(getA_Depreciation_ID(), null);
   }
 
   /**
@@ -394,7 +394,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
       throws RuntimeException {
     return (org.compiere.model.I_A_Depreciation_Method)
         MTable.get(getCtx(), org.compiere.model.I_A_Depreciation_Method.Table_Name)
-            .getPO(getA_Depreciation_Method_F_ID(), get_TrxName());
+            .getPO(getA_Depreciation_Method_F_ID(), null);
   }
 
   /**
@@ -423,7 +423,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
       throws RuntimeException {
     return (org.compiere.model.I_A_Depreciation_Method)
         MTable.get(getCtx(), org.compiere.model.I_A_Depreciation_Method.Table_Name)
-            .getPO(getA_Depreciation_Method_ID(), get_TrxName());
+            .getPO(getA_Depreciation_Method_ID(), null);
   }
 
   /**
@@ -451,7 +451,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
       throws RuntimeException {
     return (org.compiere.model.I_A_Depreciation_Table_Header)
         MTable.get(getCtx(), org.compiere.model.I_A_Depreciation_Table_Header.Table_Name)
-            .getPO(getA_Depreciation_Table_Header_ID(), get_TrxName());
+            .getPO(getA_Depreciation_Table_Header_ID(), null);
   }
 
   /**
@@ -522,7 +522,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Disposal_G() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Disposal_Gain(), get_TrxName());
+            .getPO(getA_Disposal_Gain(), null);
   }
 
   /**
@@ -548,7 +548,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Disposal_Gain_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Disposal_Gain_Acct(), get_TrxName());
+            .getPO(getA_Disposal_Gain_Acct(), null);
   }
 
   /**
@@ -574,7 +574,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Disposal_L() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Disposal_Loss(), get_TrxName());
+            .getPO(getA_Disposal_Loss(), null);
   }
 
   /**
@@ -600,7 +600,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Disposal_Loss_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Disposal_Loss_Acct(), get_TrxName());
+            .getPO(getA_Disposal_Loss_Acct(), null);
   }
 
   /**
@@ -626,7 +626,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Disposal_Reve() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Disposal_Revenue(), get_TrxName());
+            .getPO(getA_Disposal_Revenue(), null);
   }
 
   /**
@@ -652,7 +652,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Disposal_Revenue_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Disposal_Revenue_Acct(), get_TrxName());
+            .getPO(getA_Disposal_Revenue_Acct(), null);
   }
 
   /**
@@ -718,7 +718,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Accumdep_Offset_() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Accumdep_Offset_Cur(), get_TrxName());
+            .getPO(getA_Reval_Accumdep_Offset_Cur(), null);
   }
 
   /**
@@ -744,7 +744,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Accumdep_Offset_Pr() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Accumdep_Offset_Prior(), get_TrxName());
+            .getPO(getA_Reval_Accumdep_Offset_Prior(), null);
   }
 
   /**
@@ -771,7 +771,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Adep_Offset_Cur_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Adep_Offset_Cur_Acct(), get_TrxName());
+            .getPO(getA_Reval_Adep_Offset_Cur_Acct(), null);
   }
 
   /**
@@ -798,7 +798,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Adep_Offset_Prior_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Adep_Offset_Prior_Acct(), get_TrxName());
+            .getPO(getA_Reval_Adep_Offset_Prior_Acct(), null);
   }
 
   /**
@@ -852,7 +852,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Cost_Off() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Cost_Offset(), get_TrxName());
+            .getPO(getA_Reval_Cost_Offset(), null);
   }
 
   /**
@@ -878,7 +878,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Cost_Offset_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Cost_Offset_Acct(), get_TrxName());
+            .getPO(getA_Reval_Cost_Offset_Acct(), null);
   }
 
   /**
@@ -904,7 +904,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Cost_Offset_Pr() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Cost_Offset_Prior(), get_TrxName());
+            .getPO(getA_Reval_Cost_Offset_Prior(), null);
   }
 
   /**
@@ -930,7 +930,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Cost_Offset_Prior_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Cost_Offset_Prior_Acct(), get_TrxName());
+            .getPO(getA_Reval_Cost_Offset_Prior_Acct(), null);
   }
 
   /**
@@ -957,7 +957,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Depexp_Off() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Depexp_Offset(), get_TrxName());
+            .getPO(getA_Reval_Depexp_Offset(), null);
   }
 
   /**
@@ -983,7 +983,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public I_C_ValidCombination getA_Reval_Depexp_Offset_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Reval_Depexp_Offset_Acct(), get_TrxName());
+            .getPO(getA_Reval_Depexp_Offset_Acct(), null);
   }
 
   /**
@@ -1049,7 +1049,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**

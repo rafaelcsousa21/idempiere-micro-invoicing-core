@@ -54,18 +54,18 @@ public class RollUpCosts extends SvrProcess {
     } else if (category != 0) // roll up for all categories
     {
       String sql =
-          "SELECT M_Product_ID FROM M_Product WHERE M_Product_Category_ID = ? AND AD_Client_ID = ? "
+          "SELECT M_Product_ID FROM M_Product WHERE M_Product_Category_ID = ? AND clientId = ? "
               + " AND M_Product_ID IN (SELECT M_Product_ID FROM M_Product_BOM)";
-      int[] prodids = getIDsEx(get_TrxName(), sql, category, client_id);
+      int[] prodids = getIDsEx(null, sql, category, client_id);
       for (int prodid : prodids) {
         rollUpCosts(prodid);
       }
     } else // do it for all products
     {
       String sql =
-          "SELECT M_Product_ID FROM M_Product WHERE AD_Client_ID = ? "
+          "SELECT M_Product_ID FROM M_Product WHERE clientId = ? "
               + " AND M_Product_ID IN (SELECT M_Product_ID FROM M_Product_BOM)";
-      int[] prodids = getIDsEx(get_TrxName(), sql, client_id);
+      int[] prodids = getIDsEx(null, sql, client_id);
       for (int prodid : prodids) {
         rollUpCosts(prodid);
       }
@@ -82,9 +82,9 @@ public class RollUpCosts extends SvrProcess {
   protected void rollUpCosts(int p_id) throws Exception {
     StringBuilder sql =
         new StringBuilder("SELECT M_ProductBOM_ID FROM M_Product_BOM WHERE M_Product_ID = ? ")
-            .append(" AND AD_Client_ID = ")
+            .append(" AND clientId = ")
             .append(client_id);
-    int[] prodbomids = getIDsEx(get_TrxName(), sql.toString(), p_id);
+    int[] prodbomids = getIDsEx(null, sql.toString(), p_id);
 
     for (int prodbomid : prodbomids) {
       if (!processed.contains(p_id)) {
@@ -113,13 +113,13 @@ public class RollUpCosts extends SvrProcess {
             .append("),0)")
             .append(" WHERE M_Product_ID = ")
             .append(p_id)
-            .append(" AND AD_Client_ID = ")
+            .append(" AND clientId = ")
             .append(client_id)
             .append(" AND M_CostElement_ID = ")
             .append(costelement_id)
             .append(" AND M_PRODUCT_ID IN (SELECT M_PRODUCT_ID FROM M_PRODUCT_BOM)");
 
-    executeUpdate(update.toString(), get_TrxName());
+    executeUpdate(update.toString(), null);
 
     processed.add(p_id);
   }

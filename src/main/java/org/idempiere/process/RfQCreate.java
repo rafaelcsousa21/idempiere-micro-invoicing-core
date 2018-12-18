@@ -52,7 +52,7 @@ public class RfQCreate extends SvrProcess {
     throw new NotImplementedException();
 
     /*
-    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, get_TrxName());
+    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
     if (log.isLoggable(Level.INFO)) log.info("doIt - " + rfq + ", Send=" + p_IsSendRfQ);
     String error = rfq.checkQuoteTotalAmtOnly();
     if (error != null && error.length() > 0)
@@ -66,7 +66,7 @@ public class RfQCreate extends SvrProcess {
     MRfQResponse[] responses = rfq.getResponses (false, false);
 
     //	Topic
-    MRfQTopic topic = new MRfQTopic (getCtx(), rfq.getC_RfQ_Topic_ID(), get_TrxName());
+    MRfQTopic topic = new MRfQTopic (getCtx(), rfq.getC_RfQ_Topic_ID(), null);
     MRfQTopicSubscriber[] subscribers = topic.getSubscribers();
     for (int i = 0; i < subscribers.length; i++)
     {

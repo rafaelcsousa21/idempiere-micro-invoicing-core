@@ -52,7 +52,7 @@ public class RfQClose extends SvrProcess {
     throw new NotImplementedException();
 
     /*
-    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, get_TrxName());
+    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
     if (rfq.getId() == 0)
     	throw new IllegalArgumentException("No RfQ found");
     if (log.isLoggable(Level.INFO)) log.info("doIt - " + rfq);

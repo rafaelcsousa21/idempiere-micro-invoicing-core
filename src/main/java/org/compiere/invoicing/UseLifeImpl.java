@@ -1,14 +1,15 @@
 package org.compiere.invoicing;
 
-import java.sql.Timestamp;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.SetGetModel;
 import org.compiere.model.UseLife;
 import org.compiere.orm.PO;
 import org.compiere.orm.SetGetUtil;
 import org.compiere.orm.TimeUtil;
 import org.idempiere.common.util.CLogger;
+
+import java.sql.Timestamp;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Asset properties - classification of assets, service period, life use.
@@ -81,11 +82,6 @@ public class UseLifeImpl implements UseLife {
   /** */
   public boolean is_AttrValueChanged(String name) {
     return m_obj.is_AttrValueChanged(name);
-  }
-
-  /** @return transaction name for decorated object */
-  public String get_TrxName() {
-    return m_obj.get_TrxName();
   }
 
   /**

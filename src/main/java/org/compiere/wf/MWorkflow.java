@@ -77,7 +77,7 @@ public class MWorkflow extends X_AD_Workflow {
           new Query(ctx, I_AD_Workflow.Table_Name, whereClause, trxName)
               .setParameters(new Object[] {X_AD_Workflow.WORKFLOWTYPE_DocumentValue, true})
               .setOnlyActiveRecords(true)
-              .setOrderBy("AD_Client_ID, AD_Table_ID")
+              .setOrderBy("clientId, AD_Table_ID")
               .list();
       ArrayList<MWorkflow> list = new ArrayList<MWorkflow>();
       String oldKey = "";
@@ -211,7 +211,7 @@ public class MWorkflow extends X_AD_Workflow {
   /** Load All Nodes */
   private void loadNodes() {
     m_nodes =
-        new Query(getCtx(), MWFNode.Table_Name, "AD_WorkFlow_ID=?", get_TrxName())
+        new Query(getCtx(), MWFNode.Table_Name, "AD_WorkFlow_ID=?", null)
             .setParameters(new Object[] {getId()})
             .setOnlyActiveRecords(true)
             .list();
@@ -342,20 +342,20 @@ public class MWorkflow extends X_AD_Workflow {
    *
    * @param list list to add to
    * @param AD_WF_Node_ID start node id
-   * @param AD_Client_ID for client
+   * @param clientId for client
    */
-  /*private void addNodesDF (ArrayList<MWFNode> list, int AD_WF_Node_ID, int AD_Client_ID)
+  /*private void addNodesDF (ArrayList<MWFNode> list, int AD_WF_Node_ID, int clientId)
   {
   	MWFNode node = getNode (AD_WF_Node_ID);
   	if (node != null && !list.contains(node))
   	{
   		list.add(node);
   		//	Get Dependent
-  		MWFNodeNext[] nexts = node.getTransitions(AD_Client_ID);
+  		MWFNodeNext[] nexts = node.getTransitions(clientId);
   		for (int i = 0; i < nexts.length; i++)
   		{
   			if (nexts[i].isActive())
-  				addNodesDF (list, nexts[i].getAD_WF_Next_ID(), AD_Client_ID);
+  				addNodesDF (list, nexts[i].getAD_WF_Next_ID(), clientId);
   		}
   	}
   }	//	addNodesDF*/
@@ -551,7 +551,7 @@ public class MWorkflow extends X_AD_Workflow {
       //	save all nodes -- Creating new Workflow
       MWFNode[] nodes = getNodesInOrder(0);
       for (int i = 0; i < nodes.length; i++) {
-        nodes[i].saveEx(get_TrxName());
+        nodes[i].saveEx(null);
       }
     }
 
@@ -565,7 +565,7 @@ public class MWorkflow extends X_AD_Workflow {
         || is_ValueChanged(HasName.Companion.getCOLUMNNAME_Name())
         || is_ValueChanged(I_AD_Workflow.COLUMNNAME_Description)) {
       /* TODO Add DAP
-      MMenu[] menues = MMenu.get(getCtx(), "AD_Workflow_ID=" + getAD_Workflow_ID(), get_TrxName());
+      MMenu[] menues = MMenu.get(getCtx(), "AD_Workflow_ID=" + getAD_Workflow_ID(), null);
       for (int i = 0; i < menues.length; i++)
       {
       	menues[i].setIsActive(isActive());
@@ -737,7 +737,7 @@ public class MWorkflow extends X_AD_Workflow {
   public static int getWorkflowSearchKey(MProduct product) {
     int AD_Client_ID = Env.getClientId(product.getCtx());
     String sql =
-        "SELECT AD_Workflow_ID FROM AD_Workflow " + " WHERE Value = ? AND AD_Client_ID = ?";
+        "SELECT AD_Workflow_ID FROM AD_Workflow " + " WHERE Value = ? AND clientId = ?";
     return getSQLValueEx(null, sql, product.getValue(), AD_Client_ID);
   }
 

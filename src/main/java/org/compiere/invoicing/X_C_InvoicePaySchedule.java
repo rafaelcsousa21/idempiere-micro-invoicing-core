@@ -56,7 +56,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), get_TrxName());
+            .getPO(getC_Invoice_ID(), null);
   }
 
   /**
@@ -124,7 +124,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
   public org.compiere.model.I_C_PaySchedule getC_PaySchedule() throws RuntimeException {
     return (org.compiere.model.I_C_PaySchedule)
         MTable.get(getCtx(), org.compiere.model.I_C_PaySchedule.Table_Name)
-            .getPO(getC_PaySchedule_ID(), get_TrxName());
+            .getPO(getC_PaySchedule_ID(), null);
   }
 
   /**

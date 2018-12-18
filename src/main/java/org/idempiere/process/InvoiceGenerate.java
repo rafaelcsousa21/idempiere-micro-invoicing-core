@@ -90,7 +90,7 @@ public class InvoiceGenerate extends SvrProcess {
       if (para[i].getParameter() == null) ;
       else if (name.equals("Selection")) p_Selection = "Y".equals(para[i].getParameter());
       else if (name.equals("DateInvoiced")) p_DateInvoiced = (Timestamp) para[i].getParameter();
-      else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
+      else if (name.equals("orgId")) p_AD_Org_ID = para[i].getParameterAsInt();
       else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
       else if (name.equals("C_Order_ID")) p_C_Order_ID = para[i].getParameterAsInt();
       else if (name.equals("ConsolidateDocument"))
@@ -122,7 +122,7 @@ public class InvoiceGenerate extends SvrProcess {
               + p_Selection
               + ", DateInvoiced="
               + p_DateInvoiced
-              + ", AD_Org_ID="
+              + ", orgId="
               + p_AD_Org_ID
               + ", C_BPartner_ID="
               + p_C_BPartner_ID
@@ -147,7 +147,7 @@ public class InvoiceGenerate extends SvrProcess {
       sql =
           new StringBuilder("SELECT * FROM C_Order o ")
               .append("WHERE DocStatus IN('CO','CL') AND IsSOTrx='Y'");
-      if (p_AD_Org_ID != 0) sql.append(" AND AD_Org_ID=?");
+      if (p_AD_Org_ID != 0) sql.append(" AND orgId=?");
       if (p_C_BPartner_ID != 0) sql.append(" AND C_BPartner_ID=?");
       if (p_C_Order_ID != 0) sql.append(" AND C_Order_ID=?");
       //
@@ -162,7 +162,7 @@ public class InvoiceGenerate extends SvrProcess {
 
     PreparedStatement pstmt = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       int index = 1;
       if (p_Selection) {
         pstmt.setInt(index, getAD_PInstance_ID());
@@ -189,7 +189,7 @@ public class InvoiceGenerate extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) {
         p_MinimumAmtInvSched = null;
-        MOrder order = new MOrder(getCtx(), rs, get_TrxName());
+        MOrder order = new MOrder(getCtx(), rs, null);
         StringBuilder msgsup =
             new StringBuilder(Msg.getMsg(getCtx(), "Processing"))
                 .append(" ")
@@ -214,7 +214,7 @@ public class InvoiceGenerate extends SvrProcess {
             order.saveEx();
           } else {
             MInvoiceSchedule is =
-                MInvoiceSchedule.get(getCtx(), m_bp.getC_InvoiceSchedule_ID(), get_TrxName());
+                MInvoiceSchedule.get(getCtx(), m_bp.getC_InvoiceSchedule_ID(), null);
             if (is.canInvoice(order.getDateOrdered())) {
               if (is.isAmount() && is.getAmt() != null) p_MinimumAmtInvSched = is.getAmt();
               doInvoice = true;
@@ -342,8 +342,8 @@ public class InvoiceGenerate extends SvrProcess {
       MOrder order, MOrderLine orderLine, BigDecimal qtyInvoiced, BigDecimal qtyEntered) {
     if (m_invoice == null) {
       try {
-        if (m_savepoint != null) Trx.get(get_TrxName(), false).releaseSavepoint(m_savepoint);
-        m_savepoint = Trx.get(get_TrxName(), false).setSavepoint(null);
+        if (m_savepoint != null) Trx.get(null, false).releaseSavepoint(m_savepoint);
+        m_savepoint = Trx.get(null, false).setSavepoint(null);
       } catch (SQLException e) {
         throw new AdempiereException(e);
       }
@@ -370,8 +370,8 @@ public class InvoiceGenerate extends SvrProcess {
   private void createLine(MOrder order, MInOut ship, MInOutLine sLine) {
     if (m_invoice == null) {
       try {
-        if (m_savepoint != null) Trx.get(get_TrxName(), false).releaseSavepoint(m_savepoint);
-        m_savepoint = Trx.get(get_TrxName(), false).setSavepoint(null);
+        if (m_savepoint != null) Trx.get(null, false).releaseSavepoint(m_savepoint);
+        m_savepoint = Trx.get(null, false).setSavepoint(null);
       } catch (SQLException e) {
         throw new AdempiereException(e);
       }
@@ -382,7 +382,7 @@ public class InvoiceGenerate extends SvrProcess {
     if (m_ship == null || m_ship.getM_InOut_ID() != ship.getM_InOut_ID()) {
       MDocType dt = MDocType.get(getCtx(), ship.getC_DocType_ID());
       if (m_bp == null || m_bp.getC_BPartner_ID() != ship.getC_BPartner_ID())
-        m_bp = new MBPartner(getCtx(), ship.getC_BPartner_ID(), get_TrxName());
+        m_bp = new MBPartner(getCtx(), ship.getC_BPartner_ID(), null);
 
       //	Reference: Delivery: 12345 - 12.12.12
       MClient client = MClient.get(getCtx(), order.getClientId());
@@ -436,19 +436,19 @@ public class InvoiceGenerate extends SvrProcess {
   /** Complete Invoice */
   private void completeInvoice() {
     if (m_invoice != null) {
-      MOrder order = new MOrder(getCtx(), m_invoice.getC_Order_ID(), get_TrxName());
+      MOrder order = new MOrder(getCtx(), m_invoice.getC_Order_ID(), null);
       if (order != null) {
         m_invoice.setPaymentRule(order.getPaymentRule());
         m_invoice.setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
         m_invoice.saveEx();
-        m_invoice.load(m_invoice.get_TrxName()); // refresh from DB
+        m_invoice.load(null); // refresh from DB
         // copy payment schedule from order if invoice doesn't have a current payment schedule
         MOrderPaySchedule[] opss =
             MOrderPaySchedule.getOrderPaySchedule(
-                getCtx(), order.getC_Order_ID(), 0, get_TrxName());
+                getCtx(), order.getC_Order_ID(), 0, null);
         MInvoicePaySchedule[] ipss =
             MInvoicePaySchedule.getInvoicePaySchedule(
-                getCtx(), m_invoice.getC_Invoice_ID(), 0, get_TrxName());
+                getCtx(), m_invoice.getC_Invoice_ID(), 0, null);
         if (ipss.length == 0 && opss.length > 0) {
           BigDecimal ogt = order.getGrandTotal();
           BigDecimal igt = m_invoice.getGrandTotal();
@@ -458,7 +458,7 @@ public class InvoiceGenerate extends SvrProcess {
           int scale = cur.getStdPrecision();
 
           for (MOrderPaySchedule ops : opss) {
-            MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, get_TrxName());
+            MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, null);
             PO.copyValues(ops, ips);
             if (percent != Env.ONE) {
               BigDecimal propDueAmt = ops.getDueAmt().multiply(percent);
@@ -492,7 +492,7 @@ public class InvoiceGenerate extends SvrProcess {
         addLog(message);
         if (m_savepoint != null) {
           try {
-            Trx.get(get_TrxName(), false).rollback(m_savepoint);
+            Trx.get(null, false).rollback(m_savepoint);
           } catch (SQLException e) {
             throw new AdempiereException(e);
           }

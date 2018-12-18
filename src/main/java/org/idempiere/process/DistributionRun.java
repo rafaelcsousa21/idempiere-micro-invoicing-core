@@ -81,7 +81,7 @@ public class DistributionRun extends SvrProcess {
       if (para[i].getParameter() == null) ;
       else if (name.equals("C_DocType_ID")) {
         p_C_DocType_ID = ((BigDecimal) para[i].getParameter()).intValue();
-        m_docType = new MDocType(getCtx(), p_C_DocType_ID, get_TrxName());
+        m_docType = new MDocType(getCtx(), p_C_DocType_ID, null);
       } else if (name.equals("DatePromised")) {
         p_DatePromised = (Timestamp) para[i].getParameter();
         // p_DatePromised_To = (Timestamp)para[i].getParameter_To();
@@ -120,7 +120,7 @@ public class DistributionRun extends SvrProcess {
     //	Distribution Run
     if (p_M_DistributionRun_ID == 0)
     	throw new IllegalArgumentException ("No Distribution Run ID");
-    m_run = new MDistributionRun(getCtx(), p_M_DistributionRun_ID, get_TrxName());
+    m_run = new MDistributionRun(getCtx(), p_M_DistributionRun_ID, null);
     if (m_run.getId() == 0)
     	throw new Exception ("Distribution Run not found -  M_DistributionRun_ID=" +  p_M_DistributionRun_ID);
     m_runLines = m_run.getLines(true);
@@ -160,7 +160,7 @@ public class DistributionRun extends SvrProcess {
     }
 
     //	Order By Distribution Run Line
-    m_details = MDistributionRunDetail.get(getCtx(), p_M_DistributionRun_ID, false, get_TrxName());
+    m_details = MDistributionRunDetail.get(getCtx(), p_M_DistributionRun_ID, false, null);
     //	First Run -- Add & Round
     addAllocations ();
 
@@ -175,7 +175,7 @@ public class DistributionRun extends SvrProcess {
     }
 
     //	Order By Business Partner
-    m_details = MDistributionRunDetail.get(getCtx(), p_M_DistributionRun_ID, true, get_TrxName());
+    m_details = MDistributionRunDetail.get(getCtx(), p_M_DistributionRun_ID, true, null);
 
     //Implement Distribution Order
     if(m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder))
@@ -201,9 +201,9 @@ public class DistributionRun extends SvrProcess {
     //	Handle NULL
     String sql =
         "UPDATE M_DistributionRunLine SET MinQty = 0 WHERE MinQty IS NULL AND M_DistributionRun_ID=?";
-    int no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, get_TrxName());
+    int no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, null);
     sql = "UPDATE M_DistributionListLine SET MinQty = 0 WHERE MinQty IS NULL";
-    no = executeUpdateEx(sql, get_TrxName());
+    no = executeUpdateEx(sql, null);
     //	Total Ratio
     sql =
         "UPDATE M_DistributionList l "
@@ -212,23 +212,23 @@ public class DistributionRun extends SvrProcess {
             + "WHERE EXISTS (SELECT * FROM M_DistributionRunLine rl"
             + " WHERE l.M_DistributionList_ID=rl.M_DistributionList_ID"
             + " AND rl.M_DistributionRun_ID=?)";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, get_TrxName());
+    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, null);
 
     //	Delete Old
     sql = "DELETE FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=?";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, get_TrxName());
+    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, null);
     if (log.isLoggable(Level.FINE)) log.fine("insertDetails - deleted #" + no);
     //	Insert New
     sql =
         "INSERT INTO T_DistributionRunDetail "
             + "(M_DistributionRun_ID, M_DistributionRunLine_ID, M_DistributionList_ID, M_DistributionListLine_ID,"
-            + "AD_Client_ID,AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,"
+            + "clientId,orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,"
             + "C_BPartner_ID, C_BPartner_Location_ID, M_Product_ID,"
             + "Ratio, MinQty, Qty) "
             //
             + "SELECT rl.M_DistributionRun_ID, rl.M_DistributionRunLine_ID,"
             + "ll.M_DistributionList_ID, ll.M_DistributionListLine_ID, "
-            + "rl.AD_Client_ID,rl.AD_Org_ID, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy,"
+            + "rl.clientId,rl.orgId, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy,"
             + "ll.C_BPartner_ID, ll.C_BPartner_Location_ID, rl.M_Product_ID, "
             + "ll.Ratio, "
             + "CASE WHEN rl.MinQty > ll.MinQty THEN rl.MinQty ELSE ll.MinQty END, "
@@ -238,7 +238,7 @@ public class DistributionRun extends SvrProcess {
             + " INNER JOIN M_DistributionListLine ll ON (rl.M_DistributionList_ID=ll.M_DistributionList_ID) "
             + "WHERE rl.M_DistributionRun_ID=?"
             + " AND l.RatioTotal<>0 AND rl.IsActive='Y' AND ll.IsActive='Y'";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, get_TrxName());
+    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, null);
     if (log.isLoggable(Level.FINE)) log.fine("inserted #" + no);
     return no;
   } //	insertDetails
@@ -429,11 +429,11 @@ public class DistributionRun extends SvrProcess {
     if (runAD_Org_ID == 0)
     	runAD_Org_ID = Env.getOrgId(getCtx());
     MOrg runOrg = MOrg.get(getCtx(), runAD_Org_ID);
-    int runC_BPartner_ID = runOrg.getLinkedC_BPartner_ID(get_TrxName());
+    int runC_BPartner_ID = runOrg.getLinkedC_BPartner_ID(null);
     boolean counter = !m_run.isCreateSingleOrder()	//	no single Order
     	&& runC_BPartner_ID > 0						//	Org linked to BP
     	&& !m_docType.isSOTrx();					//	PO
-    MBPartner runBPartner = counter ? new MBPartner(getCtx(), runC_BPartner_ID, get_TrxName()) : null;
+    MBPartner runBPartner = counter ? new MBPartner(getCtx(), runC_BPartner_ID, null) : null;
     if (!counter || runBPartner == null || runBPartner.getId() != runC_BPartner_ID)
     	counter = false;
     if (counter)
@@ -450,13 +450,13 @@ public class DistributionRun extends SvrProcess {
     //	Consolidated Order
     if (m_run.isCreateSingleOrder())
     {
-    	bp = new MBPartner (getCtx(), m_run.getC_BPartner_ID(), get_TrxName());
+    	bp = new MBPartner (getCtx(), m_run.getC_BPartner_ID(), null);
     	if (bp.getId() == 0)
     		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + m_run.getC_BPartner_ID());
     	//
     	if (!p_IsTest)
     	{
-    		singleOrder = new MOrder (getCtx(), 0, get_TrxName());
+    		singleOrder = new MOrder (getCtx(), 0, null);
     		singleOrder.setC_DocTypeTarget_ID(m_docType.getC_DocType_ID());
     		singleOrder.setC_DocType_ID(m_docType.getC_DocType_ID());
     		singleOrder.setIsSOTrx(m_docType.isSOTrx());
@@ -498,10 +498,10 @@ public class DistributionRun extends SvrProcess {
     	//	New Order
     	if (order == null)
     	{
-    		bp = new MBPartner (getCtx(), detail.getC_BPartner_ID(), get_TrxName());
+    		bp = new MBPartner (getCtx(), detail.getC_BPartner_ID(), null);
     		if (!p_IsTest)
     		{
-    			order = new MOrder (getCtx(), 0, get_TrxName());
+    			order = new MOrder (getCtx(), 0, null);
     			order.setC_DocTypeTarget_ID(m_docType.getC_DocType_ID());
     			order.setC_DocType_ID(m_docType.getC_DocType_ID());
     			order.setIsSOTrx(m_docType.isSOTrx());
@@ -510,8 +510,8 @@ public class DistributionRun extends SvrProcess {
     			{
     				if (log.isLoggable(Level.FINE)) log.fine("Counter - From_BPOrg=" + bp.getAD_OrgBP_ID_Int()
     					+ "-" + bp + ", To_BP=" + runBPartner);
-    				order.setAD_Org_ID(bp.getAD_OrgBP_ID_Int());
-    				MOrgInfo oi = MOrgInfo.get(getCtx(), bp.getAD_OrgBP_ID_Int(), get_TrxName());
+    				order.setOrgId(bp.getAD_OrgBP_ID_Int());
+    				MOrgInfo oi = MOrgInfo.get(getCtx(), bp.getAD_OrgBP_ID_Int(), null);
     				if (oi.getM_Warehouse_ID() > 0)
     					order.setM_Warehouse_ID(oi.getM_Warehouse_ID());
     				order.setBPartner(runBPartner);
@@ -520,7 +520,7 @@ public class DistributionRun extends SvrProcess {
     			{
     				if (log.isLoggable(Level.FINE)) log.fine("From_Org=" + runAD_Org_ID
     					+ ", To_BP=" + bp);
-    				order.setAD_Org_ID(runAD_Org_ID);
+    				order.setOrgId(runAD_Org_ID);
     				order.setBPartner(bp);
     				if (detail.getC_BPartner_Location_ID() != 0)
     					order.setC_BPartner_Location_ID(detail.getC_BPartner_Location_ID());
@@ -586,25 +586,25 @@ public class DistributionRun extends SvrProcess {
     /*
     //	Handle NULL
     StringBuilder sql = new StringBuilder("UPDATE M_DistributionRunLine SET MinQty = 0 WHERE MinQty IS NULL");
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
 
     sql = new StringBuilder("UPDATE M_DistributionListLine SET MinQty = 0 WHERE MinQty IS NULL");
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
 
     //	Delete Old
     sql = new StringBuilder("DELETE FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=")
     	.append(p_M_DistributionRun_ID);
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("insertDetails - deleted #" + no);
 
     //	Insert New
     sql = new StringBuilder("INSERT INTO T_DistributionRunDetail ")
     	.append("(M_DistributionRun_ID, M_DistributionRunLine_ID, M_DistributionList_ID, M_DistributionListLine_ID,")
-    	.append("AD_Client_ID,AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
+    	.append("clientId,orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
     	.append("C_BPartner_ID, C_BPartner_Location_ID, M_Product_ID,")
     	.append("Ratio, MinQty, Qty) "			)
     	.append("SELECT MAX(rl.M_DistributionRun_ID), MAX(rl.M_DistributionRunLine_ID),MAX(ll.M_DistributionList_ID), MAX(ll.M_DistributionListLine_ID), ")
-    	.append("MAX(rl.AD_Client_ID),MAX(rl.AD_Org_ID), MAX(rl.IsActive), MAX(rl.Created),MAX(rl.CreatedBy), MAX(rl.Updated),MAX(rl.UpdatedBy), ")
+    	.append("MAX(rl.clientId),MAX(rl.orgId), MAX(rl.IsActive), MAX(rl.Created),MAX(rl.CreatedBy), MAX(rl.Updated),MAX(rl.UpdatedBy), ")
     	.append("MAX(ll.C_BPartner_ID), MAX(ll.C_BPartner_Location_ID), MAX(rl.M_Product_ID),")
     	// Ration for this process is equal QtyToDeliver
     	.append("COALESCE (SUM(ol.QtyOrdered-ol.QtyDelivered-TargetQty), 0) , ")
@@ -618,17 +618,17 @@ public class DistributionRun extends SvrProcess {
     	.append("WHERE rl.M_DistributionRun_ID=").append(p_M_DistributionRun_ID).append(" AND rl.IsActive='Y' AND ll.IsActive='Y' AND ol.DatePromised <= ").append(TO_DATE(p_DatePromised))
     	.append(" GROUP BY o.M_Shipper_ID , ll.C_BPartner_ID, ol.M_Product_ID");
     	//+ " BETWEEN "+ TO_DATE(p_DatePromised)  +" AND "+ TO_DATE(p_DatePromised_To)
-    	no = executeUpdate(sql.toString(), get_TrxName());
+    	no = executeUpdate(sql.toString(), null);
 
     	List<MDistributionRunDetail> records = new Query(getCtx(),
     										   MDistributionRunDetail.Table_Name,
     										   MDistributionRunDetail.COLUMNNAME_M_DistributionRun_ID + "=?",
-    										   get_TrxName()).setParameters( new Object[]{p_M_DistributionRun_ID}).list();
+    										   null).setParameters( new Object[]{p_M_DistributionRun_ID}).list();
 
     	for(MDistributionRunDetail record : records)
     	{
 
-    			MDistributionRunLine drl = (MDistributionRunLine) MTable.get(getCtx(), MDistributionRunLine.Table_ID).getPO(record.getM_DistributionRunLine_ID(), get_TrxName());
+    			MDistributionRunLine drl = (MDistributionRunLine) MTable.get(getCtx(), MDistributionRunLine.Table_ID).getPO(record.getM_DistributionRunLine_ID(), null);
     			MProduct product = MProduct.get(getCtx(), record.getM_Product_ID());
     			BigDecimal ration = record.getRatio();
     			BigDecimal totalration = getQtyDemand(record.getM_Product_ID());
@@ -663,7 +663,7 @@ public class DistributionRun extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setTimestamp(1, p_DatePromised);
       // pstmt.setTimestamp(2, p_DatePromised_To);
       pstmt.setInt(2, p_M_Warehouse_ID);
@@ -696,25 +696,25 @@ public class DistributionRun extends SvrProcess {
     /*
     //	Handle NULL
     StringBuilder sql = new StringBuilder("UPDATE M_DistributionRunLine SET MinQty = 0 WHERE MinQty IS NULL");
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
 
     sql = new StringBuilder("UPDATE M_DistributionListLine SET MinQty = 0 WHERE MinQty IS NULL");
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
 
     //	Delete Old
     sql = new StringBuilder("DELETE FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=")
     	.append(p_M_DistributionRun_ID);
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("insertDetails - deleted #" + no);
 
     //	Insert New
     sql = new StringBuilder("INSERT INTO T_DistributionRunDetail ")
     	.append("(M_DistributionRun_ID, M_DistributionRunLine_ID, M_DistributionList_ID, M_DistributionListLine_ID,")
-    	.append("AD_Client_ID,AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
+    	.append("clientId,orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
     	.append("C_BPartner_ID, C_BPartner_Location_ID, M_Product_ID,")
     	.append("Ratio, MinQty, Qty) ")
     	.append("SELECT rl.M_DistributionRun_ID, rl.M_DistributionRunLine_ID,ll.M_DistributionList_ID, ll.M_DistributionListLine_ID, ")
-    	.append("rl.AD_Client_ID,rl.AD_Org_ID, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy, ")
+    	.append("rl.clientId,rl.orgId, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy, ")
     	.append("ll.C_BPartner_ID, ll.C_BPartner_Location_ID, rl.M_Product_ID, 0 , ")
     	.append("ol.TargetQty AS MinQty , 0 FROM M_DistributionRunLine rl ")
     	.append("INNER JOIN M_DistributionList l ON (rl.M_DistributionList_ID=l.M_DistributionList_ID) ")
@@ -725,20 +725,20 @@ public class DistributionRun extends SvrProcess {
     	.append( "<=").append(TO_DATE(p_DatePromised))
     	.append(" INNER JOIN M_Locator loc ON (loc.M_Locator_ID=ol.M_Locator_ID AND loc.M_Warehouse_ID=").append(p_M_Warehouse_ID).append(") ")
     	.append(" WHERE rl.M_DistributionRun_ID=").append(p_M_DistributionRun_ID).append(" AND l.RatioTotal<>0 AND rl.IsActive='Y' AND ll.IsActive='Y'");
-    	no = executeUpdate(sql.toString(), get_TrxName());
+    	no = executeUpdate(sql.toString(), null);
 
     	Query query = MTable.get(getCtx(), I_T_DistributionRunDetail.Table_ID).
-    	createQuery(MDistributionRunDetail.COLUMNNAME_M_DistributionRun_ID + "=?", get_TrxName());
+    	createQuery(MDistributionRunDetail.COLUMNNAME_M_DistributionRun_ID + "=?", null);
     	query.setParameters(p_M_DistributionRun_ID);
 
     	List<MDistributionRunDetail> records = query.list();
 
     	for(MDistributionRunDetail record : records)
     	{
-    			BigDecimal total_ration = getSQLValueBD(get_TrxName(),
+    			BigDecimal total_ration = getSQLValueBD(null,
     			"SELECT SUM(Ratio) FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=? AND M_Product_ID=? GROUP BY  M_Product_ID"
     			, p_M_DistributionRun_ID, record.getM_Product_ID());
-    			MDistributionRunLine drl = (MDistributionRunLine) MTable.get(getCtx(), MDistributionRunLine.Table_ID).getPO(record.getM_DistributionRunLine_ID(), get_TrxName());
+    			MDistributionRunLine drl = (MDistributionRunLine) MTable.get(getCtx(), MDistributionRunLine.Table_ID).getPO(record.getM_DistributionRunLine_ID(), null);
     			BigDecimal ration = record.getRatio();
     			BigDecimal factor = ration.divide(total_ration,BigDecimal.ROUND_HALF_UP);
     			record.setQty(factor.multiply(drl.getTotalQty()));
@@ -764,7 +764,7 @@ public class DistributionRun extends SvrProcess {
     	int M_Warehouse_ID = 0;
     	if (p_M_Warehouse_ID <= 0)
     	{
-    		MOrgInfo oi_source = MOrgInfo.get(getCtx(), m_run.getOrgId(), get_TrxName());
+    		MOrgInfo oi_source = MOrgInfo.get(getCtx(), m_run.getOrgId(), null);
     		MWarehouse m_source = MWarehouse.get(getCtx(), oi_source.getM_Warehouse_ID());
     		if(m_source == null)
     			throw new AdempiereException("Do not exist Defautl Warehouse Source");
@@ -786,7 +786,7 @@ public class DistributionRun extends SvrProcess {
     	    ResultSet rs = null;
      	    try
      	    {
-     	    		pstmt = prepareStatement (sql.toString(),get_TrxName());
+     	    		pstmt = prepareStatement (sql.toString(),null);
      	    		pstmt.setInt(1, detail.getC_BPartner_ID());
      	    		pstmt.setInt(2, detail.getM_Product_ID());
      	    		pstmt.setInt(3, M_Warehouse_ID);
@@ -797,7 +797,7 @@ public class DistributionRun extends SvrProcess {
      	            while (rs.next())
      	            {
     	 	   			//	Create Order Line
-    	 	   			MDDOrderLine line = new MDDOrderLine(getCtx(), rs , get_TrxName());
+    	 	   			MDDOrderLine line = new MDDOrderLine(getCtx(), rs , null);
     	 	   			line.setM_Product_ID(detail.getM_Product_ID());
     	 	   			line.setConfirmedQty(line.getTargetQty().add(detail.getActualAllocation()));
     	 	   			if(p_M_Warehouse_ID>0)
@@ -831,11 +831,11 @@ public class DistributionRun extends SvrProcess {
     if (runAD_Org_ID == 0)
     	runAD_Org_ID = Env.getOrgId(getCtx());
     MOrg runOrg = MOrg.get(getCtx(), runAD_Org_ID);
-    int runC_BPartner_ID = runOrg.getLinkedC_BPartner_ID(get_TrxName());
+    int runC_BPartner_ID = runOrg.getLinkedC_BPartner_ID(null);
     boolean counter = !m_run.isCreateSingleOrder()	//	no single Order
     	&& runC_BPartner_ID > 0						//	Org linked to BP
     	&& !m_docType.isSOTrx();					//	PO
-    MBPartner runBPartner = counter ? new MBPartner(getCtx(), runC_BPartner_ID, get_TrxName()) : null;
+    MBPartner runBPartner = counter ? new MBPartner(getCtx(), runC_BPartner_ID, null) : null;
     if (!counter || runBPartner == null || runBPartner.getId() != runC_BPartner_ID)
     	counter = false;
     if (counter)
@@ -856,7 +856,7 @@ public class DistributionRun extends SvrProcess {
     MLocator m_locator_to= null;
     MWarehouse[] ws = null;
 
-    MOrgInfo oi_source = MOrgInfo.get(getCtx(), m_run.getOrgId(), get_TrxName());
+    MOrgInfo oi_source = MOrgInfo.get(getCtx(), m_run.getOrgId(), null);
     m_source = MWarehouse.get(getCtx(), oi_source.getM_Warehouse_ID());
     if(m_source == null)
     	throw new AdempiereException("Do not exist Defautl Warehouse Source");
@@ -873,13 +873,13 @@ public class DistributionRun extends SvrProcess {
     //	Consolidated Single Order
     if (m_run.isCreateSingleOrder())
     {
-    	bp = new MBPartner (getCtx(), m_run.getC_BPartner_ID(), get_TrxName());
+    	bp = new MBPartner (getCtx(), m_run.getC_BPartner_ID(), null);
     	if (bp.getId() == 0)
     		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + m_run.getC_BPartner_ID());
     	//
     	if (!p_IsTest)
     	{
-    		singleOrder = new MDDOrder (getCtx(), 0, get_TrxName());
+    		singleOrder = new MDDOrder (getCtx(), 0, null);
     		singleOrder.setC_DocType_ID(m_docType.getC_DocType_ID());
     		singleOrder.setIsSOTrx(m_docType.isSOTrx());
     		singleOrder.setBPartner(bp);
@@ -920,8 +920,8 @@ public class DistributionRun extends SvrProcess {
     	lastC_BPartner_ID = detail.getC_BPartner_ID();
     	lastC_BPartner_Location_ID = detail.getC_BPartner_Location_ID();
 
-    	bp = new MBPartner (getCtx(), detail.getC_BPartner_ID(), get_TrxName());
-    	MOrgInfo oi_target = MOrgInfo.get(getCtx(), bp.getAD_OrgBP_ID_Int(), get_TrxName());
+    	bp = new MBPartner (getCtx(), detail.getC_BPartner_ID(), null);
+    	MOrgInfo oi_target = MOrgInfo.get(getCtx(), bp.getAD_OrgBP_ID_Int(), null);
     	m_target = MWarehouse.get(getCtx(), oi_target.getM_Warehouse_ID());
     	if(m_target==null)
     		throw new AdempiereException("Do not exist Default Warehouse Target");
@@ -936,12 +936,12 @@ public class DistributionRun extends SvrProcess {
     	if(p_ConsolidateDocument)
     	{
 
-    		StringBuilder whereClause = new StringBuilder("DocStatus IN ('DR','IN') AND AD_Org_ID=").append(bp.getAD_OrgBP_ID_Int()).append(" AND ")
+    		StringBuilder whereClause = new StringBuilder("DocStatus IN ('DR','IN') AND orgId=").append(bp.getAD_OrgBP_ID_Int()).append(" AND ")
     							    .append(MDDOrder.COLUMNNAME_C_BPartner_ID).append("=? AND ")
     							    .append(MDDOrder.COLUMNNAME_M_Warehouse_ID).append("=?  AND ")
     							    .append(MDDOrder.COLUMNNAME_DatePromised).append("<=? ");
 
-    		order = new Query(getCtx(), MDDOrder.Table_Name, whereClause.toString(), get_TrxName())
+    		order = new Query(getCtx(), MDDOrder.Table_Name, whereClause.toString(), null)
     					.setParameters(new Object[]{lastC_BPartner_ID, ws[0].getM_Warehouse_ID(), p_DatePromised})
     					.setOrderBy(MDDOrder.COLUMNNAME_DatePromised +" DESC")
     					.first();
@@ -952,8 +952,8 @@ public class DistributionRun extends SvrProcess {
     	{
     		if (!p_IsTest)
     		{
-    			order = new MDDOrder (getCtx(), 0, get_TrxName());
-    			order.setAD_Org_ID(bp.getAD_OrgBP_ID_Int());
+    			order = new MDDOrder (getCtx(), 0, null);
+    			order.setOrgId(bp.getAD_OrgBP_ID_Int());
     			order.setC_DocType_ID(m_docType.getC_DocType_ID());
     			order.setIsSOTrx(m_docType.isSOTrx());
 
@@ -962,7 +962,7 @@ public class DistributionRun extends SvrProcess {
     			{
     				if (log.isLoggable(Level.FINE)) log.fine("Counter - From_BPOrg=" + bp.getAD_OrgBP_ID_Int()
     					+ "-" + bp + ", To_BP=" + runBPartner);
-    				order.setAD_Org_ID(bp.getAD_OrgBP_ID_Int());
+    				order.setOrgId(bp.getAD_OrgBP_ID_Int());
     				if (ws[0].getM_Warehouse_ID() > 0)
     				order.setM_Warehouse_ID(ws[0].getM_Warehouse_ID());
     				order.setBPartner(runBPartner);
@@ -971,7 +971,7 @@ public class DistributionRun extends SvrProcess {
     			{
     				if (log.isLoggable(Level.FINE)) log.fine("From_Org=" + runAD_Org_ID
     					+ ", To_BP=" + bp);
-    				order.setAD_Org_ID(bp.getAD_OrgBP_ID_Int());
+    				order.setOrgId(bp.getAD_OrgBP_ID_Int());
     				order.setBPartner(bp);
     				if (detail.getC_BPartner_Location_ID() != 0)
     					order.setC_BPartner_Location_ID(detail.getC_BPartner_Location_ID());
@@ -1003,11 +1003,11 @@ public class DistributionRun extends SvrProcess {
     	{
 
     		String sql = "SELECT DD_OrderLine_ID FROM DD_OrderLine ol INNER JOIN DD_Order o ON (o.DD_Order_ID=ol.DD_Order_ID) WHERE o.DocStatus IN ('DR','IN') AND o.C_BPartner_ID = ? AND M_Product_ID=? AND  ol.M_Locator_ID=?  AND ol.DatePromised <= ?";
-    		int DD_OrderLine_ID = getSQLValueEx(get_TrxName(), sql, new Object[]{detail.getC_BPartner_ID(),product.getM_Product_ID(), m_locator.getM_Locator_ID(), p_DatePromised});
+    		int DD_OrderLine_ID = getSQLValueEx(null, sql, new Object[]{detail.getC_BPartner_ID(),product.getM_Product_ID(), m_locator.getM_Locator_ID(), p_DatePromised});
     		if (DD_OrderLine_ID  <= 0)
     		{
     			MDDOrderLine line = new MDDOrderLine(order);
-    			line.setAD_Org_ID(bp.getAD_OrgBP_ID_Int());
+    			line.setOrgId(bp.getAD_OrgBP_ID_Int());
     			line.setM_Locator_ID(m_locator.getM_Locator_ID());
     			line.setM_LocatorTo_ID(m_locator_to.getM_Locator_ID());
     			line.setIsInvoiced(false);
@@ -1031,7 +1031,7 @@ public class DistributionRun extends SvrProcess {
     		}
     		else
     		{
-    			MDDOrderLine line = new MDDOrderLine(getCtx(), DD_OrderLine_ID, get_TrxName());
+    			MDDOrderLine line = new MDDOrderLine(getCtx(), DD_OrderLine_ID, null);
     			BigDecimal QtyAllocation = detail.getActualAllocation();
     			if(QtyAllocation == null)
     				QtyAllocation = Env.ZERO;
@@ -1054,7 +1054,7 @@ public class DistributionRun extends SvrProcess {
     		if (counter && bp.getAD_OrgBP_ID_Int() > 0)
     			;	//	don't overwrite counter doc
     		//
-    		line.setAD_Org_ID(bp.getAD_OrgBP_ID_Int());
+    		line.setOrgId(bp.getAD_OrgBP_ID_Int());
     		line.setM_Locator_ID(m_locator.getM_Locator_ID());
     		line.setM_LocatorTo_ID(m_locator_to.getM_Locator_ID());
     		line.setIsInvoiced(false);

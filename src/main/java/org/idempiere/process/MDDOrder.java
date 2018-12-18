@@ -142,7 +142,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
    * @param DocSubTypeSO if SO DocType Target (default DocSubTypeSO_OnCredit)
    */
   public MDDOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
-    this(project.getCtx(), 0, project.get_TrxName());
+    this(project.getCtx(), 0, null);
     setADClientID(project.getClientId());
     setAD_Org_ID(project.getOrgId());
     setC_Campaign_ID(project.getC_Campaign_ID());
@@ -302,7 +302,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
       line.setDateDelivered(null);
 
       line.setProcessed(false);
-      if (line.save(get_TrxName())) count++;
+      if (line.save(null)) count++;
     }
     if (fromLines.length != count)
       log.log(Level.SEVERE, "Line difference - From=" + fromLines.length + " <> Saved=" + count);
@@ -377,7 +377,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
       whereClauseFinal.append(" AND (").append(whereClause).append(")");
     //
     List<MDDOrderLine> list =
-        new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClauseFinal.toString(), get_TrxName())
+        new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClauseFinal.toString(), null)
             .setParameters(getDD_Order_ID())
             .setOrderBy(orderClause)
             .list();
@@ -393,7 +393,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
    */
   public MDDOrderLine[] getLines(boolean requery, String orderBy) {
     if (m_lines != null && !requery) {
-      set_TrxName(m_lines, get_TrxName());
+      set_TrxName(m_lines, null);
       return m_lines;
     }
     //
@@ -424,7 +424,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     for (int i = 0; i < lines.length; i++) {
       MDDOrderLine line = lines[i];
       line.setLine(number);
-      line.saveEx(get_TrxName());
+      line.saveEx(null);
       number += step;
     }
     m_lines = null;
@@ -448,10 +448,10 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getDD_Order_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MMovement(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MMovement(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
@@ -493,7 +493,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     if (getId() == 0) return;
     String set =
         "SET Processed='" + (processed ? "Y" : "N") + "' WHERE DD_Order_ID=" + getDD_Order_ID();
-    int noLine = executeUpdate("UPDATE DD_OrderLine " + set, get_TrxName());
+    int noLine = executeUpdate("UPDATE DD_OrderLine " + set, null);
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine("setProcessed - " + processed + " - Lines=" + noLine);
   } //	setProcessed
@@ -514,7 +514,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
       }
     }
     if (getClientId() == 0) {
-      m_processMsg = "AD_Client_ID = 0";
+      m_processMsg = "clientId = 0";
       return false;
     }
 
@@ -571,12 +571,12 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
               + "FROM DD_Order o WHERE i.DD_Order_ID=o.DD_Order_ID) "
               + "WHERE DocStatus NOT IN ('RE','CL') AND DD_Order_ID="
               + getDD_Order_ID();
-      int no = executeUpdate(sql, get_TrxName());
+      int no = executeUpdate(sql, null);
       if (log.isLoggable(Level.FINE)) log.fine("Description -> #" + no);
     }
 
     //	Sync Lines
-    afterSaveSync("AD_Org_ID");
+    afterSaveSync("orgId");
     afterSaveSync("C_BPartner_ID");
     afterSaveSync("C_BPartner_Location_ID");
     afterSaveSync("DateOrdered");
@@ -590,7 +590,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     if (is_ValueChanged(columnName)) {
       final String whereClause = I_DD_Order.COLUMNNAME_DD_Order_ID + "=?";
       List<MDDOrderLine> lines =
-          new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClause, get_TrxName())
+          new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClause, null)
               .setParameters(getDD_Order_ID())
               .list();
 
@@ -716,7 +716,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
             + mandatoryType
             + " AND ol.M_AttributeSetInstance_ID IS NULL"
             + " AND ol.DD_Order_ID=?";
-    int no = getSQLValue(get_TrxName(), sql, getDD_Order_ID());
+    int no = getSQLValue(null, sql, getDD_Order_ID());
     if (no != 0) {
       m_processMsg = "@LinesWithoutProductAttribute@ (" + no + ")";
       return DocAction.Companion.getSTATUS_Invalid();
@@ -783,7 +783,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                 line.getMAttributeSetInstance_ID(),
                 Env.ZERO,
                 null,
-                get_TrxName())) {
+                null)) {
               throw new AdempiereException("!MStorageOnHand1");
             }
 
@@ -795,7 +795,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                 line.getMAttributeSetInstanceTo_ID(),
                 Env.ZERO,
                 null,
-                get_TrxName())) {
+                null)) {
               throw new AdempiereException("!MStorageOnHand2");
             }
           } //	stockec
@@ -912,7 +912,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
       BigDecimal old = line.getQtyOrdered();
       if (old.signum() != 0) {
         line.addDescription(Msg.getMsg(getCtx(), "Voided") + " (" + old + ")");
-        line.saveEx(get_TrxName());
+        line.saveEx(null);
       }
     }
     addDescription(Msg.getMsg(getCtx(), "Voided"));
@@ -954,7 +954,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
   			|| MInOut.DOCSTATUS_Reversed.equals(ship.getDocStatus())
   			|| MInOut.DOCSTATUS_Voided.equals(ship.getDocStatus()) )
   			continue;
-  		ship.set_TrxName(get_TrxName());
+  		ship.set_TrxName(null);
 
   		//	If not completed - void - otherwise reverse it
   		if (!MInOut.DOCSTATUS_Completed.equals(ship.getDocStatus()))
@@ -973,7 +973,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
   			return false;
   		}
   		ship.setDocAction(MInOut.DOCACTION_None);
-  		ship.save(get_TrxName());
+  		ship.save(null);
   	}	//	for all shipments
 
   	//	Reverse All *Invoices*
@@ -987,7 +987,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
   			|| MInvoice.DOCSTATUS_Reversed.equals(invoice.getDocStatus())
   			|| MInvoice.DOCSTATUS_Voided.equals(invoice.getDocStatus()) )
   			continue;
-  		invoice.set_TrxName(get_TrxName());
+  		invoice.set_TrxName(null);
 
   		//	If not completed - void - otherwise reverse it
   		if (!MInvoice.DOCSTATUS_Completed.equals(invoice.getDocStatus()))
@@ -1006,7 +1006,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
   			return false;
   		}
   		invoice.setDocAction(MInvoice.DOCACTION_None);
-  		invoice.save(get_TrxName());
+  		invoice.save(null);
   	}	//	for all shipments
 
   	m_processMsg = info.toString();
@@ -1035,7 +1035,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         line.setQtyOrdered(line.getQtyDelivered());
         //	QtyEntered unchanged
         line.addDescription("Close (" + old + ")");
-        line.saveEx(get_TrxName());
+        line.saveEx(null);
       }
     }
     //	Clear Reservations

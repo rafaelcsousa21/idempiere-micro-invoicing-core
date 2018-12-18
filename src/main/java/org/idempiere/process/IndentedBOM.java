@@ -87,7 +87,7 @@ public class IndentedBOM extends SvrProcess {
   private llCost explodeProduct(int M_Product_ID, BigDecimal qty, BigDecimal accumQty) {
     MProduct product = MProduct.get(getCtx(), M_Product_ID);
 
-    X_T_BOM_Indented tboml = new X_T_BOM_Indented(getCtx(), 0, get_TrxName());
+    X_T_BOM_Indented tboml = new X_T_BOM_Indented(getCtx(), 0, null);
 
     tboml.setAD_Org_ID(p_AD_Org_ID);
     tboml.setC_AcctSchema_ID(p_C_AcctSchema_ID);
@@ -105,7 +105,7 @@ public class IndentedBOM extends SvrProcess {
     tboml.setLevels((m_LevelNo > 0 ? ":" : "") + pad + " " + product.getValue());
     //
     // Set Costs:
-    MCost cost = MCost.get(product, 0, m_as, p_AD_Org_ID, p_M_CostElement_ID, get_TrxName());
+    MCost cost = MCost.get(product, 0, m_as, p_AD_Org_ID, p_M_CostElement_ID, null);
     tboml.setCurrentCostPrice(cost.getCurrentCostPrice());
     tboml.setCost(cost.getCurrentCostPrice().multiply(accumQty));
     tboml.setFutureCostPrice(cost.getFutureCostPrice());
@@ -160,7 +160,7 @@ public class IndentedBOM extends SvrProcess {
     params.add(product.getId());
 
     List<MProductBOM> list =
-        new Query(getCtx(), MProductBOM.Table_Name, whereClause.toString(), get_TrxName())
+        new Query(getCtx(), MProductBOM.Table_Name, whereClause.toString(), null)
             .setParameters(params)
             .setOnlyActiveRecords(true)
             .setOrderBy(MProductBOM.COLUMNNAME_Line)

@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -108,7 +109,7 @@ public class MStorageReservation extends X_M_StorageReservation {
    */
   private MStorageReservation(
       MWarehouse warehouse, int M_Product_ID, int M_AttributeSetInstance_ID, boolean isSOTrx) {
-    this(warehouse.getCtx(), 0, warehouse.get_TrxName());
+    this(warehouse.getCtx(), 0, null);
     setClientOrg(warehouse);
     setM_Warehouse_ID(warehouse.getM_Warehouse_ID());
     setM_Product_ID(M_Product_ID);
@@ -297,8 +298,8 @@ public class MStorageReservation extends X_M_StorageReservation {
           getMAttributeSetInstance_ID(),
           isSOTrx()
         },
-        get_TrxName());
-    load(get_TrxName());
+        null);
+    load((HashMap)null);
   }
 
   /**

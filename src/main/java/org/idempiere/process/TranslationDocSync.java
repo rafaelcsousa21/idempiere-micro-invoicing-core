@@ -14,9 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.logging.Level;
 import org.compiere.accounting.MClient;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MColumn;
@@ -25,10 +22,15 @@ import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.DisplayType;
 import org.idempiere.common.util.AdempiereUserError;
-
 import org.idempiere.common.util.Language;
 import org.idempiere.orm.PO;
-import static software.hsharp.core.util.DBKt.*;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Document Translation Sync
@@ -57,7 +59,7 @@ public class TranslationDocSync extends SvrProcess {
     MClient client = MClient.get(getCtx());
     String baselang = Language.getBaseAD_Language();
     if (client.isMultiLingualDocument() && client.getADLanguage().equals(baselang)) {
-      throw new AdempiereUserError("@AD_Client_ID@: @IsMultiLingualDocument@");
+      throw new AdempiereUserError("@clientId@: @IsMultiLingualDocument@");
     }
     if (log.isLoggable(Level.INFO)) log.info("" + client);
     List<MTable> tables =
@@ -65,7 +67,7 @@ public class TranslationDocSync extends SvrProcess {
                 getCtx(),
                 "AD_Table",
                 "TableName LIKE '%_Trl' AND TableName NOT LIKE 'AD%'",
-                get_TrxName())
+                null)
             .setOrderBy("TableName")
             .list();
     for (MTable table : tables) {
@@ -121,12 +123,12 @@ public class TranslationDocSync extends SvrProcess {
                 .append(baseTable)
                 .append("_ID=b.")
                 .append(baseTable)
-                .append("_ID) WHERE AD_Client_ID=")
+                .append("_ID) WHERE clientId=")
                 .append(getClientId())
                 .append(" AND AD_Language=")
                 .append(TO_STRING(client.getADLanguage()));
 
-        int no = executeUpdate(sql.toString(), get_TrxName());
+        int no = executeUpdate(sql.toString(), null);
         addLog(0, null, new BigDecimal(no), baseTable);
       }
     } else {
@@ -146,10 +148,10 @@ public class TranslationDocSync extends SvrProcess {
               .append(baseTable)
               .append("_ID=b.")
               .append(baseTable)
-              .append("_ID) WHERE AD_Client_ID=")
+              .append("_ID) WHERE clientId=")
               .append(getClientId());
 
-      int no = executeUpdate(sql.toString(), get_TrxName());
+      int no = executeUpdate(sql.toString(), null);
       addLog(0, null, new BigDecimal(no), baseTable);
     }
   } //	processTable

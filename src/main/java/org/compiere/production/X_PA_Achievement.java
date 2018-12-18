@@ -191,7 +191,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_
   public org.compiere.model.I_PA_Measure getPA_Measure() throws RuntimeException {
     return (org.compiere.model.I_PA_Measure)
         MTable.get(getCtx(), org.compiere.model.I_PA_Measure.Table_Name)
-            .getPO(getPA_Measure_ID(), get_TrxName());
+            .getPO(getPA_Measure_ID(), null);
   }
 
   /**

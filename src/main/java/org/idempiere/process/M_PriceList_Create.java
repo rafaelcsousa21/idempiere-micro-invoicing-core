@@ -96,7 +96,7 @@ public class M_PriceList_Create extends SvrProcess {
     //
     sqlupd.append("UPDATE M_Product_PO  SET	PriceList = 0  ").append(" WHERE	PriceList IS NULL ");
 
-    cntu = executeUpdate(sqlupd.toString(), get_TrxName());
+    cntu = executeUpdate(sqlupd.toString(), null);
     if (cntu == -1)
       raiseError(
           "Update The PriceList to zero of M_Product_PO WHERE	PriceList IS NULL",
@@ -107,7 +107,7 @@ public class M_PriceList_Create extends SvrProcess {
     sqlupd = new StringBuilder("UPDATE M_Product_PO  SET PriceLastPO = 0  ");
     sqlupd.append(" WHERE	PriceLastPO IS NULL ");
 
-    cntu = executeUpdate(sqlupd.toString(), get_TrxName());
+    cntu = executeUpdate(sqlupd.toString(), null);
     if (cntu == -1)
       raiseError(
           "Update  The PriceListPO to zero of  M_Product_PO WHERE	PriceLastPO IS NULL",
@@ -118,7 +118,7 @@ public class M_PriceList_Create extends SvrProcess {
     sqlupd = new StringBuilder("UPDATE M_Product_PO  SET     PricePO = PriceLastPO ");
     sqlupd.append(" WHERE	(PricePO IS NULL OR PricePO = 0) AND PriceLastPO <> 0 ");
 
-    cntu = executeUpdate(sqlupd.toString(), get_TrxName());
+    cntu = executeUpdate(sqlupd.toString(), null);
     if (cntu == -1)
       raiseError(
           "Update  The PricePO to PriceLastPO of  M_Product_PO WHERE	(PricePO IS NULL OR PricePO = 0) AND PriceLastPO <> 0 ",
@@ -129,7 +129,7 @@ public class M_PriceList_Create extends SvrProcess {
     sqlupd = new StringBuilder("UPDATE M_Product_PO  SET     PricePO = 0  ");
     sqlupd.append(" WHERE	PricePO IS NULL ");
 
-    cntu = executeUpdate(sqlupd.toString(), get_TrxName());
+    cntu = executeUpdate(sqlupd.toString(), null);
     if (cntu == -1)
       raiseError(
           "Update  The PricePO to Zero of  M_Product_PO WHERE	PricePO IS NULL", sqlupd.toString());
@@ -144,13 +144,13 @@ public class M_PriceList_Create extends SvrProcess {
     sqlupd.append("  WHERE    pp.M_Product_ID = M_Product_PO.M_Product_ID");
     sqlupd.append("  GROUP BY pp.M_Product_ID HAVING COUNT(*) > 1) ");
 
-    cntu = executeUpdate(sqlupd.toString(), get_TrxName());
+    cntu = executeUpdate(sqlupd.toString(), null);
     if (cntu == -1) raiseError("Update  IsCurrentVendor to Y of  M_Product_PO ", sqlupd.toString());
     totu += cntu;
     if (log.isLoggable(Level.FINE)) log.fine("Updated " + cntu);
 
     // let the commit for SvrProcess
-    // commit(true, get_TrxName());
+    // commit(true, null);
 
     //
     //	Make sure that we have only one active product
@@ -168,7 +168,7 @@ public class M_PriceList_Create extends SvrProcess {
     PreparedStatement stmtVendors = null;
     ResultSet rsVend = null;
     try {
-      stmtDupl = prepareStatement(sql.toString(), get_TrxName());
+      stmtDupl = prepareStatement(sql.toString(), null);
       rsDupl = stmtDupl.executeQuery();
       while (rsDupl.next()) {
         sql = new StringBuilder("SELECT	M_Product_ID         ,C_BPartner_ID ");
@@ -177,7 +177,7 @@ public class M_PriceList_Create extends SvrProcess {
         sql.append(" AND	M_Product_ID    = ").append(rsDupl.getInt("M_Product_ID"));
         sql.append(" ORDER BY PriceList DESC");
 
-        stmtVendors = prepareStatement(sql.toString(), get_TrxName());
+        stmtVendors = prepareStatement(sql.toString(), null);
         rsVend = stmtVendors.executeQuery();
 
         //
@@ -192,7 +192,7 @@ public class M_PriceList_Create extends SvrProcess {
           sqlupd.append(" AND     C_BPartner_ID= ");
           sqlupd.append(rsVend.getInt("C_BPartner_ID"));
 
-          cntu = executeUpdate(sqlupd.toString(), get_TrxName());
+          cntu = executeUpdate(sqlupd.toString(), null);
           if (cntu == -1)
             raiseError(
                 "Update  IsCurrentVendor to N of  M_Product_PO for a M_Product_ID and C_BPartner_ID ingresed",
@@ -212,14 +212,14 @@ public class M_PriceList_Create extends SvrProcess {
       stmtVendors = null;
     }
 
-    // commit(true, get_TrxName());
+    // commit(true, null);
 
     //
     //	Delete Old Data
     //
     if (p_DeleteOld.equals("Y")) {
       sqldel = "DELETE M_ProductPrice WHERE	M_PriceList_Version_ID=?";
-      cntd = executeUpdate(sqldel, p_PriceList_Version_ID, get_TrxName());
+      cntd = executeUpdate(sqldel, p_PriceList_Version_ID, null);
       if (cntd == -1) raiseError(" DELETE	M_ProductPrice ", sqldel);
       totd += cntd;
       message = new StringBuilder("@Deleted@=").append(cntd).append(" - ");
@@ -229,7 +229,7 @@ public class M_PriceList_Create extends SvrProcess {
     // Get PriceList Info
     //
     sql = new StringBuilder("SELECT p.C_Currency_ID  , c.StdPrecision ");
-    sql.append(" , v.AD_Client_ID  , v.AD_Org_ID  , v.UpdatedBy ");
+    sql.append(" , v.clientId  , v.orgId  , v.UpdatedBy ");
     sql.append(" , v.M_DiscountSchema_ID ");
     sql.append(" , M_PriceList_Version_Base_ID  FROM	M_PriceList p ");
     sql.append("     ,M_PriceList_Version v      ,C_Currency c ");
@@ -244,7 +244,7 @@ public class M_PriceList_Create extends SvrProcess {
     PreparedStatement stmt = null;
     PreparedStatement pstmt = null;
     try {
-      stmtCurgen = prepareStatement(sql.toString(), get_TrxName());
+      stmtCurgen = prepareStatement(sql.toString(), null);
       rsCurgen = stmtCurgen.executeQuery();
       while (rsCurgen.next()) {
         //
@@ -252,7 +252,7 @@ public class M_PriceList_Create extends SvrProcess {
         //
         int precision = rsCurgen.getInt("StdPrecision");
         sql = new StringBuilder("SELECT M_DiscountSchemaLine_ID");
-        sql.append(",AD_Client_ID,AD_Org_ID,IsActive,Created,Createdby,Updated,Updatedby");
+        sql.append(",clientId,orgId,IsActive,Created,Createdby,Updated,Updatedby");
         sql.append(",M_DiscountSchema_ID,SeqNo,M_Product_Category_ID,C_Bpartner_ID,M_Product_ID");
         sql.append(",ConversionDate,List_Base,List_Addamt,List_Discount,List_Rounding,List_MinAmt");
         sql.append(",List_MaxAmt,List_Fixed,Std_Base,Std_Addamt,Std_Discount,Std_Rounding");
@@ -264,14 +264,14 @@ public class M_PriceList_Create extends SvrProcess {
         sql.append(rsCurgen.getInt("M_DiscountSchema_ID"));
         sql.append(" AND IsActive='Y' ORDER BY SeqNo");
 
-        stmtDiscountLine = prepareStatement(sql.toString(), get_TrxName());
+        stmtDiscountLine = prepareStatement(sql.toString(), null);
         rsDiscountLine = stmtDiscountLine.executeQuery();
         while (rsDiscountLine.next()) {
           //
           // Clear Temporary Table
           //
           sqldel = "DELETE FROM T_Selection WHERE AD_PInstance_ID=?";
-          cntd = executeUpdate(sqldel, m_AD_PInstance_ID, get_TrxName());
+          cntd = executeUpdate(sqldel, m_AD_PInstance_ID, null);
           if (cntd == -1) raiseError(" DELETE	T_Selection ", sqldel);
           totd += cntd;
           if (log.isLoggable(Level.FINE)) log.fine("Deleted " + cntd);
@@ -294,9 +294,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(" FROM M_Product p, M_Product_PO po");
             sqlins.append(" WHERE p.M_Product_ID=po.M_Product_ID ");
             sqlins
-                .append(" AND	(p.AD_Client_ID=")
-                .append(rsCurgen.getInt("AD_Client_ID"))
-                .append(" OR p.AD_Client_ID=0)");
+                .append(" AND	(p.clientId=")
+                .append(rsCurgen.getInt("clientId"))
+                .append(" OR p.clientId=0)");
             sqlins.append(" AND	p.IsActive='Y' AND po.IsActive='Y' AND po.IsCurrentVendor='Y' ");
             //
             // Optional Restrictions
@@ -330,7 +330,7 @@ public class M_PriceList_Create extends SvrProcess {
                 .append(rsDiscountLine.getInt("M_Product_ID"))
                 .append(")");
 
-            stmt = prepareStatement(sqlins.toString(), get_TrxName());
+            stmt = prepareStatement(sqlins.toString(), null);
 
             int i = 1;
 
@@ -372,7 +372,7 @@ public class M_PriceList_Create extends SvrProcess {
                 .append(" AND (NULLIF(")
                 .append(rsDiscountLine.getInt("C_BPartner_ID"))
                 .append(",0) IS NULL OR EXISTS ");
-            sqlins.append("(SELECT M_Product_ID,C_Bpartner_ID,AD_Client_ID,AD_Org_ID,IsActive");
+            sqlins.append("(SELECT M_Product_ID,C_Bpartner_ID,clientId,orgId,IsActive");
             sqlins.append(",Created,CreatedBy,Updated,Updatedby,IsCurrentVendor,C_Uom_ID");
             sqlins.append(",C_Currency_ID,PriceList,PricePo,PriceEffective,PriceLastPo");
             sqlins.append(",PriceLastInv,VendorProductno,Upc,VendorCategory,Discontinued");
@@ -394,7 +394,7 @@ public class M_PriceList_Create extends SvrProcess {
                 .append(rsDiscountLine.getInt("M_Product_ID"))
                 .append(")");
 
-            stmt = prepareStatement(sqlins.toString(), get_TrxName());
+            stmt = prepareStatement(sqlins.toString(), null);
             int i = 1;
 
             if (dl_Group1 != null) stmt.setString(i++, dl_Group1);
@@ -422,7 +422,7 @@ public class M_PriceList_Create extends SvrProcess {
                     sqldel,
                     new Object[] {p_PriceList_Version_ID, m_AD_PInstance_ID},
                     false,
-                    get_TrxName());
+                    null);
             if (cntd == -1) raiseError(" DELETE	M_ProductPrice ", sqldel);
             totd += cntd;
             message.append(", @Deleted@=").append(cntd);
@@ -450,8 +450,8 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(" ,M_ProductPrice_UU");
             sqlins.append(" ,M_PriceList_Version_ID");
             sqlins.append(" ,M_Product_ID ");
-            sqlins.append(" ,AD_Client_ID");
-            sqlins.append(" , AD_Org_ID");
+            sqlins.append(" ,clientId");
+            sqlins.append(" , orgId");
             sqlins.append(" , IsActive");
             sqlins.append(" , Created");
             sqlins.append(" , CreatedBy");
@@ -466,9 +466,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(p_PriceList_Version_ID);
             sqlins.append("      ,po.M_Product_ID ");
             sqlins.append("      ,");
-            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+            sqlins.append(rsCurgen.getInt("clientId"));
             sqlins.append("      ,");
-            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+            sqlins.append(rsCurgen.getInt("orgId"));
             sqlins.append("      ,'Y'");
             sqlins.append("      ,SysDate,");
             sqlins.append(currentUserID);
@@ -482,9 +482,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(",  ? , ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+            sqlins.append(rsCurgen.getInt("clientId"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+            sqlins.append(rsCurgen.getInt("orgId"));
             sqlins.append("),0)");
 
             //	Price Std
@@ -493,9 +493,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(", ? , ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+            sqlins.append(rsCurgen.getInt("clientId"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+            sqlins.append(rsCurgen.getInt("orgId"));
             sqlins.append("),0)");
 
             //	Price Limit
@@ -504,9 +504,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(",? , ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+            sqlins.append(rsCurgen.getInt("clientId"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+            sqlins.append(rsCurgen.getInt("orgId"));
             sqlins.append("),0)");
             sqlins.append(" FROM	M_Product_PO po ");
             sqlins.append(
@@ -519,7 +519,7 @@ public class M_PriceList_Create extends SvrProcess {
                     sqlins.toString(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE,
-                    get_TrxName());
+                    null);
             pstmt.setTimestamp(1, rsDiscountLine.getTimestamp("ConversionDate"));
             pstmt.setTimestamp(2, rsDiscountLine.getTimestamp("ConversionDate"));
             pstmt.setTimestamp(3, rsDiscountLine.getTimestamp("ConversionDate"));
@@ -546,7 +546,7 @@ public class M_PriceList_Create extends SvrProcess {
             int product_id = 0;
             MUOMConversion conversion = null;
             try {
-              pstmtconversion = prepareStatement(sqlconversion.toString(), get_TrxName());
+              pstmtconversion = prepareStatement(sqlconversion.toString(), null);
               pstmtconversion.setInt(1, p_PriceList_Version_ID);
               pstmtconversion.setInt(2, m_AD_PInstance_ID);
 
@@ -573,7 +573,7 @@ public class M_PriceList_Create extends SvrProcess {
                     .append(p_PriceList_Version_ID)
                     .append(" AND M_Product_ID= ")
                     .append(product_id);
-                int count = executeUpdate(sqlupdate.toString(), get_TrxName());
+                int count = executeUpdate(sqlupdate.toString(), null);
                 if (count == -1) {
                   raiseError(" UPDATE M_ProductPrice set PriceList=? ", sqlupdate.toString());
                 }
@@ -591,16 +591,16 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(
                 " (M_ProductPrice_ID, M_ProductPrice_UU, M_PriceList_Version_ID, M_Product_ID,");
             sqlins.append(
-                " AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
+                " clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
             sqlins.append(" PriceList, PriceStd, PriceLimit)");
             sqlins.append(" SELECT ");
             sqlins.append("nextIdFunc(").append(seqproductpriceid).append(",'N')");
             sqlins.append(", generate_uuid(),");
             sqlins.append(p_PriceList_Version_ID);
             sqlins.append(", pp.M_Product_ID,");
-            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+            sqlins.append(rsCurgen.getInt("clientId"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+            sqlins.append(rsCurgen.getInt("orgId"));
             sqlins.append(", 'Y', SysDate,  ");
             sqlins.append(currentUserID);
             sqlins.append(", SysDate, ");
@@ -612,9 +612,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(", ?, ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+            sqlins.append(rsCurgen.getInt("clientId"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+            sqlins.append(rsCurgen.getInt("orgId"));
             sqlins.append("),0),");
             // Price Std
             sqlins.append("COALESCE(currencyConvert(pp.PriceStd,pl.C_Currency_ID, ");
@@ -622,9 +622,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(" , ? ,  ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+            sqlins.append(rsCurgen.getInt("clientId"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+            sqlins.append(rsCurgen.getInt("orgId"));
             sqlins.append("),0),");
             // Price Limit
             sqlins.append(" COALESCE(currencyConvert(pp.PriceLimit,pl.C_Currency_ID, ");
@@ -632,9 +632,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(" , ? , ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+            sqlins.append(rsCurgen.getInt("clientId"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+            sqlins.append(rsCurgen.getInt("orgId"));
             sqlins.append("),0)");
             sqlins.append(" FROM M_ProductPrice pp");
             sqlins.append(
@@ -652,7 +652,7 @@ public class M_PriceList_Create extends SvrProcess {
                     sqlins.toString(),
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE,
-                    get_TrxName());
+                    null);
             pstmt.setTimestamp(1, rsDiscountLine.getTimestamp("ConversionDate"));
             pstmt.setTimestamp(2, rsDiscountLine.getTimestamp("ConversionDate"));
             pstmt.setTimestamp(3, rsDiscountLine.getTimestamp("ConversionDate"));
@@ -690,7 +690,7 @@ public class M_PriceList_Create extends SvrProcess {
                   sqlupd.toString(),
                   ResultSet.TYPE_SCROLL_INSENSITIVE,
                   ResultSet.CONCUR_UPDATABLE,
-                  get_TrxName());
+                  null);
 
           pstmu.setDouble(1, rsDiscountLine.getDouble("List_AddAmt"));
           pstmu.setDouble(2, rsDiscountLine.getDouble("List_Discount"));
@@ -716,9 +716,9 @@ public class M_PriceList_Create extends SvrProcess {
                   .getString(MDiscountSchemaLine.COLUMNNAME_Limit_Base)
                   .equals(MDiscountSchemaLine.LIMIT_BASE_ProductCost)) {
             MClientInfo m_clientInfo =
-                MClientInfo.get(getCtx(), rsCurgen.getInt("AD_Client_ID"), get_TrxName());
+                MClientInfo.get(getCtx(), rsCurgen.getInt("clientId"), null);
             MAcctSchema as =
-                new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID(), get_TrxName());
+                new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID(), null);
 
             StringBuilder sqlpc = new StringBuilder("SELECT p.M_Product_ID ");
             sqlpc.append(" FROM M_ProductPrice p");
@@ -731,19 +731,19 @@ public class M_PriceList_Create extends SvrProcess {
             ResultSet rs = null;
 
             try {
-              ps = prepareStatement(sqlpc.toString(), get_TrxName());
+              ps = prepareStatement(sqlpc.toString(), null);
               rs = ps.executeQuery();
               while (rs.next()) {
                 int M_Product_ID = rs.getInt(MProductPrice.COLUMNNAME_M_Product_ID);
                 ProductCost m_productCost =
-                    new ProductCost(getCtx(), M_Product_ID, 0, get_TrxName());
+                    new ProductCost(getCtx(), M_Product_ID, 0, null);
                 m_productCost.setQty(BigDecimal.ONE);
                 BigDecimal costs =
-                    m_productCost.getProductCosts(as, rsCurgen.getInt("AD_Org_ID"), null, 0, false);
+                    m_productCost.getProductCosts(as, rsCurgen.getInt("orgId"), null, 0, false);
 
                 if (costs == null || costs.signum() == 0) // 	zero costs OK
                 {
-                  MProduct product = new MProduct(getCtx(), M_Product_ID, get_TrxName());
+                  MProduct product = new MProduct(getCtx(), M_Product_ID, null);
                   if (product.isStocked())
                     log.log(Level.WARNING, "No Costs for " + product.getName());
                 } else {
@@ -771,7 +771,7 @@ public class M_PriceList_Create extends SvrProcess {
                           sqlupd.toString(),
                           ResultSet.TYPE_SCROLL_INSENSITIVE,
                           ResultSet.CONCUR_UPDATABLE,
-                          get_TrxName());
+                          null);
 
                   pstmu.setBigDecimal(1, costs);
                   pstmu.setDouble(
@@ -858,7 +858,7 @@ public class M_PriceList_Create extends SvrProcess {
           sqlupd.append(" WHERE s.T_Selection_ID=p.M_Product_ID");
           sqlupd.append(" AND s.AD_PInstance_ID=").append(m_AD_PInstance_ID).append(")");
 
-          cntu = executeUpdate(sqlupd.toString(), get_TrxName());
+          cntu = executeUpdate(sqlupd.toString(), null);
           if (cntu == -1) raiseError("Update  M_ProductPrice ", sqlupd.toString());
           totu += cntu;
           if (log.isLoggable(Level.FINE)) log.fine("Updated " + cntu);
@@ -883,7 +883,7 @@ public class M_PriceList_Create extends SvrProcess {
           sqlupd.append(" WHERE s.T_Selection_ID=p.M_Product_ID");
           sqlupd.append(" AND s.AD_PInstance_ID=").append(m_AD_PInstance_ID).append(")");
 
-          cntu = executeUpdate(sqlupd.toString(), get_TrxName());
+          cntu = executeUpdate(sqlupd.toString(), null);
           if (cntu == -1) raiseError("Update  M_ProductPrice ", sqlupd.toString());
           totu += cntu;
           if (log.isLoggable(Level.FINE)) log.fine("Updated " + cntu);
@@ -896,7 +896,7 @@ public class M_PriceList_Create extends SvrProcess {
         //	Delete Temporary Selection
         //
         sqldel = "DELETE FROM T_Selection WHERE AD_PInstance_ID=?";
-        cntd = executeUpdate(sqldel, m_AD_PInstance_ID, get_TrxName());
+        cntd = executeUpdate(sqldel, m_AD_PInstance_ID, null);
         if (cntd == -1) raiseError(" DELETE	T_Selection ", sqldel);
         totd += cntd;
         if (log.isLoggable(Level.FINE)) log.fine("Deleted " + cntd);
@@ -905,7 +905,7 @@ public class M_PriceList_Create extends SvrProcess {
         // commit;
         //
         // log.fine("Committing ...");
-        // commit(true, get_TrxName());
+        // commit(true, null);
 
       }
     } catch (SQLException e) {
@@ -928,7 +928,7 @@ public class M_PriceList_Create extends SvrProcess {
 
   private void raiseError(String string, String sql) throws Exception {
 
-    // rollback(false, get_TrxName());
+    // rollback(false, null);
     StringBuilder msg = new StringBuilder(string);
     ValueNamePair pp = CLogger.retrieveError();
     if (pp != null) msg = new StringBuilder(pp.getName()).append(" - ");

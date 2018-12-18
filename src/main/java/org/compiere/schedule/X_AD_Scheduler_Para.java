@@ -47,7 +47,7 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
   public org.compiere.model.I_AD_Process_Para getAD_Process_Para() throws RuntimeException {
     return (org.compiere.model.I_AD_Process_Para)
         MTable.get(getCtx(), org.compiere.model.I_AD_Process_Para.Table_Name)
-            .getPO(getAD_Process_Para_ID(), get_TrxName());
+            .getPO(getAD_Process_Para_ID(), null);
   }
 
   /**
@@ -74,7 +74,7 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
   public org.compiere.model.I_AD_Scheduler getAD_Scheduler() throws RuntimeException {
     return (org.compiere.model.I_AD_Scheduler)
         MTable.get(getCtx(), org.compiere.model.I_AD_Scheduler.Table_Name)
-            .getPO(getAD_Scheduler_ID(), get_TrxName());
+            .getPO(getAD_Scheduler_ID(), null);
   }
 
   /**

@@ -46,7 +46,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
 
   public I_C_Location getC_Location() throws RuntimeException {
     return (I_C_Location)
-        MTable.get(getCtx(), I_C_Location.Table_Name).getPO(getC_Location_ID(), get_TrxName());
+        MTable.get(getCtx(), I_C_Location.Table_Name).getPO(getC_Location_ID(), null);
   }
 
   /**
@@ -137,7 +137,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
   public org.compiere.model.I_M_Locator getM_ReserveLocator() throws RuntimeException {
     return (org.compiere.model.I_M_Locator)
         MTable.get(getCtx(), org.compiere.model.I_M_Locator.Table_Name)
-            .getPO(getM_ReserveLocator_ID(), get_TrxName());
+            .getPO(getM_ReserveLocator_ID(), null);
   }
 
   /**
@@ -185,7 +185,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
   public org.compiere.model.I_M_Warehouse getM_WarehouseSource() throws RuntimeException {
     return (org.compiere.model.I_M_Warehouse)
         MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_WarehouseSource_ID(), get_TrxName());
+            .getPO(getM_WarehouseSource_ID(), null);
   }
 
   /**

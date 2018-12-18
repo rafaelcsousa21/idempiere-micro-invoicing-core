@@ -1,12 +1,13 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.crm.MUser;
 import org.compiere.model.I_R_RequestUpdate;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MRefList;
 import org.compiere.orm.MTable;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Request Update Model
@@ -49,7 +50,7 @@ public class MRequestUpdate extends X_R_RequestUpdate {
    * @param parent request
    */
   public MRequestUpdate(MRequest parent) {
-    super(parent.getCtx(), 0, parent.get_TrxName());
+    super(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setR_Request_ID(parent.getR_Request_ID());
     //

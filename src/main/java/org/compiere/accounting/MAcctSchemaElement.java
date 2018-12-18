@@ -52,7 +52,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
 
     final String whereClause = "C_AcctSchema_ID=? AND IsActive=?";
     List<MAcctSchemaElement> elements =
-        new Query(as.getCtx(), I_C_AcctSchema_Element.Table_Name, whereClause, as.get_TrxName())
+        new Query(as.getCtx(), I_C_AcctSchema_Element.Table_Name, whereClause, null)
             .setParameters(as.getC_AcctSchema_ID(), "Y")
             .setOrderBy("SeqNo")
             .list();
@@ -77,7 +77,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    * @return column name or "" if not found
    */
   public static String getColumnName(String elementType) {
-    if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Organization)) return "AD_Org_ID";
+    if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Organization)) return "orgId";
     else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Account))
       return I_C_ValidCombination.COLUMNNAME_Account_ID;
     else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_BPartner))
@@ -123,7 +123,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         MClient.get(Env.getCtx()).isMultiLingualDocument()
             && !language.equalsIgnoreCase(baseLanguage);
     if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Organization)) {
-      return "SELECT Value,Name FROM AD_Org WHERE AD_Org_ID=";
+      return "SELECT Value,Name FROM AD_Org WHERE orgId=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Account)
         || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList1)
         || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList2)) {
@@ -158,7 +158,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             + ") WHERE o.C_Campaign_ID=";
       else return "SELECT Value,Name FROM C_Campaign WHERE C_Campaign_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx)) {
-      return "SELECT Value,Name FROM AD_Org WHERE AD_Org_ID=";
+      return "SELECT Value,Name FROM AD_Org WHERE orgId=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Project)) {
       return "SELECT Value,Name FROM C_Project WHERE C_Project_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_SalesRegion)) {
@@ -223,7 +223,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    * @param as accounting schema
    */
   public MAcctSchemaElement(MAcctSchema as) {
-    this(as.getCtx(), 0, as.get_TrxName());
+    this(as.getCtx(), 0, null);
     setClientOrg(as);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
 
@@ -495,8 +495,8 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
 
     //	Resequence
     if (newRecord || is_ValueChanged(I_C_AcctSchema_Element.COLUMNNAME_SeqNo)) {
-      StringBuilder msguvd = new StringBuilder("AD_Client_ID=").append( getClientId());
-      MAccount.updateValueDescription(getCtx(), msguvd.toString(), get_TrxName());
+      StringBuilder msguvd = new StringBuilder("clientId=").append( getClientId());
+      MAccount.updateValueDescription(getCtx(), msguvd.toString(), null);
     }
     return success;
   } //	afterSave
@@ -509,7 +509,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    */
   private void updateData(String element, int id) {
     StringBuilder msguvd = new StringBuilder(element).append("=").append(id);
-    MAccount.updateValueDescription(getCtx(), msguvd.toString(), get_TrxName());
+    MAccount.updateValueDescription(getCtx(), msguvd.toString(), null);
     //
     StringBuilder sql =
         new StringBuilder("UPDATE C_ValidCombination SET ")
@@ -518,9 +518,9 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             .append(id)
             .append(" WHERE ")
             .append(element)
-            .append(" IS NULL AND AD_Client_ID=")
+            .append(" IS NULL AND clientId=")
             .append( getClientId());
-    int noC = executeUpdate(sql.toString(), get_TrxName());
+    int noC = executeUpdate(sql.toString(), null);
     //
     sql =
         new StringBuilder("UPDATE Fact_Acct SET ")
@@ -531,7 +531,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             .append(element)
             .append(" IS NULL AND C_AcctSchema_ID=")
             .append(getC_AcctSchema_ID());
-    int noF = executeUpdate(sql.toString(), get_TrxName());
+    int noF = executeUpdate(sql.toString(), null);
     //
     if (log.isLoggable(Level.FINE)) log.fine("ValidCombination=" + noC + ", Fact=" + noF);
   } //	updateData
@@ -558,7 +558,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
   protected boolean afterDelete(boolean success) {
     if (!success) return success;
     //	Update Account Info
-    MAccount.updateValueDescription(getCtx(), "AD_Client_ID=" + getClientId(), get_TrxName());
+    MAccount.updateValueDescription(getCtx(), "clientId=" + getClientId(), null);
     //
     s_cache.clear();
     return success;

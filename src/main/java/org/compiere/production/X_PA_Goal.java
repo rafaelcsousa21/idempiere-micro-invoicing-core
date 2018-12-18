@@ -49,7 +49,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
   public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException {
     return (org.compiere.model.I_AD_Role)
         MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
-            .getPO(getAD_Role_ID(), get_TrxName());
+            .getPO(getAD_Role_ID(), null);
   }
 
   /**
@@ -76,7 +76,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**
@@ -375,7 +375,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
   public org.compiere.model.I_PA_ColorSchema getPA_ColorSchema() throws RuntimeException {
     return (org.compiere.model.I_PA_ColorSchema)
         MTable.get(getCtx(), org.compiere.model.I_PA_ColorSchema.Table_Name)
-            .getPO(getPA_ColorSchema_ID(), get_TrxName());
+            .getPO(getPA_ColorSchema_ID(), null);
   }
 
   /**
@@ -423,7 +423,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
   public org.compiere.model.I_PA_Goal getPA_GoalParent() throws RuntimeException {
     return (org.compiere.model.I_PA_Goal)
         MTable.get(getCtx(), org.compiere.model.I_PA_Goal.Table_Name)
-            .getPO(getPA_GoalParent_ID(), get_TrxName());
+            .getPO(getPA_GoalParent_ID(), null);
   }
 
   /**
@@ -468,7 +468,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
   public org.compiere.model.I_PA_Measure getPA_Measure() throws RuntimeException {
     return (org.compiere.model.I_PA_Measure)
         MTable.get(getCtx(), org.compiere.model.I_PA_Measure.Table_Name)
-            .getPO(getPA_Measure_ID(), get_TrxName());
+            .getPO(getPA_Measure_ID(), null);
   }
 
   /**

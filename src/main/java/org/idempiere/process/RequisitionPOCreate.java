@@ -73,7 +73,7 @@ public class RequisitionPOCreate extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
-      else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
+      else if (name.equals("orgId")) p_AD_Org_ID = para[i].getParameterAsInt();
       else if (name.equals("M_Warehouse_ID")) p_M_Warehouse_ID = para[i].getParameterAsInt();
       else if (name.equals("DateDoc")) {
         p_DateDoc_From = (Timestamp) para[i].getParameter();
@@ -104,7 +104,7 @@ public class RequisitionPOCreate extends SvrProcess {
     //	Specific
     if (p_M_Requisition_ID != 0) {
       if (log.isLoggable(Level.INFO)) log.info("M_Requisition_ID=" + p_M_Requisition_ID);
-      MRequisition req = new MRequisition(getCtx(), p_M_Requisition_ID, get_TrxName());
+      MRequisition req = new MRequisition(getCtx(), p_M_Requisition_ID, null);
       if (!MRequisition.DOCSTATUS_Completed.equals(req.getDocStatus())) {
         throw new AdempiereUserError("@DocStatus@ = " + req.getDocStatus());
       }
@@ -121,7 +121,7 @@ public class RequisitionPOCreate extends SvrProcess {
     //
     if (log.isLoggable(Level.INFO))
       log.info(
-          "AD_Org_ID="
+          "orgId="
               + p_AD_Org_ID
               + ", M_Warehouse_ID="
               + p_M_Warehouse_ID
@@ -145,7 +145,7 @@ public class RequisitionPOCreate extends SvrProcess {
     ArrayList<Object> params = new ArrayList<Object>();
     StringBuilder whereClause = new StringBuilder("C_OrderLine_ID IS NULL");
     if (p_AD_Org_ID > 0) {
-      whereClause.append(" AND AD_Org_ID=?");
+      whereClause.append(" AND orgId=?");
       params.add(p_AD_Org_ID);
     }
     if (p_M_Product_ID > 0) {
@@ -216,7 +216,7 @@ public class RequisitionPOCreate extends SvrProcess {
     orderClause.append("M_Product_ID, C_Charge_ID, M_AttributeSetInstance_ID");
 
     POResultSet<MRequisitionLine> rs =
-        new Query(getCtx(), MRequisitionLine.Table_Name, whereClause.toString(), get_TrxName())
+        new Query(getCtx(), MRequisitionLine.Table_Name, whereClause.toString(), null)
             .setParameters(params)
             .setOrderBy(orderClause.toString())
             .setClient_ID()
@@ -301,7 +301,7 @@ public class RequisitionPOCreate extends SvrProcess {
     MultiKey key = new MultiKey(C_BPartner_ID, DateRequired, M_PriceList_ID);
     m_order = m_cacheOrders.get(key);
     if (m_order == null) {
-      m_order = new MOrder(getCtx(), 0, get_TrxName());
+      m_order = new MOrder(getCtx(), 0, null);
       m_order.setAD_Org_ID(rLine.getOrgId());
       m_order.setM_Warehouse_ID(rLine.getParent().getM_Warehouse_ID());
       m_order.setDatePromised(DateRequired);
@@ -337,7 +337,7 @@ public class RequisitionPOCreate extends SvrProcess {
       m_orderLine.saveEx();
     }
     if (m_order != null) {
-      m_order.load(get_TrxName());
+      m_order.load(null);
       String message = Msg.parseTranslation(getCtx(), "@GeneratedPO@ " + m_order.getDocumentNo());
       addBufferLog(
           0,
@@ -438,7 +438,7 @@ public class RequisitionPOCreate extends SvrProcess {
                 getCtx(),
                 MBPartner.Table_Name,
                 "C_BPartner_ID=? AND C_BP_Group_ID=?",
-                get_TrxName())
+                null)
             .setParameters(new Object[] {C_BPartner_ID, p_C_BP_Group_ID})
             .match();
     if (!match) {

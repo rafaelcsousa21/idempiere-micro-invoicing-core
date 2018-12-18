@@ -47,8 +47,8 @@ public class MConversionType extends X_C_ConversionType {
         "SELECT C_ConversionType_ID "
             + "FROM C_ConversionType "
             + "WHERE IsActive='Y'"
-            + " AND AD_Client_ID IN (0,?) " //	#1
-            + "ORDER BY IsDefault DESC, AD_Client_ID DESC";
+            + " AND clientId IN (0,?) " //	#1
+            + "ORDER BY IsDefault DESC, clientId DESC";
     C_ConversionType_ID = getSQLValue(null, sql, AD_Client_ID);
     //	Return
     s_cache.put(key, new Integer(C_ConversionType_ID));

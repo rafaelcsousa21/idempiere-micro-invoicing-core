@@ -98,10 +98,10 @@ public class MDepreciation extends X_A_Depreciation {
     }
 
     final String whereClause =
-        I_A_Depreciation.COLUMNNAME_DepreciationType + "=?" + " AND AD_Client_ID IN (0,?)";
+        I_A_Depreciation.COLUMNNAME_DepreciationType + "=?" + " AND clientId IN (0,?)";
     depr =
         new Query(ctx, I_A_Depreciation.Table_Name, whereClause, null)
-            .setOrderBy("AD_Client_ID DESC")
+            .setOrderBy("clientId DESC")
             .setParameters(new Object[] {depreciationType, AD_Client_ID})
             .firstOnly();
     addToCache(depr);

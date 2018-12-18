@@ -55,7 +55,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
   public org.compiere.model.I_C_DepositBatch getC_DepositBatch() throws RuntimeException {
     return (org.compiere.model.I_C_DepositBatch)
         MTable.get(getCtx(), org.compiere.model.I_C_DepositBatch.Table_Name)
-            .getPO(getC_DepositBatch_ID(), get_TrxName());
+            .getPO(getC_DepositBatch_ID(), null);
   }
 
   /**
@@ -130,7 +130,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
   public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), get_TrxName());
+            .getPO(getC_Payment_ID(), null);
   }
 
   /**

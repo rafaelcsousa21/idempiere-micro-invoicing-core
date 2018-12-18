@@ -147,7 +147,6 @@ public class CostUpdate extends SvrProcess {
     if (log.isLoggable(Level.CONFIG)) log.config(m_ce.toString());
     m_ass = MAcctSchema.getClientAcctSchema(getCtx(), client.getClientId());
     for (int i = 0; i < m_ass.length; i++) createNew(m_ass[i]);
-    commitEx();
 
     //	Update Cost
     int counter = update();
@@ -197,7 +196,7 @@ public class CostUpdate extends SvrProcess {
             + "WHERE NOT EXISTS (SELECT * FROM M_Cost c WHERE c.M_Product_ID=p.M_Product_ID"
             + " AND c.M_CostType_ID=? AND c.C_AcctSchema_ID=? AND c.M_CostElement_ID=?"
             + " AND c.M_AttributeSetInstance_ID=0) "
-            + "AND AD_Client_ID=?";
+            + "AND clientId=?";
     if (p_M_Product_Category_ID != 0) sql += " AND M_Product_Category_ID=?";
     int counter = 0;
     PreparedStatement pstmt = null;
@@ -232,7 +231,7 @@ public class CostUpdate extends SvrProcess {
    * @return true if created
    */
   private boolean createNew(MProduct product, MAcctSchema as) {
-    MCost cost = MCost.get(product, 0, as, 0, m_ce.getM_CostElement_ID(), get_TrxName());
+    MCost cost = MCost.get(product, 0, as, 0, m_ce.getM_CostElement_ID(), null);
     if (cost.is_new()) return cost.save();
     return false;
   } //	createNew
@@ -256,12 +255,12 @@ public class CostUpdate extends SvrProcess {
       MClient client = MClient.get(getCtx());
       MAcctSchema primarySchema = client.getAcctSchema();
       MInventory inventoryDoc = null;
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, m_ce.getM_CostElement_ID());
       if (p_M_Product_Category_ID != 0) pstmt.setInt(2, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MCost cost = new MCost(getCtx(), rs, get_TrxName());
+        MCost cost = new MCost(getCtx(), rs, null);
         for (int i = 0; i < m_ass.length; i++) {
           //	Update Costs only for default Cost Type
           if (m_ass[i].getC_AcctSchema_ID() == cost.getC_AcctSchema_ID()
@@ -275,7 +274,7 @@ public class CostUpdate extends SvrProcess {
         }
       }
       if (lines.size() > 0) {
-        inventoryDoc = new MInventory(getCtx(), 0, get_TrxName());
+        inventoryDoc = new MInventory(getCtx(), 0, null);
         inventoryDoc.setC_DocType_ID(p_C_DocType_ID);
         inventoryDoc.setCostingMethod(MCostElement.COSTINGMETHOD_StandardCosting);
         inventoryDoc.setDocAction(DocAction.Companion.getACTION_Complete());
@@ -345,7 +344,7 @@ public class CostUpdate extends SvrProcess {
         if (lines != null) {
           BigDecimal currentCost = cost.getCurrentCostPrice();
           if (currentCost == null || currentCost.compareTo(costs) != 0) {
-            MInventoryLine line = new MInventoryLine(getCtx(), 0, get_TrxName());
+            MInventoryLine line = new MInventoryLine(getCtx(), 0, null);
             line.setM_Product_ID(cost.getM_Product_ID());
             line.setCurrentCostPrice(cost.getCurrentCostPrice());
             line.setNewCostPrice(costs);
@@ -361,7 +360,7 @@ public class CostUpdate extends SvrProcess {
           if (costs != null && costs.signum() != 0) {
             BigDecimal currentCost = cost.getCurrentCostPrice();
             if (currentCost == null || currentCost.compareTo(costs) != 0) {
-              MInventoryLine line = new MInventoryLine(getCtx(), 0, get_TrxName());
+              MInventoryLine line = new MInventoryLine(getCtx(), 0, null);
               line.setM_Product_ID(cost.getM_Product_ID());
               line.setCurrentCostPrice(cost.getCurrentCostPrice());
               line.setNewCostPrice(costs);
@@ -409,7 +408,7 @@ public class CostUpdate extends SvrProcess {
               cost.getC_AcctSchema_ID(),
               ce.getM_CostElement_ID(),
               cost.getMAttributeSetInstance_ID(),
-              get_TrxName());
+              null);
       if (xCost != null) retValue = xCost.getCurrentCostPrice();
     }
     //	Average Invoice History
@@ -426,7 +425,7 @@ public class CostUpdate extends SvrProcess {
               cost.getC_AcctSchema_ID(),
               ce.getM_CostElement_ID(),
               cost.getMAttributeSetInstance_ID(),
-              get_TrxName());
+              null);
       if (xCost != null) retValue = xCost.getHistoryAverage();
     }
 
@@ -444,7 +443,7 @@ public class CostUpdate extends SvrProcess {
               cost.getC_AcctSchema_ID(),
               ce.getM_CostElement_ID(),
               cost.getMAttributeSetInstance_ID(),
-              get_TrxName());
+              null);
       if (xCost != null) retValue = xCost.getCurrentCostPrice();
     }
     //	Average PO History
@@ -461,7 +460,7 @@ public class CostUpdate extends SvrProcess {
               cost.getC_AcctSchema_ID(),
               ce.getM_CostElement_ID(),
               cost.getMAttributeSetInstance_ID(),
-              get_TrxName());
+              null);
       if (xCost != null) retValue = xCost.getHistoryAverage();
     }
 
@@ -479,7 +478,7 @@ public class CostUpdate extends SvrProcess {
               cost.getC_AcctSchema_ID(),
               ce.getM_CostElement_ID(),
               cost.getMAttributeSetInstance_ID(),
-              get_TrxName());
+              null);
       if (xCost != null) retValue = xCost.getCurrentCostPrice();
     }
 
@@ -500,11 +499,11 @@ public class CostUpdate extends SvrProcess {
                 cost.getC_AcctSchema_ID(),
                 ce.getM_CostElement_ID(),
                 cost.getMAttributeSetInstance_ID(),
-                get_TrxName());
+                null);
         if (xCost != null) retValue = xCost.getCurrentCostPrice();
       }
       if (retValue == null) {
-        MProduct product = new MProduct(getCtx(), cost.getM_Product_ID(), get_TrxName());
+        MProduct product = new MProduct(getCtx(), cost.getM_Product_ID(), null);
         MAcctSchema as = MAcctSchema.get(getCtx(), cost.getC_AcctSchema_ID());
         retValue =
             MCost.getLastInvoicePrice(
@@ -529,11 +528,11 @@ public class CostUpdate extends SvrProcess {
                 cost.getC_AcctSchema_ID(),
                 ce.getM_CostElement_ID(),
                 cost.getMAttributeSetInstance_ID(),
-                get_TrxName());
+                null);
         if (xCost != null) retValue = xCost.getCurrentCostPrice();
       }
       if (retValue == null) {
-        MProduct product = new MProduct(getCtx(), cost.getM_Product_ID(), get_TrxName());
+        MProduct product = new MProduct(getCtx(), cost.getM_Product_ID(), null);
         MAcctSchema as = MAcctSchema.get(getCtx(), cost.getC_AcctSchema_ID());
         retValue =
             MCost.getLastPOPrice(
@@ -558,7 +557,7 @@ public class CostUpdate extends SvrProcess {
               cost.getC_AcctSchema_ID(),
               ce.getM_CostElement_ID(),
               cost.getMAttributeSetInstance_ID(),
-              get_TrxName());
+              null);
       if (xCost != null) retValue = xCost.getCurrentCostPrice();
     }
 

@@ -20,7 +20,7 @@ import static software.hsharp.core.util.DBKt.getSQLValue;
  *
  * @author Jorg Janke
  * @author Cristina Ghita
- *     <li>BF [ 2855807 ] AD_Org_ID from account
+ *     <li>BF [ 2855807 ] orgId from account
  *         https://sourceforge.net/tracker/?func=detail&aid=2855807&group_id=176962&atid=879332
  * @version $Id: MJournalLine.java,v 1.3 2006/07/30 00:51:05 jjanke Exp $
  */
@@ -71,7 +71,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
    * @param parent journal
    */
   public MJournalLine(MJournal parent) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setGL_Journal_ID(parent.getGL_Journal_ID());
     setC_Currency_ID(parent.getC_Currency_ID());
@@ -88,7 +88,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
    * @return parent
    */
   public MJournal getParent() {
-    if (m_parent == null) m_parent = new MJournal(getCtx(), getGL_Journal_ID(), get_TrxName());
+    if (m_parent == null) m_parent = new MJournal(getCtx(), getGL_Journal_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -212,7 +212,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
    */
   public MAccount getAccount_Combi() {
     if (m_account == null && getC_ValidCombination_ID() != 0)
-      m_account = new MAccount(getCtx(), getC_ValidCombination_ID(), get_TrxName());
+      m_account = new MAccount(getCtx(), getC_ValidCombination_ID(), null);
     return m_account;
   } //	getValidCombination
 
@@ -225,7 +225,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     if (m_accountElement == null) {
       MAccount vc = getAccount_Combi();
       if (vc != null && vc.getAccount_ID() != 0)
-        m_accountElement = new MElementValue(getCtx(), vc.getAccount_ID(), get_TrxName());
+        m_accountElement = new MElementValue(getCtx(), vc.getAccount_ID(), null);
     }
     return m_accountElement;
   } //	getAccountElement
@@ -319,13 +319,13 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 " FROM GL_JournalLine jl WHERE jl.IsActive='Y' AND j.GL_Journal_ID=jl.GL_Journal_ID) ")
             .append("WHERE GL_Journal_ID=")
             .append(getGL_Journal_ID());
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
     if (no != 1) log.warning("afterSave - Update Journal #" + no);
 
     //	Update Batch Total
     int GL_JournalBatch_ID =
         getSQLValue(
-            get_TrxName(),
+            null,
             "SELECT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=?",
             getGL_Journal_ID());
     if (GL_JournalBatch_ID != 0) { // idempiere 344 - nmicoud
@@ -338,7 +338,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
               .append("(SELECT DISTINCT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=")
               .append(getGL_Journal_ID())
               .append(")");
-      no = executeUpdate(sql.toString(), get_TrxName());
+      no = executeUpdate(sql.toString(), null);
       if (no != 1) log.warning("Update Batch #" + no);
     }
     return no == 1;
@@ -353,7 +353,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 || is_ValueChanged("M_Product_ID")
                 || is_ValueChanged("C_BPartner_ID")
                 || is_ValueChanged("AD_OrgTrx_ID")
-                || is_ValueChanged("AD_Org_ID")
+                || is_ValueChanged("orgId")
                 || is_ValueChanged("C_LocFrom_ID")
                 || is_ValueChanged("C_LocTo_ID")
                 || is_ValueChanged("C_SalesRegion_ID")
@@ -362,7 +362,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 || is_ValueChanged("C_Activity_ID")
                 || is_ValueChanged("User1_ID")
                 || is_ValueChanged("User2_ID")))) {
-      MJournal gl = new MJournal(getCtx(), getGL_Journal_ID(), get_TrxName());
+      MJournal gl = new MJournal(getCtx(), getGL_Journal_ID(), null);
 
       // Validate all mandatory combinations are set
       MAcctSchema as = (MAcctSchema) getParent().getC_AcctSchema();
@@ -422,10 +422,10 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
               getUser2_ID(),
               0,
               0,
-              get_TrxName());
+              null);
 
       if (acct != null) {
-        acct.saveEx(get_TrxName()); // get ID from transaction
+        acct.saveEx(null); // get ID from transaction
         setC_ValidCombination_ID(acct.getId());
         if (acct.getAlias() != null && acct.getAlias().length() > 0)
           setAlias_ValidCombination_ID(acct.getId());
@@ -438,7 +438,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
   /** Fill Accounting Dimensions from line combination * */
   private void fillDimensionsFromCombination() {
     if (getC_ValidCombination_ID() > 0) {
-      MAccount combi = new MAccount(getCtx(), getC_ValidCombination_ID(), get_TrxName());
+      MAccount combi = new MAccount(getCtx(), getC_ValidCombination_ID(), null);
       setAccount_ID(combi.getAccount_ID() > 0 ? combi.getAccount_ID() : 0);
       setC_SubAcct_ID(combi.getC_SubAcct_ID() > 0 ? combi.getC_SubAcct_ID() : 0);
       setM_Product_ID(combi.getM_Product_ID() > 0 ? combi.getM_Product_ID() : 0);

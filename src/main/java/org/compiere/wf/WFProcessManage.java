@@ -1,9 +1,10 @@
 package org.compiere.wf;
 
-import java.util.logging.Level;
 import org.compiere.crm.MUser;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Manage Workflow Process
@@ -43,7 +44,7 @@ public class WFProcessManage extends SvrProcess {
    * @throws Exception if not successful
    */
   protected String doIt() throws Exception {
-    MWFProcess process = new MWFProcess(getCtx(), p_AD_WF_Process_ID, get_TrxName());
+    MWFProcess process = new MWFProcess(getCtx(), p_AD_WF_Process_ID, null);
     if (log.isLoggable(Level.INFO)) log.info("doIt - " + process);
 
     MUser user = MUser.get(getCtx(), getAD_User_ID());

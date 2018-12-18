@@ -92,27 +92,27 @@ public class InventoryValue extends SvrProcess {
     //  Delete (just to be sure)
     StringBuilder sql = new StringBuilder("DELETE T_InventoryValue WHERE AD_PInstance_ID=");
     sql.append(getAD_PInstance_ID());
-    int no = executeUpdateEx(sql.toString(), get_TrxName());
+    int no = executeUpdateEx(sql.toString(), null);
 
     //	Insert Standard Costs
     sql =
         new StringBuilder("INSERT INTO T_InventoryValue ")
             .append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID,")
-            .append(" AD_Client_ID, AD_Org_ID, CostStandard) ")
+            .append(" clientId, orgId, CostStandard) ")
             .append("SELECT ")
             .append(getAD_PInstance_ID())
             .append(", w.M_Warehouse_ID, c.M_Product_ID, c.M_AttributeSetInstance_ID,")
-            .append(" w.AD_Client_ID, w.AD_Org_ID, c.CurrentCostPrice ")
+            .append(" w.clientId, w.orgId, c.CurrentCostPrice ")
             .append("FROM M_Warehouse w")
-            .append(" INNER JOIN AD_ClientInfo ci ON (w.AD_Client_ID=ci.AD_Client_ID)")
+            .append(" INNER JOIN AD_ClientInfo ci ON (w.clientId=ci.clientId)")
             .append(" INNER JOIN C_AcctSchema acs ON (ci.C_AcctSchema1_ID=acs.C_AcctSchema_ID)")
             .append(
-                " INNER JOIN M_Cost c ON (acs.C_AcctSchema_ID=c.C_AcctSchema_ID AND acs.M_CostType_ID=c.M_CostType_ID AND c.AD_Org_ID IN (0, w.AD_Org_ID))")
+                " INNER JOIN M_Cost c ON (acs.C_AcctSchema_ID=c.C_AcctSchema_ID AND acs.M_CostType_ID=c.M_CostType_ID AND c.orgId IN (0, w.orgId))")
             .append(
                 " INNER JOIN M_CostElement ce ON (c.M_CostElement_ID=ce.M_CostElement_ID AND ce.CostingMethod='S' AND ce.CostElementType='M') ")
             .append("WHERE w.M_Warehouse_ID=")
             .append(p_M_Warehouse_ID);
-    int noInsertStd = executeUpdateEx(sql.toString(), get_TrxName());
+    int noInsertStd = executeUpdateEx(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("Inserted Std=" + noInsertStd);
     // IDEMPIERE-2500 - This may be invalid check. Removing still some one not admit reason
     /*if (noInsertStd == 0)
@@ -124,16 +124,16 @@ public class InventoryValue extends SvrProcess {
       sql =
           new StringBuilder("INSERT INTO T_InventoryValue ")
               .append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID,")
-              .append(" AD_Client_ID, AD_Org_ID, CostStandard, Cost, M_CostElement_ID) ")
+              .append(" clientId, orgId, CostStandard, Cost, M_CostElement_ID) ")
               .append("SELECT ")
               .append(getAD_PInstance_ID())
               .append(", w.M_Warehouse_ID, c.M_Product_ID, c.M_AttributeSetInstance_ID,")
-              .append(" w.AD_Client_ID, w.AD_Org_ID, 0, c.CurrentCostPrice, c.M_CostElement_ID ")
+              .append(" w.clientId, w.orgId, 0, c.CurrentCostPrice, c.M_CostElement_ID ")
               .append("FROM M_Warehouse w")
-              .append(" INNER JOIN AD_ClientInfo ci ON (w.AD_Client_ID=ci.AD_Client_ID)")
+              .append(" INNER JOIN AD_ClientInfo ci ON (w.clientId=ci.clientId)")
               .append(" INNER JOIN C_AcctSchema acs ON (ci.C_AcctSchema1_ID=acs.C_AcctSchema_ID)")
               .append(
-                  " INNER JOIN M_Cost c ON (acs.C_AcctSchema_ID=c.C_AcctSchema_ID AND acs.M_CostType_ID=c.M_CostType_ID AND c.AD_Org_ID IN (0, w.AD_Org_ID)) ")
+                  " INNER JOIN M_Cost c ON (acs.C_AcctSchema_ID=c.C_AcctSchema_ID AND acs.M_CostType_ID=c.M_CostType_ID AND c.orgId IN (0, w.orgId)) ")
               .append("WHERE w.M_Warehouse_ID=")
               .append(p_M_Warehouse_ID)
               .append(" AND c.M_CostElement_ID=")
@@ -144,7 +144,7 @@ public class InventoryValue extends SvrProcess {
               .append(" AND iv.M_Warehouse_ID=w.M_Warehouse_ID")
               .append(" AND iv.M_Product_ID=c.M_Product_ID")
               .append(" AND iv.M_AttributeSetInstance_ID=c.M_AttributeSetInstance_ID)");
-      noInsertCost = executeUpdateEx(sql.toString(), get_TrxName());
+      noInsertCost = executeUpdateEx(sql.toString(), null);
       if (log.isLoggable(Level.FINE)) log.fine("Inserted Cost=" + noInsertCost);
       //	Update Std Cost Records
       sql =
@@ -152,11 +152,11 @@ public class InventoryValue extends SvrProcess {
               .append("SET (Cost, M_CostElement_ID)=")
               .append("(SELECT c.CurrentCostPrice, c.M_CostElement_ID ")
               .append("FROM M_Warehouse w")
-              .append(" INNER JOIN AD_ClientInfo ci ON (w.AD_Client_ID=ci.AD_Client_ID)")
+              .append(" INNER JOIN AD_ClientInfo ci ON (w.clientId=ci.clientId)")
               .append(" INNER JOIN C_AcctSchema acs ON (ci.C_AcctSchema1_ID=acs.C_AcctSchema_ID)")
               .append(" INNER JOIN M_Cost c ON (acs.C_AcctSchema_ID=c.C_AcctSchema_ID")
               .append(
-                  " AND acs.M_CostType_ID=c.M_CostType_ID AND c.AD_Org_ID IN (0, w.AD_Org_ID)) ")
+                  " AND acs.M_CostType_ID=c.M_CostType_ID AND c.orgId IN (0, w.orgId)) ")
               .append("WHERE c.M_CostElement_ID=")
               .append(p_M_CostElement_ID)
               .append(" AND iv.M_Warehouse_ID=w.M_Warehouse_ID")
@@ -166,7 +166,7 @@ public class InventoryValue extends SvrProcess {
               .append("WHERE ivv.AD_PInstance_ID=")
               .append(getAD_PInstance_ID())
               .append(" AND ivv.M_CostElement_ID IS NULL)");
-      int noUpdatedCost = executeUpdateEx(sql.toString(), get_TrxName());
+      int noUpdatedCost = executeUpdateEx(sql.toString(), null);
       if (log.isLoggable(Level.FINE)) log.fine("Updated Cost=" + noUpdatedCost);
     }
     if ((noInsertStd + noInsertCost) == 0) return "No Costs found";
@@ -186,7 +186,7 @@ public class InventoryValue extends SvrProcess {
             .append(p_C_Currency_ID)
             .append(" WHERE AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdateEx(sql.toString(), get_TrxName());
+    no = executeUpdateEx(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("Constants=" + no);
 
     //  Get current QtyOnHand with ASI
@@ -200,7 +200,7 @@ public class InventoryValue extends SvrProcess {
             .append("WHERE AD_PInstance_ID=")
             .append(getAD_PInstance_ID())
             .append(" AND iv.M_AttributeSetInstance_ID<>0");
-    no = executeUpdateEx(sql.toString(), get_TrxName());
+    no = executeUpdateEx(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("QtHand with ASI=" + no);
     //  Get current QtyOnHand without ASI
     sql =
@@ -212,7 +212,7 @@ public class InventoryValue extends SvrProcess {
             .append("WHERE iv.AD_PInstance_ID=")
             .append(getAD_PInstance_ID())
             .append(" AND iv.M_AttributeSetInstance_ID=0");
-    no = executeUpdateEx(sql.toString(), get_TrxName());
+    no = executeUpdateEx(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("QtHand w/o ASI=" + no);
 
     //  Adjust for Valuation Date
@@ -229,7 +229,7 @@ public class InventoryValue extends SvrProcess {
             .append("WHERE iv.M_AttributeSetInstance_ID<>0")
             .append(" AND iv.AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdateEx(sql.toString(), get_TrxName());
+    no = executeUpdateEx(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("Update with ASI=" + no);
     //
     sql =
@@ -245,7 +245,7 @@ public class InventoryValue extends SvrProcess {
             .append("AND iv.AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
 
-    no = executeUpdateEx(sql.toString(), get_TrxName());
+    no = executeUpdateEx(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("Update w/o ASI=" + no);
 
     //  Delete Records w/o OnHand Qty
@@ -253,7 +253,7 @@ public class InventoryValue extends SvrProcess {
         new StringBuilder("DELETE T_InventoryValue ")
             .append("WHERE (QtyOnHand=0 OR QtyOnHand IS NULL) AND AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    int noQty = executeUpdateEx(sql.toString(), get_TrxName());
+    int noQty = executeUpdateEx(sql.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("NoQty Deleted=" + noQty);
 
     //  Update Prices
@@ -261,12 +261,12 @@ public class InventoryValue extends SvrProcess {
         new StringBuilder("UPDATE T_InventoryValue iv ")
             .append("SET PricePO = ")
             .append(
-                "(SELECT MAX(currencyConvert (po.PriceList,po.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, po.AD_Client_ID,po.AD_Org_ID))")
+                "(SELECT MAX(currencyConvert (po.PriceList,po.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, po.clientId,po.orgId))")
             .append(" FROM M_Product_PO po WHERE po.M_Product_ID=iv.M_Product_ID")
             .append(" AND po.IsCurrentVendor='Y'), ")
             .append("PriceList = ")
             .append(
-                "(SELECT currencyConvert(pp.PriceList,pl.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, pl.AD_Client_ID,pl.AD_Org_ID)")
+                "(SELECT currencyConvert(pp.PriceList,pl.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, pl.clientId,pl.orgId)")
             .append(" FROM M_PriceList pl, M_PriceList_Version plv, M_ProductPrice pp")
             .append(
                 " WHERE pp.M_Product_ID=iv.M_Product_ID AND pp.M_PriceList_Version_ID=iv.M_PriceList_Version_ID")
@@ -274,7 +274,7 @@ public class InventoryValue extends SvrProcess {
             .append(" AND plv.M_PriceList_ID=pl.M_PriceList_ID), ")
             .append("PriceStd = ")
             .append(
-                "(SELECT currencyConvert(pp.PriceStd,pl.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, pl.AD_Client_ID,pl.AD_Org_ID)")
+                "(SELECT currencyConvert(pp.PriceStd,pl.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, pl.clientId,pl.orgId)")
             .append(" FROM M_PriceList pl, M_PriceList_Version plv, M_ProductPrice pp")
             .append(
                 " WHERE pp.M_Product_ID=iv.M_Product_ID AND pp.M_PriceList_Version_ID=iv.M_PriceList_Version_ID")
@@ -282,7 +282,7 @@ public class InventoryValue extends SvrProcess {
             .append(" AND plv.M_PriceList_ID=pl.M_PriceList_ID), ")
             .append("PriceLimit = ")
             .append(
-                "(SELECT currencyConvert(pp.PriceLimit,pl.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, pl.AD_Client_ID,pl.AD_Org_ID)")
+                "(SELECT currencyConvert(pp.PriceLimit,pl.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, pl.clientId,pl.orgId)")
             .append(" FROM M_PriceList pl, M_PriceList_Version plv, M_ProductPrice pp")
             .append(
                 " WHERE pp.M_Product_ID=iv.M_Product_ID AND pp.M_PriceList_Version_ID=iv.M_PriceList_Version_ID")
@@ -291,7 +291,7 @@ public class InventoryValue extends SvrProcess {
             .append(" WHERE iv.AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
 
-    no = executeUpdateEx(sql.toString(), get_TrxName());
+    no = executeUpdateEx(sql.toString(), null);
     String msg = "";
     if (no == 0) msg = "No Prices";
 
@@ -301,19 +301,19 @@ public class InventoryValue extends SvrProcess {
           new StringBuilder("UPDATE T_InventoryValue iv ")
               .append("SET CostStandard= ")
               .append(
-                  "(SELECT currencyConvert(iv.CostStandard,acs.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, iv.AD_Client_ID,iv.AD_Org_ID) ")
+                  "(SELECT currencyConvert(iv.CostStandard,acs.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, iv.clientId,iv.orgId) ")
               .append("FROM C_AcctSchema acs WHERE acs.C_AcctSchema_ID=")
               .append(as.getC_AcctSchema_ID())
               .append("),")
               .append("	Cost= ")
               .append(
-                  "(SELECT currencyConvert(iv.Cost,acs.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, iv.AD_Client_ID,iv.AD_Org_ID) ")
+                  "(SELECT currencyConvert(iv.Cost,acs.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, iv.clientId,iv.orgId) ")
               .append("FROM C_AcctSchema acs WHERE acs.C_AcctSchema_ID=")
               .append(as.getC_AcctSchema_ID())
               .append(") ")
               .append("WHERE iv.AD_PInstance_ID=")
               .append(getAD_PInstance_ID());
-      no = executeUpdateEx(sql.toString(), get_TrxName());
+      no = executeUpdateEx(sql.toString(), null);
       if (log.isLoggable(Level.FINE)) log.fine("Converted=" + no);
     }
 
@@ -328,7 +328,7 @@ public class InventoryValue extends SvrProcess {
             .append("CostAmt = QtyOnHand * Cost ")
             .append("WHERE AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdateEx(dbeux.toString(), get_TrxName());
+    no = executeUpdateEx(dbeux.toString(), null);
     if (log.isLoggable(Level.FINE)) log.fine("Calculation=" + no);
     //
     return msg;

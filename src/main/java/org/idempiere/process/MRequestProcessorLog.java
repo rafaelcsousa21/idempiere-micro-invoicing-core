@@ -1,8 +1,9 @@
 package org.idempiere.process;
 
+import org.compiere.model.AdempiereProcessorLog;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.compiere.model.AdempiereProcessorLog;
 
 public class MRequestProcessorLog extends X_R_RequestProcessorLog implements AdempiereProcessorLog {
   /** */
@@ -38,7 +39,7 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
    * @param summary summary
    */
   public MRequestProcessorLog(MRequestProcessor parent, String summary) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setR_RequestProcessor_ID(parent.getR_RequestProcessor_ID());
     setSummary(summary);

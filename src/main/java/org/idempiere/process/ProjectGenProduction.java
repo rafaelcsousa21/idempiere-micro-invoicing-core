@@ -64,18 +64,18 @@ public class ProjectGenProduction extends SvrProcess {
       log.info(
           "doIt - C_Project_ID=" + m_C_Project_ID + " - C_ProjectLine_ID=" + m_C_ProjectLine_ID);
     if (m_C_ProjectLine_ID != 0) {
-      MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID, get_TrxName());
-      MProject project = new MProject(getCtx(), projectLine.getC_Project_ID(), get_TrxName());
+      MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID, null);
+      MProject project = new MProject(getCtx(), projectLine.getC_Project_ID(), null);
       createProduction(project, projectLine);
     } else if (m_C_ProjectPhase_ID != 0) {
-      MProject project = new MProject(getCtx(), m_C_Project_ID, get_TrxName());
+      MProject project = new MProject(getCtx(), m_C_Project_ID, null);
       for (MProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
         if (line.isActive()) {
           createProduction(project, line);
         }
       }
     } else {
-      MProject project = new MProject(getCtx(), m_C_Project_ID, get_TrxName());
+      MProject project = new MProject(getCtx(), m_C_Project_ID, null);
       for (MProjectLine line : project.getLines()) {
         if (line.isActive()) {
           createProduction(project, line);
@@ -105,7 +105,7 @@ public class ProjectGenProduction extends SvrProcess {
       return;
     }
 
-    MProduct M_Product = new MProduct(getCtx(), projectLine.getM_Product_ID(), get_TrxName());
+    MProduct M_Product = new MProduct(getCtx(), projectLine.getM_Product_ID(), null);
     if (!M_Product.isManufactured()) {
       addLog(
           project.getC_Project_ID(),
@@ -132,7 +132,7 @@ public class ProjectGenProduction extends SvrProcess {
     production = new MProduction(projectLine);
     int AD_Org_ID = projectLine.getOrgId();
     if (AD_Org_ID == 0) {
-      log.warning("createProductionfromProjectLine - AD_Org_ID=0");
+      log.warning("createProductionfromProjectLine - orgId=0");
       AD_Org_ID = Env.getOrgId(getCtx());
       if (AD_Org_ID != 0) projectLine.setAD_Org_ID(AD_Org_ID);
     }

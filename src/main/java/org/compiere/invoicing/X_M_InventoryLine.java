@@ -56,7 +56,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
     return (org.compiere.model.I_C_Charge)
         MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), get_TrxName());
+            .getPO(getC_Charge_ID(), null);
   }
 
   /**
@@ -175,7 +175,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -203,7 +203,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   public org.compiere.model.I_M_Inventory getM_Inventory() throws RuntimeException {
     return (org.compiere.model.I_M_Inventory)
         MTable.get(getCtx(), org.compiere.model.I_M_Inventory.Table_Name)
-            .getPO(getM_Inventory_ID(), get_TrxName());
+            .getPO(getM_Inventory_ID(), null);
   }
 
   /**
@@ -268,7 +268,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
 
   public I_M_Locator getM_Locator() throws RuntimeException {
     return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), get_TrxName());
+        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
   }
 
   /**
@@ -295,7 +295,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -445,7 +445,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   public org.compiere.model.I_M_InventoryLine getReversalLine() throws RuntimeException {
     return (org.compiere.model.I_M_InventoryLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getReversalLine_ID(), get_TrxName());
+            .getPO(getReversalLine_ID(), null);
   }
 
   /**

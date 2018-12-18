@@ -64,14 +64,14 @@ public class OrderRePrice extends SvrProcess {
 
     StringBuilder retValue = new StringBuilder();
     if (p_C_Order_ID != 0) {
-      MOrder order = new MOrder(getCtx(), p_C_Order_ID, get_TrxName());
+      MOrder order = new MOrder(getCtx(), p_C_Order_ID, null);
       BigDecimal oldPrice = order.getGrandTotal();
       MOrderLine[] lines = order.getLines();
       for (int i = 0; i < lines.length; i++) {
         lines[i].setPrice(order.getM_PriceList_ID());
         lines[i].saveEx();
       }
-      order = new MOrder(getCtx(), p_C_Order_ID, get_TrxName());
+      order = new MOrder(getCtx(), p_C_Order_ID, null);
       BigDecimal newPrice = order.getGrandTotal();
       retValue =
           new StringBuilder()

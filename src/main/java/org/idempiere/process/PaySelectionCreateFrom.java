@@ -106,7 +106,7 @@ public class PaySelectionCreateFrom extends SvrProcess {
               + ", C_BPartner_ID="
               + p_C_BPartner_ID);
 
-    MPaySelection psel = new MPaySelection(getCtx(), p_C_PaySelection_ID, get_TrxName());
+    MPaySelection psel = new MPaySelection(getCtx(), p_C_PaySelection_ID, null);
     if (psel.getId() == 0)
       throw new IllegalArgumentException("Not found C_PaySelection_ID=" + p_C_PaySelection_ID);
     if (psel.isProcessed()) throw new IllegalArgumentException("@Processed@");
@@ -120,21 +120,21 @@ public class PaySelectionCreateFrom extends SvrProcess {
             //	Open
             .append(" currencyConvert(invoiceOpen(i.C_Invoice_ID, i.C_InvoicePaySchedule_ID)")
             .append(
-                ",i.C_Currency_ID, ?,?, i.C_ConversionType_ID,i.AD_Client_ID,i.AD_Org_ID) AS PayAmt,") //	2 ##p1/p2 Currency_To,PayDate
+                ",i.C_Currency_ID, ?,?, i.C_ConversionType_ID,i.clientId,i.orgId) AS PayAmt,") //	2 ##p1/p2 Currency_To,PayDate
             //	Discount
             .append(
                 " currencyConvert(invoiceDiscount(i.C_Invoice_ID,?,i.C_InvoicePaySchedule_ID)") //	##p3 PayDate
             .append(
-                ",i.C_Currency_ID, ?,?,i.C_ConversionType_ID,i.AD_Client_ID,i.AD_Org_ID) AS DiscountAmt,") //	3 ##p4/p5 Currency_To,PayDate
+                ",i.C_Currency_ID, ?,?,i.C_ConversionType_ID,i.clientId,i.orgId) AS DiscountAmt,") //	3 ##p4/p5 Currency_To,PayDate
             .append(" PaymentRule, IsSOTrx, ") // 4..5
             .append(" currencyConvert(invoiceWriteOff(i.C_Invoice_ID) ")
             .append(
-                ",i.C_Currency_ID, ?,?,i.C_ConversionType_ID,i.AD_Client_ID,i.AD_Org_ID) AS WriteOffAmt ") //	6 ##p6/p7 Currency_To,PayDate
+                ",i.C_Currency_ID, ?,?,i.C_ConversionType_ID,i.clientId,i.orgId) AS WriteOffAmt ") //	6 ##p6/p7 Currency_To,PayDate
             .append("FROM C_Invoice_v i WHERE ");
     if (X_C_Order.PAYMENTRULE_DirectDebit.equals(p_PaymentRule)) sql.append("IsSOTrx='Y'");
     else sql.append("IsSOTrx='N'");
     sql.append(" AND IsPaid='N' AND DocStatus IN ('CO','CL')")
-        .append(" AND AD_Client_ID=?") // 	##p8
+        .append(" AND clientId=?") // 	##p8
         //	Existing Payments - Will reselect Invoice if prepared but not paid
         .append(" AND NOT EXISTS (SELECT * FROM C_PaySelectionLine psl")
         .append(
@@ -190,7 +190,7 @@ public class PaySelectionCreateFrom extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       int index = 1;
       pstmt.setInt(index++, C_CurrencyTo_ID);
       pstmt.setTimestamp(index++, psel.getPayDate());

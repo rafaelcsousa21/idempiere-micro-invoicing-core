@@ -1,14 +1,15 @@
 package org.compiere.accounting;
 
+import org.compiere.model.IFact;
+import org.compiere.model.I_Fact_Acct;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
-import org.compiere.model.IFact;
-import org.compiere.model.I_Fact_Acct;
-import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
 /**
  * Accounting Fact
@@ -766,15 +767,6 @@ public final class Fact implements IFact {
     }
     return true;
   } //  commit
-
-  /**
-   * Get Transaction
-   *
-   * @return trx
-   */
-  public String get_TrxName() {
-    return m_trxName;
-  } //	getTrxName
 
   /**
    * Set Transaction name

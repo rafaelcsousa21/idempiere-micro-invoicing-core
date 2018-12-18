@@ -34,8 +34,8 @@ public class MStatusCategory extends X_R_StatusCategory {
     int AD_Client_ID = Env.getClientId(ctx);
     String sql =
         "SELECT * FROM R_StatusCategory "
-            + "WHERE AD_Client_ID in (0,?) AND IsDefault='Y' "
-            + "ORDER BY AD_Client_ID DESC";
+            + "WHERE clientId in (0,?) AND IsDefault='Y' "
+            + "ORDER BY clientId DESC";
     MStatusCategory retValue = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -70,11 +70,11 @@ public class MStatusCategory extends X_R_StatusCategory {
     String sql =
         "UPDATE R_Status SET R_StatusCategory_ID="
             + retValue.getR_StatusCategory_ID()
-            + " WHERE R_StatusCategory_ID IS NULL AND AD_Client_ID="
+            + " WHERE R_StatusCategory_ID IS NULL AND clientId="
             + AD_Client_ID;
     int no = executeUpdate(sql, null);
     if (s_log.isLoggable(Level.INFO))
-      s_log.info("Default for AD_Client_ID=" + AD_Client_ID + " - Status #" + no);
+      s_log.info("Default for clientId=" + AD_Client_ID + " - Status #" + no);
     return retValue;
   } //	createDefault
 

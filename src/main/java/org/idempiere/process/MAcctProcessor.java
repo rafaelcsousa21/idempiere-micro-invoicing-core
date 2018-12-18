@@ -8,6 +8,7 @@ import org.compiere.util.Msg;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -67,7 +68,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
    * @param Supervisor_ID admin
    */
   public MAcctProcessor(MClient client, int Supervisor_ID) {
-    this(client.getCtx(), 0, client.get_TrxName());
+    this(client.getCtx(), 0, null);
     setClientOrg(client);
     StringBuilder msgset =
         new StringBuilder()
@@ -117,7 +118,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
    * @return date next run
    */
   public Timestamp getDateNextRun(boolean requery) {
-    if (requery) load(get_TrxName());
+    if (requery) load((HashMap)null);
     return getDateNextRun();
   } //	getDateNextRun
 
@@ -129,7 +130,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
   public AdempiereProcessorLog[] getLogs() {
     String whereClause = "C_AcctProcessor_ID=? ";
     List<MAcctProcessor> list =
-        new Query(getCtx(), I_C_AcctProcessorLog.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_C_AcctProcessorLog.Table_Name, whereClause, null)
             .setParameters(getC_AcctProcessor_ID())
             .setOrderBy("Created DESC")
             .list();
@@ -150,7 +151,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
             .append(" AND (Created+")
             .append(getKeepLogDays())
             .append(") < SysDate");
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
     return no;
   } //	deleteLog
 

@@ -13,7 +13,6 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.crm.MLanguage;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_AD_Language;
@@ -21,6 +20,8 @@ import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Language;
 import org.idempiere.common.util.Util;
+
+import java.util.logging.Level;
 
 /**
  * Verify Language Configuration
@@ -63,11 +64,11 @@ public class ChangeBaseLanguage extends SvrProcess {
     // Disable the base flag on the actual
     I_AD_Language baselang = MLanguage.get(getCtx(), Language.getBaseAD_Language());
     baselang.setIsBaseLanguage(false);
-    baselang.saveEx(get_TrxName());
+    baselang.saveEx(null);
 
     // Enable base flag on new language
     lang.setIsBaseLanguage(true);
-    lang.saveEx(get_TrxName());
+    lang.saveEx(null);
 
     Language.setBaseLanguage(p_Language);
 

@@ -1,15 +1,17 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.model.AdempiereProcessorLog;
 import org.compiere.model.I_AD_WorkflowProcessor;
 import org.compiere.orm.Query;
 import org.compiere.schedule.MSchedule;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
 
@@ -79,7 +81,7 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
    * @return date next run
    */
   public Timestamp getDateNextRun(boolean requery) {
-    if (requery) load(get_TrxName());
+    if (requery) load((HashMap)null);
     return getDateNextRun();
   } //	getDateNextRun
 
@@ -94,7 +96,7 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
                 getCtx(),
                 MWorkflowProcessorLog.Table_Name,
                 "AD_WorkflowProcessor_ID=?",
-                get_TrxName())
+                null)
             .setParameters(new Object[] {getAD_WorkflowProcessor_ID()})
             .setOrderBy("Created DESC")
             .list();
@@ -117,7 +119,7 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
             + " AND (Created+"
             + getKeepLogDays()
             + ") < SysDate";
-    int no = executeUpdate(sql, get_TrxName());
+    int no = executeUpdate(sql, null);
     return no;
   } //	deleteLog
 

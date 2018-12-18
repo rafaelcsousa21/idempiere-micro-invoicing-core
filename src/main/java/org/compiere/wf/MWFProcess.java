@@ -59,7 +59,7 @@ public class MWFProcess extends X_AD_WF_Process {
    * @throws Exception
    */
   public MWFProcess(MWorkflow wf, IProcessInfo pi) throws Exception {
-    this(wf, pi, wf.get_TrxName());
+    this(wf, pi, null);
   }
 
   /**
@@ -127,7 +127,7 @@ public class MWFProcess extends X_AD_WF_Process {
    * @return array of activities
    */
   public MWFActivity[] getActivities(boolean requery, boolean onlyActive) {
-    return getActivities(requery, onlyActive, get_TrxName());
+    return getActivities(requery, onlyActive, null);
   }
 
   /**
@@ -331,7 +331,7 @@ public class MWFProcess extends X_AD_WF_Process {
                 .addAccessSQL(
                     "SELECT AD_WF_Responsible_ID FROM AD_WF_Responsible "
                         + "WHERE ResponsibleType='H' AND COALESCE(AD_User_ID,0)=0 "
-                        + "ORDER BY AD_Client_ID DESC",
+                        + "ORDER BY clientId DESC",
                     "AD_WF_Responsible",
                     MRole.SQL_NOTQUALIFIED,
                     MRole.SQL_RO));
@@ -452,7 +452,7 @@ public class MWFProcess extends X_AD_WF_Process {
     if (getRecord_ID() == 0) return null;
 
     MTable table = MTable.get(getCtx(), getAD_Table_ID());
-    m_po = (PO) table.getPO(getRecord_ID(), get_TrxName());
+    m_po = (PO) table.getPO(getRecord_ID(), null);
     return m_po;
   } //	getPO
 

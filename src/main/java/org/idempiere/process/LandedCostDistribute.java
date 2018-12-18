@@ -14,10 +14,11 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.invoicing.MLandedCost;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.util.logging.Level;
 
 /**
  * Distribute Landed Costs
@@ -43,7 +44,7 @@ public class LandedCostDistribute extends SvrProcess {
    * @throws Exception
    */
   protected String doIt() throws Exception {
-    m_lc = new MLandedCost(getCtx(), p_C_LandedCost_ID, get_TrxName());
+    m_lc = new MLandedCost(getCtx(), p_C_LandedCost_ID, null);
     if (log.isLoggable(Level.INFO)) log.info(m_lc.toString());
     if (m_lc.getId() == 0)
       throw new AdempiereUserError("@NotFound@: @C_LandedCost_ID@ - " + p_C_LandedCost_ID);

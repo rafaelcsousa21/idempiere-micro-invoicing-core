@@ -67,7 +67,7 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
    */
   public MProcessPara getProcessPara() {
     if (m_processPara == null)
-      m_processPara = new MProcessPara(getCtx(), getAD_Process_Para_ID(), get_TrxName());
+      m_processPara = new MProcessPara(getCtx(), getAD_Process_Para_ID(), null);
     return m_processPara;
   } //	getProcessPara
 

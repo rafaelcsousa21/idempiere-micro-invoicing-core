@@ -69,7 +69,7 @@ public class PackageCreate extends SvrProcess {
     MInOut shipment = new MInOut(getCtx(), p_M_InOut_ID, null);
     if (shipment.getId() != p_M_InOut_ID)
       throw new IllegalArgumentException("Cannot find Shipment ID=" + p_M_InOut_ID);
-    MShipper shipper = new MShipper(getCtx(), p_M_Shipper_ID, get_TrxName());
+    MShipper shipper = new MShipper(getCtx(), p_M_Shipper_ID, null);
     if (shipper.getId() != p_M_Shipper_ID)
       throw new IllegalArgumentException("Cannot find Shipper ID=" + p_M_InOut_ID);
     //

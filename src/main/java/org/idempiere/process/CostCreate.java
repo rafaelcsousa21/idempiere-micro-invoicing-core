@@ -14,12 +14,13 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.accounting.MCostDetail;
 import org.compiere.accounting.MProduct;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.util.logging.Level;
 
 /**
  * Create/Update Costing for Product
@@ -57,7 +58,7 @@ public class CostCreate extends SvrProcess {
     if (product.getId() != p_M_Product_ID)
       throw new AdempiereUserError("@NotFound@: @M_Product_ID@ = " + p_M_Product_ID);
     //
-    if (MCostDetail.processProduct(product, get_TrxName())) return "@OK@";
+    if (MCostDetail.processProduct(product, null)) return "@OK@";
     return "@Error@";
   } //	doIt
 } //	CostCreate

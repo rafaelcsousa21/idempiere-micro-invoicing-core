@@ -99,7 +99,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
   public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
     return (org.compiere.model.I_C_Period)
         MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), get_TrxName());
+            .getPO(getC_Period_ID(), null);
   }
 
   /**

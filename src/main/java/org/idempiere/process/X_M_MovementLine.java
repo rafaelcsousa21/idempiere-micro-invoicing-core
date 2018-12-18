@@ -78,7 +78,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
   public org.eevolution.model.I_DD_OrderLine getDD_OrderLine() throws RuntimeException {
     return (org.eevolution.model.I_DD_OrderLine)
         MTable.get(getCtx(), org.eevolution.model.I_DD_OrderLine.Table_Name)
-            .getPO(getDD_OrderLine_ID(), get_TrxName());
+            .getPO(getDD_OrderLine_ID(), null);
   }
 
   /**
@@ -152,7 +152,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -180,7 +180,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
   public I_M_AttributeSetInstance getMAttributeSetInstanceTo() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstanceTo_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstanceTo_ID(), null);
   }
 
   /**
@@ -209,7 +209,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
 
   public I_M_Locator getM_Locator() throws RuntimeException {
     return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), get_TrxName());
+        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
   }
 
   /**
@@ -235,7 +235,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
 
   public I_M_Locator getM_LocatorTo() throws RuntimeException {
     return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_LocatorTo_ID(), get_TrxName());
+        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_LocatorTo_ID(), null);
   }
 
   /**
@@ -262,7 +262,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
   public org.compiere.model.I_M_Movement getM_Movement() throws RuntimeException {
     return (org.compiere.model.I_M_Movement)
         MTable.get(getCtx(), org.compiere.model.I_M_Movement.Table_Name)
-            .getPO(getM_Movement_ID(), get_TrxName());
+            .getPO(getM_Movement_ID(), null);
   }
 
   /**
@@ -348,7 +348,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -398,7 +398,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
   public org.compiere.model.I_M_MovementLine getReversalLine() throws RuntimeException {
     return (org.compiere.model.I_M_MovementLine)
         MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-            .getPO(getReversalLine_ID(), get_TrxName());
+            .getPO(getReversalLine_ID(), null);
   }
 
   /**

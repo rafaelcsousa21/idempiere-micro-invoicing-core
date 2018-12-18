@@ -95,7 +95,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA, I_Pers
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -124,7 +124,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA, I_Pers
   public org.compiere.model.I_M_MovementLine getM_MovementLine() throws RuntimeException {
     return (org.compiere.model.I_M_MovementLine)
         MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-            .getPO(getM_MovementLine_ID(), get_TrxName());
+            .getPO(getM_MovementLine_ID(), null);
   }
 
   /**

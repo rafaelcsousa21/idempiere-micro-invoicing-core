@@ -68,7 +68,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
   public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
     return (org.compiere.model.I_C_ProjectPhase)
         MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
-            .getPO(getC_ProjectPhase_ID(), get_TrxName());
+            .getPO(getC_ProjectPhase_ID(), null);
   }
 
   /**
@@ -134,7 +134,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
   public org.compiere.model.I_C_Task getC_Task() throws RuntimeException {
     return (org.compiere.model.I_C_Task)
         MTable.get(getCtx(), org.compiere.model.I_C_Task.Table_Name)
-            .getPO(getC_Task_ID(), get_TrxName());
+            .getPO(getC_Task_ID(), null);
   }
 
   /**
@@ -197,7 +197,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**

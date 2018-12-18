@@ -46,8 +46,8 @@ public class CopyRole extends SvrProcess {
       if (para[i].getParameter() == null) ;
       else if (name.equals("AD_Role_ID") && i == 0) m_AD_Role_ID_From = para[i].getParameterAsInt();
       else if (name.equals("AD_Role_ID") && i == 1) m_AD_Role_ID_To = para[i].getParameterAsInt();
-      else if (name.equals("AD_Client_ID")) m_AD_Client_ID = para[i].getParameterAsInt();
-      else if (name.equals("AD_Org_ID")) m_AD_Org_ID = para[i].getParameterAsInt();
+      else if (name.equals("clientId")) m_AD_Client_ID = para[i].getParameterAsInt();
+      else if (name.equals("orgId")) m_AD_Org_ID = para[i].getParameterAsInt();
     }
   } //	prepare
 
@@ -99,7 +99,7 @@ public class CopyRole extends SvrProcess {
               .append(table)
               .append(" WHERE AD_Role_ID = ")
               .append(m_AD_Role_ID_To);
-      int no = executeUpdateEx(sql.toString(), get_TrxName());
+      int no = executeUpdateEx(sql.toString(), null);
       addLog(action++, null, BigDecimal.valueOf(no), "Old records deleted from " + table);
 
       final boolean column_IsReadWrite =
@@ -111,7 +111,7 @@ public class CopyRole extends SvrProcess {
       sql =
           new StringBuilder("INSERT INTO ")
               .append(table)
-              .append(" (AD_Client_ID, AD_Org_ID, Created, CreatedBy, Updated, UpdatedBy, ")
+              .append(" (clientId, orgId, Created, CreatedBy, Updated, UpdatedBy, ")
               .append("AD_Role_ID, ")
               .append(keycolumn)
               .append(", isActive");
@@ -135,7 +135,7 @@ public class CopyRole extends SvrProcess {
       if (column_IsReadWrite) sql.append(", isReadWrite ");
       sql.append("FROM ").append(table).append(" WHERE AD_Role_ID = ").append(m_AD_Role_ID_From);
 
-      no = executeUpdateEx(sql.toString(), get_TrxName());
+      no = executeUpdateEx(sql.toString(), null);
 
       addLog(action++, null, new BigDecimal(no), "New records inserted into " + table);
     }

@@ -79,7 +79,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
   public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
     return (org.compiere.model.I_C_Order)
         MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), get_TrxName());
+            .getPO(getC_Order_ID(), null);
   }
 
   /**
@@ -194,7 +194,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
   public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
     return (org.compiere.model.I_M_CostElement)
         MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), get_TrxName());
+            .getPO(getM_CostElement_ID(), null);
   }
 
   /**

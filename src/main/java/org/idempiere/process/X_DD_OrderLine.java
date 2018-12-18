@@ -79,7 +79,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -106,7 +106,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
     return (org.compiere.model.I_C_Campaign)
         MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), get_TrxName());
+            .getPO(getC_Campaign_ID(), null);
   }
 
   /**
@@ -133,7 +133,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
     return (org.compiere.model.I_C_Charge)
         MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), get_TrxName());
+            .getPO(getC_Charge_ID(), null);
   }
 
   /**
@@ -180,7 +180,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -207,7 +207,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
     return (org.compiere.model.I_C_UOM)
         MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), get_TrxName());
+            .getPO(getC_UOM_ID(), null);
   }
 
   /**
@@ -288,7 +288,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.eevolution.model.I_DD_Order getDD_Order() throws RuntimeException {
     return (org.eevolution.model.I_DD_Order)
         MTable.get(getCtx(), org.eevolution.model.I_DD_Order.Table_Name)
-            .getPO(getDD_Order_ID(), get_TrxName());
+            .getPO(getDD_Order_ID(), null);
   }
 
   /**
@@ -487,7 +487,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -515,7 +515,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public I_M_AttributeSetInstance getMAttributeSetInstanceTo() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstanceTo_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstanceTo_ID(), null);
   }
 
   /**
@@ -544,7 +544,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_M_Locator getM_Locator() throws RuntimeException {
     return (org.compiere.model.I_M_Locator)
         MTable.get(getCtx(), org.compiere.model.I_M_Locator.Table_Name)
-            .getPO(getM_Locator_ID(), get_TrxName());
+            .getPO(getM_Locator_ID(), null);
   }
 
   /**
@@ -571,7 +571,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_M_Locator getM_LocatorTo() throws RuntimeException {
     return (org.compiere.model.I_M_Locator)
         MTable.get(getCtx(), org.compiere.model.I_M_Locator.Table_Name)
-            .getPO(getM_LocatorTo_ID(), get_TrxName());
+            .getPO(getM_LocatorTo_ID(), null);
   }
 
   /**
@@ -598,7 +598,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -625,7 +625,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_M_Shipper getM_Shipper() throws RuntimeException {
     return (org.compiere.model.I_M_Shipper)
         MTable.get(getCtx(), org.compiere.model.I_M_Shipper.Table_Name)
-            .getPO(getM_Shipper_ID(), get_TrxName());
+            .getPO(getM_Shipper_ID(), null);
   }
 
   /**
@@ -835,7 +835,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), get_TrxName());
+            .getPO(getUser1_ID(), null);
   }
 
   /**
@@ -862,7 +862,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), get_TrxName());
+            .getPO(getUser2_ID(), null);
   }
 
   /**

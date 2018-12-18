@@ -13,10 +13,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.logging.Level;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
@@ -25,19 +21,18 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
-import org.compiere.production.MLocator;
-import org.compiere.production.MPPProductBOM;
-import org.compiere.production.MPPProductBOMLine;
-import org.compiere.production.MTransaction;
-import org.compiere.production.X_M_Production;
-import org.compiere.production.X_M_ProductionLine;
-import org.compiere.production.X_M_ProductionPlan;
+import org.compiere.production.*;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.ValueNamePair;
-import static software.hsharp.core.util.DBKt.*;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 /**
  * Production of BOMs 1) Creating ProductionLines when IsCreated = 'N' 2) Posting the Lines
@@ -79,7 +74,7 @@ public class M_Production_Run extends SvrProcess {
   protected String doIt() throws Exception {
     log.info("Search fields in M_Production");
 
-    X_M_Production production = new X_M_Production(getCtx(), p_Record_ID, get_TrxName());
+    X_M_Production production = new X_M_Production(getCtx(), p_Record_ID, null);
     /** No Action */
     if (production.isProcessed()) {
       log.info("Already Posted");
@@ -88,7 +83,7 @@ public class M_Production_Run extends SvrProcess {
 
     String whereClause = "M_Production_ID=? ";
     List<X_M_ProductionPlan> lines =
-        new Query(getCtx(), X_M_ProductionPlan.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), X_M_ProductionPlan.Table_Name, whereClause, null)
             .setParameters(p_Record_ID)
             .setOrderBy("Line, M_Product_ID")
             .list();
@@ -100,7 +95,7 @@ public class M_Production_Run extends SvrProcess {
             executeUpdateEx(
                 "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = ?",
                 new Object[] {pp.getM_ProductionPlan_ID()},
-                get_TrxName());
+                null);
         if (no == -1)
           raiseError(
               "ERROR",
@@ -108,7 +103,7 @@ public class M_Production_Run extends SvrProcess {
 
         MProduct product = MProduct.get(getCtx(), pp.getM_Product_ID());
 
-        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0, get_TrxName());
+        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0, null);
         pl.setAD_Org_ID(pp.getOrgId());
         pl.setLine(line);
         pl.setDescription(pp.getDescription());
@@ -123,7 +118,7 @@ public class M_Production_Run extends SvrProcess {
       } else {
         whereClause = "M_ProductionPlan_ID= ? ";
         List<X_M_ProductionLine> production_lines =
-            new Query(getCtx(), X_M_ProductionLine.Table_Name, whereClause, get_TrxName())
+            new Query(getCtx(), X_M_ProductionLine.Table_Name, whereClause, null)
                 .setParameters(pp.getM_ProductionPlan_ID())
                 .setOrderBy("Line")
                 .list();
@@ -139,7 +134,7 @@ public class M_Production_Run extends SvrProcess {
                     locator.getM_Warehouse_ID(),
                     pline.getM_Product_ID(),
                     pline.getMAttributeSetInstance_ID(),
-                    get_TrxName());
+                    null);
 
             if (mustBeStocked && QtyAvailable.add(MovementQty).signum() < 0) {
               raiseError("@NotEnoughStocked@: " + pline.getM_Product().getName(), "");
@@ -152,7 +147,7 @@ public class M_Production_Run extends SvrProcess {
           if (pline.getMAttributeSetInstance_ID() > 0) {
             Timestamp t =
                 MStorageOnHand.getDateMaterialPolicy(
-                    pline.getM_Product_ID(), pline.getMAttributeSetInstance_ID(), get_TrxName());
+                    pline.getM_Product_ID(), pline.getMAttributeSetInstance_ID(), null);
             if (t != null) dateMPolicy = t;
           }
 
@@ -164,7 +159,7 @@ public class M_Production_Run extends SvrProcess {
               pline.getMAttributeSetInstance_ID(),
               MovementQty,
               dateMPolicy,
-              get_TrxName())) {
+              null)) {
             raiseError("Cannot correct Inventory", "");
           }
 
@@ -179,7 +174,7 @@ public class M_Production_Run extends SvrProcess {
                   pline.getMAttributeSetInstance_ID(),
                   MovementQty,
                   production.getMovementDate(),
-                  get_TrxName());
+                  null);
           mtrx.setM_ProductionLine_ID(pline.getM_ProductionLine_ID());
           mtrx.saveEx();
 
@@ -209,7 +204,7 @@ public class M_Production_Run extends SvrProcess {
                 production.getTableId(),
                 production.getId(),
                 true,
-                get_TrxName());
+                null);
       }
     }
 
@@ -226,7 +221,7 @@ public class M_Production_Run extends SvrProcess {
    */
   private int explosion(X_M_ProductionPlan pp, MProduct product, BigDecimal qty, int line)
       throws Exception {
-    MPPProductBOM bom = MPPProductBOM.getDefault(product, get_TrxName());
+    MPPProductBOM bom = MPPProductBOM.getDefault(product, null);
     if (bom == null) {
       raiseError(
           "Do not exist default BOM for this product :"
@@ -246,7 +241,7 @@ public class M_Production_Run extends SvrProcess {
         explosion(pp, component, bomline.getQtyBOM().multiply(qty), line);
       } else {
         line += 1;
-        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0, get_TrxName());
+        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0, null);
         pl.setAD_Org_ID(pp.getOrgId());
         pl.setLine(line);
         pl.setDescription(bomline.getDescription());

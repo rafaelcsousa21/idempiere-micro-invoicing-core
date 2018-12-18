@@ -68,7 +68,7 @@ class MSetup
     private var m_clientName: String? = null
     //	private String          m_orgName;
     //
-    private val m_stdColumns = "AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy"
+    private val m_stdColumns = "clientId,orgId,IsActive,Created,CreatedBy,Updated,UpdatedBy"
     private var m_stdValues: String? = null
     private var m_stdValuesOrg: String? = null
     //
@@ -98,13 +98,13 @@ class MSetup
 
     /**
      * Get Client
-     * @return AD_Client_ID
+     * @return clientId
      */
     val aD_Client_ID: Int
         get() = m_client!!.clientId
     /**
-     * Get AD_Org_ID
-     * @return AD_Org_ID
+     * Get orgId
+     * @return orgId
      */
     val aD_Org_ID: Int
         get() = m_org!!.orgId
@@ -210,11 +210,11 @@ class MSetup
             m_trx.close()
             return false
         }
-        Env.setContext(m_ctx, m_WindowNo, "AD_Org_ID", aD_Org_ID)
-        Env.setContext(m_ctx, "#AD_Org_ID", aD_Org_ID)
+        Env.setContext(m_ctx, m_WindowNo, "orgId", aD_Org_ID)
+        Env.setContext(m_ctx, "#orgId", aD_Org_ID)
         m_stdValuesOrg = AD_Client_ID.toString() + "," + aD_Org_ID + ",'Y',SysDate,0,SysDate,0"
         //  Info
-        m_info!!.append(Msg.translate(m_lang, "AD_Org_ID")).append("=").append(name).append("\n")
+        m_info!!.append(Msg.translate(m_lang, "orgId")).append("=").append(name).append("\n")
 
         // Set Organization Phone, Phone2, Fax, EMail
         val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID, m_trx.trxName)
@@ -303,7 +303,7 @@ class MSetup
         if (isSetInitialPassword)
             clientAdminUser.password = name
         clientAdminUser.description = name
-        clientAdminUser.setName(name)
+        clientAdminUser.name = name
         clientAdminUser.value = name
         clientAdminUser.setADClientID(AD_Client_ID)
         clientAdminUser.setAD_Org_ID(0)
@@ -335,7 +335,7 @@ class MSetup
         if (isSetInitialPassword)
             clientUser.password = name
         clientUser.description = name
-        clientUser.setName(name)
+        clientUser.name = name
         clientUser.value = name
         clientUser.setADClientID(AD_Client_ID)
         clientUser.setAD_Org_ID(0)
@@ -769,7 +769,7 @@ class MSetup
         sqlCmd = StringBuffer("UPDATE AD_ClientInfo SET ")
         sqlCmd.append("C_AcctSchema1_ID=").append(m_as!!.c_AcctSchema_ID)
                 .append(", C_Calendar_ID=").append(m_calendar!!.c_Calendar_ID)
-                .append(" WHERE AD_Client_ID=").append(m_client!!.clientId)
+                .append(" WHERE clientId=").append(m_client!!.clientId)
         no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
         if (no != 1) {
             val err = "ClientInfo not updated"
@@ -785,7 +785,7 @@ class MSetup
         processInfo.setADClientID(aD_Client_ID)
         processInfo.aD_User_ID = aD_User_ID
         processInfo.parameter = arrayOfNulls<ProcessInfoParameter>(0)
-        if (!ProcessUtil.startJavaProcess(m_ctx, processInfo, m_trx, false, null, DocumentTypeVerify())) {
+        if (!ProcessUtil.startJavaProcess(m_ctx, processInfo, false, null, DocumentTypeVerify())) {
             val err = "Document type verification failed. Message=" + processInfo.summary!!
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
@@ -996,8 +996,8 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element Campaign NOT updated")
         }
         // Campaign Translation
-        sqlCmd = StringBuffer("INSERT INTO C_Campaign_Trl (AD_Language,C_Campaign_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_Campaign_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_Campaign_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Campaign t")
+        sqlCmd = StringBuffer("INSERT INTO C_Campaign_Trl (AD_Language,C_Campaign_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_Campaign_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_Campaign_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Campaign t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Campaign_ID=").append(C_Campaign_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Campaign_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Campaign_ID=t.C_Campaign_ID)")
         no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
@@ -1027,8 +1027,8 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element SalesRegion NOT updated")
         }
         // Sales Region Translation
-        sqlCmd = StringBuffer("INSERT INTO C_SalesRegion_Trl (AD_Language,C_SalesRegion_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_SalesRegion_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_SalesRegion_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_SalesRegion t")
+        sqlCmd = StringBuffer("INSERT INTO C_SalesRegion_Trl (AD_Language,C_SalesRegion_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_SalesRegion_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_SalesRegion_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_SalesRegion t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_SalesRegion_ID=").append(C_SalesRegion_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_SalesRegion_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_SalesRegion_ID=t.C_SalesRegion_ID)")
         no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
@@ -1058,8 +1058,8 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element Activity NOT updated")
         }
         // Activity Translation
-        sqlCmd = StringBuffer("INSERT INTO C_Activity_Trl (AD_Language,C_Activity_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_Activity_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_Activity_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Activity t")
+        sqlCmd = StringBuffer("INSERT INTO C_Activity_Trl (AD_Language,C_Activity_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_Activity_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_Activity_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Activity t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Activity_ID=").append(C_Activity_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Activity_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Activity_ID=t.C_Activity_ID)")
         no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
@@ -1138,8 +1138,8 @@ class MSetup
             log.log(Level.SEVERE, "TaxCategory NOT inserted")
 
         //  TaxCategory translation
-        sqlCmd = StringBuffer("INSERT INTO C_TaxCategory_Trl (AD_Language,C_TaxCategory_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_TaxCategory_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_TaxCategory_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_TaxCategory t")
+        sqlCmd = StringBuffer("INSERT INTO C_TaxCategory_Trl (AD_Language,C_TaxCategory_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_TaxCategory_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_TaxCategory_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_TaxCategory t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_TaxCategory_ID=").append(C_TaxCategory_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_TaxCategory_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_TaxCategory_ID=t.C_TaxCategory_ID)")
         no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
@@ -1184,7 +1184,7 @@ class MSetup
         loc.postal = postal
         loc.saveEx()
         sqlCmd = StringBuffer("UPDATE AD_OrgInfo SET C_Location_ID=")
-        sqlCmd.append(loc.c_Location_ID).append(" WHERE AD_Org_ID=").append(aD_Org_ID)
+        sqlCmd.append(loc.c_Location_ID).append(" WHERE orgId=").append(aD_Org_ID)
         no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
         if (no != 1)
             log.log(Level.SEVERE, "Location NOT inserted")
@@ -1216,7 +1216,7 @@ class MSetup
         //		sqlCmd.append(",C_UOM_Weight_ID=");
         //		sqlCmd.append(",C_UOM_Length_ID=");
         //		sqlCmd.append(",C_UOM_Time_ID=");
-        sqlCmd.append(" WHERE AD_Client_ID=").append(aD_Client_ID)
+        sqlCmd.append(" WHERE clientId=").append(aD_Client_ID)
         no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
         if (no != 1) {
             val err = "ClientInfo not updated"
@@ -1317,8 +1317,8 @@ class MSetup
         if (no != 1)
             log.log(Level.SEVERE, "PaymentTerm NOT inserted")
         // Payment Term Translation
-        sqlCmd = StringBuffer("INSERT INTO C_PaymentTerm_Trl (AD_Language,C_PaymentTerm_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_PaymentTerm_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_PaymentTerm_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_PaymentTerm t")
+        sqlCmd = StringBuffer("INSERT INTO C_PaymentTerm_Trl (AD_Language,C_PaymentTerm_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_PaymentTerm_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_PaymentTerm_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_PaymentTerm t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_PaymentTerm_ID=").append(C_PaymentTerm_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_PaymentTerm_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_PaymentTerm_ID=t.C_PaymentTerm_ID)")
         no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)

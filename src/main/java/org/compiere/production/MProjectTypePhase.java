@@ -62,10 +62,10 @@ public class MProjectTypePhase extends X_C_Phase {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getC_Phase_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MProjectTypeTask(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MProjectTypeTask(getCtx(), rs, null));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {

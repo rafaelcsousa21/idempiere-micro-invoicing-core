@@ -155,7 +155,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
     return (org.compiere.model.I_C_UOM)
         MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), get_TrxName());
+            .getPO(getC_UOM_ID(), null);
   }
 
   /**
@@ -369,7 +369,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -397,7 +397,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public org.compiere.model.I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException {
     return (org.compiere.model.I_M_ChangeNotice)
         MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_ChangeNotice_ID(), get_TrxName());
+            .getPO(getM_ChangeNotice_ID(), null);
   }
 
   /**
@@ -424,7 +424,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -460,7 +460,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
     return (org.eevolution.model.I_PP_Product_BOM)
         MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-            .getPO(getPP_Product_BOM_ID(), get_TrxName());
+            .getPO(getPP_Product_BOM_ID(), null);
   }
 
   /**

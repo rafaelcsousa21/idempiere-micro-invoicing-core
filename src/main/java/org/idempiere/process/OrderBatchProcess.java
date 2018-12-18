@@ -131,12 +131,12 @@ public class OrderBatchProcess extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, p_C_DocTypeTarget_ID);
       pstmt.setString(2, p_DocStatus);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        if (process(new MOrder(getCtx(), rs, get_TrxName()))) counter++;
+        if (process(new MOrder(getCtx(), rs, null))) counter++;
         else errCounter++;
       }
     } catch (Exception e) {

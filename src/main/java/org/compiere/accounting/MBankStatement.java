@@ -88,7 +88,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
    * @param isManual Manual statement
    */
   public MBankStatement(MBankAccount account, boolean isManual) {
-    this(account.getCtx(), 0, account.get_TrxName());
+    this(account.getCtx(), 0, null);
     setClientOrg(account);
     setC_BankAccount_ID(account.getC_BankAccount_ID());
     setStatementDate(new Timestamp(System.currentTimeMillis()));
@@ -118,13 +118,13 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
    */
   public MBankStatementLine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     //
     final String whereClause = I_C_BankStatementLine.COLUMNNAME_C_BankStatement_ID + "=?";
     List<MBankStatementLine> list =
-        new Query(getCtx(), I_C_BankStatementLine.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_C_BankStatementLine.Table_Name, whereClause, null)
             .setParameters(getC_BankStatement_ID())
             .setOrderBy("Line")
             .list();
@@ -160,7 +160,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_BankStatement_ID=")
             .append(getC_BankStatement_ID());
-    int noLine = executeUpdate(sql.toString(), get_TrxName());
+    int noLine = executeUpdate(sql.toString(), null);
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine("setProcessed - " + processed + " - Lines=" + noLine);
   } //	setProcessed
@@ -230,7 +230,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
   protected boolean beforeSave(boolean newRecord) {
     if (!isProcessed() && getBeginningBalance().compareTo(Env.ZERO) == 0) {
       MBankAccount ba = getBankAccount();
-      ba.load(get_TrxName());
+      ba.load(null);
       setBeginningBalance(ba.getCurrentBalance());
     }
     setEndingBalance(getBeginningBalance().add(getStatementDifference()));
@@ -371,17 +371,17 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     for (int i = 0; i < lines.length; i++) {
       MBankStatementLine line = lines[i];
       if (line.getC_Payment_ID() != 0) {
-        MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), get_TrxName());
+        MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), null);
         payment.setIsReconciled(true);
-        payment.saveEx(get_TrxName());
+        payment.saveEx(null);
       }
     }
     //	Update Bank Account
     MBankAccount ba = getBankAccount();
-    ba.load(get_TrxName());
+    ba.load(null);
     // BF 1933645
     ba.setCurrentBalance(ba.getCurrentBalance().add(getStatementDifference()));
-    ba.saveEx(get_TrxName());
+    ba.saveEx(null);
 
     //	User Validation
     String valid =
@@ -426,14 +426,14 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     else {
       MPeriod.testPeriodOpen(
           getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement,  getOrgId());
-      MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getC_BankStatement_ID(), get_TrxName());
+      MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getC_BankStatement_ID(), null);
     }
 
     if (isProcessed()) {
       // Added Lines by AZ Goodwill
       // Restore Bank Account Balance
       MBankAccount ba = getBankAccount();
-      ba.load(get_TrxName());
+      ba.load(null);
       ba.setCurrentBalance(ba.getCurrentBalance().subtract(getStatementDifference()));
       ba.saveEx();
       // End of Added Lines
@@ -476,7 +476,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         line.setChargeAmt(Env.ZERO);
         line.setInterestAmt(Env.ZERO);
         if (line.getC_Payment_ID() != 0) {
-          MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), get_TrxName());
+          MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), null);
           payment.setIsReconciled(false);
           payment.saveEx();
           line.setC_Payment_ID(0);

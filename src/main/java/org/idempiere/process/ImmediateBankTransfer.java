@@ -135,9 +135,9 @@ public class ImmediateBankTransfer extends SvrProcess {
    */
   private boolean isSameCurrency() {
 
-    MCashBook mcash = new MCashBook(getCtx(), p_C_CashBook_ID, get_TrxName());
-    MBankAccount mBankFrom = new MBankAccount(getCtx(), p_From_C_BankAccount_ID, get_TrxName());
-    MBankAccount mBankTo = new MBankAccount(getCtx(), p_To_C_BankAccount_ID, get_TrxName());
+    MCashBook mcash = new MCashBook(getCtx(), p_C_CashBook_ID, null);
+    MBankAccount mBankFrom = new MBankAccount(getCtx(), p_From_C_BankAccount_ID, null);
+    MBankAccount mBankTo = new MBankAccount(getCtx(), p_To_C_BankAccount_ID, null);
 
     if ((mcash.getC_Currency_ID() != mBankFrom.getC_Currency_ID())
         || (mcash.getC_Currency_ID() != mBankTo.getC_Currency_ID())) return false;
@@ -149,7 +149,7 @@ public class ImmediateBankTransfer extends SvrProcess {
 
   private MCash createCash() {
 
-    MCash cash = new MCash(getCtx(), 0, get_TrxName());
+    MCash cash = new MCash(getCtx(), 0, null);
 
     cash.setName(p_Name);
     cash.setDescription(p_Description);

@@ -1,14 +1,15 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Locale;
-import java.util.Properties;
 import org.compiere.crm.MClientInfo;
 import org.compiere.model.I_C_Calendar;
 import org.compiere.orm.MClient;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
+
+import java.sql.ResultSet;
+import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Calendar Model
@@ -90,7 +91,7 @@ public class MCalendar extends X_C_Calendar {
    * @param client parent
    */
   public MCalendar(MClient client) {
-    super(client.getCtx(), 0, client.get_TrxName());
+    super(client.getCtx(), 0, null);
     setClientOrg(client);
     StringBuilder msgset =
         new StringBuilder()

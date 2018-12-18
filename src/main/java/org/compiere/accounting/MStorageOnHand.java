@@ -1,23 +1,20 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
 import org.compiere.production.MLocator;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.*;
 
@@ -373,7 +370,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     //	Specific Attribute Set Instance
     String sql =
         "SELECT s.M_Product_ID,s.M_Locator_ID,s.M_AttributeSetInstance_ID,"
-            + "s.AD_Client_ID,s.AD_Org_ID,s.IsActive,s.Created,s.CreatedBy,s.Updated,s.UpdatedBy,"
+            + "s.clientId,s.orgId,s.IsActive,s.Created,s.CreatedBy,s.Updated,s.UpdatedBy,"
             + "s.QtyOnHand,s.DateLastInventory,s.M_StorageOnHand_UU,s.DateMaterialPolicy "
             + "FROM M_StorageOnHand s"
             + " INNER JOIN M_Locator l ON (l.M_Locator_ID=s.M_Locator_ID) ";
@@ -392,7 +389,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     if (allAttributeInstances) {
       sql =
           "SELECT s.M_Product_ID,s.M_Locator_ID,s.M_AttributeSetInstance_ID,"
-              + " s.AD_Client_ID,s.AD_Org_ID,s.IsActive,s.Created,s.CreatedBy,s.Updated,s.UpdatedBy,"
+              + " s.clientId,s.orgId,s.IsActive,s.Created,s.CreatedBy,s.Updated,s.UpdatedBy,"
               + " s.QtyOnHand,s.DateLastInventory,s.M_StorageOnHand_UU,s.DateMaterialPolicy "
               + " FROM M_StorageOnHand s"
               + " INNER JOIN M_Locator l ON (l.M_Locator_ID=s.M_Locator_ID)"
@@ -562,7 +559,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     ArrayList<MStorageOnHand> list = new ArrayList<MStorageOnHand>();
     String sql =
         "SELECT s.M_Product_ID,s.M_Locator_ID,s.M_AttributeSetInstance_ID,"
-            + "s.AD_Client_ID,s.AD_Org_ID,s.IsActive,s.Created,s.CreatedBy,s.Updated,s.UpdatedBy,"
+            + "s.clientId,s.orgId,s.IsActive,s.Created,s.CreatedBy,s.Updated,s.UpdatedBy,"
             + "s.QtyOnHand,s.DateLastInventory,s.M_StorageOnHand_UU,s.DateMaterialPolicy "
             + "FROM M_StorageOnHand s"
             + " INNER JOIN M_Locator l ON (l.M_Locator_ID=s.M_Locator_ID)"
@@ -843,8 +840,8 @@ public class MStorageOnHand extends X_M_StorageOnHand {
           getMAttributeSetInstance_ID(),
           getDateMaterialPolicy()
         },
-        get_TrxName());
-    load(get_TrxName());
+        null);
+    load((HashMap)null);
     if (getQtyOnHand().signum() == -1) {
       MWarehouse wh = MWarehouse.get(Env.getCtx(), getM_Warehouse_ID());
       if (wh.isDisallowNegativeInv()) {
@@ -953,7 +950,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
    */
   private MStorageOnHand(
       MLocator locator, int M_Product_ID, int M_AttributeSetInstance_ID, Timestamp dateMPolicy) {
-    this(locator.getCtx(), 0, locator.get_TrxName());
+    this(locator.getCtx(), 0, null);
     setClientOrg(locator);
     setM_Locator_ID(locator.getM_Locator_ID());
     setM_Product_ID(M_Product_ID);
@@ -991,7 +988,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
   protected boolean beforeSave(boolean newRecord) {
     //	Negative Inventory check
     if (newRecord || is_ValueChanged("QtyOnHand")) {
-      MWarehouse wh = new MWarehouse(getCtx(), getM_Warehouse_ID(), get_TrxName());
+      MWarehouse wh = new MWarehouse(getCtx(), getM_Warehouse_ID(), null);
       if (wh.isDisallowNegativeInv()) {
         String sql =
             "SELECT SUM(QtyOnHand) "
@@ -1003,7 +1000,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 + " AND s.M_AttributeSetInstance_ID<>?";
         BigDecimal QtyOnHand =
             getSQLValueBDEx(
-                get_TrxName(),
+                null,
                 sql,
                 new Object[] {
                   getM_Product_ID(),

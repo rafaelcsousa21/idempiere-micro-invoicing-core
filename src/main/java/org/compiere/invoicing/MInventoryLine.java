@@ -43,7 +43,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         "M_Inventory_ID=? AND M_Locator_ID=?"
             + " AND M_Product_ID=? AND M_AttributeSetInstance_ID=?";
     return new Query(
-            inventory.getCtx(), I_M_InventoryLine.Table_Name, whereClause, inventory.get_TrxName())
+            inventory.getCtx(), I_M_InventoryLine.Table_Name, whereClause, null)
         .setParameters(inventory.getId(), M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID)
         .firstOnly();
   } //	get
@@ -101,7 +101,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
       BigDecimal QtyBook,
       BigDecimal QtyCount,
       BigDecimal QtyInternalUse) {
-    this(inventory.getCtx(), 0, inventory.get_TrxName());
+    this(inventory.getCtx(), 0, null);
     if (inventory.getId() == 0) throw new IllegalArgumentException("Header not saved");
     m_parent = inventory;
     setM_Inventory_ID(inventory.getM_Inventory_ID()); // 	Parent
@@ -210,7 +210,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
    * @return parent
    */
   public MInventory getParent() {
-    if (m_parent == null) m_parent = new MInventory(getCtx(), getM_Inventory_ID(), get_TrxName());
+    if (m_parent == null) m_parent = new MInventory(getCtx(), getM_Inventory_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -273,7 +273,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_InventoryLine WHERE M_Inventory_ID=?";
-      int ii = getSQLValue(get_TrxName(), sql, getM_Inventory_ID());
+      int ii = getSQLValue(null, sql, getM_Inventory_ID());
       setLine(ii);
     }
 
@@ -339,7 +339,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
       }
     } else if (MDocType.DOCSUBTYPEINV_CostAdjustment.equals(docSubTypeInv)) {
       int M_ASI_ID = getMAttributeSetInstance_ID();
-      MProduct product = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
+      MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
       MClient client = MClient.get(getCtx());
       MAcctSchema as = client.getAcctSchema();
       String costingLevel = product.getCostingLevel(as);
@@ -396,7 +396,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
   /*private void createMA()
   {
   	MStorageOnHand[] storages = MStorageOnHand.getAll(getCtx(), getM_Product_ID(),
-  		getM_Locator_ID(), get_TrxName());
+  		getM_Locator_ID(), null);
   	boolean allZeroASI = true;
   	for (int i = 0; i < storages.length; i++)
   	{

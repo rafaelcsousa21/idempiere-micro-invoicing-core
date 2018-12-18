@@ -90,7 +90,7 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch, I_
   public org.compiere.model.I_C_PaymentProcessor getC_PaymentProcessor() throws RuntimeException {
     return (org.compiere.model.I_C_PaymentProcessor)
         MTable.get(getCtx(), org.compiere.model.I_C_PaymentProcessor.Table_Name)
-            .getPO(getC_PaymentProcessor_ID(), get_TrxName());
+            .getPO(getC_PaymentProcessor_ID(), null);
   }
 
   /**

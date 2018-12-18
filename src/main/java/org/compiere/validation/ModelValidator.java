@@ -173,7 +173,7 @@ public interface ModelValidator {
   /**
    * Get Client to be monitored
    *
-   * @return AD_Client_ID
+   * @return clientId
    */
   public int  getClientId();
 

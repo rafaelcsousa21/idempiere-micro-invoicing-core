@@ -85,7 +85,7 @@ public class X_AD_WF_Block extends BasePOName implements I_AD_WF_Block, I_Persis
   public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
     return (org.compiere.model.I_AD_Workflow)
         MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getAD_Workflow_ID(), get_TrxName());
+            .getPO(getAD_Workflow_ID(), null);
   }
 
   /**

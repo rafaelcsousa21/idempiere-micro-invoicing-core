@@ -116,7 +116,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -143,7 +143,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**
@@ -481,7 +481,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
   public org.compiere.model.I_C_AllocationHdr getReversal() throws RuntimeException {
     return (org.compiere.model.I_C_AllocationHdr)
         MTable.get(getCtx(), org.compiere.model.I_C_AllocationHdr.Table_Name)
-            .getPO(getReversal_ID(), get_TrxName());
+            .getPO(getReversal_ID(), null);
   }
 
   /**

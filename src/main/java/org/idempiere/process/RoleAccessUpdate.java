@@ -14,14 +14,15 @@
  */
 package org.idempiere.process;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MRole;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.*;
+import org.idempiere.common.util.CLogger;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Update Role Access
@@ -50,7 +51,7 @@ public class RoleAccessUpdate extends SvrProcess {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
       else if (name.equals("AD_Role_ID")) p_AD_Role_ID = para[i].getParameterAsInt();
-      else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
+      else if (name.equals("clientId")) p_AD_Client_ID = para[i].getParameterAsInt();
       else if (name.equals("ResetAccess")) p_IsReset = "Y".equals(para[i].getParameter());
       else log.log(Level.SEVERE, "Unknown Parameter: " + name);
     }
@@ -64,14 +65,14 @@ public class RoleAccessUpdate extends SvrProcess {
    */
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO))
-      log.info("AD_Client_ID=" + p_AD_Client_ID + ", AD_Role_ID=" + p_AD_Role_ID);
+      log.info("clientId=" + p_AD_Client_ID + ", AD_Role_ID=" + p_AD_Role_ID);
     //
-    if (p_AD_Role_ID > 0) updateRole(new MRole(getCtx(), p_AD_Role_ID, get_TrxName()));
+    if (p_AD_Role_ID > 0) updateRole(new MRole(getCtx(), p_AD_Role_ID, null));
     else {
       List<Object> params = new ArrayList<Object>();
       StringBuilder whereClause = new StringBuilder("1=1");
       if (p_AD_Client_ID > 0) {
-        whereClause.append(" AND AD_Client_ID=? ");
+        whereClause.append(" AND clientId=? ");
         params.add(p_AD_Client_ID);
       }
       if (p_AD_Role_ID == 0) // System Role
@@ -79,13 +80,13 @@ public class RoleAccessUpdate extends SvrProcess {
         whereClause.append(" AND AD_Role_ID=?");
         params.add(p_AD_Role_ID);
       }
-      // sql += "ORDER BY AD_Client_ID, Name";
+      // sql += "ORDER BY clientId, Name";
 
       List<MRole> roles =
-          new Query(getCtx(), MRole.Table_Name, whereClause.toString(), get_TrxName())
+          new Query(getCtx(), MRole.Table_Name, whereClause.toString(), null)
               .setOnlyActiveRecords(true)
               .setParameters(params)
-              .setOrderBy("AD_Client_ID, Name")
+              .setOrderBy("clientId, Name")
               .list();
 
       for (MRole role : roles) {

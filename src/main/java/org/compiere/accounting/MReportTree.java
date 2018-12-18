@@ -179,7 +179,7 @@ public class MReportTree {
 
     String sql =
         "SELECT AD_Tree_ID, Name FROM AD_Tree "
-            + "WHERE AD_Client_ID=? AND TreeType=? AND IsActive='Y' AND IsAllNodes='Y' "
+            + "WHERE clientId=? AND TreeType=? AND IsActive='Y' AND IsAllNodes='Y' "
             + "ORDER BY IsDefault DESC, AD_Tree_ID"; //	assumes first is primary tree
     PreparedStatement pstmt = null;
     ResultSet rs = null;

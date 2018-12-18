@@ -58,7 +58,7 @@ public class PeriodStatus extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO))
       log.info("C_Period_ID=" + p_C_Period_ID + ", PeriodAction=" + p_PeriodAction);
-    MPeriod period = new MPeriod(getCtx(), p_C_Period_ID, get_TrxName());
+    MPeriod period = new MPeriod(getCtx(), p_C_Period_ID, null);
     if (period.getId() == 0)
       throw new AdempiereUserError("@NotFound@  @C_Period_ID@=" + p_C_Period_ID);
 
@@ -84,7 +84,7 @@ public class PeriodStatus extends SvrProcess {
         .append(p_PeriodAction)
         .append("'");
 
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
 
     CacheMgt.get().reset("C_PeriodControl", 0);
     CacheMgt.get().reset("C_Period", p_C_Period_ID);

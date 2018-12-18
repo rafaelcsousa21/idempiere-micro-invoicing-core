@@ -102,7 +102,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA, I_Pe
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -131,7 +131,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA, I_Pe
   public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
     return (org.compiere.model.I_M_InventoryLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getM_InventoryLine_ID(), get_TrxName());
+            .getPO(getM_InventoryLine_ID(), null);
   }
 
   /**

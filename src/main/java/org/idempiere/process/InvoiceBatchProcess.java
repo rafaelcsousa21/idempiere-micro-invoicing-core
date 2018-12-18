@@ -14,7 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceBatch;
 import org.compiere.invoicing.MInvoiceBatchLine;
@@ -23,6 +22,8 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.util.logging.Level;
 
 /**
  * Process Invoice Batch
@@ -69,7 +70,7 @@ public class InvoiceBatchProcess extends SvrProcess {
     if (log.isLoggable(Level.INFO))
       log.info("C_InvoiceBatch_ID=" + p_C_InvoiceBatch_ID + ", DocAction=" + p_DocAction);
     if (p_C_InvoiceBatch_ID == 0) throw new AdempiereUserError("C_InvoiceBatch_ID = 0");
-    MInvoiceBatch batch = new MInvoiceBatch(getCtx(), p_C_InvoiceBatch_ID, get_TrxName());
+    MInvoiceBatch batch = new MInvoiceBatch(getCtx(), p_C_InvoiceBatch_ID, null);
     if (batch.getId() == 0)
       throw new AdempiereUserError("@NotFound@: @C_InvoiceBatch_ID@ - " + p_C_InvoiceBatch_ID);
     if (batch.isProcessed()) throw new AdempiereUserError("@Processed@");

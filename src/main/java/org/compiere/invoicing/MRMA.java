@@ -63,7 +63,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
       return null;
     }
 
-    return new MInvoice(getCtx(), invId, get_TrxName());
+    return new MInvoice(getCtx(), invId, null);
   }
 
   /**
@@ -85,10 +85,10 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
       if (m_inout != null) {
         if (m_inout.getC_Order_ID() != 0) {
           org.compiere.order.MOrder order =
-              new MOrder(getCtx(), m_inout.getC_Order_ID(), get_TrxName());
+              new MOrder(getCtx(), m_inout.getC_Order_ID(), null);
           setC_Currency_ID(order.getC_Currency_ID());
         } else if (m_inout.getC_Invoice_ID() != 0) {
-          MInvoice invoice = new MInvoice(getCtx(), m_inout.getC_Invoice_ID(), get_TrxName());
+          MInvoice invoice = new MInvoice(getCtx(), m_inout.getC_Invoice_ID(), null);
           setC_Currency_ID(invoice.getC_Currency_ID());
         }
       }
@@ -236,10 +236,10 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
 
     //	Org Must be linked to BPartner
     org.compiere.orm.MOrg org = MOrg.get(getCtx(),  getOrgId());
-    int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(get_TrxName());
+    int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(null);
     if (counterC_BPartner_ID == 0) return null;
     //	Business Partner needs to be linked to Org
-    org.compiere.crm.MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID(), get_TrxName());
+    org.compiere.crm.MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID(), null);
     int counterAD_Org_ID = bp.getAD_OrgBP_ID_Int();
     if (counterAD_Org_ID == 0) return null;
 
@@ -258,12 +258,12 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
     }
 
     //	Deep Copy
-    MRMA counter = copyFrom(this, C_DocTypeTarget_ID, !isSOTrx(), true, get_TrxName());
+    MRMA counter = copyFrom(this, C_DocTypeTarget_ID, !isSOTrx(), true, null);
 
     //
     counter.setAD_Org_ID(counterAD_Org_ID);
     counter.setC_BPartner_ID(counterC_BPartner_ID);
-    counter.saveEx(get_TrxName());
+    counter.saveEx(null);
 
     //	Update copied lines
     MRMALine[] counterLines = counter.getLines(true);
@@ -271,7 +271,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
       MRMALine counterLine = counterLines[i];
       counterLine.setClientOrg(counter);
       //
-      counterLine.saveEx(get_TrxName());
+      counterLine.saveEx(null);
     }
 
     if (log.isLoggable(Level.FINE)) log.fine(counter.toString());
@@ -285,7 +285,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
           throw new AdempiereException(
               "Failed when processing document - " + counter.getProcessMsg());
         // end added
-        counter.saveEx(get_TrxName());
+        counter.saveEx(null);
       }
     }
     return counter;
@@ -308,7 +308,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         "SELECT COUNT(1) "
             + "FROM M_InOut "
             + "WHERE M_RMA_ID=? AND (DocStatus NOT IN ('VO','RE'))";
-    int count = getSQLValueEx(get_TrxName(), validation, getM_RMA_ID());
+    int count = getSQLValueEx(null, validation, getM_RMA_ID());
 
     if (count == 0) {
       MRMALine lines[] = getLines(true);
@@ -437,11 +437,11 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
    */
   public MRMALine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     List<MRMALine> list =
-        new Query(getCtx(), I_M_RMALine.Table_Name, "M_RMA_ID=?", get_TrxName())
+        new Query(getCtx(), I_M_RMALine.Table_Name, "M_RMA_ID=?", null)
             .setParameters(getM_RMA_ID())
             .setOrderBy(MRMALine.COLUMNNAME_Line)
             .list();
@@ -469,7 +469,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
    */
   public MInOut getShipment() {
     if (m_inout == null && getInOut_ID() != 0)
-      m_inout = new MInOut(getCtx(), getInOut_ID(), get_TrxName());
+      m_inout = new MInOut(getCtx(), getInOut_ID(), null);
     return (MInOut) m_inout;
   } //	getShipment
 }

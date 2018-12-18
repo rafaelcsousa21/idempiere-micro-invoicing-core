@@ -115,7 +115,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
    * @param order parent order
    */
   public MDDOrderLine(MDDOrder order) {
-    this(order.getCtx(), 0, order.get_TrxName());
+    this(order.getCtx(), 0, null);
     if (order.getId() == 0) throw new IllegalArgumentException("Header not saved");
     setDD_Order_ID(order.getDD_Order_ID()); // 	parent
     setOrder(order);
@@ -176,7 +176,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
    * @return parent
    */
   public MDDOrder getParent() {
-    if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDD_Order_ID(), get_TrxName());
+    if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDD_Order_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -515,7 +515,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
                   true,
                   false,
                   0,
-                  get_TrxName());
+                  null);
           BigDecimal qty = Env.ZERO;
           for (int i = 0; i < storages.length; i++) {
             if (storages[i].getMAttributeSetInstance_ID() == getMAttributeSetInstance_ID())
@@ -536,7 +536,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_OrderLine WHERE C_Order_ID=?";
-      int ii = getSQLValue(get_TrxName(), sql, getDD_Order_ID());
+      int ii = getSQLValue(null, sql, getDD_Order_ID());
       setLine(ii);
     }
 

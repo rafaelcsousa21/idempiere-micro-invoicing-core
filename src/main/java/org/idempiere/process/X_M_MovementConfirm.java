@@ -236,7 +236,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
   public org.compiere.model.I_M_Inventory getM_Inventory() throws RuntimeException {
     return (org.compiere.model.I_M_Inventory)
         MTable.get(getCtx(), org.compiere.model.I_M_Inventory.Table_Name)
-            .getPO(getM_Inventory_ID(), get_TrxName());
+            .getPO(getM_Inventory_ID(), null);
   }
 
   /**
@@ -302,7 +302,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
   public org.compiere.model.I_M_Movement getM_Movement() throws RuntimeException {
     return (org.compiere.model.I_M_Movement)
         MTable.get(getCtx(), org.compiere.model.I_M_Movement.Table_Name)
-            .getPO(getM_Movement_ID(), get_TrxName());
+            .getPO(getM_Movement_ID(), null);
   }
 
   /**

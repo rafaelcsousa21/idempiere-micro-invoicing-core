@@ -61,7 +61,7 @@ public class CommissionCalc extends SvrProcess {
     	if (log.isLoggable(Level.INFO)) log.info("C_Commission_ID=" + getRecord_ID() + ", StartDate=" + p_StartDate);
     	if (p_StartDate == null)
     		p_StartDate = new Timestamp (System.currentTimeMillis());
-    	m_com = new MCommission (getCtx(), getRecord_ID(), get_TrxName());
+    	m_com = new MCommission (getCtx(), getRecord_ID(), null);
     	if (m_com.getId() == 0)
     		throw new AdempiereUserError("No Commission");
 
@@ -106,7 +106,7 @@ public class CommissionCalc extends SvrProcess {
     					.append(" LEFT OUTER JOIN M_Product prd ON (l.M_Product_ID = prd.M_Product_ID) ")
     					.append("WHERE p.DocStatus IN ('CL','CO','RE')")
     					.append(" AND h.IsSOTrx='Y'")
-    					.append(" AND p.AD_Client_ID = ?")
+    					.append(" AND p.clientId = ?")
     					.append(" AND p.DateTrx BETWEEN ? AND ?");
     			}
     			else
@@ -123,7 +123,7 @@ public class CommissionCalc extends SvrProcess {
     					.append(" INNER JOIN C_InvoiceLine l ON (h.C_Invoice_ID = l.C_Invoice_ID) ")
     					.append("WHERE p.DocStatus IN ('CL','CO','RE')")
     					.append(" AND h.IsSOTrx='Y'")
-    					.append(" AND p.AD_Client_ID = ?")
+    					.append(" AND p.clientId = ?")
     					.append(" AND p.DateTrx BETWEEN ? AND ?");
     			}
     		}
@@ -139,7 +139,7 @@ public class CommissionCalc extends SvrProcess {
     					.append(" LEFT OUTER JOIN M_Product prd ON (l.M_Product_ID = prd.M_Product_ID) ")
     					.append("WHERE h.DocStatus IN ('CL','CO')")
     					.append(" AND h.IsSOTrx='Y'")
-    					.append(" AND h.AD_Client_ID = ?")
+    					.append(" AND h.clientId = ?")
     					.append(" AND h.DateOrdered BETWEEN ? AND ?");
     			}
     			else
@@ -151,7 +151,7 @@ public class CommissionCalc extends SvrProcess {
     					.append(" INNER JOIN C_OrderLine l ON (h.C_Order_ID = l.C_Order_ID) ")
     					.append("WHERE h.DocStatus IN ('CL','CO')")
     					.append(" AND h.IsSOTrx='Y'")
-    					.append(" AND h.AD_Client_ID = ?")
+    					.append(" AND h.clientId = ?")
     					.append(" AND h.DateOrdered BETWEEN ? AND ?");
     			}
     		}
@@ -167,7 +167,7 @@ public class CommissionCalc extends SvrProcess {
     					.append(" LEFT OUTER JOIN M_Product prd ON (l.M_Product_ID = prd.M_Product_ID) ")
     					.append("WHERE h.DocStatus IN ('CL','CO','RE')")
     					.append(" AND h.IsSOTrx='Y'")
-    					.append(" AND h.AD_Client_ID = ?")
+    					.append(" AND h.clientId = ?")
     					.append(" AND h.DateInvoiced BETWEEN ? AND ?");
     			}
     			else
@@ -179,14 +179,14 @@ public class CommissionCalc extends SvrProcess {
     					.append(" INNER JOIN C_InvoiceLine l ON (h.C_Invoice_ID = l.C_Invoice_ID) ")
     					.append("WHERE h.DocStatus IN ('CL','CO','RE')")
     					.append(" AND h.IsSOTrx='Y'")
-    					.append(" AND h.AD_Client_ID = ?")
+    					.append(" AND h.clientId = ?")
     					.append(" AND h.DateInvoiced BETWEEN ? AND ?");
     			}
     		}
     		//	CommissionOrders/Invoices
     		if (lines[i].isCommissionOrders())
     		{
-    			MUser[] users = MUser.getOfBPartner(getCtx(), m_com.getC_BPartner_ID(), get_TrxName());
+    			MUser[] users = MUser.getOfBPartner(getCtx(), m_com.getC_BPartner_ID(), null);
     			if (users == null || users.length == 0)
     				throw new AdempiereUserError ("Commission Business Partner has no Users/Contact");
     			if (users.length == 1)
@@ -204,7 +204,7 @@ public class CommissionCalc extends SvrProcess {
     		}
     		//	Organization
     		if (lines[i].getOrg_ID() != 0)
-    			sql.append(" AND h.AD_Org_ID=").append(lines[i].getOrg_ID());
+    			sql.append(" AND h.orgId=").append(lines[i].getOrg_ID());
     		//	BPartner
     		if (lines[i].getC_BPartner_ID() != 0)
     			sql.append(" AND h.C_BPartner_ID=").append(lines[i].getC_BPartner_ID());
@@ -329,7 +329,7 @@ public class CommissionCalc extends SvrProcess {
   	ResultSet rs = null;
   	try
   	{
-  		pstmt = prepareStatement(sql, get_TrxName());
+  		pstmt = prepareStatement(sql, null);
   		pstmt.setInt(1, m_com.getClientId());
   		pstmt.setTimestamp(2, p_StartDate);
   		pstmt.setTimestamp(3, m_EndDate);

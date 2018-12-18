@@ -50,7 +50,7 @@ public class FactAcctSummary extends SvrProcess {
     throw new NotImplementedException();
 
     /*
-    List<MReportCube> cubes = new Query(getCtx(), MReportCube.Table_Name, where.toString(), get_TrxName())
+    List<MReportCube> cubes = new Query(getCtx(), MReportCube.Table_Name, where.toString(), null)
     .setOnlyActiveRecords(true).setClient_ID()
     .list();
 

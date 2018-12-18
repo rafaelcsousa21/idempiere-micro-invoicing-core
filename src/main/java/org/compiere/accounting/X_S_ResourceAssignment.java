@@ -188,7 +188,7 @@ public class X_S_ResourceAssignment extends BasePOName
   public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException {
     return (org.compiere.model.I_S_Resource)
         MTable.get(getCtx(), org.compiere.model.I_S_Resource.Table_Name)
-            .getPO(getS_Resource_ID(), get_TrxName());
+            .getPO(getS_Resource_ID(), null);
   }
 
   /**

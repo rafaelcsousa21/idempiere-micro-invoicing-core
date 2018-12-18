@@ -1,11 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.apache.commons.collections4.keyvalue.MultiKey;
 import org.compiere.model.I_A_Depreciation_Workfile;
 import org.compiere.model.SetGetModel;
@@ -16,8 +10,15 @@ import org.compiere.orm.TimeUtil;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
@@ -74,7 +75,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
    */
   public MAsset getAsset(boolean requery) {
     if (m_asset == null || requery) {
-      m_asset = MAsset.get(getCtx(), getA_Asset_ID(), get_TrxName());
+      m_asset = MAsset.get(getCtx(), getA_Asset_ID(), null);
     }
     if (m_asset.getId() <= 0) {
       m_asset = null;
@@ -136,7 +137,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
   }
 
   protected boolean beforeSave(boolean newRecord) {
-    if (log.isLoggable(Level.INFO)) log.info("Entering: trxName=" + get_TrxName());
+    if (log.isLoggable(Level.INFO)) log.info("Entering: trxName=" + null);
 
     // copy UseLife to A_Life
     if (newRecord) { // @win: should only update only if newrecord
@@ -179,7 +180,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     }
 
     if (log.isLoggable(Level.INFO))
-      log.info("Leaving: trxName=" + get_TrxName() + " [RETURN TRUE]");
+      log.info("Leaving: trxName=" + null + " [RETURN TRUE]");
     return true;
   } //	beforeSave
 
@@ -215,7 +216,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
 
   /** */
   public MDepreciationWorkfile(MAsset asset, String postingType, MAssetGroupAcct assetgrpacct) {
-    this(asset.getCtx(), 0, asset.get_TrxName());
+    this(asset.getCtx(), 0, null);
     setA_Asset_ID(asset.getA_Asset_ID());
     setAD_Org_ID(asset. getOrgId()); // @win added
     setA_Asset_Cost(asset.getA_Asset_Cost());
@@ -569,7 +570,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
             + "=? AND IsActive=?";
     //
     MDepreciationExp depexp =
-        new Query(getCtx(), MDepreciationExp.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), MDepreciationExp.Table_Name, whereClause, null)
             .setParameters(new Object[] {getA_Asset_ID(), getPostingType(), true, true})
             .setOrderBy(
                 MDepreciationExp.COLUMNNAME_A_Period
@@ -600,8 +601,8 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     }
 
     StringBuilder sb = new StringBuilder();
-    load(get_TrxName()); // reload workfile
-    MAssetAcct assetacct = getA_AssetAcct(null, get_TrxName());
+    load((HashMap)null); // reload workfile
+    MAssetAcct assetacct = getA_AssetAcct(null, null);
     // TODO: teo_sarca: need to evaluate what happens when we change Depreciation method !!!
     MDepreciation depreciation_C = MDepreciation.get(getCtx(), assetacct.getA_Depreciation_ID());
     MDepreciation depreciation_F = MDepreciation.get(getCtx(), assetacct.getA_Depreciation_F_ID());
@@ -668,7 +669,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
       Timestamp dateAcct = TimeUtil.getMonthLastDay(TimeUtil.addMonths(getDateAcct(), months));
 
       MDepreciationExp.createDepreciation(
-          this, currentPeriod, dateAcct, exp_C, exp_F, accumDep_C, accumDep_F, help, get_TrxName());
+          this, currentPeriod, dateAcct, exp_C, exp_F, accumDep_C, accumDep_F, help, null);
       if (log.isLoggable(Level.FINE)) {
         String info =
             ""
@@ -700,7 +701,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
 
   /** Truncate not processed depreciation entries. IS NOT modifying workfile. */
   public void truncDepreciation() {
-    String trxName = get_TrxName();
+    String trxName = null;
 
     int A_Current_Period = getA_Current_Period();
     final String sql =

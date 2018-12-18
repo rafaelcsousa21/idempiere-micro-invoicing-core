@@ -119,7 +119,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @param AD_WF_Node_ID start node
    */
   public MWFActivity(MWFProcess process, int AD_WF_Node_ID) {
-    super(process.getCtx(), 0, process.get_TrxName());
+    super(process.getCtx(), 0, null);
     setAD_WF_Process_ID(process.getAD_WF_Process_ID());
     setPriority(process.getPriority());
     //	Document Link
@@ -218,8 +218,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
       //	Inform Process
       if (m_process == null)
-        m_process = new MWFProcess(getCtx(), getAD_WF_Process_ID(), this.get_TrxName());
-      m_process.checkActivities(this.get_TrxName(), m_po);
+        m_process = new MWFProcess(getCtx(), getAD_WF_Process_ID(), null);
+      m_process.checkActivities(null, m_po);
     } else {
       String msg =
           "Set WFState - Ignored Invalid Transformation - New="
@@ -266,7 +266,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
   public MWFEventAudit getEventAudit() {
     if (m_audit != null) return m_audit;
     MWFEventAudit[] events =
-        MWFEventAudit.get(getCtx(), getAD_WF_Process_ID(), getAD_WF_Node_ID(), get_TrxName());
+        MWFEventAudit.get(getCtx(), getAD_WF_Process_ID(), getAD_WF_Node_ID(), null);
     if (events == null || events.length == 0) m_audit = new MWFEventAudit(this);
     else m_audit = events[events.length - 1]; // 	last event
     return m_audit;
@@ -297,16 +297,16 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @return po
    */
   public PO getPO() {
-    return getPO(get_TrxName() != null ? Trx.get(get_TrxName(), false) : null);
+    return getPO(null != null ? Trx.get(null, false) : null);
   } //	getPO
 
   /**
-   * Get PO AD_Client_ID
+   * Get PO clientId
    *
    * @return client of PO
    */
   public int getPO_AD_Client_ID() {
-    if (m_po == null) getPO(get_TrxName() != null ? Trx.get(get_TrxName(), false) : null);
+    if (m_po == null) getPO(null != null ? Trx.get(null, false) : null);
     if (m_po != null) return m_po.getClientId();
     return 0;
   } //	getPO_AD_Client_ID
@@ -720,11 +720,11 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int doc_id = rs.getInt(1);
-        PO doc = (PO) tablepo.getPO(doc_id, get_TrxName());
+        PO doc = (PO) tablepo.getPO(doc_id, null);
         BigDecimal docamt = ((DocAction) doc).getApprovalAmt();
         if (docamt != null) amtaccum = amtaccum.add(docamt);
       }
@@ -750,12 +750,12 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     // m_trx = Trx.get(, true);
     Trx trx = null;
     boolean localTrx = false;
-    if (get_TrxName() == null) {
+    if (null == null) {
       this.set_TrxName(Trx.createTrxName("WFA"));
       localTrx = true;
     }
 
-    trx = Trx.get(get_TrxName(), true);
+    trx = Trx.get(null, true);
     if (localTrx) trx.setDisplayName(getClass().getName() + "_run");
 
     Savepoint savepoint = null;
@@ -780,7 +780,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       }
       //	Do Work
       /** ** Trx Start *** */
-      boolean done = performWork(Trx.get(get_TrxName(), false));
+      boolean done = performWork(Trx.get(null, false));
 
       /** ** Trx End *** */
       // teo_sarca [ 1708835 ]
@@ -825,7 +825,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         if (contextLost) {
           Env.getCtx()
               .setProperty(
-                  "#AD_Client_ID", (m_po != null ? Integer.toString(m_po.getClientId()) : "0"));
+                  "#clientId", (m_po != null ? Integer.toString(m_po.getClientId()) : "0"));
           m_state = new StateEngine(X_AD_WF_Activity.WFSTATE_Running);
           setProcessed(true);
           setWFState(StateEngine.STATE_Aborted);
@@ -835,7 +835,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
         //	Set Document Status
         if (m_po != null && m_po instanceof DocAction && m_docStatus != null) {
-          m_po.load(get_TrxName());
+          m_po.load(null);
           DocAction doc = (DocAction) m_po;
           doc.setDocStatus(m_docStatus);
           m_po.saveEx();
@@ -845,7 +845,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
           m_process.saveEx();
         }
       } finally {
-        if (contextLost) Env.getCtx().remove("#AD_Client_ID");
+        if (contextLost) Env.getCtx().remove("#clientId");
       }
     } finally {
       if (localTrx && trx != null) {
@@ -965,7 +965,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       note.saveEx();
       //	Attachment
       MAttachment attachment =
-          new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID(), get_TrxName());
+          new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID(), null);
       attachment.addEntry(report);
       attachment.setTextMsg(m_node.getName(true));
       attachment.saveEx();
@@ -987,7 +987,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       pi.setAD_User_ID(getAD_User_ID());
       pi.setADClientID(getClientId());
       pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
-      return process.processItWithoutTrxClose(pi, trx);
+      return process.processItWithoutTrxClose(pi);
     }
 
     /**
@@ -1093,7 +1093,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             }
           } else if (resp.isManual()) {
             MWFActivityApprover[] approvers =
-                MWFActivityApprover.getOfActivity(getCtx(), getAD_WF_Activity_ID(), get_TrxName());
+                MWFActivityApprover.getOfActivity(getCtx(), getAD_WF_Activity_ID(), null);
             for (int i = 0; i < approvers.length; i++) {
               if (approvers[i].getAD_User_ID() == Env.getAD_User_ID(getCtx())) {
                 autoApproval = true;
@@ -1272,7 +1272,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
     setWFState(StateEngine.STATE_Running);
     setAD_User_ID(AD_User_ID);
-    Trx trx = (get_TrxName() != null) ? Trx.get(get_TrxName(), false) : null;
+    Trx trx = (null != null) ? Trx.get(null, false) : null;
     boolean ok = setVariable(value, displayType, textMsg, trx);
     if (!ok) return false;
 
@@ -1574,10 +1574,10 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             sendEMail(client, users[i].getAD_User_ID(), null, subject, message, pdf, text.isHtml());
         }
       } else if (resp.isOrganization()) {
-        MOrgInfo org = MOrgInfo.get(getCtx(), m_po. getOrgId(), get_TrxName());
+        MOrgInfo org = MOrgInfo.get(getCtx(), m_po. getOrgId(), null);
         if (org.getSupervisor_ID() == 0) {
           if (log.isLoggable(Level.FINE))
-            log.fine("No Supervisor for AD_Org_ID=" + m_po. getOrgId());
+            log.fine("No Supervisor for orgId=" + m_po. getOrgId());
         } else {
           sendEMail(client, org.getSupervisor_ID(), null, subject, message, pdf, text.isHtml());
         }
@@ -1605,7 +1605,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       File pdf,
       boolean isHtml) {
     if (AD_User_ID != 0) {
-      MUser user = new MUser(getCtx(), AD_User_ID, get_TrxName());
+      MUser user = new MUser(getCtx(), AD_User_ID, null);
       email = user.getEMail();
       if (email != null && email.length() > 0) {
         email = email.trim();
@@ -1646,7 +1646,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
   public String getHistoryHTML() {
     SimpleDateFormat format = DisplayType.getDateFormat(DisplayType.DateTime);
     StringBuilder sb = new StringBuilder();
-    MWFEventAudit[] events = MWFEventAudit.get(getCtx(), getAD_WF_Process_ID(), get_TrxName());
+    MWFEventAudit[] events = MWFEventAudit.get(getCtx(), getAD_WF_Process_ID(), null);
     for (int i = 0; i < events.length; i++) {
       MWFEventAudit audit = events[i];
       //	sb.append("<p style=\"width:400\">");

@@ -60,19 +60,19 @@ public class ReportLineSet_Copy extends SvrProcess {
     throw new NotImplementedException();
     //
     /*
-    MReportLineSet to = new MReportLineSet(getCtx(), to_ID, get_TrxName());
-    MReportLineSet rlSet = new MReportLineSet(getCtx(), m_PA_ReportLineSet_ID, get_TrxName());
+    MReportLineSet to = new MReportLineSet(getCtx(), to_ID, null);
+    MReportLineSet rlSet = new MReportLineSet(getCtx(), m_PA_ReportLineSet_ID, null);
     MReportLine[] rls = rlSet.getLiness();
     for (int i = 0; i < rls.length; i++)
     {
-    	MReportLine rl = MReportLine.copy (getCtx(), to.getClientId(), to.getOrgId(), to_ID, rls[i], get_TrxName());
+    	MReportLine rl = MReportLine.copy (getCtx(), to.getClientId(), to.getOrgId(), to_ID, rls[i], null);
     	rl.saveEx();
     	MReportSource[] rss = rls[i].getSources();
     	if (rss != null)
     	{
     		for (int ii = 0; ii < rss.length; ii++)
     		{
-    			MReportSource rs = MReportSource.copy (getCtx(), to.getClientId(), to.getOrgId(), rl.getId(), rss[ii], get_TrxName());
+    			MReportSource rs = MReportSource.copy (getCtx(), to.getClientId(), to.getOrgId(), rl.getId(), rss[ii], null);
     			rs.saveEx();
     		}
     	}

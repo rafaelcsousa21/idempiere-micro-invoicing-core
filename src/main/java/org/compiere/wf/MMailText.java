@@ -197,7 +197,7 @@ public class MMailText extends X_R_MailText {
    */
   private String parseVariable(String variable, org.compiere.orm.PO po) {
     if (variable.contains("<") && variable.contains(">")) { // IDEMPIERE-3096
-      return MSequence.parseVariable("@" + variable + "@", po, get_TrxName(), true);
+      return MSequence.parseVariable("@" + variable + "@", po, null, true);
     }
     // special default formatting cases for dates/times/boolean in mail text not covered by
     // MSequence.parseVariable
@@ -250,7 +250,7 @@ public class MMailText extends X_R_MailText {
    * @param C_BPartner_ID bp
    */
   public void setBPartner(int C_BPartner_ID) {
-    m_bpartner = new MBPartner(getCtx(), C_BPartner_ID, get_TrxName());
+    m_bpartner = new MBPartner(getCtx(), C_BPartner_ID, null);
   } //	setBPartner
 
   /**

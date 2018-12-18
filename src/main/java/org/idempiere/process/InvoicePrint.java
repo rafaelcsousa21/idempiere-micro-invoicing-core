@@ -98,7 +98,7 @@ public class InvoicePrint extends SvrProcess {
 
     MMailText mText = null;
     if (p_R_MailText_ID != 0) {
-      mText = new MMailText(getCtx(), p_R_MailText_ID, get_TrxName());
+      mText = new MMailText(getCtx(), p_R_MailText_ID, null);
       if (mText.getId() != p_R_MailText_ID)
         throw new AdempiereUserError("@NotFound@: @R_MailText_ID@ - " + p_R_MailText_ID);
     }
@@ -125,11 +125,11 @@ public class InvoicePrint extends SvrProcess {
             .append("FROM C_Invoice i")
             .append(" INNER JOIN C_BPartner bp ON (i.C_BPartner_ID=bp.C_BPartner_ID)")
             .append(" LEFT OUTER JOIN AD_User bpc ON (i.AD_User_ID=bpc.AD_User_ID)")
-            .append(" INNER JOIN AD_Client c ON (i.AD_Client_ID=c.AD_Client_ID)")
-            .append(" INNER JOIN AD_PrintForm pf ON (i.AD_Client_ID=pf.AD_Client_ID)")
+            .append(" INNER JOIN AD_Client c ON (i.clientId=c.clientId)")
+            .append(" INNER JOIN AD_PrintForm pf ON (i.clientId=pf.clientId)")
             .append(" INNER JOIN C_DocType dt ON (i.C_DocType_ID=dt.C_DocType_ID)")
-            .append(" WHERE i.AD_Client_ID=? AND i.AD_Org_ID=? AND i.isSOTrx='Y' AND ")
-            .append("       pf.AD_Org_ID IN (0,i.AD_Org_ID) AND "); // 	more them 1 PF
+            .append(" WHERE i.clientId=? AND i.orgId=? AND i.isSOTrx='Y' AND ")
+            .append("       pf.orgId IN (0,i.orgId) AND "); // 	more them 1 PF
     boolean needAnd = false;
     if (m_C_Invoice_ID != 0) sql.append("i.C_Invoice_ID=").append(m_C_Invoice_ID);
     else {
@@ -173,7 +173,7 @@ public class InvoicePrint extends SvrProcess {
         sql.append("i.DocStatus IN ('CO','CL') ");
       }
     }
-    sql.append(" ORDER BY i.C_Invoice_ID, pf.AD_Org_ID DESC"); // 	more than 1 PF record
+    sql.append(" ORDER BY i.C_Invoice_ID, pf.orgId DESC"); // 	more than 1 PF record
     if (log.isLoggable(Level.FINE)) log.fine(sql.toString());
 
     /*MPrintFormat format = null;
@@ -187,7 +187,7 @@ public class InvoicePrint extends SvrProcess {
 
     try
     {
-    	pstmt = prepareStatement(sql.toString(), get_TrxName());
+    	pstmt = prepareStatement(sql.toString(), null);
     	pstmt.setInt(1, Env.getClientId(Env.getCtx()));
     	pstmt.setInt(2, Env.getOrgId(Env.getCtx()));
     	rs = pstmt.executeQuery();
@@ -209,7 +209,7 @@ public class InvoicePrint extends SvrProcess {
     		if (copies == 0)
     			copies = 1;
     		int AD_User_ID = rs.getInt(6);
-    		MUser to = new MUser (getCtx(), AD_User_ID, get_TrxName());
+    		MUser to = new MUser (getCtx(), AD_User_ID, null);
     		String DocumentNo = rs.getString(7);
     		C_BPartner_ID = rs.getInt(8);
     		//
@@ -263,7 +263,7 @@ public class InvoicePrint extends SvrProcess {
     			}
     			mText.setUser(to);					//	Context
     			mText.setBPartner(C_BPartner_ID);	//	Context
-    			mText.setPO(new MInvoice(getCtx(), C_Invoice_ID, get_TrxName()));
+    			mText.setPO(new MInvoice(getCtx(), C_Invoice_ID, null));
     			String message = mText.getMailText(true);
     			if (mText.isHtml())
     				email.setMessageHTML(subject.toString(), message);
@@ -315,7 +315,7 @@ public class InvoicePrint extends SvrProcess {
     				.append("SET DatePrinted=SysDate, IsPrinted='Y' WHERE C_Invoice_ID=")
     				.append (C_Invoice_ID);
     			@SuppressWarnings("unused")
-    			int no = executeUpdate(sb.toString(), get_TrxName());
+    			int no = executeUpdate(sb.toString(), null);
     		}
     	}	//	for all entries
     }

@@ -278,7 +278,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
   public org.compiere.model.I_AD_Sequence getAD_Sequence() throws RuntimeException {
     return (org.compiere.model.I_AD_Sequence)
         MTable.get(getCtx(), org.compiere.model.I_AD_Sequence.Table_Name)
-            .getPO(getAD_Sequence_ID(), get_TrxName());
+            .getPO(getAD_Sequence_ID(), null);
   }
 
   /**
@@ -305,7 +305,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
   public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), get_TrxName());
+            .getPO(getC_BankAccount_ID(), null);
   }
 
   /**
@@ -332,7 +332,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**

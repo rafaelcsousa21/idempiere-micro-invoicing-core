@@ -59,19 +59,19 @@ public class StorageCleanup extends SvrProcess {
     //	Clean up empty Storage
     String sql =
         "DELETE FROM M_StorageOnHand " + "WHERE QtyOnHand = 0" + " AND Created < SysDate-3";
-    int no = executeUpdate(sql, get_TrxName());
+    int no = executeUpdate(sql, null);
     if (log.isLoggable(Level.INFO)) log.info("Delete Empty #" + no);
 
     //	Clean up empty Reservation Storage
     sql = "DELETE FROM M_StorageReservation " + "WHERE Qty = 0" + " AND Created < SysDate-3";
-    no = executeUpdate(sql, get_TrxName());
+    no = executeUpdate(sql, null);
     if (log.isLoggable(Level.INFO)) log.info("Delete Empty #" + no);
 
     //
     sql =
         "SELECT * "
             + "FROM M_StorageOnHand s "
-            + "WHERE AD_Client_ID = ?"
+            + "WHERE clientId = ?"
             + " AND QtyOnHand < 0"
             //	Instance Attribute
             + " AND EXISTS (SELECT * FROM M_Product p"
@@ -93,11 +93,11 @@ public class StorageCleanup extends SvrProcess {
     ResultSet rs = null;
     int lines = 0;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, Env.getClientId(getCtx()));
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        lines += move(new MStorageOnHand(getCtx(), rs, get_TrxName()));
+        lines += move(new MStorageOnHand(getCtx(), rs, null));
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
@@ -124,8 +124,8 @@ public class StorageCleanup extends SvrProcess {
 
     /*
     //	Create Movement
-    MMovement mh = new MMovement (getCtx(), 0, get_TrxName());
-    mh.setAD_Org_ID(target.getOrgId());
+    MMovement mh = new MMovement (getCtx(), 0, null);
+    mh.setOrgId(target.getOrgId());
     mh.setC_DocType_ID(p_C_DocType_ID);
     mh.setDescription(getName());
     if (!mh.save())
@@ -170,7 +170,7 @@ public class StorageCleanup extends SvrProcess {
     mh.saveEx();
     StringBuilder msglog= new StringBuilder("@M_Movement_ID@ ").append(mh.getDocumentNo()).append(" (")
     		.append(MRefList.get(getCtx(), MMovement.DOCSTATUS_AD_Reference_ID,
-    				mh.getDocStatus(), get_TrxName())).append(")");
+    				mh.getDocStatus(), null)).append(")");
     addLog(0, null, new BigDecimal(lines), msglog.toString());
 
     eliminateReservation(target);
@@ -189,7 +189,7 @@ public class StorageCleanup extends SvrProcess {
     {
     	int M_Locator_ID = target.getM_Locator_ID();
     	MStorageOnHand storage0 = MStorageOnHand.get(getCtx(), M_Locator_ID,
-    		target.getM_Product_ID(), 0, get_TrxName());
+    		target.getM_Product_ID(), 0, null);
     	if (storage0 == null)
     	{
     		MLocator defaultLoc = MLocator.getDefault(getCtx(), M_Locator_ID);
@@ -197,7 +197,7 @@ public class StorageCleanup extends SvrProcess {
     		{
     			M_Locator_ID = defaultLoc.getM_Locator_ID();
     			storage0 = MStorageOnHand.get(getCtx(), M_Locator_ID,
-    				target.getM_Product_ID(), 0, get_TrxName());
+    				target.getM_Product_ID(), 0, null);
     		}
     	}
     	if (storage0 != null)
@@ -214,12 +214,12 @@ public class StorageCleanup extends SvrProcess {
     			if (MStorageOnHand.add(getCtx(), target.getM_Warehouse_ID(), target.getM_Locator_ID(),
     				target.getM_Product_ID(),
     				target.getMAttributeSetInstance_ID(), target.getMAttributeSetInstance_ID(),
-    				Env.ZERO,  get_TrxName()))
+    				Env.ZERO,  null))
     			{
     				if (MStorageOnHand.add(getCtx(), storage0.getM_Warehouse_ID(), storage0.getM_Locator_ID(),
     					storage0.getM_Product_ID(),
     					storage0.getMAttributeSetInstance_ID(), storage0.getMAttributeSetInstance_ID(),
-    					Env.ZERO, get_TrxName()))
+    					Env.ZERO, null))
     					log.info("Reserved=" + reserved + ",Ordered=" + ordered);
     				else
     					log.warning("Failed Storage0 Update");
@@ -260,12 +260,12 @@ public class StorageCleanup extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, M_Product_ID);
       pstmt.setInt(2, M_Locator_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        list.add(new MStorageOnHand(getCtx(), rs, get_TrxName()));
+        list.add(new MStorageOnHand(getCtx(), rs, null));
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);

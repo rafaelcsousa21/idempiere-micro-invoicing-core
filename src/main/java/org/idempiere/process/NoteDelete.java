@@ -14,11 +14,13 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import static software.hsharp.core.util.DBKt.*;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
  * Delete Notes (Notice)
@@ -58,12 +60,12 @@ public class NoteDelete extends SvrProcess {
 
     StringBuilder sql =
         new StringBuilder(
-                "DELETE FROM AD_Note WHERE AD_BroadcastMessage_ID IS NULL AND AD_Client_ID=")
+                "DELETE FROM AD_Note WHERE AD_BroadcastMessage_ID IS NULL AND clientId=")
             .append(getClientId());
     if (p_AD_User_ID > 0) sql.append(" AND AD_User_ID=").append(p_AD_User_ID);
     if (p_KeepLogDays > 0) sql.append(" AND (Created+").append(p_KeepLogDays).append(") < SysDate");
     //
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
     StringBuilder msgreturn = new StringBuilder("@Deleted@ = ").append(no);
     return msgreturn.toString();
   } //	doIt

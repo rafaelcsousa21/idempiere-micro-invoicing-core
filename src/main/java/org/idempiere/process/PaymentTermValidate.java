@@ -14,12 +14,13 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MPaymentTerm;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.util.logging.Level;
 
 /**
  * Validate Payment Term and Schedule
@@ -46,7 +47,7 @@ public class PaymentTermValidate extends SvrProcess {
    */
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("C_PaymentTerm_ID=" + getRecord_ID());
-    MPaymentTerm pt = new MPaymentTerm(getCtx(), getRecord_ID(), get_TrxName());
+    MPaymentTerm pt = new MPaymentTerm(getCtx(), getRecord_ID(), null);
     String msg = pt.validate();
     pt.saveEx();
     //

@@ -59,7 +59,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -172,7 +172,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -200,7 +200,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
   public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
     return (org.compiere.model.I_M_InOutLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), get_TrxName());
+            .getPO(getM_InOutLine_ID(), null);
   }
 
   /**
@@ -226,7 +226,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
 
   public I_M_Locator getM_Locator() throws RuntimeException {
     return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), get_TrxName());
+        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
   }
 
   /**
@@ -291,7 +291,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -408,7 +408,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
   public org.compiere.model.I_S_TimeExpenseLine getS_TimeExpenseLine() throws RuntimeException {
     return (org.compiere.model.I_S_TimeExpenseLine)
         MTable.get(getCtx(), org.compiere.model.I_S_TimeExpenseLine.Table_Name)
-            .getPO(getS_TimeExpenseLine_ID(), get_TrxName());
+            .getPO(getS_TimeExpenseLine_ID(), null);
   }
 
   /**

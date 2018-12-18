@@ -100,7 +100,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
   public org.compiere.model.I_M_LocatorType getM_LocatorType() throws RuntimeException {
     return (org.compiere.model.I_M_LocatorType)
         MTable.get(getCtx(), org.compiere.model.I_M_LocatorType.Table_Name)
-            .getPO(getM_LocatorType_ID(), get_TrxName());
+            .getPO(getM_LocatorType_ID(), null);
   }
 
   /**
@@ -145,7 +145,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
   public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
     return (org.compiere.model.I_M_Warehouse)
         MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), get_TrxName());
+            .getPO(getM_Warehouse_ID(), null);
   }
 
   /**

@@ -90,7 +90,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
   public org.compiere.model.I_C_Year getC_Year() throws RuntimeException {
     return (org.compiere.model.I_C_Year)
         MTable.get(getCtx(), org.compiere.model.I_C_Year.Table_Name)
-            .getPO(getC_Year_ID(), get_TrxName());
+            .getPO(getC_Year_ID(), null);
   }
 
   /**

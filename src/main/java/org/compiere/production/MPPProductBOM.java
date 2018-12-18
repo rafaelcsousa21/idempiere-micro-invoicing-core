@@ -40,7 +40,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
   public static List<MPPProductBOM> getProductBOMs(MProduct product) {
     String whereClause = I_PP_Product_BOM.COLUMNNAME_Value + "=? AND M_Product_ID=?";
     return new Query(
-            product.getCtx(), I_PP_Product_BOM.Table_Name, whereClause, product.get_TrxName())
+            product.getCtx(), I_PP_Product_BOM.Table_Name, whereClause, null)
         .setClient_ID()
         .setParameters(product.getValue(), product.getM_Product_ID())
         .list();
@@ -75,7 +75,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     int AD_Client_ID = Env.getClientId(product.getCtx());
     String sql =
         "SELECT PP_Product_BOM_ID FROM PP_Product_BOM"
-            + " WHERE Value=? AND M_Product_ID=? AND AD_Client_ID=?";
+            + " WHERE Value=? AND M_Product_ID=? AND clientId=?";
     return getSQLValueEx(null, sql, product.getValue(), product.getId(), AD_Client_ID);
   }
 
@@ -193,7 +193,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     if (this.m_lines == null || reload) {
       final String whereClause = MPPProductBOMLine.COLUMNNAME_PP_Product_BOM_ID + "=?";
       this.m_lines =
-          new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause, get_TrxName())
+          new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause, null)
               .setParameters(new Object[] {getPP_Product_BOM_ID()})
               .setOnlyActiveRecords(true)
               .setOrderBy(MPPProductBOMLine.COLUMNNAME_Line)
@@ -235,11 +235,11 @@ public class MPPProductBOM extends X_PP_Product_BOM {
                 getCtx(),
                 I_PP_Product_BOM.Table_Name,
                 I_PP_Product_BOM.COLUMNNAME_M_Product_ID + "=?",
-                get_TrxName())
+                null)
             .setParameters(new Object[] {getM_Product_ID()})
             .setOnlyActiveRecords(true)
             .count();
-    MProduct product = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
+    MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
     product.setIsBOM(count > 0);
     product.saveEx();
   }

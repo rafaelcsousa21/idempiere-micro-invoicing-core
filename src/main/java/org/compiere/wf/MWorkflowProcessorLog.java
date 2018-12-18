@@ -1,8 +1,9 @@
 package org.compiere.wf;
 
+import org.compiere.model.AdempiereProcessorLog;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.compiere.model.AdempiereProcessorLog;
 
 /**
  * Processor Log
@@ -47,7 +48,7 @@ public class MWorkflowProcessorLog extends X_AD_WorkflowProcessorLog
    * @param Summary Summary
    */
   public MWorkflowProcessorLog(MWorkflowProcessor parent, String Summary) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setAD_WorkflowProcessor_ID(parent.getAD_WorkflowProcessor_ID());
     setSummary(Summary);

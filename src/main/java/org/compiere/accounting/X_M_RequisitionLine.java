@@ -56,7 +56,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -83,7 +83,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
     return (org.compiere.model.I_C_Charge)
         MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), get_TrxName());
+            .getPO(getC_Charge_ID(), null);
   }
 
   /**
@@ -110,7 +110,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
     return (org.compiere.model.I_C_OrderLine)
         MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-            .getPO(getC_OrderLine_ID(), get_TrxName());
+            .getPO(getC_OrderLine_ID(), null);
   }
 
   /**
@@ -137,7 +137,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
     return (org.compiere.model.I_C_UOM)
         MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), get_TrxName());
+            .getPO(getC_UOM_ID(), null);
   }
 
   /**
@@ -231,7 +231,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -259,7 +259,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -286,7 +286,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   public org.compiere.model.I_M_Requisition getM_Requisition() throws RuntimeException {
     return (org.compiere.model.I_M_Requisition)
         MTable.get(getCtx(), org.compiere.model.I_M_Requisition.Table_Name)
-            .getPO(getM_Requisition_ID(), get_TrxName());
+            .getPO(getM_Requisition_ID(), null);
   }
 
   /**

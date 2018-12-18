@@ -14,10 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.util.Iterator;
-import java.util.logging.Level;
 import org.compiere.accounting.MPayment;
 import org.compiere.crm.MBPartner;
 import org.compiere.invoicing.MInvoice;
@@ -27,6 +23,11 @@ import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.logging.Level;
 
 /**
  * Validate Business Partner
@@ -67,7 +68,7 @@ public class BPartnerValidate extends SvrProcess {
       throw new AdempiereUserError("No Business Partner/Group selected");
 
     if (p_C_BP_Group_ID == 0) {
-      MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID, get_TrxName());
+      MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID, null);
       if (bp.getId() == 0)
         throw new AdempiereUserError(
             "Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);
@@ -75,7 +76,7 @@ public class BPartnerValidate extends SvrProcess {
     } else {
       final String whereClause = "C_BP_Group_ID=?";
       Iterator<MBPartner> it =
-          new Query(getCtx(), I_C_BPartner.Table_Name, whereClause, get_TrxName())
+          new Query(getCtx(), I_C_BPartner.Table_Name, whereClause, null)
               .setParameters(p_C_BP_Group_ID)
               .setOnlyActiveRecords(true)
               .iterate();
@@ -108,7 +109,6 @@ public class BPartnerValidate extends SvrProcess {
     addLog(0, null, bp.getTotalOpenBalance(), Msg.getElement(getCtx(), "TotalOpenBalance"));
     addLog(0, null, bp.getActualLifeTimeValue(), Msg.getElement(getCtx(), "ActualLifeTimeValue"));
     //
-    commitEx();
   } //	checkBP
 
   /**
@@ -119,7 +119,7 @@ public class BPartnerValidate extends SvrProcess {
   private void checkPayments(MBPartner bp) {
     //	See also VMerge.postMerge
     int changed = 0;
-    MPayment[] payments = MPayment.getOfBPartner(getCtx(), bp.getC_BPartner_ID(), get_TrxName());
+    MPayment[] payments = MPayment.getOfBPartner(getCtx(), bp.getC_BPartner_ID(), null);
     for (int i = 0; i < payments.length; i++) {
       MPayment payment = payments[i];
       if (payment.testAllocation()) {
@@ -143,7 +143,7 @@ public class BPartnerValidate extends SvrProcess {
   private void checkInvoices(MBPartner bp) {
     //	See also VMerge.postMerge
     int changed = 0;
-    MInvoice[] invoices = MInvoice.getOfBPartner(getCtx(), bp.getC_BPartner_ID(), get_TrxName());
+    MInvoice[] invoices = MInvoice.getOfBPartner(getCtx(), bp.getC_BPartner_ID(), null);
     for (int i = 0; i < invoices.length; i++) {
       MInvoice invoice = invoices[i];
       if (invoice.testAllocation()) {

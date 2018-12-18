@@ -54,16 +54,16 @@ public class RfQCreateSO extends SvrProcess {
   protected String doIt() throws Exception {
     throw new NotImplementedException();
     /*
-    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, get_TrxName());
+    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
     if (rfq.getId() == 0)
     	throw new IllegalArgumentException("No RfQ found");
     if (log.isLoggable(Level.INFO)) log.info("doIt - " + rfq);
 
     if (rfq.getC_BPartner_ID() == 0 || rfq.getC_BPartner_Location_ID() == 0)
     	throw new Exception ("No Business Partner/Location");
-    MBPartner bp = new MBPartner (getCtx(), rfq.getC_BPartner_ID(), get_TrxName());
+    MBPartner bp = new MBPartner (getCtx(), rfq.getC_BPartner_ID(), null);
 
-    MOrder order = new MOrder (getCtx(), 0, get_TrxName());
+    MOrder order = new MOrder (getCtx(), 0, null);
     order.setIsSOTrx(true);
     if (p_C_DocType_ID != 0)
     	order.setC_DocTypeTarget_ID(p_C_DocType_ID);

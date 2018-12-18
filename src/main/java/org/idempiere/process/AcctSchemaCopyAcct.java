@@ -14,18 +14,15 @@
  */
 package org.idempiere.process;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-import org.compiere.accounting.MAccount;
-import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MAcctSchemaDefault;
-import org.compiere.accounting.MAcctSchemaElement;
-import org.compiere.accounting.MAcctSchemaGL;
+import org.compiere.accounting.*;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.KeyNamePair;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * Copy Accounts from one Acct Schema to another
@@ -72,7 +69,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
     MAcctSchema source = MAcctSchema.get(getCtx(), p_SourceAcctSchema_ID, null);
     if (source.getId() == 0)
       throw new AdempiereSystemError("NotFound Source C_AcctSchema_ID=" + p_SourceAcctSchema_ID);
-    MAcctSchema target = new MAcctSchema(getCtx(), p_TargetAcctSchema_ID, get_TrxName());
+    MAcctSchema target = new MAcctSchema(getCtx(), p_TargetAcctSchema_ID, null);
     if (target.getId() == 0)
       throw new AdempiereSystemError("NotFound Target C_AcctSchema_ID=" + p_TargetAcctSchema_ID);
 
@@ -107,7 +104,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
    */
   private void copyGL(MAcctSchema targetAS) throws Exception {
     MAcctSchemaGL source = MAcctSchemaGL.get(getCtx(), p_SourceAcctSchema_ID);
-    MAcctSchemaGL target = new MAcctSchemaGL(getCtx(), 0, get_TrxName());
+    MAcctSchemaGL target = new MAcctSchemaGL(getCtx(), 0, null);
     target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
     ArrayList<KeyNamePair> list = source.getAcctInfo();
     for (int i = 0; i < list.size(); i++) {
@@ -129,7 +126,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
    */
   private void copyDefault(MAcctSchema targetAS) throws Exception {
     MAcctSchemaDefault source = MAcctSchemaDefault.get(getCtx(), p_SourceAcctSchema_ID);
-    MAcctSchemaDefault target = new MAcctSchemaDefault(getCtx(), 0, get_TrxName());
+    MAcctSchemaDefault target = new MAcctSchemaDefault(getCtx(), 0, null);
     target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
     target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
     ArrayList<KeyNamePair> list = source.getAcctInfo();
@@ -233,6 +230,6 @@ public class AcctSchemaCopyAcct extends SvrProcess {
         User2_ID,
         UserElement1_ID,
         UserElement2_ID,
-        get_TrxName());
+        null);
   } //	createAccount
 } //	AcctSchemaCopyAcct

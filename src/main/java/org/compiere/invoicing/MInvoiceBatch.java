@@ -66,7 +66,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
    */
   public MInvoiceBatchLine[] getLines(boolean reload) {
     if (m_lines != null && !reload) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     String sql = "SELECT * FROM C_InvoiceBatchLine WHERE C_InvoiceBatch_ID=? ORDER BY Line";
@@ -74,11 +74,11 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getC_InvoiceBatch_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        list.add(new MInvoiceBatchLine(getCtx(), rs, get_TrxName()));
+        list.add(new MInvoiceBatchLine(getCtx(), rs, null));
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
@@ -106,7 +106,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_InvoiceBatch_ID=")
             .append(getC_InvoiceBatch_ID());
-    int noLine = executeUpdate("UPDATE C_InvoiceBatchLine " + set, get_TrxName());
+    int noLine = executeUpdate("UPDATE C_InvoiceBatchLine " + set, null);
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed

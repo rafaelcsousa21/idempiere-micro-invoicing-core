@@ -163,7 +163,7 @@ public class MPeriod extends X_C_Period {
     }
     if (retValue == null)
       if (s_log.isLoggable(Level.INFO))
-        s_log.info("No Standard Period for " + DateAcct + " (AD_Client_ID=" + AD_Client_ID + ")");
+        s_log.info("No Standard Period for " + DateAcct + " (clientId=" + AD_Client_ID + ")");
     return retValue;
   }
 
@@ -338,11 +338,11 @@ public class MPeriod extends X_C_Period {
       return true;
     }
 
-    // obtain AD_Org_ID
+    // obtain orgId
     int orgID = 0;
-    int idxorg = po.get_ColumnIndex("AD_Org_ID");
+    int idxorg = po.get_ColumnIndex("orgId");
     if (idxorg < 0) {
-      s_log.warning("Could not find AD_Org_ID for " + table.getTableName());
+      s_log.warning("Could not find orgId for " + table.getTableName());
     } else {
       orgID = po.get_ValueAsInt(idxorg);
     }
@@ -457,7 +457,7 @@ public class MPeriod extends X_C_Period {
    * @param endDate end
    */
   public MPeriod(MYear year, int PeriodNo, String name, Timestamp startDate, Timestamp endDate) {
-    this(year.getCtx(), 0, year.get_TrxName());
+    this(year.getCtx(), 0, null);
     setClientOrg(year);
     setC_Year_ID(year.getC_Year_ID());
     setPeriodNo(PeriodNo);
@@ -636,7 +636,7 @@ public class MPeriod extends X_C_Period {
       return false;
     }
 
-    MYear year = new MYear(getCtx(), getC_Year_ID(), get_TrxName());
+    MYear year = new MYear(getCtx(), getC_Year_ID(), null);
 
     Query query =
         MTable.get(getCtx(), "C_Period")
@@ -646,7 +646,7 @@ public class MPeriod extends X_C_Period {
                     + " AND (? BETWEEN StartDate AND EndDate"
                     + " OR ? BETWEEN StartDate AND EndDate)"
                     + " AND PeriodType=?",
-                get_TrxName());
+                null);
     query.setParameters(year.getC_Calendar_ID(), getStartDate(), getEndDate(), getPeriodType());
 
     List<MPeriod> periods = query.list();

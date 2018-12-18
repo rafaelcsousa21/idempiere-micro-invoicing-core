@@ -138,7 +138,7 @@ public class InOutGenerate extends SvrProcess {
       m_sql =
           new StringBuffer("SELECT C_Order.* FROM C_Order, T_Selection ")
               .append(
-                  "WHERE C_Order.DocStatus='CO' AND C_Order.IsSOTrx='Y' AND C_Order.AD_Client_ID=? ")
+                  "WHERE C_Order.DocStatus='CO' AND C_Order.IsSOTrx='Y' AND C_Order.clientId=? ")
               .append("AND C_Order.C_Order_ID = T_Selection.T_Selection_ID ")
               .append("AND T_Selection.AD_PInstance_ID=? ");
     } else {
@@ -165,7 +165,7 @@ public class InOutGenerate extends SvrProcess {
 
     PreparedStatement pstmt = null;
     try {
-      pstmt = prepareStatement(m_sql.toString(), get_TrxName());
+      pstmt = prepareStatement(m_sql.toString(), null);
       int index = 1;
       if (p_Selection) {
         pstmt.setInt(index++, Env.getClientId(getCtx()));
@@ -194,7 +194,7 @@ public class InOutGenerate extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) // 	Order
       {
-        MOrder order = new MOrder(getCtx(), rs, get_TrxName());
+        MOrder order = new MOrder(getCtx(), rs, null);
         statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + order.getDocumentInfo());
 
         //	New Header different Shipper, Shipment Location
@@ -580,7 +580,7 @@ public class InOutGenerate extends SvrProcess {
               FiFo,
               false,
               0,
-              get_TrxName());
+              null);
 
       /* IDEMPIERE-2668 - filter just locators enabled for shipping */
       List<MStorageOnHand> m_storagesForShipping = new ArrayList<MStorageOnHand>();

@@ -400,7 +400,7 @@ public class Doc_Order extends Doc {
     StringBuilder sql =
         new StringBuilder("UPDATE M_Product_PO po ")
             .append(
-                "SET PriceLastPO = (SELECT currencyConvert(ol.PriceActual,ol.C_Currency_ID,po.C_Currency_ID,o.DateOrdered,o.C_ConversionType_ID,o.AD_Client_ID,o.AD_Org_ID) ")
+                "SET PriceLastPO = (SELECT currencyConvert(ol.PriceActual,ol.C_Currency_ID,po.C_Currency_ID,o.DateOrdered,o.C_ConversionType_ID,o.clientId,o.orgId) ")
             .append("FROM C_Order o, C_OrderLine ol ")
             .append("WHERE o.C_Order_ID=ol.C_Order_ID")
             .append(" AND po.M_Product_ID=ol.M_Product_ID AND po.C_BPartner_ID=o.C_BPartner_ID ");

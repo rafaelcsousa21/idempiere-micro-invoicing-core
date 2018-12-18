@@ -1,13 +1,14 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.orm.Query;
 import org.compiere.process.DocAction;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
+
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Workflow Node Next - Transition
@@ -55,7 +56,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
    * @param AD_WF_Next_ID Next
    */
   public MWFNodeNext(MWFNode parent, int AD_WF_Next_ID) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setAD_WF_Node_ID(parent.getAD_WF_Node_ID());
     setAD_WF_Next_ID(AD_WF_Next_ID);
@@ -106,9 +107,9 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
   public MWFNextCondition[] getConditions(boolean requery) {
     if (!requery && m_conditions != null) return m_conditions;
     //
-    final String whereClause = "AD_WF_NodeNext_ID=? AND AD_Client_ID IN (0,?)";
+    final String whereClause = "AD_WF_NodeNext_ID=? AND clientId IN (0,?)";
     List<MWFNextCondition> list =
-        new Query(getCtx(), MWFNextCondition.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), MWFNextCondition.Table_Name, whereClause, null)
             .setParameters(new Object[] {getAD_WF_NodeNext_ID(), Env.getClientId(Env.getCtx())})
             .setOnlyActiveRecords(true)
             .setOrderBy(MWFNextCondition.COLUMNNAME_SeqNo)

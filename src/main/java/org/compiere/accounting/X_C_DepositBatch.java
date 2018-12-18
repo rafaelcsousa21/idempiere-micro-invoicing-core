@@ -56,7 +56,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
   public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), get_TrxName());
+            .getPO(getC_BankAccount_ID(), null);
   }
 
   /**
@@ -122,7 +122,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**

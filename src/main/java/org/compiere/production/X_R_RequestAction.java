@@ -50,7 +50,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
     return (org.compiere.model.I_A_Asset)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), get_TrxName());
+            .getPO(getA_Asset_ID(), null);
   }
 
   /**
@@ -77,7 +77,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException {
     return (org.compiere.model.I_AD_Role)
         MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
-            .getPO(getAD_Role_ID(), get_TrxName());
+            .getPO(getAD_Role_ID(), null);
   }
 
   /**
@@ -104,7 +104,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**
@@ -131,7 +131,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -158,7 +158,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -185,7 +185,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), get_TrxName());
+            .getPO(getC_Invoice_ID(), null);
   }
 
   /**
@@ -241,7 +241,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
     return (org.compiere.model.I_C_Order)
         MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), get_TrxName());
+            .getPO(getC_Order_ID(), null);
   }
 
   /**
@@ -268,7 +268,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), get_TrxName());
+            .getPO(getC_Payment_ID(), null);
   }
 
   /**
@@ -295,7 +295,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -467,7 +467,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_M_InOut getM_InOut() throws RuntimeException {
     return (org.compiere.model.I_M_InOut)
         MTable.get(getCtx(), org.compiere.model.I_M_InOut.Table_Name)
-            .getPO(getM_InOut_ID(), get_TrxName());
+            .getPO(getM_InOut_ID(), null);
   }
 
   /**
@@ -494,7 +494,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -521,7 +521,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_M_Product getM_ProductSpent() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_ProductSpent_ID(), get_TrxName());
+            .getPO(getM_ProductSpent_ID(), null);
   }
 
   /**
@@ -548,7 +548,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_M_RMA getM_RMA() throws RuntimeException {
     return (org.compiere.model.I_M_RMA)
         MTable.get(getCtx(), org.compiere.model.I_M_RMA.Table_Name)
-            .getPO(getM_RMA_ID(), get_TrxName());
+            .getPO(getM_RMA_ID(), null);
   }
 
   /**
@@ -715,7 +715,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_R_Category getR_Category() throws RuntimeException {
     return (org.compiere.model.I_R_Category)
         MTable.get(getCtx(), org.compiere.model.I_R_Category.Table_Name)
-            .getPO(getR_Category_ID(), get_TrxName());
+            .getPO(getR_Category_ID(), null);
   }
 
   /**
@@ -742,7 +742,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_R_Group getR_Group() throws RuntimeException {
     return (org.compiere.model.I_R_Group)
         MTable.get(getCtx(), org.compiere.model.I_R_Group.Table_Name)
-            .getPO(getR_Group_ID(), get_TrxName());
+            .getPO(getR_Group_ID(), null);
   }
 
   /**
@@ -808,7 +808,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_R_Request getR_Request() throws RuntimeException {
     return (org.compiere.model.I_R_Request)
         MTable.get(getCtx(), org.compiere.model.I_R_Request.Table_Name)
-            .getPO(getR_Request_ID(), get_TrxName());
+            .getPO(getR_Request_ID(), null);
   }
 
   /**
@@ -835,7 +835,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_R_RequestType getR_RequestType() throws RuntimeException {
     return (org.compiere.model.I_R_RequestType)
         MTable.get(getCtx(), org.compiere.model.I_R_RequestType.Table_Name)
-            .getPO(getR_RequestType_ID(), get_TrxName());
+            .getPO(getR_RequestType_ID(), null);
   }
 
   /**
@@ -862,7 +862,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_R_Resolution getR_Resolution() throws RuntimeException {
     return (org.compiere.model.I_R_Resolution)
         MTable.get(getCtx(), org.compiere.model.I_R_Resolution.Table_Name)
-            .getPO(getR_Resolution_ID(), get_TrxName());
+            .getPO(getR_Resolution_ID(), null);
   }
 
   /**
@@ -889,7 +889,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_R_Status getR_Status() throws RuntimeException {
     return (org.compiere.model.I_R_Status)
         MTable.get(getCtx(), org.compiere.model.I_R_Status.Table_Name)
-            .getPO(getR_Status_ID(), get_TrxName());
+            .getPO(getR_Status_ID(), null);
   }
 
   /**
@@ -916,7 +916,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSalesRep_ID(), get_TrxName());
+            .getPO(getSalesRep_ID(), null);
   }
 
   /**

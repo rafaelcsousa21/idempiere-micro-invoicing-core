@@ -70,7 +70,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
    * @param cash parent
    */
   public MCashLine(MCash cash) {
-    this(cash.getCtx(), 0, cash.get_TrxName());
+    this(cash.getCtx(), 0, null);
     setClientOrg(cash);
     setC_Cash_ID(cash.getC_Cash_ID());
     m_parent = cash;
@@ -177,7 +177,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
               parent. getOrgId(),
               parent.getStatementDate(),
               parent.getC_Currency_ID(),
-              get_TrxName());
+              null);
     }
     // Inactivate not processed lines - teo_sarca BF [ 1918290 ]
     else {
@@ -210,7 +210,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
    * @return cash
    */
   public MCash getParent() {
-    if (m_parent == null) m_parent = new MCash(getCtx(), getC_Cash_ID(), get_TrxName());
+    if (m_parent == null) m_parent = new MCash(getCtx(), getC_Cash_ID(), null);
     return m_parent;
   } //	getCash
 
@@ -345,7 +345,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_CashLine WHERE C_Cash_ID=?";
-      int ii = getSQLValue(get_TrxName(), sql, getC_Cash_ID());
+      int ii = getSQLValue(null, sql, getC_Cash_ID());
       setLine(ii);
     }
 
@@ -374,7 +374,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         "UPDATE C_Cash c"
             + " SET StatementDifference="
             // replace null with 0 there is no difference with this
-            + "(SELECT COALESCE(SUM(currencyConvert(cl.Amount, cl.C_Currency_ID, cb.C_Currency_ID, c.DateAcct, 0, c.AD_Client_ID, c.AD_Org_ID)),0) "
+            + "(SELECT COALESCE(SUM(currencyConvert(cl.Amount, cl.C_Currency_ID, cb.C_Currency_ID, c.DateAcct, 0, c.clientId, c.orgId)),0) "
             + "FROM C_CashLine cl, C_CashBook cb "
             + "WHERE cb.C_CashBook_ID=c.C_CashBook_ID"
             + " AND cl.C_Cash_ID=c.C_Cash_ID"
@@ -382,7 +382,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
             + ") "
             + "WHERE C_Cash_ID="
             + getC_Cash_ID();
-    int no = executeUpdate(sql, get_TrxName());
+    int no = executeUpdate(sql, null);
     if (no != 1) log.warning("Difference #" + no);
     //	Ending Balance
     sql =
@@ -390,7 +390,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
             + " SET EndingBalance = BeginningBalance + StatementDifference "
             + "WHERE C_Cash_ID="
             + getC_Cash_ID();
-    no = executeUpdate(sql, get_TrxName());
+    no = executeUpdate(sql, null);
     if (no != 1) log.warning("Balance #" + no);
     return no == 1;
   } //	updateHeader

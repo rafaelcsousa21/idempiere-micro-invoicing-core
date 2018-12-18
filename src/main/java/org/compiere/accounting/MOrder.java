@@ -66,7 +66,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
    * @param DocSubTypeSO if SO DocType Target (default DocSubTypeSO_OnCredit)
    */
   public MOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
-    this(project.getCtx(), 0, project.get_TrxName());
+    this(project.getCtx(), 0, null);
     setADClientID(project. getClientId());
     setAD_Org_ID(project. getOrgId());
     setC_Campaign_ID(project.getC_Campaign_ID());
@@ -106,7 +106,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
   protected I_C_Invoice createInvoice(MDocType dt, MInOut shipment, Timestamp invoiceDate) {
     if (log.isLoggable(Level.INFO)) log.info(dt.toString());
     MInvoice invoice = new MInvoice(this, dt.getC_DocTypeInvoice_ID(), invoiceDate);
-    if (!invoice.save(get_TrxName())) {
+    if (!invoice.save(null)) {
       m_processMsg = "Could not create Invoice";
       return null;
     }
@@ -126,13 +126,13 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         if (sLine.sameOrderLineUOM()) iLine.setQtyEntered(sLine.getQtyEntered());
         else iLine.setQtyEntered(sLine.getMovementQty());
         iLine.setQtyInvoiced(sLine.getMovementQty());
-        if (!iLine.save(get_TrxName())) {
+        if (!iLine.save(null)) {
           m_processMsg = "Could not create Invoice Line from Shipment Line";
           return null;
         }
         //
         sLine.setIsInvoiced(true);
-        if (!sLine.save(get_TrxName())) {
+        if (!sLine.save(null)) {
           log.warning("Could not update Shipment line: " + sLine);
         }
       }
@@ -156,7 +156,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                   .getQtyInvoiced()
                   .multiply(oLine.getQtyEntered())
                   .divide(oLine.getQtyOrdered(), 12, BigDecimal.ROUND_HALF_UP));
-        if (!iLine.save(get_TrxName())) {
+        if (!iLine.save(null)) {
           m_processMsg = "Could not create Invoice Line from Order Line";
           return null;
         }
@@ -165,8 +165,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
     // Copy payment schedule from order to invoice if any
     for (MOrderPaySchedule ops :
-        MOrderPaySchedule.getOrderPaySchedule(getCtx(), getC_Order_ID(), 0, get_TrxName())) {
-      MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, get_TrxName());
+        MOrderPaySchedule.getOrderPaySchedule(getCtx(), getC_Order_ID(), 0, null)) {
+      MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, null);
       copyValues(ops, ips);
       ips.setC_Invoice_ID(invoice.getC_Invoice_ID());
       ips.setAD_Org_ID(ops. getOrgId());
@@ -182,7 +182,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (!invoice.processIt(DocAction.Companion.getACTION_Complete()))
       throw new AdempiereException("Failed when processing document - " + invoice.getProcessMsg());
     // end added
-    invoice.saveEx(get_TrxName());
+    invoice.saveEx(null);
     setC_CashLine_ID(invoice.getC_CashLine_ID());
     if (!DOCSTATUS_Completed.equals(invoice.getDocStatus())) {
       m_processMsg = "@C_Invoice_ID@: " + invoice.getProcessMsg();
@@ -208,7 +208,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       }
     }
     if ( getClientId() == 0) {
-      m_processMsg = "AD_Client_ID = 0";
+      m_processMsg = "clientId = 0";
       return false;
     }
 
@@ -225,7 +225,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     }
     MWarehouse wh = MWarehouse.get(getCtx(), getM_Warehouse_ID());
     //	Warehouse Org
-    if (newRecord || is_ValueChanged("AD_Org_ID") || is_ValueChanged("M_Warehouse_ID")) {
+    if (newRecord || is_ValueChanged("orgId") || is_ValueChanged("M_Warehouse_ID")) {
       if (wh. getOrgId() !=  getOrgId()) log.saveWarning("WarehouseOrgConflict", "");
     }
 
@@ -261,7 +261,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
           getSQLValueEx(
               null,
               "SELECT M_PriceList_ID FROM M_PriceList "
-                  + "WHERE AD_Client_ID=? AND IsSOPriceList=? AND IsActive=?"
+                  + "WHERE clientId=? AND IsSOPriceList=? AND IsActive=?"
                   + "ORDER BY IsDefault DESC",
                getClientId(),
               isSOTrx(),
@@ -291,7 +291,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       if (ii != 0) setC_PaymentTerm_ID(ii);
       else {
         String sql =
-            "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE AD_Client_ID=? AND IsDefault='Y' AND IsActive='Y'";
+            "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE clientId=? AND IsDefault='Y' AND IsActive='Y'";
         ii = getSQLValue(null, sql,  getClientId());
         if (ii != 0) setC_PaymentTerm_ID(ii);
       }
@@ -327,7 +327,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             || is_ValueChanged(COLUMNNAME_DateOrdered))) {
       int cnt =
           getSQLValueEx(
-              get_TrxName(),
+              null,
               "SELECT COUNT(*) FROM C_OrderLine WHERE C_Order_ID=? AND M_Product_ID>0",
               getC_Order_ID());
       if (cnt > 0) {
@@ -352,7 +352,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (!recursiveCall && (!newRecord && is_ValueChanged(COLUMNNAME_C_PaymentTerm_ID))) {
       recursiveCall = true;
       try {
-        MPaymentTerm pt = new MPaymentTerm(getCtx(), getC_PaymentTerm_ID(), get_TrxName());
+        MPaymentTerm pt = new MPaymentTerm(getCtx(), getC_PaymentTerm_ID(), null);
         boolean valid = pt.applyOrder(this);
         setIsPayScheduleValid(valid);
       } catch (Exception e) {
@@ -398,7 +398,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
    */
   public MOrderLine[] getLines(boolean requery, String orderBy) {
     if (m_lines != null && !requery) {
-      set_TrxName(m_lines, get_TrxName());
+      set_TrxName(m_lines, null);
       return m_lines;
     }
     //
@@ -423,7 +423,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (orderClause.length() == 0) orderClause = MOrderLine.COLUMNNAME_Line;
     //
     List<MOrderLine> list =
-        new Query(getCtx(), I_C_OrderLine.Table_Name, whereClauseFinal.toString(), get_TrxName())
+        new Query(getCtx(), I_C_OrderLine.Table_Name, whereClauseFinal.toString(), null)
             .setParameters(getId())
             .setOrderBy(orderClause)
             .list();
@@ -558,7 +558,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         return DocAction.Companion.getSTATUS_Invalid();
       }
     } else {
-      if (MOrderPaySchedule.getOrderPaySchedule(getCtx(), getC_Order_ID(), 0, get_TrxName()).length
+      if (MOrderPaySchedule.getOrderPaySchedule(getCtx(), getC_Order_ID(), 0, null).length
           > 0) {
         m_processMsg = "@ErrorPaymentSchedule@";
         return DocAction.Companion.getSTATUS_Invalid();
@@ -581,7 +581,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             new MBPartner(
                 getCtx(),
                 getBill_BPartner_ID(),
-                get_TrxName()); // bill bp is guaranteed on beforeSave
+                null); // bill bp is guaranteed on beforeSave
 
         if (getGrandTotal().signum()
             > 0) // IDEMPIERE-365 - just check credit if is going to increase the debt
@@ -720,11 +720,11 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
               line.getMAttributeSetInstance_ID(),
               difference,
               isSOTrx,
-              get_TrxName())) return false;
+              null)) return false;
         } //	stocked
         //	update line
         line.setQtyReserved(line.getQtyReserved().add(difference));
-        if (!line.save(get_TrxName())) return false;
+        if (!line.save(null)) return false;
         //
         Volume = Volume.add(product.getVolume().multiply(line.getQtyOrdered()));
         Weight = Weight.add(product.getWeight().multiply(line.getQtyOrdered()));
@@ -809,7 +809,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         || MDocType.DOCSUBTYPESO_POSOrder.equals(DocSubTypeSO) // 	(W)alkIn(R)eceipt
         || MDocType.DOCSUBTYPESO_PrepayOrder.equals(DocSubTypeSO)) {
       if (!DELIVERYRULE_Force.equals(getDeliveryRule())) {
-        MWarehouse wh = new MWarehouse(getCtx(), getM_Warehouse_ID(), get_TrxName());
+        MWarehouse wh = new MWarehouse(getCtx(), getM_Warehouse_ID(), null);
         if (!wh.isDisallowNegativeInv()) setDeliveryRule(DELIVERYRULE_Force);
       }
       //
@@ -869,7 +869,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
   } //	completeIt
 
   protected String landedCostAllocation() {
-    MOrderLandedCost[] landedCosts = MOrderLandedCost.getOfOrder(getC_Order_ID(), get_TrxName());
+    MOrderLandedCost[] landedCosts = MOrderLandedCost.getOfOrder(getC_Order_ID(), null);
     for (MOrderLandedCost landedCost : landedCosts) {
       String error = landedCost.distributeLandedCost();
       if (!Util.isEmpty(error)) return error;
@@ -893,7 +893,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     BigDecimal grandTotal = lastInvoice.getGrandTotal();
 
     List<X_C_POSPayment> pps =
-        new Query(this.getCtx(), X_C_POSPayment.Table_Name, "C_Order_ID=?", this.get_TrxName())
+        new Query(this.getCtx(), X_C_POSPayment.Table_Name, "C_Order_ID=?", null)
             .setParameters(this.getC_Order_ID())
             .setOnlyActiveRecords(true)
             .list();
@@ -907,9 +907,9 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
           + ", @GrandTotal@="
           + grandTotal;
 
-    String whereClause = "AD_Org_ID=? AND C_Currency_ID=?";
+    String whereClause = "orgId=? AND C_Currency_ID=?";
     MBankAccount ba =
-        new Query(this.getCtx(), MBankAccount.Table_Name, whereClause, this.get_TrxName())
+        new Query(this.getCtx(), MBankAccount.Table_Name, whereClause, null)
             .setParameters(this. getOrgId(), this.getC_Currency_ID())
             .setOrderBy("IsDefault DESC")
             .first();
@@ -930,11 +930,11 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     // associate the payment id and mark the record as processed
     for (X_C_POSPayment pp : pps) {
       X_C_POSTenderType tt =
-          new X_C_POSTenderType(getCtx(), pp.getC_POSTenderType_ID(), get_TrxName());
+          new X_C_POSTenderType(getCtx(), pp.getC_POSTenderType_ID(), null);
       if (tt.isGuarantee()) continue;
       if (pp.isPostDated()) continue;
 
-      MPayment payment = new MPayment(this.getCtx(), 0, this.get_TrxName());
+      MPayment payment = new MPayment(this.getCtx(), 0, null);
       payment.setAD_Org_ID(this. getOrgId());
 
       payment.setTenderType(pp.getTenderType());
@@ -1004,7 +1004,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (dt.isOverwriteSeqOnComplete()) {
       /* a42niem - BF IDEMPIERE-63 - check if document has been completed before */
       if (this.getProcessedOn().signum() == 0) {
-        String value = MSequence.getDocumentNo(getC_DocType_ID(), get_TrxName(), true, this);
+        String value = MSequence.getDocumentNo(getC_DocType_ID(), null, true, this);
         if (value != null) setDocumentNo(value);
       }
     }
@@ -1021,7 +1021,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (log.isLoggable(Level.INFO)) log.info("For " + dt);
     MInOut shipment = new MInOut(this, dt.getC_DocTypeShipment_ID(), movementDate);
     //	shipment.setDateAcct(getDateAcct());
-    if (!shipment.save(get_TrxName())) {
+    if (!shipment.save(null)) {
       m_processMsg = "Could not create Shipment";
       return null;
     }
@@ -1040,7 +1040,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
               oLine.getM_Product_ID(),
               oLine.getMAttributeSetInstance_ID(),
               MovementQty,
-              get_TrxName());
+              null);
       if (M_Locator_ID == 0) // 	Get default Location
       {
         MWarehouse wh = MWarehouse.get(getCtx(), oLine.getM_Warehouse_ID());
@@ -1053,7 +1053,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         ioLine.setQtyEntered(
             MovementQty.multiply(oLine.getQtyEntered())
                 .divide(oLine.getQtyOrdered(), 6, BigDecimal.ROUND_HALF_UP));
-      if (!ioLine.save(get_TrxName())) {
+      if (!ioLine.save(null)) {
         m_processMsg = "Could not create Shipment Line";
         return null;
       }
@@ -1062,7 +1062,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (!shipment.processIt(DocAction.Companion.getACTION_Complete()))
       throw new AdempiereException("Failed when processing document - " + shipment.getProcessMsg());
     // end added
-    shipment.saveEx(get_TrxName());
+    shipment.saveEx(null);
     if (!DOCSTATUS_Completed.equals(shipment.getDocStatus())) {
       m_processMsg = "@M_InOut_ID@: " + shipment.getProcessMsg();
       return null;
@@ -1106,15 +1106,15 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
     //	Org Must be linked to BPartner
     org.compiere.orm.MOrg org = MOrg.get(getCtx(),  getOrgId());
-    int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(get_TrxName());
+    int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(null);
     if (counterC_BPartner_ID == 0) return null;
     //	Business Partner needs to be linked to Org
-    MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID(), get_TrxName());
+    MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID(), null);
     int counterAD_Org_ID = bp.getAD_OrgBP_ID_Int();
     if (counterAD_Org_ID == 0) return null;
 
     MBPartner counterBP = new MBPartner(getCtx(), counterC_BPartner_ID, null);
-    MOrgInfo counterOrgInfo = MOrgInfo.get(getCtx(), counterAD_Org_ID, get_TrxName());
+    MOrgInfo counterOrgInfo = MOrgInfo.get(getCtx(), counterAD_Org_ID, null);
     if (log.isLoggable(Level.INFO)) log.info("Counter BP=" + counterBP.getName());
 
     //	Document Type
@@ -1133,7 +1133,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     //	Deep Copy
     MOrder counter =
         copyFrom(
-            this, getDateOrdered(), C_DocTypeTarget_ID, !isSOTrx(), true, false, get_TrxName());
+            this, getDateOrdered(), C_DocTypeTarget_ID, !isSOTrx(), true, false, null);
     //
     counter.setAD_Org_ID(counterAD_Org_ID);
     counter.setM_Warehouse_ID(counterOrgInfo.getM_Warehouse_ID());
@@ -1142,7 +1142,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     counter.setDatePromised(getDatePromised()); // default is date ordered
     //	References (Should not be required)
     counter.setSalesRep_ID(getSalesRep_ID());
-    counter.saveEx(get_TrxName());
+    counter.saveEx(null);
 
     //	Update copied lines
     MOrderLine[] counterLines = counter.getLines(true, null);
@@ -1151,7 +1151,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       counterLine.setOrder(counter); // 	copies header values (BP, etc.)
       counterLine.setPrice();
       counterLine.setTax();
-      counterLine.saveEx(get_TrxName());
+      counterLine.saveEx(null);
     }
     if (log.isLoggable(Level.FINE)) log.fine(counter.toString());
 
@@ -1164,7 +1164,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
           throw new AdempiereException(
               "Failed when processing document - " + counter.getProcessMsg());
         // end added
-        counter.saveEx(get_TrxName());
+        counter.saveEx(null);
       }
     }
     return counter;
@@ -1184,7 +1184,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
     if (getLink_Order_ID() > 0) {
       org.compiere.order.MOrder so =
-          new org.compiere.order.MOrder(getCtx(), getLink_Order_ID(), get_TrxName());
+          new org.compiere.order.MOrder(getCtx(), getLink_Order_ID(), null);
       so.setLink_Order_ID(0);
       so.saveEx();
     }
@@ -1199,14 +1199,14 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         line.addDescription(Msg.getMsg(getCtx(), "Voided") + " (" + old + ")");
         line.setQty(Env.ZERO);
         line.setLineNetAmt(Env.ZERO);
-        line.saveEx(get_TrxName());
+        line.saveEx(null);
       }
       // AZ Goodwill
       if (!isSOTrx()) {
         deleteMatchPOCostDetail(line);
       }
       if (line.getLink_OrderLine_ID() > 0) {
-        MOrderLine soline = new MOrderLine(getCtx(), line.getLink_OrderLine_ID(), get_TrxName());
+        MOrderLine soline = new MOrderLine(getCtx(), line.getLink_OrderLine_ID(), null);
         soline.setLink_OrderLine_ID(0);
         soline.saveEx();
       }
@@ -1226,10 +1226,10 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     }
 
     // UnLink All Requisitions
-    MRequisitionLine.unlinkC_Order_ID(getCtx(), getId(), get_TrxName());
+    MRequisitionLine.unlinkC_Order_ID(getCtx(), getId(), null);
 
     /* globalqss - 2317928 - Reactivating/Voiding order must reset posted */
-    MFactAcct.deleteEx(Table_ID, getC_Order_ID(), get_TrxName());
+    MFactAcct.deleteEx(Table_ID, getC_Order_ID(), null);
     setPosted(false);
 
     // After Void
@@ -1256,7 +1256,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             + " AND iol.C_OrderLine_ID=ol.C_OrderLine_ID"
             + " AND ol.C_Order_ID=?)";
     List<PO> list =
-        new Query(getCtx(), I_M_InOut.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_M_InOut.Table_Name, whereClause, null)
             .setParameters(getId())
             .setOrderBy("M_InOut_ID DESC")
             .list();
@@ -1284,7 +1284,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       if (MInOut.DOCSTATUS_Closed.equals(ship.getDocStatus())
           || MInOut.DOCSTATUS_Reversed.equals(ship.getDocStatus())
           || MInOut.DOCSTATUS_Voided.equals(ship.getDocStatus())) continue;
-      ship.set_TrxName(get_TrxName());
+      ship.set_TrxName(null);
 
       //	If not completed - void - otherwise reverse it
       if (!MInOut.DOCSTATUS_Completed.equals(ship.getDocStatus())) {
@@ -1298,7 +1298,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         return false;
       }
       ship.setDocAction(MInOut.DOCACTION_None);
-      ship.saveEx(get_TrxName());
+      ship.saveEx(null);
     } //	for all shipments
 
     //	Reverse All *Invoices*
@@ -1310,7 +1310,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       if (I_C_Invoice.DOCSTATUS_Closed.equals(invoice.getDocStatus())
           || I_C_Invoice.DOCSTATUS_Reversed.equals(invoice.getDocStatus())
           || I_C_Invoice.DOCSTATUS_Voided.equals(invoice.getDocStatus())) continue;
-      invoice.set_TrxName(get_TrxName());
+      invoice.set_TrxName(null);
 
       //	If not completed - void - otherwise reverse it
       if (!I_C_Invoice.DOCSTATUS_Completed.equals(invoice.getDocStatus())) {
@@ -1324,7 +1324,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         return false;
       }
       invoice.setDocAction(MInvoice.DOCACTION_None);
-      invoice.saveEx(get_TrxName());
+      invoice.saveEx(null);
     } //	for all shipments
 
     m_processMsg = info.toString();
@@ -1353,7 +1353,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         line.setQtyOrdered(line.getQtyDelivered());
         //	QtyEntered unchanged
         line.addDescription("Close (" + old + ")");
-        line.saveEx(get_TrxName());
+        line.saveEx(null);
       }
     }
     //	Clear Reservations
@@ -1397,7 +1397,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
           desc = desc.concat(s);
         }
         line.setDescription(desc);
-        if (!line.save(get_TrxName())) return "Couldn't save orderline";
+        if (!line.save(null)) return "Couldn't save orderline";
       }
     }
     //	Clear Reservations
@@ -1408,7 +1408,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
     setDocStatus(DOCSTATUS_Completed);
     setDocAction(DOCACTION_Close);
-    if (!this.save(get_TrxName())) return "Couldn't save reopened order";
+    if (!this.save(null)) return "Couldn't save reopened order";
     else return "";
   } //	reopenIt
   /**
@@ -1499,7 +1499,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     }
 
     /* globalqss - 2317928 - Reactivating/Voiding order must reset posted */
-    MFactAcct.deleteEx(Table_ID, getC_Order_ID(), get_TrxName());
+    MFactAcct.deleteEx(Table_ID, getC_Order_ID(), null);
     setPosted(false);
 
     // After reActivate
@@ -1524,7 +1524,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       }
 
       // update/delete Cost Detail and recalculate Current Cost
-      MMatchPO[] mPO = MMatchPO.getOrderLine(getCtx(), line.getC_OrderLine_ID(), get_TrxName());
+      MMatchPO[] mPO = MMatchPO.getOrderLine(getCtx(), line.getC_OrderLine_ID(), null);
       // delete Cost Detail if the Matched PO has been deleted
       if (mPO.length == 0) {
         MCostDetail cd =
@@ -1534,7 +1534,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                 line.getC_OrderLine_ID(),
                 line.getMAttributeSetInstance_ID(),
                 as.getC_AcctSchema_ID(),
-                get_TrxName());
+                null);
         if (cd != null) {
           cd.setProcessed(false);
           cd.delete(true);

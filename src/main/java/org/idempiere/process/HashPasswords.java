@@ -49,7 +49,7 @@ public class HashPasswords extends SvrProcess {
     int count = 0;
     try {
       List<MUser> users =
-          MTable.get(getCtx(), MUser.Table_ID).createQuery(where, get_TrxName()).list();
+          MTable.get(getCtx(), MUser.Table_ID).createQuery(where, null).list();
       for (MUser user : users) {
         user.setPassword(user.getPassword());
         count++;

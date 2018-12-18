@@ -58,7 +58,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**
@@ -85,7 +85,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**
@@ -328,7 +328,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
   public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException {
     return (org.compiere.model.I_M_PriceList)
         MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
-            .getPO(getM_PriceList_ID(), get_TrxName());
+            .getPO(getM_PriceList_ID(), null);
   }
 
   /**
@@ -394,7 +394,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
   public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
     return (org.compiere.model.I_M_Warehouse)
         MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), get_TrxName());
+            .getPO(getM_Warehouse_ID(), null);
   }
 
   /**

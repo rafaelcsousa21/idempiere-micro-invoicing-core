@@ -1,10 +1,5 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.crm.MClientInfo;
 import org.compiere.model.I_AD_ClientInfo;
 import org.compiere.model.I_C_AcctSchema;
@@ -14,6 +9,12 @@ import org.compiere.orm.Query;
 import org.compiere.product.MCurrency;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Accounting Schema Model (base)
@@ -97,7 +98,7 @@ public class MAcctSchema extends X_C_AcctSchema {
                 " AND EXISTS (SELECT * FROM C_AcctSchema_Default d WHERE C_AcctSchema.C_AcctSchema_ID=d.C_AcctSchema_ID)");
     params.add("Y");
     if (AD_Client_ID != 0) {
-      whereClause.append(" AND AD_Client_ID=?");
+      whereClause.append(" AND clientId=?");
       params.add(AD_Client_ID);
     }
 
@@ -178,7 +179,7 @@ public class MAcctSchema extends X_C_AcctSchema {
    * @param currency currency
    */
   public MAcctSchema(MClient client, KeyNamePair currency) {
-    this(client.getCtx(), 0, client.get_TrxName());
+    this(client.getCtx(), 0, null);
     setClientOrg(client);
     setC_Currency_ID(currency.getKey());
     StringBuilder msgset =
@@ -398,7 +399,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     if (log.isLoggable(Level.INFO)) log.info(toString());
     //	Create Cost Type
     if (getM_CostType_ID() == 0) {
-      MCostType ct = new MCostType(getCtx(), 0, get_TrxName());
+      MCostType ct = new MCostType(getCtx(), 0, null);
       ct.setClientOrg( getClientId(), 0);
       ct.setName(getName());
       ct.saveEx();
@@ -550,7 +551,7 @@ public class MAcctSchema extends X_C_AcctSchema {
   /**
    * Get Only Org Children
    *
-   * @return array of AD_Org_ID
+   * @return array of orgId
    */
   public synchronized Integer[] getOnlyOrgs() {
     if (m_onlyOrgs == null) {

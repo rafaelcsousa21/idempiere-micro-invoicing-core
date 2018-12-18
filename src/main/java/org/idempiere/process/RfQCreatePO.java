@@ -58,7 +58,7 @@ public class RfQCreatePO extends SvrProcess {
     throw new NotImplementedException();
 
     /*
-    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, get_TrxName());
+    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
     if (rfq.getId() == 0)
     	throw new IllegalArgumentException("No RfQ found");
     if (log.isLoggable(Level.INFO)) log.info(rfq.toString());
@@ -76,9 +76,9 @@ public class RfQCreatePO extends SvrProcess {
     	if (!response.isSelectedWinner())
     		continue;
     	//
-    	MBPartner bp = new MBPartner(getCtx(), response.getC_BPartner_ID(), get_TrxName());
+    	MBPartner bp = new MBPartner(getCtx(), response.getC_BPartner_ID(), null);
     	if (log.isLoggable(Level.CONFIG)) log.config("Winner=" + bp);
-    	MOrder order = new MOrder (getCtx(), 0, get_TrxName());
+    	MOrder order = new MOrder (getCtx(), 0, null);
     	order.setIsSOTrx(false);
     	if (p_C_DocType_ID != 0)
     		order.setC_DocTypeTarget_ID(p_C_DocType_ID);
@@ -143,14 +143,14 @@ public class RfQCreatePO extends SvrProcess {
     		//	New/different BP
     		if (bp == null || bp.getC_BPartner_ID() != response.getC_BPartner_ID())
     		{
-    			bp = new MBPartner(getCtx(), response.getC_BPartner_ID(), get_TrxName());
+    			bp = new MBPartner(getCtx(), response.getC_BPartner_ID(), null);
     			order = null;
     		}
     		if (log.isLoggable(Level.CONFIG)) log.config("Line=" + line + ", Winner=" + bp);
     		//	New Order
     		if (order == null)
     		{
-    			order = new MOrder (getCtx(), 0, get_TrxName());
+    			order = new MOrder (getCtx(), 0, null);
     			order.setIsSOTrx(false);
     			order.setC_DocTypeTarget_ID();
     			order.setBPartner(bp);

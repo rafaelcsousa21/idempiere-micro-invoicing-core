@@ -57,7 +57,7 @@ public class TreeMaintenance extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("AD_Tree_ID=" + m_AD_Tree_ID);
     if (m_AD_Tree_ID == 0) throw new IllegalArgumentException("Tree_ID = 0");
-    MTree tree = new MTree(getCtx(), m_AD_Tree_ID, get_TrxName());
+    MTree tree = new MTree(getCtx(), m_AD_Tree_ID, null);
     if (tree == null || tree.getAD_Tree_ID() == 0)
       throw new IllegalArgumentException("No Tree -" + tree);
     //
@@ -95,13 +95,13 @@ public class TreeMaintenance extends SvrProcess {
         .append(sourceTableKey)
         .append(" FROM ")
         .append(sourceTableName)
-        .append(" WHERE AD_Client_ID=")
+        .append(" WHERE clientId=")
         .append(AD_Client_ID);
     if (C_Element_ID > 0) sql.append(" AND C_Element_ID=").append(C_Element_ID);
     sql.append(")");
     if (log.isLoggable(Level.FINER)) log.finer(sql.toString());
     //
-    int deletes = executeUpdate(sql.toString(), get_TrxName());
+    int deletes = executeUpdate(sql.toString(), null);
     addLog(0, null, new BigDecimal(deletes), tree.getName() + " Deleted");
     if (!tree.isAllNodes()) {
       StringBuilder msgreturn = new StringBuilder().append(tree.getName()).append(" OK");
@@ -114,7 +114,7 @@ public class TreeMaintenance extends SvrProcess {
         .append(sourceTableKey)
         .append(" FROM ")
         .append(sourceTableName)
-        .append(" WHERE AD_Client_ID=")
+        .append(" WHERE clientId=")
         .append(AD_Client_ID);
     if (C_Element_ID > 0) sql.append(" AND C_Element_ID=").append(C_Element_ID);
     sql.append(" AND ")
@@ -130,7 +130,7 @@ public class TreeMaintenance extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int Node_ID = rs.getInt(1);
@@ -162,18 +162,18 @@ public class TreeMaintenance extends SvrProcess {
           .append(sourceTableKey)
           .append(" FROM ")
           .append(sourceTableName)
-          .append(" WHERE AD_Client_ID=")
+          .append(" WHERE clientId=")
           .append(AD_Client_ID);
       if (C_Element_ID > 0) sql.append(" AND C_Element_ID=").append(C_Element_ID);
       if (log.isLoggable(Level.FINER)) log.finer(sql.toString());
       //
       MTable table = MTable.get(getCtx(), sourceTableName);
       try {
-        pstmt = prepareStatement(sql.toString(), get_TrxName());
+        pstmt = prepareStatement(sql.toString(), null);
         rs = pstmt.executeQuery();
         while (rs.next()) {
           int Node_ID = rs.getInt(1);
-          PO rec = (PO) table.getPO(Node_ID, get_TrxName());
+          PO rec = (PO) table.getPO(Node_ID, null);
           rec.update_Tree(tree.getTreeType());
         }
       } catch (Exception e) {

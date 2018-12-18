@@ -27,7 +27,7 @@ public class WorkflowMoveToClient extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
+      else if (name.equals("clientId")) p_AD_Client_ID = para[i].getParameterAsInt();
       else if (name.equals("AD_Workflow_ID")) p_AD_Workflow_ID = para[i].getParameterAsInt();
       else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
     }
@@ -41,62 +41,62 @@ public class WorkflowMoveToClient extends SvrProcess {
    */
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO))
-      log.info("doIt - AD_Client_ID=" + p_AD_Client_ID + ", AD_Workflow_ID=" + p_AD_Workflow_ID);
+      log.info("doIt - clientId=" + p_AD_Client_ID + ", AD_Workflow_ID=" + p_AD_Workflow_ID);
 
     int changes = 0;
     //	WF
     String sql =
-        "UPDATE AD_Workflow SET AD_Client_ID="
+        "UPDATE AD_Workflow SET clientId="
             + p_AD_Client_ID
-            + " WHERE AD_Client_ID=0 AND EntityType NOT IN ('D','C')"
+            + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND AD_Workflow_ID="
             + p_AD_Workflow_ID;
-    int no = executeUpdate(sql, get_TrxName());
+    int no = executeUpdate(sql, null);
     if (no == -1) throw new AdempiereSystemError("Error updating Workflow");
     changes += no;
 
     //	Node
     sql =
-        "UPDATE AD_WF_Node SET AD_Client_ID="
+        "UPDATE AD_WF_Node SET clientId="
             + p_AD_Client_ID
-            + " WHERE AD_Client_ID=0 AND EntityType NOT IN ('D','C')"
+            + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND AD_Workflow_ID="
             + p_AD_Workflow_ID;
-    no = executeUpdate(sql, get_TrxName());
+    no = executeUpdate(sql, null);
     if (no == -1) throw new AdempiereSystemError("Error updating Workflow Node");
     changes += no;
 
     //	Node Next
     sql =
-        "UPDATE AD_WF_NodeNext SET AD_Client_ID="
+        "UPDATE AD_WF_NodeNext SET clientId="
             + p_AD_Client_ID
-            + " WHERE AD_Client_ID=0 AND EntityType NOT IN ('D','C')"
+            + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND (AD_WF_Node_ID IN (SELECT AD_WF_Node_ID FROM AD_WF_Node WHERE AD_Workflow_ID="
             + p_AD_Workflow_ID
             + ") OR AD_WF_Next_ID IN (SELECT AD_WF_Node_ID FROM AD_WF_Node WHERE AD_Workflow_ID="
             + p_AD_Workflow_ID
             + "))";
-    no = executeUpdate(sql, get_TrxName());
+    no = executeUpdate(sql, null);
     if (no == -1) throw new AdempiereSystemError("Error updating Workflow Transition");
     changes += no;
 
     //	Node Parameters
     sql =
-        "UPDATE AD_WF_Node_Para SET AD_Client_ID="
+        "UPDATE AD_WF_Node_Para SET clientId="
             + p_AD_Client_ID
-            + " WHERE AD_Client_ID=0 AND EntityType NOT IN ('D','C')"
+            + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND AD_WF_Node_ID IN (SELECT AD_WF_Node_ID FROM AD_WF_Node WHERE AD_Workflow_ID="
             + p_AD_Workflow_ID
             + ")";
-    no = executeUpdate(sql, get_TrxName());
+    no = executeUpdate(sql, null);
     if (no == -1) throw new AdempiereSystemError("Error updating Workflow Node Parameters");
     changes += no;
 
     //	Node Next Condition
     sql =
-        "UPDATE AD_WF_NextCondition SET AD_Client_ID="
+        "UPDATE AD_WF_NextCondition SET clientId="
             + p_AD_Client_ID
-            + " WHERE AD_Client_ID=0 AND EntityType NOT IN ('D','C')"
+            + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND AD_WF_NodeNext_ID IN ("
             + "SELECT AD_WF_NodeNext_ID FROM AD_WF_NodeNext "
             + "WHERE AD_WF_Node_ID IN (SELECT AD_WF_Node_ID FROM AD_WF_Node WHERE AD_Workflow_ID="
@@ -104,7 +104,7 @@ public class WorkflowMoveToClient extends SvrProcess {
             + ") OR AD_WF_Next_ID IN (SELECT AD_WF_Node_ID FROM AD_WF_Node WHERE AD_Workflow_ID="
             + p_AD_Workflow_ID
             + "))";
-    no = executeUpdate(sql, get_TrxName());
+    no = executeUpdate(sql, null);
     if (no == -1) throw new AdempiereSystemError("Error updating Workflow Transition Condition");
     changes += no;
 

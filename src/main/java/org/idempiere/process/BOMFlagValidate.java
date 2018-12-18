@@ -43,12 +43,12 @@ public class BOMFlagValidate extends SvrProcess {
     StringBuilder sql =
         new StringBuilder("SELECT Name, M_Product_ID FROM M_Product WHERE IsBOM = 'Y' AND ")
             .append("M_Product_ID NOT IN (SELECT M_Product_ID FROM M_Product_BOM ) AND ");
-    if (p_M_Product_Category_ID == 0) sql.append("AD_Client_ID= ?");
+    if (p_M_Product_Category_ID == 0) sql.append("clientId= ?");
     else sql.append("M_Product_Category_ID= ?");
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId(getCtx()));
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
@@ -72,9 +72,9 @@ public class BOMFlagValidate extends SvrProcess {
           new StringBuilder(
                   "UPDATE M_Product SET IsBOM = 'N' WHERE IsBOM = 'Y' AND M_Product_ID NOT IN ")
               .append("(SELECT M_Product_ID FROM M_Product_BOM ) AND ");
-      if (p_M_Product_Category_ID == 0) update.append("AD_Client_ID= ?");
+      if (p_M_Product_Category_ID == 0) update.append("clientId= ?");
       else update.append("M_Product_Category_ID= ?");
-      upstmt = prepareStatement(update.toString(), get_TrxName());
+      upstmt = prepareStatement(update.toString(), null);
       if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
       else upstmt.setInt(1, p_M_Product_Category_ID);
       upstmt.executeUpdate();
@@ -92,12 +92,12 @@ public class BOMFlagValidate extends SvrProcess {
     StringBuilder sql =
         new StringBuilder("SELECT Name, M_Product_ID FROM M_Product WHERE IsBOM = 'N' AND ")
             .append("M_Product_ID IN (SELECT M_Product_ID FROM M_Product_BOM ) AND ");
-    if (p_M_Product_Category_ID == 0) sql.append("AD_Client_ID= ?");
+    if (p_M_Product_Category_ID == 0) sql.append("clientId= ?");
     else sql.append("M_Product_Category_ID= ?");
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId(getCtx()));
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
@@ -118,11 +118,11 @@ public class BOMFlagValidate extends SvrProcess {
     StringBuilder update =
         new StringBuilder("UPDATE M_Product SET ISBOM = 'Y' WHERE IsBOM = 'N' AND M_Product_ID IN ")
             .append("(SELECT M_Product_ID FROM M_Product_BOM ) AND ");
-    if (p_M_Product_Category_ID == 0) update.append("AD_Client_ID= ?");
+    if (p_M_Product_Category_ID == 0) update.append("clientId= ?");
     else update.append("M_Product_Category_ID= ?");
     PreparedStatement upstmt = null;
     try {
-      upstmt = prepareStatement(update.toString(), get_TrxName());
+      upstmt = prepareStatement(update.toString(), null);
       if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
       else upstmt.setInt(1, p_M_Product_Category_ID);
       upstmt.executeUpdate();

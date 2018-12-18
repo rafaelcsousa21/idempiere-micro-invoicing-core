@@ -48,7 +48,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
   public org.compiere.model.I_AD_BroadcastMessage getAD_BroadcastMessage() throws RuntimeException {
     return (org.compiere.model.I_AD_BroadcastMessage)
         MTable.get(getCtx(), org.compiere.model.I_AD_BroadcastMessage.Table_Name)
-            .getPO(getAD_BroadcastMessage_ID(), get_TrxName());
+            .getPO(getAD_BroadcastMessage_ID(), null);
   }
 
   /**
@@ -75,7 +75,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
   public org.compiere.model.I_AD_Message getAD_Message() throws RuntimeException {
     return (org.compiere.model.I_AD_Message)
         MTable.get(getCtx(), org.compiere.model.I_AD_Message.Table_Name)
-            .getPO(getAD_Message_ID(), get_TrxName());
+            .getPO(getAD_Message_ID(), null);
   }
 
   /**
@@ -150,7 +150,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
   public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
     return (org.compiere.model.I_AD_Table)
         MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), get_TrxName());
+            .getPO(getAD_Table_ID(), null);
   }
 
   /**
@@ -177,7 +177,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**
@@ -204,7 +204,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
   public org.compiere.model.I_AD_WF_Activity getAD_WF_Activity() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Activity)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Activity.Table_Name)
-            .getPO(getAD_WF_Activity_ID(), get_TrxName());
+            .getPO(getAD_WF_Activity_ID(), null);
   }
 
   /**

@@ -83,7 +83,7 @@ public class SequenceCheck extends SvrProcess {
    */
   private static void checkTableSequences(Properties ctx, SvrProcess sp) {
     String trxName = null;
-    if (sp != null) trxName = sp.get_TrxName();
+    if (sp != null) trxName = null;
     String sql =
         "SELECT TableName "
             + "FROM AD_Table t "
@@ -178,7 +178,7 @@ public class SequenceCheck extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     String trxName = null;
-    if (sp != null) trxName = sp.get_TrxName();
+    if (sp != null) trxName = null;
     try {
       pstmt = prepareStatement(sql, trxName);
       rs = pstmt.executeQuery();
@@ -216,7 +216,7 @@ public class SequenceCheck extends SvrProcess {
    */
   private static void checkClientSequences(Properties ctx, SvrProcess sp) {
     String trxName = null;
-    if (sp != null) trxName = sp.get_TrxName();
+    if (sp != null) trxName = null;
 
     // CarlosRuiz - globalqss - [ 1887608 ] SequenceCheck deadlock
     // Commit previous work on AD_Sequence

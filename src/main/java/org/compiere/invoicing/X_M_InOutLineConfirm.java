@@ -54,7 +54,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm, I_
   public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
     return (org.compiere.model.I_C_InvoiceLine)
         MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), get_TrxName());
+            .getPO(getC_InvoiceLine_ID(), null);
   }
 
   /**
@@ -157,7 +157,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm, I_
   public org.compiere.model.I_M_InOutConfirm getM_InOutConfirm() throws RuntimeException {
     return (org.compiere.model.I_M_InOutConfirm)
         MTable.get(getCtx(), org.compiere.model.I_M_InOutConfirm.Table_Name)
-            .getPO(getM_InOutConfirm_ID(), get_TrxName());
+            .getPO(getM_InOutConfirm_ID(), null);
   }
 
   /**
@@ -223,7 +223,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm, I_
   public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
     return (org.compiere.model.I_M_InOutLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), get_TrxName());
+            .getPO(getM_InOutLine_ID(), null);
   }
 
   /**
@@ -259,7 +259,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm, I_
   public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
     return (org.compiere.model.I_M_InventoryLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getM_InventoryLine_ID(), get_TrxName());
+            .getPO(getM_InventoryLine_ID(), null);
   }
 
   /**

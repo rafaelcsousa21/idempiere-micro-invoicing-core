@@ -45,7 +45,7 @@ public class SynchronizeTerminology extends SvrProcess {
     ResultSet rs = null;
     try {
       int no;
-      Trx trx = Trx.get(get_TrxName(), false);
+      Trx trx = Trx.get(null, false);
       // Create Elements from ColumnNames
       sql =
           "SELECT DISTINCT ColumnName, Name, Description, Help, EntityType "
@@ -53,7 +53,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + "(SELECT 1 FROM AD_ELEMENT e "
               + " WHERE UPPER(c.ColumnName)=UPPER(e.ColumnName))"
               + " AND c.isActive = 'Y'";
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         String columnName = rs.getString(1);
@@ -61,7 +61,7 @@ public class SynchronizeTerminology extends SvrProcess {
         String desc = rs.getString(3);
         String help = rs.getString(4);
         String entityType = rs.getString(5);
-        M_Element elem = new M_Element(getCtx(), columnName, entityType, get_TrxName());
+        M_Element elem = new M_Element(getCtx(), columnName, entityType, null);
         elem.setDescription(desc);
         elem.setHelp(help);
         elem.setPrintName(name);
@@ -80,7 +80,7 @@ public class SynchronizeTerminology extends SvrProcess {
       	+" WHERE UPPER(p.ColumnName)=UPPER(e.ColumnName))"
       	+" AND p.isCentrallyMaintained = 'Y'"
       	+" AND p.isActive = 'Y'";
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       rs = pstmt.executeQuery ();
       while (rs.next()){
       	String columnName = rs.getString(1);
@@ -89,7 +89,7 @@ public class SynchronizeTerminology extends SvrProcess {
       	String help =rs.getString(4);
       	String entityType=rs.getString(5);
       	//TODO AD_SEQ system !!!
-      	M_Element elem = new M_Element(getCtx(),columnName,entityType,get_TrxName());
+      	M_Element elem = new M_Element(getCtx(),columnName,entityType,null);
       	elem.setDescription(desc);
       	elem.setHelp(help);
       	elem.setPrintName(name);
@@ -100,17 +100,17 @@ public class SynchronizeTerminology extends SvrProcess {
       trx.commit(true);*/
       log.info("Adding missing Element Translations");
       sql =
-          "INSERT INTO AD_ELEMENT_TRL (AD_Element_ID, AD_LANGUAGE, AD_Client_ID, AD_Org_ID,"
+          "INSERT INTO AD_ELEMENT_TRL (AD_Element_ID, AD_LANGUAGE, clientId, orgId,"
               + " IsActive, Created, CreatedBy, Updated, UpdatedBy,"
               + " Name, PrintName, Description, Help, IsTranslated)"
-              + " SELECT m.AD_Element_ID, l.AD_LANGUAGE, m.AD_Client_ID, m.AD_Org_ID,"
+              + " SELECT m.AD_Element_ID, l.AD_LANGUAGE, m.clientId, m.orgId,"
               + " m.IsActive, m.Created, m.CreatedBy, m.Updated, m.UpdatedBy,"
               + " m.Name, m.PrintName, m.Description, m.Help, 'N'"
               + " FROM	AD_ELEMENT m, AD_LANGUAGE l"
               + " WHERE	l.IsActive = 'Y' AND l.IsSystemLanguage = 'Y'"
               + " AND	AD_Element_ID || AD_LANGUAGE NOT IN "
               + " (SELECT AD_Element_ID || AD_LANGUAGE FROM AD_ELEMENT_TRL)";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -121,7 +121,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 	(SELECT AD_Element_ID FROM AD_ELEMENT e"
               + " 	WHERE UPPER(c.ColumnName)=UPPER(e.ColumnName))"
               + " 	WHERE AD_Element_ID IS NULL";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -136,7 +136,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 	(SELECT 1 FROM AD_PROCESS_PARA p WHERE UPPER(e.ColumnName)=UPPER(p.ColumnName))"
               + " 	AND NOT EXISTS"
               + " 	(SELECT 1 FROM AD_INFOCOLUMN i WHERE UPPER(e.ColumnName)=UPPER(i.ColumnName)))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows deleted: " + no);
       trx.commit(true);
 
@@ -148,7 +148,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 	(SELECT 1 FROM AD_PROCESS_PARA p WHERE UPPER(e.ColumnName)=UPPER(p.ColumnName))"
               + " 	AND NOT EXISTS"
               + " 	(SELECT 1 FROM AD_INFOCOLUMN i WHERE UPPER(e.ColumnName)=UPPER(i.ColumnName))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows deleted: " + no);
       trx.commit(true);
 
@@ -164,7 +164,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 				WHERE c.AD_Element_ID=e.AD_Element_ID"
               + " 				  AND (c.ColumnName <> e.ColumnName OR c.Name <> e.Name "
               + " 					OR NVL(c.Description,' ') <> NVL(e.Description,' ') OR NVL(c.Help,' ') <> NVL(e.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -181,7 +181,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 				WHERE c.AD_Element_ID=e.AD_Element_ID"
               + " 				  AND (c.ColumnName <> e.ColumnName OR c.Name <> e.Name "
               + " 					OR NVL(c.Description,' ') <> NVL(e.Description,' ') OR NVL(c.Help,' ') <> NVL(e.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -199,7 +199,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 				WHERE f.AD_Column_ID=c.AD_Column_ID"
               + " 				  AND c.AD_Element_ID=e.AD_Element_ID AND c.AD_Process_ID IS NULL"
               + " 				  AND (f.Name <> e.Name OR NVL(f.Description,' ') <> NVL(e.Description,' ') OR NVL(f.Help,' ') <> NVL(e.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -227,7 +227,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + "		  AND trl.AD_LANGUAGE=e.AD_LANGUAGE"
               + "		  AND f.IsCentrallyMaintained='Y' AND f.IsActive='Y'"
               + "		  AND (trl.Name <> e.Name OR NVL(trl.Description,' ') <> NVL(e.Description,' ') OR NVL(trl.Help,' ') <> NVL(e.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -252,7 +252,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 		WHERE f.AD_Tab_ID=t.AD_Tab_ID"
               + " 		  AND t.AD_Window_ID=w.AD_Window_ID"
               + " 		  AND w.IsSOTrx='N')";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -286,7 +286,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 	  AND f.AD_Tab_ID=t.AD_Tab_ID"
               + " 	  AND t.AD_Window_ID=w.AD_Window_ID"
               + " 	  AND w.IsSOTrx='N')";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -305,7 +305,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND EXISTS (SELECT 1 FROM AD_PROCESS p, AD_COLUMN c"
               + " 		WHERE c.AD_Process_ID=p.AD_Process_ID AND f.AD_Column_ID=c.AD_Column_ID"
               + " 		AND (f.Name<>p.Name OR NVL(f.Description,' ')<>NVL(p.Description,' ') OR NVL(f.Help,' ')<>NVL(p.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -331,7 +331,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 		AND f.AD_Field_ID=trl.AD_Field_ID AND p.AD_LANGUAGE=trl.AD_LANGUAGE"
               + " 		AND f.IsCentrallyMaintained='Y' AND f.IsActive='Y'"
               + " 		AND (trl.Name<>p.Name OR NVL(trl.Description,' ')<>NVL(p.Description,' ') OR NVL(trl.Help,' ')<>NVL(p.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -345,7 +345,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND EXISTS (SELECT 1 FROM AD_ELEMENT e"
               + " WHERE UPPER(e.ColumnName)=UPPER(f.ColumnName)"
               + " AND e.ColumnName<>f.ColumnName)";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -355,7 +355,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " SET	IsCentrallyMaintained = 'N'"
               + " WHERE	IsCentrallyMaintained <> 'N'"
               + " AND NOT EXISTS (SELECT 1 FROM AD_ELEMENT e WHERE p.ColumnName=e.ColumnName)";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -374,7 +374,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND EXISTS (SELECT 1 FROM AD_ELEMENT e"
               + " 		WHERE e.ColumnName=f.ColumnName"
               + " 		  AND (f.Name <> e.Name OR NVL(f.Description,' ') <> NVL(e.Description,' ') OR NVL(f.Help,' ') <> NVL(e.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -400,7 +400,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 			  AND e.ColumnName=f.ColumnName AND f.AD_Process_Para_ID=trl.AD_Process_Para_ID"
               + " 			  AND f.IsCentrallyMaintained='Y' AND f.IsActive='Y'"
               + " 			  AND (trl.Name <> et.Name OR NVL(trl.Description,' ') <> NVL(et.Description,' ') OR NVL(trl.Help,' ') <> NVL(et.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -426,7 +426,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 			  AND e.ColumnName=f.ColumnName AND f.AD_InfoColumn_ID=trl.AD_InfoColumn_ID"
               + " 			  AND f.IsCentrallyMaintained='Y' AND f.IsActive='Y'"
               + " 			  AND (trl.Name <> et.Name OR NVL(trl.Description,' ') <> NVL(et.Description,' ') OR NVL(trl.Help,' ') <> NVL(et.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -446,7 +446,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 		  AND (w.Name <> n.Name OR NVL(w.Description,' ') <> NVL(n.Description,' ') OR NVL(w.Help,' ') <> NVL("
               + (isOracle() ? "dbms_lob.substr(n.Help, 4000, 1 )" : "n.Help")
               + ",' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -469,7 +469,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 		  AND (trl.Name <> t.Name OR NVL(trl.Description,' ') <> NVL(t.Description,' ') OR NVL("
               + (isOracle() ? "dbms_lob.substr(trl.Help, 4000, 1 )" : "trl.Help")
               + ",' ') <> NVL(t.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -486,7 +486,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 		  AND (f.Name <> n.Name OR NVL(f.Description,' ') <> NVL(n.Description,' ') OR NVL(f.Help,' ') <> NVL("
               + (isOracle() ? "dbms_lob.substr(n.Help, 4000, 1 )" : "n.Help")
               + ",' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -504,7 +504,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 		  AND (trl.Name <> t.Name OR NVL(trl.Description,' ') <> NVL(t.Description,' ') OR NVL("
               + (isOracle() ? "dbms_lob.substr(trl.Help, 4000, 1 )" : "trl.Help")
               + ",' ') <> NVL(t.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -521,7 +521,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " 		  AND (f.Name <> n.Name OR NVL(f.Description,' ') <> NVL(n.Description,' ') OR NVL(f.Help,' ') <> NVL("
               + (isOracle() ? "dbms_lob.substr(n.Help, 4000, 1 )" : "n.Help")
               + ",' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -539,7 +539,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + "  AND (trl.Name <> t.Name OR NVL(trl.Description,' ') <> NVL(t.Description,' ') OR NVL("
               + (isOracle() ? "dbms_lob.substr(trl.Help, 4000, 1 )" : "trl.Help")
               + ",' ') <> NVL(t.Help,' ')))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -557,8 +557,8 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND c.AD_Column_ID=pfi.AD_Column_ID"
               + " AND e.Name<>pfi.Name)"
               + " AND EXISTS (SELECT 1 FROM AD_CLIENT"
-              + " WHERE AD_Client_ID=pfi.AD_Client_ID AND IsMultiLingualDocument='Y')";
-      no = executeUpdate(sql, false, get_TrxName());
+              + " WHERE clientId=pfi.clientId AND IsMultiLingualDocument='Y')";
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -579,8 +579,8 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND pf.AD_PrintFormat_ID=pfi.AD_PrintFormat_ID"
               + " AND pf.IsForm='N' AND IsTableBased='Y')"
               + " AND EXISTS (SELECT 1 FROM AD_CLIENT "
-              + " WHERE AD_Client_ID=pfi.AD_Client_ID AND IsMultiLingualDocument='Y')";
-      no = executeUpdate(sql, false, get_TrxName());
+              + " WHERE clientId=pfi.clientId AND IsMultiLingualDocument='Y')";
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -598,7 +598,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + "		  AND trl.AD_LANGUAGE=e.AD_LANGUAGE"
               + "		  AND p.IsCentrallyMaintained='Y' AND p.IsActive='Y'"
               + "		  AND (trl.Name <> e.Name))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -623,8 +623,8 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND pf.AD_PrintFormat_ID=pfi.AD_PrintFormat_ID "
               + " AND pf.IsForm='N' AND IsTableBased='Y')"
               + " AND EXISTS (SELECT 1 FROM AD_CLIENT "
-              + " WHERE AD_Client_ID=trl.AD_Client_ID AND IsMultiLingualDocument='Y')";
-      no = executeUpdate(sql, false, get_TrxName());
+              + " WHERE clientId=trl.clientId AND IsMultiLingualDocument='Y')";
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -643,8 +643,8 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND pf.AD_PrintFormat_ID=pfi.AD_PrintFormat_ID "
               + " AND pf.IsForm='N' AND pf.IsTableBased='Y')"
               + " AND EXISTS (SELECT 1 FROM AD_CLIENT "
-              + " WHERE AD_Client_ID=trl.AD_Client_ID AND IsMultiLingualDocument='N')";
-      no = executeUpdate(sql, false, get_TrxName());
+              + " WHERE clientId=trl.clientId AND IsMultiLingualDocument='N')";
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -658,7 +658,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " WHERE pfi.AD_PrintFormatItem_ID=trl.AD_PrintFormatItem_ID"
               + " AND pfi.IsCentrallyMaintained='Y'"
               + " AND (LENGTH (pfi.PrintName) = 0 OR pfi.PrintName IS NULL))";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -679,7 +679,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " WHERE	m.AD_Window_ID IS NOT NULL"
               + "  AND m.Action = 'W'"
               + "  AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -701,7 +701,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND m.Action = 'W'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
               + ")";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -714,7 +714,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " WHERE m.AD_Process_ID IS NOT NULL"
               + " AND m.Action IN ('R', 'P')"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -736,7 +736,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND m.Action IN ('R', 'P')"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
               + ")";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -749,7 +749,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " WHERE m.AD_Form_ID IS NOT NULL"
               + " AND m.Action = 'X'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -771,7 +771,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND m.Action = 'X'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
               + ")";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -784,7 +784,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " WHERE m.AD_Workflow_ID IS NOT NULL"
               + " AND m.Action = 'F'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -806,7 +806,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND m.Action = 'F'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
               + ")";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -819,7 +819,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " WHERE m.AD_Task_ID IS NOT NULL"
               + " AND m.Action = 'T'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -841,7 +841,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND m.Action = 'T'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
               + ")";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -854,7 +854,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " WHERE m.AD_InfoWindow_ID IS NOT NULL"
               + " AND m.Action = 'I'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -876,7 +876,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND m.Action = 'I'"
               + " AND m.IsCentrallyMaintained='Y' AND m.IsActive='Y'"
               + ")";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -890,7 +890,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " (SELECT 1 FROM AD_COLUMN c INNER JOIN AD_ELEMENT_TRL e ON (c.AD_Element_ID=e.AD_Element_ID)"
               + " WHERE ct.AD_Column_ID=c.AD_Column_ID AND ct.AD_LANGUAGE=e.AD_LANGUAGE"
               + " AND ct.Name<>e.Name)";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -903,7 +903,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + "WHERE EXISTS (SELECT 1 FROM AD_ELEMENT e "
               + "WHERE t.TableName||'_ID'=e.ColumnName "
               + "AND t.Name<>e.Name)";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  rows updated: " + no);
       trx.commit(true);
 
@@ -918,7 +918,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " INNER JOIN AD_ELEMENT_TRL e ON (ex.AD_Element_ID=e.AD_Element_ID)"
               + " WHERE tt.AD_Table_ID=t.AD_Table_ID AND tt.AD_LANGUAGE=e.AD_LANGUAGE"
               + " AND tt.Name<>e.Name)";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  trl rows updated: " + no);
       trx.commit(true);
 
@@ -932,7 +932,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " AND EXISTS (SELECT 1 FROM AD_ELEMENT e "
               + " WHERE SUBSTR(t.TableName,1,LENGTH(t.TableName)-4)||'_ID'=e.ColumnName"
               + " AND t.Name<>e.Name)";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  trl rows updated: " + no);
       trx.commit(true);
 
@@ -948,7 +948,7 @@ public class SynchronizeTerminology extends SvrProcess {
               + " WHERE tt.AD_Table_ID=t.AD_Table_ID AND tt.AD_LANGUAGE=e.AD_LANGUAGE"
               + " AND t.TableName LIKE '%_Trl'"
               + " AND tt.Name<>e.Name)";
-      no = executeUpdate(sql, false, get_TrxName());
+      no = executeUpdate(sql, false, null);
       if (log.isLoggable(Level.INFO)) log.info("  trl rows updated: " + no);
       trx.commit(true);
 

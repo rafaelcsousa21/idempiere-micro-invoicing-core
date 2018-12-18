@@ -75,7 +75,7 @@ public class CopyOrder extends SvrProcess {
     if (dt.getId() == 0) throw new IllegalArgumentException("No DocType");
     if (p_DateDoc == null) p_DateDoc = new Timestamp(System.currentTimeMillis());
     //
-    MOrder from = new MOrder(getCtx(), p_C_Order_ID, get_TrxName());
+    MOrder from = new MOrder(getCtx(), p_C_Order_ID, null);
     MOrder newOrder =
         MOrder.copyFrom(
             from,
@@ -84,14 +84,14 @@ public class CopyOrder extends SvrProcess {
             dt.isSOTrx(),
             false,
             true,
-            get_TrxName()); //	copy ASI
+            null); //	copy ASI
     newOrder.setC_DocTypeTarget_ID(p_C_DocType_ID);
     newOrder.setQuotationOrder_ID(from.getC_Order_ID()); // IDEMPIERE-475
     boolean OK = newOrder.save();
     if (!OK) throw new IllegalStateException("Could not create new Order");
     //
     if (p_IsCloseDocument) {
-      MOrder original = new MOrder(getCtx(), p_C_Order_ID, get_TrxName());
+      MOrder original = new MOrder(getCtx(), p_C_Order_ID, null);
       original.setDocAction(MOrder.DOCACTION_Complete);
       if (!original.processIt(MOrder.DOCACTION_Complete)) {
         log.warning(

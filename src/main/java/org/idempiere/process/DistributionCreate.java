@@ -107,7 +107,7 @@ public class DistributionCreate extends SvrProcess {
     throw new NotImplementedException();
 
     /*
-    m_dl = new MDistributionList(getCtx(), p_M_DistributionList_ID, get_TrxName());
+    m_dl = new MDistributionList(getCtx(), p_M_DistributionList_ID, null);
     if (m_dl.getId() == 0)
     	throw new Exception ("Distribution List not found -  M_DistributionList_ID=" +  p_M_DistributionList_ID);
     //
@@ -124,11 +124,11 @@ public class DistributionCreate extends SvrProcess {
     //	Create Single Order
     if (!p_IsTest && p_IsCreateSingleOrder)
     {
-    	MBPartner bp = new MBPartner (getCtx(), p_Bill_BPartner_ID, get_TrxName());
+    	MBPartner bp = new MBPartner (getCtx(), p_Bill_BPartner_ID, null);
     	if (bp.getId() == 0)
     		throw new IllegalArgumentException("Single Business Partner not found - C_BPartner_ID=" + p_Bill_BPartner_ID);
     	//
-    	m_singleOrder = new MOrder (getCtx(), 0, get_TrxName());
+    	m_singleOrder = new MOrder (getCtx(), 0, null);
     	m_singleOrder.setIsSOTrx(true);
     	m_singleOrder.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_Standard);
     	m_singleOrder.setBPartner(bp);
@@ -168,7 +168,7 @@ public class DistributionCreate extends SvrProcess {
   /*
   private boolean createOrder (MDistributionListLine dll)
   {
-  	MBPartner bp = new MBPartner (getCtx(), dll.getC_BPartner_ID(), get_TrxName());
+  	MBPartner bp = new MBPartner (getCtx(), dll.getC_BPartner_ID(), null);
   	if (bp.getId() == 0)
   		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + dll.getC_BPartner_ID());
 
@@ -176,7 +176,7 @@ public class DistributionCreate extends SvrProcess {
   	MOrder order = m_singleOrder;
   	if (!p_IsTest && order == null)
   	{
-  		order = new MOrder (getCtx(), 0, get_TrxName());
+  		order = new MOrder (getCtx(), 0, null);
   		order.setIsSOTrx(true);
   		order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_Standard);
   		order.setBPartner(bp);

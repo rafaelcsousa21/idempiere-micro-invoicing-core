@@ -45,20 +45,20 @@ public class MatchPODelete extends SvrProcess {
    */
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("M_MatchPO_ID=" + p_M_MatchPO_ID);
-    MMatchPO po = new MMatchPO(getCtx(), p_M_MatchPO_ID, get_TrxName());
+    MMatchPO po = new MMatchPO(getCtx(), p_M_MatchPO_ID, null);
     if (po.getId() == 0)
       throw new AdempiereUserError("@NotFound@ @M_MatchPO_ID@ " + p_M_MatchPO_ID);
     //
     MOrderLine orderLine = null;
     boolean isMatchReceipt = (po.getM_InOutLine_ID() != 0);
     if (isMatchReceipt) {
-      orderLine = new MOrderLine(getCtx(), po.getC_OrderLine_ID(), get_TrxName());
+      orderLine = new MOrderLine(getCtx(), po.getC_OrderLine_ID(), null);
       orderLine.setQtyReserved(orderLine.getQtyReserved().add(po.getQty()));
     }
     //
     if (po.delete(true)) {
       if (isMatchReceipt) {
-        if (!orderLine.save(get_TrxName()))
+        if (!orderLine.save(null))
           throw new AdempiereUserError("Delete MatchPO failed to restore PO's On Ordered Qty");
       }
       return "@OK@";

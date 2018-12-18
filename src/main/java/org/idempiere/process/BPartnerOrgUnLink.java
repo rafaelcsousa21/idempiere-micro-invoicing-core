@@ -51,7 +51,7 @@ public class BPartnerOrgUnLink extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("doIt - C_BPartner_ID=" + p_C_BPartner_ID);
     if (p_C_BPartner_ID == 0) throw new IllegalArgumentException("No Business Partner ID");
-    MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID, get_TrxName());
+    MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID, null);
     if (bp.getId() == 0)
       throw new IllegalArgumentException(
           "Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);

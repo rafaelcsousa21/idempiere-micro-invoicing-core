@@ -88,14 +88,14 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
    */
   public MRequisitionLine[] getLines() {
     if (m_lines != null) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
 
     // red1 - FR: [ 2214883 ] Remove SQL code and Replace for Query
     final String whereClause = I_M_RequisitionLine.COLUMNNAME_M_Requisition_ID + "=?";
     List<MRequisitionLine> list =
-        new Query(getCtx(), I_M_RequisitionLine.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_M_RequisitionLine.Table_Name, whereClause, null)
             .setParameters(getId())
             .setOrderBy(I_M_RequisitionLine.COLUMNNAME_Line)
             .list();
@@ -347,7 +347,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
           getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition,  getOrgId());
     }
     if (dt.isOverwriteSeqOnComplete()) {
-      String value = MSequence.getDocumentNo(getC_DocType_ID(), get_TrxName(), true, this);
+      String value = MSequence.getDocumentNo(getC_DocType_ID(), null, true, this);
       if (value != null) setDocumentNo(value);
     }
   }
@@ -394,7 +394,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
       BigDecimal finalQty = line.getQty();
       if (line.getC_OrderLine_ID() == 0) finalQty = Env.ZERO;
       else {
-        MOrderLine ol = new MOrderLine(getCtx(), line.getC_OrderLine_ID(), get_TrxName());
+        MOrderLine ol = new MOrderLine(getCtx(), line.getC_OrderLine_ID(), null);
         finalQty = ol.getQtyOrdered();
       }
       //	final qty is not line qty
@@ -536,7 +536,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
    * @return C_Currency_ID
    */
   public int getC_Currency_ID() {
-    MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID(), get_TrxName());
+    MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID(), null);
     return pl.getC_Currency_ID();
   }
 

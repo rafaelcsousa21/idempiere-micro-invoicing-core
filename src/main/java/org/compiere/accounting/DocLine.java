@@ -461,7 +461,7 @@ public class DocLine {
   } //	getId
 
   /**
-   * Get AD_Org_ID
+   * Get orgId
    *
    * @return org
    */
@@ -470,14 +470,14 @@ public class DocLine {
   } //	getOrgId
 
   /**
-   * Get Order AD_Org_ID
+   * Get Order orgId
    *
    * @return order org if defined
    */
   public int getOrder_Org_ID() {
     int C_OrderLine_ID = getC_OrderLine_ID();
     if (C_OrderLine_ID != 0) {
-      String sql = "SELECT AD_Org_ID FROM C_OrderLine WHERE C_OrderLine_ID=?";
+      String sql = "SELECT orgId FROM C_OrderLine WHERE C_OrderLine_ID=?";
       int AD_Org_ID = getSQLValue(null, sql, C_OrderLine_ID);
       if (AD_Org_ID > 0) return AD_Org_ID;
     }
@@ -665,7 +665,7 @@ public class DocLine {
     if (m_productCost == null)
       m_productCost =
           new ProductCost(
-              Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID(), p_po.get_TrxName());
+              Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID(), null);
     return m_productCost;
   } //	getProductCost
 
@@ -690,7 +690,7 @@ public class DocLine {
               get_ID(),
               getMAttributeSetInstance_ID(),
               as.getC_AcctSchema_ID(),
-              p_po.get_TrxName());
+              null);
       if (cd != null) return cd.getAmt();
     }
     return getProductCosts(as, AD_Org_ID, zeroCostsOK);
@@ -724,7 +724,7 @@ public class DocLine {
     if (m_productCost == null)
       m_productCost =
           new ProductCost(
-              Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID(), p_po.get_TrxName());
+              Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID(), null);
     if (m_productCost != null) return m_productCost.getProduct();
     return null;
   } //	getProduct

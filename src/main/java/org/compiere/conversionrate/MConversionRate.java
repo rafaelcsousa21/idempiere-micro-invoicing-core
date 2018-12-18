@@ -239,10 +239,10 @@ public class MConversionRate extends X_C_Conversion_Rate {
             + " AND	C_ConversionType_ID=?" //	#3
             + " AND	? BETWEEN ValidFrom AND ValidTo" //	#4	TRUNC (?) ORA-00932: inconsistent
             // datatypes: expected NUMBER got TIMESTAMP
-            + " AND AD_Client_ID IN (0,?)" //	#5
-            + " AND AD_Org_ID IN (0,?) " //	#6
+            + " AND clientId IN (0,?)" //	#5
+            + " AND orgId IN (0,?) " //	#6
             + " AND IsActive = 'Y' "
-            + "ORDER BY AD_Client_ID DESC, AD_Org_ID DESC, ValidFrom DESC";
+            + "ORDER BY clientId DESC, orgId DESC, ValidFrom DESC";
     BigDecimal retValue = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -329,7 +329,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
       int C_Currency_ID_To,
       BigDecimal MultiplyRate,
       Timestamp ValidFrom) {
-    this(po.getCtx(), 0, po.get_TrxName());
+    this(po.getCtx(), 0, null);
     setClientOrg(po);
     setC_ConversionType_ID(C_ConversionType_ID);
     setC_Currency_ID(C_Currency_ID);

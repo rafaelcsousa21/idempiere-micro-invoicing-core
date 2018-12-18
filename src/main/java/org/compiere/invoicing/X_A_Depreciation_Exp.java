@@ -55,7 +55,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
   public I_C_ValidCombination getA_Account_Number_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Account_Number_Acct(), get_TrxName());
+            .getPO(getA_Account_Number_Acct(), null);
   }
 
   /**
@@ -161,7 +161,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
   public org.compiere.model.I_A_Asset_Addition getA_Asset_Addition() throws RuntimeException {
     return (org.compiere.model.I_A_Asset_Addition)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset_Addition.Table_Name)
-            .getPO(getA_Asset_Addition_ID(), get_TrxName());
+            .getPO(getA_Asset_Addition_ID(), null);
   }
 
   /**
@@ -228,7 +228,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
   public org.compiere.model.I_A_Asset_Disposed getA_Asset_Disposed() throws RuntimeException {
     return (org.compiere.model.I_A_Asset_Disposed)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset_Disposed.Table_Name)
-            .getPO(getA_Asset_Disposed_ID(), get_TrxName());
+            .getPO(getA_Asset_Disposed_ID(), null);
   }
 
   /**
@@ -255,7 +255,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
   public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
     return (org.compiere.model.I_A_Asset)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), get_TrxName());
+            .getPO(getA_Asset_ID(), null);
   }
 
   /**
@@ -323,7 +323,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
       throws RuntimeException {
     return (org.compiere.model.I_A_Depreciation_Entry)
         MTable.get(getCtx(), org.compiere.model.I_A_Depreciation_Entry.Table_Name)
-            .getPO(getA_Depreciation_Entry_ID(), get_TrxName());
+            .getPO(getA_Depreciation_Entry_ID(), null);
   }
 
   /**
@@ -451,7 +451,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
   public I_C_ValidCombination getCR_Account() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getCR_Account_ID(), get_TrxName());
+            .getPO(getCR_Account_ID(), null);
   }
 
   /**
@@ -514,7 +514,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
   public I_C_ValidCombination getDR_Account() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getDR_Account_ID(), get_TrxName());
+            .getPO(getDR_Account_ID(), null);
   }
 
   /**

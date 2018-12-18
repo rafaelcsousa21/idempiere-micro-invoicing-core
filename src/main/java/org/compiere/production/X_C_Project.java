@@ -78,7 +78,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**
@@ -105,7 +105,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -132,7 +132,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -159,7 +159,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner_Location)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner_Location.Table_Name)
-            .getPO(getC_BPartner_Location_ID(), get_TrxName());
+            .getPO(getC_BPartner_Location_ID(), null);
   }
 
   /**
@@ -186,7 +186,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_C_BPartner getC_BPartnerSR() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartnerSR_ID(), get_TrxName());
+            .getPO(getC_BPartnerSR_ID(), null);
   }
 
   /**
@@ -213,7 +213,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
     return (org.compiere.model.I_C_Campaign)
         MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), get_TrxName());
+            .getPO(getC_Campaign_ID(), null);
   }
 
   /**
@@ -240,7 +240,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -325,7 +325,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException {
     return (org.compiere.model.I_C_PaymentTerm)
         MTable.get(getCtx(), org.compiere.model.I_C_PaymentTerm.Table_Name)
-            .getPO(getC_PaymentTerm_ID(), get_TrxName());
+            .getPO(getC_PaymentTerm_ID(), null);
   }
 
   /**
@@ -352,7 +352,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_C_Phase getC_Phase() throws RuntimeException {
     return (org.compiere.model.I_C_Phase)
         MTable.get(getCtx(), org.compiere.model.I_C_Phase.Table_Name)
-            .getPO(getC_Phase_ID(), get_TrxName());
+            .getPO(getC_Phase_ID(), null);
   }
 
   /**
@@ -617,7 +617,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_M_PriceList_Version getM_PriceList_Version() throws RuntimeException {
     return (org.compiere.model.I_M_PriceList_Version)
         MTable.get(getCtx(), org.compiere.model.I_M_PriceList_Version.Table_Name)
-            .getPO(getM_PriceList_Version_ID(), get_TrxName());
+            .getPO(getM_PriceList_Version_ID(), null);
   }
 
   /**
@@ -644,7 +644,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
     return (org.compiere.model.I_M_Warehouse)
         MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), get_TrxName());
+            .getPO(getM_Warehouse_ID(), null);
   }
 
   /**
@@ -921,7 +921,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
   public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSalesRep_ID(), get_TrxName());
+            .getPO(getSalesRep_ID(), null);
   }
 
   /**

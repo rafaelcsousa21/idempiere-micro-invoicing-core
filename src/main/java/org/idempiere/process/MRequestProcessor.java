@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -90,7 +91,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
    * @param Supervisor_ID Supervisor
    */
   public MRequestProcessor(MClient parent, int Supervisor_ID) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setName(parent.getName() + " - " + Msg.translate(getCtx(), "R_RequestProcessor_ID"));
     setSupervisor_ID(Supervisor_ID);
@@ -114,10 +115,10 @@ public class MRequestProcessor extends X_R_RequestProcessor
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getR_RequestProcessor_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MRequestProcessorRoute(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MRequestProcessorRoute(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
@@ -146,10 +147,10 @@ public class MRequestProcessor extends X_R_RequestProcessor
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getR_RequestProcessor_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MRequestProcessorLog(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MRequestProcessorLog(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
@@ -176,7 +177,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
             + " AND (Created+"
             + getKeepLogDays()
             + ") < SysDate";
-    int no = executeUpdate(sql, get_TrxName());
+    int no = executeUpdate(sql, null);
     return no;
   } //	deleteLog
 
@@ -187,7 +188,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
    * @return date next run
    */
   public Timestamp getDateNextRun(boolean requery) {
-    if (requery) load(get_TrxName());
+    if (requery) load((HashMap)null);
     return getDateNextRun();
   } //	getDateNextRun
 

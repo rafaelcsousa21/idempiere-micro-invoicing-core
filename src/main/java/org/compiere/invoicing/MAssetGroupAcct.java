@@ -1,14 +1,15 @@
 package org.compiere.invoicing;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.model.I_A_Asset_Group_Acct;
 import org.compiere.model.UseLife;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.product.MAssetGroup;
+
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Asset Group Accounting Model
@@ -72,7 +73,7 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     if (m_parent == null) {
       int A_Asset_Group_ID = getA_Asset_Group_ID();
       if (is_new()) {
-        m_parent = new MAssetGroup(getCtx(), A_Asset_Group_ID, get_TrxName());
+        m_parent = new MAssetGroup(getCtx(), A_Asset_Group_ID, null);
       } else {
         m_parent = MAssetGroup.get(getCtx(), A_Asset_Group_ID);
       }
@@ -98,7 +99,7 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
    * @return new asset group accounting (NOTE: it's not saved)
    */
   public MAssetGroupAcct copy(MAssetGroup grp) {
-    MAssetGroupAcct newAcct = new MAssetGroupAcct(grp.getCtx(), 0, grp.get_TrxName());
+    MAssetGroupAcct newAcct = new MAssetGroupAcct(grp.getCtx(), 0, null);
     PO.copyValues(this, newAcct, grp. getClientId(), grp. getOrgId());
     newAcct.setA_Asset_Group_ID(grp.getA_Asset_Group_ID());
     return newAcct;

@@ -52,7 +52,7 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
   public org.compiere.model.I_AD_Process_Para getAD_Process_Para() throws RuntimeException {
     return (org.compiere.model.I_AD_Process_Para)
         MTable.get(getCtx(), org.compiere.model.I_AD_Process_Para.Table_Name)
-            .getPO(getAD_Process_Para_ID(), get_TrxName());
+            .getPO(getAD_Process_Para_ID(), null);
   }
 
   /**
@@ -79,7 +79,7 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
   public org.compiere.model.I_AD_WF_Node getAD_WF_Node() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Node)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Node_ID(), get_TrxName());
+            .getPO(getAD_WF_Node_ID(), null);
   }
 
   /**

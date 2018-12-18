@@ -139,7 +139,7 @@ public class X_C_OrderLandedCostAllocation extends PO
   public org.compiere.model.I_C_OrderLandedCost getC_OrderLandedCost() throws RuntimeException {
     return (org.compiere.model.I_C_OrderLandedCost)
         MTable.get(getCtx(), org.compiere.model.I_C_OrderLandedCost.Table_Name)
-            .getPO(getC_OrderLandedCost_ID(), get_TrxName());
+            .getPO(getC_OrderLandedCost_ID(), null);
   }
 
   /**
@@ -166,7 +166,7 @@ public class X_C_OrderLandedCostAllocation extends PO
   public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
     return (org.compiere.model.I_C_OrderLine)
         MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-            .getPO(getC_OrderLine_ID(), get_TrxName());
+            .getPO(getC_OrderLine_ID(), null);
   }
 
   /**

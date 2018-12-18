@@ -1,8 +1,9 @@
 package org.compiere.production;
 
+import org.compiere.util.Msg;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.compiere.util.Msg;
 
 /**
  * Change Request Model
@@ -37,7 +38,7 @@ public class MChangeRequest extends X_M_ChangeRequest {
    * @param group request group
    */
   public MChangeRequest(MRequest request, MGroup group) {
-    this(request.getCtx(), 0, request.get_TrxName());
+    this(request.getCtx(), 0, null);
     setClientOrg(request);
     StringBuilder msgset =
         new StringBuilder()

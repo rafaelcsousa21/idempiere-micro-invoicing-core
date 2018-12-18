@@ -1,12 +1,5 @@
 package org.compiere.accounting;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.MConversionRate;
 import org.compiere.model.*;
@@ -21,9 +14,16 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
+
+import java.io.File;
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
 
@@ -61,11 +61,11 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
       Properties ctx, int AD_Org_ID, Timestamp dateAcct, int C_Currency_ID, String trxName) {
     //	Existing Journal
     final String whereClause =
-        "C_Cash.AD_Org_ID=?" //	#1
+        "C_Cash.orgId=?" //	#1
             + " AND TRUNC(C_Cash.StatementDate)=?" //	#2
             + " AND C_Cash.Processed='N'"
             + " AND EXISTS (SELECT * FROM C_CashBook cb "
-            + "WHERE C_Cash.C_CashBook_ID=cb.C_CashBook_ID AND cb.AD_Org_ID=C_Cash.AD_Org_ID"
+            + "WHERE C_Cash.C_CashBook_ID=cb.C_CashBook_ID AND cb.orgId=C_Cash.orgId"
             + " AND cb.C_Currency_ID=?)"; //	#3
     MCash retValue =
         new Query(ctx, I_C_Cash.Table_Name, whereClause, trxName)
@@ -77,7 +77,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     //	Get CashBook
     MCashBook cb = MCashBook.get(ctx, AD_Org_ID, C_Currency_ID);
     if (cb == null) {
-      s_log.warning("No CashBook for AD_Org_ID=" + AD_Org_ID + ", C_Currency_ID=" + C_Currency_ID);
+      s_log.warning("No CashBook for orgId=" + AD_Org_ID + ", C_Currency_ID=" + C_Currency_ID);
       return null;
     }
 
@@ -175,7 +175,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
    * @param today date - if null today
    */
   public MCash(MCashBook cb, Timestamp today) {
-    this(cb.getCtx(), 0, cb.get_TrxName());
+    this(cb.getCtx(), 0, null);
     setClientOrg(cb);
     setC_CashBook_ID(cb.getC_CashBook_ID());
     if (today != null) {
@@ -203,13 +203,13 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
    */
   public MCashLine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
 
     final String whereClause = MCashLine.COLUMNNAME_C_Cash_ID + "=?";
     List<MCashLine> list =
-        new Query(getCtx(), I_C_CashLine.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_C_CashLine.Table_Name, whereClause, null)
             .setParameters(getC_Cash_ID())
             .setOrderBy(I_C_CashLine.COLUMNNAME_Line)
             .setOnlyActiveRecords(true)
@@ -288,7 +288,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
   protected boolean beforeSave(boolean newRecord) {
     setAD_Org_ID(getCashBook(). getOrgId());
     if ( getOrgId() == 0) {
-      log.saveError("Error", Msg.parseTranslation(getCtx(), "@AD_Org_ID@"));
+      log.saveError("Error", Msg.parseTranslation(getCtx(), "@orgId@"));
       return false;
     }
     //	Calculate End Balance
@@ -471,7 +471,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 getDateAcct(),
                 line.getC_Currency_ID(),
                 name.toString(),
-                get_TrxName());
+                null);
         hdr.setAD_Org_ID( getOrgId());
         if (!hdr.save()) {
           m_processMsg = CLogger.retrieveErrorString("Could not create Allocation Hdr");
@@ -498,7 +498,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         }
       } else if (MCashLine.CASHTYPE_BankAccountTransfer.equals(line.getCashType())) {
         //	Payment just as intermediate info
-        MPayment pay = new MPayment(getCtx(), 0, get_TrxName());
+        MPayment pay = new MPayment(getCtx(), 0, null);
         pay.setAD_Org_ID( getOrgId());
         String documentNo = getName();
         pay.setDocumentNo(documentNo);
@@ -596,7 +596,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
     //	Reverse Allocations
     MAllocationHdr[] allocations =
-        MAllocationHdr.getOfCash(getCtx(), getC_Cash_ID(), get_TrxName());
+        MAllocationHdr.getOfCash(getCtx(), getC_Cash_ID(), null);
     for (MAllocationHdr allocation : allocations) {
       allocation.reverseCorrectIt();
       if (!allocation.save()) throw new IllegalStateException("Cannot reverse allocations");
@@ -625,7 +625,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         if (cashline.getC_Payment_ID() == 0)
           throw new IllegalStateException("Cannot reverse payment");
 
-        MPayment payment = new MPayment(getCtx(), cashline.getC_Payment_ID(), get_TrxName());
+        MPayment payment = new MPayment(getCtx(), cashline.getC_Payment_ID(), null);
         payment.reverseCorrectIt();
         payment.saveEx();
       }
@@ -641,7 +641,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     saveEx();
 
     //	Delete Posting
-    MFactAcct.deleteEx(I_C_Cash.Table_ID, getC_Cash_ID(), get_TrxName());
+    MFactAcct.deleteEx(I_C_Cash.Table_ID, getC_Cash_ID(), null);
 
     return true;
   } //	reverse
@@ -764,7 +764,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_Cash_ID=")
             .append(getC_Cash_ID());
-    int noLine = executeUpdate(sql.toString(), get_TrxName());
+    int noLine = executeUpdate(sql.toString(), null);
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed

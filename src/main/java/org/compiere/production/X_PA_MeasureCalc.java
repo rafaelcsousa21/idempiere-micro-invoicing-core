@@ -25,7 +25,7 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc, I_
     /**
      * if (PA_MeasureCalc_ID == 0) { setAD_Table_ID (0); setDateColumn (null); // x.Date
      * setEntityType (null); // @SQL=select get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual
-     * setKeyColumn (null); setName (null); setOrgColumn (null); // x.AD_Org_ID setPA_MeasureCalc_ID
+     * setKeyColumn (null); setName (null); setOrgColumn (null); // x.orgId setPA_MeasureCalc_ID
      * (0); setSelectClause (null); // SELECT ... FROM ... setWhereClause (null); // WHERE ... }
      */
   }
@@ -52,7 +52,7 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc, I_
   public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
     return (org.compiere.model.I_AD_Table)
         MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), get_TrxName());
+            .getPO(getAD_Table_ID(), null);
   }
 
   /**
@@ -172,7 +172,7 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc, I_
   /**
    * Set Org Column.
    *
-   * @param OrgColumn Fully qualified Organization column (AD_Org_ID)
+   * @param OrgColumn Fully qualified Organization column (orgId)
    */
   public void setOrgColumn(String OrgColumn) {
     set_Value(COLUMNNAME_OrgColumn, OrgColumn);
@@ -181,7 +181,7 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc, I_
   /**
    * Get Org Column.
    *
-   * @return Fully qualified Organization column (AD_Org_ID)
+   * @return Fully qualified Organization column (orgId)
    */
   public String getOrgColumn() {
     return (String) get_Value(COLUMNNAME_OrgColumn);

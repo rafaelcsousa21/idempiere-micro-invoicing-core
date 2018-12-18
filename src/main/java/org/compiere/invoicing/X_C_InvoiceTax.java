@@ -52,7 +52,7 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), get_TrxName());
+            .getPO(getC_Invoice_ID(), null);
   }
 
   /**
@@ -97,7 +97,7 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
   public org.compiere.model.I_C_Tax getC_Tax() throws RuntimeException {
     return (org.compiere.model.I_C_Tax)
         MTable.get(getCtx(), org.compiere.model.I_C_Tax.Table_Name)
-            .getPO(getC_Tax_ID(), get_TrxName());
+            .getPO(getC_Tax_ID(), null);
   }
 
   /**
@@ -124,7 +124,7 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
   public org.compiere.model.I_C_TaxProvider getC_TaxProvider() throws RuntimeException {
     return (org.compiere.model.I_C_TaxProvider)
         MTable.get(getCtx(), org.compiere.model.I_C_TaxProvider.Table_Name)
-            .getPO(getC_TaxProvider_ID(), get_TrxName());
+            .getPO(getC_TaxProvider_ID(), null);
   }
 
   /**

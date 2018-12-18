@@ -72,7 +72,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -108,7 +108,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public I_C_ValidCombination getCommitmentOffset_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getCommitmentOffset_Acct(), get_TrxName());
+            .getPO(getCommitmentOffset_Acct(), null);
   }
 
   /**
@@ -134,7 +134,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public I_C_ValidCombination getCommitmentOffsetSales_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getCommitmentOffsetSales_Acct(), get_TrxName());
+            .getPO(getCommitmentOffsetSales_Acct(), null);
   }
 
   /**
@@ -160,7 +160,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public I_C_ValidCombination getCurrencyBalancing_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getCurrencyBalancing_Acct(), get_TrxName());
+            .getPO(getCurrencyBalancing_Acct(), null);
   }
 
   /**
@@ -186,7 +186,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public I_C_ValidCombination getIntercompanyDueFrom_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getIntercompanyDueFrom_Acct(), get_TrxName());
+            .getPO(getIntercompanyDueFrom_Acct(), null);
   }
 
   /**
@@ -212,7 +212,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public I_C_ValidCombination getIntercompanyDueTo_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getIntercompanyDueTo_Acct(), get_TrxName());
+            .getPO(getIntercompanyDueTo_Acct(), null);
   }
 
   /**
@@ -238,7 +238,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public I_C_ValidCombination getPPVOffset_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getPPVOffset_Acct(), get_TrxName());
+            .getPO(getPPVOffset_Acct(), null);
   }
 
   /**
@@ -264,7 +264,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public I_C_ValidCombination getSuspenseBalancing_A() throws RuntimeException {
     return (I_C_ValidCombination)
         MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getSuspenseBalancing_Acct(), get_TrxName());
+            .getPO(getSuspenseBalancing_Acct(), null);
   }
 
   /**

@@ -83,7 +83,7 @@ public class DunningPrint extends SvrProcess {
     //		String subject = "";
     MMailText mText = null;
     if (p_EMailPDF) {
-      mText = new MMailText(getCtx(), p_R_MailText_ID, get_TrxName());
+      mText = new MMailText(getCtx(), p_R_MailText_ID, null);
       if (p_EMailPDF && mText.getId() == 0)
         throw new AdempiereUserError("@NotFound@: @R_MailText_ID@ - " + p_R_MailText_ID);
       //			subject = mText.getMailHeader();
@@ -93,7 +93,7 @@ public class DunningPrint extends SvrProcess {
     throw new NotImplementedException();
 
     /*
-    MDunningRun run = new MDunningRun (getCtx(), p_C_DunningRun_ID, get_TrxName());
+    MDunningRun run = new MDunningRun (getCtx(), p_C_DunningRun_ID, null);
     if (run.getId() == 0)
     	throw new AdempiereUserError ("@NotFound@: @C_DunningRun_ID@ - " + p_C_DunningRun_ID);
     MClient client = MClient.get(getCtx());

@@ -1,11 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MMatchInv;
 import org.compiere.accounting.MProduct;
@@ -16,11 +10,20 @@ import org.compiere.model.I_C_Project;
 import org.compiere.order.MInOut;
 import org.compiere.order.MInOutLine;
 import org.compiere.orm.MTable;
-import org.compiere.product.*;
+import org.compiere.product.MAssetChange;
+import org.compiere.product.MAssetGroup;
+import org.compiere.product.MAttributeSetInstance;
+import org.compiere.product.X_A_Asset;
 import org.compiere.util.Msg;
-
 import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.TO_STRING;
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -41,11 +44,11 @@ public class MAsset extends org.compiere.product.MAsset {
    * @param match match invoice
    */
   public MAsset(MMatchInv match) {
-    this(match.getCtx(), 0, match.get_TrxName());
+    this(match.getCtx(), 0, null);
 
     MInvoiceLine invoiceLine =
-        new MInvoiceLine(getCtx(), match.getC_InvoiceLine_ID(), get_TrxName());
-    MInOutLine inoutLine = new MInOutLine(getCtx(), match.getM_InOutLine_ID(), get_TrxName());
+        new MInvoiceLine(getCtx(), match.getC_InvoiceLine_ID(), null);
+    MInOutLine inoutLine = new MInOutLine(getCtx(), match.getM_InOutLine_ID(), null);
 
     setIsOwned(true);
     setIsInPosession(true);
@@ -85,7 +88,7 @@ public class MAsset extends org.compiere.product.MAsset {
    * @param match match invoice
    */
   public MAsset(MIFixedAsset ifa) {
-    this(ifa.getCtx(), 0, ifa.get_TrxName());
+    this(ifa.getCtx(), 0, null);
 
     setAD_Org_ID(ifa.getOrgId()); // added by @win
     setIsOwned(true);
@@ -107,7 +110,7 @@ public class MAsset extends org.compiere.product.MAsset {
     if (product != null) {
       setM_Product_ID(product.getM_Product_ID());
       setA_Asset_Group_ID(ifa.getA_Asset_Group_ID());
-      MAttributeSetInstance asi = MAttributeSetInstance.create(getCtx(), product, get_TrxName());
+      MAttributeSetInstance asi = MAttributeSetInstance.create(getCtx(), product, null);
       setM_AttributeSetInstance_ID(asi.getMAttributeSetInstance_ID());
     }
 
@@ -121,7 +124,7 @@ public class MAsset extends org.compiere.product.MAsset {
    * @param project
    */
   public MAsset(I_C_Project project) {
-    this(project.getCtx(), 0, project.get_TrxName());
+    this(project.getCtx(), 0, null);
     setIsOwned(true);
     setIsInPosession(true);
     setA_Asset_CreateDate(new Timestamp(System.currentTimeMillis()));
@@ -135,7 +138,7 @@ public class MAsset extends org.compiere.product.MAsset {
   }
 
   public MAsset(MInOut mInOut, MInOutLine sLine, int deliveryCount) {
-    this(mInOut.getCtx(), 0, mInOut.get_TrxName());
+    this(mInOut.getCtx(), 0, null);
     setIsOwned(false);
     setIsInPosession(false);
     setA_Asset_CreateDate(new Timestamp(System.currentTimeMillis()));
@@ -157,7 +160,7 @@ public class MAsset extends org.compiere.product.MAsset {
    * @return A_Asset_ID
    */
   public MAsset(MInventory inventory, MInventoryLine invLine, BigDecimal qty, BigDecimal costs) {
-    super(invLine.getCtx(), 0, invLine.get_TrxName());
+    super(invLine.getCtx(), 0, null);
     setClientOrg(invLine);
 
     org.compiere.accounting.MProduct product = MProduct.get(getCtx(), invLine.getM_Product_ID());
@@ -185,7 +188,7 @@ public class MAsset extends org.compiere.product.MAsset {
     // ASI
     if (invLine.getMAttributeSetInstance_ID() != 0) {
       MAttributeSetInstance asi =
-          new MAttributeSetInstance(getCtx(), invLine.getMAttributeSetInstance_ID(), get_TrxName());
+          new MAttributeSetInstance(getCtx(), invLine.getMAttributeSetInstance_ID(), null);
       setASI(asi);
     }
     // setSerNo(invLine.getSerNo());
@@ -229,7 +232,7 @@ public class MAsset extends org.compiere.product.MAsset {
       setA_Parent_Asset_ID(A_Asset_ID);
       executeUpdateEx(
           "UPDATE A_Asset SET A_Parent_Asset_ID=A_Asset_ID WHERE A_Asset_ID=" + A_Asset_ID,
-          get_TrxName());
+          null);
       if (log.isLoggable(Level.FINE)) log.fine("A_Parent_Asset_ID=" + getA_Parent_Asset_ID());
     }
 
@@ -244,14 +247,14 @@ public class MAsset extends org.compiere.product.MAsset {
               + TO_STRING(invNo)
               + " WHERE A_Asset_ID="
               + getA_Asset_ID(),
-          get_TrxName());
+          null);
       if (log.isLoggable(Level.FINE)) log.fine("InventoryNo=" + getInventoryNo());
     }
 
     // If new record, create accounting and workfile
     if (newRecord) {
       // @win: set value at asset group as default value for asset
-      MAssetGroup assetgroup = new MAssetGroup(getCtx(), getA_Asset_Group_ID(), get_TrxName());
+      MAssetGroup assetgroup = new MAssetGroup(getCtx(), getA_Asset_Group_ID(), null);
       String isDepreciated = (assetgroup.isDepreciated()) ? "Y" : "N";
       String isOwned = (assetgroup.isOwned()) ? "Y" : "N";
       setIsDepreciated(assetgroup.isDepreciated());
@@ -263,7 +266,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + isOwned
               + "' WHERE A_Asset_ID="
               + getA_Asset_ID(),
-          get_TrxName());
+          null);
       // end @win
 
       // for each asset group acounting create an asset accounting and a workfile too
@@ -304,7 +307,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + " WHERE "
               + MDepreciationWorkfile.COLUMNNAME_A_Asset_ID
               + "=?";
-      executeUpdateEx(sql, new Object[] {isDepreciated(), getA_Asset_ID()}, get_TrxName());
+      executeUpdateEx(sql, new Object[] {isDepreciated(), getA_Asset_ID()}, null);
     }
 
     return true;
@@ -322,7 +325,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + "=? AND "
               + I_A_Asset_Addition.COLUMNNAME_A_Asset_ID
               + "=?";
-      int no = executeUpdateEx(sql, new Object[] {false, getA_Asset_ID()}, get_TrxName());
+      int no = executeUpdateEx(sql, new Object[] {false, getA_Asset_ID()}, null);
       if (log.isLoggable(Level.INFO)) log.info("@A_Asset_Addition@ @Deleted@ #" + no);
     }
     //
@@ -341,7 +344,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + " WHERE "
               + MInvoiceLine.COLUMNNAME_A_Asset_ID
               + "=?";
-      int no = executeUpdateEx(sql, new Object[] {null, false, getA_Asset_ID()}, get_TrxName());
+      int no = executeUpdateEx(sql, new Object[] {null, false, getA_Asset_ID()}, null);
       if (log.isLoggable(Level.INFO)) log.info("@C_InvoiceLine@ @Updated@ #" + no);
     }
     return true;
@@ -376,7 +379,7 @@ public class MAsset extends org.compiere.product.MAsset {
       setAssetDisposalDate(date);
       // TODO: move to MAsetDisposal
       Collection<MDepreciationWorkfile> workFiles =
-          MDepreciationWorkfile.forA_Asset_ID(getCtx(), getA_Asset_ID(), get_TrxName());
+          MDepreciationWorkfile.forA_Asset_ID(getCtx(), getA_Asset_ID(), null);
       for (MDepreciationWorkfile assetwk : workFiles) {
         assetwk.truncDepreciation();
         assetwk.saveEx();

@@ -53,7 +53,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public org.compiere.model.I_AD_Message getAD_Message() throws RuntimeException {
     return (org.compiere.model.I_AD_Message)
         MTable.get(getCtx(), org.compiere.model.I_AD_Message.Table_Name)
-            .getPO(getAD_Message_ID(), get_TrxName());
+            .getPO(getAD_Message_ID(), null);
   }
 
   /**
@@ -80,7 +80,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
     return (org.compiere.model.I_AD_Table)
         MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), get_TrxName());
+            .getPO(getAD_Table_ID(), null);
   }
 
   /**
@@ -107,7 +107,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), get_TrxName());
+            .getPO(getAD_User_ID(), null);
   }
 
   /**
@@ -173,7 +173,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public org.compiere.model.I_AD_WF_Node getAD_WF_Node() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Node)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Node_ID(), get_TrxName());
+            .getPO(getAD_WF_Node_ID(), null);
   }
 
   /**
@@ -209,7 +209,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public org.compiere.model.I_AD_WF_Process getAD_WF_Process() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Process)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Process.Table_Name)
-            .getPO(getAD_WF_Process_ID(), get_TrxName());
+            .getPO(getAD_WF_Process_ID(), null);
   }
 
   /**
@@ -236,7 +236,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public org.compiere.model.I_AD_WF_Responsible getAD_WF_Responsible() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Responsible)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Responsible.Table_Name)
-            .getPO(getAD_WF_Responsible_ID(), get_TrxName());
+            .getPO(getAD_WF_Responsible_ID(), null);
   }
 
   /**
@@ -263,7 +263,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
     return (org.compiere.model.I_AD_Workflow)
         MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getAD_Workflow_ID(), get_TrxName());
+            .getPO(getAD_Workflow_ID(), null);
   }
 
   /**

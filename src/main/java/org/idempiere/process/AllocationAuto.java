@@ -99,7 +99,7 @@ public class AllocationAuto extends SvrProcess {
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, get_TrxName());
+        pstmt = prepareStatement(sql, null);
         pstmt.setInt(1, p_C_BP_Group_ID);
         rs = pstmt.executeQuery();
         while (rs.next()) {
@@ -108,7 +108,6 @@ public class AllocationAuto extends SvrProcess {
           if (count > 0) {
             countBP++;
             countAlloc += count;
-            commitEx();
           }
         }
       } catch (Exception e) {
@@ -119,11 +118,11 @@ public class AllocationAuto extends SvrProcess {
         pstmt = null;
       }
     } else {
-      String sql = "SELECT C_BPartner_ID FROM C_BPartner WHERE AD_Client_ID=? ORDER BY Value";
+      String sql = "SELECT C_BPartner_ID FROM C_BPartner WHERE clientId=? ORDER BY Value";
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, get_TrxName());
+        pstmt = prepareStatement(sql, null);
         pstmt.setInt(1, Env.getClientId(getCtx()));
         rs = pstmt.executeQuery();
         while (rs.next()) {
@@ -132,7 +131,6 @@ public class AllocationAuto extends SvrProcess {
           if (count > 0) {
             countBP++;
             countAlloc += count;
-            commitEx();
           }
         }
       } catch (Exception e) {
@@ -264,11 +262,11 @@ public class AllocationAuto extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, C_BPartner_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MPayment payment = new MPayment(getCtx(), rs, get_TrxName());
+        MPayment payment = new MPayment(getCtx(), rs, null);
         BigDecimal allocated = payment.getAllocatedAmt();
         if (allocated != null && allocated.compareTo(payment.getPayAmt()) == 0) {
           payment.setIsAllocated(true);
@@ -304,11 +302,11 @@ public class AllocationAuto extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, C_BPartner_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MInvoice invoice = new MInvoice(getCtx(), rs, get_TrxName());
+        MInvoice invoice = new MInvoice(getCtx(), rs, null);
         if (invoice.getOpenAmt(false, null).signum() == 0) {
           invoice.setIsPaid(true);
           invoice.saveEx();
@@ -387,7 +385,7 @@ public class AllocationAuto extends SvrProcess {
       else //	No direct invoice
       {
         MPaySelectionCheck psCheck =
-            MPaySelectionCheck.getOfPayment(getCtx(), payment.getC_Payment_ID(), get_TrxName());
+            MPaySelectionCheck.getOfPayment(getCtx(), payment.getC_Payment_ID(), null);
         if (psCheck == null) continue;
         //
         BigDecimal totalInvoice = Env.ZERO;
@@ -815,7 +813,7 @@ public class AllocationAuto extends SvrProcess {
               dateAcct, //	automatic
               C_Currency_ID,
               "Auto " + description,
-              get_TrxName());
+              null);
       m_allocation.setAD_Org_ID(AD_Org_ID);
       if (!m_allocation.save()) return false;
     }

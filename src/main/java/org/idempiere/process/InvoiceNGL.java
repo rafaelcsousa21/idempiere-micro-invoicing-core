@@ -14,16 +14,7 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.logging.Level;
-import org.compiere.accounting.MAccount;
-import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MAcctSchemaDefault;
-import org.compiere.accounting.MFactAcct;
-import org.compiere.accounting.MJournal;
-import org.compiere.accounting.MJournalLine;
+import org.compiere.accounting.*;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MDocType;
@@ -31,8 +22,12 @@ import org.compiere.orm.MOrg;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
-
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.TO_DATE;
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -113,21 +108,21 @@ public class InvoiceNGL extends SvrProcess {
     //	Delete - just to be sure
     StringBuilder sql =
         new StringBuilder("DELETE T_InvoiceGL WHERE AD_PInstance_ID=").append(getAD_PInstance_ID());
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
     if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Deleted #" + no);
 
     //	Insert Trx
     String dateStr = TO_DATE(p_DateReval, true);
     sql =
         new StringBuilder(
-                "INSERT INTO T_InvoiceGL (AD_Client_ID, AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
+                "INSERT INTO T_InvoiceGL (clientId, orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
             .append(" AD_PInstance_ID, C_Invoice_ID, GrandTotal, OpenAmt, ")
             .append(" Fact_Acct_ID, AmtSourceBalance, AmtAcctBalance, ")
             .append(" AmtRevalDr, AmtRevalCr, C_DocTypeReval_ID, IsAllCurrencies, ")
             .append(" DateReval, C_ConversionTypeReval_ID, AmtRevalDrDiff, AmtRevalCrDiff, APAR) ")
             //	--
             .append(
-                "SELECT i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.Created,i.CreatedBy, i.Updated,i.UpdatedBy,")
+                "SELECT i.clientId, i.orgId, i.IsActive, i.Created,i.CreatedBy, i.Updated,i.UpdatedBy,")
             .append(getAD_PInstance_ID())
             .append(", i.C_Invoice_ID, i.GrandTotal, invoiceOpen(i.C_Invoice_ID, 0), ")
             .append(" fa.Fact_Acct_ID, fa.AmtSourceDr-fa.AmtSourceCr, fa.AmtAcctDr-fa.AmtAcctCr, ")
@@ -136,12 +131,12 @@ public class InvoiceNGL extends SvrProcess {
             .append(dateStr)
             .append(", ")
             .append(p_C_ConversionTypeReval_ID)
-            .append(", i.AD_Client_ID, i.AD_Org_ID),")
+            .append(", i.clientId, i.orgId),")
             .append(" currencyConvert(fa.AmtSourceCr, i.C_Currency_ID, a.C_Currency_ID, ")
             .append(dateStr)
             .append(", ")
             .append(p_C_ConversionTypeReval_ID)
-            .append(", i.AD_Client_ID, i.AD_Org_ID),")
+            .append(", i.clientId, i.orgId),")
             .append((p_C_DocTypeReval_ID == 0 ? "NULL" : String.valueOf(p_C_DocTypeReval_ID)))
             .append(", ")
             .append((p_IsAllCurrencies ? "'Y'," : "'N',"))
@@ -169,7 +164,7 @@ public class InvoiceNGL extends SvrProcess {
     if (!p_IsAllCurrencies && p_C_Currency_ID != 0)
       sql.append(" AND i.C_Currency_ID=").append(p_C_Currency_ID);
 
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (no != 0) {
       if (log.isLoggable(Level.INFO)) log.info("Inserted #" + no);
     } else if (log.isLoggable(Level.FINER)) {
@@ -187,7 +182,7 @@ public class InvoiceNGL extends SvrProcess {
             .append("WHERE gl.Fact_Acct_ID=fa.Fact_Acct_ID) ")
             .append("WHERE AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    int noT = executeUpdate(sql.toString(), get_TrxName());
+    int noT = executeUpdate(sql.toString(), null);
     if (noT > 0) if (log.isLoggable(Level.CONFIG)) log.config("Difference #" + noT);
 
     //	Percentage
@@ -195,14 +190,14 @@ public class InvoiceNGL extends SvrProcess {
         new StringBuilder("UPDATE T_InvoiceGL SET Percent = 100 ")
             .append("WHERE GrandTotal=OpenAmt AND AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Not Paid #" + no);
 
     sql =
         new StringBuilder("UPDATE T_InvoiceGL SET Percent = ROUND(OpenAmt*100/GrandTotal,6) ")
             .append("WHERE GrandTotal<>OpenAmt AND GrandTotal <> 0 AND AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Partial Paid #" + no);
 
     sql =
@@ -212,7 +207,7 @@ public class InvoiceNGL extends SvrProcess {
             .append(" AmtRevalCrDiff = AmtRevalCrDiff * Percent/100 ")
             .append("WHERE Percent <> 100 AND AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (no > 0) if (log.isLoggable(Level.CONFIG)) log.config("Partial Calc #" + no);
 
     //	Create Document
@@ -234,9 +229,9 @@ public class InvoiceNGL extends SvrProcess {
     // FR: [ 2214883 ] Remove SQL code and Replace for Query
     final String whereClause = "AD_PInstance_ID=?";
     List<X_T_InvoiceGL> list =
-        new Query(getCtx(), X_T_InvoiceGL.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), X_T_InvoiceGL.Table_Name, whereClause, null)
             .setParameters(getAD_PInstance_ID())
-            .setOrderBy("AD_Org_ID")
+            .setOrderBy("orgId")
             .list();
     // FR: [ 2214883 ] Remove SQL code and Replace for Query
 
@@ -251,7 +246,7 @@ public class InvoiceNGL extends SvrProcess {
       cat = MGLCategory.get(getCtx(), docType.getGL_Category_ID());
     }
     //
-    MJournal journal = new MJournal(getCtx(), 0, get_TrxName());
+    MJournal journal = new MJournal(getCtx(), 0, null);
     journal.setC_DocType_ID(p_C_DocTypeReval_ID);
     journal.setPostingType(MJournal.POSTINGTYPE_Actual);
     journal.setDateDoc(p_DateReval);
@@ -394,7 +389,7 @@ public class InvoiceNGL extends SvrProcess {
               base.getUser2_ID(),
               base.getUserElement1_ID(),
               base.getUserElement2_ID(),
-              get_TrxName());
+              null);
       line.setDescription(Msg.getElement(getCtx(), "UnrealizedGain_Acct"));
       line.setC_ValidCombination_ID(acct.getC_ValidCombination_ID());
       line.setAmtSourceCr(gainTotal);
@@ -427,7 +422,7 @@ public class InvoiceNGL extends SvrProcess {
               base.getUser2_ID(),
               base.getUserElement1_ID(),
               base.getUserElement2_ID(),
-              get_TrxName());
+              null);
       line.setDescription(Msg.getElement(getCtx(), "UnrealizedLoss_Acct"));
       line.setC_ValidCombination_ID(acct.getC_ValidCombination_ID());
       line.setAmtSourceDr(lossTotal);

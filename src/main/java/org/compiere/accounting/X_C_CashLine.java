@@ -107,7 +107,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), get_TrxName());
+            .getPO(getC_BankAccount_ID(), null);
   }
 
   /**
@@ -134,7 +134,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   public org.compiere.model.I_C_Cash getC_Cash() throws RuntimeException {
     return (org.compiere.model.I_C_Cash)
         MTable.get(getCtx(), org.compiere.model.I_C_Cash.Table_Name)
-            .getPO(getC_Cash_ID(), get_TrxName());
+            .getPO(getC_Cash_ID(), null);
   }
 
   /**
@@ -209,7 +209,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
     return (org.compiere.model.I_C_Charge)
         MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), get_TrxName());
+            .getPO(getC_Charge_ID(), null);
   }
 
   /**
@@ -236,7 +236,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -263,7 +263,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), get_TrxName());
+            .getPO(getC_Invoice_ID(), null);
   }
 
   /**
@@ -290,7 +290,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), get_TrxName());
+            .getPO(getC_Payment_ID(), null);
   }
 
   /**

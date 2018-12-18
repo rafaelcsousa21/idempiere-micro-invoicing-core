@@ -62,8 +62,8 @@ public class CopyFromBankStmt extends SvrProcess {
     if (m_C_BankStatement_ID == 0)
       throw new IllegalArgumentException("Source C_BankStatement_ID == 0");
 
-    MBankStatement from = new MBankStatement(getCtx(), m_C_BankStatement_ID, get_TrxName());
-    MBankStatement to = new MBankStatement(getCtx(), To_C_BankStatement_ID, get_TrxName());
+    MBankStatement from = new MBankStatement(getCtx(), m_C_BankStatement_ID, null);
+    MBankStatement to = new MBankStatement(getCtx(), To_C_BankStatement_ID, null);
     int no = 0;
 
     if (!(MBankStatement.DOCSTATUS_Completed.equals(from.getDocStatus())
@@ -80,9 +80,9 @@ public class CopyFromBankStmt extends SvrProcess {
                 + " WHERE bs.C_BankStatement_ID=bsl.C_BankStatement_ID"
                 + " AND bs.DocStatus IN ('DR', 'CO', 'CL')"
                 + " AND bsl.C_Payment_ID=?";
-        if (getSQLValueEx(get_TrxName(), sql, fromLine.getC_Payment_ID()) < 0) {
+        if (getSQLValueEx(null, sql, fromLine.getC_Payment_ID()) < 0) {
           MBankStatementLine toLine = new MBankStatementLine(to);
-          toLine.setPayment(new MPayment(getCtx(), fromLine.getC_Payment_ID(), get_TrxName()));
+          toLine.setPayment(new MPayment(getCtx(), fromLine.getC_Payment_ID(), null));
           toLine.saveEx();
           no++;
         } else {

@@ -47,7 +47,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_AD_Column getAD_Column() throws RuntimeException {
     return (org.compiere.model.I_AD_Column)
         MTable.get(getCtx(), org.compiere.model.I_AD_Column.Table_Name)
-            .getPO(getAD_Column_ID(), get_TrxName());
+            .getPO(getAD_Column_ID(), null);
   }
 
   /**
@@ -113,7 +113,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -140,7 +140,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -167,7 +167,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -194,7 +194,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
     return (org.compiere.model.I_C_Campaign)
         MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), get_TrxName());
+            .getPO(getC_Campaign_ID(), null);
   }
 
   /**
@@ -221,7 +221,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_C_Element getC_Element() throws RuntimeException {
     return (org.compiere.model.I_C_Element)
         MTable.get(getCtx(), org.compiere.model.I_C_Element.Table_Name)
-            .getPO(getC_Element_ID(), get_TrxName());
+            .getPO(getC_Element_ID(), null);
   }
 
   /**
@@ -248,7 +248,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_C_ElementValue getC_ElementValue() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getC_ElementValue_ID(), get_TrxName());
+            .getPO(getC_ElementValue_ID(), null);
   }
 
   /**
@@ -274,7 +274,7 @@ public class X_C_AcctSchema_Element extends BasePOName
 
   public I_C_Location getC_Location() throws RuntimeException {
     return (I_C_Location)
-        MTable.get(getCtx(), I_C_Location.Table_Name).getPO(getC_Location_ID(), get_TrxName());
+        MTable.get(getCtx(), I_C_Location.Table_Name).getPO(getC_Location_ID(), null);
   }
 
   /**
@@ -301,7 +301,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -328,7 +328,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_C_SalesRegion getC_SalesRegion() throws RuntimeException {
     return (org.compiere.model.I_C_SalesRegion)
         MTable.get(getCtx(), org.compiere.model.I_C_SalesRegion.Table_Name)
-            .getPO(getC_SalesRegion_ID(), get_TrxName());
+            .getPO(getC_SalesRegion_ID(), null);
   }
 
   /**
@@ -454,7 +454,7 @@ public class X_C_AcctSchema_Element extends BasePOName
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**

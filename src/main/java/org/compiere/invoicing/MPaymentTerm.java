@@ -1,13 +1,15 @@
 package org.compiere.invoicing;
 
+import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_InvoicePaySchedule;
+import org.compiere.order.MPaySchedule;
+import org.compiere.orm.Query;
+import org.idempiere.common.util.Env;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-import org.compiere.model.I_C_Invoice;
-import org.compiere.model.I_C_InvoicePaySchedule;
-import org.compiere.orm.Query;
-import org.idempiere.common.util.Env;
 
 public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
   public MPaymentTerm(Properties ctx, int C_PaymentTerm_ID, String trxName) {
@@ -33,7 +35,7 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
 
     if (!isValid()) return applyNoSchedule(invoice);
     //
-    getSchedule(true);
+    MPaySchedule[] m_schedule = getSchedule(true);
     if (m_schedule.length <= 0) // Allow schedules with just one record
     return applyNoSchedule(invoice);
     else //	only if valid
@@ -47,20 +49,21 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
    * @return true if payment schedule is valid
    */
   private boolean applySchedule(MInvoice invoice) {
-    deleteInvoicePaySchedule(invoice.getC_Invoice_ID(), invoice.get_TrxName());
+    deleteInvoicePaySchedule(invoice.getC_Invoice_ID(), null);
     //	Create Schedule
     MInvoicePaySchedule ips = null;
     BigDecimal remainder = invoice.getGrandTotal();
+    MPaySchedule[] m_schedule = getSchedule(false);
     for (int i = 0; i < m_schedule.length; i++) {
       ips = new MInvoicePaySchedule(invoice, m_schedule[i]);
-      ips.saveEx(invoice.get_TrxName());
+      ips.saveEx(null);
       if (log.isLoggable(Level.FINE)) log.fine(ips.toString());
       remainder = remainder.subtract(ips.getDueAmt());
     } //	for all schedules
     //	Remainder - update last
     if (remainder.compareTo(Env.ZERO) != 0 && ips != null) {
       ips.setDueAmt(ips.getDueAmt().add(remainder));
-      ips.saveEx(invoice.get_TrxName());
+      ips.saveEx(null);
       if (log.isLoggable(Level.FINE)) log.fine("Remainder=" + remainder + " - " + ips);
     }
 
@@ -77,7 +80,7 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
    * @return false as no payment schedule
    */
   private boolean applyNoSchedule(I_C_Invoice invoice) {
-    deleteInvoicePaySchedule(invoice.getC_Invoice_ID(), invoice.get_TrxName());
+    deleteInvoicePaySchedule(invoice.getC_Invoice_ID(), null);
     //	updateInvoice
     if (invoice.getC_PaymentTerm_ID() != getC_PaymentTerm_ID())
       invoice.setC_PaymentTerm_ID(getC_PaymentTerm_ID());

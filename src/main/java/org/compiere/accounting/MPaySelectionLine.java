@@ -63,7 +63,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
    * @param PaymentRule payment rule
    */
   public MPaySelectionLine(MPaySelection ps, int Line, String PaymentRule) {
-    this(ps.getCtx(), 0, ps.get_TrxName());
+    this(ps.getCtx(), 0, null);
     setClientOrg(ps);
     setC_PaySelection_ID(ps.getC_PaySelection_ID());
     setLine(Line);
@@ -123,7 +123,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
    * @return invoice
    */
   public MInvoice getInvoice() {
-    if (m_invoice == null) m_invoice = new MInvoice(getCtx(), getC_Invoice_ID(), get_TrxName());
+    if (m_invoice == null) m_invoice = new MInvoice(getCtx(), getC_Invoice_ID(), null);
     return m_invoice;
   } //	getInvoice
 
@@ -174,7 +174,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
             + "WHERE ps.C_PaySelection_ID=psl.C_PaySelection_ID AND psl.IsActive='Y') "
             + "WHERE C_PaySelection_ID="
             + getC_PaySelection_ID();
-    executeUpdate(sql, get_TrxName());
+    executeUpdate(sql, null);
   } //	setHeader
 
   /**

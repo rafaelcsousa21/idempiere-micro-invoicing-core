@@ -173,7 +173,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getC_Invoice_ID());
       pstmt.setInt(2, getC_Tax_ID());
       rs = pstmt.executeQuery();

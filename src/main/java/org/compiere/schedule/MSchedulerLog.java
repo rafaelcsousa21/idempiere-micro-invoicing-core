@@ -1,8 +1,9 @@
 package org.compiere.schedule;
 
+import org.compiere.model.AdempiereProcessorLog;
+
 import java.sql.ResultSet;
 import java.util.Properties;
-import org.compiere.model.AdempiereProcessorLog;
 
 /**
  * Scheduler Log
@@ -44,7 +45,7 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
    * @param summary summary
    */
   public MSchedulerLog(MScheduler parent, String summary) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setAD_Scheduler_ID(parent.getAD_Scheduler_ID());
     setSummary(summary);

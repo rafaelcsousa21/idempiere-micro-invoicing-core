@@ -14,7 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.model.IProcessInfoParameter;
@@ -24,6 +23,8 @@ import org.compiere.production.MProjectLine;
 import org.compiere.production.MProjectPhase;
 import org.compiere.production.MProjectTask;
 import org.idempiere.common.util.Env;
+
+import java.util.logging.Level;
 
 /**
  * Generate Order from Project Phase
@@ -54,9 +55,9 @@ public class ProjectPhaseGenOrder extends SvrProcess {
     m_C_ProjectPhase_ID = getRecord_ID();
     if (log.isLoggable(Level.INFO)) log.info("doIt - C_ProjectPhase_ID=" + m_C_ProjectPhase_ID);
     if (m_C_ProjectPhase_ID == 0) throw new IllegalArgumentException("C_ProjectPhase_ID == 0");
-    MProjectPhase fromPhase = new MProjectPhase(getCtx(), m_C_ProjectPhase_ID, get_TrxName());
+    MProjectPhase fromPhase = new MProjectPhase(getCtx(), m_C_ProjectPhase_ID, null);
     MProject fromProject =
-        ProjectGenOrder.getProject(getCtx(), fromPhase.getC_Project_ID(), get_TrxName());
+        ProjectGenOrder.getProject(getCtx(), fromPhase.getC_Project_ID(), null);
     MOrder order = new MOrder(fromProject, true, MOrder.DocSubTypeSO_OnCredit);
     order.setDescription(order.getDescription() + " - " + fromPhase.getName());
     if (!order.save()) throw new Exception("Could not create Order");

@@ -50,8 +50,8 @@ public class CopyFromJournalDoc extends SvrProcess {
       log.info("doIt - From GL_Journal_ID=" + m_GL_Journal_ID + " to " + To_GL_Journal_ID);
     if (To_GL_Journal_ID == 0) throw new IllegalArgumentException("Target GL_Journal_ID == 0");
     if (m_GL_Journal_ID == 0) throw new IllegalArgumentException("Source GL_Journal_ID == 0");
-    MJournal from = new MJournal(getCtx(), m_GL_Journal_ID, get_TrxName());
-    MJournal to = new MJournal(getCtx(), To_GL_Journal_ID, get_TrxName());
+    MJournal from = new MJournal(getCtx(), m_GL_Journal_ID, null);
+    MJournal to = new MJournal(getCtx(), To_GL_Journal_ID, null);
     //
     int no = to.copyLinesFrom(from, to.getDateAcct(), 'x');
     //

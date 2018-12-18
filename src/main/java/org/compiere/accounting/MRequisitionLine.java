@@ -140,7 +140,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    * @param req requisition
    */
   public MRequisitionLine(MRequisition req) {
-    this(req.getCtx(), 0, req.get_TrxName());
+    this(req.getCtx(), 0, null);
     setClientOrg(req);
     setM_Requisition_ID(req.getM_Requisition_ID());
     m_M_PriceList_ID = req.getM_PriceList_ID();
@@ -170,7 +170,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    */
   public MRequisition getParent() {
     if (m_parent == null)
-      m_parent = new MRequisition(getCtx(), getM_Requisition_ID(), get_TrxName());
+      m_parent = new MRequisition(getCtx(), getM_Requisition_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -211,7 +211,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     //
     if (log.isLoggable(Level.FINE)) log.fine("M_PriceList_ID=" + M_PriceList_ID);
     IProductPricing pp = MProduct.getProductPricing();
-    pp.setRequisitionLine(this, get_TrxName());
+    pp.setRequisitionLine(this, null);
     pp.setM_PriceList_ID(M_PriceList_ID);
     //	pp.setPriceDate(getDateOrdered());
     //
@@ -238,7 +238,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 FROM M_RequisitionLine WHERE M_Requisition_ID=?";
-      int ii = getSQLValueEx(get_TrxName(), sql, getM_Requisition_ID());
+      int ii = getSQLValueEx(null, sql, getM_Requisition_ID());
       setLine(ii);
     }
     //	Product & ASI - Charge
@@ -307,7 +307,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
             + "(SELECT COALESCE(SUM(LineNetAmt),0) FROM M_RequisitionLine rl "
             + "WHERE r.M_Requisition_ID=rl.M_Requisition_ID) "
             + "WHERE M_Requisition_ID=?";
-    int no = executeUpdateEx(sql, new Object[] {getM_Requisition_ID()}, get_TrxName());
+    int no = executeUpdateEx(sql, new Object[] {getM_Requisition_ID()}, null);
     if (no != 1) log.log(Level.SEVERE, "Header update #" + no);
     m_parent = null;
     return no == 1;

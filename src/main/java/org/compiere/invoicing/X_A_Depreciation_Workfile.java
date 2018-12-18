@@ -121,7 +121,7 @@ public class X_A_Depreciation_Workfile extends PO
   public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
     return (org.compiere.model.I_A_Asset)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), get_TrxName());
+            .getPO(getA_Asset_ID(), null);
   }
 
   /**
@@ -419,7 +419,7 @@ public class X_A_Depreciation_Workfile extends PO
   public org.compiere.model.I_A_FundingMode getA_FundingMode() throws RuntimeException {
     return (org.compiere.model.I_A_FundingMode)
         MTable.get(getCtx(), org.compiere.model.I_A_FundingMode.Table_Name)
-            .getPO(getA_FundingMode_ID(), get_TrxName());
+            .getPO(getA_FundingMode_ID(), null);
   }
 
   /**

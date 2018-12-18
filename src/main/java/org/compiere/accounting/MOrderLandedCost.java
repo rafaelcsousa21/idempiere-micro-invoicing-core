@@ -67,7 +67,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
                 getCtx(),
                 I_C_OrderLandedCostAllocation.Table_Name,
                 whereClauseFinal.toString(),
-                get_TrxName())
+                null)
             .setParameters(getC_OrderLandedCost_ID())
             .list();
     return list.toArray(new MOrderLandedCostAllocation[list.size()]);
@@ -83,7 +83,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
         for (MOrderLine line : orderLines) {
           if (line.getM_Product_ID() > 0) {
             MOrderLandedCostAllocation allocation =
-                new MOrderLandedCostAllocation(getCtx(), 0, get_TrxName());
+                new MOrderLandedCostAllocation(getCtx(), 0, null);
             allocation.setC_OrderLandedCost_ID(getC_OrderLandedCost_ID());
             allocation.setC_OrderLine_ID(line.getC_OrderLine_ID());
             allocation.setClientOrg( getClientId(),  getOrgId());

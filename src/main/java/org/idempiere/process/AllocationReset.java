@@ -125,7 +125,7 @@ public class AllocationReset extends SvrProcess {
     else if (p_C_BP_Group_ID != 0)
       sql.append(" AND EXISTS (SELECT * FROM C_BPartner bp ")
           .append("WHERE bp.C_BPartner_ID=al.C_BPartner_ID AND bp.C_BP_Group_ID=?)");
-    else sql.append(" AND AD_Client_ID=?");
+    else sql.append(" AND clientId=?");
     if (p_DateAcct_From != null) sql.append(" AND TRIM(ah.DateAcct) >= ?");
     if (p_DateAcct_To != null) sql.append(" AND TRIM(ah.DateAcct) <= ?");
     //	Do not delete Cash Trx

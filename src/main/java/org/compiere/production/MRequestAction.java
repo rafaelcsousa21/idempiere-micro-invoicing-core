@@ -1,9 +1,10 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.crm.MUser;
 import org.compiere.util.Msg;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Request History Model
@@ -42,7 +43,7 @@ public class MRequestAction extends X_R_RequestAction {
    * @param newRecord new (copy all)
    */
   public MRequestAction(MRequest request, boolean newRecord) {
-    this(request.getCtx(), 0, request.get_TrxName());
+    this(request.getCtx(), 0, null);
     setClientOrg(request);
     setR_Request_ID(request.getR_Request_ID());
   } //	MRequestAction
@@ -85,7 +86,7 @@ public class MRequestAction extends X_R_RequestAction {
     getChangeHTML(sb, "SalesRep_ID");
     getChangeHTML(sb, "Summary");
     //
-    //	getChangeHTML(sb, "AD_Org_ID");		//	always stored
+    //	getChangeHTML(sb, "orgId");		//	always stored
     getChangeHTML(sb, "AD_Role_ID");
     getChangeHTML(sb, "AD_User_ID");
     getChangeHTML(sb, "C_Activity_ID");

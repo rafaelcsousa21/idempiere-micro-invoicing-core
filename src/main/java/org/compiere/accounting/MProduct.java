@@ -60,11 +60,11 @@ public class MProduct extends org.compiere.product.MProduct {
     BigDecimal qtyOnHand = Env.ZERO;
     BigDecimal qtyOrdered = Env.ZERO;
     BigDecimal qtyReserved = Env.ZERO;
-    for (MStorageOnHand ohs : MStorageOnHand.getOfProduct(getCtx(), getId(), get_TrxName())) {
+    for (MStorageOnHand ohs : MStorageOnHand.getOfProduct(getCtx(), getId(), null)) {
       qtyOnHand = qtyOnHand.add(ohs.getQtyOnHand());
     }
     for (MStorageReservation rs :
-        MStorageReservation.getOfProduct(getCtx(), getId(), get_TrxName())) {
+        MStorageReservation.getOfProduct(getCtx(), getId(), null)) {
       if (rs.isSOTrx()) qtyReserved = qtyReserved.add(rs.getQty());
       else qtyOrdered = qtyOrdered.add(rs.getQty());
     }
@@ -88,7 +88,7 @@ public class MProduct extends org.compiere.product.MProduct {
                 getCtx(),
                 I_M_Transaction.Table_Name,
                 I_M_Transaction.COLUMNNAME_M_Product_ID + "=?",
-                get_TrxName())
+                null)
             .setOnlyActiveRecords(true)
             .setParameters(new Object[] {getId()})
             .match();
@@ -102,7 +102,7 @@ public class MProduct extends org.compiere.product.MProduct {
                 getCtx(),
                 I_M_CostDetail.Table_Name,
                 I_M_CostDetail.COLUMNNAME_M_Product_ID + "=?",
-                get_TrxName())
+                null)
             .setOnlyActiveRecords(true)
             .setParameters(getId())
             .match();
@@ -119,7 +119,7 @@ public class MProduct extends org.compiere.product.MProduct {
 
     //	Value/Name change in Account
     if (!newRecord && (is_ValueChanged("Value") || is_ValueChanged("Name")))
-      MAccount.updateValueDescription(getCtx(), "M_Product_ID=" + getM_Product_ID(), get_TrxName());
+      MAccount.updateValueDescription(getCtx(), "M_Product_ID=" + getM_Product_ID(), null);
 
     //	Name/Description Change in Asset	MAsset.setValueNameDescription
     if (!newRecord && (is_ValueChanged("Name") || is_ValueChanged("Description"))) {
@@ -133,7 +133,7 @@ public class MProduct extends org.compiere.product.MProduct {
               //	+ " AND GuaranteeDate > SysDate"
               + "  AND M_Product_ID="
               + getM_Product_ID();
-      int no = executeUpdate(sql, get_TrxName());
+      int no = executeUpdate(sql, null);
       if (log.isLoggable(Level.FINE)) log.fine("Asset Description updated #" + no);
     }
 
@@ -171,7 +171,7 @@ public class MProduct extends org.compiere.product.MProduct {
     MCost.delete(this);
 
     // [ 1674225 ] Delete Product: Costing deletion error
-    /*MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId(), get_TrxName());
+    /*MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId(), null);
     for(int i=0; i<mass.length; i++)
     {
     	// Get Cost Elements
@@ -190,7 +190,7 @@ public class MProduct extends org.compiere.product.MProduct {
     		continue;
 
     	MCost mcost = MCost.get(this, 0, mass[i], 0, ce.getM_CostElement_ID());
-    	mcost.delete(true, get_TrxName());
+    	mcost.delete(true, null);
     }*/
 
     //
@@ -206,7 +206,7 @@ public class MProduct extends org.compiere.product.MProduct {
   public boolean isASIMandatory(boolean isSOTrx) {
     //
     //	If CostingLevel is BatchLot ASI is always mandatory - check all client acct schemas
-    MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(),  getClientId(), get_TrxName());
+    MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(),  getClientId(), null);
     for (MAcctSchema as : mass) {
       String cl = getCostingLevel(as);
       if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(cl)) {
@@ -239,7 +239,7 @@ public class MProduct extends org.compiere.product.MProduct {
   public String getCostingLevel(MAcctSchema as) {
     String costingLevel = null;
     MProductCategoryAcct pca =
-        MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId(), get_TrxName());
+        MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId(), null);
     if (pca != null) {
       costingLevel = pca.getCostingLevel();
     }
@@ -258,7 +258,7 @@ public class MProduct extends org.compiere.product.MProduct {
   public String getCostingMethod(MAcctSchema as) {
     String costingMethod = null;
     MProductCategoryAcct pca =
-        MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId(), get_TrxName());
+        MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId(), null);
     if (pca != null) {
       costingMethod = pca.getCostingMethod();
     }
@@ -287,7 +287,7 @@ public class MProduct extends org.compiere.product.MProduct {
     if (ce == null) {
       return null;
     }
-    MCost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getM_CostElement_ID(), get_TrxName());
+    MCost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getM_CostElement_ID(), null);
     return cost.is_new() ? null : cost;
   }
 
@@ -325,7 +325,7 @@ public class MProduct extends org.compiere.product.MProduct {
     if (getMAttributeSetInstance_ID() > 0
         && is_ValueChanged(I_M_Product.COLUMNNAME_M_AttributeSet_ID)) {
       MAttributeSetInstance asi =
-          new MAttributeSetInstance(getCtx(), getMAttributeSetInstance_ID(), get_TrxName());
+          new MAttributeSetInstance(getCtx(), getMAttributeSetInstance_ID(), null);
       if (asi.getMAttributeSet_ID() != getMAttributeSet_ID()) setM_AttributeSetInstance_ID(0);
     }
     if (!newRecord && is_ValueChanged(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID)) {
@@ -336,16 +336,16 @@ public class MProduct extends org.compiere.product.MProduct {
             new MAttributeSetInstance(
                 getCtx(),
                 get_ValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID),
-                get_TrxName());
+                null);
         int cnt =
             getSQLValueEx(
-                get_TrxName(),
+                null,
                 "SELECT COUNT(*) FROM M_Product WHERE M_AttributeSetInstance_ID=?",
                 oldasi.getMAttributeSetInstance_ID());
         if (cnt == 1) {
           // Delete the old m_attributesetinstance
           try {
-            oldasi.deleteEx(true, get_TrxName());
+            oldasi.deleteEx(true, null);
           } catch (AdempiereException ex) {
             log.saveError("Error", "Error deleting the AttributeSetInstance");
             return false;

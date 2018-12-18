@@ -1,11 +1,12 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.order.MInOutConfirm;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Ship Confirmation Line Model
@@ -54,7 +55,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
    * @param header parent
    */
   public MInOutLineConfirm(MInOutConfirm header) {
-    this(header.getCtx(), 0, header.get_TrxName());
+    this(header.getCtx(), 0, null);
     setClientOrg(header);
     setM_InOutConfirm_ID(header.getM_InOutConfirm_ID());
   } //	MInOutLineConfirm
@@ -80,7 +81,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
    * @return line
    */
   public MInOutLine getLine() {
-    if (m_line == null) m_line = new MInOutLine(getCtx(), getM_InOutLine_ID(), get_TrxName());
+    if (m_line == null) m_line = new MInOutLine(getCtx(), getM_InOutLine_ID(), null);
     return m_line;
   } //	getLine
 
@@ -128,7 +129,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
       line.setConfirmedQty(getConfirmedQty());
     }
 
-    return line.save(get_TrxName());
+    return line.save(null);
   } //	processConfirmation
 
   /**

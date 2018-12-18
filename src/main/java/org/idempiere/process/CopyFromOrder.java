@@ -54,8 +54,8 @@ public class CopyFromOrder extends SvrProcess {
       log.info("From C_Order_ID=" + p_C_Order_ID + " to " + To_C_Order_ID);
     if (To_C_Order_ID == 0) throw new IllegalArgumentException("Target C_Order_ID == 0");
     if (p_C_Order_ID == 0) throw new IllegalArgumentException("Source C_Order_ID == 0");
-    MOrder from = new MOrder(getCtx(), p_C_Order_ID, get_TrxName());
-    MOrder to = new MOrder(getCtx(), To_C_Order_ID, get_TrxName());
+    MOrder from = new MOrder(getCtx(), p_C_Order_ID, null);
+    MOrder to = new MOrder(getCtx(), To_C_Order_ID, null);
     //
     int no = to.copyLinesFrom(from, false, false); // 	no Attributes
     //

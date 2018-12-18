@@ -14,13 +14,14 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MBankStatementLoader;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Process for loading Bank Statements into I_BankStatement
@@ -65,10 +66,10 @@ public class LoadBankStatement extends SvrProcess {
       else log.log(Level.SEVERE, "Unknown Parameter: " + name);
     }
     m_AD_Client_ID = Env.getClientId(m_ctx);
-    if (log.isLoggable(Level.INFO)) log.info("AD_Client_ID=" + m_AD_Client_ID);
+    if (log.isLoggable(Level.INFO)) log.info("clientId=" + m_AD_Client_ID);
     m_AD_Org_ID = Env.getOrgId(m_ctx);
     if (log.isLoggable(Level.INFO)) {
-      log.info("AD_Org_ID=" + m_AD_Org_ID);
+      log.info("orgId=" + m_AD_Org_ID);
       log.info("C_BankStatementLoader_ID=" + m_C_BankStmtLoader_ID);
     }
   } //	prepare
@@ -83,7 +84,7 @@ public class LoadBankStatement extends SvrProcess {
     log.info("LoadBankStatement.doIt");
     String message = "@Error@";
 
-    m_controller = new MBankStatementLoader(m_ctx, m_C_BankStmtLoader_ID, fileName, get_TrxName());
+    m_controller = new MBankStatementLoader(m_ctx, m_C_BankStmtLoader_ID, fileName, null);
     if (log.isLoggable(Level.INFO)) log.info(m_controller.toString());
 
     if (m_controller == null || m_controller.getId() == 0) log.log(Level.SEVERE, "Invalid Loader");

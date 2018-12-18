@@ -43,7 +43,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
   public static List<MPPProductBOMLine> getByProduct(MProduct product) {
     final String whereClause = I_PP_Product_BOMLine.COLUMNNAME_M_Product_ID + "=?";
     return new Query(
-            product.getCtx(), I_PP_Product_BOMLine.Table_Name, whereClause, product.get_TrxName())
+            product.getCtx(), I_PP_Product_BOMLine.Table_Name, whereClause, null)
         .setParameters(product.getM_Product_ID())
         .list();
   }
@@ -87,7 +87,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
    * @return int low level
    */
   public int getLowLevel() {
-    return new ProductLowLevelCalculator(getCtx(), get_TrxName()).getLowLevel(getM_Product_ID());
+    return new ProductLowLevelCalculator(getCtx(), null).getLowLevel(getM_Product_ID());
   }
 
   /**
@@ -97,7 +97,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
    */
   public MPPProductBOM getParent() {
     if (m_bom == null) {
-      m_bom = new MPPProductBOM(getCtx(), this.getPP_Product_BOM_ID(), get_TrxName());
+      m_bom = new MPPProductBOM(getCtx(), this.getPP_Product_BOM_ID(), null);
     }
     return m_bom;
   }
@@ -134,7 +134,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
               + " WHERE "
               + I_PP_Product_BOMLine.COLUMNNAME_PP_Product_BOM_ID
               + "=?";
-      int line = getSQLValueEx(get_TrxName(), sql, getPP_Product_BOM_ID());
+      int line = getSQLValueEx(null, sql, getPP_Product_BOM_ID());
       setLine(line);
     }
 
@@ -146,7 +146,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
     if (!success) return false;
 
     int lowlevel = getLowLevel();
-    MProduct product = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
+    MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
     product.setLowLevel(lowlevel); // update lowlevel
     product.saveEx();
 

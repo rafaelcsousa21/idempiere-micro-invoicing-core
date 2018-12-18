@@ -59,16 +59,16 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
   }
 
   public MProduction(MOrderLine line) {
-    super(line.getCtx(), 0, line.get_TrxName());
+    super(line.getCtx(), 0, null);
     setADClientID(line. getClientId());
     setAD_Org_ID(line. getOrgId());
     setMovementDate(line.getDatePromised());
   }
 
   public MProduction(MProjectLine line) {
-    super(line.getCtx(), 0, line.get_TrxName());
-    MProject project = new MProject(line.getCtx(), line.getC_Project_ID(), line.get_TrxName());
-    MWarehouse wh = new MWarehouse(line.getCtx(), project.getM_Warehouse_ID(), line.get_TrxName());
+    super(line.getCtx(), 0, null);
+    MProject project = new MProject(line.getCtx(), line.getC_Project_ID(), null);
+    MWarehouse wh = new MWarehouse(line.getCtx(), project.getM_Warehouse_ID(), null);
 
     MLocator M_Locator = null;
     int M_Locator_ID = 0;
@@ -128,7 +128,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
               Env.getCtx(),
               I_M_ProductionPlan.Table_Name,
               "M_ProductionPlan.M_Production_ID=?",
-              get_TrxName());
+              null);
       List<MProductionPlan> plans = planQuery.setParameters(getM_Production_ID()).list();
       for (MProductionPlan plan : plans) {
         MProductionLine[] lines = plan.getLines();
@@ -184,7 +184,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         errors.append(error);
       } else {
         lines[i].setProcessed(true);
-        lines[i].saveEx(get_TrxName());
+        lines[i].saveEx(null);
       }
     }
 
@@ -202,10 +202,10 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getId());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1), get_TrxName()));
+      while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1), null));
     } catch (SQLException ex) {
       throw new AdempiereException("Unable to load production lines", ex);
     } finally {
@@ -233,7 +233,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     count = 0;
 
     // product to be produced
-    MProduct finishedProduct = new MProduct(getCtx(), getM_Product_ID(), get_TrxName());
+    MProduct finishedProduct = new MProduct(getCtx(), getM_Product_ID(), null);
 
     MProductionLine line = new MProductionLine(this);
     line.setLine(lineno);
@@ -272,7 +272,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     ResultSet rs = null;
 
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
 
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -282,7 +282,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         BigDecimal BOMQty = rs.getBigDecimal(2);
         BigDecimal BOMMovementQty = BOMQty.multiply(requiredQty);
 
-        MProduct bomproduct = new MProduct(Env.getCtx(), BOMProduct_ID, get_TrxName());
+        MProduct bomproduct = new MProduct(Env.getCtx(), BOMProduct_ID, null);
 
         if (bomproduct.isBOM() && bomproduct.isPhantom()) {
           createLines(mustBeStocked, bomproduct, BOMMovementQty);
@@ -299,7 +299,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             BOMLine.setM_Locator_ID(defaultLocator);
             BOMLine.setQtyUsed(BOMMovementQty);
             BOMLine.setPlannedQty(BOMMovementQty);
-            BOMLine.saveEx(get_TrxName());
+            BOMLine.saveEx(null);
 
             lineno = lineno + 10;
             count++;
@@ -311,7 +311,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             BOMLine.setM_Locator_ID(defaultLocator);
             BOMLine.setQtyUsed(BOMMovementQty);
             BOMLine.setPlannedQty(BOMMovementQty);
-            BOMLine.saveEx(get_TrxName());
+            BOMLine.saveEx(null);
 
             lineno = lineno + 10;
             count++;
@@ -342,7 +342,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                     MProductCategory.MMPOLICY_FiFo.equals(MMPolicy),
                     true,
                     0,
-                    get_TrxName());
+                    null);
 
             MProductionLine BOMLine = null;
             int prevLoc = -1;
@@ -357,13 +357,13 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 int loc = storages[sl].getM_Locator_ID();
                 int slASI = storages[sl].getMAttributeSetInstance_ID();
                 int locAttribSet =
-                    new MAttributeSetInstance(getCtx(), asi, get_TrxName()).getMAttributeSet_ID();
+                    new MAttributeSetInstance(getCtx(), asi, null).getMAttributeSet_ID();
 
                 // roll up costing attributes if in the same locator
                 if (locAttribSet == 0 && previousAttribSet == 0 && prevLoc == loc) {
                   BOMLine.setQtyUsed(BOMLine.getQtyUsed().add(lineQty));
                   BOMLine.setPlannedQty(BOMLine.getQtyUsed());
-                  BOMLine.saveEx(get_TrxName());
+                  BOMLine.saveEx(null);
 
                 }
                 // otherwise create new line
@@ -376,7 +376,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                   BOMLine.setPlannedQty(lineQty);
                   if (slASI != 0 && locAttribSet != 0) // ie non costing attribute
                   BOMLine.setM_AttributeSetInstance_ID(slASI);
-                  BOMLine.saveEx(get_TrxName());
+                  BOMLine.saveEx(null);
 
                   lineno = lineno + 10;
                   count++;
@@ -397,7 +397,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 if (previousAttribSet == 0 && prevLoc == defaultLocator) {
                   BOMLine.setQtyUsed(BOMLine.getQtyUsed().add(BOMMovementQty));
                   BOMLine.setPlannedQty(BOMLine.getQtyUsed());
-                  BOMLine.saveEx(get_TrxName());
+                  BOMLine.saveEx(null);
 
                 }
                 // otherwise create new line
@@ -409,7 +409,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                   BOMLine.setM_Locator_ID(defaultLocator);
                   BOMLine.setQtyUsed(BOMMovementQty);
                   BOMLine.setPlannedQty(BOMMovementQty);
-                  BOMLine.saveEx(get_TrxName());
+                  BOMLine.saveEx(null);
 
                   lineno = lineno + 10;
                   count++;
@@ -433,7 +433,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
   @Override
   protected boolean beforeDelete() {
-    deleteLines(get_TrxName());
+    deleteLines(null);
     return true;
   }
 
@@ -490,7 +490,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
               getCtx(),
               I_M_ProductionPlan.Table_Name,
               "M_ProductionPlan.M_Production_ID=?",
-              get_TrxName());
+              null);
       List<MProductionPlan> plans = planQuery.setParameters(getM_Production_ID()).list();
       for (MProductionPlan plan : plans) {
         m_processMsg = validateEndProduct(plan.getM_Product_ID());
@@ -530,13 +530,13 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
   protected String isBom(int M_Product_ID) {
     String bom =
         getSQLValueString(
-            get_TrxName(), "SELECT isbom FROM M_Product WHERE M_Product_ID = ?", M_Product_ID);
+            null, "SELECT isbom FROM M_Product WHERE M_Product_ID = ?", M_Product_ID);
     if ("N".compareTo(bom) == 0) {
       return "Attempt to create product line for Non Bill Of Materials";
     }
     int materials =
         getSQLValue(
-            get_TrxName(),
+            null,
             "SELECT count(M_Product_BOM_ID) FROM M_Product_BOM WHERE M_Product_ID = ?",
             M_Product_ID);
     if (materials == 0) {
@@ -563,7 +563,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
               + " WHERE cc.currentcostprice > 0 AND pp.M_Product_ID = ?"
               + " AND ce.costingmethod='S'";
 
-      BigDecimal costPercentageDiff = getSQLValueBD(get_TrxName(), sql, M_Product_ID);
+      BigDecimal costPercentageDiff = getSQLValueBD(null, sql, M_Product_ID);
 
       if (costPercentageDiff == null) {
         costPercentageDiff = Env.ZERO;
@@ -617,7 +617,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         || X_M_Production.DOCSTATUS_NotApproved.equals(getDocStatus())) {
       setIsCreated("N");
       if (!isUseProductionPlan()) {
-        deleteLines(get_TrxName());
+        deleteLines(null);
         setProductionQty(BigDecimal.ZERO);
       } else {
         Query planQuery =
@@ -625,10 +625,10 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 Env.getCtx(),
                 I_M_ProductionPlan.Table_Name,
                 "M_ProductionPlan.M_Production_ID=?",
-                get_TrxName());
+                null);
         List<MProductionPlan> plans = planQuery.setParameters(getM_Production_ID()).list();
         for (MProductionPlan plan : plans) {
-          plan.deleteLines(get_TrxName());
+          plan.deleteLines(null);
           plan.setProductionQty(BigDecimal.ZERO);
           plan.setProcessed(true);
           plan.saveEx();
@@ -712,7 +712,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     StringBuilder msgadd = new StringBuilder("{->").append(getDocumentNo()).append(")");
     reversal.addDescription(msgadd.toString());
     reversal.setReversal_ID(getM_Production_ID());
-    reversal.saveEx(get_TrxName());
+    reversal.saveEx(null);
 
     // Reverse Line Qty
     MProductionLine[] sLines = getLines();
@@ -720,7 +720,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     for (int i = 0; i < sLines.length; i++) {
       //	We need to copy MA
       if (sLines[i].getMAttributeSetInstance_ID() == 0) {
-        MProductionLineMA mas[] = MProductionLineMA.get(getCtx(), sLines[i].getId(), get_TrxName());
+        MProductionLineMA mas[] = MProductionLineMA.get(getCtx(), sLines[i].getId(), null);
         for (int j = 0; j < mas.length; j++) {
           MProductionLineMA ma =
               new MProductionLineMA(
@@ -728,7 +728,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                   mas[j].getMAttributeSetInstance_ID(),
                   mas[j].getMovementQty().negate(),
                   mas[j].getDateMaterialPolicy());
-          ma.saveEx(get_TrxName());
+          ma.saveEx(null);
         }
       }
     }
@@ -742,7 +742,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     reversal.setProcessing(false);
     reversal.setDocStatus(X_M_Production.DOCSTATUS_Reversed);
     reversal.setDocAction(X_M_Production.DOCACTION_None);
-    reversal.saveEx(get_TrxName());
+    reversal.saveEx(null);
 
     msgadd = new StringBuilder("(").append(reversal.getDocumentNo()).append("<-)");
     addDescription(msgadd.toString());
@@ -756,7 +756,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
   }
 
   private MProduction copyFrom(Timestamp reversalDate) {
-    MProduction to = new MProduction(getCtx(), 0, get_TrxName());
+    MProduction to = new MProduction(getCtx(), 0, null);
     PO.copyValues(this, to,  getClientId(),  getOrgId());
 
     to.set_ValueNoCheck("DocumentNo", null);
@@ -776,10 +776,10 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
               Env.getCtx(),
               I_M_ProductionPlan.Table_Name,
               "M_ProductionPlan.M_Production_ID=?",
-              get_TrxName());
+              null);
       List<MProductionPlan> fplans = planQuery.setParameters(getM_Production_ID()).list();
       for (MProductionPlan fplan : fplans) {
-        MProductionPlan tplan = new MProductionPlan(getCtx(), 0, get_TrxName());
+        MProductionPlan tplan = new MProductionPlan(getCtx(), 0, null);
         PO.copyValues(fplan, tplan,  getClientId(),  getOrgId());
         tplan.setM_Production_ID(to.getM_Production_ID());
         tplan.setProductionQty(fplan.getProductionQty().negate());

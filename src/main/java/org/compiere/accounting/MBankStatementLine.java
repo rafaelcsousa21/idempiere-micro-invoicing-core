@@ -72,7 +72,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
    * @param statement Bank Statement that the line is part of
    */
   public MBankStatementLine(MBankStatement statement) {
-    this(statement.getCtx(), 0, statement.get_TrxName());
+    this(statement.getCtx(), 0, null);
     setClientOrg(statement);
     setC_BankStatement_ID(statement.getC_BankStatement_ID());
     setStatementLineDate(statement.getStatementDate());
@@ -164,18 +164,18 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM C_BankStatementLine WHERE C_BankStatement_ID=?";
-      int ii = getSQLValue(get_TrxName(), sql, getC_BankStatement_ID());
+      int ii = getSQLValue(null, sql, getC_BankStatement_ID());
       setLine(ii);
     }
 
     //	Set References
     if (getC_Payment_ID() != 0 && getC_BPartner_ID() == 0) {
-      MPayment payment = new MPayment(getCtx(), getC_Payment_ID(), get_TrxName());
+      MPayment payment = new MPayment(getCtx(), getC_Payment_ID(), null);
       setC_BPartner_ID(payment.getC_BPartner_ID());
       if (payment.getC_Invoice_ID() != 0) setC_Invoice_ID(payment.getC_Invoice_ID());
     }
     if (getC_Invoice_ID() != 0 && getC_BPartner_ID() == 0) {
-      MInvoice invoice = new MInvoice(getCtx(), getC_Invoice_ID(), get_TrxName());
+      MInvoice invoice = new MInvoice(getCtx(), getC_Invoice_ID(), null);
       setC_BPartner_ID(invoice.getC_BPartner_ID());
     }
 
@@ -192,7 +192,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
    */
   public MBankStatement getParent() {
     if (m_parent == null)
-      m_parent = new MBankStatement(getCtx(), getC_BankStatement_ID(), get_TrxName());
+      m_parent = new MBankStatement(getCtx(), getC_BankStatement_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -228,7 +228,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
             .append("WHERE bsl.C_BankStatement_ID=bs.C_BankStatement_ID AND bsl.IsActive='Y') ")
             .append("WHERE C_BankStatement_ID=")
             .append(getC_BankStatement_ID());
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
     if (no != 1) {
       log.warning("StatementDifference #" + no);
       return false;
@@ -238,7 +238,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
             .append(" SET EndingBalance=BeginningBalance+StatementDifference ")
             .append("WHERE C_BankStatement_ID=")
             .append(getC_BankStatement_ID());
-    no = executeUpdate(sql.toString(), get_TrxName());
+    no = executeUpdate(sql.toString(), null);
     if (no != 1) {
       log.warning("Balance #" + no);
       return false;

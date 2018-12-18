@@ -51,7 +51,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
   public org.compiere.model.I_AD_PrintColor getAD_PrintColor1() throws RuntimeException {
     return (org.compiere.model.I_AD_PrintColor)
         MTable.get(getCtx(), org.compiere.model.I_AD_PrintColor.Table_Name)
-            .getPO(getAD_PrintColor1_ID(), get_TrxName());
+            .getPO(getAD_PrintColor1_ID(), null);
   }
 
   /**
@@ -78,7 +78,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
   public org.compiere.model.I_AD_PrintColor getAD_PrintColor2() throws RuntimeException {
     return (org.compiere.model.I_AD_PrintColor)
         MTable.get(getCtx(), org.compiere.model.I_AD_PrintColor.Table_Name)
-            .getPO(getAD_PrintColor2_ID(), get_TrxName());
+            .getPO(getAD_PrintColor2_ID(), null);
   }
 
   /**
@@ -105,7 +105,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
   public org.compiere.model.I_AD_PrintColor getAD_PrintColor3() throws RuntimeException {
     return (org.compiere.model.I_AD_PrintColor)
         MTable.get(getCtx(), org.compiere.model.I_AD_PrintColor.Table_Name)
-            .getPO(getAD_PrintColor3_ID(), get_TrxName());
+            .getPO(getAD_PrintColor3_ID(), null);
   }
 
   /**
@@ -132,7 +132,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
   public org.compiere.model.I_AD_PrintColor getAD_PrintColor4() throws RuntimeException {
     return (org.compiere.model.I_AD_PrintColor)
         MTable.get(getCtx(), org.compiere.model.I_AD_PrintColor.Table_Name)
-            .getPO(getAD_PrintColor4_ID(), get_TrxName());
+            .getPO(getAD_PrintColor4_ID(), null);
   }
 
   /**

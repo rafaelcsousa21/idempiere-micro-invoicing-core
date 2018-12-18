@@ -85,7 +85,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
    */
   public MTimeExpenseLine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      set_TrxName(m_lines, get_TrxName());
+      set_TrxName(m_lines, null);
       return m_lines;
     }
     //
@@ -96,11 +96,11 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getS_TimeExpense_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MTimeExpenseLine te = new MTimeExpenseLine(getCtx(), rs, get_TrxName());
+        MTimeExpenseLine te = new MTimeExpenseLine(getCtx(), rs, null);
         te.setC_Currency_Report_ID(C_Currency_ID);
         list.add(te);
       }
@@ -170,7 +170,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             + (processed ? "Y" : "N")
             + "' WHERE S_TimeExpense_ID="
             + getS_TimeExpense_ID();
-    int noLine = executeUpdate(sql, get_TrxName());
+    int noLine = executeUpdate(sql, null);
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed
@@ -507,7 +507,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
   public int getDoc_User_ID() {
     if (m_AD_User_ID != 0) return m_AD_User_ID;
     if (getC_BPartner_ID() != 0) {
-      MUser[] users = MUser.getOfBPartner(getCtx(), getC_BPartner_ID(), get_TrxName());
+      MUser[] users = MUser.getOfBPartner(getCtx(), getC_BPartner_ID(), null);
       if (users.length > 0) {
         m_AD_User_ID = users[0].getAD_User_ID();
         return m_AD_User_ID;
@@ -522,7 +522,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
    * @return C_Currency_ID
    */
   public int getC_Currency_ID() {
-    MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID(), get_TrxName());
+    MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID(), null);
     return pl.getC_Currency_ID();
   } //	getC_Currency_ID
 

@@ -1,7 +1,5 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.HasName;
 import org.compiere.model.I_C_ElementValue;
 import org.compiere.model.I_C_ValidCombination;
@@ -11,6 +9,9 @@ import org.compiere.orm.POResultSet;
 import org.compiere.orm.Query;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Natural Account
@@ -101,7 +102,7 @@ public class MElementValue extends X_C_ElementValue {
    * @param imp import
    */
   public MElementValue(X_I_ElementValue imp) {
-    this(imp.getCtx(), 0, imp.get_TrxName());
+    this(imp.getCtx(), 0, null);
     setClientOrg(imp);
     set(imp);
   } //	MElementValue
@@ -201,7 +202,7 @@ public class MElementValue extends X_C_ElementValue {
                   getCtx(),
                   I_Fact_Acct.Table_Name,
                   I_Fact_Acct.COLUMNNAME_Account_ID + "=?",
-                  get_TrxName())
+                  null)
               .setParameters(getC_ElementValue_ID())
               .match();
       if (match) {
@@ -213,7 +214,7 @@ public class MElementValue extends X_C_ElementValue {
       POResultSet<MAccount> rs = null;
       try {
         rs =
-            new Query(getCtx(), I_C_ValidCombination.Table_Name, whereClause, get_TrxName())
+            new Query(getCtx(), I_C_ValidCombination.Table_Name, whereClause, null)
                 .setParameters(getId())
                 .scroll();
         while (rs.hasNext()) {
@@ -232,8 +233,8 @@ public class MElementValue extends X_C_ElementValue {
     if (!success) return success;
     if (newRecord || is_ValueChanged(I_C_ElementValue.COLUMNNAME_Value)) {
       // afalcone [Bugs #1837219]
-      int ad_Tree_ID = (new MElement(getCtx(), getC_Element_ID(), get_TrxName())).getAD_Tree_ID();
-      String treeType = (new MTree(getCtx(), ad_Tree_ID, get_TrxName())).getTreeType();
+      int ad_Tree_ID = (new MElement(getCtx(), getC_Element_ID(), null)).getAD_Tree_ID();
+      String treeType = (new MTree(getCtx(), ad_Tree_ID, null)).getTreeType();
 
       if (newRecord) insert_Tree(treeType, getC_Element_ID());
 
@@ -245,13 +246,13 @@ public class MElementValue extends X_C_ElementValue {
         && (is_ValueChanged(I_C_ElementValue.COLUMNNAME_Value)
             || is_ValueChanged(HasName.Companion.getCOLUMNNAME_Name()))) {
       MAccount.updateValueDescription(
-          getCtx(), "Account_ID=" + getC_ElementValue_ID(), get_TrxName());
+          getCtx(), "Account_ID=" + getC_ElementValue_ID(), null);
       if ("Y".equals(Env.getContext(getCtx(), "$Element_U1")))
         MAccount.updateValueDescription(
-            getCtx(), "User1_ID=" + getC_ElementValue_ID(), get_TrxName());
+            getCtx(), "User1_ID=" + getC_ElementValue_ID(), null);
       if ("Y".equals(Env.getContext(getCtx(), "$Element_U2")))
         MAccount.updateValueDescription(
-            getCtx(), "User2_ID=" + getC_ElementValue_ID(), get_TrxName());
+            getCtx(), "User2_ID=" + getC_ElementValue_ID(), null);
     }
 
     return success;

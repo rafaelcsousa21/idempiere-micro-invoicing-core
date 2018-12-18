@@ -66,13 +66,13 @@ public class MPaySelection extends X_C_PaySelection {
    */
   public MPaySelectionLine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, get_TrxName());
+      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     final String whereClause = "C_PaySelection_ID=?";
     List<MPaySelectionLine> list =
-        new Query(getCtx(), I_C_PaySelectionLine.Table_Name, whereClause, get_TrxName())
+        new Query(getCtx(), I_C_PaySelectionLine.Table_Name, whereClause, null)
             .setParameters(getC_PaySelection_ID())
             .setOrderBy("Line")
             .list();

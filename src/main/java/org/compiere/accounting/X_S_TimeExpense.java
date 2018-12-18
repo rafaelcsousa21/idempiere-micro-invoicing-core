@@ -70,7 +70,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -277,7 +277,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
   public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException {
     return (org.compiere.model.I_M_PriceList)
         MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
-            .getPO(getM_PriceList_ID(), get_TrxName());
+            .getPO(getM_PriceList_ID(), null);
   }
 
   /**
@@ -304,7 +304,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
   public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
     return (org.compiere.model.I_M_Warehouse)
         MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), get_TrxName());
+            .getPO(getM_Warehouse_ID(), null);
   }
 
   /**

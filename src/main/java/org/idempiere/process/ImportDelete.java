@@ -53,7 +53,7 @@ public class ImportDelete extends SvrProcess {
     StringBuilder msglog = new StringBuilder("AD_Table_ID=").append(p_AD_Table_ID);
     if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
     //	get Table Info
-    MTable table = new MTable(getCtx(), p_AD_Table_ID, get_TrxName());
+    MTable table = new MTable(getCtx(), p_AD_Table_ID, null);
     if (table.getId() == 0) {
       StringBuilder msgexc = new StringBuilder("No AD_Table_ID=").append(p_AD_Table_ID);
       throw new IllegalArgumentException(msgexc.toString());
@@ -68,9 +68,9 @@ public class ImportDelete extends SvrProcess {
     StringBuilder sql =
         new StringBuilder("DELETE FROM ")
             .append(tableName)
-            .append(" WHERE AD_Client_ID=")
+            .append(" WHERE clientId=")
             .append(getClientId());
-    int no = executeUpdate(sql.toString(), get_TrxName());
+    int no = executeUpdate(sql.toString(), null);
     StringBuilder msg =
         new StringBuilder()
             .append(Msg.translate(getCtx(), tableName + "_ID"))

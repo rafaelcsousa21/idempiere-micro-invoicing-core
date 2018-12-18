@@ -47,7 +47,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
   public org.compiere.model.I_AD_Process getAD_Process() throws RuntimeException {
     return (org.compiere.model.I_AD_Process)
         MTable.get(getCtx(), org.compiere.model.I_AD_Process.Table_Name)
-            .getPO(getAD_Process_ID(), get_TrxName());
+            .getPO(getAD_Process_ID(), null);
   }
 
   /**
@@ -74,7 +74,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
   public org.compiere.model.I_AD_Schedule getAD_Schedule() throws RuntimeException {
     return (org.compiere.model.I_AD_Schedule)
         MTable.get(getCtx(), org.compiere.model.I_AD_Schedule.Table_Name)
-            .getPO(getAD_Schedule_ID(), get_TrxName());
+            .getPO(getAD_Schedule_ID(), null);
   }
 
   /**
@@ -140,7 +140,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
   public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
     return (org.compiere.model.I_AD_Table)
         MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), get_TrxName());
+            .getPO(getAD_Table_ID(), null);
   }
 
   /**
@@ -285,7 +285,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
   public org.compiere.model.I_R_MailText getR_MailText() throws RuntimeException {
     return (org.compiere.model.I_R_MailText)
         MTable.get(getCtx(), org.compiere.model.I_R_MailText.Table_Name)
-            .getPO(getR_MailText_ID(), get_TrxName());
+            .getPO(getR_MailText_ID(), null);
   }
 
   /**
@@ -312,7 +312,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
   public org.compiere.model.I_AD_User getSupervisor() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSupervisor_ID(), get_TrxName());
+            .getPO(getSupervisor_ID(), null);
   }
 
   /**

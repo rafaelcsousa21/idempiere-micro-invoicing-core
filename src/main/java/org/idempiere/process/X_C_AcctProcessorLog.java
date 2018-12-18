@@ -68,7 +68,7 @@ public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog, I_
   public org.compiere.model.I_C_AcctProcessor getC_AcctProcessor() throws RuntimeException {
     return (org.compiere.model.I_C_AcctProcessor)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctProcessor.Table_Name)
-            .getPO(getC_AcctProcessor_ID(), get_TrxName());
+            .getPO(getC_AcctProcessor_ID(), null);
   }
 
   /**

@@ -57,7 +57,7 @@ public class X_AD_WorkflowProcessorLog extends PO
       throws RuntimeException {
     return (org.compiere.model.I_AD_WorkflowProcessor)
         MTable.get(getCtx(), org.compiere.model.I_AD_WorkflowProcessor.Table_Name)
-            .getPO(getAD_WorkflowProcessor_ID(), get_TrxName());
+            .getPO(getAD_WorkflowProcessor_ID(), null);
   }
 
   /**

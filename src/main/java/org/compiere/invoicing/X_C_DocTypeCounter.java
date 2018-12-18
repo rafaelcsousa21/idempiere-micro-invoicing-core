@@ -84,7 +84,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**
@@ -111,7 +111,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
   public org.compiere.model.I_C_DocType getCounter_C_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getCounter_C_DocType_ID(), get_TrxName());
+            .getPO(getCounter_C_DocType_ID(), null);
   }
 
   /**

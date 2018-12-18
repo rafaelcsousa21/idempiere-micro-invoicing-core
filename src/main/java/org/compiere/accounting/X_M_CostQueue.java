@@ -59,7 +59,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -126,7 +126,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -155,7 +155,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
   public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
     return (org.compiere.model.I_M_CostElement)
         MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), get_TrxName());
+            .getPO(getM_CostElement_ID(), null);
   }
 
   /**
@@ -221,7 +221,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
   public org.compiere.model.I_M_CostType getM_CostType() throws RuntimeException {
     return (org.compiere.model.I_M_CostType)
         MTable.get(getCtx(), org.compiere.model.I_M_CostType.Table_Name)
-            .getPO(getM_CostType_ID(), get_TrxName());
+            .getPO(getM_CostType_ID(), null);
   }
 
   /**
@@ -248,7 +248,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**

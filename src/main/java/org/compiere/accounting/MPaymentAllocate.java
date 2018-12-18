@@ -1,15 +1,16 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.I_C_PaymentAllocate;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Payment Allocate Model
@@ -31,7 +32,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
     final String whereClause = "C_Payment_ID=?";
     Query query =
         MTable.get(parent.getCtx(), I_C_PaymentAllocate.Table_ID)
-            .createQuery(whereClause, parent.get_TrxName());
+            .createQuery(whereClause, null);
     query.setParameters(parent.getC_Payment_ID()).setOnlyActiveRecords(true);
     List<MPaymentAllocate> list = query.list();
     return list.toArray(new MPaymentAllocate[list.size()]);
@@ -88,7 +89,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
    */
   public MInvoice getInvoice() {
     if (m_invoice == null && getC_Invoice_ID() != 0)
-      m_invoice = new MInvoice(getCtx(), getC_Invoice_ID(), get_TrxName());
+      m_invoice = new MInvoice(getCtx(), getC_Invoice_ID(), null);
     return m_invoice;
   } //	getInvoice
 
@@ -110,7 +111,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
    * @return true
    */
   protected boolean beforeSave(boolean newRecord) {
-    MPayment payment = new MPayment(getCtx(), getC_Payment_ID(), get_TrxName());
+    MPayment payment = new MPayment(getCtx(), getC_Payment_ID(), null);
     if ((newRecord || is_ValueChanged("C_Invoice_ID"))
         && (payment.getC_Charge_ID() != 0
             || payment.getC_Invoice_ID() != 0

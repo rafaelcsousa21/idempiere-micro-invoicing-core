@@ -1,17 +1,18 @@
 package org.compiere.production;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_ProductionLineMA;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 
 public class MProductionLineMA extends X_M_ProductionLineMA {
   /** */
@@ -35,7 +36,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
    */
   public MProductionLineMA(
       MProductionLine parent, int asi, BigDecimal qty, Timestamp dateMaterialPolicy) {
-    super(parent.getCtx(), 0, parent.get_TrxName());
+    super(parent.getCtx(), 0, null);
     setM_AttributeSetInstance_ID(asi);
     setM_ProductionLine_ID(parent.getId());
     setMovementQty(qty);
@@ -44,7 +45,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
       if (asi > 0) {
         dateMaterialPolicy =
             MStorageOnHand.getDateMaterialPolicy(
-                parent.getM_Product_ID(), asi, parent.get_TrxName());
+                parent.getM_Product_ID(), asi, null);
       }
       if (dateMaterialPolicy == null) {
         dateMaterialPolicy = parent.getM_Production().getMovementDate();
@@ -68,7 +69,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
 
     MProductionLineMA lineMA =
         MTable.get(parent.getCtx(), I_M_ProductionLineMA.Table_Name)
-            .createQuery(where, parent.get_TrxName())
+            .createQuery(where, null)
             .setParameters(parent.getM_ProductionLine_ID(), asi, dateMPolicy)
             .first();
 

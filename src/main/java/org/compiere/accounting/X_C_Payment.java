@@ -261,7 +261,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -288,7 +288,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), get_TrxName());
+            .getPO(getC_BankAccount_ID(), null);
   }
 
   /**
@@ -315,7 +315,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -342,7 +342,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_BP_BankAccount getC_BP_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BP_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BP_BankAccount.Table_Name)
-            .getPO(getC_BP_BankAccount_ID(), get_TrxName());
+            .getPO(getC_BP_BankAccount_ID(), null);
   }
 
   /**
@@ -369,7 +369,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
     return (org.compiere.model.I_C_Campaign)
         MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), get_TrxName());
+            .getPO(getC_Campaign_ID(), null);
   }
 
   /**
@@ -396,7 +396,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_CashBook getC_CashBook() throws RuntimeException {
     return (org.compiere.model.I_C_CashBook)
         MTable.get(getCtx(), org.compiere.model.I_C_CashBook.Table_Name)
-            .getPO(getC_CashBook_ID(), get_TrxName());
+            .getPO(getC_CashBook_ID(), null);
   }
 
   /**
@@ -423,7 +423,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
     return (org.compiere.model.I_C_Charge)
         MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), get_TrxName());
+            .getPO(getC_Charge_ID(), null);
   }
 
   /**
@@ -450,7 +450,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
     return (org.compiere.model.I_C_ConversionType)
         MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), get_TrxName());
+            .getPO(getC_ConversionType_ID(), null);
   }
 
   /**
@@ -477,7 +477,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -504,7 +504,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_DepositBatch getC_DepositBatch() throws RuntimeException {
     return (org.compiere.model.I_C_DepositBatch)
         MTable.get(getCtx(), org.compiere.model.I_C_DepositBatch.Table_Name)
-            .getPO(getC_DepositBatch_ID(), get_TrxName());
+            .getPO(getC_DepositBatch_ID(), null);
   }
 
   /**
@@ -531,7 +531,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), get_TrxName());
+            .getPO(getC_DocType_ID(), null);
   }
 
   /**
@@ -596,7 +596,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), get_TrxName());
+            .getPO(getC_Invoice_ID(), null);
   }
 
   /**
@@ -623,7 +623,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
     return (org.compiere.model.I_C_Order)
         MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), get_TrxName());
+            .getPO(getC_Order_ID(), null);
   }
 
   /**
@@ -650,7 +650,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_PaymentBatch getC_PaymentBatch() throws RuntimeException {
     return (org.compiere.model.I_C_PaymentBatch)
         MTable.get(getCtx(), org.compiere.model.I_C_PaymentBatch.Table_Name)
-            .getPO(getC_PaymentBatch_ID(), get_TrxName());
+            .getPO(getC_PaymentBatch_ID(), null);
   }
 
   /**
@@ -698,7 +698,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_PaymentProcessor getC_PaymentProcessor() throws RuntimeException {
     return (org.compiere.model.I_C_PaymentProcessor)
         MTable.get(getCtx(), org.compiere.model.I_C_PaymentProcessor.Table_Name)
-            .getPO(getC_PaymentProcessor_ID(), get_TrxName());
+            .getPO(getC_PaymentProcessor_ID(), null);
   }
 
   /**
@@ -743,7 +743,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_POSTenderType getC_POSTenderType() throws RuntimeException {
     return (org.compiere.model.I_C_POSTenderType)
         MTable.get(getCtx(), org.compiere.model.I_C_POSTenderType.Table_Name)
-            .getPO(getC_POSTenderType_ID(), get_TrxName());
+            .getPO(getC_POSTenderType_ID(), null);
   }
 
   /**
@@ -770,7 +770,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -1720,7 +1720,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Payment getRef_Payment() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getRef_Payment_ID(), get_TrxName());
+            .getPO(getRef_Payment_ID(), null);
   }
 
   /**
@@ -1747,7 +1747,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Payment getReversal() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getReversal_ID(), get_TrxName());
+            .getPO(getReversal_ID(), null);
   }
 
   /**
@@ -2022,7 +2022,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), get_TrxName());
+            .getPO(getUser1_ID(), null);
   }
 
   /**
@@ -2049,7 +2049,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), get_TrxName());
+            .getPO(getUser2_ID(), null);
   }
 
   /**

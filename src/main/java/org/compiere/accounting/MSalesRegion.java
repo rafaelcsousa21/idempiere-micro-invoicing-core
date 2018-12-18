@@ -73,7 +73,7 @@ public class MSalesRegion extends X_C_SalesRegion {
     //	Value/Name change
     if (!newRecord && (is_ValueChanged("Value") || is_ValueChanged("Name")))
       MAccount.updateValueDescription(
-          getCtx(), "C_SalesRegion_ID=" + getC_SalesRegion_ID(), get_TrxName());
+          getCtx(), "C_SalesRegion_ID=" + getC_SalesRegion_ID(), null);
 
     return true;
   } //	afterSave

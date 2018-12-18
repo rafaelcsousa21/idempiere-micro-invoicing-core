@@ -53,7 +53,7 @@ public class X_AD_Table_ScriptValidator extends PO
   public org.compiere.model.I_AD_Rule getAD_Rule() throws RuntimeException {
     return (org.compiere.model.I_AD_Rule)
         MTable.get(getCtx(), org.compiere.model.I_AD_Rule.Table_Name)
-            .getPO(getAD_Rule_ID(), get_TrxName());
+            .getPO(getAD_Rule_ID(), null);
   }
 
   /**
@@ -80,7 +80,7 @@ public class X_AD_Table_ScriptValidator extends PO
   public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
     return (org.compiere.model.I_AD_Table)
         MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), get_TrxName());
+            .getPO(getAD_Table_ID(), null);
   }
 
   /**

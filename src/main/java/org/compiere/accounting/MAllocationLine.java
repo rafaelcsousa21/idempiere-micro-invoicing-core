@@ -59,11 +59,11 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
    * @param parent parent
    */
   public MAllocationLine(MAllocationHdr parent) {
-    this(parent.getCtx(), 0, parent.get_TrxName());
+    this(parent.getCtx(), 0, null);
     setClientOrg(parent);
     setC_AllocationHdr_ID(parent.getC_AllocationHdr_ID());
     m_parent = parent;
-    set_TrxName(parent.get_TrxName());
+    set_TrxName(null);
   } //	MAllocationLine
 
   /**
@@ -103,7 +103,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
    */
   public MAllocationHdr getParent() {
     if (m_parent == null)
-      m_parent = new MAllocationHdr(getCtx(), getC_AllocationHdr_ID(), get_TrxName());
+      m_parent = new MAllocationHdr(getCtx(), getC_AllocationHdr_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -156,7 +156,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
    */
   public MInvoice getInvoice() {
     if (m_invoice == null && getC_Invoice_ID() != 0)
-      m_invoice = new MInvoice(getCtx(), getC_Invoice_ID(), get_TrxName());
+      m_invoice = new MInvoice(getCtx(), getC_Invoice_ID(), null);
     return m_invoice;
   } //	getInvoice
 
@@ -238,7 +238,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
 
     //	Update Payment
     if (C_Payment_ID != 0) {
-      MPayment payment = new MPayment(getCtx(), C_Payment_ID, get_TrxName());
+      MPayment payment = new MPayment(getCtx(), C_Payment_ID, null);
       if (getC_BPartner_ID() != payment.getC_BPartner_ID())
         log.warning(
             "C_BPartner_ID different - Invoice="
@@ -279,7 +279,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
               + "WHERE i.C_Invoice_ID="
               + C_Invoice_ID
               + ")";
-      if (executeUpdate(update, get_TrxName()) > 0)
+      if (executeUpdate(update, null) > 0)
         if (log.isLoggable(Level.FINE))
           log.fine(
               "C_Payment_ID="
@@ -316,7 +316,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
               + "WHERE i.C_Invoice_ID="
               + C_Invoice_ID
               + ")";
-      if (executeUpdate(update, get_TrxName()) > 0)
+      if (executeUpdate(update, null) > 0)
         if (log.isLoggable(Level.FINE))
           log.fine(
               "C_CashLine_ID="

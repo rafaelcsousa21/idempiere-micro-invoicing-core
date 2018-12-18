@@ -87,7 +87,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase, I_Persistent {
   public org.compiere.model.I_C_ProjectType getC_ProjectType() throws RuntimeException {
     return (org.compiere.model.I_C_ProjectType)
         MTable.get(getCtx(), org.compiere.model.I_C_ProjectType.Table_Name)
-            .getPO(getC_ProjectType_ID(), get_TrxName());
+            .getPO(getC_ProjectType_ID(), null);
   }
 
   /**
@@ -150,7 +150,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase, I_Persistent {
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**

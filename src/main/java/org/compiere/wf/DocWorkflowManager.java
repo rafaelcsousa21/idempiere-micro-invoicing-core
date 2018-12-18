@@ -66,7 +66,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
             document.getCtx(),
             document.getClientId(),
             AD_Table_ID,
-            document.get_TrxName() // Bug 1568766 Trx should be kept all along the road
+            null // Bug 1568766 Trx should be kept all along the road
             );
     if (wfs == null || wfs.length == 0) return false;
 
@@ -101,7 +101,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
       pi.setAD_User_ID(Env.getAD_User_ID(document.getCtx()));
       pi.setADClientID(document.getClientId());
       //
-      if (wf.start(pi, document.get_TrxName()) != null) {
+      if (wf.start(pi, null) != null) {
         if (log.isLoggable(Level.CONFIG)) log.config(wf.getName());
         m_noStarted++;
         started = true;
@@ -138,7 +138,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
             .append(keyColumn)
             .append(" FROM ")
             .append(tableName)
-            .append(" WHERE AD_Client_ID=? AND ") // 	#1
+            .append(" WHERE clientId=? AND ") // 	#1
             .append(keyColumn)
             .append("=? AND ") // 	#2
             .append(logic)
@@ -153,7 +153,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), document.get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(1, wf.getClientId());
       pstmt.setInt(2, document.getId());
       pstmt.setInt(3, document.getTableId());

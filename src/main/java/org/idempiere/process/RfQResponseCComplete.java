@@ -49,7 +49,7 @@ public class RfQResponseCComplete extends SvrProcess {
     throw new NotImplementedException();
 
     /*
-    MRfQResponse response = new MRfQResponse (getCtx(), p_C_RfQResponse_ID, get_TrxName());
+    MRfQResponse response = new MRfQResponse (getCtx(), p_C_RfQResponse_ID, null);
     if (log.isLoggable(Level.INFO)) log.info("doIt - " + response);
     //
     String error = response.checkComplete();

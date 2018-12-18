@@ -47,7 +47,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
   public org.compiere.model.I_AD_Schedule getAD_Schedule() throws RuntimeException {
     return (org.compiere.model.I_AD_Schedule)
         MTable.get(getCtx(), org.compiere.model.I_AD_Schedule.Table_Name)
-            .getPO(getAD_Schedule_ID(), get_TrxName());
+            .getPO(getAD_Schedule_ID(), null);
   }
 
   /**
@@ -290,7 +290,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
   public org.compiere.model.I_R_RequestType getR_RequestType() throws RuntimeException {
     return (org.compiere.model.I_R_RequestType)
         MTable.get(getCtx(), org.compiere.model.I_R_RequestType.Table_Name)
-            .getPO(getR_RequestType_ID(), get_TrxName());
+            .getPO(getR_RequestType_ID(), null);
   }
 
   /**
@@ -317,7 +317,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
   public org.compiere.model.I_AD_User getSupervisor() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSupervisor_ID(), get_TrxName());
+            .getPO(getSupervisor_ID(), null);
   }
 
   /**

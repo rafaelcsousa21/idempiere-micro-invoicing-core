@@ -57,7 +57,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public org.compiere.model.I_C_ProjectIssue getC_ProjectIssue() throws RuntimeException {
     return (org.compiere.model.I_C_ProjectIssue)
         MTable.get(getCtx(), org.compiere.model.I_C_ProjectIssue.Table_Name)
-            .getPO(getC_ProjectIssue_ID(), get_TrxName());
+            .getPO(getC_ProjectIssue_ID(), null);
   }
 
   /**
@@ -84,7 +84,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), get_TrxName());
+            .getPO(getMAttributeSetInstance_ID(), null);
   }
 
   /**
@@ -113,7 +113,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
     return (org.compiere.model.I_M_InOutLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), get_TrxName());
+            .getPO(getM_InOutLine_ID(), null);
   }
 
   /**
@@ -140,7 +140,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
     return (org.compiere.model.I_M_InventoryLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getM_InventoryLine_ID(), get_TrxName());
+            .getPO(getM_InventoryLine_ID(), null);
   }
 
   /**
@@ -166,7 +166,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
 
   public I_M_Locator getM_Locator() throws RuntimeException {
     return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), get_TrxName());
+        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
   }
 
   /**
@@ -193,7 +193,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public org.compiere.model.I_M_MovementLine getM_MovementLine() throws RuntimeException {
     return (org.compiere.model.I_M_MovementLine)
         MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-            .getPO(getM_MovementLine_ID(), get_TrxName());
+            .getPO(getM_MovementLine_ID(), null);
   }
 
   /**
@@ -312,7 +312,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -339,7 +339,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public org.compiere.model.I_M_ProductionLine getM_ProductionLine() throws RuntimeException {
     return (org.compiere.model.I_M_ProductionLine)
         MTable.get(getCtx(), org.compiere.model.I_M_ProductionLine.Table_Name)
-            .getPO(getM_ProductionLine_ID(), get_TrxName());
+            .getPO(getM_ProductionLine_ID(), null);
   }
 
   /**
@@ -405,7 +405,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException {
     return (org.eevolution.model.I_PP_Cost_Collector)
         MTable.get(getCtx(), org.eevolution.model.I_PP_Cost_Collector.Table_Name)
-            .getPO(getPP_Cost_Collector_ID(), get_TrxName());
+            .getPO(getPP_Cost_Collector_ID(), null);
   }
 
   /**

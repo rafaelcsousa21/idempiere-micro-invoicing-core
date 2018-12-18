@@ -115,7 +115,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
             getM_Product_ID(),
             getMAttributeSetInstance_ID(),
             Qty,
-            get_TrxName());
+            null);
     //	Get default Location
     if (M_Locator_ID == 0) {
       MWarehouse wh = MWarehouse.get(getCtx(), getM_Warehouse_ID());
@@ -147,7 +147,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM M_InOutLine WHERE M_InOut_ID=?";
-      int ii = getSQLValueEx(get_TrxName(), sql, getM_InOut_ID());
+      int ii = getSQLValueEx(null, sql, getM_InOut_ID());
       setLine(ii);
     }
     //	UOM
@@ -197,7 +197,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
         && isAutoGenerateLot
         && getMAttributeSetInstance_ID() == 0) {
       MAttributeSetInstance asi =
-          MAttributeSetInstance.generateLot(getCtx(), (MProduct) getM_Product(), get_TrxName());
+          MAttributeSetInstance.generateLot(getCtx(), (MProduct) getM_Product(), null);
       setM_AttributeSetInstance_ID(asi.getMAttributeSetInstance_ID());
     }
     //	if (getC_Charge_ID() == 0 && getM_Product_ID() == 0)
@@ -209,7 +209,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
      * M_AttributeSet_ID != 0; if (isInstance) { MAttributeSet mas = MAttributeSet.get(getCtx(),
      * M_AttributeSet_ID); isInstance = mas.isInstanceAttribute(); } // Max if (isInstance) {
      * MStorage storage = MStorage.get(getCtx(), getM_Locator_ID(), getM_Product_ID(),
-     * getMAttributeSetInstance_ID(), get_TrxName()); if (storage != null) { BigDecimal qty =
+     * getMAttributeSetInstance_ID(), null); if (storage != null) { BigDecimal qty =
      * storage.getQtyOnHand(); if (getMovementQty().compareTo(qty) > 0) { log.warning("Qty - Stock="
      * + qty + ", Movement=" + getMovementQty()); log.saveError("QtyInsufficient", "=" + qty);
      * return false; } } } } /*

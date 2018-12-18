@@ -57,7 +57,7 @@ class ProductLowLevelCalculator {
 
     String sql =
         "SELECT PP_Product_BOMLine_ID FROM PP_Product_BOMLine"
-            + " WHERE IsActive=? AND AD_Client_ID=? AND M_Product_ID=?";
+            + " WHERE IsActive=? AND clientId=? AND M_Product_ID=?";
 
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -99,7 +99,7 @@ class ProductLowLevelCalculator {
     final String sql =
         "SELECT pbom.M_Product_ID , pbom.Value , pbom.PP_Product_BOM_ID FROM  PP_Product_BOMLine pboml"
             + " INNER JOIN PP_Product_BOM pbom ON (pbom.PP_Product_BOM_ID = pboml.PP_Product_BOM_ID)"
-            + " WHERE pbom.IsActive=? AND pboml.IsActive=? AND pboml.AD_Client_ID=? AND pboml.PP_Product_BOMLine_ID=? ";
+            + " WHERE pbom.IsActive=? AND pboml.IsActive=? AND pboml.clientId=? AND pboml.PP_Product_BOMLine_ID=? ";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {

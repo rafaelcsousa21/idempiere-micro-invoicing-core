@@ -53,7 +53,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
   public org.compiere.model.I_AD_WF_Node getAD_WF_Next() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Node)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Next_ID(), get_TrxName());
+            .getPO(getAD_WF_Next_ID(), null);
   }
 
   /**
@@ -80,7 +80,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
   public org.compiere.model.I_AD_WF_Node getAD_WF_Node() throws RuntimeException {
     return (org.compiere.model.I_AD_WF_Node)
         MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Node_ID(), get_TrxName());
+            .getPO(getAD_WF_Node_ID(), null);
   }
 
   /**

@@ -85,7 +85,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
   }
 
   public void setC_Period_ID() {
-    MPeriod period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId(), get_TrxName());
+    MPeriod period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId(), null);
     if (period == null) {
       throw new AdempiereException("@NotFound@ @C_Period_ID@");
     }
@@ -106,7 +106,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     if (id <= 0) { // Use old ID is current ID is missing (i.e. object was deleted)
       id = get_IDOld();
     }
-    int no = executeUpdateEx(sql, new Object[] {id}, get_TrxName());
+    int no = executeUpdateEx(sql, new Object[] {id}, null);
     if (log.isLoggable(Level.FINE)) log.fine("Updated #" + no);
   }
 
@@ -126,18 +126,18 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             + " AND TRUNC("
             + MDepreciationExp.COLUMNNAME_DateAcct
             + ",'MONTH') = ?"
-            + " AND AD_Client_ID=? AND AD_Org_ID=?";
+            + " AND clientId=? AND orgId=?";
     ;
     Timestamp dateAcct = TimeUtil.trunc(getDateAcct(), TimeUtil.TRUNC_MONTH);
     int no =
         executeUpdateEx(
-            sql, new Object[] {getId(), dateAcct,  getClientId(),  getOrgId()}, get_TrxName());
+            sql, new Object[] {getId(), dateAcct,  getClientId(),  getOrgId()}, null);
     if (log.isLoggable(Level.FINE)) log.fine("Updated #" + no);
   }
 
   /** Get Lines */
   public Iterator<MDepreciationExp> getLinesIterator(boolean onlyNotProcessed) {
-    final String trxName = get_TrxName();
+    final String trxName = null;
     final List<Object> params = new ArrayList<Object>();
     String whereClause = MDepreciationExp.COLUMNNAME_A_Depreciation_Entry_ID + "=?";
     params.add(getId());
@@ -241,7 +241,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     while (it.hasNext()) {
       try {
         Trx.run(
-            get_TrxName(),
+            null,
             new TrxRunnable() {
 
               public void run(String trxName) {
@@ -335,7 +335,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         new Object[] {
           I_A_Depreciation_Entry.Table_ID, depexp.getA_Depreciation_Entry_ID(), depexp.getId()
         };
-    executeUpdateEx(sql, params, depexp.get_TrxName());
+    executeUpdateEx(sql, params, null);
   }
 
   @Override

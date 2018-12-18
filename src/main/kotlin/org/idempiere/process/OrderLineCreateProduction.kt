@@ -64,14 +64,14 @@ class OrderLineCreateProduction(
         if (p_C_OrderLine_ID == 0)
             throw IllegalArgumentException("No OrderLine")
         //
-        val line = MOrderLine(ctx, p_C_OrderLine_ID, _TrxName)
+        val line = MOrderLine(ctx, p_C_OrderLine_ID, null)
         if (line.id == 0)
             throw IllegalArgumentException("Order line not found")
-        val order: I_C_Order = MOrder(ctx, line.c_Order_ID, _TrxName)
+        val order: I_C_Order = MOrder(ctx, line.c_Order_ID, null)
         if (MOrder.DOCSTATUS_Completed != order.docStatus)
             throw IllegalArgumentException("Order not completed")
 
-        val doc = MDocType(ctx, order.c_DocType_ID, _TrxName)
+        val doc = MDocType(ctx, order.c_DocType_ID, null)
 
         if (line.qtyOrdered.subtract(line.qtyDelivered).compareTo(Env.ZERO) <= 0) {
             if (doc.docSubTypeSO != "ON")
@@ -84,7 +84,7 @@ class OrderLineCreateProduction(
         // If we don't ignore previous production, and there has been a previous one,
         // throw an exception
         if (!ignorePrevProduction) {
-            val docNo = getSQLValueString(_TrxName,
+            val docNo = getSQLValueString(null,
                     "SELECT max(DocumentNo) " + "FROM M_Production WHERE C_OrderLine_ID = ?",
                     p_C_OrderLine_ID)
             if (docNo != null) {
@@ -93,7 +93,7 @@ class OrderLineCreateProduction(
         }
 
         val production: I_M_Production = MProduction(line)
-        val product = MProduct(ctx, line.m_Product_ID, _TrxName)
+        val product = MProduct(ctx, line.m_Product_ID, null)
 
         production.m_Product_ID = line.m_Product_ID
         production.productionQty = line.qtyOrdered.subtract(line.qtyDelivered)

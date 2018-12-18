@@ -93,10 +93,10 @@ public class MProjectType extends X_C_ProjectType {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getC_ProjectType_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MProjectTypePhase(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MProjectTypePhase(getCtx(), rs, null));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {
@@ -127,7 +127,7 @@ public class MProjectType extends X_C_ProjectType {
       Timestamp reportDate,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "AD_Org_ID";
+    String orgColumn = "orgId";
     String bpColumn = "C_BPartner_ID";
     String pColumn = null;
     //	PlannedAmt -> PlannedQty -> Count
@@ -187,7 +187,7 @@ public class MProjectType extends X_C_ProjectType {
       Timestamp startDate,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "AD_Org_ID";
+    String orgColumn = "orgId";
     String bpColumn = "C_BPartner_ID";
     String pColumn = null;
     //
@@ -251,7 +251,7 @@ public class MProjectType extends X_C_ProjectType {
       int C_Phase_ID,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "AD_Org_ID";
+    String orgColumn = "orgId";
     String bpColumn = "C_BPartner_ID";
     String pColumn = null;
     //

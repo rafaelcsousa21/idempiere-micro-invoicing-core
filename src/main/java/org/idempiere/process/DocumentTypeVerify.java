@@ -46,8 +46,8 @@ public class DocumentTypeVerify extends SvrProcess {
    * @throws Exception
    */
   protected String doIt() throws Exception {
-    createDocumentTypes(getCtx(), getClientId(), this, get_TrxName());
-    createPeriodControls(getCtx(), getClientId(), this, get_TrxName());
+    createDocumentTypes(getCtx(), getClientId(), this, null);
+    createPeriodControls(getCtx(), getClientId(), this, null);
     return "OK";
   } //	doIt
 
@@ -62,13 +62,13 @@ public class DocumentTypeVerify extends SvrProcess {
    */
   public static void createDocumentTypes(
       Properties ctx, int AD_Client_ID, SvrProcess sp, String trxName) {
-    if (s_log.isLoggable(Level.INFO)) s_log.info("AD_Client_ID=" + AD_Client_ID);
+    if (s_log.isLoggable(Level.INFO)) s_log.info("clientId=" + AD_Client_ID);
     String sql =
         "SELECT rl.Value, rl.Name "
             + "FROM AD_Ref_List rl "
             + "WHERE rl.AD_Reference_ID=183"
             + " AND rl.IsActive='Y' AND NOT EXISTS "
-            + " (SELECT * FROM C_DocType dt WHERE dt.AD_Client_ID=? AND rl.Value=dt.DocBaseType)";
+            + " (SELECT * FROM C_DocType dt WHERE dt.clientId=? AND rl.Value=dt.DocBaseType)";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
@@ -107,7 +107,7 @@ public class DocumentTypeVerify extends SvrProcess {
    */
   public static void createPeriodControls(
       Properties ctx, int AD_Client_ID, SvrProcess sp, String trxName) {
-    if (s_log.isLoggable(Level.INFO)) s_log.info("AD_Client_ID=" + AD_Client_ID);
+    if (s_log.isLoggable(Level.INFO)) s_log.info("clientId=" + AD_Client_ID);
 
     //	Delete Duplicates
     String sql =
@@ -126,10 +126,10 @@ public class DocumentTypeVerify extends SvrProcess {
 
     //	Insert Missing
     sql =
-        "SELECT DISTINCT p.AD_Client_ID, p.C_Period_ID, dt.DocBaseType "
+        "SELECT DISTINCT p.clientId, p.C_Period_ID, dt.DocBaseType "
             + "FROM C_Period p"
-            + " FULL JOIN C_DocType dt ON (p.AD_Client_ID=dt.AD_Client_ID) "
-            + "WHERE p.AD_Client_ID=?"
+            + " FULL JOIN C_DocType dt ON (p.clientId=dt.clientId) "
+            + "WHERE p.clientId=?"
             + " AND NOT EXISTS"
             + " (SELECT * FROM C_PeriodControl pc "
             + "WHERE pc.C_Period_ID=p.C_Period_ID AND pc.DocBaseType=dt.DocBaseType)";
@@ -146,7 +146,7 @@ public class DocumentTypeVerify extends SvrProcess {
         String DocBaseType = rs.getString(3);
         if (s_log.isLoggable(Level.CONFIG))
           s_log.config(
-              "AD_Client_ID="
+              "clientId="
                   + Client_ID
                   + ", C_Period_ID="
                   + C_Period_ID

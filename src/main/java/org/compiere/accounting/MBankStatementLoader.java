@@ -208,7 +208,7 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
   public boolean saveLine() {
     log.info("MBankStatementLoader.importLine");
     boolean result = false;
-    X_I_BankStatement imp = new X_I_BankStatement(getCtx(), 0, get_TrxName());
+    X_I_BankStatement imp = new X_I_BankStatement(getCtx(), 0, null);
     if (m_loader == null) {
       errorMessage = "LoadError";
       return result;

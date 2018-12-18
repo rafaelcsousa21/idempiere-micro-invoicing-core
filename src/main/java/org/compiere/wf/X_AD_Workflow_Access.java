@@ -56,7 +56,7 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access, I_
   public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException {
     return (org.compiere.model.I_AD_Role)
         MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
-            .getPO(getAD_Role_ID(), get_TrxName());
+            .getPO(getAD_Role_ID(), null);
   }
 
   /**
@@ -101,7 +101,7 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access, I_
   public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
     return (org.compiere.model.I_AD_Workflow)
         MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getAD_Workflow_ID(), get_TrxName());
+            .getPO(getAD_Workflow_ID(), null);
   }
 
   /**

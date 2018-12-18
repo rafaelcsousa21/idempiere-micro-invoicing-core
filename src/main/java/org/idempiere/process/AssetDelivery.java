@@ -123,7 +123,7 @@ public class AssetDelivery extends SvrProcess {
         //	Guarantee Expired
         if (GuaranteeDate != null && GuaranteeDate.before(m_GuaranteeDate)) {
           if (m_NoGuarantee_MailText_ID != 0) {
-            sendNoGuaranteeMail(A_Asset_ID, m_NoGuarantee_MailText_ID, get_TrxName());
+            sendNoGuaranteeMail(A_Asset_ID, m_NoGuarantee_MailText_ID, null);
             reminders++;
           }
         } else //	Guarantee valid
@@ -172,11 +172,11 @@ public class AssetDelivery extends SvrProcess {
     /*MAsset asset = new MAsset (getCtx(), A_Asset_ID, trxName);
     if (asset.getAD_User_ID() == 0)
     	return "** No Asset User";
-    MUser user = new MUser (getCtx(), asset.getAD_User_ID(), get_TrxName());
+    MUser user = new MUser (getCtx(), asset.getAD_User_ID(), null);
     if (user.getEMail() == null || user.getEMail().length() == 0)
     	return "** No Asset User Email";
     if (m_MailText == null || m_MailText.getR_MailText_ID() != R_MailText_ID)
-    	m_MailText = new MMailText (getCtx(), R_MailText_ID, get_TrxName());
+    	m_MailText = new MMailText (getCtx(), R_MailText_ID, null);
     if (m_MailText.getMailHeader() == null || m_MailText.getMailHeader().length() == 0)
     	return "** No Subject";
 
@@ -215,16 +215,16 @@ public class AssetDelivery extends SvrProcess {
     /*if (log.isLoggable(Level.FINE)) log.fine("A_Asset_ID=" + A_Asset_ID);
     long start = System.currentTimeMillis();
     //
-    MAsset asset = new MAsset (getCtx(), A_Asset_ID, get_TrxName());
+    MAsset asset = new MAsset (getCtx(), A_Asset_ID, null);
     if (asset.getAD_User_ID() == 0)
     	return "** No Asset User";
-    MUser user = new MUser (getCtx(), asset.getAD_User_ID(), get_TrxName());
+    MUser user = new MUser (getCtx(), asset.getAD_User_ID(), null);
     if (user.getEMail() == null || user.getEMail().length() == 0)
     	return "** No Asset User Email";
     if (asset.getProductR_MailText_ID() == 0)
     	return "** Product Mail Text";
     if (m_MailText == null || m_MailText.getR_MailText_ID() != asset.getProductR_MailText_ID())
-    	m_MailText = new MMailText (getCtx(), asset.getProductR_MailText_ID(), get_TrxName());
+    	m_MailText = new MMailText (getCtx(), asset.getProductR_MailText_ID(), null);
     if (m_MailText.getMailHeader() == null || m_MailText.getMailHeader().length() == 0)
     	return "** No Subject";
 

@@ -1,13 +1,14 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 import org.compiere.model.HasName;
 import org.compiere.model.I_AD_WF_EventAudit;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Workflow Event Audit
@@ -116,7 +117,7 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
    * @param activity activity
    */
   public MWFEventAudit(MWFActivity activity) {
-    super(activity.getCtx(), 0, activity.get_TrxName());
+    super(activity.getCtx(), 0, null);
     setAD_WF_Process_ID(activity.getAD_WF_Process_ID());
     setAD_WF_Node_ID(activity.getAD_WF_Node_ID());
     setAD_Table_ID(activity.getAD_Table_ID());

@@ -94,7 +94,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_A_Asset_Class getA_Asset_Class() throws RuntimeException {
     return (org.compiere.model.I_A_Asset_Class)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset_Class.Table_Name)
-            .getPO(getA_Asset_Class_ID(), get_TrxName());
+            .getPO(getA_Asset_Class_ID(), null);
   }
 
   /**
@@ -159,7 +159,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException {
     return (org.compiere.model.I_A_Asset_Group)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset_Group.Table_Name)
-            .getPO(getA_Asset_Group_ID(), get_TrxName());
+            .getPO(getA_Asset_Group_ID(), null);
   }
 
   /**
@@ -204,7 +204,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
     return (org.compiere.model.I_A_Asset)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), get_TrxName());
+            .getPO(getA_Asset_ID(), null);
   }
 
   /**
@@ -231,7 +231,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_A_Asset_Type getA_Asset_Type() throws RuntimeException {
     return (org.compiere.model.I_A_Asset_Type)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset_Type.Table_Name)
-            .getPO(getA_Asset_Type_ID(), get_TrxName());
+            .getPO(getA_Asset_Type_ID(), null);
   }
 
   /**
@@ -410,7 +410,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_C_BPartner getC_BPartnerSR() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartnerSR_ID(), get_TrxName());
+            .getPO(getC_BPartnerSR_ID(), null);
   }
 
   /**
@@ -437,7 +437,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_C_City getC_City() throws RuntimeException {
     return (org.compiere.model.I_C_City)
         MTable.get(getCtx(), org.compiere.model.I_C_City.Table_Name)
-            .getPO(getC_City_ID(), get_TrxName());
+            .getPO(getC_City_ID(), null);
   }
 
   /**
@@ -482,7 +482,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
     return (org.compiere.model.I_C_UOM)
         MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), get_TrxName());
+            .getPO(getC_UOM_ID(), null);
   }
 
   /**
@@ -710,7 +710,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_M_Locator getM_Locator() throws RuntimeException {
     return (org.compiere.model.I_M_Locator)
         MTable.get(getCtx(), org.compiere.model.I_M_Locator.Table_Name)
-            .getPO(getM_Locator_ID(), get_TrxName());
+            .getPO(getM_Locator_ID(), null);
   }
 
   /**
@@ -737,7 +737,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**

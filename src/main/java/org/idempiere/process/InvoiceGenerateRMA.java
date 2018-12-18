@@ -75,14 +75,14 @@ public class InvoiceGenerateRMA extends SvrProcess {
 
     String sql =
         "SELECT rma.M_RMA_ID FROM M_RMA rma, T_Selection "
-            + "WHERE rma.DocStatus='CO' AND rma.IsSOTrx='Y' AND rma.AD_Client_ID=? "
+            + "WHERE rma.DocStatus='CO' AND rma.IsSOTrx='Y' AND rma.clientId=? "
             + "AND rma.M_RMA_ID = T_Selection.T_Selection_ID "
             + "AND T_Selection.AD_PInstance_ID=? ";
 
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, Env.getClientId(getCtx()));
       pstmt.setInt(2, getAD_PInstance_ID());
       rs = pstmt.executeQuery();
@@ -119,7 +119,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
       throw new IllegalStateException("Could not get invoice document type for Vendor RMA");
     }
 
-    MInvoice invoice = new MInvoice(getCtx(), 0, get_TrxName());
+    MInvoice invoice = new MInvoice(getCtx(), 0, null);
     invoice.setRMA(rma);
 
     invoice.setC_DocTypeTarget_ID(docTypeId);
@@ -162,7 +162,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
   }
 
   private void generateInvoice(int M_RMA_ID) {
-    MRMA rma = new MRMA(getCtx(), M_RMA_ID, get_TrxName());
+    MRMA rma = new MRMA(getCtx(), M_RMA_ID, null);
     statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
 
     MInvoice invoice = createInvoice(rma);

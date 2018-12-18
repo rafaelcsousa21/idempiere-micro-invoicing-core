@@ -129,7 +129,7 @@ public class DocLine_Allocation extends DocLine {
   @Override
   public Timestamp getDateConv() {
     if (getC_Payment_ID() > 0) {
-      MPayment payment = new MPayment(p_po.getCtx(), getC_Payment_ID(), p_po.get_TrxName());
+      MPayment payment = new MPayment(p_po.getCtx(), getC_Payment_ID(), null);
       return payment.getDateAcct(); // use payment date
     }
     return super.getDateConv();

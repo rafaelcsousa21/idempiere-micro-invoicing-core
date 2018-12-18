@@ -73,7 +73,7 @@ public final class FactLine extends X_Fact_Acct {
    */
   public FactLine reverse(String description) {
     FactLine reversal =
-        new FactLine(getCtx(), getAD_Table_ID(), getRecord_ID(), getLine_ID(), get_TrxName());
+        new FactLine(getCtx(), getAD_Table_ID(), getRecord_ID(), getLine_ID(), null);
     reversal.setClientOrg(this); // 	needs to be set explicitly
     reversal.setDocumentInfo(m_doc, m_docLine);
     reversal.setAccount(m_acctSchema, m_acct);
@@ -109,7 +109,7 @@ public final class FactLine extends X_Fact_Acct {
    */
   public FactLine accrue(String description) {
     FactLine accrual =
-        new FactLine(getCtx(), getAD_Table_ID(), getRecord_ID(), getLine_ID(), get_TrxName());
+        new FactLine(getCtx(), getAD_Table_ID(), getRecord_ID(), getLine_ID(), null);
     accrual.setClientOrg(this); // 	needs to be set explicitly
     accrual.setDocumentInfo(m_doc, m_docLine);
     accrual.setAccount(m_acctSchema, m_acct);
@@ -428,7 +428,7 @@ public final class FactLine extends X_Fact_Acct {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, M_Locator_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) C_Location_ID = rs.getInt(1);
@@ -456,7 +456,7 @@ public final class FactLine extends X_Fact_Acct {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, C_BPartner_Location_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) C_Location_ID = rs.getInt(1);
@@ -480,11 +480,11 @@ public final class FactLine extends X_Fact_Acct {
   public void setLocationFromOrg(int AD_Org_ID, boolean isFrom) {
     if (AD_Org_ID == 0) return;
     int C_Location_ID = 0;
-    String sql = "SELECT C_Location_ID FROM AD_OrgInfo WHERE AD_Org_ID=?";
+    String sql = "SELECT C_Location_ID FROM AD_OrgInfo WHERE orgId=?";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, AD_Org_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) C_Location_ID = rs.getInt(1);
@@ -676,24 +676,24 @@ public final class FactLine extends X_Fact_Acct {
   } //	toString
 
   /**
-   * Get AD_Org_ID (balancing segment). (if not set directly - from document line, document,
+   * Get orgId (balancing segment). (if not set directly - from document line, document,
    * account, locator)
    *
    * <p>Note that Locator needs to be set before - otherwise segment balancing might produce the
    * wrong results
    *
-   * @return AD_Org_ID
+   * @return orgId
    */
   public int  getOrgId() {
     if (super. getOrgId() != 0) //  set earlier
     return super. getOrgId();
     //	Prio 1 - get from locator - if exist
     if (getM_Locator_ID() != 0) {
-      String sql = "SELECT AD_Org_ID FROM M_Locator WHERE M_Locator_ID=? AND AD_Client_ID=?";
+      String sql = "SELECT orgId FROM M_Locator WHERE M_Locator_ID=? AND clientId=?";
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, get_TrxName());
+        pstmt = prepareStatement(sql, null);
         pstmt.setInt(1, getM_Locator_ID());
         pstmt.setInt(2,  getClientId());
         rs = pstmt.executeQuery();
@@ -701,12 +701,12 @@ public final class FactLine extends X_Fact_Acct {
           setAD_Org_ID(rs.getInt(1));
           if (log.isLoggable(Level.FINER))
             log.finer(
-                "AD_Org_ID="
+                "orgId="
                     + super. getOrgId()
                     + " (1 from M_Locator_ID="
                     + getM_Locator_ID()
                     + ")");
-        } else log.log(Level.SEVERE, "AD_Org_ID - Did not find M_Locator_ID=" + getM_Locator_ID());
+        } else log.log(Level.SEVERE, "orgId - Did not find M_Locator_ID=" + getM_Locator_ID());
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
@@ -720,18 +720,18 @@ public final class FactLine extends X_Fact_Acct {
     if (m_docLine != null && super. getOrgId() == 0) {
       setAD_Org_ID(m_docLine. getOrgId());
       if (log.isLoggable(Level.FINER))
-        log.finer("AD_Org_ID=" + super. getOrgId() + " (2 from DocumentLine)");
+        log.finer("orgId=" + super. getOrgId() + " (2 from DocumentLine)");
     }
     //	Prio 3 - get from doc - if not GL
     if (m_doc != null && super. getOrgId() == 0) {
       if (Doc.DOCTYPE_GLJournal.equals(m_doc.getDocumentType())) {
         setAD_Org_ID(m_acct. getOrgId()); // 	inter-company GL
         if (log.isLoggable(Level.FINER))
-          log.finer("AD_Org_ID=" + super. getOrgId() + " (3 from Acct)");
+          log.finer("orgId=" + super. getOrgId() + " (3 from Acct)");
       } else {
         setAD_Org_ID(m_doc. getOrgId());
         if (log.isLoggable(Level.FINER))
-          log.finer("AD_Org_ID=" + super. getOrgId() + " (3 from Document)");
+          log.finer("orgId=" + super. getOrgId() + " (3 from Document)");
       }
     }
     //	Prio 4 - get from account - if not GL
@@ -739,15 +739,15 @@ public final class FactLine extends X_Fact_Acct {
       if (Doc.DOCTYPE_GLJournal.equals(m_doc.getDocumentType())) {
         setAD_Org_ID(m_doc. getOrgId());
         if (log.isLoggable(Level.FINER))
-          log.finer("AD_Org_ID=" + super. getOrgId() + " (4 from Document)");
+          log.finer("orgId=" + super. getOrgId() + " (4 from Document)");
       } else {
         setAD_Org_ID(m_acct. getOrgId());
         if (log.isLoggable(Level.FINER))
-          log.finer("AD_Org_ID=" + super. getOrgId() + " (4 from Acct)");
+          log.finer("orgId=" + super. getOrgId() + " (4 from Acct)");
       }
     }
     return super. getOrgId();
-  } //  setAD_Org_ID
+  } //  setOrgId
 
   /**
    * Get/derive Sales Region
@@ -928,7 +928,7 @@ public final class FactLine extends X_Fact_Acct {
             User2_ID,
             UserElement1_ID,
             UserElement2_ID,
-            get_TrxName());
+            null);
     if (revenue != null && revenue.getId() == 0) revenue.saveEx();
     if (revenue == null || revenue.getId() == 0) {
       log.severe("Revenue_Acct not found");
@@ -948,7 +948,7 @@ public final class FactLine extends X_Fact_Acct {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getC_AcctSchema_ID());
       pstmt.setInt(2, C_BPartner_ID);
       rs = pstmt.executeQuery();
@@ -976,7 +976,7 @@ public final class FactLine extends X_Fact_Acct {
     plan.setP_Revenue_Acct(P_Revenue_Acct);
     plan.setC_Currency_ID(getC_Currency_ID());
     plan.setTotalAmt(getAcctBalance());
-    if (!plan.save(get_TrxName())) {
+    if (!plan.save(null)) {
       log.severe("Plan NOT created");
       return Account_ID;
     }
@@ -1026,7 +1026,7 @@ public final class FactLine extends X_Fact_Acct {
     ResultSet rs = null;
     try {
       int pindex = 1;
-      pstmt = prepareStatement(sql.toString(), get_TrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       pstmt.setInt(pindex++, getC_AcctSchema_ID());
       pstmt.setInt(pindex++, AD_Table_ID);
       pstmt.setInt(pindex++, Record_ID);
@@ -1040,7 +1040,7 @@ public final class FactLine extends X_Fact_Acct {
       // end MZ
       rs = pstmt.executeQuery();
       if (rs.next()) {
-        MFactAcct fact = new MFactAcct(getCtx(), rs, get_TrxName());
+        MFactAcct fact = new MFactAcct(getCtx(), rs, null);
         //  Accounted Amounts - reverse
         BigDecimal dr = fact.getAmtAcctDr();
         BigDecimal cr = fact.getAmtAcctCr();

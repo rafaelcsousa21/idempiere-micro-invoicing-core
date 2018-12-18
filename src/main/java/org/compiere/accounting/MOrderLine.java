@@ -171,7 +171,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
                   true,
                   false,
                   0,
-                  get_TrxName());
+                  null);
           BigDecimal qty = Env.ZERO;
           for (int i = 0; i < storages.length; i++) {
             if (storages[i].getMAttributeSetInstance_ID() == getMAttributeSetInstance_ID())
@@ -196,7 +196,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_OrderLine WHERE C_Order_ID=?";
-      int ii = getSQLValue(get_TrxName(), sql, getC_Order_ID());
+      int ii = getSQLValue(null, sql, getC_Order_ID());
       setLine(ii);
     }
 
@@ -243,7 +243,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     }
 
     // UnLink All Requisitions
-    MRequisitionLine.unlinkC_OrderLine_ID(getCtx(), getId(), get_TrxName());
+    MRequisitionLine.unlinkC_OrderLine_ID(getCtx(), getId(), null);
 
     return true;
   } //	beforeDelete
@@ -259,7 +259,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     if (!success) return success;
     if (getS_ResourceAssignment_ID() != 0) {
       MResourceAssignment ra =
-          new MResourceAssignment(getCtx(), getS_ResourceAssignment_ID(), get_TrxName());
+          new MResourceAssignment(getCtx(), getS_ResourceAssignment_ID(), null);
       ra.delete(true);
     }
 

@@ -120,7 +120,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
     return (org.compiere.model.I_AD_Table)
         MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), get_TrxName());
+            .getPO(getAD_Table_ID(), null);
   }
 
   /**
@@ -227,7 +227,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), get_TrxName());
+            .getPO(getC_AcctSchema_ID(), null);
   }
 
   /**
@@ -254,7 +254,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
     return (org.compiere.model.I_C_Activity)
         MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), get_TrxName());
+            .getPO(getC_Activity_ID(), null);
   }
 
   /**
@@ -281,7 +281,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
     return (org.compiere.model.I_C_BPartner)
         MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), get_TrxName());
+            .getPO(getC_BPartner_ID(), null);
   }
 
   /**
@@ -308,7 +308,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
     return (org.compiere.model.I_C_Campaign)
         MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), get_TrxName());
+            .getPO(getC_Campaign_ID(), null);
   }
 
   /**
@@ -335,7 +335,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
     return (org.compiere.model.I_C_Currency)
         MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), get_TrxName());
+            .getPO(getC_Currency_ID(), null);
   }
 
   /**
@@ -362,7 +362,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_Location getC_LocFrom() throws RuntimeException {
     return (org.compiere.model.I_C_Location)
         MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocFrom_ID(), get_TrxName());
+            .getPO(getC_LocFrom_ID(), null);
   }
 
   /**
@@ -389,7 +389,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_Location getC_LocTo() throws RuntimeException {
     return (org.compiere.model.I_C_Location)
         MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocTo_ID(), get_TrxName());
+            .getPO(getC_LocTo_ID(), null);
   }
 
   /**
@@ -416,7 +416,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
     return (org.compiere.model.I_C_Period)
         MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), get_TrxName());
+            .getPO(getC_Period_ID(), null);
   }
 
   /**
@@ -443,7 +443,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), get_TrxName());
+            .getPO(getC_Project_ID(), null);
   }
 
   /**
@@ -470,7 +470,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
     return (org.compiere.model.I_C_ProjectPhase)
         MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
-            .getPO(getC_ProjectPhase_ID(), get_TrxName());
+            .getPO(getC_ProjectPhase_ID(), null);
   }
 
   /**
@@ -497,7 +497,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_ProjectTask getC_ProjectTask() throws RuntimeException {
     return (org.compiere.model.I_C_ProjectTask)
         MTable.get(getCtx(), org.compiere.model.I_C_ProjectTask.Table_Name)
-            .getPO(getC_ProjectTask_ID(), get_TrxName());
+            .getPO(getC_ProjectTask_ID(), null);
   }
 
   /**
@@ -524,7 +524,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_SalesRegion getC_SalesRegion() throws RuntimeException {
     return (org.compiere.model.I_C_SalesRegion)
         MTable.get(getCtx(), org.compiere.model.I_C_SalesRegion.Table_Name)
-            .getPO(getC_SalesRegion_ID(), get_TrxName());
+            .getPO(getC_SalesRegion_ID(), null);
   }
 
   /**
@@ -551,7 +551,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_SubAcct getC_SubAcct() throws RuntimeException {
     return (org.compiere.model.I_C_SubAcct)
         MTable.get(getCtx(), org.compiere.model.I_C_SubAcct.Table_Name)
-            .getPO(getC_SubAcct_ID(), get_TrxName());
+            .getPO(getC_SubAcct_ID(), null);
   }
 
   /**
@@ -578,7 +578,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_Tax getC_Tax() throws RuntimeException {
     return (org.compiere.model.I_C_Tax)
         MTable.get(getCtx(), org.compiere.model.I_C_Tax.Table_Name)
-            .getPO(getC_Tax_ID(), get_TrxName());
+            .getPO(getC_Tax_ID(), null);
   }
 
   /**
@@ -605,7 +605,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
     return (org.compiere.model.I_C_UOM)
         MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), get_TrxName());
+            .getPO(getC_UOM_ID(), null);
   }
 
   /**
@@ -734,7 +734,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_GL_Budget getGL_Budget() throws RuntimeException {
     return (org.compiere.model.I_GL_Budget)
         MTable.get(getCtx(), org.compiere.model.I_GL_Budget.Table_Name)
-            .getPO(getGL_Budget_ID(), get_TrxName());
+            .getPO(getGL_Budget_ID(), null);
   }
 
   /**
@@ -761,7 +761,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_GL_Category getGL_Category() throws RuntimeException {
     return (org.compiere.model.I_GL_Category)
         MTable.get(getCtx(), org.compiere.model.I_GL_Category.Table_Name)
-            .getPO(getGL_Category_ID(), get_TrxName());
+            .getPO(getGL_Category_ID(), null);
   }
 
   /**
@@ -809,7 +809,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_M_Locator getM_Locator() throws RuntimeException {
     return (org.compiere.model.I_M_Locator)
         MTable.get(getCtx(), org.compiere.model.I_M_Locator.Table_Name)
-            .getPO(getM_Locator_ID(), get_TrxName());
+            .getPO(getM_Locator_ID(), null);
   }
 
   /**
@@ -836,7 +836,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), get_TrxName());
+            .getPO(getM_Product_ID(), null);
   }
 
   /**
@@ -935,7 +935,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), get_TrxName());
+            .getPO(getUser1_ID(), null);
   }
 
   /**
@@ -962,7 +962,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
   public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), get_TrxName());
+            .getPO(getUser2_ID(), null);
   }
 
   /**

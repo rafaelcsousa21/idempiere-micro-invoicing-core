@@ -52,7 +52,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
   public org.compiere.model.I_AD_Tree getAD_Tree() throws RuntimeException {
     return (org.compiere.model.I_AD_Tree)
         MTable.get(getCtx(), org.compiere.model.I_AD_Tree.Table_Name)
-            .getPO(getAD_Tree_ID(), get_TrxName());
+            .getPO(getAD_Tree_ID(), null);
   }
 
   /**

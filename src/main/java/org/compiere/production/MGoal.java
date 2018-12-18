@@ -50,7 +50,7 @@ public class MGoal extends X_PA_Goal {
     String sql =
         "SELECT * FROM PA_Goal g "
             + "WHERE IsActive='Y'"
-            + " AND AD_Client_ID=?" //	#1
+            + " AND clientId=?" //	#1
             + " AND ((AD_User_ID IS NULL AND AD_Role_ID IS NULL)"
             + " OR AD_User_ID=?" //	#2
             + " OR EXISTS (SELECT * FROM AD_User_Roles ur "
@@ -290,10 +290,10 @@ public class MGoal extends X_PA_Goal {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, get_TrxName());
+      pstmt = prepareStatement(sql, null);
       pstmt.setInt(1, getPA_Goal_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MGoalRestriction(getCtx(), rs, get_TrxName()));
+      while (rs.next()) list.add(new MGoalRestriction(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
@@ -340,10 +340,10 @@ public class MGoal extends X_PA_Goal {
     }
 
     if (force || getDateLastRun() == null || isUpdateByInterfal) {
-      measure.set_TrxName(get_TrxName());
+      measure.set_TrxName(null);
       if (measure.updateGoals()) // 	saves
       {
-        load(getId(), get_TrxName());
+        load(getId(), null);
         return true;
       }
     }

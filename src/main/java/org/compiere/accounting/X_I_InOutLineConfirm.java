@@ -218,7 +218,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
   public org.compiere.model.I_M_InOutLineConfirm getM_InOutLineConfirm() throws RuntimeException {
     return (org.compiere.model.I_M_InOutLineConfirm)
         MTable.get(getCtx(), org.compiere.model.I_M_InOutLineConfirm.Table_Name)
-            .getPO(getM_InOutLineConfirm_ID(), get_TrxName());
+            .getPO(getM_InOutLineConfirm_ID(), null);
   }
 
   /**

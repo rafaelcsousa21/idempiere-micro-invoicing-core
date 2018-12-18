@@ -1,8 +1,5 @@
 package org.idempiere.process;
 
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_M_ProductionPlan;
 import org.compiere.orm.Query;
@@ -14,6 +11,10 @@ import org.compiere.production.MProductionPlan;
 import org.compiere.server.ServerProcessCtl;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
+
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Process to create production lines based on the plans defined for a particular production header
@@ -39,7 +40,7 @@ public class ProductionProcess extends SvrProcess {
 
     p_M_Production_ID = getRecord_ID();
     if (p_M_Production_ID > 0)
-      m_production = new MProduction(getCtx(), p_M_Production_ID, get_TrxName());
+      m_production = new MProduction(getCtx(), p_M_Production_ID, null);
   } // prepare
 
   @Override
@@ -69,7 +70,7 @@ public class ProductionProcess extends SvrProcess {
                 Env.getCtx(),
                 I_M_ProductionPlan.Table_Name,
                 "M_ProductionPlan.M_Production_ID=?",
-                production.get_TrxName());
+                null);
         List<MProductionPlan> plans =
             planQuery.setParameters(production.getM_Production_ID()).list();
         int linesCount = 0;

@@ -94,7 +94,7 @@ public abstract class Doc implements IDoc {
    * ************************************************************************
    */
   private static final String DOC_TYPE_BY_DOC_BASE_TYPE_SQL =
-      "SELECT C_DocType_ID FROM C_DocType WHERE AD_Client_ID=? AND DocBaseType=? AND IsActive='Y' ORDER BY IsDefault DESC, C_DocType_ID";
+      "SELECT C_DocType_ID FROM C_DocType WHERE clientId=? AND DocBaseType=? AND IsActive='Y' ORDER BY IsDefault DESC, C_DocType_ID";
 
   /** AR Invoices - ARI */
   public static final String DOCTYPE_ARInvoice = MDocType.DOCBASETYPE_ARInvoice;
@@ -225,7 +225,7 @@ public abstract class Doc implements IDoc {
           if (!matchPo.isPosted()) {
             error =
                 postImmediate(
-                    ass, matchPo.getTableId(), matchPo.getId(), force, matchPo.get_TrxName());
+                    ass, matchPo.getTableId(), matchPo.getId(), force, null);
             if (!Util.isEmpty(error)) break;
           }
         }
@@ -245,7 +245,7 @@ public abstract class Doc implements IDoc {
                       matchInv.getTableId(),
                       matchInv.getId(),
                       force,
-                      matchInv.get_TrxName());
+                      null);
               if (!Util.isEmpty(error)) break;
             }
           }
@@ -288,7 +288,7 @@ public abstract class Doc implements IDoc {
     p_Status = STATUS_Error;
     m_as = as;
     m_ctx = new Properties(m_as.getCtx());
-    m_ctx.setProperty("#AD_Client_ID", String.valueOf(m_as. getClientId()));
+    m_ctx.setProperty("#clientId", String.valueOf(m_as. getClientId()));
 
     String className = clazz.getName();
     className = className.substring(className.lastIndexOf('.') + 1);
@@ -302,7 +302,7 @@ public abstract class Doc implements IDoc {
       throw new IllegalArgumentException(msg);
     }
     p_po.load(
-        p_po.get_TrxName()); // reload the PO to get any virtual column that was not obtained using
+        null); // reload the PO to get any virtual column that was not obtained using
     // the rs (IDEMPIERE-775)
 
     //	DocStatus
@@ -472,7 +472,7 @@ public abstract class Doc implements IDoc {
     //
     if (p_po. getClientId() != m_as. getClientId()) {
       StringBuilder error =
-          new StringBuilder("AD_Client_ID Conflict - Document=")
+          new StringBuilder("clientId Conflict - Document=")
               .append(p_po. getClientId())
               .append(", AcctSchema=")
               .append(m_as. getClientId());
@@ -856,7 +856,7 @@ public abstract class Doc implements IDoc {
     //  We have a document Type, but no GL info - search for DocType
     if (m_GL_Category_ID == 0) {
       String sql =
-          "SELECT GL_Category_ID FROM C_DocType " + "WHERE AD_Client_ID=? AND DocBaseType=?";
+          "SELECT GL_Category_ID FROM C_DocType " + "WHERE clientId=? AND DocBaseType=?";
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
       try {
@@ -878,7 +878,7 @@ public abstract class Doc implements IDoc {
     if (m_GL_Category_ID == 0) {
       String sql =
           "SELECT GL_Category_ID FROM GL_Category "
-              + "WHERE AD_Client_ID=? "
+              + "WHERE clientId=? "
               + "ORDER BY IsDefault DESC";
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
@@ -1007,7 +1007,7 @@ public abstract class Doc implements IDoc {
     else m_C_Period_ID = -1;
     //
     if (log.isLoggable(Level.FINE))
-      log.fine( // + AD_Client_ID + " - "
+      log.fine( // + clientId + " - "
           getDateAcct() + " - " + getDocumentType() + " => " + m_C_Period_ID);
   } //  setC_Period_ID
 
@@ -1401,7 +1401,7 @@ public abstract class Doc implements IDoc {
   } //  toString
 
   /**
-   * Get AD_Client_ID
+   * Get clientId
    *
    * @return client
    */
@@ -1410,7 +1410,7 @@ public abstract class Doc implements IDoc {
   } //	getClientId
 
   /**
-   * Get AD_Org_ID
+   * Get orgId
    *
    * @return org
    */

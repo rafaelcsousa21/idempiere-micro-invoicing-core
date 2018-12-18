@@ -66,7 +66,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
    */
   public MTimeExpense getParent() {
     if (m_parent == null)
-      m_parent = new MTimeExpense(getCtx(), getS_TimeExpense_ID(), get_TrxName());
+      m_parent = new MTimeExpense(getCtx(), getS_TimeExpense_ID(), null);
     return m_parent;
   } //	getParent
 
@@ -134,7 +134,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
   public int getC_Currency_Report_ID() {
     if (m_C_Currency_Report_ID != 0) return m_C_Currency_Report_ID;
     //	Get it from header
-    MTimeExpense te = new MTimeExpense(getCtx(), getS_TimeExpense_ID(), get_TrxName());
+    MTimeExpense te = new MTimeExpense(getCtx(), getS_TimeExpense_ID(), null);
     m_C_Currency_Report_ID = te.getC_Currency_ID();
     return m_C_Currency_Report_ID;
   } //	getC_Currency_Report_ID
@@ -203,7 +203,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
             if (old_S_ResourceAssignment_ID != S_ResourceAssignment_ID
                 && old_S_ResourceAssignment_ID != 0) {
               MResourceAssignment ra =
-                  new MResourceAssignment(getCtx(), old_S_ResourceAssignment_ID, get_TrxName());
+                  new MResourceAssignment(getCtx(), old_S_ResourceAssignment_ID, null);
               ra.delete(false);
             }
           }
@@ -211,7 +211,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
         //	Sync Assignment
         if (S_ResourceAssignment_ID != 0) {
           MResourceAssignment ra =
-              new MResourceAssignment(getCtx(), S_ResourceAssignment_ID, get_TrxName());
+              new MResourceAssignment(getCtx(), S_ResourceAssignment_ID, null);
           if (getQty().compareTo(ra.getQty()) != 0) {
             ra.setQty(getQty());
             if (getDescription() != null && getDescription().length() > 0)
@@ -240,7 +240,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
         //	Deleted Assignment
         if (old_S_ResourceAssignment_ID != 0) {
           MResourceAssignment ra =
-              new MResourceAssignment(getCtx(), old_S_ResourceAssignment_ID, get_TrxName());
+              new MResourceAssignment(getCtx(), old_S_ResourceAssignment_ID, null);
           ra.delete(false);
         }
       }
@@ -258,6 +258,6 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
             + "WHERE S_TimeExpense_ID="
             + getS_TimeExpense_ID();
     @SuppressWarnings("unused")
-    int no = executeUpdate(sql, get_TrxName());
+    int no = executeUpdate(sql, null);
   } //	updateHeader
 } //	MTimeExpenseLine

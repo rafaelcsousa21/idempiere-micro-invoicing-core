@@ -42,7 +42,7 @@ public class CopyProduct extends SvrProcess {
 
     // Get product price from the source product
     List<MProductPrice> prices =
-        new Query(getCtx(), MProductPrice.Table_Name, "M_Product_ID=?", get_TrxName())
+        new Query(getCtx(), MProductPrice.Table_Name, "M_Product_ID=?", null)
             .setParameters(new Object[] {m_copyFromId})
             .setOnlyActiveRecords(true)
             .list();
@@ -52,11 +52,11 @@ public class CopyProduct extends SvrProcess {
     MProductPrice priceDst;
     for (Iterator<MProductPrice> it = prices.iterator(); it.hasNext(); ) {
       priceSrc = it.next();
-      priceDst = new MProductPrice(getCtx(), 0, get_TrxName());
+      priceDst = new MProductPrice(getCtx(), 0, null);
       priceDst.setM_Product_ID(toMProductID);
       priceDst.setM_PriceList_Version_ID(priceSrc.getM_PriceList_Version_ID());
       priceDst.setPrices(priceSrc.getPriceList(), priceSrc.getPriceStd(), priceSrc.getPriceLimit());
-      priceDst.saveEx(get_TrxName());
+      priceDst.saveEx(null);
     }
 
     int count = prices.size();
@@ -65,7 +65,7 @@ public class CopyProduct extends SvrProcess {
 
     /*
     // Copy substitutes
-    List<X_M_Substitute> subs = new Query(getCtx(), X_M_Substitute.Table_Name, "M_Product_ID=? and NOT substitute_ID=?", get_TrxName())
+    List<X_M_Substitute> subs = new Query(getCtx(), X_M_Substitute.Table_Name, "M_Product_ID=? and NOT substitute_ID=?", null)
     							.setParameters(new Object[]{m_copyFromId, toMProductID})
     							.setOnlyActiveRecords(true)
     							.list();
@@ -74,18 +74,18 @@ public class CopyProduct extends SvrProcess {
     X_M_Substitute subDst;
     for (Iterator<X_M_Substitute> it = subs.iterator(); it.hasNext();) {
     	subSrc = it.next();
-    	subDst = new X_M_Substitute(getCtx(), 0, get_TrxName());
+    	subDst = new X_M_Substitute(getCtx(), 0, null);
     	subDst.setM_Product_ID(toMProductID);
     	subDst.setSubstitute_ID(subSrc.getSubstitute_ID());
     	subDst.setName(subSrc.getName());
     	subDst.setDescription(subSrc.getDescription());
-    	subDst.saveEx(get_TrxName());
+    	subDst.saveEx(null);
     }
 
     count += subs.size();
 
     // Copy related
-    List<X_M_RelatedProduct> related = new Query(getCtx(), X_M_RelatedProduct.Table_Name, "M_Product_ID=? and NOT relatedProduct_ID=?", get_TrxName())
+    List<X_M_RelatedProduct> related = new Query(getCtx(), X_M_RelatedProduct.Table_Name, "M_Product_ID=? and NOT relatedProduct_ID=?", null)
     									.setParameters(new Object[]{m_copyFromId, toMProductID})
     									.setOnlyActiveRecords(true)
     									.list();
@@ -94,19 +94,19 @@ public class CopyProduct extends SvrProcess {
     X_M_RelatedProduct relatedDst;
     for (Iterator<X_M_RelatedProduct> it = related.iterator(); it.hasNext();) {
     	relatedSrc = it.next();
-    	relatedDst = new X_M_RelatedProduct(getCtx(), 0, get_TrxName());
+    	relatedDst = new X_M_RelatedProduct(getCtx(), 0, null);
     	relatedDst.setM_Product_ID(toMProductID);
     	relatedDst.setRelatedProduct_ID(relatedSrc.getRelatedProduct_ID());
     	relatedDst.setRelatedProductType(relatedSrc.getRelatedProductType());
     	relatedDst.setName(relatedSrc.getName());
     	relatedDst.setDescription(relatedSrc.getDescription());
-    	relatedDst.saveEx(get_TrxName());
+    	relatedDst.saveEx(null);
     }
 
     count += related.size();
 
     // Copy replenish
-    List<X_M_Replenish> replenish = new Query(getCtx(), X_M_Replenish.Table_Name, "M_Product_ID=?", get_TrxName())
+    List<X_M_Replenish> replenish = new Query(getCtx(), X_M_Replenish.Table_Name, "M_Product_ID=?", null)
     								.setParameters(new Object[]{m_copyFromId})
     								.setOnlyActiveRecords(true)
     								.list();
@@ -115,7 +115,7 @@ public class CopyProduct extends SvrProcess {
     X_M_Replenish replenishDst;
     for (Iterator<X_M_Replenish> it = replenish.iterator(); it.hasNext();) {
     	replenishSrc = it.next();
-    	replenishDst = new X_M_Replenish(getCtx(), 0, get_TrxName());
+    	replenishDst = new X_M_Replenish(getCtx(), 0, null);
     	replenishDst.setM_Product_ID(toMProductID);
     	replenishDst.setM_Warehouse_ID(replenishSrc.getM_Warehouse_ID());
     	replenishDst.setM_WarehouseSource_ID(replenishSrc.getM_WarehouseSource_ID());
@@ -123,7 +123,7 @@ public class CopyProduct extends SvrProcess {
     	replenishDst.setM_Locator_ID(replenishSrc.getM_Locator_ID());
     	replenishDst.setLevel_Min(replenishSrc.getLevel_Min());
     	replenishDst.setLevel_Max(replenishSrc.getLevel_Max());
-    	replenishDst.saveEx(get_TrxName());
+    	replenishDst.saveEx(null);
     }
 
     count += replenish.size();
@@ -132,7 +132,7 @@ public class CopyProduct extends SvrProcess {
 
 
     // Copy business partner
-    List<MBPartnerProduct> bpList = new Query(getCtx(), MBPartnerProduct.Table_Name, "M_Product_ID=?", get_TrxName())
+    List<MBPartnerProduct> bpList = new Query(getCtx(), MBPartnerProduct.Table_Name, "M_Product_ID=?", null)
     								.setParameters(new Object[]{m_copyFromId})
     								.setOnlyActiveRecords(true)
     								.list();
@@ -141,7 +141,7 @@ public class CopyProduct extends SvrProcess {
     MBPartnerProduct bpDst;
     for (Iterator<MBPartnerProduct> it = bpList.iterator(); it.hasNext();) {
     	bpSrc = it.next();
-    	bpDst = new MBPartnerProduct(getCtx(), 0, get_TrxName());
+    	bpDst = new MBPartnerProduct(getCtx(), 0, null);
     	bpDst.setC_BPartner_ID(bpSrc.getC_BPartner_ID());
     	bpDst.setDescription(bpSrc.getDescription());
     	bpDst.setIsManufacturer(bpSrc.isManufacturer());
@@ -152,12 +152,12 @@ public class CopyProduct extends SvrProcess {
     	bpDst.setShelfLifeMinPct(bpSrc.getShelfLifeMinPct());
     	bpDst.setVendorCategory(bpSrc.getVendorCategory());
     	bpDst.setVendorProductNo(bpSrc.getVendorProductNo());
-    	bpDst.saveEx(get_TrxName());
+    	bpDst.saveEx(null);
     }
     count += bpList.size();
 
     // Copy download
-    List<MProductDownload> dlList = new Query(getCtx(), MProductDownload.Table_Name, "M_Product_ID=?", get_TrxName())
+    List<MProductDownload> dlList = new Query(getCtx(), MProductDownload.Table_Name, "M_Product_ID=?", null)
     								.setParameters(new Object[]{m_copyFromId})
     								.setOnlyActiveRecords(true)
     								.list();
@@ -166,11 +166,11 @@ public class CopyProduct extends SvrProcess {
     MProductDownload dlDst;
     for (Iterator<MProductDownload> it = dlList.iterator(); it.hasNext();) {
     	dlSrc = it.next();
-    	dlDst = new MProductDownload(getCtx(), 0, get_TrxName());
+    	dlDst = new MProductDownload(getCtx(), 0, null);
     	dlDst.setM_Product_ID(toMProductID);
     	dlDst.setName(dlSrc.getName());
     	dlDst.setDownloadURL(dlSrc.getDownloadURL());
-    	dlDst.saveEx(get_TrxName());
+    	dlDst.saveEx(null);
     }
     count += dlList.size();
 

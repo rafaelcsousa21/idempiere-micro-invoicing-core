@@ -260,9 +260,9 @@ public class Doc_BankStatement extends Doc {
    */
 
   /**
-   * Get AD_Org_ID from Bank Account
+   * Get orgId from Bank Account
    *
-   * @return AD_Org_ID or 0
+   * @return orgId or 0
    */
   protected int getBank_Org_ID() {
     if (m_C_BankAccount_ID == 0) return 0;

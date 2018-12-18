@@ -83,7 +83,7 @@ public class X_R_Group extends BasePOName implements I_R_Group, I_Persistent {
   public org.compiere.model.I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException {
     return (org.compiere.model.I_M_ChangeNotice)
         MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_ChangeNotice_ID(), get_TrxName());
+            .getPO(getM_ChangeNotice_ID(), null);
   }
 
   /**
@@ -110,7 +110,7 @@ public class X_R_Group extends BasePOName implements I_R_Group, I_Persistent {
   public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
     return (org.eevolution.model.I_PP_Product_BOM)
         MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-            .getPO(getPP_Product_BOM_ID(), get_TrxName());
+            .getPO(getPP_Product_BOM_ID(), null);
   }
 
   /**

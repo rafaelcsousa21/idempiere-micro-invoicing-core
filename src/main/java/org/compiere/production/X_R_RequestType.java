@@ -401,7 +401,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
   public org.compiere.model.I_R_StatusCategory getR_StatusCategory() throws RuntimeException {
     return (org.compiere.model.I_R_StatusCategory)
         MTable.get(getCtx(), org.compiere.model.I_R_StatusCategory.Table_Name)
-            .getPO(getR_StatusCategory_ID(), get_TrxName());
+            .getPO(getR_StatusCategory_ID(), null);
   }
 
   /**

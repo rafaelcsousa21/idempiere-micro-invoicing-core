@@ -85,7 +85,7 @@ public class BPGroupAcctCopy extends SvrProcess {
             + " AND p.C_BP_Group_ID="
             + p_C_BP_Group_ID
             + ")";
-    updated = executeUpdate(sql, get_TrxName());
+    updated = executeUpdate(sql, null);
     addLog(0, null, new BigDecimal(updated), "@Updated@ @C_BPartner_ID@ @IsCustomer@");
     updatedTotal += updated;
 
@@ -93,10 +93,10 @@ public class BPGroupAcctCopy extends SvrProcess {
     sql =
         "INSERT INTO C_BP_Customer_Acct "
             + "(C_BPartner_ID, C_AcctSchema_ID,"
-            + " AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,"
+            + " clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,"
             + " C_Receivable_Acct, C_Receivable_Services_Acct, C_PrePayment_Acct) "
             + "SELECT p.C_BPartner_ID, acct.C_AcctSchema_ID,"
-            + " p.AD_Client_ID, p.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,"
+            + " p.clientId, p.orgId, 'Y', SysDate, 0, SysDate, 0,"
             + " acct.C_Receivable_Acct, acct.C_Receivable_Services_Acct, acct.C_PrePayment_Acct "
             + "FROM C_BPartner p"
             + " INNER JOIN C_BP_Group_Acct acct ON (acct.C_BP_Group_ID=p.C_BP_Group_ID)"
@@ -107,7 +107,7 @@ public class BPGroupAcctCopy extends SvrProcess {
             + " AND NOT EXISTS (SELECT * FROM C_BP_Customer_Acct ca "
             + "WHERE ca.C_BPartner_ID=p.C_BPartner_ID"
             + " AND ca.C_AcctSchema_ID=acct.C_AcctSchema_ID)";
-    created = executeUpdate(sql, get_TrxName());
+    created = executeUpdate(sql, null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsCustomer@");
     createdTotal += created;
 
@@ -129,7 +129,7 @@ public class BPGroupAcctCopy extends SvrProcess {
             + " AND p.C_BP_Group_ID="
             + p_C_BP_Group_ID
             + ")";
-    updated = executeUpdate(sql, get_TrxName());
+    updated = executeUpdate(sql, null);
     addLog(0, null, new BigDecimal(updated), "@Updated@ @C_BPartner_ID@ @IsVendor@");
     updatedTotal += updated;
 
@@ -137,10 +137,10 @@ public class BPGroupAcctCopy extends SvrProcess {
     sql =
         "INSERT INTO C_BP_Vendor_Acct "
             + "(C_BPartner_ID, C_AcctSchema_ID,"
-            + " AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,"
+            + " clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,"
             + " V_Liability_Acct, V_Liability_Services_Acct, V_PrePayment_Acct) "
             + "SELECT p.C_BPartner_ID, acct.C_AcctSchema_ID,"
-            + " p.AD_Client_ID, p.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,"
+            + " p.clientId, p.orgId, 'Y', SysDate, 0, SysDate, 0,"
             + " acct.V_Liability_Acct, acct.V_Liability_Services_Acct, acct.V_PrePayment_Acct "
             + "FROM C_BPartner p"
             + " INNER JOIN C_BP_Group_Acct acct ON (acct.C_BP_Group_ID=p.C_BP_Group_ID)"
@@ -150,7 +150,7 @@ public class BPGroupAcctCopy extends SvrProcess {
             + p_C_BP_Group_ID
             + " AND NOT EXISTS (SELECT * FROM C_BP_Vendor_Acct va "
             + "WHERE va.C_BPartner_ID=p.C_BPartner_ID AND va.C_AcctSchema_ID=acct.C_AcctSchema_ID)";
-    created = executeUpdate(sql, get_TrxName());
+    created = executeUpdate(sql, null);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsVendor@");
     createdTotal += created;
 

@@ -90,7 +90,7 @@ public class MStatus extends X_R_Status {
     int AD_Client_ID = Env.getClientId(ctx);
     String sql =
         "SELECT * FROM R_Status "
-            + "WHERE AD_Client_ID=? AND IsActive='Y' AND IsClosed='Y' "
+            + "WHERE clientId=? AND IsActive='Y' AND IsClosed='Y' "
             + "ORDER BY Value";
     ArrayList<MStatus> list = new ArrayList<MStatus>();
     PreparedStatement pstmt = null;

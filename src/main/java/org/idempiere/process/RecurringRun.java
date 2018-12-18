@@ -83,7 +83,7 @@ public class RecurringRun extends SvrProcess {
     	parameters.add(p_Cut_Date);
     }
 
-    List<MRecurring> recs = new Query(getCtx(), MRecurring.Table_Name, whereClause.toString(), get_TrxName())
+    List<MRecurring> recs = new Query(getCtx(), MRecurring.Table_Name, whereClause.toString(), null)
     	.setOnlyActiveRecords(true)
     	.setClient_ID()
     	.setParameters(parameters)
@@ -155,7 +155,7 @@ public class RecurringRun extends SvrProcess {
       if (po.get_ColumnIndex("Description") >= 0) {
         String description = po.get_ValueAsString("Description");
         String description_org = description;
-        description = MSequence.parseVariable(description, po, get_TrxName(), true);
+        description = MSequence.parseVariable(description, po, null, true);
 
         if (prms.size() > 0) {
           for (ValueNamePair prm : prms) {
