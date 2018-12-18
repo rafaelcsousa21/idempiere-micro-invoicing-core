@@ -1,36 +1,27 @@
 package org.compiere.invoicing.test
 
-import company.bigger.test.support.BaseTest
 import company.bigger.test.support.randomString
 import kotliquery.HikariCP
-import org.compiere.model.*
-import org.compiere.orm.IModelFactory
-import org.compiere.orm.MClient
-import org.idempiere.icommon.model.IPO
-import org.junit.Before
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import org.idempiere.common.util.Env
-import org.compiere.orm.MOrg
 import org.compiere.accounting.MWarehouse
-import org.compiere.orm.Query
 import org.compiere.bank.MBank
 import org.compiere.bank.MBankAccount
-import org.compiere.model.I_C_BankAccount
 import org.compiere.invoicing.MPaymentTerm
 import org.compiere.invoicing.test.SetupClientTests.Companion.createClient
-import org.compiere.model.I_C_PaymentTerm
+import org.compiere.model.*
 import org.compiere.order.MPaySchedule
-import org.compiere.orm.DefaultModelFactory
-import org.compiere.model.I_M_Product
-import org.compiere.tax.MTaxCategory
-import org.compiere.tax.MTax
-import org.compiere.model.I_C_Tax
+import org.compiere.orm.*
 import org.compiere.product.MProduct
 import org.compiere.product.MUOM
+import org.compiere.tax.MTax
+import org.compiere.tax.MTaxCategory
+import org.idempiere.common.util.Env
+import org.idempiere.icommon.model.IPO
+import org.junit.Before
 import software.hsharp.core.orm.DummyEventManager
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
-internal val sessionUrl = System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere"
+internal val sessionUrl = System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
 
 abstract class BaseComponentTest {
     companion object {

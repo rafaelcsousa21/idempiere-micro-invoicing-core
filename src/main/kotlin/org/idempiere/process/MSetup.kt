@@ -1,53 +1,32 @@
 package org.idempiere.process
 
-import java.io.File
-import java.sql.PreparedStatement
-import java.sql.ResultSet
-import java.sql.SQLException
-import java.util.Properties
-import java.util.UUID
-import java.util.logging.Level
-import org.compiere.accounting.MAccount
-import org.compiere.accounting.MAcctSchema
-import org.compiere.accounting.MCalendar
-import org.compiere.accounting.MCashBook
+import org.compiere.accounting.*
 import org.compiere.accounting.MClient
-import org.compiere.accounting.MElement
-import org.compiere.accounting.MElementValue
 import org.compiere.accounting.MProduct
-import org.compiere.accounting.MWarehouse
-import org.compiere.accounting.X_C_AcctSchema_Default
-import org.compiere.accounting.X_C_AcctSchema_GL
-import org.compiere.crm.MBPGroup
-import org.compiere.crm.MBPartner
-import org.compiere.crm.MBPartnerLocation
-import org.compiere.crm.MLocation
-import org.compiere.crm.MUser
+import org.compiere.crm.*
 import org.compiere.model.I_C_AcctSchema
 import org.compiere.orm.*
 import org.compiere.process.ProcessInfo
 import org.compiere.process.ProcessInfoParameter
 import org.compiere.process.ProcessUtil
-import org.compiere.product.MDiscountSchema
-import org.compiere.product.MPriceList
-import org.compiere.product.MPriceListVersion
-import org.compiere.product.MProductCategory
-import org.compiere.product.MProductPrice
+import org.compiere.product.*
 import org.compiere.production.MLocator
 import org.compiere.tax.MTax
 import org.compiere.util.DisplayType
 import org.compiere.util.Msg
 import org.compiere.util.SystemIDs
 import org.idempiere.common.exceptions.AdempiereException
-import org.idempiere.common.util.AdempiereUserError
-import org.idempiere.common.util.CLogger
-import org.idempiere.common.util.Env
-import org.idempiere.common.util.KeyNamePair
-import org.idempiere.common.util.Trx
+import org.idempiere.common.util.*
 import software.hsharp.core.util.TO_STRING
 import software.hsharp.core.util.close
 import software.hsharp.core.util.executeUpdateEx
 import software.hsharp.core.util.prepareStatement
+import java.io.File
+import java.sql.PreparedStatement
+import java.sql.ResultSet
+import java.sql.SQLException
+import java.util.*
+import java.util.logging.Level
 
 class MSetup
 /**
@@ -210,11 +189,11 @@ class MSetup
             m_trx.close()
             return false
         }
-        Env.setContext(m_ctx, m_WindowNo, "orgId", aD_Org_ID)
-        Env.setContext(m_ctx, "#orgId", aD_Org_ID)
+        Env.setContext(m_ctx, m_WindowNo, "AD_Org_ID", aD_Org_ID)
+        Env.setContext(m_ctx, "#AD_Org_ID", aD_Org_ID)
         m_stdValuesOrg = AD_Client_ID.toString() + "," + aD_Org_ID + ",'Y',SysDate,0,SysDate,0"
         //  Info
-        m_info!!.append(Msg.translate(m_lang, "orgId")).append("=").append(name).append("\n")
+        m_info!!.append(Msg.translate(m_lang, "AD_Org_ID")).append("=").append(name).append("\n")
 
         // Set Organization Phone, Phone2, Fax, EMail
         val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID, m_trx.trxName)
