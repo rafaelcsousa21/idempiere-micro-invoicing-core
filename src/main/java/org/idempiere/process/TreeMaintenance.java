@@ -95,7 +95,7 @@ public class TreeMaintenance extends SvrProcess {
         .append(sourceTableKey)
         .append(" FROM ")
         .append(sourceTableName)
-        .append(" WHERE clientId=")
+        .append(" WHERE AD_Client_ID=")
         .append(AD_Client_ID);
     if (C_Element_ID > 0) sql.append(" AND C_Element_ID=").append(C_Element_ID);
     sql.append(")");
@@ -114,7 +114,7 @@ public class TreeMaintenance extends SvrProcess {
         .append(sourceTableKey)
         .append(" FROM ")
         .append(sourceTableName)
-        .append(" WHERE clientId=")
+        .append(" WHERE AD_Client_ID=")
         .append(AD_Client_ID);
     if (C_Element_ID > 0) sql.append(" AND C_Element_ID=").append(C_Element_ID);
     sql.append(" AND ")
@@ -162,7 +162,7 @@ public class TreeMaintenance extends SvrProcess {
           .append(sourceTableKey)
           .append(" FROM ")
           .append(sourceTableName)
-          .append(" WHERE clientId=")
+          .append(" WHERE AD_Client_ID=")
           .append(AD_Client_ID);
       if (C_Element_ID > 0) sql.append(" AND C_Element_ID=").append(C_Element_ID);
       if (log.isLoggable(Level.FINER)) log.finer(sql.toString());

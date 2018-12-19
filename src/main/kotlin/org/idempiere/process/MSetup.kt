@@ -714,7 +714,7 @@ class MSetup
         sqlCmd = StringBuffer("UPDATE AD_ClientInfo SET ")
         sqlCmd.append("C_AcctSchema1_ID=").append(m_as!!.c_AcctSchema_ID)
                 .append(", C_Calendar_ID=").append(m_calendar!!.c_Calendar_ID)
-                .append(" WHERE clientId=").append(m_client!!.clientId)
+                .append(" WHERE AD_Client_ID=").append(m_client!!.clientId)
         no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1) {
             val err = "ClientInfo not updated"
@@ -935,8 +935,8 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element Campaign NOT updated")
         }
         // Campaign Translation
-        sqlCmd = StringBuffer("INSERT INTO C_Campaign_Trl (AD_Language,C_Campaign_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_Campaign_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_Campaign_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Campaign t")
+        sqlCmd = StringBuffer("INSERT INTO C_Campaign_Trl (AD_Language,C_Campaign_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_Campaign_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_Campaign_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Campaign t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Campaign_ID=").append(C_Campaign_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Campaign_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Campaign_ID=t.C_Campaign_ID)")
         no = executeUpdateEx(sqlCmd.toString(), null)
@@ -966,8 +966,8 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element SalesRegion NOT updated")
         }
         // Sales Region Translation
-        sqlCmd = StringBuffer("INSERT INTO C_SalesRegion_Trl (AD_Language,C_SalesRegion_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_SalesRegion_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_SalesRegion_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_SalesRegion t")
+        sqlCmd = StringBuffer("INSERT INTO C_SalesRegion_Trl (AD_Language,C_SalesRegion_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_SalesRegion_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_SalesRegion_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_SalesRegion t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_SalesRegion_ID=").append(C_SalesRegion_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_SalesRegion_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_SalesRegion_ID=t.C_SalesRegion_ID)")
         no = executeUpdateEx(sqlCmd.toString(), null)
@@ -997,8 +997,8 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element Activity NOT updated")
         }
         // Activity Translation
-        sqlCmd = StringBuffer("INSERT INTO C_Activity_Trl (AD_Language,C_Activity_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_Activity_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_Activity_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Activity t")
+        sqlCmd = StringBuffer("INSERT INTO C_Activity_Trl (AD_Language,C_Activity_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_Activity_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_Activity_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Activity t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Activity_ID=").append(C_Activity_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Activity_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Activity_ID=t.C_Activity_ID)")
         no = executeUpdateEx(sqlCmd.toString(), null)
@@ -1077,8 +1077,8 @@ class MSetup
             log.log(Level.SEVERE, "TaxCategory NOT inserted")
 
         //  TaxCategory translation
-        sqlCmd = StringBuffer("INSERT INTO C_TaxCategory_Trl (AD_Language,C_TaxCategory_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_TaxCategory_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_TaxCategory_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_TaxCategory t")
+        sqlCmd = StringBuffer("INSERT INTO C_TaxCategory_Trl (AD_Language,C_TaxCategory_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_TaxCategory_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_TaxCategory_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_TaxCategory t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_TaxCategory_ID=").append(C_TaxCategory_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_TaxCategory_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_TaxCategory_ID=t.C_TaxCategory_ID)")
         no = executeUpdateEx(sqlCmd.toString(), null)
@@ -1123,7 +1123,7 @@ class MSetup
         loc.postal = postal
         loc.saveEx()
         sqlCmd = StringBuffer("UPDATE AD_OrgInfo SET C_Location_ID=")
-        sqlCmd.append(loc.c_Location_ID).append(" WHERE orgId=").append(aD_Org_ID)
+        sqlCmd.append(loc.c_Location_ID).append(" WHERE AD_Org_ID=").append(aD_Org_ID)
         no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "Location NOT inserted")
@@ -1155,7 +1155,7 @@ class MSetup
         //		sqlCmd.append(",C_UOM_Weight_ID=");
         //		sqlCmd.append(",C_UOM_Length_ID=");
         //		sqlCmd.append(",C_UOM_Time_ID=");
-        sqlCmd.append(" WHERE clientId=").append(aD_Client_ID)
+        sqlCmd.append(" WHERE AD_Client_ID=").append(aD_Client_ID)
         no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1) {
             val err = "ClientInfo not updated"
@@ -1256,8 +1256,8 @@ class MSetup
         if (no != 1)
             log.log(Level.SEVERE, "PaymentTerm NOT inserted")
         // Payment Term Translation
-        sqlCmd = StringBuffer("INSERT INTO C_PaymentTerm_Trl (AD_Language,C_PaymentTerm_ID, Description,Name, IsTranslated,clientId,orgId,Created,Createdby,Updated,UpdatedBy,C_PaymentTerm_Trl_UU)")
-        sqlCmd.append(" SELECT l.AD_Language,t.C_PaymentTerm_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_PaymentTerm t")
+        sqlCmd = StringBuffer("INSERT INTO C_PaymentTerm_Trl (AD_Language,C_PaymentTerm_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_PaymentTerm_Trl_UU)")
+        sqlCmd.append(" SELECT l.AD_Language,t.C_PaymentTerm_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_PaymentTerm t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_PaymentTerm_ID=").append(C_PaymentTerm_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_PaymentTerm_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_PaymentTerm_ID=t.C_PaymentTerm_ID)")
         no = executeUpdateEx(sqlCmd.toString(), null)

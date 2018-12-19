@@ -98,7 +98,7 @@ public abstract class Doc implements IDoc {
    * ************************************************************************
    */
   private static final String DOC_TYPE_BY_DOC_BASE_TYPE_SQL =
-      "SELECT C_DocType_ID FROM C_DocType WHERE clientId=? AND DocBaseType=? AND IsActive='Y' ORDER BY IsDefault DESC, C_DocType_ID";
+      "SELECT C_DocType_ID FROM C_DocType WHERE AD_Client_ID=? AND DocBaseType=? AND IsActive='Y' ORDER BY IsDefault DESC, C_DocType_ID";
 
   /** AR Invoices - ARI */
   public static final String DOCTYPE_ARInvoice = MDocType.DOCBASETYPE_ARInvoice;
@@ -466,7 +466,7 @@ public abstract class Doc implements IDoc {
     //
     if (p_po. getClientId() != m_as. getClientId()) {
       StringBuilder error =
-          new StringBuilder("clientId Conflict - Document=")
+          new StringBuilder("AD_Client_ID Conflict - Document=")
               .append(p_po. getClientId())
               .append(", AcctSchema=")
               .append(m_as. getClientId());
@@ -824,7 +824,7 @@ public abstract class Doc implements IDoc {
     //  We have a document Type, but no GL info - search for DocType
     if (m_GL_Category_ID == 0) {
       String sql =
-          "SELECT GL_Category_ID FROM C_DocType " + "WHERE clientId=? AND DocBaseType=?";
+          "SELECT GL_Category_ID FROM C_DocType " + "WHERE AD_Client_ID=? AND DocBaseType=?";
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
       try {
@@ -846,7 +846,7 @@ public abstract class Doc implements IDoc {
     if (m_GL_Category_ID == 0) {
       String sql =
           "SELECT GL_Category_ID FROM GL_Category "
-              + "WHERE clientId=? "
+              + "WHERE AD_Client_ID=? "
               + "ORDER BY IsDefault DESC";
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;

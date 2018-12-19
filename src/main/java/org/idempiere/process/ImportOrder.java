@@ -63,9 +63,9 @@ public class ImportOrder extends SvrProcess {
     IProcessInfoParameter[] para = getParameter();
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
-      if (name.equals("clientId"))
+      if (name.equals("AD_Client_ID"))
         m_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("orgId"))
+      else if (name.equals("AD_Org_ID"))
         m_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("DeleteOldImported"))
         m_deleteOldImported = "Y".equals(para[i].getParameter());
@@ -84,7 +84,7 @@ public class ImportOrder extends SvrProcess {
   protected String doIt() throws java.lang.Exception {
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(m_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(m_AD_Client_ID);
 
     //	****	Prepare	****
 
@@ -99,10 +99,10 @@ public class ImportOrder extends SvrProcess {
     //	Set Client, Org, IsActive, Created/Updated
     sql =
         new StringBuilder("UPDATE I_Order ")
-            .append("SET clientId = COALESCE (clientId,")
+            .append("SET clientId = COALESCE (AD_Client_ID,")
             .append(m_AD_Client_ID)
             .append("),")
-            .append(" orgId = COALESCE (orgId,")
+            .append(" orgId = COALESCE (AD_Org_ID,")
             .append(m_AD_Org_ID)
             .append("),")
             .append(" IsActive = COALESCE (IsActive, 'Y'),")
@@ -121,7 +121,7 @@ public class ImportOrder extends SvrProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Invalid Org, '")
             .append("WHERE (orgId IS NULL OR orgId=0")
             .append(
-                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.orgId=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
+                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -132,7 +132,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ") // 	PO Document Type Name
             .append(
                 "SET C_DocType_ID=(SELECT C_DocType_ID FROM C_DocType d WHERE d.Name=o.DocTypeName")
-            .append(" AND d.DocBaseType='POO' AND o.clientId=d.clientId) ")
+            .append(" AND d.DocBaseType='POO' AND o.AD_Client_ID=d.AD_Client_ID) ")
             .append(
                 "WHERE C_DocType_ID IS NULL AND IsSOTrx='N' AND DocTypeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -142,7 +142,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ") // 	SO Document Type Name
             .append(
                 "SET C_DocType_ID=(SELECT C_DocType_ID FROM C_DocType d WHERE d.Name=o.DocTypeName")
-            .append(" AND d.DocBaseType='SOO' AND o.clientId=d.clientId) ")
+            .append(" AND d.DocBaseType='SOO' AND o.AD_Client_ID=d.AD_Client_ID) ")
             .append(
                 "WHERE C_DocType_ID IS NULL AND IsSOTrx='Y' AND DocTypeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -152,7 +152,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ")
             .append(
                 "SET C_DocType_ID=(SELECT C_DocType_ID FROM C_DocType d WHERE d.Name=o.DocTypeName")
-            .append(" AND d.DocBaseType IN ('SOO','POO') AND o.clientId=d.clientId) ")
+            .append(" AND d.DocBaseType IN ('SOO','POO') AND o.AD_Client_ID=d.AD_Client_ID) ")
             // + "WHERE C_DocType_ID IS NULL AND IsSOTrx IS NULL AND DocTypeName IS NOT NULL AND
             // I_IsImported<>'Y'").append (clientCheck);
             .append("WHERE C_DocType_ID IS NULL AND DocTypeName IS NOT NULL AND I_IsImported<>'Y'")
@@ -172,7 +172,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ") // 	Default PO
             .append(
                 "SET C_DocType_ID=(SELECT MAX(C_DocType_ID) FROM C_DocType d WHERE d.IsDefault='Y'")
-            .append(" AND d.DocBaseType='POO' AND o.clientId=d.clientId) ")
+            .append(" AND d.DocBaseType='POO' AND o.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND IsSOTrx='N' AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -181,7 +181,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ") // 	Default SO
             .append(
                 "SET C_DocType_ID=(SELECT MAX(C_DocType_ID) FROM C_DocType d WHERE d.IsDefault='Y'")
-            .append(" AND d.DocBaseType='SOO' AND o.clientId=d.clientId) ")
+            .append(" AND d.DocBaseType='SOO' AND o.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND IsSOTrx='Y' AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -190,7 +190,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ")
             .append(
                 "SET C_DocType_ID=(SELECT MAX(C_DocType_ID) FROM C_DocType d WHERE d.IsDefault='Y'")
-            .append(" AND d.DocBaseType IN('SOO','POO') AND o.clientId=d.clientId) ")
+            .append(" AND d.DocBaseType IN('SOO','POO') AND o.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND IsSOTrx IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -208,7 +208,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o SET IsSOTrx='Y' ")
             .append(
-                "WHERE EXISTS (SELECT * FROM C_DocType d WHERE o.C_DocType_ID=d.C_DocType_ID AND d.DocBaseType='SOO' AND o.clientId=d.clientId)")
+                "WHERE EXISTS (SELECT * FROM C_DocType d WHERE o.C_DocType_ID=d.C_DocType_ID AND d.DocBaseType='SOO' AND o.AD_Client_ID=d.AD_Client_ID)")
             .append(" AND C_DocType_ID IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -217,7 +217,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o SET IsSOTrx='N' ")
             .append(
-                "WHERE EXISTS (SELECT * FROM C_DocType d WHERE o.C_DocType_ID=d.C_DocType_ID AND d.DocBaseType='POO' AND o.clientId=d.clientId)")
+                "WHERE EXISTS (SELECT * FROM C_DocType d WHERE o.C_DocType_ID=d.C_DocType_ID AND d.DocBaseType='POO' AND o.AD_Client_ID=d.AD_Client_ID)")
             .append(" AND C_DocType_ID IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -230,7 +230,7 @@ public class ImportOrder extends SvrProcess {
             .append(
                 "SET M_PriceList_ID=(SELECT MAX(M_PriceList_ID) FROM M_PriceList p WHERE p.IsDefault='Y'")
             .append(
-                " AND p.C_Currency_ID=o.C_Currency_ID AND p.IsSOPriceList=o.IsSOTrx AND o.clientId=p.clientId) ")
+                " AND p.C_Currency_ID=o.C_Currency_ID AND p.IsSOPriceList=o.IsSOTrx AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -239,7 +239,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ")
             .append(
                 "SET M_PriceList_ID=(SELECT MAX(M_PriceList_ID) FROM M_PriceList p WHERE p.IsDefault='Y'")
-            .append(" AND p.IsSOPriceList=o.IsSOTrx AND o.clientId=p.clientId) ")
+            .append(" AND p.IsSOPriceList=o.IsSOTrx AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL AND C_Currency_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -248,7 +248,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ")
             .append("SET M_PriceList_ID=(SELECT MAX(M_PriceList_ID) FROM M_PriceList p ")
             .append(
-                " WHERE p.C_Currency_ID=o.C_Currency_ID AND p.IsSOPriceList=o.IsSOTrx AND o.clientId=p.clientId) ")
+                " WHERE p.C_Currency_ID=o.C_Currency_ID AND p.IsSOPriceList=o.IsSOTrx AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -256,7 +256,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET M_PriceList_ID=(SELECT MAX(M_PriceList_ID) FROM M_PriceList p ")
-            .append(" WHERE p.IsSOPriceList=o.IsSOTrx AND o.clientId=p.clientId) ")
+            .append(" WHERE p.IsSOPriceList=o.IsSOTrx AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL AND C_Currency_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -275,7 +275,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET C_OrderSource_ID=(SELECT C_OrderSource_ID FROM C_OrderSource p")
-            .append(" WHERE o.C_OrderSourceValue=p.Value AND o.clientId=p.clientId) ")
+            .append(" WHERE o.C_OrderSourceValue=p.Value AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append(
                 "WHERE C_OrderSource_ID IS NULL AND C_OrderSourceValue IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -295,7 +295,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET C_PaymentTerm_ID=(SELECT C_PaymentTerm_ID FROM C_PaymentTerm p")
-            .append(" WHERE o.PaymentTermValue=p.Value AND o.clientId=p.clientId) ")
+            .append(" WHERE o.PaymentTermValue=p.Value AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append(
                 "WHERE C_PaymentTerm_ID IS NULL AND PaymentTermValue IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -304,7 +304,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET C_PaymentTerm_ID=(SELECT MAX(C_PaymentTerm_ID) FROM C_PaymentTerm p")
-            .append(" WHERE p.IsDefault='Y' AND o.clientId=p.clientId) ")
+            .append(" WHERE p.IsDefault='Y' AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append(
                 "WHERE C_PaymentTerm_ID IS NULL AND o.PaymentTermValue IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -324,7 +324,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET M_Warehouse_ID=(SELECT MAX(M_Warehouse_ID) FROM M_Warehouse w")
-            .append(" WHERE o.clientId=w.clientId AND o.orgId=w.orgId) ")
+            .append(" WHERE o.AD_Client_ID=w.AD_Client_ID AND o.AD_Org_ID=w.AD_Org_ID) ")
             .append("WHERE M_Warehouse_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null); // 	Warehouse for Org
@@ -332,10 +332,10 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET M_Warehouse_ID=(SELECT M_Warehouse_ID FROM M_Warehouse w")
-            .append(" WHERE o.clientId=w.clientId) ")
+            .append(" WHERE o.AD_Client_ID=w.AD_Client_ID) ")
             .append("WHERE M_Warehouse_ID IS NULL")
             .append(
-                " AND EXISTS (SELECT clientId FROM M_Warehouse w WHERE w.clientId=o.clientId GROUP BY clientId HAVING COUNT(*)=1)")
+                " AND EXISTS (SELECT clientId FROM M_Warehouse w WHERE w.AD_Client_ID=o.AD_Client_ID GROUP BY clientId HAVING COUNT(*)=1)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -356,7 +356,7 @@ public class ImportOrder extends SvrProcess {
             .append(
                 "SET (C_BPartner_ID,AD_User_ID)=(SELECT C_BPartner_ID,AD_User_ID FROM AD_User u")
             .append(
-                " WHERE o.EMail=u.EMail AND o.clientId=u.clientId AND u.C_BPartner_ID IS NOT NULL) ")
+                " WHERE o.EMail=u.EMail AND o.AD_Client_ID=u.AD_Client_ID AND u.C_BPartner_ID IS NOT NULL) ")
             .append("WHERE C_BPartner_ID IS NULL AND EMail IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -368,10 +368,10 @@ public class ImportOrder extends SvrProcess {
             .append(
                 "SET (C_BPartner_ID,AD_User_ID)=(SELECT C_BPartner_ID,AD_User_ID FROM AD_User u")
             .append(
-                " WHERE o.ContactName=u.Name AND o.clientId=u.clientId AND u.C_BPartner_ID IS NOT NULL) ")
+                " WHERE o.ContactName=u.Name AND o.AD_Client_ID=u.AD_Client_ID AND u.C_BPartner_ID IS NOT NULL) ")
             .append("WHERE C_BPartner_ID IS NULL AND ContactName IS NOT NULL")
             .append(
-                " AND EXISTS (SELECT Name FROM AD_User u WHERE o.ContactName=u.Name AND o.clientId=u.clientId AND u.C_BPartner_ID IS NOT NULL GROUP BY Name HAVING COUNT(*)=1)")
+                " AND EXISTS (SELECT Name FROM AD_User u WHERE o.ContactName=u.Name AND o.AD_Client_ID=u.AD_Client_ID AND u.C_BPartner_ID IS NOT NULL GROUP BY Name HAVING COUNT(*)=1)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -380,7 +380,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET C_BPartner_ID=(SELECT MAX(C_BPartner_ID) FROM C_BPartner bp")
-            .append(" WHERE o.BPartnerValue=bp.Value AND o.clientId=bp.clientId) ")
+            .append(" WHERE o.BPartnerValue=bp.Value AND o.AD_Client_ID=bp.AD_Client_ID) ")
             .append("WHERE C_BPartner_ID IS NULL AND BPartnerValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -390,7 +390,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET C_BPartner_ID=(SELECT C_BPartnerCashTrx_ID FROM AD_ClientInfo c")
-            .append(" WHERE o.clientId=c.clientId) ")
+            .append(" WHERE o.AD_Client_ID=c.AD_Client_ID) ")
             .append("WHERE C_BPartner_ID IS NULL AND BPartnerValue IS NULL AND Name IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -404,7 +404,7 @@ public class ImportOrder extends SvrProcess {
                 "SET (BillTo_ID,C_BPartner_Location_ID)=(SELECT C_BPartner_Location_ID,C_BPartner_Location_ID")
             .append(
                 " FROM C_BPartner_Location bpl INNER JOIN C_Location l ON (bpl.C_Location_ID=l.C_Location_ID)")
-            .append(" WHERE o.C_BPartner_ID=bpl.C_BPartner_ID AND bpl.clientId=o.clientId")
+            .append(" WHERE o.C_BPartner_ID=bpl.C_BPartner_ID AND bpl.AD_Client_ID=o.AD_Client_ID")
             .append(" AND DUMP(o.Address1)=DUMP(l.Address1) AND DUMP(o.Address2)=DUMP(l.Address2)")
             .append(" AND DUMP(o.City)=DUMP(l.City) AND DUMP(o.Postal)=DUMP(l.Postal)")
             .append(" AND o.C_Region_ID=l.C_Region_ID AND o.C_Country_ID=l.C_Country_ID) ")
@@ -417,7 +417,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET BillTo_ID=(SELECT MAX(C_BPartner_Location_ID) FROM C_BPartner_Location l")
-            .append(" WHERE l.C_BPartner_ID=o.C_BPartner_ID AND o.clientId=l.clientId")
+            .append(" WHERE l.C_BPartner_ID=o.C_BPartner_ID AND o.AD_Client_ID=l.AD_Client_ID")
             .append(
                 " AND ((l.IsBillTo='Y' AND o.IsSOTrx='Y') OR (l.IsPayFrom='Y' AND o.IsSOTrx='N'))")
             .append(") ")
@@ -431,7 +431,7 @@ public class ImportOrder extends SvrProcess {
         new StringBuilder("UPDATE I_Order o ")
             .append(
                 "SET C_BPartner_Location_ID=(SELECT MAX(C_BPartner_Location_ID) FROM C_BPartner_Location l")
-            .append(" WHERE l.C_BPartner_ID=o.C_BPartner_ID AND o.clientId=l.clientId")
+            .append(" WHERE l.C_BPartner_ID=o.C_BPartner_ID AND o.AD_Client_ID=l.AD_Client_ID")
             .append(" AND ((l.IsShipTo='Y' AND o.IsSOTrx='Y') OR o.IsSOTrx='N')")
             .append(") ")
             .append("WHERE C_BPartner_ID IS NOT NULL AND C_BPartner_Location_ID IS NULL")
@@ -518,7 +518,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET M_Product_ID=(SELECT MAX(M_Product_ID) FROM M_Product p")
-            .append(" WHERE o.ProductValue=p.Value AND o.clientId=p.clientId) ")
+            .append(" WHERE o.ProductValue=p.Value AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL AND ProductValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -527,7 +527,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET M_Product_ID=(SELECT MAX(M_Product_ID) FROM M_Product p")
-            .append(" WHERE o.UPC=p.UPC AND o.clientId=p.clientId) ")
+            .append(" WHERE o.UPC=p.UPC AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL AND UPC IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -536,7 +536,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET M_Product_ID=(SELECT MAX(M_Product_ID) FROM M_Product p")
-            .append(" WHERE o.SKU=p.SKU AND o.clientId=p.clientId) ")
+            .append(" WHERE o.SKU=p.SKU AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL AND SKU IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -556,7 +556,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET C_Charge_ID=(SELECT C_Charge_ID FROM C_Charge c")
-            .append(" WHERE o.ChargeName=c.Name AND o.clientId=c.clientId) ")
+            .append(" WHERE o.ChargeName=c.Name AND o.AD_Client_ID=c.AD_Client_ID) ")
             .append("WHERE C_Charge_ID IS NULL AND ChargeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -584,7 +584,7 @@ public class ImportOrder extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Order o ")
             .append("SET C_Tax_ID=(SELECT MAX(C_Tax_ID) FROM C_Tax t")
-            .append(" WHERE o.TaxIndicator=t.TaxIndicator AND o.clientId=t.clientId) ")
+            .append(" WHERE o.TaxIndicator=t.TaxIndicator AND o.AD_Client_ID=t.AD_Client_ID) ")
             .append("WHERE C_Tax_ID IS NULL AND TaxIndicator IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);

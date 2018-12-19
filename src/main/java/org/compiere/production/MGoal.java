@@ -50,7 +50,7 @@ public class MGoal extends X_PA_Goal {
     String sql =
         "SELECT * FROM PA_Goal g "
             + "WHERE IsActive='Y'"
-            + " AND clientId=?" //	#1
+            + " AND AD_Client_ID=?" //	#1
             + " AND ((AD_User_ID IS NULL AND AD_Role_ID IS NULL)"
             + " OR AD_User_ID=?" //	#2
             + " OR EXISTS (SELECT * FROM AD_User_Roles ur "

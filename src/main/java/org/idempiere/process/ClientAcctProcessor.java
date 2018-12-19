@@ -122,7 +122,7 @@ public class ClientAcctProcessor extends SvrProcess {
       StringBuilder sql =
           new StringBuilder("SELECT DISTINCT ProcessedOn FROM ")
               .append(TableName)
-              .append(" WHERE clientId=? AND ProcessedOn<?")
+              .append(" WHERE AD_Client_ID=? AND ProcessedOn<?")
               .append(" AND Processed='Y' AND Posted='N' AND IsActive='Y'");
       PreparedStatement pstmt = null;
       ResultSet rs = null;
@@ -163,7 +163,7 @@ public class ClientAcctProcessor extends SvrProcess {
         StringBuilder sql =
             new StringBuilder("SELECT * FROM ")
                 .append(TableName)
-                .append(" WHERE clientId=? AND (ProcessedOn");
+                .append(" WHERE AD_Client_ID=? AND (ProcessedOn");
         if (processedOn.compareTo(Env.ZERO) != 0) sql.append("=?");
         else sql.append(" IS NULL OR ProcessedOn=0");
         sql.append(") AND Processed='Y' AND Posted='N' AND IsActive='Y'")

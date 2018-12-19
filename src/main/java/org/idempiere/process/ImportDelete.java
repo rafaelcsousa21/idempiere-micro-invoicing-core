@@ -68,7 +68,7 @@ public class ImportDelete extends SvrProcess {
     StringBuilder sql =
         new StringBuilder("DELETE FROM ")
             .append(tableName)
-            .append(" WHERE clientId=")
+            .append(" WHERE AD_Client_ID=")
             .append(getClientId());
     int no = executeUpdate(sql.toString(), null);
     StringBuilder msg =

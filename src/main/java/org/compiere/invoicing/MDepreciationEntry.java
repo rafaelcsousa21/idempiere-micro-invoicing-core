@@ -124,7 +124,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             + " AND TRUNC("
             + MDepreciationExp.COLUMNNAME_DateAcct
             + ",'MONTH') = ?"
-            + " AND clientId=? AND orgId=?";
+            + " AND AD_Client_ID=? AND AD_Org_ID=?";
     ;
     Timestamp dateAcct = TimeUtil.trunc(getDateAcct(), TimeUtil.TRUNC_MONTH);
     int no =

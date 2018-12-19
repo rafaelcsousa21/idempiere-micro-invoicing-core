@@ -98,9 +98,9 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
       String trxname) {
     if (log.isLoggable(Level.INFO))
       log.info(
-          "clientId="
+          "AD_Client_ID="
               + ad_client_id
-              + " orgId="
+              + " AD_Org_ID="
               + ad_org_id
               + " M_Product_ID="
               + m_product_id
@@ -114,7 +114,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     }
 
     String whereClause =
-        " clientId=? AND orgId=?"
+        " AD_Client_ID=? AND AD_Org_ID=?"
             + " AND "
             + I_PP_Product_Planning.COLUMNNAME_M_Product_ID
             + "=?"
@@ -151,7 +151,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
       int M_Product_ID,
       String trxName) {
     final String whereClause =
-        "clientId=? AND M_Product_ID=?"
+        "AD_Client_ID=? AND M_Product_ID=?"
             + " AND (orgId IN (0,?) OR orgId IS NULL)"
             + " AND (M_Warehouse_ID IN (0,?) OR M_Warehouse_ID IS NULL)"
             + " AND (S_Resource_ID IN (0,?) OR S_Resource_ID IS NULL)";
@@ -160,7 +160,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
             Env.getClientId(ctx), M_Product_ID, AD_Org_ID, M_Warehouse_ID, S_Resource_ID)
         .setOnlyActiveRecords(true)
         .setOrderBy(
-            "COALESCE(orgId, 0) DESC"
+            "COALESCE(AD_Org_ID, 0) DESC"
                 + ", COALESCE(M_Warehouse_ID, 0) DESC"
                 + ", COALESCE(S_Resource_ID, 0) DESC")
         .first();

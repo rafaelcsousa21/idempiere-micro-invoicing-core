@@ -163,7 +163,7 @@ public class MPeriod extends X_C_Period {
     }
     if (retValue == null)
       if (s_log.isLoggable(Level.INFO))
-        s_log.info("No Standard Period for " + DateAcct + " (clientId=" + AD_Client_ID + ")");
+        s_log.info("No Standard Period for " + DateAcct + " (AD_Client_ID=" + AD_Client_ID + ")");
     return retValue;
   }
 
@@ -340,7 +340,7 @@ public class MPeriod extends X_C_Period {
 
     // obtain orgId
     int orgID = 0;
-    int idxorg = po.get_ColumnIndex("orgId");
+    int idxorg = po.get_ColumnIndex("AD_Org_ID");
     if (idxorg < 0) {
       s_log.warning("Could not find orgId for " + table.getTableName());
     } else {

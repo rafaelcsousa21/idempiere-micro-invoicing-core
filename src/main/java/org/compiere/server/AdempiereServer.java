@@ -122,11 +122,11 @@ public abstract class AdempiereServer implements Runnable {
     Env.setContext(context, "#AD_Language", schedclient.getADLanguage());
     if (p_model instanceof PO) {
       PO po = (PO) p_model;
-      if (po.get_ColumnIndex("orgId") >= 0) {
-        Env.setContext(context, "#orgId", po.get_ValueAsInt("orgId"));
+      if (po.get_ColumnIndex("AD_Org_ID") >= 0) {
+        Env.setContext(context, "#orgId", po.get_ValueAsInt("AD_Org_ID"));
         MOrgInfo schedorg =
-            new Query(context, MOrgInfo.Table_Name, "orgId=?", null)
-                .setParameters(po.get_ValueAsInt("orgId"))
+            new Query(context, MOrgInfo.Table_Name, "AD_Org_ID=?", null)
+                .setParameters(po.get_ValueAsInt("AD_Org_ID"))
                 .first();
         if (schedorg != null && schedorg.getM_Warehouse_ID() > 0)
           Env.setContext(context, "#M_Warehouse_ID", schedorg.getM_Warehouse_ID());
@@ -136,7 +136,7 @@ public abstract class AdempiereServer implements Runnable {
         Env.setContext(context, "#AD_User_ID", AD_User_ID);
         Env.setContext(context, "#SalesRep_ID", AD_User_ID);
         MUser scheduser = new MUser(context, AD_User_ID, null);
-        MRole[] schedroles = scheduser.getRoles(po.get_ValueAsInt("orgId"));
+        MRole[] schedroles = scheduser.getRoles(po.get_ValueAsInt("AD_Org_ID"));
         if (schedroles != null && schedroles.length > 0)
           Env.setContext(
               context,
@@ -203,8 +203,8 @@ public abstract class AdempiereServer implements Runnable {
     Env.setContext(context, "#clientId", p_model.getClientId());
     if (p_model instanceof PO) {
       PO po = (PO) p_model;
-      if (po.get_ColumnIndex("orgId") >= 0)
-        Env.setContext(context, "#orgId", po.get_ValueAsInt("orgId"));
+      if (po.get_ColumnIndex("AD_Org_ID") >= 0)
+        Env.setContext(context, "#orgId", po.get_ValueAsInt("AD_Org_ID"));
       if (po.get_ColumnIndex("AD_User_ID") >= 0)
         Env.setContext(context, "#AD_User_ID", po.get_ValueAsInt("AD_User_ID"));
     }

@@ -55,7 +55,7 @@ public final class MConversionRateUtil {
     }
 
     // clientId
-    int AD_Client_ID = SetGetUtil.get_AttrValueAsInt(model, "clientId");
+    int AD_Client_ID = SetGetUtil.get_AttrValueAsInt(model, "AD_Client_ID");
 
     // Currency To
     int C_Currency_ID_To =
@@ -65,7 +65,7 @@ public final class MConversionRateUtil {
     // Get Rate
     BigDecimal rate = SetGetUtil.get_AttrValueAsBigDecimal(model, "CurrencyRate");
     if (rate == null || rate.signum() == 0) {
-      int AD_Org_ID = SetGetUtil.get_AttrValueAsInt(model, "clientId");
+      int AD_Org_ID = SetGetUtil.get_AttrValueAsInt(model, "AD_Client_ID");
       Timestamp ConvDate = SetGetUtil.get_AttrValueAsDate(model, DateName);
       int C_Currency_ID = SetGetUtil.get_AttrValueAsInt(model, "C_Currency_ID");
       if (C_Currency_ID == C_Currency_ID_To) {

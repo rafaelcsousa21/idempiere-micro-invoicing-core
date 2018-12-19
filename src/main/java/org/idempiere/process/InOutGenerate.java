@@ -138,7 +138,7 @@ public class InOutGenerate extends SvrProcess {
       m_sql =
           new StringBuffer("SELECT C_Order.* FROM C_Order, T_Selection ")
               .append(
-                  "WHERE C_Order.DocStatus='CO' AND C_Order.IsSOTrx='Y' AND C_Order.clientId=? ")
+                  "WHERE C_Order.DocStatus='CO' AND C_Order.IsSOTrx='Y' AND C_Order.AD_Client_ID=? ")
               .append("AND C_Order.C_Order_ID = T_Selection.T_Selection_ID ")
               .append("AND T_Selection.AD_PInstance_ID=? ");
     } else {

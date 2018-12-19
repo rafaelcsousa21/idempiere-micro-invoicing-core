@@ -226,8 +226,8 @@ public class ModelValidationEngine {
             MRule.setContext(engine, Env.getCtx(), 0); // no window
             // now add the method arguments to the engine
             engine.put(MRule.ARGUMENTS_PREFIX + "Ctx", Env.getCtx());
-            engine.put(MRule.ARGUMENTS_PREFIX + "clientId", AD_Client_ID);
-            engine.put(MRule.ARGUMENTS_PREFIX + "orgId", AD_Org_ID);
+            engine.put(MRule.ARGUMENTS_PREFIX + "AD_Client_ID", AD_Client_ID);
+            engine.put(MRule.ARGUMENTS_PREFIX + "AD_Org_ID", AD_Org_ID);
             engine.put(MRule.ARGUMENTS_PREFIX + "AD_Role_ID", AD_Role_ID);
             engine.put(MRule.ARGUMENTS_PREFIX + "AD_User_ID", AD_User_ID);
 

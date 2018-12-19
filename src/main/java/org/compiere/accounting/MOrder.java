@@ -208,7 +208,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       }
     }
     if ( getClientId() == 0) {
-      m_processMsg = "clientId = 0";
+      m_processMsg = "AD_Client_ID = 0";
       return false;
     }
 
@@ -225,7 +225,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     }
     MWarehouse wh = MWarehouse.get(getCtx(), getM_Warehouse_ID());
     //	Warehouse Org
-    if (newRecord || is_ValueChanged("orgId") || is_ValueChanged("M_Warehouse_ID")) {
+    if (newRecord || is_ValueChanged("AD_Org_ID") || is_ValueChanged("M_Warehouse_ID")) {
       if (wh. getOrgId() !=  getOrgId()) log.saveWarning("WarehouseOrgConflict", "");
     }
 
@@ -261,7 +261,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
           getSQLValueEx(
               null,
               "SELECT M_PriceList_ID FROM M_PriceList "
-                  + "WHERE clientId=? AND IsSOPriceList=? AND IsActive=?"
+                  + "WHERE AD_Client_ID=? AND IsSOPriceList=? AND IsActive=?"
                   + "ORDER BY IsDefault DESC",
                getClientId(),
               isSOTrx(),
@@ -291,7 +291,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       if (ii != 0) setC_PaymentTerm_ID(ii);
       else {
         String sql =
-            "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE clientId=? AND IsDefault='Y' AND IsActive='Y'";
+            "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE AD_Client_ID=? AND IsDefault='Y' AND IsActive='Y'";
         ii = getSQLValue(null, sql,  getClientId());
         if (ii != 0) setC_PaymentTerm_ID(ii);
       }
@@ -907,7 +907,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
           + ", @GrandTotal@="
           + grandTotal;
 
-    String whereClause = "orgId=? AND C_Currency_ID=?";
+    String whereClause = "AD_Org_ID=? AND C_Currency_ID=?";
     MBankAccount ba =
         new Query(this.getCtx(), MBankAccount.Table_Name, whereClause, null)
             .setParameters(this. getOrgId(), this.getC_Currency_ID())

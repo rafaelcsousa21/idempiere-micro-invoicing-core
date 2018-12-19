@@ -123,7 +123,7 @@ public class TranslationDocSync extends SvrProcess {
                 .append(baseTable)
                 .append("_ID=b.")
                 .append(baseTable)
-                .append("_ID) WHERE clientId=")
+                .append("_ID) WHERE AD_Client_ID=")
                 .append(getClientId())
                 .append(" AND AD_Language=")
                 .append(TO_STRING(client.getADLanguage()));
@@ -148,7 +148,7 @@ public class TranslationDocSync extends SvrProcess {
               .append(baseTable)
               .append("_ID=b.")
               .append(baseTable)
-              .append("_ID) WHERE clientId=")
+              .append("_ID) WHERE AD_Client_ID=")
               .append(getClientId());
 
       int no = executeUpdate(sql.toString(), null);

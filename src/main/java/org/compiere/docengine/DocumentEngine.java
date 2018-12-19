@@ -1214,9 +1214,9 @@ public class DocumentEngine implements DocAction {
    * @return number of valid actions in the String[] options
    */
   public static int checkActionAccess(
-      int clientId, int roleId, int docTypeId, String[] options, int maxIndex) {
+      int AD_Client_ID, int roleId, int docTypeId, String[] options, int maxIndex) {
     return MRole.get(Env.getCtx(), roleId)
-        .checkActionAccess(clientId, docTypeId, options, maxIndex);
+        .checkActionAccess(AD_Client_ID, docTypeId, options, maxIndex);
   }
 
   /**

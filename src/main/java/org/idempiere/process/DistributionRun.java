@@ -222,13 +222,13 @@ public class DistributionRun extends SvrProcess {
     sql =
         "INSERT INTO T_DistributionRunDetail "
             + "(M_DistributionRun_ID, M_DistributionRunLine_ID, M_DistributionList_ID, M_DistributionListLine_ID,"
-            + "clientId,orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,"
+            + "AD_Client_ID,AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,"
             + "C_BPartner_ID, C_BPartner_Location_ID, M_Product_ID,"
             + "Ratio, MinQty, Qty) "
             //
             + "SELECT rl.M_DistributionRun_ID, rl.M_DistributionRunLine_ID,"
             + "ll.M_DistributionList_ID, ll.M_DistributionListLine_ID, "
-            + "rl.clientId,rl.orgId, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy,"
+            + "rl.AD_Client_ID,rl.AD_Org_ID, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy,"
             + "ll.C_BPartner_ID, ll.C_BPartner_Location_ID, rl.M_Product_ID, "
             + "ll.Ratio, "
             + "CASE WHEN rl.MinQty > ll.MinQty THEN rl.MinQty ELSE ll.MinQty END, "
@@ -600,7 +600,7 @@ public class DistributionRun extends SvrProcess {
     //	Insert New
     sql = new StringBuilder("INSERT INTO T_DistributionRunDetail ")
     	.append("(M_DistributionRun_ID, M_DistributionRunLine_ID, M_DistributionList_ID, M_DistributionListLine_ID,")
-    	.append("clientId,orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
+    	.append("AD_Client_ID,AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
     	.append("C_BPartner_ID, C_BPartner_Location_ID, M_Product_ID,")
     	.append("Ratio, MinQty, Qty) "			)
     	.append("SELECT MAX(rl.M_DistributionRun_ID), MAX(rl.M_DistributionRunLine_ID),MAX(ll.M_DistributionList_ID), MAX(ll.M_DistributionListLine_ID), ")
@@ -710,11 +710,11 @@ public class DistributionRun extends SvrProcess {
     //	Insert New
     sql = new StringBuilder("INSERT INTO T_DistributionRunDetail ")
     	.append("(M_DistributionRun_ID, M_DistributionRunLine_ID, M_DistributionList_ID, M_DistributionListLine_ID,")
-    	.append("clientId,orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
+    	.append("AD_Client_ID,AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
     	.append("C_BPartner_ID, C_BPartner_Location_ID, M_Product_ID,")
     	.append("Ratio, MinQty, Qty) ")
     	.append("SELECT rl.M_DistributionRun_ID, rl.M_DistributionRunLine_ID,ll.M_DistributionList_ID, ll.M_DistributionListLine_ID, ")
-    	.append("rl.clientId,rl.orgId, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy, ")
+    	.append("rl.AD_Client_ID,rl.AD_Org_ID, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy, ")
     	.append("ll.C_BPartner_ID, ll.C_BPartner_Location_ID, rl.M_Product_ID, 0 , ")
     	.append("ol.TargetQty AS MinQty , 0 FROM M_DistributionRunLine rl ")
     	.append("INNER JOIN M_DistributionList l ON (rl.M_DistributionList_ID=l.M_DistributionList_ID) ")
@@ -936,7 +936,7 @@ public class DistributionRun extends SvrProcess {
     	if(p_ConsolidateDocument)
     	{
 
-    		StringBuilder whereClause = new StringBuilder("DocStatus IN ('DR','IN') AND orgId=").append(bp.getAD_OrgBP_ID_Int()).append(" AND ")
+    		StringBuilder whereClause = new StringBuilder("DocStatus IN ('DR','IN') AND AD_Org_ID=").append(bp.getAD_OrgBP_ID_Int()).append(" AND ")
     							    .append(MDDOrder.COLUMNNAME_C_BPartner_ID).append("=? AND ")
     							    .append(MDDOrder.COLUMNNAME_M_Warehouse_ID).append("=?  AND ")
     							    .append(MDDOrder.COLUMNNAME_DatePromised).append("<=? ");

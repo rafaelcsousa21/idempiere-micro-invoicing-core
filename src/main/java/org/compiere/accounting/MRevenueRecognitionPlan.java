@@ -68,15 +68,15 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan {
   //				FROM	C_InvoiceLine
   //				WHERE 	C_InvoiceLine_ID=:new.C_InvoiceLine_ID;
   //				--	Insert
-  //				AD_Sequence_Next ('C_ServiceLevel', :new.clientId, v_NextNo);
+  //				AD_Sequence_Next ('C_ServiceLevel', :new.AD_Client_ID, v_NextNo);
   //				INSERT INTO C_ServiceLevel
   //					(C_ServiceLevel_ID, C_RevenueRecognition_Plan_ID,
-  //					clientId,orgId,IsActive,Created,CreatedBy,Updated,UpdatedBy,
+  //					AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,
   //					M_Product_ID, Description, ServiceLevelInvoiced, ServiceLevelProvided,
   //					Processing,Processed)
   //				VALUES
   //					(v_NextNo, :new.C_RevenueRecognition_Plan_ID,
-  //					:new.clientId,:new.orgId,'Y',SysDate,:new.CreatedBy,SysDate,:new.UpdatedBy,
+  //					:new.AD_Client_ID,:new.AD_Org_ID,'Y',SysDate,:new.CreatedBy,SysDate,:new.UpdatedBy,
   //					v_M_Product_ID, NULL, v_Qty, 0,
   //					'N', 'N');
   //				**/

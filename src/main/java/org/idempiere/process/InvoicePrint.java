@@ -125,10 +125,10 @@ public class InvoicePrint extends SvrProcess {
             .append("FROM C_Invoice i")
             .append(" INNER JOIN C_BPartner bp ON (i.C_BPartner_ID=bp.C_BPartner_ID)")
             .append(" LEFT OUTER JOIN AD_User bpc ON (i.AD_User_ID=bpc.AD_User_ID)")
-            .append(" INNER JOIN AD_Client c ON (i.clientId=c.clientId)")
-            .append(" INNER JOIN AD_PrintForm pf ON (i.clientId=pf.clientId)")
+            .append(" INNER JOIN AD_Client c ON (i.AD_Client_ID=c.AD_Client_ID)")
+            .append(" INNER JOIN AD_PrintForm pf ON (i.AD_Client_ID=pf.AD_Client_ID)")
             .append(" INNER JOIN C_DocType dt ON (i.C_DocType_ID=dt.C_DocType_ID)")
-            .append(" WHERE i.clientId=? AND i.orgId=? AND i.isSOTrx='Y' AND ")
+            .append(" WHERE i.AD_Client_ID=? AND i.AD_Org_ID=? AND i.isSOTrx='Y' AND ")
             .append("       pf.orgId IN (0,i.orgId) AND "); // 	more them 1 PF
     boolean needAnd = false;
     if (m_C_Invoice_ID != 0) sql.append("i.C_Invoice_ID=").append(m_C_Invoice_ID);

@@ -68,7 +68,7 @@ public class FactAcctReset extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
-      else if (name.equals("clientId"))
+      else if (name.equals("AD_Client_ID"))
         p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("AD_Table_ID"))
         p_AD_Table_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -89,7 +89,7 @@ public class FactAcctReset extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO))
       log.info(
-          "clientId="
+          "AD_Client_ID="
               + p_AD_Client_ID
               + ", AD_Table_ID="
               + p_AD_Table_ID
@@ -132,7 +132,7 @@ public class FactAcctReset extends SvrProcess {
     String sql =
         "UPDATE "
             + TableName
-            + " SET Processing='N' WHERE clientId="
+            + " SET Processing='N' WHERE AD_Client_ID="
             + p_AD_Client_ID
             + " AND (Processing<>'N' OR Processing IS NULL)";
     int unlocked = executeUpdate(sql, null);
@@ -140,7 +140,7 @@ public class FactAcctReset extends SvrProcess {
     sql =
         "UPDATE "
             + TableName
-            + " SET Posted='N' WHERE clientId="
+            + " SET Posted='N' WHERE AD_Client_ID="
             + p_AD_Client_ID
             + " AND (Posted NOT IN ('Y','N') OR Posted IS NULL) AND Processed='Y'";
     int invalid = executeUpdate(sql, null);
@@ -266,7 +266,7 @@ public class FactAcctReset extends SvrProcess {
         "UPDATE "
             + TableName
             + " SET Posted='N', Processing='N' "
-            + "WHERE clientId="
+            + "WHERE AD_Client_ID="
             + p_AD_Client_ID
             + " AND (Posted<>'N' OR Posted IS NULL OR Processing<>'N' OR Processing IS NULL)"
             + " AND EXISTS (SELECT 1 FROM C_PeriodControl pc"
@@ -290,7 +290,7 @@ public class FactAcctReset extends SvrProcess {
     //	Fact
     String sql2 =
         "DELETE Fact_Acct "
-            + "WHERE clientId="
+            + "WHERE AD_Client_ID="
             + p_AD_Client_ID
             + " AND AD_Table_ID="
             + AD_Table_ID;

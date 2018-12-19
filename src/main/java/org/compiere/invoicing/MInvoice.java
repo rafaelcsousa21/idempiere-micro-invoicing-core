@@ -575,12 +575,12 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
   public void setC_DocTypeTarget_ID(String DocBaseType) {
     String sql =
         "SELECT C_DocType_ID FROM C_DocType "
-            + "WHERE clientId=? AND orgId in (0,?) AND DocBaseType=?"
+            + "WHERE AD_Client_ID=? AND orgId in (0,?) AND DocBaseType=?"
             + " AND IsActive='Y' "
             + "ORDER BY IsDefault DESC, orgId DESC";
     int C_DocType_ID = getSQLValueEx(null, sql, getClientId(), getOrgId(), DocBaseType);
     if (C_DocType_ID <= 0)
-      log.log(Level.SEVERE, "Not found for clientId=" + getClientId() + " - " + DocBaseType);
+      log.log(Level.SEVERE, "Not found for AD_Client_ID=" + getClientId() + " - " + DocBaseType);
     else {
       log.fine(DocBaseType);
       setC_DocTypeTarget_ID(C_DocType_ID);
@@ -891,7 +891,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
 
       if (getM_PriceList_ID() == 0) {
         String sql =
-            "SELECT M_PriceList_ID FROM M_PriceList WHERE clientId=? AND IsSOPriceList=? AND IsActive='Y' ORDER BY IsDefault DESC";
+            "SELECT M_PriceList_ID FROM M_PriceList WHERE AD_Client_ID=? AND IsSOPriceList=? AND IsActive='Y' ORDER BY IsDefault DESC";
         ii = getSQLValue(null, sql,  getClientId(), isSOTrx());
         if (ii != 0) setM_PriceList_ID(ii);
       }
@@ -923,7 +923,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
       if (ii != 0) setC_PaymentTerm_ID(ii);
       else {
         String sql =
-            "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE clientId=? AND IsDefault='Y' AND IsActive='Y'";
+            "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE AD_Client_ID=? AND IsDefault='Y' AND IsActive='Y'";
         ii = getSQLValue(null, sql,  getClientId());
         if (ii != 0) setC_PaymentTerm_ID(ii);
       }
@@ -1060,7 +1060,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
   protected boolean afterSave(boolean newRecord, boolean success) {
     if (!success || newRecord) return success;
 
-    if (is_ValueChanged("orgId")) {
+    if (is_ValueChanged("AD_Org_ID")) {
       StringBuilder sql =
           new StringBuilder("UPDATE C_InvoiceLine ol")
               .append(" SET orgId =")
@@ -1097,7 +1097,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     BigDecimal retValue = null;
     String sql =
         "SELECT SUM(currencyConvert(al.Amount+al.DiscountAmt+al.WriteOffAmt,"
-            + "ah.C_Currency_ID, i.C_Currency_ID,ah.DateTrx,COALESCE(i.C_ConversionType_ID,0), al.clientId,al.orgId)) "
+            + "ah.C_Currency_ID, i.C_Currency_ID,ah.DateTrx,COALESCE(i.C_ConversionType_ID,0), al.AD_Client_ID,al.orgId)) "
             + "FROM C_AllocationLine al"
             + " INNER JOIN C_AllocationHdr ah ON (al.C_AllocationHdr_ID=ah.C_AllocationHdr_ID)"
             + " INNER JOIN C_Invoice i ON (al.C_Invoice_ID=i.C_Invoice_ID) "
@@ -1165,7 +1165,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
       whereClause.append(" AND C_BPartner_ID=?");
       params.add(C_BPartner_ID);
     } else {
-      whereClause.append(" AND clientId=?");
+      whereClause.append(" AND AD_Client_ID=?");
       params.add(Env.getClientId(ctx));
     }
 
@@ -1609,7 +1609,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
 
     //	Create Cash Payment
     if (X_C_Invoice.PAYMENTRULE_Cash.equals(getPaymentRule()) && !fromPOS) {
-      String whereClause = "orgId=? AND C_Currency_ID=?";
+      String whereClause = "AD_Org_ID=? AND C_Currency_ID=?";
       MBankAccount ba =
           new Query(getCtx(), MBankAccount.Table_Name, whereClause, null)
               .setParameters( getOrgId(), getC_Currency_ID())

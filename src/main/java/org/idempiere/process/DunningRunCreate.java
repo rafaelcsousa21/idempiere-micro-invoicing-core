@@ -57,7 +57,7 @@ public class DunningRunCreate extends SvrProcess {
       else if (name.equals("C_Currency_ID")) p_C_Currency_ID = para[i].getParameterAsInt();
       else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
       else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
-      else if (name.equals("orgId")) p_AD_Org_ID = para[i].getParameterAsInt();
+      else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
       else log.log(Level.SEVERE, "Unknown Parameter: " + name);
     }
     p_C_DunningRun_ID = getRecord_ID();
@@ -124,7 +124,7 @@ public class DunningRunCreate extends SvrProcess {
   			sql.append(" i.IsInDispute, i.C_BPartner_ID, i.C_InvoicePaySchedule_ID ");
   			sql.append("FROM C_Invoice_v i ");
   			sql.append(" LEFT OUTER JOIN C_InvoicePaySchedule ips ON (i.C_InvoicePaySchedule_ID=ips.C_InvoicePaySchedule_ID) ");
-  			sql.append("WHERE i.IsPaid='N' AND i.clientId=?");	//	##3
+  			sql.append("WHERE i.IsPaid='N' AND i.AD_Client_ID=?");	//	##3
   			sql.append(" AND i.DocStatus IN ('CO','CL')");
   			sql.append(" AND (i.DunningGrace IS NULL OR i.DunningGrace<?) ");
   				// Only BP(Group) with Dunning defined
@@ -147,7 +147,7 @@ public class DunningRunCreate extends SvrProcess {
   	if (!p_IsAllCurrencies)
   		sql.append(" AND i.C_Currency_ID=").append(p_C_Currency_ID);
   	if ( p_AD_Org_ID != 0 )
-  		sql.append(" AND i.orgId=").append(p_AD_Org_ID);
+  		sql.append(" AND i.AD_Org_ID=").append(p_AD_Org_ID);
   //	if (log.isLoggable(Level.INFO)) log.info(sql);
 
   	String sql2= "";
@@ -363,7 +363,7 @@ public class DunningRunCreate extends SvrProcess {
   	StringBuilder sql = new StringBuilder("SELECT C_Payment_ID, C_Currency_ID, PayAmt,");
   				sql.append(" paymentAvailable(C_Payment_ID), C_BPartner_ID ");
   				sql.append("FROM C_Payment_v p ");
-  				sql.append("WHERE clientId=?"); //	##1
+  				sql.append("WHERE AD_Client_ID=?"); //	##1
   				sql.append(" AND IsAllocated='N' AND C_BPartner_ID IS NOT NULL");
   				sql.append(" AND C_Charge_ID IS NULL");
   				sql.append(" AND DocStatus IN ('CO','CL')");
@@ -390,7 +390,7 @@ public class DunningRunCreate extends SvrProcess {
   	if (p_OnlySOTrx)
   		sql.append(" AND IsReceipt='Y'");
   	if ( p_AD_Org_ID != 0 )
-  		sql.append(" AND p.orgId=").append(p_AD_Org_ID);
+  		sql.append(" AND p.AD_Org_ID=").append(p_AD_Org_ID);
 
   	int count = 0;
   	PreparedStatement pstmt = null;

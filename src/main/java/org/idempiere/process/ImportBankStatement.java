@@ -56,9 +56,9 @@ public class ImportBankStatement extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId"))
+      else if (name.equals("AD_Client_ID"))
         p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("orgId"))
+      else if (name.equals("AD_Org_ID"))
         p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("C_BankAccount_ID"))
         p_C_BankAccount_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -77,14 +77,14 @@ public class ImportBankStatement extends SvrProcess {
    */
   protected String doIt() throws java.lang.Exception {
     StringBuilder msglog =
-        new StringBuilder("orgId=")
+        new StringBuilder("AD_Org_ID=")
             .append(p_AD_Org_ID)
             .append(", C_BankAccount_ID")
             .append(p_C_BankAccount_ID);
     if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(p_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(p_AD_Client_ID);
 
     //	****	Prepare	****
 
@@ -101,10 +101,10 @@ public class ImportBankStatement extends SvrProcess {
     //	Set Client, Org, IsActive, Created/Updated
     sql =
         new StringBuilder("UPDATE I_BankStatement ")
-            .append("SET clientId = COALESCE (clientId,")
+            .append("SET clientId = COALESCE (AD_Client_ID,")
             .append(p_AD_Client_ID)
             .append("),")
-            .append(" orgId = COALESCE (orgId,")
+            .append(" orgId = COALESCE (AD_Org_ID,")
             .append(p_AD_Org_ID)
             .append("),");
     sql.append(" IsActive = COALESCE (IsActive, 'Y'),")
@@ -124,7 +124,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Invalid Org, '")
             .append("WHERE (orgId IS NULL OR orgId=0")
             .append(
-                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.orgId=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
+                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -138,7 +138,7 @@ public class ImportBankStatement extends SvrProcess {
             .append(" SELECT C_BankAccount_ID ")
             .append(" FROM C_BankAccount a, C_Bank b ")
             .append(" WHERE b.IsOwnBank='Y' ")
-            .append(" AND a.clientId=i.clientId ")
+            .append(" AND a.AD_Client_ID=i.AD_Client_ID ")
             .append(" AND a.C_Bank_ID=b.C_Bank_ID ")
             .append(" AND a.AccountNo=i.BankAccountNo ")
             .append(" AND b.RoutingNo=i.RoutingNo ")
@@ -160,7 +160,7 @@ public class ImportBankStatement extends SvrProcess {
             .append(" WHERE b.IsOwnBank='Y' ")
             .append(" AND a.C_Bank_ID=b.C_Bank_ID ")
             .append(" AND a.AccountNo=i.BankAccountNo ")
-            .append(" AND a.clientId=i.clientId ")
+            .append(" AND a.AD_Client_ID=i.AD_Client_ID ")
             .append(") ")
             .append("WHERE i.C_BankAccount_ID IS NULL ")
             .append("AND i.I_isImported<>'Y' ")
@@ -175,7 +175,7 @@ public class ImportBankStatement extends SvrProcess {
             .append(
                 "SET C_BankAccount_ID=(SELECT C_BankAccount_ID FROM C_BankAccount a WHERE a.C_BankAccount_ID=")
             .append(p_C_BankAccount_ID)
-            .append(" and a.clientId=i.clientId) ")
+            .append(" and a.AD_Client_ID=i.AD_Client_ID) ")
             .append("WHERE i.C_BankAccount_ID IS NULL ")
             .append("AND i.BankAccountNo IS NULL ")
             .append("AND i.I_isImported<>'Y' ")

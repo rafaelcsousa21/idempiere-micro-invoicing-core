@@ -71,7 +71,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
                 + "FROM C_BankAccount_Processor bap, C_PaymentProcessor pp, C_BankAccount ba "
                 + "WHERE pp.C_PaymentProcessor_ID = bap.C_PaymentProcessor_ID"
                 + " AND ba.C_BankAccount_ID = bap.C_BankAccount_ID"
-                + " AND ba.clientId=? AND pp.IsActive='Y'" //	#1
+                + " AND ba.AD_Client_ID=? AND pp.IsActive='Y'" //	#1
                 + " AND ba.IsActive='Y' AND bap.IsActive='Y' "
                 + " AND (bap.C_Currency_ID IS NULL OR bap.C_Currency_ID=?)" //	#2
                 + " AND (bap.MinimumAmt IS NULL OR bap.MinimumAmt = 0 OR bap.MinimumAmt <= ?)"); //	#3
@@ -118,7 +118,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     //
     if (list.size() == 0)
       s_log.warning(
-          "find - not found - clientId="
+          "find - not found - AD_Client_ID="
               + AD_Client_ID
               + ", C_Currency_ID="
               + C_Currency_ID
@@ -128,7 +128,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
       s_log.fine(
           "find - #"
               + list.size()
-              + " - clientId="
+              + " - AD_Client_ID="
               + AD_Client_ID
               + ", C_Currency_ID="
               + C_Currency_ID

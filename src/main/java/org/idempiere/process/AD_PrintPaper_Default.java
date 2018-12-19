@@ -41,7 +41,7 @@ public class AD_PrintPaper_Default extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId")) p_AD_Client_ID = para[i].getParameterAsInt();
+      else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
       else log.log(Level.SEVERE, "Unknown Parameter: " + name);
     }
     p_Record_ID = getRecord_ID();

@@ -138,7 +138,7 @@ public class MCost extends X_M_Cost {
             + " COALESCE(SUM(c.CurrentCostPriceLL),0) " // 6
             + " FROM M_Cost c"
             + " LEFT OUTER JOIN M_CostElement ce ON (c.M_CostElement_ID=ce.M_CostElement_ID) "
-            + "WHERE c.clientId=? AND c.orgId=?" //	#1/2
+            + "WHERE c.AD_Client_ID=? AND c.AD_Org_ID=?" //	#1/2
             + " AND c.M_Product_ID=?" //	#3
             + " AND (c.M_AttributeSetInstance_ID=? OR c.M_AttributeSetInstance_ID=0)" //	#4
             + " AND c.M_CostType_ID=? AND c.C_AcctSchema_ID=?" //	#5/6
@@ -440,13 +440,13 @@ public class MCost extends X_M_Cost {
     BigDecimal retValue = null;
     StringBuilder sql =
         new StringBuilder(
-                "SELECT currencyConvert(il.PriceActual, i.C_Currency_ID, ?, i.DateAcct, i.C_ConversionType_ID, il.clientId, il.orgId) ")
+                "SELECT currencyConvert(il.PriceActual, i.C_Currency_ID, ?, i.DateAcct, i.C_ConversionType_ID, il.AD_Client_ID, il.orgId) ")
             // ,il.PriceActual, il.QtyInvoiced, i.DateInvoiced, il.Line
             .append("FROM C_InvoiceLine il ")
             .append(" INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) ")
             .append("WHERE il.M_Product_ID=?")
             .append(" AND i.IsSOTrx='N'");
-    if (AD_Org_ID != 0) sql.append(" AND il.orgId=?");
+    if (AD_Org_ID != 0) sql.append(" AND il.AD_Org_ID=?");
     else if (M_ASI_ID != 0) sql.append(" AND il.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY i.DateInvoiced DESC, il.Line DESC");
     //
@@ -489,15 +489,15 @@ public class MCost extends X_M_Cost {
     BigDecimal retValue = null;
     StringBuilder sql =
         new StringBuilder(
-                "SELECT currencyConvert(ol.PriceCost, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.clientId, ol.orgId),")
+                "SELECT currencyConvert(ol.PriceCost, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.AD_Client_ID, ol.orgId),")
             .append(
-                " currencyConvert(ol.PriceActual, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.clientId, ol.orgId) ")
+                " currencyConvert(ol.PriceActual, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.AD_Client_ID, ol.orgId) ")
             //	,ol.PriceCost,ol.PriceActual, ol.QtyOrdered, o.DateOrdered, ol.Line
             .append("FROM C_OrderLine ol")
             .append(" INNER JOIN C_Order o ON (ol.C_Order_ID=o.C_Order_ID) ")
             .append("WHERE ol.M_Product_ID=?")
             .append(" AND o.IsSOTrx='N'");
-    if (AD_Org_ID != 0) sql.append(" AND ol.orgId=?");
+    if (AD_Org_ID != 0) sql.append(" AND ol.AD_Org_ID=?");
     else if (M_ASI_ID != 0) sql.append(" AND ol.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY o.DateOrdered DESC, ol.Line DESC");
     //
@@ -541,8 +541,8 @@ public class MCost extends X_M_Cost {
   public static BigDecimal getPOPrice(MProduct product, int C_OrderLine_ID, int C_Currency_ID) {
     BigDecimal retValue = null;
     String sql =
-        "SELECT currencyConvert(ol.PriceCost, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.clientId, ol.orgId),"
-            + " currencyConvert(ol.PriceActual, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.clientId, ol.orgId) "
+        "SELECT currencyConvert(ol.PriceCost, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.AD_Client_ID, ol.orgId),"
+            + " currencyConvert(ol.PriceActual, o.C_Currency_ID, ?, o.DateAcct, o.C_ConversionType_ID, ol.AD_Client_ID, ol.orgId) "
             //	,ol.PriceCost,ol.PriceActual, ol.QtyOrdered, o.DateOrdered, ol.Line
             + "FROM C_OrderLine ol"
             + " INNER JOIN C_Order o ON (ol.C_Order_ID=o.C_Order_ID) "
@@ -590,7 +590,7 @@ public class MCost extends X_M_Cost {
     //	For all Products
     String sql =
         "SELECT * FROM M_Product p "
-            + "WHERE clientId=?"
+            + "WHERE AD_Client_ID=?"
             + " AND EXISTS (SELECT * FROM M_CostDetail cd "
             + "WHERE p.M_Product_ID=cd.M_Product_ID AND Processed='N')";
     PreparedStatement pstmt = null;
@@ -794,13 +794,13 @@ public class MCost extends X_M_Cost {
     StringBuilder sql =
         new StringBuilder("SELECT t.MovementQty, mi.Qty, il.QtyInvoiced, il.PriceActual,")
             .append(
-                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.clientId, i.orgId, t.M_Transaction_ID ")
+                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.AD_Client_ID, i.AD_Org_ID, t.M_Transaction_ID ")
             .append("FROM M_Transaction t")
             .append(" INNER JOIN M_MatchInv mi ON (t.M_InOutLine_ID=mi.M_InOutLine_ID)")
             .append(" INNER JOIN C_InvoiceLine il ON (mi.C_InvoiceLine_ID=il.C_InvoiceLine_ID)")
             .append(" INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) ")
             .append("WHERE t.M_Product_ID=?");
-    if (AD_Org_ID != 0) sql.append(" AND t.orgId=?");
+    if (AD_Org_ID != 0) sql.append(" AND t.AD_Org_ID=?");
     else if (M_AttributeSetInstance_ID != 0) sql.append(" AND t.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY t.M_Transaction_ID");
 
@@ -897,13 +897,13 @@ public class MCost extends X_M_Cost {
         new StringBuilder(
                 "SELECT t.MovementQty, mp.Qty, ol.QtyOrdered, ol.PriceCost, ol.PriceActual,") //	1..5
             .append(" o.C_Currency_ID, o.DateAcct, o.C_ConversionType_ID,") // 	6..8
-            .append(" o.clientId, o.orgId, t.M_Transaction_ID ") // 	9..11
+            .append(" o.AD_Client_ID, o.AD_Org_ID, t.M_Transaction_ID ") // 	9..11
             .append("FROM M_Transaction t")
             .append(" INNER JOIN M_MatchPO mp ON (t.M_InOutLine_ID=mp.M_InOutLine_ID)")
             .append(" INNER JOIN C_OrderLine ol ON (mp.C_OrderLine_ID=ol.C_OrderLine_ID)")
             .append(" INNER JOIN C_Order o ON (ol.C_Order_ID=o.C_Order_ID) ")
             .append("WHERE t.M_Product_ID=?");
-    if (AD_Org_ID != 0) sql.append(" AND t.orgId=?");
+    if (AD_Org_ID != 0) sql.append(" AND t.AD_Org_ID=?");
     else if (M_AttributeSetInstance_ID != 0) sql.append(" AND t.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY t.M_Transaction_ID");
 
@@ -1001,13 +1001,13 @@ public class MCost extends X_M_Cost {
     StringBuilder sql =
         new StringBuilder("SELECT t.MovementQty, mi.Qty, il.QtyInvoiced, il.PriceActual,")
             .append(
-                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.clientId, i.orgId, t.M_Transaction_ID ")
+                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.AD_Client_ID, i.AD_Org_ID, t.M_Transaction_ID ")
             .append("FROM M_Transaction t")
             .append(" INNER JOIN M_MatchInv mi ON (t.M_InOutLine_ID=mi.M_InOutLine_ID)")
             .append(" INNER JOIN C_InvoiceLine il ON (mi.C_InvoiceLine_ID=il.C_InvoiceLine_ID)")
             .append(" INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) ")
             .append("WHERE t.M_Product_ID=?");
-    if (AD_Org_ID != 0) sql.append(" AND t.orgId=?");
+    if (AD_Org_ID != 0) sql.append(" AND t.AD_Org_ID=?");
     else if (M_AttributeSetInstance_ID != 0) sql.append(" AND t.M_AttributeSetInstance_ID=?");
     sql.append(" ORDER BY t.M_Transaction_ID");
 
@@ -1124,13 +1124,13 @@ public class MCost extends X_M_Cost {
     StringBuilder sql =
         new StringBuilder("SELECT t.MovementQty, mi.Qty, il.QtyInvoiced, il.PriceActual,")
             .append(
-                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.clientId, i.orgId, t.M_Transaction_ID ")
+                " i.C_Currency_ID, i.DateAcct, i.C_ConversionType_ID, i.AD_Client_ID, i.AD_Org_ID, t.M_Transaction_ID ")
             .append("FROM M_Transaction t")
             .append(" INNER JOIN M_MatchInv mi ON (t.M_InOutLine_ID=mi.M_InOutLine_ID)")
             .append(" INNER JOIN C_InvoiceLine il ON (mi.C_InvoiceLine_ID=il.C_InvoiceLine_ID)")
             .append(" INNER JOIN C_Invoice i ON (il.C_Invoice_ID=i.C_Invoice_ID) ")
             .append("WHERE t.M_Product_ID=?");
-    if (AD_Org_ID != 0) sql.append(" AND t.orgId=?");
+    if (AD_Org_ID != 0) sql.append(" AND t.AD_Org_ID=?");
     else if (M_AttributeSetInstance_ID != 0) sql.append(" AND t.M_AttributeSetInstance_ID=?");
     //	Starting point?
     sql.append(" ORDER BY t.M_Transaction_ID DESC");
@@ -1271,7 +1271,7 @@ public class MCost extends X_M_Cost {
     MCost cost = null;
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     final String whereClause =
-        "clientId=? AND orgId=?"
+        "AD_Client_ID=? AND AD_Org_ID=?"
             + " AND M_Product_ID=?"
             + " AND M_AttributeSetInstance_ID=?"
             + " AND M_CostType_ID=? AND C_AcctSchema_ID=?"
@@ -1330,7 +1330,7 @@ public class MCost extends X_M_Cost {
       int M_AttributeSetInstance_ID,
       String trxName) {
     final String whereClause =
-        "clientId=? AND orgId=?"
+        "AD_Client_ID=? AND AD_Org_ID=?"
             + " AND "
             + I_M_Cost.COLUMNNAME_M_Product_ID
             + "=?"
@@ -1588,8 +1588,8 @@ public class MCost extends X_M_Cost {
    */
   public String toString() {
     StringBuilder sb = new StringBuilder("MCost[");
-    sb.append("clientId=").append( getClientId());
-    if ( getOrgId() != 0) sb.append(",orgId=").append( getOrgId());
+    sb.append("AD_Client_ID=").append( getClientId());
+    if ( getOrgId() != 0) sb.append(",AD_Org_ID=").append( getOrgId());
     sb.append(",M_Product_ID=").append(getM_Product_ID());
     if (getMAttributeSetInstance_ID() != 0)
       sb.append(",AD_ASI_ID=").append(getMAttributeSetInstance_ID());

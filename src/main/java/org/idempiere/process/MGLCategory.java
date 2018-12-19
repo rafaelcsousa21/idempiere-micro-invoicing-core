@@ -41,7 +41,7 @@ public class MGLCategory extends X_GL_Category {
    */
   public static MGLCategory getDefault(Properties ctx, String CategoryType) {
     MGLCategory retValue = null;
-    String sql = "SELECT * FROM GL_Category " + "WHERE clientId=? AND IsDefault='Y'";
+    String sql = "SELECT * FROM GL_Category " + "WHERE AD_Client_ID=? AND IsDefault='Y'";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {

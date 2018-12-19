@@ -89,7 +89,7 @@ public class InvoiceGenerate extends SvrProcess {
       if (para[i].getParameter() == null) ;
       else if (name.equals("Selection")) p_Selection = "Y".equals(para[i].getParameter());
       else if (name.equals("DateInvoiced")) p_DateInvoiced = (Timestamp) para[i].getParameter();
-      else if (name.equals("orgId")) p_AD_Org_ID = para[i].getParameterAsInt();
+      else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
       else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
       else if (name.equals("C_Order_ID")) p_C_Order_ID = para[i].getParameterAsInt();
       else if (name.equals("ConsolidateDocument"))
@@ -121,7 +121,7 @@ public class InvoiceGenerate extends SvrProcess {
               + p_Selection
               + ", DateInvoiced="
               + p_DateInvoiced
-              + ", orgId="
+              + ", AD_Org_ID="
               + p_AD_Org_ID
               + ", C_BPartner_ID="
               + p_C_BPartner_ID
@@ -146,7 +146,7 @@ public class InvoiceGenerate extends SvrProcess {
       sql =
           new StringBuilder("SELECT * FROM C_Order o ")
               .append("WHERE DocStatus IN('CO','CL') AND IsSOTrx='Y'");
-      if (p_AD_Org_ID != 0) sql.append(" AND orgId=?");
+      if (p_AD_Org_ID != 0) sql.append(" AND AD_Org_ID=?");
       if (p_C_BPartner_ID != 0) sql.append(" AND C_BPartner_ID=?");
       if (p_C_Order_ID != 0) sql.append(" AND C_Order_ID=?");
       //

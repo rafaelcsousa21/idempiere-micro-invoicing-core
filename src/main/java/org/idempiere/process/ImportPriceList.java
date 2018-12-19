@@ -46,7 +46,7 @@ public class ImportPriceList extends SvrProcess {
     IProcessInfoParameter[] para = getParameter();
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
-      if (name.equals("clientId"))
+      if (name.equals("AD_Client_ID"))
         m_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("DeleteOldImported"))
         m_deleteOldImported = "Y".equals(para[i].getParameter());
@@ -69,12 +69,12 @@ public class ImportPriceList extends SvrProcess {
   protected String doIt() throws Exception {
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(m_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(m_AD_Client_ID);
 
     int m_discountschema_id =
         getSQLValue(
             null,
-            "SELECT MIN(M_DiscountSchema_ID) FROM M_DiscountSchema WHERE DiscountType='P' AND IsActive='Y' AND clientId=?",
+            "SELECT MIN(M_DiscountSchema_ID) FROM M_DiscountSchema WHERE DiscountType='P' AND IsActive='Y' AND AD_Client_ID=?",
             m_AD_Client_ID);
     if (m_discountschema_id <= 0) throw new AdempiereUserError("Price List Schema not configured");
 
@@ -91,10 +91,10 @@ public class ImportPriceList extends SvrProcess {
     // PricePrecision
     sql =
         new StringBuilder("UPDATE I_PriceList ")
-            .append("SET clientId = COALESCE (clientId, ")
+            .append("SET clientId = COALESCE (AD_Client_ID, ")
             .append(m_AD_Client_ID)
             .append("),")
-            .append(" orgId = COALESCE (orgId, 0),")
+            .append(" orgId = COALESCE (AD_Org_ID, 0),")
             .append(" IsActive = COALESCE (IsActive, 'Y'),")
             .append(" Created = COALESCE (Created, SysDate),")
             .append(" CreatedBy = COALESCE (CreatedBy, 0),")
@@ -115,7 +115,7 @@ public class ImportPriceList extends SvrProcess {
         new StringBuilder("UPDATE I_PriceList ")
             .append("SET C_BPartner_ID=(SELECT C_BPartner_ID FROM C_BPartner p")
             .append(
-                " WHERE I_PriceList.BPartner_Value=p.Value AND I_PriceList.clientId=p.clientId) ")
+                " WHERE I_PriceList.BPartner_Value=p.Value AND I_PriceList.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_BPartner_ID IS NULL AND BPartner_Value IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -136,7 +136,7 @@ public class ImportPriceList extends SvrProcess {
         new StringBuilder("UPDATE I_PriceList ")
             .append("SET M_Product_ID=(SELECT MAX(M_Product_ID) FROM M_Product p")
             .append(
-                " WHERE I_PriceList.ProductValue=p.Value AND I_PriceList.clientId=p.clientId) ")
+                " WHERE I_PriceList.ProductValue=p.Value AND I_PriceList.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL AND ProductValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -156,7 +156,7 @@ public class ImportPriceList extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_PriceList ")
             .append("SET M_PriceList_ID=(SELECT M_PriceList_ID FROM M_PriceList p")
-            .append(" WHERE I_PriceList.Name=p.Name AND I_PriceList.clientId=p.clientId) ")
+            .append(" WHERE I_PriceList.Name=p.Name AND I_PriceList.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
@@ -209,7 +209,7 @@ public class ImportPriceList extends SvrProcess {
             .append("SET ISO_Code=(SELECT ISO_Code FROM C_Currency c")
             .append(" INNER JOIN C_AcctSchema a ON (a.C_Currency_ID=c.C_Currency_ID)")
             .append(" INNER JOIN AD_ClientInfo ci ON (a.C_AcctSchema_ID=ci.C_AcctSchema1_ID)")
-            .append(" WHERE ci.clientId=I_PriceList.clientId) ")
+            .append(" WHERE ci.AD_Client_ID=I_PriceList.AD_Client_ID) ")
             .append("WHERE C_Currency_ID IS NULL AND ISO_Code IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -303,7 +303,7 @@ public class ImportPriceList extends SvrProcess {
           M_PriceList_ID =
               getSQLValue(
                   null,
-                  "SELECT M_PriceList_ID FROM M_PriceList WHERE IsActive='Y' AND clientId=? AND Name=?",
+                  "SELECT M_PriceList_ID FROM M_PriceList WHERE IsActive='Y' AND AD_Client_ID=? AND Name=?",
                   m_AD_Client_ID,
                   imp.getName());
           if (M_PriceList_ID < 0) M_PriceList_ID = 0;

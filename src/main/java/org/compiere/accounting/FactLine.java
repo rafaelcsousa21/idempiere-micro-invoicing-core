@@ -480,7 +480,7 @@ public final class FactLine extends X_Fact_Acct {
   public void setLocationFromOrg(int AD_Org_ID, boolean isFrom) {
     if (AD_Org_ID == 0) return;
     int C_Location_ID = 0;
-    String sql = "SELECT C_Location_ID FROM AD_OrgInfo WHERE orgId=?";
+    String sql = "SELECT C_Location_ID FROM AD_OrgInfo WHERE AD_Org_ID=?";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
@@ -689,7 +689,7 @@ public final class FactLine extends X_Fact_Acct {
     return super. getOrgId();
     //	Prio 1 - get from locator - if exist
     if (getM_Locator_ID() != 0) {
-      String sql = "SELECT orgId FROM M_Locator WHERE M_Locator_ID=? AND clientId=?";
+      String sql = "SELECT orgId FROM M_Locator WHERE M_Locator_ID=? AND AD_Client_ID=?";
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
@@ -701,12 +701,12 @@ public final class FactLine extends X_Fact_Acct {
           setAD_Org_ID(rs.getInt(1));
           if (log.isLoggable(Level.FINER))
             log.finer(
-                "orgId="
+                "AD_Org_ID="
                     + super. getOrgId()
                     + " (1 from M_Locator_ID="
                     + getM_Locator_ID()
                     + ")");
-        } else log.log(Level.SEVERE, "orgId - Did not find M_Locator_ID=" + getM_Locator_ID());
+        } else log.log(Level.SEVERE, "AD_Org_ID - Did not find M_Locator_ID=" + getM_Locator_ID());
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
@@ -720,18 +720,18 @@ public final class FactLine extends X_Fact_Acct {
     if (m_docLine != null && super. getOrgId() == 0) {
       setAD_Org_ID(m_docLine. getOrgId());
       if (log.isLoggable(Level.FINER))
-        log.finer("orgId=" + super. getOrgId() + " (2 from DocumentLine)");
+        log.finer("AD_Org_ID=" + super. getOrgId() + " (2 from DocumentLine)");
     }
     //	Prio 3 - get from doc - if not GL
     if (m_doc != null && super. getOrgId() == 0) {
       if (Doc.DOCTYPE_GLJournal.equals(m_doc.getDocumentType())) {
         setAD_Org_ID(m_acct. getOrgId()); // 	inter-company GL
         if (log.isLoggable(Level.FINER))
-          log.finer("orgId=" + super. getOrgId() + " (3 from Acct)");
+          log.finer("AD_Org_ID=" + super. getOrgId() + " (3 from Acct)");
       } else {
         setAD_Org_ID(m_doc. getOrgId());
         if (log.isLoggable(Level.FINER))
-          log.finer("orgId=" + super. getOrgId() + " (3 from Document)");
+          log.finer("AD_Org_ID=" + super. getOrgId() + " (3 from Document)");
       }
     }
     //	Prio 4 - get from account - if not GL
@@ -739,11 +739,11 @@ public final class FactLine extends X_Fact_Acct {
       if (Doc.DOCTYPE_GLJournal.equals(m_doc.getDocumentType())) {
         setAD_Org_ID(m_doc. getOrgId());
         if (log.isLoggable(Level.FINER))
-          log.finer("orgId=" + super. getOrgId() + " (4 from Document)");
+          log.finer("AD_Org_ID=" + super. getOrgId() + " (4 from Document)");
       } else {
         setAD_Org_ID(m_acct. getOrgId());
         if (log.isLoggable(Level.FINER))
-          log.finer("orgId=" + super. getOrgId() + " (4 from Acct)");
+          log.finer("AD_Org_ID=" + super. getOrgId() + " (4 from Acct)");
       }
     }
     return super. getOrgId();

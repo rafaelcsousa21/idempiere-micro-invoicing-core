@@ -1003,7 +1003,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
             + "WHERE po.C_OrderLine_ID=x.C_OrderLine_ID AND po.Qty=x.Qty "
             + "GROUP BY C_OrderLine_ID, Qty "
             + "HAVING COUNT(*) = 2) "
-            + " AND clientId=?"
+            + " AND AD_Client_ID=?"
             + "ORDER BY C_OrderLine_ID, M_InOutLine_ID";
     PreparedStatement pstmt = null;
     ResultSet rs = null;

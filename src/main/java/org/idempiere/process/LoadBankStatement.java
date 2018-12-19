@@ -66,10 +66,10 @@ public class LoadBankStatement extends SvrProcess {
       else log.log(Level.SEVERE, "Unknown Parameter: " + name);
     }
     m_AD_Client_ID = Env.getClientId(m_ctx);
-    if (log.isLoggable(Level.INFO)) log.info("clientId=" + m_AD_Client_ID);
+    if (log.isLoggable(Level.INFO)) log.info("AD_Client_ID=" + m_AD_Client_ID);
     m_AD_Org_ID = Env.getOrgId(m_ctx);
     if (log.isLoggable(Level.INFO)) {
-      log.info("orgId=" + m_AD_Org_ID);
+      log.info("AD_Org_ID=" + m_AD_Org_ID);
       log.info("C_BankStatementLoader_ID=" + m_C_BankStmtLoader_ID);
     }
   } //	prepare

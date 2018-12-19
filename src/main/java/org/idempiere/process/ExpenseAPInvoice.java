@@ -72,7 +72,7 @@ public class ExpenseAPInvoice extends SvrProcess {
         new StringBuilder("SELECT * ")
             .append("FROM S_TimeExpense e ")
             .append("WHERE e.Processed='Y'")
-            .append(" AND e.clientId=?"); // 	#1
+            .append(" AND e.AD_Client_ID=?"); // 	#1
     if (m_C_BPartner_ID != 0) sql.append(" AND e.C_BPartner_ID=?"); // 	#2
     if (m_DateFrom != null) sql.append(" AND e.DateReport >= ?"); // 	#3
     if (m_DateTo != null) sql.append(" AND e.DateReport <= ?"); // 	#4

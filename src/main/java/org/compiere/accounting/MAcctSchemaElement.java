@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MClient;
@@ -77,7 +78,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    * @return column name or "" if not found
    */
   public static String getColumnName(String elementType) {
-    if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Organization)) return "orgId";
+    if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Organization)) return "AD_Org_ID";
     else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Account))
       return I_C_ValidCombination.COLUMNNAME_Account_ID;
     else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_BPartner))
@@ -123,7 +124,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         MClient.get(Env.getCtx()).isMultiLingualDocument()
             && !language.equalsIgnoreCase(baseLanguage);
     if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Organization)) {
-      return "SELECT Value,Name FROM AD_Org WHERE orgId=";
+      return "SELECT Value,Name FROM AD_Org WHERE AD_Org_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Account)
         || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList1)
         || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList2)) {
@@ -158,7 +159,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             + ") WHERE o.C_Campaign_ID=";
       else return "SELECT Value,Name FROM C_Campaign WHERE C_Campaign_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx)) {
-      return "SELECT Value,Name FROM AD_Org WHERE orgId=";
+      return "SELECT Value,Name FROM AD_Org WHERE AD_Org_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Project)) {
       return "SELECT Value,Name FROM C_Project WHERE C_Project_ID=";
     } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_SalesRegion)) {
@@ -215,6 +216,9 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    */
   public MAcctSchemaElement(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MAcctSchemaElement
+  public MAcctSchemaElement(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MAcctSchemaElement
 
   /**
@@ -495,7 +499,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
 
     //	Resequence
     if (newRecord || is_ValueChanged(I_C_AcctSchema_Element.COLUMNNAME_SeqNo)) {
-      StringBuilder msguvd = new StringBuilder("clientId=").append( getClientId());
+      StringBuilder msguvd = new StringBuilder("AD_Client_ID=").append( getClientId());
       MAccount.updateValueDescription(getCtx(), msguvd.toString(), null);
     }
     return success;
@@ -518,7 +522,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             .append(id)
             .append(" WHERE ")
             .append(element)
-            .append(" IS NULL AND clientId=")
+            .append(" IS NULL AND AD_Client_ID=")
             .append( getClientId());
     int noC = executeUpdate(sql.toString(), null);
     //
@@ -558,7 +562,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
   protected boolean afterDelete(boolean success) {
     if (!success) return success;
     //	Update Account Info
-    MAccount.updateValueDescription(getCtx(), "clientId=" + getClientId(), null);
+    MAccount.updateValueDescription(getCtx(), "AD_Client_ID=" + getClientId(), null);
     //
     s_cache.clear();
     return success;

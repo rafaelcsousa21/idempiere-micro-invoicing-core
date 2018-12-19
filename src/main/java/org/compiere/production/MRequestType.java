@@ -63,7 +63,7 @@ public class MRequestType extends X_R_RequestType {
     int AD_Client_ID = Env.getClientId(ctx);
 
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
-    final String whereClause = "clientId IN (0," + AD_Client_ID + ")";
+    final String whereClause = "AD_Client_ID IN (0," + AD_Client_ID + ")";
     MRequestType retValue =
         new Query(ctx, I_R_RequestType.Table_Name, whereClause, null)
             .setOrderBy("IsDefault DESC, clientId DESC")
@@ -306,7 +306,7 @@ public class MRequestType extends X_R_RequestType {
       Timestamp reportDate,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "orgId";
+    String orgColumn = "AD_Org_ID";
     String bpColumn = "C_BPartner_ID";
     String pColumn = "M_Product_ID";
     //	PlannedAmt -> PlannedQty -> Count
@@ -366,7 +366,7 @@ public class MRequestType extends X_R_RequestType {
       Timestamp startDate,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "orgId";
+    String orgColumn = "AD_Org_ID";
     String bpColumn = "C_BPartner_ID";
     String pColumn = "M_Product_ID";
     //
@@ -429,7 +429,7 @@ public class MRequestType extends X_R_RequestType {
       int R_Status_ID,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "orgId";
+    String orgColumn = "AD_Org_ID";
     String bpColumn = "C_BPartner_ID";
     String pColumn = "M_Product_ID";
     //

@@ -15,6 +15,14 @@
  */
 package org.idempiere.process;
 
+import org.compiere.accounting.*;
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.orm.MSequence;
+import org.compiere.process.SvrProcess;
+import org.compiere.product.MDiscountSchemaLine;
+import org.compiere.product.MProductPrice;
+import org.idempiere.common.util.*;
+
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,18 +31,7 @@ import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
-import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.MClientInfo;
-import org.compiere.accounting.MProduct;
-import org.compiere.accounting.MUOMConversion;
-import org.compiere.accounting.ProductCost;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.orm.MSequence;
-import org.compiere.process.SvrProcess;
-import org.compiere.product.MDiscountSchemaLine;
-import org.compiere.product.MProductPrice;
-import org.idempiere.common.util.*;
-import org.idempiere.common.util.Env;
+
 import static software.hsharp.core.util.DBKt.*;
 
 /**
@@ -252,7 +249,7 @@ public class M_PriceList_Create extends SvrProcess {
         //
         int precision = rsCurgen.getInt("StdPrecision");
         sql = new StringBuilder("SELECT M_DiscountSchemaLine_ID");
-        sql.append(",clientId,orgId,IsActive,Created,Createdby,Updated,Updatedby");
+        sql.append(",AD_Client_ID,AD_Org_ID,IsActive,Created,Createdby,Updated,Updatedby");
         sql.append(",M_DiscountSchema_ID,SeqNo,M_Product_Category_ID,C_Bpartner_ID,M_Product_ID");
         sql.append(",ConversionDate,List_Base,List_Addamt,List_Discount,List_Rounding,List_MinAmt");
         sql.append(",List_MaxAmt,List_Fixed,Std_Base,Std_Addamt,Std_Discount,Std_Rounding");
@@ -294,9 +291,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(" FROM M_Product p, M_Product_PO po");
             sqlins.append(" WHERE p.M_Product_ID=po.M_Product_ID ");
             sqlins
-                .append(" AND	(p.clientId=")
-                .append(rsCurgen.getInt("clientId"))
-                .append(" OR p.clientId=0)");
+                .append(" AND	(p.AD_Client_ID=")
+                .append(rsCurgen.getInt("AD_Client_ID"))
+                .append(" OR p.AD_Client_ID=0)");
             sqlins.append(" AND	p.IsActive='Y' AND po.IsActive='Y' AND po.IsCurrentVendor='Y' ");
             //
             // Optional Restrictions
@@ -372,7 +369,7 @@ public class M_PriceList_Create extends SvrProcess {
                 .append(" AND (NULLIF(")
                 .append(rsDiscountLine.getInt("C_BPartner_ID"))
                 .append(",0) IS NULL OR EXISTS ");
-            sqlins.append("(SELECT M_Product_ID,C_Bpartner_ID,clientId,orgId,IsActive");
+            sqlins.append("(SELECT M_Product_ID,C_Bpartner_ID,AD_Client_ID,AD_Org_ID,IsActive");
             sqlins.append(",Created,CreatedBy,Updated,Updatedby,IsCurrentVendor,C_Uom_ID");
             sqlins.append(",C_Currency_ID,PriceList,PricePo,PriceEffective,PriceLastPo");
             sqlins.append(",PriceLastInv,VendorProductno,Upc,VendorCategory,Discontinued");
@@ -466,9 +463,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(p_PriceList_Version_ID);
             sqlins.append("      ,po.M_Product_ID ");
             sqlins.append("      ,");
-            sqlins.append(rsCurgen.getInt("clientId"));
+            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
             sqlins.append("      ,");
-            sqlins.append(rsCurgen.getInt("orgId"));
+            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
             sqlins.append("      ,'Y'");
             sqlins.append("      ,SysDate,");
             sqlins.append(currentUserID);
@@ -482,9 +479,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(",  ? , ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("clientId"));
+            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("orgId"));
+            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
             sqlins.append("),0)");
 
             //	Price Std
@@ -493,9 +490,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(", ? , ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("clientId"));
+            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("orgId"));
+            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
             sqlins.append("),0)");
 
             //	Price Limit
@@ -504,9 +501,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(",? , ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("clientId"));
+            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("orgId"));
+            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
             sqlins.append("),0)");
             sqlins.append(" FROM	M_Product_PO po ");
             sqlins.append(
@@ -591,16 +588,16 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(
                 " (M_ProductPrice_ID, M_ProductPrice_UU, M_PriceList_Version_ID, M_Product_ID,");
             sqlins.append(
-                " clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
+                " AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
             sqlins.append(" PriceList, PriceStd, PriceLimit)");
             sqlins.append(" SELECT ");
             sqlins.append("nextIdFunc(").append(seqproductpriceid).append(",'N')");
             sqlins.append(", generate_uuid(),");
             sqlins.append(p_PriceList_Version_ID);
             sqlins.append(", pp.M_Product_ID,");
-            sqlins.append(rsCurgen.getInt("clientId"));
+            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("orgId"));
+            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
             sqlins.append(", 'Y', SysDate,  ");
             sqlins.append(currentUserID);
             sqlins.append(", SysDate, ");
@@ -612,9 +609,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(", ?, ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("clientId"));
+            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("orgId"));
+            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
             sqlins.append("),0),");
             // Price Std
             sqlins.append("COALESCE(currencyConvert(pp.PriceStd,pl.C_Currency_ID, ");
@@ -622,9 +619,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(" , ? ,  ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("clientId"));
+            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("orgId"));
+            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
             sqlins.append("),0),");
             // Price Limit
             sqlins.append(" COALESCE(currencyConvert(pp.PriceLimit,pl.C_Currency_ID, ");
@@ -632,9 +629,9 @@ public class M_PriceList_Create extends SvrProcess {
             sqlins.append(" , ? , ");
             sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("clientId"));
+            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
             sqlins.append(", ");
-            sqlins.append(rsCurgen.getInt("orgId"));
+            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
             sqlins.append("),0)");
             sqlins.append(" FROM M_ProductPrice pp");
             sqlins.append(
@@ -716,7 +713,7 @@ public class M_PriceList_Create extends SvrProcess {
                   .getString(MDiscountSchemaLine.COLUMNNAME_Limit_Base)
                   .equals(MDiscountSchemaLine.LIMIT_BASE_ProductCost)) {
             MClientInfo m_clientInfo =
-                MClientInfo.get(getCtx(), rsCurgen.getInt("clientId"), null);
+                MClientInfo.get(getCtx(), rsCurgen.getInt("AD_Client_ID"), null);
             MAcctSchema as =
                 new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID(), null);
 
@@ -739,7 +736,7 @@ public class M_PriceList_Create extends SvrProcess {
                     new ProductCost(getCtx(), M_Product_ID, 0, null);
                 m_productCost.setQty(BigDecimal.ONE);
                 BigDecimal costs =
-                    m_productCost.getProductCosts(as, rsCurgen.getInt("orgId"), null, 0, false);
+                    m_productCost.getProductCosts(as, rsCurgen.getInt("AD_Org_ID"), null, 0, false);
 
                 if (costs == null || costs.signum() == 0) // 	zero costs OK
                 {

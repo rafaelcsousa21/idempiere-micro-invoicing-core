@@ -51,7 +51,7 @@ public class ImportReportLine extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId"))
+      else if (name.equals("AD_Client_ID"))
         m_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("PA_ReportLineSet_ID"))
         m_PA_ReportLineSet_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -71,7 +71,7 @@ public class ImportReportLine extends SvrProcess {
   protected String doIt() throws java.lang.Exception {
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(m_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(m_AD_Client_ID);
 
     //	****	Prepare	****
 
@@ -88,10 +88,10 @@ public class ImportReportLine extends SvrProcess {
     //	Set Client, Org, IsActive, Created/Updated
     sql =
         new StringBuilder("UPDATE I_ReportLine ")
-            .append("SET clientId = COALESCE (clientId, ")
+            .append("SET clientId = COALESCE (AD_Client_ID, ")
             .append(m_AD_Client_ID)
             .append("),")
-            .append(" orgId = COALESCE (orgId, 0),")
+            .append(" orgId = COALESCE (AD_Org_ID, 0),")
             .append(" IsActive = COALESCE (IsActive, 'Y'),")
             .append(" Created = COALESCE (Created, SysDate),")
             .append(" CreatedBy = COALESCE (CreatedBy, 0),")
@@ -110,7 +110,7 @@ public class ImportReportLine extends SvrProcess {
               .append("SET ReportLineSetName=(SELECT Name FROM PA_ReportLineSet r")
               .append(" WHERE PA_ReportLineSet_ID=")
               .append(m_PA_ReportLineSet_ID)
-              .append(" AND i.clientId=r.clientId) ")
+              .append(" AND i.AD_Client_ID=r.AD_Client_ID) ")
               .append("WHERE ReportLineSetName IS NULL AND PA_ReportLineSet_ID IS NULL")
               .append(" AND I_IsImported<>'Y'")
               .append(clientCheck);
@@ -121,7 +121,7 @@ public class ImportReportLine extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_ReportLine i ")
             .append("SET PA_ReportLineSet_ID=(SELECT PA_ReportLineSet_ID FROM PA_ReportLineSet r")
-            .append(" WHERE i.ReportLineSetName=r.Name AND i.clientId=r.clientId) ")
+            .append(" WHERE i.ReportLineSetName=r.Name AND i.AD_Client_ID=r.AD_Client_ID) ")
             .append("WHERE PA_ReportLineSet_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -151,7 +151,7 @@ public class ImportReportLine extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_ReportLine i ")
             .append("SET C_ElementValue_ID=(SELECT C_ElementValue_ID FROM C_ElementValue e")
-            .append(" WHERE i.ElementValue=e.Value AND i.clientId=e.clientId) ")
+            .append(" WHERE i.ElementValue=e.Value AND i.AD_Client_ID=e.AD_Client_ID) ")
             .append("WHERE C_ElementValue_ID IS NULL AND ElementValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -315,10 +315,10 @@ public class ImportReportLine extends SvrProcess {
       StringBuilder dbpst =
           new StringBuilder("INSERT INTO PA_ReportLine ")
               .append("(PA_ReportLine_ID,PA_ReportLineSet_ID,")
-              .append("clientId,orgId,IsActive,Created,CreatedBy,Updated,UpdatedBy,")
+              .append("AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,")
               .append("Name,SeqNo,IsPrinted,IsSummary,LineType)")
               .append("SELECT ?,PA_ReportLineSet_ID,")
-              .append("clientId,orgId,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,")
+              .append("AD_Client_ID,AD_Org_ID,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,")
               .append("Name,SeqNo,IsPrinted,IsSummary,LineType ")
               // jz + "FROM I_ReportLine "
               // + "WHERE PA_ReportLineSet_ID=? AND Name=? AND ROWNUM=1"		//	#2..3
@@ -416,10 +416,10 @@ public class ImportReportLine extends SvrProcess {
       StringBuilder dbpst =
           new StringBuilder("INSERT INTO PA_ReportSource ")
               .append("(PA_ReportSource_ID,")
-              .append("clientId,orgId,IsActive,Created,CreatedBy,Updated,UpdatedBy,")
+              .append("AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,")
               .append("PA_ReportLine_ID,ElementType,C_ElementValue_ID) ")
               .append("SELECT ?,")
-              .append("clientId,orgId,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,")
+              .append("AD_Client_ID,AD_Org_ID,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,")
               .append("PA_ReportLine_ID,'AC',C_ElementValue_ID ")
               .append("FROM I_ReportLine ")
               .append("WHERE I_ReportLine_ID=?")

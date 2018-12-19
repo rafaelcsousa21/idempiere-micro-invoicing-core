@@ -60,7 +60,7 @@ public class ImportAccount extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId"))
+      else if (name.equals("AD_Client_ID"))
         m_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("C_Element_ID"))
         m_C_Element_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -84,7 +84,7 @@ public class ImportAccount extends SvrProcess {
   protected String doIt() throws java.lang.Exception {
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(m_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(m_AD_Client_ID);
 
     //	****	Prepare	****
 
@@ -101,10 +101,10 @@ public class ImportAccount extends SvrProcess {
     //	Set Client, Org, IsActive, Created/Updated
     sql =
         new StringBuilder("UPDATE I_ElementValue ")
-            .append("SET clientId = COALESCE (clientId, ")
+            .append("SET clientId = COALESCE (AD_Client_ID, ")
             .append(m_AD_Client_ID)
             .append("),")
-            .append(" orgId = COALESCE (orgId, 0),")
+            .append(" orgId = COALESCE (AD_Org_ID, 0),")
             .append(" IsActive = COALESCE (IsActive, 'Y'),")
             .append(" Created = COALESCE (Created, SysDate),")
             .append(" CreatedBy = COALESCE (CreatedBy, 0),")
@@ -137,7 +137,7 @@ public class ImportAccount extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_ElementValue i ")
             .append("SET C_Element_ID = (SELECT C_Element_ID FROM C_Element e")
-            .append(" WHERE i.ElementName=e.Name AND i.clientId=e.clientId)")
+            .append(" WHERE i.ElementName=e.Name AND i.AD_Client_ID=e.AD_Client_ID)")
             .append("WHERE C_Element_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -278,7 +278,7 @@ public class ImportAccount extends SvrProcess {
         new StringBuilder("UPDATE I_ElementValue i ")
             .append("SET C_ElementValue_ID=(SELECT C_ElementValue_ID FROM C_ElementValue ev")
             .append(" INNER JOIN C_Element e ON (ev.C_Element_ID=e.C_Element_ID)")
-            .append(" WHERE i.C_Element_ID=e.C_Element_ID AND i.clientId=e.clientId")
+            .append(" WHERE i.C_Element_ID=e.C_Element_ID AND i.AD_Client_ID=e.AD_Client_ID")
             .append(" AND i.Value=ev.Value) ")
             .append("WHERE C_ElementValue_ID IS NULL")
             .append(" AND I_IsImported='N'")
@@ -370,7 +370,7 @@ public class ImportAccount extends SvrProcess {
         new StringBuilder("UPDATE I_ElementValue i ")
             .append("SET ParentElementValue_ID=(SELECT C_ElementValue_ID")
             .append(" FROM C_ElementValue ev WHERE i.C_Element_ID=ev.C_Element_ID")
-            .append(" AND i.ParentValue=ev.Value AND i.clientId=ev.clientId) ")
+            .append(" AND i.ParentValue=ev.Value AND i.AD_Client_ID=ev.AD_Client_ID) ")
             .append("WHERE ParentElementValue_ID IS NULL")
             .append(" AND I_IsImported='Y'")
             .append(clientCheck);
@@ -392,7 +392,7 @@ public class ImportAccount extends SvrProcess {
             .append("FROM I_ElementValue i")
             .append(" INNER JOIN C_Element e ON (i.C_Element_ID=e.C_Element_ID) ")
             .append("WHERE i.C_ElementValue_ID IS NOT NULL AND e.AD_Tree_ID IS NOT NULL")
-            .append(" AND i.I_IsImported='Y' AND Processed='N' AND i.clientId=")
+            .append(" AND i.I_IsImported='Y' AND Processed='N' AND i.AD_Client_ID=")
             .append(m_AD_Client_ID);
     int noParentUpdate = 0;
     try {

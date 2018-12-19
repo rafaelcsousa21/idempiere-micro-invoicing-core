@@ -61,11 +61,11 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
       Properties ctx, int AD_Org_ID, Timestamp dateAcct, int C_Currency_ID, String trxName) {
     //	Existing Journal
     final String whereClause =
-        "C_Cash.orgId=?" //	#1
+        "C_Cash.AD_Org_ID=?" //	#1
             + " AND TRUNC(C_Cash.StatementDate)=?" //	#2
             + " AND C_Cash.Processed='N'"
             + " AND EXISTS (SELECT * FROM C_CashBook cb "
-            + "WHERE C_Cash.C_CashBook_ID=cb.C_CashBook_ID AND cb.orgId=C_Cash.orgId"
+            + "WHERE C_Cash.C_CashBook_ID=cb.C_CashBook_ID AND cb.AD_Org_ID=C_Cash.orgId"
             + " AND cb.C_Currency_ID=?)"; //	#3
     MCash retValue =
         new Query(ctx, I_C_Cash.Table_Name, whereClause, trxName)
@@ -77,7 +77,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     //	Get CashBook
     MCashBook cb = MCashBook.get(ctx, AD_Org_ID, C_Currency_ID);
     if (cb == null) {
-      s_log.warning("No CashBook for orgId=" + AD_Org_ID + ", C_Currency_ID=" + C_Currency_ID);
+      s_log.warning("No CashBook for AD_Org_ID=" + AD_Org_ID + ", C_Currency_ID=" + C_Currency_ID);
       return null;
     }
 

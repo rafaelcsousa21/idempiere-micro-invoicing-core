@@ -43,7 +43,7 @@ public class BOMFlagValidate extends SvrProcess {
     StringBuilder sql =
         new StringBuilder("SELECT Name, M_Product_ID FROM M_Product WHERE IsBOM = 'Y' AND ")
             .append("M_Product_ID NOT IN (SELECT M_Product_ID FROM M_Product_BOM ) AND ");
-    if (p_M_Product_Category_ID == 0) sql.append("clientId= ?");
+    if (p_M_Product_Category_ID == 0) sql.append("AD_Client_ID= ?");
     else sql.append("M_Product_Category_ID= ?");
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -72,7 +72,7 @@ public class BOMFlagValidate extends SvrProcess {
           new StringBuilder(
                   "UPDATE M_Product SET IsBOM = 'N' WHERE IsBOM = 'Y' AND M_Product_ID NOT IN ")
               .append("(SELECT M_Product_ID FROM M_Product_BOM ) AND ");
-      if (p_M_Product_Category_ID == 0) update.append("clientId= ?");
+      if (p_M_Product_Category_ID == 0) update.append("AD_Client_ID= ?");
       else update.append("M_Product_Category_ID= ?");
       upstmt = prepareStatement(update.toString(), null);
       if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
@@ -92,7 +92,7 @@ public class BOMFlagValidate extends SvrProcess {
     StringBuilder sql =
         new StringBuilder("SELECT Name, M_Product_ID FROM M_Product WHERE IsBOM = 'N' AND ")
             .append("M_Product_ID IN (SELECT M_Product_ID FROM M_Product_BOM ) AND ");
-    if (p_M_Product_Category_ID == 0) sql.append("clientId= ?");
+    if (p_M_Product_Category_ID == 0) sql.append("AD_Client_ID= ?");
     else sql.append("M_Product_Category_ID= ?");
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -118,7 +118,7 @@ public class BOMFlagValidate extends SvrProcess {
     StringBuilder update =
         new StringBuilder("UPDATE M_Product SET ISBOM = 'Y' WHERE IsBOM = 'N' AND M_Product_ID IN ")
             .append("(SELECT M_Product_ID FROM M_Product_BOM ) AND ");
-    if (p_M_Product_Category_ID == 0) update.append("clientId= ?");
+    if (p_M_Product_Category_ID == 0) update.append("AD_Client_ID= ?");
     else update.append("M_Product_Category_ID= ?");
     PreparedStatement upstmt = null;
     try {

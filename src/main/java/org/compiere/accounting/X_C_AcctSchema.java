@@ -699,6 +699,6 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
 
   @Override
   public int getTableId() {
-    return 0;
+    return I_C_AcctSchema.Table_ID;
   }
 }

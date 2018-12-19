@@ -98,7 +98,7 @@ public class MAcctSchema extends X_C_AcctSchema {
                 " AND EXISTS (SELECT * FROM C_AcctSchema_Default d WHERE C_AcctSchema.C_AcctSchema_ID=d.C_AcctSchema_ID)");
     params.add("Y");
     if (AD_Client_ID != 0) {
-      whereClause.append(" AND clientId=?");
+      whereClause.append(" AND AD_Client_ID=?");
       params.add(AD_Client_ID);
     }
 

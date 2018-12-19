@@ -79,7 +79,7 @@ public class BOMValidate extends SvrProcess {
     int counter = 0;
     PreparedStatement pstmt = null;
     String sql = "SELECT * FROM M_Product " + "WHERE IsBOM='Y' AND ";
-    if (p_M_Product_Category_ID == 0) sql += "clientId=? ";
+    if (p_M_Product_Category_ID == 0) sql += "AD_Client_ID=? ";
     else sql += "M_Product_Category_ID=? ";
     if (!p_IsReValidate) sql += "AND IsVerified<>'Y' ";
     sql += "ORDER BY Name";

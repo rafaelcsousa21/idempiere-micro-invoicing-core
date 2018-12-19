@@ -236,7 +236,7 @@ public class MQuery implements Serializable {
     if (columnName.equals("M_LocatorTo_ID")) return "M_Locator_ID";
     if (columnName.equals("AD_OrgBP_ID")
         || columnName.equals("AD_OrgTrx_ID")
-        || columnName.equals("AD_OrgTo_ID")) return "orgId";
+        || columnName.equals("AD_OrgTo_ID")) return "AD_Org_ID";
     return columnName;
   } //	getZoomColumnName
 

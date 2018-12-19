@@ -61,9 +61,9 @@ public class ImportGLJournal extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId"))
+      else if (name.equals("AD_Client_ID"))
         m_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("orgId"))
+      else if (name.equals("AD_Org_ID"))
         m_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("C_AcctSchema_ID"))
         m_C_AcctSchema_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -92,7 +92,7 @@ public class ImportGLJournal extends SvrProcess {
     if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(m_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(m_AD_Client_ID);
 
     //	****	Prepare	****
 
@@ -133,7 +133,7 @@ public class ImportGLJournal extends SvrProcess {
     //	Set Default Client, Doc Org, AcctSchema, DatAcct
     sql =
         new StringBuilder("UPDATE I_GLJournal ")
-            .append("SET clientId = COALESCE (clientId,")
+            .append("SET clientId = COALESCE (AD_Client_ID,")
             .append(m_AD_Client_ID)
             .append("),")
             .append(" AD_OrgDoc_ID = COALESCE (AD_OrgDoc_ID,")
@@ -166,7 +166,7 @@ public class ImportGLJournal extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET C_AcctSchema_ID=(SELECT a.C_AcctSchema_ID FROM C_AcctSchema a")
-            .append(" WHERE i.AcctSchemaName=a.Name AND i.clientId=a.clientId) ")
+            .append(" WHERE i.AcctSchemaName=a.Name AND i.AD_Client_ID=a.AD_Client_ID) ")
             .append("WHERE C_AcctSchema_ID IS NULL AND AcctSchemaName IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -175,7 +175,7 @@ public class ImportGLJournal extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_GLJournal i ")
             .append(
-                "SET C_AcctSchema_ID=(SELECT c.C_AcctSchema1_ID FROM AD_ClientInfo c WHERE c.clientId=i.clientId) ")
+                "SET C_AcctSchema_ID=(SELECT c.C_AcctSchema1_ID FROM AD_ClientInfo c WHERE c.AD_Client_ID=i.AD_Client_ID) ")
             .append("WHERE C_AcctSchema_ID IS NULL AND AcctSchemaName IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -187,7 +187,7 @@ public class ImportGLJournal extends SvrProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Invalid AcctSchema, '")
             .append("WHERE (C_AcctSchema_ID IS NULL OR C_AcctSchema_ID=0")
             .append(
-                " OR NOT EXISTS (SELECT * FROM C_AcctSchema a WHERE i.clientId=a.clientId))")
+                " OR NOT EXISTS (SELECT * FROM C_AcctSchema a WHERE i.AD_Client_ID=a.AD_Client_ID))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -208,7 +208,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET C_DocType_ID=(SELECT d.C_DocType_ID FROM C_DocType d")
             .append(
-                " WHERE d.Name=i.DocTypeName AND d.DocBaseType='GLJ' AND i.clientId=d.clientId) ")
+                " WHERE d.Name=i.DocTypeName AND d.DocBaseType='GLJ' AND i.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND DocTypeName IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -219,7 +219,7 @@ public class ImportGLJournal extends SvrProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Invalid DocType, '")
             .append("WHERE (C_DocType_ID IS NULL OR C_DocType_ID=0")
             .append(
-                " OR NOT EXISTS (SELECT * FROM C_DocType d WHERE i.clientId=d.clientId AND d.DocBaseType='GLJ'))")
+                " OR NOT EXISTS (SELECT * FROM C_DocType d WHERE i.AD_Client_ID=d.AD_Client_ID AND d.DocBaseType='GLJ'))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -229,7 +229,7 @@ public class ImportGLJournal extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET GL_Category_ID=(SELECT c.GL_Category_ID FROM GL_Category c")
-            .append(" WHERE c.Name=i.CategoryName AND i.clientId=c.clientId) ")
+            .append(" WHERE c.Name=i.CategoryName AND i.AD_Client_ID=c.AD_Client_ID) ")
             .append("WHERE GL_Category_ID IS NULL AND CategoryName IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -257,7 +257,7 @@ public class ImportGLJournal extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET C_Currency_ID=(SELECT a.C_Currency_ID FROM C_AcctSchema a")
-            .append(" WHERE a.C_AcctSchema_ID=i.C_AcctSchema_ID AND a.clientId=i.clientId)")
+            .append(" WHERE a.C_AcctSchema_ID=i.C_AcctSchema_ID AND a.AD_Client_ID=i.AD_Client_ID)")
             .append("WHERE C_Currency_ID IS NULL AND ISO_Code IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -326,9 +326,9 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append(
                 "SET CurrencyRate=(SELECT MAX(r.MultiplyRate) FROM C_Conversion_Rate r, C_AcctSchema s")
-            .append(" WHERE s.C_AcctSchema_ID=i.C_AcctSchema_ID AND s.clientId=i.clientId")
+            .append(" WHERE s.C_AcctSchema_ID=i.C_AcctSchema_ID AND s.AD_Client_ID=i.AD_Client_ID")
             .append(" AND r.C_Currency_ID=i.C_Currency_ID AND r.C_Currency_ID_TO=s.C_Currency_ID")
-            .append(" AND r.clientId=i.clientId AND r.orgId=i.AD_OrgDoc_ID")
+            .append(" AND r.AD_Client_ID=i.AD_Client_ID AND r.AD_Org_ID=i.AD_OrgDoc_ID")
             .append(" AND r.C_ConversionType_ID=i.C_ConversionType_ID")
             .append(" AND i.DateAcct BETWEEN r.ValidFrom AND r.ValidTo ")
             //	ORDER BY ValidFrom DESC
@@ -341,9 +341,9 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append(
                 "SET CurrencyRate=(SELECT MAX(r.MultiplyRate) FROM C_Conversion_Rate r, C_AcctSchema s")
-            .append(" WHERE s.C_AcctSchema_ID=i.C_AcctSchema_ID AND s.clientId=i.clientId")
+            .append(" WHERE s.C_AcctSchema_ID=i.C_AcctSchema_ID AND s.AD_Client_ID=i.AD_Client_ID")
             .append(" AND r.C_Currency_ID=i.C_Currency_ID AND r.C_Currency_ID_TO=s.C_Currency_ID")
-            .append(" AND r.clientId=i.clientId")
+            .append(" AND r.AD_Client_ID=i.AD_Client_ID")
             .append(" AND r.C_ConversionType_ID=i.C_ConversionType_ID")
             .append(" AND i.DateAcct BETWEEN r.ValidFrom AND r.ValidTo ")
             //	ORDER BY ValidFrom DESC
@@ -367,7 +367,7 @@ public class ImportGLJournal extends SvrProcess {
             .append("SET C_Period_ID=(SELECT MAX(p.C_Period_ID) FROM C_Period p")
             .append(" INNER JOIN C_Year y ON (y.C_Year_ID=p.C_Year_ID)")
             .append(" INNER JOIN AD_ClientInfo c ON (c.C_Calendar_ID=y.C_Calendar_ID)")
-            .append(" WHERE c.clientId=i.clientId")
+            .append(" WHERE c.AD_Client_ID=i.AD_Client_ID")
             // globalqss - cruiz - Bug [ 1577712 ] Financial Period Bug
             .append(
                 " AND i.DateAcct BETWEEN p.StartDate AND p.EndDate AND p.IsActive='Y' AND p.PeriodType='S') ")
@@ -383,7 +383,7 @@ public class ImportGLJournal extends SvrProcess {
             .append("(SELECT C_Period_ID FROM C_Period p")
             .append(" INNER JOIN C_Year y ON (y.C_Year_ID=p.C_Year_ID)")
             .append(" INNER JOIN AD_ClientInfo c ON (c.C_Calendar_ID=y.C_Calendar_ID) ")
-            .append(" WHERE c.clientId=i.clientId")
+            .append(" WHERE c.AD_Client_ID=i.AD_Client_ID")
             // globalqss - cruiz - Bug [ 1577712 ] Financial Period Bug
             .append(
                 " AND i.DateAcct BETWEEN p.StartDate AND p.EndDate AND p.IsActive='Y' AND p.PeriodType='S')")
@@ -429,7 +429,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET orgId=COALESCE((SELECT o.orgId FROM AD_Org o")
             .append(
-                " WHERE o.Value=i.OrgValue AND o.IsSummary='N' AND i.clientId=o.clientId),orgId) ")
+                " WHERE o.Value=i.OrgValue AND o.IsSummary='N' AND i.AD_Client_ID=o.AD_Client_ID),orgId) ")
             .append("WHERE (orgId IS NULL OR orgId=0) AND OrgValue IS NOT NULL")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'");
@@ -451,7 +451,7 @@ public class ImportGLJournal extends SvrProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Invalid Org, '")
             .append("WHERE (orgId IS NULL OR orgId=0")
             .append(
-                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.orgId=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
+                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -467,7 +467,7 @@ public class ImportGLJournal extends SvrProcess {
                 " INNER JOIN C_AcctSchema_Element ase ON (e.C_Element_ID=ase.C_Element_ID AND ase.ElementType='AC')")
             .append(" WHERE ev.Value=i.AccountValue AND ev.IsSummary='N'")
             .append(
-                " AND i.C_AcctSchema_ID=ase.C_AcctSchema_ID AND i.clientId=ev.clientId) ")
+                " AND i.C_AcctSchema_ID=ase.C_AcctSchema_ID AND i.AD_Client_ID=ev.AD_Client_ID) ")
             .append("WHERE Account_ID IS NULL AND AccountValue IS NOT NULL")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'")
@@ -489,7 +489,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET C_BPartner_ID=(SELECT bp.C_BPartner_ID FROM C_BPartner bp")
             .append(
-                " WHERE bp.Value=i.BPartnerValue AND bp.IsSummary='N' AND i.clientId=bp.clientId) ")
+                " WHERE bp.Value=i.BPartnerValue AND bp.IsSummary='N' AND i.AD_Client_ID=bp.AD_Client_ID) ")
             .append("WHERE C_BPartner_ID IS NULL AND BPartnerValue IS NOT NULL")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'")
@@ -511,7 +511,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET M_Product_ID=(SELECT MAX(p.M_Product_ID) FROM M_Product p")
             .append(" WHERE (p.Value=i.ProductValue OR p.UPC=i.UPC OR p.SKU=i.SKU)")
-            .append(" AND p.IsSummary='N' AND i.clientId=p.clientId) ")
+            .append(" AND p.IsSummary='N' AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append(
                 "WHERE M_Product_ID IS NULL AND (ProductValue IS NOT NULL OR UPC IS NOT NULL OR SKU IS NOT NULL)")
             .append(
@@ -535,7 +535,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET C_Project_ID=(SELECT p.C_Project_ID FROM C_Project p")
             .append(
-                " WHERE p.Value=i.ProjectValue AND p.IsSummary='N' AND i.clientId=p.clientId) ")
+                " WHERE p.Value=i.ProjectValue AND p.IsSummary='N' AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_Project_ID IS NULL AND ProjectValue IS NOT NULL")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'")
@@ -559,7 +559,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET C_Campaign_ID=(SELECT p.C_Campaign_ID FROM C_Campaign p")
             .append(
-                " WHERE p.Value=i.CampaignValue AND p.IsSummary='N' AND i.clientId=p.clientId) ")
+                " WHERE p.Value=i.CampaignValue AND p.IsSummary='N' AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_Campaign_ID IS NULL AND CampaignValue IS NOT NULL")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'")
@@ -581,7 +581,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET C_Activity_ID=(SELECT p.C_Activity_ID FROM C_Activity p")
             .append(
-                " WHERE p.Value=i.ActivityValue AND p.IsSummary='N' AND i.clientId=p.clientId) ")
+                " WHERE p.Value=i.ActivityValue AND p.IsSummary='N' AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_Activity_ID IS NULL AND ActivityValue IS NOT NULL")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'")
@@ -603,7 +603,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET C_SalesRegion_ID=(SELECT p.C_SalesRegion_ID FROM C_SalesRegion p")
             .append(
-                " WHERE p.Value=i.SalesRegionValue AND p.IsSummary='N' AND i.clientId=p.clientId) ")
+                " WHERE p.Value=i.SalesRegionValue AND p.IsSummary='N' AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_SalesRegion_ID IS NULL AND SalesRegionValue IS NOT NULL")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'")
@@ -625,7 +625,7 @@ public class ImportGLJournal extends SvrProcess {
         new StringBuilder("UPDATE I_GLJournal i ")
             .append("SET AD_OrgTrx_ID=(SELECT o.orgId FROM AD_Org o")
             .append(
-                " WHERE o.Value=i.OrgTrxValue AND o.IsSummary='N' AND i.clientId=o.clientId) ")
+                " WHERE o.Value=i.OrgTrxValue AND o.IsSummary='N' AND i.AD_Client_ID=o.AD_Client_ID) ")
             .append("WHERE AD_OrgTrx_ID IS NULL AND OrgTrxValue IS NOT NULL")
             .append(
                 " AND (C_ValidCombination_ID IS NULL OR C_ValidCombination_ID=0) AND I_IsImported<>'Y'")

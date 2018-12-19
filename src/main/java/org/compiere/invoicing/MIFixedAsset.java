@@ -73,7 +73,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
       }
       key = key.toUpperCase();
       whereClause.append(TO_STRING(key));
-      whereClause.append(" AND clientId=").append( getClientId());
+      whereClause.append(" AND AD_Client_ID=").append( getClientId());
       String sql = "SELECT M_Product_ID FROM M_Product WHERE " + whereClause.toString();
       M_Product_ID = getSQLValueEx(trxName, sql);
       if (log.isLoggable(Level.FINE)) log.fine("M_Product_ID=" + M_Product_ID + " -- sql=" + sql);

@@ -56,7 +56,7 @@ public class Aging extends SvrProcess {
       else if (name.equals("IsSOTrx")) p_IsSOTrx = "Y".equals(para[i].getParameter());
       else if (name.equals("C_Currency_ID"))
         p_C_Currency_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("orgId"))
+      else if (name.equals("AD_Org_ID"))
         p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("C_BP_Group_ID"))
         p_C_BP_Group_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -81,7 +81,7 @@ public class Aging extends SvrProcess {
     throw new NotImplementedException();
     /*
     if (log.isLoggable(Level.INFO)) log.info("StatementDate=" + p_StatementDate + ", IsSOTrx=" + p_IsSOTrx
-    	+ ", C_Currency_ID=" + p_C_Currency_ID + ", orgId=" + p_AD_Org_ID
+    	+ ", C_Currency_ID=" + p_C_Currency_ID + ", AD_Org_ID=" + p_AD_Org_ID
     	+ ", C_BP_Group_ID=" + p_C_BP_Group_ID + ", C_BPartner_ID=" + p_C_BPartner_ID
     	+ ", IsListInvoices=" + p_IsListInvoices);
     //FR 1933937
@@ -104,7 +104,7 @@ public class Aging extends SvrProcess {
     }
     else
     {
-    	String s = ",oi.C_Currency_ID," + p_C_Currency_ID + ",oi.DateAcct,oi.C_ConversionType_ID,oi.clientId,oi.orgId)";
+    	String s = ",oi.C_Currency_ID," + p_C_Currency_ID + ",oi.DateAcct,oi.C_ConversionType_ID,oi.AD_Client_ID,oi.orgId)";
     	sql.append("currencyConvert(oi.GrandTotal").append(s);		//	11
     	if (!p_DateAcct)
     	{
@@ -139,7 +139,7 @@ public class Aging extends SvrProcess {
     }
     if (p_AD_Org_ID > 0) // BF 2655587
     {
-    	sql.append(" AND oi.orgId=").append(p_AD_Org_ID);
+    	sql.append(" AND oi.AD_Org_ID=").append(p_AD_Org_ID);
     }
 
     if (p_DateAcct)//FR 1933937
@@ -208,7 +208,7 @@ public class Aging extends SvrProcess {
     			aging = new MAging (getCtx(), AD_PInstance_ID, p_StatementDate,
     				C_BPartner_ID, C_Currency_ID,
     				C_Invoice_ID, C_InvoicePaySchedule_ID,
-    				C_BP_Group_ID, orgId, DueDate, IsSOTrx, null);
+    				C_BP_Group_ID, AD_Org_ID, DueDate, IsSOTrx, null);
     			aging.setC_Activity_ID(C_Activity_ID);
     			aging.setC_Campaign_ID(C_Campaign_ID);
     			aging.setC_Project_ID(C_Project_ID);

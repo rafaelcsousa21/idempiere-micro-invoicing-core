@@ -118,7 +118,7 @@ public class AllocationAuto extends SvrProcess {
         pstmt = null;
       }
     } else {
-      String sql = "SELECT C_BPartner_ID FROM C_BPartner WHERE clientId=? ORDER BY Value";
+      String sql = "SELECT C_BPartner_ID FROM C_BPartner WHERE AD_Client_ID=? ORDER BY Value";
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {

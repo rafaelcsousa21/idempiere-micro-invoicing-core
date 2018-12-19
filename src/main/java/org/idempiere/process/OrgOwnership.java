@@ -45,7 +45,7 @@ public class OrgOwnership extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("orgId"))
+      else if (name.equals("AD_Org_ID"))
         p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("M_Warehouse_ID"))
         p_M_Warehouse_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -68,9 +68,9 @@ public class OrgOwnership extends SvrProcess {
    * @throws Exception if not successful
    */
   protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("doIt - orgId=" + p_AD_Org_ID);
+    if (log.isLoggable(Level.INFO)) log.info("doIt - AD_Org_ID=" + p_AD_Org_ID);
     if (p_AD_Org_ID < 0)
-      throw new IllegalArgumentException("OrgOwnership - invalid orgId=" + p_AD_Org_ID);
+      throw new IllegalArgumentException("OrgOwnership - invalid AD_Org_ID=" + p_AD_Org_ID);
 
     generalOwnership();
 
@@ -96,11 +96,11 @@ public class OrgOwnership extends SvrProcess {
     //	Set Warehouse
     StringBuilder sql = new StringBuilder();
     sql.append("UPDATE M_Warehouse ")
-        .append("SET orgId=")
+        .append("SET AD_Org_ID=")
         .append(p_AD_Org_ID)
         .append(" WHERE M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
-        .append(" AND clientId=")
+        .append(" AND AD_Client_ID=")
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
@@ -110,11 +110,11 @@ public class OrgOwnership extends SvrProcess {
     //	Set Accounts
     sql = new StringBuilder();
     sql.append("UPDATE M_Warehouse_Acct ")
-        .append("SET orgId=")
+        .append("SET AD_Org_ID=")
         .append(p_AD_Org_ID)
         .append(" WHERE M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
-        .append(" AND clientId=")
+        .append(" AND AD_Client_ID=")
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
@@ -124,11 +124,11 @@ public class OrgOwnership extends SvrProcess {
     //	Set Locators
     sql = new StringBuilder();
     sql.append("UPDATE M_Locator ")
-        .append("SET orgId=")
+        .append("SET AD_Org_ID=")
         .append(p_AD_Org_ID)
         .append(" WHERE M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
-        .append(" AND clientId=")
+        .append(" AND AD_Client_ID=")
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
@@ -138,13 +138,13 @@ public class OrgOwnership extends SvrProcess {
     //	Set Storage
     sql = new StringBuilder();
     sql.append("UPDATE M_StorageOnHand	 s ")
-        .append("SET orgId=")
+        .append("SET AD_Org_ID=")
         .append(p_AD_Org_ID)
         .append(" WHERE EXISTS ")
         .append("(SELECT * FROM M_Locator l WHERE l.M_Locator_ID=s.M_Locator_ID")
         .append(" AND l.M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
-        .append(") AND clientId=")
+        .append(") AND AD_Client_ID=")
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
@@ -154,11 +154,11 @@ public class OrgOwnership extends SvrProcess {
     //	Set Storage Reservation
     sql = new StringBuilder();
     sql.append("UPDATE M_StorageReservation	 s ")
-        .append("SET orgId=")
+        .append("SET AD_Org_ID=")
         .append(p_AD_Org_ID)
         .append(" WHERE M_Warehouse_ID=")
         .append(p_M_Warehouse_ID)
-        .append(" AND clientId=")
+        .append(" AND AD_Client_ID=")
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
@@ -181,14 +181,14 @@ public class OrgOwnership extends SvrProcess {
               + ", M_Product_ID="
               + p_M_Product_ID);
 
-    StringBuilder set = new StringBuilder(" SET orgId=").append(p_AD_Org_ID);
+    StringBuilder set = new StringBuilder(" SET AD_Org_ID=").append(p_AD_Org_ID);
     if (p_M_Product_Category_ID > 0)
       set.append(" WHERE EXISTS (SELECT * FROM M_Product p")
           .append(" WHERE p.M_Product_ID=x.M_Product_ID AND p.M_Product_Category_ID=")
           .append(p_M_Product_Category_ID)
           .append(")");
     else set.append(" WHERE M_Product_ID=").append(p_M_Product_ID);
-    set.append(" AND clientId=")
+    set.append(" AND AD_Client_ID=")
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
@@ -235,14 +235,14 @@ public class OrgOwnership extends SvrProcess {
               + ", C_BPartner_ID="
               + p_C_BPartner_ID);
 
-    StringBuilder set = new StringBuilder(" SET orgId=").append(p_AD_Org_ID);
+    StringBuilder set = new StringBuilder(" SET AD_Org_ID=").append(p_AD_Org_ID);
     if (p_C_BP_Group_ID > 0)
       set.append(
               " WHERE EXISTS (SELECT * FROM C_BPartner bp WHERE bp.C_BPartner_ID=x.C_BPartner_ID AND bp.C_BP_Group_ID=")
           .append(p_C_BP_Group_ID)
           .append(")");
     else set.append(" WHERE C_BPartner_ID=").append(p_C_BPartner_ID);
-    set.append(" AND clientId=")
+    set.append(" AND AD_Client_ID=")
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
@@ -285,7 +285,7 @@ public class OrgOwnership extends SvrProcess {
   /** Set General Ownership (i.e. Org to 0). In general for items with two parents */
   private void generalOwnership() {
     StringBuilder set =
-        new StringBuilder("SET orgId=0 WHERE clientId=")
+        new StringBuilder("SET orgId=0 WHERE AD_Client_ID=")
             .append(getClientId())
             .append(" AND orgId<>0");
 

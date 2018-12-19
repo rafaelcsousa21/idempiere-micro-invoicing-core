@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.model.I_C_Location;
 import org.compiere.orm.BasePOName;
@@ -30,6 +31,10 @@ public class X_C_AcctSchema_Element extends BasePOName
   public X_C_AcctSchema_Element(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_C_AcctSchema_Element(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MAcctSchemaElement
+
 
   /**
    * AccessLevel

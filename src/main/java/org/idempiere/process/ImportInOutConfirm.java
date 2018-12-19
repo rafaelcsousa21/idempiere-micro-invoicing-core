@@ -46,7 +46,7 @@ public class ImportInOutConfirm extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId"))
+      else if (name.equals("AD_Client_ID"))
         p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("DeleteOldImported"))
         p_DeleteOldImported = "Y".equals(para[i].getParameter());
@@ -66,7 +66,7 @@ public class ImportInOutConfirm extends SvrProcess {
     if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(p_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(p_AD_Client_ID);
 
     //	Delete Old Imported
     if (p_DeleteOldImported) {
@@ -95,7 +95,7 @@ public class ImportInOutConfirm extends SvrProcess {
     //	Set Client from Name
     sql =
         new StringBuilder("UPDATE I_InOutLineConfirm i ")
-            .append("SET clientId=COALESCE (clientId,")
+            .append("SET clientId=COALESCE (AD_Client_ID,")
             .append(p_AD_Client_ID)
             .append(") ")
             .append("WHERE (clientId IS NULL OR clientId=0)")

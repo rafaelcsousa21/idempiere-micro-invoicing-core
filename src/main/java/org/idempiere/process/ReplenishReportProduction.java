@@ -230,11 +230,11 @@ public class ReplenishReportProduction extends SvrProcess {
    */
   private void fillTable(MWarehouse wh) throws Exception {
     StringBuilder sql = new StringBuilder("INSERT INTO T_Replenish ");
-    sql.append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, clientId, orgId,");
+    sql.append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, AD_Client_ID, AD_Org_ID,");
     sql.append(" ReplenishType, Level_Min, Level_Max,");
     sql.append(" C_BPartner_ID, Order_Min, Order_Pack, QtyToOrder, ReplenishmentCreate) ");
     sql.append("SELECT ").append(getAD_PInstance_ID());
-    sql.append(", r.M_Warehouse_ID, r.M_Product_ID, r.clientId, r.orgId,");
+    sql.append(", r.M_Warehouse_ID, r.M_Product_ID, r.AD_Client_ID, r.AD_Org_ID,");
     sql.append(" r.ReplenishType, r.Level_Min, r.Level_Max,");
     sql.append(" po.C_BPartner_ID, po.Order_Min, po.Order_Pack, 0, ");
     if (p_ReplenishmentCreate == null) sql.append("null");
@@ -256,11 +256,11 @@ public class ReplenishReportProduction extends SvrProcess {
 
     if (p_C_BPartner_ID == 0) {
       sql = new StringBuilder("INSERT INTO T_Replenish ");
-      sql.append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, clientId, orgId,");
+      sql.append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, AD_Client_ID, AD_Org_ID,");
       sql.append(" ReplenishType, Level_Min, Level_Max,");
       sql.append(" C_BPartner_ID, Order_Min, Order_Pack, QtyToOrder, ReplenishmentCreate) ");
       sql.append("SELECT ").append(getAD_PInstance_ID());
-      sql.append(", r.M_Warehouse_ID, r.M_Product_ID, r.clientId, r.orgId,");
+      sql.append(", r.M_Warehouse_ID, r.M_Product_ID, r.AD_Client_ID, r.AD_Org_ID,");
       sql.append(" r.ReplenishType, r.Level_Min, r.Level_Max,");
       sql.append(" 0, 1, 1, 0, ");
       if (p_ReplenishmentCreate == null) sql.append("null");

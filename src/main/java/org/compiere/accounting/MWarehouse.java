@@ -69,7 +69,7 @@ public class MWarehouse extends X_M_Warehouse {
    * @return warehouse
    */
   public static MWarehouse[] getForOrg(Properties ctx, int AD_Org_ID) {
-    final String whereClause = "orgId=?";
+    final String whereClause = "AD_Org_ID=?";
     List<MWarehouse> list =
         new Query(ctx, I_M_Warehouse.Table_Name, whereClause, null)
             .setParameters(AD_Org_ID)
@@ -87,7 +87,7 @@ public class MWarehouse extends X_M_Warehouse {
    * @return warehouse
    */
   public static MWarehouse[] getInTransitForOrg(Properties ctx, int AD_Org_ID) {
-    final String whereClause = "IsInTransit=? AND orgId=?";
+    final String whereClause = "IsInTransit=? AND AD_Org_ID=?";
     List<MWarehouse> list =
         new Query(ctx, I_M_Warehouse.Table_Name, whereClause, null)
             .setParameters("Y", AD_Org_ID)

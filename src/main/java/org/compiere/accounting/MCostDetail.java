@@ -751,7 +751,7 @@ public class MCostDetail extends X_M_CostDetail {
         new Query(product.getCtx(), I_M_CostDetail.Table_Name, whereClause, trxName)
             .setParameters(product.getM_Product_ID(), false)
             .setOrderBy(
-                "C_AcctSchema_ID, M_CostElement_ID, orgId, M_AttributeSetInstance_ID, Created")
+                "C_AcctSchema_ID, M_CostElement_ID, AD_Org_ID, M_AttributeSetInstance_ID, Created")
             .list();
     for (MCostDetail cd : list) {
       if (cd.process()) // 	saves

@@ -204,7 +204,7 @@ public class CommissionCalc extends SvrProcess {
     		}
     		//	Organization
     		if (lines[i].getOrg_ID() != 0)
-    			sql.append(" AND h.orgId=").append(lines[i].getOrg_ID());
+    			sql.append(" AND h.AD_Org_ID=").append(lines[i].getOrg_ID());
     		//	BPartner
     		if (lines[i].getC_BPartner_ID() != 0)
     			sql.append(" AND h.C_BPartner_ID=").append(lines[i].getC_BPartner_ID());

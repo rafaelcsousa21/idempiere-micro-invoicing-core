@@ -196,7 +196,7 @@ public class CostUpdate extends SvrProcess {
             + "WHERE NOT EXISTS (SELECT * FROM M_Cost c WHERE c.M_Product_ID=p.M_Product_ID"
             + " AND c.M_CostType_ID=? AND c.C_AcctSchema_ID=? AND c.M_CostElement_ID=?"
             + " AND c.M_AttributeSetInstance_ID=0) "
-            + "AND clientId=?";
+            + "AND AD_Client_ID=?";
     if (p_M_Product_Category_ID != 0) sql += " AND M_Product_Category_ID=?";
     int counter = 0;
     PreparedStatement pstmt = null;

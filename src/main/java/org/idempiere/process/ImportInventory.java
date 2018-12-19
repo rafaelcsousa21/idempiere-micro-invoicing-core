@@ -80,9 +80,9 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId"))
+      else if (name.equals("AD_Client_ID"))
         p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("orgId"))
+      else if (name.equals("AD_Org_ID"))
         p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("M_Locator_ID"))
         p_M_Locator_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -140,7 +140,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
 
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(p_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(p_AD_Client_ID);
 
     //	****	Prepare	****
 
@@ -157,10 +157,10 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     //	Set Client, Org, Location, IsActive, Created/Updated
     sql =
         new StringBuilder("UPDATE I_Inventory ")
-            .append("SET clientId = COALESCE (clientId,")
+            .append("SET clientId = COALESCE (AD_Client_ID,")
             .append(p_AD_Client_ID)
             .append("),")
-            .append(" orgId = CASE WHEN COALESCE(orgId,0)=0 THEN ")
+            .append(" orgId = CASE WHEN COALESCE(AD_Org_ID,0)=0 THEN ")
             .append(p_AD_Org_ID)
             .append(" ELSE orgId END,");
     if (p_MovementDate != null)
@@ -187,7 +187,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Invalid Org, '")
             .append("WHERE (orgId IS NULL OR orgId=0")
             .append(
-                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.orgId=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
+                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -198,7 +198,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
         new StringBuilder("UPDATE I_Inventory i ")
             .append("SET C_DocType_ID=(SELECT d.C_DocType_ID FROM C_DocType d")
             .append(
-                " WHERE d.Name=i.DocTypeName AND d.DocBaseType='MMI' AND i.clientId=d.clientId) ")
+                " WHERE d.Name=i.DocTypeName AND d.DocBaseType='MMI' AND i.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND DocTypeName IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -217,7 +217,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Inventory i ")
             .append("SET M_Locator_ID=(SELECT MAX(M_Locator_ID) FROM M_Locator l")
-            .append(" WHERE i.LocatorValue=l.Value AND i.clientId=l.clientId) ")
+            .append(" WHERE i.LocatorValue=l.Value AND i.AD_Client_ID=l.AD_Client_ID) ")
             .append("WHERE M_Locator_ID IS NULL AND LocatorValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -226,7 +226,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Inventory i ")
             .append("SET M_Locator_ID=(SELECT MAX(M_Locator_ID) FROM M_Locator l")
-            .append(" WHERE i.X=l.X AND i.Y=l.Y AND i.Z=l.Z AND i.clientId=l.clientId) ")
+            .append(" WHERE i.X=l.X AND i.Y=l.Y AND i.Z=l.Z AND i.AD_Client_ID=l.AD_Client_ID) ")
             .append(
                 "WHERE M_Locator_ID IS NULL AND X IS NOT NULL AND Y IS NOT NULL AND Z IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
@@ -288,7 +288,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Inventory i ")
             .append("SET M_Product_ID=(SELECT MAX(M_Product_ID) FROM M_Product p")
-            .append(" WHERE i.Value=p.Value AND i.clientId=p.clientId) ")
+            .append(" WHERE i.Value=p.Value AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL AND Value IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -297,7 +297,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Inventory i ")
             .append("SET M_Product_ID=(SELECT MAX(M_Product_ID) FROM M_Product p")
-            .append(" WHERE i.UPC=p.UPC AND i.clientId=p.clientId) ")
+            .append(" WHERE i.UPC=p.UPC AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL AND UPC IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -316,7 +316,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Inventory o ")
             .append("SET C_Charge_ID=(SELECT C_Charge_ID FROM C_Charge p")
-            .append(" WHERE o.ChargeName=p.Name AND o.clientId=p.clientId) ")
+            .append(" WHERE o.ChargeName=p.Name AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_Charge_ID IS NULL AND ChargeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -605,7 +605,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
 
   @Override
   public String getWhereClause() {
-    StringBuilder msgreturn = new StringBuilder(" AND clientId=").append(p_AD_Client_ID);
+    StringBuilder msgreturn = new StringBuilder(" AND AD_Client_ID=").append(p_AD_Client_ID);
     return msgreturn.toString();
   }
 } //	ImportInventory

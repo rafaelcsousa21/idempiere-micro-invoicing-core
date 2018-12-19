@@ -120,21 +120,21 @@ public class PaySelectionCreateFrom extends SvrProcess {
             //	Open
             .append(" currencyConvert(invoiceOpen(i.C_Invoice_ID, i.C_InvoicePaySchedule_ID)")
             .append(
-                ",i.C_Currency_ID, ?,?, i.C_ConversionType_ID,i.clientId,i.orgId) AS PayAmt,") //	2 ##p1/p2 Currency_To,PayDate
+                ",i.C_Currency_ID, ?,?, i.C_ConversionType_ID,i.AD_Client_ID,i.orgId) AS PayAmt,") //	2 ##p1/p2 Currency_To,PayDate
             //	Discount
             .append(
                 " currencyConvert(invoiceDiscount(i.C_Invoice_ID,?,i.C_InvoicePaySchedule_ID)") //	##p3 PayDate
             .append(
-                ",i.C_Currency_ID, ?,?,i.C_ConversionType_ID,i.clientId,i.orgId) AS DiscountAmt,") //	3 ##p4/p5 Currency_To,PayDate
+                ",i.C_Currency_ID, ?,?,i.C_ConversionType_ID,i.AD_Client_ID,i.orgId) AS DiscountAmt,") //	3 ##p4/p5 Currency_To,PayDate
             .append(" PaymentRule, IsSOTrx, ") // 4..5
             .append(" currencyConvert(invoiceWriteOff(i.C_Invoice_ID) ")
             .append(
-                ",i.C_Currency_ID, ?,?,i.C_ConversionType_ID,i.clientId,i.orgId) AS WriteOffAmt ") //	6 ##p6/p7 Currency_To,PayDate
+                ",i.C_Currency_ID, ?,?,i.C_ConversionType_ID,i.AD_Client_ID,i.orgId) AS WriteOffAmt ") //	6 ##p6/p7 Currency_To,PayDate
             .append("FROM C_Invoice_v i WHERE ");
     if (X_C_Order.PAYMENTRULE_DirectDebit.equals(p_PaymentRule)) sql.append("IsSOTrx='Y'");
     else sql.append("IsSOTrx='N'");
     sql.append(" AND IsPaid='N' AND DocStatus IN ('CO','CL')")
-        .append(" AND clientId=?") // 	##p8
+        .append(" AND AD_Client_ID=?") // 	##p8
         //	Existing Payments - Will reselect Invoice if prepared but not paid
         .append(" AND NOT EXISTS (SELECT * FROM C_PaySelectionLine psl")
         .append(

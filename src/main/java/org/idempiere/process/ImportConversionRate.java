@@ -53,9 +53,9 @@ public class ImportConversionRate extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId"))
+      else if (name.equals("AD_Client_ID"))
         p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("orgId"))
+      else if (name.equals("AD_Org_ID"))
         p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("C_ConversionType_ID"))
         p_C_ConversionType_ID = ((BigDecimal) para[i].getParameter()).intValue();
@@ -76,9 +76,9 @@ public class ImportConversionRate extends SvrProcess {
    */
   protected String doIt() throws Exception {
     StringBuilder msglog =
-        new StringBuilder("doIt - clientId=")
+        new StringBuilder("doIt - AD_Client_ID=")
             .append(p_AD_Client_ID)
-            .append(",orgId=")
+            .append(",AD_Org_ID=")
             .append(p_AD_Org_ID)
             .append(",C_ConversionType_ID=")
             .append(p_C_ConversionType_ID)
@@ -90,7 +90,7 @@ public class ImportConversionRate extends SvrProcess {
     //
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(p_AD_Client_ID);
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(p_AD_Client_ID);
     //	****	Prepare	****
 
     //	Delete Old Imported
@@ -106,10 +106,10 @@ public class ImportConversionRate extends SvrProcess {
     //	Set Client, Org, Location, IsActive, Created/Updated
     sql =
         new StringBuilder("UPDATE I_Conversion_Rate ")
-            .append("SET clientId = COALESCE (clientId,")
+            .append("SET clientId = COALESCE (AD_Client_ID,")
             .append(p_AD_Client_ID)
             .append("),")
-            .append(" orgId = COALESCE (orgId,")
+            .append(" orgId = COALESCE (AD_Org_ID,")
             .append(p_AD_Org_ID)
             .append("),");
     if (p_C_ConversionType_ID != 0)
@@ -142,7 +142,7 @@ public class ImportConversionRate extends SvrProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Invalid Org, '")
             .append("WHERE (orgId IS NULL")
             .append(
-                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.orgId=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
+                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);

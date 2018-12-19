@@ -45,7 +45,7 @@ public class MReplenish extends X_M_Replenish {
     return new Query(ctx, I_M_Replenish.Table_Name, whereClause, trxName)
         .setParameters(M_ProductID, Env.getOrgId(ctx))
         .setClient_ID()
-        .setOrderBy("orgId")
+        .setOrderBy("AD_Org_ID")
         .setOnlyActiveRecords(true)
         .list();
   }

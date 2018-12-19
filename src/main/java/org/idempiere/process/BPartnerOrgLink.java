@@ -51,7 +51,7 @@ public class BPartnerOrgLink extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("orgId")) p_AD_Org_ID = para[i].getParameterAsInt();
+      else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
       else if (name.equals("AD_OrgType_ID")) p_AD_OrgType_ID = para[i].getParameterAsInt();
       else if (name.equals("AD_Role_ID")) p_AD_Role_ID = para[i].getParameterAsInt();
       else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
@@ -70,7 +70,7 @@ public class BPartnerOrgLink extends SvrProcess {
       log.info(
           "C_BPartner_ID="
               + p_C_BPartner_ID
-              + ", orgId="
+              + ", AD_Org_ID="
               + p_AD_Org_ID
               + ", AD_OrgType_ID="
               + p_AD_OrgType_ID

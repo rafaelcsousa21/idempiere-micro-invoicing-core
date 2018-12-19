@@ -115,14 +115,14 @@ public class InvoiceNGL extends SvrProcess {
     String dateStr = TO_DATE(p_DateReval, true);
     sql =
         new StringBuilder(
-                "INSERT INTO T_InvoiceGL (clientId, orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
+                "INSERT INTO T_InvoiceGL (AD_Client_ID, AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
             .append(" AD_PInstance_ID, C_Invoice_ID, GrandTotal, OpenAmt, ")
             .append(" Fact_Acct_ID, AmtSourceBalance, AmtAcctBalance, ")
             .append(" AmtRevalDr, AmtRevalCr, C_DocTypeReval_ID, IsAllCurrencies, ")
             .append(" DateReval, C_ConversionTypeReval_ID, AmtRevalDrDiff, AmtRevalCrDiff, APAR) ")
             //	--
             .append(
-                "SELECT i.clientId, i.orgId, i.IsActive, i.Created,i.CreatedBy, i.Updated,i.UpdatedBy,")
+                "SELECT i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.Created,i.CreatedBy, i.Updated,i.UpdatedBy,")
             .append(getAD_PInstance_ID())
             .append(", i.C_Invoice_ID, i.GrandTotal, invoiceOpen(i.C_Invoice_ID, 0), ")
             .append(" fa.Fact_Acct_ID, fa.AmtSourceDr-fa.AmtSourceCr, fa.AmtAcctDr-fa.AmtAcctCr, ")
@@ -131,12 +131,12 @@ public class InvoiceNGL extends SvrProcess {
             .append(dateStr)
             .append(", ")
             .append(p_C_ConversionTypeReval_ID)
-            .append(", i.clientId, i.orgId),")
+            .append(", i.AD_Client_ID, i.orgId),")
             .append(" currencyConvert(fa.AmtSourceCr, i.C_Currency_ID, a.C_Currency_ID, ")
             .append(dateStr)
             .append(", ")
             .append(p_C_ConversionTypeReval_ID)
-            .append(", i.clientId, i.orgId),")
+            .append(", i.AD_Client_ID, i.orgId),")
             .append((p_C_DocTypeReval_ID == 0 ? "NULL" : String.valueOf(p_C_DocTypeReval_ID)))
             .append(", ")
             .append((p_IsAllCurrencies ? "'Y'," : "'N',"))
@@ -231,7 +231,7 @@ public class InvoiceNGL extends SvrProcess {
     List<X_T_InvoiceGL> list =
         new Query(getCtx(), X_T_InvoiceGL.Table_Name, whereClause, null)
             .setParameters(getAD_PInstance_ID())
-            .setOrderBy("orgId")
+            .setOrderBy("AD_Org_ID")
             .list();
     // FR: [ 2214883 ] Remove SQL code and Replace for Query
 

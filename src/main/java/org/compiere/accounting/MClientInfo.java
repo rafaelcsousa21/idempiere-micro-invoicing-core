@@ -122,7 +122,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
     MClientInfo info = (MClientInfo) s_cache.get(key);
     if (info != null) return info;
     //
-    String sql = "SELECT * FROM AD_ClientInfo WHERE clientId=?";
+    String sql = "SELECT * FROM AD_ClientInfo WHERE AD_Client_ID=?";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {

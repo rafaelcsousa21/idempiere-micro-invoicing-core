@@ -73,7 +73,7 @@ public class RequisitionPOCreate extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
-      else if (name.equals("orgId")) p_AD_Org_ID = para[i].getParameterAsInt();
+      else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
       else if (name.equals("M_Warehouse_ID")) p_M_Warehouse_ID = para[i].getParameterAsInt();
       else if (name.equals("DateDoc")) {
         p_DateDoc_From = (Timestamp) para[i].getParameter();
@@ -121,7 +121,7 @@ public class RequisitionPOCreate extends SvrProcess {
     //
     if (log.isLoggable(Level.INFO))
       log.info(
-          "orgId="
+          "AD_Org_ID="
               + p_AD_Org_ID
               + ", M_Warehouse_ID="
               + p_M_Warehouse_ID
@@ -145,7 +145,7 @@ public class RequisitionPOCreate extends SvrProcess {
     ArrayList<Object> params = new ArrayList<Object>();
     StringBuilder whereClause = new StringBuilder("C_OrderLine_ID IS NULL");
     if (p_AD_Org_ID > 0) {
-      whereClause.append(" AND orgId=?");
+      whereClause.append(" AND AD_Org_ID=?");
       params.add(p_AD_Org_ID);
     }
     if (p_M_Product_ID > 0) {

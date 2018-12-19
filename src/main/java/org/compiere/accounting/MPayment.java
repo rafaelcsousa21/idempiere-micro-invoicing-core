@@ -778,7 +778,7 @@ public class MPayment extends X_C_Payment
     //
     String sql =
         "SELECT SUM(currencyConvert(al.Amount,"
-            + "ah.C_Currency_ID, p.C_Currency_ID,ah.DateTrx,p.C_ConversionType_ID, al.clientId,al.orgId)) "
+            + "ah.C_Currency_ID, p.C_Currency_ID,ah.DateTrx,p.C_ConversionType_ID, al.AD_Client_ID,al.orgId)) "
             + "FROM C_AllocationLine al"
             + " INNER JOIN C_AllocationHdr ah ON (al.C_AllocationHdr_ID=ah.C_AllocationHdr_ID) "
             + " INNER JOIN C_Payment p ON (al.C_Payment_ID=p.C_Payment_ID) "
@@ -846,7 +846,7 @@ public class MPayment extends X_C_Payment
     int counter = 0;
     String sql = "SELECT * FROM C_Payment " + "WHERE IsAllocated='N' AND DocStatus IN ('CO','CL')";
     if (C_BPartner_ID > 1) sql += " AND C_BPartner_ID=?";
-    else sql += " AND clientId=" + Env.getClientId(ctx);
+    else sql += " AND AD_Client_ID=" + Env.getClientId(ctx);
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
@@ -1363,7 +1363,7 @@ public class MPayment extends X_C_Payment
   public void setC_DocType_ID(boolean isReceipt) {
     setIsReceipt(isReceipt);
     String sql =
-        "SELECT C_DocType_ID FROM C_DocType WHERE IsActive='Y' AND clientId=? AND DocBaseType=? ORDER BY IsDefault DESC";
+        "SELECT C_DocType_ID FROM C_DocType WHERE IsActive='Y' AND AD_Client_ID=? AND DocBaseType=? ORDER BY IsDefault DESC";
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {

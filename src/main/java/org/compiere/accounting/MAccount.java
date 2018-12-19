@@ -124,7 +124,7 @@ public class MAccount extends X_C_ValidCombination {
       int UserElement2_ID,
       String trxName) {
     StringBuilder info = new StringBuilder();
-    info.append("clientId=").append(AD_Client_ID).append(",orgId=").append(AD_Org_ID);
+    info.append("AD_Client_ID=").append(AD_Client_ID).append(",AD_Org_ID=").append(AD_Org_ID);
     //	Schema
     info.append(",C_AcctSchema_ID=").append(C_AcctSchema_ID);
     //	Account
@@ -133,8 +133,8 @@ public class MAccount extends X_C_ValidCombination {
     ArrayList<Object> params = new ArrayList<Object>();
     //		Mandatory fields
     StringBuilder whereClause =
-        new StringBuilder("clientId=?") // 	#1
-            .append(" AND orgId=?")
+        new StringBuilder("AD_Client_ID=?") // 	#1
+            .append(" AND AD_Org_ID=?")
             .append(" AND C_AcctSchema_ID=?")
             .append(" AND Account_ID=?"); // 	#4
     params.add(AD_Client_ID);

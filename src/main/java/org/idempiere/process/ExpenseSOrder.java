@@ -75,7 +75,7 @@ public class ExpenseSOrder extends SvrProcess {
   protected String doIt() throws java.lang.Exception {
     StringBuilder sql =
         new StringBuilder("SELECT * FROM S_TimeExpenseLine el ")
-            .append("WHERE el.clientId=?") // 	#1
+            .append("WHERE el.AD_Client_ID=?") // 	#1
             .append(" AND el.C_BPartner_ID>0 AND el.IsInvoiced='Y'") // 	Business Partner && to be
             // invoiced
             .append(" AND el.C_OrderLine_ID IS NULL") // 	not invoiced yet

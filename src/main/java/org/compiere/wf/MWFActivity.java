@@ -1535,7 +1535,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         MOrgInfo org = MOrgInfo.get(getCtx(), m_po. getOrgId(), null);
         if (org.getSupervisor_ID() == 0) {
           if (log.isLoggable(Level.FINE))
-            log.fine("No Supervisor for orgId=" + m_po. getOrgId());
+            log.fine("No Supervisor for AD_Org_ID=" + m_po. getOrgId());
         } else {
           sendEMail(client, org.getSupervisor_ID(), null, subject, message, pdf, text.isHtml());
         }

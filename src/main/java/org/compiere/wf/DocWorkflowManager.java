@@ -138,7 +138,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
             .append(keyColumn)
             .append(" FROM ")
             .append(tableName)
-            .append(" WHERE clientId=? AND ") // 	#1
+            .append(" WHERE AD_Client_ID=? AND ") // 	#1
             .append(keyColumn)
             .append("=? AND ") // 	#2
             .append(logic)

@@ -44,7 +44,7 @@ public class MCostQueue extends X_M_CostQueue {
     MCostQueue costQ = null;
     String sql =
         "SELECT * FROM M_CostQueue "
-            + "WHERE clientId=? AND orgId=?"
+            + "WHERE AD_Client_ID=? AND AD_Org_ID=?"
             + " AND M_Product_ID=?"
             + " AND M_AttributeSetInstance_ID=?"
             + " AND M_CostType_ID=? AND C_AcctSchema_ID=?"
@@ -93,7 +93,7 @@ public class MCostQueue extends X_M_CostQueue {
     ArrayList<MCostQueue> list = new ArrayList<MCostQueue>();
     StringBuilder sql =
         new StringBuilder("SELECT * FROM M_CostQueue ")
-            .append("WHERE clientId=? AND orgId=?")
+            .append("WHERE AD_Client_ID=? AND AD_Org_ID=?")
             .append(" AND M_Product_ID=?")
             .append(" AND M_CostType_ID=? AND C_AcctSchema_ID=?")
             .append(" AND M_CostElement_ID=?");

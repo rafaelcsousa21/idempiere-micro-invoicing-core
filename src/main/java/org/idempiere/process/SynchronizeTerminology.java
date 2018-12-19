@@ -100,10 +100,10 @@ public class SynchronizeTerminology extends SvrProcess {
       trx.commit(true);*/
       log.info("Adding missing Element Translations");
       sql =
-          "INSERT INTO AD_ELEMENT_TRL (AD_Element_ID, AD_LANGUAGE, clientId, orgId,"
+          "INSERT INTO AD_ELEMENT_TRL (AD_Element_ID, AD_LANGUAGE, AD_Client_ID, AD_Org_ID,"
               + " IsActive, Created, CreatedBy, Updated, UpdatedBy,"
               + " Name, PrintName, Description, Help, IsTranslated)"
-              + " SELECT m.AD_Element_ID, l.AD_LANGUAGE, m.clientId, m.orgId,"
+              + " SELECT m.AD_Element_ID, l.AD_LANGUAGE, m.AD_Client_ID, m.AD_Org_ID,"
               + " m.IsActive, m.Created, m.CreatedBy, m.Updated, m.UpdatedBy,"
               + " m.Name, m.PrintName, m.Description, m.Help, 'N'"
               + " FROM	AD_ELEMENT m, AD_LANGUAGE l"

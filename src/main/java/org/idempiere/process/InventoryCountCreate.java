@@ -14,24 +14,20 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.Iterator;
-import java.util.Vector;
-import java.util.logging.Level;
 import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInventoryLine;
 import org.compiere.invoicing.MInventoryLineMA;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;
-
 import org.idempiere.common.util.Env;
-import static software.hsharp.core.util.DBKt.*;
+
+import java.math.BigDecimal;
+import java.sql.*;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.logging.Level;
+
 import static software.hsharp.core.util.DBKt.*;
 
 /**
@@ -138,14 +134,14 @@ public class InventoryCountCreate extends SvrProcess {
     //	Create Null Storage records
     if (p_QtyRange != null && p_QtyRange.equals("=")) {
       StringBuilder sql = new StringBuilder("INSERT INTO M_StorageOnHand ");
-      sql.append("(clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
+      sql.append("(AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
       sql.append(" M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID,");
       sql.append(" QtyOnHand, DateLastInventory) ");
       sql.append("SELECT l.AD_CLIENT_ID, l.AD_ORG_ID, 'Y', SysDate, 0,SysDate, 0,");
       sql.append(" l.M_Locator_ID, p.M_Product_ID, 0,");
       sql.append(" 0,null ");
       sql.append("FROM M_Locator l");
-      sql.append(" INNER JOIN M_Product p ON (l.clientId=p.clientId) ");
+      sql.append(" INNER JOIN M_Product p ON (l.AD_Client_ID=p.AD_Client_ID) ");
       sql.append("WHERE l.M_Warehouse_ID=");
       sql.append(m_inventory.getM_Warehouse_ID());
 

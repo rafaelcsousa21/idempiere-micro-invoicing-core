@@ -118,7 +118,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         new Query(
                 getCtx(),
                 I_C_ValidCombination.Table_Name,
-                "C_AcctSchema_ID=? and clientId=? and orgId=0",
+                "C_AcctSchema_ID=? and AD_Client_ID=? and orgId=0",
                 null)
             .setParameters(m_acctSchemaId, m_clientId)
             .list();
@@ -134,7 +134,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         new Query(
                 getCtx(),
                 I_C_ElementValue.Table_Name,
-                "AccountType=? and isSummary='N' and Value>=? and Value<=? and clientId=?",
+                "AccountType=? and isSummary='N' and Value>=? and Value<=? and AD_Client_ID=?",
                 null)
             .setParameters(
                 MElementValue.ACCOUNTTYPE_Expense, m_startElement, m_endElement, m_clientId)
@@ -156,7 +156,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
       if (product == null) {
         // Create a new product from the account element
         product = new MProduct(getCtx(), 0, null);
-        product.set_ValueOfColumn("clientId", Integer.valueOf(m_clientId));
+        product.set_ValueOfColumn("AD_Client_ID", Integer.valueOf(m_clientId));
         product.setValue(expenseItemValue);
         product.setName(elem.getName());
         product.setDescription(elem.getDescription());
@@ -173,7 +173,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
 
         // Add a zero product price to the price list so it shows up in the price list
         priceRec = new MProductPrice(getCtx(), pv.getId(), product.getId(), null);
-        priceRec.set_ValueOfColumn("clientId", Integer.valueOf(m_clientId));
+        priceRec.set_ValueOfColumn("AD_Client_ID", Integer.valueOf(m_clientId));
         priceRec.setPrices(zero, zero, zero);
         priceRec.saveEx(null);
 
@@ -183,7 +183,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         if (validComb == null) {
           // Create new valid combination
           validComb = new MAccount(getCtx(), 0, null);
-          validComb.set_ValueOfColumn("clientId", Integer.valueOf(m_clientId));
+          validComb.set_ValueOfColumn("AD_Client_ID", Integer.valueOf(m_clientId));
           validComb.setAD_Org_ID(0);
           validComb.setAlias(elem.getValue());
           validComb.setAccount_ID(elem.getId());

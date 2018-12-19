@@ -108,7 +108,7 @@ public class TransactionXRef extends SvrProcess {
     StringBuilder sql =
         new StringBuilder("INSERT INTO T_Transaction ")
             .append("(AD_PInstance_ID, M_Transaction_ID,")
-            .append(" clientId, orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
+            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
             .append(" MovementType, M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID,")
             .append(" MovementDate, MovementQty,")
             .append(" M_InOutLine_ID, M_InOut_ID,")
@@ -121,7 +121,7 @@ public class TransactionXRef extends SvrProcess {
             .append("SELECT ")
             .append(getAD_PInstance_ID())
             .append(", M_Transaction_ID,")
-            .append(" clientId, orgId, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
+            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
             .append(" MovementType, M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID,")
             .append(" MovementDate, MovementQty,")
             .append(" M_InOutLine_ID, M_InOut_ID, ")

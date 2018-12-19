@@ -97,7 +97,7 @@ public class ProductCategoryAcctCopy extends SvrProcess {
     sql =
         new StringBuilder("INSERT INTO M_Product_Acct ")
             .append("(M_Product_ID, C_AcctSchema_ID,")
-            .append(" clientId, orgId, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
+            .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
             .append(
                 " P_Revenue_Acct, P_Expense_Acct, P_CostAdjustment_Acct, P_InventoryClearing_Acct, P_Asset_Acct, P_CoGs_Acct,")
             .append(
@@ -105,7 +105,7 @@ public class ProductCategoryAcctCopy extends SvrProcess {
             .append(" P_TradeDiscountRec_Acct, P_TradeDiscountGrant_Acct, ")
             .append(" P_RateVariance_Acct, P_LandedCostClearing_Acct) ")
             .append("SELECT p.M_Product_ID, acct.C_AcctSchema_ID,")
-            .append(" p.clientId, p.orgId, 'Y', SysDate, 0, SysDate, 0,")
+            .append(" p.AD_Client_ID, p.AD_Org_ID, 'Y', SysDate, 0, SysDate, 0,")
             .append(
                 " acct.P_Revenue_Acct, acct.P_Expense_Acct, acct.P_CostAdjustment_Acct, acct.P_InventoryClearing_Acct, acct.P_Asset_Acct, acct.P_CoGs_Acct,")
             .append(

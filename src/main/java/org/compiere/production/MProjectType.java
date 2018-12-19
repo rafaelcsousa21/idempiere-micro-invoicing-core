@@ -127,7 +127,7 @@ public class MProjectType extends X_C_ProjectType {
       Timestamp reportDate,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "orgId";
+    String orgColumn = "AD_Org_ID";
     String bpColumn = "C_BPartner_ID";
     String pColumn = null;
     //	PlannedAmt -> PlannedQty -> Count
@@ -187,7 +187,7 @@ public class MProjectType extends X_C_ProjectType {
       Timestamp startDate,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "orgId";
+    String orgColumn = "AD_Org_ID";
     String bpColumn = "C_BPartner_ID";
     String pColumn = null;
     //
@@ -251,7 +251,7 @@ public class MProjectType extends X_C_ProjectType {
       int C_Phase_ID,
       MRole role) {
     String dateColumn = "Created";
-    String orgColumn = "orgId";
+    String orgColumn = "AD_Org_ID";
     String bpColumn = "C_BPartner_ID";
     String pColumn = null;
     //

@@ -353,7 +353,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 || is_ValueChanged("M_Product_ID")
                 || is_ValueChanged("C_BPartner_ID")
                 || is_ValueChanged("AD_OrgTrx_ID")
-                || is_ValueChanged("orgId")
+                || is_ValueChanged("AD_Org_ID")
                 || is_ValueChanged("C_LocFrom_ID")
                 || is_ValueChanged("C_LocTo_ID")
                 || is_ValueChanged("C_SalesRegion_ID")

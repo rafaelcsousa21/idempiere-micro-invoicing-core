@@ -514,7 +514,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
       }
     }
     if (getClientId() == 0) {
-      m_processMsg = "clientId = 0";
+      m_processMsg = "AD_Client_ID = 0";
       return false;
     }
 
@@ -576,7 +576,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     }
 
     //	Sync Lines
-    afterSaveSync("orgId");
+    afterSaveSync("AD_Org_ID");
     afterSaveSync("C_BPartner_ID");
     afterSaveSync("C_BPartner_Location_ID");
     afterSaveSync("DateOrdered");

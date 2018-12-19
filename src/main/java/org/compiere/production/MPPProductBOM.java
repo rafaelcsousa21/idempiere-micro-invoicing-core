@@ -75,7 +75,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     int AD_Client_ID = Env.getClientId(product.getCtx());
     String sql =
         "SELECT PP_Product_BOM_ID FROM PP_Product_BOM"
-            + " WHERE Value=? AND M_Product_ID=? AND clientId=?";
+            + " WHERE Value=? AND M_Product_ID=? AND AD_Client_ID=?";
     return getSQLValueEx(null, sql, product.getValue(), product.getId(), AD_Client_ID);
   }
 

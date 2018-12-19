@@ -56,7 +56,7 @@ public class ImportPayment extends SvrProcess {
     IProcessInfoParameter[] para = getParameter();
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
-      if (name.equals("orgId")) p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
+      if (name.equals("AD_Org_ID")) p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("C_BankAccount_ID"))
         p_C_BankAccount_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("DeleteOldImported"))
@@ -79,11 +79,11 @@ public class ImportPayment extends SvrProcess {
     if (p_C_BankAccount_ID == 0 || ba.getId() != p_C_BankAccount_ID)
       throw new AdempiereUserError("@NotFound@ @C_BankAccount_ID@ - " + p_C_BankAccount_ID);
     if (p_AD_Org_ID != ba.getOrgId() && ba.getOrgId() != 0) p_AD_Org_ID = ba.getOrgId();
-    if (log.isLoggable(Level.INFO)) log.info("orgId=" + p_AD_Org_ID);
+    if (log.isLoggable(Level.INFO)) log.info("AD_Org_ID=" + p_AD_Org_ID);
 
     StringBuilder sql = null;
     int no = 0;
-    StringBuilder clientCheck = new StringBuilder(" AND clientId=").append(ba.getClientId());
+    StringBuilder clientCheck = new StringBuilder(" AND AD_Client_ID=").append(ba.getClientId());
 
     //	****	Prepare	****
 
@@ -100,10 +100,10 @@ public class ImportPayment extends SvrProcess {
     //	Set Client, Org, IsActive, Created/Updated
     sql =
         new StringBuilder("UPDATE I_Payment ")
-            .append("SET clientId = COALESCE (clientId,")
+            .append("SET clientId = COALESCE (AD_Client_ID,")
             .append(ba.getClientId())
             .append("),")
-            .append(" orgId = COALESCE (orgId,")
+            .append(" orgId = COALESCE (AD_Org_ID,")
             .append(p_AD_Org_ID)
             .append("),");
     sql.append(" IsActive = COALESCE (IsActive, 'Y'),")
@@ -123,7 +123,7 @@ public class ImportPayment extends SvrProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Invalid Org, '")
             .append("WHERE (orgId IS NULL OR orgId=0")
             .append(
-                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.orgId=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
+                " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
@@ -137,7 +137,7 @@ public class ImportPayment extends SvrProcess {
             .append(" SELECT C_BankAccount_ID ")
             .append(" FROM C_BankAccount a, C_Bank b ")
             .append(" WHERE b.IsOwnBank='Y' ")
-            .append(" AND a.clientId=i.clientId ")
+            .append(" AND a.AD_Client_ID=i.AD_Client_ID ")
             .append(" AND a.C_Bank_ID=b.C_Bank_ID ")
             .append(" AND a.AccountNo=i.BankAccountNo ")
             .append(" AND b.RoutingNo=i.RoutingNo ")
@@ -159,7 +159,7 @@ public class ImportPayment extends SvrProcess {
             .append(" WHERE b.IsOwnBank='Y' ")
             .append(" AND a.C_Bank_ID=b.C_Bank_ID ")
             .append(" AND a.AccountNo=i.BankAccountNo ")
-            .append(" AND a.clientId=i.clientId ")
+            .append(" AND a.AD_Client_ID=i.AD_Client_ID ")
             .append(") ")
             .append("WHERE i.C_BankAccount_ID IS NULL ")
             .append("AND i.I_isImported<>'Y' ")
@@ -174,7 +174,7 @@ public class ImportPayment extends SvrProcess {
             .append(
                 "SET C_BankAccount_ID=(SELECT C_BankAccount_ID FROM C_BankAccount a WHERE a.C_BankAccount_ID=")
             .append(p_C_BankAccount_ID);
-    sql.append(" and a.clientId=i.clientId) ")
+    sql.append(" and a.AD_Client_ID=i.AD_Client_ID) ")
         .append("WHERE i.C_BankAccount_ID IS NULL ")
         .append("AND i.BankAccountNo IS NULL ")
         .append("AND i.I_isImported<>'Y' ")
@@ -285,7 +285,7 @@ public class ImportPayment extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Payment i ")
             .append("SET C_Invoice_ID=(SELECT MAX(C_Invoice_ID) FROM C_Invoice ii")
-            .append(" WHERE i.InvoiceDocumentNo=ii.DocumentNo AND i.clientId=ii.clientId) ")
+            .append(" WHERE i.InvoiceDocumentNo=ii.DocumentNo AND i.AD_Client_ID=ii.AD_Client_ID) ")
             .append("WHERE C_Invoice_ID IS NULL AND InvoiceDocumentNo IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -296,7 +296,7 @@ public class ImportPayment extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Payment i ")
             .append("SET C_BPartner_ID=(SELECT MAX(C_BPartner_ID) FROM C_BPartner bp")
-            .append(" WHERE i.BPartnerValue=bp.Value AND i.clientId=bp.clientId) ")
+            .append(" WHERE i.BPartnerValue=bp.Value AND i.AD_Client_ID=bp.AD_Client_ID) ")
             .append("WHERE C_BPartner_ID IS NULL AND BPartnerValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -306,7 +306,7 @@ public class ImportPayment extends SvrProcess {
     sql =
         new StringBuilder("UPDATE I_Payment i ")
             .append("SET C_BPartner_ID=(SELECT MAX(C_BPartner_ID) FROM C_Invoice ii")
-            .append(" WHERE i.C_Invoice_ID=ii.C_Invoice_ID AND i.clientId=ii.clientId) ")
+            .append(" WHERE i.C_Invoice_ID=ii.C_Invoice_ID AND i.AD_Client_ID=ii.AD_Client_ID) ")
             .append("WHERE C_BPartner_ID IS NULL AND C_Invoice_ID IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -414,7 +414,7 @@ public class ImportPayment extends SvrProcess {
         new StringBuilder("UPDATE I_Payment i ")
             .append(
                 "SET C_DocType_ID=(SELECT C_DocType_ID FROM C_DocType d WHERE d.Name=i.DocTypeName")
-            .append(" AND d.DocBaseType IN ('ARR','APP') AND i.clientId=d.clientId) ")
+            .append(" AND d.DocBaseType IN ('ARR','APP') AND i.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND DocTypeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);

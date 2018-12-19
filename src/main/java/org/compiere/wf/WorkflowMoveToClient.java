@@ -27,7 +27,7 @@ public class WorkflowMoveToClient extends SvrProcess {
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
       if (para[i].getParameter() == null) ;
-      else if (name.equals("clientId")) p_AD_Client_ID = para[i].getParameterAsInt();
+      else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
       else if (name.equals("AD_Workflow_ID")) p_AD_Workflow_ID = para[i].getParameterAsInt();
       else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
     }
@@ -41,12 +41,12 @@ public class WorkflowMoveToClient extends SvrProcess {
    */
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO))
-      log.info("doIt - clientId=" + p_AD_Client_ID + ", AD_Workflow_ID=" + p_AD_Workflow_ID);
+      log.info("doIt - AD_Client_ID=" + p_AD_Client_ID + ", AD_Workflow_ID=" + p_AD_Workflow_ID);
 
     int changes = 0;
     //	WF
     String sql =
-        "UPDATE AD_Workflow SET clientId="
+        "UPDATE AD_Workflow SET AD_Client_ID="
             + p_AD_Client_ID
             + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND AD_Workflow_ID="
@@ -57,7 +57,7 @@ public class WorkflowMoveToClient extends SvrProcess {
 
     //	Node
     sql =
-        "UPDATE AD_WF_Node SET clientId="
+        "UPDATE AD_WF_Node SET AD_Client_ID="
             + p_AD_Client_ID
             + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND AD_Workflow_ID="
@@ -68,7 +68,7 @@ public class WorkflowMoveToClient extends SvrProcess {
 
     //	Node Next
     sql =
-        "UPDATE AD_WF_NodeNext SET clientId="
+        "UPDATE AD_WF_NodeNext SET AD_Client_ID="
             + p_AD_Client_ID
             + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND (AD_WF_Node_ID IN (SELECT AD_WF_Node_ID FROM AD_WF_Node WHERE AD_Workflow_ID="
@@ -82,7 +82,7 @@ public class WorkflowMoveToClient extends SvrProcess {
 
     //	Node Parameters
     sql =
-        "UPDATE AD_WF_Node_Para SET clientId="
+        "UPDATE AD_WF_Node_Para SET AD_Client_ID="
             + p_AD_Client_ID
             + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND AD_WF_Node_ID IN (SELECT AD_WF_Node_ID FROM AD_WF_Node WHERE AD_Workflow_ID="
@@ -94,7 +94,7 @@ public class WorkflowMoveToClient extends SvrProcess {
 
     //	Node Next Condition
     sql =
-        "UPDATE AD_WF_NextCondition SET clientId="
+        "UPDATE AD_WF_NextCondition SET AD_Client_ID="
             + p_AD_Client_ID
             + " WHERE clientId=0 AND EntityType NOT IN ('D','C')"
             + " AND AD_WF_NodeNext_ID IN ("

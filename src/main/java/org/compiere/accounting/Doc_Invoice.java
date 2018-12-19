@@ -902,7 +902,7 @@ public class Doc_Invoice extends Doc {
                       "SELECT Sum(Amt) FROM C_LandedCostAllocation WHERE M_InOutLine_ID=? ")
                   .append("AND C_LandedCostAllocation_ID<>? ")
                   .append("AND M_CostElement_ID=? ")
-                  .append("AND clientId=? ");
+                  .append("AND AD_Client_ID=? ");
           BigDecimal otherAmt =
               getSQLValueBD(
                   getTrxName(),
@@ -1095,7 +1095,7 @@ public class Doc_Invoice extends Doc {
             .append("SET PriceLastInv = ")
             //	select
             .append(
-                "(SELECT currencyConvert(il.PriceActual,i.C_Currency_ID,po.C_Currency_ID,i.DateInvoiced,i.C_ConversionType_ID,i.clientId,i.orgId) ")
+                "(SELECT currencyConvert(il.PriceActual,i.C_Currency_ID,po.C_Currency_ID,i.DateInvoiced,i.C_ConversionType_ID,i.AD_Client_ID,i.orgId) ")
             .append("FROM C_Invoice i, C_InvoiceLine il ")
             .append("WHERE i.C_Invoice_ID=il.C_Invoice_ID")
             .append(" AND po.M_Product_ID=il.M_Product_ID AND po.C_BPartner_ID=i.C_BPartner_ID");

@@ -77,7 +77,7 @@ public class MWorkflow extends X_AD_Workflow {
           new Query(ctx, I_AD_Workflow.Table_Name, whereClause, trxName)
               .setParameters(new Object[] {X_AD_Workflow.WORKFLOWTYPE_DocumentValue, true})
               .setOnlyActiveRecords(true)
-              .setOrderBy("clientId, AD_Table_ID")
+              .setOrderBy("AD_Client_ID, AD_Table_ID")
               .list();
       ArrayList<MWorkflow> list = new ArrayList<MWorkflow>();
       String oldKey = "";

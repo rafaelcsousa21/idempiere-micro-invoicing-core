@@ -57,7 +57,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
     IProcessInfoParameter[] para = getParameter();
     for (int i = 0; i < para.length; i++) {
       String name = para[i].getParameterName();
-      if (name.equals("clientId"))
+      if (name.equals("AD_Client_ID"))
         m_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
       else if (name.equals("DeleteOldImported"))
         m_deleteOldImported = "Y".equals(para[i].getParameter());
@@ -113,10 +113,10 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
     //	Set Client, Org, IaActive, Created/Updated, 	ProductType
     sql =
         new StringBuilder("UPDATE I_Product ")
-            .append("SET clientId = COALESCE (clientId, ")
+            .append("SET clientId = COALESCE (AD_Client_ID, ")
             .append(m_AD_Client_ID)
             .append("),")
-            .append(" orgId = COALESCE (orgId, 0),")
+            .append(" orgId = COALESCE (AD_Org_ID, 0),")
             .append(" IsActive = COALESCE (IsActive, 'Y'),")
             .append(" Created = COALESCE (Created, SysDate),")
             .append(" CreatedBy = COALESCE (CreatedBy, 0),")
@@ -136,7 +136,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Product i ")
             .append("SET C_BPartner_ID=(SELECT C_BPartner_ID FROM C_BPartner p")
-            .append(" WHERE i.BPartner_Value=p.Value AND i.clientId=p.clientId) ")
+            .append(" WHERE i.BPartner_Value=p.Value AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_BPartner_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -157,7 +157,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Product i ")
             .append("SET M_Product_ID=(SELECT M_Product_ID FROM M_Product p")
-            .append(" WHERE i.UPC=p.UPC AND i.clientId=p.clientId) ")
+            .append(" WHERE i.UPC=p.UPC AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
@@ -168,7 +168,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Product i ")
             .append("SET M_Product_ID=(SELECT M_Product_ID FROM M_Product p")
-            .append(" WHERE i.Value=p.Value AND i.clientId=p.clientId) ")
+            .append(" WHERE i.Value=p.Value AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
@@ -180,7 +180,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
         new StringBuilder("UPDATE I_Product i ")
             .append("SET M_Product_ID=(SELECT M_Product_ID FROM M_Product_po p")
             .append(" WHERE i.C_BPartner_ID=p.C_BPartner_ID")
-            .append(" AND i.VendorProductNo=p.VendorProductNo AND i.clientId=p.clientId) ")
+            .append(" AND i.VendorProductNo=p.VendorProductNo AND i.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_Product_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
@@ -191,7 +191,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
     sql =
         new StringBuilder("UPDATE I_Product ")
             .append("SET ProductCategory_Value=(SELECT MAX(Value) FROM M_Product_Category")
-            .append(" WHERE IsDefault='Y' AND clientId=")
+            .append(" WHERE IsDefault='Y' AND AD_Client_ID=")
             .append(m_AD_Client_ID)
             .append(") ")
             .append("WHERE ProductCategory_Value IS NULL AND M_Product_Category_ID IS NULL")
@@ -205,7 +205,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
         new StringBuilder("UPDATE I_Product i ")
             .append(
                 "SET M_Product_Category_ID=(SELECT M_Product_Category_ID FROM M_Product_Category c")
-            .append(" WHERE i.ProductCategory_Value=c.Value AND i.clientId=c.clientId) ")
+            .append(" WHERE i.ProductCategory_Value=c.Value AND i.AD_Client_ID=c.AD_Client_ID) ")
             .append("WHERE ProductCategory_Value IS NOT NULL AND M_Product_Category_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -221,7 +221,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
               .append(" = (SELECT ")
               .append(strFieldsToCopy[i])
               .append(" FROM M_Product p")
-              .append(" WHERE i.M_Product_ID=p.M_Product_ID AND i.clientId=p.clientId) ")
+              .append(" WHERE i.M_Product_ID=p.M_Product_ID AND i.AD_Client_ID=p.AD_Client_ID) ")
               .append("WHERE M_Product_ID IS NOT NULL")
               .append(" AND ")
               .append(strFieldsToCopy[i])
@@ -252,7 +252,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
               .append(" = (SELECT ")
               .append(numFields[i])
               .append(" FROM M_Product p")
-              .append(" WHERE i.M_Product_ID=p.M_Product_ID AND i.clientId=p.clientId) ")
+              .append(" WHERE i.M_Product_ID=p.M_Product_ID AND i.AD_Client_ID=p.AD_Client_ID) ")
               .append("WHERE M_Product_ID IS NOT NULL")
               .append(" AND (")
               .append(numFields[i])
@@ -288,7 +288,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
               .append(strFieldsPO[i])
               .append(" FROM M_Product_PO p")
               .append(
-                  " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID AND i.clientId=p.clientId) ")
+                  " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID AND i.AD_Client_ID=p.AD_Client_ID) ")
               .append("WHERE M_Product_ID IS NOT NULL AND C_BPartner_ID IS NOT NULL")
               .append(" AND ")
               .append(strFieldsPO[i])
@@ -321,7 +321,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
               .append(numFieldsPO[i])
               .append(" FROM M_Product_PO p")
               .append(
-                  " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID AND i.clientId=p.clientId) ")
+                  " WHERE i.M_Product_ID=p.M_Product_ID AND i.C_BPartner_ID=p.C_BPartner_ID AND i.AD_Client_ID=p.AD_Client_ID) ")
               .append("WHERE M_Product_ID IS NOT NULL AND C_BPartner_ID IS NOT NULL")
               .append(" AND (")
               .append(numFieldsPO[i])
@@ -383,7 +383,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("SET ISO_Code=(SELECT ISO_Code FROM C_Currency c")
             .append(" INNER JOIN C_AcctSchema a ON (a.C_Currency_ID=c.C_Currency_ID)")
             .append(" INNER JOIN AD_ClientInfo ci ON (a.C_AcctSchema_ID=ci.C_AcctSchema1_ID)")
-            .append(" WHERE ci.clientId=i.clientId) ")
+            .append(" WHERE ci.AD_Client_ID=i.AD_Client_ID) ")
             .append("WHERE C_Currency_ID IS NULL AND ISO_Code IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
@@ -425,7 +425,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Value not unique,' ")
             .append("WHERE I_IsImported<>'Y'")
             .append(
-                " AND Value IN (SELECT Value FROM I_Product ii WHERE i.clientId=ii.clientId GROUP BY Value HAVING COUNT(*) > 1)")
+                " AND Value IN (SELECT Value FROM I_Product ii WHERE i.AD_Client_ID=ii.AD_Client_ID GROUP BY Value HAVING COUNT(*) > 1)")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
     if (no != 0) log.warning("Not Unique Value=" + no);
@@ -435,7 +435,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=UPC not unique,' ")
             .append("WHERE I_IsImported<>'Y'")
             .append(
-                " AND UPC IN (SELECT UPC FROM I_Product ii WHERE i.clientId=ii.clientId GROUP BY UPC HAVING COUNT(*) > 1)")
+                " AND UPC IN (SELECT UPC FROM I_Product ii WHERE i.AD_Client_ID=ii.AD_Client_ID GROUP BY UPC HAVING COUNT(*) > 1)")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
     if (no != 0) log.warning("Not Unique UPC=" + no);
@@ -475,7 +475,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append(" AND C_BPartner_ID IS NOT NULL")
             .append(" AND (C_BPartner_ID, VendorProductNo) IN ")
             .append(
-                " (SELECT C_BPartner_ID, VendorProductNo FROM I_Product ii WHERE i.clientId=ii.clientId GROUP BY C_BPartner_ID, VendorProductNo HAVING COUNT(*) > 1)")
+                " (SELECT C_BPartner_ID, VendorProductNo FROM I_Product ii WHERE i.AD_Client_ID=ii.AD_Client_ID GROUP BY C_BPartner_ID, VendorProductNo HAVING COUNT(*) > 1)")
             .append(clientCheck);
     no = executeUpdate(sql.toString(), null);
     if (no != 0) log.warning("Not Unique VendorProductNo=" + no);
@@ -518,12 +518,12 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
       /*	Insert Product from Import
       PreparedStatement pstmt_insertProduct = conn.prepareStatement
       	("INSERT INTO M_Product (M_Product_ID,"
-      	+ "clientId,orgId,IsActive,Created,CreatedBy,Updated,UpdatedBy,"
+      	+ "AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,"
       	+ "Value,Name,Description,DocumentNote,Help,"
       	+ "UPC,SKU,C_UOM_ID,IsSummary,M_Product_Category_ID,C_TaxCategory_ID,"
       	+ "ProductType,ImageURL,DescriptionURL) "
       	+ "SELECT ?,"
-      	+ "clientId,orgId,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,"
+      	+ "AD_Client_ID,AD_Org_ID,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,"
       	+ "Value,Name,Description,DocumentNote,Help,"
       	+ "UPC,SKU,C_UOM_ID,'N',M_Product_Category_ID," + C_TaxCategory_ID + ","
       	+ "ProductType,ImageURL,DescriptionURL "
@@ -569,14 +569,14 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
       pstmt_insertProductPO =
           prepareStatement(
               "INSERT INTO M_Product_PO (M_Product_ID,C_BPartner_ID, "
-                  + "clientId,orgId,IsActive,Created,CreatedBy,Updated,UpdatedBy,"
+                  + "AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,"
                   + "IsCurrentVendor,C_UOM_ID,C_Currency_ID,UPC,"
                   + "PriceList,PricePO,RoyaltyAmt,PriceEffective,"
                   + "VendorProductNo,VendorCategory,Manufacturer,"
                   + "Discontinued,DiscontinuedBy, DiscontinuedAt, Order_Min,Order_Pack,"
                   + "CostPerOrder,DeliveryTime_Promised) "
                   + "SELECT ?,?, "
-                  + "clientId,orgId,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,"
+                  + "AD_Client_ID,AD_Org_ID,'Y',SysDate,CreatedBy,SysDate,UpdatedBy,"
                   + "'Y',C_UOM_ID,C_Currency_ID,UPC,"
                   + "PriceList,PricePO,RoyaltyAmt,PriceEffective,"
                   + "VendorProductNo,VendorCategory,Manufacturer,"
@@ -811,7 +811,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
 
   @Override
   public String getWhereClause() {
-    StringBuilder msgreturn = new StringBuilder(" AND clientId=").append(m_AD_Client_ID);
+    StringBuilder msgreturn = new StringBuilder(" AND AD_Client_ID=").append(m_AD_Client_ID);
     return msgreturn.toString();
   }
 } //	ImportProduct
