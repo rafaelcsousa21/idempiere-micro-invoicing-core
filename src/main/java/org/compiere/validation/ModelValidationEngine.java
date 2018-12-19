@@ -8,6 +8,7 @@ import org.compiere.orm.*;
 import org.compiere.process.ImportProcess;
 import org.compiere.process.ImportValidator;
 import org.compiere.rule.MRule;
+import org.idempiere.common.base.IServiceLocator;
 import org.idempiere.common.base.IServicesHolder;
 import org.idempiere.common.base.Service;
 import org.idempiere.common.util.CLogger;
@@ -118,14 +119,17 @@ public class ModelValidationEngine {
    * @return ModelValidator instance of null if validatorId not found
    */
   public static ModelValidator getModelValidator(String validatorId) {
-    IServicesHolder<IModelValidatorFactory> service =
-        Service.Companion.locator().list(IModelValidatorFactory.class);
-    if (service != null) {
-      List<IModelValidatorFactory> factoryList = service.getServices();
-      if (factoryList != null) {
-        for (IModelValidatorFactory factory : factoryList) {
-          ModelValidator validator = factory.newModelValidatorInstance(validatorId);
-          if (validator != null) return validator;
+    IServiceLocator locator = Service.Companion.locator();
+    if (locator!=null) {
+      IServicesHolder<IModelValidatorFactory> service =
+              locator.list(IModelValidatorFactory.class);
+      if (service != null) {
+        List<IModelValidatorFactory> factoryList = service.getServices();
+        if (factoryList != null) {
+          for (IModelValidatorFactory factory : factoryList) {
+            ModelValidator validator = factory.newModelValidatorInstance(validatorId);
+            if (validator != null) return validator;
+          }
         }
       }
     }

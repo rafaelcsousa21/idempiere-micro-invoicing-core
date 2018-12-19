@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
@@ -939,6 +940,9 @@ public class MStorageOnHand extends X_M_StorageOnHand {
    */
   public MStorageOnHand(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MStorageOnHand
+  public MStorageOnHand(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MStorageOnHand
 
   /**

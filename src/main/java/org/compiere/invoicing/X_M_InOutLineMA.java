@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_InOutLineMA;
 import org.compiere.orm.MTable;
@@ -37,6 +38,9 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA, I_Persistent
   public X_M_InOutLineMA(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_M_InOutLineMA(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MInOutLineMA
 
   /**
    * AccessLevel

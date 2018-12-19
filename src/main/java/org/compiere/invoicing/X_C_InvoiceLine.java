@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
@@ -41,6 +42,9 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
   public X_C_InvoiceLine(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_C_InvoiceLine(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MInvoiceLine
 
   /**
    * AccessLevel

@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MMatchInv;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_C_InvoiceLine;
@@ -152,6 +153,9 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
    */
   public MInvoiceLine(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MInvoiceLine
+  public MInvoiceLine(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MInvoiceLine
 
   private int m_M_PriceList_ID = 0;

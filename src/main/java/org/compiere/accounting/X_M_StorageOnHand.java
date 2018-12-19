@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_StorageOnHand;
@@ -38,6 +39,9 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand, I_Persis
   public X_M_StorageOnHand(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_M_StorageOnHand(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MStorageOnHand
 
   /**
    * AccessLevel

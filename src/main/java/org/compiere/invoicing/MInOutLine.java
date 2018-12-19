@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.MWarehouse;
@@ -55,6 +56,9 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
    */
   public MInOutLine(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MInOutLine
+  public MInOutLine(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MInOutLine
 
   /**

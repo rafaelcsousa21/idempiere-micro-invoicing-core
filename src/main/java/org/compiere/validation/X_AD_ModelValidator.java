@@ -1,5 +1,6 @@
 package org.compiere.validation;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_ModelValidator;
 import org.compiere.orm.BasePOName;
 import org.idempiere.orm.I_Persistent;
@@ -26,6 +27,9 @@ public class X_AD_ModelValidator extends BasePOName implements I_AD_ModelValidat
   /** Load Constructor */
   public X_AD_ModelValidator(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  }
+  public X_AD_ModelValidator(Properties ctx, Row row) {
+    super(ctx, row);
   }
 
   /**

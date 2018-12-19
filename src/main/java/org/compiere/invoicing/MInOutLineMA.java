@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_InOut;
 import org.compiere.model.I_M_InOutLine;
@@ -110,6 +111,9 @@ public class MInOutLineMA extends X_M_InOutLineMA {
    */
   public MInOutLineMA(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MInOutLineMA
+  public MInOutLineMA(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MInOutLineMA
 
   /**
