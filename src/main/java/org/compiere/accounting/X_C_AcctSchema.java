@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
@@ -28,6 +29,10 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
   public X_C_AcctSchema(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_C_AcctSchema(Properties ctx, Row row)  {
+    super(ctx, row);
+  }
+
 
   /**
    * AccessLevel

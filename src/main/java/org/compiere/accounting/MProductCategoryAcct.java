@@ -2,6 +2,8 @@ package org.compiere.accounting;
 
 import java.sql.ResultSet;
 import java.util.Properties;
+
+import kotliquery.Row;
 import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
@@ -67,6 +69,9 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
   public MProductCategoryAcct(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   } //	MProductCategoryAcct
+  public MProductCategoryAcct(Properties ctx, Row row)  {
+    super(ctx, row);
+  }
 
   /** Check Costing Setup */
   public void checkCosting() {

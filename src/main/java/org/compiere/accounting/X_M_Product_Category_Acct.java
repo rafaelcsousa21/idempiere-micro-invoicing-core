@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.MTable;
@@ -36,6 +37,9 @@ public class X_M_Product_Category_Acct extends PO
   /** Load Constructor */
   public X_M_Product_Category_Acct(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  }
+  public X_M_Product_Category_Acct(Properties ctx, Row row)  {
+    super(ctx, row);
   }
 
   /**

@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.MRefList;
@@ -260,6 +261,9 @@ public class MCostElement extends X_M_CostElement {
    */
   public MCostElement(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MCostElement
+  public MCostElement(Properties ctx, Row row)  {
+    super(ctx, row);
   } //	MCostElement
 
   /**

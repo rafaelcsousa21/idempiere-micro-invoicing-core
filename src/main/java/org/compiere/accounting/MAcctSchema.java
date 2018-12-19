@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.crm.MClientInfo;
 import org.compiere.model.I_AD_ClientInfo;
 import org.compiere.model.I_C_AcctSchema;
@@ -170,6 +171,9 @@ public class MAcctSchema extends X_C_AcctSchema {
    */
   public MAcctSchema(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MAcctSchema
+  public MAcctSchema(Properties ctx, Row row)  {
+    super(ctx, row);
   } //	MAcctSchema
 
   /**

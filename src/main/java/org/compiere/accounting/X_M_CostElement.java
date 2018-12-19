@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.orm.BasePOName;
 import org.idempiere.orm.I_Persistent;
@@ -26,6 +27,9 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
   /** Load Constructor */
   public X_M_CostElement(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  }
+  public X_M_CostElement(Properties ctx, Row row)  {
+    super(ctx, row);
   }
 
   /**

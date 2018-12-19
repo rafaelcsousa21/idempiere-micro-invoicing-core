@@ -130,7 +130,7 @@ public class DocumentTypeVerify extends SvrProcess {
     sql =
         "SELECT DISTINCT p.AD_Client_ID, p.C_Period_ID, dt.DocBaseType "
             + "FROM C_Period p"
-            + " FULL JOIN C_DocType dt ON (p.AD_Client_ID=dt.clientId) "
+            + " FULL JOIN C_DocType dt ON (p.AD_Client_ID=dt.AD_Client_ID) "
             + "WHERE p.AD_Client_ID=?"
             + " AND NOT EXISTS"
             + " (SELECT * FROM C_PeriodControl pc "
