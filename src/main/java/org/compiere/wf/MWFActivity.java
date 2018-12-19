@@ -279,26 +279,16 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @param trx transaction
    * @return po
    */
-  public PO getPO(Trx trx) {
+  public PO getPO() {
     if (m_po != null) {
-      if (trx != null) m_po.set_TrxName(trx.getTrxName());
       return m_po;
     }
 
     MTable table = MTable.get(getCtx(), getAD_Table_ID());
-    if (trx != null) m_po = (PO) table.getPO(getRecord_ID(), trx.getTrxName());
-    else m_po = (PO) table.getPO(getRecord_ID(), null);
+    m_po = (PO) table.getPO(getRecord_ID(), null);
     return m_po;
   } //	getPO
 
-  /**
-   * Get Persistent Object
-   *
-   * @return po
-   */
-  public PO getPO() {
-    return getPO(null != null ? Trx.get(null, false) : null);
-  } //	getPO
 
   /**
    * Get PO clientId
@@ -306,7 +296,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @return client of PO
    */
   public int getPO_AD_Client_ID() {
-    if (m_po == null) getPO(null != null ? Trx.get(null, false) : null);
+    if (m_po == null) getPO();
     if (m_po != null) return m_po.getClientId();
     return 0;
   } //	getPO_AD_Client_ID
@@ -748,21 +738,10 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     m_newValue = null;
 
     // m_trx = Trx.get(, true);
-    Trx trx = null;
-    boolean localTrx = false;
-    if (null == null) {
-      this.set_TrxName(Trx.createTrxName("WFA"));
-      localTrx = true;
-    }
-
-    trx = Trx.get(null, true);
-    if (localTrx) trx.setDisplayName(getClass().getName() + "_run");
-
     Savepoint savepoint = null;
 
     //
     try {
-      if (!localTrx) savepoint = trx.setSavepoint(null);
 
       if (!m_state.isValidAction(StateEngine.ACTION_Start)) {
         setTextMsg("State=" + getWFState() + " - cannot start");
@@ -780,35 +759,17 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       }
       //	Do Work
       /** ** Trx Start *** */
-      boolean done = performWork(Trx.get(null, false));
+      boolean done = performWork();
 
       /** ** Trx End *** */
       // teo_sarca [ 1708835 ]
       // Reason: if the commit fails the document should be put in Invalid state
-      if (localTrx) {
-        try {
-          trx.commit(true);
-        } catch (Exception e) {
-          // If we have a DocStatus, change it to Invalid, and throw the exception to the next level
-          if (m_docStatus != null) m_docStatus = DocAction.Companion.getSTATUS_Invalid();
-          throw e;
-        }
-      }
 
       setWFState(done ? StateEngine.STATE_Completed : StateEngine.STATE_Suspended);
 
     } catch (Exception e) {
       log.log(Level.WARNING, "" + getNode(), e);
       /** ** Trx Rollback *** */
-      if (localTrx) {
-        trx.rollback();
-      } else if (savepoint != null) {
-        try {
-          trx.rollback(savepoint);
-        } catch (SQLException e1) {
-        }
-      }
-
       //
       if (e.getCause() != null) log.log(Level.WARNING, "Cause", e.getCause());
 
@@ -847,10 +808,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       } finally {
         if (contextLost) Env.getCtx().remove("#clientId");
       }
-    } finally {
-      if (localTrx && trx != null) {
-        trx.close();
-      }
+
+      throw new AdempiereException(e);
     }
   } //	run
 
@@ -861,9 +820,9 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @return true if completed, false otherwise
    * @throws Exception if error
    */
-  private boolean performWork(Trx trx) throws Exception {
+  private boolean performWork() throws Exception {
     if (log.isLoggable(Level.INFO))
-      log.info(m_node + " [" + (trx != null ? trx.getTrxName() : "") + "]");
+      log.info(m_node + " ["  + "]");
     m_docStatus = null;
     if (m_node.getPriority() != 0) // 	overwrite priority if defined
     setPriority(m_node.getPriority());
@@ -883,7 +842,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     /* **** Document Action ***** */
     else if (MWFNode.ACTION_DocumentAction.equals(action)) {
       if (log.isLoggable(Level.FINE)) log.fine("DocumentAction=" + m_node.getDocAction());
-      getPO(trx);
+      getPO();
       if (m_po == null)
         throw new Exception(
             "Persistent Object not found - AD_Table_ID="
@@ -942,7 +901,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       if (log.isLoggable(Level.FINE)) log.fine("Report:AD_Process_ID=" + m_node.getAD_Process_ID());
       //	Process
       MProcess process = MProcess.get(getCtx(), m_node.getAD_Process_ID());
-      process.set_TrxName(trx != null ? trx.getTrxName() : null);
+      process.set_TrxName(null);
       if (!process.isReport() || process.getAD_ReportView_ID() == 0)
         throw new IllegalStateException("Not a Report AD_Process_ID=" + m_node.getAD_Process_ID());
       //
@@ -952,13 +911,13 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       pi.setAD_User_ID(getAD_User_ID());
       pi.setADClientID(getClientId());
       MPInstance pInstance = new MPInstance(process, getRecord_ID());
-      pInstance.set_TrxName(trx != null ? trx.getTrxName() : null);
-      fillParameter(pInstance, trx);
+      pInstance.set_TrxName(null);
+      fillParameter(pInstance);
       pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
       File report = null;
       //	Notice
       int AD_Message_ID = SystemIDs.MESSAGE_WORKFLOWRESULT; // 	HARDCODED WorkflowResult
-      MNote note = new MNote(getCtx(), AD_Message_ID, getAD_User_ID(), trx.getTrxName());
+      MNote note = new MNote(getCtx(), AD_Message_ID, getAD_User_ID(), null);
       note.setTextMsg(m_node.getName(true));
       note.setDescription(m_node.getDescription(true));
       note.setRecord(getAD_Table_ID(), getRecord_ID());
@@ -979,7 +938,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       //	Process
       MProcess process = MProcess.get(getCtx(), m_node.getAD_Process_ID());
       MPInstance pInstance = new MPInstance(process, getRecord_ID());
-      fillParameter(pInstance, trx);
+      fillParameter(pInstance);
       //
       ProcessInfo pi =
           new ProcessInfo(
@@ -1006,7 +965,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     else if (MWFNode.ACTION_EMail.equals(action)) {
       if (log.isLoggable(Level.FINE))
         log.fine("EMail:EMailRecipient=" + m_node.getEMailRecipient());
-      getPO(trx);
+      getPO();
       if (m_po == null)
         throw new Exception(
             "Persistent Object not found - AD_Table_ID="
@@ -1039,7 +998,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         log.fine("SetVariable:AD_Column_ID=" + m_node.getAD_Column_ID() + " to " + value);
       MColumn column = m_node.getColumn();
       int dt = column.getReferenceId();
-      return setVariable(value, dt, null, trx);
+      return setVariable(value, dt, null);
     } //	SetVariable
 
     /** **** TODO Start WF Instance ***** */
@@ -1053,7 +1012,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       if (log.isLoggable(Level.FINE))
         log.fine("UserChoice:AD_Column_ID=" + m_node.getAD_Column_ID());
       //	Approval
-      if (m_node.isUserApproval() && getPO(trx) instanceof DocAction) {
+      if (m_node.isUserApproval() && getPO() instanceof DocAction) {
         DocAction doc = (DocAction) m_po;
         boolean autoApproval = false;
         //	Approval Hierarchy
@@ -1141,10 +1100,10 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @return true if set
    * @throws Exception if error
    */
-  private boolean setVariable(String value, int displayType, String textMsg, Trx trx)
+  private boolean setVariable(String value, int displayType, String textMsg)
       throws Exception {
     m_newValue = null;
-    getPO(trx);
+    getPO();
     if (m_po == null)
       throw new Exception(
           "Persistent Object not found - AD_Table_ID="
@@ -1163,7 +1122,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         MTable refTable = MTable.get(Env.getCtx(), referenceTableName);
         dbValue = Integer.valueOf(value);
         boolean validValue = true;
-        PO po = (PO) refTable.getPO((Integer) dbValue, trx.getTrxName());
+        PO po = (PO) refTable.getPO((Integer) dbValue, null);
         if (po == null || po.getId() == 0) {
           // foreign key does not exist
           validValue = false;
@@ -1272,13 +1231,12 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
     setWFState(StateEngine.STATE_Running);
     setAD_User_ID(AD_User_ID);
-    Trx trx = (null != null) ? Trx.get(null, false) : null;
-    boolean ok = setVariable(value, displayType, textMsg, trx);
+    boolean ok = setVariable(value, displayType, textMsg);
     if (!ok) return false;
 
     String newState = StateEngine.STATE_Completed;
     //	Approval
-    if (getNode().isUserApproval() && getPO(trx) instanceof DocAction) {
+    if (getNode().isUserApproval() && getPO() instanceof DocAction) {
       DocAction doc = (DocAction) m_po;
       try {
         //	Not approved
@@ -1423,8 +1381,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @param pInstance process instance
    * @param trx transaction
    */
-  private void fillParameter(MPInstance pInstance, Trx trx) {
-    getPO(trx);
+  private void fillParameter(MPInstance pInstance) {
+    getPO();
     //
     MWFNodePara[] nParams = m_node.getParameters();
     MPInstancePara[] iParams = pInstance.getParameters();

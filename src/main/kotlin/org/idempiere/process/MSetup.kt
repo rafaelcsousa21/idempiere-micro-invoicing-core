@@ -16,7 +16,10 @@ import org.compiere.util.DisplayType
 import org.compiere.util.Msg
 import org.compiere.util.SystemIDs
 import org.idempiere.common.exceptions.AdempiereException
-import org.idempiere.common.util.*
+import org.idempiere.common.util.AdempiereUserError
+import org.idempiere.common.util.CLogger
+import org.idempiere.common.util.Env
+import org.idempiere.common.util.KeyNamePair
 import software.hsharp.core.util.TO_STRING
 import software.hsharp.core.util.close
 import software.hsharp.core.util.executeUpdateEx
@@ -39,7 +42,6 @@ class MSetup
     /**	Logger			 */
     protected var log = CLogger.getCLogger(javaClass)
 
-    private val m_trx = Trx.get(Trx.createTrxName("Setup"), true)
     private val m_ctx: Properties
     private val m_lang: String
     private var m_info: StringBuffer? = null
@@ -47,7 +49,7 @@ class MSetup
     private var m_clientName: String? = null
     //	private String          m_orgName;
     //
-    private val m_stdColumns = "clientId,orgId,IsActive,Created,CreatedBy,Updated,UpdatedBy"
+    private val m_stdColumns = "AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy"
     private var m_stdValues: String? = null
     private var m_stdValuesOrg: String? = null
     //
@@ -114,8 +116,6 @@ class MSetup
                      adminEmail: String, userEmail: String, isSetInitialPassword: Boolean): Boolean {
         var orgValue1 = orgValue
         log.info(clientName)
-        m_trx!!.displayName = javaClass.name + "_createClient"
-        m_trx.start()
 
         //  info header
         m_info = StringBuffer()
@@ -131,16 +131,14 @@ class MSetup
         if (name.isEmpty())
             name = "newClient"
         m_clientName = name
-        m_client = MClient(m_ctx, 0, true, m_trx.trxName)
+        m_client = MClient(m_ctx, 0, true, null)
         m_client!!.value = m_clientName!!
         m_client!!.name = m_clientName!!
         if (!m_client!!.save()) {
             val err = "Client NOT created"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         val AD_Client_ID = m_client!!.clientId
         Env.setContext(m_ctx, m_WindowNo, "AD_Client_ID", AD_Client_ID)
@@ -156,9 +154,7 @@ class MSetup
             val err = "Sequences NOT created"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
 
         //  Trees and Client Info
@@ -166,9 +162,7 @@ class MSetup
             val err = "Client Info NOT created"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         m_AD_Tree_Account_ID = m_client!!.setup_AD_Tree_Account_ID
 
@@ -185,9 +179,7 @@ class MSetup
             val err = "Organization NOT created"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         Env.setContext(m_ctx, m_WindowNo, "AD_Org_ID", aD_Org_ID)
         Env.setContext(m_ctx, "#AD_Org_ID", aD_Org_ID)
@@ -196,7 +188,7 @@ class MSetup
         m_info!!.append(Msg.translate(m_lang, "AD_Org_ID")).append("=").append(name).append("\n")
 
         // Set Organization Phone, Phone2, Fax, EMail
-        val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID, m_trx.trxName)
+        val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID, null)
         orgInfo!!.phone = phone
         orgInfo.phone2 = phone2
         orgInfo.fax = fax
@@ -208,9 +200,7 @@ class MSetup
             val err = "Organization Info NOT Updated"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
 
         /**
@@ -219,7 +209,7 @@ class MSetup
          * - User
          */
         name = m_clientName!! + " Admin"
-        val admin = MRole(m_ctx, 0, m_trx.trxName)
+        val admin = MRole(m_ctx, 0, null)
         admin.setClientOrg(m_client)
         admin.name = name
         admin.userLevel = MRole.USERLEVEL_ClientPlusOrganization
@@ -230,9 +220,7 @@ class MSetup
             val err = "Admin Role A NOT inserted"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         //	OrgAccess x, 0
         val adminClientAccess = MRoleOrgAccess(admin, 0)
@@ -248,7 +236,7 @@ class MSetup
 
         //
         name = m_clientName!! + " User"
-        val user = MRole(m_ctx, 0, m_trx.trxName)
+        val user = MRole(m_ctx, 0, null)
         user.setClientOrg(m_client)
         user.name = name
         user.setIsAccessAdvanced(false)
@@ -256,9 +244,7 @@ class MSetup
             val err = "User Role A NOT inserted"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         //  OrgAccess x,y
         val userOrgAccess = MRoleOrgAccess(user, m_org!!.orgId)
@@ -273,7 +259,7 @@ class MSetup
          * - Client
          * - Org
          */
-        val clientAdminUser = MUser(m_ctx, 0, m_trx.trxName)
+        val clientAdminUser = MUser(m_ctx, 0, null)
 
         name = userClient
         if (name.isEmpty())
@@ -294,9 +280,7 @@ class MSetup
             val err = "Admin User NOT inserted - " + AD_User_Name!!
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
 
         aD_User_ID = clientAdminUser.aD_User_ID
@@ -305,7 +289,7 @@ class MSetup
         //  Info
         m_info!!.append(Msg.translate(m_lang, "AD_User_ID")).append("=").append(AD_User_Name).append("/").append(AD_User_Name).append("\n")
 
-        val clientUser = MUser(m_ctx, 0, m_trx.trxName)
+        val clientUser = MUser(m_ctx, 0, null)
 
         name = userOrg
         if (name.isEmpty())
@@ -326,9 +310,7 @@ class MSetup
             val err = "Org User NOT inserted - " + AD_User_U_Name!!
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
 
         AD_User_U_ID = clientUser.aD_User_ID
@@ -342,18 +324,18 @@ class MSetup
         //  ClientUser          - Admin & User
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
                 + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + admin.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
-        no = executeUpdateEx(sql, m_trx.trxName)
+        no = executeUpdateEx(sql, null)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole ClientUser+Admin NOT inserted")
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
                 + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + user.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
-        no = executeUpdateEx(sql, m_trx.trxName)
+        no = executeUpdateEx(sql, null)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole ClientUser+User NOT inserted")
         //  OrgUser             - User
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
                 + " VALUES (" + m_stdValues + "," + AD_User_U_ID + "," + user.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
-        no = executeUpdateEx(sql, m_trx.trxName)
+        no = executeUpdateEx(sql, null)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole OrgUser+Org NOT inserted")
 
@@ -415,9 +397,7 @@ class MSetup
             val err = "Calendar NOT inserted"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx!!.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         //  Info
         m_info!!.append(Msg.translate(m_lang, "C_Calendar_ID")).append("=").append(m_calendar!!.name).append("\n")
@@ -433,22 +413,18 @@ class MSetup
             val err = "Acct Element NOT inserted"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx!!.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         val C_Element_ID = element.c_Element_ID
         m_info!!.append(Msg.translate(m_lang, "C_Element_ID")).append("=").append(name).append("\n")
 
         //	Create Account Values
-        m_nap = NaturalAccountMap(m_ctx, m_trx!!.trxName)
+        m_nap = NaturalAccountMap(m_ctx, null)
         val errMsg = m_nap!!.parseFile(AccountingFile)
         if (errMsg.length != 0) {
             log.log(Level.SEVERE, errMsg)
             m_info!!.append(errMsg)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(errMsg)
         }
         if (m_nap!!.saveAccounts(aD_Client_ID, aD_Org_ID, C_Element_ID, !inactivateDefaults))
             m_info!!.append(Msg.translate(m_lang, "C_ElementValue_ID")).append(" # ").append(m_nap!!.size).append("\n")
@@ -456,9 +432,7 @@ class MSetup
             val err = "Acct Element Values NOT inserted"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
 
         val summary_ID = m_nap!!.getC_ElementValue_ID("SUMMARY")
@@ -466,7 +440,7 @@ class MSetup
         if (summary_ID > 0) {
             executeUpdateEx("UPDATE AD_TreeNode SET Parent_ID=? WHERE AD_Tree_ID=? AND Node_ID!=?",
                     arrayOf<Any>(summary_ID, m_AD_Tree_Account_ID, summary_ID),
-                    m_trx.trxName)
+                    null)
         }
 
         val C_ElementValue_ID = m_nap!!.getC_ElementValue_ID("DEFAULT_ACCT")
@@ -480,9 +454,7 @@ class MSetup
             val err = "AcctSchema NOT inserted"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         //  Info
         m_info!!.append(Msg.translate(m_lang, "C_AcctSchema_ID")).append("=").append(m_as!!.name).append("\n")
@@ -502,7 +474,7 @@ class MSetup
         var rs: ResultSet? = null
         try {
             val AD_Client_ID = m_client!!.clientId
-            stmt = prepareStatement(sql2, m_trx.trxName)
+            stmt = prepareStatement(sql2, null)
             rs = stmt!!.executeQuery()
             while (rs!!.next()) {
                 val ElementType = rs.getString(1)
@@ -556,7 +528,7 @@ class MSetup
                     sqlCmd.append(m_stdValues).append(",").append(C_AcctSchema_Element_ID).append(",").append(m_as!!.c_AcctSchema_ID).append(",")
                             .append("'").append(ElementType).append("','").append(name).append("',").append(SeqNo).append(",'")
                             .append(IsMandatory).append("','").append(IsBalanced).append("',").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-                    no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+                    no = executeUpdateEx(sqlCmd.toString(), null)
                     if (no == 1)
                         m_info!!.append(Msg.translate(m_lang, "C_AcctSchema_Element_ID")).append("=").append(name).append("\n")
 
@@ -564,7 +536,7 @@ class MSetup
                     if (ElementType == "OO") {
                         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET Org_ID=")
                         sqlCmd.append(aD_Org_ID).append(" WHERE C_AcctSchema_Element_ID=").append(C_AcctSchema_Element_ID)
-                        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+                        no = executeUpdateEx(sqlCmd.toString(), null)
                         if (no != 1)
                             log.log(Level.SEVERE, "Default Org in AcctSchemaElement NOT updated")
                     }
@@ -572,7 +544,7 @@ class MSetup
                         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET C_ElementValue_ID=")
                         sqlCmd.append(C_ElementValue_ID).append(", C_Element_ID=").append(C_Element_ID)
                         sqlCmd.append(" WHERE C_AcctSchema_Element_ID=").append(C_AcctSchema_Element_ID)
-                        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+                        no = executeUpdateEx(sqlCmd.toString(), null)
                         if (no != 1)
                             log.log(Level.SEVERE, "Default Account in AcctSchemaElement NOT updated")
                     }
@@ -581,9 +553,7 @@ class MSetup
         } catch (e1: SQLException) {
             log.log(Level.SEVERE, "Elements", e1)
             m_info!!.append(e1.message)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(e1.message)
         } finally {
             close(rs, stmt)
         }
@@ -599,9 +569,7 @@ class MSetup
             log.log(Level.SEVERE, err)
             e.printStackTrace()
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
 
         //  GL Categories
@@ -624,9 +592,7 @@ class MSetup
         if (ii == 0) {
             val err = "Document Type not created"
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         createDocType("GL Journal Batch", Msg.getElement(m_ctx, "GL_JournalBatch_ID"),
                 MDocType.DOCBASETYPE_GLJournal, null, 0, 0, 100, GL_GL, false)
@@ -749,14 +715,12 @@ class MSetup
         sqlCmd.append("C_AcctSchema1_ID=").append(m_as!!.c_AcctSchema_ID)
                 .append(", C_Calendar_ID=").append(m_calendar!!.c_Calendar_ID)
                 .append(" WHERE clientId=").append(m_client!!.clientId)
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1) {
             val err = "ClientInfo not updated"
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
 
         //	Validate Completeness
@@ -768,9 +732,7 @@ class MSetup
             val err = "Document type verification failed. Message=" + processInfo.summary!!
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
-            m_trx.rollback()
-            m_trx.close()
-            return false
+            throw Error(err)
         }
         //
         log.info("fini")
@@ -780,7 +742,7 @@ class MSetup
     @Throws(Exception::class)
     private fun createAccountingRecord(tableName: String) {
         val table = MTable.get(m_ctx, tableName)
-        val acct = table.getPO(-1, m_trx!!.trxName) as PO // Note this should create a new Acct; ugly hack, because we return null for 0
+        val acct = table.getPO(-1, null) as PO // Note this should create a new Acct; ugly hack, because we return null for 0
 
         val cols = table.getColumns(false)
         for (c in cols) {
@@ -841,7 +803,7 @@ class MSetup
      * @return GL_Category_ID
      */
     private fun createGLCategory(Name: String, CategoryType: String, isDefault: Boolean): Int {
-        val cat = MGLCategory(m_ctx, 0, m_trx!!.trxName)
+        val cat = MGLCategory(m_ctx, 0, null)
         cat.name = Name
         cat.categoryType = CategoryType
         cat.setIsDefault(isDefault)
@@ -872,14 +834,14 @@ class MSetup
                               StartNo: Int, GL_Category_ID: Int, isReturnTrx: Boolean): Int {
         var sequence: MSequence? = null
         if (StartNo != 0) {
-            sequence = MSequence(m_ctx, aD_Client_ID, Name, StartNo, m_trx!!.trxName)
+            sequence = MSequence(m_ctx, aD_Client_ID, Name, StartNo, null)
             if (!sequence.save()) {
                 log.log(Level.SEVERE, "Sequence NOT created - $Name")
                 return 0
             }
         }
 
-        val dt = MDocType(m_ctx, DocBaseType, Name, m_trx!!.trxName)
+        val dt = MDocType(m_ctx, DocBaseType, Name, null)
         if (PrintName != null && PrintName.length > 0)
             dt.printName = PrintName    //	Defaults to Name
         if (DocSubTypeSO != null) {
@@ -928,9 +890,7 @@ class MSetup
     fun createEntities(C_Country_ID: Int, City: String, C_Region_ID: Int, C_Currency_ID: Int, postal: String, address1: String): Boolean {
         if (m_as == null) {
             log.severe("No AcctountingSChema")
-            m_trx!!.rollback()
-            m_trx.close()
-            return false
+            throw Error("No AcctountingSChema")
         }
         if (log.isLoggable(Level.INFO))
             log.info("C_Country_ID=" + C_Country_ID
@@ -949,7 +909,7 @@ class MSetup
         sqlCmd.append(m_stdColumns).append(",C_Channel_UU) VALUES (")
         sqlCmd.append(C_Channel_ID).append(",").append(defaultEntry)
         sqlCmd.append(m_stdValues).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx!!.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "Channel NOT inserted")
 
@@ -959,7 +919,7 @@ class MSetup
         sqlCmd.append(" Value,Name,Costs,C_Campaign_UU) VALUES (")
         sqlCmd.append(C_Campaign_ID).append(",").append(C_Channel_ID).append(",").append(m_stdValues).append(",")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("0").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Campaign_ID")).append("=").append(defaultName).append("\n")
         else
@@ -970,7 +930,7 @@ class MSetup
             sqlCmd.append("C_Campaign_ID=").append(C_Campaign_ID)
             sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
             sqlCmd.append(" AND ElementType='MC'")
-            no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+            no = executeUpdateEx(sqlCmd.toString(), null)
             if (no != 1)
                 log.log(Level.SEVERE, "AcctSchema Element Campaign NOT updated")
         }
@@ -979,7 +939,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_Campaign_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Campaign t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Campaign_ID=").append(C_Campaign_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Campaign_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Campaign_ID=t.C_Campaign_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no < 0)
             log.log(Level.SEVERE, "Campaign Translation NOT inserted")
 
@@ -990,7 +950,7 @@ class MSetup
         sqlCmd.append(" Value,Name,IsSummary,C_SalesRegion_UU) VALUES (")
         sqlCmd.append(C_SalesRegion_ID).append(",").append(m_stdValues).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_SalesRegion_ID")).append("=").append(defaultName).append("\n")
         else
@@ -1001,7 +961,7 @@ class MSetup
             sqlCmd.append("C_SalesRegion_ID=").append(C_SalesRegion_ID)
             sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
             sqlCmd.append(" AND ElementType='SR'")
-            no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+            no = executeUpdateEx(sqlCmd.toString(), null)
             if (no != 1)
                 log.log(Level.SEVERE, "AcctSchema Element SalesRegion NOT updated")
         }
@@ -1010,7 +970,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_SalesRegion_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_SalesRegion t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_SalesRegion_ID=").append(C_SalesRegion_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_SalesRegion_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_SalesRegion_ID=t.C_SalesRegion_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no < 0)
             log.log(Level.SEVERE, "Sales Region Translation NOT inserted")
 
@@ -1021,7 +981,7 @@ class MSetup
         sqlCmd.append(" Value,Name,IsSummary,C_Activity_UU) VALUES (")
         sqlCmd.append(C_Activity_ID).append(",").append(m_stdValues).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Activity_ID")).append("=").append(defaultName).append("\n")
         else
@@ -1032,7 +992,7 @@ class MSetup
             sqlCmd.append("C_Activity_ID=").append(C_Activity_ID)
             sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
             sqlCmd.append(" AND ElementType='AY'")
-            no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+            no = executeUpdateEx(sqlCmd.toString(), null)
             if (no != 1)
                 log.log(Level.SEVERE, "AcctSchema Element Activity NOT updated")
         }
@@ -1041,7 +1001,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_Activity_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Activity t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Activity_ID=").append(C_Activity_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Activity_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Activity_ID=t.C_Activity_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no < 0)
             log.log(Level.SEVERE, "Activity Translation NOT inserted")
 
@@ -1049,7 +1009,7 @@ class MSetup
          * Business Partner
          */
         //  Create BP Group
-        val bpg = MBPGroup(m_ctx, 0, m_trx.trxName)
+        val bpg = MBPGroup(m_ctx, 0, null)
         bpg.value = defaultName
         bpg.name = defaultName
         bpg.setIsDefault(true)
@@ -1059,7 +1019,7 @@ class MSetup
             log.log(Level.SEVERE, "BP Group NOT inserted")
 
         //	Create BPartner
-        val bp = MBPartner(m_ctx, 0, m_trx.trxName)
+        val bp = MBPartner(m_ctx, 0, null)
         bp.setValue(defaultName)
         bp.setName(defaultName)
         bp.setBPGroup(bpg)
@@ -1068,7 +1028,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "BPartner NOT inserted")
         //  Location for Standard BP
-        val bpLoc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, m_trx.trxName)
+        val bpLoc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
         bpLoc.saveEx()
         val bpl = MBPartnerLocation(bp)
         bpl.c_Location_ID = bpLoc.c_Location_ID
@@ -1079,7 +1039,7 @@ class MSetup
         sqlCmd.append("C_BPartner_ID=").append(bp.c_BPartner_ID)
         sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
         sqlCmd.append(" AND ElementType='BP'")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "AcctSchema Element BPartner NOT updated")
         createPreference("C_BPartner_ID", bp.c_BPartner_ID.toString(), 143)
@@ -1088,7 +1048,7 @@ class MSetup
          * Product
          */
         //  Create Product Category
-        val pc = MProductCategory(m_ctx, 0, m_trx.trxName)
+        val pc = MProductCategory(m_ctx, 0, null)
         pc.value = defaultName
         pc.name = defaultName
         pc.setIsDefault(true)
@@ -1112,7 +1072,7 @@ class MSetup
         else
             sqlCmd.append(defaultEntry).append("'Y',")
         sqlCmd.append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "TaxCategory NOT inserted")
 
@@ -1121,12 +1081,12 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_TaxCategory_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_TaxCategory t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_TaxCategory_ID=").append(C_TaxCategory_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_TaxCategory_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_TaxCategory_ID=t.C_TaxCategory_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no < 0)
             log.log(Level.SEVERE, "TaxCategory Translation NOT inserted")
 
         //  Tax - Zero Rate
-        val tax = MTax(m_ctx, "Standard", Env.ZERO, C_TaxCategory_ID, m_trx.trxName)
+        val tax = MTax(m_ctx, "Standard", Env.ZERO, C_TaxCategory_ID, null)
         tax.setIsDefault(true)
         if (tax.save())
             m_info!!.append(Msg.translate(m_lang, "C_Tax_ID"))
@@ -1135,7 +1095,7 @@ class MSetup
             log.log(Level.SEVERE, "Tax NOT inserted")
 
         //	Create Product
-        val product = MProduct(m_ctx, 0, m_trx.trxName)
+        val product = MProduct(m_ctx, 0, null)
         product.value = defaultName
         product.name = defaultName
         product.c_UOM_ID = C_UOM_ID
@@ -1150,7 +1110,7 @@ class MSetup
         sqlCmd.append("M_Product_ID=").append(product.m_Product_ID)
         sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
         sqlCmd.append(" AND ElementType='PR'")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "AcctSchema Element Product NOT updated")
 
@@ -1158,23 +1118,23 @@ class MSetup
          * Location, Warehouse, Locator
          */
         //  Location (Company)
-        val loc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, m_trx.trxName)
+        val loc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
         loc.address1 = address1
         loc.postal = postal
         loc.saveEx()
         sqlCmd = StringBuffer("UPDATE AD_OrgInfo SET C_Location_ID=")
         sqlCmd.append(loc.c_Location_ID).append(" WHERE orgId=").append(aD_Org_ID)
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "Location NOT inserted")
         createPreference("C_Country_ID", C_Country_ID.toString(), 0)
 
         //  Default Warehouse
-        val locwh = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, m_trx.trxName)
+        val locwh = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
         locwh.address1 = address1
         locwh.postal = postal
         locwh.saveEx()
-        val wh = MWarehouse(m_ctx, 0, m_trx.trxName)
+        val wh = MWarehouse(m_ctx, 0, null)
         wh.value = defaultName
         wh.name = defaultName
         wh.c_Location_ID = locwh.c_Location_ID
@@ -1196,7 +1156,7 @@ class MSetup
         //		sqlCmd.append(",C_UOM_Length_ID=");
         //		sqlCmd.append(",C_UOM_Time_ID=");
         sqlCmd.append(" WHERE clientId=").append(aD_Client_ID)
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1) {
             val err = "ClientInfo not updated"
             log.log(Level.SEVERE, err)
@@ -1208,14 +1168,14 @@ class MSetup
          * Other
          */
         //  PriceList
-        val pl = MPriceList(m_ctx, 0, m_trx.trxName)
+        val pl = MPriceList(m_ctx, 0, null)
         pl.name = defaultName
         pl.c_Currency_ID = C_Currency_ID
         pl.setIsDefault(true)
         if (!pl.save())
             log.log(Level.SEVERE, "PriceList NOT inserted")
         //  Price List
-        val ds = MDiscountSchema(m_ctx, 0, m_trx.trxName)
+        val ds = MDiscountSchema(m_ctx, 0, null)
         ds.name = defaultName
         ds.discountType = MDiscountSchema.DISCOUNTTYPE_Pricelist
         if (!ds.save())
@@ -1234,7 +1194,7 @@ class MSetup
 
 
         //	Create Sales Rep for Client-User
-        val bpCU = MBPartner(m_ctx, 0, m_trx.trxName)
+        val bpCU = MBPartner(m_ctx, 0, null)
         bpCU.setValue(AD_User_U_Name!!)
         bpCU.setName(AD_User_U_Name!!)
         bpCU.setBPGroup(bpg)
@@ -1245,7 +1205,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "SalesRep (User) NOT inserted")
         //  Location for Client-User
-        val bpLocCU = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, m_trx.trxName)
+        val bpLocCU = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
         bpLocCU.saveEx()
         val bplCU = MBPartnerLocation(bpCU)
         bplCU.c_Location_ID = bpLocCU.c_Location_ID
@@ -1254,13 +1214,13 @@ class MSetup
         //  Update User
         sqlCmd = StringBuffer("UPDATE AD_User SET C_BPartner_ID=")
         sqlCmd.append(bpCU.c_BPartner_ID).append(" WHERE AD_User_ID=").append(AD_User_U_ID)
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "User of SalesRep (User) NOT updated")
 
 
         //	Create Sales Rep for Client-Admin
-        val bpCA = MBPartner(m_ctx, 0, m_trx.trxName)
+        val bpCA = MBPartner(m_ctx, 0, null)
         bpCA.setValue(AD_User_Name!!)
         bpCA.setName(AD_User_Name!!)
         bpCA.setBPGroup(bpg)
@@ -1271,7 +1231,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "SalesRep (Admin) NOT inserted")
         //  Location for Client-Admin
-        val bpLocCA = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, m_trx.trxName)
+        val bpLocCA = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
         bpLocCA.saveEx()
         val bplCA = MBPartnerLocation(bpCA)
         bplCA.c_Location_ID = bpLocCA.c_Location_ID
@@ -1280,7 +1240,7 @@ class MSetup
         //  Update User
         sqlCmd = StringBuffer("UPDATE AD_User SET C_BPartner_ID=")
         sqlCmd.append(bpCA.c_BPartner_ID).append(" WHERE AD_User_ID=").append(aD_User_ID)
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "User of SalesRep (Admin) NOT updated")
 
@@ -1292,7 +1252,7 @@ class MSetup
         sqlCmd.append("Value,Name,NetDays,GraceDays,DiscountDays,Discount,DiscountDays2,Discount2,IsDefault,C_PaymentTerm_UU) VALUES (")
         sqlCmd.append(C_PaymentTerm_ID).append(",").append(m_stdValues).append(",")
         sqlCmd.append("'Immediate','Immediate',0,0,0,0,0,0,'Y'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "PaymentTerm NOT inserted")
         // Payment Term Translation
@@ -1300,7 +1260,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_PaymentTerm_ID, t.Description,t.Name, 'N',t.clientId,t.orgId,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_PaymentTerm t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_PaymentTerm_ID=").append(C_PaymentTerm_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_PaymentTerm_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_PaymentTerm_ID=t.C_PaymentTerm_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no < 0)
             log.log(Level.SEVERE, "Payment Term Translation NOT inserted")
 
@@ -1311,7 +1271,7 @@ class MSetup
         sqlCmd.append(" Name,C_Currency_ID,C_Cycle_UU) VALUES (")
         sqlCmd.append(C_Cycle_ID).append(",").append(m_stdValues).append(", ")
         sqlCmd.append(defaultEntry).append(C_Currency_ID).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "Cycle NOT inserted")
 
@@ -1326,7 +1286,7 @@ class MSetup
         sqlCmd.append(" Value,Name,C_Currency_ID,IsSummary,C_Project_UU) VALUES (")
         sqlCmd.append(C_Project_ID).append(",").append(m_stdValuesOrg).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append(C_Currency_ID).append(",'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+        no = executeUpdateEx(sqlCmd.toString(), null)
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Project_ID")).append("=").append(defaultName).append("\n")
         else
@@ -1337,13 +1297,13 @@ class MSetup
             sqlCmd.append("C_Project_ID=").append(C_Project_ID)
             sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
             sqlCmd.append(" AND ElementType='PJ'")
-            no = executeUpdateEx(sqlCmd.toString(), m_trx.trxName)
+            no = executeUpdateEx(sqlCmd.toString(), null)
             if (no != 1)
                 log.log(Level.SEVERE, "AcctSchema Element Project NOT updated")
         }
 
         //  CashBook
-        val cb = MCashBook(m_ctx, 0, m_trx.trxName)
+        val cb = MCashBook(m_ctx, 0, null)
         cb.name = defaultName
         cb.c_Currency_ID = C_Currency_ID
         if (cb.save())
@@ -1351,10 +1311,8 @@ class MSetup
         else
             log.log(Level.SEVERE, "CashBook NOT inserted")
         //
-        val success = m_trx.commit()
-        m_trx.close()
         log.info("finish")
-        return success
+        return true
     }   //  createEntities
 
     /**
@@ -1374,7 +1332,7 @@ class MSetup
             sqlCmd.append("NULL)")
         else
             sqlCmd.append(AD_Window_ID).append(")")
-        val no = executeUpdateEx(sqlCmd.toString(), m_trx!!.trxName)
+        val no = executeUpdateEx(sqlCmd.toString(), null)
         if (no != 1)
             log.log(Level.SEVERE, "Preference NOT inserted - $Attribute")
     }   //  createPreference
@@ -1388,19 +1346,6 @@ class MSetup
      */
     private fun getNextID(AD_Client_ID: Int, TableName: String): Int {
         //	TODO: Exception
-        return MSequence.getNextID(AD_Client_ID, TableName, m_trx!!.trxName)
+        return MSequence.getNextID(AD_Client_ID, TableName, null)
     }    //	getNextID
-
-    /**
-     * Rollback Internal Transaction
-     */
-    fun rollback() {
-        try {
-            m_trx!!.rollback()
-            m_trx.close()
-        } catch (e: Exception) {
-        }
-
-    }
-
 }   //  MSetup

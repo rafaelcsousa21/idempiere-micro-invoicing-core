@@ -17,6 +17,7 @@ import org.compiere.tax.MTaxCategory
 import org.idempiere.common.util.Env
 import org.idempiere.icommon.model.IPO
 import org.junit.Before
+import org.slf4j.impl.SimpleLogger
 import software.hsharp.core.orm.DummyEventManager
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -30,6 +31,7 @@ abstract class BaseComponentTest {
     }
 
     init {
+        System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE")
         HikariCP.default(sessionUrl, "adempiere", "adempiere")
         DummyEventManager()
     }

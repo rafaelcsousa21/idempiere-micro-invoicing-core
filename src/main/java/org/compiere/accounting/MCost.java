@@ -8,7 +8,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -587,12 +586,6 @@ public class MCost extends X_M_Cost {
     MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(client.getCtx(), client. getClientId());
     String trxName = null;
     String trxNameUsed = trxName;
-    Trx trx = null;
-    if (trxName == null) {
-      trxNameUsed = Trx.createTrxName("Cost");
-      trx = Trx.get(trxNameUsed, true);
-      trx.setDisplayName(MCost.class.getName() + "_create");
-    }
     boolean success = true;
     //	For all Products
     String sql =
@@ -630,12 +623,6 @@ public class MCost extends X_M_Cost {
       close(rs, pstmt);
       rs = null;
       pstmt = null;
-    }
-    //	Transaction
-    if (trx != null) {
-      if (success) trx.commit();
-      else trx.rollback();
-      trx.close();
     }
   } //	create
 

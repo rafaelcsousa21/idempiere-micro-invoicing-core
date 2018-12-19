@@ -9,7 +9,11 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.compiere.wf.MNote;
-import org.idempiere.common.util.*;
+import org.idempiere.common.exceptions.AdempiereException;
+import org.idempiere.common.util.AdempiereUserError;
+import org.idempiere.common.util.CLogger;
+import org.idempiere.common.util.Env;
+import org.idempiere.common.util.Util;
 
 import java.lang.reflect.Constructor;
 import java.math.BigDecimal;
@@ -215,12 +219,10 @@ public abstract class Doc implements IDoc {
       int WindowNo, int AD_Client_ID, int AD_Table_ID, int Record_ID, boolean force) {
     String error = null;
     MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(Env.getCtx(), AD_Client_ID);
-    Trx trx = Trx.get(Trx.createTrxName("ManulPosting"), true);
-    trx.setDisplayName(Doc.class.getName() + "_manualPosting");
     try {
       // Costing: Post MatchPO before MR
       if (AD_Table_ID == MInOut.Table_ID) {
-        MMatchPO[] matchPos = MMatchPO.getInOut(Env.getCtx(), Record_ID, trx.getTrxName());
+        MMatchPO[] matchPos = MMatchPO.getInOut(Env.getCtx(), Record_ID, null);
         for (MMatchPO matchPo : matchPos) {
           if (!matchPo.isPosted()) {
             error =
@@ -231,12 +233,12 @@ public abstract class Doc implements IDoc {
         }
       }
       if (Util.isEmpty(error)) {
-        error = postImmediate(ass, AD_Table_ID, Record_ID, force, trx.getTrxName());
+        error = postImmediate(ass, AD_Table_ID, Record_ID, force, null);
       }
       // Costing: Post MatchInv after Invoice
       if (Util.isEmpty(error)) {
         if (AD_Table_ID == I_C_Invoice.Table_ID) {
-          MMatchInv[] matchInvs = MMatchInv.getInvoice(Env.getCtx(), Record_ID, trx.getTrxName());
+          MMatchInv[] matchInvs = MMatchInv.getInvoice(Env.getCtx(), Record_ID, null);
           for (MMatchInv matchInv : matchInvs) {
             if (!matchInv.isPosted()) {
               error =
@@ -251,16 +253,8 @@ public abstract class Doc implements IDoc {
           }
         }
       }
-      if (Util.isEmpty(error)) {
-        trx.commit(true);
-      } else {
-        trx.rollback();
-      }
     } catch (Throwable t) {
-      trx.rollback();
-      return "@Error@ " + t.getLocalizedMessage();
-    } finally {
-      trx.close();
+      throw new Error("@Error@ " + t.getLocalizedMessage());
     }
 
     return error;
@@ -518,15 +512,12 @@ public abstract class Doc implements IDoc {
       return null;
     }
 
-    Trx trx = Trx.get(getTrxName(), true);
     //  Delete existing Accounting
     if (repost) {
       if (isPosted() && !isPeriodOpen()) // 	already posted - don't delete if period closed
       {
         log.log(Level.SEVERE, toString() + " - Period Closed for already posed document");
         unlock();
-        trx.commit();
-        trx.close();
         return "PeriodClosed";
       }
       //	delete it
@@ -534,8 +525,6 @@ public abstract class Doc implements IDoc {
     } else if (isPosted()) {
       log.log(Level.SEVERE, toString() + " - Document already posted");
       unlock();
-      trx.commit();
-      trx.close();
       return "AlreadyPosted";
     }
 
@@ -732,7 +721,6 @@ public abstract class Doc implements IDoc {
       log.info("Sta=" + status + " DT=" + getDocumentType() + " ID=" + p_po.getId());
     p_Status = status;
 
-    Trx trx = Trx.get(getTrxName(), true);
     try {
       //  *** Transaction Start       ***
       //  Commit Facts
@@ -743,40 +731,20 @@ public abstract class Doc implements IDoc {
           else if (fact.save(getTrxName())) ;
           else {
             log.log(Level.SEVERE, "(fact not saved) ... rolling back");
-            if (m_manageLocalTrx) {
-              trx.rollback();
-              trx.close();
-            }
             unlock();
-            return STATUS_Error;
+            throw new AdempiereException("(fact not saved) ... rolling back");
           }
         }
       }
 
       unlock();
 
-      //	Success
-      if (m_manageLocalTrx) {
-        trx.commit(true);
-        trx.close();
-        trx = null;
-      }
       //  *** Transaction End         ***
     } catch (Exception e) {
       log.log(Level.SEVERE, "... rolling back", e);
       status = STATUS_Error;
-      if (m_manageLocalTrx) {
-        try {
-          if (trx != null) trx.rollback();
-        } catch (Exception e2) {
-        }
-        try {
-          if (trx != null) trx.close();
-          trx = null;
-        } catch (Exception e3) {
-        }
-      }
       unlock();
+      throw new AdempiereException(e);
     }
     p_Status = status;
     return status;

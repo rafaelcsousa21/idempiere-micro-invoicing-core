@@ -9,7 +9,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 import org.idempiere.orm.PO;
 
 import java.math.BigDecimal;
@@ -247,14 +246,6 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
   public static void confirmPrint(MPaySelectionCheck check, MPaymentBatch batch) {
     boolean localTrx = false;
     String trxName = null;
-    Trx trx = null;
-    if (trxName == null) {
-      localTrx = true;
-      trxName = Trx.createTrxName("ConfirmPrintSingle");
-      trx = Trx.get(trxName, true);
-      trx.setDisplayName(MPaySelectionCheck.class.getName() + "_confirmPrint");
-      check.set_TrxName(trxName);
-    }
     try {
       MPayment payment = new MPayment(check.getCtx(), check.getC_Payment_ID(), trxName);
       //	Existing Payment
@@ -335,17 +326,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
       check.setProcessed(true);
       check.saveEx();
     } catch (Exception e) {
-      if (localTrx && trx != null) {
-        trx.rollback();
-        trx.close();
-        trx = null;
-      }
       throw new AdempiereException(e);
-    } finally {
-      if (localTrx && trx != null) {
-        trx.commit();
-        trx.close();
-      }
     }
   } //	confirmPrint
 
@@ -379,12 +360,6 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
       } else {
         isDebit = false;
         createDepositBatch = false;
-      }
-      Trx trx = null;
-      if (trxName == null) {
-        localTrx = true;
-        trxName = Trx.createTrxName("ConfirmPrintMulti");
-        trx = Trx.get(trxName, true);
       }
 
       try {
@@ -428,17 +403,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         }
 
       } catch (Exception e) {
-        if (localTrx && trx != null) {
-          trx.rollback();
-          trx.close();
-          trx = null;
-        }
         throw new AdempiereException(e);
-      } finally {
-        if (localTrx && trx != null) {
-          trx.commit();
-          trx.close();
-        }
       }
     }
     if (s_log.isLoggable(Level.FINE)) s_log.fine("Last Document No = " + lastDocumentNo);

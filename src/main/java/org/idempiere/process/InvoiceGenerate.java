@@ -32,7 +32,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
-import org.idempiere.common.util.Trx;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -341,12 +340,6 @@ public class InvoiceGenerate extends SvrProcess {
   private void createLine(
       MOrder order, MOrderLine orderLine, BigDecimal qtyInvoiced, BigDecimal qtyEntered) {
     if (m_invoice == null) {
-      try {
-        if (m_savepoint != null) Trx.get(null, false).releaseSavepoint(m_savepoint);
-        m_savepoint = Trx.get(null, false).setSavepoint(null);
-      } catch (SQLException e) {
-        throw new AdempiereException(e);
-      }
       m_invoice = new MInvoice(order, 0, p_DateInvoiced);
       if (!m_invoice.save()) throw new IllegalStateException("Could not create Invoice (o)");
     }
@@ -369,12 +362,6 @@ public class InvoiceGenerate extends SvrProcess {
    */
   private void createLine(MOrder order, MInOut ship, MInOutLine sLine) {
     if (m_invoice == null) {
-      try {
-        if (m_savepoint != null) Trx.get(null, false).releaseSavepoint(m_savepoint);
-        m_savepoint = Trx.get(null, false).setSavepoint(null);
-      } catch (SQLException e) {
-        throw new AdempiereException(e);
-      }
       m_invoice = new MInvoice(order, 0, p_DateInvoiced);
       if (!m_invoice.save()) throw new IllegalStateException("Could not create Invoice (s)");
     }
@@ -490,15 +477,7 @@ public class InvoiceGenerate extends SvrProcess {
             Msg.parseTranslation(
                 getCtx(), "@NotInvoicedAmt@ " + amt + " - " + m_invoice.getC_BPartner().getName());
         addLog(message);
-        if (m_savepoint != null) {
-          try {
-            Trx.get(null, false).rollback(m_savepoint);
-          } catch (SQLException e) {
-            throw new AdempiereException(e);
-          }
-        } else {
-          throw new AdempiereException("No savepoint");
-        }
+        throw new AdempiereException("No savepoint");
 
       } else {
 

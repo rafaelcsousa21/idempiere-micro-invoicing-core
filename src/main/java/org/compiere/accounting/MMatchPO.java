@@ -11,13 +11,11 @@ import org.compiere.orm.MSysConfig;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.ValueNamePair;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Savepoint;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -352,8 +350,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
                         + " AND C_InvoiceLine_ID="
                         + C_InvoiceLine_ID);
             if (cnt <= 0) {
-              Trx trx = trxName != null ? Trx.get(trxName, false) : null;
-              Savepoint savepoint = trx != null ? trx.getConnection().setSavepoint() : null;
               MMatchInv matchInv = new MMatchInv(mpo.getCtx(), 0, null);
               matchInv.setC_InvoiceLine_ID(C_InvoiceLine_ID);
               matchInv.setM_Product_ID(mpo.getM_Product_ID());
@@ -365,12 +361,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
               matchInv.setDateTrx(dateTrx);
               matchInv.setProcessed(true);
               if (!matchInv.save()) {
-                if (savepoint != null) {
-                  trx.getConnection().rollback(savepoint);
-                  savepoint = null;
-                } else {
-                  matchInv.delete(true);
-                }
+                matchInv.delete(true);
                 String msg = "Failed to auto match invoice.";
                 ValueNamePair error = CLogger.retrieveError();
                 if (error != null) {
@@ -381,12 +372,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
                 continue;
               }
               mpo.setMatchInvCreated(matchInv);
-              if (savepoint != null) {
-                try {
-                  trx.getConnection().releaseSavepoint(savepoint);
-                } catch (Exception e) {
-                }
-              }
             }
           }
           if (iLine != null) mpo.setC_InvoiceLine_ID(iLine);

@@ -1,6 +1,6 @@
 package org.compiere.invoicing;
 
-import org.apache.commons.collections4.keyvalue.MultiKey;
+import org.apache.commons.collections.keyvalue.MultiKey;
 import org.compiere.model.I_A_Depreciation_Workfile;
 import org.compiere.model.SetGetModel;
 import org.compiere.model.UseLife;

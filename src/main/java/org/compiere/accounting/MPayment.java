@@ -30,7 +30,6 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.Util;
 import org.idempiere.common.util.ValueNamePair;
 
@@ -544,13 +543,9 @@ public class MPayment extends X_C_Payment
 
     setIsApproved(approved);
 
-    Trx trx = Trx.get(Trx.createTrxName("ppt-"), true);
-    trx.setDisplayName(getClass().getName() + "_processOnline");
-
     try {
-      trx.start();
 
-      MPaymentTransaction m_mPaymentTransaction = createPaymentTransaction(trx.getTrxName());
+      MPaymentTransaction m_mPaymentTransaction = createPaymentTransaction(null);
       m_mPaymentTransaction.setIsApproved(approved);
       if (getTrxType().equals(X_C_Payment.TRXTYPE_Void)
           || getTrxType().equals(X_C_Payment.TRXTYPE_CreditPayment))
@@ -559,7 +554,7 @@ public class MPayment extends X_C_Payment
       m_mPaymentTransaction.setC_Payment_ID(getC_Payment_ID());
       m_mPaymentTransaction.saveEx();
 
-      MOnlineTrxHistory history = new MOnlineTrxHistory(getCtx(), 0, trx.getTrxName());
+      MOnlineTrxHistory history = new MOnlineTrxHistory(getCtx(), 0, null);
       history.setAD_Table_ID(MPaymentTransaction.Table_ID);
       history.setRecord_ID(m_mPaymentTransaction.getC_PaymentTransaction_ID());
       history.setIsError(!approved);
@@ -584,11 +579,7 @@ public class MPayment extends X_C_Payment
     } catch (Exception e) {
       log.log(Level.SEVERE, "processOnline", e);
       setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNotProcessed") + ": " + e.getMessage());
-    } finally {
-      if (trx != null) {
-        trx.commit();
-        trx.close();
-      }
+      throw new Error(e);
     }
 
     if (getTrxType().equals(X_C_Payment.TRXTYPE_Void)

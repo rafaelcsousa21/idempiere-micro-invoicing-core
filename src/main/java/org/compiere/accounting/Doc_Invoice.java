@@ -8,8 +8,8 @@ import org.compiere.model.IFact;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.product.MCurrency;
 import org.compiere.tax.MTax;
+import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -958,10 +958,7 @@ public class Doc_Invoice extends Doc {
 
         boolean zeroQty = false;
         if (costAdjustmentAmt.signum() != 0) {
-          Trx trx = Trx.get(getTrxName(), false);
-          Savepoint savepoint = null;
           try {
-            savepoint = trx.setSavepoint(null);
             BigDecimal costDetailAmt = costAdjustmentAmt;
             // convert to accounting schema currency
             if (getC_Currency_ID() != as.getC_Currency_ID())
@@ -998,23 +995,8 @@ public class Doc_Invoice extends Doc {
                 getTrxName())) {
               throw new RuntimeException("Failed to create cost detail record.");
             }
-          } catch (SQLException e) {
-            throw new RuntimeException(e.getLocalizedMessage(), e);
           } catch (AverageCostingZeroQtyException e) {
-            zeroQty = true;
-            try {
-              trx.rollback(savepoint);
-              savepoint = null;
-            } catch (SQLException e1) {
-              throw new RuntimeException(e1.getLocalizedMessage(), e1);
-            }
-          } finally {
-            if (savepoint != null) {
-              try {
-                trx.releaseSavepoint(savepoint);
-              } catch (SQLException e) {
-              }
-            }
+            throw new AdempiereException(e);
           }
         }
 

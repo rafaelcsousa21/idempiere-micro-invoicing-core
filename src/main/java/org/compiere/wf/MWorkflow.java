@@ -8,11 +8,11 @@ import org.compiere.orm.Query;
 import org.compiere.process.ProcessInfo;
 import org.compiere.product.MProduct;
 import org.compiere.util.Msg;
+import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -597,24 +597,16 @@ public class MWorkflow extends X_AD_Workflow {
    */
   public MWFProcess start(IProcessInfo pi, String trxName) {
     MWFProcess retValue = null;
-    Trx localTrx = null;
-    if (trxName == null) {
-      localTrx = Trx.get(Trx.createTrxName("WFP"), true);
-      localTrx.setDisplayName(getClass().getName() + "_start");
-    }
     try {
-      retValue = new MWFProcess(this, pi, trxName != null ? trxName : localTrx.getTrxName());
+      retValue = new MWFProcess(this, pi, null);
       retValue.saveEx();
       pi.setSummary(Msg.getMsg(getCtx(), "Processing"));
       retValue.startWork();
-      if (localTrx != null) localTrx.commit(true);
     } catch (Exception e) {
-      if (localTrx != null) localTrx.rollback();
       log.log(Level.SEVERE, e.getLocalizedMessage(), e);
       pi.setSummary(e.getMessage(), true);
       retValue = null;
-    } finally {
-      if (localTrx != null) localTrx.close();
+      throw new AdempiereException(e);
     }
 
     if (retValue != null) {

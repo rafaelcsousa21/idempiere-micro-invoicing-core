@@ -213,38 +213,30 @@ class InitialClientSetup(
 
         // Process
         val ms = MSetup(Env.getCtx(), WINDOW_THIS_PROCESS)
-        try {
-            if (!ms.createClient(p_ClientName, p_OrgValue, p_OrgName, p_AdminUserName, p_NormalUserName, p_Phone,
-                    p_Phone2, p_Fax, p_EMail, p_TaxID, p_AdminUserEmail, p_NormalUserEmail, p_IsSetInitialPassword)) {
-                ms.rollback()
-                throw AdempiereException("Create client failed")
-            }
-
-            addLog(ms.info)
-
-            //  Generate Accounting
-            val currency = MCurrency.get(ctx, p_C_Currency_ID)
-            val currency_kp = KeyNamePair(p_C_Currency_ID, currency.description)
-            if (!ms.createAccounting(currency_kp,
-                            p_IsUseProductDimension, p_IsUseBPDimension, p_IsUseProjectDimension, p_IsUseCampaignDimension, p_IsUseSalesRegionDimension, p_IsUseActivityDimension,
-                            coaFile, p_InactivateDefaults)) {
-                ms.rollback()
-                throw AdempiereException("@AccountSetupError@")
-            }
-
-            //  Generate Entities
-            if (!ms.createEntities(p_C_Country_ID, p_CityName, p_C_Region_ID, p_C_Currency_ID, p_Postal, p_Address1)) {
-                ms.rollback()
-                throw AdempiereException("@AccountSetupError@")
-            }
-            addLog(ms.info)
-
-            // 	Create Print Documents
-            // PrintUtil.setupPrintForm(ms.getClientId());
-        } catch (e: Exception) {
-            ms.rollback()
-            throw e
+        if (!ms.createClient(p_ClientName, p_OrgValue, p_OrgName, p_AdminUserName, p_NormalUserName, p_Phone,
+                p_Phone2, p_Fax, p_EMail, p_TaxID, p_AdminUserEmail, p_NormalUserEmail, p_IsSetInitialPassword)) {
+            throw AdempiereException("Create client failed")
         }
+
+        addLog(ms.info)
+
+        //  Generate Accounting
+        val currency = MCurrency.get(ctx, p_C_Currency_ID)
+        val currency_kp = KeyNamePair(p_C_Currency_ID, currency.description)
+        if (!ms.createAccounting(currency_kp,
+                        p_IsUseProductDimension, p_IsUseBPDimension, p_IsUseProjectDimension, p_IsUseCampaignDimension, p_IsUseSalesRegionDimension, p_IsUseActivityDimension,
+                        coaFile, p_InactivateDefaults)) {
+            throw AdempiereException("@AccountSetupError@")
+        }
+
+        //  Generate Entities
+        if (!ms.createEntities(p_C_Country_ID, p_CityName, p_C_Region_ID, p_C_Currency_ID, p_Postal, p_Address1)) {
+            throw AdempiereException("@AccountSetupError@")
+        }
+        addLog(ms.info)
+
+        // 	Create Print Documents
+        // PrintUtil.setupPrintForm(ms.getClientId());
 
         return "@OK@"
     }

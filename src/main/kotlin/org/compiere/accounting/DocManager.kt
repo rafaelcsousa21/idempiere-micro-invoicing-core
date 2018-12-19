@@ -1,6 +1,5 @@
 package org.compiere.accounting
 
-import mu.KotlinLogging
 import org.compiere.model.IDoc
 import org.compiere.model.IDocFactory
 import org.compiere.orm.MTable
@@ -12,14 +11,12 @@ import org.idempiere.common.exceptions.DBException
 import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
-import org.idempiere.common.util.Trx
 import software.hsharp.core.util.close
 import software.hsharp.core.util.executeUpdate
 import software.hsharp.core.util.prepareStatement
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
-import java.sql.Savepoint
 
 /**
  * This class contains methods to manage the posting of financial document. Most of the code is adapted from the legacy code in Doc.java
@@ -250,92 +247,33 @@ object DocManager {
         repost: Boolean,
         trxName: String?
     ): String? {
-        var trxName1 = trxName
-        var localTrxName: String? = null
-        if (trxName1 == null) {
-            localTrxName = Trx.createTrxName("Post")
-            trxName1 = localTrxName
+        var error: String? = null
+        var status = ""
+        for (`as` in ass) {
+            val doc = Doc.get(`as`, AD_Table_ID, rs, null)
+            if (doc != null) {
+                error = doc.post(force, repost) // 	repost
+                status = doc.postStatus
+                if (error != null && error.trim { it <= ' ' }.length > 0) {
+                    s_log.info("Error Posting $doc to $`as` Error: $error")
+                    throw Error("Error Posting $doc to $`as` Error: $error")
+                }
+            } else {
+                s_log.info("Error Posting $doc to $`as` Error:  NoDoc")
+                throw Error("Error Posting $doc to $`as` Error: $error")
+            }
         }
 
-        val trx = Trx.get(trxName1, true)
-        if (localTrxName != null)
-            trx!!.displayName = DocManager::class.java.name + "_postDocument"
-        var error: String? = null
-        var savepoint: Savepoint? = null
-        try {
-            savepoint = if (localTrxName == null) trx!!.setSavepoint(null) else null
-            var status = ""
-            for (`as` in ass) {
-                val doc = Doc.get(`as`, AD_Table_ID, rs, trxName1)
-                if (doc != null) {
-                    error = doc.post(force, repost) // 	repost
-                    status = doc.postStatus
-                    if (error != null && error.trim { it <= ' ' }.length > 0) {
-                        if (savepoint != null) {
-                            trx!!.rollback(savepoint)
-                            savepoint = null
-                        } else
-                            trx!!.rollback()
-                        s_log.info("Error Posting $doc to $`as` Error: $error")
-                        break
-                    }
-                } else {
-                    if (savepoint != null) {
-                        trx!!.rollback(savepoint)
-                        savepoint = null
-                    } else
-                        trx!!.rollback()
-
-                    s_log.info("Error Posting $doc to $`as` Error:  NoDoc")
-                    return "NoDoc"
-                }
-            }
-
-            val table = MTable.get(Env.getCtx(), AD_Table_ID)
-            val Record_ID = rs.getInt(table.keyColumns[0])
-            //  Commit Doc
-            if (!save(trxName1, AD_Table_ID, Record_ID, status)) {
-                val dbError = CLogger.retrieveError()
-                // log.log(Level.SEVERE, "(doc not saved) ... rolling back");
-                if (localTrxName != null) {
-                    trx?.rollback()
-                } else if (trx != null && savepoint != null) {
-                    trx.rollback(savepoint)
-                    savepoint = null
-                }
-                if (dbError != null)
-                    error = dbError.value
-                else
-                    error = "SaveError"
-            }
-            if (savepoint != null) {
-                try {
-                    trx!!.releaseSavepoint(savepoint)
-                } catch (e1: SQLException) {
-                }
-
-                savepoint = null
-            }
-            if (localTrxName != null && error == null) {
-                trx?.commit()
-            }
-        } catch (e: Exception) {
-            if (localTrxName != null) {
-                trx?.rollback()
-            } else if (trx != null && savepoint != null) {
-                try {
-                    trx.rollback(savepoint)
-                } catch (e1: SQLException) {
-                }
-            }
-            if (e is RuntimeException)
-                throw e
+        val table = MTable.get(Env.getCtx(), AD_Table_ID)
+        val Record_ID = rs.getInt(table.keyColumns[0])
+        //  Commit Doc
+        if (!save(null, AD_Table_ID, Record_ID, status)) {
+            val dbError = CLogger.retrieveError()
+            // log.log(Level.SEVERE, "(doc not saved) ... rolling back");
+            if (dbError != null)
+                error = dbError.value
             else
-                throw AdempiereException(e)
-        } finally {
-            if (localTrxName != null) {
-                trx?.close()
-            }
+                error = "SaveError"
         }
         return error
     }

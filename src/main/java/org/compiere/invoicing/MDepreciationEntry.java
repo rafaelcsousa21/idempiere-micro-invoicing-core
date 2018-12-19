@@ -14,8 +14,6 @@ import org.compiere.process.DocAction;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.Trx;
-import org.idempiere.common.util.TrxRunnable;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -240,27 +238,20 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     //
     while (it.hasNext()) {
       try {
-        Trx.run(
-            null,
-            new TrxRunnable() {
-
-              public void run(String trxName) {
-                MDepreciationExp depexp = it.next();
-                // Check if is in Period
-                if (!period.isInPeriod(depexp.getDateAcct())) {
-                  throw new AssetException(
-                      "The date is not within this Period"
-                          + " ("
-                          + depexp
-                          + ", Data="
-                          + depexp.getDateAcct()
-                          + ", Period="
-                          + period.getName()
-                          + ")"); // TODO: translate
-                }
-                depexp.process();
-              }
-            });
+          MDepreciationExp depexp = it.next();
+          // Check if is in Period
+          if (!period.isInPeriod(depexp.getDateAcct())) {
+            throw new AssetException(
+                "The date is not within this Period"
+                    + " ("
+                    + depexp
+                    + ", Data="
+                    + depexp.getDateAcct()
+                    + ", Period="
+                    + period.getName()
+                    + ")"); // TODO: translate
+          }
+          depexp.process();
       } catch (Exception e) {
         log.log(Level.SEVERE, e.getLocalizedMessage(), e);
         errors.add(e);

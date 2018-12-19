@@ -14,7 +14,6 @@ import org.compiere.util.DisplayType;
 import org.compiere.wf.MMailText;
 import org.compiere.wf.MNote;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 import org.idempiere.common.util.Util;
 
 import java.io.File;
@@ -56,8 +55,6 @@ public class Scheduler extends AdempiereServer {
   protected MScheduler m_model = null;
   /** Last Summary */
   protected StringBuffer m_summary = new StringBuffer();
-  /** Transaction */
-  protected Trx m_trx = null;
 
   /** Work */
   protected void doWork() {
@@ -90,16 +87,11 @@ public class Scheduler extends AdempiereServer {
 
     MProcess process = new MProcess(getCtx(), m_model.getAD_Process_ID(), null);
     try {
-      m_trx = Trx.get(Trx.createTrxName("Scheduler"), true);
-      m_trx.setDisplayName(getClass().getName() + "_" + getModel().getName() + "_doWork");
       m_summary.append(runProcess(process));
-      m_trx.commit(true);
     } catch (Throwable e) {
-      if (m_trx != null) m_trx.rollback();
       log.log(Level.WARNING, process.toString(), e);
       m_summary.append(e.toString());
-    } finally {
-      if (m_trx != null) m_trx.close();
+      throw new Error(e.toString());
     }
 
     //
@@ -148,8 +140,8 @@ public class Scheduler extends AdempiereServer {
     pi.setPrintPreview(true);
     MUser from = new MUser(getCtx(), pi.getAD_User_ID(), null);
 
-    pi.setTransactionName(m_trx != null ? m_trx.getTrxName() : null);
-    ServerProcessCtl.process(pi, m_trx);
+    pi.setTransactionName(null);
+    ServerProcessCtl.process(pi);
     if (pi.isError()) // note, this call close the transaction, don't use m_trx below
     {
       // notify supervisor if error

@@ -14,14 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
 import org.compiere.accounting.DocManager;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
@@ -30,9 +22,17 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereUserError;
-
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+
 import static software.hsharp.core.util.DBKt.*;
 /**
  * Client Accounting Processor
@@ -180,22 +180,15 @@ public class ClientAcctProcessor extends SvrProcess {
             count[i]++;
             boolean ok = true;
             // Run every posting document in own transaction
-            String innerTrxName = Trx.createTrxName("CAP");
-            Trx innerTrx = Trx.get(innerTrxName, true);
-            innerTrx.setDisplayName(getClass().getName() + "_postSession");
 
             try {
               String error =
                   DocManager.INSTANCE.postDocument(
-                      m_ass, AD_Table_ID, rs, false, false, innerTrxName);
+                      m_ass, AD_Table_ID, rs, false, false, null);
               ok = (error == null);
             } catch (Exception e) {
               log.log(Level.SEVERE, getName() + ": " + TableName, e);
               ok = false;
-            } finally {
-              innerTrx.commit();
-              innerTrx.close();
-              innerTrx = null;
             }
             if (!ok) countError[i]++;
           }

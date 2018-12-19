@@ -2,42 +2,24 @@ package org.compiere.invoicing.test
 
 import company.bigger.test.support.asResource
 import company.bigger.test.support.randomString
-import org.compiere.accounting.MOrder
-import org.compiere.accounting.MOrderLine
-import org.compiere.accounting.MPayment
+import org.compiere.accounting.*
 import org.compiere.accounting.MProduct
-import org.compiere.accounting.MStorageOnHand
-import org.compiere.crm.MBPartner
-import org.compiere.crm.MCountry
-import org.compiere.crm.MLocation
-import org.compiere.crm.MRegion
-import org.compiere.crm.MBPartnerLocation
+import org.compiere.crm.*
 import org.compiere.invoicing.MInOut
 import org.compiere.invoicing.MInOutLine
 import org.compiere.invoicing.MInvoice
-import org.compiere.model.I_C_Invoice
-import org.compiere.model.I_C_Payment
-import org.compiere.model.I_M_Product
-import org.compiere.model.I_M_Production
-import org.compiere.model.I_C_BPartner
-import org.compiere.model.I_M_InOut
-import org.compiere.model.I_M_InOutLine
-import org.compiere.model.I_M_PriceList
-import org.compiere.model.I_M_PriceList_Version
+import org.compiere.model.*
 import org.compiere.order.X_M_InOut
 import org.compiere.orm.DefaultModelFactory
 import org.compiere.orm.IModelFactory
 import org.compiere.orm.MDocType
 import org.compiere.process.DocAction
 import org.compiere.process.ProcessInfo
-import org.compiere.product.MPriceList
-import org.compiere.product.MProductBOM
-import org.compiere.product.MProductPrice
-import org.compiere.product.MPriceListVersion
-import org.compiere.product.MDiscountSchema
+import org.compiere.product.*
 import org.compiere.production.MLocator
 import org.compiere.production.MProduction
 import org.idempiere.common.util.Env
+import org.idempiere.process.ProductionCreate
 import org.junit.Before
 import org.junit.Test
 import software.hsharp.core.util.DB
@@ -50,7 +32,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
-import org.idempiere.process.ProductionCreate
 
 data class InvoiceImportantTestAttributes(
     val grandTotal: BigDecimal,
@@ -174,15 +155,17 @@ class InvoiceTest: BaseComponentTest() {
 
     @Test
     fun `get invoice by id`() {
-        loginClient(11)
-        val invoice_id = 106
+        DB.current.transaction { tx ->
+            loginClient(11)
+            val invoice_id = 106
 
-        val invoice: MInvoice = getById(invoice_id, I_C_Invoice.Table_Name)
-        assertNotNull(invoice)
-        assertEquals(invoice_id, invoice.id)
-        val lines = invoice.lines
-        assertNotNull(lines)
-        assertEquals(6, lines.count())
+            val invoice: MInvoice = getById(invoice_id, I_C_Invoice.Table_Name)
+            assertNotNull(invoice)
+            assertEquals(invoice_id, invoice.id)
+            val lines = invoice.lines
+            assertNotNull(lines)
+            assertEquals(6, lines.count())
+        }
     }
 
     private fun createOrder(c_DocType_ID: Int, product_id: Int): Triple<MOrder, Int, Int> {

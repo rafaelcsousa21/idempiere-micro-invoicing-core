@@ -8,7 +8,6 @@ import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -149,9 +148,6 @@ public class MConversionRate extends X_C_Conversion_Rate {
       String CurFrom_ISO, String CurTo_ISO, java.util.Date spotDate, BigDecimal MultiplyRate)
       throws Exception {
 
-    String trxName = Trx.createTrxName();
-    Trx trx = Trx.get(trxName, true);
-    trx.setDisplayName(MConversionRate.class.getName() + "_setRate");
     Properties ctx = Env.getCtx();
     MCurrency curFrom = MCurrency.get(ctx, CurFrom_ISO);
     if (curFrom == null) throw new Exception("Invalid currency " + CurFrom_ISO);
@@ -173,7 +169,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
         "C_Currency_ID=? and C_Currency_ID_To=? and ValidFrom>=? and ValidTo<=? and C_ConversionType_ID=?";
     MConversionRate rate, updateRate = null;
     List<MConversionRate> rates =
-        new Query(ctx, I_C_Conversion_Rate.Table_Name, whereClause, trxName)
+        new Query(ctx, I_C_Conversion_Rate.Table_Name, whereClause, null)
             .setParameters(
                 curFrom.getId(), curTo.getId(), startTs, startTs, MConversionType.TYPE_SPOT)
             .list();
@@ -183,14 +179,14 @@ public class MConversionRate extends X_C_Conversion_Rate {
         rate = it.next();
         if (!rate.getValidFrom().equals(rate.getValidTo())) {
           // Remove this since it's for more than one day
-          rate.deleteEx(true, trxName);
+          rate.deleteEx(true, null);
         } else {
           updateRate = rate;
         }
       }
     }
     if (updateRate == null) {
-      updateRate = new MConversionRate(ctx, 0, trxName);
+      updateRate = new MConversionRate(ctx, 0, null);
       updateRate.setADClientID(0);
       updateRate.setAD_Org_ID(0);
       updateRate.setC_Currency_ID(curFrom.getId());
@@ -200,9 +196,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
       updateRate.setC_ConversionType_ID(MConversionType.TYPE_SPOT);
     }
     updateRate.setMultiplyRate(MultiplyRate);
-    updateRate.saveEx(trxName);
-    trx.commit(true);
-    trx.close();
+    updateRate.saveEx(null);
   }
 
   /**

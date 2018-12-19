@@ -16,7 +16,6 @@ import org.compiere.wf.MWorkflow;
 import org.idempiere.common.base.Service;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 
 import java.io.InvalidClassException;
 import java.lang.reflect.UndeclaredThrowableException;
@@ -63,7 +62,7 @@ public class ServerProcessCtl implements Runnable {
    * @param trx Transaction
    * @return worker started ProcessCtl instance or null for workflow
    */
-  public static ServerProcessCtl process(ProcessInfo pi, Trx trx) {
+  public static ServerProcessCtl process(ProcessInfo pi) {
     if (log.isLoggable(Level.FINE)) log.fine("ServerProcess - " + pi);
 
     MPInstance instance = null;
@@ -369,7 +368,7 @@ public class ServerProcessCtl implements Runnable {
             po.getId());
     processInfo.setTransactionName(null);
     processInfo.setPO(po);
-    ServerProcessCtl.process(processInfo, Trx.get(processInfo.getTransactionName(), false));
+    ServerProcessCtl.process(processInfo);
     return processInfo;
   }
 }

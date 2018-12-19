@@ -21,7 +21,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -50,8 +49,6 @@ public class AllocationReset extends SvrProcess {
   private int p_C_AllocationHdr_ID = 0;
   /** All Allocations */
   private boolean p_AllAllocations = false;
-  /** Transaction */
-  private Trx m_trx = null;
 
   /** Prepare - e.g., get Parameters. */
   protected void prepare() {
@@ -103,15 +100,12 @@ public class AllocationReset extends SvrProcess {
       throw new AdempiereUserError(
           Msg.parseTranslation(getCtx(), "@Mandatory@: @C_AllocationHdr_ID@"));
 
-    m_trx = Trx.get(Trx.createTrxName("AllocReset"), true);
-    m_trx.setDisplayName(getClass().getName() + "_doIt");
     int count = 0;
 
     if (p_C_AllocationHdr_ID != 0) {
-      MAllocationHdr hdr = new MAllocationHdr(getCtx(), p_C_AllocationHdr_ID, m_trx.getTrxName());
+      MAllocationHdr hdr = new MAllocationHdr(getCtx(), p_C_AllocationHdr_ID, null);
       if (delete(hdr)) count++;
       else throw new AdempiereException("Cannot delete");
-      m_trx.close();
       StringBuilder msgreturn = new StringBuilder("@Deleted@ #").append(count);
       return msgreturn.toString();
     }
@@ -139,7 +133,7 @@ public class AllocationReset extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), m_trx.getTrxName());
+      pstmt = prepareStatement(sql.toString(), null);
       int index = 1;
       if (p_C_BPartner_ID != 0) pstmt.setInt(index++, p_C_BPartner_ID);
       else if (p_C_BP_Group_ID != 0) pstmt.setInt(index++, p_C_BP_Group_ID);
@@ -148,18 +142,17 @@ public class AllocationReset extends SvrProcess {
       if (p_DateAcct_To != null) pstmt.setTimestamp(index++, p_DateAcct_To);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MAllocationHdr hdr = new MAllocationHdr(getCtx(), rs, m_trx.getTrxName());
+        MAllocationHdr hdr = new MAllocationHdr(getCtx(), rs, null);
         if (delete(hdr)) count++;
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
-      m_trx.rollback();
+      throw new Error(sql.toString());
     } finally {
       close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
-    m_trx.close();
     StringBuilder msgreturn = new StringBuilder("@Deleted@ #").append(count);
     return msgreturn.toString();
   } //	doIt
@@ -167,12 +160,10 @@ public class AllocationReset extends SvrProcess {
   private boolean delete(MAllocationHdr hdr) {
     //	m_trx.start();
     boolean success = false;
-    if (hdr.delete(true, m_trx.getTrxName())) {
+    if (hdr.delete(true, null)) {
       if (log.isLoggable(Level.FINE)) log.fine(hdr.toString());
       success = true;
     }
-    if (success) success = m_trx.commit();
-    else m_trx.rollback();
     return success;
   } //	delete
 

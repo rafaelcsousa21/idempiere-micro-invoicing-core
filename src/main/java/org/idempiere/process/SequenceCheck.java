@@ -20,7 +20,6 @@ import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Trx;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -221,8 +220,6 @@ public class SequenceCheck extends SvrProcess {
     // CarlosRuiz - globalqss - [ 1887608 ] SequenceCheck deadlock
     // Commit previous work on AD_Sequence
     // previously could update a sequence record needed now that is going to create new ones
-    Trx trx = Trx.get(trxName, false);
-    trx.commit();
 
     //	Sequence for DocumentNo/Value
     MClient[] clients = MClient.getAll(ctx);
