@@ -1,7 +1,6 @@
 package org.compiere.invoicing.test
 
 import company.bigger.test.support.randomString
-import kotliquery.HikariCP
 import org.compiere.accounting.MWarehouse
 import org.compiere.bank.MBank
 import org.compiere.bank.MBankAccount
@@ -19,6 +18,8 @@ import org.idempiere.icommon.model.IPO
 import org.junit.Before
 import org.slf4j.impl.SimpleLogger
 import software.hsharp.core.orm.DummyEventManager
+import software.hsharp.core.util.DB
+import software.hsharp.core.util.HikariCPI
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -32,7 +33,7 @@ abstract class BaseComponentTest {
 
     init {
         System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE")
-        HikariCP.default(sessionUrl, "adempiere", "adempiere")
+        HikariCPI.default(sessionUrl, "adempiere", "adempiere")
         DummyEventManager()
     }
 
@@ -60,16 +61,18 @@ abstract class BaseComponentTest {
 
     @Before
     fun prepareEnv() {
-        val query = Query(this.ctx, "AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID", null)
-        val result = query.list<MClient>()
-        if (result.isEmpty()) {
-            createClient(ctx) { loginClient(0) }
-        }
+        DB.run {
+            val query = Query(this.ctx, "AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID", null)
+            val result = query.list<MClient>()
+            if (result.isEmpty()) {
+                createClient(ctx) { loginClient(0) }
+            }
 
-        loginClient(NEW_AD_CLIENT_ID)
-        if (_taxCategory == null) ensureTaxCategory10Pct()
-        if (_paymentTerm == null) ensurePaymentTerm14Days()
-        if (_bankAccount == null) ensureBankAccount()
+            loginClient(NEW_AD_CLIENT_ID)
+            if (_taxCategory == null) ensureTaxCategory10Pct()
+            if (_paymentTerm == null) ensurePaymentTerm14Days()
+            if (_bankAccount == null) ensureBankAccount()
+        }
     }
 
     private fun ensureBankAccount() {

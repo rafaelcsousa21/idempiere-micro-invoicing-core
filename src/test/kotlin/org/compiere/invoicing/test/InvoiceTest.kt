@@ -155,7 +155,7 @@ class InvoiceTest: BaseComponentTest() {
 
     @Test
     fun `get invoice by id`() {
-        DB.current.transaction { tx ->
+        DB.run {
             loginClient(11)
             val invoice_id = 106
 
@@ -198,20 +198,22 @@ class InvoiceTest: BaseComponentTest() {
 
     @Test
     fun `create invoice from prepay order after receiving the payment`() {
-        createInvoiceFromOrder(1000030, testProduct.id, BigDecimal("1.10")) {
-            val payment = MPayment(ctx, 0, null)
-            payment.c_BPartner_ID = it.c_BPartner_ID
-            payment.setAD_Org_ID(org.orgId)
-            payment.c_BankAccount_ID = bankAccount.id
-            payment.setC_Currency_ID(EUR) // EUR
-            payment.payAmt = 1.10.toBigDecimal()
-            payment.save()
+        DB.run {
+            createInvoiceFromOrder(1000030, testProduct.id, BigDecimal("1.10")) {
+                val payment = MPayment(ctx, 0, null)
+                payment.c_BPartner_ID = it.c_BPartner_ID
+                payment.setAD_Org_ID(org.orgId)
+                payment.c_BankAccount_ID = bankAccount.id
+                payment.setC_Currency_ID(EUR) // EUR
+                payment.payAmt = 1.10.toBigDecimal()
+                payment.save()
 
-            val pay: MPayment = getById(payment.id, I_C_Payment.Table_Name)
-            assertNotNull(pay)
+                val pay: MPayment = getById(payment.id, I_C_Payment.Table_Name)
+                assertNotNull(pay)
 
-            it.c_Payment_ID = pay.id
-            it.save()
+                it.c_Payment_ID = pay.id
+                it.save()
+            }
         }
     }
 
@@ -272,73 +274,83 @@ class InvoiceTest: BaseComponentTest() {
 
     @Test
     fun `create invoice from order (on credit)`() {
-        val salesOrderTypes = MDocType.getOfDocBaseType(ctx, MDocType.DOCBASETYPE_SalesOrder)
-        val onCreditOrder = salesOrderTypes.first { it.name == "Credit Order" }
-        createInvoiceFromOrder(onCreditOrder.id, testProduct.id, BigDecimal("1.10")) {}
+        DB.run {
+            val salesOrderTypes = MDocType.getOfDocBaseType(ctx, MDocType.DOCBASETYPE_SalesOrder)
+            val onCreditOrder = salesOrderTypes.first { it.name == "Credit Order" }
+            createInvoiceFromOrder(onCreditOrder.id, testProduct.id, BigDecimal("1.10")) {}
+        }
     }
 
     @Test
     fun `create invoice from BOM order with production step in between (on credit)`() {
-        val bomProduct = createAProduct(BOM + randomString(5), I_M_Product.PRODUCTTYPE_Item) as MProduct
-        bomProduct.setIsBOM(true)
-        bomProduct.save()
-        val innerProduct = MProductBOM(ctx, 0, null)
-        innerProduct.bomQty = 10.toBigDecimal()
-        innerProduct.m_ProductBOM_ID = testProduct.id
-        innerProduct.m_Product_ID = bomProduct.id
-        innerProduct.line = 10
-        innerProduct.save()
+        DB.run {
+            val bomProduct = createAProduct(BOM + randomString(5), I_M_Product.PRODUCTTYPE_Item) as MProduct
+            bomProduct.setIsBOM(true)
+            bomProduct.save()
+            val innerProduct = MProductBOM(ctx, 0, null)
+            innerProduct.bomQty = 10.toBigDecimal()
+            innerProduct.m_ProductBOM_ID = testProduct.id
+            innerProduct.m_Product_ID = bomProduct.id
+            innerProduct.line = 10
+            innerProduct.save()
 
-        // put the product on the pricelist
-        val currentPriceListVersion = salesPriceList.getPriceListVersion(now)!!
-        val price = 11.0.toBigDecimal()
-        val productPrice = MProductPrice(currentPriceListVersion, bomProduct.id, price, price, price)
-        productPrice.save()
+            // put the product on the pricelist
+            val currentPriceListVersion = salesPriceList.getPriceListVersion(now)!!
+            val price = 11.0.toBigDecimal()
+            val productPrice = MProductPrice(currentPriceListVersion, bomProduct.id, price, price, price)
+            productPrice.save()
 
-        createInvoiceFromOrder(1000033, bomProduct.m_Product_ID, BigDecimal("12.10")) {
-            val orderLine = it.lines.first()
-            val production = MProduction(orderLine)
-            production.setAD_Org_ID(1000000)
-            production.m_Product_ID = orderLine.m_Product_ID // TODO: Why? Should not this be done automatically in the constructor?
-            production.productionQty = orderLine.qtyOrdered // TODO: Why? Should not this be done automatically in the constructor?
-            production.m_Locator_ID = 1000000
-            production.save()
+            createInvoiceFromOrder(1000033, bomProduct.m_Product_ID, BigDecimal("12.10")) {
+                val orderLine = it.lines.first()
+                val production = MProduction(orderLine)
+                production.setAD_Org_ID(1000000)
+                production.m_Product_ID =
+                        orderLine.m_Product_ID // TODO: Why? Should not this be done automatically in the constructor?
+                production.productionQty =
+                        orderLine.qtyOrdered // TODO: Why? Should not this be done automatically in the constructor?
+                production.m_Locator_ID = 1000000
+                production.save()
 
-            val productionCreate = ProductionCreate(m_production = production)
-            val pi = ProcessInfo("", 0)
-            productionCreate.startProcess(ctx, pi)
+                val productionCreate = ProductionCreate(m_production = production)
+                val pi = ProcessInfo("", 0)
+                productionCreate.startProcess(ctx, pi)
 
-            val prod: MProduction = getById(production.id, I_M_Production.Table_Name)
+                val prod: MProduction = getById(production.id, I_M_Production.Table_Name)
 
-            prod.setDocAction(DocAction.STATUS_Completed)
-            prod.save()
+                prod.setDocAction(DocAction.STATUS_Completed)
+                prod.save()
 
-            prod.completeIt()
+                prod.completeIt()
+            }
         }
     }
 
     @Test
     fun `create invoice from order (on credit) without pricelist should fail`() {
-        val product = createAProduct("Other 1-" + randomString(5), I_M_Product.PRODUCTTYPE_Item)
-        try {
-            createInvoiceFromOrder(1000033, product.id, BigDecimal("1.10")) {}
-            fail("Invoice was created for a product not on a pricelist")
-        } catch (e: Exception) {
+        DB.run {
+            val product = createAProduct("Other 1-" + randomString(5), I_M_Product.PRODUCTTYPE_Item)
+            try {
+                createInvoiceFromOrder(1000033, product.id, BigDecimal("1.10")) {}
+                fail("Invoice was created for a product not on a pricelist")
+            } catch (e: Exception) {
+            }
         }
     }
 
     @Test
     fun `create invoice from order (on credit) without amount on hand should fail`() {
-        val product = createAProduct("Other 1-" + randomString(5), I_M_Product.PRODUCTTYPE_Item)
-        val pl = MPriceList(ctx, 1000000, null)
-        val plv = pl.getPriceListVersion(Timestamp.from(Instant.now()))!!
-        val price = 10.toBigDecimal()
-        val pp = MProductPrice(ctx, plv.id, product.id, price, price, price, null)
-        pp.save()
-        try {
-            createInvoiceFromOrder(1000033, product.id, BigDecimal("11.00")) {}
-            fail("Invoice was created for a product with negative inventory")
-        } catch (e: Exception) {
+        DB.run {
+            val product = createAProduct("Other 1-" + randomString(5), I_M_Product.PRODUCTTYPE_Item)
+            val pl = MPriceList(ctx, 1000000, null)
+            val plv = pl.getPriceListVersion(Timestamp.from(Instant.now()))!!
+            val price = 10.toBigDecimal()
+            val pp = MProductPrice(ctx, plv.id, product.id, price, price, price, null)
+            pp.save()
+            try {
+                createInvoiceFromOrder(1000033, product.id, BigDecimal("11.00")) {}
+                fail("Invoice was created for a product with negative inventory")
+            } catch (e: Exception) {
+            }
         }
     }
 
