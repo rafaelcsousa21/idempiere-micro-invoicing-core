@@ -1,6 +1,9 @@
 package org.compiere.invoicing.test
 
 import company.bigger.test.support.randomString
+import org.compiere.accounting.MAcctSchema
+import org.compiere.accounting.MCostDetail
+import org.compiere.accounting.MCostElement
 import org.compiere.accounting.MWarehouse
 import org.compiere.bank.MBank
 import org.compiere.bank.MBankAccount
@@ -9,6 +12,7 @@ import org.compiere.invoicing.test.SetupClientTests.Companion.createClient
 import org.compiere.model.*
 import org.compiere.order.MPaySchedule
 import org.compiere.orm.*
+import org.compiere.product.MAttributeSetInstance
 import org.compiere.product.MProduct
 import org.compiere.product.MUOM
 import org.compiere.tax.MTax
@@ -155,6 +159,20 @@ abstract class BaseComponentTest {
         product.c_TaxCategory_ID = taxCategory.c_TaxCategory_ID
         product.productType = productType // I_M_Product.PRODUCTTYPE_Service
         product.save()
+
+        // need to create during inventory, this does not work
+        val costDetail =
+            MCostDetail(
+                MAcctSchema.getClientAcctSchema(ctx, NEW_AD_CLIENT_ID).first(),
+                0,
+                product.id,
+                MAttributeSetInstance.get(ctx, 0, product.id).id,
+                MCostElement.getElements(ctx, null).first().id,
+                1.toBigDecimal(), 1.toBigDecimal(),
+                "initial", null
+            )
+        costDetail.save()
+
         return getProductById(product.id)
     }
 }

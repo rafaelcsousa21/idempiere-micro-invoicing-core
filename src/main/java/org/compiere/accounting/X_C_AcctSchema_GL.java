@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MTable;
@@ -36,6 +37,9 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   public X_C_AcctSchema_GL(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_C_AcctSchema_GL(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MAcctSchemaGL
 
   /**
    * AccessLevel

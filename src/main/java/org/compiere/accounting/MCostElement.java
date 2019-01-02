@@ -52,7 +52,7 @@ public class MCostElement extends X_M_CostElement {
     MCostElement retValue =
         new Query(po.getCtx(), I_M_CostElement.Table_Name, whereClause, null)
             .setParameters(
-                po. getClientId(), CostingMethod, X_M_CostElement.COSTELEMENTTYPE_Material)
+                po.getClientId(), CostingMethod, X_M_CostElement.COSTELEMENTTYPE_Material)
             .setOrderBy("AD_Org_ID")
             .firstOnly();
     if (retValue != null) return retValue;
@@ -133,7 +133,7 @@ public class MCostElement extends X_M_CostElement {
   public static List<MCostElement> getCostElementsWithCostingMethods(IPO po) {
     final String whereClause = "AD_Client_ID=? AND CostingMethod IS NOT NULL";
     return new Query(po.getCtx(), MCostElement.Table_Name, whereClause, null)
-        .setParameters(po. getClientId())
+        .setParameters(po.getClientId())
         .setOnlyActiveRecords(true)
         .list();
   } //	getCostElementCostingMethod
@@ -148,7 +148,7 @@ public class MCostElement extends X_M_CostElement {
     final String whereClause = "AD_Client_ID=? AND CostElementType=? AND CostingMethod IS NOT NULL";
     List<MCostElement> list =
         new Query(po.getCtx(), I_M_CostElement.Table_Name, whereClause, null)
-            .setParameters(po. getClientId(), X_M_CostElement.COSTELEMENTTYPE_Material)
+            .setParameters(po.getClientId(), X_M_CostElement.COSTELEMENTTYPE_Material)
             .setOnlyActiveRecords(true)
             .list();
     //
@@ -168,7 +168,7 @@ public class MCostElement extends X_M_CostElement {
     final String whereClause = "AD_Client_ID=? AND CostingMethod IS NULL";
     List<MCostElement> list =
         new Query(po.getCtx(), I_M_CostElement.Table_Name, whereClause, null)
-            .setParameters(po. getClientId())
+            .setParameters(po.getClientId())
             .setOnlyActiveRecords(true)
             .list();
     //

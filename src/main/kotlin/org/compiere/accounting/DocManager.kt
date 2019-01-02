@@ -139,11 +139,17 @@ object DocManager {
      * @return Document
      * @throws AdempiereUserError
      */
-    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: ResultSet, trxName: String): IDoc? {
+    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: ResultSet, trxName: String?): IDoc? {
         val query = ServiceQuery()
         query["gaap"] = `as`.gaap
-        var holder: IServicesHolder<IDocFactory>? = Service.locator()!!.list(IDocFactory::class.java, query)
-        if (holder == null) {
+        val locator = Service.locator()
+        var holder: IServicesHolder<IDocFactory>?
+        if ( locator != null) {
+            holder = locator.list(IDocFactory::class.java, query)
+            if (holder == null) {
+                holder = DefaultDocumentFactoryHolder()
+            }
+        } else {
             holder = DefaultDocumentFactoryHolder()
         }
         var factoryList: List<IDocFactory>? = holder.services

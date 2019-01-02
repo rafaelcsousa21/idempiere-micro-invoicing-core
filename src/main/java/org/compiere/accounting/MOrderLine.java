@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MLandedCost;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -31,6 +32,9 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
    */
   public MOrderLine(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  }
+  public MOrderLine(Properties ctx, Row row) {
+    super(ctx, row);
   }
 
   /**

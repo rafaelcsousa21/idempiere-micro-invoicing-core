@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_Product;
 import org.compiere.orm.Query;
@@ -800,6 +801,9 @@ public class MCostDetail extends X_M_CostDetail {
    */
   public MCostDetail(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MCostDetail
+  public MCostDetail(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MCostDetail
 
   /**
