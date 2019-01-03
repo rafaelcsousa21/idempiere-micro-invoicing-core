@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_Transaction;
@@ -54,6 +55,9 @@ public class MProduct extends org.compiere.product.MProduct {
    */
   public MProduct(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MProduct
+  public MProduct(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MProduct
 
   private String verifyStorage() {

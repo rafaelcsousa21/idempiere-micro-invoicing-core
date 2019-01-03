@@ -38,7 +38,7 @@ abstract class BaseComponentTest {
     }
 
     init {
-        System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE")
+        System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN")
         HikariCPI.default(sessionUrl, "adempiere", "adempiere")
         DummyEventManager()
     }
@@ -161,7 +161,7 @@ abstract class BaseComponentTest {
     }
 
     fun createAProduct(name: String, productType: String): I_M_Product {
-        val standardProduct = getProductById(1000000)
+        val standardProduct = MProduct.get(ctx, "name = 'Standard'", null).first()
         val ctx = Env.getCtx()
         val product = MProduct(ctx, 0, null)
         product.name = name
@@ -176,7 +176,7 @@ abstract class BaseComponentTest {
         val warehouse = MWarehouse.getForOrg(ctx, org.id).first()
         val attributeSetInstance = MAttributeSetInstance.get(ctx, 0, product.id)
 
-        val inventory = MInventory(warehouse)
+        val inventory = MInventory(warehouse, null)
         inventory.c_DocType_ID = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "IU" }.id
         inventory.save()
 
