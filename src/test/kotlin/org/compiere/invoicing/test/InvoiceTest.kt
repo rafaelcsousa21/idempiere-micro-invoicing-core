@@ -28,10 +28,7 @@ import java.math.BigDecimal
 import java.sql.Date
 import java.sql.Timestamp
 import java.time.Instant
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
-import kotlin.test.fail
+import kotlin.test.*
 
 data class InvoiceImportantTestAttributes(
     val grandTotal: BigDecimal,
@@ -263,7 +260,7 @@ class InvoiceTest: BaseComponentTest() {
             val list = DB.current.run(loadQuery)
             assertEquals(1, list.count())
             val details = list.first()
-            // TODO: fix accounting and then - assertFalse(details.reverseCharge)
+            assertFalse(details.reverseCharge)
             assertEquals(expectedPrice, details.grandTotal)
             assertEquals(expectedPrice - (expectedPrice / 1.10.toBigDecimal()), details.grandTotalVAT)
             val now = java.util.Date()
