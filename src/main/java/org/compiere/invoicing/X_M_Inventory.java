@@ -215,7 +215,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
    */
   public void setC_DocType_ID(int C_DocType_ID) {
     if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-    else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+    else set_Value(COLUMNNAME_C_DocType_ID, C_DocType_ID);
   }
 
   /**

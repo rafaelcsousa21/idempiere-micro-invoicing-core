@@ -277,7 +277,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
         new StringBuilder("UPDATE I_Inventory ")
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Locator not from Org, ' ")
             .append(
-                "WHERE orgId <> (SELECT orgId FROM M_Warehouse WHERE M_Warehouse_ID = I_Inventory.M_Warehouse_ID")
+                "WHERE orgId <> (SELECT AD_Org_ID FROM M_Warehouse WHERE M_Warehouse_ID = I_Inventory.M_Warehouse_ID")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck)
             .append(" )");

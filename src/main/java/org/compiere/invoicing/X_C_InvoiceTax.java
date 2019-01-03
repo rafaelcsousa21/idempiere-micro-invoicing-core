@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_InvoiceTax;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -34,6 +35,9 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
   public X_C_InvoiceTax(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_C_InvoiceTax(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MInvoiceTax
 
   /**
    * AccessLevel

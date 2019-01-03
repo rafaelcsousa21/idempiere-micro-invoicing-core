@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_Cost;
 import org.compiere.orm.MTable;
@@ -37,6 +38,10 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
   public X_M_Cost(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_M_Cost(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MCost
+
 
   /**
    * AccessLevel

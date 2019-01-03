@@ -1,12 +1,14 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Properties;
+import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Default;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.KeyNamePair;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * Default Accounts for MAcctSchema
@@ -59,6 +61,9 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
    */
   public MAcctSchemaDefault(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MAcctSchemaDefault
+  public MAcctSchemaDefault(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MAcctSchemaDefault
 
   /**

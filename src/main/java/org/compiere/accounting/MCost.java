@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MConversionRate;
 import org.compiere.model.I_M_Cost;
 import org.compiere.orm.MOrg;
@@ -1420,6 +1421,10 @@ public class MCost extends X_M_Cost {
    */
   public MCost(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+    m_manual = false;
+  } //	MCost
+  public MCost(Properties ctx, Row row) {
+    super(ctx, row);
     m_manual = false;
   } //	MCost
 

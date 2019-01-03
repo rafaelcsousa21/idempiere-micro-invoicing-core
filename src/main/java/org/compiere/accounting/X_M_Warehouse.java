@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Location;
 import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.BasePONameValue;
@@ -29,6 +30,9 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
   public X_M_Warehouse(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_M_Warehouse(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MWarehouse
 
   /**
    * AccessLevel

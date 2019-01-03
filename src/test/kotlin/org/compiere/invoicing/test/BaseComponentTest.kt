@@ -1,17 +1,18 @@
 package org.compiere.invoicing.test
 
 import company.bigger.test.support.randomString
-import org.compiere.accounting.MAcctSchema
-import org.compiere.accounting.MCostDetail
-import org.compiere.accounting.MCostElement
-import org.compiere.accounting.MWarehouse
+import org.compiere.accounting.*
 import org.compiere.bank.MBank
 import org.compiere.bank.MBankAccount
+import org.compiere.invoicing.MInventory
+import org.compiere.invoicing.MInventoryLine
 import org.compiere.invoicing.MPaymentTerm
 import org.compiere.invoicing.test.SetupClientTests.Companion.createClient
 import org.compiere.model.*
 import org.compiere.order.MPaySchedule
 import org.compiere.orm.*
+import org.compiere.orm.MClient
+import org.compiere.orm.MDocType
 import org.compiere.product.MAttributeSetInstance
 import org.compiere.product.MProduct
 import org.compiere.product.MUOM
@@ -26,6 +27,7 @@ import software.hsharp.core.util.DB
 import software.hsharp.core.util.HikariCPI
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 internal val sessionUrl = System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
 
@@ -62,6 +64,8 @@ abstract class BaseComponentTest {
     protected val paymentTerm: I_C_PaymentTerm get() = _paymentTerm!!
     private var _bankAccount: I_C_BankAccount? = null
     protected val bankAccount get() = _bankAccount!!
+    private var _charge: I_C_Charge? = null
+    protected val charge get() = _charge!!
 
     @Before
     fun prepareEnv() {
@@ -76,6 +80,7 @@ abstract class BaseComponentTest {
             if (_taxCategory == null) ensureTaxCategory10Pct()
             if (_paymentTerm == null) ensurePaymentTerm14Days()
             if (_bankAccount == null) ensureBankAccount()
+            if (_charge == null) ensureCharge()
         }
     }
 
@@ -93,6 +98,13 @@ abstract class BaseComponentTest {
         newBankAccount.save()
         _bankAccount = getById(newBankAccount.id, I_C_BankAccount.Table_Name)
         assertNotNull(_bankAccount)
+    }
+
+    private fun ensureCharge() {
+        val newCharge = MCharge(ctx, 0, null)
+        newCharge.name = "CH-" + randomString(5)
+        newCharge.save()
+        _charge = getById(newCharge.id, I_C_Charge.Table_Name)
     }
 
     private fun ensurePaymentTerm14Days() {
@@ -160,18 +172,31 @@ abstract class BaseComponentTest {
         product.productType = productType // I_M_Product.PRODUCTTYPE_Service
         product.save()
 
-        // need to create during inventory, this does not work
-        val costDetail =
-            MCostDetail(
+        val org = MOrg.getOfClient(product).first()
+        val warehouse = MWarehouse.getForOrg(ctx, org.id).first()
+        val attributeSetInstance = MAttributeSetInstance.get(ctx, 0, product.id)
+
+        val inventory = MInventory(warehouse)
+        inventory.c_DocType_ID = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "IU" }.id
+        inventory.save()
+
+        val inventoryLine = MInventoryLine(inventory, warehouse.defaultLocator.id, product.id, attributeSetInstance.id, 0.toBigDecimal(), 0.toBigDecimal())
+        inventoryLine.c_Charge_ID = charge.id
+        inventoryLine.qtyInternalUse = 1.toBigDecimal()
+        inventoryLine.save()
+
+        assertTrue(
+            MCostDetail.createInventory(
                 MAcctSchema.getClientAcctSchema(ctx, NEW_AD_CLIENT_ID).first(),
-                0,
+                org.id,
                 product.id,
-                MAttributeSetInstance.get(ctx, 0, product.id).id,
+                attributeSetInstance.id,
+                inventoryLine.id,
                 MCostElement.getElements(ctx, null).first().id,
                 1.toBigDecimal(), 1.toBigDecimal(),
                 "initial", null
             )
-        costDetail.save()
+        )
 
         return getProductById(product.id)
     }

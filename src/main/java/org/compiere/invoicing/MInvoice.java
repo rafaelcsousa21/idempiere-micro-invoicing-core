@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.accounting.*;
@@ -299,6 +300,9 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
    */
   public MInvoice(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MInvoice
+  public MInvoice(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MInvoice
 
   /**
@@ -1064,7 +1068,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
       StringBuilder sql =
           new StringBuilder("UPDATE C_InvoiceLine ol")
               .append(" SET orgId =")
-              .append("(SELECT orgId")
+              .append("(SELECT AD_Org_ID")
               .append(" FROM C_Invoice o WHERE ol.C_Invoice_ID=o.C_Invoice_ID) ")
               .append("WHERE C_Invoice_ID=")
               .append(getC_Invoice_ID());

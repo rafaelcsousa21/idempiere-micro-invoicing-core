@@ -4,6 +4,7 @@ import company.bigger.test.support.randomString
 import org.compiere.crm.MCountry
 import org.compiere.process.ProcessInfo
 import org.idempiere.common.util.ServerContext
+import org.idempiere.process.AcctSchemaDefaultCopy
 import org.idempiere.process.InitialClientSetup
 import java.util.*
 import kotlin.test.assertTrue
@@ -35,6 +36,10 @@ class SetupClientTests : BaseComponentTest() {
             )
             val pi = ProcessInfo("", 0)
             assertTrue(clientSetup.startProcess(ctx, pi))
+            val acctSchemaDefaultCopy = AcctSchemaDefaultCopy(
+                1000000, false
+            )
+            assertTrue(acctSchemaDefaultCopy.startProcess(ctx, pi))
         }
     }
 }

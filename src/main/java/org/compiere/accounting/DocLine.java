@@ -477,7 +477,7 @@ public class DocLine {
   public int getOrder_Org_ID() {
     int C_OrderLine_ID = getC_OrderLine_ID();
     if (C_OrderLine_ID != 0) {
-      String sql = "SELECT orgId FROM C_OrderLine WHERE C_OrderLine_ID=?";
+      String sql = "SELECT ad_org_id FROM C_OrderLine WHERE C_OrderLine_ID=?";
       int AD_Org_ID = getSQLValue(null, sql, C_OrderLine_ID);
       if (AD_Org_ID > 0) return AD_Org_ID;
     }

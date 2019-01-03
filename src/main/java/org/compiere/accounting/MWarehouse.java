@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.MOrg;
@@ -126,6 +127,9 @@ public class MWarehouse extends X_M_Warehouse {
    */
   public MWarehouse(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MWarehouse
+  public MWarehouse(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MWarehouse
 
   /**

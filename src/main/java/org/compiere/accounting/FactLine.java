@@ -689,7 +689,7 @@ public final class FactLine extends X_Fact_Acct {
     return super. getOrgId();
     //	Prio 1 - get from locator - if exist
     if (getM_Locator_ID() != 0) {
-      String sql = "SELECT orgId FROM M_Locator WHERE M_Locator_ID=? AND AD_Client_ID=?";
+      String sql = "SELECT AD_Org_ID FROM M_Locator WHERE M_Locator_ID=? AND AD_Client_ID=?";
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {

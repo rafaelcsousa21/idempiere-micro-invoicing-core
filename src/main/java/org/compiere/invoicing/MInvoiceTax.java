@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.model.I_C_InvoiceTax;
@@ -116,6 +117,9 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
    */
   public MInvoiceTax(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MInvoiceTax
+  public MInvoiceTax(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MInvoiceTax
 
   /** Tax */

@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Locator;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -32,6 +33,9 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
   /** Load Constructor */
   public X_M_Locator(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  }
+  public X_M_Locator(Properties ctx, Row row) {
+    super(ctx, row);
   }
 
   /**

@@ -1,11 +1,5 @@
 package org.compiere.accounting;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.model.I_GL_Distribution;
 import org.compiere.model.I_GL_DistributionLine;
 import org.compiere.orm.Query;
@@ -15,6 +9,13 @@ import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * GL Distribution Model
@@ -150,7 +151,7 @@ public class MDistribution extends X_GL_Distribution {
     MDistribution[] retValue = (MDistribution[]) s_accounts.get(key);
     if (retValue != null) return retValue;
     String whereClause = "";
-    Object[] parameters = null;
+    Object[] parameters = new Object[] {};
     if (Account_ID >= 0) {
       whereClause = "Account_ID=?";
       parameters = new Object[] {Account_ID};
