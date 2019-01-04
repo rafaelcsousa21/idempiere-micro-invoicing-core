@@ -15,6 +15,16 @@ jobs:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m -DforkCount=0
 
+      BASE_INTERFACES_VERSION: 0.1.0
+      TEST_SUPPORT_VERSION: 0.0.3
+      MODEL_CORE_VERSION: 0.1.1
+      MODEL_INTERFACES_VERSION: 0.1.1
+      CRM_CORE_VERSION: 0.1.1
+      PRODUCT_CORE_VERSION: 0.1.1
+      TAX_CORE_VERSION: 0.1.1
+      ORDER_CORE_VERSION: 0.1.1
+      PROCESS_CORE_VERSION: 0.1.1
+
     steps:
       - checkout
 

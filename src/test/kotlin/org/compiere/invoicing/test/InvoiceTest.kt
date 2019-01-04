@@ -1,6 +1,5 @@
 package org.compiere.invoicing.test
 
-import company.bigger.test.support.asResource
 import company.bigger.test.support.randomString
 import org.compiere.accounting.*
 import org.compiere.accounting.MProduct
@@ -23,6 +22,7 @@ import org.idempiere.process.ProductionCreate
 import org.junit.Before
 import org.junit.Test
 import software.hsharp.core.util.DB
+import software.hsharp.core.util.asResource
 import software.hsharp.core.util.queryOf
 import java.math.BigDecimal
 import java.sql.Date

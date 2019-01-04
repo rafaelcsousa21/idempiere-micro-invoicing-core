@@ -18,7 +18,41 @@
         <junit.version>4.12</junit.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <idempiere-micro.groupId>org.idempiere</idempiere-micro.groupId>
+        <idempiere-micro-base-interfaces.version>1.0-SNAPSHOT</idempiere-micro-base-interfaces.version>
+        <idempiere-micro-test-support.version>1.0-SNAPSHOT</idempiere-micro-test-support.version>
+        <idempiere-micro-model-core.version>1.0-SNAPSHOT</idempiere-micro-model-core.version>
+        <idempiere-micro-model-interfaces.version>1.0-SNAPSHOT</idempiere-micro-model-interfaces.version>
+        <idempiere-micro-crm-core.version>1.0-SNAPSHOT</idempiere-micro-crm-core.version>
+        <idempiere-micro-product-core.version>1.0-SNAPSHOT</idempiere-micro-product-core.version>
+        <idempiere-micro-tax-core.version>1.0-SNAPSHOT</idempiere-micro-tax-core.version>
+        <idempiere-micro-order-core.version>1.0-SNAPSHOT</idempiere-micro-order-core.version>
+        <idempiere-micro-process-core.version>1.0-SNAPSHOT</idempiere-micro-process-core.version>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+            <activation>
+                <property>
+                    <name>env.BASE_INTERFACES_VERSION</name>
+                </property>
+            </activation>
+            <properties>
+                <idempiere-micro.groupId>com.github.iDempiere-micro</idempiere-micro.groupId>
+                <idempiere-micro-base-interfaces.version>${env.BASE_INTERFACES_VERSION}</idempiere-micro-base-interfaces.version>
+                <idempiere-micro-test-support.version>${env.TEST_SUPPORT_VERSION}</idempiere-micro-test-support.version>
+                <idempiere-micro-model-core.version>${env.MODEL_CORE_VERSION}</idempiere-micro-model-core.version>
+                <idempiere-micro-model-interfaces.version>${env.MODEL_INTERFACES_VERSION}</idempiere-micro-model-interfaces.version>
+                <idempiere-micro-crm-core.version>${env.CRM_CORE_VERSION}</idempiere-micro-crm-core.version>
+                <idempiere-micro-product-core.version>${env.PRODUCT_CORE_VERSION}</idempiere-micro-product-core.version>
+                <idempiere-micro-tax-core.version>${env.TAX_CORE_VERSION}</idempiere-micro-tax-core.version>
+                <idempiere-micro-order-core.version>${env.ORDER_CORE_VERSION}</idempiere-micro-order-core.version>
+                <idempiere-micro-process-core.version>${env.PROCESS_CORE_VERSION}</idempiere-micro-process-core.version>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
@@ -53,49 +87,49 @@
             <version>1.5</version>
         </dependency>
         <dependency>
-            <groupId>org.idempiere</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-base-interfaces</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${idempiere-micro-base-interfaces.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.idempiere</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-model-interfaces</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${idempiere-micro-model-interfaces.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.idempiere</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-model-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${idempiere-micro-model-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.idempiere</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-crm-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${idempiere-micro-crm-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.idempiere</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-product-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${idempiere-micro-product-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.idempiere</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-order-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${idempiere-micro-order-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.idempiere</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-process-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${idempiere-micro-process-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.idempiere</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-tax-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${idempiere-micro-tax-core.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.github.iDempiere-micro</groupId>
+            <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-test-support</artifactId>
-            <version>0.0.2</version>
+            <version>${idempiere-micro-test-support.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
