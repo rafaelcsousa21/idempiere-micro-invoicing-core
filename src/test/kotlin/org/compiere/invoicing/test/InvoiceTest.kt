@@ -126,6 +126,8 @@ class InvoiceTest: BaseComponentTest() {
             receiptLine.save()
             val line = getById<MInOutLine>(receiptLine.id, I_M_InOutLine.Table_Name)
             assertNotNull(line)
+            (vendorShipment as X_M_InOut).docStatus = X_M_InOut.DOCSTATUS_Completed
+            vendorShipment.save()
             vendorShipment.setDocAction(DocAction.STATUS_Completed)
             vendorShipment.completeIt()
             val storageOnHand = MStorageOnHand.getOfProduct(ctx, product.id, null).first()
@@ -177,6 +179,7 @@ class InvoiceTest: BaseComponentTest() {
         order.m_PriceList_ID = MPriceList.getDefault(ctx, true).id
         order.setC_Currency_ID(EUR) // EUR
         order.c_PaymentTerm_ID = paymentTerm.id
+        order.salesRep_ID = 1000000
 
         val partner = createBPartner()
 
@@ -220,6 +223,8 @@ class InvoiceTest: BaseComponentTest() {
         val (order, id, product_id) = createOrder(c_DocType_ID, productId)
         doAfterOrderTask(order)
 
+        order.docStatus = MOrder.DOCSTATUS_Completed
+        order.save()
         order.setDocAction(DocAction.STATUS_Completed)
         val completion = order.completeIt()
         order.save()
@@ -315,6 +320,8 @@ class InvoiceTest: BaseComponentTest() {
                 productionCreate.startProcess(ctx, pi)
 
                 val prod: MProduction = getById(production.id, I_M_Production.Table_Name)
+                prod.docStatus = MProduction.DOCSTATUS_Completed
+                prod.save()
 
                 prod.setDocAction(DocAction.STATUS_Completed)
                 prod.save()
