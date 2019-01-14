@@ -13,6 +13,7 @@ import org.compiere.order.MPaySchedule
 import org.compiere.orm.*
 import org.compiere.orm.MClient
 import org.compiere.orm.MDocType
+import org.compiere.process.DocAction
 import org.compiere.product.MAttributeSetInstance
 import org.compiere.product.MProduct
 import org.compiere.product.MUOM
@@ -198,6 +199,15 @@ abstract class BaseComponentTest {
                 "initial", null
             )
         )
+
+        inventory.docStatus = MInventory.DOCSTATUS_Completed
+        inventory.save()
+
+        inventory.setDocAction(DocAction.STATUS_Completed)
+        inventory.save()
+
+
+        inventory.completeIt()
 
         return getProductById(product.id)
     }

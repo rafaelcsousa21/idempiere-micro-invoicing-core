@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.*;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_M_InventoryLine;
@@ -80,6 +81,9 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
    */
   public MInventoryLine(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
+  } //	MInventoryLine
+  public MInventoryLine(Properties ctx, Row row) {
+    super(ctx, row);
   } //	MInventoryLine
 
   /**

@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_InventoryLine;
 import org.compiere.model.I_M_Locator;
@@ -38,6 +39,9 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   public X_M_InventoryLine(Properties ctx, ResultSet rs, String trxName) {
     super(ctx, rs, trxName);
   }
+  public X_M_InventoryLine(Properties ctx, Row row) {
+    super(ctx, row);
+  } //	MInventoryLine
 
   /**
    * AccessLevel
