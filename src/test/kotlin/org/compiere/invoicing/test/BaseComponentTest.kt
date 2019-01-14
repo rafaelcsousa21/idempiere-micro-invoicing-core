@@ -177,12 +177,12 @@ abstract class BaseComponentTest {
         val attributeSetInstance = MAttributeSetInstance.get(ctx, 0, product.id)
 
         val inventory = MInventory(warehouse, null)
-        inventory.c_DocType_ID = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "IU" }.id
+        inventory.c_DocType_ID = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "PI" }.id
         inventory.save()
 
         val inventoryLine = MInventoryLine(inventory, warehouse.defaultLocator.id, product.id, attributeSetInstance.id, 0.toBigDecimal(), 0.toBigDecimal())
         inventoryLine.c_Charge_ID = charge.id
-        inventoryLine.qtyInternalUse = 1.toBigDecimal()
+        inventoryLine.qtyInternalUse = 0.toBigDecimal()
         inventoryLine.save()
 
         assertTrue(
@@ -193,7 +193,8 @@ abstract class BaseComponentTest {
                 attributeSetInstance.id,
                 inventoryLine.id,
                 MCostElement.getElements(ctx, null).first().id,
-                1.toBigDecimal(), 1.toBigDecimal(),
+                // amount (costs), quantity
+                0.8.toBigDecimal(), 1.toBigDecimal(),
                 "initial", null
             )
         )
