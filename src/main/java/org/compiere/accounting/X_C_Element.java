@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_Element;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -49,13 +48,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_Tree getAD_Tree() throws RuntimeException {
-    return (org.compiere.model.I_AD_Tree)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Tree.Table_Name)
-            .getPO(getAD_Tree_ID(), null);
-  }
-
-  /**
+    /**
    * Set Tree.
    *
    * @param AD_Tree_ID Identifies a Tree
@@ -76,17 +69,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Element.
-   *
-   * @param C_Element_ID Accounting Element
-   */
-  public void setC_Element_ID(int C_Element_ID) {
-    if (C_Element_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Element_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Element_ID, Integer.valueOf(C_Element_ID));
-  }
-
-  /**
+    /**
    * Get Element.
    *
    * @return Accounting Element
@@ -97,43 +80,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
     return ii;
   }
 
-  /**
-   * Set C_Element_UU.
-   *
-   * @param C_Element_UU C_Element_UU
-   */
-  public void setC_Element_UU(String C_Element_UU) {
-    set_Value(COLUMNNAME_C_Element_UU, C_Element_UU);
-  }
-
-  /**
-   * Get C_Element_UU.
-   *
-   * @return C_Element_UU
-   */
-  public String getC_Element_UU() {
-    return (String) get_Value(COLUMNNAME_C_Element_UU);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /** ElementType AD_Reference_ID=116 */
+    /** ElementType AD_Reference_ID=116 */
   public static final int ELEMENTTYPE_AD_Reference_ID = 116;
   /** Account = A */
   public static final String ELEMENTTYPE_Account = "A";
@@ -167,21 +114,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
     set_Value(COLUMNNAME_IsBalancing, Boolean.valueOf(IsBalancing));
   }
 
-  /**
-   * Get Balancing.
-   *
-   * @return All transactions within an element value must balance (e.g. cost centers)
-   */
-  public boolean isBalancing() {
-    Object oo = get_Value(COLUMNNAME_IsBalancing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Natural Account.
    *
    * @param IsNaturalAccount The primary natural account
@@ -204,22 +137,4 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
     return false;
   }
 
-  /**
-   * Set Value Format.
-   *
-   * @param VFormat Format of the value; Can contain fixed format elements, Variables:
-   *     "_lLoOaAcCa09"
-   */
-  public void setVFormat(String VFormat) {
-    set_Value(COLUMNNAME_VFormat, VFormat);
-  }
-
-  /**
-   * Get Value Format.
-   *
-   * @return Format of the value; Can contain fixed format elements, Variables: "_lLoOaAcCa09"
-   */
-  public String getVFormat() {
-    return (String) get_Value(COLUMNNAME_VFormat);
-  }
 }

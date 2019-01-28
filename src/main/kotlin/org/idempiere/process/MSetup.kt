@@ -132,7 +132,7 @@ class MSetup
             name = "newClient"
         m_clientName = name
         m_client = MClient(m_ctx, 0, true, null)
-        m_client!!.value = m_clientName!!
+        m_client!!.setValue(m_clientName!!)
         m_client!!.name = m_clientName!!
         if (!m_client!!.save()) {
             val err = "Client NOT created"
@@ -189,12 +189,12 @@ class MSetup
 
         // Set Organization Phone, Phone2, Fax, EMail
         val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID, null)
-        orgInfo!!.phone = phone
-        orgInfo.phone2 = phone2
-        orgInfo.fax = fax
-        orgInfo.eMail = eMail
+        orgInfo!!.setPhone(phone)
+        orgInfo.setPhone2(phone2)
+        orgInfo.setFax(fax)
+        orgInfo.setEMail(eMail)
         if (taxID != null && taxID.length > 0) {
-            orgInfo.taxID = taxID
+            orgInfo.setTaxID(taxID)
         }
         if (!orgInfo.save()) {
             val err = "Organization Info NOT Updated"
