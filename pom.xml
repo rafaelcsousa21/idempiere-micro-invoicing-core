@@ -68,7 +68,7 @@
                 <idempiere-micro-crm-core.version>0.5.0</idempiere-micro-crm-core.version>
                 <idempiere-micro-product-core.version>0.5.0</idempiere-micro-product-core.version>
                 <idempiere-micro-tax-core.version>0.5.0</idempiere-micro-tax-core.version>
-                <idempiere-micro-order-core.version>0.5.0</idempiere-micro-order-core.version>
+                <idempiere-micro-order-core.version>0.5.1</idempiere-micro-order-core.version>
                 <idempiere-micro-process-core.version>0.5.0</idempiere-micro-process-core.version>
             </properties>
         </profile>
