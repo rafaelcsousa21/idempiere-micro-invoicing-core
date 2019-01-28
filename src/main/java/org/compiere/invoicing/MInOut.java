@@ -1610,4 +1610,64 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
     }
     return qtyToReceive;
   }
+
+
+  /**
+   * Get Document Approval Amount
+   *
+   * @return amount
+   */
+  public BigDecimal getApprovalAmt() {
+    return Env.ZERO;
+  } //	getApprovalAmt
+
+  /**
+   * *********************************************************************** Get Summary
+   *
+   * @return Summary of Document
+   */
+  public String getSummary() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getDocumentNo());
+    //	: Total Lines = 123.00 (#1)
+    sb.append(":")
+            //	.append(Msg.translate(getCtx(),"TotalLines")).append("=").append(getTotalLines())
+            .append(" (#")
+            .append(getLines(false).length)
+            .append(")");
+    //	 - Description
+    if (getDescription() != null && getDescription().length() > 0)
+      sb.append(" - ").append(getDescription());
+    return sb.toString();
+  } //	getSummary
+
+  /**
+   * Get Document Info
+   *
+   * @return document info (untranslated)
+   */
+  public String getDocumentInfo() {
+    MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+    StringBuilder msgreturn =
+            new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
+    return msgreturn.toString();
+  } //	getDocumentInfo
+
+  /**
+   * Get Document Owner (Responsible)
+   *
+   * @return AD_User_ID
+   */
+  public int getDoc_User_ID() {
+    return getSalesRep_ID();
+  } //	getDoc_User_ID
+
+  /**
+   * Get C_Currency_ID
+   *
+   * @return Accounting Currency
+   */
+  public int getC_Currency_ID() {
+    return Env.getContextAsInt(getCtx(), "$C_Currency_ID");
+  } //	getC_Currency_ID
 }

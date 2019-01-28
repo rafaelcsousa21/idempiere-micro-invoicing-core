@@ -21,6 +21,7 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -430,6 +431,28 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
   protected MRMALine[] m_lines = null;
 
   /**
+   * *********************************************************************** Get Summary
+   *
+   * @return Summary of Document
+   */
+  public String getSummary() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getDocumentNo());
+    //	: Total Lines = 123.00 (#1)
+    sb.append(": ")
+            .append(Msg.translate(getCtx(), "Amt"))
+            .append("=")
+            .append(getAmt())
+            .append(" (#")
+            .append(getLines(false).length)
+            .append(")");
+    //	 - Description
+    if (getDescription() != null && getDescription().length() > 0)
+      sb.append(" - ").append(getDescription());
+    return sb.toString();
+  } //	getSummary
+
+  /**
    * Get Lines
    *
    * @param requery requery
@@ -472,4 +495,23 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
       m_inout = new MInOut(getCtx(), getInOut_ID(), null);
     return (MInOut) m_inout;
   } //	getShipment
+
+  /**
+   * Get Document Owner (Responsible)
+   *
+   * @return AD_User_ID
+   */
+  public int getDoc_User_ID() {
+    return getSalesRep_ID();
+  } //	getDoc_User_ID
+
+  /**
+   * Get Document Approval Amount
+   *
+   * @return amount
+   */
+  public BigDecimal getApprovalAmt() {
+    return getAmt();
+  } //	getApprovalAmt
+
 }

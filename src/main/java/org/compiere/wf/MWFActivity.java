@@ -1494,7 +1494,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     String subject = doc.getDocumentInfo() + ": " + text.getMailHeader();
     String message =
         text.getMailText(true) + "\n-----\n" + doc.getDocumentInfo() + "\n" + doc.getSummary();
-    File pdf = doc.createPDF();
+    File pdf = null; //doc.createPDF();
     //
     MClient client = MClient.get(doc.getCtx(), doc.getClientId());
 

@@ -276,6 +276,23 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
   private MProduct m_product = null;
 
   /**
+   * Set Product
+   *
+   * @param product product
+   */
+  public void setProduct(MProduct product) {
+    m_product = product;
+    if (m_product != null) {
+      setM_Product_ID(m_product.getM_Product_ID());
+      setC_UOM_ID(m_product.getC_UOM_ID());
+    } else {
+      setM_Product_ID(0);
+      setC_UOM_ID(0);
+    }
+    setM_AttributeSetInstance_ID(0);
+  } //	setProduct
+
+  /**
    * Get Product
    *
    * @return product or null

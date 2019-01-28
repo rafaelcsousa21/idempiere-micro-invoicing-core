@@ -1,9 +1,5 @@
 package org.compiere.invoicing;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
@@ -21,6 +17,11 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
 
 public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements DocAction, IPODoc {
   /**
@@ -629,4 +630,71 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
 
   @Override
   public void setProcessedOn(String processed, boolean b, boolean b1) {}
+
+  /**
+   * Reject Approval
+   *
+   * @return true if success
+   */
+  public boolean rejectIt() {
+    if (log.isLoggable(Level.INFO)) log.info(toString());
+    setIsApproved(false);
+    return true;
+  } //	rejectIt
+
+  /**
+   * Get Document Info
+   *
+   * @return document info (untranslated)
+   */
+  public String getDocumentInfo() {
+    StringBuilder msgreturn =
+            new StringBuilder()
+                    .append(Msg.getElement(getCtx(), "M_InOutConfirm_ID"))
+                    .append(" ")
+                    .append(getDocumentNo());
+    return msgreturn.toString();
+  } //	getDocumentInfo
+
+  /**
+   * Get Document Owner (Responsible)
+   *
+   * @return AD_User_ID
+   */
+  public int getDoc_User_ID() {
+    return getUpdatedBy();
+  } //	getDoc_User_ID
+
+  /**
+   * Get Document Currency
+   *
+   * @return C_Currency_ID
+   */
+  public int getC_Currency_ID() {
+    //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
+    //	return pl.getC_Currency_ID();
+    return 0;
+  } //	getC_Currency_ID
+
+  /**
+   * Unlock Document.
+   *
+   * @return true if success
+   */
+  public boolean unlockIt() {
+    if (log.isLoggable(Level.INFO)) log.info(toString());
+    setProcessing(false);
+    return true;
+  } //	unlockIt
+
+  /**
+   * Invalidate Document
+   *
+   * @return true if success
+   */
+  public boolean invalidateIt() {
+    if (log.isLoggable(Level.INFO)) log.info(toString());
+    setDocAction(X_M_InOutConfirm.DOCACTION_Prepare);
+    return true;
+  } //	invalidateIt
 }
