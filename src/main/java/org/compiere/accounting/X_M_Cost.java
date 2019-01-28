@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_Cost;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -84,46 +83,12 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     return ii;
   }
 
-  /** CostingMethod AD_Reference_ID=122 */
-  public static final int COSTINGMETHOD_AD_Reference_ID = 122;
-  /** Standard Costing = S */
-  public static final String COSTINGMETHOD_StandardCosting = "S";
-  /** Average PO = A */
+    /** Average PO = A */
   public static final String COSTINGMETHOD_AveragePO = "A";
-  /** Lifo = L */
-  public static final String COSTINGMETHOD_Lifo = "L";
-  /** Fifo = F */
-  public static final String COSTINGMETHOD_Fifo = "F";
-  /** Last PO Price = p */
-  public static final String COSTINGMETHOD_LastPOPrice = "p";
-  /** Average Invoice = I */
+    /** Average Invoice = I */
   public static final String COSTINGMETHOD_AverageInvoice = "I";
-  /** Last Invoice = i */
-  public static final String COSTINGMETHOD_LastInvoice = "i";
-  /** User Defined = U */
-  public static final String COSTINGMETHOD_UserDefined = "U";
-  /** _ = x */
-  public static final String COSTINGMETHOD__ = "x";
-  /**
-   * Set Costing Method.
-   *
-   * @param CostingMethod Indicates how Costs will be calculated
-   */
-  public void setCostingMethod(String CostingMethod) {
 
-    throw new IllegalArgumentException("CostingMethod is virtual column");
-  }
-
-  /**
-   * Get Costing Method.
-   *
-   * @return Indicates how Costs will be calculated
-   */
-  public String getCostingMethod() {
-    return (String) get_Value(COLUMNNAME_CostingMethod);
-  }
-
-  /**
+    /**
    * Set Accumulated Amt.
    *
    * @param CumulatedAmt Total Amount
@@ -183,17 +148,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     return bd;
   }
 
-  /**
-   * Set Current Cost Price Lower Level.
-   *
-   * @param CurrentCostPriceLL Current Price Lower Level Is the sum of the costs of the components
-   *     of this product manufactured for this level.
-   */
-  public void setCurrentCostPriceLL(BigDecimal CurrentCostPriceLL) {
-    set_Value(COLUMNNAME_CurrentCostPriceLL, CurrentCostPriceLL);
-  }
-
-  /**
+    /**
    * Get Current Cost Price Lower Level.
    *
    * @return Current Price Lower Level Is the sum of the costs of the components of this product
@@ -225,25 +180,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     return bd;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Future Cost Price.
    *
    * @param FutureCostPrice Future Cost Price
@@ -263,56 +200,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     return bd;
   }
 
-  /**
-   * Set Future Cost Price Lower Level.
-   *
-   * @param FutureCostPriceLL Future Cost Price Lower Level
-   */
-  public void setFutureCostPriceLL(BigDecimal FutureCostPriceLL) {
-    set_Value(COLUMNNAME_FutureCostPriceLL, FutureCostPriceLL);
-  }
-
-  /**
-   * Get Future Cost Price Lower Level.
-   *
-   * @return Future Cost Price Lower Level
-   */
-  public BigDecimal getFutureCostPriceLL() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_FutureCostPriceLL);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Cost Frozen.
-   *
-   * @param IsCostFrozen Indicated that the Standard Cost is frozen
-   */
-  public void setIsCostFrozen(boolean IsCostFrozen) {
-    set_Value(COLUMNNAME_IsCostFrozen, Boolean.valueOf(IsCostFrozen));
-  }
-
-  /**
-   * Get Cost Frozen.
-   *
-   * @return Indicated that the Standard Cost is frozen
-   */
-  public boolean isCostFrozen() {
-    Object oo = get_Value(COLUMNNAME_IsCostFrozen);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -362,13 +250,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_CostType getM_CostType() throws RuntimeException {
-    return (org.compiere.model.I_M_CostType)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostType.Table_Name)
-            .getPO(getM_CostType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Type.
    *
    * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
@@ -389,25 +271,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set M_Cost_UU.
-   *
-   * @param M_Cost_UU M_Cost_UU
-   */
-  public void setM_Cost_UU(String M_Cost_UU) {
-    set_Value(COLUMNNAME_M_Cost_UU, M_Cost_UU);
-  }
-
-  /**
-   * Get M_Cost_UU.
-   *
-   * @return M_Cost_UU
-   */
-  public String getM_Cost_UU() {
-    return (String) get_Value(COLUMNNAME_M_Cost_UU);
-  }
-
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
+    public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
             .getPO(getM_Product_ID(), null);
@@ -454,30 +318,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Processed.
-   *
-   * @param Processed The document has been processed
-   */
-  public void setProcessed(boolean Processed) {
-    throw new IllegalArgumentException("Processed is virtual column");
-  }
-
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_M_Cost.Table_ID;
   }

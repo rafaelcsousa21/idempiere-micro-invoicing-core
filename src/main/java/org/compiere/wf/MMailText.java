@@ -253,16 +253,7 @@ public class MMailText extends X_R_MailText {
     m_bpartner = new MBPartner(getCtx(), C_BPartner_ID, null);
   } //	setBPartner
 
-  /**
-   * Set BPartner for parse
-   *
-   * @param bpartner bp
-   */
-  public void setBPartner(MBPartner bpartner) {
-    m_bpartner = bpartner;
-  } //	setBPartner
-
-  /**
+    /**
    * Set PO for parse
    *
    * @param po po
@@ -366,9 +357,9 @@ public class MMailText extends X_R_MailText {
 
   /** MailText Translation VO */
   static class MMailTextTrl {
-    /** Language */
-    String AD_Language = null;
-    /** Translated Header */
+      /** Language */
+      String AD_Language = null;
+      /** Translated Header */
     String MailHeader = null;
     /** Translated Text */
     String MailText = null;
@@ -382,19 +373,4 @@ public class MMailText extends X_R_MailText {
     m_language = language;
   }
 
-  public org.compiere.orm.PO getPO() {
-    return m_po;
-  }
-
-  public MBPartner getBPartner() {
-    return m_bpartner;
-  }
-
-  public String getLanguage() {
-    return m_language;
-  }
-
-  public MUser getUser() {
-    return m_user;
-  }
 } //	MMailText

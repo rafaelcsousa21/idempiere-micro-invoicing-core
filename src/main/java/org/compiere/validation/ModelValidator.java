@@ -13,29 +13,8 @@ import org.idempiere.orm.IEventTopics;
  *     documents
  */
 public interface ModelValidator {
-  /** Model Change Type New */
-  public static final int TYPE_BEFORE_NEW = 1; // teo_sarca [ 1675490 ]
 
-  public static final int TYPE_NEW = 1;
-  public static final int CHANGETYPE_NEW = 1; // Compatibility with Compiere 260c
-  public static final int TYPE_AFTER_NEW = 4; // teo_sarca [ 1675490 ]
-  public static final int TYPE_AFTER_NEW_REPLICATION = 7; // @Trifon
-  /** Model Change Type Change */
-  public static final int TYPE_BEFORE_CHANGE = 2; // teo_sarca [ 1675490 ]
-
-  public static final int TYPE_CHANGE = 2;
-  public static final int CHANGETYPE_CHANGE = 2; // Compatibility with Compiere 260c
-  public static final int TYPE_AFTER_CHANGE = 5; // teo_sarca [ 1675490 ]
-  public static final int TYPE_AFTER_CHANGE_REPLICATION = 8; // @Trifon
-  /** Model Change Type Delete */
-  public static final int TYPE_BEFORE_DELETE = 3; // teo_sarca [ 1675490 ]
-
-  public static final int TYPE_DELETE = 3;
-  public static final int CHANGETYPE_DELETE = 3; // Compatibility with Compiere 260c
-  public static final int TYPE_AFTER_DELETE = 6; // teo_sarca [ 1675490 ]
-  public static final int TYPE_BEFORE_DELETE_REPLICATION = 9; // @Trifon
-
-  // Correlation between constant events and list of event script model validators
+    // Correlation between constant events and list of event script model validators
   public static String[] tableEventValidators =
       new String[] {
         "", // 0
@@ -71,8 +50,7 @@ public interface ModelValidator {
   /** Called before document is prepared */
   public static final int TIMING_BEFORE_PREPARE = 1;
 
-  public static final int DOCTIMING_BEFORE_PREPARE = 1; // Compatibility with Compiere 260c
-  /** Called before document is void */
+    /** Called before document is void */
   public static final int TIMING_BEFORE_VOID = 2;
   /** Called before document is close */
   public static final int TIMING_BEFORE_CLOSE = 3;
@@ -89,8 +67,7 @@ public interface ModelValidator {
   /** Called after document is completed */
   public static final int TIMING_AFTER_COMPLETE = 9;
 
-  public static final int DOCTIMING_AFTER_COMPLETE = 9; // Compatibility with Compiere 260c
-  /** Called after document is void */
+    /** Called after document is void */
   public static final int TIMING_AFTER_VOID = 10;
   /** Called after document is closed */
   public static final int TIMING_AFTER_CLOSE = 11;
@@ -140,29 +117,7 @@ public interface ModelValidator {
         X_AD_Table_ScriptValidator.EVENTMODELVALIDATOR_DocumentAfterPost // TIMING_AFTER_POST = 16
       };
 
-  // Correlation between constant events and list of osgi event topics
-  public static String[] documentEventTopics =
-      new String[] {
-        "", // 0
-        IEventTopics.DOC_BEFORE_PREPARE, // TIMING_BEFORE_PREPARE = 1
-        IEventTopics.DOC_BEFORE_VOID, // TIMING_BEFORE_VOID = 2
-        IEventTopics.DOC_BEFORE_CLOSE, // TIMING_BEFORE_CLOSE = 3
-        IEventTopics.DOC_BEFORE_REACTIVATE, // TIMING_BEFORE_REACTIVATE = 4
-        IEventTopics.DOC_BEFORE_REVERSECORRECT, // TIMING_BEFORE_REVERSECORRECT = 5
-        IEventTopics.DOC_BEFORE_REVERSEACCRUAL, // TIMING_BEFORE_REVERSEACCRUAL = 6
-        IEventTopics.DOC_BEFORE_COMPLETE, // TIMING_BEFORE_COMPLETE = 7
-        IEventTopics.DOC_AFTER_PREPARE, // TIMING_AFTER_PREPARE = 8
-        IEventTopics.DOC_AFTER_COMPLETE, // TIMING_AFTER_COMPLETE = 9
-        IEventTopics.DOC_AFTER_VOID, // TIMING_AFTER_VOID = 10
-        IEventTopics.DOC_AFTER_CLOSE, // TIMING_AFTER_CLOSE = 11
-        IEventTopics.DOC_AFTER_REACTIVATE, // TIMING_AFTER_REACTIVATE = 12
-        IEventTopics.DOC_AFTER_REVERSECORRECT, // TIMING_AFTER_REVERSECORRECT = 13
-        IEventTopics.DOC_AFTER_REVERSEACCRUAL, // TIMING_AFTER_REVERSEACCRUAL = 14
-        IEventTopics.DOC_BEFORE_POST, // TIMING_BEFORE_POST = 15
-        IEventTopics.DOC_AFTER_POST // TIMING_AFTER_POST = 16
-      };
-
-  /**
+    /**
    * Initialize Validation
    *
    * @param engine validation engine

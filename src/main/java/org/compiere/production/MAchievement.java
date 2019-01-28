@@ -20,17 +20,7 @@ public class MAchievement extends X_PA_Achievement {
 
   private static final long serialVersionUID = -1438593600498523664L;
 
-  /**
-   * Get achieved Achievements Of Measure
-   *
-   * @param measure Measure
-   * @return array of Achievements
-   */
-  public static MAchievement[] get(MMeasure measure) {
-    return getOfMeasure(measure.getCtx(), measure.getPA_Measure_ID());
-  } //	get
-
-  /**
+    /**
    * Get achieved Achievements Of Measure
    *
    * @param ctx context

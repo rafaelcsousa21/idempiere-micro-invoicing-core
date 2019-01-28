@@ -45,8 +45,7 @@ public class ProductCost {
   /** Transaction */
   private String m_trxName = null;
 
-  private int m_C_UOM_ID = 0;
-  private BigDecimal m_qty = Env.ZERO;
+    private BigDecimal m_qty = Env.ZERO;
 
   /** Logger */
   private static CLogger log = CLogger.getCLogger(ProductCost.class);
@@ -60,17 +59,7 @@ public class ProductCost {
     return m_product;
   } //  getProduct
 
-  /**
-   * Is this a Service
-   *
-   * @return true if service
-   */
-  public boolean isService() {
-    if (m_product != null) return m_product.isService();
-    return false;
-  } //	isService
-
-  /**
+    /**
    * Set Quantity in Storage UOM
    *
    * @param qty quantity
@@ -79,22 +68,7 @@ public class ProductCost {
     m_qty = qty;
   } //  setQty
 
-  /**
-   * Set Quantity in UOM
-   *
-   * @param qty quantity
-   * @param C_UOM_ID UOM
-   */
-  public void setQty(BigDecimal qty, int C_UOM_ID) {
-    m_qty = MUOMConversion.convert(C_UOM_ID, m_C_UOM_ID, qty, true); //  StdPrecision
-    if (qty != null && m_qty == null) //  conversion error
-    {
-      log.severe("Conversion error - set to " + qty);
-      m_qty = qty;
-    } else m_C_UOM_ID = C_UOM_ID;
-  } //  setQty
-
-  /** Product Revenue Acct */
+    /** Product Revenue Acct */
   public static final int ACCTTYPE_P_Revenue = 1;
   /** Product Expense Acct */
   public static final int ACCTTYPE_P_Expense = 2;
@@ -102,11 +76,7 @@ public class ProductCost {
   public static final int ACCTTYPE_P_Asset = 3;
   /** Product COGS Acct */
   public static final int ACCTTYPE_P_Cogs = 4;
-  /** Purchase Price Variance */
-  public static final int ACCTTYPE_P_PPV = 5;
-  /** Invoice Price Variance */
-  public static final int ACCTTYPE_P_IPV = 6;
-  /** Trade Discount Revenue */
+    /** Trade Discount Revenue */
   public static final int ACCTTYPE_P_TDiscountRec = 7;
   /** Trade Discount Costs */
   public static final int ACCTTYPE_P_TDiscountGrant = 8;
@@ -116,29 +86,7 @@ public class ProductCost {
   public static final int ACCTTYPE_P_InventoryClearing = 10;
   /** Work in Process */
   public static final int ACCTTYPE_P_WorkInProcess = 11;
-  /** Method Change Variance */
-  public static final int ACCTTYPE_P_MethodChangeVariance = 12;
-  /** Material Usage Variance */
-  public static final int ACCTTYPE_P_UsageVariance = 13;
-  /** Material Rate Variance */
-  public static final int ACCTTYPE_P_RateVariance = 14;
-  /** Mix Variance */
-  public static final int ACCTTYPE_P_MixVariance = 15;
-  /** Floor Stock */
-  public static final int ACCTTYPE_P_FloorStock = 16;
-  /** Cost Production */
-  public static final int ACCTTYPE_P_CostOfProduction = 17;
-  /** Labor */
-  public static final int ACCTTYPE_P_Labor = 18;
-  /** Burden */
-  public static final int ACCTTYPE_P_Burden = 19;
-  /** Outside Processing */
-  public static final int ACCTTYPE_P_OutsideProcessing = 20;
-  /** Outside Overhead */
-  public static final int ACCTTYPE_P_Overhead = 21;
-  /** Outside Processing */
-  public static final int ACCTTYPE_P_Scrap = 22;
-  /** Average costing variance */
+    /** Average costing variance */
   public static final int ACCTTYPE_P_AverageCostVariance = 23;
   /** Landed cost clearing * */
   public static final int ACCTTYPE_P_LandedCostClearing = 24;

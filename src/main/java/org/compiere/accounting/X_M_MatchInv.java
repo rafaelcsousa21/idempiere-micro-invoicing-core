@@ -1,8 +1,6 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_MatchInv;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -54,13 +52,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
-    return (org.compiere.model.I_C_InvoiceLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice Line.
    *
    * @param C_InvoiceLine_ID Invoice Detail Line
@@ -135,16 +127,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -153,22 +136,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -191,13 +159,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
-    return (org.compiere.model.I_M_InOutLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Shipment/Receipt Line.
    *
    * @param M_InOutLine_ID Line on Shipment or Receipt document
@@ -218,17 +180,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Match Invoice.
-   *
-   * @param M_MatchInv_ID Match Shipment/Receipt to Invoice
-   */
-  public void setM_MatchInv_ID(int M_MatchInv_ID) {
-    if (M_MatchInv_ID < 1) set_ValueNoCheck(COLUMNNAME_M_MatchInv_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_MatchInv_ID, Integer.valueOf(M_MatchInv_ID));
-  }
-
-  /**
+    /**
    * Get Match Invoice.
    *
    * @return Match Shipment/Receipt to Invoice
@@ -239,31 +191,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set M_MatchInv_UU.
-   *
-   * @param M_MatchInv_UU M_MatchInv_UU
-   */
-  public void setM_MatchInv_UU(String M_MatchInv_UU) {
-    set_Value(COLUMNNAME_M_MatchInv_UU, M_MatchInv_UU);
-  }
-
-  /**
-   * Get M_MatchInv_UU.
-   *
-   * @return M_MatchInv_UU
-   */
-  public String getM_MatchInv_UU() {
-    return (String) get_Value(COLUMNNAME_M_MatchInv_UU);
-  }
-
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -330,28 +258,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return false;
   }
 
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -360,21 +267,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Quantity.
    *
    * @param Qty Quantity
@@ -394,13 +287,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return bd;
   }
 
-  public org.compiere.model.I_M_MatchInv getReversal() throws RuntimeException {
-    return (org.compiere.model.I_M_MatchInv)
-        MTable.get(getCtx(), org.compiere.model.I_M_MatchInv.Table_Name)
-            .getPO(getReversal_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal ID.
    *
    * @param Reversal_ID ID of document reversal

@@ -29,27 +29,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
   /** */
   private static final long serialVersionUID = -3864175464877913555L;
 
-  /**
-   * Get Inventory Line with parameters
-   *
-   * @param inventory inventory
-   * @param M_Locator_ID locator
-   * @param M_Product_ID product
-   * @param M_AttributeSetInstance_ID asi
-   * @return line or null
-   */
-  public static MInventoryLine get(
-      MInventory inventory, int M_Locator_ID, int M_Product_ID, int M_AttributeSetInstance_ID) {
-    final String whereClause =
-        "M_Inventory_ID=? AND M_Locator_ID=?"
-            + " AND M_Product_ID=? AND M_AttributeSetInstance_ID=?";
-    return new Query(
-            inventory.getCtx(), I_M_InventoryLine.Table_Name, whereClause, null)
-        .setParameters(inventory.getId(), M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID)
-        .firstOnly();
-  } //	get
-
-  /**
+    /**
    * ************************************************************************ Default Constructor
    *
    * @param ctx context

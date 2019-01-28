@@ -53,37 +53,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return sb.toString();
   }
 
-  /**
-   * Set Trx Organization.
-   *
-   * @param AD_OrgTrx_ID Performing or initiating organization
-   */
-  public void setAD_OrgTrx_ID(int AD_OrgTrx_ID) {
-    if (AD_OrgTrx_ID < 1) set_Value(COLUMNNAME_AD_OrgTrx_ID, null);
-    else set_Value(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
-  }
-
-  /**
-   * Get Trx Organization.
-   *
-   * @return Performing or initiating organization
-   */
-  public int getAD_OrgTrx_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_OrgTrx_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Approval Amount.
-   *
-   * @param ApprovalAmt Document Approval Amount
-   */
-  public void setApprovalAmt(BigDecimal ApprovalAmt) {
-    set_Value(COLUMNNAME_ApprovalAmt, ApprovalAmt);
-  }
-
-  /**
+    /**
    * Get Approval Amount.
    *
    * @return Document Approval Amount
@@ -94,23 +64,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return bd;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
-   * Set Activity.
-   *
-   * @param C_Activity_ID Business Activity
-   */
-  public void setC_Activity_ID(int C_Activity_ID) {
-    if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-    else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
-  }
-
-  /**
+    /**
    * Get Activity.
    *
    * @return Business Activity
@@ -121,23 +75,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
-   * Set Campaign.
-   *
-   * @param C_Campaign_ID Marketing Campaign
-   */
-  public void setC_Campaign_ID(int C_Campaign_ID) {
-    if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-    else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
-  }
-
-  /**
+    /**
    * Get Campaign.
    *
    * @return Marketing Campaign
@@ -148,23 +86,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
-    return (org.compiere.model.I_C_ConversionType)
-        MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), null);
-  }
-
-  /**
-   * Set Currency Type.
-   *
-   * @param C_ConversionType_ID Currency Conversion Rate Type
-   */
-  public void setC_ConversionType_ID(int C_ConversionType_ID) {
-    if (C_ConversionType_ID < 1) set_Value(COLUMNNAME_C_ConversionType_ID, null);
-    else set_Value(COLUMNNAME_C_ConversionType_ID, Integer.valueOf(C_ConversionType_ID));
-  }
-
-  /**
+    /**
    * Get Currency Type.
    *
    * @return Currency Conversion Rate Type
@@ -175,23 +97,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
-   * Set Currency.
-   *
-   * @param C_Currency_ID The Currency for this record
-   */
-  public void setC_Currency_ID(int C_Currency_ID) {
-    if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-    else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
-  }
-
-  /**
+    /**
    * Get Currency.
    *
    * @return The Currency for this record
@@ -229,27 +135,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return ii;
   }
 
-  /** CostingMethod AD_Reference_ID=122 */
-  public static final int COSTINGMETHOD_AD_Reference_ID = 122;
-  /** Standard Costing = S */
-  public static final String COSTINGMETHOD_StandardCosting = "S";
-  /** Average PO = A */
-  public static final String COSTINGMETHOD_AveragePO = "A";
-  /** Lifo = L */
-  public static final String COSTINGMETHOD_Lifo = "L";
-  /** Fifo = F */
-  public static final String COSTINGMETHOD_Fifo = "F";
-  /** Last PO Price = p */
-  public static final String COSTINGMETHOD_LastPOPrice = "p";
-  /** Average Invoice = I */
-  public static final String COSTINGMETHOD_AverageInvoice = "I";
-  /** Last Invoice = i */
-  public static final String COSTINGMETHOD_LastInvoice = "i";
-  /** User Defined = U */
-  public static final String COSTINGMETHOD_UserDefined = "U";
-  /** _ = x */
-  public static final String COSTINGMETHOD__ = "x";
-  /**
+    /**
    * Set Costing Method.
    *
    * @param CostingMethod Indicates how Costs will be calculated
@@ -268,23 +154,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return (String) get_Value(COLUMNNAME_CostingMethod);
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
-   * Set Project.
-   *
-   * @param C_Project_ID Financial Project
-   */
-  public void setC_Project_ID(int C_Project_ID) {
-    if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-    else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-  }
-
-  /**
+    /**
    * Get Project.
    *
    * @return Financial Project
@@ -313,37 +183,16 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
+    /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
+    /** Close = CL */
   public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
-  public static final String DOCACTION_Re_Activate = "RE";
-  /** <None> = -- */
+    /** <None> = -- */
   public static final String DOCACTION_None = "--";
   /** Prepare = PR */
   public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-  /**
+
+    /**
    * Set Document Action.
    *
    * @param DocAction The targeted status of the document
@@ -362,9 +211,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocAction);
   }
 
-  /** DocStatus AD_Reference_ID=131 */
-  public static final int DOCSTATUS_AD_Reference_ID = 131;
-  /** Drafted = DR */
+    /** Drafted = DR */
   public static final String DOCSTATUS_Drafted = "DR";
   /** Completed = CO */
   public static final String DOCSTATUS_Completed = "CO";
@@ -380,15 +227,10 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public static final String DOCSTATUS_Reversed = "RE";
   /** Closed = CL */
   public static final String DOCSTATUS_Closed = "CL";
-  /** Unknown = ?? */
-  public static final String DOCSTATUS_Unknown = "??";
-  /** In Progress = IP */
+    /** In Progress = IP */
   public static final String DOCSTATUS_InProgress = "IP";
-  /** Waiting Payment = WP */
-  public static final String DOCSTATUS_WaitingPayment = "WP";
-  /** Waiting Confirmation = WC */
-  public static final String DOCSTATUS_WaitingConfirmation = "WC";
-  /**
+
+    /**
    * Set Document Status.
    *
    * @param DocStatus The current status of the document
@@ -425,34 +267,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
-  /**
-   * Set Generate List.
-   *
-   * @param GenerateList Generate List
-   */
-  public void setGenerateList(String GenerateList) {
-    set_Value(COLUMNNAME_GenerateList, GenerateList);
-  }
-
-  /**
-   * Get Generate List.
-   *
-   * @return Generate List
-   */
-  public String getGenerateList() {
-    return (String) get_Value(COLUMNNAME_GenerateList);
-  }
-
-  /**
+    /**
    * Set Approved.
    *
    * @param IsApproved Indicates if this document requires approval
@@ -475,17 +290,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return false;
   }
 
-  /**
-   * Set Phys.Inventory.
-   *
-   * @param M_Inventory_ID Parameters for a Physical Inventory
-   */
-  public void setM_Inventory_ID(int M_Inventory_ID) {
-    if (M_Inventory_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Inventory_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
-  }
-
-  /**
+    /**
    * Get Phys.Inventory.
    *
    * @return Parameters for a Physical Inventory
@@ -496,25 +301,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set M_Inventory_UU.
-   *
-   * @param M_Inventory_UU M_Inventory_UU
-   */
-  public void setM_Inventory_UU(String M_Inventory_UU) {
-    set_Value(COLUMNNAME_M_Inventory_UU, M_Inventory_UU);
-  }
-
-  /**
-   * Get M_Inventory_UU.
-   *
-   * @return M_Inventory_UU
-   */
-  public String getM_Inventory_UU() {
-    return (String) get_Value(COLUMNNAME_M_Inventory_UU);
-  }
-
-  /**
+    /**
    * Set Movement Date.
    *
    * @param MovementDate Date a product was moved in or out of inventory
@@ -532,23 +319,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return (Timestamp) get_Value(COLUMNNAME_MovementDate);
   }
 
-  public org.compiere.model.I_M_PerpetualInv getM_PerpetualInv() throws RuntimeException {
-    return (org.compiere.model.I_M_PerpetualInv)
-        MTable.get(getCtx(), org.compiere.model.I_M_PerpetualInv.Table_Name)
-            .getPO(getM_PerpetualInv_ID(), null);
-  }
-
-  /**
-   * Set Perpetual Inventory.
-   *
-   * @param M_PerpetualInv_ID Rules for generating physical inventory
-   */
-  public void setM_PerpetualInv_ID(int M_PerpetualInv_ID) {
-    if (M_PerpetualInv_ID < 1) set_ValueNoCheck(COLUMNNAME_M_PerpetualInv_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_PerpetualInv_ID, Integer.valueOf(M_PerpetualInv_ID));
-  }
-
-  /**
+    /**
    * Get Perpetual Inventory.
    *
    * @return Rules for generating physical inventory
@@ -559,13 +330,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
-    return (org.compiere.model.I_M_Warehouse)
-        MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), null);
-  }
-
-  /**
+    /**
    * Set Warehouse.
    *
    * @param M_Warehouse_ID Storage Warehouse and Service Point
@@ -595,21 +360,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
   }
 
-  /**
-   * Get Posted.
-   *
-   * @return Posting status
-   */
-  public boolean isPosted() {
-    Object oo = get_Value(COLUMNNAME_Posted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -632,28 +383,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return false;
   }
 
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -662,27 +392,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_M_Inventory getReversal() throws RuntimeException {
-    return (org.compiere.model.I_M_Inventory)
-        MTable.get(getCtx(), org.compiere.model.I_M_Inventory.Table_Name)
-            .getPO(getReversal_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal ID.
    *
    * @param Reversal_ID ID of document reversal
@@ -703,41 +413,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Update Quantities.
-   *
-   * @param UpdateQty Update Quantities
-   */
-  public void setUpdateQty(String UpdateQty) {
-    set_Value(COLUMNNAME_UpdateQty, UpdateQty);
-  }
-
-  /**
-   * Get Update Quantities.
-   *
-   * @return Update Quantities
-   */
-  public String getUpdateQty() {
-    return (String) get_Value(COLUMNNAME_UpdateQty);
-  }
-
-  public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), null);
-  }
-
-  /**
-   * Set User Element List 1.
-   *
-   * @param User1_ID User defined list element #1
-   */
-  public void setUser1_ID(int User1_ID) {
-    if (User1_ID < 1) set_Value(COLUMNNAME_User1_ID, null);
-    else set_Value(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
-  }
-
-  /**
+    /**
    * Get User Element List 1.
    *
    * @return User defined list element #1
@@ -748,23 +424,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), null);
-  }
-
-  /**
-   * Set User Element List 2.
-   *
-   * @param User2_ID User defined list element #2
-   */
-  public void setUser2_ID(int User2_ID) {
-    if (User2_ID < 1) set_Value(COLUMNNAME_User2_ID, null);
-    else set_Value(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
-  }
-
-  /**
+    /**
    * Get User Element List 2.
    *
    * @return User defined list element #2

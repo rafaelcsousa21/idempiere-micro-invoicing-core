@@ -42,13 +42,9 @@ public class X_GL_Category extends BasePOName implements I_GL_Category, I_Persis
     return sb.toString();
   }
 
-  /** CategoryType AD_Reference_ID=207 */
-  public static final int CATEGORYTYPE_AD_Reference_ID = 207;
-  /** Manual = M */
+    /** Manual = M */
   public static final String CATEGORYTYPE_Manual = "M";
-  /** Import = I */
-  public static final String CATEGORYTYPE_Import = "I";
-  /** Document = D */
+    /** Document = D */
   public static final String CATEGORYTYPE_Document = "D";
   /** System generated = S */
   public static final String CATEGORYTYPE_SystemGenerated = "S";
@@ -71,35 +67,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category, I_Persis
     return (String) get_Value(COLUMNNAME_CategoryType);
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set GL Category.
-   *
-   * @param GL_Category_ID General Ledger Category
-   */
-  public void setGL_Category_ID(int GL_Category_ID) {
-    if (GL_Category_ID < 1) set_ValueNoCheck(COLUMNNAME_GL_Category_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_GL_Category_ID, Integer.valueOf(GL_Category_ID));
-  }
-
-  /**
+    /**
    * Get GL Category.
    *
    * @return General Ledger Category
@@ -110,25 +78,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category, I_Persis
     return ii;
   }
 
-  /**
-   * Set GL_Category_UU.
-   *
-   * @param GL_Category_UU GL_Category_UU
-   */
-  public void setGL_Category_UU(String GL_Category_UU) {
-    set_Value(COLUMNNAME_GL_Category_UU, GL_Category_UU);
-  }
-
-  /**
-   * Get GL_Category_UU.
-   *
-   * @return GL_Category_UU
-   */
-  public String getGL_Category_UU() {
-    return (String) get_Value(COLUMNNAME_GL_Category_UU);
-  }
-
-  /**
+    /**
    * Set Default.
    *
    * @param IsDefault Default value

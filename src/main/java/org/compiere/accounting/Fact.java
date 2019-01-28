@@ -51,17 +51,12 @@ public final class Fact implements IFact {
 
   /** Actual Balance Type */
   public static final String POST_Actual = MFactAcct.POSTINGTYPE_Actual;
-  /** Budget Balance Type */
-  public static final String POST_Budget = MFactAcct.POSTINGTYPE_Budget;
-  /** Encumbrance Posting */
+    /** Encumbrance Posting */
   public static final String POST_Commitment = MFactAcct.POSTINGTYPE_Commitment;
   /** Encumbrance Posting */
   public static final String POST_Reservation = MFactAcct.POSTINGTYPE_Reservation;
 
-  /** Is Converted */
-  private boolean m_converted = false;
-
-  /** Lines */
+    /** Lines */
   private ArrayList<FactLine> m_lines = new ArrayList<FactLine>();
 
   /** Dispose */
@@ -190,35 +185,7 @@ public final class Fact implements IFact {
     else return createLine(docLine, account, C_Currency_ID, Amt, null);
   } //  createLine
 
-  /**
-   * Is Posting Type
-   *
-   * @param PostingType - see POST_*
-   * @return true if document is posting type
-   */
-  public boolean isPostingType(String PostingType) {
-    return m_postingType.equals(PostingType);
-  } //  isPostingType
-
-  /**
-   * Is converted
-   *
-   * @return true if converted
-   */
-  public boolean isConverted() {
-    return m_converted;
-  } //	isConverted
-
-  /**
-   * Get AcctSchema
-   *
-   * @return AcctSchema
-   */
-  public MAcctSchema getAcctSchema() {
-    return m_acctSchema;
-  } //	getAcctSchema
-
-  /**
+    /**
    * ************************************************************************ Are the lines Source
    * Balanced
    *

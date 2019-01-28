@@ -93,7 +93,7 @@ abstract class BaseComponentTest {
         val newBankAccount = MBankAccount(ctx, 0, null)
         newBankAccount.c_Bank_ID = newBank.id
         newBankAccount.name = newBank.name
-        newBankAccount.value = newBankAccount.name
+        newBankAccount.setValue(newBankAccount.name)
         newBankAccount.c_Currency_ID = EUR
         newBankAccount.accountNo = newBank.name
         newBankAccount.save()
@@ -112,7 +112,7 @@ abstract class BaseComponentTest {
         val newPaymentTerm = MPaymentTerm(ctx, 0, null)
         newPaymentTerm.setIsValid(true)
         newPaymentTerm.name = "P-" + randomString(10)
-        newPaymentTerm.value = newPaymentTerm.name
+        newPaymentTerm.setValue(newPaymentTerm.name)
         newPaymentTerm.save()
         _paymentTerm = getById(newPaymentTerm.id, I_C_PaymentTerm.Table_Name)
         assertNotNull(_paymentTerm)

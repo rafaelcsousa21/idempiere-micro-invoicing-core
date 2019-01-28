@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_GL_DistributionLine;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -97,13 +96,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
+    /**
    * Set Activity.
    *
    * @param C_Activity_ID Business Activity
@@ -124,13 +117,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -151,13 +138,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
+    /**
    * Set Campaign.
    *
    * @param C_Campaign_ID Marketing Campaign
@@ -178,13 +159,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Location getC_LocFrom() throws RuntimeException {
-    return (org.compiere.model.I_C_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocFrom_ID(), null);
-  }
-
-  /**
+    /**
    * Set Location From.
    *
    * @param C_LocFrom_ID Location that inventory was moved from
@@ -205,13 +180,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Location getC_LocTo() throws RuntimeException {
-    return (org.compiere.model.I_C_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocTo_ID(), null);
-  }
-
-  /**
+    /**
    * Set Location To.
    *
    * @param C_LocTo_ID Location that inventory was moved to
@@ -232,13 +201,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project.
    *
    * @param C_Project_ID Financial Project
@@ -259,13 +222,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_SalesRegion getC_SalesRegion() throws RuntimeException {
-    return (org.compiere.model.I_C_SalesRegion)
-        MTable.get(getCtx(), org.compiere.model.I_C_SalesRegion.Table_Name)
-            .getPO(getC_SalesRegion_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Region.
    *
    * @param C_SalesRegion_ID Sales coverage region
@@ -286,16 +243,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -304,23 +252,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  public org.compiere.model.I_GL_Distribution getGL_Distribution() throws RuntimeException {
-    return (org.compiere.model.I_GL_Distribution)
-        MTable.get(getCtx(), org.compiere.model.I_GL_Distribution.Table_Name)
-            .getPO(getGL_Distribution_ID(), null);
-  }
-
-  /**
-   * Set GL Distribution.
-   *
-   * @param GL_Distribution_ID General Ledger Distribution
-   */
-  public void setGL_Distribution_ID(int GL_Distribution_ID) {
-    if (GL_Distribution_ID < 1) set_ValueNoCheck(COLUMNNAME_GL_Distribution_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_GL_Distribution_ID, Integer.valueOf(GL_Distribution_ID));
-  }
-
-  /**
+    /**
    * Get GL Distribution.
    *
    * @return General Ledger Distribution
@@ -331,47 +263,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  /**
-   * Set GL Distribution Line.
-   *
-   * @param GL_DistributionLine_ID General Ledger Distribution Line
-   */
-  public void setGL_DistributionLine_ID(int GL_DistributionLine_ID) {
-    if (GL_DistributionLine_ID < 1) set_ValueNoCheck(COLUMNNAME_GL_DistributionLine_ID, null);
-    else
-      set_ValueNoCheck(COLUMNNAME_GL_DistributionLine_ID, Integer.valueOf(GL_DistributionLine_ID));
-  }
-
-  /**
-   * Get GL Distribution Line.
-   *
-   * @return General Ledger Distribution Line
-   */
-  public int getGL_DistributionLine_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_GL_DistributionLine_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set GL_DistributionLine_UU.
-   *
-   * @param GL_DistributionLine_UU GL_DistributionLine_UU
-   */
-  public void setGL_DistributionLine_UU(String GL_DistributionLine_UU) {
-    set_Value(COLUMNNAME_GL_DistributionLine_UU, GL_DistributionLine_UU);
-  }
-
-  /**
-   * Get GL_DistributionLine_UU.
-   *
-   * @return GL_DistributionLine_UU
-   */
-  public String getGL_DistributionLine_UU() {
-    return (String) get_Value(COLUMNNAME_GL_DistributionLine_UU);
-  }
-
-  /**
+    /**
    * Set Line No.
    *
    * @param Line Unique line for this document
@@ -391,22 +283,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -769,13 +646,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return bd;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 1.
    *
    * @param User1_ID User defined list element #1
@@ -796,13 +667,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 2.
    *
    * @param User2_ID User defined list element #2

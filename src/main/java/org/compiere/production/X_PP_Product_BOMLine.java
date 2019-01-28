@@ -93,25 +93,9 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
     return (String) get_Value(COLUMNNAME_BackflushGroup);
   }
 
-  /** ComponentType AD_Reference_ID=53225 */
-  public static final int COMPONENTTYPE_AD_Reference_ID = 53225;
-  /** By-Product = BY */
+    /** By-Product = BY */
   public static final String COMPONENTTYPE_By_Product = "BY";
-  /** Component = CO */
-  public static final String COMPONENTTYPE_Component = "CO";
-  /** Phantom = PH */
-  public static final String COMPONENTTYPE_Phantom = "PH";
-  /** Packing = PK */
-  public static final String COMPONENTTYPE_Packing = "PK";
-  /** Planning = PL */
-  public static final String COMPONENTTYPE_Planning = "PL";
-  /** Tools = TL */
-  public static final String COMPONENTTYPE_Tools = "TL";
-  /** Option = OP */
-  public static final String COMPONENTTYPE_Option = "OP";
-  /** Variant = VA */
-  public static final String COMPONENTTYPE_Variant = "VA";
-  /** Co-Product = CP */
+    /** Co-Product = CP */
   public static final String COMPONENTTYPE_Co_Product = "CP";
   /**
    * Set Component Type.
@@ -299,15 +283,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
     return false;
   }
 
-  /** IssueMethod AD_Reference_ID=53226 */
-  public static final int ISSUEMETHOD_AD_Reference_ID = 53226;
-  /** Issue = 0 */
-  public static final String ISSUEMETHOD_Issue = "0";
-  /** Backflush = 1 */
-  public static final String ISSUEMETHOD_Backflush = "1";
-  /** Floor Stock = 2 */
-  public static final String ISSUEMETHOD_FloorStock = "2";
-  /**
+    /**
    * Set Issue Method.
    *
    * @param IssueMethod There are two methods for issue the components to Manufacturing Order
@@ -448,16 +424,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_Product_ID()));
-  }
-
-  public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
+    public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
     return (org.eevolution.model.I_PP_Product_BOM)
         MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
             .getPO(getPP_Product_BOM_ID(), null);

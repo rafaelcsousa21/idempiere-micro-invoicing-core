@@ -21,7 +21,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -878,11 +877,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
   }
 
   @Override
-  public File createPDF() {
-    return null;
-  }
-
-  @Override
   public String getProcessMsg() {
     return m_processMsg;
   }
@@ -921,4 +915,5 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
   @Override
   public void setProcessedOn(String processed, boolean b, boolean b1) {}
+
 }

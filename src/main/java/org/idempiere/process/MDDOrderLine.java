@@ -3,7 +3,6 @@ package org.idempiere.process;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_Product;
-import org.compiere.order.MCharge;
 import org.compiere.product.MAttributeSet;
 import org.compiere.product.MUOM;
 import org.compiere.production.MLocator;
@@ -13,56 +12,15 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
-import static software.hsharp.core.util.DBKt.getSQLValueBD;
 
 public class MDDOrderLine extends X_DD_OrderLine {
   /** */
   private static final long serialVersionUID = -8878804332001384969L;
 
-  /**
-   * Get Order Unreserved Qty
-   *
-   * @param ctx context
-   * @param M_Locator_ID wh
-   * @param M_Product_ID product
-   * @param M_AttributeSetInstance_ID asi
-   * @param excludeC_OrderLine_ID exclude C_OrderLine_ID
-   * @return Unreserved Qty
-   */
-  public static BigDecimal getNotReserved(
-      Properties ctx,
-      int M_Locator_ID,
-      int M_Product_ID,
-      int M_AttributeSetInstance_ID,
-      int excludeDD_OrderLine_ID) {
-
-    ArrayList<Object> params = new ArrayList<Object>();
-    params.add(M_Locator_ID);
-    params.add(M_Product_ID);
-    params.add(excludeDD_OrderLine_ID);
-
-    String sql =
-        "SELECT SUM(QtyOrdered-QtyDelivered-QtyReserved) "
-            + "FROM DD_OrderLine ol"
-            + " INNER JOIN DD_Order o ON (ol.DD_Order_ID=o.DD_Order_ID) "
-            + "WHERE ol.M_Locator_ID=?" //	#1
-            + " AND M_Product_ID=?" //	#2
-            + " AND o.IsSOTrx='N' AND o.DocStatus='DR'"
-            + " AND QtyOrdered-QtyDelivered-QtyReserved<>0"
-            + " AND ol.DD_OrderLine_ID<>?";
-
-    if (M_AttributeSetInstance_ID != 0) {
-      sql += " AND M_AttributeSetInstance_ID=?";
-      params.add(M_AttributeSetInstance_ID);
-    }
-    return getSQLValueBD(null, sql.toString(), params);
-  } //	getNotReserved
-
-  /** Logger */
+    /** Logger */
   @SuppressWarnings("unused")
   private static CLogger s_log = CLogger.getCLogger(MDDOrderLine.class);
 
@@ -180,48 +138,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
     return m_parent;
   } //	getParent
 
-  /**
-   * Set Product
-   *
-   * @param product product
-   */
-  public void setProduct(I_M_Product product) {
-    m_product = product;
-    if (m_product != null) {
-      setM_Product_ID(m_product.getM_Product_ID());
-      setC_UOM_ID(m_product.getC_UOM_ID());
-    } else {
-      setM_Product_ID(0);
-      set_ValueNoCheck("C_UOM_ID", null);
-    }
-    setM_AttributeSetInstance_ID(0);
-  } //	setProduct
-
-  /**
-   * Set M_Product_ID
-   *
-   * @param M_Product_ID product
-   * @param setUOM set also UOM
-   */
-  public void setM_Product_ID(int M_Product_ID, boolean setUOM) {
-    if (setUOM) setProduct(MProduct.get(getCtx(), M_Product_ID));
-    else super.setM_Product_ID(M_Product_ID);
-    setM_AttributeSetInstance_ID(0);
-  } //	setM_Product_ID
-
-  /**
-   * Set Product and UOM
-   *
-   * @param M_Product_ID product
-   * @param C_UOM_ID uom
-   */
-  public void setM_Product_ID(int M_Product_ID, int C_UOM_ID) {
-    super.setM_Product_ID(M_Product_ID);
-    if (C_UOM_ID != 0) super.setC_UOM_ID(C_UOM_ID);
-    setM_AttributeSetInstance_ID(0);
-  } //	setM_Product_ID
-
-  /**
+    /**
    * Get Product
    *
    * @return product or null
@@ -376,31 +293,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
     else setDescription(desc + " | " + description);
   } //	addDescription
 
-  /**
-   * Get Description Text. For jsp access (vs. isDescription)
-   *
-   * @return description
-   */
-  public String getDescriptionText() {
-    return super.getDescription();
-  } //	getDescriptionText
-
-  /**
-   * Get Name
-   *
-   * @return get the name of the line (from Product)
-   */
-  public String getName() {
-    getProduct();
-    if (m_product != null) return m_product.getName();
-    if (getC_Charge_ID() != 0) {
-      MCharge charge = MCharge.get(getCtx(), getC_Charge_ID());
-      return charge.getName();
-    }
-    return "";
-  } //	getName
-
-  /**
+    /**
    * Set C_Charge_ID
    *
    * @param C_Charge_ID charge
@@ -588,12 +481,4 @@ public class MDDOrderLine extends X_DD_OrderLine {
     return true;
   } //	afterDelete
 
-  /**
-   * Quantity To Deliver
-   *
-   * @return Quantity To Deliver
-   */
-  public BigDecimal getQtyToDeliver() {
-    return getQtyOrdered().subtract(getQtyInTransit()).subtract(getQtyDelivered());
-  }
 } //	MDDOrderLine

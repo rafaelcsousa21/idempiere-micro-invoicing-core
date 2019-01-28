@@ -1545,14 +1545,82 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     return "";
   }
 
-  /* Doc - To be used on ModelValidator to get the corresponding Doc from the PO */
-  private IDoc m_doc;
-
   @Override
   public void setDoc(IDoc doc) {
-    m_doc = doc;
   }
 
   @Override
   public void setProcessedOn(String processed, boolean b, boolean b1) {}
+
+  /**
+   * *********************************************************************** Get Summary
+   *
+   * @return Summary of Document
+   */
+  public String getSummary() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getDocumentNo());
+    //	: Grand Total = 123.00 (#1)
+    sb.append(": ")
+            .append(Msg.translate(getCtx(), "GrandTotal"))
+            .append("=")
+            .append(getGrandTotal());
+    if (m_lines != null) sb.append(" (#").append(m_lines.length).append(")");
+    //	 - Description
+    if (getDescription() != null && getDescription().length() > 0)
+      sb.append(" - ").append(getDescription());
+    return sb.toString();
+  } //	getSummary
+
+  /**
+   * Get Document Owner (Responsible)
+   *
+   * @return AD_User_ID
+   */
+  public int getDoc_User_ID() {
+    return getSalesRep_ID();
+  } //	getDoc_User_ID
+
+  /**
+   * Get Document Approval Amount
+   *
+   * @return amount
+   */
+  public BigDecimal getApprovalAmt() {
+    return getGrandTotal();
+  } //	getApprovalAmt
+
+  /**
+   * Unlock Document.
+   *
+   * @return true if success
+   */
+  public boolean unlockIt() {
+    if (log.isLoggable(Level.INFO)) log.info("unlockIt - " + toString());
+    setProcessing(false);
+    return true;
+  } //	unlockIt
+
+  /**
+   * Invalidate Document
+   *
+   * @return true if success
+   */
+  public boolean invalidateIt() {
+    if (log.isLoggable(Level.INFO)) log.info(toString());
+    setDocAction(DOCACTION_Prepare);
+    return true;
+  } //	invalidateIt
+
+  /**
+   * Reject Approval
+   *
+   * @return true if success
+   */
+  public boolean rejectIt() {
+    if (log.isLoggable(Level.INFO)) log.info("rejectIt - " + toString());
+    setIsApproved(false);
+    return true;
+  } //	rejectIt
+
 }

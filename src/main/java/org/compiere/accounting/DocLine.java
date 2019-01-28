@@ -258,16 +258,7 @@ public class DocLine {
     return m_DiscountAmt;
   } //  getDiscount
 
-  /**
-   * Line List Amount
-   *
-   * @return list amount
-   */
-  public BigDecimal getListAmount() {
-    return m_ListAmt;
-  } //  getListAmount
-
-  /**
+    /**
    * Set Line Net Amt Difference
    *
    * @param diff difference (to be subtracted)
@@ -432,16 +423,7 @@ public class DocLine {
     return m_C_Period_ID;
   } //	getC_Period_ID
 
-  /**
-   * Set C_Period_ID
-   *
-   * @param C_Period_ID id
-   */
-  protected void setC_Period_ID(int C_Period_ID) {
-    m_C_Period_ID = C_Period_ID;
-  } //	setC_Period_ID
-
-  /**
+    /**
    * ************************************************************************ Get (Journal)
    * AcctSchema
    *
@@ -542,53 +524,7 @@ public class DocLine {
     return 0;
   } //  getM_Locator_ID
 
-  /**
-   * Get Warehouse Locator To
-   *
-   * @return M_Locator_ID
-   */
-  public int getM_LocatorTo_ID() {
-    int index = p_po.get_ColumnIndex("M_LocatorTo_ID");
-    if (index != -1) {
-      Integer ii = (Integer) p_po.get_Value(index);
-      if (ii != null) return ii;
-    }
-    return 0;
-  } //  getM_LocatorTo_ID
-
-  /**
-   * Set Production BOM flag
-   *
-   * @param productionBOM flag
-   */
-  public void setProductionBOM(boolean productionBOM) {
-    m_productionBOM = productionBOM;
-  } //	setProductionBOM
-
-  /**
-   * Is this the BOM to be produced
-   *
-   * @return true if BOM
-   */
-  public boolean isProductionBOM() {
-    return m_productionBOM;
-  } //	isProductionBOM
-
-  /**
-   * Get Production Header
-   *
-   * @return M_Production_ID
-   */
-  public int getM_Production_ID() {
-    int index = p_po.get_ColumnIndex("M_Production_ID");
-    if (index != -1) {
-      Integer ii = (Integer) p_po.get_Value(index);
-      if (ii != null) return ii;
-    }
-    return 0;
-  } //  getM_Production_ID
-
-  /**
+    /**
    * Get Order Line Reference
    *
    * @return C_OrderLine_ID
@@ -611,16 +547,7 @@ public class DocLine {
     return m_C_LocFrom_ID;
   } //	getC_LocFrom_ID
 
-  /**
-   * Set C_LocFrom_ID
-   *
-   * @param C_LocFrom_ID loc from
-   */
-  public void setC_LocFrom_ID(int C_LocFrom_ID) {
-    m_C_LocFrom_ID = C_LocFrom_ID;
-  } //	setC_LocFrom_ID
-
-  /**
+    /**
    * Get PP_Cost_Collector_ID
    *
    * @return Cost Collector ID
@@ -647,16 +574,7 @@ public class DocLine {
     return m_C_LocTo_ID;
   } //	getC_LocTo_ID
 
-  /**
-   * Set C_LocTo_ID
-   *
-   * @param C_LocTo_ID loc to
-   */
-  public void setC_LocTo_ID(int C_LocTo_ID) {
-    m_C_LocTo_ID = C_LocTo_ID;
-  } //	setC_LocTo_ID
-
-  /**
+    /**
    * Get Product Cost Info
    *
    * @return product cost

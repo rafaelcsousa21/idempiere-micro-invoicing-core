@@ -1,13 +1,10 @@
 package org.compiere.invoicing;
 
 import org.compiere.model.I_A_Depreciation_Entry;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
@@ -51,17 +48,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return "X_A_Depreciation_Entry[" + getId() + "]";
   }
 
-  /**
-   * Set Depreciation Entry.
-   *
-   * @param A_Depreciation_Entry_ID Depreciation Entry
-   */
-  public void setA_Depreciation_Entry_ID(int A_Depreciation_Entry_ID) {
-    if (A_Depreciation_Entry_ID < 1) set_ValueNoCheck(COLUMNNAME_A_Depreciation_Entry_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_A_Depreciation_Entry_ID, A_Depreciation_Entry_ID);
-  }
-
-  /**
+    /**
    * Get Depreciation Entry.
    *
    * @return Depreciation Entry
@@ -72,48 +59,10 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getA_Depreciation_Entry_ID()));
-  }
-
-  /**
-   * Set A_Depreciation_Entry_UU.
-   *
-   * @param A_Depreciation_Entry_UU A_Depreciation_Entry_UU
-   */
-  public void setA_Depreciation_Entry_UU(String A_Depreciation_Entry_UU) {
-    set_Value(COLUMNNAME_A_Depreciation_Entry_UU, A_Depreciation_Entry_UU);
-  }
-
-  /**
-   * Get A_Depreciation_Entry_UU.
-   *
-   * @return A_Depreciation_Entry_UU
-   */
-  public String getA_Depreciation_Entry_UU() {
-    return (String) get_Value(COLUMNNAME_A_Depreciation_Entry_UU);
-  }
-
-  /** A_Entry_Type AD_Reference_ID=53257 */
-  public static final int A_ENTRY_TYPE_AD_Reference_ID = 53257;
-  /** Depreciation = DEP */
+    /** Depreciation = DEP */
   public static final String A_ENTRY_TYPE_Depreciation = "DEP";
-  /** Disposals = DIS */
-  public static final String A_ENTRY_TYPE_Disposals = "DIS";
-  /** Forecasts = FOR */
-  public static final String A_ENTRY_TYPE_Forecasts = "FOR";
-  /** New = NEW */
-  public static final String A_ENTRY_TYPE_New = "NEW";
-  /** Splits = SPL */
-  public static final String A_ENTRY_TYPE_Splits = "SPL";
-  /** Transfers = TRN */
-  public static final String A_ENTRY_TYPE_Transfers = "TRN";
-  /**
+
+    /**
    * Set Entry Type.
    *
    * @param A_Entry_Type Entry Type
@@ -123,22 +72,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     set_Value(COLUMNNAME_A_Entry_Type, A_Entry_Type);
   }
 
-  /**
-   * Get Entry Type.
-   *
-   * @return Entry Type
-   */
-  public String getA_Entry_Type() {
-    return (String) get_Value(COLUMNNAME_A_Entry_Type);
-  }
-
-  public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
-    return (org.compiere.model.I_C_AcctSchema)
-        MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
-  }
-
-  /**
+    /**
    * Set Accounting Schema.
    *
    * @param C_AcctSchema_ID Rules for accounting
@@ -159,13 +93,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -186,23 +114,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
-   * Set Document Type.
-   *
-   * @param C_DocType_ID Document type or rules
-   */
-  public void setC_DocType_ID(int C_DocType_ID) {
-    if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-    else set_Value(COLUMNNAME_C_DocType_ID, C_DocType_ID);
-  }
-
-  /**
+    /**
    * Get Document Type.
    *
    * @return Document type or rules
@@ -213,13 +125,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return ii;
   }
 
-  public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
-    return (org.compiere.model.I_C_Period)
-        MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), null);
-  }
-
-  /**
+    /**
    * Set Period.
    *
    * @param C_Period_ID Period of the Calendar
@@ -240,16 +146,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return ii;
   }
 
-  /**
-   * Set Account Date.
-   *
-   * @param DateAcct Accounting Date
-   */
-  public void setDateAcct(Timestamp DateAcct) {
-    set_Value(COLUMNNAME_DateAcct, DateAcct);
-  }
-
-  /**
+    /**
    * Get Account Date.
    *
    * @return Accounting Date
@@ -258,73 +155,14 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return (Timestamp) get_Value(COLUMNNAME_DateAcct);
   }
 
-  /**
-   * Set Document Date.
-   *
-   * @param DateDoc Date of the Document
-   */
-  public void setDateDoc(Timestamp DateDoc) {
-    set_Value(COLUMNNAME_DateDoc, DateDoc);
-  }
-
-  /**
-   * Get Document Date.
-   *
-   * @return Date of the Document
-   */
-  public Timestamp getDateDoc() {
-    return (Timestamp) get_Value(COLUMNNAME_DateDoc);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
+    /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
+    /** Close = CL */
   public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
-  public static final String DOCACTION_Re_Activate = "RE";
-  /** <None> = -- */
+    /** <None> = -- */
   public static final String DOCACTION_None = "--";
-  /** Prepare = PR */
-  public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-  /**
+
+    /**
    * Set Document Action.
    *
    * @param DocAction The targeted status of the document
@@ -343,43 +181,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return (String) get_Value(COLUMNNAME_DocAction);
   }
 
-  /** DocStatus AD_Reference_ID=131 */
-  public static final int DOCSTATUS_AD_Reference_ID = 131;
-  /** Drafted = DR */
-  public static final String DOCSTATUS_Drafted = "DR";
-  /** Completed = CO */
-  public static final String DOCSTATUS_Completed = "CO";
-  /** Approved = AP */
-  public static final String DOCSTATUS_Approved = "AP";
-  /** Not Approved = NA */
-  public static final String DOCSTATUS_NotApproved = "NA";
-  /** Voided = VO */
-  public static final String DOCSTATUS_Voided = "VO";
-  /** Invalid = IN */
-  public static final String DOCSTATUS_Invalid = "IN";
-  /** Reversed = RE */
-  public static final String DOCSTATUS_Reversed = "RE";
-  /** Closed = CL */
-  public static final String DOCSTATUS_Closed = "CL";
-  /** Unknown = ?? */
-  public static final String DOCSTATUS_Unknown = "??";
-  /** In Progress = IP */
-  public static final String DOCSTATUS_InProgress = "IP";
-  /** Waiting Payment = WP */
-  public static final String DOCSTATUS_WaitingPayment = "WP";
-  /** Waiting Confirmation = WC */
-  public static final String DOCSTATUS_WaitingConfirmation = "WC";
-  /**
-   * Set Document Status.
-   *
-   * @param DocStatus The current status of the document
-   */
-  public void setDocStatus(String DocStatus) {
-
-    set_Value(COLUMNNAME_DocStatus, DocStatus);
-  }
-
-  /**
+    /**
    * Get Document Status.
    *
    * @return The current status of the document
@@ -388,16 +190,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return (String) get_Value(COLUMNNAME_DocStatus);
   }
 
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -438,33 +231,10 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     set_Value(COLUMNNAME_Posted, Posted);
   }
 
-  /**
-   * Get Posted.
-   *
-   * @return Posting status
-   */
-  public boolean isPosted() {
-    Object oo = get_Value(COLUMNNAME_Posted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /** PostingType AD_Reference_ID=125 */
-  public static final int POSTINGTYPE_AD_Reference_ID = 125;
-  /** Actual = A */
+    /** Actual = A */
   public static final String POSTINGTYPE_Actual = "A";
-  /** Budget = B */
-  public static final String POSTINGTYPE_Budget = "B";
-  /** Commitment = E */
-  public static final String POSTINGTYPE_Commitment = "E";
-  /** Statistical = S */
-  public static final String POSTINGTYPE_Statistical = "S";
-  /** Reservation = R */
-  public static final String POSTINGTYPE_Reservation = "R";
-  /**
+
+    /**
    * Set PostingType.
    *
    * @param PostingType The type of posted amount for the transaction
@@ -474,16 +244,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     set_Value(COLUMNNAME_PostingType, PostingType);
   }
 
-  /**
-   * Get PostingType.
-   *
-   * @return The type of posted amount for the transaction
-   */
-  public String getPostingType() {
-    return (String) get_Value(COLUMNNAME_PostingType);
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -506,28 +267,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return false;
   }
 
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -536,17 +276,4 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     set_Value(COLUMNNAME_Processing, Processing);
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
 }

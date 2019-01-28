@@ -66,16 +66,7 @@ public class DocLine_Bank extends DocLine {
     return super. getOrgId();
   } //	getOrgId
 
-  /**
-   * Is Reversal
-   *
-   * @return true if reversal
-   */
-  public boolean isReversal() {
-    return m_IsReversal;
-  } //  isReversal
-
-  /**
+    /**
    * Get Interest
    *
    * @return InterestAmount

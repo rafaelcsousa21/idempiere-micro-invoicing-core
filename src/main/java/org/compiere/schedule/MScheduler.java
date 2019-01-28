@@ -5,7 +5,6 @@ import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
 import org.compiere.orm.MUserRoles;
 import org.compiere.orm.Query;
-import org.compiere.process.MProcess;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.idempiere.icommon.model.IPO;
@@ -30,21 +29,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
   /** */
   private static final long serialVersionUID = 5106574386025319255L;
 
-  /**
-   * Get Active
-   *
-   * @param ctx context
-   * @return active processors
-   */
-  public static MScheduler[] getActive(Properties ctx) {
-    List<MScheduler> list =
-        new Query(ctx, I_AD_Scheduler.Table_Name, null, null).setOnlyActiveRecords(true).list();
-    MScheduler[] retValue = new MScheduler[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getActive
-
-  /**
+    /**
    * Standard Constructor
    *
    * @param ctx context
@@ -129,16 +114,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
     return no;
   } //	deleteLog
 
-  /**
-   * Get Process
-   *
-   * @return process
-   */
-  public MProcess getProcess() {
-    return MProcess.get(getCtx(), getAD_Process_ID());
-  } //	getProcess
-
-  /**
+    /**
    * Get Parameters
    *
    * @param reload reload
@@ -297,6 +273,23 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
   @Override
   public String getCronPattern() {
     return MSchedule.get(getCtx(), getAD_Schedule_ID()).getCronPattern();
+  }
+
+  /**
+   * Set Date last run.
+   *
+   * @param DateLastRun Date the process was last run.
+   */
+  public void setDateLastRun(Timestamp DateLastRun) {
+    set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+  }
+  /**
+   * Get Date last run.
+   *
+   * @return Date the process was last run.
+   */
+  public Timestamp getDateLastRun() {
+    return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
   }
 
 } //	MScheduler

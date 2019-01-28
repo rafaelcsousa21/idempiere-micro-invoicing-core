@@ -111,74 +111,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     return "";
   } //  getColumnName
 
-  /**
-   * Get Value Query for ELEMENTTYPE Type
-   *
-   * @param elementType ELEMENTTYPE type
-   * @return query "SELECT Value,Name FROM Table WHERE ID=" or "" if not found
-   */
-  public static String getValueQuery(String elementType) {
-    String baseLanguage = Language.getBaseAD_Language();
-    String language = Language.getLoginLanguage().getADLanguage();
-    boolean translated =
-        MClient.get(Env.getCtx()).isMultiLingualDocument()
-            && !language.equalsIgnoreCase(baseLanguage);
-    if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Organization)) {
-      return "SELECT Value,Name FROM AD_Org WHERE AD_Org_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Account)
-        || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList1)
-        || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList2)) {
-      if (translated)
-        return "SELECT o.Value,t.Name FROM C_ElementValue o JOIN C_ElementValue_Trl t ON (o.C_ElementValue_ID=t.C_ElementValue_ID AND t.AD_Language="
-            + TO_STRING(language)
-            + ") WHERE o.C_ElementValue_ID=";
-      else return "SELECT Value,Name FROM C_ElementValue WHERE C_ElementValue_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_SubAccount)) {
-      return "SELECT Value,Name FROM C_SubAccount WHERE C_SubAccount_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_BPartner)) {
-      return "SELECT Value,Name FROM C_BPartner WHERE C_BPartner_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Product)) {
-      if (translated)
-        return "SELECT o.Value,t.Name FROM M_Product o JOIN M_Product_Trl t ON (o.M_Product_ID=t.M_Product_ID AND t.AD_Language="
-            + TO_STRING(language)
-            + ") WHERE o.M_Product_ID=";
-      else return "SELECT Value,Name FROM M_Product WHERE M_Product_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Activity)) {
-      if (translated)
-        return "SELECT Value,Name FROM C_Activity o JOIN C_Activity_Trl t ON (o.C_Activity_ID=t.C_Activity_ID AND t.AD_Language="
-            + TO_STRING(language)
-            + ") WHERE o.C_Activity_ID=";
-      else return "SELECT Value,Name FROM C_Activity WHERE C_Activity_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_LocationFrom)
-        || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_LocationTo)) {
-      return "SELECT City,Address1 FROM C_Location WHERE C_Location_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Campaign)) {
-      if (translated)
-        return "SELECT Value,Name FROM C_Campaign o JOIN C_Campaign_Trl t ON (o.C_Campaign_ID=t.C_Campaign_ID AND t.AD_Language="
-            + TO_STRING(language)
-            + ") WHERE o.C_Campaign_ID=";
-      else return "SELECT Value,Name FROM C_Campaign WHERE C_Campaign_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx)) {
-      return "SELECT Value,Name FROM AD_Org WHERE AD_Org_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Project)) {
-      return "SELECT Value,Name FROM C_Project WHERE C_Project_ID=";
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_SalesRegion)) {
-      if (translated)
-        return "SELECT Value,Name FROM C_SalesRegion o JOIN C_SalesRegion_Trl t ON (o.C_SalesRegion_ID=t.C_SalesRegion_ID AND t.AD_Language="
-            + TO_STRING(language)
-            + ") WHERE o.C_SalesRegion_ID="; // ADEMPIERE-119 / Freepath
-      else return "SELECT Value,Name FROM C_SalesRegion WHERE C_SalesRegion_ID="; // ADEMPIERE-119 /
-      // Freepath
-      //
-    } else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn1)
-        || elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn2)) {
-      return null;
-    }
-    //
-    return "";
-  } //  getColumnName
-
-  /** Logger */
+    /** Logger */
   private static CLogger s_log = CLogger.getCLogger(MAcctSchemaElement.class);
 
   /** Cache */
@@ -241,90 +174,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
   /** User Element Column Name */
   private String m_ColumnName = null;
 
-  /**
-   * Set Organization Type
-   *
-   * @param SeqNo sequence
-   * @param Name name
-   * @param Org_ID id
-   */
-  public void setTypeOrg(int SeqNo, String Name, int Org_ID) {
-    setElementType(X_C_AcctSchema_Element.ELEMENTTYPE_Organization);
-    setSeqNo(SeqNo);
-    setName(Name);
-    setOrg_ID(Org_ID);
-  } //	setTypeOrg
-
-  /**
-   * Set Type Account
-   *
-   * @param SeqNo squence
-   * @param Name name
-   * @param C_Element_ID element
-   * @param C_ElementValue_ID element value
-   */
-  public void setTypeAccount(int SeqNo, String Name, int C_Element_ID, int C_ElementValue_ID) {
-    setElementType(X_C_AcctSchema_Element.ELEMENTTYPE_Account);
-    setSeqNo(SeqNo);
-    setName(Name);
-    setC_Element_ID(C_Element_ID);
-    setC_ElementValue_ID(C_ElementValue_ID);
-  } //	setTypeAccount
-
-  /**
-   * Set Type BPartner
-   *
-   * @param SeqNo sequence
-   * @param Name name
-   * @param C_BPartner_ID id
-   */
-  public void setTypeBPartner(int SeqNo, String Name, int C_BPartner_ID) {
-    setElementType(X_C_AcctSchema_Element.ELEMENTTYPE_BPartner);
-    setSeqNo(SeqNo);
-    setName(Name);
-    setC_BPartner_ID(C_BPartner_ID);
-  } //	setTypeBPartner
-
-  /**
-   * Set Type Product
-   *
-   * @param SeqNo sequence
-   * @param Name name
-   * @param M_Product_ID id
-   */
-  public void setTypeProduct(int SeqNo, String Name, int M_Product_ID) {
-    setElementType(X_C_AcctSchema_Element.ELEMENTTYPE_Product);
-    setSeqNo(SeqNo);
-    setName(Name);
-    setM_Product_ID(M_Product_ID);
-  } //	setTypeProduct
-
-  /**
-   * Set Type Project
-   *
-   * @param SeqNo sequence
-   * @param Name name
-   * @param C_Project_ID id
-   */
-  public void setTypeProject(int SeqNo, String Name, int C_Project_ID) {
-    setElementType(X_C_AcctSchema_Element.ELEMENTTYPE_Project);
-    setSeqNo(SeqNo);
-    setName(Name);
-    setC_Project_ID(C_Project_ID);
-  } //	setTypeProject
-
-  /**
-   * Is Element Type
-   *
-   * @param elementType type
-   * @return ELEMENTTYPE type
-   */
-  public boolean isElementType(String elementType) {
-    if (elementType == null) return false;
-    return elementType.equals(getElementType());
-  } //  isElementType
-
-  /**
+    /**
    * Get Default element value
    *
    * @return default
@@ -363,17 +213,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     return defaultValue;
   } //	getDefault
 
-  /**
-   * Get Acct Fact ColumnName
-   *
-   * @return column name
-   */
-  public String getColumnName() {
-    String et = getElementType();
-    return getColumnName(et);
-  } //	getColumnName
-
-  /**
+    /**
    * Get Display ColumnName
    *
    * @return column name

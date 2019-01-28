@@ -131,42 +131,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
         .firstOnly();
   }
 
-  /**
-   * Find data planning, try find the specific planning data if do not found then try find data
-   * planning general
-   *
-   * @param ctx Context
-   * @param AD_Org_ID Organization ID
-   * @param M_Warehouse_ID Resource ID
-   * @param S_Resource_ID Resource ID
-   * @param M_Product_ID Product ID
-   * @param trxName Transaction Name
-   * @return MPPProductPlanning Planning Data
-   */
-  public static MPPProductPlanning find(
-      Properties ctx,
-      int AD_Org_ID,
-      int M_Warehouse_ID,
-      int S_Resource_ID,
-      int M_Product_ID,
-      String trxName) {
-    final String whereClause =
-        "AD_Client_ID=? AND M_Product_ID=?"
-            + " AND (orgId IN (0,?) OR orgId IS NULL)"
-            + " AND (M_Warehouse_ID IN (0,?) OR M_Warehouse_ID IS NULL)"
-            + " AND (S_Resource_ID IN (0,?) OR S_Resource_ID IS NULL)";
-    return new Query(ctx, I_PP_Product_Planning.Table_Name, whereClause, trxName)
-        .setParameters(
-            Env.getClientId(ctx), M_Product_ID, AD_Org_ID, M_Warehouse_ID, S_Resource_ID)
-        .setOnlyActiveRecords(true)
-        .setOrderBy(
-            "COALESCE(AD_Org_ID, 0) DESC"
-                + ", COALESCE(M_Warehouse_ID, 0) DESC"
-                + ", COALESCE(S_Resource_ID, 0) DESC")
-        .first();
-  }
-
-  /**
+    /**
    * Get plant resource for warehouse. If more than one resource is found, first will be used.
    *
    * @param M_Warehouse_ID
@@ -241,16 +206,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
 
   private int m_C_BPartner_ID = 0;
 
-  /**
-   * Set Supplier
-   *
-   * @param C_BPartner_ID
-   */
-  public void setC_BPartner_ID(int C_BPartner_ID) {
-    this.m_C_BPartner_ID = C_BPartner_ID;
-  }
-
-  /** @return Supplier */
+    /** @return Supplier */
   public int getC_BPartner_ID() {
     return this.m_C_BPartner_ID;
   }

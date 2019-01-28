@@ -62,37 +62,7 @@ public class MReportTree {
     return tree;
   } //	get
 
-  /**
-   * Get Where Clause
-   *
-   * @param ctx context
-   * @param PA_Hierarchy_ID optional hierarchy
-   * @param ElementType Account Schema Element Type
-   * @param ID leaf element id
-   * @return where clause
-   */
-  public static String getWhereClause(
-      Properties ctx, int PA_Hierarchy_ID, String ElementType, int ID) {
-    MReportTree tree = get(ctx, PA_Hierarchy_ID, ElementType);
-    return tree.getWhereClause(ID);
-  } //	getWhereClause
-
-  /**
-   * Get Child IDs
-   *
-   * @param ctx context
-   * @param PA_Hierarchy_ID optional hierarchie
-   * @param ElementType Account Schema Element Type
-   * @param ID id
-   * @return array of IDs
-   */
-  public static Integer[] getChildIDs(
-      Properties ctx, int PA_Hierarchy_ID, String ElementType, int ID) {
-    MReportTree tree = get(ctx, PA_Hierarchy_ID, ElementType);
-    return tree.getChildIDs(ID);
-  } //	getChildIDs
-
-  /** Map with Tree */
+    /** Map with Tree */
   private static CCache<String, MReportTree> s_trees =
       new CCache<String, MReportTree>(null, "MReportTree", 20, false);
 
@@ -200,75 +170,7 @@ public class MReportTree {
     return AD_Tree_ID;
   } //	getDefaultAD_Tree_ID
 
-  /**
-   * Get Account Schema Element Type
-   *
-   * @return element Type
-   */
-  public String getElementType() {
-    return m_ElementType;
-  } //	getElementType
-
-  /**
-   * Get Tree Type
-   *
-   * @return tree type
-   */
-  public String getTreeType() {
-    return m_TreeType;
-  } //	getTreeType
-
-  /**
-   * Get Tree
-   *
-   * @return tree
-   */
-  public MTree getTree() {
-    return m_tree;
-  } //	getTreeType
-
-  /**
-   * Get Where Clause
-   *
-   * @param ID start node
-   * @return ColumnName = 1 or ( ColumnName = 1 OR ColumnName = 2 OR ColumnName = 3)
-   */
-  public String getWhereClause(int ID) {
-    if (log.isLoggable(Level.FINE)) log.fine("(" + m_ElementType + ") ID=" + ID);
-    String ColumnName = MAcctSchemaElement.getColumnName(m_ElementType);
-    //
-    MTreeNode node = m_tree.getRoot().findNode(ID);
-    if (log.isLoggable(Level.FINEST)) log.finest("Root=" + node);
-    //
-    StringBuffer result = null;
-    if (node != null && node.isSummary()) {
-
-      @SuppressWarnings("unchecked")
-      Enumeration<?> en = (Enumeration<?>) node.preorderEnumeration();
-      StringBuffer sb = new StringBuffer();
-      while (en.hasMoreElements()) {
-        MTreeNode nn = (MTreeNode) en.nextElement();
-        if (!nn.isSummary()) {
-          if (sb.length() > 0) {
-            sb.append(" OR ");
-          }
-          sb.append(ColumnName);
-          sb.append('=');
-          sb.append(nn.getNode_ID());
-          if (log.isLoggable(Level.FINEST)) log.finest("- " + nn);
-        } else if (log.isLoggable(Level.FINEST)) log.finest("- skipped parent (" + nn + ")");
-      }
-      result = new StringBuffer(" ( ");
-      result.append(sb);
-      result.append(" ) ");
-    } else //	not found or not summary
-    result = new StringBuffer(ColumnName).append("=").append(ID);
-    //
-    if (log.isLoggable(Level.FINEST)) log.finest(result.toString());
-    return result.toString();
-  } //	getWhereClause
-
-  /**
+    /**
    * Get Child IDs
    *
    * @param ID start node

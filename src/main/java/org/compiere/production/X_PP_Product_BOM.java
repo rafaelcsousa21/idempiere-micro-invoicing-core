@@ -51,27 +51,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
     return sb.toString();
   }
 
-  /** BOMType AD_Reference_ID=347 */
-  public static final int BOMTYPE_AD_Reference_ID = 347;
-  /** Current Active = A */
-  public static final String BOMTYPE_CurrentActive = "A";
-  /** Make-To-Order = O */
-  public static final String BOMTYPE_Make_To_Order = "O";
-  /** Previous = P */
-  public static final String BOMTYPE_Previous = "P";
-  /** Previous, Spare = S */
-  public static final String BOMTYPE_PreviousSpare = "S";
-  /** Future = F */
-  public static final String BOMTYPE_Future = "F";
-  /** Maintenance = M */
-  public static final String BOMTYPE_Maintenance = "M";
-  /** Repair = R */
-  public static final String BOMTYPE_Repair = "R";
-  /** Product Configure = C */
-  public static final String BOMTYPE_ProductConfigure = "C";
-  /** Make-To-Kit = K */
-  public static final String BOMTYPE_Make_To_Kit = "K";
-  /**
+    /**
    * Set BOM Type.
    *
    * @param BOMType Type of BOM
@@ -90,19 +70,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
     return (String) get_Value(COLUMNNAME_BOMType);
   }
 
-  /** BOMUse AD_Reference_ID=348 */
-  public static final int BOMUSE_AD_Reference_ID = 348;
-  /** Master = A */
-  public static final String BOMUSE_Master = "A";
-  /** Engineering = E */
-  public static final String BOMUSE_Engineering = "E";
-  /** Manufacturing = M */
-  public static final String BOMUSE_Manufacturing = "M";
-  /** Planning = P */
-  public static final String BOMUSE_Planning = "P";
-  /** Quality = Q */
-  public static final String BOMUSE_Quality = "Q";
-  /**
+    /**
    * Set BOM Use.
    *
    * @param BOMUse The use of the Bill of Material
@@ -454,16 +422,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
     return (String) get_Value(COLUMNNAME_Value);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getValue());
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_PP_Product_BOM.Table_ID;
   }

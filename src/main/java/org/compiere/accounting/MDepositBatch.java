@@ -17,20 +17,10 @@ package org.compiere.accounting;
 
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
-import org.compiere.orm.MDocType;
-import org.compiere.validation.ModelValidationEngine;
-import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.*;
 
@@ -100,62 +90,12 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
     super.setClientOrg(AD_Client_ID, AD_Org_ID);
   } //	setClientOrg
 
-  /**
-   * Set Accounting Date. Set also Period if not set earlier
-   *
-   * @param DateAcct date
-   */
-  public void setDateAcct(Timestamp DateAcct) {
-    super.setDateDeposit(DateAcct);
-    if (DateAcct == null) return;
-  } //	setDateAcct
-
-  /** Process Message */
+    /** Process Message */
   private String m_processMsg = null;
   /** Just Prepared Flag */
   //	private boolean		m_justPrepared = false;
 
-  /**
-   * Unlock Document.
-   *
-   * @return true if success
-   */
-  public boolean unlockIt() {
-    if (log.isLoggable(Level.INFO)) log.info("unlockIt - " + toString());
-    setProcessing(false);
-    return true;
-  } //	unlockIt
-
-  /**
-   * Invalidate Document
-   *
-   * @return true if success
-   */
-  public boolean invalidateIt() {
-    if (log.isLoggable(Level.INFO)) log.info("invalidateIt - " + toString());
-    return true;
-  } //	invalidateIt
-
-  /**
-   * Void Document.
-   *
-   * @return false
-   */
-  public boolean voidIt() {
-    if (log.isLoggable(Level.INFO)) log.info("voidIt - " + toString());
-    // Before Void
-    m_processMsg =
-        ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_VOID);
-    if (m_processMsg != null) return false;
-    // After Void
-    m_processMsg =
-        ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_VOID);
-    if (m_processMsg != null) return false;
-
-    return false;
-  } //	voidIt
-
-  /**
+    /**
    * String Representation
    *
    * @return info
@@ -171,69 +111,7 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
     return sb.toString();
   } //	toString
 
-  /**
-   * Get Document Info
-   *
-   * @return document info (untranslated)
-   */
-  public String getDocumentInfo() {
-    MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
-    return dt.getName() + " " + getDocumentNo();
-  } //	getDocumentInfo
-
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      File temp = File.createTempFile(get_TableName() + getId() + "_", ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    return null;
-  } //	createPDF
-
-  /**
-   * Get Process Message
-   *
-   * @return clear text error message
-   */
-  public String getProcessMsg() {
-    return m_processMsg;
-  } //	getProcessMsg
-
-  /**
-   * Get Document Owner (Responsible)
-   *
-   * @return AD_User_ID (Created By)
-   */
-  public int getDoc_User_ID() {
-    return getCreatedBy();
-  } //	getDoc_User_ID
-
-  /**
-   * Get Document Approval Amount
-   *
-   * @return DR amount
-   */
-  public BigDecimal getApprovalAmt() {
-    return getDepositAmt();
-  } //	getApprovalAmt
-
-  /**
+    /**
    * After Delete
    *
    * @param success success
@@ -248,35 +126,7 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
     return success;
   } //	afterDelete
 
-  /**
-   * ************************************************************************ Get Deposit Batch
-   * Lines
-   *
-   * @return Array of lines
-   */
-  public MDepositBatchLine[] getLines() {
-    ArrayList<MDepositBatchLine> list = new ArrayList<MDepositBatchLine>();
-    String sql = "SELECT * FROM C_DepositBatchLine WHERE C_DepositBatch_ID=? ORDER BY Line";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, getC_DepositBatch_ID());
-      rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MDepositBatchLine(getCtx(), rs, null));
-    } catch (SQLException ex) {
-      log.log(Level.SEVERE, sql, ex);
-    } finally {
-      close(rs, pstmt);
-    }
-
-    //
-    MDepositBatchLine[] retValue = new MDepositBatchLine[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getLines
-
-  @Override
+    @Override
   public void setDoc(IDoc doc) {}
 
   @Override

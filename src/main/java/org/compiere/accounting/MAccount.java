@@ -252,24 +252,7 @@ public class MAccount extends X_C_ValidCombination {
     return newAccount;
   } //	get
 
-  /**
-   * Get first with Alias
-   *
-   * @param ctx context
-   * @param C_AcctSchema_ID as
-   * @param alias alias
-   * @return account
-   */
-  public static MAccount get(Properties ctx, int C_AcctSchema_ID, String alias) {
-    final String whereClause = "C_AcctSchema_ID=? AND Alias=?";
-    MAccount retValue =
-        new Query(ctx, I_C_ValidCombination.Table_Name, whereClause, null)
-            .setParameters(C_AcctSchema_ID, alias)
-            .firstOnly();
-    return retValue;
-  } //	get
-
-  /**
+    /**
    * Get from existing Accounting fact
    *
    * @param fa accounting fact
@@ -300,23 +283,7 @@ public class MAccount extends X_C_ValidCombination {
     return acct;
   } //	get
 
-  /**
-   * ************************************************************************ Factory: default
-   * combination
-   *
-   * @param ctx context
-   * @param C_AcctSchema_ID accounting schema
-   * @param optionalNull if true the optional values are null
-   * @param trxName transaction
-   * @return Account
-   */
-  public static MAccount getDefault(
-      Properties ctx, int C_AcctSchema_ID, boolean optionalNull, String trxName) {
-    MAcctSchema acctSchema = new MAcctSchema(ctx, C_AcctSchema_ID, trxName);
-    return getDefault(acctSchema, optionalNull);
-  } //  getDefault
-
-  /**
+    /**
    * Factory: default combination
    *
    * @param acctSchema accounting schema
@@ -550,18 +517,7 @@ public class MAccount extends X_C_ValidCombination {
     return MElementValue.ACCOUNTTYPE_Asset.equals(getAccountType());
   } //	isActive
 
-  /**
-   * Is this a Passiva Account
-   *
-   * @return boolean
-   */
-  public boolean isPassiva() {
-    String accountType = getAccountType();
-    return (MElementValue.ACCOUNTTYPE_Liability.equals(accountType)
-        || MElementValue.ACCOUNTTYPE_OwnerSEquity.equals(accountType));
-  } //	isPassiva
-
-  /** Set Value and Description and Fully Qualified Flag for Combination */
+    /** Set Value and Description and Fully Qualified Flag for Combination */
   public void setValueDescription() {
     StringBuilder combi = new StringBuilder();
     StringBuilder descr = new StringBuilder();

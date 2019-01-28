@@ -56,24 +56,7 @@ public class MMovementLineMA extends X_M_MovementLineMA {
     return retValue;
   } //	get
 
-  /**
-   * Delete all Material Allocation for Movement
-   *
-   * @param M_Movement_ID movement
-   * @param trxName transaction
-   * @return number of rows deleted or -1 for error
-   */
-  public static int deleteMovementMA(int M_Movement_ID, String trxName) {
-    String sql =
-        "DELETE FROM M_MovementLineMA ma WHERE EXISTS "
-            + "(SELECT * FROM M_MovementLine l WHERE l.M_MovementLine_ID=ma.M_MovementLine_ID"
-            + " AND M_Movement_ID="
-            + M_Movement_ID
-            + ")";
-    return executeUpdate(sql, trxName);
-  } //	deleteInOutMA
-
-  /**
+    /**
    * Delete all Material Allocation for Movement Line
    *
    * @param M_MovementLine_ID movement line
@@ -183,15 +166,7 @@ public class MMovementLineMA extends X_M_MovementLineMA {
     return sb.toString();
   } //	toString
 
-  public static MMovementLineMA addOrCreate(
-      MMovementLine line,
-      int M_AttributeSetInstance_ID,
-      BigDecimal MovementQty,
-      Timestamp DateMaterialPolicy) {
-    return addOrCreate(line, M_AttributeSetInstance_ID, MovementQty, DateMaterialPolicy, true);
-  }
-
-  public static MMovementLineMA addOrCreate(
+    public static MMovementLineMA addOrCreate(
       MMovementLine line,
       int M_AttributeSetInstance_ID,
       BigDecimal MovementQty,

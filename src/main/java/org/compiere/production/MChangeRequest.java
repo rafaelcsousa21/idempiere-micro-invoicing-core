@@ -63,17 +63,7 @@ public class MChangeRequest extends X_M_ChangeRequest {
     super(ctx, rs, trxName);
   } //	MChangeRequest
 
-  /**
-   * Get CRM Requests of Change Requests TODO: implement it or delete
-   *
-   * @return requests
-   */
-  public MRequest[] getRequests() {
-    //		String sql = "SELECT * FROM R_Request WHERE M_ChangeRequest_ID=?";
-    return null;
-  } //	getRequests
-
-  /**
+    /**
    * Before Save
    *
    * @param newRecord new

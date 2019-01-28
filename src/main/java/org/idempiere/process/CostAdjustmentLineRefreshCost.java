@@ -22,10 +22,7 @@ import org.compiere.process.SvrProcess;
 /** @author hengsin */
 public class CostAdjustmentLineRefreshCost extends SvrProcess {
 
-  /** */
-  public CostAdjustmentLineRefreshCost() {}
-
-  /* (non-Javadoc)
+    /* (non-Javadoc)
    * @see org.compiere.process.SvrProcess#prepare()
    */
   @Override

@@ -220,54 +220,7 @@ public class MMovementLine extends X_M_MovementLine {
     return true;
   } //	beforeSave
 
-  /**
-   * Set Distribution Order Line. Does not set Quantity!
-   *
-   * @param oLine order line
-   * @param M_Locator_ID locator
-   * @param Qty used only to find suitable locator
-   */
-  public void setOrderLine(MDDOrderLine oLine, BigDecimal Qty, boolean isReceipt) {
-    setDD_OrderLine_ID(oLine.getDD_OrderLine_ID());
-    setLine(oLine.getLine());
-    // setC_UOM_ID(oLine.getC_UOM_ID());
-    I_M_Product product = oLine.getProduct();
-    if (product == null) {
-      set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
-      set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
-      set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstanceTo_ID, null);
-      set_ValueNoCheck(COLUMNNAME_M_Locator_ID, null);
-      set_ValueNoCheck(COLUMNNAME_M_LocatorTo_ID, null);
-    } else {
-      setM_Product_ID(oLine.getM_Product_ID());
-      setM_AttributeSetInstance_ID(oLine.getMAttributeSetInstance_ID());
-      setM_AttributeSetInstanceTo_ID(oLine.getMAttributeSetInstanceTo_ID());
-      //
-      if (product.isItem()) {
-        MWarehouse w = MWarehouse.get(getCtx(), oLine.getParent().getM_Warehouse_ID());
-        MLocator locator_inTransit = MLocator.getDefault(w);
-        if (locator_inTransit == null) {
-          throw new AdempiereException("Do not exist Locator for the  Warehouse in transit");
-        }
-
-        if (isReceipt) {
-          setM_Locator_ID(locator_inTransit.getM_Locator_ID());
-          setM_LocatorTo_ID(oLine.getM_LocatorTo_ID());
-        } else {
-          setM_Locator_ID(oLine.getM_Locator_ID());
-          setM_LocatorTo_ID(locator_inTransit.getM_Locator_ID());
-        }
-      } else {
-        set_ValueNoCheck(COLUMNNAME_M_Locator_ID, null);
-        set_ValueNoCheck(COLUMNNAME_M_LocatorTo_ID, null);
-      }
-    }
-
-    setDescription(oLine.getDescription());
-    this.setMovementQty(Qty);
-  } //      setOrderLine
-
-  /**
+    /**
    * Set M_Locator_ID
    *
    * @param M_Locator_ID id
@@ -291,26 +244,7 @@ public class MMovementLine extends X_M_MovementLine {
     set_Value(COLUMNNAME_M_LocatorTo_ID, M_LocatorTo_ID);
   } //      M_LocatorTo_ID
 
-  /**
-   * Get Movement lines Of Distribution Order Line
-   *
-   * @param ctx context
-   * @param DD_OrderLine_ID line
-   * @param where optional addition where clause
-   * @param trxName transaction
-   * @return array of receipt lines
-   */
-  public static MMovementLine[] getOfOrderLine(
-      Properties ctx, int DD_OrderLine_ID, String where, String trxName) {
-    String whereClause = COLUMNNAME_DD_OrderLine_ID + "=?";
-    if (where != null && where.length() > 0) whereClause += " AND (" + where + ")";
-    //
-    List<MMovementLine> list =
-        new Query(ctx, Table_Name, whereClause, trxName).setParameters(DD_OrderLine_ID).list();
-    return list.toArray(new MMovementLine[list.size()]);
-  } //      getOfOrderLine
-
-  public String toString() {
+    public String toString() {
     return Table_Name
         + "["
         + getId()

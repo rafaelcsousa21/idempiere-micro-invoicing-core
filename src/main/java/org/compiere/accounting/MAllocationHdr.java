@@ -19,7 +19,6 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -701,34 +700,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     return msgreturn.toString();
   } //	getDocumentInfo
 
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      StringBuilder msgctf =
-          new StringBuilder().append(get_TableName()).append(getId()).append("_");
-      File temp = File.createTempFile(msgctf.toString(), ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    return null;
-  } //	createPDF
-
-  /**
+    /**
    * *********************************************************************** Get Summary
    *
    * @return Summary of Document
@@ -1285,26 +1257,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     return m_reversal;
   } //	isReversal
 
-  /**
-   * Returns a description parsing the bpartner defined in the Allocation form and then the
-   * allocation itself
-   */
-  public String getDescriptionForManualAllocation(int bpartnerID, String trxName) {
-    String sysconfig_desc =
-        MSysConfig.getValue(MSysConfig.ALLOCATION_DESCRIPTION, "@#AD_User_Name@",  getClientId());
-    String description = "";
-    if (sysconfig_desc.contains("@")) {
-      description =
-          MSequence.parseVariable(
-              sysconfig_desc, new MBPartner(getCtx(), bpartnerID, null), trxName, true);
-      description = MSequence.parseVariable(description, this, trxName, true);
-      description = Msg.parseTranslation(getCtx(), description);
-    } else description = Env.getContext(getCtx(), "#AD_User_Name"); // just to be sure
-
-    return description;
-  }
-
-  @Override
+    @Override
   public void setDoc(IDoc doc) {}
 
   @Override

@@ -48,17 +48,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
     return sb.toString();
   }
 
-  /**
-   * Set Period.
-   *
-   * @param C_Period_ID Period of the Calendar
-   */
-  public void setC_Period_ID(int C_Period_ID) {
-    if (C_Period_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Period_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
-  }
-
-  /**
+    /**
    * Get Period.
    *
    * @return Period of the Calendar
@@ -69,25 +59,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set C_Period_UU.
-   *
-   * @param C_Period_UU C_Period_UU
-   */
-  public void setC_Period_UU(String C_Period_UU) {
-    set_Value(COLUMNNAME_C_Period_UU, C_Period_UU);
-  }
-
-  /**
-   * Get C_Period_UU.
-   *
-   * @return C_Period_UU
-   */
-  public String getC_Period_UU() {
-    return (String) get_Value(COLUMNNAME_C_Period_UU);
-  }
-
-  public org.compiere.model.I_C_Year getC_Year() throws RuntimeException {
+    public org.compiere.model.I_C_Year getC_Year() throws RuntimeException {
     return (org.compiere.model.I_C_Year)
         MTable.get(getCtx(), org.compiere.model.I_C_Year.Table_Name)
             .getPO(getC_Year_ID(), null);
@@ -141,24 +113,10 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
     set_Value(COLUMNNAME_PeriodNo, Integer.valueOf(PeriodNo));
   }
 
-  /**
-   * Get Period No.
-   *
-   * @return Unique Period Number
-   */
-  public int getPeriodNo() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_PeriodNo);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /** PeriodType AD_Reference_ID=115 */
-  public static final int PERIODTYPE_AD_Reference_ID = 115;
-  /** Standard Calendar Period = S */
+    /** Standard Calendar Period = S */
   public static final String PERIODTYPE_StandardCalendarPeriod = "S";
-  /** Adjustment Period = A */
-  public static final String PERIODTYPE_AdjustmentPeriod = "A";
-  /**
+
+    /**
    * Set Period Type.
    *
    * @param PeriodType Period Type
@@ -177,30 +135,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
     return (String) get_Value(COLUMNNAME_PeriodType);
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Start Date.
    *
    * @param StartDate First effective day (inclusive)

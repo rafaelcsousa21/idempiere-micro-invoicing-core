@@ -1,6 +1,5 @@
 package org.compiere.production;
 
-import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
 import org.compiere.product.MUOM;
 import org.eevolution.model.I_PP_Product_BOMLine;
@@ -11,7 +10,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
@@ -32,23 +30,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
   /** */
   private static final long serialVersionUID = -5792418944606756221L;
 
-  MPPProductBOM m_bom = null;
-
-  /**
-   * Get all the Product BOM line for a Component
-   *
-   * @param product Product
-   * @return list of MPPProductBOMLine
-   */
-  public static List<MPPProductBOMLine> getByProduct(MProduct product) {
-    final String whereClause = I_PP_Product_BOMLine.COLUMNNAME_M_Product_ID + "=?";
-    return new Query(
-            product.getCtx(), I_PP_Product_BOMLine.Table_Name, whereClause, null)
-        .setParameters(product.getM_Product_ID())
-        .list();
-  }
-
-  /**
+    /**
    * Default Constructor
    *
    * @param ctx context
@@ -90,33 +72,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
     return new ProductLowLevelCalculator(getCtx(), null).getLowLevel(getM_Product_ID());
   }
 
-  /**
-   * get Parent BOM
-   *
-   * @return
-   */
-  public MPPProductBOM getParent() {
-    if (m_bom == null) {
-      m_bom = new MPPProductBOM(getCtx(), this.getPP_Product_BOM_ID(), null);
-    }
-    return m_bom;
-  }
-
-  public MProduct getProduct() {
-    return MProduct.get(getCtx(), getM_Product_ID());
-  }
-
-  /**
-   * Calculate Low Level of a Product
-   *
-   * @param ID Product
-   * @return int low level
-   */
-  public static int getLowLevel(Properties ctx, int M_Product_ID, String trxName) {
-    return new ProductLowLevelCalculator(ctx, trxName).getLowLevel(M_Product_ID);
-  }
-
-  @Override
+    @Override
   protected boolean beforeSave(boolean newRecord) {
     //
     // For Co/By Products, Qty should be always negative:
@@ -162,12 +118,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
     return true;
   }
 
-  public boolean isByProduct() {
-    String componentType = getComponentType();
-    return X_PP_Product_BOMLine.COMPONENTTYPE_By_Product.equals(componentType);
-  }
-
-  public boolean isCoProduct() {
+    public boolean isCoProduct() {
     String componentType = getComponentType();
     return X_PP_Product_BOMLine.COMPONENTTYPE_Co_Product.equals(componentType);
   }
@@ -201,31 +152,9 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
     return qty;
   }
 
-  /** Like {@link #getQty(boolean)}, includeScrapQty = false */
-  public BigDecimal getQty() {
-    return getQty(false);
-  }
-
-  /** @return UOM precision */
+    /** @return UOM precision */
   public int getPrecision() {
     return MUOM.getPrecision(getCtx(), getC_UOM_ID());
   }
 
-  /**
-   * @param fallback use QtyBOM/QtyPercentage if CostAllocationPerc is zero
-   * @return co-product cost allocation percent (i.e. -1/qty)
-   */
-  public BigDecimal getCostAllocationPerc(boolean fallback) {
-    BigDecimal allocationPercent = super.getCostAllocationPerc();
-    if (allocationPercent.signum() != 0) return allocationPercent;
-    //
-    // Fallback and try to calculate it from Qty
-    if (fallback) {
-      BigDecimal qty = getQty(false).negate();
-      if (qty.signum() != 0) {
-        allocationPercent = Env.ONE.divide(qty, 4, RoundingMode.HALF_UP);
-      }
-    }
-    return allocationPercent;
-  }
 }

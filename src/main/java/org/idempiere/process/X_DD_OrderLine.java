@@ -455,16 +455,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
-  /**
+    /**
    * Set Line Amount.
    *
    * @param LineNetAmt Line Extended Amount (Quantity * Actual Price) without Freight and Charges

@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_BankStatementLine;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -58,13 +57,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_BankStatement getC_BankStatement() throws RuntimeException {
-    return (org.compiere.model.I_C_BankStatement)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankStatement.Table_Name)
-            .getPO(getC_BankStatement_ID(), null);
-  }
-
-  /**
+    /**
    * Set Bank Statement.
    *
    * @param C_BankStatement_ID Bank Statement of account
@@ -85,18 +78,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return ii;
   }
 
-  /**
-   * Set Bank statement line.
-   *
-   * @param C_BankStatementLine_ID Line on a statement from this Bank
-   */
-  public void setC_BankStatementLine_ID(int C_BankStatementLine_ID) {
-    if (C_BankStatementLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BankStatementLine_ID, null);
-    else
-      set_ValueNoCheck(COLUMNNAME_C_BankStatementLine_ID, Integer.valueOf(C_BankStatementLine_ID));
-  }
-
-  /**
+    /**
    * Get Bank statement line.
    *
    * @return Line on a statement from this Bank
@@ -107,31 +89,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return ii;
   }
 
-  /**
-   * Set C_BankStatementLine_UU.
-   *
-   * @param C_BankStatementLine_UU C_BankStatementLine_UU
-   */
-  public void setC_BankStatementLine_UU(String C_BankStatementLine_UU) {
-    set_Value(COLUMNNAME_C_BankStatementLine_UU, C_BankStatementLine_UU);
-  }
-
-  /**
-   * Get C_BankStatementLine_UU.
-   *
-   * @return C_BankStatementLine_UU
-   */
-  public String getC_BankStatementLine_UU() {
-    return (String) get_Value(COLUMNNAME_C_BankStatementLine_UU);
-  }
-
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -152,13 +110,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
+    /**
    * Set Charge.
    *
    * @param C_Charge_ID Additional document charges
@@ -179,13 +131,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -226,13 +172,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return bd;
   }
 
-  public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice.
    *
    * @param C_Invoice_ID Invoice Identifier
@@ -253,13 +193,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment.
    *
    * @param C_Payment_ID Payment identifier
@@ -280,25 +214,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return ii;
   }
 
-  /**
-   * Set Create Payment.
-   *
-   * @param CreatePayment Create Payment
-   */
-  public void setCreatePayment(String CreatePayment) {
-    set_Value(COLUMNNAME_CreatePayment, CreatePayment);
-  }
-
-  /**
-   * Get Create Payment.
-   *
-   * @return Create Payment
-   */
-  public String getCreatePayment() {
-    return (String) get_Value(COLUMNNAME_CreatePayment);
-  }
-
-  /**
+    /**
    * Set Account Date.
    *
    * @param DateAcct Accounting Date
@@ -343,18 +259,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftAmt, EftAmt);
   }
 
-  /**
-   * Get EFT Amount.
-   *
-   * @return Electronic Funds Transfer Amount
-   */
-  public BigDecimal getEftAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_EftAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set EFT Check No.
    *
    * @param EftCheckNo Electronic Funds Transfer Check No
@@ -363,16 +268,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftCheckNo, EftCheckNo);
   }
 
-  /**
-   * Get EFT Check No.
-   *
-   * @return Electronic Funds Transfer Check No
-   */
-  public String getEftCheckNo() {
-    return (String) get_Value(COLUMNNAME_EftCheckNo);
-  }
-
-  /**
+    /**
    * Set EFT Currency.
    *
    * @param EftCurrency Electronic Funds Transfer Currency
@@ -381,16 +277,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftCurrency, EftCurrency);
   }
 
-  /**
-   * Get EFT Currency.
-   *
-   * @return Electronic Funds Transfer Currency
-   */
-  public String getEftCurrency() {
-    return (String) get_Value(COLUMNNAME_EftCurrency);
-  }
-
-  /**
+    /**
    * Set EFT Memo.
    *
    * @param EftMemo Electronic Funds Transfer Memo
@@ -399,16 +286,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftMemo, EftMemo);
   }
 
-  /**
-   * Get EFT Memo.
-   *
-   * @return Electronic Funds Transfer Memo
-   */
-  public String getEftMemo() {
-    return (String) get_Value(COLUMNNAME_EftMemo);
-  }
-
-  /**
+    /**
    * Set EFT Payee.
    *
    * @param EftPayee Electronic Funds Transfer Payee information
@@ -417,16 +295,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftPayee, EftPayee);
   }
 
-  /**
-   * Get EFT Payee.
-   *
-   * @return Electronic Funds Transfer Payee information
-   */
-  public String getEftPayee() {
-    return (String) get_Value(COLUMNNAME_EftPayee);
-  }
-
-  /**
+    /**
    * Set EFT Payee Account.
    *
    * @param EftPayeeAccount Electronic Funds Transfer Payee Account Information
@@ -435,16 +304,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftPayeeAccount, EftPayeeAccount);
   }
 
-  /**
-   * Get EFT Payee Account.
-   *
-   * @return Electronic Funds Transfer Payee Account Information
-   */
-  public String getEftPayeeAccount() {
-    return (String) get_Value(COLUMNNAME_EftPayeeAccount);
-  }
-
-  /**
+    /**
    * Set EFT Reference.
    *
    * @param EftReference Electronic Funds Transfer Reference
@@ -453,16 +313,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftReference, EftReference);
   }
 
-  /**
-   * Get EFT Reference.
-   *
-   * @return Electronic Funds Transfer Reference
-   */
-  public String getEftReference() {
-    return (String) get_Value(COLUMNNAME_EftReference);
-  }
-
-  /**
+    /**
    * Set EFT Statement Line Date.
    *
    * @param EftStatementLineDate Electronic Funds Transfer Statement Line Date
@@ -471,16 +322,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftStatementLineDate, EftStatementLineDate);
   }
 
-  /**
-   * Get EFT Statement Line Date.
-   *
-   * @return Electronic Funds Transfer Statement Line Date
-   */
-  public Timestamp getEftStatementLineDate() {
-    return (Timestamp) get_Value(COLUMNNAME_EftStatementLineDate);
-  }
-
-  /**
+    /**
    * Set EFT Trx ID.
    *
    * @param EftTrxID Electronic Funds Transfer Transaction ID
@@ -489,16 +331,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftTrxID, EftTrxID);
   }
 
-  /**
-   * Get EFT Trx ID.
-   *
-   * @return Electronic Funds Transfer Transaction ID
-   */
-  public String getEftTrxID() {
-    return (String) get_Value(COLUMNNAME_EftTrxID);
-  }
-
-  /**
+    /**
    * Set EFT Trx Type.
    *
    * @param EftTrxType Electronic Funds Transfer Transaction Type
@@ -507,16 +340,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftTrxType, EftTrxType);
   }
 
-  /**
-   * Get EFT Trx Type.
-   *
-   * @return Electronic Funds Transfer Transaction Type
-   */
-  public String getEftTrxType() {
-    return (String) get_Value(COLUMNNAME_EftTrxType);
-  }
-
-  /**
+    /**
    * Set EFT Effective Date.
    *
    * @param EftValutaDate Electronic Funds Transfer Valuta (effective) Date
@@ -525,16 +349,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_EftValutaDate, EftValutaDate);
   }
 
-  /**
-   * Get EFT Effective Date.
-   *
-   * @return Electronic Funds Transfer Valuta (effective) Date
-   */
-  public Timestamp getEftValutaDate() {
-    return (Timestamp) get_Value(COLUMNNAME_EftValutaDate);
-  }
-
-  /**
+    /**
    * Set Interest Amount.
    *
    * @param InterestAmt Interest Amount
@@ -554,30 +369,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return bd;
   }
 
-  /**
-   * Set Manual.
-   *
-   * @param IsManual This is a manual process
-   */
-  public void setIsManual(boolean IsManual) {
-    set_Value(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
-  }
-
-  /**
-   * Get Manual.
-   *
-   * @return This is a manual process
-   */
-  public boolean isManual() {
-    Object oo = get_Value(COLUMNNAME_IsManual);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Reversal.
    *
    * @param IsReversal This is a reversing transaction
@@ -620,34 +412,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
-  /**
-   * Set Match Statement.
-   *
-   * @param MatchStatement Match Statement
-   */
-  public void setMatchStatement(String MatchStatement) {
-    set_Value(COLUMNNAME_MatchStatement, MatchStatement);
-  }
-
-  /**
-   * Get Match Statement.
-   *
-   * @return Match Statement
-   */
-  public String getMatchStatement() {
-    return (String) get_Value(COLUMNNAME_MatchStatement);
-  }
-
-  /**
+    /**
    * Set Memo.
    *
    * @param Memo Memo Text
@@ -656,39 +421,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_Memo, Memo);
   }
 
-  /**
-   * Get Memo.
-   *
-   * @return Memo Text
-   */
-  public String getMemo() {
-    return (String) get_Value(COLUMNNAME_Memo);
-  }
-
-  /**
-   * Set Processed.
-   *
-   * @param Processed The document has been processed
-   */
-  public void setProcessed(boolean Processed) {
-    set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
-  }
-
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Reference No.
    *
    * @param ReferenceNo Your customer or vendor number at the Business Partner's site
@@ -697,16 +430,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     set_Value(COLUMNNAME_ReferenceNo, ReferenceNo);
   }
 
-  /**
-   * Get Reference No.
-   *
-   * @return Your customer or vendor number at the Business Partner's site
-   */
-  public String getReferenceNo() {
-    return (String) get_Value(COLUMNNAME_ReferenceNo);
-  }
-
-  /**
+    /**
    * Set Statement Line Date.
    *
    * @param StatementLineDate Date of the Statement Line

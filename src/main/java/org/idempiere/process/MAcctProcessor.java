@@ -1,7 +1,10 @@
 package org.idempiere.process;
 
 import org.compiere.accounting.MClient;
-import org.compiere.model.*;
+import org.compiere.model.AdempiereProcessor;
+import org.compiere.model.AdempiereProcessor2;
+import org.compiere.model.AdempiereProcessorLog;
+import org.compiere.model.I_C_AcctProcessorLog;
 import org.compiere.orm.Query;
 import org.compiere.schedule.MSchedule;
 import org.compiere.util.Msg;
@@ -12,27 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import static software.hsharp.core.util.DBKt.executeUpdate;
-
 
 public class MAcctProcessor extends X_C_AcctProcessor
     implements AdempiereProcessor, AdempiereProcessor2 {
   /** */
   private static final long serialVersionUID = -4760475718973777369L;
 
-  /**
-   * Get Active
-   *
-   * @param ctx context
-   * @return active processors
-   */
-  public static MAcctProcessor[] getActive(Properties ctx) {
-    List<MAcctProcessor> list =
-        new Query(ctx, I_C_AcctProcessor.Table_Name, null, null).setOnlyActiveRecords(true).list();
-    return list.toArray(new MAcctProcessor[list.size()]);
-  } //	getActive
-
-  /**
+    /**
    * Standard Construvtor
    *
    * @param ctx context
@@ -137,25 +126,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
     return list.toArray(new MAcctProcessorLog[list.size()]);
   } //	getLogs
 
-  /**
-   * Delete old Request Log
-   *
-   * @return number of records
-   */
-  public int deleteLog() {
-    if (getKeepLogDays() < 1) return 0;
-    StringBuilder sql =
-        new StringBuilder("DELETE C_AcctProcessorLog ")
-            .append("WHERE C_AcctProcessor_ID=")
-            .append(getC_AcctProcessor_ID())
-            .append(" AND (Created+")
-            .append(getKeepLogDays())
-            .append(") < SysDate");
-    int no = executeUpdate(sql.toString(), null);
-    return no;
-  } //	deleteLog
-
-  @Override
+    @Override
   public String getFrequencyType() {
     return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequencyType();
   }
@@ -178,5 +149,32 @@ public class MAcctProcessor extends X_C_AcctProcessor
   @Override
   public String getCronPattern() {
     return MSchedule.get(getCtx(), getAD_Schedule_ID()).getCronPattern();
+  }
+
+  /**
+   * Set Date last run.
+   *
+   * @param DateLastRun Date the process was last run.
+   */
+  public void setDateLastRun(Timestamp DateLastRun) {
+    set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+  }
+
+  /**
+   * Get Description.
+   *
+   * @return Optional short description of the record
+   */
+  public String getDescription() {
+    return (String) get_Value(COLUMNNAME_Description);
+  }
+
+  /**
+   * Get Date last run.
+   *
+   * @return Date the process was last run.
+   */
+  public Timestamp getDateLastRun() {
+    return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
   }
 } //	MAcctProcessor

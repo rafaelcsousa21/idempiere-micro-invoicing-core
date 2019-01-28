@@ -1,11 +1,9 @@
 package org.compiere.accounting;
 
-import org.compiere.crm.MClientInfo;
 import org.compiere.model.I_C_Calendar;
 import org.compiere.orm.MClient;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.Env;
 
 import java.sql.ResultSet;
 import java.util.Locale;
@@ -37,29 +35,7 @@ public class MCalendar extends X_C_Calendar {
     return retValue;
   } //	get
 
-  /**
-   * Get Default Calendar for Client
-   *
-   * @param ctx context
-   * @param AD_Client_ID id
-   * @return MCalendar
-   */
-  public static MCalendar getDefault(Properties ctx, int AD_Client_ID) {
-    MClientInfo info = MClientInfo.get(ctx, AD_Client_ID);
-    return get(ctx, info.getC_Calendar_ID());
-  } //	getDefault
-
-  /**
-   * Get Default Calendar for Client
-   *
-   * @param ctx context
-   * @return MCalendar
-   */
-  public static MCalendar getDefault(Properties ctx) {
-    return getDefault(ctx, Env.getClientId(ctx));
-  } //	getDefault
-
-  /** Cache */
+    /** Cache */
   private static CCache<Integer, MCalendar> s_cache =
       new CCache<Integer, MCalendar>(I_C_Calendar.Table_Name, 20);
 

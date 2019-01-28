@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_PA_Goal;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -46,13 +45,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException {
-    return (org.compiere.model.I_AD_Role)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
-            .getPO(getAD_Role_ID(), null);
-  }
-
-  /**
+    /**
    * Set Role.
    *
    * @param AD_Role_ID Responsibility Role
@@ -73,23 +66,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
-   * Set User/Contact.
-   *
-   * @param AD_User_ID User within the system - Internal or Business Partner Contact
-   */
-  public void setAD_User_ID(int AD_User_ID) {
-    if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-    else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
-  }
-
-  /**
+    /**
    * Get User/Contact.
    *
    * @return User within the system - Internal or Business Partner Contact
@@ -100,58 +77,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return ii;
   }
 
-  /** ChartType AD_Reference_ID=53315 */
-  public static final int CHARTTYPE_AD_Reference_ID = 53315;
-  /** Bar Chart = BC */
-  public static final String CHARTTYPE_BarChart = "BC";
-  /** Pie Chart = PC */
-  public static final String CHARTTYPE_PieChart = "PC";
-  /** Ring Chart = RC */
-  public static final String CHARTTYPE_RingChart = "RC";
-  /** Line Chart = LC */
-  public static final String CHARTTYPE_LineChart = "LC";
-  /** Area Chart = AC */
-  public static final String CHARTTYPE_AreaChart = "AC";
-  /** Waterfall Chart = WC */
-  public static final String CHARTTYPE_WaterfallChart = "WC";
-  /**
-   * Set Chart Type.
-   *
-   * @param ChartType Type of chart to render
-   */
-  public void setChartType(String ChartType) {
-
-    set_Value(COLUMNNAME_ChartType, ChartType);
-  }
-
-  /**
-   * Get Chart Type.
-   *
-   * @return Type of chart to render
-   */
-  public String getChartType() {
-    return (String) get_Value(COLUMNNAME_ChartType);
-  }
-
-  /**
-   * Set Date From.
-   *
-   * @param DateFrom Starting date for a range
-   */
-  public void setDateFrom(Timestamp DateFrom) {
-    set_Value(COLUMNNAME_DateFrom, DateFrom);
-  }
-
-  /**
-   * Get Date From.
-   *
-   * @return Starting date for a range
-   */
-  public Timestamp getDateFrom() {
-    return (Timestamp) get_Value(COLUMNNAME_DateFrom);
-  }
-
-  /**
+    /**
    * Set Date last run.
    *
    * @param DateLastRun Date the process was last run.
@@ -169,25 +95,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
   }
 
-  /**
-   * Set Date To.
-   *
-   * @param DateTo End date of a date range
-   */
-  public void setDateTo(Timestamp DateTo) {
-    set_Value(COLUMNNAME_DateTo, DateTo);
-  }
-
-  /**
-   * Get Date To.
-   *
-   * @return End date of a date range
-   */
-  public Timestamp getDateTo() {
-    return (Timestamp) get_Value(COLUMNNAME_DateTo);
-  }
-
-  /**
+    /**
    * Set Description.
    *
    * @param Description Optional short description of the record
@@ -196,16 +104,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     set_Value(COLUMNNAME_Description, Description);
   }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Performance Goal.
    *
    * @param GoalPerformance Target achievement from 0..1
@@ -282,17 +181,8 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
   public static final String MEASUREDISPLAY_Week = "7";
   /** Day = 8 */
   public static final String MEASUREDISPLAY_Day = "8";
-  /**
-   * Set Measure Display.
-   *
-   * @param MeasureDisplay Measure Scope initially displayed
-   */
-  public void setMeasureDisplay(String MeasureDisplay) {
 
-    set_Value(COLUMNNAME_MeasureDisplay, MeasureDisplay);
-  }
-
-  /**
+    /**
    * Get Measure Display.
    *
    * @return Measure Scope initially displayed
@@ -301,9 +191,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return (String) get_Value(COLUMNNAME_MeasureDisplay);
   }
 
-  /** MeasureScope AD_Reference_ID=367 */
-  public static final int MEASURESCOPE_AD_Reference_ID = 367;
-  /** Year = 1 */
+    /** Year = 1 */
   public static final String MEASURESCOPE_Year = "1";
   /** Quarter = 3 */
   public static final String MEASURESCOPE_Quarter = "3";
@@ -354,41 +242,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return bd;
   }
 
-  /**
-   * Set Note.
-   *
-   * @param Note Optional additional user defined information
-   */
-  public void setNote(String Note) {
-    set_Value(COLUMNNAME_Note, Note);
-  }
-
-  /**
-   * Get Note.
-   *
-   * @return Optional additional user defined information
-   */
-  public String getNote() {
-    return (String) get_Value(COLUMNNAME_Note);
-  }
-
-  public org.compiere.model.I_PA_ColorSchema getPA_ColorSchema() throws RuntimeException {
-    return (org.compiere.model.I_PA_ColorSchema)
-        MTable.get(getCtx(), org.compiere.model.I_PA_ColorSchema.Table_Name)
-            .getPO(getPA_ColorSchema_ID(), null);
-  }
-
-  /**
-   * Set Color Schema.
-   *
-   * @param PA_ColorSchema_ID Performance Color Schema
-   */
-  public void setPA_ColorSchema_ID(int PA_ColorSchema_ID) {
-    if (PA_ColorSchema_ID < 1) set_Value(COLUMNNAME_PA_ColorSchema_ID, null);
-    else set_Value(COLUMNNAME_PA_ColorSchema_ID, Integer.valueOf(PA_ColorSchema_ID));
-  }
-
-  /**
+    /**
    * Get Color Schema.
    *
    * @return Performance Color Schema
@@ -399,17 +253,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Goal.
-   *
-   * @param PA_Goal_ID Performance Goal
-   */
-  public void setPA_Goal_ID(int PA_Goal_ID) {
-    if (PA_Goal_ID < 1) set_ValueNoCheck(COLUMNNAME_PA_Goal_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_PA_Goal_ID, Integer.valueOf(PA_Goal_ID));
-  }
-
-  /**
+    /**
    * Get Goal.
    *
    * @return Performance Goal
@@ -420,23 +264,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_PA_Goal getPA_GoalParent() throws RuntimeException {
-    return (org.compiere.model.I_PA_Goal)
-        MTable.get(getCtx(), org.compiere.model.I_PA_Goal.Table_Name)
-            .getPO(getPA_GoalParent_ID(), null);
-  }
-
-  /**
-   * Set Parent Goal.
-   *
-   * @param PA_GoalParent_ID Parent Goal
-   */
-  public void setPA_GoalParent_ID(int PA_GoalParent_ID) {
-    if (PA_GoalParent_ID < 1) set_Value(COLUMNNAME_PA_GoalParent_ID, null);
-    else set_Value(COLUMNNAME_PA_GoalParent_ID, Integer.valueOf(PA_GoalParent_ID));
-  }
-
-  /**
+    /**
    * Get Parent Goal.
    *
    * @return Parent Goal
@@ -447,31 +275,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set PA_Goal_UU.
-   *
-   * @param PA_Goal_UU PA_Goal_UU
-   */
-  public void setPA_Goal_UU(String PA_Goal_UU) {
-    set_Value(COLUMNNAME_PA_Goal_UU, PA_Goal_UU);
-  }
-
-  /**
-   * Get PA_Goal_UU.
-   *
-   * @return PA_Goal_UU
-   */
-  public String getPA_Goal_UU() {
-    return (String) get_Value(COLUMNNAME_PA_Goal_UU);
-  }
-
-  public org.compiere.model.I_PA_Measure getPA_Measure() throws RuntimeException {
-    return (org.compiere.model.I_PA_Measure)
-        MTable.get(getCtx(), org.compiere.model.I_PA_Measure.Table_Name)
-            .getPO(getPA_Measure_ID(), null);
-  }
-
-  /**
+    /**
    * Set Measure.
    *
    * @param PA_Measure_ID Concrete Performance Measurement
@@ -501,18 +305,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     set_Value(COLUMNNAME_RelativeWeight, RelativeWeight);
   }
 
-  /**
-   * Get Relative Weight.
-   *
-   * @return Relative weight of this step (0 = ignored)
-   */
-  public BigDecimal getRelativeWeight() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_RelativeWeight);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Sequence.
    *
    * @param SeqNo Method of ordering records; lowest number comes first
@@ -521,18 +314,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
   }
 
-  /**
-   * Get Sequence.
-   *
-   * @return Method of ordering records; lowest number comes first
-   */
-  public int getSeqNo() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_PA_Goal.Table_ID;
   }

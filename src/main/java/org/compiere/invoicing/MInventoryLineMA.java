@@ -194,15 +194,7 @@ public class MInventoryLineMA extends X_M_InventoryLineMA {
     return sb.toString();
   } //	toString
 
-  public static MInventoryLineMA addOrCreate(
-      MInventoryLine line,
-      int M_AttributeSetInstance_ID,
-      BigDecimal MovementQty,
-      Timestamp DateMaterialPolicy) {
-    return addOrCreate(line, M_AttributeSetInstance_ID, MovementQty, DateMaterialPolicy, true);
-  }
-
-  public static MInventoryLineMA addOrCreate(
+    public static MInventoryLineMA addOrCreate(
       MInventoryLine line,
       int M_AttributeSetInstance_ID,
       BigDecimal MovementQty,

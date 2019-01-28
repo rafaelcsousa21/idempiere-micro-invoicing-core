@@ -17,7 +17,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -87,42 +86,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     return retValue;
   } //	get
 
-  /**
-   * Get Cash Journal for CashBook and date
-   *
-   * @param ctx context
-   * @param C_CashBook_ID cashbook
-   * @param dateAcct date
-   * @param trxName transaction
-   * @return cash
-   */
-  public static MCash get(Properties ctx, int C_CashBook_ID, Timestamp dateAcct, String trxName) {
-    final String whereClause =
-        "C_CashBook_ID=?" //	#1
-            + " AND TRUNC(StatementDate)=?" //	#2
-            + " AND Processed='N'";
-
-    MCash retValue =
-        new Query(ctx, MCash.Table_Name, whereClause, trxName)
-            .setParameters(C_CashBook_ID, TimeUtil.getDay(dateAcct))
-            .first();
-
-    if (retValue != null) return retValue;
-
-    //	Get CashBook
-    MCashBook cb = new MCashBook(ctx, C_CashBook_ID, trxName);
-    if (cb.getId() == 0) {
-      s_log.warning("Not found C_CashBook_ID=" + C_CashBook_ID);
-      return null;
-    }
-
-    //	Create New Journal
-    retValue = new MCash(cb, dateAcct);
-    retValue.saveEx(trxName);
-    return retValue;
-  } //	get
-
-  /** Static Logger */
+    /** Static Logger */
   private static CLogger s_log = CLogger.getCLogger(MCash.class);
 
   /**
@@ -252,34 +216,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     return msgreturn.toString();
   } //	getDocumentInfo
 
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      StringBuilder msgfile =
-          new StringBuilder().append(get_TableName()).append(getId()).append("_");
-      File temp = File.createTempFile(msgfile.toString(), ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    return null;
-  } //	createPDF
-
-  /**
+    /**
    * Before Save
    *
    * @param newRecord

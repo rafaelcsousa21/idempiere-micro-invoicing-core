@@ -97,15 +97,7 @@ public class ServerProcessCtl implements Runnable {
     return worker;
   } //	execute
 
-  /** Run this process in a new thread */
-  public void start() {
-    Thread thread = new Thread(this);
-    // Set thread name
-    if (m_pi != null) thread.setName(m_pi.getTitle() + "-" + m_pi.getAD_PInstance_ID());
-    thread.start();
-  }
-
-  /**
+    /**
    * Execute Process Instance and Lock UI. Calls lockUI and unlockUI if parent is a ASyncProcess
    *
    * <pre>

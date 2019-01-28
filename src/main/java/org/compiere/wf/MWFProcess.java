@@ -165,16 +165,7 @@ public class MWFProcess extends X_AD_WF_Process {
     return m_state;
   } //	getState
 
-  /**
-   * Get Action Options
-   *
-   * @return array of valid actions
-   */
-  public String[] getActionOptions() {
-    return m_state.getActionOptions();
-  } //	getActionOptions
-
-  /**
+    /**
    * Set Process State and update Actions
    *
    * @param WFState
@@ -387,28 +378,7 @@ public class MWFProcess extends X_AD_WF_Process {
     return m_wf;
   } //	getWorkflow
 
-  /**
-   * ************************************************************************ Perform Action
-   *
-   * @param action StateEngine.ACTION_*
-   * @return true if valid
-   */
-  public boolean perform(String action) {
-    if (!m_state.isValidAction(action)) {
-      log.log(
-          Level.SEVERE,
-          "Ignored Invalid Transformation - Action=" + action + ", CurrentState=" + getWFState());
-      return false;
-    }
-    log.fine(action);
-    //	Action is Valid
-    if (StateEngine.ACTION_Start.equals(action)) return startWork();
-    //	Set new State
-    setWFState(m_state.getNewStateIfAction(action));
-    return true;
-  } //	perform
-
-  /**
+    /**
    * Start WF Execution
    *
    * @return true if success

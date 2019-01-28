@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_M_Product;
-import org.compiere.model.I_M_Requisition;
 import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.order.MCharge;
 import org.compiere.orm.Query;
@@ -153,17 +152,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
   /** PriceList */
   private int m_M_PriceList_ID = 0;
 
-  /**
-   * Get Ordered Qty
-   *
-   * @return Ordered Qty
-   */
-  public BigDecimal getQtyOrdered() {
-    if (getC_OrderLine_ID() > 0) return getQty();
-    else return Env.ZERO;
-  }
-
-  /**
+    /**
    * Get Parent
    *
    * @return parent
@@ -174,12 +163,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     return m_parent;
   } //	getParent
 
-  @Override
-  public I_M_Requisition getM_Requisition() {
-    return getParent();
-  }
-
-  /**
+    /**
    * @return Date when this product is required by planner
    * @see MRequisition#getDateRequired()
    */

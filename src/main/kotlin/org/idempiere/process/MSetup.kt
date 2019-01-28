@@ -132,7 +132,7 @@ class MSetup
             name = "newClient"
         m_clientName = name
         m_client = MClient(m_ctx, 0, true, null)
-        m_client!!.value = m_clientName!!
+        m_client!!.setValue(m_clientName!!)
         m_client!!.name = m_clientName!!
         if (!m_client!!.save()) {
             val err = "Client NOT created"
@@ -189,12 +189,12 @@ class MSetup
 
         // Set Organization Phone, Phone2, Fax, EMail
         val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID, null)
-        orgInfo!!.phone = phone
-        orgInfo.phone2 = phone2
-        orgInfo.fax = fax
-        orgInfo.eMail = eMail
+        orgInfo!!.setPhone(phone)
+        orgInfo.setPhone2(phone2)
+        orgInfo.setFax(fax)
+        orgInfo.setEMail(eMail)
         if (taxID != null && taxID.length > 0) {
-            orgInfo.taxID = taxID
+            orgInfo.setTaxID(taxID)
         }
         if (!orgInfo.save()) {
             val err = "Organization Info NOT Updated"
@@ -269,7 +269,7 @@ class MSetup
             clientAdminUser.password = name
         clientAdminUser.description = name
         clientAdminUser.name = name
-        clientAdminUser.value = name
+        clientAdminUser.setValue(name)
         clientAdminUser.setADClientID(AD_Client_ID)
         clientAdminUser.setAD_Org_ID(0)
         clientAdminUser.eMail = adminEmail
@@ -299,7 +299,7 @@ class MSetup
             clientUser.password = name
         clientUser.description = name
         clientUser.name = name
-        clientUser.value = name
+        clientUser.setValue(name)
         clientUser.setADClientID(AD_Client_ID)
         clientUser.setAD_Org_ID(0)
         clientUser.eMail = userEmail
@@ -1010,7 +1010,7 @@ class MSetup
          */
         //  Create BP Group
         val bpg = MBPGroup(m_ctx, 0, null)
-        bpg.value = defaultName
+        bpg.setValue(defaultName)
         bpg.name = defaultName
         bpg.setIsDefault(true)
         if (bpg.save())
@@ -1049,7 +1049,7 @@ class MSetup
          */
         //  Create Product Category
         val pc = MProductCategory(m_ctx, 0, null)
-        pc.value = defaultName
+        pc.setValue(defaultName)
         pc.name = defaultName
         pc.setIsDefault(true)
         if (pc.save())
@@ -1135,7 +1135,7 @@ class MSetup
         locwh.postal = postal
         locwh.saveEx()
         val wh = MWarehouse(m_ctx, 0, null)
-        wh.value = defaultName
+        wh.setValue(defaultName)
         wh.name = defaultName
         wh.c_Location_ID = locwh.c_Location_ID
         if (!wh.save())

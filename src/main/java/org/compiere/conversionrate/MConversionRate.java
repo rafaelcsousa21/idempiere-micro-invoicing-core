@@ -135,71 +135,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
     return retValue;
   } //	convert
 
-  /**
-   * Sets system spot conversion rate for a single day. Checks for overlaps of spot rate is made. If
-   * an overlap is found, the overlapping rate is removed.
-   *
-   * @param CurFrom_ISO Currency from ISO code
-   * @param CurTo_ISO Currency to ISO code
-   * @param spotDate If null, today's date is used.
-   * @param multiplyRate CurFrom_ISO * MultiplyRate = amount in CurTo_ISO
-   */
-  public static void setRate(
-      String CurFrom_ISO, String CurTo_ISO, java.util.Date spotDate, BigDecimal MultiplyRate)
-      throws Exception {
-
-    Properties ctx = Env.getCtx();
-    MCurrency curFrom = MCurrency.get(ctx, CurFrom_ISO);
-    if (curFrom == null) throw new Exception("Invalid currency " + CurFrom_ISO);
-    MCurrency curTo = MCurrency.get(ctx, CurTo_ISO);
-    if (curTo == null) throw new Exception("Invalid currency " + CurTo_ISO);
-
-    java.sql.Timestamp startTs;
-    if (spotDate == null) {
-      spotDate = Calendar.getInstance().getTime();
-    }
-    Calendar spotCal = Calendar.getInstance();
-    spotCal.setTime(spotDate);
-    spotCal.set(Calendar.HOUR_OF_DAY, 0);
-    spotCal.set(Calendar.MINUTE, 0);
-    spotCal.set(Calendar.SECOND, 0);
-    spotCal.set(Calendar.MILLISECOND, 0);
-    startTs = new java.sql.Timestamp(spotCal.getTimeInMillis());
-    final String whereClause =
-        "C_Currency_ID=? and C_Currency_ID_To=? and ValidFrom>=? and ValidTo<=? and C_ConversionType_ID=?";
-    MConversionRate rate, updateRate = null;
-    List<MConversionRate> rates =
-        new Query(ctx, I_C_Conversion_Rate.Table_Name, whereClause, null)
-            .setParameters(
-                curFrom.getId(), curTo.getId(), startTs, startTs, MConversionType.TYPE_SPOT)
-            .list();
-
-    if (rates.size() > 0) {
-      for (Iterator<MConversionRate> it = rates.iterator(); it.hasNext(); ) {
-        rate = it.next();
-        if (!rate.getValidFrom().equals(rate.getValidTo())) {
-          // Remove this since it's for more than one day
-          rate.deleteEx(true, null);
-        } else {
-          updateRate = rate;
-        }
-      }
-    }
-    if (updateRate == null) {
-      updateRate = new MConversionRate(ctx, 0, null);
-      updateRate.setADClientID(0);
-      updateRate.setAD_Org_ID(0);
-      updateRate.setC_Currency_ID(curFrom.getId());
-      updateRate.setC_Currency_ID_To(curTo.getId());
-      updateRate.setValidFrom(startTs);
-      updateRate.setValidTo(startTs);
-      updateRate.setC_ConversionType_ID(MConversionType.TYPE_SPOT);
-    }
-    updateRate.setMultiplyRate(MultiplyRate);
-    updateRate.saveEx(null);
-  }
-
-  /**
+    /**
    * Get Currency Conversion Rate
    *
    * @param CurFrom_ID The C_Currency_ID FROM

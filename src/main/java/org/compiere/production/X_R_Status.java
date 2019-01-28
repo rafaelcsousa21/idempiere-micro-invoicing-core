@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_R_Status;
 import org.compiere.orm.BasePONameValue;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -43,43 +42,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
     return sb.toString();
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
-   * Get Comment/Help.
-   *
-   * @return Comment or Hint
-   */
-  public String getHelp() {
-    return (String) get_Value(COLUMNNAME_Help);
-  }
-
-  /**
+    /**
    * Set Closed Status.
    *
    * @param IsClosed The status is closed
@@ -194,13 +157,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
     return false;
   }
 
-  public org.compiere.model.I_R_Status getNext_Status() throws RuntimeException {
-    return (org.compiere.model.I_R_Status)
-        MTable.get(getCtx(), org.compiere.model.I_R_Status.Table_Name)
-            .getPO(getNext_Status_ID(), null);
-  }
-
-  /**
+    /**
    * Set Next Status.
    *
    * @param Next_Status_ID Move to next status automatically after timeout
@@ -221,23 +178,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
     return ii;
   }
 
-  public org.compiere.model.I_R_StatusCategory getR_StatusCategory() throws RuntimeException {
-    return (org.compiere.model.I_R_StatusCategory)
-        MTable.get(getCtx(), org.compiere.model.I_R_StatusCategory.Table_Name)
-            .getPO(getR_StatusCategory_ID(), null);
-  }
-
-  /**
-   * Set Status Category.
-   *
-   * @param R_StatusCategory_ID Request Status Category
-   */
-  public void setR_StatusCategory_ID(int R_StatusCategory_ID) {
-    if (R_StatusCategory_ID < 1) set_Value(COLUMNNAME_R_StatusCategory_ID, null);
-    else set_Value(COLUMNNAME_R_StatusCategory_ID, Integer.valueOf(R_StatusCategory_ID));
-  }
-
-  /**
+    /**
    * Get Status Category.
    *
    * @return Request Status Category
@@ -248,17 +189,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
     return ii;
   }
 
-  /**
-   * Set Status.
-   *
-   * @param R_Status_ID Request Status
-   */
-  public void setR_Status_ID(int R_Status_ID) {
-    if (R_Status_ID < 1) set_ValueNoCheck(COLUMNNAME_R_Status_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_R_Status_ID, Integer.valueOf(R_Status_ID));
-  }
-
-  /**
+    /**
    * Get Status.
    *
    * @return Request Status
@@ -269,54 +200,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
     return ii;
   }
 
-  /**
-   * Set R_Status_UU.
-   *
-   * @param R_Status_UU R_Status_UU
-   */
-  public void setR_Status_UU(String R_Status_UU) {
-    set_Value(COLUMNNAME_R_Status_UU, R_Status_UU);
-  }
-
-  /**
-   * Get R_Status_UU.
-   *
-   * @return R_Status_UU
-   */
-  public String getR_Status_UU() {
-    return (String) get_Value(COLUMNNAME_R_Status_UU);
-  }
-
-  /**
-   * Set Sequence.
-   *
-   * @param SeqNo Method of ordering records; lowest number comes first
-   */
-  public void setSeqNo(int SeqNo) {
-    set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
-  }
-
-  /**
-   * Get Sequence.
-   *
-   * @return Method of ordering records; lowest number comes first
-   */
-  public int getSeqNo() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Timeout in Days.
-   *
-   * @param TimeoutDays Timeout in Days to change Status automatically
-   */
-  public void setTimeoutDays(int TimeoutDays) {
-    set_Value(COLUMNNAME_TimeoutDays, Integer.valueOf(TimeoutDays));
-  }
-
-  /**
+    /**
    * Get Timeout in Days.
    *
    * @return Timeout in Days to change Status automatically
@@ -327,13 +211,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
     return ii;
   }
 
-  public org.compiere.model.I_R_Status getUpdate_Status() throws RuntimeException {
-    return (org.compiere.model.I_R_Status)
-        MTable.get(getCtx(), org.compiere.model.I_R_Status.Table_Name)
-            .getPO(getUpdate_Status_ID(), null);
-  }
-
-  /**
+    /**
    * Set Update Status.
    *
    * @param Update_Status_ID Automatically change the status after entry from web

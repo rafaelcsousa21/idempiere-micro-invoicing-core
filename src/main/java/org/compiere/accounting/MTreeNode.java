@@ -2,10 +2,8 @@ package org.compiere.accounting;
 
 import java.awt.*;
 import java.util.Enumeration;
-import java.util.logging.Level;
 import javax.swing.tree.DefaultMutableTreeNode;
 import org.compiere.wf.MWFNode;
-import org.idempiere.common.util.CLogger;
 
 /**
  * Mutable Tree Node (not a PO).
@@ -75,10 +73,7 @@ public class MTreeNode extends DefaultMutableTreeNode {
   /** Color */
   private Color m_color;
 
-  /** Logger */
-  private static CLogger log = CLogger.getCLogger(MTreeNode.class);
-
-  /** ********************************************************************** */
+    /** ********************************************************************** */
 
   /** Window - 1 */
   public static int TYPE_WINDOW = 1;
@@ -88,31 +83,14 @@ public class MTreeNode extends DefaultMutableTreeNode {
   public static int TYPE_PROCESS = 3;
   /** Workflow - 4 */
   public static int TYPE_WORKFLOW = 4;
-  /** Workbench - 5 */
-  public static int TYPE_WORKBENCH = 5;
-  /** Variable - 6 */
+    /** Variable - 6 */
   public static int TYPE_SETVARIABLE = 6;
   /** Choice - 7 */
   public static int TYPE_USERCHOICE = 7;
   /** Action - 8 */
   public static int TYPE_DOCACTION = 8;
-  /** Info - 9 */
-  public static int TYPE_INFO = 9;
 
-  public static String[] PATHS =
-      new String[] {
-        null,
-        "mWindow.png",
-        "mReport.png",
-        "mProcess.png",
-        "mWorkFlow.png",
-        "mWorkbench.png",
-        "mSetVariable.png",
-        "mUserChoice.png",
-        "mDocAction.png"
-      };
-
-  /**
+    /**
    * ************************************************************************ Get Node ID
    *
    * @return node id (e.g. AD_Menu_ID)
@@ -121,17 +99,7 @@ public class MTreeNode extends DefaultMutableTreeNode {
     return m_node_ID;
   } //  getID
 
-  /**
-   * Set Name
-   *
-   * @param name name
-   */
-  public void setName(String name) {
-    if (name == null) m_name = "";
-    else m_name = name;
-  } //  setName
-
-  /**
+    /**
    * Get Name
    *
    * @return name
@@ -140,20 +108,7 @@ public class MTreeNode extends DefaultMutableTreeNode {
     return m_name;
   } //  setName
 
-  /**
-   * Get SeqNo (Index) as formatted String 0000 for sorting
-   *
-   * @return SeqNo as String
-   */
-  public String getSeqNo() {
-    String retValue = "0000" + m_seqNo; // 	not more than 100,000 nodes
-    if (m_seqNo > 99999)
-      log.log(Level.SEVERE, "MTreeNode.getIndex - TreeNode Index is higher than 99999");
-    if (retValue.length() > 5) retValue = retValue.substring(retValue.length() - 5); // 	last 5
-    return retValue;
-  } //	getSeqNo
-
-  /**
+    /**
    * Return parent
    *
    * @return Parent_ID (e.g. AD_Menu_ID)
@@ -172,26 +127,7 @@ public class MTreeNode extends DefaultMutableTreeNode {
     m_name;
   } //  toString
 
-  /**
-   * Get Description
-   *
-   * @return description
-   */
-  public String getDescription() {
-    return m_description;
-  } //	getDescription
-
-  /**
-   * Set Description
-   *
-   * @param name name
-   */
-  public void setDescription(String description) {
-    if (description == null) m_description = "";
-    else m_description = description;
-  } //  setDescription
-
-  /**
+    /**
    * ************************************************************************ Set Summary (allow
    * children)
    *
@@ -267,46 +203,7 @@ public class MTreeNode extends DefaultMutableTreeNode {
     }
   } //  setImageIndicator
 
-  /**
-   * Get Image Indicator
-   *
-   * @return image indicator
-   */
-  public String getImageIndiactor() {
-    return m_imageIndicator;
-  } //  getImageIndiactor
-
-  /**
-   * Get Image Path
-   *
-   * @return image path
-   */
-  public String getImagePath() {
-    if (m_imageIndex == 0 || PATHS == null || m_imageIndex > PATHS.length)
-      return "/images/Folder16.png";
-    return "/images/" + PATHS[m_imageIndex];
-  } //  getImageIndiactor
-
-  /**
-   * Get Shortcut Bar info
-   *
-   * @return true if node on bar
-   */
-  public boolean isOnBar() {
-    return m_onBar;
-  } //  isOnBar
-
-  /**
-   * Get Color
-   *
-   * @return color or black if not set
-   */
-  public Color getColor() {
-    if (m_color != null) return m_color;
-    return Color.black;
-  } //	getColor
-
-  /** ********************************************************************** */
+    /** ********************************************************************** */
 
   /** Last found ID */
   private int m_lastID = -1;

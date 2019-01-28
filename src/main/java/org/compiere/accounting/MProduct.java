@@ -272,11 +272,7 @@ public class MProduct extends org.compiere.product.MProduct {
     return costingMethod;
   }
 
-  public MCost getCostingRecord(MAcctSchema as, int AD_Org_ID, int M_ASI_ID) {
-    return getCostingRecord(as, AD_Org_ID, M_ASI_ID, getCostingMethod(as));
-  }
-
-  public MCost getCostingRecord(MAcctSchema as, int AD_Org_ID, int M_ASI_ID, String costingMethod) {
+    public MCost getCostingRecord(MAcctSchema as, int AD_Org_ID, int M_ASI_ID, String costingMethod) {
 
     String costingLevel = getCostingLevel(as);
     if (MAcctSchema.COSTINGLEVEL_Client.equals(costingLevel)) {

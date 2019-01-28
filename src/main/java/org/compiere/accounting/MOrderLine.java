@@ -284,13 +284,9 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     return m_product;
   } //	getProduct
 
-  /* Doc - To be used on ModelValidator to get the corresponding Doc from the PO */
-  private IDoc m_doc;
-
-  @Override
+    @Override
   public void setDoc(IDoc doc) {
-    m_doc = doc;
-  }
+    }
 
   @Override
   public void setProcessedOn(String processed, boolean b, boolean b1) {}

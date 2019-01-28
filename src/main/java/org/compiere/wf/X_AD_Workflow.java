@@ -2,8 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_Workflow;
 import org.compiere.orm.BasePONameValue;
-import org.compiere.orm.MTable;
-import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -46,21 +44,10 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return sb.toString();
   }
 
-  /** AccessLevel AD_Reference_ID=5 */
-  public static final int ACCESSLEVEL_AD_Reference_ID = 5;
-  /** Organization = 1 */
+    /** Organization = 1 */
   public static final String ACCESSLEVEL_Organization = "1";
-  /** Client+Organization = 3 */
-  public static final String ACCESSLEVEL_ClientPlusOrganization = "3";
-  /** System only = 4 */
-  public static final String ACCESSLEVEL_SystemOnly = "4";
-  /** All = 7 */
-  public static final String ACCESSLEVEL_All = "7";
-  /** System+Client = 6 */
-  public static final String ACCESSLEVEL_SystemPlusClient = "6";
-  /** Client only = 2 */
-  public static final String ACCESSLEVEL_ClientOnly = "2";
-  /**
+
+    /**
    * Set Data Access Level.
    *
    * @param AccessLevel Access Level required
@@ -70,32 +57,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_AccessLevel, AccessLevel);
   }
 
-  /**
-   * Get Data Access Level.
-   *
-   * @return Access Level required
-   */
-  public String getWFAccessLevel() {
-    return (String) get_Value(COLUMNNAME_AccessLevel);
-  }
-
-  public org.compiere.model.I_AD_CtxHelp getAD_CtxHelp() throws RuntimeException {
-    return (org.compiere.model.I_AD_CtxHelp)
-        MTable.get(getCtx(), org.compiere.model.I_AD_CtxHelp.Table_Name)
-            .getPO(getAD_CtxHelp_ID(), null);
-  }
-
-  /**
-   * Set Context Help.
-   *
-   * @param AD_CtxHelp_ID Context Help
-   */
-  public void setAD_CtxHelp_ID(int AD_CtxHelp_ID) {
-    if (AD_CtxHelp_ID < 1) set_Value(COLUMNNAME_AD_CtxHelp_ID, null);
-    else set_Value(COLUMNNAME_AD_CtxHelp_ID, Integer.valueOf(AD_CtxHelp_ID));
-  }
-
-  /**
+    /**
    * Get Context Help.
    *
    * @return Context Help
@@ -106,13 +68,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
-    return (org.compiere.model.I_AD_Table)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), null);
-  }
-
-  /**
+    /**
    * Set Table.
    *
    * @param AD_Table_ID Database Table information
@@ -133,23 +89,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  public org.compiere.model.I_AD_WF_Node getAD_WF_Node() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Node)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Node_ID(), null);
-  }
-
-  /**
-   * Set Node.
-   *
-   * @param AD_WF_Node_ID Workflow Node (activity), step or process
-   */
-  public void setAD_WF_Node_ID(int AD_WF_Node_ID) {
-    if (AD_WF_Node_ID < 1) set_Value(COLUMNNAME_AD_WF_Node_ID, null);
-    else set_Value(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
-  }
-
-  /**
+    /**
    * Get Node.
    *
    * @return Workflow Node (activity), step or process
@@ -160,23 +100,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  public org.compiere.model.I_AD_WF_Responsible getAD_WF_Responsible() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Responsible)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Responsible.Table_Name)
-            .getPO(getAD_WF_Responsible_ID(), null);
-  }
-
-  /**
-   * Set Workflow Responsible.
-   *
-   * @param AD_WF_Responsible_ID Responsible for Workflow Execution
-   */
-  public void setAD_WF_Responsible_ID(int AD_WF_Responsible_ID) {
-    if (AD_WF_Responsible_ID < 1) set_Value(COLUMNNAME_AD_WF_Responsible_ID, null);
-    else set_Value(COLUMNNAME_AD_WF_Responsible_ID, Integer.valueOf(AD_WF_Responsible_ID));
-  }
-
-  /**
+    /**
    * Get Workflow Responsible.
    *
    * @return Responsible for Workflow Execution
@@ -187,17 +111,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  /**
-   * Set Workflow.
-   *
-   * @param AD_Workflow_ID Workflow or combination of tasks
-   */
-  public void setAD_Workflow_ID(int AD_Workflow_ID) {
-    if (AD_Workflow_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
-  }
-
-  /**
+    /**
    * Get Workflow.
    *
    * @return Workflow or combination of tasks
@@ -208,24 +122,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  public org.compiere.model.I_AD_WorkflowProcessor getAD_WorkflowProcessor()
-      throws RuntimeException {
-    return (org.compiere.model.I_AD_WorkflowProcessor)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WorkflowProcessor.Table_Name)
-            .getPO(getAD_WorkflowProcessor_ID(), null);
-  }
-
-  /**
-   * Set Workflow Processor.
-   *
-   * @param AD_WorkflowProcessor_ID Workflow Processor Server
-   */
-  public void setAD_WorkflowProcessor_ID(int AD_WorkflowProcessor_ID) {
-    if (AD_WorkflowProcessor_ID < 1) set_Value(COLUMNNAME_AD_WorkflowProcessor_ID, null);
-    else set_Value(COLUMNNAME_AD_WorkflowProcessor_ID, Integer.valueOf(AD_WorkflowProcessor_ID));
-  }
-
-  /**
+    /**
    * Get Workflow Processor.
    *
    * @return Workflow Processor Server
@@ -236,25 +133,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  /**
-   * Set AD_Workflow_UU.
-   *
-   * @param AD_Workflow_UU AD_Workflow_UU
-   */
-  public void setAD_Workflow_UU(String AD_Workflow_UU) {
-    set_Value(COLUMNNAME_AD_Workflow_UU, AD_Workflow_UU);
-  }
-
-  /**
-   * Get AD_Workflow_UU.
-   *
-   * @return AD_Workflow_UU
-   */
-  public String getAD_Workflow_UU() {
-    return (String) get_Value(COLUMNNAME_AD_Workflow_UU);
-  }
-
-  /**
+    /**
    * Set Author.
    *
    * @param Author Author/Creator of the Entity
@@ -263,16 +142,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_Author, Author);
   }
 
-  /**
-   * Get Author.
-   *
-   * @return Author/Creator of the Entity
-   */
-  public String getAuthor() {
-    return (String) get_Value(COLUMNNAME_Author);
-  }
-
-  /**
+    /**
    * Set Cost.
    *
    * @param Cost Cost information
@@ -281,27 +151,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_Cost, Cost);
   }
 
-  /**
-   * Get Cost.
-   *
-   * @return Cost information
-   */
-  public BigDecimal getCost() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Cost);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -310,35 +160,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
-   * Get Document No.
-   *
-   * @return Document sequence number of the document
-   */
-  public String getDocumentNo() {
-    return (String) get_Value(COLUMNNAME_DocumentNo);
-  }
-
-  /**
-   * Set Document Value Logic.
-   *
-   * @param DocValueLogic Logic to determine Workflow Start - If true, a workflow process is started
-   *     for the document
-   */
-  public void setDocValueLogic(String DocValueLogic) {
-    set_Value(COLUMNNAME_DocValueLogic, DocValueLogic);
-  }
-
-  /**
+    /**
    * Get Document Value Logic.
    *
    * @return Logic to determine Workflow Start - If true, a workflow process is started for the
@@ -357,20 +179,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_Duration, Integer.valueOf(Duration));
   }
 
-  /**
-   * Get Duration.
-   *
-   * @return Normal Duration in Duration Unit
-   */
-  public int getDuration() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Duration);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /** DurationUnit AD_Reference_ID=299 */
-  public static final int DURATIONUNIT_AD_Reference_ID = 299;
-  /** Year = Y */
+    /** Year = Y */
   public static final String DURATIONUNIT_Year = "Y";
   /** Month = M */
   public static final String DURATIONUNIT_Month = "M";
@@ -401,9 +210,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return (String) get_Value(COLUMNNAME_DurationUnit);
   }
 
-  /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-  /**
+    /**
    * Set Entity Type.
    *
    * @param EntityType Dictionary Entity Type; Determines ownership and synchronization
@@ -413,25 +220,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_EntityType, EntityType);
   }
 
-  /**
-   * Get Entity Type.
-   *
-   * @return Dictionary Entity Type; Determines ownership and synchronization
-   */
-  public String getEntityType() {
-    return (String) get_Value(COLUMNNAME_EntityType);
-  }
-
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
+    /**
    * Get Comment/Help.
    *
    * @return Comment or Hint
@@ -449,21 +238,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_IsBetaFunctionality, Boolean.valueOf(IsBetaFunctionality));
   }
 
-  /**
-   * Get Beta Functionality.
-   *
-   * @return This functionality is considered Beta
-   */
-  public boolean isBetaFunctionality() {
-    Object oo = get_Value(COLUMNNAME_IsBetaFunctionality);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Default.
    *
    * @param IsDefault Default value
@@ -472,21 +247,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
   }
 
-  /**
-   * Get Default.
-   *
-   * @return Default value
-   */
-  public boolean isDefault() {
-    Object oo = get_Value(COLUMNNAME_IsDefault);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Valid.
    *
    * @param IsValid Element is valid
@@ -509,78 +270,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return false;
   }
 
-  /**
-   * Set Duration Limit.
-   *
-   * @param Limit Maximum Duration in Duration Unit
-   */
-  public void setLimit(int Limit) {
-    set_Value(COLUMNNAME_Limit, Integer.valueOf(Limit));
-  }
-
-  /**
-   * Get Duration Limit.
-   *
-   * @return Maximum Duration in Duration Unit
-   */
-  public int getLimit() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Limit);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Moving Time.
-   *
-   * @param MovingTime Moving Time
-   */
-  public void setMovingTime(int MovingTime) {
-    set_Value(COLUMNNAME_MovingTime, Integer.valueOf(MovingTime));
-  }
-
-  /**
-   * Get Moving Time.
-   *
-   * @return Moving Time
-   */
-  public int getMovingTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_MovingTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Overlap Units.
-   *
-   * @param OverlapUnits Overlap Units are number of units that must be completed before they are
-   *     moved the next activity
-   */
-  public void setOverlapUnits(BigDecimal OverlapUnits) {
-    set_Value(COLUMNNAME_OverlapUnits, OverlapUnits);
-  }
-
-  /**
-   * Get Overlap Units.
-   *
-   * @return Overlap Units are number of units that must be completed before they are moved the next
-   *     activity
-   */
-  public BigDecimal getOverlapUnits() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OverlapUnits);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Priority.
-   *
-   * @param Priority Indicates if this request is of a high, medium or low priority.
-   */
-  public void setPriority(int Priority) {
-    set_Value(COLUMNNAME_Priority, Integer.valueOf(Priority));
-  }
-
-  /**
+    /**
    * Get Priority.
    *
    * @return Indicates if this request is of a high, medium or low priority.
@@ -591,50 +281,10 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  /** ProcessType AD_Reference_ID=53224 */
-  public static final int PROCESSTYPE_AD_Reference_ID = 53224;
-  /** Batch Flow = BF */
-  public static final String PROCESSTYPE_BatchFlow = "BF";
-  /** Continuous Flow = CF */
-  public static final String PROCESSTYPE_ContinuousFlow = "CF";
-  /** Dedicate Repetititive Flow = DR */
-  public static final String PROCESSTYPE_DedicateRepetititiveFlow = "DR";
-  /** Job Shop = JS */
-  public static final String PROCESSTYPE_JobShop = "JS";
-  /** Mixed Repetitive Flow = MR */
-  public static final String PROCESSTYPE_MixedRepetitiveFlow = "MR";
-  /** Plant = PL */
-  public static final String PROCESSTYPE_Plant = "PL";
-  /**
-   * Set Process Type.
-   *
-   * @param ProcessType Process Type
-   */
-  public void setProcessType(String ProcessType) {
-
-    set_Value(COLUMNNAME_ProcessType, ProcessType);
-  }
-
-  /**
-   * Get Process Type.
-   *
-   * @return Process Type
-   */
-  public String getProcessType() {
-    return (String) get_Value(COLUMNNAME_ProcessType);
-  }
-
-  /** PublishStatus AD_Reference_ID=310 */
-  public static final int PUBLISHSTATUS_AD_Reference_ID = 310;
-  /** Released = R */
-  public static final String PUBLISHSTATUS_Released = "R";
-  /** Test = T */
-  public static final String PUBLISHSTATUS_Test = "T";
-  /** Under Revision = U */
+    /** Under Revision = U */
   public static final String PUBLISHSTATUS_UnderRevision = "U";
-  /** Void = V */
-  public static final String PUBLISHSTATUS_Void = "V";
-  /**
+
+    /**
    * Set Publication Status.
    *
    * @param PublishStatus Status of Publication
@@ -644,92 +294,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_PublishStatus, PublishStatus);
   }
 
-  /**
-   * Get Publication Status.
-   *
-   * @return Status of Publication
-   */
-  public String getPublishStatus() {
-    return (String) get_Value(COLUMNNAME_PublishStatus);
-  }
-
-  /**
-   * Set Qty Batch Size.
-   *
-   * @param QtyBatchSize Qty Batch Size
-   */
-  public void setQtyBatchSize(BigDecimal QtyBatchSize) {
-    set_Value(COLUMNNAME_QtyBatchSize, QtyBatchSize);
-  }
-
-  /**
-   * Get Qty Batch Size.
-   *
-   * @return Qty Batch Size
-   */
-  public BigDecimal getQtyBatchSize() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyBatchSize);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Queuing Time.
-   *
-   * @param QueuingTime Queue time is the time a job waits at a work center before begin handled.
-   */
-  public void setQueuingTime(int QueuingTime) {
-    set_Value(COLUMNNAME_QueuingTime, Integer.valueOf(QueuingTime));
-  }
-
-  /**
-   * Get Queuing Time.
-   *
-   * @return Queue time is the time a job waits at a work center before begin handled.
-   */
-  public int getQueuingTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_QueuingTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Setup Time.
-   *
-   * @param SetupTime Setup time before starting Production
-   */
-  public void setSetupTime(int SetupTime) {
-    set_Value(COLUMNNAME_SetupTime, Integer.valueOf(SetupTime));
-  }
-
-  /**
-   * Get Setup Time.
-   *
-   * @return Setup time before starting Production
-   */
-  public int getSetupTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_SetupTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException {
-    return (org.compiere.model.I_S_Resource)
-        MTable.get(getCtx(), org.compiere.model.I_S_Resource.Table_Name)
-            .getPO(getS_Resource_ID(), null);
-  }
-
-  /**
-   * Set Resource.
-   *
-   * @param S_Resource_ID Resource
-   */
-  public void setS_Resource_ID(int S_Resource_ID) {
-    if (S_Resource_ID < 1) set_Value(COLUMNNAME_S_Resource_ID, null);
-    else set_Value(COLUMNNAME_S_Resource_ID, Integer.valueOf(S_Resource_ID));
-  }
-
-  /**
+    /**
    * Get Resource.
    *
    * @return Resource
@@ -740,56 +305,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  /**
-   * Set Units by Cycles.
-   *
-   * @param UnitsCycles The Units by Cycles are defined for process type Flow Repetitive Dedicated
-   *     and indicated the product to be manufactured on a production line for duration unit.
-   */
-  public void setUnitsCycles(BigDecimal UnitsCycles) {
-    set_Value(COLUMNNAME_UnitsCycles, UnitsCycles);
-  }
-
-  /**
-   * Get Units by Cycles.
-   *
-   * @return The Units by Cycles are defined for process type Flow Repetitive Dedicated and
-   *     indicated the product to be manufactured on a production line for duration unit.
-   */
-  public BigDecimal getUnitsCycles() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_UnitsCycles);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Validate Workflow.
-   *
-   * @param ValidateWorkflow Validate Workflow
-   */
-  public void setValidateWorkflow(String ValidateWorkflow) {
-    set_Value(COLUMNNAME_ValidateWorkflow, ValidateWorkflow);
-  }
-
-  /**
-   * Get Validate Workflow.
-   *
-   * @return Validate Workflow
-   */
-  public String getValidateWorkflow() {
-    return (String) get_Value(COLUMNNAME_ValidateWorkflow);
-  }
-
-  /**
-   * Set Valid from.
-   *
-   * @param ValidFrom Valid from including this date (first day)
-   */
-  public void setValidFrom(Timestamp ValidFrom) {
-    set_Value(COLUMNNAME_ValidFrom, ValidFrom);
-  }
-
-  /**
+    /**
    * Get Valid from.
    *
    * @return Valid from including this date (first day)
@@ -798,16 +314,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return (Timestamp) get_Value(COLUMNNAME_ValidFrom);
   }
 
-  /**
-   * Set Valid to.
-   *
-   * @param ValidTo Valid to including this date (last day)
-   */
-  public void setValidTo(Timestamp ValidTo) {
-    set_Value(COLUMNNAME_ValidTo, ValidTo);
-  }
-
-  /**
+    /**
    * Get Valid to.
    *
    * @return Valid to including this date (last day)
@@ -825,18 +332,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_Version, Integer.valueOf(Version));
   }
 
-  /**
-   * Get Version.
-   *
-   * @return Version of the table definition
-   */
-  public int getVersion() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Version);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Waiting Time.
    *
    * @param WaitingTime Workflow Simulation Waiting time
@@ -845,42 +341,12 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
   }
 
-  /**
-   * Get Waiting Time.
-   *
-   * @return Workflow Simulation Waiting time
-   */
-  public int getWaitingTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_WaitingTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /** WorkflowType AD_Reference_ID=328 */
-  public static final int WORKFLOWTYPE_AD_Reference_ID = 328;
-  /** General = G */
-  public static final String WORKFLOWTYPE_General = "G";
-  /** Document Process = P */
-  public static final String WORKFLOWTYPE_DocumentProcess = "P";
-  /** Document Value = V */
+    /** Document Value = V */
   public static final String WORKFLOWTYPE_DocumentValue = "V";
   /** Manufacturing = M */
   public static final String WORKFLOWTYPE_Manufacturing = "M";
-  /** Quality = Q */
-  public static final String WORKFLOWTYPE_Quality = "Q";
-  /** Wizard = W */
-  public static final String WORKFLOWTYPE_Wizard = "W";
-  /**
-   * Set Workflow Type.
-   *
-   * @param WorkflowType Type of Workflow
-   */
-  public void setWorkflowType(String WorkflowType) {
 
-    set_Value(COLUMNNAME_WorkflowType, WorkflowType);
-  }
-
-  /**
+    /**
    * Get Workflow Type.
    *
    * @return Type of Workflow
@@ -898,40 +364,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_WorkingTime, Integer.valueOf(WorkingTime));
   }
 
-  /**
-   * Get Working Time.
-   *
-   * @return Workflow Simulation Execution Time
-   */
-  public int getWorkingTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_WorkingTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Yield %.
-   *
-   * @param Yield The Yield is the percentage of a lot that is expected to be of acceptable wuality
-   *     may fall below 100 percent
-   */
-  public void setYield(int Yield) {
-    set_Value(COLUMNNAME_Yield, Integer.valueOf(Yield));
-  }
-
-  /**
-   * Get Yield %.
-   *
-   * @return The Yield is the percentage of a lot that is expected to be of acceptable wuality may
-   *     fall below 100 percent
-   */
-  public int getYield() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Yield);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_AD_Workflow.Table_ID;
   }

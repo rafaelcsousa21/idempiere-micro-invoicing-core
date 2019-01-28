@@ -1,8 +1,6 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_CostHistory;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
@@ -52,13 +50,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     return sb.toString();
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -81,13 +73,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_CostDetail getM_CostDetail() throws RuntimeException {
-    return (org.compiere.model.I_M_CostDetail)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostDetail.Table_Name)
-            .getPO(getM_CostDetail_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Detail.
    *
    * @param M_CostDetail_ID Cost Detail Information
@@ -108,13 +94,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
-    return (org.compiere.model.I_M_CostElement)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Element.
    *
    * @param M_CostElement_ID Product Cost Element
@@ -135,52 +115,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Cost History.
-   *
-   * @param M_CostHistory_ID Movement history for M_Cost
-   */
-  public void setM_CostHistory_ID(int M_CostHistory_ID) {
-    if (M_CostHistory_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostHistory_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_CostHistory_ID, Integer.valueOf(M_CostHistory_ID));
-  }
-
-  /**
-   * Get Cost History.
-   *
-   * @return Movement history for M_Cost
-   */
-  public int getM_CostHistory_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_CostHistory_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Cost History UUID.
-   *
-   * @param M_CostHistory_UU Cost History UUID
-   */
-  public void setM_CostHistory_UU(String M_CostHistory_UU) {
-    set_ValueNoCheck(COLUMNNAME_M_CostHistory_UU, M_CostHistory_UU);
-  }
-
-  /**
-   * Get Cost History UUID.
-   *
-   * @return Cost History UUID
-   */
-  public String getM_CostHistory_UU() {
-    return (String) get_Value(COLUMNNAME_M_CostHistory_UU);
-  }
-
-  public org.compiere.model.I_M_CostType getM_CostType() throws RuntimeException {
-    return (org.compiere.model.I_M_CostType)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostType.Table_Name)
-            .getPO(getM_CostType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Type.
    *
    * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
@@ -210,18 +145,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     set_ValueNoCheck(COLUMNNAME_NewCAmt, NewCAmt);
   }
 
-  /**
-   * Get New Accumulated Amt.
-   *
-   * @return Accumulated Amt after processing of M_CostDetail
-   */
-  public BigDecimal getNewCAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewCAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set New Cost Price.
    *
    * @param NewCostPrice New current cost price after processing of M_CostDetail
@@ -250,18 +174,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     set_ValueNoCheck(COLUMNNAME_NewCQty, NewCQty);
   }
 
-  /**
-   * Get New Accumulated Qty.
-   *
-   * @return New Accumulated Qty after processing of M_CostDetail
-   */
-  public BigDecimal getNewCQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewCQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set New Current Quantity.
    *
    * @param NewQty New current quantity after processing of M_CostDetail
