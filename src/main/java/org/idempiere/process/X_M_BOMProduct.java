@@ -50,13 +50,9 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
     return sb.toString();
   }
 
-  /** BOMProductType AD_Reference_ID=349 */
-  public static final int BOMPRODUCTTYPE_AD_Reference_ID = 349;
-  /** Standard Product = S */
+    /** Standard Product = S */
   public static final String BOMPRODUCTTYPE_StandardProduct = "S";
-  /** Optional Product = O */
-  public static final String BOMPRODUCTTYPE_OptionalProduct = "O";
-  /** Alternative = A */
+    /** Alternative = A */
   public static final String BOMPRODUCTTYPE_Alternative = "A";
   /** Alternative (Default) = D */
   public static final String BOMPRODUCTTYPE_AlternativeDefault = "D";
@@ -137,15 +133,6 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
     Integer ii = (Integer) get_Value(COLUMNNAME_Line);
     if (ii == null) return 0;
     return ii;
-  }
-
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
   }
 
     /**

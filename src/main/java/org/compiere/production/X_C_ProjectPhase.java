@@ -211,19 +211,6 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase, I_
     return bd;
   }
 
-  /** ProjInvoiceRule AD_Reference_ID=383 */
-  public static final int PROJINVOICERULE_AD_Reference_ID = 383;
-  /** None = - */
-  public static final String PROJINVOICERULE_None = "-";
-  /** Committed Amount = C */
-  public static final String PROJINVOICERULE_CommittedAmount = "C";
-  /** Time&Material max Comitted = c */
-  public static final String PROJINVOICERULE_TimeMaterialMaxComitted = "c";
-  /** Time&Material = T */
-  public static final String PROJINVOICERULE_TimeMaterial = "T";
-  /** Product Quantity = P */
-  public static final String PROJINVOICERULE_ProductQuantity = "P";
-
     /**
    * Set Quantity.
    *

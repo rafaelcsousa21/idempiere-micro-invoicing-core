@@ -57,17 +57,6 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType, I_Pe
     return ii;
   }
 
-    /** ProjectCategory AD_Reference_ID=288 */
-  public static final int PROJECTCATEGORY_AD_Reference_ID = 288;
-  /** General = N */
-  public static final String PROJECTCATEGORY_General = "N";
-  /** Asset Project = A */
-  public static final String PROJECTCATEGORY_AssetProject = "A";
-  /** Work Order (Job) = W */
-  public static final String PROJECTCATEGORY_WorkOrderJob = "W";
-  /** Service (Charge) Project = S */
-  public static final String PROJECTCATEGORY_ServiceChargeProject = "S";
-
     /**
    * Get Project Category.
    *

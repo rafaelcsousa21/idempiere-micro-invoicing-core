@@ -143,15 +143,6 @@ public class X_C_RevenueRecognition_Plan extends PO
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_RevenueRecognition_ID()));
-  }
-
     /**
    * Set Product Revenue.
    *

@@ -220,30 +220,10 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getA_Depreciation_Exp_ID()));
-  }
-
-    /** A_Entry_Type AD_Reference_ID=53257 */
-  public static final int A_ENTRY_TYPE_AD_Reference_ID = 53257;
-  /** Depreciation = DEP */
+    /** Depreciation = DEP */
   public static final String A_ENTRY_TYPE_Depreciation = "DEP";
-  /** Disposals = DIS */
-  public static final String A_ENTRY_TYPE_Disposals = "DIS";
-  /** Forecasts = FOR */
-  public static final String A_ENTRY_TYPE_Forecasts = "FOR";
-  /** New = NEW */
-  public static final String A_ENTRY_TYPE_New = "NEW";
-  /** Splits = SPL */
-  public static final String A_ENTRY_TYPE_Splits = "SPL";
-  /** Transfers = TRN */
-  public static final String A_ENTRY_TYPE_Transfers = "TRN";
-  /**
+
+    /**
    * Set Entry Type.
    *
    * @param A_Entry_Type Entry Type
@@ -409,19 +389,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_IsDepreciated, IsDepreciated);
   }
 
-    /** PostingType AD_Reference_ID=125 */
-  public static final int POSTINGTYPE_AD_Reference_ID = 125;
-  /** Actual = A */
-  public static final String POSTINGTYPE_Actual = "A";
-  /** Budget = B */
-  public static final String POSTINGTYPE_Budget = "B";
-  /** Commitment = E */
-  public static final String POSTINGTYPE_Commitment = "E";
-  /** Statistical = S */
-  public static final String POSTINGTYPE_Statistical = "S";
-  /** Reservation = R */
-  public static final String POSTINGTYPE_Reservation = "R";
-  /**
+    /**
    * Set PostingType.
    *
    * @param PostingType The type of posted amount for the transaction

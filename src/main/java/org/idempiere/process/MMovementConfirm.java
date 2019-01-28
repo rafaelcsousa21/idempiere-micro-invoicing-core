@@ -22,7 +22,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.ValueNamePair;
 
-import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -190,35 +189,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
     return Msg.getElement(getCtx(), "M_MovementConfirm_ID") + " " + getDocumentNo();
   } //	getDocumentInfo
 
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      File temp = File.createTempFile(get_TableName() + getId() + "_", ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    //	ReportEngine re = ReportEngine.get (getCtx(), ReportEngine.INVOICE, getC_Invoice_ID());
-    //	if (re == null)
-    return null;
-    //	return re.getPDF(file);
-  } //	createPDF
-
-  /**
+    /**
    * ************************************************************************ Process document
    *
    * @param processAction document action

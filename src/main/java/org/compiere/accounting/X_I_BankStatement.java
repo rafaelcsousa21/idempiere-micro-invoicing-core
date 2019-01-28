@@ -723,21 +723,6 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return bd;
   }
 
-  /** TrxType AD_Reference_ID=215 */
-  public static final int TRXTYPE_AD_Reference_ID = 215;
-  /** Sales = S */
-  public static final String TRXTYPE_Sales = "S";
-  /** Delayed Capture = D */
-  public static final String TRXTYPE_DelayedCapture = "D";
-  /** Credit (Payment) = C */
-  public static final String TRXTYPE_CreditPayment = "C";
-  /** Voice Authorization = F */
-  public static final String TRXTYPE_VoiceAuthorization = "F";
-  /** Authorization = A */
-  public static final String TRXTYPE_Authorization = "A";
-  /** Void = V */
-  public static final String TRXTYPE_Void = "V";
-
     /**
    * Set Effective date.
    *

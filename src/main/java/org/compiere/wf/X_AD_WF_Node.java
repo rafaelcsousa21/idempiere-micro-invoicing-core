@@ -53,9 +53,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return sb.toString();
   }
 
-  /** Action AD_Reference_ID=302 */
-  public static final int ACTION_AD_Reference_ID = 302;
-  /** Wait (Sleep) = Z */
+    /** Wait (Sleep) = Z */
   public static final String ACTION_WaitSleep = "Z";
   /** User Choice = C */
   public static final String ACTION_UserChoice = "C";
@@ -77,9 +75,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public static final String ACTION_DocumentAction = "D";
   /** EMail = M */
   public static final String ACTION_EMail = "M";
-  /** User Workbench = B */
-  public static final String ACTION_UserWorkbench = "B";
-  /** User Info = I */
+    /** User Info = I */
   public static final String ACTION_UserInfo = "I";
   /**
    * Set Action.
@@ -304,37 +300,6 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
-  public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
-  public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
-  public static final String DOCACTION_Re_Activate = "RE";
-  /** <None> = -- */
-  public static final String DOCACTION_None = "--";
-  /** Prepare = PR */
-  public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-
     /**
    * Get Document Action.
    *
@@ -375,9 +340,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return bd;
   }
 
-  /** DynPriorityUnit AD_Reference_ID=221 */
-  public static final int DYNPRIORITYUNIT_AD_Reference_ID = 221;
-  /** Minute = M */
+    /** Minute = M */
   public static final String DYNPRIORITYUNIT_Minute = "M";
   /** Hour = H */
   public static final String DYNPRIORITYUNIT_Hour = "H";
@@ -402,9 +365,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (String) get_Value(COLUMNNAME_EMail);
   }
 
-  /** EMailRecipient AD_Reference_ID=363 */
-  public static final int EMAILRECIPIENT_AD_Reference_ID = 363;
-  /** Document Owner = D */
+    /** Document Owner = D */
   public static final String EMAILRECIPIENT_DocumentOwner = "D";
   /** Document Business Partner = B */
   public static final String EMAILRECIPIENT_DocumentBusinessPartner = "B";
@@ -420,9 +381,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (String) get_Value(COLUMNNAME_EMailRecipient);
   }
 
-  /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-  /**
+    /**
    * Set Entity Type.
    *
    * @param EntityType Dictionary Entity Type; Determines ownership and synchronization
@@ -431,13 +390,6 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
 
     set_Value(COLUMNNAME_EntityType, EntityType);
   }
-
-    /** FinishMode AD_Reference_ID=303 */
-  public static final int FINISHMODE_AD_Reference_ID = 303;
-  /** Automatic = A */
-  public static final String FINISHMODE_Automatic = "A";
-  /** Manual = M */
-  public static final String FINISHMODE_Manual = "M";
 
     /**
    * Get Comment/Help.
@@ -457,9 +409,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     set_Value(COLUMNNAME_IsCentrallyMaintained, Boolean.valueOf(IsCentrallyMaintained));
   }
 
-    /** JoinElement AD_Reference_ID=301 */
-  public static final int JOINELEMENT_AD_Reference_ID = 301;
-  /** AND = A */
+    /** AND = A */
   public static final String JOINELEMENT_AND = "A";
   /** XOR = X */
   public static final String JOINELEMENT_XOR = "X";
@@ -524,9 +474,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-    /** SplitElement AD_Reference_ID=301 */
-  public static final int SPLITELEMENT_AD_Reference_ID = 301;
-  /** AND = A */
+    /** AND = A */
   public static final String SPLITELEMENT_AND = "A";
   /** XOR = X */
   public static final String SPLITELEMENT_XOR = "X";
@@ -559,20 +507,6 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     if (ii == null) return 0;
     return ii;
   }
-
-  /** StartMode AD_Reference_ID=303 */
-  public static final int STARTMODE_AD_Reference_ID = 303;
-  /** Automatic = A */
-  public static final String STARTMODE_Automatic = "A";
-  /** Manual = M */
-  public static final String STARTMODE_Manual = "M";
-
-    /** SubflowExecution AD_Reference_ID=307 */
-  public static final int SUBFLOWEXECUTION_AD_Reference_ID = 307;
-  /** Asynchronously = A */
-  public static final String SUBFLOWEXECUTION_Asynchronously = "A";
-  /** Synchronously = S */
-  public static final String SUBFLOWEXECUTION_Synchronously = "S";
 
     /**
    * Get Valid from.

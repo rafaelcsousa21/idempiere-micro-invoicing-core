@@ -14,9 +14,7 @@ import org.compiere.orm.MClient;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MTable;
 import org.compiere.orm.MTree_Base;
-import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogMgt;
-import org.idempiere.common.util.CLogger;
 
 import org.idempiere.common.util.Env;
 
@@ -98,91 +96,7 @@ public class MTree extends MTree_Base {
 
   private HashMap<Integer, ArrayList<Integer>> m_nodeIdMap;
 
-  /** Logger */
-  private static CLogger s_log = CLogger.getCLogger(MTree.class);
-
-  /** Cache */
-  private static CCache<String, Integer> tree_cache = new CCache<String, Integer>("AD_Tree_ID", 5);
-
-  /**
-   * ************************************************************************ Get default (oldest)
-   * complete AD_Tree_ID for KeyColumn. Called from GridController
-   *
-   * @param keyColumnName key column name, eg. C_Project_ID
-   * @param AD_Client_ID client
-   * @return AD_Tree_ID
-   */
-  public static int getDefaultAD_Tree_ID(int AD_Client_ID, String keyColumnName) {
-    String key = AD_Client_ID + "|" + keyColumnName;
-    if (tree_cache.containsKey(key)) return tree_cache.get(key);
-
-    s_log.config(keyColumnName);
-    if (keyColumnName == null || keyColumnName.length() == 0) return 0;
-
-    String TreeType = null;
-    if (keyColumnName.equals("AD_Menu_ID")) TreeType = TREETYPE_Menu;
-    else if (keyColumnName.equals("C_ElementValue_ID")) TreeType = TREETYPE_ElementValue;
-    else if (keyColumnName.equals("M_Product_ID")) TreeType = TREETYPE_Product;
-    else if (keyColumnName.equals("C_BPartner_ID")) TreeType = TREETYPE_BPartner;
-    else if (keyColumnName.equals("AD_Org_ID")) TreeType = TREETYPE_Organization;
-    else if (keyColumnName.equals("C_Project_ID")) TreeType = TREETYPE_Project;
-    else if (keyColumnName.equals("M_ProductCategory_ID")) TreeType = TREETYPE_ProductCategory;
-    else if (keyColumnName.equals("M_BOM_ID")) TreeType = TREETYPE_BoM;
-    else if (keyColumnName.equals("C_SalesRegion_ID")) TreeType = TREETYPE_SalesRegion;
-    else if (keyColumnName.equals("C_Campaign_ID")) TreeType = TREETYPE_Campaign;
-    else if (keyColumnName.equals("C_Activity_ID")) TreeType = TREETYPE_Activity;
-    //
-    else if (keyColumnName.equals("CM_CStage_ID")) TreeType = TREETYPE_CMContainerStage;
-    else if (keyColumnName.equals("CM_Container_ID")) TreeType = TREETYPE_CMContainer;
-    else if (keyColumnName.equals("CM_Media_ID")) TreeType = TREETYPE_CMMedia;
-    else if (keyColumnName.equals("CM_Template_ID")) TreeType = TREETYPE_CMTemplate;
-    else {
-      String tableName = keyColumnName.substring(0, keyColumnName.length() - 3);
-      String query =
-          "SELECT tr.AD_Tree_ID "
-              + "FROM AD_Tree tr "
-              + "JOIN AD_Table t ON (tr.AD_Table_ID=t.AD_Table_ID) "
-              + "WHERE tr.AD_Client_ID=? AND tr.TreeType=? AND tr.IsActive='Y' AND tr.IsAllNodes='Y' AND t.TableName = ? "
-              + "ORDER BY tr.AD_Tree_ID";
-      int treeID =
-          getSQLValueEx(
-              null, query, Env.getClientId(Env.getCtx()), TREETYPE_CustomTable, tableName);
-
-      if (treeID != -1) {
-        tree_cache.put(key, treeID);
-        return treeID;
-      }
-      s_log.log(Level.SEVERE, "Could not map " + keyColumnName);
-      tree_cache.put(key, 0);
-      return 0;
-    }
-
-    int AD_Tree_ID = 0;
-    String sql =
-        "SELECT AD_Tree_ID, Name FROM AD_Tree "
-            + "WHERE AD_Client_ID=? AND TreeType=? AND IsActive='Y' AND IsAllNodes='Y' "
-            + "ORDER BY IsDefault DESC, AD_Tree_ID";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, AD_Client_ID);
-      pstmt.setString(2, TreeType);
-      rs = pstmt.executeQuery();
-      if (rs.next()) AD_Tree_ID = rs.getInt(1);
-    } catch (SQLException e) {
-      s_log.log(Level.SEVERE, sql, e);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    tree_cache.put(key, AD_Tree_ID);
-    return AD_Tree_ID;
-  } //  getDefaultAD_Tree_ID
-
-  /**
+    /**
    * *********************************************************************** Load Nodes and Bar
    *
    * @param AD_User_ID user for tree bar
@@ -607,34 +521,7 @@ public class MTree extends MTree_Base {
     return m_root;
   } //  getRoot
 
-  /**
-   * Is Menu Tree
-   *
-   * @return true if menu
-   */
-  public boolean isMenu() {
-    return TREETYPE_Menu.equals(getTreeType());
-  } //	isMenu
-
-  /**
-   * Is Product Tree
-   *
-   * @return true if product
-   */
-  public boolean isProduct() {
-    return TREETYPE_Product.equals(getTreeType());
-  } //	isProduct
-
-  /**
-   * Is Business Partner Tree
-   *
-   * @return true if partner
-   */
-  public boolean isBPartner() {
-    return TREETYPE_BPartner.equals(getTreeType());
-  } //	isBPartner
-
-  /**
+    /**
    * String representation
    *
    * @return info

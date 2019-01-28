@@ -218,51 +218,7 @@ public class MWorkflow extends X_AD_Workflow {
     if (log.isLoggable(Level.FINE)) log.fine("#" + m_nodes.size());
   } //	loadNodes
 
-  /**
-   * ************************************************************************ Get Number of Nodes
-   *
-   * @return number of nodes
-   */
-  public int getNodeCount() {
-    return m_nodes.size();
-  } //	getNextNodeCount
-
-  /**
-   * Get the nodes
-   *
-   * @param ordered ordered array
-   * @param AD_Client_ID for client
-   * @return array of nodes
-   */
-  public MWFNode[] getNodes(boolean ordered, int AD_Client_ID) {
-    if (ordered) return getNodesInOrder(AD_Client_ID);
-    //
-    ArrayList<MWFNode> list = new ArrayList<MWFNode>();
-    for (int i = 0; i < m_nodes.size(); i++) {
-      MWFNode node = m_nodes.get(i);
-      if (!node.isActive()) continue;
-      if (node.getClientId() == 0 || node.getClientId() == AD_Client_ID) list.add(node);
-    }
-    MWFNode[] retValue = new MWFNode[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getNodes
-
-  public void reloadNodes() {
-    m_nodes = null;
-    loadNodes();
-  }
-
-  /**
-   * Get the first node
-   *
-   * @return array of next nodes
-   */
-  public MWFNode getFirstNode() {
-    return getNode(getAD_WF_Node_ID());
-  } //	getFirstNode
-
-  /**
+    /**
    * Get Node with ID in Workflow
    *
    * @param AD_WF_Node_ID ID
@@ -276,31 +232,7 @@ public class MWorkflow extends X_AD_Workflow {
     return null;
   } //	getNode
 
-  /**
-   * Get the next nodes
-   *
-   * @param AD_WF_Node_ID ID
-   * @param AD_Client_ID for client
-   * @return array of next nodes or null
-   */
-  public MWFNode[] getNextNodes(int AD_WF_Node_ID, int AD_Client_ID) {
-    MWFNode node = getNode(AD_WF_Node_ID);
-    if (node == null || node.getNextNodeCount() == 0) return null;
-    //
-    MWFNodeNext[] nexts = node.getTransitions(AD_Client_ID);
-    ArrayList<MWFNode> list = new ArrayList<MWFNode>();
-    for (int i = 0; i < nexts.length; i++) {
-      MWFNode next = getNode(nexts[i].getAD_WF_Next_ID());
-      if (next != null) list.add(next);
-    }
-
-    //	Return Nodes
-    MWFNode[] retValue = new MWFNode[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getNextNodes
-
-  /**
+    /**
    * Get The Nodes in Sequence Order
    *
    * @param AD_Client_ID client
@@ -389,27 +321,7 @@ public class MWorkflow extends X_AD_Workflow {
     }
   } //	addNodesSF
 
-  /**
-   * ************************************************************************ Get first transition
-   * (Next Node) of ID
-   *
-   * @param AD_WF_Node_ID id
-   * @param AD_Client_ID for client
-   * @return next AD_WF_Node_ID or 0
-   */
-  public int getNext(int AD_WF_Node_ID, int AD_Client_ID) {
-    MWFNode[] nodes = getNodesInOrder(AD_Client_ID);
-    for (int i = 0; i < nodes.length; i++) {
-      if (nodes[i].getAD_WF_Node_ID() == AD_WF_Node_ID) {
-        MWFNodeNext[] nexts = nodes[i].getTransitions(AD_Client_ID);
-        if (nexts.length > 0) return nexts[0].getAD_WF_Next_ID();
-        return 0;
-      }
-    }
-    return 0;
-  } //	getNext
-
-  /**
+    /**
    * Get Transitions (NodeNext) of ID
    *
    * @param AD_WF_Node_ID id
@@ -426,94 +338,7 @@ public class MWorkflow extends X_AD_Workflow {
     return null;
   } //	getNext
 
-  /**
-   * Get (first) Previous Node of ID
-   *
-   * @param AD_WF_Node_ID id
-   * @param AD_Client_ID for client
-   * @return next AD_WF_Node_ID or 0
-   */
-  public int getPrevious(int AD_WF_Node_ID, int AD_Client_ID) {
-    MWFNode[] nodes = getNodesInOrder(AD_Client_ID);
-    for (int i = 0; i < nodes.length; i++) {
-      if (nodes[i].getAD_WF_Node_ID() == AD_WF_Node_ID) {
-        if (i > 0) return nodes[i - 1].getAD_WF_Node_ID();
-        return 0;
-      }
-    }
-    return 0;
-  } //	getPrevious
-
-  /**
-   * Get very Last Node
-   *
-   * @param AD_WF_Node_ID ignored
-   * @param AD_Client_ID for client
-   * @return next AD_WF_Node_ID or 0
-   */
-  public int getLast(int AD_WF_Node_ID, int AD_Client_ID) {
-    MWFNode[] nodes = getNodesInOrder(AD_Client_ID);
-    if (nodes.length > 0) return nodes[nodes.length - 1].getAD_WF_Node_ID();
-    return 0;
-  } //	getLast
-
-  /**
-   * Is this the first Node
-   *
-   * @param AD_WF_Node_ID id
-   * @param AD_Client_ID for client
-   * @return true if first node
-   */
-  public boolean isFirst(int AD_WF_Node_ID, int AD_Client_ID) {
-    return AD_WF_Node_ID == getAD_WF_Node_ID();
-  } //	isFirst
-
-  /**
-   * Is this the last Node
-   *
-   * @param AD_WF_Node_ID id
-   * @param AD_Client_ID for client
-   * @return true if last node
-   */
-  public boolean isLast(int AD_WF_Node_ID, int AD_Client_ID) {
-    MWFNode[] nodes = getNodesInOrder(AD_Client_ID);
-    return AD_WF_Node_ID == nodes[nodes.length - 1].getAD_WF_Node_ID();
-  } //	isLast
-
-  /**
-   * ************************************************************************ Get Name
-   *
-   * @param translated translated
-   * @return Name
-   */
-  public String getName(boolean translated) {
-    if (translated && m_translated) return m_name_trl;
-    return getName();
-  } //	getName
-
-  /**
-   * Get Description
-   *
-   * @param translated translated
-   * @return Description
-   */
-  public String getDescription(boolean translated) {
-    if (translated && m_translated) return m_description_trl;
-    return getDescription();
-  } //	getDescription
-
-  /**
-   * Get Help
-   *
-   * @param translated translated
-   * @return Name
-   */
-  public String getHelp(boolean translated) {
-    if (translated && m_translated) return m_help_trl;
-    return getHelp();
-  } //	getHelp
-
-  /**
+    /**
    * String Representation
    *
    * @return info
@@ -619,48 +444,7 @@ public class MWorkflow extends X_AD_Workflow {
     return retValue;
   } //	MWFProcess
 
-  /**
-   * Start Workflow and Wait for completion.
-   *
-   * @param pi process info with Record_ID record for the workflow
-   * @return process
-   */
-  public MWFProcess startWait(ProcessInfo pi) {
-    final int SLEEP = 500; // 	1/2 sec
-    final int MAXLOOPS = 30; // 	15 sec
-    //
-    MWFProcess process = start(pi, pi.getTransactionName());
-    if (process == null) return null;
-    Thread.yield();
-    StateEngine state = process.getState();
-    int loops = 0;
-    while (!state.isClosed() && !state.isSuspended()) {
-      if (loops > MAXLOOPS) {
-        log.warning("Timeout after sec " + ((SLEEP * MAXLOOPS) / 1000));
-        pi.setSummary(Msg.getMsg(getCtx(), "ProcessRunning"));
-        pi.setIsTimeout(true);
-        return process;
-      }
-      //	System.out.println("--------------- " + loops + ": " + state);
-      try {
-        Thread.sleep(SLEEP);
-        loops++;
-      } catch (InterruptedException e) {
-        log.log(Level.SEVERE, "startWait interrupted", e);
-        pi.setSummary("Interrupted");
-        return process;
-      }
-      Thread.yield();
-      state = process.getState();
-    }
-    String summary = process.getProcessMsg();
-    if (summary == null || summary.trim().length() == 0) summary = state.toString();
-    pi.setSummary(summary, state.isTerminated() || state.isAborted());
-    log.fine(summary);
-    return process;
-  } //	startWait
-
-  /**
+    /**
    * Get Duration Base in Seconds
    *
    * @return duration unit in seconds
@@ -720,31 +504,4 @@ public class MWorkflow extends X_AD_Workflow {
     return errors.toString();
   } //	validate
 
-  /**
-   * Get AD_Workflow_ID for given M_Product_ID
-   *
-   * @param M_Product_ID
-   * @return AD_Workflow_ID
-   */
-  public static int getWorkflowSearchKey(MProduct product) {
-    int AD_Client_ID = Env.getClientId(product.getCtx());
-    String sql =
-        "SELECT AD_Workflow_ID FROM AD_Workflow " + " WHERE Value = ? AND clientId = ?";
-    return getSQLValueEx(null, sql, product.getValue(), AD_Client_ID);
-  }
-
-  /**
-   * Check if the workflow is valid for given date
-   *
-   * @param date
-   * @return true if valid
-   */
-  public boolean isValidFromTo(Timestamp date) {
-    Timestamp validFrom = getValidFrom();
-    Timestamp validTo = getValidTo();
-
-    if (validFrom != null && date.before(validFrom)) return false;
-    if (validTo != null && date.after(validTo)) return false;
-    return true;
-  }
 } //	MWorkflow_ID

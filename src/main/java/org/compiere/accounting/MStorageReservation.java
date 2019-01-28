@@ -118,31 +118,7 @@ public class MStorageReservation extends X_M_StorageReservation {
     setQty(Env.ZERO);
   } //	MStorageReservation
 
-  /**
-   * Get Storage Info for Product on specified Warehouse
-   *
-   * @param ctx
-   * @param m_Warehouse_ID
-   * @param m_Product_ID
-   * @param i
-   * @param get_TrxName
-   * @return
-   */
-  public static MStorageReservation[] get(
-      Properties ctx, int m_Warehouse_ID, int m_Product_ID, int i, String trxName) {
-    String sqlWhere = "M_Product_ID=? AND M_Warehouse_ID=?";
-
-    List<MStorageReservation> list =
-        new Query(ctx, I_M_StorageReservation.Table_Name, sqlWhere, trxName)
-            .setParameters(m_Product_ID, m_Warehouse_ID)
-            .list();
-
-    MStorageReservation[] retValue = new MStorageReservation[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  }
-
-  /**
+    /**
    * Get Storage Info for Product across warehouses
    *
    * @param ctx context

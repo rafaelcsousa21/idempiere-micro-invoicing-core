@@ -78,9 +78,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
     return ii;
   }
 
-  /** InvoiceFrequency AD_Reference_ID=168 */
-  public static final int INVOICEFREQUENCY_AD_Reference_ID = 168;
-  /** Daily = D */
+    /** Daily = D */
   public static final String INVOICEFREQUENCY_Daily = "D";
   /** Weekly = W */
   public static final String INVOICEFREQUENCY_Weekly = "W";
@@ -98,9 +96,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
     return (String) get_Value(COLUMNNAME_InvoiceFrequency);
   }
 
-  /** InvoiceWeekDay AD_Reference_ID=167 */
-  public static final int INVOICEWEEKDAY_AD_Reference_ID = 167;
-  /** Sunday = 7 */
+    /** Sunday = 7 */
   public static final String INVOICEWEEKDAY_Sunday = "7";
   /** Monday = 1 */
   public static final String INVOICEWEEKDAY_Monday = "1";
@@ -108,9 +104,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
   public static final String INVOICEWEEKDAY_Tuesday = "2";
   /** Wednesday = 3 */
   public static final String INVOICEWEEKDAY_Wednesday = "3";
-  /** Thursday = 4 */
-  public static final String INVOICEWEEKDAY_Thursday = "4";
-  /** Friday = 5 */
+    /** Friday = 5 */
   public static final String INVOICEWEEKDAY_Friday = "5";
   /** Saturday = 6 */
   public static final String INVOICEWEEKDAY_Saturday = "6";
@@ -123,23 +117,6 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
   public String getInvoiceWeekDay() {
     return (String) get_Value(COLUMNNAME_InvoiceWeekDay);
   }
-
-  /** InvoiceWeekDayCutoff AD_Reference_ID=167 */
-  public static final int INVOICEWEEKDAYCUTOFF_AD_Reference_ID = 167;
-  /** Sunday = 7 */
-  public static final String INVOICEWEEKDAYCUTOFF_Sunday = "7";
-  /** Monday = 1 */
-  public static final String INVOICEWEEKDAYCUTOFF_Monday = "1";
-  /** Tuesday = 2 */
-  public static final String INVOICEWEEKDAYCUTOFF_Tuesday = "2";
-  /** Wednesday = 3 */
-  public static final String INVOICEWEEKDAYCUTOFF_Wednesday = "3";
-  /** Thursday = 4 */
-  public static final String INVOICEWEEKDAYCUTOFF_Thursday = "4";
-  /** Friday = 5 */
-  public static final String INVOICEWEEKDAYCUTOFF_Friday = "5";
-  /** Saturday = 6 */
-  public static final String INVOICEWEEKDAYCUTOFF_Saturday = "6";
 
     /**
    * Get Invoice weekday cutoff.
@@ -173,16 +150,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
     return (String) get_Value(HasName.Companion.getCOLUMNNAME_Name());
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getName());
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_InvoiceSchedule.Table_ID;
   }

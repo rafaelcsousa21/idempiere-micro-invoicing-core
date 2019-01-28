@@ -132,15 +132,6 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA, I_Persistent
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_InOutLine_ID()));
-  }
-
     /**
    * Set Movement Quantity.
    *

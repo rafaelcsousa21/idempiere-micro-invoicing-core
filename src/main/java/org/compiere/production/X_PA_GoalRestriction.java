@@ -64,9 +64,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
     return ii;
   }
 
-  /** GoalRestrictionType AD_Reference_ID=368 */
-  public static final int GOALRESTRICTIONTYPE_AD_Reference_ID = 368;
-  /** Organization = O */
+    /** Organization = O */
   public static final String GOALRESTRICTIONTYPE_Organization = "O";
   /** Business Partner = B */
   public static final String GOALRESTRICTIONTYPE_BusinessPartner = "B";

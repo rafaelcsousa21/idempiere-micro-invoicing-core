@@ -71,9 +71,7 @@ public class X_AD_Table_ScriptValidator extends PO
     return ii;
   }
 
-    /** EventModelValidator AD_Reference_ID=53237 */
-  public static final int EVENTMODELVALIDATOR_AD_Reference_ID = 53237;
-  /** Table Before New = TBN */
+    /** Table Before New = TBN */
   public static final String EVENTMODELVALIDATOR_TableBeforeNew = "TBN";
   /** Table Before Change = TBC */
   public static final String EVENTMODELVALIDATOR_TableBeforeChange = "TBC";
@@ -133,16 +131,7 @@ public class X_AD_Table_ScriptValidator extends PO
     return (String) get_Value(COLUMNNAME_EventModelValidator);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getEventModelValidator()));
-  }
-
-  /**
+    /**
    * Set Sequence.
    *
    * @param SeqNo Method of ordering records; lowest number comes first

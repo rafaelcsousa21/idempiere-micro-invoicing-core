@@ -109,17 +109,6 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
     return ii;
   }
 
-  /** ConfidentialType AD_Reference_ID=340 */
-  public static final int CONFIDENTIALTYPE_AD_Reference_ID = 340;
-  /** Public Information = A */
-  public static final String CONFIDENTIALTYPE_PublicInformation = "A";
-  /** Partner Confidential = C */
-  public static final String CONFIDENTIALTYPE_PartnerConfidential = "C";
-  /** Internal = I */
-  public static final String CONFIDENTIALTYPE_Internal = "I";
-  /** Private Information = P */
-  public static final String CONFIDENTIALTYPE_PrivateInformation = "P";
-
     /**
    * Get Order.
    *
@@ -152,20 +141,6 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
     if (ii == null) return 0;
     return ii;
   }
-
-    /** IsEscalated AD_Reference_ID=319 */
-  public static final int ISESCALATED_AD_Reference_ID = 319;
-  /** Yes = Y */
-  public static final String ISESCALATED_Yes = "Y";
-  /** No = N */
-  public static final String ISESCALATED_No = "N";
-
-    /** IsSelfService AD_Reference_ID=319 */
-  public static final int ISSELFSERVICE_AD_Reference_ID = 319;
-  /** Yes = Y */
-  public static final String ISSELFSERVICE_Yes = "Y";
-  /** No = N */
-  public static final String ISSELFSERVICE_No = "N";
 
     /**
    * Get Shipment/Receipt.
@@ -228,32 +203,6 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   public String getNullColumns() {
     return (String) get_Value(COLUMNNAME_NullColumns);
   }
-
-  /** Priority AD_Reference_ID=154 */
-  public static final int PRIORITY_AD_Reference_ID = 154;
-  /** High = 3 */
-  public static final String PRIORITY_High = "3";
-  /** Medium = 5 */
-  public static final String PRIORITY_Medium = "5";
-  /** Low = 7 */
-  public static final String PRIORITY_Low = "7";
-  /** Urgent = 1 */
-  public static final String PRIORITY_Urgent = "1";
-  /** Minor = 9 */
-  public static final String PRIORITY_Minor = "9";
-
-    /** PriorityUser AD_Reference_ID=154 */
-  public static final int PRIORITYUSER_AD_Reference_ID = 154;
-  /** High = 3 */
-  public static final String PRIORITYUSER_High = "3";
-  /** Medium = 5 */
-  public static final String PRIORITYUSER_Medium = "5";
-  /** Low = 7 */
-  public static final String PRIORITYUSER_Low = "7";
-  /** Urgent = 1 */
-  public static final String PRIORITYUSER_Urgent = "1";
-  /** Minor = 9 */
-  public static final String PRIORITYUSER_Minor = "9";
 
     /**
    * Get Category.
@@ -341,27 +290,6 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
     if (ii == null) return 0;
     return ii;
   }
-
-    /** TaskStatus AD_Reference_ID=366 */
-  public static final int TASKSTATUS_AD_Reference_ID = 366;
-  /** 0% Not Started = 0 */
-  public static final String TASKSTATUS_0NotStarted = "0";
-  /** 100% Complete = D */
-  public static final String TASKSTATUS_100Complete = "D";
-  /** 20% Started = 2 */
-  public static final String TASKSTATUS_20Started = "2";
-  /** 80% Nearly Done = 8 */
-  public static final String TASKSTATUS_80NearlyDone = "8";
-  /** 40% Busy = 4 */
-  public static final String TASKSTATUS_40Busy = "4";
-  /** 60% Good Progress = 6 */
-  public static final String TASKSTATUS_60GoodProgress = "6";
-  /** 90% Finishing = 9 */
-  public static final String TASKSTATUS_90Finishing = "9";
-  /** 95% Almost Done = A */
-  public static final String TASKSTATUS_95AlmostDone = "A";
-  /** 99% Cleaning up = C */
-  public static final String TASKSTATUS_99CleaningUp = "C";
 
     @Override
   public int getTableId() {

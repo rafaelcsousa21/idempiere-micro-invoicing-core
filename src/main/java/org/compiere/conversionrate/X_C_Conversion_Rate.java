@@ -62,15 +62,6 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_Conversion_Rate_ID()));
-  }
-
     /**
    * Set Currency Type.
    *

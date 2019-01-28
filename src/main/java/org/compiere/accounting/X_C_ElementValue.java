@@ -42,15 +42,10 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
     return "X_C_ElementValue[" + getId() + "]";
   }
 
-  /** AccountSign AD_Reference_ID=118 */
-  public static final int ACCOUNTSIGN_AD_Reference_ID = 118;
-  /** Natural = N */
+    /** Natural = N */
   public static final String ACCOUNTSIGN_Natural = "N";
-  /** Debit = D */
-  public static final String ACCOUNTSIGN_Debit = "D";
-  /** Credit = C */
-  public static final String ACCOUNTSIGN_Credit = "C";
-  /**
+
+    /**
    * Set Account Sign.
    *
    * @param AccountSign Indicates the Natural Sign of the Account as a Debit or Credit
@@ -60,21 +55,16 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
     set_Value(COLUMNNAME_AccountSign, AccountSign);
   }
 
-    /** AccountType AD_Reference_ID=117 */
-  public static final int ACCOUNTTYPE_AD_Reference_ID = 117;
-  /** Asset = A */
+    /** Asset = A */
   public static final String ACCOUNTTYPE_Asset = "A";
   /** Liability = L */
   public static final String ACCOUNTTYPE_Liability = "L";
-  /** Revenue = R */
-  public static final String ACCOUNTTYPE_Revenue = "R";
-  /** Expense = E */
+    /** Expense = E */
   public static final String ACCOUNTTYPE_Expense = "E";
   /** Owner's Equity = O */
   public static final String ACCOUNTTYPE_OwnerSEquity = "O";
-  /** Memo = M */
-  public static final String ACCOUNTTYPE_Memo = "M";
-  /**
+
+    /**
    * Set Account Type.
    *
    * @param AccountType Indicates the type of account
@@ -93,21 +83,6 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
     return (String) get_Value(COLUMNNAME_AccountType);
   }
 
-  /** BPartnerType AD_Reference_ID=200076 */
-  public static final int BPARTNERTYPE_AD_Reference_ID = 200076;
-  /** Customer = C */
-  public static final String BPARTNERTYPE_Customer = "C";
-  /** Vendor = V */
-  public static final String BPARTNERTYPE_Vendor = "V";
-  /** Employee = E */
-  public static final String BPARTNERTYPE_Employee = "E";
-
-    public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
-    return (org.compiere.model.I_C_BankAccount)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), null);
-  }
-
     /**
    * Get Bank Account.
    *
@@ -117,12 +92,6 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
     Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
     if (ii == null) return 0;
     return ii;
-  }
-
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
   }
 
     /**

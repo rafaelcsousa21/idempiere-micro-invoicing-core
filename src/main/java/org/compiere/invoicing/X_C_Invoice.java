@@ -5,7 +5,6 @@ import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -240,7 +239,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-    /**
+  /**
    * Get Charge.
    *
    * @return Additional document charges
@@ -349,17 +348,6 @@ public class X_C_Invoice extends PO implements I_Persistent {
   }
 
     /**
-   * Get Dunning Level.
-   *
-   * @return Dunning Level
-   */
-    private int getC_DunningLevel_ID() {
-    Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_DunningLevel_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
    * Set Charge amount.
    *
    * @param ChargeAmt Charge Amount
@@ -534,7 +522,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return (Timestamp) get_Value(I_C_Invoice.COLUMNNAME_DateOrdered);
   }
 
-  /**
+    /**
    * Set Date printed.
    *
    * @param DatePrinted Date the document was printed.
@@ -561,37 +549,16 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return (String) get_Value(I_C_Invoice.COLUMNNAME_Description);
   }
 
-  /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
+    /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
+    /** Close = CL */
   public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
-  public static final String DOCACTION_Re_Activate = "RE";
-  /** <None> = -- */
+    /** <None> = -- */
   public static final String DOCACTION_None = "--";
   /** Prepare = PR */
   public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-  /**
+
+    /**
    * Set Document Action.
    *
    * @param DocAction The targeted status of the document
@@ -610,9 +577,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return (String) get_Value(I_C_Invoice.COLUMNNAME_DocAction);
   }
 
-  /** DocStatus AD_Reference_ID=131 */
-  public static final int DOCSTATUS_AD_Reference_ID = 131;
-  /** Drafted = DR */
+    /** Drafted = DR */
   public static final String DOCSTATUS_Drafted = "DR";
   /** Completed = CO */
   public static final String DOCSTATUS_Completed = "CO";
@@ -628,15 +593,10 @@ public class X_C_Invoice extends PO implements I_Persistent {
   public static final String DOCSTATUS_Reversed = "RE";
   /** Closed = CL */
   public static final String DOCSTATUS_Closed = "CL";
-  /** Unknown = ?? */
-  public static final String DOCSTATUS_Unknown = "??";
-  /** In Progress = IP */
+    /** In Progress = IP */
   public static final String DOCSTATUS_InProgress = "IP";
-  /** Waiting Payment = WP */
-  public static final String DOCSTATUS_WaitingPayment = "WP";
-  /** Waiting Confirmation = WC */
-  public static final String DOCSTATUS_WaitingConfirmation = "WC";
-  /**
+
+    /**
    * Set Document Status.
    *
    * @param DocStatus The current status of the document
@@ -673,15 +633,6 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return (String) get_Value(I_C_Invoice.COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
     /**
    * Set Grand Total.
    *
@@ -701,17 +652,6 @@ public class X_C_Invoice extends PO implements I_Persistent {
     if (bd == null) return Env.ZERO;
     return bd;
   }
-
-  /** InvoiceCollectionType AD_Reference_ID=394 */
-  public static final int INVOICECOLLECTIONTYPE_AD_Reference_ID = 394;
-  /** Dunning = D */
-  public static final String INVOICECOLLECTIONTYPE_Dunning = "D";
-  /** Collection Agency = C */
-  public static final String INVOICECOLLECTIONTYPE_CollectionAgency = "C";
-  /** Legal Procedure = L */
-  public static final String INVOICECOLLECTIONTYPE_LegalProcedure = "L";
-  /** Uncollectable = U */
-  public static final String INVOICECOLLECTIONTYPE_Uncollectable = "U";
 
     /**
    * Set Approved.
@@ -801,7 +741,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return false;
   }
 
-  /**
+    /**
    * Set Printed.
    *
    * @param IsPrinted Indicates if this document / line is printed
@@ -922,23 +862,14 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  /** PaymentRule AD_Reference_ID=195 */
-  public static final int PAYMENTRULE_AD_Reference_ID = 195;
-  /** Cash = B */
+    /** Cash = B */
   public static final String PAYMENTRULE_Cash = "B";
-  /** Credit Card = K */
-  public static final String PAYMENTRULE_CreditCard = "K";
-  /** Direct Deposit = T */
-  public static final String PAYMENTRULE_DirectDeposit = "T";
-  /** Check = S */
-  public static final String PAYMENTRULE_Check = "S";
-  /** On Credit = P */
+    /** On Credit = P */
   public static final String PAYMENTRULE_OnCredit = "P";
   /** Direct Debit = D */
   public static final String PAYMENTRULE_DirectDebit = "D";
-  /** Mixed POS Payment = M */
-  public static final String PAYMENTRULE_MixedPOSPayment = "M";
-  /**
+
+    /**
    * Set Payment Rule.
    *
    * @param PaymentRule How you pay the invoice
@@ -976,7 +907,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return (String) get_Value(I_C_Invoice.COLUMNNAME_POReference);
   }
 
-  /**
+    /**
    * Set Posted.
    *
    * @param Posted Posting status
@@ -1060,17 +991,6 @@ public class X_C_Invoice extends PO implements I_Persistent {
   public void setReversal_ID(int Reversal_ID) {
     if (Reversal_ID < 1) set_Value(I_C_Invoice.COLUMNNAME_Reversal_ID, null);
     else set_Value(I_C_Invoice.COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
-  }
-
-  /**
-   * Get Reversal ID.
-   *
-   * @return ID of document reversal
-   */
-  private int getReversal_ID() {
-    Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_Reversal_ID);
-    if (ii == null) return 0;
-    return ii;
   }
 
     /**

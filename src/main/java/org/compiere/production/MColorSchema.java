@@ -18,26 +18,7 @@ public class MColorSchema extends X_PA_ColorSchema {
   /** */
   private static final long serialVersionUID = 4645092884363283719L;
 
-  /**
-   * Get Color
-   *
-   * @param ctx context
-   * @param PA_ColorSchema_ID id
-   * @param target target value
-   * @param actual actual value
-   * @return color
-   */
-  public static Color getColor(
-      Properties ctx, int PA_ColorSchema_ID, BigDecimal target, BigDecimal actual) {
-    int percent = 0;
-    if (actual != null && actual.signum() != 0 && target != null && target.signum() != 0) {
-      BigDecimal pp = actual.multiply(Env.ONEHUNDRED).divide(target, 0, BigDecimal.ROUND_HALF_UP);
-      percent = pp.intValue();
-    }
-    return getColor(ctx, PA_ColorSchema_ID, percent);
-  } //	getColor
-
-  /**
+    /**
    * Get Color
    *
    * @param ctx context

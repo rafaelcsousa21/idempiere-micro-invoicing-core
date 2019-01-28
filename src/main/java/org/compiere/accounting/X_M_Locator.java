@@ -159,16 +159,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     return (String) get_Value(COLUMNNAME_Value);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getValue());
-  }
-
-  /**
+    /**
    * Set Aisle (X).
    *
    * @param X X dimension, e.g., Aisle

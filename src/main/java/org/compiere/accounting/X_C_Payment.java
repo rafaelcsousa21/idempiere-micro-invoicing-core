@@ -690,9 +690,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
     return (String) get_Value(COLUMNNAME_CreditCardNumber);
   }
 
-  /** CreditCardType AD_Reference_ID=149 */
-  public static final int CREDITCARDTYPE_AD_Reference_ID = 149;
-  /** Amex = A */
+    /** Amex = A */
   public static final String CREDITCARDTYPE_Amex = "A";
   /** MasterCard = M */
   public static final String CREDITCARDTYPE_MasterCard = "M";
@@ -871,37 +869,16 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
     return bd;
   }
 
-  /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
+    /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
+    /** Close = CL */
   public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
-  public static final String DOCACTION_Re_Activate = "RE";
-  /** <None> = -- */
+    /** <None> = -- */
   public static final String DOCACTION_None = "--";
   /** Prepare = PR */
   public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-  /**
+
+    /**
    * Set Document Action.
    *
    * @param DocAction The targeted status of the document
@@ -920,9 +897,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocAction);
   }
 
-  /** DocStatus AD_Reference_ID=131 */
-  public static final int DOCSTATUS_AD_Reference_ID = 131;
-  /** Drafted = DR */
+    /** Drafted = DR */
   public static final String DOCSTATUS_Drafted = "DR";
   /** Completed = CO */
   public static final String DOCSTATUS_Completed = "CO";
@@ -938,15 +913,12 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public static final String DOCSTATUS_Reversed = "RE";
   /** Closed = CL */
   public static final String DOCSTATUS_Closed = "CL";
-  /** Unknown = ?? */
-  public static final String DOCSTATUS_Unknown = "??";
-  /** In Progress = IP */
+    /** In Progress = IP */
   public static final String DOCSTATUS_InProgress = "IP";
   /** Waiting Payment = WP */
   public static final String DOCSTATUS_WaitingPayment = "WP";
-  /** Waiting Confirmation = WC */
-  public static final String DOCSTATUS_WaitingConfirmation = "WC";
-  /**
+
+    /**
    * Set Document Status.
    *
    * @param DocStatus The current status of the document
@@ -983,16 +955,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
-  /**
+    /**
    * Set IBAN.
    *
    * @param IBAN International Bank Account Number
@@ -1388,15 +1351,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
     return (String) get_Value(COLUMNNAME_R_AuthCode);
   }
 
-    /** R_AvsAddr AD_Reference_ID=213 */
-  public static final int R_AVSADDR_AD_Reference_ID = 213;
-  /** Match = Y */
-  public static final String R_AVSADDR_Match = "Y";
-  /** No Match = N */
-  public static final String R_AVSADDR_NoMatch = "N";
-  /** Unavailable = X */
-  public static final String R_AVSADDR_Unavailable = "X";
-  /**
+    /**
    * Set Address verified.
    *
    * @param R_AvsAddr This address has been verified
@@ -1415,13 +1370,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
     return (String) get_Value(COLUMNNAME_R_AvsAddr);
   }
 
-  /** R_AvsZip AD_Reference_ID=213 */
-  public static final int R_AVSZIP_AD_Reference_ID = 213;
-  /** Match = Y */
-  public static final String R_AVSZIP_Match = "Y";
-  /** No Match = N */
-  public static final String R_AVSZIP_NoMatch = "N";
-  /** Unavailable = X */
+    /** Unavailable = X */
   public static final String R_AVSZIP_Unavailable = "X";
   /**
    * Set Zip verified.
@@ -1668,9 +1617,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
     return bd;
   }
 
-  /** TenderType AD_Reference_ID=214 */
-  public static final int TENDERTYPE_AD_Reference_ID = 214;
-  /** Credit Card = C */
+    /** Credit Card = C */
   public static final String TENDERTYPE_CreditCard = "C";
   /** Check = K */
   public static final String TENDERTYPE_Check = "K";
@@ -1701,19 +1648,13 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
     return (String) get_Value(COLUMNNAME_TenderType);
   }
 
-  /** TrxType AD_Reference_ID=215 */
-  public static final int TRXTYPE_AD_Reference_ID = 215;
-  /** Sales = S */
+    /** Sales = S */
   public static final String TRXTYPE_Sales = "S";
   /** Delayed Capture = D */
   public static final String TRXTYPE_DelayedCapture = "D";
   /** Credit (Payment) = C */
   public static final String TRXTYPE_CreditPayment = "C";
-  /** Voice Authorization = F */
-  public static final String TRXTYPE_VoiceAuthorization = "F";
-  /** Authorization = A */
-  public static final String TRXTYPE_Authorization = "A";
-  /** Void = V */
+    /** Void = V */
   public static final String TRXTYPE_Void = "V";
   /**
    * Set Transaction Type.

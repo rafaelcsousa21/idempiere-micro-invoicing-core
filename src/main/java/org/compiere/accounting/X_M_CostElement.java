@@ -45,19 +45,12 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
     return "X_M_CostElement[" + getId() + "]";
   }
 
-  /** CostElementType AD_Reference_ID=338 */
-  public static final int COSTELEMENTTYPE_AD_Reference_ID = 338;
-  /** Material = M */
+    /** Material = M */
   public static final String COSTELEMENTTYPE_Material = "M";
-  /** Overhead = O */
-  public static final String COSTELEMENTTYPE_Overhead = "O";
-  /** Burden (M.Overhead) = B */
-  public static final String COSTELEMENTTYPE_BurdenMOverhead = "B";
-  /** Outside Processing = X */
+    /** Outside Processing = X */
   public static final String COSTELEMENTTYPE_OutsideProcessing = "X";
-  /** Resource = R */
-  public static final String COSTELEMENTTYPE_Resource = "R";
-  /**
+
+    /**
    * Set Cost Element Type.
    *
    * @param CostElementType Type of Cost Element
@@ -94,9 +87,8 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
   public static final String COSTINGMETHOD_LastInvoice = "i";
   /** User Defined = U */
   public static final String COSTINGMETHOD_UserDefined = "U";
-  /** _ = x */
-  public static final String COSTINGMETHOD__ = "x";
-  /**
+
+    /**
    * Set Costing Method.
    *
    * @param CostingMethod Indicates how Costs will be calculated

@@ -10,12 +10,9 @@ import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 
-import java.awt.*;
-import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -262,36 +259,7 @@ public class MWFNode extends X_AD_WF_Node {
     return getHelp();
   } //	getHelp
 
-  /**
-   * Set Position
-   *
-   * @param position point
-   */
-  public void setPosition(Point position) {
-    setPosition(position.x, position.y);
-  } //	setPosition
-
-  /**
-   * Set Position
-   *
-   * @param x x
-   * @param y y
-   */
-  public void setPosition(int x, int y) {
-    setXPosition(x);
-    setYPosition(y);
-  } //	setPosition
-
-  /**
-   * Get Position
-   *
-   * @return position point
-   */
-  public Point getPosition() {
-    return new Point(getXPosition(), getYPosition());
-  } //	getPosition
-
-  /**
+    /**
    * Get Action Info
    *
    * @return info
@@ -383,19 +351,7 @@ public class MWFNode extends X_AD_WF_Node {
     return false;
   } //	isUserManual
 
-  /**
-   * Get Duration in ms
-   *
-   * @return duration in ms
-   */
-  public long getDurationMS() {
-    long duration = super.getDuration();
-    if (duration == 0) return 0;
-    if (m_durationBaseMS == -1) m_durationBaseMS = getAD_Workflow().getDurationBaseSec() * 1000;
-    return duration * m_durationBaseMS;
-  } //	getDurationMS
-
-  /**
+    /**
    * Get Duration Limit in ms
    *
    * @return duration limit in ms
@@ -407,44 +363,7 @@ public class MWFNode extends X_AD_WF_Node {
     return limit * m_durationBaseMS;
   } //	getLimitMS
 
-  /**
-   * Get Duration CalendarField
-   *
-   * @return Calendar.MINUTE, etc.
-   */
-  public int getDurationCalendarField() {
-    return getAD_Workflow().getDurationCalendarField();
-  } //	getDirationCalendarField
-
-  /**
-   * Calculate Dynamic Priority
-   *
-   * @param seconds second after created
-   * @return dyn prio
-   */
-  public int calculateDynamicPriority(int seconds) {
-    if (seconds == 0
-        || getDynPriorityUnit() == null
-        || getDynPriorityChange() == null
-        || Env.ZERO.compareTo(getDynPriorityChange()) == 0) return 0;
-    //
-    BigDecimal divide = Env.ZERO;
-    if (X_AD_WF_Node.DYNPRIORITYUNIT_Minute.equals(getDynPriorityUnit()))
-      divide = new BigDecimal(60);
-    else if (X_AD_WF_Node.DYNPRIORITYUNIT_Hour.equals(getDynPriorityUnit()))
-      divide = new BigDecimal(3600);
-    else if (X_AD_WF_Node.DYNPRIORITYUNIT_Day.equals(getDynPriorityUnit()))
-      divide = new BigDecimal(86400);
-    else return 0;
-    //
-    BigDecimal change =
-        new BigDecimal(seconds)
-            .divide(divide, BigDecimal.ROUND_DOWN)
-            .multiply(getDynPriorityChange());
-    return change.intValue();
-  } //	calculateDynamicPriority
-
-  /**
+    /**
    * ************************************************************************ Get Parameters
    *
    * @return array of parameters
@@ -593,18 +512,4 @@ public class MWFNode extends X_AD_WF_Node {
     return success;
   } //	afterDelete
 
-  /**
-   * Check if the workflow node is valid for given date
-   *
-   * @param date
-   * @return true if valid
-   */
-  public boolean isValidFromTo(Timestamp date) {
-    Timestamp validFrom = getValidFrom();
-    Timestamp validTo = getValidTo();
-
-    if (validFrom != null && date.before(validFrom)) return false;
-    if (validTo != null && date.after(validTo)) return false;
-    return true;
-  }
 } //	M_WFNext

@@ -73,25 +73,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
   /** Invoice */
   private MInvoice m_invoice = null;
 
-  /**
-   * Set Invoice Info
-   *
-   * @param C_Invoice_ID invoice
-   * @param isSOTrx sales trx
-   * @param PayAmt payment
-   * @param OpenAmt open
-   * @param DiscountAmt discount
-   */
-  public void xsetInvoice(
-      int C_Invoice_ID,
-      boolean isSOTrx,
-      BigDecimal OpenAmt,
-      BigDecimal PayAmt,
-      BigDecimal DiscountAmt) {
-    setInvoice(C_Invoice_ID, isSOTrx, OpenAmt, PayAmt, DiscountAmt, Env.ZERO);
-  } //	setInvoive
-
-  /**
+    /**
    * Set Invoice Info
    *
    * @param C_Invoice_ID invoice

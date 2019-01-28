@@ -2,10 +2,7 @@ package org.compiere.wf;
 
 import org.compiere.accounting.MClient;
 import org.compiere.conversionrate.MConversionRate;
-import org.compiere.crm.MBPartner;
 import org.compiere.crm.MUser;
-import org.compiere.model.I_AD_WF_Activity;
-import org.compiere.model.I_C_BPartner;
 import org.compiere.orm.*;
 import org.compiere.process.*;
 import org.compiere.util.DisplayType;
@@ -17,7 +14,6 @@ import org.idempiere.common.util.*;
 import java.io.File;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -35,58 +31,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
   /** */
   private static final long serialVersionUID = -3282235931100223816L;
 
-  /**
-   * Get Activities for table/record
-   *
-   * @param ctx context
-   * @param AD_Table_ID table
-   * @param Record_ID record
-   * @param activeOnly if true only not processed records are returned
-   * @return activity
-   */
-  public static MWFActivity[] get(
-      Properties ctx, int AD_Table_ID, int Record_ID, boolean activeOnly) {
-    ArrayList<Object> params = new ArrayList<Object>();
-    StringBuilder whereClause = new StringBuilder("AD_Table_ID=? AND Record_ID=?");
-    params.add(AD_Table_ID);
-    params.add(Record_ID);
-    if (activeOnly) {
-      whereClause.append(" AND Processed<>?");
-      params.add(true);
-    }
-    List<MWFActivity> list =
-        new Query(ctx, I_AD_WF_Activity.Table_Name, whereClause.toString(), null)
-            .setParameters(params)
-            .setOrderBy(I_AD_WF_Activity.COLUMNNAME_AD_WF_Activity_ID)
-            .list();
-
-    MWFActivity[] retValue = new MWFActivity[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	get
-
-  /**
-   * Get Active Info
-   *
-   * @param ctx context
-   * @param AD_Table_ID table
-   * @param Record_ID record
-   * @return activity summary
-   */
-  public static String getActiveInfo(Properties ctx, int AD_Table_ID, int Record_ID) {
-    MWFActivity[] acts = get(ctx, AD_Table_ID, Record_ID, true);
-    if (acts == null || acts.length == 0) return null;
-    //
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < acts.length; i++) {
-      if (i > 0) sb.append("\n");
-      MWFActivity activity = acts[i];
-      sb.append(activity.toStringX());
-    }
-    return sb.toString();
-  } //	getActivityInfo
-
-  /**
+    /**
    * ************************************************************************ Standard Constructor
    *
    * @param ctx context
@@ -316,31 +261,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     return po.get_ValueOfColumn(AD_Column_ID);
   } //	getAttributeValue
 
-  /**
-   * Is SO Trx
-   *
-   * @return SO Trx or of not found true
-   */
-  public boolean isSOTrx() {
-    PO po = getPO();
-    if (po.getId() == 0) return true;
-    //	Is there a Column?
-    int index = po.get_ColumnIndex("IsSOTrx");
-    if (index < 0) {
-      if (po.get_TableName().startsWith("M_")) return false;
-      return true;
-    }
-    //	we have a column
-    try {
-      Boolean IsSOTrx = (Boolean) po.get_Value(index);
-      return IsSOTrx.booleanValue();
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "", e);
-    }
-    return true;
-  } //	isSOTrx
-
-  /**
+    /**
    * ************************************************************************ Set AD_WF_Node_ID.
    * (Re)Set to Not Started
    *
@@ -368,25 +289,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     return m_node;
   } //	getNode
 
-  /**
-   * Get WF Node Name
-   *
-   * @return translated node name
-   */
-  public String getNodeName() {
-    return getNode().getName(true);
-  } //	getNodeName
-
-  /**
-   * Get Node Description
-   *
-   * @return translated node description
-   */
-  public String getNodeDescription() {
-    return getNode().getDescription(true);
-  } //	getNodeDescription
-
-  /**
+    /**
    * Get Node Help
    *
    * @return translated node help
@@ -395,34 +298,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     return getNode().getHelp(true);
   } //	getNodeHelp
 
-  /**
-   * Is this an user Approval step?
-   *
-   * @return true if User Approval
-   */
-  public boolean isUserApproval() {
-    return getNode().isUserApproval();
-  } //	isNodeApproval
-
-  /**
-   * Is this a Manual user step?
-   *
-   * @return true if Window/Form/..
-   */
-  public boolean isUserManual() {
-    return getNode().isUserManual();
-  } //	isUserManual
-
-  /**
-   * Is this a user choice step?
-   *
-   * @return true if User Choice
-   */
-  public boolean isUserChoice() {
-    return getNode().isUserChoice();
-  } //	isUserChoice
-
-  /**
+    /**
    * Set Text Msg (add to existing)
    *
    * @param TextMsg
@@ -1180,202 +1056,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     return true;
   } //	setVariable
 
-  /**
-   * Set User Choice
-   *
-   * @param AD_User_ID user
-   * @param value new Value
-   * @param displayType display type
-   * @param textMsg optional Message
-   * @return true if set
-   * @throws Exception if error
-   */
-  public boolean setUserChoice(int AD_User_ID, String value, int displayType, String textMsg)
-      throws Exception {
-    //	Check if user approves own document when a role is reponsible
-    /*
-     * 2007-06-08, matthiasO.
-     * The following sequence makes sure that only users in roles which
-     * have the 'Approve own document flag' set can set the user choice
-     * of 'Y' (approve) or 'N' (reject).
-     * IMHO this is against the meaning of 'Approve own document': Why
-     * should a user who is faced with the task of approving documents
-     * generally be required to have the ability to approve his OWN
-     * documents? If the document to approve really IS his own document
-     * this will be respected when trying to find an approval user in
-     * the call to getApprovalUser(...) below.
-     */
-    /*
-    if (getNode().isUserApproval() && getPO() instanceof DocAction)
-    {
-    	DocAction doc = (DocAction)m_po;
-    	MUser user = new MUser (getCtx(), AD_User_ID, null);
-    	MRole[] roles = user.getRoles(m_po. getOrgId());
-    	boolean canApproveOwnDoc = false;
-    	for (int r = 0; r < roles.length; r++)
-    	{
-    		if (roles[r].isCanApproveOwnDoc())
-    		{
-    			canApproveOwnDoc = true;
-    			break;
-    		}	//	found a role which allows to approve own document
-    	}
-    	if (!canApproveOwnDoc)
-    	{
-    		String info = user.getName() + " cannot approve own document " + doc;
-    		addTextMsg(info);
-    		log.fine(info);
-    		return false;		//	ignore
-    	}
-    }*/
-
-    setWFState(StateEngine.STATE_Running);
-    setAD_User_ID(AD_User_ID);
-    boolean ok = setVariable(value, displayType, textMsg);
-    if (!ok) return false;
-
-    String newState = StateEngine.STATE_Completed;
-    //	Approval
-    if (getNode().isUserApproval() && getPO() instanceof DocAction) {
-      DocAction doc = (DocAction) m_po;
-      try {
-        //	Not approved
-        if (!"Y".equals(value)) {
-          newState = StateEngine.STATE_Aborted;
-          if (!(doc.processIt(DocAction.Companion.getACTION_Reject())))
-            setTextMsg("Cannot Reject - Document Status: " + doc.getDocStatus());
-        } else {
-          if (isInvoker()) {
-            int startAD_User_ID = Env.getAD_User_ID(getCtx());
-            if (startAD_User_ID == 0) startAD_User_ID = doc.getDoc_User_ID();
-            int nextAD_User_ID =
-                getApprovalUser(
-                    startAD_User_ID,
-                    doc.getC_Currency_ID(),
-                    doc.getApprovalAmt(),
-                    doc. getOrgId(),
-                    startAD_User_ID == doc.getDoc_User_ID()); // 	own doc
-            //	No Approver
-            if (nextAD_User_ID <= 0) {
-              newState = StateEngine.STATE_Aborted;
-              setTextMsg(Msg.getMsg(getCtx(), "NoApprover"));
-              doc.processIt(DocAction.Companion.getACTION_Reject());
-            } else if (startAD_User_ID != nextAD_User_ID) {
-              forwardTo(nextAD_User_ID, "Next Approver");
-              newState = StateEngine.STATE_Suspended;
-            } else //	Approve
-            {
-              if (!(doc.processIt(DocAction.Companion.getACTION_Approve()))) {
-                newState = StateEngine.STATE_Aborted;
-                setTextMsg("Cannot Approve - Document Status: " + doc.getDocStatus());
-              }
-            }
-          }
-          //	No Invoker - Approve
-          else if (!(doc.processIt(DocAction.Companion.getACTION_Approve()))) {
-            newState = StateEngine.STATE_Aborted;
-            setTextMsg("Cannot Approve - Document Status: " + doc.getDocStatus());
-          }
-        }
-        doc.saveEx();
-      } catch (Exception e) {
-        newState = StateEngine.STATE_Terminated;
-        setTextMsg("User Choice: " + e.toString());
-        addTextMsg(e);
-        log.log(Level.WARNING, "", e);
-      }
-      // Send Approval Notification
-      if (newState.equals(StateEngine.STATE_Aborted)) {
-        MUser to = new MUser(getCtx(), doc.getDoc_User_ID(), null);
-
-        // send email
-        if (to.isNotificationEMail()) {
-          MClient client = MClient.get(getCtx(), doc.getClientId());
-          client.sendEMail(
-              doc.getDoc_User_ID(),
-              Msg.getMsg(getCtx(), "NotApproved") + ": " + doc.getDocumentNo(),
-              (doc.getSummary() != null ? doc.getSummary() + "\n" : "")
-                  + (doc.getProcessMsg() != null ? doc.getProcessMsg() + "\n" : "")
-                  + (getTextMsg() != null ? getTextMsg() : ""),
-              null);
-        }
-
-        // Send Note
-        if (to.isNotificationNote()) {
-          MNote note = new MNote(getCtx(), "NotApproved", doc.getDoc_User_ID(), null);
-          note.setTextMsg(
-              (doc.getSummary() != null ? doc.getSummary() + "\n" : "")
-                  + (doc.getProcessMsg() != null ? doc.getProcessMsg() + "\n" : "")
-                  + (getTextMsg() != null ? getTextMsg() : ""));
-          // 2007-06-08, matthiasO.
-          // Add record information to the note, so that the user receiving the
-          // note can jump to the doc easily
-          note.setRecord(m_po.getTableId(), m_po.getId());
-          note.saveEx();
-        }
-      }
-    }
-    setWFState(newState);
-    return ok;
-  } //	setUserChoice
-
-  /**
-   * Forward To
-   *
-   * @param AD_User_ID user
-   * @param textMsg text message
-   * @return true if forwarded
-   */
-  public boolean forwardTo(int AD_User_ID, String textMsg) {
-    if (AD_User_ID == getAD_User_ID()) {
-      log.log(Level.WARNING, "Same User - AD_User_ID=" + AD_User_ID);
-      return false;
-    }
-    //
-    MUser oldUser = MUser.get(getCtx(), getAD_User_ID());
-    MUser user = MUser.get(getCtx(), AD_User_ID);
-    if (user == null || user.getId() == 0) {
-      log.log(Level.WARNING, "Does not exist - AD_User_ID=" + AD_User_ID);
-      return false;
-    }
-    //	Update
-    setAD_User_ID(user.getAD_User_ID());
-    setTextMsg(textMsg);
-    saveEx();
-    //	Close up Old Event
-    getEventAudit();
-    m_audit.setAD_User_ID(oldUser.getAD_User_ID());
-    m_audit.setTextMsg(getTextMsg());
-    m_audit.setAttributeName("AD_User_ID");
-    m_audit.setOldValue(oldUser.getName() + "(" + oldUser.getAD_User_ID() + ")");
-    m_audit.setNewValue(user.getName() + "(" + user.getAD_User_ID() + ")");
-    //
-    m_audit.setWFState(getWFState());
-    m_audit.setEventType(MWFEventAudit.EVENTTYPE_StateChanged);
-    long ms = System.currentTimeMillis() - m_audit.getCreated().getTime();
-    m_audit.setElapsedTimeMS(new BigDecimal(ms));
-    m_audit.saveEx();
-    //	Create new one
-    m_audit = new MWFEventAudit(this);
-    m_audit.saveEx();
-    return true;
-  } //	forwardTo
-
-  /**
-   * Set User Confirmation
-   *
-   * @param AD_User_ID user
-   * @param textMsg optional message
-   */
-  public void setUserConfirmation(int AD_User_ID, String textMsg) {
-    log.fine(textMsg);
-    setWFState(StateEngine.STATE_Running);
-    setAD_User_ID(AD_User_ID);
-    if (textMsg != null) setTextMsg(textMsg);
-    setWFState(StateEngine.STATE_Completed);
-  } //	setUserConfirmation
-
-  /**
+    /**
    * Fill Parameter
    *
    * @param pInstance process instance
@@ -1595,48 +1276,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     }
   } //	sendEMail
 
-  /**
-   * ************************************************************************ Get Process Activity
-   * (Event) History
-   *
-   * @return history
-   */
-  public String getHistoryHTML() {
-    SimpleDateFormat format = DisplayType.getDateFormat(DisplayType.DateTime);
-    StringBuilder sb = new StringBuilder();
-    MWFEventAudit[] events = MWFEventAudit.get(getCtx(), getAD_WF_Process_ID(), null);
-    for (int i = 0; i < events.length; i++) {
-      MWFEventAudit audit = events[i];
-      //	sb.append("<p style=\"width:400\">");
-      sb.append("<p>");
-      sb.append(format.format(audit.getCreated()))
-          .append(" ")
-          .append(getHTMLpart("b", audit.getNodeName()))
-          .append(": ")
-          .append(getHTMLpart(null, audit.getDescription()))
-          .append(getHTMLpart("i", audit.getTextMsg()));
-      sb.append("</p>");
-    }
-    return sb.toString();
-  } //	getHistory
-
-  /**
-   * Get HTML part
-   *
-   * @param tag HTML tag
-   * @param content content
-   * @return <tag>content</tag>
-   */
-  private StringBuffer getHTMLpart(String tag, String content) {
-    StringBuffer sb = new StringBuffer();
-    if (content == null || content.length() == 0) return sb;
-    if (tag != null && tag.length() > 0) sb.append("<").append(tag).append(">");
-    sb.append(content);
-    if (tag != null && tag.length() > 0) sb.append("</").append(tag).append(">");
-    return sb;
-  } //	getHTMLpart
-
-  /**
+    /**
    * ************************************************************************ Does the underlying PO
    * (!) object have a PDF Attachment
    *
@@ -1683,55 +1323,4 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     return sb.toString();
   } //	toString
 
-  /**
-   * User String Representation. Suspended: Approve it (Joe)
-   *
-   * @return info
-   */
-  public String toStringX() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(getWFStateText()).append(": ").append(getNode().getName());
-    if (getAD_User_ID() > 0) {
-      MUser user = MUser.get(getCtx(), getAD_User_ID());
-      sb.append(" (").append(user.getName()).append(")");
-    }
-    return sb.toString();
-  } //	toStringX
-
-  /**
-   * Get Document Summary
-   *
-   * @return PO Summary
-   */
-  public String getSummary() {
-    PO po = getPO();
-    if (po == null) return null;
-    StringBuilder sb = new StringBuilder();
-    String[] keyColumns = po.get_KeyColumns();
-    if ((keyColumns != null) && (keyColumns.length > 0))
-      sb.append(Msg.getElement(getCtx(), keyColumns[0])).append(" ");
-    int index = po.get_ColumnIndex("DocumentNo");
-    if (index != -1) sb.append(po.get_Value(index)).append(": ");
-    index = po.get_ColumnIndex("SalesRep_ID");
-    Integer sr = null;
-    if (index != -1) sr = (Integer) po.get_Value(index);
-    else {
-      index = po.get_ColumnIndex("AD_User_ID");
-      if (index != -1) sr = (Integer) po.get_Value(index);
-    }
-    if (sr != null) {
-      MUser user = MUser.get(getCtx(), sr.intValue());
-      if (user != null) sb.append(user.getName()).append(" ");
-    }
-    //
-    index = po.get_ColumnIndex("C_BPartner_ID");
-    if (index != -1) {
-      Integer bp = (Integer) po.get_Value(index);
-      if (bp != null) {
-        I_C_BPartner partner = MBPartner.get(getCtx(), bp.intValue());
-        if (partner != null) sb.append(partner.getName()).append(" ");
-      }
-    }
-    return sb.toString();
-  } //	getSummary
 } //	MWFActivity

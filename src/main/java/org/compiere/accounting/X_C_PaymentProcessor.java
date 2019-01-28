@@ -417,21 +417,6 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
     set_Value(COLUMNNAME_RequireVV, Boolean.valueOf(RequireVV));
   }
 
-    /** TrxType AD_Reference_ID=215 */
-  public static final int TRXTYPE_AD_Reference_ID = 215;
-  /** Sales = S */
-  public static final String TRXTYPE_Sales = "S";
-  /** Delayed Capture = D */
-  public static final String TRXTYPE_DelayedCapture = "D";
-  /** Credit (Payment) = C */
-  public static final String TRXTYPE_CreditPayment = "C";
-  /** Voice Authorization = F */
-  public static final String TRXTYPE_VoiceAuthorization = "F";
-  /** Authorization = A */
-  public static final String TRXTYPE_Authorization = "A";
-  /** Void = V */
-  public static final String TRXTYPE_Void = "V";
-
     @Override
   public int getTableId() {
     return I_C_PaymentProcessor.Table_ID;

@@ -534,21 +534,12 @@ public class X_DD_Order extends PO implements I_DD_Order, I_Persistent {
     return (String) get_Value(COLUMNNAME_DD_Order_UU);
   }
 
-  /** DeliveryRule AD_Reference_ID=151 */
-  public static final int DELIVERYRULE_AD_Reference_ID = 151;
-  /** After Receipt = R */
-  public static final String DELIVERYRULE_AfterReceipt = "R";
-  /** Availability = A */
+    /** Availability = A */
   public static final String DELIVERYRULE_Availability = "A";
-  /** Complete Line = L */
-  public static final String DELIVERYRULE_CompleteLine = "L";
-  /** Complete Order = O */
+    /** Complete Order = O */
   public static final String DELIVERYRULE_CompleteOrder = "O";
-  /** Force = F */
-  public static final String DELIVERYRULE_Force = "F";
-  /** Manual = M */
-  public static final String DELIVERYRULE_Manual = "M";
-  /**
+
+    /**
    * Set Delivery Rule.
    *
    * @param DeliveryRule Defines the timing of Delivery
@@ -567,15 +558,12 @@ public class X_DD_Order extends PO implements I_DD_Order, I_Persistent {
     return (String) get_Value(COLUMNNAME_DeliveryRule);
   }
 
-  /** DeliveryViaRule AD_Reference_ID=152 */
-  public static final int DELIVERYVIARULE_AD_Reference_ID = 152;
-  /** Pickup = P */
+    /** Pickup = P */
   public static final String DELIVERYVIARULE_Pickup = "P";
   /** Delivery = D */
   public static final String DELIVERYVIARULE_Delivery = "D";
-  /** Shipper = S */
-  public static final String DELIVERYVIARULE_Shipper = "S";
-  /**
+
+    /**
    * Set Delivery Via.
    *
    * @param DeliveryViaRule How the order will be delivered
@@ -612,37 +600,16 @@ public class X_DD_Order extends PO implements I_DD_Order, I_Persistent {
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
+    /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
+    /** Close = CL */
   public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
-  public static final String DOCACTION_Re_Activate = "RE";
-  /** <None> = -- */
+    /** <None> = -- */
   public static final String DOCACTION_None = "--";
   /** Prepare = PR */
   public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-  /**
+
+    /**
    * Set Document Action.
    *
    * @param DocAction The targeted status of the document
@@ -661,33 +628,16 @@ public class X_DD_Order extends PO implements I_DD_Order, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocAction);
   }
 
-  /** DocStatus AD_Reference_ID=131 */
-  public static final int DOCSTATUS_AD_Reference_ID = 131;
-  /** Drafted = DR */
+    /** Drafted = DR */
   public static final String DOCSTATUS_Drafted = "DR";
   /** Completed = CO */
   public static final String DOCSTATUS_Completed = "CO";
-  /** Approved = AP */
-  public static final String DOCSTATUS_Approved = "AP";
-  /** Not Approved = NA */
-  public static final String DOCSTATUS_NotApproved = "NA";
-  /** Voided = VO */
-  public static final String DOCSTATUS_Voided = "VO";
-  /** Invalid = IN */
-  public static final String DOCSTATUS_Invalid = "IN";
-  /** Reversed = RE */
+    /** Reversed = RE */
   public static final String DOCSTATUS_Reversed = "RE";
   /** Closed = CL */
   public static final String DOCSTATUS_Closed = "CL";
-  /** Unknown = ?? */
-  public static final String DOCSTATUS_Unknown = "??";
-  /** In Progress = IP */
-  public static final String DOCSTATUS_InProgress = "IP";
-  /** Waiting Payment = WP */
-  public static final String DOCSTATUS_WaitingPayment = "WP";
-  /** Waiting Confirmation = WC */
-  public static final String DOCSTATUS_WaitingConfirmation = "WC";
-  /**
+
+    /**
    * Set Document Status.
    *
    * @param DocStatus The current status of the document
@@ -724,16 +674,7 @@ public class X_DD_Order extends PO implements I_DD_Order, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
-  /**
+    /**
    * Set Freight Amount.
    *
    * @param FreightAmt Freight Amount
@@ -753,17 +694,10 @@ public class X_DD_Order extends PO implements I_DD_Order, I_Persistent {
     return bd;
   }
 
-  /** FreightCostRule AD_Reference_ID=153 */
-  public static final int FREIGHTCOSTRULE_AD_Reference_ID = 153;
-  /** Freight included = I */
+    /** Freight included = I */
   public static final String FREIGHTCOSTRULE_FreightIncluded = "I";
-  /** Fix price = F */
-  public static final String FREIGHTCOSTRULE_FixPrice = "F";
-  /** Calculated = C */
-  public static final String FREIGHTCOSTRULE_Calculated = "C";
-  /** Line = L */
-  public static final String FREIGHTCOSTRULE_Line = "L";
-  /**
+
+    /**
    * Set Freight Cost Rule.
    *
    * @param FreightCostRule Method for charging Freight
@@ -1118,19 +1052,10 @@ public class X_DD_Order extends PO implements I_DD_Order, I_Persistent {
     return false;
   }
 
-  /** PriorityRule AD_Reference_ID=154 */
-  public static final int PRIORITYRULE_AD_Reference_ID = 154;
-  /** High = 3 */
-  public static final String PRIORITYRULE_High = "3";
-  /** Medium = 5 */
+    /** Medium = 5 */
   public static final String PRIORITYRULE_Medium = "5";
-  /** Low = 7 */
-  public static final String PRIORITYRULE_Low = "7";
-  /** Urgent = 1 */
-  public static final String PRIORITYRULE_Urgent = "1";
-  /** Minor = 9 */
-  public static final String PRIORITYRULE_Minor = "9";
-  /**
+
+    /**
    * Set Priority.
    *
    * @param PriorityRule Priority of a document

@@ -474,12 +474,8 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
     return m_lines;
   } //	getLines
 
-  /* Doc - To be used on ModelValidator to get the corresponding Doc from the PO */
-  private IDoc m_doc;
-
   @Override
   public void setDoc(IDoc doc) {
-    m_doc = doc;
   }
 
   @Override

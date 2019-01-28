@@ -158,25 +158,7 @@ public class MCostElement extends X_M_CostElement {
   } //	getMaterialCostElement
 
   // MZ Goodwill
-  /**
-   * Get active non Material Cost Element for client
-   *
-   * @param po parent
-   * @return cost element array
-   */
-  public static MCostElement[] getNonCostingMethods(PO po) {
-    final String whereClause = "AD_Client_ID=? AND CostingMethod IS NULL";
-    List<MCostElement> list =
-        new Query(po.getCtx(), I_M_CostElement.Table_Name, whereClause, null)
-            .setParameters(po.getClientId())
-            .setOnlyActiveRecords(true)
-            .list();
-    //
-    MCostElement[] retValue = new MCostElement[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getMaterialCostElement
-  // end MZ
+    // end MZ
 
   /**
    * Get Cost Element from Cache
@@ -214,22 +196,7 @@ public class MCostElement extends X_M_CostElement {
     return retValue;
   }
 
-  /**
-   * Get All Cost Elements for current clientId
-   *
-   * @param ctx context
-   * @param trxName transaction
-   * @return array cost elements
-   */
-  public static List<MCostElement> getByCostingMethod(Properties ctx, String CostingMethod) {
-    final String whereClause = "AD_Client_ID = ? AND CostingMethod=?";
-    return new Query(ctx, I_M_CostElement.Table_Name, whereClause, null)
-        .setOnlyActiveRecords(true)
-        .setParameters(Env.getClientId(ctx), CostingMethod)
-        .list();
-  }
-
-  /** Cache */
+    /** Cache */
   private static CCache<Integer, MCostElement> s_cache =
       new CCache<Integer, MCostElement>(I_M_CostElement.Table_Name, 20);
 

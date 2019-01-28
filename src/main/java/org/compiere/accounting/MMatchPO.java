@@ -45,42 +45,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
   /** */
   private static final long serialVersionUID = -3669451656879485463L;
 
-  /**
-   * Get PO Match with order/invoice
-   *
-   * @param ctx context
-   * @param C_OrderLine_ID order
-   * @param C_InvoiceLine_ID invoice
-   * @param trxName transaction
-   * @return array of matches
-   */
-  public static MMatchPO[] get(
-      Properties ctx, int C_OrderLine_ID, int C_InvoiceLine_ID, String trxName) {
-    if (C_OrderLine_ID == 0 || C_InvoiceLine_ID == 0) return new MMatchPO[] {};
-    //
-    String sql = "SELECT * FROM M_MatchPO WHERE C_OrderLine_ID=? AND C_InvoiceLine_ID=?";
-    ArrayList<MMatchPO> list = new ArrayList<MMatchPO>();
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, trxName);
-      pstmt.setInt(1, C_OrderLine_ID);
-      pstmt.setInt(2, C_InvoiceLine_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
-    } catch (Exception e) {
-      s_log.log(Level.SEVERE, sql, e);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    MMatchPO[] retValue = new MMatchPO[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	get
-
-  /**
+    /**
    * Get PO Match of Receipt Line
    *
    * @param ctx context
@@ -609,18 +574,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     }
   } //	setM_InOutLine_ID
 
-  /**
-   * Set C_OrderLine_ID
-   *
-   * @param line line
-   */
-  public void setC_OrderLine_ID(MOrderLine line) {
-    m_oLine = line;
-    if (line == null) setC_OrderLine_ID(0);
-    else setC_OrderLine_ID(line.getC_OrderLine_ID());
-  } //	setC_InvoiceLine_ID
-
-  /**
+    /**
    * Get Order Line
    *
    * @return order line or null
@@ -991,74 +945,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     return sb.toString();
   } //	toString
 
-  /**
-   * Consolidate MPO entries. (data conversion issue)
-   *
-   * @param ctx context
-   */
-  public static void consolidate(Properties ctx) {
-    String sql =
-        "SELECT * FROM M_MatchPO po "
-            + "WHERE EXISTS (SELECT 1 FROM M_MatchPO x "
-            + "WHERE po.C_OrderLine_ID=x.C_OrderLine_ID AND po.Qty=x.Qty "
-            + "GROUP BY C_OrderLine_ID, Qty "
-            + "HAVING COUNT(*) = 2) "
-            + " AND AD_Client_ID=?"
-            + "ORDER BY C_OrderLine_ID, M_InOutLine_ID";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    int success = 0;
-    int errors = 0;
-    try {
-      pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, Env.getClientId(ctx));
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        MMatchPO po1 = new MMatchPO(ctx, rs, null);
-        if (rs.next()) {
-          MMatchPO po2 = new MMatchPO(ctx, rs, null);
-          if (po1.getM_InOutLine_ID() != 0
-              && po1.getC_InvoiceLine_ID() == 0
-              && po2.getM_InOutLine_ID() == 0
-              && po2.getC_InvoiceLine_ID() != 0) {
-            StringBuilder s1 =
-                new StringBuilder("UPDATE M_MatchPO SET C_InvoiceLine_ID=")
-                    .append(po2.getC_InvoiceLine_ID())
-                    .append(" WHERE M_MatchPO_ID=")
-                    .append(po1.getM_MatchPO_ID());
-            int no1 = executeUpdate(s1.toString(), null);
-            if (no1 != 1) {
-              errors++;
-              s_log.warning("Not updated M_MatchPO_ID=" + po1.getM_MatchPO_ID());
-              continue;
-            }
-            //
-            String s2 = "DELETE FROM Fact_Acct WHERE AD_Table_ID=473 AND Record_ID=?";
-            int no2 = executeUpdate(s2, po2.getM_MatchPO_ID(), null);
-            String s3 = "DELETE FROM M_MatchPO WHERE M_MatchPO_ID=?";
-            int no3 = executeUpdate(s3, po2.getM_MatchPO_ID(), null);
-            if (no2 == 0 && no3 == 1) success++;
-            else {
-              s_log.warning(
-                  "M_MatchPO_ID=" + po2.getM_MatchPO_ID() + " - Deleted=" + no2 + ", Acct=" + no3);
-              errors++;
-            }
-          }
-        }
-      }
-    } catch (Exception e) {
-      s_log.log(Level.SEVERE, sql, e);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    if (errors == 0 && success == 0) ;
-    else if (s_log.isLoggable(Level.INFO))
-      s_log.info("Success #" + success + " - Error #" + errors);
-  } //	consolidate
-
-  /**
+    /**
    * Reverse MatchPO.
    *
    * @param reversalDate

@@ -71,15 +71,6 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_DepositBatch_ID()));
-  }
-
     /**
    * Set Payment.
    *

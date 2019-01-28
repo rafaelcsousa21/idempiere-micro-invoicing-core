@@ -184,16 +184,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_A_Name);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getA_Name());
-  }
-
-  /**
+    /**
    * Set Account State.
    *
    * @param A_State State of the Credit Card or Account holder
@@ -247,22 +238,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_A_Zip);
   }
 
-  /** BankAccountType AD_Reference_ID=216 */
-  public static final int BANKACCOUNTTYPE_AD_Reference_ID = 216;
-  /** Checking = C */
-  public static final String BANKACCOUNTTYPE_Checking = "C";
-  /** Savings = S */
-  public static final String BANKACCOUNTTYPE_Savings = "S";
-  /** Cash = B */
-  public static final String BANKACCOUNTTYPE_Cash = "B";
-  /** Card = D */
-  public static final String BANKACCOUNTTYPE_Card = "D";
-
-    /** BPBankAcctUse AD_Reference_ID=393 */
-  public static final int BPBANKACCTUSE_AD_Reference_ID = 393;
-  /** None = N */
-  public static final String BPBANKACCTUSE_None = "N";
-  /** Both = B */
+    /** Both = B */
   public static final String BPBANKACCTUSE_Both = "B";
   /** Direct Debit = D */
   public static final String BPBANKACCTUSE_DirectDebit = "D";
@@ -399,23 +375,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_CreditCardNumber);
   }
 
-  /** CreditCardType AD_Reference_ID=149 */
-  public static final int CREDITCARDTYPE_AD_Reference_ID = 149;
-  /** Amex = A */
-  public static final String CREDITCARDTYPE_Amex = "A";
-  /** MasterCard = M */
-  public static final String CREDITCARDTYPE_MasterCard = "M";
-  /** Visa = V */
-  public static final String CREDITCARDTYPE_Visa = "V";
-  /** ATM = C */
-  public static final String CREDITCARDTYPE_ATM = "C";
-  /** Diners = D */
-  public static final String CREDITCARDTYPE_Diners = "D";
-  /** Discover = N */
-  public static final String CREDITCARDTYPE_Discover = "N";
-  /** Purchase Card = P */
-  public static final String CREDITCARDTYPE_PurchaseCard = "P";
-  /**
+    /**
    * Set Credit Card.
    *
    * @param CreditCardType Credit Card (Visa, MC, AmEx)
@@ -493,15 +453,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return false;
   }
 
-  /** R_AvsAddr AD_Reference_ID=213 */
-  public static final int R_AVSADDR_AD_Reference_ID = 213;
-  /** Match = Y */
-  public static final String R_AVSADDR_Match = "Y";
-  /** No Match = N */
-  public static final String R_AVSADDR_NoMatch = "N";
-  /** Unavailable = X */
-  public static final String R_AVSADDR_Unavailable = "X";
-  /**
+    /**
    * Set Address verified.
    *
    * @param R_AvsAddr This address has been verified
@@ -511,15 +463,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     set_ValueNoCheck(COLUMNNAME_R_AvsAddr, R_AvsAddr);
   }
 
-    /** R_AvsZip AD_Reference_ID=213 */
-  public static final int R_AVSZIP_AD_Reference_ID = 213;
-  /** Match = Y */
-  public static final String R_AVSZIP_Match = "Y";
-  /** No Match = N */
-  public static final String R_AVSZIP_NoMatch = "N";
-  /** Unavailable = X */
-  public static final String R_AVSZIP_Unavailable = "X";
-  /**
+    /**
    * Set Zip verified.
    *
    * @param R_AvsZip The Zip Code has been verified

@@ -63,17 +63,10 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     return (String) get_Value(COLUMNNAME_AccountNo);
   }
 
-  /** BankAccountType AD_Reference_ID=216 */
-  public static final int BANKACCOUNTTYPE_AD_Reference_ID = 216;
-  /** Checking = C */
+    /** Checking = C */
   public static final String BANKACCOUNTTYPE_Checking = "C";
-  /** Savings = S */
-  public static final String BANKACCOUNTTYPE_Savings = "S";
-  /** Cash = B */
-  public static final String BANKACCOUNTTYPE_Cash = "B";
-  /** Card = D */
-  public static final String BANKACCOUNTTYPE_Card = "D";
-  /**
+
+    /**
    * Set Bank Account Type.
    *
    * @param BankAccountType Bank Account Type

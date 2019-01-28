@@ -68,38 +68,7 @@ public class MRequestUpdate extends X_R_RequestUpdate {
     }
   } //	MRequestUpdate
 
-  /**
-   * Do we have new info
-   *
-   * @return true if new info
-   */
-  public boolean isNewInfo() {
-    return getResult() != null;
-  } //	isNewInfo
-
-  /**
-   * Get Name of creator
-   *
-   * @return name
-   */
-  public String getCreatedByName() {
-    MUser user = MUser.get(getCtx(), getCreatedBy());
-    return user.getName();
-  } //	getCreatedByName
-
-  /**
-   * Get Confidential Entry Text (for jsp)
-   *
-   * @return text
-   */
-  public String getConfidentialEntryText() {
-    return MRefList.getListName(
-        getCtx(),
-        X_R_RequestUpdate.CONFIDENTIALTYPEENTRY_AD_Reference_ID,
-        getConfidentialTypeEntry());
-  } //	getConfidentialTextEntry
-
-  /**
+    /**
    * Before Save
    *
    * @param newRecord new

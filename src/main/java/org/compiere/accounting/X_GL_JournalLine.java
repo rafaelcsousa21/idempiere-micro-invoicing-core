@@ -572,15 +572,6 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
     /**
    * Set Product.
    *

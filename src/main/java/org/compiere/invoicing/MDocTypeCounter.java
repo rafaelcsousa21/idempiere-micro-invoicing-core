@@ -100,24 +100,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     return null; //	nothing found
   } //	getCounterDocType
 
-  /**
-   * Get MDocTypeCounter from Cache
-   *
-   * @param ctx context
-   * @param C_DocTypeCounter_ID id
-   * @return MDocTypeCounter
-   * @param trxName transaction
-   */
-  public static MDocTypeCounter get(Properties ctx, int C_DocTypeCounter_ID, String trxName) {
-    Integer key = new Integer(C_DocTypeCounter_ID);
-    MDocTypeCounter retValue = (MDocTypeCounter) s_cache.get(key);
-    if (retValue != null) return retValue;
-    retValue = new MDocTypeCounter(ctx, C_DocTypeCounter_ID, trxName);
-    if (retValue.getId() != 0) s_cache.put(key, retValue);
-    return retValue;
-  } //	get
-
-  /**
+    /**
    * Get Counter Document BaseType
    *
    * @param DocBaseType Document Base Type (e.g. SOO)
@@ -156,10 +139,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     return retValue;
   } //	getCounterDocBaseType
 
-  /** Object Cache */
-  private static CCache<Integer, MDocTypeCounter> s_cache =
-      new CCache<Integer, MDocTypeCounter>(I_C_DocTypeCounter.Table_Name, 20);
-  /** Counter Relationship Cache */
+    /** Counter Relationship Cache */
   private static CCache<Integer, MDocTypeCounter> s_counter =
       new CCache<Integer, MDocTypeCounter>(
           I_C_DocTypeCounter.Table_Name, "C_DocTypeCounter_Relation", 20);

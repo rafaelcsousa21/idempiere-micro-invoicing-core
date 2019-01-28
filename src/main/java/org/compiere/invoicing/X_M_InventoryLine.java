@@ -114,9 +114,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /** InventoryType AD_Reference_ID=292 */
-  public static final int INVENTORYTYPE_AD_Reference_ID = 292;
-  /** Inventory Difference = D */
+    /** Inventory Difference = D */
   public static final String INVENTORYTYPE_InventoryDifference = "D";
   /** Charge Account = C */
   public static final String INVENTORYTYPE_ChargeAccount = "C";
@@ -157,15 +155,6 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     Integer ii = (Integer) get_Value(COLUMNNAME_Line);
     if (ii == null) return 0;
     return ii;
-  }
-
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
   }
 
     /**

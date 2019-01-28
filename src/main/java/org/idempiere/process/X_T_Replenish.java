@@ -129,26 +129,7 @@ public class X_T_Replenish extends PO implements I_T_Replenish, I_Persistent {
     return bd;
   }
 
-  /** ReplenishmentCreate AD_Reference_ID=329 */
-  public static final int REPLENISHMENTCREATE_AD_Reference_ID = 329;
-  /** Purchase Order = POO */
-  public static final String REPLENISHMENTCREATE_PurchaseOrder = "POO";
-  /** Requisition = POR */
-  public static final String REPLENISHMENTCREATE_Requisition = "POR";
-  /** Inventory Move = MMM */
-  public static final String REPLENISHMENTCREATE_InventoryMove = "MMM";
-  /** Distribution Order = DOO */
-  public static final String REPLENISHMENTCREATE_DistributionOrder = "DOO";
-
-    /** ReplenishType AD_Reference_ID=164 */
-  public static final int REPLENISHTYPE_AD_Reference_ID = 164;
-  /** Maintain Maximum Level = 2 */
-  public static final String REPLENISHTYPE_MaintainMaximumLevel = "2";
-  /** Manual = 0 */
-  public static final String REPLENISHTYPE_Manual = "0";
-  /** Reorder below Minimum Level = 1 */
-  public static final String REPLENISHTYPE_ReorderBelowMinimumLevel = "1";
-  /** Custom = 9 */
+    /** Custom = 9 */
   public static final String REPLENISHTYPE_Custom = "9";
 
     /**

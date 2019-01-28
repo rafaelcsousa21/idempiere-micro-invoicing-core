@@ -32,19 +32,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
   /** Static Logger */
   private static CLogger s_log = CLogger.getCLogger(MBankAccountProcessor.class);
 
-  public static MBankAccountProcessor[] find(
-      Properties ctx,
-      String tender,
-      String CCType,
-      int AD_Client_ID,
-      int AD_Org_ID,
-      int C_Currency_ID,
-      BigDecimal Amt,
-      String trxName) {
-    return find(ctx, tender, CCType, AD_Client_ID, C_Currency_ID, Amt, trxName);
-  }
-
-  /**
+    /**
    * Get Bank Account Processor
    *
    * @param ctx context
@@ -139,21 +127,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     return retValue;
   } //  find
 
-  public static MBankAccountProcessor get(
-      Properties ctx, int C_BankAccount_ID, int C_PaymentProcessor_ID, String trxName) {
-    final String whereClause =
-        MBankAccountProcessor.COLUMNNAME_C_BankAccount_ID
-            + "=? AND "
-            + MBankAccountProcessor.COLUMNNAME_C_PaymentProcessor_ID
-            + "=?";
-    MBankAccountProcessor retValue =
-        new Query(ctx, I_C_BankAccount_Processor.Table_Name, whereClause, trxName)
-            .setParameters(C_BankAccount_ID, C_PaymentProcessor_ID)
-            .first();
-    return retValue;
-  }
-
-  public MBankAccountProcessor(Properties ctx, int ignored, String trxName) {
+    public MBankAccountProcessor(Properties ctx, int ignored, String trxName) {
     super(ctx, 0, trxName);
     if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
   }
@@ -251,39 +225,4 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     return sb.toString();
   }
 
-  public String getHostAddress() {
-    MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
-    return pp.getHostAddress();
-  }
-
-  public int getHostPort() {
-    MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
-    return pp.getHostPort();
-  }
-
-  public String getProxyAddress() {
-    MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
-    return pp.getProxyAddress();
-  }
-
-  public int getProxyPort() {
-    MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
-    return pp.getProxyPort();
-  }
-
-  public String getProxyLogon() {
-    MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
-    return pp.getProxyLogon();
-  }
-
-  public String getProxyPassword() {
-    MPaymentProcessor pp =
-        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
-    return pp.getProxyPassword();
-  }
 }

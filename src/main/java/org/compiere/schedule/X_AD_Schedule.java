@@ -80,9 +80,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
     return ii;
   }
 
-  /** FrequencyType AD_Reference_ID=221 */
-  public static final int FREQUENCYTYPE_AD_Reference_ID = 221;
-  /** Minute = M */
+    /** Minute = M */
   public static final String FREQUENCYTYPE_Minute = "M";
   /** Hour = H */
   public static final String FREQUENCYTYPE_Hour = "H";
@@ -130,15 +128,9 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
     return (String) get_Value(I_AD_Schedule.COLUMNNAME_RunOnlyOnIP);
   }
 
-  /** ScheduleType AD_Reference_ID=318 */
-  public static final int SCHEDULETYPE_AD_Reference_ID = 318;
-  /** Frequency = F */
+    /** Frequency = F */
   public static final String SCHEDULETYPE_Frequency = "F";
-  /** Week Day = W */
-  public static final String SCHEDULETYPE_WeekDay = "W";
-  /** Month Day = M */
-  public static final String SCHEDULETYPE_MonthDay = "M";
-  /** Cron Scheduling Pattern = C */
+    /** Cron Scheduling Pattern = C */
   public static final String SCHEDULETYPE_CronSchedulingPattern = "C";
 
     /**
@@ -149,23 +141,6 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
   public String getScheduleType() {
     return (String) get_Value(I_AD_Schedule.COLUMNNAME_ScheduleType);
   }
-
-  /** WeekDay AD_Reference_ID=167 */
-  public static final int WEEKDAY_AD_Reference_ID = 167;
-  /** Sunday = 7 */
-  public static final String WEEKDAY_Sunday = "7";
-  /** Monday = 1 */
-  public static final String WEEKDAY_Monday = "1";
-  /** Tuesday = 2 */
-  public static final String WEEKDAY_Tuesday = "2";
-  /** Wednesday = 3 */
-  public static final String WEEKDAY_Wednesday = "3";
-  /** Thursday = 4 */
-  public static final String WEEKDAY_Thursday = "4";
-  /** Friday = 5 */
-  public static final String WEEKDAY_Friday = "5";
-  /** Saturday = 6 */
-  public static final String WEEKDAY_Saturday = "6";
 
     @Override
   public int getTableId() {

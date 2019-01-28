@@ -122,9 +122,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return ii;
   }
 
-  /** CommitmentType AD_Reference_ID=359 */
-  public static final int COMMITMENTTYPE_AD_Reference_ID = 359;
-  /** PO Commitment only = C */
+    /** PO Commitment only = C */
   public static final String COMMITMENTTYPE_POCommitmentOnly = "C";
   /** PO Commitment & Reservation = B */
   public static final String COMMITMENTTYPE_POCommitmentReservation = "B";
@@ -155,9 +153,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return (String) get_Value(I_C_AcctSchema.COLUMNNAME_CommitmentType);
   }
 
-  /** CostingLevel AD_Reference_ID=355 */
-  public static final int COSTINGLEVEL_AD_Reference_ID = 355;
-  /** Client = C */
+    /** Client = C */
   public static final String COSTINGLEVEL_Client = "C";
   /** Organization = O */
   public static final String COSTINGLEVEL_Organization = "O";
@@ -182,27 +178,16 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return (String) get_Value(I_C_AcctSchema.COLUMNNAME_CostingLevel);
   }
 
-  /** CostingMethod AD_Reference_ID=122 */
-  public static final int COSTINGMETHOD_AD_Reference_ID = 122;
-  /** Standard Costing = S */
+    /** Standard Costing = S */
   public static final String COSTINGMETHOD_StandardCosting = "S";
   /** Average PO = A */
   public static final String COSTINGMETHOD_AveragePO = "A";
-  /** Lifo = L */
-  public static final String COSTINGMETHOD_Lifo = "L";
-  /** Fifo = F */
-  public static final String COSTINGMETHOD_Fifo = "F";
-  /** Last PO Price = p */
+    /** Last PO Price = p */
   public static final String COSTINGMETHOD_LastPOPrice = "p";
   /** Average Invoice = I */
   public static final String COSTINGMETHOD_AverageInvoice = "I";
-  /** Last Invoice = i */
-  public static final String COSTINGMETHOD_LastInvoice = "i";
-  /** User Defined = U */
-  public static final String COSTINGMETHOD_UserDefined = "U";
-  /** _ = x */
-  public static final String COSTINGMETHOD__ = "x";
-  /**
+
+    /**
    * Set Costing Method.
    *
    * @param CostingMethod Indicates how Costs will be calculated
@@ -242,19 +227,10 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return ii;
   }
 
-    /** GAAP AD_Reference_ID=123 */
-  public static final int GAAP_AD_Reference_ID = 123;
-  /** International GAAP = UN */
+    /** International GAAP = UN */
   public static final String GAAP_InternationalGAAP = "UN";
-  /** US GAAP = US */
-  public static final String GAAP_USGAAP = "US";
-  /** German HGB = DE */
-  public static final String GAAP_GermanHGB = "DE";
-  /** French Accounting Standard = FR */
-  public static final String GAAP_FrenchAccountingStandard = "FR";
-  /** Custom Accounting Rules = XX */
-  public static final String GAAP_CustomAccountingRules = "XX";
-  /**
+
+    /**
    * Set GAAP.
    *
    * @param GAAP Generally Accepted Accounting Principles
@@ -524,9 +500,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return (String) get_Value(I_C_AcctSchema.COLUMNNAME_Separator);
   }
 
-  /** TaxCorrectionType AD_Reference_ID=392 */
-  public static final int TAXCORRECTIONTYPE_AD_Reference_ID = 392;
-  /** None = N */
+    /** None = N */
   public static final String TAXCORRECTIONTYPE_None = "N";
   /** Write-off only = W */
   public static final String TAXCORRECTIONTYPE_Write_OffOnly = "W";

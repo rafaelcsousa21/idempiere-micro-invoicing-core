@@ -53,13 +53,8 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate, I_Persis
   public static final int CONFIDENTIALTYPEENTRY_AD_Reference_ID = 340;
   /** Public Information = A */
   public static final String CONFIDENTIALTYPEENTRY_PublicInformation = "A";
-  /** Partner Confidential = C */
-  public static final String CONFIDENTIALTYPEENTRY_PartnerConfidential = "C";
-  /** Internal = I */
-  public static final String CONFIDENTIALTYPEENTRY_Internal = "I";
-  /** Private Information = P */
-  public static final String CONFIDENTIALTYPEENTRY_PrivateInformation = "P";
-  /**
+
+    /**
    * Set Entry Confidentiality.
    *
    * @param ConfidentialTypeEntry Confidentiality of the individual entry
@@ -139,15 +134,6 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate, I_Persis
     Integer ii = (Integer) get_Value(COLUMNNAME_R_RequestUpdate_ID);
     if (ii == null) return 0;
     return ii;
-  }
-
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getR_RequestUpdate_ID()));
   }
 
     @Override

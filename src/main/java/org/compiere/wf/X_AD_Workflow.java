@@ -44,21 +44,10 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return sb.toString();
   }
 
-  /** AccessLevel AD_Reference_ID=5 */
-  public static final int ACCESSLEVEL_AD_Reference_ID = 5;
-  /** Organization = 1 */
+    /** Organization = 1 */
   public static final String ACCESSLEVEL_Organization = "1";
-  /** Client+Organization = 3 */
-  public static final String ACCESSLEVEL_ClientPlusOrganization = "3";
-  /** System only = 4 */
-  public static final String ACCESSLEVEL_SystemOnly = "4";
-  /** All = 7 */
-  public static final String ACCESSLEVEL_All = "7";
-  /** System+Client = 6 */
-  public static final String ACCESSLEVEL_SystemPlusClient = "6";
-  /** Client only = 2 */
-  public static final String ACCESSLEVEL_ClientOnly = "2";
-  /**
+
+    /**
    * Set Data Access Level.
    *
    * @param AccessLevel Access Level required
@@ -190,9 +179,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_Duration, Integer.valueOf(Duration));
   }
 
-    /** DurationUnit AD_Reference_ID=299 */
-  public static final int DURATIONUNIT_AD_Reference_ID = 299;
-  /** Year = Y */
+    /** Year = Y */
   public static final String DURATIONUNIT_Year = "Y";
   /** Month = M */
   public static final String DURATIONUNIT_Month = "M";
@@ -223,9 +210,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return (String) get_Value(COLUMNNAME_DurationUnit);
   }
 
-  /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-  /**
+    /**
    * Set Entity Type.
    *
    * @param EntityType Dictionary Entity Type; Determines ownership and synchronization
@@ -296,32 +281,10 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     return ii;
   }
 
-  /** ProcessType AD_Reference_ID=53224 */
-  public static final int PROCESSTYPE_AD_Reference_ID = 53224;
-  /** Batch Flow = BF */
-  public static final String PROCESSTYPE_BatchFlow = "BF";
-  /** Continuous Flow = CF */
-  public static final String PROCESSTYPE_ContinuousFlow = "CF";
-  /** Dedicate Repetititive Flow = DR */
-  public static final String PROCESSTYPE_DedicateRepetititiveFlow = "DR";
-  /** Job Shop = JS */
-  public static final String PROCESSTYPE_JobShop = "JS";
-  /** Mixed Repetitive Flow = MR */
-  public static final String PROCESSTYPE_MixedRepetitiveFlow = "MR";
-  /** Plant = PL */
-  public static final String PROCESSTYPE_Plant = "PL";
-
-    /** PublishStatus AD_Reference_ID=310 */
-  public static final int PUBLISHSTATUS_AD_Reference_ID = 310;
-  /** Released = R */
-  public static final String PUBLISHSTATUS_Released = "R";
-  /** Test = T */
-  public static final String PUBLISHSTATUS_Test = "T";
-  /** Under Revision = U */
+    /** Under Revision = U */
   public static final String PUBLISHSTATUS_UnderRevision = "U";
-  /** Void = V */
-  public static final String PUBLISHSTATUS_Void = "V";
-  /**
+
+    /**
    * Set Publication Status.
    *
    * @param PublishStatus Status of Publication
@@ -378,20 +341,10 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     set_Value(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
   }
 
-    /** WorkflowType AD_Reference_ID=328 */
-  public static final int WORKFLOWTYPE_AD_Reference_ID = 328;
-  /** General = G */
-  public static final String WORKFLOWTYPE_General = "G";
-  /** Document Process = P */
-  public static final String WORKFLOWTYPE_DocumentProcess = "P";
-  /** Document Value = V */
+    /** Document Value = V */
   public static final String WORKFLOWTYPE_DocumentValue = "V";
   /** Manufacturing = M */
   public static final String WORKFLOWTYPE_Manufacturing = "M";
-  /** Quality = Q */
-  public static final String WORKFLOWTYPE_Quality = "Q";
-  /** Wizard = W */
-  public static final String WORKFLOWTYPE_Wizard = "W";
 
     /**
    * Get Workflow Type.

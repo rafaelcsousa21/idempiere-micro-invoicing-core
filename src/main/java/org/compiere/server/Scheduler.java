@@ -40,18 +40,8 @@ import static software.hsharp.core.util.DBKt.prepareStatement;
  *     <p>Contributors: Carlos Ruiz - globalqss - FR [3135351] - Enable Scheduler for buttons
  */
 public class Scheduler extends AdempiereServer {
-  /**
-   * Scheduler
-   *
-   * @param model model
-   */
-  public Scheduler(MScheduler model) {
-    super(model, 30); // 	30 seconds delay
-    m_model = model;
-    //	m_client = MClient.get(model.getCtx(), model.getClientId());
-  } //	Scheduler
 
-  /** The Concrete Model */
+    /** The Concrete Model */
   protected MScheduler m_model = null;
   /** Last Summary */
   protected StringBuffer m_summary = new StringBuffer();
@@ -489,12 +479,4 @@ public class Scheduler extends AdempiereServer {
     return value;
   }
 
-  /**
-   * Get Server Info
-   *
-   * @return info
-   */
-  public String getServerInfo() {
-    return "#" + p_runCount + " - Last=" + m_summary.toString();
-  } //	getServerInfo
 } //	Scheduler

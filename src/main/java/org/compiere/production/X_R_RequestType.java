@@ -69,17 +69,10 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     return ii;
   }
 
-  /** ConfidentialType AD_Reference_ID=340 */
-  public static final int CONFIDENTIALTYPE_AD_Reference_ID = 340;
-  /** Public Information = A */
+    /** Public Information = A */
   public static final String CONFIDENTIALTYPE_PublicInformation = "A";
-  /** Partner Confidential = C */
-  public static final String CONFIDENTIALTYPE_PartnerConfidential = "C";
-  /** Internal = I */
-  public static final String CONFIDENTIALTYPE_Internal = "I";
-  /** Private Information = P */
-  public static final String CONFIDENTIALTYPE_PrivateInformation = "P";
-  /**
+
+    /**
    * Set Confidentiality.
    *
    * @param ConfidentialType Type of Confidentiality

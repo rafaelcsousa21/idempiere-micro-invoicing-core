@@ -136,15 +136,6 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
     /**
    * Set Attribute Set Instance.
    *

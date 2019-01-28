@@ -70,24 +70,6 @@ public class X_AD_WorkflowProcessor extends BasePOName
     return ii;
   }
 
-  /**
-   * Set Date last run.
-   *
-   * @param DateLastRun Date the process was last run.
-   */
-  public void setDateLastRun(Timestamp DateLastRun) {
-    set_Value(COLUMNNAME_DateLastRun, DateLastRun);
-  }
-
-  /**
-   * Get Date last run.
-   *
-   * @return Date the process was last run.
-   */
-  public Timestamp getDateLastRun() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
-  }
-
     /**
    * Set Date next run.
    *
@@ -104,24 +86,6 @@ public class X_AD_WorkflowProcessor extends BasePOName
    */
   public Timestamp getDateNextRun() {
     return (Timestamp) get_Value(COLUMNNAME_DateNextRun);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
   }
 
     /**

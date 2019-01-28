@@ -66,15 +66,6 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_UOM_Conversion_ID()));
-  }
-
     /**
    * Set UOM.
    *

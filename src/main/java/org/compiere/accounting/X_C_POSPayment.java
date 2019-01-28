@@ -81,19 +81,6 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return (String) get_Value(COLUMNNAME_CheckNo);
   }
 
-  /** CheckStatus AD_Reference_ID=200007 */
-  public static final int CHECKSTATUS_AD_Reference_ID = 200007;
-  /** Charged = C */
-  public static final String CHECKSTATUS_Charged = "C";
-  /** Delayed = D */
-  public static final String CHECKSTATUS_Delayed = "D";
-  /** Replaced = P */
-  public static final String CHECKSTATUS_Replaced = "P";
-  /** Received = R */
-  public static final String CHECKSTATUS_Received = "R";
-  /** Returned = T */
-  public static final String CHECKSTATUS_Returned = "T";
-
     /**
    * Get Order.
    *
@@ -145,23 +132,6 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   public String getCreditCardNumber() {
     return (String) get_Value(COLUMNNAME_CreditCardNumber);
   }
-
-  /** CreditCardType AD_Reference_ID=149 */
-  public static final int CREDITCARDTYPE_AD_Reference_ID = 149;
-  /** Amex = A */
-  public static final String CREDITCARDTYPE_Amex = "A";
-  /** MasterCard = M */
-  public static final String CREDITCARDTYPE_MasterCard = "M";
-  /** Visa = V */
-  public static final String CREDITCARDTYPE_Visa = "V";
-  /** ATM = C */
-  public static final String CREDITCARDTYPE_ATM = "C";
-  /** Diners = D */
-  public static final String CREDITCARDTYPE_Diners = "D";
-  /** Discover = N */
-  public static final String CREDITCARDTYPE_Discover = "N";
-  /** Purchase Card = P */
-  public static final String CREDITCARDTYPE_PurchaseCard = "P";
 
     /**
    * Get Credit Card.
@@ -241,21 +211,6 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   public String getSwiftCode() {
     return (String) get_Value(COLUMNNAME_SwiftCode);
   }
-
-  /** TenderType AD_Reference_ID=214 */
-  public static final int TENDERTYPE_AD_Reference_ID = 214;
-  /** Credit Card = C */
-  public static final String TENDERTYPE_CreditCard = "C";
-  /** Check = K */
-  public static final String TENDERTYPE_Check = "K";
-  /** Direct Deposit = A */
-  public static final String TENDERTYPE_DirectDeposit = "A";
-  /** Direct Debit = D */
-  public static final String TENDERTYPE_DirectDebit = "D";
-  /** Account = T */
-  public static final String TENDERTYPE_Account = "T";
-  /** Cash = X */
-  public static final String TENDERTYPE_Cash = "X";
 
     /**
    * Get Tender type.

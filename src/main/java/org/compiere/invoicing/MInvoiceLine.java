@@ -516,16 +516,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     return m_tax;
   } //	getTax
 
-  /**
-   * Set Qty Invoiced/Entered.
-   *
-   * @param Qty Invoiced/Ordered
-   */
-  public void setQty(int Qty) {
-    setQty(new BigDecimal(Qty));
-  } //	setQtyInvoiced
-
-  /**
+    /**
    * Set Qty Invoiced
    *
    * @param Qty Invoiced/Entered
@@ -591,19 +582,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     setM_AttributeSetInstance_ID(0);
   } //	setM_Product_ID
 
-  /**
-   * Set Product and UOM
-   *
-   * @param M_Product_ID product
-   * @param C_UOM_ID uom
-   */
-  public void setM_Product_ID(int M_Product_ID, int C_UOM_ID) {
-    super.setM_Product_ID(M_Product_ID);
-    super.setC_UOM_ID(C_UOM_ID);
-    setM_AttributeSetInstance_ID(0);
-  } //	setM_Product_ID
-
-  /**
+    /**
    * Get Product
    *
    * @return product or null
@@ -699,57 +678,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     return sb.toString();
   } //	toString
 
-  /**
-   * Get (Product/Charge) Name
-   *
-   * @return name
-   */
-  public String getName() {
-    if (m_name == null) {
-      String sql =
-          "SELECT COALESCE (p.Name, c.Name) "
-              + "FROM C_InvoiceLine il"
-              + " LEFT OUTER JOIN M_Product p ON (il.M_Product_ID=p.M_Product_ID)"
-              + " LEFT OUTER JOIN C_Charge C ON (il.C_Charge_ID=c.C_Charge_ID) "
-              + "WHERE C_InvoiceLine_ID=?";
-      PreparedStatement pstmt = null;
-      ResultSet rs = null;
-      try {
-        pstmt = prepareStatement(sql, null);
-        pstmt.setInt(1, getC_InvoiceLine_ID());
-        rs = pstmt.executeQuery();
-        if (rs.next()) m_name = rs.getString(1);
-        if (m_name == null) m_name = "??";
-      } catch (Exception e) {
-        log.log(Level.SEVERE, "getName", e);
-      } finally {
-        close(rs, pstmt);
-        rs = null;
-        pstmt = null;
-      }
-    }
-    return m_name;
-  } //	getName
-
-  /**
-   * Set Temporary (cached) Name
-   *
-   * @param tempName Cached Name
-   */
-  public void setName(String tempName) {
-    m_name = tempName;
-  } //	setName
-
-  /**
-   * Get Description Text. For jsp access (vs. isDescription)
-   *
-   * @return description
-   */
-  public String getDescriptionText() {
-    return super.getDescription();
-  } //	getDescriptionText
-
-  /**
+    /**
    * Get Currency Precision
    *
    * @return precision

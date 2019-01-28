@@ -121,15 +121,6 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
     /**
    * Set Attribute Set Instance.
    *

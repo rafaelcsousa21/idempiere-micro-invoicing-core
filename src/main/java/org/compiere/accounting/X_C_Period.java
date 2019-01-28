@@ -113,13 +113,10 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
     set_Value(COLUMNNAME_PeriodNo, Integer.valueOf(PeriodNo));
   }
 
-    /** PeriodType AD_Reference_ID=115 */
-  public static final int PERIODTYPE_AD_Reference_ID = 115;
-  /** Standard Calendar Period = S */
+    /** Standard Calendar Period = S */
   public static final String PERIODTYPE_StandardCalendarPeriod = "S";
-  /** Adjustment Period = A */
-  public static final String PERIODTYPE_AdjustmentPeriod = "A";
-  /**
+
+    /**
    * Set Period Type.
    *
    * @param PeriodType Period Type

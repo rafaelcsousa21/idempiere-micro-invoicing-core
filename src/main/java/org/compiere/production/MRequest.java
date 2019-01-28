@@ -1,6 +1,5 @@
 package org.compiere.production;
 
-import java.io.File;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -11,12 +10,9 @@ import org.compiere.crm.MBPartner;
 import org.compiere.crm.MUser;
 import org.compiere.crm.X_C_BP_Group;
 import org.compiere.model.I_R_Request;
-import org.compiere.model.I_R_RequestAction;
 import org.compiere.model.I_R_RequestUpdate;
-import org.compiere.orm.MRefList;
 import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
-import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 /**
@@ -29,33 +25,7 @@ public class MRequest extends X_R_Request {
   /** */
   private static final long serialVersionUID = -6049674214655497548L;
 
-  /**
-   * Get Request ID from mail text
-   *
-   * @param mailText mail text
-   * @return ID if it contains request tag otherwise 0
-   */
-  public static int getR_Request_ID(String mailText) {
-    if (mailText == null) return 0;
-    int indexStart = mailText.indexOf(TAG_START);
-    if (indexStart == -1) return 0;
-    int indexEnd = mailText.indexOf(TAG_END, indexStart);
-    if (indexEnd == -1) return 0;
-    //
-    indexStart += 5;
-    String idString = mailText.substring(indexStart, indexEnd);
-    int R_Request_ID = 0;
-    try {
-      R_Request_ID = Integer.parseInt(idString);
-    } catch (Exception e) {
-      s_log.severe("Cannot parse " + idString);
-    }
-    return R_Request_ID;
-  } //	getR_Request_ID
-
-  /** Static Logger */
-  private static CLogger s_log = CLogger.getCLogger(MRequest.class);
-  /** Request Tag Start */
+    /** Request Tag Start */
   private static final String TAG_START = "[Req#";
   /** Request Tag End */
   private static final String TAG_END = "#ID]";
@@ -135,14 +105,8 @@ public class MRequest extends X_R_Request {
   private boolean m_changed = false;
   /** BPartner */
   private MBPartner m_partner = null;
-  /** User/Contact */
-  private MUser m_user = null;
 
-  /** Separator line */
-  public static final String SEPARATOR =
-      "\n---------.----------.----------.----------.----------.----------\n";
-
-  /**
+    /**
    * ************************************************************************ Set Default Request
    * Type.
    */
@@ -161,19 +125,7 @@ public class MRequest extends X_R_Request {
     } else setR_Status_ID(status.getR_Status_ID());
   } //	setR_Status_ID
 
-  /**
-   * Add To Result
-   *
-   * @param Result
-   */
-  public void addToResult(String Result) {
-    String oldResult = getResult();
-    if (Result == null || Result.length() == 0) ;
-    else if (oldResult == null || oldResult.length() == 0) setResult(Result);
-    else setResult(oldResult + "\n-\n" + Result);
-  } //	addToResult
-
-  /** Set DueType based on Date Next Action */
+    /** Set DueType based on Date Next Action */
   public void setDueType() {
     Timestamp due = getDateNextAction();
     if (due == null) return;
@@ -187,22 +139,7 @@ public class MRequest extends X_R_Request {
     super.setDueType(DueType);
   } //	setDueType
 
-  /**
-   * ************************************************************************ Get Action History
-   *
-   * @return array of actions
-   */
-  public MRequestAction[] getActions() {
-    final String whereClause = MRequestAction.COLUMNNAME_R_Request_ID + "=?";
-    List<MRequestAction> list =
-        new Query(getCtx(), I_R_RequestAction.Table_Name, whereClause, null)
-            .setParameters(getId())
-            .setOrderBy("Created DESC")
-            .list();
-    return list.toArray(new MRequestAction[list.size()]);
-  } //	getActions
-
-  /**
+    /**
    * Get Updates
    *
    * @param confidentialType maximum confidential type - null = all
@@ -242,34 +179,7 @@ public class MRequest extends X_R_Request {
     return retValue;
   } //	getUpdates
 
-  /**
-   * Get Public Updates
-   *
-   * @return public updates
-   */
-  public MRequestUpdate[] getUpdatesPublic() {
-    return getUpdates(X_R_Request.CONFIDENTIALTYPE_PublicInformation);
-  } //	getUpdatesPublic
-
-  /**
-   * Get Customer Updates
-   *
-   * @return customer updates
-   */
-  public MRequestUpdate[] getUpdatesCustomer() {
-    return getUpdates(X_R_Request.CONFIDENTIALTYPE_PartnerConfidential);
-  } //	getUpdatesCustomer
-
-  /**
-   * Get Internal Updates
-   *
-   * @return internal updates
-   */
-  public MRequestUpdate[] getUpdatesInternal() {
-    return getUpdates(X_R_Request.CONFIDENTIALTYPE_Internal);
-  } //	getUpdatesInternal
-
-  /**
+    /**
    * Get Request Type
    *
    * @return Request Type
@@ -286,173 +196,7 @@ public class MRequest extends X_R_Request {
     return m_requestType;
   } //	getRequestType
 
-  /**
-   * Get Request Type Text (for jsp)
-   *
-   * @return Request Type Text
-   */
-  public String getRequestTypeName() {
-    if (m_requestType == null) getRequestType();
-    if (m_requestType == null) return "??";
-    return m_requestType.getName();
-  } //	getRequestTypeText
-
-  /**
-   * Get Request Category
-   *
-   * @return category
-   */
-  public MRequestCategory getCategory() {
-    if (getR_Category_ID() == 0) return null;
-    return MRequestCategory.get(getCtx(), getR_Category_ID());
-  } //	getCategory
-
-  /**
-   * Get Request Category Name
-   *
-   * @return name
-   */
-  public String getCategoryName() {
-    MRequestCategory cat = getCategory();
-    if (cat == null) return "";
-    return cat.getName();
-  } //	getCategoryName
-
-  /**
-   * Get Request Group
-   *
-   * @return group
-   */
-  public MGroup getGroup() {
-    if (getR_Group_ID() == 0) return null;
-    return MGroup.get(getCtx(), getR_Group_ID());
-  } //	getGroup
-
-  /**
-   * Get Request Group Name
-   *
-   * @return name
-   */
-  public String getGroupName() {
-    MGroup grp = getGroup();
-    if (grp == null) return "";
-    return grp.getName();
-  } //	getGroupName
-
-  /**
-   * Get Status
-   *
-   * @return status
-   */
-  public MStatus getStatus() {
-    if (getR_Status_ID() == 0) return null;
-    return MStatus.get(getCtx(), getR_Status_ID());
-  } //	getStatus
-
-  /**
-   * Get Request Status Name
-   *
-   * @return name
-   */
-  public String getStatusName() {
-    MStatus sta = getStatus();
-    if (sta == null) return "?";
-    return sta.getName();
-  } //	getStatusName
-
-  /**
-   * Get Request Resolution
-   *
-   * @return resolution
-   */
-  public MResolution getResolution() {
-    if (getR_Resolution_ID() == 0) return null;
-    return MResolution.get(getCtx(), getR_Resolution_ID());
-  } //	getResolution
-
-  /**
-   * Get Request Resolution Name
-   *
-   * @return name
-   */
-  public String getResolutionName() {
-    MResolution res = getResolution();
-    if (res == null) return "";
-    return res.getName();
-  } //	getResolutionName
-
-  /**
-   * Is Overdue
-   *
-   * @return true if overdue
-   */
-  public boolean isOverdue() {
-    return X_R_Request.DUETYPE_Overdue.equals(getDueType());
-  } //	isOverdue
-
-  /**
-   * Is due
-   *
-   * @return true if due
-   */
-  public boolean isDue() {
-    return X_R_Request.DUETYPE_Due.equals(getDueType());
-  } //	isDue
-
-  /**
-   * Get DueType Text (for jsp)
-   *
-   * @return text
-   */
-  public String getDueTypeText() {
-    return MRefList.getListName(getCtx(), X_R_Request.DUETYPE_AD_Reference_ID, getDueType());
-  } //	getDueTypeText
-
-  /**
-   * Get Priority Text (for jsp)
-   *
-   * @return text
-   */
-  public String getPriorityText() {
-    return MRefList.getListName(getCtx(), X_R_Request.PRIORITY_AD_Reference_ID, getPriority());
-  } //	getPriorityText
-
-  /**
-   * Get Importance Text (for jsp)
-   *
-   * @return text
-   */
-  public String getPriorityUserText() {
-    return MRefList.getListName(
-        getCtx(), X_R_Request.PRIORITYUSER_AD_Reference_ID, getPriorityUser());
-  } //	getPriorityUserText
-
-  /**
-   * Get Confidential Text (for jsp)
-   *
-   * @return text
-   */
-  public String getConfidentialText() {
-    return MRefList.getListName(
-        getCtx(), X_R_Request.CONFIDENTIALTYPE_AD_Reference_ID, getConfidentialType());
-  } //	getConfidentialText
-
-  /**
-   * Get Confidential Entry Text (for jsp)
-   *
-   * @return text
-   */
-  public String getConfidentialEntryText() {
-    return MRefList.getListName(
-        getCtx(), X_R_Request.CONFIDENTIALTYPEENTRY_AD_Reference_ID, getConfidentialTypeEntry());
-  } //	getConfidentialTextEntry
-
-  /** Set Date Last Alert to today */
-  public void setDateLastAlert() {
-    super.setDateLastAlert(new Timestamp(System.currentTimeMillis()));
-  } //	setDateLastAlert
-
-  /**
+    /**
    * Get Sales Rep
    *
    * @return Sales Rep User
@@ -462,40 +206,7 @@ public class MRequest extends X_R_Request {
     return MUser.get(getCtx(), getSalesRep_ID());
   } //	getSalesRep
 
-  /**
-   * Get Sales Rep Name
-   *
-   * @return Sales Rep User
-   */
-  public String getSalesRepName() {
-    MUser sr = getSalesRep();
-    if (sr == null) return "n/a";
-    return sr.getName();
-  } //	getSalesRepName
-
-  /**
-   * Get Name of creator
-   *
-   * @return name
-   */
-  public String getCreatedByName() {
-    MUser user = MUser.get(getCtx(), getCreatedBy());
-    return user.getName();
-  } //	getCreatedByName
-
-  /**
-   * Get Contact (may be not defined)
-   *
-   * @return Sales Rep User
-   */
-  public MUser getUser() {
-    if (getAD_User_ID() == 0) return null;
-    if (m_user != null && m_user.getAD_User_ID() != getAD_User_ID()) m_user = null;
-    if (m_user == null) m_user = new MUser(getCtx(), getAD_User_ID(), null);
-    return m_user;
-  } //	getUser
-
-  /**
+    /**
    * Get BPartner (may be not defined)
    *
    * @return Sales Rep User
@@ -507,21 +218,7 @@ public class MRequest extends X_R_Request {
     return m_partner;
   } //	getBPartner
 
-  /**
-   * Web Can Update Request
-   *
-   * @return true if Web can update
-   */
-  public boolean isWebCanUpdate() {
-    if (isProcessed()) return false;
-    if (getR_Status_ID() == 0) setR_Status_ID();
-    if (getR_Status_ID() == 0) return false;
-    MStatus status = MStatus.get(getCtx(), getR_Status_ID());
-    if (status == null) return false;
-    return status.isWebCanUpdate();
-  } //	isWebCanUpdate
-
-  /** Set Priority */
+    /** Set Priority */
   private void setPriority() {
     if (getPriorityUser() == null) setPriorityUser(X_R_Request.PRIORITYUSER_Low);
     //
@@ -572,21 +269,7 @@ public class MRequest extends X_R_Request {
       super.setConfidentialTypeEntry(ConfidentialTypeEntry);
   } //	setConfidentialTypeEntry
 
-  /**
-   * Web Update
-   *
-   * @param result result
-   * @return true if updated
-   */
-  public boolean webUpdate(String result) {
-    MStatus status = MStatus.get(getCtx(), getR_Status_ID());
-    if (!status.isWebCanUpdate()) return false;
-    if (status.getUpdate_Status_ID() > 0) setR_Status_ID(status.getUpdate_Status_ID());
-    setResult(result);
-    return true;
-  } //	webUpdate
-
-  /**
+    /**
    * String Representation
    *
    * @return info
@@ -597,39 +280,7 @@ public class MRequest extends X_R_Request {
     return sb.toString();
   } //	toString
 
-  /**
-   * Create PDF
-   *
-   * @return pdf or null
-   */
-  public File createPDF() {
-    // globalqss - comment to solve bug [ 1688794 ] System is generating lots of temp files
-    //		try
-    //		{
-    //			File temp = File.createTempFile(get_TableName()+getId()+"_", ".pdf");
-    //			return createPDF (temp);
-    //		}
-    //		catch (Exception e)
-    //		{
-    //			log.severe("Could not create PDF - " + e.getMessage());
-    //		}
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    //	ReportEngine re = ReportEngine.get (getCtx(), ReportEngine.INVOICE, getC_Invoice_ID());
-    //	if (re == null)
-    return null;
-    //	return re.getPDF(file);
-  } //	createPDF
-
-  /**
+    /**
    * ************************************************************************ Before Save
    *
    * @param newRecord new
@@ -816,67 +467,4 @@ public class MRequest extends X_R_Request {
   	}	//	afterSaveTransfer
   */
 
-  /**
-   * Get Mail Tag
-   *
-   * @return [Req@{id}@]
-   */
-  public String getMailTag() {
-    return TAG_START + getId() + TAG_END;
-  } //	getMailTag
-
-  /** (Soft) Close request. Must be called after webUpdate */
-  public void doClose() {
-    MStatus status = MStatus.get(getCtx(), getR_Status_ID());
-    if (!status.isClosed()) {
-      MStatus[] closed = MStatus.getClosed(getCtx());
-      MStatus newStatus = null;
-      for (int i = 0; i < closed.length; i++) {
-        if (!closed[i].isFinalClose()) {
-          newStatus = closed[i];
-          break;
-        }
-      }
-      if (newStatus == null && closed.length > 0) newStatus = closed[0];
-      if (newStatus != null) setR_Status_ID(newStatus.getR_Status_ID());
-    }
-  } //	doClose
-
-  /**
-   * Escalate request
-   *
-   * @param user true if user escalated - otherwise system
-   */
-  public void doEscalate(boolean user) {
-    if (user) {
-      String Importance = getPriorityUser();
-      if (X_R_Request.PRIORITYUSER_Urgent.equals(Importance)) ; // 	high as it goes
-      else if (X_R_Request.PRIORITYUSER_High.equals(Importance))
-        setPriorityUser(X_R_Request.PRIORITYUSER_Urgent);
-      else if (X_R_Request.PRIORITYUSER_Medium.equals(Importance))
-        setPriorityUser(X_R_Request.PRIORITYUSER_High);
-      else if (X_R_Request.PRIORITYUSER_Low.equals(Importance))
-        setPriorityUser(X_R_Request.PRIORITYUSER_Medium);
-      else if (X_R_Request.PRIORITYUSER_Minor.equals(Importance))
-        setPriorityUser(X_R_Request.PRIORITYUSER_Low);
-    } else {
-      String Importance = getPriority();
-      if (X_R_Request.PRIORITY_Urgent.equals(Importance)) ; // 	high as it goes
-      else if (X_R_Request.PRIORITY_High.equals(Importance))
-        setPriority(X_R_Request.PRIORITY_Urgent);
-      else if (X_R_Request.PRIORITY_Medium.equals(Importance))
-        setPriority(X_R_Request.PRIORITY_High);
-      else if (X_R_Request.PRIORITY_Low.equals(Importance))
-        setPriority(X_R_Request.PRIORITY_Medium);
-      else if (X_R_Request.PRIORITY_Minor.equals(Importance)) setPriority(X_R_Request.PRIORITY_Low);
-    }
-  } //	doEscalate
-
-  public boolean isChanged() {
-    return m_changed;
-  }
-
-  public void setIsChanged(boolean changed) {
-    this.m_changed = changed;
-  }
 } //	MRequest

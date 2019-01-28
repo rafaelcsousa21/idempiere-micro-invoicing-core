@@ -12,12 +12,10 @@ import org.compiere.production.MTransaction;
 import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
-import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -46,27 +44,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
   /** Reversal Indicator */
   public static String REVERSE_INDICATOR = "^";
 
-  /**
-   * Get Inventory from Cache
-   *
-   * @param ctx context
-   * @param M_Inventory_ID id
-   * @return MInventory
-   */
-  public static MInventory get(Properties ctx, int M_Inventory_ID) {
-    Integer key = new Integer(M_Inventory_ID);
-    MInventory retValue = (MInventory) s_cache.get(key);
-    if (retValue != null) return retValue;
-    retValue = new MInventory(ctx, M_Inventory_ID, null);
-    if (retValue.getId() != 0) s_cache.put(key, retValue);
-    return retValue;
-  } //	get
-
-  /** Cache */
-  private static CCache<Integer, MInventory> s_cache =
-      new CCache<Integer, MInventory>(I_M_Inventory.Table_Name, 5, 5);
-
-  /**
+    /**
    * Standard Constructor
    *
    * @param ctx context
@@ -197,37 +175,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     return msgreturn.toString();
   } //	getDocumentInfo
 
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      StringBuilder msgfile =
-          new StringBuilder().append(get_TableName()).append(getId()).append("_");
-      File temp = File.createTempFile(msgfile.toString(), ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    //	ReportEngine re = ReportEngine.get (getCtx(), ReportEngine.INVOICE, getC_Invoice_ID());
-    //	if (re == null)
-    return null;
-    //	return re.getPDF(file);
-  } //	createPDF
-
-  /**
+    /**
    * Before Save
    *
    * @param newRecord new

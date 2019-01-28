@@ -134,15 +134,6 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getAD_WF_Node_ID()));
-  }
-
     /**
    * Set Workflow Process.
    *
@@ -303,15 +294,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public static final String WFSTATE_NotStarted = "ON";
   /** Running = OR */
   public static final String WFSTATE_Running = "OR";
-  /** Suspended = OS */
-  public static final String WFSTATE_Suspended = "OS";
-  /** Completed = CC */
-  public static final String WFSTATE_Completed = "CC";
-  /** Aborted = CA */
-  public static final String WFSTATE_Aborted = "CA";
-  /** Terminated = CT */
-  public static final String WFSTATE_Terminated = "CT";
-  /**
+
+    /**
    * Set Workflow State.
    *
    * @param WFState State of the execution of the workflow

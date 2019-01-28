@@ -258,15 +258,6 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return (String) get_Value(COLUMNNAME_Combination);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getCombination());
-  }
-
     /**
    * Set Project.
    *

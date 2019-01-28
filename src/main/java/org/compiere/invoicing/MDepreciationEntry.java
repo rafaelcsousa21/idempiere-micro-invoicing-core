@@ -15,7 +15,6 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -312,11 +311,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     return null;
   }
 
-  public File createPDF() {
-    return null;
-  }
-
-  public String getDocumentInfo() {
+    public String getDocumentInfo() {
     return getDocumentNo();
   }
 
@@ -334,4 +329,14 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
 
   @Override
   public void setProcessedOn(String processed, boolean b, boolean b1) {}
+
+  /**
+   * Set Document Status.
+   *
+   * @param DocStatus The current status of the document
+   */
+  public void setDocStatus(String DocStatus) {
+
+    set_Value(COLUMNNAME_DocStatus, DocStatus);
+  }
 }

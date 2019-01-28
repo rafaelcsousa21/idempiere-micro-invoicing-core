@@ -82,15 +82,6 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_Project_ID()));
-  }
-
     /**
    * Get Project Issue.
    *

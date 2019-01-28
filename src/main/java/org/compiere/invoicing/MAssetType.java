@@ -3,10 +3,7 @@ package org.compiere.invoicing;
 import java.sql.ResultSet;
 import java.util.Properties;
 import org.compiere.model.I_A_Asset_Type;
-import org.compiere.product.MAssetGroup;
-import org.compiere.util.ArhRuntimeException;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.Env;
 
 /**
  * Asset Type
@@ -19,9 +16,7 @@ public class MAssetType extends X_A_Asset_Type {
 
   private static final String A_ASSET_TYPE_MFX =
       "MFX"; // HARDCODED - you must create a Asset Type with Value=MFX to indicate is Fixed Asset
-  private static final String A_ASSET_TYPE_INV =
-      "INV"; // HARDCODED - you must create a Asset Type with Value=MFX to indicate is Inventory
-  // Object
+    // Object
 
   public static interface Model {
     /** Get Context */
@@ -59,19 +54,7 @@ public class MAssetType extends X_A_Asset_Type {
     return null;
   }
 
-  /**
-   * Get Asset Type
-   *
-   * @param ctx context
-   * @param id id as Number
-   * @return asset type object
-   */
-  public static MAssetType get(Properties ctx, Object id) {
-    if (id == null) return null;
-    return get(ctx, ((Number) id).intValue());
-  }
-
-  /** Standard Constructor */
+    /** Standard Constructor */
   public MAssetType(Properties ctx, int A_Asset_Type_ID, String trxName) {
     super(ctx, A_Asset_Type_ID, trxName);
   }
@@ -86,32 +69,11 @@ public class MAssetType extends X_A_Asset_Type {
     return A_ASSET_TYPE_MFX.equals(getValue());
   }
 
-  public static boolean isFixedAsset(int A_Asset_ID) {
-    MAsset asset = MAsset.get(Env.getCtx(), A_Asset_ID, null);
-    return isFixedAsset(asset);
-  }
-
-  public static boolean isFixedAsset(MAsset asset) {
+    public static boolean isFixedAsset(MAsset asset) {
     return asset != null && A_ASSET_TYPE_MFX.equals(asset.getA_Asset_Type().getValue());
   }
 
-  public static boolean isFixedAssetGroup(Properties ctx, int A_Asset_Group_ID) {
-    if (A_Asset_Group_ID <= 0) return false;
-    MAssetGroup assetGroup = MAssetGroup.get(ctx, A_Asset_Group_ID);
-    //
-    int assetType_ID = assetGroup.getA_Asset_Type_ID();
-    if (assetType_ID <= 0) return false;
-    MAssetType assetType = MAssetType.get(ctx, assetType_ID);
-    //
-    return assetType.isFixedAsset();
-  }
-
-  /** Is Inventory Object */
-  public boolean isInventoryObject() {
-    return A_ASSET_TYPE_INV.equals(getValue());
-  }
-
-  /** Convert an Yes-No-Unknown field to Boolean */
+    /** Convert an Yes-No-Unknown field to Boolean */
   protected static Boolean getBoolean(String value, boolean useDefaults) {
     if (value == null || value.length() == 0) return null;
     String f = value.substring(0, 1);
@@ -121,60 +83,4 @@ public class MAssetType extends X_A_Asset_Type {
     else return null;
   }
 
-  /**
-   * Validate a Model
-   *
-   * @param m model
-   * @throws ContextUserException
-   */
-  public static void validate(Model m) {
-    // Load Asset Type
-    MAssetType assetType = MAssetType.get(m.getCtx(), m.getA_Asset_Type_ID());
-    if (assetType == null) {
-      throw new ArhRuntimeException(m.getCtx(), "@NotFound@ @A_Asset_Type_ID@")
-          .addInfo("@A_Asset_Type_ID", m.getA_Asset_Type_ID());
-    }
-
-    ArhRuntimeException err = new ArhRuntimeException(m.getCtx(), "");
-    Boolean f = getBoolean(assetType.getIsOwned(), false);
-    if (f != null && f.booleanValue() != m.isOwned()) {
-      err.addInfo("@IsOwned@ <> @" + f + "@");
-    }
-    f = getBoolean(assetType.getIsInPosession(), false);
-    if (f != null && f.booleanValue() != m.isInPosession()) {
-      err.addInfo("@IsInPosession@ <> @" + f + "@");
-    }
-    f = getBoolean(assetType.getIsDepreciable(), false);
-    if (f != null && f.booleanValue() != m.isDepreciated()) {
-      err.addInfo("@IsDepreciated@ <> @" + f + "@");
-    }
-
-    if (err.hasInfo()) throw err;
-  }
-
-  /**
-   * Update the given SetGetModel; Does not set A_Asset_Type_ID
-   *
-   * @param model
-   * @param useDefaults in case is not a concrete value, use defaults
-   */
-  public boolean update(org.compiere.model.SetGetModel model, boolean useDefaults) {
-    //		boolean useDefaults = true;
-    Boolean f = getBoolean(getIsOwned(), useDefaults);
-    if (f != null) model.set_AttrValue("IsOwned", f);
-    f = getBoolean(getIsInPosession(), useDefaults);
-    if (f != null) model.set_AttrValue("IsInPosession", f);
-    f = getBoolean(getIsDepreciable(), useDefaults);
-    if (f != null) {
-      model.set_AttrValue("IsDepreciated", f);
-    }
-
-    if (!isFixedAsset()) {
-      model.set_AttrValue("A_Asset_Class_ID", null);
-    }
-
-    model.set_AttrValue("A_Asset_Type", getValue());
-
-    return true;
-  }
 } // class MAssetType

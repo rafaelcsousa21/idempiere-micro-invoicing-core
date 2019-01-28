@@ -101,27 +101,7 @@ public final class FactLine extends X_Fact_Acct {
     return reversal;
   } //	reverse
 
-  /**
-   * Create Accrual (flip CR/DR) of the line
-   *
-   * @param description new description
-   * @return accrual line
-   */
-  public FactLine accrue(String description) {
-    FactLine accrual =
-        new FactLine(getCtx(), getAD_Table_ID(), getRecord_ID(), getLine_ID(), null);
-    accrual.setClientOrg(this); // 	needs to be set explicitly
-    accrual.setDocumentInfo(m_doc, m_docLine);
-    accrual.setAccount(m_acctSchema, m_acct);
-    accrual.setPostingType(getPostingType());
-    //
-    accrual.setAmtSource(getC_Currency_ID(), getAmtSourceCr(), getAmtSourceDr());
-    accrual.convert();
-    accrual.setDescription(description);
-    return accrual;
-  } //	reverse
-
-  /**
+    /**
    * Set Account Info
    *
    * @param acctSchema account schema

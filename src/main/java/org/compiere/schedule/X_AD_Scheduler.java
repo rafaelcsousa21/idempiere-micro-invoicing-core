@@ -87,23 +87,6 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
     return ii;
   }
 
-  /**
-   * Set Date last run.
-   *
-   * @param DateLastRun Date the process was last run.
-   */
-  public void setDateLastRun(Timestamp DateLastRun) {
-    set_Value(COLUMNNAME_DateLastRun, DateLastRun);
-  }
-  /**
-   * Get Date last run.
-   *
-   * @return Date the process was last run.
-   */
-  public Timestamp getDateLastRun() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
-  }
-
     /**
    * Set Date next run.
    *

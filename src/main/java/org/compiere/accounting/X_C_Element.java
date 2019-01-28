@@ -80,9 +80,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
     return ii;
   }
 
-    /** ElementType AD_Reference_ID=116 */
-  public static final int ELEMENTTYPE_AD_Reference_ID = 116;
-  /** Account = A */
+    /** Account = A */
   public static final String ELEMENTTYPE_Account = "A";
   /** User defined = U */
   public static final String ELEMENTTYPE_UserDefined = "U";

@@ -59,9 +59,6 @@ public class X_AD_Message extends PO implements I_AD_Message, I_Persistent {
     return ii;
   }
 
-    /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-
     /**
    * Get Message Text.
    *
@@ -70,15 +67,6 @@ public class X_AD_Message extends PO implements I_AD_Message, I_Persistent {
   public String getMsgText() {
     return (String) get_Value(COLUMNNAME_MsgText);
   }
-
-    /** MsgType AD_Reference_ID=103 */
-  public static final int MSGTYPE_AD_Reference_ID = 103;
-  /** Error = E */
-  public static final String MSGTYPE_Error = "E";
-  /** Information = I */
-  public static final String MSGTYPE_Information = "I";
-  /** Menu = M */
-  public static final String MSGTYPE_Menu = "M";
 
     /**
    * Get Search Key.
@@ -89,16 +77,7 @@ public class X_AD_Message extends PO implements I_AD_Message, I_Persistent {
     return (String) get_Value(COLUMNNAME_Value);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getValue());
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_AD_Message.Table_ID;
   }

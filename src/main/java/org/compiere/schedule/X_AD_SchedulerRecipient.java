@@ -80,16 +80,7 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getAD_User_ID()));
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_AD_SchedulerRecipient.Table_ID;
   }

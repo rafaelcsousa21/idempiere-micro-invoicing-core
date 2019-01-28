@@ -4,7 +4,6 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import org.compiere.model.I_C_SalesRegion;
 import org.compiere.orm.MTree_Base;
-import org.idempiere.common.util.CCache;
 
 /**
  * Sales Region Model
@@ -16,27 +15,7 @@ public class MSalesRegion extends X_C_SalesRegion {
   /** */
   private static final long serialVersionUID = -6166934441386906620L;
 
-  /**
-   * Get SalesRegion from Cache
-   *
-   * @param ctx context
-   * @param C_SalesRegion_ID id
-   * @return MSalesRegion
-   */
-  public static MSalesRegion get(Properties ctx, int C_SalesRegion_ID) {
-    Integer key = new Integer(C_SalesRegion_ID);
-    MSalesRegion retValue = (MSalesRegion) s_cache.get(key);
-    if (retValue != null) return retValue;
-    retValue = new MSalesRegion(ctx, C_SalesRegion_ID, null);
-    if (retValue.getId() != 0) s_cache.put(key, retValue);
-    return retValue;
-  } //	get
-
-  /** Cache */
-  private static CCache<Integer, MSalesRegion> s_cache =
-      new CCache<Integer, MSalesRegion>(I_C_SalesRegion.Table_Name, 10);
-
-  /**
+    /**
    * ************************************************************************ Default Constructor
    *
    * @param ctx context

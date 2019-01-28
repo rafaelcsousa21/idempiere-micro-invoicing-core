@@ -43,15 +43,6 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
     return sb.toString();
   }
 
-  /** AccountSign AD_Reference_ID=118 */
-  public static final int ACCOUNTSIGN_AD_Reference_ID = 118;
-  /** Natural = N */
-  public static final String ACCOUNTSIGN_Natural = "N";
-  /** Debit = D */
-  public static final String ACCOUNTSIGN_Debit = "D";
-  /** Credit = C */
-  public static final String ACCOUNTSIGN_Credit = "C";
-
     /**
    * Get Account Sign.
    *
@@ -60,21 +51,6 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
   public String getAccountSign() {
     return (String) get_Value(COLUMNNAME_AccountSign);
   }
-
-  /** AccountType AD_Reference_ID=117 */
-  public static final int ACCOUNTTYPE_AD_Reference_ID = 117;
-  /** Asset = A */
-  public static final String ACCOUNTTYPE_Asset = "A";
-  /** Liability = L */
-  public static final String ACCOUNTTYPE_Liability = "L";
-  /** Revenue = R */
-  public static final String ACCOUNTTYPE_Revenue = "R";
-  /** Expense = E */
-  public static final String ACCOUNTTYPE_Expense = "E";
-  /** Owner's Equity = O */
-  public static final String ACCOUNTTYPE_OwnerSEquity = "O";
-  /** Memo = M */
-  public static final String ACCOUNTTYPE_Memo = "M";
 
     /**
    * Get Account Type.

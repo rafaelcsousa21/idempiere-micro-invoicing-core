@@ -57,24 +57,7 @@ public class MInOutLineMA extends X_M_InOutLineMA {
     return retValue;
   } //	get
 
-  /**
-   * Delete all Material Allocation for InOut
-   *
-   * @param M_InOut_ID shipment
-   * @param trxName transaction
-   * @return number of rows deleted or -1 for error
-   */
-  public static int deleteInOutMA(int M_InOut_ID, String trxName) {
-    StringBuilder sql =
-        new StringBuilder("DELETE FROM M_InOutLineMA ma WHERE EXISTS ")
-            .append("(SELECT * FROM M_InOutLine l WHERE l.M_InOutLine_ID=ma.M_InOutLine_ID")
-            .append(" AND M_InOut_ID=")
-            .append(M_InOut_ID)
-            .append(")");
-    return executeUpdate(sql.toString(), trxName);
-  } //	deleteInOutMA
-
-  /**
+    /**
    * Delete all Material Allocation for InOutLine
    *
    * @param M_InOutLine_ID Shipment Line
@@ -186,15 +169,7 @@ public class MInOutLineMA extends X_M_InOutLineMA {
     return sb.toString();
   } //	toString
 
-  public static MInOutLineMA addOrCreate(
-      MInOutLine line,
-      int M_AttributeSetInstance_ID,
-      BigDecimal MovementQty,
-      Timestamp DateMaterialPolicy) {
-    return addOrCreate(line, M_AttributeSetInstance_ID, MovementQty, DateMaterialPolicy, true);
-  }
-
-  public static MInOutLineMA addOrCreate(
+    public static MInOutLineMA addOrCreate(
       MInOutLine line,
       int M_AttributeSetInstance_ID,
       BigDecimal MovementQty,

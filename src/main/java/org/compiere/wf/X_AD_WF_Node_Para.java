@@ -80,15 +80,6 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getAD_WF_Node_ID()));
-  }
-
     /**
    * Set Attribute Name.
    *
@@ -115,9 +106,6 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
   public String getAttributeValue() {
     return (String) get_Value(COLUMNNAME_AttributeValue);
   }
-
-    /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
 
     @Override
   public int getTableId() {

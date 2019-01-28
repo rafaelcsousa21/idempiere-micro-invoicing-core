@@ -241,17 +241,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     return null;
   } //  getAcctSchemaElement
 
-  /**
-   * Has AcctSchema Element
-   *
-   * @param segmentType segment type - AcctSchemaElement.SEGMENT_
-   * @return true if schema has segment type
-   */
-  public boolean isAcctSchemaElement(String segmentType) {
-    return getAcctSchemaElement(segmentType) != null;
-  } //  isAcctSchemaElement
-
-  /**
+    /**
    * Get AcctSchema GL info
    *
    * @return GL info
@@ -419,36 +409,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     if (getGAAP() == null) setGAAP(X_C_AcctSchema.GAAP_InternationalGAAP);
   } //	checkCosting
 
-  /**
-   * Is Client Costing Level (default)
-   *
-   * @return true if Client
-   */
-  public boolean isCostingLevelClient() {
-    String s = getCostingLevel();
-    if (s == null || X_C_AcctSchema.COSTINGLEVEL_Client.equals(s)) return true;
-    return false;
-  } //	isCostingLevelClient
-
-  /**
-   * Is Org Costing Level
-   *
-   * @return true if Org
-   */
-  public boolean isCostingLevelOrg() {
-    return X_C_AcctSchema.COSTINGLEVEL_Organization.equals(getCostingLevel());
-  } //	isCostingLevelOrg
-
-  /**
-   * Is Batch Costing Level
-   *
-   * @return true if Batch
-   */
-  public boolean isCostingLevelBatch() {
-    return X_C_AcctSchema.COSTINGLEVEL_BatchLot.equals(getCostingLevel());
-  } //	isCostingLevelBatch
-
-  /**
+    /**
    * Create PO Commitment Accounting
    *
    * @return true if creaet commitments

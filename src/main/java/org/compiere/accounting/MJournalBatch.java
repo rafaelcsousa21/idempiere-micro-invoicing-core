@@ -14,7 +14,6 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,42 +43,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
   /** */
   private static final long serialVersionUID = -2494833602067696046L;
 
-  /**
-   * Create new Journal Batch by copying
-   *
-   * @param ctx context
-   * @param GL_JournalBatch_ID journal batch
-   * @param dateDoc date of the document date
-   * @param trxName transaction
-   * @return Journal Batch
-   */
-  public static MJournalBatch copyFrom(
-      Properties ctx, int GL_JournalBatch_ID, Timestamp dateDoc, String trxName) {
-    MJournalBatch from = new MJournalBatch(ctx, GL_JournalBatch_ID, trxName);
-    if (from.getGL_JournalBatch_ID() == 0)
-      throw new IllegalArgumentException(
-          "From Journal Batch not found GL_JournalBatch_ID=" + GL_JournalBatch_ID);
-    //
-    MJournalBatch to = new MJournalBatch(ctx, 0, trxName);
-    PO.copyValues(from, to, from. getClientId(), from. getOrgId());
-    to.set_ValueNoCheck("DocumentNo", null);
-    to.set_ValueNoCheck("C_Period_ID", null);
-    to.setDateAcct(dateDoc);
-    to.setDateDoc(dateDoc);
-    to.setDocStatus(X_GL_JournalBatch.DOCSTATUS_Drafted);
-    to.setDocAction(X_GL_JournalBatch.DOCACTION_Complete);
-    to.setIsApproved(false);
-    to.setProcessed(false);
-    //
-    if (!to.save()) throw new IllegalStateException("Could not create Journal Batch");
-
-    if (to.copyDetailsFrom(from) == 0)
-      throw new IllegalStateException("Could not create Journal Batch Details");
-
-    return to;
-  } //	copyFrom
-
-  /**
+    /**
    * ************************************************************************ Standard Construvtore
    *
    * @param ctx context
@@ -786,37 +750,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     return msgreturn.toString();
   } //	getDocumentInfo
 
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      StringBuilder msgfile =
-          new StringBuilder().append(get_TableName()).append(getId()).append("_");
-      File temp = File.createTempFile(msgfile.toString(), ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    //	ReportEngine re = ReportEngine.get (getCtx(), ReportEngine.INVOICE, getC_Invoice_ID());
-    //	if (re == null)
-    return null;
-    //	return re.getPDF(file);
-  } //	createPDF
-
-  /**
+    /**
    * Get Process Message
    *
    * @return clear text error message

@@ -135,39 +135,7 @@ public class MElementValue extends X_C_ElementValue {
     //	setValidTo(null);
   } //	set
 
-  /**
-   * Is this a Balance Sheet Account
-   *
-   * @return boolean
-   */
-  public boolean isBalanceSheet() {
-    String accountType = getAccountType();
-    return (X_C_ElementValue.ACCOUNTTYPE_Asset.equals(accountType)
-        || X_C_ElementValue.ACCOUNTTYPE_Liability.equals(accountType)
-        || X_C_ElementValue.ACCOUNTTYPE_OwnerSEquity.equals(accountType));
-  } //	isBalanceSheet
-
-  /**
-   * Is this an Activa Account
-   *
-   * @return boolean
-   */
-  public boolean isActiva() {
-    return X_C_ElementValue.ACCOUNTTYPE_Asset.equals(getAccountType());
-  } //	isActive
-
-  /**
-   * Is this a Passiva Account
-   *
-   * @return boolean
-   */
-  public boolean isPassiva() {
-    String accountType = getAccountType();
-    return (X_C_ElementValue.ACCOUNTTYPE_Liability.equals(accountType)
-        || X_C_ElementValue.ACCOUNTTYPE_OwnerSEquity.equals(accountType));
-  } //	isPassiva
-
-  /**
+    /**
    * User String Representation
    *
    * @return info value - name
@@ -178,18 +146,7 @@ public class MElementValue extends X_C_ElementValue {
     return sb.toString();
   } //	toString
 
-  /**
-   * Extended String Representation
-   *
-   * @return info
-   */
-  public String toStringX() {
-    StringBuilder sb = new StringBuilder("MElementValue[");
-    sb.append(getId()).append(",").append(getValue()).append(" - ").append(getName()).append("]");
-    return sb.toString();
-  } //	toStringX
-
-  @Override
+    @Override
   protected boolean beforeSave(boolean newRecord) {
     if ( getOrgId() != 0) setAD_Org_ID(0);
     //

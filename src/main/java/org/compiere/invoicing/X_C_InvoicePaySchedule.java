@@ -132,16 +132,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
     return (Timestamp) get_Value(COLUMNNAME_DiscountDate);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getDiscountDate()));
-  }
-
-  /**
+    /**
    * Set Amount due.
    *
    * @param DueAmt Amount of the payment due

@@ -70,9 +70,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return bd;
   }
 
-  /** CashType AD_Reference_ID=217 */
-  public static final int CASHTYPE_AD_Reference_ID = 217;
-  /** Bank Account Transfer = T */
+    /** Bank Account Transfer = T */
   public static final String CASHTYPE_BankAccountTransfer = "T";
   /** Invoice = I */
   public static final String CASHTYPE_Invoice = "I";
@@ -82,9 +80,8 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   public static final String CASHTYPE_GeneralReceipts = "R";
   /** Charge = C */
   public static final String CASHTYPE_Charge = "C";
-  /** Difference = D */
-  public static final String CASHTYPE_Difference = "D";
-  /**
+
+    /**
    * Set Cash Type.
    *
    * @param CashType Source of Cash
@@ -143,15 +140,6 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     Integer ii = (Integer) get_Value(COLUMNNAME_C_Cash_ID);
     if (ii == null) return 0;
     return ii;
-  }
-
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_Cash_ID()));
   }
 
     /**

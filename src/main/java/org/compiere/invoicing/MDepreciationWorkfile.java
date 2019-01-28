@@ -8,7 +8,6 @@ import org.compiere.orm.Query;
 import org.compiere.orm.SetGetUtil;
 import org.compiere.orm.TimeUtil;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -16,7 +15,6 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -83,17 +81,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     return m_asset;
   }
 
-  /**
-   * Set asset
-   *
-   * @param asset
-   */
-  public void setAsset(MAsset asset) {
-    setA_Asset_ID(asset.getId());
-    m_asset = asset;
-  }
-
-  /**
+    /**
    * Gets asset's service date (commissioning)
    *
    * @return asset service date
@@ -123,20 +111,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
   */
   // end comment by @win
 
-  /**
-   * After save
-   *
-   * @param newRecord
-   * @return true on success
-   */
-  protected boolean afterSave(boolean newRecord) {
-    if (m_buildDepreciation) {
-      buildDepreciation();
-    }
-    return true;
-  }
-
-  protected boolean beforeSave(boolean newRecord) {
+    protected boolean beforeSave(boolean newRecord) {
     if (log.isLoggable(Level.INFO)) log.info("Entering: trxName=" + null);
 
     // copy UseLife to A_Life
@@ -268,18 +243,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         .list();
   }
 
-  /**
-   * @param ctx
-   * @param A_Asset_ID
-   * @param postingType
-   * @return workfile
-   * @see #get(Properties, int, String, String)
-   */
-  public static MDepreciationWorkfile get(Properties ctx, int A_Asset_ID, String postingType) {
-    return get(ctx, A_Asset_ID, postingType, null);
-  }
-
-  /**
+    /**
    * Get/load workfile from cache (if trxName is null)
    *
    * @param ctx
@@ -329,33 +293,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
           I_A_Depreciation_Workfile.Table_Name + "_Asset",
           10);
 
-  /** Returns the date of the last action */
-  public Timestamp getLastActionDate() {
-    return TimeUtil.getMonthLastDay(TimeUtil.addMonths(getDateAcct(), -1));
-  }
-
-  /**
-   * Check if the asset is depreciated at the specified date
-   *
-   * @param date
-   * @return true if you amortized until the specified date, otherwise false
-   */
-  public boolean isDepreciated(Timestamp date) {
-    Timestamp lastActionDate = getLastActionDate();
-    boolean isDepr = !date.after(lastActionDate); // date <= lastActionDate
-
-    if (log.isLoggable(Level.FINE))
-      log.fine(
-          "LastActionDate="
-              + lastActionDate
-              + ", GivenDate="
-              + date
-              + " => isDepreciated="
-              + isDepr);
-    return isDepr;
-  }
-
-  /**
+    /**
    * Get Asset Accounting for this workfile
    *
    * @return asset accounting model
@@ -379,65 +317,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     return assetCost.subtract(getA_Salvage_Value());
   }
 
-  /**
-   * @param deltaAmt
-   * @param deltaQty
-   * @param reset
-   */
-  public void adjustCost(BigDecimal deltaAmt, BigDecimal deltaQty, boolean reset) {
-    BigDecimal newCost = Env.ZERO;
-    BigDecimal newQty = Env.ZERO;
-    if (!reset) {
-      newCost = getA_Asset_Cost();
-      newQty = getA_QTY_Current();
-    }
-    newCost = newCost.add(deltaAmt);
-    newQty = newQty.add(deltaQty);
-
-    // TODO: crashes if I cancel an Issue:
-    //		if (newQty.signum() < 0) {
-    //			throw new ArhRuntimeException(getCtx(), "@A_QTY_Current@ < 0");
-    //		}
-
-    //
-    // There must be verified that the remaining value to be greater than the amount diminished
-    // total devaluation because if the entire asset value (A_Asset_Cost) must be brought to 0.
-    //		if (deltaAmt.signum() < 0)
-    //		{
-    //			BigDecimal remainingAmt_C = getRemainingCost(null, false);
-    //			if (remainingAmt_C.compareTo(deltaAmt.negate()) < 0)
-    //			{
-    //				throw new ArhRuntimeException(getCtx(), "@A_Asset_Remaining@ < @DeltaAmt@")
-    //					.addInfo("@A_Asset_Cost@=", getA_Asset_Cost())
-    //					.addInfo("@A_Accumulated_Depr@=", getA_Accumulated_Depr());
-    //			}
-    //			BigDecimal remainingAmt_F = getRemainingCost(null, true);
-    //			if (remainingAmt_F.compareTo(deltaAmt.negate()) < 0)
-    //			{
-    //				throw new ArhRuntimeException(getCtx(), "@A_Asset_Remaining_F@ < @DeltaAmt@")
-    //					.addInfo("@A_Asset_Cost=@", getA_Asset_Cost())
-    //					.addInfo("@A_Accumulated_Depr@=", getA_Accumulated_Depr_F());
-    //			}
-    //		}
-
-    setA_Asset_Cost(newCost);
-    setA_QTY_Current(newQty);
-
-    if (log.isLoggable(Level.FINE))
-      log.fine(
-          "adjustCost("
-              + deltaAmt
-              + ", "
-              + deltaQty
-              + ", reset="
-              + reset
-              + ") => amt="
-              + getA_Asset_Cost()
-              + ", qty="
-              + getA_QTY_Current());
-  }
-
-  /**
+    /**
    * Adjust Accumulated depreciation
    *
    * @param amt
@@ -457,22 +337,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     return true;
   }
 
-  /** Adjust use life years */
-  public void adjustUseLife(int deltaUseLifeYears, int deltaUseLifeYears_F, boolean reset) {
-    if (log.isLoggable(Level.FINE))
-      log.fine(
-          "Entering: deltaUseLifeYears="
-              + deltaUseLifeYears
-              + ", deltaUseLifeYears_F="
-              + deltaUseLifeYears_F);
-    //
-    UseLifeImpl.get(this, false).adjustUseLifeYears(deltaUseLifeYears, reset);
-    UseLifeImpl.get(this, true).adjustUseLifeYears(deltaUseLifeYears_F, reset);
-    //
-    if (log.isLoggable(Level.FINE)) log.fine("Leaving");
-  }
-
-  /** */
+    /** */
   public int getUseLifeMonths(boolean fiscal) {
     return fiscal ? getUseLifeMonths_F() : getUseLifeMonths();
   }
@@ -482,17 +347,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     return fiscal ? getA_Accumulated_Depr_F() : getA_Accumulated_Depr();
   }
 
-  /** */
-  public BigDecimal getAccumulatedCost() {
-    return getA_Accumulated_Depr(isFiscal());
-  }
-
-  /** */
-  public BigDecimal getReevaluationCost() {
-    return Env.ZERO;
-  }
-
-  /** Returns the residual (remaining) value */
+    /** Returns the residual (remaining) value */
   public BigDecimal getRemainingCost(BigDecimal accumAmt, boolean fiscal) {
     BigDecimal cost = getActualCost();
     if (accumAmt == null) {
@@ -591,115 +446,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
   /** Build depreciation flag - if true, the depreciation should be built after save */
   private boolean m_buildDepreciation = false;
 
-  /**
-   * Build depreciation (A_Depreciation_Exp) entries. More exactly, is deleting not Processed
-   * entries. and create new ones again. WARNING: IS NOT modifying workfile (this)
-   */
-  public void buildDepreciation() {
-    if (!isDepreciated()) {
-      return;
-    }
-
-    StringBuilder sb = new StringBuilder();
-    load((HashMap)null); // reload workfile
-    MAssetAcct assetacct = getA_AssetAcct(null, null);
-    // TODO: teo_sarca: need to evaluate what happens when we change Depreciation method !!!
-    MDepreciation depreciation_C = MDepreciation.get(getCtx(), assetacct.getA_Depreciation_ID());
-    MDepreciation depreciation_F = MDepreciation.get(getCtx(), assetacct.getA_Depreciation_F_ID());
-    // ~ int offset_C = depreciation_C.getFixMonthOffset();
-    // ~ int offset_F = depreciation_F.getFixMonthOffset();
-    int offset_C = 0, offset_F = 0;
-
-    BigDecimal assetCost = getActualCost();
-    BigDecimal accumDep_C = getA_Accumulated_Depr(false);
-    BigDecimal accumDep_F = getA_Accumulated_Depr(true);
-    int lifePeriods_C = getUseLifeMonths(false) + offset_C;
-    int lifePeriods_F = getUseLifeMonths(true) + offset_F;
-    int lifePeriods = (lifePeriods_C > lifePeriods_F ? lifePeriods_C : lifePeriods_F);
-    BigDecimal exp_C = Env.ZERO;
-    BigDecimal exp_F = Env.ZERO;
-
-    // logging
-    if (CLogMgt.isLevelFine()) {
-      sb.append(
-          "currentPeriod="
-              + getA_Current_Period()
-              + ", AssetServiceDate="
-              + getAssetDepreciationDate()
-              + "\n");
-      sb.append("offset: C|F=" + offset_C + "|" + offset_F + "\n");
-      sb.append(
-          "life: C|F=" + lifePeriods_C + "|" + lifePeriods_F + " + offset =" + lifePeriods + "\n");
-    }
-
-    truncDepreciation();
-    int A_Current_Period = getA_Current_Period();
-    for (int currentPeriod = A_Current_Period, cnt = 1;
-        currentPeriod <= lifePeriods;
-        currentPeriod++, cnt++) {
-      exp_C = Env.ZERO;
-      exp_F = Env.ZERO;
-
-      String help = "" + accumDep_C + "|" + accumDep_F + " + ";
-
-      if (lifePeriods_C > currentPeriod || !depreciation_C.requireLastPeriodAdjustment()) {
-        setFiscal(false);
-        exp_C = depreciation_C.invoke(this, assetacct, currentPeriod, accumDep_C);
-        accumDep_C = accumDep_C.add(exp_C);
-      } else if (lifePeriods_C == currentPeriod) { // last period
-        exp_C = assetCost.subtract(accumDep_C);
-        accumDep_C = assetCost;
-      }
-
-      if (lifePeriods_F > currentPeriod || !depreciation_F.requireLastPeriodAdjustment()) {
-        setFiscal(true);
-        exp_F = depreciation_F.invoke(this, assetacct, currentPeriod, accumDep_F);
-        accumDep_F = accumDep_F.add(exp_F);
-      } else if (lifePeriods_F == currentPeriod) { // last period (fiscal)
-        exp_F = assetCost.subtract(accumDep_F);
-        accumDep_F = assetCost;
-      }
-
-      help += "" + exp_C + "|" + exp_F + " = " + accumDep_C + "|" + accumDep_F;
-
-      // added by zuhri
-      int months = 0;
-
-      months = months + (currentPeriod - A_Current_Period);
-      Timestamp dateAcct = TimeUtil.getMonthLastDay(TimeUtil.addMonths(getDateAcct(), months));
-
-      MDepreciationExp.createDepreciation(
-          this, currentPeriod, dateAcct, exp_C, exp_F, accumDep_C, accumDep_F, help, null);
-      if (log.isLoggable(Level.FINE)) {
-        String info =
-            ""
-                + cnt
-                + ": period="
-                + currentPeriod
-                + "/"
-                + lifePeriods_C
-                + "|"
-                + lifePeriods_F
-                + ", exp="
-                + exp_C
-                + "|"
-                + exp_F
-                + ", accumDep="
-                + accumDep_C
-                + "|"
-                + accumDep_F
-                + ", DateAcct="
-                + dateAcct;
-        log.fine("=> " + info + Env.NL + Env.NL);
-        sb.append(info + Env.NL);
-      }
-    } // for
-    if (log.isLoggable(Level.FINE)) log.fine(sb.toString());
-
-    m_buildDepreciation = false;
-  } //	buildDepreciation
-
-  /** Truncate not processed depreciation entries. IS NOT modifying workfile. */
+    /** Truncate not processed depreciation entries. IS NOT modifying workfile. */
   public void truncDepreciation() {
     String trxName = null;
 

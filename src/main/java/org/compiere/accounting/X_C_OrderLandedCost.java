@@ -95,19 +95,6 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
     return ii;
   }
 
-    /** LandedCostDistribution AD_Reference_ID=339 */
-  public static final int LANDEDCOSTDISTRIBUTION_AD_Reference_ID = 339;
-  /** Quantity = Q */
-  public static final String LANDEDCOSTDISTRIBUTION_Quantity = "Q";
-  /** Line = L */
-  public static final String LANDEDCOSTDISTRIBUTION_Line = "L";
-  /** Volume = V */
-  public static final String LANDEDCOSTDISTRIBUTION_Volume = "V";
-  /** Weight = W */
-  public static final String LANDEDCOSTDISTRIBUTION_Weight = "W";
-  /** Costs = C */
-  public static final String LANDEDCOSTDISTRIBUTION_Costs = "C";
-
     /**
    * Get Cost Distribution.
    *

@@ -62,19 +62,4 @@ public class X_C_POSTenderType extends BasePONameValue implements I_C_POSTenderT
     return false;
   }
 
-    /** TenderType AD_Reference_ID=214 */
-  public static final int TENDERTYPE_AD_Reference_ID = 214;
-  /** Credit Card = C */
-  public static final String TENDERTYPE_CreditCard = "C";
-  /** Check = K */
-  public static final String TENDERTYPE_Check = "K";
-  /** Direct Deposit = A */
-  public static final String TENDERTYPE_DirectDeposit = "A";
-  /** Direct Debit = D */
-  public static final String TENDERTYPE_DirectDebit = "D";
-  /** Account = T */
-  public static final String TENDERTYPE_Account = "T";
-  /** Cash = X */
-  public static final String TENDERTYPE_Cash = "X";
-
 }

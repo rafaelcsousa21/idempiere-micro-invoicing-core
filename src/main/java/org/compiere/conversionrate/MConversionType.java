@@ -25,11 +25,7 @@ public class MConversionType extends X_C_ConversionType {
    */
   public static final int TYPE_SPOT = 114;
 
-  public static final int TYPE_PERIOD_END = 115;
-  public static final int TYPE_AVERAGE = 200;
-  public static final int TYPE_COMPANY = 201;
-
-  /**
+    /**
    * Get Default Conversion Rate for Client/Org
    *
    * @param AD_Client_ID client

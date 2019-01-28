@@ -154,16 +154,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getAD_Workflow_ID()));
-  }
-
-  /**
+    /**
    * Set Priority.
    *
    * @param Priority Indicates if this request is of a high, medium or low priority.
@@ -231,19 +222,13 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     return (String) get_Value(COLUMNNAME_TextMsg);
   }
 
-  /** WFState AD_Reference_ID=305 */
-  public static final int WFSTATE_AD_Reference_ID = 305;
-  /** Not Started = ON */
+    /** Not Started = ON */
   public static final String WFSTATE_NotStarted = "ON";
   /** Running = OR */
   public static final String WFSTATE_Running = "OR";
   /** Suspended = OS */
   public static final String WFSTATE_Suspended = "OS";
-  /** Completed = CC */
-  public static final String WFSTATE_Completed = "CC";
-  /** Aborted = CA */
-  public static final String WFSTATE_Aborted = "CA";
-  /** Terminated = CT */
+    /** Terminated = CT */
   public static final String WFSTATE_Terminated = "CT";
   /**
    * Set Workflow State.

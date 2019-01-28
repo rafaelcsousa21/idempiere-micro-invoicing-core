@@ -136,15 +136,6 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate, I_Pe
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getI_Conversion_Rate_ID()));
-  }
-
     /**
    * Set Imported.
    *

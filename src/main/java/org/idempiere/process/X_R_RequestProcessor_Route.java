@@ -92,12 +92,4 @@ public class X_R_RequestProcessor_Route extends PO
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getSeqNo()));
-  }
 }

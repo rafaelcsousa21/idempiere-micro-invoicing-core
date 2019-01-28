@@ -227,16 +227,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_Production_ID()));
-  }
-
-  /**
+    /**
    * Set Production Line.
    *
    * @param M_ProductionLine_ID Document Line representing a production

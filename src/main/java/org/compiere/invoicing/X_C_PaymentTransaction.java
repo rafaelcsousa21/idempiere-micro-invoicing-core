@@ -596,9 +596,7 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
     return (String) get_Value(COLUMNNAME_CreditCardNumber);
   }
 
-  /** CreditCardType AD_Reference_ID=149 */
-  public static final int CREDITCARDTYPE_AD_Reference_ID = 149;
-  /** Amex = A */
+    /** Amex = A */
   public static final String CREDITCARDTYPE_Amex = "A";
   /** MasterCard = M */
   public static final String CREDITCARDTYPE_MasterCard = "M";
@@ -1010,15 +1008,7 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
     return (String) get_Value(COLUMNNAME_R_AuthCode);
   }
 
-  /** R_AvsAddr AD_Reference_ID=213 */
-  public static final int R_AVSADDR_AD_Reference_ID = 213;
-  /** Match = Y */
-  public static final String R_AVSADDR_Match = "Y";
-  /** No Match = N */
-  public static final String R_AVSADDR_NoMatch = "N";
-  /** Unavailable = X */
-  public static final String R_AVSADDR_Unavailable = "X";
-  /**
+    /**
    * Set Address verified.
    *
    * @param R_AvsAddr This address has been verified
@@ -1037,13 +1027,7 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
     return (String) get_Value(COLUMNNAME_R_AvsAddr);
   }
 
-  /** R_AvsZip AD_Reference_ID=213 */
-  public static final int R_AVSZIP_AD_Reference_ID = 213;
-  /** Match = Y */
-  public static final String R_AVSZIP_Match = "Y";
-  /** No Match = N */
-  public static final String R_AVSZIP_NoMatch = "N";
-  /** Unavailable = X */
+    /** Unavailable = X */
   public static final String R_AVSZIP_Unavailable = "X";
   /**
    * Set Zip verified.
@@ -1255,21 +1239,12 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
     return bd;
   }
 
-  /** TenderType AD_Reference_ID=214 */
-  public static final int TENDERTYPE_AD_Reference_ID = 214;
-  /** Credit Card = C */
+    /** Credit Card = C */
   public static final String TENDERTYPE_CreditCard = "C";
   /** Check = K */
   public static final String TENDERTYPE_Check = "K";
-  /** Direct Deposit = A */
-  public static final String TENDERTYPE_DirectDeposit = "A";
-  /** Direct Debit = D */
-  public static final String TENDERTYPE_DirectDebit = "D";
-  /** Account = T */
-  public static final String TENDERTYPE_Account = "T";
-  /** Cash = X */
-  public static final String TENDERTYPE_Cash = "X";
-  /**
+
+    /**
    * Set Tender type.
    *
    * @param TenderType Method of Payment
@@ -1288,9 +1263,7 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
     return (String) get_Value(COLUMNNAME_TenderType);
   }
 
-  /** TrxType AD_Reference_ID=215 */
-  public static final int TRXTYPE_AD_Reference_ID = 215;
-  /** Sales = S */
+    /** Sales = S */
   public static final String TRXTYPE_Sales = "S";
   /** Delayed Capture = D */
   public static final String TRXTYPE_DelayedCapture = "D";

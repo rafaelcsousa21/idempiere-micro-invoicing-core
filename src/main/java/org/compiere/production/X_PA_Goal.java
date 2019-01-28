@@ -77,21 +77,6 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return ii;
   }
 
-  /** ChartType AD_Reference_ID=53315 */
-  public static final int CHARTTYPE_AD_Reference_ID = 53315;
-  /** Bar Chart = BC */
-  public static final String CHARTTYPE_BarChart = "BC";
-  /** Pie Chart = PC */
-  public static final String CHARTTYPE_PieChart = "PC";
-  /** Ring Chart = RC */
-  public static final String CHARTTYPE_RingChart = "RC";
-  /** Line Chart = LC */
-  public static final String CHARTTYPE_LineChart = "LC";
-  /** Area Chart = AC */
-  public static final String CHARTTYPE_AreaChart = "AC";
-  /** Waterfall Chart = WC */
-  public static final String CHARTTYPE_WaterfallChart = "WC";
-
     /**
    * Set Date last run.
    *
@@ -206,9 +191,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     return (String) get_Value(COLUMNNAME_MeasureDisplay);
   }
 
-  /** MeasureScope AD_Reference_ID=367 */
-  public static final int MEASURESCOPE_AD_Reference_ID = 367;
-  /** Year = 1 */
+    /** Year = 1 */
   public static final String MEASURESCOPE_Year = "1";
   /** Quarter = 3 */
   public static final String MEASURESCOPE_Quarter = "3";

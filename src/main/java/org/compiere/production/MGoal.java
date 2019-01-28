@@ -6,15 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import org.compiere.crm.MUser;
-import org.compiere.model.I_PA_Goal;
-import org.compiere.orm.MRefList;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MSysConfig;
-import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
 
@@ -37,91 +33,7 @@ public class MGoal extends X_PA_Goal {
   /** */
   private static final long serialVersionUID = -4612113288233473730L;
 
-  /**
-   * Get User Goals
-   *
-   * @param ctx context
-   * @param AD_User_ID user
-   * @return array of goals
-   */
-  public static MGoal[] getUserGoals(Properties ctx, int AD_User_ID) {
-    if (AD_User_ID < 0) return getTestGoals(ctx);
-    ArrayList<MGoal> list = new ArrayList<MGoal>();
-    String sql =
-        "SELECT * FROM PA_Goal g "
-            + "WHERE IsActive='Y'"
-            + " AND AD_Client_ID=?" //	#1
-            + " AND ((AD_User_ID IS NULL AND AD_Role_ID IS NULL)"
-            + " OR AD_User_ID=?" //	#2
-            + " OR EXISTS (SELECT * FROM AD_User_Roles ur "
-            + "WHERE ur.AD_User_ID=? AND g.AD_Role_ID=ur.AD_Role_ID AND ur.IsActive='Y')) "
-            + "ORDER BY SeqNo";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, Env.getClientId(ctx));
-      pstmt.setInt(2, AD_User_ID);
-      pstmt.setInt(3, AD_User_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        MGoal goal = new MGoal(ctx, rs, null);
-        goal.updateGoal(false);
-        list.add(goal);
-      }
-    } catch (Exception e) {
-      s_log.log(Level.SEVERE, sql, e);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    if (list.size() == 0) s_log.log(Level.INFO, Msg.getMsg(ctx, "FindZeroRecords"));
-    MGoal[] retValue = new MGoal[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getUserGoals
-
-  /**
-   * Get Accessible Goals
-   *
-   * @param ctx context
-   * @return array of goals
-   */
-  public static MGoal[] getGoals(Properties ctx) {
-    List<MGoal> list =
-        new Query(ctx, I_PA_Goal.Table_Name, null, null)
-            .setOrderBy("SeqNo")
-            .setApplyAccessFilter(false, true)
-            .setOnlyActiveRecords(true)
-            .list();
-    for (MGoal goal : list) goal.updateGoal(false);
-
-    MGoal[] retValue = new MGoal[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getGoals
-
-  /**
-   * Create Test Goals
-   *
-   * @param ctx context
-   * @return array of goals
-   */
-  public static MGoal[] getTestGoals(Properties ctx) {
-    MGoal[] retValue = new MGoal[4];
-    retValue[0] = new MGoal(ctx, "Test 1", "Description 1", new BigDecimal(1000), null);
-    retValue[0].setMeasureActual(new BigDecimal(200));
-    retValue[1] = new MGoal(ctx, "Test 2", "Description 2", new BigDecimal(1000), null);
-    retValue[1].setMeasureActual(new BigDecimal(900));
-    retValue[2] = new MGoal(ctx, "Test 3", "Description 3", new BigDecimal(1000), null);
-    retValue[2].setMeasureActual(new BigDecimal(1200));
-    retValue[3] = new MGoal(ctx, "Test 4", "Description 4", new BigDecimal(1000), null);
-    retValue[3].setMeasureActual(new BigDecimal(3200));
-    return retValue;
-  } //	getTestGoals
-
-  /**
+    /**
    * Get Goals with Measure
    *
    * @param ctx context
@@ -150,71 +62,7 @@ public class MGoal extends X_PA_Goal {
     return retValue;
   } //	getMeasureGoals
 
-  /**
-   * Get Multiplier from Scope to Display
-   *
-   * @param goal goal
-   * @return null if error or multiplier
-   */
-  public static BigDecimal getMultiplier(MGoal goal) {
-    String MeasureScope = goal.getMeasureScope();
-    String MeasureDisplay = goal.getMeasureDisplay();
-    if (MeasureDisplay == null || MeasureScope.equals(MeasureDisplay)) return Env.ONE; // 	1:1
-
-    if (MeasureScope.equals(X_PA_Goal.MEASURESCOPE_Total)
-        || MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Total)) return null; // 	Error
-
-    BigDecimal Multiplier = null;
-    if (MeasureScope.equals(X_PA_Goal.MEASURESCOPE_Year)) {
-      if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Quarter))
-        Multiplier = BigDecimal.valueOf(1.0 / 4.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Month))
-        Multiplier = BigDecimal.valueOf(1.0 / 12.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Week))
-        Multiplier = BigDecimal.valueOf(1.0 / 52.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Day))
-        Multiplier = BigDecimal.valueOf(1.0 / 364.0);
-    } else if (MeasureScope.equals(X_PA_Goal.MEASURESCOPE_Quarter)) {
-      if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Year))
-        Multiplier = BigDecimal.valueOf(4.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Month))
-        Multiplier = BigDecimal.valueOf(1.0 / 3.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Week))
-        Multiplier = BigDecimal.valueOf(1.0 / 13.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Day))
-        Multiplier = BigDecimal.valueOf(1.0 / 91.0);
-    } else if (MeasureScope.equals(X_PA_Goal.MEASURESCOPE_Month)) {
-      if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Year))
-        Multiplier = BigDecimal.valueOf(12.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Quarter))
-        Multiplier = BigDecimal.valueOf(3.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Week))
-        Multiplier = BigDecimal.valueOf(1.0 / 4.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Day))
-        Multiplier = BigDecimal.valueOf(1.0 / 30.0);
-    } else if (MeasureScope.equals(X_PA_Goal.MEASURESCOPE_Week)) {
-      if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Year))
-        Multiplier = BigDecimal.valueOf(52.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Quarter))
-        Multiplier = BigDecimal.valueOf(13.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Month))
-        Multiplier = BigDecimal.valueOf(4.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Day))
-        Multiplier = BigDecimal.valueOf(1.0 / 7.0);
-    } else if (MeasureScope.equals(X_PA_Goal.MEASURESCOPE_Day)) {
-      if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Year))
-        Multiplier = BigDecimal.valueOf(364.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Quarter))
-        Multiplier = BigDecimal.valueOf(91.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Month))
-        Multiplier = BigDecimal.valueOf(30.0);
-      else if (MeasureDisplay.equals(X_PA_Goal.MEASUREDISPLAY_Week))
-        Multiplier = BigDecimal.valueOf(7.0);
-    }
-    return Multiplier;
-  } //	getMultiplier
-
-  /** Logger */
+    /** Logger */
   private static CLogger s_log = CLogger.getCLogger(MGoal.class);
 
   /**
@@ -307,17 +155,7 @@ public class MGoal extends X_PA_Goal {
     return m_restrictions;
   } //	getRestrictions
 
-  /**
-   * Get Measure
-   *
-   * @return measure or null
-   */
-  public MMeasure getMeasure() {
-    if (getPA_Measure_ID() != 0) return MMeasure.get(getCtx(), getPA_Measure_ID());
-    return null;
-  } //	getMeasure
-
-  /**
+    /**
    * ************************************************************************ Update/save Goals for
    * the same measure
    *
@@ -373,49 +211,7 @@ public class MGoal extends X_PA_Goal {
     m_color = null;
   } //	setGoalPerformance
 
-  /**
-   * Get Goal Performance as Double
-   *
-   * @return performance as multipier
-   */
-  public double getGoalPerformanceDouble() {
-    BigDecimal bd = getGoalPerformance();
-    return bd.doubleValue();
-  } //	getGoalPerformanceDouble
-
-  /**
-   * Get Goal Performance in Percent
-   *
-   * @return performance in percent
-   */
-  public int getPercent() {
-    BigDecimal bd = getGoalPerformance().multiply(Env.ONEHUNDRED);
-    return bd.intValue();
-  } //	getPercent
-
-  /**
-   * Get Color
-   *
-   * @return color - white if no target
-   */
-  public Color getColor() {
-    if (m_color == null) {
-      if (getMeasureTarget().signum() == 0) m_color = Color.white;
-      else m_color = MColorSchema.getColor(getCtx(), getPA_ColorSchema_ID(), getPercent());
-    }
-    return m_color;
-  } //	getColor
-
-  /**
-   * Get the color schema for this goal.
-   *
-   * @return the color schema
-   */
-  public MColorSchema getColorSchema() {
-    return MColorSchema.get(getCtx(), getPA_ColorSchema_ID());
-  }
-
-  /**
+    /**
    * Get Measure Display
    *
    * @return Measure Display
@@ -431,36 +227,7 @@ public class MGoal extends X_PA_Goal {
     return s;
   } //	getMeasureDisplay
 
-  /**
-   * Get Measure Display Text
-   *
-   * @return Measure Display Text
-   */
-  public String getXAxisText() {
-    MMeasure measure = getMeasure();
-    if (measure != null
-        && MMeasure.MEASUREDATATYPE_StatusQtyAmount.equals(measure.getMeasureDataType())) {
-      if (MMeasure.MEASURETYPE_Request.equals(measure.getMeasureType()))
-        return Msg.getElement(getCtx(), "R_Status_ID");
-      if (MMeasure.MEASURETYPE_Project.equals(measure.getMeasureType()))
-        return Msg.getElement(getCtx(), "C_Phase_ID");
-    }
-    String value = getMeasureDisplay();
-    String display =
-        MRefList.getListName(getCtx(), X_PA_Goal.MEASUREDISPLAY_AD_Reference_ID, value);
-    return display == null ? value : display;
-  } //	getMeasureDisplayText
-
-  /**
-   * Goal has Target
-   *
-   * @return true if target
-   */
-  public boolean isTarget() {
-    return getMeasureTarget().signum() != 0;
-  } //	isTarget
-
-  /**
+    /**
    * String Representation
    *
    * @return info

@@ -1545,12 +1545,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     return "";
   }
 
-  /* Doc - To be used on ModelValidator to get the corresponding Doc from the PO */
-  private IDoc m_doc;
-
   @Override
   public void setDoc(IDoc doc) {
-    m_doc = doc;
   }
 
   @Override

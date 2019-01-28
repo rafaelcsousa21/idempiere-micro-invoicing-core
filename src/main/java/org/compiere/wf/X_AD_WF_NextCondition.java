@@ -72,11 +72,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
     return ii;
   }
 
-  /** AndOr AD_Reference_ID=204 */
-  public static final int ANDOR_AD_Reference_ID = 204;
-  /** And = A */
-  public static final String ANDOR_And = "A";
-  /** Or = O */
+    /** Or = O */
   public static final String ANDOR_Or = "O";
 
     /**
@@ -88,12 +84,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
     return (String) get_Value(COLUMNNAME_AndOr);
   }
 
-  /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-
-    /** Operation AD_Reference_ID=205 */
-  public static final int OPERATION_AD_Reference_ID = 205;
-  /** = = == */
+    /** = = == */
   public static final String OPERATION_Eq = "==";
   /** >= = >= */
   public static final String OPERATION_GtEq = ">=";
@@ -139,15 +130,6 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
    */
   public String getValue() {
     return (String) get_Value(COLUMNNAME_Value);
-  }
-
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getValue());
   }
 
     /**

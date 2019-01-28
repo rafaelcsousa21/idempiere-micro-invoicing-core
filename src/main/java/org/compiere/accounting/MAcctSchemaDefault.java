@@ -38,10 +38,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
         .firstOnly();
   } //	get
 
-  /** Logger */
-  protected static CLogger s_log = CLogger.getCLogger(MAcctSchemaDefault.class);
-
-  /**
+    /**
    * Load Constructor
    *
    * @param ctx context

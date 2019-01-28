@@ -121,9 +121,6 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
     return ii;
   }
 
-    /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-
     /**
    * Set Mark 1 Percent.
    *

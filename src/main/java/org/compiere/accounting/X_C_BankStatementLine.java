@@ -412,15 +412,6 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
     /**
    * Set Memo.
    *

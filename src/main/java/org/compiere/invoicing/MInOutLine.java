@@ -307,12 +307,8 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
     super.setClientOrg(inout);
   } //	setClientOrg
 
-  /* Doc - To be used on ModelValidator to get the corresponding Doc from the PO */
-  private IDoc m_doc;
-
   @Override
   public void setDoc(IDoc doc) {
-    m_doc = doc;
   }
 
   @Override

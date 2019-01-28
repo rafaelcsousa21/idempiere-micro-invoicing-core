@@ -14,13 +14,8 @@ import org.idempiere.common.util.Util;
  * @version $Id: StateEngine.java,v 1.3 2006/07/30 00:54:44 jjanke Exp $
  */
 public class StateEngine {
-  /** Default Constructor (not started) */
-  public StateEngine() {
-    this(STATE_NotStarted);
-    log = CLogger.getCLogger(getClass());
-  } //	State
 
-  /**
+    /**
    * Initialized Constructor
    *
    * @param startState start state
@@ -66,21 +61,7 @@ public class StateEngine {
   /** Logger */
   protected CLogger log = null;
 
-  /**
-   * Are Exception Thrown
-   *
-   * @return trie if exceptions thrown
-   */
-  public boolean isThrowException() {
-    return m_throwException;
-  } //	isThrowException
-
-  /** Set if Exceptions are Thrown * @param throwException boolean */
-  public void setThrowException(boolean throwException) {
-    m_throwException = throwException;
-  } //	setThrowException
-
-  /**
+    /**
    * Get State
    *
    * @return state
@@ -113,16 +94,7 @@ public class StateEngine {
         || STATE_Suspended.equals(m_state);
   } //	isOpen
 
-  /**
-   * State is Not Running
-   *
-   * @return true if not running (not started, suspended)
-   */
-  public boolean isNotRunning() {
-    return STATE_NotStarted.equals(m_state) || STATE_Suspended.equals(m_state);
-  } //	isNotRunning
-
-  /**
+    /**
    * State is Closed
    *
    * @return true if closed (completed, aborted, terminated)
@@ -329,25 +301,7 @@ public class StateEngine {
     return false;
   } //	isValidNewState
 
-  /**
-   * Set State to new State
-   *
-   * @param newState new state
-   * @return true if set to new state
-   */
-  public boolean setState(String newState) // 	raises InvalidState, TransitionNotAllowed
-      {
-    if (STATE_Running.equals(newState)) {
-      if (isNotStarted()) return start();
-      else return resume();
-    } else if (STATE_Suspended.equals(newState)) return suspend();
-    else if (STATE_Completed.equals(newState)) return complete();
-    else if (STATE_Aborted.equals(newState)) return abort();
-    else if (STATE_Terminated.equals(newState)) return terminate();
-    return false;
-  } //	setState
-
-  /**
+    /**
    * Get Action Options based on current State
    *
    * @return array of actions
@@ -375,24 +329,7 @@ public class StateEngine {
     return false;
   } //	isValidAction
 
-  /**
-   * Process
-   *
-   * @param action action
-   * @return true if set to new state
-   */
-  public boolean process(String action) // 	raises InvalidState, TransitionNotAllowed
-      {
-    if (ACTION_Start.equals(action)) return start();
-    else if (ACTION_Complete.equals(action)) return complete();
-    else if (ACTION_Suspend.equals(action)) return suspend();
-    else if (ACTION_Resume.equals(action)) return resume();
-    else if (ACTION_Abort.equals(action)) return abort();
-    else if (ACTION_Terminate.equals(action)) return terminate();
-    return false;
-  } //	process
-
-  /**
+    /**
    * Get New State If Action performed
    *
    * @param action action

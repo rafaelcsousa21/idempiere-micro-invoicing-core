@@ -109,15 +109,6 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getI_Inventory_ID()));
-  }
-
     /**
    * Set Imported.
    *

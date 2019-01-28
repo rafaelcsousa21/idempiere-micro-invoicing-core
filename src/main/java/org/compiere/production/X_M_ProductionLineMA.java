@@ -132,15 +132,6 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_ProductionLine_ID()));
-  }
-
     @Override
   public int getTableId() {
     return I_M_ProductionLineMA.Table_ID;

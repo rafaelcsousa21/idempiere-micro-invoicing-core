@@ -112,15 +112,6 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_Invoice_ID()));
-  }
-
     /**
    * Get Payment.
    *

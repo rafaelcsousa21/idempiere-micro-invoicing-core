@@ -197,16 +197,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return (Timestamp) get_Value(COLUMNNAME_MovementDate);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getMovementDate()));
-  }
-
-  /**
+    /**
    * Set Movement Quantity.
    *
    * @param MovementQty Quantity of a product moved.
@@ -226,17 +217,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return bd;
   }
 
-  /** MovementType AD_Reference_ID=189 */
-  public static final int MOVEMENTTYPE_AD_Reference_ID = 189;
-  /** Customer Shipment = C- */
-  public static final String MOVEMENTTYPE_CustomerShipment = "C-";
-  /** Customer Returns = C+ */
-  public static final String MOVEMENTTYPE_CustomerReturns = "C+";
-  /** Vendor Receipts = V+ */
-  public static final String MOVEMENTTYPE_VendorReceipts = "V+";
-  /** Vendor Returns = V- */
-  public static final String MOVEMENTTYPE_VendorReturns = "V-";
-  /** Inventory Out = I- */
+    /** Inventory Out = I- */
   public static final String MOVEMENTTYPE_InventoryOut = "I-";
   /** Inventory In = I+ */
   public static final String MOVEMENTTYPE_InventoryIn = "I+";
@@ -250,9 +231,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   public static final String MOVEMENTTYPE_Production_ = "P-";
   /** Work Order + = W+ */
   public static final String MOVEMENTTYPE_WorkOrderPlus = "W+";
-  /** Work Order - = W- */
-  public static final String MOVEMENTTYPE_WorkOrder_ = "W-";
-  /**
+
+    /**
    * Set Movement Type.
    *
    * @param MovementType Method of moving the inventory

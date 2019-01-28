@@ -97,17 +97,6 @@ public class X_M_Replenish extends PO implements I_M_Replenish, I_Persistent {
     return bd;
   }
 
-  /** ReplenishType AD_Reference_ID=164 */
-  public static final int REPLENISHTYPE_AD_Reference_ID = 164;
-  /** Maintain Maximum Level = 2 */
-  public static final String REPLENISHTYPE_MaintainMaximumLevel = "2";
-  /** Manual = 0 */
-  public static final String REPLENISHTYPE_Manual = "0";
-  /** Reorder below Minimum Level = 1 */
-  public static final String REPLENISHTYPE_ReorderBelowMinimumLevel = "1";
-  /** Custom = 9 */
-  public static final String REPLENISHTYPE_Custom = "9";
-
     @Override
   public int getTableId() {
     return Table_ID;

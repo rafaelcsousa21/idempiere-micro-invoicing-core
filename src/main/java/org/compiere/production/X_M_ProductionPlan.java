@@ -71,15 +71,6 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan, I_Pers
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
     /**
    * Get Locator.
    *

@@ -283,15 +283,6 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
     /**
    * Set Product.
    *

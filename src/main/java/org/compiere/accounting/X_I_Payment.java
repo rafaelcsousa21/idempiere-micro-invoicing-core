@@ -268,23 +268,6 @@ public class X_I_Payment extends PO implements I_I_Payment, I_Persistent {
     return (String) get_Value(COLUMNNAME_CreditCardNumber);
   }
 
-  /** CreditCardType AD_Reference_ID=149 */
-  public static final int CREDITCARDTYPE_AD_Reference_ID = 149;
-  /** Amex = A */
-  public static final String CREDITCARDTYPE_Amex = "A";
-  /** MasterCard = M */
-  public static final String CREDITCARDTYPE_MasterCard = "M";
-  /** Visa = V */
-  public static final String CREDITCARDTYPE_Visa = "V";
-  /** ATM = C */
-  public static final String CREDITCARDTYPE_ATM = "C";
-  /** Diners = D */
-  public static final String CREDITCARDTYPE_Diners = "D";
-  /** Discover = N */
-  public static final String CREDITCARDTYPE_Discover = "N";
-  /** Purchase Card = P */
-  public static final String CREDITCARDTYPE_PurchaseCard = "P";
-
     /**
    * Get Credit Card.
    *
@@ -480,21 +463,6 @@ public class X_I_Payment extends PO implements I_I_Payment, I_Persistent {
     return bd;
   }
 
-  /** TenderType AD_Reference_ID=214 */
-  public static final int TENDERTYPE_AD_Reference_ID = 214;
-  /** Credit Card = C */
-  public static final String TENDERTYPE_CreditCard = "C";
-  /** Check = K */
-  public static final String TENDERTYPE_Check = "K";
-  /** Direct Deposit = A */
-  public static final String TENDERTYPE_DirectDeposit = "A";
-  /** Direct Debit = D */
-  public static final String TENDERTYPE_DirectDebit = "D";
-  /** Account = T */
-  public static final String TENDERTYPE_Account = "T";
-  /** Cash = X */
-  public static final String TENDERTYPE_Cash = "X";
-
     /**
    * Get Tender type.
    *
@@ -503,21 +471,6 @@ public class X_I_Payment extends PO implements I_I_Payment, I_Persistent {
   public String getTenderType() {
     return (String) get_Value(COLUMNNAME_TenderType);
   }
-
-  /** TrxType AD_Reference_ID=215 */
-  public static final int TRXTYPE_AD_Reference_ID = 215;
-  /** Sales = S */
-  public static final String TRXTYPE_Sales = "S";
-  /** Delayed Capture = D */
-  public static final String TRXTYPE_DelayedCapture = "D";
-  /** Credit (Payment) = C */
-  public static final String TRXTYPE_CreditPayment = "C";
-  /** Voice Authorization = F */
-  public static final String TRXTYPE_VoiceAuthorization = "F";
-  /** Authorization = A */
-  public static final String TRXTYPE_Authorization = "A";
-  /** Void = V */
-  public static final String TRXTYPE_Void = "V";
 
     /**
    * Get Transaction Type.

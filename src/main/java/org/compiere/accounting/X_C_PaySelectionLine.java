@@ -127,15 +127,6 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_PaySelectionLine_ID()));
-  }
-
     /**
    * Set Difference.
    *
@@ -257,23 +248,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     return bd;
   }
 
-  /** PaymentRule AD_Reference_ID=195 */
-  public static final int PAYMENTRULE_AD_Reference_ID = 195;
-  /** Cash = B */
-  public static final String PAYMENTRULE_Cash = "B";
-  /** Credit Card = K */
-  public static final String PAYMENTRULE_CreditCard = "K";
-  /** Direct Deposit = T */
-  public static final String PAYMENTRULE_DirectDeposit = "T";
-  /** Check = S */
-  public static final String PAYMENTRULE_Check = "S";
-  /** On Credit = P */
-  public static final String PAYMENTRULE_OnCredit = "P";
-  /** Direct Debit = D */
-  public static final String PAYMENTRULE_DirectDebit = "D";
-  /** Mixed POS Payment = M */
-  public static final String PAYMENTRULE_MixedPOSPayment = "M";
-  /**
+    /**
    * Set Payment Rule.
    *
    * @param PaymentRule How you pay the invoice

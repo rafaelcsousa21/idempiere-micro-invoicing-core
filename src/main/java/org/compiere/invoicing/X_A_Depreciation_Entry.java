@@ -59,30 +59,10 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getA_Depreciation_Entry_ID()));
-  }
-
-    /** A_Entry_Type AD_Reference_ID=53257 */
-  public static final int A_ENTRY_TYPE_AD_Reference_ID = 53257;
-  /** Depreciation = DEP */
+    /** Depreciation = DEP */
   public static final String A_ENTRY_TYPE_Depreciation = "DEP";
-  /** Disposals = DIS */
-  public static final String A_ENTRY_TYPE_Disposals = "DIS";
-  /** Forecasts = FOR */
-  public static final String A_ENTRY_TYPE_Forecasts = "FOR";
-  /** New = NEW */
-  public static final String A_ENTRY_TYPE_New = "NEW";
-  /** Splits = SPL */
-  public static final String A_ENTRY_TYPE_Splits = "SPL";
-  /** Transfers = TRN */
-  public static final String A_ENTRY_TYPE_Transfers = "TRN";
-  /**
+
+    /**
    * Set Entry Type.
    *
    * @param A_Entry_Type Entry Type
@@ -175,37 +155,14 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     return (Timestamp) get_Value(COLUMNNAME_DateAcct);
   }
 
-    /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
+    /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
+    /** Close = CL */
   public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
-  public static final String DOCACTION_Re_Activate = "RE";
-  /** <None> = -- */
+    /** <None> = -- */
   public static final String DOCACTION_None = "--";
-  /** Prepare = PR */
-  public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-  /**
+
+    /**
    * Set Document Action.
    *
    * @param DocAction The targeted status of the document
@@ -223,33 +180,6 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
   public String getDocAction() {
     return (String) get_Value(COLUMNNAME_DocAction);
   }
-
-  /** DocStatus AD_Reference_ID=131 */
-  public static final int DOCSTATUS_AD_Reference_ID = 131;
-  /** Drafted = DR */
-  public static final String DOCSTATUS_Drafted = "DR";
-  /** Completed = CO */
-  public static final String DOCSTATUS_Completed = "CO";
-  /** Approved = AP */
-  public static final String DOCSTATUS_Approved = "AP";
-  /** Not Approved = NA */
-  public static final String DOCSTATUS_NotApproved = "NA";
-  /** Voided = VO */
-  public static final String DOCSTATUS_Voided = "VO";
-  /** Invalid = IN */
-  public static final String DOCSTATUS_Invalid = "IN";
-  /** Reversed = RE */
-  public static final String DOCSTATUS_Reversed = "RE";
-  /** Closed = CL */
-  public static final String DOCSTATUS_Closed = "CL";
-  /** Unknown = ?? */
-  public static final String DOCSTATUS_Unknown = "??";
-  /** In Progress = IP */
-  public static final String DOCSTATUS_InProgress = "IP";
-  /** Waiting Payment = WP */
-  public static final String DOCSTATUS_WaitingPayment = "WP";
-  /** Waiting Confirmation = WC */
-  public static final String DOCSTATUS_WaitingConfirmation = "WC";
 
     /**
    * Get Document Status.
@@ -301,19 +231,10 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     set_Value(COLUMNNAME_Posted, Posted);
   }
 
-    /** PostingType AD_Reference_ID=125 */
-  public static final int POSTINGTYPE_AD_Reference_ID = 125;
-  /** Actual = A */
+    /** Actual = A */
   public static final String POSTINGTYPE_Actual = "A";
-  /** Budget = B */
-  public static final String POSTINGTYPE_Budget = "B";
-  /** Commitment = E */
-  public static final String POSTINGTYPE_Commitment = "E";
-  /** Statistical = S */
-  public static final String POSTINGTYPE_Statistical = "S";
-  /** Reservation = R */
-  public static final String POSTINGTYPE_Reservation = "R";
-  /**
+
+    /**
    * Set PostingType.
    *
    * @param PostingType The type of posted amount for the transaction
@@ -353,16 +274,6 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
    */
   public void setProcessing(boolean Processing) {
     set_Value(COLUMNNAME_Processing, Processing);
-  }
-
-  /**
-   * Set Document Status.
-   *
-   * @param DocStatus The current status of the document
-   */
-  public void setDocStatus(String DocStatus) {
-
-    set_Value(COLUMNNAME_DocStatus, DocStatus);
   }
 
 }

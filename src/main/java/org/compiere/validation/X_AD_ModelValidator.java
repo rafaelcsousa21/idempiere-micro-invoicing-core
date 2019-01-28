@@ -52,9 +52,6 @@ public class X_AD_ModelValidator extends BasePOName implements I_AD_ModelValidat
     return sb.toString();
   }
 
-    /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-
     /**
    * Get Model Validation Class.
    *

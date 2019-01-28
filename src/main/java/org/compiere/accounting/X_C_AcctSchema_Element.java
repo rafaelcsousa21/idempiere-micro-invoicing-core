@@ -207,9 +207,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  /** ElementType AD_Reference_ID=181 */
-  public static final int ELEMENTTYPE_AD_Reference_ID = 181;
-  /** Organization = OO */
+    /** Organization = OO */
   public static final String ELEMENTTYPE_Organization = "OO";
   /** Account = AC */
   public static final String ELEMENTTYPE_Account = "AC";

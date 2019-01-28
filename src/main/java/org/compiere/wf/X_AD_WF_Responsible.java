@@ -65,9 +65,6 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
     return ii;
   }
 
-    /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-
     /**
    * Get Name.
    *
@@ -77,26 +74,13 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
     return (String) get_Value(HasName.Companion.getCOLUMNNAME_Name());
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getName());
-  }
-
-  /** ResponsibleType AD_Reference_ID=304 */
-  public static final int RESPONSIBLETYPE_AD_Reference_ID = 304;
-  /** Organization = O */
+    /** Organization = O */
   public static final String RESPONSIBLETYPE_Organization = "O";
   /** Human = H */
   public static final String RESPONSIBLETYPE_Human = "H";
   /** Role = R */
   public static final String RESPONSIBLETYPE_Role = "R";
-  /** System Resource = S */
-  public static final String RESPONSIBLETYPE_SystemResource = "S";
-  /** Manual = M */
+    /** Manual = M */
   public static final String RESPONSIBLETYPE_Manual = "M";
 
     /**

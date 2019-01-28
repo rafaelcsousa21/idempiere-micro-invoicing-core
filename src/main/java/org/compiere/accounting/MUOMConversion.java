@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_UOM_Conversion;
-import org.compiere.orm.MRole;
 import org.compiere.orm.MSysConfig;
 import org.compiere.orm.Query;
 import org.compiere.product.MUOM;
@@ -16,7 +15,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.*;
 import java.util.logging.Level;
@@ -72,48 +70,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     return retValue;
   } //	convert
 
-  /**
-   * Convert qty to target UOM and round.
-   *
-   * @param ctx context
-   * @param C_UOM_ID from UOM
-   * @param qty qty
-   * @return minutes - 0 if not found
-   */
-  public static int convertToMinutes(Properties ctx, int C_UOM_ID, BigDecimal qty) {
-    if (qty == null) return 0;
-    int C_UOM_To_ID = MUOM.getMinute_UOM_ID(ctx);
-    if (C_UOM_ID == C_UOM_To_ID) return qty.intValue();
-    //
-    BigDecimal result = convert(ctx, C_UOM_ID, C_UOM_To_ID, qty);
-    if (result == null) return 0;
-    return result.intValue();
-  } //	convert
-
-  /**
-   * Calculate End Date based on start date and qty
-   *
-   * @param ctx context
-   * @param startDate date
-   * @param C_UOM_ID UOM
-   * @param qty qty
-   * @return end date
-   */
-  public static Timestamp getEndDate(
-      Properties ctx, Timestamp startDate, int C_UOM_ID, BigDecimal qty) {
-    GregorianCalendar endDate = new GregorianCalendar();
-    endDate.setTime(startDate);
-    //
-    int minutes = MUOMConversion.convertToMinutes(ctx, C_UOM_ID, qty);
-    endDate.add(Calendar.MINUTE, minutes);
-    //
-    Timestamp retValue = new Timestamp(endDate.getTimeInMillis());
-    //	log.config( "TimeUtil.getEndDate", "Start=" + startDate
-    //		+ ", Qty=" + qty + ", End=" + retValue);
-    return retValue;
-  } //	startDate
-
-  /**
+    /**
    * ************************************************************************ Get Conversion
    * Multiplier Rate, try to derive it if not found directly
    *
@@ -129,47 +86,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     return deriveRate(ctx, p.x, p.y);
   } //	getConversion
 
-  /**
-   * Create Conversion Matrix (Client)
-   *
-   * @param ctx context
-   */
-  private static void createRates(Properties ctx) {
-    s_conversions = new CCache<Point, BigDecimal>(I_C_UOM_Conversion.Table_Name, 20);
-    //
-    String sql =
-        MRole.getDefault(ctx, false)
-            .addAccessSQL(
-                "SELECT C_UOM_ID, C_UOM_To_ID, MultiplyRate, DivideRate "
-                    + "FROM C_UOM_Conversion "
-                    + "WHERE IsActive='Y' AND M_Product_ID IS NULL",
-                "C_UOM_Conversion",
-                MRole.SQL_NOTQUALIFIED,
-                MRole.SQL_RO);
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, null);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        Point p = new Point(rs.getInt(1), rs.getInt(2));
-        BigDecimal mr = rs.getBigDecimal(3);
-        BigDecimal dr = rs.getBigDecimal(4);
-        if (mr != null) s_conversions.put(p, mr);
-        //	reverse
-        if (dr == null && mr != null) dr = Env.ONE.divide(mr, BigDecimal.ROUND_HALF_UP);
-        if (dr != null) s_conversions.put(new Point(p.y, p.x), dr);
-      }
-    } catch (SQLException e) {
-      s_log.log(Level.SEVERE, sql, e);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-  } //	createRatess
-
-  /**
+    /**
    * Derive Standard Conversions
    *
    * @param ctx context
@@ -396,72 +313,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     return null;
   } //	getProductRateTo
 
-  /**
-   * ************************************************************************ Convert PRICE
-   * expressed in product UoM to equivalent price in entered UoM and round. <br>
-   * OR Convert QTY in entered UOM to qty in product UoM and round. <br>
-   * eg: $1/ea => $6/6pk <br>
-   * OR 1 X 6pk => 6 X ea
-   *
-   * @param ctx context
-   * @param M_Product_ID product
-   * @param C_UOM_To_ID entered UOM
-   * @param qtyPrice quantity or price
-   * @return Product: Qty/Price (precision rounded)
-   */
-  public static BigDecimal convertProductFrom(
-      Properties ctx, int M_Product_ID, int C_UOM_To_ID, BigDecimal qtyPrice) {
-    //	No conversion
-    if (qtyPrice == null
-        || qtyPrice.compareTo(Env.ZERO) == 0
-        || C_UOM_To_ID == 0
-        || M_Product_ID == 0) {
-      if (s_log.isLoggable(Level.FINE)) s_log.fine("No Conversion - QtyPrice=" + qtyPrice);
-      return qtyPrice;
-    }
-
-    BigDecimal retValue = getProductRateFrom(ctx, M_Product_ID, C_UOM_To_ID);
-    if (retValue != null) {
-      if (Env.ONE.compareTo(retValue) == 0) return qtyPrice;
-      MUOM uom = MUOM.get(ctx, C_UOM_To_ID);
-      if (uom != null) return uom.round(retValue.multiply(qtyPrice), true);
-      return retValue.multiply(qtyPrice);
-    }
-    if (s_log.isLoggable(Level.FINE)) s_log.fine("No Rate M_Product_ID=" + M_Product_ID);
-    return null;
-  } //	convertProductFrom
-
-  /**
-   * Get multiply rate to convert PRICE from price in entered UOM to price in product UOM <br>
-   * OR multiply rate to convert QTY from product UOM to entered UOM
-   *
-   * @param ctx context
-   * @param M_Product_ID product
-   * @param C_UOM_To_ID entered UOM
-   * @return multiplier or null
-   */
-  public static BigDecimal getProductRateFrom(Properties ctx, int M_Product_ID, int C_UOM_To_ID) {
-    MUOMConversion[] rates = getProductConversions(ctx, M_Product_ID);
-
-    for (int i = 0; i < rates.length; i++) {
-      MUOMConversion rate = rates[i];
-      if (rate.getC_UOM_To_ID() == C_UOM_To_ID) return rate.getDivideRate();
-    }
-
-    List<MUOMConversion> conversions =
-        new Query(ctx, I_C_UOM_Conversion.Table_Name, "C_UOM_ID=? AND C_UOM_TO_ID=?", null)
-            .setParameters(MProduct.get(ctx, M_Product_ID).getC_UOM_ID(), C_UOM_To_ID)
-            .setOnlyActiveRecords(true)
-            .list();
-    for (int i = 0; i < conversions.size(); i++) {
-      MUOMConversion rate = conversions.get(i);
-      if (rate.getC_UOM_To_ID() == C_UOM_To_ID) return rate.getDivideRate();
-    }
-
-    return null;
-  } //	getProductRateFrom
-
-  /**
+    /**
    * Get Product Conversions (cached)
    *
    * @param ctx context
@@ -503,9 +355,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
   private static final CLogger s_log = CLogger.getCLogger(MUOMConversion.class);
   /** Indicator for Rate */
   private static final BigDecimal GETRATE = BigDecimal.valueOf(123.456);
-  /** Conversion Map: Key=Point(from,to) Value=BigDecimal */
-  private static CCache<Point, BigDecimal> s_conversions = null;
-  /** Product Conversion Map */
+    /** Product Conversion Map */
   private static final CCache<Integer, MUOMConversion[]> s_conversionProduct =
       new CCache<Integer, MUOMConversion[]>(
           I_C_UOM_Conversion.Table_Name, I_C_UOM_Conversion.Table_Name + "_Of_Product", 20);

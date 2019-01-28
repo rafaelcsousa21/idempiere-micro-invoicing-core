@@ -281,15 +281,6 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
     /**
    * Get Product Category.
    *

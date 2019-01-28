@@ -79,9 +79,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
     return bd;
   }
 
-    /** MeasureDataType AD_Reference_ID=369 */
-  public static final int MEASUREDATATYPE_AD_Reference_ID = 369;
-  /** Qty/Amount in Time = T */
+    /** Qty/Amount in Time = T */
   public static final String MEASUREDATATYPE_QtyAmountInTime = "T";
   /** Status Qty/Amount = S */
   public static final String MEASUREDATATYPE_StatusQtyAmount = "S";
@@ -95,9 +93,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
     return (String) get_Value(COLUMNNAME_MeasureDataType);
   }
 
-  /** MeasureType AD_Reference_ID=231 */
-  public static final int MEASURETYPE_AD_Reference_ID = 231;
-  /** Manual = M */
+    /** Manual = M */
   public static final String MEASURETYPE_Manual = "M";
   /** Calculated = C */
   public static final String MEASURETYPE_Calculated = "C";

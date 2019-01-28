@@ -404,11 +404,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
     set_ValueNoCheck(COLUMNNAME_ProjectBalanceAmt, ProjectBalanceAmt);
   }
 
-    /** ProjectCategory AD_Reference_ID=288 */
-  public static final int PROJECTCATEGORY_AD_Reference_ID = 288;
-  /** General = N */
-  public static final String PROJECTCATEGORY_General = "N";
-  /** Asset Project = A */
+    /** Asset Project = A */
   public static final String PROJECTCATEGORY_AssetProject = "A";
   /** Work Order (Job) = W */
   public static final String PROJECTCATEGORY_WorkOrderJob = "W";
@@ -433,15 +429,10 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
     return (String) get_Value(COLUMNNAME_ProjectCategory);
   }
 
-  /** ProjectLineLevel AD_Reference_ID=384 */
-  public static final int PROJECTLINELEVEL_AD_Reference_ID = 384;
-  /** Project = P */
+    /** Project = P */
   public static final String PROJECTLINELEVEL_Project = "P";
-  /** Phase = A */
-  public static final String PROJECTLINELEVEL_Phase = "A";
-  /** Task = T */
-  public static final String PROJECTLINELEVEL_Task = "T";
-  /**
+
+    /**
    * Set Line Level.
    *
    * @param ProjectLineLevel Project Line Level
@@ -451,19 +442,10 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
     set_Value(COLUMNNAME_ProjectLineLevel, ProjectLineLevel);
   }
 
-    /** ProjInvoiceRule AD_Reference_ID=383 */
-  public static final int PROJINVOICERULE_AD_Reference_ID = 383;
-  /** None = - */
+    /** None = - */
   public static final String PROJINVOICERULE_None = "-";
-  /** Committed Amount = C */
-  public static final String PROJINVOICERULE_CommittedAmount = "C";
-  /** Time&Material max Comitted = c */
-  public static final String PROJINVOICERULE_TimeMaterialMaxComitted = "c";
-  /** Time&Material = T */
-  public static final String PROJINVOICERULE_TimeMaterial = "T";
-  /** Product Quantity = P */
-  public static final String PROJINVOICERULE_ProductQuantity = "P";
-  /**
+
+    /**
    * Set Invoice Rule.
    *
    * @param ProjInvoiceRule Invoice Rule for the project

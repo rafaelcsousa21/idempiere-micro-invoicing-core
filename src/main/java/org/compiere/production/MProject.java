@@ -29,44 +29,7 @@ public class MProject extends X_C_Project {
   /** */
   private static final long serialVersionUID = 8631795136761641303L;
 
-  /**
-   * Create new Project by copying
-   *
-   * @param ctx context
-   * @param C_Project_ID project
-   * @param dateDoc date of the document date
-   * @param trxName transaction
-   * @return Project
-   */
-  public static MProject copyFrom(
-      Properties ctx, int C_Project_ID, Timestamp dateDoc, String trxName) {
-    MProject from = new MProject(ctx, C_Project_ID, trxName);
-    if (from.getC_Project_ID() == 0)
-      throw new IllegalArgumentException("From Project not found C_Project_ID=" + C_Project_ID);
-    //
-    MProject to = new MProject(ctx, 0, trxName);
-    copyValues(from, to, from. getClientId(), from. getOrgId());
-    to.set_ValueNoCheck("C_Project_ID", I_ZERO);
-    //	Set Value with Time
-    String Value = to.getValue() + " ";
-    String Time = dateDoc.toString();
-    int length = Value.length() + Time.length();
-    if (length <= 40) Value += Time;
-    else Value += Time.substring(length - 40);
-    to.setValue(Value);
-    to.setInvoicedAmt(Env.ZERO);
-    to.setProjectBalanceAmt(Env.ZERO);
-    to.setProcessed(false);
-    //
-    if (!to.save()) throw new IllegalStateException("Could not create Project");
-
-    if (to.copyDetailsFrom(from) == 0)
-      throw new IllegalStateException("Could not create Project Details");
-
-    return to;
-  } //	copyFrom
-
-  /**
+    /**
    * ************************************************************************ Standard Constructor
    *
    * @param ctx context
@@ -438,19 +401,4 @@ public class MProject extends X_C_Project {
     return success;
   } //	afterDelete
 
-  /**
-   * Return the Invoices Generated for this Project
-   *
-   * @return invoices
-   * @author monhate
-   */
-  public I_C_Invoice[] getMInvoices() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(I_C_Invoice.COLUMNNAME_C_Project_ID).append("=?");
-    List<I_C_Invoice> list =
-        new Query(getCtx(), I_C_Invoice.Table_Name, sb.toString(), null)
-            .setParameters(getC_Project_ID())
-            .list();
-    return list.toArray(new I_C_Invoice[list.size()]);
-  }
 } //	MProject

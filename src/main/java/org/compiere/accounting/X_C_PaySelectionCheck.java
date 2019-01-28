@@ -265,9 +265,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     return bd;
   }
 
-  /** PaymentRule AD_Reference_ID=195 */
-  public static final int PAYMENTRULE_AD_Reference_ID = 195;
-  /** Cash = B */
+    /** Cash = B */
   public static final String PAYMENTRULE_Cash = "B";
   /** Credit Card = K */
   public static final String PAYMENTRULE_CreditCard = "K";
@@ -275,13 +273,10 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
   public static final String PAYMENTRULE_DirectDeposit = "T";
   /** Check = S */
   public static final String PAYMENTRULE_Check = "S";
-  /** On Credit = P */
-  public static final String PAYMENTRULE_OnCredit = "P";
-  /** Direct Debit = D */
+    /** Direct Debit = D */
   public static final String PAYMENTRULE_DirectDebit = "D";
-  /** Mixed POS Payment = M */
-  public static final String PAYMENTRULE_MixedPOSPayment = "M";
-  /**
+
+    /**
    * Set Payment Rule.
    *
    * @param PaymentRule How you pay the invoice

@@ -20,19 +20,4 @@ public class ImportEventData {
     this.source = source;
     this.target = target;
   }
-
-  /** @return the importProcess */
-  public ImportProcess getImportProcess() {
-    return importProcess;
-  }
-
-  /** @return the source */
-  public PO getSource() {
-    return source;
-  }
-
-  /** @return the target */
-  public PO getTarget() {
-    return target;
-  }
 }

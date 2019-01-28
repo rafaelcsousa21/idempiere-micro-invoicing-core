@@ -76,15 +76,6 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getAD_Message_ID()));
-  }
-
     /**
    * Get Notice.
    *

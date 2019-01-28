@@ -112,15 +112,6 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_InvoiceLine_ID()));
-  }
-
     /**
    * Get Landed Cost Allocation.
    *

@@ -111,34 +111,7 @@ public final class DocTax {
     return m_amount;
   }
 
-  /**
-   * Get Base Amount
-   *
-   * @return net amount
-   */
-  public BigDecimal getTaxBaseAmt() {
-    return m_taxBaseAmt;
-  }
-
-  /**
-   * Get Rate
-   *
-   * @return tax rate in percent
-   */
-  public BigDecimal getRate() {
-    return m_rate;
-  }
-
-  /**
-   * Get Name of Tax
-   *
-   * @return name
-   */
-  public String getName() {
-    return m_name;
-  }
-
-  /**
+    /**
    * Get C_Tax_ID
    *
    * @return tax id
@@ -147,18 +120,7 @@ public final class DocTax {
     return m_C_Tax_ID;
   } //	getC_Tax_ID
 
-  /**
-   * Get Description (Tax Name and Base Amount)
-   *
-   * @return tax anme and base amount
-   */
-  public String getDescription() {
-    StringBuilder msgreturn =
-        new StringBuilder().append(m_name).append(" ").append(m_taxBaseAmt.toString());
-    return msgreturn.toString();
-  } //  getDescription
-
-  /**
+    /**
    * Add to Included Tax
    *
    * @param amt amount
@@ -167,16 +129,7 @@ public final class DocTax {
     m_includedTax = m_includedTax.add(amt);
   } //	addIncludedTax
 
-  /**
-   * Get Included Tax
-   *
-   * @return tax amount
-   */
-  public BigDecimal getIncludedTax() {
-    return m_includedTax;
-  } //	getIncludedTax
-
-  /**
+    /**
    * Get Included Tax Difference
    *
    * @return tax ampunt - included amount

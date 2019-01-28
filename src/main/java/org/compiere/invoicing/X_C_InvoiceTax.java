@@ -95,17 +95,6 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
   }
 
     /**
-   * Get Tax Provider.
-   *
-   * @return Tax Provider
-   */
-  public int getC_TaxProvider_ID() {
-    Integer ii = (Integer) get_Value(I_C_InvoiceTax.COLUMNNAME_C_TaxProvider_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
    * Set Price includes Tax.
    *
    * @param IsTaxIncluded Tax is included in the price

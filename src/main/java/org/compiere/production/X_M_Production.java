@@ -65,17 +65,6 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     else set_Value(I_M_Production.COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
   }
 
-  /**
-   * Get Activity.
-   *
-   * @return Business Activity
-   */
-  private int getC_Activity_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_Activity_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
     /**
    * Set Business Partner .
    *
@@ -84,17 +73,6 @@ public class X_M_Production extends BasePOName implements I_Persistent {
   public void setC_BPartner_ID(int C_BPartner_ID) {
     if (C_BPartner_ID < 1) set_ValueNoCheck(I_M_Production.COLUMNNAME_C_BPartner_ID, null);
     else set_ValueNoCheck(I_M_Production.COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
-  }
-
-  /**
-   * Get Business Partner .
-   *
-   * @return Identifies a Business Partner
-   */
-  private int getC_BPartner_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_BPartner_ID);
-    if (ii == null) return 0;
-    return ii;
   }
 
     /**
@@ -107,38 +85,6 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     else set_Value(I_M_Production.COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
   }
 
-  /**
-   * Get Campaign.
-   *
-   * @return Marketing Campaign
-   */
-  private int getC_Campaign_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_Campaign_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Sales Order Line.
-   *
-   * @param C_OrderLine_ID Sales Order Line
-   */
-  public void setC_OrderLine_ID(int C_OrderLine_ID) {
-    if (C_OrderLine_ID < 1) set_Value(I_M_Production.COLUMNNAME_C_OrderLine_ID, null);
-    else set_Value(I_M_Production.COLUMNNAME_C_OrderLine_ID, Integer.valueOf(C_OrderLine_ID));
-  }
-
-  /**
-   * Get Sales Order Line.
-   *
-   * @return Sales Order Line
-   */
-  private int getC_OrderLine_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_OrderLine_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
     /**
    * Set Project.
    *
@@ -147,17 +93,6 @@ public class X_M_Production extends BasePOName implements I_Persistent {
   public void setC_Project_ID(int C_Project_ID) {
     if (C_Project_ID < 1) set_Value(I_M_Production.COLUMNNAME_C_Project_ID, null);
     else set_Value(I_M_Production.COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-  }
-
-  /**
-   * Get Project.
-   *
-   * @return Financial Project
-   */
-  private int getC_Project_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_Project_ID);
-    if (ii == null) return 0;
-    return ii;
   }
 
     /**
@@ -172,17 +107,6 @@ public class X_M_Production extends BasePOName implements I_Persistent {
           I_M_Production.COLUMNNAME_C_ProjectPhase_ID, Integer.valueOf(C_ProjectPhase_ID));
   }
 
-  /**
-   * Get Project Phase.
-   *
-   * @return Phase of a Project
-   */
-  private int getC_ProjectPhase_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_ProjectPhase_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
     /**
    * Set Project Task.
    *
@@ -195,25 +119,24 @@ public class X_M_Production extends BasePOName implements I_Persistent {
           I_M_Production.COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
   }
 
-  /**
-   * Get Project Task.
-   *
-   * @return Actual Project Task in a Phase
-   */
-  private int getC_ProjectTask_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_ProjectTask_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    /**
+     * Set Sales Order Line.
+     *
+     * @param C_OrderLine_ID Sales Order Line
+     */
+    public void setC_OrderLine_ID(int C_OrderLine_ID) {
+        if (C_OrderLine_ID < 1) set_Value(I_M_Production.COLUMNNAME_C_OrderLine_ID, null);
+        else set_Value(I_M_Production.COLUMNNAME_C_OrderLine_ID, C_OrderLine_ID);
+    }
 
     /**
-   * Set Date Promised.
-   *
-   * @param DatePromised Date Order was promised
-   */
-  public void setDatePromised(Timestamp DatePromised) {
-    set_Value(I_M_Production.COLUMNNAME_DatePromised, DatePromised);
-  }
+     * Set Date Promised.
+     *
+     * @param DatePromised Date Order was promised
+     */
+    public void setDatePromised(Timestamp DatePromised) {
+        set_Value(I_M_Production.COLUMNNAME_DatePromised, DatePromised);
+    }
 
     /**
    * Set Description.
@@ -233,37 +156,16 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return (String) get_Value(I_M_Production.COLUMNNAME_Description);
   }
 
-  /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
+    /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
+    /** Close = CL */
   public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
-  public static final String DOCACTION_Re_Activate = "RE";
-  /** <None> = -- */
+    /** <None> = -- */
   public static final String DOCACTION_None = "--";
   /** Prepare = PR */
   public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-  /**
+
+    /**
    * Set Document Action.
    *
    * @param DocAction The targeted status of the document
@@ -282,9 +184,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return (String) get_Value(I_M_Production.COLUMNNAME_DocAction);
   }
 
-  /** DocStatus AD_Reference_ID=131 */
-  public static final int DOCSTATUS_AD_Reference_ID = 131;
-  /** Drafted = DR */
+    /** Drafted = DR */
   public static final String DOCSTATUS_Drafted = "DR";
   /** Completed = CO */
   public static final String DOCSTATUS_Completed = "CO";
@@ -300,15 +200,10 @@ public class X_M_Production extends BasePOName implements I_Persistent {
   public static final String DOCSTATUS_Reversed = "RE";
   /** Closed = CL */
   public static final String DOCSTATUS_Closed = "CL";
-  /** Unknown = ?? */
-  public static final String DOCSTATUS_Unknown = "??";
-  /** In Progress = IP */
+    /** In Progress = IP */
   public static final String DOCSTATUS_InProgress = "IP";
-  /** Waiting Payment = WP */
-  public static final String DOCSTATUS_WaitingPayment = "WP";
-  /** Waiting Confirmation = WC */
-  public static final String DOCSTATUS_WaitingConfirmation = "WC";
-  /**
+
+    /**
    * Set Document Status.
    *
    * @param DocStatus The current status of the document
@@ -345,13 +240,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     set_Value(I_M_Production.COLUMNNAME_IsComplete, Boolean.valueOf(IsComplete));
   }
 
-    /** IsCreated AD_Reference_ID=319 */
-  public static final int ISCREATED_AD_Reference_ID = 319;
-  /** Yes = Y */
-  public static final String ISCREATED_Yes = "Y";
-  /** No = N */
-  public static final String ISCREATED_No = "N";
-  /**
+    /**
    * Set Records created.
    *
    * @param IsCreated Records created
@@ -523,64 +412,32 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    */
   public void setReversal_ID(int Reversal_ID) {
     if (Reversal_ID < 1) set_Value(I_M_Production.COLUMNNAME_Reversal_ID, null);
-    else set_Value(I_M_Production.COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+    else set_Value(I_M_Production.COLUMNNAME_Reversal_ID, Reversal_ID);
   }
 
-  /**
-   * Get Reversal ID.
-   *
-   * @return ID of document reversal
-   */
-  private int getReversal_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_Reversal_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set User Element List 1.
-   *
-   * @param User1_ID User defined list element #1
-   */
-  public void setUser1_ID(int User1_ID) {
-    if (User1_ID < 1) set_Value(I_M_Production.COLUMNNAME_User1_ID, null);
-    else set_Value(I_M_Production.COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
-  }
-
-  /**
-   * Get User Element List 1.
-   *
-   * @return User defined list element #1
-   */
-  private int getUser1_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_User1_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set User Element List 2.
-   *
-   * @param User2_ID User defined list element #2
-   */
-  public void setUser2_ID(int User2_ID) {
-    if (User2_ID < 1) set_Value(I_M_Production.COLUMNNAME_User2_ID, null);
-    else set_Value(I_M_Production.COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
-  }
-
-  /**
-   * Get User Element List 2.
-   *
-   * @return User defined list element #2
-   */
-  private int getUser2_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_User2_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_M_Production.Table_ID;
   }
+
+    /**
+     * Set User Element List 1.
+     *
+     * @param User1_ID User defined list element #1
+     */
+    public void setUser1_ID(int User1_ID) {
+        if (User1_ID < 1) set_Value(I_M_Production.COLUMNNAME_User1_ID, null);
+        else set_Value(I_M_Production.COLUMNNAME_User1_ID, User1_ID);
+    }
+
+
+    /**
+     * Set User Element List 2.
+     *
+     * @param User2_ID User defined list element #2
+     */
+    public void setUser2_ID(int User2_ID) {
+        if (User2_ID < 1) set_Value(I_M_Production.COLUMNNAME_User2_ID, null);
+        else set_Value(I_M_Production.COLUMNNAME_User2_ID, User2_ID);
+    }
 }

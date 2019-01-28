@@ -22,15 +22,6 @@ import static software.hsharp.core.util.DBKt.prepareStatement;
  * @version $Id: DocWorkflowManager.java,v 1.2 2006/07/30 00:51:05 jjanke Exp $
  */
 public class DocWorkflowManager implements DocWorkflowMgr {
-  /**
-   * Get Document Workflow Manager
-   *
-   * @return mgr
-   */
-  public static DocWorkflowManager get() {
-    if (s_mgr == null) s_mgr = new DocWorkflowManager();
-    return s_mgr;
-  } //	get
 
   /* DAP
   //	Set PO Workflow Manager

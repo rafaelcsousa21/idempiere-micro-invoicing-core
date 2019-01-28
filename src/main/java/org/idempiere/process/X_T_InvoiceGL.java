@@ -79,15 +79,6 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
     return bd;
   }
 
-    /** APAR AD_Reference_ID=332 */
-  public static final int APAR_AD_Reference_ID = 332;
-  /** Receivables & Payables = A */
-  public static final String APAR_ReceivablesPayables = "A";
-  /** Receivables only = R */
-  public static final String APAR_ReceivablesOnly = "R";
-  /** Payables only = P */
-  public static final String APAR_PayablesOnly = "P";
-
     /**
    * Get Revaluation Conversion Type.
    *

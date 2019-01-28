@@ -171,15 +171,6 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_InOutLine_ID()));
-  }
-
     /**
    * Set Phys.Inventory Line.
    *

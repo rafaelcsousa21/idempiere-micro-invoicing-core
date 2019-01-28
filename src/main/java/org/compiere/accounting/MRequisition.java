@@ -18,7 +18,6 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -133,35 +132,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
     return Msg.getElement(getCtx(), "M_Requisition_ID") + " " + getDocumentNo();
   } //	getDocumentInfo
 
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      File temp = File.createTempFile(get_TableName() + getId() + "_", ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    //	ReportEngine re = ReportEngine.get (getCtx(), ReportEngine.INVOICE, getC_Invoice_ID());
-    //	if (re == null)
-    return null;
-    //	return re.getPDF(file);
-  } //	createPDF
-
-  /** Set default PriceList */
+    /** Set default PriceList */
   public void setM_PriceList_ID() {
     MPriceList defaultPL = MPriceList.getDefault(getCtx(), false);
     if (defaultPL == null) defaultPL = MPriceList.getDefault(getCtx(), true);

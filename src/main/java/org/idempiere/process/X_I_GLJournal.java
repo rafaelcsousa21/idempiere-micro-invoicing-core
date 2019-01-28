@@ -439,15 +439,6 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal, I_Persistent {
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getI_GLJournal_ID()));
-  }
-
     /**
    * Set Imported.
    *
@@ -515,19 +506,6 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal, I_Persistent {
     if (ii == null) return 0;
     return ii;
   }
-
-    /** PostingType AD_Reference_ID=125 */
-  public static final int POSTINGTYPE_AD_Reference_ID = 125;
-  /** Actual = A */
-  public static final String POSTINGTYPE_Actual = "A";
-  /** Budget = B */
-  public static final String POSTINGTYPE_Budget = "B";
-  /** Commitment = E */
-  public static final String POSTINGTYPE_Commitment = "E";
-  /** Statistical = S */
-  public static final String POSTINGTYPE_Statistical = "S";
-  /** Reservation = R */
-  public static final String POSTINGTYPE_Reservation = "R";
 
     /**
    * Get PostingType.

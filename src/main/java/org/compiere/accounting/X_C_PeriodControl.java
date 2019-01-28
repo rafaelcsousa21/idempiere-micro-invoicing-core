@@ -58,15 +58,6 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_PeriodControl_ID()));
-  }
-
     /**
    * Set Period.
    *
@@ -88,13 +79,9 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     return ii;
   }
 
-  /** DocBaseType AD_Reference_ID=183 */
-  public static final int DOCBASETYPE_AD_Reference_ID = 183;
-  /** GL Journal = GLJ */
+    /** GL Journal = GLJ */
   public static final String DOCBASETYPE_GLJournal = "GLJ";
-  /** GL Document = GLD */
-  public static final String DOCBASETYPE_GLDocument = "GLD";
-  /** AP Invoice = API */
+    /** AP Invoice = API */
   public static final String DOCBASETYPE_APInvoice = "API";
   /** AP Payment = APP */
   public static final String DOCBASETYPE_APPayment = "APP";
@@ -148,13 +135,8 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
   public static final String DOCBASETYPE_DistributionOrder = "DOO";
   /** Manufacturing Cost Collector = MCC */
   public static final String DOCBASETYPE_ManufacturingCostCollector = "MCC";
-  /** Fixed Assets Addition = FAA */
-  public static final String DOCBASETYPE_FixedAssetsAddition = "FAA";
-  /** Fixed Assets Disposal = FAD */
-  public static final String DOCBASETYPE_FixedAssetsDisposal = "FAD";
-  /** Fixed Assets Depreciation = FDP */
-  public static final String DOCBASETYPE_FixedAssetsDepreciation = "FDP";
-  /**
+
+    /**
    * Set Document BaseType.
    *
    * @param DocBaseType Logical type of document
@@ -173,9 +155,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     return (String) get_Value(COLUMNNAME_DocBaseType);
   }
 
-  /** PeriodAction AD_Reference_ID=176 */
-  public static final int PERIODACTION_AD_Reference_ID = 176;
-  /** Open Period = O */
+    /** Open Period = O */
   public static final String PERIODACTION_OpenPeriod = "O";
   /** Close Period = C */
   public static final String PERIODACTION_ClosePeriod = "C";
@@ -202,9 +182,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     return (String) get_Value(COLUMNNAME_PeriodAction);
   }
 
-  /** PeriodStatus AD_Reference_ID=177 */
-  public static final int PERIODSTATUS_AD_Reference_ID = 177;
-  /** Open = O */
+    /** Open = O */
   public static final String PERIODSTATUS_Open = "O";
   /** Closed = C */
   public static final String PERIODSTATUS_Closed = "C";

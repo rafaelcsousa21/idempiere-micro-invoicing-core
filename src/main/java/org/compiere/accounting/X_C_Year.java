@@ -94,16 +94,7 @@ public class X_C_Year extends PO implements I_C_Year, I_Persistent {
     return (String) get_Value(COLUMNNAME_FiscalYear);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getFiscalYear());
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now

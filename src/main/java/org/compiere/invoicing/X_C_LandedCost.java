@@ -68,18 +68,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_InvoiceLine_ID()));
-  }
-
-    /** LandedCostDistribution AD_Reference_ID=339 */
-  public static final int LANDEDCOSTDISTRIBUTION_AD_Reference_ID = 339;
-  /** Quantity = Q */
+    /** Quantity = Q */
   public static final String LANDEDCOSTDISTRIBUTION_Quantity = "Q";
   /** Line = L */
   public static final String LANDEDCOSTDISTRIBUTION_Line = "L";

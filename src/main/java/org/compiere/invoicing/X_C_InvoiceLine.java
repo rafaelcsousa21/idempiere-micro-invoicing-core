@@ -80,24 +80,6 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     else set_Value(I_C_InvoiceLine.COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
   }
 
-  /**
-   * Get Asset.
-   *
-   * @return Asset used internally or by customers
-   */
-  private int getA_Asset_ID() {
-    Integer ii = (Integer) get_Value(I_C_InvoiceLine.COLUMNNAME_A_Asset_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /** A_CapvsExp AD_Reference_ID=53277 */
-  public static final int A_CAPVSEXP_AD_Reference_ID = 53277;
-  /** Capital = Cap */
-  public static final String A_CAPVSEXP_Capital = "Cap";
-  /** Expense = Exp */
-  public static final String A_CAPVSEXP_Expense = "Exp";
-
     /**
    * Set Trx Organization.
    *
@@ -127,17 +109,6 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
   public void setC_1099Box_ID(int C_1099Box_ID) {
     if (C_1099Box_ID < 1) set_Value(I_C_InvoiceLine.COLUMNNAME_C_1099Box_ID, null);
     else set_Value(I_C_InvoiceLine.COLUMNNAME_C_1099Box_ID, Integer.valueOf(C_1099Box_ID));
-  }
-
-  /**
-   * Get 1099 Box.
-   *
-   * @return 1099 Box
-   */
-  private int getC_1099Box_ID() {
-    Integer ii = (Integer) get_Value(I_C_InvoiceLine.COLUMNNAME_C_1099Box_ID);
-    if (ii == null) return 0;
-    return ii;
   }
 
     /**
@@ -228,15 +199,6 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     Integer ii = (Integer) get_Value(I_C_InvoiceLine.COLUMNNAME_C_Invoice_ID);
     if (ii == null) return 0;
     return ii;
-  }
-
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_Invoice_ID()));
   }
 
     /**
@@ -580,16 +542,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Unit Price.
-   *
-   * @param PriceActual Actual Price
-   */
-  public void setPriceActual(BigDecimal PriceActual) {
-    set_ValueNoCheck(I_C_InvoiceLine.COLUMNNAME_PriceActual, PriceActual);
-  }
-
-  /**
+    /**
    * Get Unit Price.
    *
    * @return Actual Price

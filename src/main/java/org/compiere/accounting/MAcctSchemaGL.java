@@ -38,10 +38,7 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
         .firstOnly();
   } //	get
 
-  /** Logger */
-  protected static CLogger s_log = CLogger.getCLogger(MAcctSchemaGL.class);
-
-  /**
+    /**
    * Load Constructor
    *
    * @param ctx context

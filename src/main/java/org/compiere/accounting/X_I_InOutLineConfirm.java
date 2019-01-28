@@ -109,15 +109,6 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getI_InOutLineConfirm_ID()));
-  }
-
     /**
    * Set Imported.
    *

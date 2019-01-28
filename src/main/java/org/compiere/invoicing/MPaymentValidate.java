@@ -220,27 +220,7 @@ public class MPaymentValidate {
     return "";
   } //  validateCreditCardNumber
 
-  /**
-   * Validate Validation Code
-   *
-   * @param creditCardVV CC Verification Code
-   * @return "" or Error AD_Message
-   */
-  public static String validateCreditCardVV(String creditCardVV) {
-    if (creditCardVV == null) return "";
-    int length = checkNumeric(creditCardVV).length();
-    if (length == 3 || length == 4) return "";
-    try {
-      Integer.parseInt(creditCardVV);
-      return "";
-    } catch (NumberFormatException ex) {
-      if (s_log.isLoggable(Level.FINE)) s_log.fine("validateCreditCardVV - " + ex);
-    }
-    if (s_log.isLoggable(Level.FINE)) s_log.fine("validateCreditCardVV - length=" + length);
-    return "CreditCardVVError";
-  } //  validateCreditCardVV
-
-  /**
+    /**
    * Validate Validation Code
    *
    * @param creditCardVV CC Verification Code

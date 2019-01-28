@@ -42,19 +42,6 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type, I
     return sb.toString();
   }
 
-    /** IsDepreciable AD_Reference_ID=53365 */
-  public static final int ISDEPRECIABLE_AD_Reference_ID = 53365;
-  /** No = NX */
-  public static final String ISDEPRECIABLE_No = "NX";
-  /** - / Default No = XN */
-  public static final String ISDEPRECIABLE__DefaultNo = "XN";
-  /** - = XX */
-  public static final String ISDEPRECIABLE__ = "XX";
-  /** - / Default Yes = XY */
-  public static final String ISDEPRECIABLE__DefaultYes = "XY";
-  /** Yes = YX */
-  public static final String ISDEPRECIABLE_Yes = "YX";
-
     /**
    * Get Is Depreciable.
    *
@@ -64,19 +51,6 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type, I
     return (String) get_Value(COLUMNNAME_IsDepreciable);
   }
 
-  /** IsInPosession AD_Reference_ID=53365 */
-  public static final int ISINPOSESSION_AD_Reference_ID = 53365;
-  /** No = NX */
-  public static final String ISINPOSESSION_No = "NX";
-  /** - / Default No = XN */
-  public static final String ISINPOSESSION__DefaultNo = "XN";
-  /** - = XX */
-  public static final String ISINPOSESSION__ = "XX";
-  /** - / Default Yes = XY */
-  public static final String ISINPOSESSION__DefaultYes = "XY";
-  /** Yes = YX */
-  public static final String ISINPOSESSION_Yes = "YX";
-
     /**
    * Get In Possession.
    *
@@ -85,19 +59,6 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type, I
   public String getIsInPosession() {
     return (String) get_Value(COLUMNNAME_IsInPosession);
   }
-
-  /** IsOwned AD_Reference_ID=53365 */
-  public static final int ISOWNED_AD_Reference_ID = 53365;
-  /** No = NX */
-  public static final String ISOWNED_No = "NX";
-  /** - / Default No = XN */
-  public static final String ISOWNED__DefaultNo = "XN";
-  /** - = XX */
-  public static final String ISOWNED__ = "XX";
-  /** - / Default Yes = XY */
-  public static final String ISOWNED__DefaultYes = "XY";
-  /** Yes = YX */
-  public static final String ISOWNED_Yes = "YX";
 
     /**
    * Get Owned.

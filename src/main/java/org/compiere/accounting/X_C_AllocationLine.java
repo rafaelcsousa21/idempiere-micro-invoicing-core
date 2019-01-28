@@ -182,15 +182,6 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_Invoice_ID()));
-  }
-
     /**
    * Set Order.
    *

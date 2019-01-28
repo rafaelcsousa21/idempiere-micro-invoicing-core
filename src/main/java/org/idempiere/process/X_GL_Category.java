@@ -42,13 +42,9 @@ public class X_GL_Category extends BasePOName implements I_GL_Category, I_Persis
     return sb.toString();
   }
 
-  /** CategoryType AD_Reference_ID=207 */
-  public static final int CATEGORYTYPE_AD_Reference_ID = 207;
-  /** Manual = M */
+    /** Manual = M */
   public static final String CATEGORYTYPE_Manual = "M";
-  /** Import = I */
-  public static final String CATEGORYTYPE_Import = "I";
-  /** Document = D */
+    /** Document = D */
   public static final String CATEGORYTYPE_Document = "D";
   /** System generated = S */
   public static final String CATEGORYTYPE_SystemGenerated = "S";

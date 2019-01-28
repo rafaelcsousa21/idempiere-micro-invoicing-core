@@ -620,12 +620,8 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
     return sb.toString();
   } //	toString
 
-  /* Doc - To be used on ModelValidator to get the corresponding Doc from the PO */
-  private IDoc m_doc;
-
   @Override
   public void setDoc(IDoc doc) {
-    m_doc = doc;
   }
 
   @Override

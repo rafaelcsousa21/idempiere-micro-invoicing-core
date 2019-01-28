@@ -77,9 +77,6 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc, I_
     return (String) get_Value(COLUMNNAME_DateColumn);
   }
 
-    /** EntityType AD_Reference_ID=389 */
-  public static final int ENTITYTYPE_AD_Reference_ID = 389;
-
     /**
    * Get Key Column.
    *

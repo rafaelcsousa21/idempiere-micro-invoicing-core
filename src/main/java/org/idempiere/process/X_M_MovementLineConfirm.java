@@ -132,15 +132,6 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_MovementConfirm_ID()));
-  }
-
     /**
    * Set Move Line.
    *

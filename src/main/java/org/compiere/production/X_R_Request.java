@@ -296,16 +296,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
-  /** DueType AD_Reference_ID=222 */
+    /** DueType AD_Reference_ID=222 */
   public static final int DUETYPE_AD_Reference_ID = 222;
   /** Overdue = 3 */
   public static final String DUETYPE_Overdue = "3";
@@ -448,13 +439,6 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     if (ii == null) return 0;
     return ii;
   }
-
-  /** NextAction AD_Reference_ID=219 */
-  public static final int NEXTACTION_AD_Reference_ID = 219;
-  /** None = N */
-  public static final String NEXTACTION_None = "N";
-  /** Follow up = F */
-  public static final String NEXTACTION_FollowUp = "F";
 
     /** Priority AD_Reference_ID=154 */
   public static final int PRIORITY_AD_Reference_ID = 154;
@@ -749,27 +733,6 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
   public String getSummary() {
     return (String) get_Value(COLUMNNAME_Summary);
   }
-
-  /** TaskStatus AD_Reference_ID=366 */
-  public static final int TASKSTATUS_AD_Reference_ID = 366;
-  /** 0% Not Started = 0 */
-  public static final String TASKSTATUS_0NotStarted = "0";
-  /** 100% Complete = D */
-  public static final String TASKSTATUS_100Complete = "D";
-  /** 20% Started = 2 */
-  public static final String TASKSTATUS_20Started = "2";
-  /** 80% Nearly Done = 8 */
-  public static final String TASKSTATUS_80NearlyDone = "8";
-  /** 40% Busy = 4 */
-  public static final String TASKSTATUS_40Busy = "4";
-  /** 60% Good Progress = 6 */
-  public static final String TASKSTATUS_60GoodProgress = "6";
-  /** 90% Finishing = 9 */
-  public static final String TASKSTATUS_90Finishing = "9";
-  /** 95% Almost Done = A */
-  public static final String TASKSTATUS_95AlmostDone = "A";
-  /** 99% Cleaning up = C */
-  public static final String TASKSTATUS_99CleaningUp = "C";
 
     @Override
   public int getTableId() {
