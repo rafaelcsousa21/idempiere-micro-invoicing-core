@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_I_InOutLineConfirm;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -50,16 +49,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     return sb.toString();
   }
 
-  /**
-   * Set Confirmation No.
-   *
-   * @param ConfirmationNo Confirmation Number
-   */
-  public void setConfirmationNo(String ConfirmationNo) {
-    set_Value(COLUMNNAME_ConfirmationNo, ConfirmationNo);
-  }
-
-  /**
+    /**
    * Get Confirmation No.
    *
    * @return Confirmation Number
@@ -68,16 +58,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     return (String) get_Value(COLUMNNAME_ConfirmationNo);
   }
 
-  /**
-   * Set Confirmed Quantity.
-   *
-   * @param ConfirmedQty Confirmation of a received quantity
-   */
-  public void setConfirmedQty(BigDecimal ConfirmedQty) {
-    set_Value(COLUMNNAME_ConfirmedQty, ConfirmedQty);
-  }
-
-  /**
+    /**
    * Get Confirmed Quantity.
    *
    * @return Confirmation of a received quantity
@@ -88,16 +69,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     return bd;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -106,16 +78,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
-   * Set Difference.
-   *
-   * @param DifferenceQty Difference Quantity
-   */
-  public void setDifferenceQty(BigDecimal DifferenceQty) {
-    set_Value(COLUMNNAME_DifferenceQty, DifferenceQty);
-  }
-
-  /**
+    /**
    * Get Difference.
    *
    * @return Difference Quantity
@@ -135,26 +98,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     set_Value(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
   }
 
-  /**
-   * Get Import Error Message.
-   *
-   * @return Messages generated from import process
-   */
-  public String getI_ErrorMsg() {
-    return (String) get_Value(COLUMNNAME_I_ErrorMsg);
-  }
-
-  /**
-   * Set Ship/Receipt Confirmation Import Line.
-   *
-   * @param I_InOutLineConfirm_ID Material Shipment or Receipt Confirmation Import Line
-   */
-  public void setI_InOutLineConfirm_ID(int I_InOutLineConfirm_ID) {
-    if (I_InOutLineConfirm_ID < 1) set_ValueNoCheck(COLUMNNAME_I_InOutLineConfirm_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_I_InOutLineConfirm_ID, Integer.valueOf(I_InOutLineConfirm_ID));
-  }
-
-  /**
+    /**
    * Get Ship/Receipt Confirmation Import Line.
    *
    * @return Material Shipment or Receipt Confirmation Import Line
@@ -174,25 +118,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     return new KeyNamePair(getId(), String.valueOf(getI_InOutLineConfirm_ID()));
   }
 
-  /**
-   * Set I_InOutLineConfirm_UU.
-   *
-   * @param I_InOutLineConfirm_UU I_InOutLineConfirm_UU
-   */
-  public void setI_InOutLineConfirm_UU(String I_InOutLineConfirm_UU) {
-    set_Value(COLUMNNAME_I_InOutLineConfirm_UU, I_InOutLineConfirm_UU);
-  }
-
-  /**
-   * Get I_InOutLineConfirm_UU.
-   *
-   * @return I_InOutLineConfirm_UU
-   */
-  public String getI_InOutLineConfirm_UU() {
-    return (String) get_Value(COLUMNNAME_I_InOutLineConfirm_UU);
-  }
-
-  /**
+    /**
    * Set Imported.
    *
    * @param I_IsImported Has this import been processed
@@ -201,37 +127,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
   }
 
-  /**
-   * Get Imported.
-   *
-   * @return Has this import been processed
-   */
-  public boolean isI_IsImported() {
-    Object oo = get_Value(COLUMNNAME_I_IsImported);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_M_InOutLineConfirm getM_InOutLineConfirm() throws RuntimeException {
-    return (org.compiere.model.I_M_InOutLineConfirm)
-        MTable.get(getCtx(), org.compiere.model.I_M_InOutLineConfirm.Table_Name)
-            .getPO(getM_InOutLineConfirm_ID(), null);
-  }
-
-  /**
-   * Set Ship/Receipt Confirmation Line.
-   *
-   * @param M_InOutLineConfirm_ID Material Shipment or Receipt Confirmation Line
-   */
-  public void setM_InOutLineConfirm_ID(int M_InOutLineConfirm_ID) {
-    if (M_InOutLineConfirm_ID < 1) set_Value(COLUMNNAME_M_InOutLineConfirm_ID, null);
-    else set_Value(COLUMNNAME_M_InOutLineConfirm_ID, Integer.valueOf(M_InOutLineConfirm_ID));
-  }
-
-  /**
+    /**
    * Get Ship/Receipt Confirmation Line.
    *
    * @return Material Shipment or Receipt Confirmation Line
@@ -251,53 +147,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Scrapped Quantity.
-   *
-   * @param ScrappedQty The Quantity scrapped due to QA issues
-   */
-  public void setScrappedQty(BigDecimal ScrappedQty) {
-    set_Value(COLUMNNAME_ScrappedQty, ScrappedQty);
-  }
-
-  /**
+    /**
    * Get Scrapped Quantity.
    *
    * @return The Quantity scrapped due to QA issues

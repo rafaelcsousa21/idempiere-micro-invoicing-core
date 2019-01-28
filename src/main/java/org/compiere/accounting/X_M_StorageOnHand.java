@@ -1,10 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_M_AttributeSetInstance;
-import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_StorageOnHand;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
@@ -71,16 +68,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand, I_Persis
     set_Value(COLUMNNAME_DateLastInventory, DateLastInventory);
   }
 
-  /**
-   * Get Date last inventory count.
-   *
-   * @return Date of Last Inventory Count
-   */
-  public Timestamp getDateLastInventory() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastInventory);
-  }
-
-  /**
+    /**
    * Set Date Material Policy.
    *
    * @param DateMaterialPolicy Time used for LIFO and FIFO Material Policy
@@ -98,13 +86,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand, I_Persis
     return (Timestamp) get_Value(COLUMNNAME_DateMaterialPolicy);
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -127,12 +109,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand, I_Persis
     return ii;
   }
 
-  public I_M_Locator getM_Locator() throws RuntimeException {
-    return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
-  }
-
-  /**
+    /**
    * Set Locator.
    *
    * @param M_Locator_ID Warehouse Locator
@@ -153,13 +130,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand, I_Persis
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -180,25 +151,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand, I_Persis
     return ii;
   }
 
-  /**
-   * Set M_StorageOnHand_UU.
-   *
-   * @param M_StorageOnHand_UU M_StorageOnHand_UU
-   */
-  public void setM_StorageOnHand_UU(String M_StorageOnHand_UU) {
-    set_Value(COLUMNNAME_M_StorageOnHand_UU, M_StorageOnHand_UU);
-  }
-
-  /**
-   * Get M_StorageOnHand_UU.
-   *
-   * @return M_StorageOnHand_UU
-   */
-  public String getM_StorageOnHand_UU() {
-    return (String) get_Value(COLUMNNAME_M_StorageOnHand_UU);
-  }
-
-  /**
+    /**
    * Set On Hand Quantity.
    *
    * @param QtyOnHand On Hand Quantity

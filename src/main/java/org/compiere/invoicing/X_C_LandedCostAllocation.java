@@ -1,7 +1,6 @@
 package org.compiere.invoicing;
 
 import org.compiere.model.I_C_LandedCostAllocation;
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
@@ -92,13 +91,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
     return bd;
   }
 
-  public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
-    return (org.compiere.model.I_C_InvoiceLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice Line.
    *
    * @param C_InvoiceLine_ID Invoice Detail Line
@@ -128,19 +121,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
     return new KeyNamePair(getId(), String.valueOf(getC_InvoiceLine_ID()));
   }
 
-  /**
-   * Set Landed Cost Allocation.
-   *
-   * @param C_LandedCostAllocation_ID Allocation for Land Costs
-   */
-  public void setC_LandedCostAllocation_ID(int C_LandedCostAllocation_ID) {
-    if (C_LandedCostAllocation_ID < 1) set_ValueNoCheck(COLUMNNAME_C_LandedCostAllocation_ID, null);
-    else
-      set_ValueNoCheck(
-          COLUMNNAME_C_LandedCostAllocation_ID, Integer.valueOf(C_LandedCostAllocation_ID));
-  }
-
-  /**
+    /**
    * Get Landed Cost Allocation.
    *
    * @return Allocation for Land Costs
@@ -151,31 +132,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
     return ii;
   }
 
-  /**
-   * Set C_LandedCostAllocation_UU.
-   *
-   * @param C_LandedCostAllocation_UU C_LandedCostAllocation_UU
-   */
-  public void setC_LandedCostAllocation_UU(String C_LandedCostAllocation_UU) {
-    set_Value(COLUMNNAME_C_LandedCostAllocation_UU, C_LandedCostAllocation_UU);
-  }
-
-  /**
-   * Get C_LandedCostAllocation_UU.
-   *
-   * @return C_LandedCostAllocation_UU
-   */
-  public String getC_LandedCostAllocation_UU() {
-    return (String) get_Value(COLUMNNAME_C_LandedCostAllocation_UU);
-  }
-
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -198,13 +155,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
     return ii;
   }
 
-  public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
-    return (org.compiere.model.I_M_CostElement)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Element.
    *
    * @param M_CostElement_ID Product Cost Element
@@ -252,13 +203,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item

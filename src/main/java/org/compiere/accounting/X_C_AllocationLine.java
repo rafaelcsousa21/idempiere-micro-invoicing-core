@@ -9,7 +9,6 @@ import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Properties;
 
 /**
@@ -71,13 +70,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return bd;
   }
 
-  public org.compiere.model.I_C_AllocationHdr getC_AllocationHdr() throws RuntimeException {
-    return (org.compiere.model.I_C_AllocationHdr)
-        MTable.get(getCtx(), org.compiere.model.I_C_AllocationHdr.Table_Name)
-            .getPO(getC_AllocationHdr_ID(), null);
-  }
-
-  /**
+    /**
    * Set Allocation.
    *
    * @param C_AllocationHdr_ID Payment allocation
@@ -98,17 +91,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return ii;
   }
 
-  /**
-   * Set Allocation Line.
-   *
-   * @param C_AllocationLine_ID Allocation Line
-   */
-  public void setC_AllocationLine_ID(int C_AllocationLine_ID) {
-    if (C_AllocationLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AllocationLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_AllocationLine_ID, Integer.valueOf(C_AllocationLine_ID));
-  }
-
-  /**
+    /**
    * Get Allocation Line.
    *
    * @return Allocation Line
@@ -119,31 +102,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return ii;
   }
 
-  /**
-   * Set C_AllocationLine_UU.
-   *
-   * @param C_AllocationLine_UU C_AllocationLine_UU
-   */
-  public void setC_AllocationLine_UU(String C_AllocationLine_UU) {
-    set_Value(COLUMNNAME_C_AllocationLine_UU, C_AllocationLine_UU);
-  }
-
-  /**
-   * Get C_AllocationLine_UU.
-   *
-   * @return C_AllocationLine_UU
-   */
-  public String getC_AllocationLine_UU() {
-    return (String) get_Value(COLUMNNAME_C_AllocationLine_UU);
-  }
-
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -164,13 +123,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return ii;
   }
 
-  public org.compiere.model.I_C_CashLine getC_CashLine() throws RuntimeException {
-    return (org.compiere.model.I_C_CashLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_CashLine.Table_Name)
-            .getPO(getC_CashLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cash Journal Line.
    *
    * @param C_CashLine_ID Cash Journal Line
@@ -191,23 +144,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return ii;
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
-   * Set Charge.
-   *
-   * @param C_Charge_ID Additional document charges
-   */
-  public void setC_Charge_ID(int C_Charge_ID) {
-    if (C_Charge_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Charge_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
-  }
-
-  /**
+    /**
    * Get Charge.
    *
    * @return Additional document charges
@@ -254,13 +191,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return new KeyNamePair(getId(), String.valueOf(getC_Invoice_ID()));
   }
 
-  public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
-    return (org.compiere.model.I_C_Order)
-        MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), null);
-  }
-
-  /**
+    /**
    * Set Order.
    *
    * @param C_Order_ID Order
@@ -308,25 +239,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return ii;
   }
 
-  /**
-   * Set Transaction Date.
-   *
-   * @param DateTrx Transaction Date
-   */
-  public void setDateTrx(Timestamp DateTrx) {
-    set_ValueNoCheck(COLUMNNAME_DateTrx, DateTrx);
-  }
-
-  /**
-   * Get Transaction Date.
-   *
-   * @return Transaction Date
-   */
-  public Timestamp getDateTrx() {
-    return (Timestamp) get_Value(COLUMNNAME_DateTrx);
-  }
-
-  /**
+    /**
    * Set Discount Amount.
    *
    * @param DiscountAmt Calculated amount of discount
@@ -346,30 +259,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
     return bd;
   }
 
-  /**
-   * Set Manual.
-   *
-   * @param IsManual This is a manual process
-   */
-  public void setIsManual(boolean IsManual) {
-    set_ValueNoCheck(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
-  }
-
-  /**
-   * Get Manual.
-   *
-   * @return This is a manual process
-   */
-  public boolean isManual() {
-    Object oo = get_Value(COLUMNNAME_IsManual);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Over/Under Payment.
    *
    * @param OverUnderAmt Over-Payment (unallocated) or Under-Payment (partial payment) Amount

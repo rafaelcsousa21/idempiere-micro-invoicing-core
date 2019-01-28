@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_S_ResourceAssignment;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -65,16 +64,7 @@ public class X_S_ResourceAssignment extends BasePOName
     return (Timestamp) get_Value(COLUMNNAME_AssignDateFrom);
   }
 
-  /**
-   * Set Assign To.
-   *
-   * @param AssignDateTo Assign resource until
-   */
-  public void setAssignDateTo(Timestamp AssignDateTo) {
-    set_ValueNoCheck(COLUMNNAME_AssignDateTo, AssignDateTo);
-  }
-
-  /**
+    /**
    * Get Assign To.
    *
    * @return Assign resource until
@@ -92,16 +82,7 @@ public class X_S_ResourceAssignment extends BasePOName
     set_Value(COLUMNNAME_Description, Description);
   }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Confirmed.
    *
    * @param IsConfirmed Assignment is confirmed
@@ -144,64 +125,7 @@ public class X_S_ResourceAssignment extends BasePOName
     return bd;
   }
 
-  /**
-   * Set Resource Assignment.
-   *
-   * @param S_ResourceAssignment_ID Resource Assignment
-   */
-  public void setS_ResourceAssignment_ID(int S_ResourceAssignment_ID) {
-    if (S_ResourceAssignment_ID < 1) set_ValueNoCheck(COLUMNNAME_S_ResourceAssignment_ID, null);
-    else
-      set_ValueNoCheck(
-          COLUMNNAME_S_ResourceAssignment_ID, Integer.valueOf(S_ResourceAssignment_ID));
-  }
-
-  /**
-   * Get Resource Assignment.
-   *
-   * @return Resource Assignment
-   */
-  public int getS_ResourceAssignment_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_S_ResourceAssignment_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set S_ResourceAssignment_UU.
-   *
-   * @param S_ResourceAssignment_UU S_ResourceAssignment_UU
-   */
-  public void setS_ResourceAssignment_UU(String S_ResourceAssignment_UU) {
-    set_Value(COLUMNNAME_S_ResourceAssignment_UU, S_ResourceAssignment_UU);
-  }
-
-  /**
-   * Get S_ResourceAssignment_UU.
-   *
-   * @return S_ResourceAssignment_UU
-   */
-  public String getS_ResourceAssignment_UU() {
-    return (String) get_Value(COLUMNNAME_S_ResourceAssignment_UU);
-  }
-
-  public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException {
-    return (org.compiere.model.I_S_Resource)
-        MTable.get(getCtx(), org.compiere.model.I_S_Resource.Table_Name)
-            .getPO(getS_Resource_ID(), null);
-  }
-
-  /**
-   * Set Resource.
-   *
-   * @param S_Resource_ID Resource
-   */
-  public void setS_Resource_ID(int S_Resource_ID) {
-    if (S_Resource_ID < 1) set_ValueNoCheck(COLUMNNAME_S_Resource_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_S_Resource_ID, Integer.valueOf(S_Resource_ID));
-  }
-
-  /**
+    /**
    * Get Resource.
    *
    * @return Resource

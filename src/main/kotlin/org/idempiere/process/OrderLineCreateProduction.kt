@@ -96,55 +96,55 @@ class OrderLineCreateProduction(
         val product = MProduct(ctx, line.m_Product_ID, null)
 
         production.m_Product_ID = line.m_Product_ID
-        production.productionQty = line.qtyOrdered.subtract(line.qtyDelivered)
-        production.datePromised = line.datePromised
+        production.setProductionQty(line.qtyOrdered.subtract(line.qtyDelivered))
+        production.setDatePromised(line.datePromised)
         if (product.m_Locator_ID > 0)
-            production.m_Locator_ID = product.m_Locator_ID
-        production.c_OrderLine_ID = p_C_OrderLine_ID
+            production.setM_Locator_ID(product.m_Locator_ID)
+        production.setC_OrderLine_ID(p_C_OrderLine_ID)
 
         var locator = product.m_Locator_ID
         if (locator == 0)
             locator = MWarehouse.get(ctx, line.m_Warehouse_ID).defaultLocator!!.id
-        production.m_Locator_ID = locator
+        production.setM_Locator_ID(locator)
 
         if (line.c_BPartner_ID > 0) {
-            production.c_BPartner_ID = order.c_BPartner_ID
+            production.setC_BPartner_ID(order.c_BPartner_ID)
         }
 
         if (line.c_Project_ID > 0) {
-            production.c_Project_ID = line.c_Project_ID
+            production.setC_Project_ID(line.c_Project_ID)
         } else {
-            production.c_Project_ID = order.c_Project_ID
+            production.setC_Project_ID(order.c_Project_ID)
         }
 
         if (line.c_Campaign_ID > 0) {
-            production.c_Campaign_ID = line.c_Campaign_ID
+            production.setC_Campaign_ID(line.c_Campaign_ID)
         } else {
-            production.c_Campaign_ID = order.c_Campaign_ID
+            production.setC_Campaign_ID(order.c_Campaign_ID)
         }
 
         if (line.c_Activity_ID > 0) {
-            production.c_Activity_ID = line.c_Activity_ID
+            production.setC_Activity_ID(line.c_Activity_ID)
         } else {
-            production.c_Activity_ID = order.c_Activity_ID
+            production.setC_Activity_ID(order.c_Activity_ID)
         }
 
         if (line.user1_ID > 0) {
-            production.user1_ID = line.user1_ID
+            production.setUser1_ID(line.user1_ID)
         } else {
-            production.user1_ID = order.user1_ID
+            production.setUser1_ID(order.user1_ID)
         }
 
         if (line.user2_ID > 0) {
-            production.user2_ID = line.user2_ID
+            production.setUser2_ID(line.user2_ID)
         } else {
-            production.user2_ID = order.user2_ID
+            production.setUser2_ID(order.user2_ID)
         }
 
         if (line.aD_OrgTrx_ID > 0) {
-            production.aD_OrgTrx_ID = line.aD_OrgTrx_ID
+            production.setAD_OrgTrx_ID(line.aD_OrgTrx_ID)
         } else {
-            production.aD_OrgTrx_ID = order.aD_OrgTrx_ID
+            production.setAD_OrgTrx_ID(order.aD_OrgTrx_ID)
         }
 
         production.saveEx()

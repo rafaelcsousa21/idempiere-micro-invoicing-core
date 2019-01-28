@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_C_Task;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -45,23 +44,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_Phase getC_Phase() throws RuntimeException {
-    return (org.compiere.model.I_C_Phase)
-        MTable.get(getCtx(), org.compiere.model.I_C_Phase.Table_Name)
-            .getPO(getC_Phase_ID(), null);
-  }
-
-  /**
-   * Set Standard Phase.
-   *
-   * @param C_Phase_ID Standard Phase of the Project Type
-   */
-  public void setC_Phase_ID(int C_Phase_ID) {
-    if (C_Phase_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Phase_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Phase_ID, Integer.valueOf(C_Phase_ID));
-  }
-
-  /**
+    /**
    * Get Standard Phase.
    *
    * @return Standard Phase of the Project Type
@@ -72,17 +55,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Standard Task.
-   *
-   * @param C_Task_ID Standard Project Type Task
-   */
-  public void setC_Task_ID(int C_Task_ID) {
-    if (C_Task_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Task_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Task_ID, Integer.valueOf(C_Task_ID));
-  }
-
-  /**
+    /**
    * Get Standard Task.
    *
    * @return Standard Project Type Task
@@ -93,34 +66,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set C_Task_UU.
-   *
-   * @param C_Task_UU C_Task_UU
-   */
-  public void setC_Task_UU(String C_Task_UU) {
-    set_Value(COLUMNNAME_C_Task_UU, C_Task_UU);
-  }
-
-  /**
-   * Get C_Task_UU.
-   *
-   * @return C_Task_UU
-   */
-  public String getC_Task_UU() {
-    return (String) get_Value(COLUMNNAME_C_Task_UU);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -129,16 +75,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
+    /**
    * Get Comment/Help.
    *
    * @return Comment or Hint
@@ -147,23 +84,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
     return (String) get_Value(COLUMNNAME_Help);
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
-   * Set Product.
-   *
-   * @param M_Product_ID Product, Service, Item
-   */
-  public void setM_Product_ID(int M_Product_ID) {
-    if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-  }
-
-  /**
+    /**
    * Get Product.
    *
    * @return Product, Service, Item

@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_BankStatement;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -73,13 +72,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     return bd;
   }
 
-  public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
-    return (org.compiere.model.I_C_BankAccount)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), null);
-  }
-
-  /**
+    /**
    * Set Bank Account.
    *
    * @param C_BankAccount_ID Account at the Bank
@@ -100,17 +93,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     return ii;
   }
 
-  /**
-   * Set Bank Statement.
-   *
-   * @param C_BankStatement_ID Bank Statement of account
-   */
-  public void setC_BankStatement_ID(int C_BankStatement_ID) {
-    if (C_BankStatement_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BankStatement_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_BankStatement_ID, Integer.valueOf(C_BankStatement_ID));
-  }
-
-  /**
+    /**
    * Get Bank Statement.
    *
    * @return Bank Statement of account
@@ -121,80 +104,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     return ii;
   }
 
-  /**
-   * Set C_BankStatement_UU.
-   *
-   * @param C_BankStatement_UU C_BankStatement_UU
-   */
-  public void setC_BankStatement_UU(String C_BankStatement_UU) {
-    set_Value(COLUMNNAME_C_BankStatement_UU, C_BankStatement_UU);
-  }
-
-  /**
-   * Get C_BankStatement_UU.
-   *
-   * @return C_BankStatement_UU
-   */
-  public String getC_BankStatement_UU() {
-    return (String) get_Value(COLUMNNAME_C_BankStatement_UU);
-  }
-
-  /**
-   * Set Copy From.
-   *
-   * @param CopyFrom Copy From Record
-   */
-  public void setCopyFrom(String CopyFrom) {
-    set_Value(COLUMNNAME_CopyFrom, CopyFrom);
-  }
-
-  /**
-   * Get Copy From.
-   *
-   * @return Copy From Record
-   */
-  public String getCopyFrom() {
-    return (String) get_Value(COLUMNNAME_CopyFrom);
-  }
-
-  /**
-   * Set Create lines from.
-   *
-   * @param CreateFrom Process which will generate a new document lines based on an existing
-   *     document
-   */
-  public void setCreateFrom(String CreateFrom) {
-    set_Value(COLUMNNAME_CreateFrom, CreateFrom);
-  }
-
-  /**
-   * Get Create lines from.
-   *
-   * @return Process which will generate a new document lines based on an existing document
-   */
-  public String getCreateFrom() {
-    return (String) get_Value(COLUMNNAME_CreateFrom);
-  }
-
-  /**
-   * Set Create From Batch.
-   *
-   * @param CreateFromBatch Create From Batch
-   */
-  public void setCreateFromBatch(String CreateFromBatch) {
-    set_Value(COLUMNNAME_CreateFromBatch, CreateFromBatch);
-  }
-
-  /**
-   * Get Create From Batch.
-   *
-   * @return Create From Batch
-   */
-  public String getCreateFromBatch() {
-    return (String) get_Value(COLUMNNAME_CreateFromBatch);
-  }
-
-  /**
+    /**
    * Set Account Date.
    *
    * @param DateAcct Accounting Date
@@ -333,16 +243,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     set_Value(COLUMNNAME_EftStatementDate, EftStatementDate);
   }
 
-  /**
-   * Get EFT Statement Date.
-   *
-   * @return Electronic Funds Transfer Statement Date
-   */
-  public Timestamp getEftStatementDate() {
-    return (Timestamp) get_Value(COLUMNNAME_EftStatementDate);
-  }
-
-  /**
+    /**
    * Set EFT Statement Reference.
    *
    * @param EftStatementReference Electronic Funds Transfer Statement Reference
@@ -369,18 +270,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     set_Value(COLUMNNAME_EndingBalance, EndingBalance);
   }
 
-  /**
-   * Get Ending balance.
-   *
-   * @return Ending or closing balance
-   */
-  public BigDecimal getEndingBalance() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_EndingBalance);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Approved.
    *
    * @param IsApproved Indicates if this document requires approval
@@ -412,39 +302,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     set_Value(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
   }
 
-  /**
-   * Get Manual.
-   *
-   * @return This is a manual process
-   */
-  public boolean isManual() {
-    Object oo = get_Value(COLUMNNAME_IsManual);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Match Statement.
-   *
-   * @param MatchStatement Match Statement
-   */
-  public void setMatchStatement(String MatchStatement) {
-    set_Value(COLUMNNAME_MatchStatement, MatchStatement);
-  }
-
-  /**
-   * Get Match Statement.
-   *
-   * @return Match Statement
-   */
-  public String getMatchStatement() {
-    return (String) get_Value(COLUMNNAME_MatchStatement);
-  }
-
-  /**
+    /**
    * Set Posted.
    *
    * @param Posted Posting status
@@ -453,21 +311,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
   }
 
-  /**
-   * Get Posted.
-   *
-   * @return Posting status
-   */
-  public boolean isPosted() {
-    Object oo = get_Value(COLUMNNAME_Posted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -490,28 +334,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     return false;
   }
 
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -520,21 +343,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Statement date.
    *
    * @param StatementDate Date of the statement

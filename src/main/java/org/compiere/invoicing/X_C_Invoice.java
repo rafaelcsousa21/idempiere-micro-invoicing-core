@@ -85,13 +85,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
+    /**
    * Set User/Contact.
    *
    * @param AD_User_ID User within the system - Internal or Business Partner Contact
@@ -112,13 +106,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
+    /**
    * Set Activity.
    *
    * @param C_Activity_ID Business Activity
@@ -166,13 +154,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner_Location.Table_Name)
-            .getPO(getC_BPartner_Location_ID(), null);
-  }
-
-  /**
+    /**
    * Set Partner Location.
    *
    * @param C_BPartner_Location_ID Identifies the (ship to) address for this Business Partner
@@ -195,13 +177,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
+    /**
    * Set Campaign.
    *
    * @param C_Campaign_ID Marketing Campaign
@@ -222,13 +198,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_CashLine getC_CashLine() throws RuntimeException {
-    return (org.compiere.model.I_C_CashLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_CashLine.Table_Name)
-            .getPO(getC_CashLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cash Journal Line.
    *
    * @param C_CashLine_ID Cash Journal Line
@@ -249,13 +219,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_CashPlanLine getC_CashPlanLine() throws RuntimeException {
-    return (org.compiere.model.I_C_CashPlanLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_CashPlanLine.Table_Name)
-            .getPO(getC_CashPlanLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cash Plan Line.
    *
    * @param C_CashPlanLine_ID Cash Plan Line
@@ -276,23 +240,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
-   * Set Charge.
-   *
-   * @param C_Charge_ID Additional document charges
-   */
-  public void setC_Charge_ID(int C_Charge_ID) {
-    if (C_Charge_ID < 1) set_Value(I_C_Invoice.COLUMNNAME_C_Charge_ID, null);
-    else set_Value(I_C_Invoice.COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
-  }
-
-  /**
+    /**
    * Get Charge.
    *
    * @return Additional document charges
@@ -303,13 +251,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
-    return (org.compiere.model.I_C_ConversionType)
-        MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency Type.
    *
    * @param C_ConversionType_ID Currency Conversion Rate Type
@@ -358,13 +300,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Document Type.
    *
    * @param C_DocType_ID Document type or rules
@@ -412,28 +348,12 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_DunningLevel getC_DunningLevel() throws RuntimeException {
-    return (org.compiere.model.I_C_DunningLevel)
-        MTable.get(getCtx(), org.compiere.model.I_C_DunningLevel.Table_Name)
-            .getPO(getC_DunningLevel_ID(), null);
-  }
-
-  /**
-   * Set Dunning Level.
-   *
-   * @param C_DunningLevel_ID Dunning Level
-   */
-  public void setC_DunningLevel_ID(int C_DunningLevel_ID) {
-    if (C_DunningLevel_ID < 1) set_Value(I_C_Invoice.COLUMNNAME_C_DunningLevel_ID, null);
-    else set_Value(I_C_Invoice.COLUMNNAME_C_DunningLevel_ID, Integer.valueOf(C_DunningLevel_ID));
-  }
-
-  /**
+    /**
    * Get Dunning Level.
    *
    * @return Dunning Level
    */
-  public int getC_DunningLevel_ID() {
+    private int getC_DunningLevel_ID() {
     Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_DunningLevel_ID);
     if (ii == null) return 0;
     return ii;
@@ -459,17 +379,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return bd;
   }
 
-  /**
-   * Set Invoice.
-   *
-   * @param C_Invoice_ID Invoice Identifier
-   */
-  public void setC_Invoice_ID(int C_Invoice_ID) {
-    if (C_Invoice_ID < 1) set_ValueNoCheck(I_C_Invoice.COLUMNNAME_C_Invoice_ID, null);
-    else set_ValueNoCheck(I_C_Invoice.COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
-  }
-
-  /**
+    /**
    * Get Invoice.
    *
    * @return Invoice Identifier
@@ -480,43 +390,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  /**
-   * Set C_Invoice_UU.
-   *
-   * @param C_Invoice_UU C_Invoice_UU
-   */
-  public void setC_Invoice_UU(String C_Invoice_UU) {
-    set_Value(I_C_Invoice.COLUMNNAME_C_Invoice_UU, C_Invoice_UU);
-  }
-
-  /**
-   * Get C_Invoice_UU.
-   *
-   * @return C_Invoice_UU
-   */
-  public String getC_Invoice_UU() {
-    return (String) get_Value(I_C_Invoice.COLUMNNAME_C_Invoice_UU);
-  }
-
-  /**
-   * Set Copy From.
-   *
-   * @param CopyFrom Copy From Record
-   */
-  public void setCopyFrom(String CopyFrom) {
-    set_Value(I_C_Invoice.COLUMNNAME_CopyFrom, CopyFrom);
-  }
-
-  /**
-   * Get Copy From.
-   *
-   * @return Copy From Record
-   */
-  public String getCopyFrom() {
-    return (String) get_Value(I_C_Invoice.COLUMNNAME_CopyFrom);
-  }
-
-  public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
+    public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
     return (org.compiere.model.I_C_Order)
         MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
             .getPO(getC_Order_ID(), null);
@@ -543,13 +417,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment.
    *
    * @param C_Payment_ID Payment identifier
@@ -570,13 +438,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException {
-    return (org.compiere.model.I_C_PaymentTerm)
-        MTable.get(getCtx(), org.compiere.model.I_C_PaymentTerm.Table_Name)
-            .getPO(getC_PaymentTerm_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment Term.
    *
    * @param C_PaymentTerm_ID The terms of Payment (timing, discount)
@@ -597,13 +459,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project.
    *
    * @param C_Project_ID Financial Project
@@ -624,26 +480,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Create lines from.
-   *
-   * @param CreateFrom Process which will generate a new document lines based on an existing
-   *     document
-   */
-  public void setCreateFrom(String CreateFrom) {
-    set_Value(I_C_Invoice.COLUMNNAME_CreateFrom, CreateFrom);
-  }
-
-  /**
-   * Get Create lines from.
-   *
-   * @return Process which will generate a new document lines based on an existing document
-   */
-  public String getCreateFrom() {
-    return (String) get_Value(I_C_Invoice.COLUMNNAME_CreateFrom);
-  }
-
-  /**
+    /**
    * Set Account Date.
    *
    * @param DateAcct Accounting Date
@@ -706,16 +543,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     set_Value(I_C_Invoice.COLUMNNAME_DatePrinted, DatePrinted);
   }
 
-  /**
-   * Get Date printed.
-   *
-   * @return Date the document was printed.
-   */
-  public Timestamp getDatePrinted() {
-    return (Timestamp) get_Value(I_C_Invoice.COLUMNNAME_DatePrinted);
-  }
-
-  /**
+    /**
    * Set Description.
    *
    * @param Description Optional short description of the record
@@ -854,43 +682,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return new KeyNamePair(getId(), getDocumentNo());
   }
 
-  /**
-   * Set Dunning Grace Date.
-   *
-   * @param DunningGrace Dunning Grace Date
-   */
-  public void setDunningGrace(Timestamp DunningGrace) {
-    set_Value(I_C_Invoice.COLUMNNAME_DunningGrace, DunningGrace);
-  }
-
-  /**
-   * Get Dunning Grace Date.
-   *
-   * @return Dunning Grace Date
-   */
-  public Timestamp getDunningGrace() {
-    return (Timestamp) get_Value(I_C_Invoice.COLUMNNAME_DunningGrace);
-  }
-
-  /**
-   * Set Generate To.
-   *
-   * @param GenerateTo Generate To
-   */
-  public void setGenerateTo(String GenerateTo) {
-    set_Value(I_C_Invoice.COLUMNNAME_GenerateTo, GenerateTo);
-  }
-
-  /**
-   * Get Generate To.
-   *
-   * @return Generate To
-   */
-  public String getGenerateTo() {
-    return (String) get_Value(I_C_Invoice.COLUMNNAME_GenerateTo);
-  }
-
-  /**
+    /**
    * Set Grand Total.
    *
    * @param GrandTotal Total amount of document
@@ -920,26 +712,8 @@ public class X_C_Invoice extends PO implements I_Persistent {
   public static final String INVOICECOLLECTIONTYPE_LegalProcedure = "L";
   /** Uncollectable = U */
   public static final String INVOICECOLLECTIONTYPE_Uncollectable = "U";
-  /**
-   * Set Collection Status.
-   *
-   * @param InvoiceCollectionType Invoice Collection Status
-   */
-  public void setInvoiceCollectionType(String InvoiceCollectionType) {
 
-    set_Value(I_C_Invoice.COLUMNNAME_InvoiceCollectionType, InvoiceCollectionType);
-  }
-
-  /**
-   * Get Collection Status.
-   *
-   * @return Invoice Collection Status
-   */
-  public String getInvoiceCollectionType() {
-    return (String) get_Value(I_C_Invoice.COLUMNNAME_InvoiceCollectionType);
-  }
-
-  /**
+    /**
    * Set Approved.
    *
    * @param IsApproved Indicates if this document requires approval
@@ -971,44 +745,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     set_Value(I_C_Invoice.COLUMNNAME_IsDiscountPrinted, Boolean.valueOf(IsDiscountPrinted));
   }
 
-  /**
-   * Get Discount Printed.
-   *
-   * @return Print Discount on Invoice and Order
-   */
-  public boolean isDiscountPrinted() {
-    Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsDiscountPrinted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set IsFixedAssetInvoice.
-   *
-   * @param IsFixedAssetInvoice IsFixedAssetInvoice
-   */
-  public void setIsFixedAssetInvoice(boolean IsFixedAssetInvoice) {
-    set_Value(I_C_Invoice.COLUMNNAME_IsFixedAssetInvoice, Boolean.valueOf(IsFixedAssetInvoice));
-  }
-
-  /**
-   * Get IsFixedAssetInvoice.
-   *
-   * @return IsFixedAssetInvoice
-   */
-  public boolean isFixedAssetInvoice() {
-    Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsFixedAssetInvoice);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set In Dispute.
    *
    * @param IsInDispute Document is in dispute
@@ -1017,21 +754,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     set_Value(I_C_Invoice.COLUMNNAME_IsInDispute, Boolean.valueOf(IsInDispute));
   }
 
-  /**
-   * Get In Dispute.
-   *
-   * @return Document is in dispute
-   */
-  public boolean isInDispute() {
-    Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsInDispute);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Paid.
    *
    * @param IsPaid The document is paid
@@ -1087,21 +810,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     set_ValueNoCheck(I_C_Invoice.COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
   }
 
-  /**
-   * Get Printed.
-   *
-   * @return Indicates if this document / line is printed
-   */
-  public boolean isPrinted() {
-    Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsPrinted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Self-Service.
    *
    * @param IsSelfService This is a Self-Service entry or this entry can be changed via Self-Service
@@ -1110,21 +819,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     set_Value(I_C_Invoice.COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
   }
 
-  /**
-   * Get Self-Service.
-   *
-   * @return This is a Self-Service entry or this entry can be changed via Self-Service
-   */
-  public boolean isSelfService() {
-    Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsSelfService);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Sales Transaction.
    *
    * @param IsSOTrx This is a Sales Transaction
@@ -1179,21 +874,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     set_ValueNoCheck(I_C_Invoice.COLUMNNAME_IsTransferred, Boolean.valueOf(IsTransferred));
   }
 
-  /**
-   * Get Transferred.
-   *
-   * @return Transferred to General Ledger (i.e. accounted)
-   */
-  public boolean isTransferred() {
-    Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsTransferred);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException {
+    public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException {
     return (org.compiere.model.I_M_PriceList)
         MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
             .getPO(getM_PriceList_ID(), null);
@@ -1220,13 +901,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_RMA getM_RMA() throws RuntimeException {
-    return (org.compiere.model.I_M_RMA)
-        MTable.get(getCtx(), org.compiere.model.I_M_RMA.Table_Name)
-            .getPO(getM_RMA_ID(), null);
-  }
-
-  /**
+    /**
    * Set RMA.
    *
    * @param M_RMA_ID Return Material Authorization
@@ -1347,28 +1022,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return false;
   }
 
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(I_C_Invoice.COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(I_C_Invoice.COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -1377,21 +1031,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     set_Value(I_C_Invoice.COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(I_C_Invoice.COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Referenced Invoice.
    *
    * @param Ref_Invoice_ID Referenced Invoice
@@ -1412,13 +1052,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Invoice getReversal() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getReversal_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal ID.
    *
    * @param Reversal_ID ID of document reversal
@@ -1433,19 +1067,13 @@ public class X_C_Invoice extends PO implements I_Persistent {
    *
    * @return ID of document reversal
    */
-  public int getReversal_ID() {
+  private int getReversal_ID() {
     Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_Reversal_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSalesRep_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Representative.
    *
    * @param SalesRep_ID Sales Representative or Company Agent
@@ -1475,21 +1103,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     set_Value(I_C_Invoice.COLUMNNAME_SendEMail, Boolean.valueOf(SendEMail));
   }
 
-  /**
-   * Get Send EMail.
-   *
-   * @return Enable sending Document EMail
-   */
-  public boolean isSendEMail() {
-    Object oo = get_Value(I_C_Invoice.COLUMNNAME_SendEMail);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Total Lines.
    *
    * @param TotalLines Total of all document lines
@@ -1509,13 +1123,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return bd;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 1.
    *
    * @param User1_ID User defined list element #1
@@ -1536,13 +1144,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 2.
    *
    * @param User2_ID User defined list element #2

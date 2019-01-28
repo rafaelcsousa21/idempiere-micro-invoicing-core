@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_PA_ColorSchema;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -48,13 +47,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_PrintColor getAD_PrintColor1() throws RuntimeException {
-    return (org.compiere.model.I_AD_PrintColor)
-        MTable.get(getCtx(), org.compiere.model.I_AD_PrintColor.Table_Name)
-            .getPO(getAD_PrintColor1_ID(), null);
-  }
-
-  /**
+    /**
    * Set Color 1.
    *
    * @param AD_PrintColor1_ID First color used
@@ -75,13 +68,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
     return ii;
   }
 
-  public org.compiere.model.I_AD_PrintColor getAD_PrintColor2() throws RuntimeException {
-    return (org.compiere.model.I_AD_PrintColor)
-        MTable.get(getCtx(), org.compiere.model.I_AD_PrintColor.Table_Name)
-            .getPO(getAD_PrintColor2_ID(), null);
-  }
-
-  /**
+    /**
    * Set Color 2.
    *
    * @param AD_PrintColor2_ID Second color used
@@ -102,13 +89,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
     return ii;
   }
 
-  public org.compiere.model.I_AD_PrintColor getAD_PrintColor3() throws RuntimeException {
-    return (org.compiere.model.I_AD_PrintColor)
-        MTable.get(getCtx(), org.compiere.model.I_AD_PrintColor.Table_Name)
-            .getPO(getAD_PrintColor3_ID(), null);
-  }
-
-  /**
+    /**
    * Set Color 3.
    *
    * @param AD_PrintColor3_ID Third color used
@@ -129,23 +110,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
     return ii;
   }
 
-  public org.compiere.model.I_AD_PrintColor getAD_PrintColor4() throws RuntimeException {
-    return (org.compiere.model.I_AD_PrintColor)
-        MTable.get(getCtx(), org.compiere.model.I_AD_PrintColor.Table_Name)
-            .getPO(getAD_PrintColor4_ID(), null);
-  }
-
-  /**
-   * Set Color 4.
-   *
-   * @param AD_PrintColor4_ID Forth color used
-   */
-  public void setAD_PrintColor4_ID(int AD_PrintColor4_ID) {
-    if (AD_PrintColor4_ID < 1) set_Value(COLUMNNAME_AD_PrintColor4_ID, null);
-    else set_Value(COLUMNNAME_AD_PrintColor4_ID, Integer.valueOf(AD_PrintColor4_ID));
-  }
-
-  /**
+    /**
    * Get Color 4.
    *
    * @return Forth color used
@@ -156,46 +121,10 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
     return ii;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /** EntityType AD_Reference_ID=389 */
+    /** EntityType AD_Reference_ID=389 */
   public static final int ENTITYTYPE_AD_Reference_ID = 389;
-  /**
-   * Set Entity Type.
-   *
-   * @param EntityType Dictionary Entity Type; Determines ownership and synchronization
-   */
-  public void setEntityType(String EntityType) {
 
-    set_Value(COLUMNNAME_EntityType, EntityType);
-  }
-
-  /**
-   * Get Entity Type.
-   *
-   * @return Dictionary Entity Type; Determines ownership and synchronization
-   */
-  public String getEntityType() {
-    return (String) get_Value(COLUMNNAME_EntityType);
-  }
-
-  /**
+    /**
    * Set Mark 1 Percent.
    *
    * @param Mark1Percent Percentage up to this color is used
@@ -275,46 +204,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
     return ii;
   }
 
-  /**
-   * Set Color Schema.
-   *
-   * @param PA_ColorSchema_ID Performance Color Schema
-   */
-  public void setPA_ColorSchema_ID(int PA_ColorSchema_ID) {
-    if (PA_ColorSchema_ID < 1) set_ValueNoCheck(COLUMNNAME_PA_ColorSchema_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_PA_ColorSchema_ID, Integer.valueOf(PA_ColorSchema_ID));
-  }
-
-  /**
-   * Get Color Schema.
-   *
-   * @return Performance Color Schema
-   */
-  public int getPA_ColorSchema_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_PA_ColorSchema_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set PA_ColorSchema_UU.
-   *
-   * @param PA_ColorSchema_UU PA_ColorSchema_UU
-   */
-  public void setPA_ColorSchema_UU(String PA_ColorSchema_UU) {
-    set_Value(COLUMNNAME_PA_ColorSchema_UU, PA_ColorSchema_UU);
-  }
-
-  /**
-   * Get PA_ColorSchema_UU.
-   *
-   * @return PA_ColorSchema_UU
-   */
-  public String getPA_ColorSchema_UU() {
-    return (String) get_Value(COLUMNNAME_PA_ColorSchema_UU);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_PA_ColorSchema.Table_ID;
   }

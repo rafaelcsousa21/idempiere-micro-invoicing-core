@@ -1,14 +1,12 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_POSPayment;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Properties;
 
 /**
@@ -56,16 +54,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return sb.toString();
   }
 
-  /**
-   * Set Account No.
-   *
-   * @param AccountNo Account Number
-   */
-  public void setAccountNo(String AccountNo) {
-    set_Value(COLUMNNAME_AccountNo, AccountNo);
-  }
-
-  /**
+    /**
    * Get Account No.
    *
    * @return Account Number
@@ -74,16 +63,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return (String) get_Value(COLUMNNAME_AccountNo);
   }
 
-  /**
-   * Set Account Name.
-   *
-   * @param A_Name Name on Credit Card or Account holder
-   */
-  public void setA_Name(String A_Name) {
-    set_Value(COLUMNNAME_A_Name, A_Name);
-  }
-
-  /**
+    /**
    * Get Account Name.
    *
    * @return Name on Credit Card or Account holder
@@ -92,16 +72,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return (String) get_Value(COLUMNNAME_A_Name);
   }
 
-  /**
-   * Set Check No.
-   *
-   * @param CheckNo Check Number
-   */
-  public void setCheckNo(String CheckNo) {
-    set_Value(COLUMNNAME_CheckNo, CheckNo);
-  }
-
-  /**
+    /**
    * Get Check No.
    *
    * @return Check Number
@@ -122,42 +93,8 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   public static final String CHECKSTATUS_Received = "R";
   /** Returned = T */
   public static final String CHECKSTATUS_Returned = "T";
-  /**
-   * Set Check Status.
-   *
-   * @param CheckStatus Check Status
-   */
-  public void setCheckStatus(String CheckStatus) {
 
-    set_Value(COLUMNNAME_CheckStatus, CheckStatus);
-  }
-
-  /**
-   * Get Check Status.
-   *
-   * @return Check Status
-   */
-  public String getCheckStatus() {
-    return (String) get_Value(COLUMNNAME_CheckStatus);
-  }
-
-  public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
-    return (org.compiere.model.I_C_Order)
-        MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), null);
-  }
-
-  /**
-   * Set Order.
-   *
-   * @param C_Order_ID Order
-   */
-  public void setC_Order_ID(int C_Order_ID) {
-    if (C_Order_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Order_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
-  }
-
-  /**
+    /**
    * Get Order.
    *
    * @return Order
@@ -168,13 +105,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment.
    *
    * @param C_Payment_ID Payment identifier
@@ -195,62 +126,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set POS Payment.
-   *
-   * @param C_POSPayment_ID POS Payment
-   */
-  public void setC_POSPayment_ID(int C_POSPayment_ID) {
-    if (C_POSPayment_ID < 1) set_ValueNoCheck(COLUMNNAME_C_POSPayment_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_POSPayment_ID, Integer.valueOf(C_POSPayment_ID));
-  }
-
-  /**
-   * Get POS Payment.
-   *
-   * @return POS Payment
-   */
-  public int getC_POSPayment_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_POSPayment_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set C_POSPayment_UU.
-   *
-   * @param C_POSPayment_UU C_POSPayment_UU
-   */
-  public void setC_POSPayment_UU(String C_POSPayment_UU) {
-    set_Value(COLUMNNAME_C_POSPayment_UU, C_POSPayment_UU);
-  }
-
-  /**
-   * Get C_POSPayment_UU.
-   *
-   * @return C_POSPayment_UU
-   */
-  public String getC_POSPayment_UU() {
-    return (String) get_Value(COLUMNNAME_C_POSPayment_UU);
-  }
-
-  public org.compiere.model.I_C_POSTenderType getC_POSTenderType() throws RuntimeException {
-    return (org.compiere.model.I_C_POSTenderType)
-        MTable.get(getCtx(), org.compiere.model.I_C_POSTenderType.Table_Name)
-            .getPO(getC_POSTenderType_ID(), null);
-  }
-
-  /**
-   * Set POS Tender Type.
-   *
-   * @param C_POSTenderType_ID POS Tender Type
-   */
-  public void setC_POSTenderType_ID(int C_POSTenderType_ID) {
-    if (C_POSTenderType_ID < 1) set_Value(COLUMNNAME_C_POSTenderType_ID, null);
-    else set_Value(COLUMNNAME_C_POSTenderType_ID, Integer.valueOf(C_POSTenderType_ID));
-  }
-
-  /**
+    /**
    * Get POS Tender Type.
    *
    * @return POS Tender Type
@@ -261,16 +137,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Number.
-   *
-   * @param CreditCardNumber Credit Card Number
-   */
-  public void setCreditCardNumber(String CreditCardNumber) {
-    set_Value(COLUMNNAME_CreditCardNumber, CreditCardNumber);
-  }
-
-  /**
+    /**
    * Get Number.
    *
    * @return Credit Card Number
@@ -295,17 +162,8 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   public static final String CREDITCARDTYPE_Discover = "N";
   /** Purchase Card = P */
   public static final String CREDITCARDTYPE_PurchaseCard = "P";
-  /**
-   * Set Credit Card.
-   *
-   * @param CreditCardType Credit Card (Visa, MC, AmEx)
-   */
-  public void setCreditCardType(String CreditCardType) {
 
-    set_Value(COLUMNNAME_CreditCardType, CreditCardType);
-  }
-
-  /**
+    /**
    * Get Credit Card.
    *
    * @return Credit Card (Visa, MC, AmEx)
@@ -314,70 +172,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return (String) get_Value(COLUMNNAME_CreditCardType);
   }
 
-  /**
-   * Set Date Promised.
-   *
-   * @param DatePromised Date Order was promised
-   */
-  public void setDatePromised(Timestamp DatePromised) {
-    set_Value(COLUMNNAME_DatePromised, DatePromised);
-  }
-
-  /**
-   * Get Date Promised.
-   *
-   * @return Date Order was promised
-   */
-  public Timestamp getDatePromised() {
-    return (Timestamp) get_Value(COLUMNNAME_DatePromised);
-  }
-
-  /**
-   * Set Deposit Group.
-   *
-   * @param DepositGroup Deposit Group
-   */
-  public void setDepositGroup(String DepositGroup) {
-    set_Value(COLUMNNAME_DepositGroup, DepositGroup);
-  }
-
-  /**
-   * Get Deposit Group.
-   *
-   * @return Deposit Group
-   */
-  public String getDepositGroup() {
-    return (String) get_Value(COLUMNNAME_DepositGroup);
-  }
-
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
-   * Get Comment/Help.
-   *
-   * @return Comment or Hint
-   */
-  public String getHelp() {
-    return (String) get_Value(COLUMNNAME_Help);
-  }
-
-  /**
-   * Set IBAN.
-   *
-   * @param IBAN International Bank Account Number
-   */
-  public void setIBAN(String IBAN) {
-    set_Value(COLUMNNAME_IBAN, IBAN);
-  }
-
-  /**
+    /**
    * Get IBAN.
    *
    * @return International Bank Account Number
@@ -386,16 +181,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return (String) get_Value(COLUMNNAME_IBAN);
   }
 
-  /**
-   * Set Post Dated.
-   *
-   * @param IsPostDated Post Dated
-   */
-  public void setIsPostDated(boolean IsPostDated) {
-    set_Value(COLUMNNAME_IsPostDated, Boolean.valueOf(IsPostDated));
-  }
-
-  /**
+    /**
    * Get Post Dated.
    *
    * @return Post Dated
@@ -409,16 +195,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return false;
   }
 
-  /**
-   * Set Micr.
-   *
-   * @param Micr Combination of routing no, account and check no
-   */
-  public void setMicr(String Micr) {
-    set_Value(COLUMNNAME_Micr, Micr);
-  }
-
-  /**
+    /**
    * Get Micr.
    *
    * @return Combination of routing no, account and check no
@@ -427,16 +204,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return (String) get_Value(COLUMNNAME_Micr);
   }
 
-  /**
-   * Set Payment amount.
-   *
-   * @param PayAmt Amount being paid
-   */
-  public void setPayAmt(BigDecimal PayAmt) {
-    set_Value(COLUMNNAME_PayAmt, PayAmt);
-  }
-
-  /**
+    /**
    * Get Payment amount.
    *
    * @return Amount being paid
@@ -456,30 +224,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Routing No.
-   *
-   * @param RoutingNo Bank Routing Number
-   */
-  public void setRoutingNo(String RoutingNo) {
-    set_Value(COLUMNNAME_RoutingNo, RoutingNo);
-  }
-
-  /**
+    /**
    * Get Routing No.
    *
    * @return Bank Routing Number
@@ -488,16 +233,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return (String) get_Value(COLUMNNAME_RoutingNo);
   }
 
-  /**
-   * Set Swift code.
-   *
-   * @param SwiftCode Swift Code or BIC
-   */
-  public void setSwiftCode(String SwiftCode) {
-    set_Value(COLUMNNAME_SwiftCode, SwiftCode);
-  }
-
-  /**
+    /**
    * Get Swift code.
    *
    * @return Swift Code or BIC
@@ -520,17 +256,8 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   public static final String TENDERTYPE_Account = "T";
   /** Cash = X */
   public static final String TENDERTYPE_Cash = "X";
-  /**
-   * Set Tender type.
-   *
-   * @param TenderType Method of Payment
-   */
-  public void setTenderType(String TenderType) {
 
-    set_Value(COLUMNNAME_TenderType, TenderType);
-  }
-
-  /**
+    /**
    * Get Tender type.
    *
    * @return Method of Payment
@@ -539,16 +266,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
     return (String) get_Value(COLUMNNAME_TenderType);
   }
 
-  /**
-   * Set Voice authorization code.
-   *
-   * @param VoiceAuthCode Voice Authorization Code from credit card company
-   */
-  public void setVoiceAuthCode(String VoiceAuthCode) {
-    set_Value(COLUMNNAME_VoiceAuthCode, VoiceAuthCode);
-  }
-
-  /**
+    /**
    * Get Voice authorization code.
    *
    * @return Voice Authorization Code from credit card company

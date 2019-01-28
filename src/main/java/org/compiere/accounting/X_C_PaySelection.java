@@ -2,8 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_PaySelection;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
-import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -52,13 +50,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
-    return (org.compiere.model.I_C_BankAccount)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), null);
-  }
-
-  /**
+    /**
    * Set Bank Account.
    *
    * @param C_BankAccount_ID Account at the Bank
@@ -79,17 +71,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
     return ii;
   }
 
-  /**
-   * Set Payment Selection.
-   *
-   * @param C_PaySelection_ID Payment Selection
-   */
-  public void setC_PaySelection_ID(int C_PaySelection_ID) {
-    if (C_PaySelection_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PaySelection_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_PaySelection_ID, Integer.valueOf(C_PaySelection_ID));
-  }
-
-  /**
+    /**
    * Get Payment Selection.
    *
    * @return Payment Selection
@@ -100,44 +82,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
     return ii;
   }
 
-  /**
-   * Set C_PaySelection_UU.
-   *
-   * @param C_PaySelection_UU C_PaySelection_UU
-   */
-  public void setC_PaySelection_UU(String C_PaySelection_UU) {
-    set_Value(COLUMNNAME_C_PaySelection_UU, C_PaySelection_UU);
-  }
-
-  /**
-   * Get C_PaySelection_UU.
-   *
-   * @return C_PaySelection_UU
-   */
-  public String getC_PaySelection_UU() {
-    return (String) get_Value(COLUMNNAME_C_PaySelection_UU);
-  }
-
-  /**
-   * Set Create lines from.
-   *
-   * @param CreateFrom Process which will generate a new document lines based on an existing
-   *     document
-   */
-  public void setCreateFrom(String CreateFrom) {
-    set_Value(COLUMNNAME_CreateFrom, CreateFrom);
-  }
-
-  /**
-   * Get Create lines from.
-   *
-   * @return Process which will generate a new document lines based on an existing document
-   */
-  public String getCreateFrom() {
-    return (String) get_Value(COLUMNNAME_CreateFrom);
-  }
-
-  /**
+    /**
    * Set Description.
    *
    * @param Description Optional short description of the record
@@ -146,16 +91,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
     set_Value(COLUMNNAME_Description, Description);
   }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Approved.
    *
    * @param IsApproved Indicates if this document requires approval
@@ -164,21 +100,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
     set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
   }
 
-  /**
-   * Get Approved.
-   *
-   * @return Indicates if this document requires approval
-   */
-  public boolean isApproved() {
-    Object oo = get_Value(COLUMNNAME_IsApproved);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Payment date.
    *
    * @param PayDate Date Payment made
@@ -228,21 +150,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
     set_Value(COLUMNNAME_Processing, Processing);
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Total Amount.
    *
    * @param TotalAmt Total Amount
@@ -251,18 +159,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
     set_Value(COLUMNNAME_TotalAmt, TotalAmt);
   }
 
-  /**
-   * Get Total Amount.
-   *
-   * @return Total Amount
-   */
-  public BigDecimal getTotalAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TotalAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_PaySelection.Table_ID;
   }

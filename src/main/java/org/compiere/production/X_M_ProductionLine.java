@@ -1,8 +1,6 @@
 package org.compiere.production;
 
 import org.compiere.model.IDocLine;
-import org.compiere.model.I_M_AttributeSetInstance;
-import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_ProductionLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -64,16 +62,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
     set_Value(I_M_ProductionLine.COLUMNNAME_Description, Description);
   }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(I_M_ProductionLine.COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set End Product.
    *
    * @param IsEndProduct End Product of production
@@ -116,13 +105,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
     return ii;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -147,12 +130,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
     return ii;
   }
 
-  public I_M_Locator getM_Locator() throws RuntimeException {
-    return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
-  }
-
-  /**
+    /**
    * Set Locator.
    *
    * @param M_Locator_ID Warehouse Locator
@@ -282,25 +260,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
     return ii;
   }
 
-  /**
-   * Set M_ProductionLine_UU.
-   *
-   * @param M_ProductionLine_UU M_ProductionLine_UU
-   */
-  public void setM_ProductionLine_UU(String M_ProductionLine_UU) {
-    set_Value(I_M_ProductionLine.COLUMNNAME_M_ProductionLine_UU, M_ProductionLine_UU);
-  }
-
-  /**
-   * Get M_ProductionLine_UU.
-   *
-   * @return M_ProductionLine_UU
-   */
-  public String getM_ProductionLine_UU() {
-    return (String) get_Value(I_M_ProductionLine.COLUMNNAME_M_ProductionLine_UU);
-  }
-
-  public org.compiere.model.I_M_ProductionPlan getM_ProductionPlan() throws RuntimeException {
+    public org.compiere.model.I_M_ProductionPlan getM_ProductionPlan() throws RuntimeException {
     return (org.compiere.model.I_M_ProductionPlan)
         MTable.get(getCtx(), org.compiere.model.I_M_ProductionPlan.Table_Name)
             .getPO(getM_ProductionPlan_ID(), null);
@@ -359,59 +319,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
     set_Value(I_M_ProductionLine.COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(I_M_ProductionLine.COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Product Type.
-   *
-   * @param ProductType Type of product
-   */
-  public void setProductType(String ProductType) {
-    throw new IllegalArgumentException("ProductType is virtual column");
-  }
-
-  /**
-   * Get Product Type.
-   *
-   * @return Type of product
-   */
-  public String getProductType() {
-    return (String) get_Value(I_M_ProductionLine.COLUMNNAME_ProductType);
-  }
-
-  /**
-   * Set Available Quantity.
-   *
-   * @param QtyAvailable Available Quantity (On Hand - Reserved)
-   */
-  public void setQtyAvailable(BigDecimal QtyAvailable) {
-    throw new IllegalArgumentException("QtyAvailable is virtual column");
-  }
-
-  /**
-   * Get Available Quantity.
-   *
-   * @return Available Quantity (On Hand - Reserved)
-   */
-  public BigDecimal getQtyAvailable() {
-    BigDecimal bd = (BigDecimal) get_Value(I_M_ProductionLine.COLUMNNAME_QtyAvailable);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Quantity Used.
    *
    * @param QtyUsed Quantity Used

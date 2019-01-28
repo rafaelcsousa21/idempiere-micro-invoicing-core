@@ -100,23 +100,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (String) get_Value(COLUMNNAME_Action);
   }
 
-  public org.compiere.model.I_AD_Column getAD_Column() throws RuntimeException {
-    return (org.compiere.model.I_AD_Column)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Column.Table_Name)
-            .getPO(getAD_Column_ID(), null);
-  }
-
-  /**
-   * Set Column.
-   *
-   * @param AD_Column_ID Column in the table
-   */
-  public void setAD_Column_ID(int AD_Column_ID) {
-    if (AD_Column_ID < 1) set_Value(COLUMNNAME_AD_Column_ID, null);
-    else set_Value(COLUMNNAME_AD_Column_ID, Integer.valueOf(AD_Column_ID));
-  }
-
-  /**
+    /**
    * Get Column.
    *
    * @return Column in the table
@@ -127,23 +111,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_CtxHelp getAD_CtxHelp() throws RuntimeException {
-    return (org.compiere.model.I_AD_CtxHelp)
-        MTable.get(getCtx(), org.compiere.model.I_AD_CtxHelp.Table_Name)
-            .getPO(getAD_CtxHelp_ID(), null);
-  }
-
-  /**
-   * Set Context Help.
-   *
-   * @param AD_CtxHelp_ID Context Help
-   */
-  public void setAD_CtxHelp_ID(int AD_CtxHelp_ID) {
-    if (AD_CtxHelp_ID < 1) set_Value(COLUMNNAME_AD_CtxHelp_ID, null);
-    else set_Value(COLUMNNAME_AD_CtxHelp_ID, Integer.valueOf(AD_CtxHelp_ID));
-  }
-
-  /**
+    /**
    * Get Context Help.
    *
    * @return Context Help
@@ -154,23 +122,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_Form getAD_Form() throws RuntimeException {
-    return (org.compiere.model.I_AD_Form)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Form.Table_Name)
-            .getPO(getAD_Form_ID(), null);
-  }
-
-  /**
-   * Set Special Form.
-   *
-   * @param AD_Form_ID Special Form
-   */
-  public void setAD_Form_ID(int AD_Form_ID) {
-    if (AD_Form_ID < 1) set_Value(COLUMNNAME_AD_Form_ID, null);
-    else set_Value(COLUMNNAME_AD_Form_ID, Integer.valueOf(AD_Form_ID));
-  }
-
-  /**
+    /**
    * Get Special Form.
    *
    * @return Special Form
@@ -181,23 +133,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_Image getAD_Image() throws RuntimeException {
-    return (org.compiere.model.I_AD_Image)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Image.Table_Name)
-            .getPO(getAD_Image_ID(), null);
-  }
-
-  /**
-   * Set Image.
-   *
-   * @param AD_Image_ID Image or Icon
-   */
-  public void setAD_Image_ID(int AD_Image_ID) {
-    if (AD_Image_ID < 1) set_Value(COLUMNNAME_AD_Image_ID, null);
-    else set_Value(COLUMNNAME_AD_Image_ID, Integer.valueOf(AD_Image_ID));
-  }
-
-  /**
+    /**
    * Get Image.
    *
    * @return Image or Icon
@@ -208,23 +144,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_InfoWindow getAD_InfoWindow() throws RuntimeException {
-    return (org.compiere.model.I_AD_InfoWindow)
-        MTable.get(getCtx(), org.compiere.model.I_AD_InfoWindow.Table_Name)
-            .getPO(getAD_InfoWindow_ID(), null);
-  }
-
-  /**
-   * Set Info Window.
-   *
-   * @param AD_InfoWindow_ID Info and search/select Window
-   */
-  public void setAD_InfoWindow_ID(int AD_InfoWindow_ID) {
-    if (AD_InfoWindow_ID < 1) set_Value(COLUMNNAME_AD_InfoWindow_ID, null);
-    else set_Value(COLUMNNAME_AD_InfoWindow_ID, Integer.valueOf(AD_InfoWindow_ID));
-  }
-
-  /**
+    /**
    * Get Info Window.
    *
    * @return Info and search/select Window
@@ -235,23 +155,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_Process getAD_Process() throws RuntimeException {
-    return (org.compiere.model.I_AD_Process)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Process.Table_Name)
-            .getPO(getAD_Process_ID(), null);
-  }
-
-  /**
-   * Set Process.
-   *
-   * @param AD_Process_ID Process or Report
-   */
-  public void setAD_Process_ID(int AD_Process_ID) {
-    if (AD_Process_ID < 1) set_Value(COLUMNNAME_AD_Process_ID, null);
-    else set_Value(COLUMNNAME_AD_Process_ID, Integer.valueOf(AD_Process_ID));
-  }
-
-  /**
+    /**
    * Get Process.
    *
    * @return Process or Report
@@ -262,23 +166,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_Task getAD_Task() throws RuntimeException {
-    return (org.compiere.model.I_AD_Task)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Task.Table_Name)
-            .getPO(getAD_Task_ID(), null);
-  }
-
-  /**
-   * Set OS Task.
-   *
-   * @param AD_Task_ID Operation System Task
-   */
-  public void setAD_Task_ID(int AD_Task_ID) {
-    if (AD_Task_ID < 1) set_Value(COLUMNNAME_AD_Task_ID, null);
-    else set_Value(COLUMNNAME_AD_Task_ID, Integer.valueOf(AD_Task_ID));
-  }
-
-  /**
+    /**
    * Get OS Task.
    *
    * @return Operation System Task
@@ -289,23 +177,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_WF_Block getAD_WF_Block() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Block)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Block.Table_Name)
-            .getPO(getAD_WF_Block_ID(), null);
-  }
-
-  /**
-   * Set Workflow Block.
-   *
-   * @param AD_WF_Block_ID Workflow Transaction Execution Block
-   */
-  public void setAD_WF_Block_ID(int AD_WF_Block_ID) {
-    if (AD_WF_Block_ID < 1) set_Value(COLUMNNAME_AD_WF_Block_ID, null);
-    else set_Value(COLUMNNAME_AD_WF_Block_ID, Integer.valueOf(AD_WF_Block_ID));
-  }
-
-  /**
+    /**
    * Get Workflow Block.
    *
    * @return Workflow Transaction Execution Block
@@ -316,17 +188,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  /**
-   * Set Node.
-   *
-   * @param AD_WF_Node_ID Workflow Node (activity), step or process
-   */
-  public void setAD_WF_Node_ID(int AD_WF_Node_ID) {
-    if (AD_WF_Node_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_Node_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
-  }
-
-  /**
+    /**
    * Get Node.
    *
    * @return Workflow Node (activity), step or process
@@ -337,41 +199,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  /**
-   * Set AD_WF_Node_UU.
-   *
-   * @param AD_WF_Node_UU AD_WF_Node_UU
-   */
-  public void setAD_WF_Node_UU(String AD_WF_Node_UU) {
-    set_Value(COLUMNNAME_AD_WF_Node_UU, AD_WF_Node_UU);
-  }
-
-  /**
-   * Get AD_WF_Node_UU.
-   *
-   * @return AD_WF_Node_UU
-   */
-  public String getAD_WF_Node_UU() {
-    return (String) get_Value(COLUMNNAME_AD_WF_Node_UU);
-  }
-
-  public org.compiere.model.I_AD_WF_Responsible getAD_WF_Responsible() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Responsible)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Responsible.Table_Name)
-            .getPO(getAD_WF_Responsible_ID(), null);
-  }
-
-  /**
-   * Set Workflow Responsible.
-   *
-   * @param AD_WF_Responsible_ID Responsible for Workflow Execution
-   */
-  public void setAD_WF_Responsible_ID(int AD_WF_Responsible_ID) {
-    if (AD_WF_Responsible_ID < 1) set_Value(COLUMNNAME_AD_WF_Responsible_ID, null);
-    else set_Value(COLUMNNAME_AD_WF_Responsible_ID, Integer.valueOf(AD_WF_Responsible_ID));
-  }
-
-  /**
+    /**
    * Get Workflow Responsible.
    *
    * @return Responsible for Workflow Execution
@@ -382,23 +210,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_Window getAD_Window() throws RuntimeException {
-    return (org.compiere.model.I_AD_Window)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Window.Table_Name)
-            .getPO(getAD_Window_ID(), null);
-  }
-
-  /**
-   * Set Window.
-   *
-   * @param AD_Window_ID Data entry or display window
-   */
-  public void setAD_Window_ID(int AD_Window_ID) {
-    if (AD_Window_ID < 1) set_Value(COLUMNNAME_AD_Window_ID, null);
-    else set_Value(COLUMNNAME_AD_Window_ID, Integer.valueOf(AD_Window_ID));
-  }
-
-  /**
+    /**
    * Get Window.
    *
    * @return Data entry or display window
@@ -454,16 +266,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (String) get_Value(COLUMNNAME_AttributeName);
   }
 
-  /**
-   * Set Attribute Value.
-   *
-   * @param AttributeValue Value of the Attribute
-   */
-  public void setAttributeValue(String AttributeValue) {
-    set_Value(COLUMNNAME_AttributeValue, AttributeValue);
-  }
-
-  /**
+    /**
    * Get Attribute Value.
    *
    * @return Value of the Attribute
@@ -472,23 +275,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (String) get_Value(COLUMNNAME_AttributeValue);
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
-   * Set Business Partner .
-   *
-   * @param C_BPartner_ID Identifies a Business Partner
-   */
-  public void setC_BPartner_ID(int C_BPartner_ID) {
-    if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-    else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
-  }
-
-  /**
+    /**
    * Get Business Partner .
    *
    * @return Identifies a Business Partner
@@ -508,27 +295,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     set_Value(COLUMNNAME_Cost, Cost);
   }
 
-  /**
-   * Get Cost.
-   *
-   * @return Cost information
-   */
-  public BigDecimal getCost() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Cost);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -567,17 +334,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public static final String DOCACTION_Unlock = "XL";
   /** Wait Complete = WC */
   public static final String DOCACTION_WaitComplete = "WC";
-  /**
-   * Set Document Action.
-   *
-   * @param DocAction The targeted status of the document
-   */
-  public void setDocAction(String DocAction) {
 
-    set_Value(COLUMNNAME_DocAction, DocAction);
-  }
-
-  /**
+    /**
    * Get Document Action.
    *
    * @return The targeted status of the document
@@ -606,16 +364,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  /**
-   * Set Dynamic Priority Change.
-   *
-   * @param DynPriorityChange Change of priority when Activity is suspended waiting for user
-   */
-  public void setDynPriorityChange(BigDecimal DynPriorityChange) {
-    set_Value(COLUMNNAME_DynPriorityChange, DynPriorityChange);
-  }
-
-  /**
+    /**
    * Get Dynamic Priority Change.
    *
    * @return Change of priority when Activity is suspended waiting for user
@@ -634,17 +383,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public static final String DYNPRIORITYUNIT_Hour = "H";
   /** Day = D */
   public static final String DYNPRIORITYUNIT_Day = "D";
-  /**
-   * Set Dynamic Priority Unit.
-   *
-   * @param DynPriorityUnit Change of priority when Activity is suspended waiting for user
-   */
-  public void setDynPriorityUnit(String DynPriorityUnit) {
 
-    set_Value(COLUMNNAME_DynPriorityUnit, DynPriorityUnit);
-  }
-
-  /**
+    /**
    * Get Dynamic Priority Unit.
    *
    * @return Change of priority when Activity is suspended waiting for user
@@ -653,16 +393,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (String) get_Value(COLUMNNAME_DynPriorityUnit);
   }
 
-  /**
-   * Set EMail Address.
-   *
-   * @param EMail Electronic Mail Address
-   */
-  public void setEMail(String EMail) {
-    set_Value(COLUMNNAME_EMail, EMail);
-  }
-
-  /**
+    /**
    * Get EMail Address.
    *
    * @return Electronic Mail Address
@@ -679,17 +410,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public static final String EMAILRECIPIENT_DocumentBusinessPartner = "B";
   /** WF Responsible = R */
   public static final String EMAILRECIPIENT_WFResponsible = "R";
-  /**
-   * Set EMail Recipient.
-   *
-   * @param EMailRecipient Recipient of the EMail
-   */
-  public void setEMailRecipient(String EMailRecipient) {
 
-    set_Value(COLUMNNAME_EMailRecipient, EMailRecipient);
-  }
-
-  /**
+    /**
    * Get EMail Recipient.
    *
    * @return Recipient of the EMail
@@ -710,50 +432,14 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     set_Value(COLUMNNAME_EntityType, EntityType);
   }
 
-  /**
-   * Get Entity Type.
-   *
-   * @return Dictionary Entity Type; Determines ownership and synchronization
-   */
-  public String getEntityType() {
-    return (String) get_Value(COLUMNNAME_EntityType);
-  }
-
-  /** FinishMode AD_Reference_ID=303 */
+    /** FinishMode AD_Reference_ID=303 */
   public static final int FINISHMODE_AD_Reference_ID = 303;
   /** Automatic = A */
   public static final String FINISHMODE_Automatic = "A";
   /** Manual = M */
   public static final String FINISHMODE_Manual = "M";
-  /**
-   * Set Finish Mode.
-   *
-   * @param FinishMode Workflow Activity Finish Mode
-   */
-  public void setFinishMode(String FinishMode) {
 
-    set_Value(COLUMNNAME_FinishMode, FinishMode);
-  }
-
-  /**
-   * Get Finish Mode.
-   *
-   * @return Workflow Activity Finish Mode
-   */
-  public String getFinishMode() {
-    return (String) get_Value(COLUMNNAME_FinishMode);
-  }
-
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
+    /**
    * Get Comment/Help.
    *
    * @return Comment or Hint
@@ -771,67 +457,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     set_Value(COLUMNNAME_IsCentrallyMaintained, Boolean.valueOf(IsCentrallyMaintained));
   }
 
-  /**
-   * Get Centrally maintained.
-   *
-   * @return Information maintained in System Element table
-   */
-  public boolean isCentrallyMaintained() {
-    Object oo = get_Value(COLUMNNAME_IsCentrallyMaintained);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Is Milestone.
-   *
-   * @param IsMilestone Is Milestone
-   */
-  public void setIsMilestone(boolean IsMilestone) {
-    set_Value(COLUMNNAME_IsMilestone, Boolean.valueOf(IsMilestone));
-  }
-
-  /**
-   * Get Is Milestone.
-   *
-   * @return Is Milestone
-   */
-  public boolean isMilestone() {
-    Object oo = get_Value(COLUMNNAME_IsMilestone);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Is Subcontracting.
-   *
-   * @param IsSubcontracting Is Subcontracting
-   */
-  public void setIsSubcontracting(boolean IsSubcontracting) {
-    set_Value(COLUMNNAME_IsSubcontracting, Boolean.valueOf(IsSubcontracting));
-  }
-
-  /**
-   * Get Is Subcontracting.
-   *
-   * @return Is Subcontracting
-   */
-  public boolean isSubcontracting() {
-    Object oo = get_Value(COLUMNNAME_IsSubcontracting);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /** JoinElement AD_Reference_ID=301 */
+    /** JoinElement AD_Reference_ID=301 */
   public static final int JOINELEMENT_AD_Reference_ID = 301;
   /** AND = A */
   public static final String JOINELEMENT_AND = "A";
@@ -876,58 +502,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  /**
-   * Set Moving Time.
-   *
-   * @param MovingTime Moving Time
-   */
-  public void setMovingTime(int MovingTime) {
-    set_Value(COLUMNNAME_MovingTime, Integer.valueOf(MovingTime));
-  }
-
-  /**
-   * Get Moving Time.
-   *
-   * @return Moving Time
-   */
-  public int getMovingTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_MovingTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Overlap Units.
-   *
-   * @param OverlapUnits Overlap Units are number of units that must be completed before they are
-   *     moved the next activity
-   */
-  public void setOverlapUnits(int OverlapUnits) {
-    set_Value(COLUMNNAME_OverlapUnits, Integer.valueOf(OverlapUnits));
-  }
-
-  /**
-   * Get Overlap Units.
-   *
-   * @return Overlap Units are number of units that must be completed before they are moved the next
-   *     activity
-   */
-  public int getOverlapUnits() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_OverlapUnits);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Priority.
-   *
-   * @param Priority Indicates if this request is of a high, medium or low priority.
-   */
-  public void setPriority(int Priority) {
-    set_Value(COLUMNNAME_Priority, Integer.valueOf(Priority));
-  }
-
-  /**
+    /**
    * Get Priority.
    *
    * @return Indicates if this request is of a high, medium or low priority.
@@ -938,43 +513,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  /**
-   * Set Queuing Time.
-   *
-   * @param QueuingTime Queue time is the time a job waits at a work center before begin handled.
-   */
-  public void setQueuingTime(int QueuingTime) {
-    set_Value(COLUMNNAME_QueuingTime, Integer.valueOf(QueuingTime));
-  }
-
-  /**
-   * Get Queuing Time.
-   *
-   * @return Queue time is the time a job waits at a work center before begin handled.
-   */
-  public int getQueuingTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_QueuingTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  public org.compiere.model.I_R_MailText getR_MailText() throws RuntimeException {
-    return (org.compiere.model.I_R_MailText)
-        MTable.get(getCtx(), org.compiere.model.I_R_MailText.Table_Name)
-            .getPO(getR_MailText_ID(), null);
-  }
-
-  /**
-   * Set Mail Template.
-   *
-   * @param R_MailText_ID Text templates for mailings
-   */
-  public void setR_MailText_ID(int R_MailText_ID) {
-    if (R_MailText_ID < 1) set_Value(COLUMNNAME_R_MailText_ID, null);
-    else set_Value(COLUMNNAME_R_MailText_ID, Integer.valueOf(R_MailText_ID));
-  }
-
-  /**
+    /**
    * Get Mail Template.
    *
    * @return Text templates for mailings
@@ -985,27 +524,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  /**
-   * Set Setup Time.
-   *
-   * @param SetupTime Setup time before starting Production
-   */
-  public void setSetupTime(int SetupTime) {
-    set_Value(COLUMNNAME_SetupTime, Integer.valueOf(SetupTime));
-  }
-
-  /**
-   * Get Setup Time.
-   *
-   * @return Setup time before starting Production
-   */
-  public int getSetupTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_SetupTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /** SplitElement AD_Reference_ID=301 */
+    /** SplitElement AD_Reference_ID=301 */
   public static final int SPLITELEMENT_AD_Reference_ID = 301;
   /** AND = A */
   public static final String SPLITELEMENT_AND = "A";
@@ -1030,23 +549,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (String) get_Value(COLUMNNAME_SplitElement);
   }
 
-  public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException {
-    return (org.compiere.model.I_S_Resource)
-        MTable.get(getCtx(), org.compiere.model.I_S_Resource.Table_Name)
-            .getPO(getS_Resource_ID(), null);
-  }
-
-  /**
-   * Set Resource.
-   *
-   * @param S_Resource_ID Resource
-   */
-  public void setS_Resource_ID(int S_Resource_ID) {
-    if (S_Resource_ID < 1) set_Value(COLUMNNAME_S_Resource_ID, null);
-    else set_Value(COLUMNNAME_S_Resource_ID, Integer.valueOf(S_Resource_ID));
-  }
-
-  /**
+    /**
    * Get Resource.
    *
    * @return Resource
@@ -1063,82 +566,15 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public static final String STARTMODE_Automatic = "A";
   /** Manual = M */
   public static final String STARTMODE_Manual = "M";
-  /**
-   * Set Start Mode.
-   *
-   * @param StartMode Workflow Activity Start Mode
-   */
-  public void setStartMode(String StartMode) {
 
-    set_Value(COLUMNNAME_StartMode, StartMode);
-  }
-
-  /**
-   * Get Start Mode.
-   *
-   * @return Workflow Activity Start Mode
-   */
-  public String getStartMode() {
-    return (String) get_Value(COLUMNNAME_StartMode);
-  }
-
-  /** SubflowExecution AD_Reference_ID=307 */
+    /** SubflowExecution AD_Reference_ID=307 */
   public static final int SUBFLOWEXECUTION_AD_Reference_ID = 307;
   /** Asynchronously = A */
   public static final String SUBFLOWEXECUTION_Asynchronously = "A";
   /** Synchronously = S */
   public static final String SUBFLOWEXECUTION_Synchronously = "S";
-  /**
-   * Set Subflow Execution.
-   *
-   * @param SubflowExecution Mode how the sub-workflow is executed
-   */
-  public void setSubflowExecution(String SubflowExecution) {
 
-    set_Value(COLUMNNAME_SubflowExecution, SubflowExecution);
-  }
-
-  /**
-   * Get Subflow Execution.
-   *
-   * @return Mode how the sub-workflow is executed
-   */
-  public String getSubflowExecution() {
-    return (String) get_Value(COLUMNNAME_SubflowExecution);
-  }
-
-  /**
-   * Set Units by Cycles.
-   *
-   * @param UnitsCycles The Units by Cycles are defined for process type Flow Repetitive Dedicated
-   *     and indicated the product to be manufactured on a production line for duration unit.
-   */
-  public void setUnitsCycles(BigDecimal UnitsCycles) {
-    set_Value(COLUMNNAME_UnitsCycles, UnitsCycles);
-  }
-
-  /**
-   * Get Units by Cycles.
-   *
-   * @return The Units by Cycles are defined for process type Flow Repetitive Dedicated and
-   *     indicated the product to be manufactured on a production line for duration unit.
-   */
-  public BigDecimal getUnitsCycles() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_UnitsCycles);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Valid from.
-   *
-   * @param ValidFrom Valid from including this date (first day)
-   */
-  public void setValidFrom(Timestamp ValidFrom) {
-    set_Value(COLUMNNAME_ValidFrom, ValidFrom);
-  }
-
-  /**
+    /**
    * Get Valid from.
    *
    * @return Valid from including this date (first day)
@@ -1147,16 +583,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return (Timestamp) get_Value(COLUMNNAME_ValidFrom);
   }
 
-  /**
-   * Set Valid to.
-   *
-   * @param ValidTo Valid to including this date (last day)
-   */
-  public void setValidTo(Timestamp ValidTo) {
-    set_Value(COLUMNNAME_ValidTo, ValidTo);
-  }
-
-  /**
+    /**
    * Get Valid to.
    *
    * @return Valid to including this date (last day)
@@ -1174,27 +601,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     set_Value(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
   }
 
-  /**
-   * Get Waiting Time.
-   *
-   * @return Workflow Simulation Waiting time
-   */
-  public int getWaitingTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_WaitingTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Wait Time.
-   *
-   * @param WaitTime Time in minutes to wait (sleep)
-   */
-  public void setWaitTime(int WaitTime) {
-    set_Value(COLUMNNAME_WaitTime, Integer.valueOf(WaitTime));
-  }
-
-  /**
+    /**
    * Get Wait Time.
    *
    * @return Time in minutes to wait (sleep)
@@ -1205,23 +612,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  public org.compiere.model.I_AD_Workflow getWorkflow() throws RuntimeException {
-    return (org.compiere.model.I_AD_Workflow)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getWorkflow_ID(), null);
-  }
-
-  /**
-   * Set Workflow.
-   *
-   * @param Workflow_ID Workflow or tasks
-   */
-  public void setWorkflow_ID(int Workflow_ID) {
-    if (Workflow_ID < 1) set_Value(COLUMNNAME_Workflow_ID, null);
-    else set_Value(COLUMNNAME_Workflow_ID, Integer.valueOf(Workflow_ID));
-  }
-
-  /**
+    /**
    * Get Workflow.
    *
    * @return Workflow or tasks
@@ -1232,27 +623,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  /**
-   * Set Working Time.
-   *
-   * @param WorkingTime Workflow Simulation Execution Time
-   */
-  public void setWorkingTime(int WorkingTime) {
-    set_Value(COLUMNNAME_WorkingTime, Integer.valueOf(WorkingTime));
-  }
-
-  /**
-   * Get Working Time.
-   *
-   * @return Workflow Simulation Execution Time
-   */
-  public int getWorkingTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_WorkingTime);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set X Position.
    *
    * @param XPosition Absolute X (horizontal) position in 1/72 of an inch
@@ -1272,29 +643,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     return ii;
   }
 
-  /**
-   * Set Yield %.
-   *
-   * @param Yield The Yield is the percentage of a lot that is expected to be of acceptable wuality
-   *     may fall below 100 percent
-   */
-  public void setYield(int Yield) {
-    set_Value(COLUMNNAME_Yield, Integer.valueOf(Yield));
-  }
-
-  /**
-   * Get Yield %.
-   *
-   * @return The Yield is the percentage of a lot that is expected to be of acceptable wuality may
-   *     fall below 100 percent
-   */
-  public int getYield() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Yield);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Y Position.
    *
    * @param YPosition Absolute Y (vertical) position in 1/72 of an inch

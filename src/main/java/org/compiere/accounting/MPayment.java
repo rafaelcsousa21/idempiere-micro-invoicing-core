@@ -2841,12 +2841,7 @@ public class MPayment extends X_C_Payment
     return true;
   }
 
-  @Override
-  public PO getPO() {
-    return this;
-  }
-
-  public static int[] getCompletedPaymentIDs(int C_Order_ID, int C_Invoice_ID, String trxName) {
+    public static int[] getCompletedPaymentIDs(int C_Order_ID, int C_Invoice_ID, String trxName) {
     StringBuilder whereClause = new StringBuilder();
     whereClause.append("TenderType='").append(MPayment.TENDERTYPE_CreditCard).append("' ");
     whereClause.append("AND TrxType IN ('").append(MPayment.TRXTYPE_DelayedCapture).append("', ");

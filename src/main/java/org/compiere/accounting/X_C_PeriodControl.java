@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_PeriodControl;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -48,17 +47,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     return sb.toString();
   }
 
-  /**
-   * Set Period Control.
-   *
-   * @param C_PeriodControl_ID Period Control
-   */
-  public void setC_PeriodControl_ID(int C_PeriodControl_ID) {
-    if (C_PeriodControl_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PeriodControl_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_PeriodControl_ID, Integer.valueOf(C_PeriodControl_ID));
-  }
-
-  /**
+    /**
    * Get Period Control.
    *
    * @return Period Control
@@ -78,31 +67,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     return new KeyNamePair(getId(), String.valueOf(getC_PeriodControl_ID()));
   }
 
-  /**
-   * Set C_PeriodControl_UU.
-   *
-   * @param C_PeriodControl_UU C_PeriodControl_UU
-   */
-  public void setC_PeriodControl_UU(String C_PeriodControl_UU) {
-    set_Value(COLUMNNAME_C_PeriodControl_UU, C_PeriodControl_UU);
-  }
-
-  /**
-   * Get C_PeriodControl_UU.
-   *
-   * @return C_PeriodControl_UU
-   */
-  public String getC_PeriodControl_UU() {
-    return (String) get_Value(COLUMNNAME_C_PeriodControl_UU);
-  }
-
-  public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
-    return (org.compiere.model.I_C_Period)
-        MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), null);
-  }
-
-  /**
+    /**
    * Set Period.
    *
    * @param C_Period_ID Period of the Calendar
@@ -266,30 +231,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     return (String) get_Value(COLUMNNAME_PeriodStatus);
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_PeriodControl.Table_ID;
   }

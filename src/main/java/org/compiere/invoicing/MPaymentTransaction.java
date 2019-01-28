@@ -561,12 +561,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     m_processUI = processUI;
   }
 
-  @Override
-  public PO getPO() {
-    return this;
-  }
-
-  public static MPaymentTransaction copyFrom(
+    public static MPaymentTransaction copyFrom(
       MPaymentTransaction from,
       Timestamp dateTrx,
       String trxType,

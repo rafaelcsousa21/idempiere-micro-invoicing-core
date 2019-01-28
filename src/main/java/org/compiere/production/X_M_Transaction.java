@@ -1,9 +1,6 @@
 package org.compiere.production;
 
-import org.compiere.model.I_M_AttributeSetInstance;
-import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_Transaction;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -54,13 +51,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_ProjectIssue getC_ProjectIssue() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectIssue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectIssue.Table_Name)
-            .getPO(getC_ProjectIssue_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Issue.
    *
    * @param C_ProjectIssue_ID Project Issues (Material, Labor)
@@ -81,13 +72,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return ii;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -110,13 +95,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
-    return (org.compiere.model.I_M_InOutLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Shipment/Receipt Line.
    *
    * @param M_InOutLine_ID Line on Shipment or Receipt document
@@ -137,13 +116,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
-    return (org.compiere.model.I_M_InventoryLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getM_InventoryLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Phys.Inventory Line.
    *
    * @param M_InventoryLine_ID Unique line in an Inventory document
@@ -164,12 +137,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return ii;
   }
 
-  public I_M_Locator getM_Locator() throws RuntimeException {
-    return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
-  }
-
-  /**
+    /**
    * Set Locator.
    *
    * @param M_Locator_ID Warehouse Locator
@@ -190,13 +158,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_MovementLine getM_MovementLine() throws RuntimeException {
-    return (org.compiere.model.I_M_MovementLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-            .getPO(getM_MovementLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Move Line.
    *
    * @param M_MovementLine_ID Inventory Move document Line
@@ -309,13 +271,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return (String) get_Value(COLUMNNAME_MovementType);
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -336,13 +292,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_ProductionLine getM_ProductionLine() throws RuntimeException {
-    return (org.compiere.model.I_M_ProductionLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_ProductionLine.Table_Name)
-            .getPO(getM_ProductionLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Production Line.
    *
    * @param M_ProductionLine_ID Document Line representing a production
@@ -363,62 +313,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Inventory Transaction.
-   *
-   * @param M_Transaction_ID Inventory Transaction
-   */
-  public void setM_Transaction_ID(int M_Transaction_ID) {
-    if (M_Transaction_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Transaction_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Transaction_ID, Integer.valueOf(M_Transaction_ID));
-  }
-
-  /**
-   * Get Inventory Transaction.
-   *
-   * @return Inventory Transaction
-   */
-  public int getM_Transaction_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_Transaction_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set M_Transaction_UU.
-   *
-   * @param M_Transaction_UU M_Transaction_UU
-   */
-  public void setM_Transaction_UU(String M_Transaction_UU) {
-    set_Value(COLUMNNAME_M_Transaction_UU, M_Transaction_UU);
-  }
-
-  /**
-   * Get M_Transaction_UU.
-   *
-   * @return M_Transaction_UU
-   */
-  public String getM_Transaction_UU() {
-    return (String) get_Value(COLUMNNAME_M_Transaction_UU);
-  }
-
-  public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException {
-    return (org.eevolution.model.I_PP_Cost_Collector)
-        MTable.get(getCtx(), org.eevolution.model.I_PP_Cost_Collector.Table_Name)
-            .getPO(getPP_Cost_Collector_ID(), null);
-  }
-
-  /**
-   * Set Manufacturing Cost Collector.
-   *
-   * @param PP_Cost_Collector_ID Manufacturing Cost Collector
-   */
-  public void setPP_Cost_Collector_ID(int PP_Cost_Collector_ID) {
-    if (PP_Cost_Collector_ID < 1) set_Value(COLUMNNAME_PP_Cost_Collector_ID, null);
-    else set_Value(COLUMNNAME_PP_Cost_Collector_ID, Integer.valueOf(PP_Cost_Collector_ID));
-  }
-
-  /**
+    /**
    * Get Manufacturing Cost Collector.
    *
    * @return Manufacturing Cost Collector

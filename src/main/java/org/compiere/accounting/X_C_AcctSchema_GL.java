@@ -2,8 +2,6 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_GL;
-import org.compiere.model.I_C_ValidCombination;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -55,31 +53,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     return sb.toString();
   }
 
-  /**
-   * Set C_AcctSchema_GL_UU.
-   *
-   * @param C_AcctSchema_GL_UU C_AcctSchema_GL_UU
-   */
-  public void setC_AcctSchema_GL_UU(String C_AcctSchema_GL_UU) {
-    set_Value(COLUMNNAME_C_AcctSchema_GL_UU, C_AcctSchema_GL_UU);
-  }
-
-  /**
-   * Get C_AcctSchema_GL_UU.
-   *
-   * @return C_AcctSchema_GL_UU
-   */
-  public String getC_AcctSchema_GL_UU() {
-    return (String) get_Value(COLUMNNAME_C_AcctSchema_GL_UU);
-  }
-
-  public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
-    return (org.compiere.model.I_C_AcctSchema)
-        MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
-  }
-
-  /**
+    /**
    * Set Accounting Schema.
    *
    * @param C_AcctSchema_ID Rules for accounting
@@ -109,22 +83,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     return new KeyNamePair(getId(), String.valueOf(getC_AcctSchema_ID()));
   }
 
-  public I_C_ValidCombination getCommitmentOffset_A() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getCommitmentOffset_Acct(), null);
-  }
-
-  /**
-   * Set Commitment Offset.
-   *
-   * @param CommitmentOffset_Acct Budgetary Commitment Offset Account
-   */
-  public void setCommitmentOffset_Acct(int CommitmentOffset_Acct) {
-    set_Value(COLUMNNAME_CommitmentOffset_Acct, Integer.valueOf(CommitmentOffset_Acct));
-  }
-
-  /**
+    /**
    * Get Commitment Offset.
    *
    * @return Budgetary Commitment Offset Account
@@ -135,22 +94,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     return ii;
   }
 
-  public I_C_ValidCombination getCommitmentOffsetSales_A() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getCommitmentOffsetSales_Acct(), null);
-  }
-
-  /**
-   * Set Commitment Offset Sales.
-   *
-   * @param CommitmentOffsetSales_Acct Budgetary Commitment Offset Account for Sales
-   */
-  public void setCommitmentOffsetSales_Acct(int CommitmentOffsetSales_Acct) {
-    set_Value(COLUMNNAME_CommitmentOffsetSales_Acct, Integer.valueOf(CommitmentOffsetSales_Acct));
-  }
-
-  /**
+    /**
    * Get Commitment Offset Sales.
    *
    * @return Budgetary Commitment Offset Account for Sales
@@ -161,22 +105,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     return ii;
   }
 
-  public I_C_ValidCombination getCurrencyBalancing_A() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getCurrencyBalancing_Acct(), null);
-  }
-
-  /**
-   * Set Currency Balancing Acct.
-   *
-   * @param CurrencyBalancing_Acct Account used when a currency is out of balance
-   */
-  public void setCurrencyBalancing_Acct(int CurrencyBalancing_Acct) {
-    set_Value(COLUMNNAME_CurrencyBalancing_Acct, Integer.valueOf(CurrencyBalancing_Acct));
-  }
-
-  /**
+    /**
    * Get Currency Balancing Acct.
    *
    * @return Account used when a currency is out of balance
@@ -187,22 +116,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     return ii;
   }
 
-  public I_C_ValidCombination getIntercompanyDueFrom_A() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getIntercompanyDueFrom_Acct(), null);
-  }
-
-  /**
-   * Set Intercompany Due From Acct.
-   *
-   * @param IntercompanyDueFrom_Acct Intercompany Due From / Receivables Account
-   */
-  public void setIntercompanyDueFrom_Acct(int IntercompanyDueFrom_Acct) {
-    set_Value(COLUMNNAME_IntercompanyDueFrom_Acct, Integer.valueOf(IntercompanyDueFrom_Acct));
-  }
-
-  /**
+    /**
    * Get Intercompany Due From Acct.
    *
    * @return Intercompany Due From / Receivables Account
@@ -213,22 +127,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     return ii;
   }
 
-  public I_C_ValidCombination getIntercompanyDueTo_A() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getIntercompanyDueTo_Acct(), null);
-  }
-
-  /**
-   * Set Intercompany Due To Acct.
-   *
-   * @param IntercompanyDueTo_Acct Intercompany Due To / Payable Account
-   */
-  public void setIntercompanyDueTo_Acct(int IntercompanyDueTo_Acct) {
-    set_Value(COLUMNNAME_IntercompanyDueTo_Acct, Integer.valueOf(IntercompanyDueTo_Acct));
-  }
-
-  /**
+    /**
    * Get Intercompany Due To Acct.
    *
    * @return Intercompany Due To / Payable Account
@@ -239,22 +138,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     return ii;
   }
 
-  public I_C_ValidCombination getPPVOffset_A() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getPPVOffset_Acct(), null);
-  }
-
-  /**
-   * Set PPV Offset.
-   *
-   * @param PPVOffset_Acct Purchase Price Variance Offset Account
-   */
-  public void setPPVOffset_Acct(int PPVOffset_Acct) {
-    set_Value(COLUMNNAME_PPVOffset_Acct, Integer.valueOf(PPVOffset_Acct));
-  }
-
-  /**
+    /**
    * Get PPV Offset.
    *
    * @return Purchase Price Variance Offset Account
@@ -265,22 +149,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     return ii;
   }
 
-  public I_C_ValidCombination getSuspenseBalancing_A() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getSuspenseBalancing_Acct(), null);
-  }
-
-  /**
-   * Set Suspense Balancing Acct.
-   *
-   * @param SuspenseBalancing_Acct Suspense Balancing Acct
-   */
-  public void setSuspenseBalancing_Acct(int SuspenseBalancing_Acct) {
-    set_Value(COLUMNNAME_SuspenseBalancing_Acct, Integer.valueOf(SuspenseBalancing_Acct));
-  }
-
-  /**
+    /**
    * Get Suspense Balancing Acct.
    *
    * @return Suspense Balancing Acct
@@ -346,21 +215,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     set_Value(COLUMNNAME_UseSuspenseError, Boolean.valueOf(UseSuspenseError));
   }
 
-  /**
-   * Get Use Suspense Error.
-   *
-   * @return Use Suspense Error
-   */
-  public boolean isUseSuspenseError() {
-    Object oo = get_Value(COLUMNNAME_UseSuspenseError);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_AcctSchema_GL.Table_ID;
   }

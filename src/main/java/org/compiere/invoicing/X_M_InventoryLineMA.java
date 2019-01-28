@@ -1,6 +1,5 @@
 package org.compiere.invoicing;
 
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_InventoryLineMA;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -99,13 +98,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA, I_Pe
     return false;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -164,25 +157,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA, I_Pe
     return new KeyNamePair(getId(), String.valueOf(getM_InventoryLine_ID()));
   }
 
-  /**
-   * Set M_InventoryLineMA_UU.
-   *
-   * @param M_InventoryLineMA_UU M_InventoryLineMA_UU
-   */
-  public void setM_InventoryLineMA_UU(String M_InventoryLineMA_UU) {
-    set_Value(COLUMNNAME_M_InventoryLineMA_UU, M_InventoryLineMA_UU);
-  }
-
-  /**
-   * Get M_InventoryLineMA_UU.
-   *
-   * @return M_InventoryLineMA_UU
-   */
-  public String getM_InventoryLineMA_UU() {
-    return (String) get_Value(COLUMNNAME_M_InventoryLineMA_UU);
-  }
-
-  /**
+    /**
    * Set Movement Quantity.
    *
    * @param MovementQty Quantity of a product moved.

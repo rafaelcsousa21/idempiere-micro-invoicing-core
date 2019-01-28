@@ -1,7 +1,5 @@
 package org.idempiere.process;
 
-import org.compiere.model.I_M_AttributeSetInstance;
-import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_MovementLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -64,24 +62,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     set_Value(COLUMNNAME_ConfirmedQty, ConfirmedQty);
   }
 
-  /**
-   * Get Confirmed Quantity.
-   *
-   * @return Confirmation of a received quantity
-   */
-  public BigDecimal getConfirmedQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ConfirmedQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  public org.eevolution.model.I_DD_OrderLine getDD_OrderLine() throws RuntimeException {
-    return (org.eevolution.model.I_DD_OrderLine)
-        MTable.get(getCtx(), org.eevolution.model.I_DD_OrderLine.Table_Name)
-            .getPO(getDD_OrderLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Distribution Order Line.
    *
    * @param DD_OrderLine_ID Distribution Order Line
@@ -149,13 +130,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     return new KeyNamePair(getId(), String.valueOf(getLine()));
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -177,13 +152,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     return ii;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstanceTo() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstanceTo_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance To.
    *
    * @param M_AttributeSetInstanceTo_ID Target Product Attribute Set Instance
@@ -207,12 +176,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     return ii;
   }
 
-  public I_M_Locator getM_Locator() throws RuntimeException {
-    return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
-  }
-
-  /**
+    /**
    * Set Locator.
    *
    * @param M_Locator_ID Warehouse Locator
@@ -233,12 +197,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     return ii;
   }
 
-  public I_M_Locator getM_LocatorTo() throws RuntimeException {
-    return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_LocatorTo_ID(), null);
-  }
-
-  /**
+    /**
    * Set Locator To.
    *
    * @param M_LocatorTo_ID Location inventory is moved to
@@ -286,17 +245,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     return ii;
   }
 
-  /**
-   * Set Move Line.
-   *
-   * @param M_MovementLine_ID Inventory Move document Line
-   */
-  public void setM_MovementLine_ID(int M_MovementLine_ID) {
-    if (M_MovementLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_MovementLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_MovementLine_ID, Integer.valueOf(M_MovementLine_ID));
-  }
-
-  /**
+    /**
    * Get Move Line.
    *
    * @return Inventory Move document Line
@@ -307,25 +256,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     return ii;
   }
 
-  /**
-   * Set M_MovementLine_UU.
-   *
-   * @param M_MovementLine_UU M_MovementLine_UU
-   */
-  public void setM_MovementLine_UU(String M_MovementLine_UU) {
-    set_Value(COLUMNNAME_M_MovementLine_UU, M_MovementLine_UU);
-  }
-
-  /**
-   * Get M_MovementLine_UU.
-   *
-   * @return M_MovementLine_UU
-   */
-  public String getM_MovementLine_UU() {
-    return (String) get_Value(COLUMNNAME_M_MovementLine_UU);
-  }
-
-  /**
+    /**
    * Set Movement Quantity.
    *
    * @param MovementQty Quantity of a product moved.
@@ -345,13 +276,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     return bd;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -381,27 +306,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_M_MovementLine getReversalLine() throws RuntimeException {
-    return (org.compiere.model.I_M_MovementLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-            .getPO(getReversalLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal Line.
    *
    * @param ReversalLine_ID Use to keep the reversal line ID for reversing costing purpose
@@ -431,18 +336,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     set_Value(COLUMNNAME_ScrappedQty, ScrappedQty);
   }
 
-  /**
-   * Get Scrapped Quantity.
-   *
-   * @return The Quantity scrapped due to QA issues
-   */
-  public BigDecimal getScrappedQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ScrappedQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Target Quantity.
    *
    * @param TargetQty Target Movement Quantity
@@ -451,32 +345,4 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     set_Value(COLUMNNAME_TargetQty, TargetQty);
   }
 
-  /**
-   * Get Target Quantity.
-   *
-   * @return Target Movement Quantity
-   */
-  public BigDecimal getTargetQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TargetQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Search Key.
-   *
-   * @param Value Search key for the record in the format required - must be unique
-   */
-  public void setValue(String Value) {
-    throw new IllegalArgumentException("Value is virtual column");
-  }
-
-  /**
-   * Get Search Key.
-   *
-   * @return Search key for the record in the format required - must be unique
-   */
-  public String getValue() {
-    return (String) get_Value(COLUMNNAME_Value);
-  }
 }

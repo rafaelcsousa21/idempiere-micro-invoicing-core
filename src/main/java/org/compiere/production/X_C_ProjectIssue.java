@@ -1,7 +1,6 @@
 package org.compiere.production;
 
 import org.compiere.model.I_C_ProjectIssue;
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_Locator;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -92,17 +91,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
     return new KeyNamePair(getId(), String.valueOf(getC_Project_ID()));
   }
 
-  /**
-   * Set Project Issue.
-   *
-   * @param C_ProjectIssue_ID Project Issues (Material, Labor)
-   */
-  public void setC_ProjectIssue_ID(int C_ProjectIssue_ID) {
-    if (C_ProjectIssue_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, Integer.valueOf(C_ProjectIssue_ID));
-  }
-
-  /**
+    /**
    * Get Project Issue.
    *
    * @return Project Issues (Material, Labor)
@@ -113,25 +102,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
     return ii;
   }
 
-  /**
-   * Set C_ProjectIssue_UU.
-   *
-   * @param C_ProjectIssue_UU C_ProjectIssue_UU
-   */
-  public void setC_ProjectIssue_UU(String C_ProjectIssue_UU) {
-    set_Value(COLUMNNAME_C_ProjectIssue_UU, C_ProjectIssue_UU);
-  }
-
-  /**
-   * Get C_ProjectIssue_UU.
-   *
-   * @return C_ProjectIssue_UU
-   */
-  public String getC_ProjectIssue_UU() {
-    return (String) get_Value(COLUMNNAME_C_ProjectIssue_UU);
-  }
-
-  /**
+    /**
    * Set Description.
    *
    * @param Description Optional short description of the record
@@ -169,24 +140,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
     return ii;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
-   * Set Attribute Set Instance.
-   *
-   * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-   */
-  public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-    if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
-    else
-      set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-  }
-
-  /**
+    /**
    * Get Attribute Set Instance.
    *
    * @return Product Attribute Set Instance
@@ -197,13 +151,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
     return ii;
   }
 
-  public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
-    return (org.compiere.model.I_M_InOutLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Shipment/Receipt Line.
    *
    * @param M_InOutLine_ID Line on Shipment or Receipt document
@@ -288,13 +236,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
     return bd;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -324,21 +266,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
     set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
   }
 
-  /**
-   * Get Posted.
-   *
-   * @return Posting status
-   */
-  public boolean isPosted() {
-    Object oo = get_Value(COLUMNNAME_Posted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -347,71 +275,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_S_TimeExpenseLine getS_TimeExpenseLine() throws RuntimeException {
-    return (org.compiere.model.I_S_TimeExpenseLine)
-        MTable.get(getCtx(), org.compiere.model.I_S_TimeExpenseLine.Table_Name)
-            .getPO(getS_TimeExpenseLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Expense Line.
    *
    * @param S_TimeExpenseLine_ID Time and Expense Report Line

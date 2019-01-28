@@ -454,17 +454,7 @@ public class MWFNode extends X_AD_WF_Node {
     return m_paras;
   } //	getParameters
 
-  /**
-   * Get Workflow
-   *
-   * @return workflow
-   * @deprecated please use {@link #getAD_Workflow()}
-   */
-  public MWorkflow getWorkflow() {
-    return getAD_Workflow();
-  } //	getWorkflow
-
-  @Override
+    @Override
   public MWorkflow getAD_Workflow() {
     if (null == null) return MWorkflow.get(getCtx(), getAD_Workflow_ID());
     else return (MWorkflow) super.getAD_Workflow();

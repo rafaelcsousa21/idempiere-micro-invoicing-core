@@ -55,13 +55,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
+    /**
    * Set User/Contact.
    *
    * @param AD_User_ID User within the system - Internal or Business Partner Contact
@@ -284,25 +278,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     return new KeyNamePair(getId(), getDocumentNo());
   }
 
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
-   * Get Comment/Help.
-   *
-   * @return Comment or Hint
-   */
-  public String getHelp() {
-    return (String) get_Value(COLUMNNAME_Help);
-  }
-
-  /**
+    /**
    * Set Approved.
    *
    * @param IsApproved Indicates if this document requires approval
@@ -325,13 +301,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     return false;
   }
 
-  public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException {
-    return (org.compiere.model.I_M_PriceList)
-        MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
-            .getPO(getM_PriceList_ID(), null);
-  }
-
-  /**
+    /**
    * Set Price List.
    *
    * @param M_PriceList_ID Unique identifier of a Price List
@@ -352,17 +322,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Requisition.
-   *
-   * @param M_Requisition_ID Material Requisition
-   */
-  public void setM_Requisition_ID(int M_Requisition_ID) {
-    if (M_Requisition_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Requisition_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Requisition_ID, Integer.valueOf(M_Requisition_ID));
-  }
-
-  /**
+    /**
    * Get Requisition.
    *
    * @return Material Requisition
@@ -373,31 +333,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     return ii;
   }
 
-  /**
-   * Set M_Requisition_UU.
-   *
-   * @param M_Requisition_UU M_Requisition_UU
-   */
-  public void setM_Requisition_UU(String M_Requisition_UU) {
-    set_Value(COLUMNNAME_M_Requisition_UU, M_Requisition_UU);
-  }
-
-  /**
-   * Get M_Requisition_UU.
-   *
-   * @return M_Requisition_UU
-   */
-  public String getM_Requisition_UU() {
-    return (String) get_Value(COLUMNNAME_M_Requisition_UU);
-  }
-
-  public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
-    return (org.compiere.model.I_M_Warehouse)
-        MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), null);
-  }
-
-  /**
+    /**
    * Set Warehouse.
    *
    * @param M_Warehouse_ID Storage Warehouse and Service Point
@@ -427,21 +363,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
   }
 
-  /**
-   * Get Posted.
-   *
-   * @return Posting status
-   */
-  public boolean isPosted() {
-    Object oo = get_Value(COLUMNNAME_Posted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /** PriorityRule AD_Reference_ID=154 */
+    /** PriorityRule AD_Reference_ID=154 */
   public static final int PRIORITYRULE_AD_Reference_ID = 154;
   /** High = 3 */
   public static final String PRIORITYRULE_High = "3";
@@ -463,16 +385,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     set_Value(COLUMNNAME_PriorityRule, PriorityRule);
   }
 
-  /**
-   * Get Priority.
-   *
-   * @return Priority of a document
-   */
-  public String getPriorityRule() {
-    return (String) get_Value(COLUMNNAME_PriorityRule);
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -481,42 +394,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -525,21 +403,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Total Lines.
    *
    * @param TotalLines Total of all document lines

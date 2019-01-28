@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_Locator;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -80,17 +79,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     return false;
   }
 
-  /**
-   * Set Locator.
-   *
-   * @param M_Locator_ID Warehouse Locator
-   */
-  public void setM_Locator_ID(int M_Locator_ID) {
-    if (M_Locator_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Locator_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
-  }
-
-  /**
+    /**
    * Get Locator.
    *
    * @return Warehouse Locator
@@ -101,13 +90,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_LocatorType getM_LocatorType() throws RuntimeException {
-    return (org.compiere.model.I_M_LocatorType)
-        MTable.get(getCtx(), org.compiere.model.I_M_LocatorType.Table_Name)
-            .getPO(getM_LocatorType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Locator Type.
    *
    * @param M_LocatorType_ID Locator Type
@@ -128,31 +111,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set M_Locator_UU.
-   *
-   * @param M_Locator_UU M_Locator_UU
-   */
-  public void setM_Locator_UU(String M_Locator_UU) {
-    set_Value(COLUMNNAME_M_Locator_UU, M_Locator_UU);
-  }
-
-  /**
-   * Get M_Locator_UU.
-   *
-   * @return M_Locator_UU
-   */
-  public String getM_Locator_UU() {
-    return (String) get_Value(COLUMNNAME_M_Locator_UU);
-  }
-
-  public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
-    return (org.compiere.model.I_M_Warehouse)
-        MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), null);
-  }
-
-  /**
+    /**
    * Set Warehouse.
    *
    * @param M_Warehouse_ID Storage Warehouse and Service Point
@@ -182,18 +141,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     set_Value(COLUMNNAME_PriorityNo, Integer.valueOf(PriorityNo));
   }
 
-  /**
-   * Get Relative Priority.
-   *
-   * @return Where inventory should be picked from first
-   */
-  public int getPriorityNo() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_PriorityNo);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Search Key.
    *
    * @param Value Search key for the record in the format required - must be unique
@@ -229,16 +177,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     set_Value(COLUMNNAME_X, X);
   }
 
-  /**
-   * Get Aisle (X).
-   *
-   * @return X dimension, e.g., Aisle
-   */
-  public String getX() {
-    return (String) get_Value(COLUMNNAME_X);
-  }
-
-  /**
+    /**
    * Set Bin (Y).
    *
    * @param Y Y dimension, e.g., Bin
@@ -247,16 +186,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     set_Value(COLUMNNAME_Y, Y);
   }
 
-  /**
-   * Get Bin (Y).
-   *
-   * @return Y dimension, e.g., Bin
-   */
-  public String getY() {
-    return (String) get_Value(COLUMNNAME_Y);
-  }
-
-  /**
+    /**
    * Set Level (Z).
    *
    * @param Z Z dimension, e.g., Level
@@ -265,12 +195,4 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     set_Value(COLUMNNAME_Z, Z);
   }
 
-  /**
-   * Get Level (Z).
-   *
-   * @return Z dimension, e.g., Level
-   */
-  public String getZ() {
-    return (String) get_Value(COLUMNNAME_Z);
-  }
 }

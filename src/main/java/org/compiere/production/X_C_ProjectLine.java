@@ -53,27 +53,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return sb.toString();
   }
 
-  /**
-   * Set Committed Amount.
-   *
-   * @param CommittedAmt The (legal) commitment amount
-   */
-  public void setCommittedAmt(BigDecimal CommittedAmt) {
-    set_Value(COLUMNNAME_CommittedAmt, CommittedAmt);
-  }
-
-  /**
-   * Get Committed Amount.
-   *
-   * @return The (legal) commitment amount
-   */
-  public BigDecimal getCommittedAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CommittedAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Committed Quantity.
    *
    * @param CommittedQty The (legal) commitment Quantity
@@ -82,24 +62,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     set_Value(COLUMNNAME_CommittedQty, CommittedQty);
   }
 
-  /**
-   * Get Committed Quantity.
-   *
-   * @return The (legal) commitment Quantity
-   */
-  public BigDecimal getCommittedQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CommittedQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
-    return (org.compiere.model.I_C_Order)
-        MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), null);
-  }
-
-  /**
+    /**
    * Set Order.
    *
    * @param C_Order_ID Order
@@ -120,13 +83,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_Order getC_OrderPO() throws RuntimeException {
-    return (org.compiere.model.I_C_Order)
-        MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_OrderPO_ID(), null);
-  }
-
-  /**
+    /**
    * Set Purchase Order.
    *
    * @param C_OrderPO_ID Purchase Order
@@ -174,13 +131,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectIssue getC_ProjectIssue() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectIssue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectIssue.Table_Name)
-            .getPO(getC_ProjectIssue_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Issue.
    *
    * @param C_ProjectIssue_ID Project Issues (Material, Labor)
@@ -201,17 +152,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Project Line.
-   *
-   * @param C_ProjectLine_ID Task or step in a project
-   */
-  public void setC_ProjectLine_ID(int C_ProjectLine_ID) {
-    if (C_ProjectLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ProjectLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_ProjectLine_ID, Integer.valueOf(C_ProjectLine_ID));
-  }
-
-  /**
+    /**
    * Get Project Line.
    *
    * @return Task or step in a project
@@ -222,31 +163,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return ii;
   }
 
-  /**
-   * Set C_ProjectLine_UU.
-   *
-   * @param C_ProjectLine_UU C_ProjectLine_UU
-   */
-  public void setC_ProjectLine_UU(String C_ProjectLine_UU) {
-    set_Value(COLUMNNAME_C_ProjectLine_UU, C_ProjectLine_UU);
-  }
-
-  /**
-   * Get C_ProjectLine_UU.
-   *
-   * @return C_ProjectLine_UU
-   */
-  public String getC_ProjectLine_UU() {
-    return (String) get_Value(COLUMNNAME_C_ProjectLine_UU);
-  }
-
-  public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectPhase)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
-            .getPO(getC_ProjectPhase_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Phase.
    *
    * @param C_ProjectPhase_ID Phase of a Project
@@ -267,13 +184,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectTask getC_ProjectTask() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectTask)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectTask.Table_Name)
-            .getPO(getC_ProjectTask_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Task.
    *
    * @param C_ProjectTask_ID Actual Project Task in a Phase
@@ -312,25 +223,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
-   * Set Pricing.
-   *
-   * @param DoPricing Pricing
-   */
-  public void setDoPricing(String DoPricing) {
-    set_Value(COLUMNNAME_DoPricing, DoPricing);
-  }
-
-  /**
-   * Get Pricing.
-   *
-   * @return Pricing
-   */
-  public String getDoPricing() {
-    return (String) get_Value(COLUMNNAME_DoPricing);
-  }
-
-  /**
+    /**
    * Set Invoiced Amount.
    *
    * @param InvoicedAmt The amount invoiced
@@ -339,18 +232,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     set_Value(COLUMNNAME_InvoicedAmt, InvoicedAmt);
   }
 
-  /**
-   * Get Invoiced Amount.
-   *
-   * @return The amount invoiced
-   */
-  public BigDecimal getInvoicedAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_InvoicedAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Quantity Invoiced .
    *
    * @param InvoicedQty The quantity invoiced
@@ -379,21 +261,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     set_Value(COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
   }
 
-  /**
-   * Get Printed.
-   *
-   * @return Indicates if this document / line is printed
-   */
-  public boolean isPrinted() {
-    Object oo = get_Value(COLUMNNAME_IsPrinted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Line No.
    *
    * @param Line Unique line for this document
@@ -422,23 +290,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return new KeyNamePair(getId(), String.valueOf(getLine()));
   }
 
-  public org.compiere.model.I_M_Product_Category getM_Product_Category() throws RuntimeException {
-    return (org.compiere.model.I_M_Product_Category)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product_Category.Table_Name)
-            .getPO(getM_Product_Category_ID(), null);
-  }
-
-  /**
-   * Set Product Category.
-   *
-   * @param M_Product_Category_ID Category of a Product
-   */
-  public void setM_Product_Category_ID(int M_Product_Category_ID) {
-    if (M_Product_Category_ID < 1) set_Value(COLUMNNAME_M_Product_Category_ID, null);
-    else set_Value(COLUMNNAME_M_Product_Category_ID, Integer.valueOf(M_Product_Category_ID));
-  }
-
-  /**
+    /**
    * Get Product Category.
    *
    * @return Category of a Product
@@ -449,13 +301,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -476,13 +322,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_Production getM_Production() throws RuntimeException {
-    return (org.compiere.model.I_M_Production)
-        MTable.get(getCtx(), org.compiere.model.I_M_Production.Table_Name)
-            .getPO(getM_Production_ID(), null);
-  }
-
-  /**
+    /**
    * Set Production.
    *
    * @param M_Production_ID Plan for producing a product
@@ -512,18 +352,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     set_Value(COLUMNNAME_PlannedAmt, PlannedAmt);
   }
 
-  /**
-   * Get Planned Amount.
-   *
-   * @return Planned amount for this project
-   */
-  public BigDecimal getPlannedAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PlannedAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Planned Margin.
    *
    * @param PlannedMarginAmt Project's planned margin amount
@@ -532,18 +361,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     set_Value(COLUMNNAME_PlannedMarginAmt, PlannedMarginAmt);
   }
 
-  /**
-   * Get Planned Margin.
-   *
-   * @return Project's planned margin amount
-   */
-  public BigDecimal getPlannedMarginAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PlannedMarginAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Planned Price.
    *
    * @param PlannedPrice Planned price for this project line
@@ -592,21 +410,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_ProjectLine.Table_ID;
   }

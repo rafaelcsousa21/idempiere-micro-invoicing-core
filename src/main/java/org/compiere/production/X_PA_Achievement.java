@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_PA_Achievement;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -70,34 +69,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_
     return (Timestamp) get_Value(COLUMNNAME_DateDoc);
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set Achieved.
-   *
-   * @param IsAchieved The goal is achieved
-   */
-  public void setIsAchieved(boolean IsAchieved) {
-    set_Value(COLUMNNAME_IsAchieved, Boolean.valueOf(IsAchieved));
-  }
-
-  /**
+    /**
    * Get Achieved.
    *
    * @return The goal is achieved
@@ -131,80 +103,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_
     return bd;
   }
 
-  /**
-   * Set Note.
-   *
-   * @param Note Optional additional user defined information
-   */
-  public void setNote(String Note) {
-    set_Value(COLUMNNAME_Note, Note);
-  }
-
-  /**
-   * Get Note.
-   *
-   * @return Optional additional user defined information
-   */
-  public String getNote() {
-    return (String) get_Value(COLUMNNAME_Note);
-  }
-
-  /**
-   * Set Achievement.
-   *
-   * @param PA_Achievement_ID Performance Achievement
-   */
-  public void setPA_Achievement_ID(int PA_Achievement_ID) {
-    if (PA_Achievement_ID < 1) set_ValueNoCheck(COLUMNNAME_PA_Achievement_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_PA_Achievement_ID, Integer.valueOf(PA_Achievement_ID));
-  }
-
-  /**
-   * Get Achievement.
-   *
-   * @return Performance Achievement
-   */
-  public int getPA_Achievement_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_PA_Achievement_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set PA_Achievement_UU.
-   *
-   * @param PA_Achievement_UU PA_Achievement_UU
-   */
-  public void setPA_Achievement_UU(String PA_Achievement_UU) {
-    set_Value(COLUMNNAME_PA_Achievement_UU, PA_Achievement_UU);
-  }
-
-  /**
-   * Get PA_Achievement_UU.
-   *
-   * @return PA_Achievement_UU
-   */
-  public String getPA_Achievement_UU() {
-    return (String) get_Value(COLUMNNAME_PA_Achievement_UU);
-  }
-
-  public org.compiere.model.I_PA_Measure getPA_Measure() throws RuntimeException {
-    return (org.compiere.model.I_PA_Measure)
-        MTable.get(getCtx(), org.compiere.model.I_PA_Measure.Table_Name)
-            .getPO(getPA_Measure_ID(), null);
-  }
-
-  /**
-   * Set Measure.
-   *
-   * @param PA_Measure_ID Concrete Performance Measurement
-   */
-  public void setPA_Measure_ID(int PA_Measure_ID) {
-    if (PA_Measure_ID < 1) set_ValueNoCheck(COLUMNNAME_PA_Measure_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_PA_Measure_ID, Integer.valueOf(PA_Measure_ID));
-  }
-
-  /**
+    /**
    * Get Measure.
    *
    * @return Concrete Performance Measurement
@@ -215,23 +114,4 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_
     return ii;
   }
 
-  /**
-   * Set Sequence.
-   *
-   * @param SeqNo Method of ordering records; lowest number comes first
-   */
-  public void setSeqNo(int SeqNo) {
-    set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
-  }
-
-  /**
-   * Get Sequence.
-   *
-   * @return Method of ordering records; lowest number comes first
-   */
-  public int getSeqNo() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
-    if (ii == null) return 0;
-    return ii;
-  }
 }

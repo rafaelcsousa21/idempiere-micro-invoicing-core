@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -91,17 +90,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return false;
   }
 
-  /**
-   * Set Accounting Schema.
-   *
-   * @param C_AcctSchema_ID Rules for accounting
-   */
-  public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
-    if (C_AcctSchema_ID < 1) set_ValueNoCheck(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID, null);
-    else set_ValueNoCheck(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
-  }
-
-  /**
+    /**
    * Get Accounting Schema.
    *
    * @return Rules for accounting
@@ -112,31 +101,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return ii;
   }
 
-  /**
-   * Set C_AcctSchema_UU.
-   *
-   * @param C_AcctSchema_UU C_AcctSchema_UU
-   */
-  public void setC_AcctSchema_UU(String C_AcctSchema_UU) {
-    set_Value(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_UU, C_AcctSchema_UU);
-  }
-
-  /**
-   * Get C_AcctSchema_UU.
-   *
-   * @return C_AcctSchema_UU
-   */
-  public String getC_AcctSchema_UU() {
-    return (String) get_Value(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_UU);
-  }
-
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -256,13 +221,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return (String) get_Value(I_C_AcctSchema.COLUMNNAME_CostingMethod);
   }
 
-  public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
-    return (org.compiere.model.I_C_Period)
-        MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), null);
-  }
-
-  /**
+    /**
    * Set Period.
    *
    * @param C_Period_ID Period of the Calendar
@@ -283,25 +242,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return ii;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(I_C_AcctSchema.COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(I_C_AcctSchema.COLUMNNAME_Description);
-  }
-
-  /** GAAP AD_Reference_ID=123 */
+    /** GAAP AD_Reference_ID=123 */
   public static final int GAAP_AD_Reference_ID = 123;
   /** International GAAP = UN */
   public static final String GAAP_InternationalGAAP = "UN";
@@ -341,21 +282,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     set_Value(I_C_AcctSchema.COLUMNNAME_HasAlias, HasAlias);
   }
 
-  /**
-   * Get Use Account Alias.
-   *
-   * @return Ability to select (partial) account combinations by an Alias
-   */
-  public boolean isHasAlias() {
-    Object oo = get_Value(I_C_AcctSchema.COLUMNNAME_HasAlias);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Use Account Combination Control.
    *
    * @param HasCombination Combination of account elements are checked
@@ -364,21 +291,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     set_Value(I_C_AcctSchema.COLUMNNAME_HasCombination, HasCombination);
   }
 
-  /**
-   * Get Use Account Combination Control.
-   *
-   * @return Combination of account elements are checked
-   */
-  public boolean isHasCombination() {
-    Object oo = get_Value(I_C_AcctSchema.COLUMNNAME_HasCombination);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Accrual.
    *
    * @param IsAccrual Indicates if Accrual or Cash Based accounting will be used
@@ -410,30 +323,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     set_Value(I_C_AcctSchema.COLUMNNAME_IsAdjustCOGS, IsAdjustCOGS);
   }
 
-  /**
-   * Get Adjust COGS.
-   *
-   * @return Adjust Cost of Good Sold
-   */
-  public boolean isAdjustCOGS() {
-    Object oo = get_Value(I_C_AcctSchema.COLUMNNAME_IsAdjustCOGS);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Allow Negative Posting.
-   *
-   * @param IsAllowNegativePosting Allow to post negative accounting values
-   */
-  public void setIsAllowNegativePosting(boolean IsAllowNegativePosting) {
-    set_Value(I_C_AcctSchema.COLUMNNAME_IsAllowNegativePosting, IsAllowNegativePosting);
-  }
-
-  /**
+    /**
    * Get Allow Negative Posting.
    *
    * @return Allow to post negative accounting values
@@ -493,17 +383,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return false;
   }
 
-  /**
-   * Set Post if Clearing Equal.
-   *
-   * @param IsPostIfClearingEqual This flag controls if Adempiere must post when clearing (transit)
-   *     and final accounts are the same
-   */
-  public void setIsPostIfClearingEqual(boolean IsPostIfClearingEqual) {
-    set_Value(I_C_AcctSchema.COLUMNNAME_IsPostIfClearingEqual, IsPostIfClearingEqual);
-  }
-
-  /**
+    /**
    * Get Post if Clearing Equal.
    *
    * @return This flag controls if Adempiere must post when clearing (transit) and final accounts
@@ -564,13 +444,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return false;
   }
 
-  public org.compiere.model.I_M_CostType getM_CostType() throws RuntimeException {
-    return (org.compiere.model.I_M_CostType)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostType.Table_Name)
-            .getPO(getM_CostType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Type.
    *
    * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
@@ -632,30 +506,7 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
     return ii;
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(I_C_AcctSchema.COLUMNNAME_Processing, Processing);
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(I_C_AcctSchema.COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Element Separator.
    *
    * @param Separator Element Separator

@@ -1,10 +1,8 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_C_Location;
 import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.BasePONameValue;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -48,12 +46,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     return sb.toString();
   }
 
-  public I_C_Location getC_Location() throws RuntimeException {
-    return (I_C_Location)
-        MTable.get(getCtx(), I_C_Location.Table_Name).getPO(getC_Location_ID(), null);
-  }
-
-  /**
+    /**
    * Set Address.
    *
    * @param C_Location_ID Location or Address
@@ -74,34 +67,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     return ii;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set Disallow Negative Inventory.
-   *
-   * @param IsDisallowNegativeInv Negative Inventory is not allowed in this warehouse
-   */
-  public void setIsDisallowNegativeInv(boolean IsDisallowNegativeInv) {
-    set_Value(COLUMNNAME_IsDisallowNegativeInv, Boolean.valueOf(IsDisallowNegativeInv));
-  }
-
-  /**
+    /**
    * Get Disallow Negative Inventory.
    *
    * @return Negative Inventory is not allowed in this warehouse
@@ -115,16 +81,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     return false;
   }
 
-  /**
-   * Set In Transit.
-   *
-   * @param IsInTransit Movement is in transit
-   */
-  public void setIsInTransit(boolean IsInTransit) {
-    set_Value(COLUMNNAME_IsInTransit, Boolean.valueOf(IsInTransit));
-  }
-
-  /**
+    /**
    * Get In Transit.
    *
    * @return Movement is in transit
@@ -138,23 +95,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     return false;
   }
 
-  public org.compiere.model.I_M_Locator getM_ReserveLocator() throws RuntimeException {
-    return (org.compiere.model.I_M_Locator)
-        MTable.get(getCtx(), org.compiere.model.I_M_Locator.Table_Name)
-            .getPO(getM_ReserveLocator_ID(), null);
-  }
-
-  /**
-   * Set Reservation Locator.
-   *
-   * @param M_ReserveLocator_ID Reservation Locator (just for reporting purposes)
-   */
-  public void setM_ReserveLocator_ID(int M_ReserveLocator_ID) {
-    if (M_ReserveLocator_ID < 1) set_Value(COLUMNNAME_M_ReserveLocator_ID, null);
-    else set_Value(COLUMNNAME_M_ReserveLocator_ID, Integer.valueOf(M_ReserveLocator_ID));
-  }
-
-  /**
+    /**
    * Get Reservation Locator.
    *
    * @return Reservation Locator (just for reporting purposes)
@@ -165,17 +106,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     return ii;
   }
 
-  /**
-   * Set Warehouse.
-   *
-   * @param M_Warehouse_ID Storage Warehouse and Service Point
-   */
-  public void setM_Warehouse_ID(int M_Warehouse_ID) {
-    if (M_Warehouse_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
-  }
-
-  /**
+    /**
    * Get Warehouse.
    *
    * @return Storage Warehouse and Service Point
@@ -186,23 +117,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     return ii;
   }
 
-  public org.compiere.model.I_M_Warehouse getM_WarehouseSource() throws RuntimeException {
-    return (org.compiere.model.I_M_Warehouse)
-        MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_WarehouseSource_ID(), null);
-  }
-
-  /**
-   * Set Source Warehouse.
-   *
-   * @param M_WarehouseSource_ID Optional Warehouse to replenish from
-   */
-  public void setM_WarehouseSource_ID(int M_WarehouseSource_ID) {
-    if (M_WarehouseSource_ID < 1) set_Value(COLUMNNAME_M_WarehouseSource_ID, null);
-    else set_Value(COLUMNNAME_M_WarehouseSource_ID, Integer.valueOf(M_WarehouseSource_ID));
-  }
-
-  /**
+    /**
    * Get Source Warehouse.
    *
    * @return Optional Warehouse to replenish from
@@ -213,34 +128,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     return ii;
   }
 
-  /**
-   * Set M_Warehouse_UU.
-   *
-   * @param M_Warehouse_UU M_Warehouse_UU
-   */
-  public void setM_Warehouse_UU(String M_Warehouse_UU) {
-    set_Value(COLUMNNAME_M_Warehouse_UU, M_Warehouse_UU);
-  }
-
-  /**
-   * Get M_Warehouse_UU.
-   *
-   * @return M_Warehouse_UU
-   */
-  public String getM_Warehouse_UU() {
-    return (String) get_Value(COLUMNNAME_M_Warehouse_UU);
-  }
-
-  /**
-   * Set Replenishment Class.
-   *
-   * @param ReplenishmentClass Custom class to calculate Quantity to Order
-   */
-  public void setReplenishmentClass(String ReplenishmentClass) {
-    set_Value(COLUMNNAME_ReplenishmentClass, ReplenishmentClass);
-  }
-
-  /**
+    /**
    * Get Replenishment Class.
    *
    * @return Custom class to calculate Quantity to Order
@@ -258,16 +146,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     set_Value(COLUMNNAME_Separator, Separator);
   }
 
-  /**
-   * Get Element Separator.
-   *
-   * @return Element Separator
-   */
-  public String getSeparator() {
-    return (String) get_Value(COLUMNNAME_Separator);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_M_Warehouse.Table_ID;
   }

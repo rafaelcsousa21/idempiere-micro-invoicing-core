@@ -2,7 +2,6 @@ package org.idempiere.process;
 
 import org.compiere.model.I_R_RequestProcessor;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -44,13 +43,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_Schedule getAD_Schedule() throws RuntimeException {
-    return (org.compiere.model.I_AD_Schedule)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Schedule.Table_Name)
-            .getPO(getAD_Schedule_ID(), null);
-  }
-
-  /**
+    /**
    * Set Schedule.
    *
    * @param AD_Schedule_ID Schedule
@@ -71,25 +64,25 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     return ii;
   }
 
-  /**
-   * Set Date last run.
-   *
-   * @param DateLastRun Date the process was last run.
-   */
-  public void setDateLastRun(Timestamp DateLastRun) {
-    set_Value(COLUMNNAME_DateLastRun, DateLastRun);
-  }
+    /**
+     * Set Date last run.
+     *
+     * @param DateLastRun Date the process was last run.
+     */
+    public void setDateLastRun(Timestamp DateLastRun) {
+        set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+    }
 
-  /**
-   * Get Date last run.
-   *
-   * @return Date the process was last run.
-   */
-  public Timestamp getDateLastRun() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
-  }
+    /**
+     * Get Date last run.
+     *
+     * @return Date the process was last run.
+     */
+    public Timestamp getDateLastRun() {
+        return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
+    }
 
-  /**
+    /**
    * Set Date next run.
    *
    * @param DateNextRun Date the process will run next
@@ -107,45 +100,25 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     return (Timestamp) get_Value(COLUMNNAME_DateNextRun);
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
+    /**
+     * Set Description.
+     *
+     * @param Description Optional short description of the record
+     */
+    public void setDescription(String Description) {
+        set_Value(COLUMNNAME_Description, Description);
+    }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
+    /**
+     * Get Description.
+     *
+     * @return Optional short description of the record
+     */
+    public String getDescription() {
+        return (String) get_Value(COLUMNNAME_Description);
+    }
 
-  /**
-   * Set Inactivity Alert Days.
-   *
-   * @param InactivityAlertDays Send Alert when there is no activity after days (0= no alert)
-   */
-  public void setInactivityAlertDays(int InactivityAlertDays) {
-    set_Value(COLUMNNAME_InactivityAlertDays, Integer.valueOf(InactivityAlertDays));
-  }
-
-  /**
-   * Get Inactivity Alert Days.
-   *
-   * @return Send Alert when there is no activity after days (0= no alert)
-   */
-  public int getInactivityAlertDays() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_InactivityAlertDays);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Days to keep Log.
    *
    * @param KeepLogDays Number of days to keep the log entries
@@ -174,18 +147,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     set_Value(COLUMNNAME_OverdueAlertDays, Integer.valueOf(OverdueAlertDays));
   }
 
-  /**
-   * Get Alert after Days Due.
-   *
-   * @return Send email alert after number of days due (0=no alerts)
-   */
-  public int getOverdueAlertDays() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_OverdueAlertDays);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Escalate after Days Due.
    *
    * @param OverdueAssignDays Escalation to superior after number of due days (0 = no)
@@ -194,41 +156,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     set_Value(COLUMNNAME_OverdueAssignDays, Integer.valueOf(OverdueAssignDays));
   }
 
-  /**
-   * Get Escalate after Days Due.
-   *
-   * @return Escalation to superior after number of due days (0 = no)
-   */
-  public int getOverdueAssignDays() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_OverdueAssignDays);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Reminder Days.
    *
    * @param RemindDays Days between sending Reminder Emails for a due or inactive Document
@@ -237,28 +165,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     set_Value(COLUMNNAME_RemindDays, Integer.valueOf(RemindDays));
   }
 
-  /**
-   * Get Reminder Days.
-   *
-   * @return Days between sending Reminder Emails for a due or inactive Document
-   */
-  public int getRemindDays() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_RemindDays);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Request Processor.
-   *
-   * @param R_RequestProcessor_ID Processor for Requests
-   */
-  public void setR_RequestProcessor_ID(int R_RequestProcessor_ID) {
-    if (R_RequestProcessor_ID < 1) set_ValueNoCheck(COLUMNNAME_R_RequestProcessor_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_R_RequestProcessor_ID, Integer.valueOf(R_RequestProcessor_ID));
-  }
-
-  /**
+    /**
    * Get Request Processor.
    *
    * @return Processor for Requests
@@ -269,41 +176,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     return ii;
   }
 
-  /**
-   * Set R_RequestProcessor_UU.
-   *
-   * @param R_RequestProcessor_UU R_RequestProcessor_UU
-   */
-  public void setR_RequestProcessor_UU(String R_RequestProcessor_UU) {
-    set_Value(COLUMNNAME_R_RequestProcessor_UU, R_RequestProcessor_UU);
-  }
-
-  /**
-   * Get R_RequestProcessor_UU.
-   *
-   * @return R_RequestProcessor_UU
-   */
-  public String getR_RequestProcessor_UU() {
-    return (String) get_Value(COLUMNNAME_R_RequestProcessor_UU);
-  }
-
-  public org.compiere.model.I_R_RequestType getR_RequestType() throws RuntimeException {
-    return (org.compiere.model.I_R_RequestType)
-        MTable.get(getCtx(), org.compiere.model.I_R_RequestType.Table_Name)
-            .getPO(getR_RequestType_ID(), null);
-  }
-
-  /**
-   * Set Request Type.
-   *
-   * @param R_RequestType_ID Type of request (e.g. Inquiry, Complaint, ..)
-   */
-  public void setR_RequestType_ID(int R_RequestType_ID) {
-    if (R_RequestType_ID < 1) set_Value(COLUMNNAME_R_RequestType_ID, null);
-    else set_Value(COLUMNNAME_R_RequestType_ID, Integer.valueOf(R_RequestType_ID));
-  }
-
-  /**
+    /**
    * Get Request Type.
    *
    * @return Type of request (e.g. Inquiry, Complaint, ..)
@@ -314,13 +187,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getSupervisor() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSupervisor_ID(), null);
-  }
-
-  /**
+    /**
    * Set Supervisor.
    *
    * @param Supervisor_ID Supervisor for this user/organization - used for escalation and approval

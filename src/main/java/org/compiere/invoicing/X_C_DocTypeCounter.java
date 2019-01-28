@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -42,52 +41,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
     return "X_C_DocTypeCounter[" + getId() + "]";
   }
 
-  /**
-   * Set Counter Document.
-   *
-   * @param C_DocTypeCounter_ID Counter Document Relationship
-   */
-  public void setC_DocTypeCounter_ID(int C_DocTypeCounter_ID) {
-    if (C_DocTypeCounter_ID < 1) set_ValueNoCheck(COLUMNNAME_C_DocTypeCounter_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_DocTypeCounter_ID, C_DocTypeCounter_ID);
-  }
-
-  /**
-   * Get Counter Document.
-   *
-   * @return Counter Document Relationship
-   */
-  public int getC_DocTypeCounter_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_DocTypeCounter_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set C_DocTypeCounter_UU.
-   *
-   * @param C_DocTypeCounter_UU C_DocTypeCounter_UU
-   */
-  public void setC_DocTypeCounter_UU(String C_DocTypeCounter_UU) {
-    set_Value(COLUMNNAME_C_DocTypeCounter_UU, C_DocTypeCounter_UU);
-  }
-
-  /**
-   * Get C_DocTypeCounter_UU.
-   *
-   * @return C_DocTypeCounter_UU
-   */
-  public String getC_DocTypeCounter_UU() {
-    return (String) get_Value(COLUMNNAME_C_DocTypeCounter_UU);
-  }
-
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Document Type.
    *
    * @param C_DocType_ID Document type or rules
@@ -108,13 +62,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getCounter_C_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getCounter_C_DocType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Counter Document Type.
    *
    * @param Counter_C_DocType_ID Generated Counter Document Type (To)
@@ -135,25 +83,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
     return ii;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /** DocAction AD_Reference_ID=135 */
+    /** DocAction AD_Reference_ID=135 */
   public static final int DOCACTION_AD_Reference_ID = 135;
   /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
@@ -183,17 +113,8 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
   public static final String DOCACTION_Unlock = "XL";
   /** Wait Complete = WC */
   public static final String DOCACTION_WaitComplete = "WC";
-  /**
-   * Set Document Action.
-   *
-   * @param DocAction The targeted status of the document
-   */
-  public void setDocAction(String DocAction) {
 
-    set_Value(COLUMNNAME_DocAction, DocAction);
-  }
-
-  /**
+    /**
    * Get Document Action.
    *
    * @return The targeted status of the document
@@ -248,30 +169,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
     return false;
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Processing);
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_DocTypeCounter.Table_ID;
   }

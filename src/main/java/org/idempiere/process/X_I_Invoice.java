@@ -2,7 +2,6 @@ package org.idempiere.process;
 
 import org.compiere.model.I_I_Invoice;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -46,34 +45,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return sb.toString();
   }
 
-  /**
-   * Set Activity Key.
-   *
-   * @param ActivityValue Text key for Activity
-   */
-  public void setActivityValue(String ActivityValue) {
-    set_Value(COLUMNNAME_ActivityValue, ActivityValue);
-  }
-
-  /**
-   * Get Activity Key.
-   *
-   * @return Text key for Activity
-   */
-  public String getActivityValue() {
-    return (String) get_Value(COLUMNNAME_ActivityValue);
-  }
-
-  /**
-   * Set Address 1.
-   *
-   * @param Address1 Address line 1 for this location
-   */
-  public void setAddress1(String Address1) {
-    set_Value(COLUMNNAME_Address1, Address1);
-  }
-
-  /**
+    /**
    * Get Address 1.
    *
    * @return Address line 1 for this location
@@ -82,16 +54,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_Address1);
   }
 
-  /**
-   * Set Address 2.
-   *
-   * @param Address2 Address line 2 for this location
-   */
-  public void setAddress2(String Address2) {
-    set_Value(COLUMNNAME_Address2, Address2);
-  }
-
-  /**
+    /**
    * Get Address 2.
    *
    * @return Address line 2 for this location
@@ -100,17 +63,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_Address2);
   }
 
-  /**
-   * Set Trx Organization.
-   *
-   * @param AD_OrgTrx_ID Performing or initiating organization
-   */
-  public void setAD_OrgTrx_ID(int AD_OrgTrx_ID) {
-    if (AD_OrgTrx_ID < 1) set_Value(COLUMNNAME_AD_OrgTrx_ID, null);
-    else set_Value(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
-  }
-
-  /**
+    /**
    * Get Trx Organization.
    *
    * @return Performing or initiating organization
@@ -121,13 +74,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
+    /**
    * Set User/Contact.
    *
    * @param AD_User_ID User within the system - Internal or Business Partner Contact
@@ -166,23 +113,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_BPartnerValue);
   }
 
-  public org.compiere.model.I_C_1099Box getC_1099Box() throws RuntimeException {
-    return (org.compiere.model.I_C_1099Box)
-        MTable.get(getCtx(), org.compiere.model.I_C_1099Box.Table_Name)
-            .getPO(getC_1099Box_ID(), null);
-  }
-
-  /**
-   * Set 1099 Box.
-   *
-   * @param C_1099Box_ID 1099 Box
-   */
-  public void setC_1099Box_ID(int C_1099Box_ID) {
-    if (C_1099Box_ID < 1) set_Value(COLUMNNAME_C_1099Box_ID, null);
-    else set_Value(COLUMNNAME_C_1099Box_ID, Integer.valueOf(C_1099Box_ID));
-  }
-
-  /**
+    /**
    * Get 1099 Box.
    *
    * @return 1099 Box
@@ -193,41 +124,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  /**
-   * Set 1099 Box Value.
-   *
-   * @param C_1099Box_Value 1099 Box Value
-   */
-  public void setC_1099Box_Value(String C_1099Box_Value) {
-    set_Value(COLUMNNAME_C_1099Box_Value, C_1099Box_Value);
-  }
-
-  /**
-   * Get 1099 Box Value.
-   *
-   * @return 1099 Box Value
-   */
-  public String getC_1099Box_Value() {
-    return (String) get_Value(COLUMNNAME_C_1099Box_Value);
-  }
-
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
-   * Set Activity.
-   *
-   * @param C_Activity_ID Business Activity
-   */
-  public void setC_Activity_ID(int C_Activity_ID) {
-    if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-    else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
-  }
-
-  /**
+    /**
    * Get Activity.
    *
    * @return Business Activity
@@ -238,13 +135,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -265,13 +156,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner_Location.Table_Name)
-            .getPO(getC_BPartner_Location_ID(), null);
-  }
-
-  /**
+    /**
    * Set Partner Location.
    *
    * @param C_BPartner_Location_ID Identifies the (ship to) address for this Business Partner
@@ -292,23 +177,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
-   * Set Campaign.
-   *
-   * @param C_Campaign_ID Marketing Campaign
-   */
-  public void setC_Campaign_ID(int C_Campaign_ID) {
-    if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-    else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
-  }
-
-  /**
+    /**
    * Get Campaign.
    *
    * @return Marketing Campaign
@@ -319,23 +188,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
-   * Set Charge.
-   *
-   * @param C_Charge_ID Additional document charges
-   */
-  public void setC_Charge_ID(int C_Charge_ID) {
-    if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
-    else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
-  }
-
-  /**
+    /**
    * Get Charge.
    *
    * @return Additional document charges
@@ -346,23 +199,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_Country getC_Country() throws RuntimeException {
-    return (org.compiere.model.I_C_Country)
-        MTable.get(getCtx(), org.compiere.model.I_C_Country.Table_Name)
-            .getPO(getC_Country_ID(), null);
-  }
-
-  /**
-   * Set Country.
-   *
-   * @param C_Country_ID Country
-   */
-  public void setC_Country_ID(int C_Country_ID) {
-    if (C_Country_ID < 1) set_Value(COLUMNNAME_C_Country_ID, null);
-    else set_Value(COLUMNNAME_C_Country_ID, Integer.valueOf(C_Country_ID));
-  }
-
-  /**
+    /**
    * Get Country.
    *
    * @return Country
@@ -373,23 +210,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
-   * Set Currency.
-   *
-   * @param C_Currency_ID The Currency for this record
-   */
-  public void setC_Currency_ID(int C_Currency_ID) {
-    if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-    else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
-  }
-
-  /**
+    /**
    * Get Currency.
    *
    * @return The Currency for this record
@@ -400,23 +221,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
-   * Set Document Type.
-   *
-   * @param C_DocType_ID Document type or rules
-   */
-  public void setC_DocType_ID(int C_DocType_ID) {
-    if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-    else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
-  }
-
-  /**
+    /**
    * Get Document Type.
    *
    * @return Document type or rules
@@ -427,31 +232,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Charge Name.
-   *
-   * @param ChargeName Name of the Charge
-   */
-  public void setChargeName(String ChargeName) {
-    set_Value(COLUMNNAME_ChargeName, ChargeName);
-  }
-
-  /**
-   * Get Charge Name.
-   *
-   * @return Name of the Charge
-   */
-  public String getChargeName() {
-    return (String) get_Value(COLUMNNAME_ChargeName);
-  }
-
-  public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice.
    *
    * @param C_Invoice_ID Invoice Identifier
@@ -472,13 +253,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
-    return (org.compiere.model.I_C_InvoiceLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice Line.
    *
    * @param C_InvoiceLine_ID Invoice Detail Line
@@ -499,16 +274,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  /**
-   * Set City.
-   *
-   * @param City Identifies a City
-   */
-  public void setCity(String City) {
-    set_Value(COLUMNNAME_City, City);
-  }
-
-  /**
+    /**
    * Get City.
    *
    * @return Identifies a City
@@ -517,13 +283,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_City);
   }
 
-  public org.compiere.model.I_C_Location getC_Location() throws RuntimeException {
-    return (org.compiere.model.I_C_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_Location_ID(), null);
-  }
-
-  /**
+    /**
    * Set Address.
    *
    * @param C_Location_ID Location or Address
@@ -544,16 +304,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Contact Name.
-   *
-   * @param ContactName Business Partner Contact Name
-   */
-  public void setContactName(String ContactName) {
-    set_Value(COLUMNNAME_ContactName, ContactName);
-  }
-
-  /**
+    /**
    * Get Contact Name.
    *
    * @return Business Partner Contact Name
@@ -562,48 +313,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_ContactName);
   }
 
-  /**
-   * Set ISO Country Code.
-   *
-   * @param CountryCode Upper-case two-letter alphanumeric ISO Country code according to ISO 3166-1
-   *     - http://www.chemie.fu-berlin.de/diverse/doc/ISO_3166.html
-   */
-  public void setCountryCode(boolean CountryCode) {
-    set_Value(COLUMNNAME_CountryCode, Boolean.valueOf(CountryCode));
-  }
-
-  /**
-   * Get ISO Country Code.
-   *
-   * @return Upper-case two-letter alphanumeric ISO Country code according to ISO 3166-1 -
-   *     http://www.chemie.fu-berlin.de/diverse/doc/ISO_3166.html
-   */
-  public boolean isCountryCode() {
-    Object oo = get_Value(COLUMNNAME_CountryCode);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_C_PaymentTerm getC_PaymentTerm() throws RuntimeException {
-    return (org.compiere.model.I_C_PaymentTerm)
-        MTable.get(getCtx(), org.compiere.model.I_C_PaymentTerm.Table_Name)
-            .getPO(getC_PaymentTerm_ID(), null);
-  }
-
-  /**
-   * Set Payment Term.
-   *
-   * @param C_PaymentTerm_ID The terms of Payment (timing, discount)
-   */
-  public void setC_PaymentTerm_ID(int C_PaymentTerm_ID) {
-    if (C_PaymentTerm_ID < 1) set_Value(COLUMNNAME_C_PaymentTerm_ID, null);
-    else set_Value(COLUMNNAME_C_PaymentTerm_ID, Integer.valueOf(C_PaymentTerm_ID));
-  }
-
-  /**
+    /**
    * Get Payment Term.
    *
    * @return The terms of Payment (timing, discount)
@@ -614,23 +324,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
-   * Set Project.
-   *
-   * @param C_Project_ID Financial Project
-   */
-  public void setC_Project_ID(int C_Project_ID) {
-    if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-    else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-  }
-
-  /**
+    /**
    * Get Project.
    *
    * @return Financial Project
@@ -641,23 +335,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_Region getC_Region() throws RuntimeException {
-    return (org.compiere.model.I_C_Region)
-        MTable.get(getCtx(), org.compiere.model.I_C_Region.Table_Name)
-            .getPO(getC_Region_ID(), null);
-  }
-
-  /**
-   * Set Region.
-   *
-   * @param C_Region_ID Identifies a geographical Region
-   */
-  public void setC_Region_ID(int C_Region_ID) {
-    if (C_Region_ID < 1) set_Value(COLUMNNAME_C_Region_ID, null);
-    else set_Value(COLUMNNAME_C_Region_ID, Integer.valueOf(C_Region_ID));
-  }
-
-  /**
+    /**
    * Get Region.
    *
    * @return Identifies a geographical Region
@@ -668,13 +346,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_C_Tax getC_Tax() throws RuntimeException {
-    return (org.compiere.model.I_C_Tax)
-        MTable.get(getCtx(), org.compiere.model.I_C_Tax.Table_Name)
-            .getPO(getC_Tax_ID(), null);
-  }
-
-  /**
+    /**
    * Set Tax.
    *
    * @param C_Tax_ID Tax identifier
@@ -695,16 +367,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Account Date.
-   *
-   * @param DateAcct Accounting Date
-   */
-  public void setDateAcct(Timestamp DateAcct) {
-    set_Value(COLUMNNAME_DateAcct, DateAcct);
-  }
-
-  /**
+    /**
    * Get Account Date.
    *
    * @return Accounting Date
@@ -713,16 +376,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (Timestamp) get_Value(COLUMNNAME_DateAcct);
   }
 
-  /**
-   * Set Date Invoiced.
-   *
-   * @param DateInvoiced Date printed on Invoice
-   */
-  public void setDateInvoiced(Timestamp DateInvoiced) {
-    set_Value(COLUMNNAME_DateInvoiced, DateInvoiced);
-  }
-
-  /**
+    /**
    * Get Date Invoiced.
    *
    * @return Date printed on Invoice
@@ -731,16 +385,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (Timestamp) get_Value(COLUMNNAME_DateInvoiced);
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -749,34 +394,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
-   * Set Document Type Name.
-   *
-   * @param DocTypeName Name of the Document Type
-   */
-  public void setDocTypeName(String DocTypeName) {
-    set_Value(COLUMNNAME_DocTypeName, DocTypeName);
-  }
-
-  /**
-   * Get Document Type Name.
-   *
-   * @return Name of the Document Type
-   */
-  public String getDocTypeName() {
-    return (String) get_Value(COLUMNNAME_DocTypeName);
-  }
-
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -785,16 +403,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Set EMail Address.
-   *
-   * @param EMail Electronic Mail Address
-   */
-  public void setEMail(String EMail) {
-    set_Value(COLUMNNAME_EMail, EMail);
-  }
-
-  /**
+    /**
    * Get EMail Address.
    *
    * @return Electronic Mail Address
@@ -803,64 +412,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_EMail);
   }
 
-  /**
-   * Set Import Error Message.
-   *
-   * @param I_ErrorMsg Messages generated from import process
-   */
-  public void setI_ErrorMsg(String I_ErrorMsg) {
-    set_Value(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
-  }
-
-  /**
-   * Get Import Error Message.
-   *
-   * @return Messages generated from import process
-   */
-  public String getI_ErrorMsg() {
-    return (String) get_Value(COLUMNNAME_I_ErrorMsg);
-  }
-
-  /**
-   * Set Import Invoice.
-   *
-   * @param I_Invoice_ID Import Invoice
-   */
-  public void setI_Invoice_ID(int I_Invoice_ID) {
-    if (I_Invoice_ID < 1) set_ValueNoCheck(COLUMNNAME_I_Invoice_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_I_Invoice_ID, Integer.valueOf(I_Invoice_ID));
-  }
-
-  /**
-   * Get Import Invoice.
-   *
-   * @return Import Invoice
-   */
-  public int getI_Invoice_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_I_Invoice_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set I_Invoice_UU.
-   *
-   * @param I_Invoice_UU I_Invoice_UU
-   */
-  public void setI_Invoice_UU(String I_Invoice_UU) {
-    set_Value(COLUMNNAME_I_Invoice_UU, I_Invoice_UU);
-  }
-
-  /**
-   * Get I_Invoice_UU.
-   *
-   * @return I_Invoice_UU
-   */
-  public String getI_Invoice_UU() {
-    return (String) get_Value(COLUMNNAME_I_Invoice_UU);
-  }
-
-  /**
+    /**
    * Set Imported.
    *
    * @param I_IsImported Has this import been processed
@@ -869,30 +421,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
   }
 
-  /**
-   * Get Imported.
-   *
-   * @return Has this import been processed
-   */
-  public boolean isI_IsImported() {
-    Object oo = get_Value(COLUMNNAME_I_IsImported);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Sales Transaction.
-   *
-   * @param IsSOTrx This is a Sales Transaction
-   */
-  public void setIsSOTrx(boolean IsSOTrx) {
-    set_Value(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
-  }
-
-  /**
+    /**
    * Get Sales Transaction.
    *
    * @return This is a Sales Transaction
@@ -906,16 +435,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return false;
   }
 
-  /**
-   * Set Line Description.
-   *
-   * @param LineDescription Description of the Line
-   */
-  public void setLineDescription(String LineDescription) {
-    set_Value(COLUMNNAME_LineDescription, LineDescription);
-  }
-
-  /**
+    /**
    * Get Line Description.
    *
    * @return Description of the Line
@@ -924,23 +444,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_LineDescription);
   }
 
-  public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException {
-    return (org.compiere.model.I_M_PriceList)
-        MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
-            .getPO(getM_PriceList_ID(), null);
-  }
-
-  /**
-   * Set Price List.
-   *
-   * @param M_PriceList_ID Unique identifier of a Price List
-   */
-  public void setM_PriceList_ID(int M_PriceList_ID) {
-    if (M_PriceList_ID < 1) set_Value(COLUMNNAME_M_PriceList_ID, null);
-    else set_Value(COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
-  }
-
-  /**
+    /**
    * Get Price List.
    *
    * @return Unique identifier of a Price List
@@ -951,23 +455,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
-   * Set Product.
-   *
-   * @param M_Product_ID Product, Service, Item
-   */
-  public void setM_Product_ID(int M_Product_ID) {
-    if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-  }
-
-  /**
+    /**
    * Get Product.
    *
    * @return Product, Service, Item
@@ -978,34 +466,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Payment Term Key.
-   *
-   * @param PaymentTermValue Key of the Payment Term
-   */
-  public void setPaymentTermValue(String PaymentTermValue) {
-    set_Value(COLUMNNAME_PaymentTermValue, PaymentTermValue);
-  }
-
-  /**
-   * Get Payment Term Key.
-   *
-   * @return Key of the Payment Term
-   */
-  public String getPaymentTermValue() {
-    return (String) get_Value(COLUMNNAME_PaymentTermValue);
-  }
-
-  /**
-   * Set Phone.
-   *
-   * @param Phone Identifies a telephone number
-   */
-  public void setPhone(String Phone) {
-    set_Value(COLUMNNAME_Phone, Phone);
-  }
-
-  /**
+    /**
    * Get Phone.
    *
    * @return Identifies a telephone number
@@ -1014,16 +475,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_Phone);
   }
 
-  /**
-   * Set ZIP.
-   *
-   * @param Postal Postal code
-   */
-  public void setPostal(String Postal) {
-    set_Value(COLUMNNAME_Postal, Postal);
-  }
-
-  /**
+    /**
    * Get ZIP.
    *
    * @return Postal code
@@ -1032,16 +484,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return (String) get_Value(COLUMNNAME_Postal);
   }
 
-  /**
-   * Set Unit Price.
-   *
-   * @param PriceActual Actual Price
-   */
-  public void setPriceActual(BigDecimal PriceActual) {
-    set_Value(COLUMNNAME_PriceActual, PriceActual);
-  }
-
-  /**
+    /**
    * Get Unit Price.
    *
    * @return Actual Price
@@ -1061,89 +504,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Product Key.
-   *
-   * @param ProductValue Key of the Product
-   */
-  public void setProductValue(String ProductValue) {
-    set_Value(COLUMNNAME_ProductValue, ProductValue);
-  }
-
-  /**
-   * Get Product Key.
-   *
-   * @return Key of the Product
-   */
-  public String getProductValue() {
-    return (String) get_Value(COLUMNNAME_ProductValue);
-  }
-
-  /**
-   * Set Project Key.
-   *
-   * @param ProjectValue Key of the Project
-   */
-  public void setProjectValue(String ProjectValue) {
-    set_Value(COLUMNNAME_ProjectValue, ProjectValue);
-  }
-
-  /**
-   * Get Project Key.
-   *
-   * @return Key of the Project
-   */
-  public String getProjectValue() {
-    return (String) get_Value(COLUMNNAME_ProjectValue);
-  }
-
-  /**
-   * Set Ordered Quantity.
-   *
-   * @param QtyOrdered Ordered Quantity
-   */
-  public void setQtyOrdered(BigDecimal QtyOrdered) {
-    set_Value(COLUMNNAME_QtyOrdered, QtyOrdered);
-  }
-
-  /**
+    /**
    * Get Ordered Quantity.
    *
    * @return Ordered Quantity
@@ -1154,41 +515,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return bd;
   }
 
-  /**
-   * Set Region.
-   *
-   * @param RegionName Name of the Region
-   */
-  public void setRegionName(String RegionName) {
-    set_Value(COLUMNNAME_RegionName, RegionName);
-  }
-
-  /**
-   * Get Region.
-   *
-   * @return Name of the Region
-   */
-  public String getRegionName() {
-    return (String) get_Value(COLUMNNAME_RegionName);
-  }
-
-  public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSalesRep_ID(), null);
-  }
-
-  /**
-   * Set Sales Representative.
-   *
-   * @param SalesRep_ID Sales Representative or Company Agent
-   */
-  public void setSalesRep_ID(int SalesRep_ID) {
-    if (SalesRep_ID < 1) set_Value(COLUMNNAME_SalesRep_ID, null);
-    else set_Value(COLUMNNAME_SalesRep_ID, Integer.valueOf(SalesRep_ID));
-  }
-
-  /**
+    /**
    * Get Sales Representative.
    *
    * @return Sales Representative or Company Agent
@@ -1199,34 +526,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return ii;
   }
 
-  /**
-   * Set SKU.
-   *
-   * @param SKU Stock Keeping Unit
-   */
-  public void setSKU(String SKU) {
-    set_Value(COLUMNNAME_SKU, SKU);
-  }
-
-  /**
-   * Get SKU.
-   *
-   * @return Stock Keeping Unit
-   */
-  public String getSKU() {
-    return (String) get_Value(COLUMNNAME_SKU);
-  }
-
-  /**
-   * Set Tax Amount.
-   *
-   * @param TaxAmt Tax Amount for a document
-   */
-  public void setTaxAmt(BigDecimal TaxAmt) {
-    set_Value(COLUMNNAME_TaxAmt, TaxAmt);
-  }
-
-  /**
+    /**
    * Get Tax Amount.
    *
    * @return Tax Amount for a document
@@ -1237,39 +537,4 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
     return bd;
   }
 
-  /**
-   * Set Tax Indicator.
-   *
-   * @param TaxIndicator Short form for Tax to be printed on documents
-   */
-  public void setTaxIndicator(String TaxIndicator) {
-    set_Value(COLUMNNAME_TaxIndicator, TaxIndicator);
-  }
-
-  /**
-   * Get Tax Indicator.
-   *
-   * @return Short form for Tax to be printed on documents
-   */
-  public String getTaxIndicator() {
-    return (String) get_Value(COLUMNNAME_TaxIndicator);
-  }
-
-  /**
-   * Set UPC/EAN.
-   *
-   * @param UPC Bar Code (Universal Product Code or its superset European Article Number)
-   */
-  public void setUPC(String UPC) {
-    set_Value(COLUMNNAME_UPC, UPC);
-  }
-
-  /**
-   * Get UPC/EAN.
-   *
-   * @return Bar Code (Universal Product Code or its superset European Article Number)
-   */
-  public String getUPC() {
-    return (String) get_Value(COLUMNNAME_UPC);
-  }
 }

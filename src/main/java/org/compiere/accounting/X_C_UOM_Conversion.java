@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_UOM_Conversion;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -56,17 +55,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
     return sb.toString();
   }
 
-  /**
-   * Set UOM Conversion.
-   *
-   * @param C_UOM_Conversion_ID Unit of Measure Conversion
-   */
-  public void setC_UOM_Conversion_ID(int C_UOM_Conversion_ID) {
-    if (C_UOM_Conversion_ID < 1) set_ValueNoCheck(COLUMNNAME_C_UOM_Conversion_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_UOM_Conversion_ID, Integer.valueOf(C_UOM_Conversion_ID));
-  }
-
-  /**
+    /**
    * Get UOM Conversion.
    *
    * @return Unit of Measure Conversion
@@ -86,31 +75,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
     return new KeyNamePair(getId(), String.valueOf(getC_UOM_Conversion_ID()));
   }
 
-  /**
-   * Set C_UOM_Conversion_UU.
-   *
-   * @param C_UOM_Conversion_UU C_UOM_Conversion_UU
-   */
-  public void setC_UOM_Conversion_UU(String C_UOM_Conversion_UU) {
-    set_Value(COLUMNNAME_C_UOM_Conversion_UU, C_UOM_Conversion_UU);
-  }
-
-  /**
-   * Get C_UOM_Conversion_UU.
-   *
-   * @return C_UOM_Conversion_UU
-   */
-  public String getC_UOM_Conversion_UU() {
-    return (String) get_Value(COLUMNNAME_C_UOM_Conversion_UU);
-  }
-
-  public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
-    return (org.compiere.model.I_C_UOM)
-        MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), null);
-  }
-
-  /**
+    /**
    * Set UOM.
    *
    * @param C_UOM_ID Unit of Measure
@@ -131,13 +96,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
     return ii;
   }
 
-  public org.compiere.model.I_C_UOM getC_UOM_To() throws RuntimeException {
-    return (org.compiere.model.I_C_UOM)
-        MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_To_ID(), null);
-  }
-
-  /**
+    /**
    * Set UoM To.
    *
    * @param C_UOM_To_ID Target or destination Unit of Measure
@@ -178,13 +137,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
     return bd;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item

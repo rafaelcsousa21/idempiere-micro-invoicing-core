@@ -1,7 +1,6 @@
 package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_NextCondition;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -51,23 +50,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_Column getAD_Column() throws RuntimeException {
-    return (org.compiere.model.I_AD_Column)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Column.Table_Name)
-            .getPO(getAD_Column_ID(), null);
-  }
-
-  /**
-   * Set Column.
-   *
-   * @param AD_Column_ID Column in the table
-   */
-  public void setAD_Column_ID(int AD_Column_ID) {
-    if (AD_Column_ID < 1) set_Value(COLUMNNAME_AD_Column_ID, null);
-    else set_Value(COLUMNNAME_AD_Column_ID, Integer.valueOf(AD_Column_ID));
-  }
-
-  /**
+    /**
    * Get Column.
    *
    * @return Column in the table
@@ -78,63 +61,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
     return ii;
   }
 
-  /**
-   * Set Transition Condition.
-   *
-   * @param AD_WF_NextCondition_ID Workflow Node Transition Condition
-   */
-  public void setAD_WF_NextCondition_ID(int AD_WF_NextCondition_ID) {
-    if (AD_WF_NextCondition_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_NextCondition_ID, null);
-    else
-      set_ValueNoCheck(COLUMNNAME_AD_WF_NextCondition_ID, Integer.valueOf(AD_WF_NextCondition_ID));
-  }
-
-  /**
-   * Get Transition Condition.
-   *
-   * @return Workflow Node Transition Condition
-   */
-  public int getAD_WF_NextCondition_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_NextCondition_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set AD_WF_NextCondition_UU.
-   *
-   * @param AD_WF_NextCondition_UU AD_WF_NextCondition_UU
-   */
-  public void setAD_WF_NextCondition_UU(String AD_WF_NextCondition_UU) {
-    set_Value(COLUMNNAME_AD_WF_NextCondition_UU, AD_WF_NextCondition_UU);
-  }
-
-  /**
-   * Get AD_WF_NextCondition_UU.
-   *
-   * @return AD_WF_NextCondition_UU
-   */
-  public String getAD_WF_NextCondition_UU() {
-    return (String) get_Value(COLUMNNAME_AD_WF_NextCondition_UU);
-  }
-
-  public org.compiere.model.I_AD_WF_NodeNext getAD_WF_NodeNext() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_NodeNext)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_NodeNext.Table_Name)
-            .getPO(getAD_WF_NodeNext_ID(), null);
-  }
-
-  /**
-   * Set Node Transition.
-   *
-   * @param AD_WF_NodeNext_ID Workflow Node Transition
-   */
-  public void setAD_WF_NodeNext_ID(int AD_WF_NodeNext_ID) {
-    if (AD_WF_NodeNext_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_NodeNext_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_WF_NodeNext_ID, Integer.valueOf(AD_WF_NodeNext_ID));
-  }
-
-  /**
+    /**
    * Get Node Transition.
    *
    * @return Workflow Node Transition
@@ -151,17 +78,8 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
   public static final String ANDOR_And = "A";
   /** Or = O */
   public static final String ANDOR_Or = "O";
-  /**
-   * Set And/Or.
-   *
-   * @param AndOr Logical operation: AND or OR
-   */
-  public void setAndOr(String AndOr) {
 
-    set_Value(COLUMNNAME_AndOr, AndOr);
-  }
-
-  /**
+    /**
    * Get And/Or.
    *
    * @return Logical operation: AND or OR
@@ -172,26 +90,8 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
 
   /** EntityType AD_Reference_ID=389 */
   public static final int ENTITYTYPE_AD_Reference_ID = 389;
-  /**
-   * Set Entity Type.
-   *
-   * @param EntityType Dictionary Entity Type; Determines ownership and synchronization
-   */
-  public void setEntityType(String EntityType) {
 
-    set_Value(COLUMNNAME_EntityType, EntityType);
-  }
-
-  /**
-   * Get Entity Type.
-   *
-   * @return Dictionary Entity Type; Determines ownership and synchronization
-   */
-  public String getEntityType() {
-    return (String) get_Value(COLUMNNAME_EntityType);
-  }
-
-  /** Operation AD_Reference_ID=205 */
+    /** Operation AD_Reference_ID=205 */
   public static final int OPERATION_AD_Reference_ID = 205;
   /** = = == */
   public static final String OPERATION_Eq = "==";
@@ -211,17 +111,8 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
   public static final String OPERATION_Sql = "SQ";
   /** != = != */
   public static final String OPERATION_NotEq = "!=";
-  /**
-   * Set Operation.
-   *
-   * @param Operation Compare Operation
-   */
-  public void setOperation(String Operation) {
 
-    set_Value(COLUMNNAME_Operation, Operation);
-  }
-
-  /**
+    /**
    * Get Operation.
    *
    * @return Compare Operation
@@ -230,16 +121,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
     return (String) get_Value(COLUMNNAME_Operation);
   }
 
-  /**
-   * Set Sequence.
-   *
-   * @param SeqNo Method of ordering records; lowest number comes first
-   */
-  public void setSeqNo(int SeqNo) {
-    set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
-  }
-
-  /**
+    /**
    * Get Sequence.
    *
    * @return Method of ordering records; lowest number comes first
@@ -250,16 +132,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
     return ii;
   }
 
-  /**
-   * Set Search Key.
-   *
-   * @param Value Search key for the record in the format required - must be unique
-   */
-  public void setValue(String Value) {
-    set_Value(COLUMNNAME_Value, Value);
-  }
-
-  /**
+    /**
    * Get Search Key.
    *
    * @return Search key for the record in the format required - must be unique
@@ -277,16 +150,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
     return new KeyNamePair(getId(), getValue());
   }
 
-  /**
-   * Set Value To.
-   *
-   * @param Value2 Value To
-   */
-  public void setValue2(String Value2) {
-    set_Value(COLUMNNAME_Value2, Value2);
-  }
-
-  /**
+    /**
    * Get Value To.
    *
    * @return Value To

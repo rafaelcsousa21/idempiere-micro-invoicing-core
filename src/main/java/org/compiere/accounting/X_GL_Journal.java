@@ -85,13 +85,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
-    return (org.compiere.model.I_C_ConversionType)
-        MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency Type.
    *
    * @param C_ConversionType_ID Currency Conversion Rate Type
@@ -112,13 +106,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -139,13 +127,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Document Type.
    *
    * @param C_DocType_ID Document type or rules
@@ -186,25 +168,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return bd;
   }
 
-  /**
-   * Set Copy From.
-   *
-   * @param CopyFrom Copy From Record
-   */
-  public void setCopyFrom(String CopyFrom) {
-    set_Value(COLUMNNAME_CopyFrom, CopyFrom);
-  }
-
-  /**
-   * Get Copy From.
-   *
-   * @return Copy From Record
-   */
-  public String getCopyFrom() {
-    return (String) get_Value(COLUMNNAME_CopyFrom);
-  }
-
-  public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
+    public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
     return (org.compiere.model.I_C_Period)
         MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
             .getPO(getC_Period_ID(), null);
@@ -426,13 +390,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return new KeyNamePair(getId(), getDocumentNo());
   }
 
-  public org.compiere.model.I_GL_Budget getGL_Budget() throws RuntimeException {
-    return (org.compiere.model.I_GL_Budget)
-        MTable.get(getCtx(), org.compiere.model.I_GL_Budget.Table_Name)
-            .getPO(getGL_Budget_ID(), null);
-  }
-
-  /**
+    /**
    * Set Budget.
    *
    * @param GL_Budget_ID General Ledger Budget
@@ -453,13 +411,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_GL_Category getGL_Category() throws RuntimeException {
-    return (org.compiere.model.I_GL_Category)
-        MTable.get(getCtx(), org.compiere.model.I_GL_Category.Table_Name)
-            .getPO(getGL_Category_ID(), null);
-  }
-
-  /**
+    /**
    * Set GL Category.
    *
    * @param GL_Category_ID General Ledger Category
@@ -480,13 +432,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_GL_JournalBatch getGL_JournalBatch() throws RuntimeException {
-    return (org.compiere.model.I_GL_JournalBatch)
-        MTable.get(getCtx(), org.compiere.model.I_GL_JournalBatch.Table_Name)
-            .getPO(getGL_JournalBatch_ID(), null);
-  }
-
-  /**
+    /**
    * Set Journal Batch.
    *
    * @param GL_JournalBatch_ID General Ledger Journal Batch
@@ -507,17 +453,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Journal.
-   *
-   * @param GL_Journal_ID General Ledger Journal
-   */
-  public void setGL_Journal_ID(int GL_Journal_ID) {
-    if (GL_Journal_ID < 1) set_ValueNoCheck(COLUMNNAME_GL_Journal_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_GL_Journal_ID, Integer.valueOf(GL_Journal_ID));
-  }
-
-  /**
+    /**
    * Get Journal.
    *
    * @return General Ledger Journal
@@ -528,25 +464,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set GL_Journal_UU.
-   *
-   * @param GL_Journal_UU GL_Journal_UU
-   */
-  public void setGL_Journal_UU(String GL_Journal_UU) {
-    set_Value(COLUMNNAME_GL_Journal_UU, GL_Journal_UU);
-  }
-
-  /**
-   * Get GL_Journal_UU.
-   *
-   * @return GL_Journal_UU
-   */
-  public String getGL_Journal_UU() {
-    return (String) get_Value(COLUMNNAME_GL_Journal_UU);
-  }
-
-  /**
+    /**
    * Set Approved.
    *
    * @param IsApproved Indicates if this document requires approval
@@ -578,21 +496,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     set_ValueNoCheck(COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
   }
 
-  /**
-   * Get Printed.
-   *
-   * @return Indicates if this document / line is printed
-   */
-  public boolean isPrinted() {
-    Object oo = get_Value(COLUMNNAME_IsPrinted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Posted.
    *
    * @param Posted Posting status
@@ -601,21 +505,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     set_ValueNoCheck(COLUMNNAME_Posted, Boolean.valueOf(Posted));
   }
 
-  /**
-   * Get Posted.
-   *
-   * @return Posting status
-   */
-  public boolean isPosted() {
-    Object oo = get_Value(COLUMNNAME_Posted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /** PostingType AD_Reference_ID=125 */
+    /** PostingType AD_Reference_ID=125 */
   public static final int POSTINGTYPE_AD_Reference_ID = 125;
   /** Actual = A */
   public static final String POSTINGTYPE_Actual = "A";
@@ -669,17 +559,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     return false;
   }
 
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
+    /**
    * Get Processed On.
    *
    * @return The date+time (expressed in decimal format) when the document has been processed
@@ -699,27 +579,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_GL_Journal getReversal() throws RuntimeException {
-    return (org.compiere.model.I_GL_Journal)
-        MTable.get(getCtx(), org.compiere.model.I_GL_Journal.Table_Name)
-            .getPO(getReversal_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal ID.
    *
    * @param Reversal_ID ID of document reversal

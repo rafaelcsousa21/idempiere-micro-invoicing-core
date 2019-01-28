@@ -1,7 +1,6 @@
 package org.idempiere.process;
 
 import org.compiere.model.I_M_MovementConfirm;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -51,16 +50,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
     return sb.toString();
   }
 
-  /**
-   * Set Approval Amount.
-   *
-   * @param ApprovalAmt Document Approval Amount
-   */
-  public void setApprovalAmt(BigDecimal ApprovalAmt) {
-    set_Value(COLUMNNAME_ApprovalAmt, ApprovalAmt);
-  }
-
-  /**
+    /**
    * Get Approval Amount.
    *
    * @return Document Approval Amount
@@ -183,16 +173,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
     return (String) get_Value(COLUMNNAME_DocStatus);
   }
 
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -233,13 +214,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
     return false;
   }
 
-  public org.compiere.model.I_M_Inventory getM_Inventory() throws RuntimeException {
-    return (org.compiere.model.I_M_Inventory)
-        MTable.get(getCtx(), org.compiere.model.I_M_Inventory.Table_Name)
-            .getPO(getM_Inventory_ID(), null);
-  }
-
-  /**
+    /**
    * Set Phys.Inventory.
    *
    * @param M_Inventory_ID Parameters for a Physical Inventory
@@ -260,17 +235,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
     return ii;
   }
 
-  /**
-   * Set Move Confirm.
-   *
-   * @param M_MovementConfirm_ID Inventory Move Confirmation
-   */
-  public void setM_MovementConfirm_ID(int M_MovementConfirm_ID) {
-    if (M_MovementConfirm_ID < 1) set_ValueNoCheck(COLUMNNAME_M_MovementConfirm_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_MovementConfirm_ID, Integer.valueOf(M_MovementConfirm_ID));
-  }
-
-  /**
+    /**
    * Get Move Confirm.
    *
    * @return Inventory Move Confirmation
@@ -281,31 +246,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
     return ii;
   }
 
-  /**
-   * Set M_MovementConfirm_UU.
-   *
-   * @param M_MovementConfirm_UU M_MovementConfirm_UU
-   */
-  public void setM_MovementConfirm_UU(String M_MovementConfirm_UU) {
-    set_Value(COLUMNNAME_M_MovementConfirm_UU, M_MovementConfirm_UU);
-  }
-
-  /**
-   * Get M_MovementConfirm_UU.
-   *
-   * @return M_MovementConfirm_UU
-   */
-  public String getM_MovementConfirm_UU() {
-    return (String) get_Value(COLUMNNAME_M_MovementConfirm_UU);
-  }
-
-  public org.compiere.model.I_M_Movement getM_Movement() throws RuntimeException {
-    return (org.compiere.model.I_M_Movement)
-        MTable.get(getCtx(), org.compiere.model.I_M_Movement.Table_Name)
-            .getPO(getM_Movement_ID(), null);
-  }
-
-  /**
+    /**
    * Set Inventory Move.
    *
    * @param M_Movement_ID Movement of Inventory
@@ -358,17 +299,4 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
 }

@@ -2,9 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Element;
-import org.compiere.model.I_C_Location;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -49,23 +47,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return "X_C_AcctSchema_Element[" + getId() + "]";
   }
 
-  public org.compiere.model.I_AD_Column getAD_Column() throws RuntimeException {
-    return (org.compiere.model.I_AD_Column)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Column.Table_Name)
-            .getPO(getAD_Column_ID(), null);
-  }
-
-  /**
-   * Set Column.
-   *
-   * @param AD_Column_ID Column in the table
-   */
-  public void setAD_Column_ID(int AD_Column_ID) {
-    if (AD_Column_ID < 1) set_Value(COLUMNNAME_AD_Column_ID, null);
-    else set_Value(COLUMNNAME_AD_Column_ID, AD_Column_ID);
-  }
-
-  /**
+    /**
    * Get Column.
    *
    * @return Column in the table
@@ -76,52 +58,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  /**
-   * Set Acct.Schema Element.
-   *
-   * @param C_AcctSchema_Element_ID Acct.Schema Element
-   */
-  public void setC_AcctSchema_Element_ID(int C_AcctSchema_Element_ID) {
-    if (C_AcctSchema_Element_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctSchema_Element_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_AcctSchema_Element_ID, C_AcctSchema_Element_ID);
-  }
-
-  /**
-   * Get Acct.Schema Element.
-   *
-   * @return Acct.Schema Element
-   */
-  public int getC_AcctSchema_Element_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_Element_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set C_AcctSchema_Element_UU.
-   *
-   * @param C_AcctSchema_Element_UU C_AcctSchema_Element_UU
-   */
-  public void setC_AcctSchema_Element_UU(String C_AcctSchema_Element_UU) {
-    set_Value(COLUMNNAME_C_AcctSchema_Element_UU, C_AcctSchema_Element_UU);
-  }
-
-  /**
-   * Get C_AcctSchema_Element_UU.
-   *
-   * @return C_AcctSchema_Element_UU
-   */
-  public String getC_AcctSchema_Element_UU() {
-    return (String) get_Value(COLUMNNAME_C_AcctSchema_Element_UU);
-  }
-
-  public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
-    return (org.compiere.model.I_C_AcctSchema)
-        MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
-  }
-
-  /**
+    /**
    * Set Accounting Schema.
    *
    * @param C_AcctSchema_ID Rules for accounting
@@ -142,23 +79,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
-   * Set Activity.
-   *
-   * @param C_Activity_ID Business Activity
-   */
-  public void setC_Activity_ID(int C_Activity_ID) {
-    if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-    else set_Value(COLUMNNAME_C_Activity_ID, C_Activity_ID);
-  }
-
-  /**
+    /**
    * Get Activity.
    *
    * @return Business Activity
@@ -169,13 +90,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -196,23 +111,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
-   * Set Campaign.
-   *
-   * @param C_Campaign_ID Marketing Campaign
-   */
-  public void setC_Campaign_ID(int C_Campaign_ID) {
-    if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-    else set_Value(COLUMNNAME_C_Campaign_ID, C_Campaign_ID);
-  }
-
-  /**
+    /**
    * Get Campaign.
    *
    * @return Marketing Campaign
@@ -223,13 +122,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  public org.compiere.model.I_C_Element getC_Element() throws RuntimeException {
-    return (org.compiere.model.I_C_Element)
-        MTable.get(getCtx(), org.compiere.model.I_C_Element.Table_Name)
-            .getPO(getC_Element_ID(), null);
-  }
-
-  /**
+    /**
    * Set Element.
    *
    * @param C_Element_ID Accounting Element
@@ -250,13 +143,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getC_ElementValue() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getC_ElementValue_ID(), null);
-  }
-
-  /**
+    /**
    * Set Account Element.
    *
    * @param C_ElementValue_ID Account Element
@@ -277,22 +164,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  public I_C_Location getC_Location() throws RuntimeException {
-    return (I_C_Location)
-        MTable.get(getCtx(), I_C_Location.Table_Name).getPO(getC_Location_ID(), null);
-  }
-
-  /**
-   * Set Address.
-   *
-   * @param C_Location_ID Location or Address
-   */
-  public void setC_Location_ID(int C_Location_ID) {
-    if (C_Location_ID < 1) set_Value(COLUMNNAME_C_Location_ID, null);
-    else set_Value(COLUMNNAME_C_Location_ID, C_Location_ID);
-  }
-
-  /**
+    /**
    * Get Address.
    *
    * @return Location or Address
@@ -303,13 +175,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project.
    *
    * @param C_Project_ID Financial Project
@@ -330,23 +196,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return ii;
   }
 
-  public org.compiere.model.I_C_SalesRegion getC_SalesRegion() throws RuntimeException {
-    return (org.compiere.model.I_C_SalesRegion)
-        MTable.get(getCtx(), org.compiere.model.I_C_SalesRegion.Table_Name)
-            .getPO(getC_SalesRegion_ID(), null);
-  }
-
-  /**
-   * Set Sales Region.
-   *
-   * @param C_SalesRegion_ID Sales coverage region
-   */
-  public void setC_SalesRegion_ID(int C_SalesRegion_ID) {
-    if (C_SalesRegion_ID < 1) set_Value(COLUMNNAME_C_SalesRegion_ID, null);
-    else set_Value(COLUMNNAME_C_SalesRegion_ID, C_SalesRegion_ID);
-  }
-
-  /**
+    /**
    * Get Sales Region.
    *
    * @return Sales coverage region
@@ -456,13 +306,7 @@ public class X_C_AcctSchema_Element extends BasePOName
     return false;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item

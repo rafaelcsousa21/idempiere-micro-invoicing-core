@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_S_TimeExpenseLine;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -53,23 +52,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
-   * Set Activity.
-   *
-   * @param C_Activity_ID Business Activity
-   */
-  public void setC_Activity_ID(int C_Activity_ID) {
-    if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-    else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
-  }
-
-  /**
+    /**
    * Get Activity.
    *
    * @return Business Activity
@@ -80,23 +63,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
-   * Set Business Partner .
-   *
-   * @param C_BPartner_ID Identifies a Business Partner
-   */
-  public void setC_BPartner_ID(int C_BPartner_ID) {
-    if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-    else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
-  }
-
-  /**
+    /**
    * Get Business Partner .
    *
    * @return Identifies a Business Partner
@@ -107,23 +74,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
-   * Set Campaign.
-   *
-   * @param C_Campaign_ID Marketing Campaign
-   */
-  public void setC_Campaign_ID(int C_Campaign_ID) {
-    if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-    else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
-  }
-
-  /**
+    /**
    * Get Campaign.
    *
    * @return Marketing Campaign
@@ -134,23 +85,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
-   * Set Currency.
-   *
-   * @param C_Currency_ID The Currency for this record
-   */
-  public void setC_Currency_ID(int C_Currency_ID) {
-    if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-    else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
-  }
-
-  /**
+    /**
    * Get Currency.
    *
    * @return The Currency for this record
@@ -161,13 +96,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
-    return (org.compiere.model.I_C_InvoiceLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice Line.
    *
    * @param C_InvoiceLine_ID Invoice Detail Line
@@ -208,13 +137,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return bd;
   }
 
-  public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
-    return (org.compiere.model.I_C_OrderLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-            .getPO(getC_OrderLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Order Line.
    *
    * @param C_OrderLine_ID Sales Order Line
@@ -235,23 +158,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
-   * Set Project.
-   *
-   * @param C_Project_ID Financial Project
-   */
-  public void setC_Project_ID(int C_Project_ID) {
-    if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-    else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-  }
-
-  /**
+    /**
    * Get Project.
    *
    * @return Financial Project
@@ -262,23 +169,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectPhase)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
-            .getPO(getC_ProjectPhase_ID(), null);
-  }
-
-  /**
-   * Set Project Phase.
-   *
-   * @param C_ProjectPhase_ID Phase of a Project
-   */
-  public void setC_ProjectPhase_ID(int C_ProjectPhase_ID) {
-    if (C_ProjectPhase_ID < 1) set_Value(COLUMNNAME_C_ProjectPhase_ID, null);
-    else set_Value(COLUMNNAME_C_ProjectPhase_ID, Integer.valueOf(C_ProjectPhase_ID));
-  }
-
-  /**
+    /**
    * Get Project Phase.
    *
    * @return Phase of a Project
@@ -289,23 +180,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectTask getC_ProjectTask() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectTask)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectTask.Table_Name)
-            .getPO(getC_ProjectTask_ID(), null);
-  }
-
-  /**
-   * Set Project Task.
-   *
-   * @param C_ProjectTask_ID Actual Project Task in a Phase
-   */
-  public void setC_ProjectTask_ID(int C_ProjectTask_ID) {
-    if (C_ProjectTask_ID < 1) set_Value(COLUMNNAME_C_ProjectTask_ID, null);
-    else set_Value(COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
-  }
-
-  /**
+    /**
    * Get Project Task.
    *
    * @return Actual Project Task in a Phase
@@ -316,23 +191,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
-    return (org.compiere.model.I_C_UOM)
-        MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), null);
-  }
-
-  /**
-   * Set UOM.
-   *
-   * @param C_UOM_ID Unit of Measure
-   */
-  public void setC_UOM_ID(int C_UOM_ID) {
-    if (C_UOM_ID < 1) set_Value(COLUMNNAME_C_UOM_ID, null);
-    else set_Value(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
-  }
-
-  /**
+    /**
    * Get UOM.
    *
    * @return Unit of Measure
@@ -361,16 +220,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return (Timestamp) get_Value(COLUMNNAME_DateExpense);
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -494,23 +344,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return new KeyNamePair(getId(), String.valueOf(getLine()));
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
-   * Set Product.
-   *
-   * @param M_Product_ID Product, Service, Item
-   */
-  public void setM_Product_ID(int M_Product_ID) {
-    if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-  }
-
-  /**
+    /**
    * Get Product.
    *
    * @return Product, Service, Item
@@ -521,25 +355,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  /**
-   * Set Note.
-   *
-   * @param Note Optional additional user defined information
-   */
-  public void setNote(String Note) {
-    set_Value(COLUMNNAME_Note, Note);
-  }
-
-  /**
-   * Get Note.
-   *
-   * @return Optional additional user defined information
-   */
-  public String getNote() {
-    return (String) get_Value(COLUMNNAME_Note);
-  }
-
-  /**
+    /**
    * Set Price Invoiced.
    *
    * @param PriceInvoiced The priced invoiced to the customer (in the currency of the customer's AR
@@ -590,21 +406,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Quantity.
    *
    * @param Qty Quantity
@@ -664,17 +466,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return bd;
   }
 
-  /**
-   * Set Resource Assignment.
-   *
-   * @param S_ResourceAssignment_ID Resource Assignment
-   */
-  public void setS_ResourceAssignment_ID(int S_ResourceAssignment_ID) {
-    if (S_ResourceAssignment_ID < 1) set_Value(COLUMNNAME_S_ResourceAssignment_ID, null);
-    else set_Value(COLUMNNAME_S_ResourceAssignment_ID, Integer.valueOf(S_ResourceAssignment_ID));
-  }
-
-  /**
+    /**
    * Get Resource Assignment.
    *
    * @return Resource Assignment
@@ -685,23 +477,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_S_TimeExpense getS_TimeExpense() throws RuntimeException {
-    return (org.compiere.model.I_S_TimeExpense)
-        MTable.get(getCtx(), org.compiere.model.I_S_TimeExpense.Table_Name)
-            .getPO(getS_TimeExpense_ID(), null);
-  }
-
-  /**
-   * Set Expense Report.
-   *
-   * @param S_TimeExpense_ID Time and Expense Report
-   */
-  public void setS_TimeExpense_ID(int S_TimeExpense_ID) {
-    if (S_TimeExpense_ID < 1) set_ValueNoCheck(COLUMNNAME_S_TimeExpense_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_S_TimeExpense_ID, Integer.valueOf(S_TimeExpense_ID));
-  }
-
-  /**
+    /**
    * Get Expense Report.
    *
    * @return Time and Expense Report
@@ -712,17 +488,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  /**
-   * Set Expense Line.
-   *
-   * @param S_TimeExpenseLine_ID Time and Expense Report Line
-   */
-  public void setS_TimeExpenseLine_ID(int S_TimeExpenseLine_ID) {
-    if (S_TimeExpenseLine_ID < 1) set_ValueNoCheck(COLUMNNAME_S_TimeExpenseLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_S_TimeExpenseLine_ID, Integer.valueOf(S_TimeExpenseLine_ID));
-  }
-
-  /**
+    /**
    * Get Expense Line.
    *
    * @return Time and Expense Report Line
@@ -733,41 +499,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
     return ii;
   }
 
-  /**
-   * Set S_TimeExpenseLine_UU.
-   *
-   * @param S_TimeExpenseLine_UU S_TimeExpenseLine_UU
-   */
-  public void setS_TimeExpenseLine_UU(String S_TimeExpenseLine_UU) {
-    set_Value(COLUMNNAME_S_TimeExpenseLine_UU, S_TimeExpenseLine_UU);
-  }
-
-  /**
-   * Get S_TimeExpenseLine_UU.
-   *
-   * @return S_TimeExpenseLine_UU
-   */
-  public String getS_TimeExpenseLine_UU() {
-    return (String) get_Value(COLUMNNAME_S_TimeExpenseLine_UU);
-  }
-
-  public org.compiere.model.I_S_TimeType getS_TimeType() throws RuntimeException {
-    return (org.compiere.model.I_S_TimeType)
-        MTable.get(getCtx(), org.compiere.model.I_S_TimeType.Table_Name)
-            .getPO(getS_TimeType_ID(), null);
-  }
-
-  /**
-   * Set Time Type.
-   *
-   * @param S_TimeType_ID Type of time recorded
-   */
-  public void setS_TimeType_ID(int S_TimeType_ID) {
-    if (S_TimeType_ID < 1) set_Value(COLUMNNAME_S_TimeType_ID, null);
-    else set_Value(COLUMNNAME_S_TimeType_ID, Integer.valueOf(S_TimeType_ID));
-  }
-
-  /**
+    /**
    * Get Time Type.
    *
    * @return Type of time recorded

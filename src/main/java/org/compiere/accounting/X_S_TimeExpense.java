@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_S_TimeExpense;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -67,23 +66,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
     return bd;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
-   * Set Business Partner .
-   *
-   * @param C_BPartner_ID Identifies a Business Partner
-   */
-  public void setC_BPartner_ID(int C_BPartner_ID) {
-    if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-    else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
-  }
-
-  /**
+    /**
    * Get Business Partner .
    *
    * @return Identifies a Business Partner
@@ -205,17 +188,8 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
   public static final String DOCSTATUS_WaitingPayment = "WP";
   /** Waiting Confirmation = WC */
   public static final String DOCSTATUS_WaitingConfirmation = "WC";
-  /**
-   * Set Document Status.
-   *
-   * @param DocStatus The current status of the document
-   */
-  public void setDocStatus(String DocStatus) {
 
-    set_Value(COLUMNNAME_DocStatus, DocStatus);
-  }
-
-  /**
+    /**
    * Get Document Status.
    *
    * @return The current status of the document
@@ -224,16 +198,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
     return (String) get_Value(COLUMNNAME_DocStatus);
   }
 
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -274,23 +239,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
     return false;
   }
 
-  public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException {
-    return (org.compiere.model.I_M_PriceList)
-        MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
-            .getPO(getM_PriceList_ID(), null);
-  }
-
-  /**
-   * Set Price List.
-   *
-   * @param M_PriceList_ID Unique identifier of a Price List
-   */
-  public void setM_PriceList_ID(int M_PriceList_ID) {
-    if (M_PriceList_ID < 1) set_Value(COLUMNNAME_M_PriceList_ID, null);
-    else set_Value(COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
-  }
-
-  /**
+    /**
    * Get Price List.
    *
    * @return Unique identifier of a Price List
@@ -301,23 +250,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
-    return (org.compiere.model.I_M_Warehouse)
-        MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), null);
-  }
-
-  /**
-   * Set Warehouse.
-   *
-   * @param M_Warehouse_ID Storage Warehouse and Service Point
-   */
-  public void setM_Warehouse_ID(int M_Warehouse_ID) {
-    if (M_Warehouse_ID < 1) set_Value(COLUMNNAME_M_Warehouse_ID, null);
-    else set_Value(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
-  }
-
-  /**
+    /**
    * Get Warehouse.
    *
    * @return Storage Warehouse and Service Point
@@ -360,31 +293,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Expense Report.
-   *
-   * @param S_TimeExpense_ID Time and Expense Report
-   */
-  public void setS_TimeExpense_ID(int S_TimeExpense_ID) {
-    if (S_TimeExpense_ID < 1) set_ValueNoCheck(COLUMNNAME_S_TimeExpense_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_S_TimeExpense_ID, Integer.valueOf(S_TimeExpense_ID));
-  }
-
-  /**
+    /**
    * Get Expense Report.
    *
    * @return Time and Expense Report
@@ -395,26 +304,18 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
     return ii;
   }
 
-  /**
-   * Set S_TimeExpense_UU.
-   *
-   * @param S_TimeExpense_UU S_TimeExpense_UU
-   */
-  public void setS_TimeExpense_UU(String S_TimeExpense_UU) {
-    set_Value(COLUMNNAME_S_TimeExpense_UU, S_TimeExpense_UU);
-  }
-
-  /**
-   * Get S_TimeExpense_UU.
-   *
-   * @return S_TimeExpense_UU
-   */
-  public String getS_TimeExpense_UU() {
-    return (String) get_Value(COLUMNNAME_S_TimeExpense_UU);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_S_TimeExpense.Table_ID;
+  }
+
+  /**
+   * Set Document Status.
+   *
+   * @param DocStatus The current status of the document
+   */
+  public void setDocStatus(String DocStatus) {
+
+    set_Value(COLUMNNAME_DocStatus, DocStatus);
   }
 }

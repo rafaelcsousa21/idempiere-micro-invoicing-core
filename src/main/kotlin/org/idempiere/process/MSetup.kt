@@ -269,7 +269,7 @@ class MSetup
             clientAdminUser.password = name
         clientAdminUser.description = name
         clientAdminUser.name = name
-        clientAdminUser.value = name
+        clientAdminUser.setValue(name)
         clientAdminUser.setADClientID(AD_Client_ID)
         clientAdminUser.setAD_Org_ID(0)
         clientAdminUser.eMail = adminEmail
@@ -299,7 +299,7 @@ class MSetup
             clientUser.password = name
         clientUser.description = name
         clientUser.name = name
-        clientUser.value = name
+        clientUser.setValue(name)
         clientUser.setADClientID(AD_Client_ID)
         clientUser.setAD_Org_ID(0)
         clientUser.eMail = userEmail
@@ -1010,7 +1010,7 @@ class MSetup
          */
         //  Create BP Group
         val bpg = MBPGroup(m_ctx, 0, null)
-        bpg.value = defaultName
+        bpg.setValue(defaultName)
         bpg.name = defaultName
         bpg.setIsDefault(true)
         if (bpg.save())
@@ -1049,7 +1049,7 @@ class MSetup
          */
         //  Create Product Category
         val pc = MProductCategory(m_ctx, 0, null)
-        pc.value = defaultName
+        pc.setValue(defaultName)
         pc.name = defaultName
         pc.setIsDefault(true)
         if (pc.save())
@@ -1135,7 +1135,7 @@ class MSetup
         locwh.postal = postal
         locwh.saveEx()
         val wh = MWarehouse(m_ctx, 0, null)
-        wh.value = defaultName
+        wh.setValue(defaultName)
         wh.name = defaultName
         wh.c_Location_ID = locwh.c_Location_ID
         if (!wh.save())

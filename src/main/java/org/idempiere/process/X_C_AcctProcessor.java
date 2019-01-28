@@ -2,7 +2,6 @@ package org.idempiere.process;
 
 import org.compiere.model.I_C_AcctProcessor;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -44,13 +43,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_Schedule getAD_Schedule() throws RuntimeException {
-    return (org.compiere.model.I_AD_Schedule)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Schedule.Table_Name)
-            .getPO(getAD_Schedule_ID(), null);
-  }
-
-  /**
+    /**
    * Set Schedule.
    *
    * @param AD_Schedule_ID Schedule
@@ -71,23 +64,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     return ii;
   }
 
-  public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
-    return (org.compiere.model.I_AD_Table)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), null);
-  }
-
-  /**
-   * Set Table.
-   *
-   * @param AD_Table_ID Database Table information
-   */
-  public void setAD_Table_ID(int AD_Table_ID) {
-    if (AD_Table_ID < 1) set_Value(COLUMNNAME_AD_Table_ID, null);
-    else set_Value(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
-  }
-
-  /**
+    /**
    * Get Table.
    *
    * @return Database Table information
@@ -98,17 +75,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     return ii;
   }
 
-  /**
-   * Set Accounting Processor.
-   *
-   * @param C_AcctProcessor_ID Accounting Processor/Server Parameters
-   */
-  public void setC_AcctProcessor_ID(int C_AcctProcessor_ID) {
-    if (C_AcctProcessor_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctProcessor_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_AcctProcessor_ID, Integer.valueOf(C_AcctProcessor_ID));
-  }
-
-  /**
+    /**
    * Get Accounting Processor.
    *
    * @return Accounting Processor/Server Parameters
@@ -119,41 +86,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     return ii;
   }
 
-  /**
-   * Set C_AcctProcessor_UU.
-   *
-   * @param C_AcctProcessor_UU C_AcctProcessor_UU
-   */
-  public void setC_AcctProcessor_UU(String C_AcctProcessor_UU) {
-    set_Value(COLUMNNAME_C_AcctProcessor_UU, C_AcctProcessor_UU);
-  }
-
-  /**
-   * Get C_AcctProcessor_UU.
-   *
-   * @return C_AcctProcessor_UU
-   */
-  public String getC_AcctProcessor_UU() {
-    return (String) get_Value(COLUMNNAME_C_AcctProcessor_UU);
-  }
-
-  public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
-    return (org.compiere.model.I_C_AcctSchema)
-        MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
-  }
-
-  /**
-   * Set Accounting Schema.
-   *
-   * @param C_AcctSchema_ID Rules for accounting
-   */
-  public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
-    if (C_AcctSchema_ID < 1) set_Value(COLUMNNAME_C_AcctSchema_ID, null);
-    else set_Value(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
-  }
-
-  /**
+    /**
    * Get Accounting Schema.
    *
    * @return Rules for accounting
@@ -182,7 +115,8 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
   }
 
-  /**
+
+    /**
    * Set Date next run.
    *
    * @param DateNextRun Date the process will run next
@@ -218,7 +152,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
+    /**
    * Set Days to keep Log.
    *
    * @param KeepLogDays Number of days to keep the log entries
@@ -238,36 +172,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     return ii;
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_AD_User getSupervisor() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSupervisor_ID(), null);
-  }
-
-  /**
+    /**
    * Set Supervisor.
    *
    * @param Supervisor_ID Supervisor for this user/organization - used for escalation and approval

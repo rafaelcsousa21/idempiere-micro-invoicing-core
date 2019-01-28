@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import kotliquery.Row;
 import org.compiere.model.I_C_InvoiceLine;
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
@@ -60,23 +59,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return sb.toString();
   }
 
-  public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException {
-    return (org.compiere.model.I_A_Asset_Group)
-        MTable.get(getCtx(), org.compiere.model.I_A_Asset_Group.Table_Name)
-            .getPO(getA_Asset_Group_ID(), null);
-  }
-
-  /**
-   * Set Asset Group.
-   *
-   * @param A_Asset_Group_ID Group of Assets
-   */
-  public void setA_Asset_Group_ID(int A_Asset_Group_ID) {
-    if (A_Asset_Group_ID < 1) set_Value(I_C_InvoiceLine.COLUMNNAME_A_Asset_Group_ID, null);
-    else set_Value(I_C_InvoiceLine.COLUMNNAME_A_Asset_Group_ID, Integer.valueOf(A_Asset_Group_ID));
-  }
-
-  /**
+    /**
    * Get Asset Group.
    *
    * @return Group of Assets
@@ -87,13 +70,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
-    return (org.compiere.model.I_A_Asset)
-        MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), null);
-  }
-
-  /**
+    /**
    * Set Asset.
    *
    * @param A_Asset_ID Asset used internally or by customers
@@ -108,7 +85,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
    *
    * @return Asset used internally or by customers
    */
-  public int getA_Asset_ID() {
+  private int getA_Asset_ID() {
     Integer ii = (Integer) get_Value(I_C_InvoiceLine.COLUMNNAME_A_Asset_ID);
     if (ii == null) return 0;
     return ii;
@@ -120,49 +97,8 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
   public static final String A_CAPVSEXP_Capital = "Cap";
   /** Expense = Exp */
   public static final String A_CAPVSEXP_Expense = "Exp";
-  /**
-   * Set Capital/Expense.
-   *
-   * @param A_CapvsExp Capital/Expense
-   */
-  public void setA_CapvsExp(String A_CapvsExp) {
 
-    set_Value(I_C_InvoiceLine.COLUMNNAME_A_CapvsExp, A_CapvsExp);
-  }
-
-  /**
-   * Get Capital/Expense.
-   *
-   * @return Capital/Expense
-   */
-  public String getA_CapvsExp() {
-    return (String) get_Value(I_C_InvoiceLine.COLUMNNAME_A_CapvsExp);
-  }
-
-  /**
-   * Set Create Asset.
-   *
-   * @param A_CreateAsset Create Asset
-   */
-  public void setA_CreateAsset(boolean A_CreateAsset) {
-    set_Value(I_C_InvoiceLine.COLUMNNAME_A_CreateAsset, Boolean.valueOf(A_CreateAsset));
-  }
-
-  /**
-   * Get Create Asset.
-   *
-   * @return Create Asset
-   */
-  public boolean isA_CreateAsset() {
-    Object oo = get_Value(I_C_InvoiceLine.COLUMNNAME_A_CreateAsset);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Trx Organization.
    *
    * @param AD_OrgTrx_ID Performing or initiating organization
@@ -183,36 +119,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Processed.
-   *
-   * @param A_Processed Processed
-   */
-  public void setA_Processed(boolean A_Processed) {
-    set_Value(I_C_InvoiceLine.COLUMNNAME_A_Processed, Boolean.valueOf(A_Processed));
-  }
-
-  /**
-   * Get Processed.
-   *
-   * @return Processed
-   */
-  public boolean isA_Processed() {
-    Object oo = get_Value(I_C_InvoiceLine.COLUMNNAME_A_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_C_1099Box getC_1099Box() throws RuntimeException {
-    return (org.compiere.model.I_C_1099Box)
-        MTable.get(getCtx(), org.compiere.model.I_C_1099Box.Table_Name)
-            .getPO(getC_1099Box_ID(), null);
-  }
-
-  /**
+    /**
    * Set 1099 Box.
    *
    * @param C_1099Box_ID 1099 Box
@@ -227,19 +134,13 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
    *
    * @return 1099 Box
    */
-  public int getC_1099Box_ID() {
+  private int getC_1099Box_ID() {
     Integer ii = (Integer) get_Value(I_C_InvoiceLine.COLUMNNAME_C_1099Box_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
+    /**
    * Set Activity.
    *
    * @param C_Activity_ID Business Activity
@@ -260,13 +161,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
+    /**
    * Set Campaign.
    *
    * @param C_Campaign_ID Marketing Campaign
@@ -287,13 +182,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
+    /**
    * Set Charge.
    *
    * @param C_Charge_ID Additional document charges
@@ -350,19 +239,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return new KeyNamePair(getId(), String.valueOf(getC_Invoice_ID()));
   }
 
-  /**
-   * Set Invoice Line.
-   *
-   * @param C_InvoiceLine_ID Invoice Detail Line
-   */
-  public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
-    if (C_InvoiceLine_ID < 1) set_ValueNoCheck(I_C_InvoiceLine.COLUMNNAME_C_InvoiceLine_ID, null);
-    else
-      set_ValueNoCheck(
-          I_C_InvoiceLine.COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
-  }
-
-  /**
+    /**
    * Get Invoice Line.
    *
    * @return Invoice Detail Line
@@ -373,31 +250,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  /**
-   * Set C_InvoiceLine_UU.
-   *
-   * @param C_InvoiceLine_UU C_InvoiceLine_UU
-   */
-  public void setC_InvoiceLine_UU(String C_InvoiceLine_UU) {
-    set_Value(I_C_InvoiceLine.COLUMNNAME_C_InvoiceLine_UU, C_InvoiceLine_UU);
-  }
-
-  /**
-   * Get C_InvoiceLine_UU.
-   *
-   * @return C_InvoiceLine_UU
-   */
-  public String getC_InvoiceLine_UU() {
-    return (String) get_Value(I_C_InvoiceLine.COLUMNNAME_C_InvoiceLine_UU);
-  }
-
-  public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
-    return (org.compiere.model.I_C_OrderLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-            .getPO(getC_OrderLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Order Line.
    *
    * @param C_OrderLine_ID Sales Order Line
@@ -419,13 +272,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project.
    *
    * @param C_Project_ID Financial Project
@@ -446,13 +293,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectPhase)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
-            .getPO(getC_ProjectPhase_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Phase.
    *
    * @param C_ProjectPhase_ID Phase of a Project
@@ -475,13 +316,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectTask getC_ProjectTask() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectTask)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectTask.Table_Name)
-            .getPO(getC_ProjectTask_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Task.
    *
    * @param C_ProjectTask_ID Actual Project Task in a Phase
@@ -504,13 +339,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Tax getC_Tax() throws RuntimeException {
-    return (org.compiere.model.I_C_Tax)
-        MTable.get(getCtx(), org.compiere.model.I_C_Tax.Table_Name)
-            .getPO(getC_Tax_ID(), null);
-  }
-
-  /**
+    /**
    * Set Tax.
    *
    * @param C_Tax_ID Tax identifier
@@ -531,13 +360,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
-    return (org.compiere.model.I_C_UOM)
-        MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), null);
-  }
-
-  /**
+    /**
    * Set UOM.
    *
    * @param C_UOM_ID Unit of Measure
@@ -599,30 +422,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return false;
   }
 
-  /**
-   * Set IsFixedAssetInvoice.
-   *
-   * @param IsFixedAssetInvoice IsFixedAssetInvoice
-   */
-  public void setIsFixedAssetInvoice(boolean IsFixedAssetInvoice) {
-    set_Value(I_C_InvoiceLine.COLUMNNAME_IsFixedAssetInvoice, Boolean.valueOf(IsFixedAssetInvoice));
-  }
-
-  /**
-   * Get IsFixedAssetInvoice.
-   *
-   * @return IsFixedAssetInvoice
-   */
-  public boolean isFixedAssetInvoice() {
-    Object oo = get_Value(I_C_InvoiceLine.COLUMNNAME_IsFixedAssetInvoice);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Printed.
    *
    * @param IsPrinted Indicates if this document / line is printed
@@ -631,21 +431,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     set_Value(I_C_InvoiceLine.COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
   }
 
-  /**
-   * Get Printed.
-   *
-   * @return Indicates if this document / line is printed
-   */
-  public boolean isPrinted() {
-    Object oo = get_Value(I_C_InvoiceLine.COLUMNNAME_IsPrinted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Line No.
    *
    * @param Line Unique line for this document
@@ -705,13 +491,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return bd;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -736,13 +516,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
-    return (org.compiere.model.I_M_InOutLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Shipment/Receipt Line.
    *
    * @param M_InOutLine_ID Line on Shipment or Receipt document
@@ -764,13 +538,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -791,13 +559,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_RMALine getM_RMALine() throws RuntimeException {
-    return (org.compiere.model.I_M_RMALine)
-        MTable.get(getCtx(), org.compiere.model.I_M_RMALine.Table_Name)
-            .getPO(getM_RMALine_ID(), null);
-  }
-
-  /**
+    /**
    * Set RMA Line.
    *
    * @param M_RMALine_ID Return Material Authorization Line
@@ -972,18 +734,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
       set_Value(I_C_InvoiceLine.COLUMNNAME_Ref_InvoiceLine_ID, Integer.valueOf(Ref_InvoiceLine_ID));
   }
 
-  /**
-   * Get Referenced Invoice Line.
-   *
-   * @return Referenced Invoice Line
-   */
-  public int getRef_InvoiceLine_ID() {
-    Integer ii = (Integer) get_Value(I_C_InvoiceLine.COLUMNNAME_Ref_InvoiceLine_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Revenue Recognition Amt.
    *
    * @param RRAmt Revenue Recognition Amount
@@ -992,18 +743,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     set_Value(I_C_InvoiceLine.COLUMNNAME_RRAmt, RRAmt);
   }
 
-  /**
-   * Get Revenue Recognition Amt.
-   *
-   * @return Revenue Recognition Amount
-   */
-  public BigDecimal getRRAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(I_C_InvoiceLine.COLUMNNAME_RRAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Revenue Recognition Start.
    *
    * @param RRStartDate Revenue Recognition Start Date
@@ -1012,16 +752,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     set_Value(I_C_InvoiceLine.COLUMNNAME_RRStartDate, RRStartDate);
   }
 
-  /**
-   * Get Revenue Recognition Start.
-   *
-   * @return Revenue Recognition Start Date
-   */
-  public Timestamp getRRStartDate() {
-    return (Timestamp) get_Value(I_C_InvoiceLine.COLUMNNAME_RRStartDate);
-  }
-
-  /**
+    /**
    * Set Resource Assignment.
    *
    * @param S_ResourceAssignment_ID Resource Assignment
@@ -1035,18 +766,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
           Integer.valueOf(S_ResourceAssignment_ID));
   }
 
-  /**
-   * Get Resource Assignment.
-   *
-   * @return Resource Assignment
-   */
-  public int getS_ResourceAssignment_ID() {
-    Integer ii = (Integer) get_Value(I_C_InvoiceLine.COLUMNNAME_S_ResourceAssignment_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Tax Amount.
    *
    * @param TaxAmt Tax Amount for a document
@@ -1066,13 +786,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return bd;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 1.
    *
    * @param User1_ID User defined list element #1
@@ -1093,13 +807,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 2.
    *
    * @param User2_ID User defined list element #2

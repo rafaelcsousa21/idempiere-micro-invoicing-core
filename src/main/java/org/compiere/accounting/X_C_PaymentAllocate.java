@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_PaymentAllocate;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -71,13 +70,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
     return bd;
   }
 
-  public org.compiere.model.I_C_AllocationLine getC_AllocationLine() throws RuntimeException {
-    return (org.compiere.model.I_C_AllocationLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_AllocationLine.Table_Name)
-            .getPO(getC_AllocationLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Allocation Line.
    *
    * @param C_AllocationLine_ID Allocation Line
@@ -98,13 +91,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice.
    *
    * @param C_Invoice_ID Invoice Identifier
@@ -134,62 +121,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
     return new KeyNamePair(getId(), String.valueOf(getC_Invoice_ID()));
   }
 
-  /**
-   * Set Allocate Payment.
-   *
-   * @param C_PaymentAllocate_ID Allocate Payment to Invoices
-   */
-  public void setC_PaymentAllocate_ID(int C_PaymentAllocate_ID) {
-    if (C_PaymentAllocate_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PaymentAllocate_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_PaymentAllocate_ID, Integer.valueOf(C_PaymentAllocate_ID));
-  }
-
-  /**
-   * Get Allocate Payment.
-   *
-   * @return Allocate Payment to Invoices
-   */
-  public int getC_PaymentAllocate_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_PaymentAllocate_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set C_PaymentAllocate_UU.
-   *
-   * @param C_PaymentAllocate_UU C_PaymentAllocate_UU
-   */
-  public void setC_PaymentAllocate_UU(String C_PaymentAllocate_UU) {
-    set_Value(COLUMNNAME_C_PaymentAllocate_UU, C_PaymentAllocate_UU);
-  }
-
-  /**
-   * Get C_PaymentAllocate_UU.
-   *
-   * @return C_PaymentAllocate_UU
-   */
-  public String getC_PaymentAllocate_UU() {
-    return (String) get_Value(COLUMNNAME_C_PaymentAllocate_UU);
-  }
-
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
-   * Set Payment.
-   *
-   * @param C_Payment_ID Payment identifier
-   */
-  public void setC_Payment_ID(int C_Payment_ID) {
-    if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-    else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
-  }
-
-  /**
+    /**
    * Get Payment.
    *
    * @return Payment identifier
@@ -260,27 +192,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
     return bd;
   }
 
-  /**
-   * Set Remaining Amt.
-   *
-   * @param RemainingAmt Remaining Amount
-   */
-  public void setRemainingAmt(BigDecimal RemainingAmt) {
-    throw new IllegalArgumentException("RemainingAmt is virtual column");
-  }
-
-  /**
-   * Get Remaining Amt.
-   *
-   * @return Remaining Amount
-   */
-  public BigDecimal getRemainingAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_RemainingAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Write-off Amount.
    *
    * @param WriteOffAmt Amount to write-off

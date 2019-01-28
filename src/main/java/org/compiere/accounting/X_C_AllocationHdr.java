@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_AllocationHdr;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -74,17 +73,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
     return bd;
   }
 
-  /**
-   * Set Allocation.
-   *
-   * @param C_AllocationHdr_ID Payment allocation
-   */
-  public void setC_AllocationHdr_ID(int C_AllocationHdr_ID) {
-    if (C_AllocationHdr_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AllocationHdr_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_AllocationHdr_ID, Integer.valueOf(C_AllocationHdr_ID));
-  }
-
-  /**
+    /**
    * Get Allocation.
    *
    * @return Payment allocation
@@ -95,31 +84,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
     return ii;
   }
 
-  /**
-   * Set C_AllocationHdr_UU.
-   *
-   * @param C_AllocationHdr_UU C_AllocationHdr_UU
-   */
-  public void setC_AllocationHdr_UU(String C_AllocationHdr_UU) {
-    set_Value(COLUMNNAME_C_AllocationHdr_UU, C_AllocationHdr_UU);
-  }
-
-  /**
-   * Get C_AllocationHdr_UU.
-   *
-   * @return C_AllocationHdr_UU
-   */
-  public String getC_AllocationHdr_UU() {
-    return (String) get_Value(COLUMNNAME_C_AllocationHdr_UU);
-  }
-
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -140,13 +105,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Document Type.
    *
    * @param C_DocType_ID Document type or rules
@@ -374,21 +333,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
     set_Value(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
   }
 
-  /**
-   * Get Manual.
-   *
-   * @return This is a manual process
-   */
-  public boolean isManual() {
-    Object oo = get_Value(COLUMNNAME_IsManual);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Posted.
    *
    * @param Posted Posting status
@@ -434,28 +379,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
     return false;
   }
 
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -464,27 +388,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_C_AllocationHdr getReversal() throws RuntimeException {
-    return (org.compiere.model.I_C_AllocationHdr)
-        MTable.get(getCtx(), org.compiere.model.I_C_AllocationHdr.Table_Name)
-            .getPO(getReversal_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal ID.
    *
    * @param Reversal_ID ID of document reversal

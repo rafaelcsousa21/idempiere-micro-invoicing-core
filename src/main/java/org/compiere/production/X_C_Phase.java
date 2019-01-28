@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_C_Phase;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -45,17 +44,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase, I_Persistent {
     return sb.toString();
   }
 
-  /**
-   * Set Standard Phase.
-   *
-   * @param C_Phase_ID Standard Phase of the Project Type
-   */
-  public void setC_Phase_ID(int C_Phase_ID) {
-    if (C_Phase_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Phase_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Phase_ID, Integer.valueOf(C_Phase_ID));
-  }
-
-  /**
+    /**
    * Get Standard Phase.
    *
    * @return Standard Phase of the Project Type
@@ -66,41 +55,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set C_Phase_UU.
-   *
-   * @param C_Phase_UU C_Phase_UU
-   */
-  public void setC_Phase_UU(String C_Phase_UU) {
-    set_Value(COLUMNNAME_C_Phase_UU, C_Phase_UU);
-  }
-
-  /**
-   * Get C_Phase_UU.
-   *
-   * @return C_Phase_UU
-   */
-  public String getC_Phase_UU() {
-    return (String) get_Value(COLUMNNAME_C_Phase_UU);
-  }
-
-  public org.compiere.model.I_C_ProjectType getC_ProjectType() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectType)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectType.Table_Name)
-            .getPO(getC_ProjectType_ID(), null);
-  }
-
-  /**
-   * Set Project Type.
-   *
-   * @param C_ProjectType_ID Type of the project
-   */
-  public void setC_ProjectType_ID(int C_ProjectType_ID) {
-    if (C_ProjectType_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ProjectType_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_ProjectType_ID, Integer.valueOf(C_ProjectType_ID));
-  }
-
-  /**
+    /**
    * Get Project Type.
    *
    * @return Type of the project
@@ -111,16 +66,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -129,16 +75,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase, I_Persistent {
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
+    /**
    * Get Comment/Help.
    *
    * @return Comment or Hint
@@ -147,23 +84,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase, I_Persistent {
     return (String) get_Value(COLUMNNAME_Help);
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
-   * Set Product.
-   *
-   * @param M_Product_ID Product, Service, Item
-   */
-  public void setM_Product_ID(int M_Product_ID) {
-    if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-  }
-
-  /**
+    /**
    * Get Product.
    *
    * @return Product, Service, Item

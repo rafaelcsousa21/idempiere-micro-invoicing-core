@@ -1,9 +1,7 @@
 package org.compiere.production;
 
-import org.compiere.model.I_M_Locator;
 import org.compiere.model.I_M_Production;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -57,24 +55,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     else set_Value(I_M_Production.COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
   }
 
-  /**
-   * Get Trx Organization.
-   *
-   * @return Performing or initiating organization
-   */
-  public int getAD_OrgTrx_ID() {
-    Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_AD_OrgTrx_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
+    /**
    * Set Activity.
    *
    * @param C_Activity_ID Business Activity
@@ -89,19 +70,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return Business Activity
    */
-  public int getC_Activity_ID() {
+  private int getC_Activity_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_Activity_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -116,19 +91,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return Identifies a Business Partner
    */
-  public int getC_BPartner_ID() {
+  private int getC_BPartner_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_BPartner_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
+    /**
    * Set Campaign.
    *
    * @param C_Campaign_ID Marketing Campaign
@@ -143,19 +112,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return Marketing Campaign
    */
-  public int getC_Campaign_ID() {
+  private int getC_Campaign_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_Campaign_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
-    return (org.compiere.model.I_C_OrderLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-            .getPO(getC_OrderLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Order Line.
    *
    * @param C_OrderLine_ID Sales Order Line
@@ -170,19 +133,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return Sales Order Line
    */
-  public int getC_OrderLine_ID() {
+  private int getC_OrderLine_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_OrderLine_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project.
    *
    * @param C_Project_ID Financial Project
@@ -197,19 +154,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return Financial Project
    */
-  public int getC_Project_ID() {
+  private int getC_Project_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_Project_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectPhase)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
-            .getPO(getC_ProjectPhase_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Phase.
    *
    * @param C_ProjectPhase_ID Phase of a Project
@@ -226,19 +177,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return Phase of a Project
    */
-  public int getC_ProjectPhase_ID() {
+  private int getC_ProjectPhase_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_ProjectPhase_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectTask getC_ProjectTask() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectTask)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectTask.Table_Name)
-            .getPO(getC_ProjectTask_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Task.
    *
    * @param C_ProjectTask_ID Actual Project Task in a Phase
@@ -255,32 +200,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return Actual Project Task in a Phase
    */
-  public int getC_ProjectTask_ID() {
+  private int getC_ProjectTask_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_C_ProjectTask_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  /**
-   * Set Create lines from.
-   *
-   * @param CreateFrom Process which will generate a new document lines based on an existing
-   *     document
-   */
-  public void setCreateFrom(String CreateFrom) {
-    set_Value(I_M_Production.COLUMNNAME_CreateFrom, CreateFrom);
-  }
-
-  /**
-   * Get Create lines from.
-   *
-   * @return Process which will generate a new document lines based on an existing document
-   */
-  public String getCreateFrom() {
-    return (String) get_Value(I_M_Production.COLUMNNAME_CreateFrom);
-  }
-
-  /**
+    /**
    * Set Date Promised.
    *
    * @param DatePromised Date Order was promised
@@ -289,16 +215,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     set_Value(I_M_Production.COLUMNNAME_DatePromised, DatePromised);
   }
 
-  /**
-   * Get Date Promised.
-   *
-   * @return Date Order was promised
-   */
-  public Timestamp getDatePromised() {
-    return (Timestamp) get_Value(I_M_Production.COLUMNNAME_DatePromised);
-  }
-
-  /**
+    /**
    * Set Description.
    *
    * @param Description Optional short description of the record
@@ -410,16 +327,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return (String) get_Value(I_M_Production.COLUMNNAME_DocStatus);
   }
 
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_ValueNoCheck(I_M_Production.COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -437,21 +345,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     set_Value(I_M_Production.COLUMNNAME_IsComplete, Boolean.valueOf(IsComplete));
   }
 
-  /**
-   * Get Complete.
-   *
-   * @return It is complete
-   */
-  public boolean isComplete() {
-    Object oo = get_Value(I_M_Production.COLUMNNAME_IsComplete);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /** IsCreated AD_Reference_ID=319 */
+    /** IsCreated AD_Reference_ID=319 */
   public static final int ISCREATED_AD_Reference_ID = 319;
   /** Yes = Y */
   public static final String ISCREATED_Yes = "Y";
@@ -499,12 +393,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return false;
   }
 
-  public I_M_Locator getM_Locator() throws RuntimeException {
-    return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
-  }
-
-  /**
+    /**
    * Set Locator.
    *
    * @param M_Locator_ID Warehouse Locator
@@ -543,13 +432,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return (Timestamp) get_Value(I_M_Production.COLUMNNAME_MovementDate);
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -570,18 +453,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Production.
-   *
-   * @param M_Production_ID Plan for producing a product
-   */
-  public void setM_Production_ID(int M_Production_ID) {
-    if (M_Production_ID < 1) set_ValueNoCheck(I_M_Production.COLUMNNAME_M_Production_ID, null);
-    else
-      set_ValueNoCheck(I_M_Production.COLUMNNAME_M_Production_ID, Integer.valueOf(M_Production_ID));
-  }
-
-  /**
+    /**
    * Get Production.
    *
    * @return Plan for producing a product
@@ -592,48 +464,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return ii;
   }
 
-  /**
-   * Set M_Production_UU.
-   *
-   * @param M_Production_UU M_Production_UU
-   */
-  public void setM_Production_UU(String M_Production_UU) {
-    set_Value(I_M_Production.COLUMNNAME_M_Production_UU, M_Production_UU);
-  }
-
-  /**
-   * Get M_Production_UU.
-   *
-   * @return M_Production_UU
-   */
-  public String getM_Production_UU() {
-    return (String) get_Value(I_M_Production.COLUMNNAME_M_Production_UU);
-  }
-
-  /**
-   * Set Posted.
-   *
-   * @param Posted Posting status
-   */
-  public void setPosted(boolean Posted) {
-    set_Value(I_M_Production.COLUMNNAME_Posted, Boolean.valueOf(Posted));
-  }
-
-  /**
-   * Get Posted.
-   *
-   * @return Posting status
-   */
-  public boolean isPosted() {
-    Object oo = get_Value(I_M_Production.COLUMNNAME_Posted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -656,28 +487,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return false;
   }
 
-  /**
-   * Set Processed On.
-   *
-   * @param ProcessedOn The date+time (expressed in decimal format) when the document has been
-   *     processed
-   */
-  public void setProcessedOn(BigDecimal ProcessedOn) {
-    set_Value(I_M_Production.COLUMNNAME_ProcessedOn, ProcessedOn);
-  }
-
-  /**
-   * Get Processed On.
-   *
-   * @return The date+time (expressed in decimal format) when the document has been processed
-   */
-  public BigDecimal getProcessedOn() {
-    BigDecimal bd = (BigDecimal) get_Value(I_M_Production.COLUMNNAME_ProcessedOn);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -686,21 +496,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     set_Value(I_M_Production.COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(I_M_Production.COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Production Quantity.
    *
    * @param ProductionQty Quantity of products to produce
@@ -720,13 +516,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
     return bd;
   }
 
-  public org.compiere.model.I_M_Production getReversal() throws RuntimeException {
-    return (org.compiere.model.I_M_Production)
-        MTable.get(getCtx(), org.compiere.model.I_M_Production.Table_Name)
-            .getPO(getReversal_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal ID.
    *
    * @param Reversal_ID ID of document reversal
@@ -741,19 +531,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return ID of document reversal
    */
-  public int getReversal_ID() {
+  private int getReversal_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_Reversal_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 1.
    *
    * @param User1_ID User defined list element #1
@@ -768,19 +552,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return User defined list element #1
    */
-  public int getUser1_ID() {
+  private int getUser1_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_User1_ID);
     if (ii == null) return 0;
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 2.
    *
    * @param User2_ID User defined list element #2
@@ -795,7 +573,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
    *
    * @return User defined list element #2
    */
-  public int getUser2_ID() {
+  private int getUser2_ID() {
     Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_User2_ID);
     if (ii == null) return 0;
     return ii;

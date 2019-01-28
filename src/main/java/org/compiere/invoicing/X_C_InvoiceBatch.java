@@ -1,7 +1,6 @@
 package org.compiere.invoicing;
 
 import org.compiere.model.I_C_InvoiceBatch;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -53,23 +52,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
-    return (org.compiere.model.I_C_ConversionType)
-        MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), null);
-  }
-
-  /**
-   * Set Currency Type.
-   *
-   * @param C_ConversionType_ID Currency Conversion Rate Type
-   */
-  public void setC_ConversionType_ID(int C_ConversionType_ID) {
-    if (C_ConversionType_ID < 1) set_Value(COLUMNNAME_C_ConversionType_ID, null);
-    else set_Value(COLUMNNAME_C_ConversionType_ID, Integer.valueOf(C_ConversionType_ID));
-  }
-
-  /**
+    /**
    * Get Currency Type.
    *
    * @return Currency Conversion Rate Type
@@ -80,23 +63,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
-   * Set Currency.
-   *
-   * @param C_Currency_ID The Currency for this record
-   */
-  public void setC_Currency_ID(int C_Currency_ID) {
-    if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-    else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
-  }
-
-  /**
+    /**
    * Get Currency.
    *
    * @return The Currency for this record
@@ -107,17 +74,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
     return ii;
   }
 
-  /**
-   * Set Invoice Batch.
-   *
-   * @param C_InvoiceBatch_ID Expense Invoice Batch Header
-   */
-  public void setC_InvoiceBatch_ID(int C_InvoiceBatch_ID) {
-    if (C_InvoiceBatch_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceBatch_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_InvoiceBatch_ID, Integer.valueOf(C_InvoiceBatch_ID));
-  }
-
-  /**
+    /**
    * Get Invoice Batch.
    *
    * @return Expense Invoice Batch Header
@@ -128,25 +85,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
     return ii;
   }
 
-  /**
-   * Set C_InvoiceBatch_UU.
-   *
-   * @param C_InvoiceBatch_UU C_InvoiceBatch_UU
-   */
-  public void setC_InvoiceBatch_UU(String C_InvoiceBatch_UU) {
-    set_Value(COLUMNNAME_C_InvoiceBatch_UU, C_InvoiceBatch_UU);
-  }
-
-  /**
-   * Get C_InvoiceBatch_UU.
-   *
-   * @return C_InvoiceBatch_UU
-   */
-  public String getC_InvoiceBatch_UU() {
-    return (String) get_Value(COLUMNNAME_C_InvoiceBatch_UU);
-  }
-
-  /**
+    /**
    * Set Control Amount.
    *
    * @param ControlAmt If not zero, the Debit amount of the document must be equal this amount
@@ -175,25 +114,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
     set_Value(COLUMNNAME_DateDoc, DateDoc);
   }
 
-  /**
-   * Get Document Date.
-   *
-   * @return Date of the Document
-   */
-  public Timestamp getDateDoc() {
-    return (Timestamp) get_Value(COLUMNNAME_DateDoc);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -222,16 +143,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
     return bd;
   }
 
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -295,46 +207,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
     return false;
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSalesRep_ID(), null);
-  }
-
-  /**
-   * Set Sales Representative.
-   *
-   * @param SalesRep_ID Sales Representative or Company Agent
-   */
-  public void setSalesRep_ID(int SalesRep_ID) {
-    if (SalesRep_ID < 1) set_Value(COLUMNNAME_SalesRep_ID, null);
-    else set_Value(COLUMNNAME_SalesRep_ID, Integer.valueOf(SalesRep_ID));
-  }
-
-  /**
+    /**
    * Get Sales Representative.
    *
    * @return Sales Representative or Company Agent

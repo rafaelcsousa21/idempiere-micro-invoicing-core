@@ -1,9 +1,7 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_InventoryLine;
-import org.compiere.model.I_M_Locator;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
@@ -57,13 +55,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
+    /**
    * Set Charge.
    *
    * @param C_Charge_ID Additional document charges
@@ -176,13 +168,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     return new KeyNamePair(getId(), String.valueOf(getLine()));
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -231,17 +217,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     return ii;
   }
 
-  /**
-   * Set Phys.Inventory Line.
-   *
-   * @param M_InventoryLine_ID Unique line in an Inventory document
-   */
-  public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
-    if (M_InventoryLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InventoryLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
-  }
-
-  /**
+    /**
    * Get Phys.Inventory Line.
    *
    * @return Unique line in an Inventory document
@@ -252,30 +228,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     return ii;
   }
 
-  /**
-   * Set M_InventoryLine_UU.
-   *
-   * @param M_InventoryLine_UU M_InventoryLine_UU
-   */
-  public void setM_InventoryLine_UU(String M_InventoryLine_UU) {
-    set_Value(COLUMNNAME_M_InventoryLine_UU, M_InventoryLine_UU);
-  }
-
-  /**
-   * Get M_InventoryLine_UU.
-   *
-   * @return M_InventoryLine_UU
-   */
-  public String getM_InventoryLine_UU() {
-    return (String) get_Value(COLUMNNAME_M_InventoryLine_UU);
-  }
-
-  public I_M_Locator getM_Locator() throws RuntimeException {
-    return (I_M_Locator)
-        MTable.get(getCtx(), I_M_Locator.Table_Name).getPO(getM_Locator_ID(), null);
-  }
-
-  /**
+    /**
    * Set Locator.
    *
    * @param M_Locator_ID Warehouse Locator
@@ -352,21 +305,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Quantity book.
    *
    * @param QtyBook Book Quantity
@@ -406,27 +345,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     return bd;
   }
 
-  /**
-   * Set QtyCsv.
-   *
-   * @param QtyCsv QtyCsv
-   */
-  public void setQtyCsv(BigDecimal QtyCsv) {
-    set_Value(COLUMNNAME_QtyCsv, QtyCsv);
-  }
-
-  /**
-   * Get QtyCsv.
-   *
-   * @return QtyCsv
-   */
-  public BigDecimal getQtyCsv() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyCsv);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Internal Use Qty.
    *
    * @param QtyInternalUse Internal Use Quantity removed from Inventory
@@ -446,13 +365,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     return bd;
   }
 
-  public org.compiere.model.I_M_InventoryLine getReversalLine() throws RuntimeException {
-    return (org.compiere.model.I_M_InventoryLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getReversalLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal Line.
    *
    * @param ReversalLine_ID Use to keep the reversal line ID for reversing costing purpose
@@ -473,43 +386,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
     return ii;
   }
 
-  /**
-   * Set UPC/EAN.
-   *
-   * @param UPC Bar Code (Universal Product Code or its superset European Article Number)
-   */
-  public void setUPC(String UPC) {
-    throw new IllegalArgumentException("UPC is virtual column");
-  }
-
-  /**
-   * Get UPC/EAN.
-   *
-   * @return Bar Code (Universal Product Code or its superset European Article Number)
-   */
-  public String getUPC() {
-    return (String) get_Value(COLUMNNAME_UPC);
-  }
-
-  /**
-   * Set Search Key.
-   *
-   * @param Value Search key for the record in the format required - must be unique
-   */
-  public void setValue(String Value) {
-    throw new IllegalArgumentException("Value is virtual column");
-  }
-
-  /**
-   * Get Search Key.
-   *
-   * @return Search key for the record in the format required - must be unique
-   */
-  public String getValue() {
-    return (String) get_Value(COLUMNNAME_Value);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_M_InventoryLine.Table_ID;
   }

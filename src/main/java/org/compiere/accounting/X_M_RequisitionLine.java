@@ -1,6 +1,5 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -53,13 +52,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -80,13 +73,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
+    /**
    * Set Charge.
    *
    * @param C_Charge_ID Additional document charges
@@ -107,13 +94,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
-    return (org.compiere.model.I_C_OrderLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-            .getPO(getC_OrderLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Order Line.
    *
    * @param C_OrderLine_ID Sales Order Line
@@ -134,13 +115,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
-    return (org.compiere.model.I_C_UOM)
-        MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), null);
-  }
-
-  /**
+    /**
    * Set UOM.
    *
    * @param C_UOM_ID Unit of Measure
@@ -228,13 +203,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
     return bd;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -283,13 +252,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_M_Requisition getM_Requisition() throws RuntimeException {
-    return (org.compiere.model.I_M_Requisition)
-        MTable.get(getCtx(), org.compiere.model.I_M_Requisition.Table_Name)
-            .getPO(getM_Requisition_ID(), null);
-  }
-
-  /**
+    /**
    * Set Requisition.
    *
    * @param M_Requisition_ID Material Requisition
@@ -310,46 +273,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
     return ii;
   }
 
-  /**
-   * Set Requisition Line.
-   *
-   * @param M_RequisitionLine_ID Material Requisition Line
-   */
-  public void setM_RequisitionLine_ID(int M_RequisitionLine_ID) {
-    if (M_RequisitionLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_RequisitionLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_RequisitionLine_ID, Integer.valueOf(M_RequisitionLine_ID));
-  }
-
-  /**
-   * Get Requisition Line.
-   *
-   * @return Material Requisition Line
-   */
-  public int getM_RequisitionLine_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_RequisitionLine_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set M_RequisitionLine_UU.
-   *
-   * @param M_RequisitionLine_UU M_RequisitionLine_UU
-   */
-  public void setM_RequisitionLine_UU(String M_RequisitionLine_UU) {
-    set_Value(COLUMNNAME_M_RequisitionLine_UU, M_RequisitionLine_UU);
-  }
-
-  /**
-   * Get M_RequisitionLine_UU.
-   *
-   * @return M_RequisitionLine_UU
-   */
-  public String getM_RequisitionLine_UU() {
-    return (String) get_Value(COLUMNNAME_M_RequisitionLine_UU);
-  }
-
-  /**
+    /**
    * Set Unit Price.
    *
    * @param PriceActual Actual Price

@@ -1,7 +1,6 @@
 package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_Process;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -49,23 +48,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_Message getAD_Message() throws RuntimeException {
-    return (org.compiere.model.I_AD_Message)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Message.Table_Name)
-            .getPO(getAD_Message_ID(), null);
-  }
-
-  /**
-   * Set Message.
-   *
-   * @param AD_Message_ID System Message
-   */
-  public void setAD_Message_ID(int AD_Message_ID) {
-    if (AD_Message_ID < 1) set_Value(COLUMNNAME_AD_Message_ID, null);
-    else set_Value(COLUMNNAME_AD_Message_ID, Integer.valueOf(AD_Message_ID));
-  }
-
-  /**
+    /**
    * Get Message.
    *
    * @return System Message
@@ -76,13 +59,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
-    return (org.compiere.model.I_AD_Table)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), null);
-  }
-
-  /**
+    /**
    * Set Table.
    *
    * @param AD_Table_ID Database Table information
@@ -103,13 +80,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
+    /**
    * Set User/Contact.
    *
    * @param AD_User_ID User within the system - Internal or Business Partner Contact
@@ -130,17 +101,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     return ii;
   }
 
-  /**
-   * Set Workflow Process.
-   *
-   * @param AD_WF_Process_ID Actual Workflow Process Instance
-   */
-  public void setAD_WF_Process_ID(int AD_WF_Process_ID) {
-    if (AD_WF_Process_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_Process_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_WF_Process_ID, Integer.valueOf(AD_WF_Process_ID));
-  }
-
-  /**
+    /**
    * Get Workflow Process.
    *
    * @return Actual Workflow Process Instance
@@ -151,31 +112,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     return ii;
   }
 
-  /**
-   * Set AD_WF_Process_UU.
-   *
-   * @param AD_WF_Process_UU AD_WF_Process_UU
-   */
-  public void setAD_WF_Process_UU(String AD_WF_Process_UU) {
-    set_Value(COLUMNNAME_AD_WF_Process_UU, AD_WF_Process_UU);
-  }
-
-  /**
-   * Get AD_WF_Process_UU.
-   *
-   * @return AD_WF_Process_UU
-   */
-  public String getAD_WF_Process_UU() {
-    return (String) get_Value(COLUMNNAME_AD_WF_Process_UU);
-  }
-
-  public org.compiere.model.I_AD_WF_Responsible getAD_WF_Responsible() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Responsible)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Responsible.Table_Name)
-            .getPO(getAD_WF_Responsible_ID(), null);
-  }
-
-  /**
+    /**
    * Set Workflow Responsible.
    *
    * @param AD_WF_Responsible_ID Responsible for Workflow Execution
@@ -196,13 +133,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     return ii;
   }
 
-  public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
-    return (org.compiere.model.I_AD_Workflow)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getAD_Workflow_ID(), null);
-  }
-
-  /**
+    /**
    * Set Workflow.
    *
    * @param AD_Workflow_ID Workflow or combination of tasks
@@ -261,44 +192,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process, I_Persistent
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Record ID.
    *
    * @param Record_ID Direct internal record ID

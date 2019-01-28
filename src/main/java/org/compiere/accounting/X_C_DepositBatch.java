@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_DepositBatch;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -53,13 +52,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
-    return (org.compiere.model.I_C_BankAccount)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), null);
-  }
-
-  /**
+    /**
    * Set Bank Account.
    *
    * @param C_BankAccount_ID Account at the Bank
@@ -101,31 +94,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
     return ii;
   }
 
-  /**
-   * Set C_DepositBatch_UU.
-   *
-   * @param C_DepositBatch_UU C_DepositBatch_UU
-   */
-  public void setC_DepositBatch_UU(String C_DepositBatch_UU) {
-    set_Value(COLUMNNAME_C_DepositBatch_UU, C_DepositBatch_UU);
-  }
-
-  /**
-   * Get C_DepositBatch_UU.
-   *
-   * @return C_DepositBatch_UU
-   */
-  public String getC_DepositBatch_UU() {
-    return (String) get_Value(COLUMNNAME_C_DepositBatch_UU);
-  }
-
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Document Type.
    *
    * @param C_DocType_ID Document type or rules
@@ -146,26 +115,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
     return ii;
   }
 
-  /**
-   * Set Create lines from.
-   *
-   * @param CreateFrom Process which will generate a new document lines based on an existing
-   *     document
-   */
-  public void setCreateFrom(String CreateFrom) {
-    set_Value(COLUMNNAME_CreateFrom, CreateFrom);
-  }
-
-  /**
-   * Get Create lines from.
-   *
-   * @return Process which will generate a new document lines based on an existing document
-   */
-  public String getCreateFrom() {
-    return (String) get_Value(COLUMNNAME_CreateFrom);
-  }
-
-  /**
+    /**
    * Set Deposit Date.
    *
    * @param DateDeposit Deposit Date
@@ -275,25 +225,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
     set_Value(COLUMNNAME_DocStatus, DocStatus);
   }
 
-  /**
-   * Get Document Status.
-   *
-   * @return The current status of the document
-   */
-  public String getDocStatus() {
-    return (String) get_Value(COLUMNNAME_DocStatus);
-  }
-
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -320,21 +252,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Process Now.
    *
    * @param Processing Process Now
@@ -343,21 +261,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_DepositBatch.Table_ID;
   }

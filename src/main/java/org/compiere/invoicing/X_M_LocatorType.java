@@ -47,43 +47,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
     return sb.toString();
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
-   * Get Comment/Help.
-   *
-   * @return Comment or Hint
-   */
-  public String getHelp() {
-    return (String) get_Value(COLUMNNAME_Help);
-  }
-
-  /**
+    /**
    * Set Available for Replenishment.
    *
    * @param IsAvailableForReplenishment Available for Replenishment
@@ -115,21 +79,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
     set_Value(COLUMNNAME_IsAvailableForReservation, Boolean.valueOf(IsAvailableForReservation));
   }
 
-  /**
-   * Get Available for Reservation.
-   *
-   * @return Available for Reservation
-   */
-  public boolean isAvailableForReservation() {
-    Object oo = get_Value(COLUMNNAME_IsAvailableForReservation);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Available for Shipping.
    *
    * @param IsAvailableForShipping Available for Shipping
@@ -152,46 +102,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
     return false;
   }
 
-  /**
-   * Set Locator Type.
-   *
-   * @param M_LocatorType_ID Locator Type
-   */
-  public void setM_LocatorType_ID(int M_LocatorType_ID) {
-    if (M_LocatorType_ID < 1) set_ValueNoCheck(COLUMNNAME_M_LocatorType_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_LocatorType_ID, Integer.valueOf(M_LocatorType_ID));
-  }
-
-  /**
-   * Get Locator Type.
-   *
-   * @return Locator Type
-   */
-  public int getM_LocatorType_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_LocatorType_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set M_LocatorType_UU.
-   *
-   * @param M_LocatorType_UU M_LocatorType_UU
-   */
-  public void setM_LocatorType_UU(String M_LocatorType_UU) {
-    set_Value(COLUMNNAME_M_LocatorType_UU, M_LocatorType_UU);
-  }
-
-  /**
-   * Get M_LocatorType_UU.
-   *
-   * @return M_LocatorType_UU
-   */
-  public String getM_LocatorType_UU() {
-    return (String) get_Value(COLUMNNAME_M_LocatorType_UU);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_M_LocatorType.Table_ID;
   }

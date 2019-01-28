@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_GL_Distribution;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -45,13 +44,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_ElementValue getAccount() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getAccount_ID(), null);
-  }
-
-  /**
+    /**
    * Set Account.
    *
    * @param Account_ID Account used
@@ -392,23 +385,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return false;
   }
 
-  public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
-    return (org.compiere.model.I_C_AcctSchema)
-        MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
-  }
-
-  /**
-   * Set Accounting Schema.
-   *
-   * @param C_AcctSchema_ID Rules for accounting
-   */
-  public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
-    if (C_AcctSchema_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
-  }
-
-  /**
+    /**
    * Get Accounting Schema.
    *
    * @return Rules for accounting
@@ -419,13 +396,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
+    /**
    * Set Activity.
    *
    * @param C_Activity_ID Business Activity
@@ -446,13 +417,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -473,13 +438,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
+    /**
    * Set Campaign.
    *
    * @param C_Campaign_ID Marketing Campaign
@@ -500,23 +459,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
-   * Set Document Type.
-   *
-   * @param C_DocType_ID Document type or rules
-   */
-  public void setC_DocType_ID(int C_DocType_ID) {
-    if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-    else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
-  }
-
-  /**
+    /**
    * Get Document Type.
    *
    * @return Document type or rules
@@ -527,13 +470,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Location getC_LocFrom() throws RuntimeException {
-    return (org.compiere.model.I_C_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocFrom_ID(), null);
-  }
-
-  /**
+    /**
    * Set Location From.
    *
    * @param C_LocFrom_ID Location that inventory was moved from
@@ -554,13 +491,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Location getC_LocTo() throws RuntimeException {
-    return (org.compiere.model.I_C_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocTo_ID(), null);
-  }
-
-  /**
+    /**
    * Set Location To.
    *
    * @param C_LocTo_ID Location that inventory was moved to
@@ -581,13 +512,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project.
    *
    * @param C_Project_ID Financial Project
@@ -608,13 +533,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_SalesRegion getC_SalesRegion() throws RuntimeException {
-    return (org.compiere.model.I_C_SalesRegion)
-        MTable.get(getCtx(), org.compiere.model.I_C_SalesRegion.Table_Name)
-            .getPO(getC_SalesRegion_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Region.
    *
    * @param C_SalesRegion_ID Sales coverage region
@@ -635,35 +554,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set GL Distribution.
-   *
-   * @param GL_Distribution_ID General Ledger Distribution
-   */
-  public void setGL_Distribution_ID(int GL_Distribution_ID) {
-    if (GL_Distribution_ID < 1) set_ValueNoCheck(COLUMNNAME_GL_Distribution_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_GL_Distribution_ID, Integer.valueOf(GL_Distribution_ID));
-  }
-
-  /**
+    /**
    * Get GL Distribution.
    *
    * @return General Ledger Distribution
@@ -674,53 +565,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  /**
-   * Set GL_Distribution_UU.
-   *
-   * @param GL_Distribution_UU GL_Distribution_UU
-   */
-  public void setGL_Distribution_UU(String GL_Distribution_UU) {
-    set_Value(COLUMNNAME_GL_Distribution_UU, GL_Distribution_UU);
-  }
-
-  /**
-   * Get GL_Distribution_UU.
-   *
-   * @return GL_Distribution_UU
-   */
-  public String getGL_Distribution_UU() {
-    return (String) get_Value(COLUMNNAME_GL_Distribution_UU);
-  }
-
-  /**
-   * Set Comment/Help.
-   *
-   * @param Help Comment or Hint
-   */
-  public void setHelp(String Help) {
-    set_Value(COLUMNNAME_Help, Help);
-  }
-
-  /**
-   * Get Comment/Help.
-   *
-   * @return Comment or Hint
-   */
-  public String getHelp() {
-    return (String) get_Value(COLUMNNAME_Help);
-  }
-
-  /**
-   * Set Create Reversal.
-   *
-   * @param IsCreateReversal Indicates that reversal movement will be created, if disabled the
-   *     original movement will be deleted.
-   */
-  public void setIsCreateReversal(boolean IsCreateReversal) {
-    set_Value(COLUMNNAME_IsCreateReversal, Boolean.valueOf(IsCreateReversal));
-  }
-
-  /**
+    /**
    * Get Create Reversal.
    *
    * @return Indicates that reversal movement will be created, if disabled the original movement
@@ -758,13 +603,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return false;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -838,17 +677,8 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
   public static final String POSTINGTYPE_Statistical = "S";
   /** Reservation = R */
   public static final String POSTINGTYPE_Reservation = "R";
-  /**
-   * Set PostingType.
-   *
-   * @param PostingType The type of posted amount for the transaction
-   */
-  public void setPostingType(String PostingType) {
 
-    set_Value(COLUMNNAME_PostingType, PostingType);
-  }
-
-  /**
+    /**
    * Get PostingType.
    *
    * @return The type of posted amount for the transaction
@@ -857,36 +687,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return (String) get_Value(COLUMNNAME_PostingType);
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 1.
    *
    * @param User1_ID User defined list element #1
@@ -907,13 +708,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 2.
    *
    * @param User2_ID User defined list element #2

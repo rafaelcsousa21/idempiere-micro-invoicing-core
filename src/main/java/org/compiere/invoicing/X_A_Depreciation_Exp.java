@@ -1,8 +1,6 @@
 package org.compiere.invoicing;
 
 import org.compiere.model.I_A_Depreciation_Exp;
-import org.compiere.model.I_C_ValidCombination;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -52,13 +50,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     return "X_A_Depreciation_Exp[" + getId() + "]";
   }
 
-  public I_C_ValidCombination getA_Account_Number_A() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getA_Account_Number_Acct(), null);
-  }
-
-  /**
+    /**
    * Set A_Account_Number_Acct.
    *
    * @param A_Account_Number_Acct A_Account_Number_Acct
@@ -107,18 +99,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_A_Accumulated_Depr_Delta, A_Accumulated_Depr_Delta);
   }
 
-  /**
-   * Get Accumulated Depreciation (delta).
-   *
-   * @return Accumulated Depreciation (delta)
-   */
-  public BigDecimal getA_Accumulated_Depr_Delta() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Accumulated_Depr_Delta);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Accumulated Depreciation (fiscal).
    *
    * @param A_Accumulated_Depr_F Accumulated Depreciation (fiscal)
@@ -147,34 +128,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_A_Accumulated_Depr_F_Delta, A_Accumulated_Depr_F_Delta);
   }
 
-  /**
-   * Get Accumulated Depreciation - fiscal (delta).
-   *
-   * @return Accumulated Depreciation - fiscal (delta)
-   */
-  public BigDecimal getA_Accumulated_Depr_F_Delta() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Accumulated_Depr_F_Delta);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  public org.compiere.model.I_A_Asset_Addition getA_Asset_Addition() throws RuntimeException {
-    return (org.compiere.model.I_A_Asset_Addition)
-        MTable.get(getCtx(), org.compiere.model.I_A_Asset_Addition.Table_Name)
-            .getPO(getA_Asset_Addition_ID(), null);
-  }
-
-  /**
-   * Set Asset Addition.
-   *
-   * @param A_Asset_Addition_ID Asset Addition
-   */
-  public void setA_Asset_Addition_ID(int A_Asset_Addition_ID) {
-    if (A_Asset_Addition_ID < 1) set_Value(COLUMNNAME_A_Asset_Addition_ID, null);
-    else set_Value(COLUMNNAME_A_Asset_Addition_ID, A_Asset_Addition_ID);
-  }
-
-  /**
+    /**
    * Get Asset Addition.
    *
    * @return Asset Addition
@@ -194,54 +148,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_A_Asset_Cost, A_Asset_Cost);
   }
 
-  /**
-   * Get Asset Cost.
-   *
-   * @return Asset Cost
-   */
-  public BigDecimal getA_Asset_Cost() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Asset_Cost);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Delta Asset Cost.
-   *
-   * @param A_Asset_Cost_Delta Delta Asset Cost
-   */
-  public void setA_Asset_Cost_Delta(BigDecimal A_Asset_Cost_Delta) {
-    set_Value(COLUMNNAME_A_Asset_Cost_Delta, A_Asset_Cost_Delta);
-  }
-
-  /**
-   * Get Delta Asset Cost.
-   *
-   * @return Delta Asset Cost
-   */
-  public BigDecimal getA_Asset_Cost_Delta() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Asset_Cost_Delta);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  public org.compiere.model.I_A_Asset_Disposed getA_Asset_Disposed() throws RuntimeException {
-    return (org.compiere.model.I_A_Asset_Disposed)
-        MTable.get(getCtx(), org.compiere.model.I_A_Asset_Disposed.Table_Name)
-            .getPO(getA_Asset_Disposed_ID(), null);
-  }
-
-  /**
-   * Set Asset Disposed.
-   *
-   * @param A_Asset_Disposed_ID Asset Disposed
-   */
-  public void setA_Asset_Disposed_ID(int A_Asset_Disposed_ID) {
-    if (A_Asset_Disposed_ID < 1) set_Value(COLUMNNAME_A_Asset_Disposed_ID, null);
-    else set_Value(COLUMNNAME_A_Asset_Disposed_ID, A_Asset_Disposed_ID);
-  }
-
-  /**
+    /**
    * Get Asset Disposed.
    *
    * @return Asset Disposed
@@ -252,13 +159,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     return ii;
   }
 
-  public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
-    return (org.compiere.model.I_A_Asset)
-        MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), null);
-  }
-
-  /**
+    /**
    * Set Asset.
    *
    * @param A_Asset_ID Asset used internally or by customers
@@ -288,18 +189,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_A_Asset_Remaining, A_Asset_Remaining);
   }
 
-  /**
-   * Get Remaining Amt.
-   *
-   * @return Remaining Amt
-   */
-  public BigDecimal getA_Asset_Remaining() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Asset_Remaining);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Remaining Amt (fiscal).
    *
    * @param A_Asset_Remaining_F Remaining Amt (fiscal)
@@ -308,35 +198,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_A_Asset_Remaining_F, A_Asset_Remaining_F);
   }
 
-  /**
-   * Get Remaining Amt (fiscal).
-   *
-   * @return Remaining Amt (fiscal)
-   */
-  public BigDecimal getA_Asset_Remaining_F() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Asset_Remaining_F);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  public org.compiere.model.I_A_Depreciation_Entry getA_Depreciation_Entry()
-      throws RuntimeException {
-    return (org.compiere.model.I_A_Depreciation_Entry)
-        MTable.get(getCtx(), org.compiere.model.I_A_Depreciation_Entry.Table_Name)
-            .getPO(getA_Depreciation_Entry_ID(), null);
-  }
-
-  /**
-   * Set Depreciation Entry.
-   *
-   * @param A_Depreciation_Entry_ID Depreciation Entry
-   */
-  public void setA_Depreciation_Entry_ID(int A_Depreciation_Entry_ID) {
-    if (A_Depreciation_Entry_ID < 1) set_Value(COLUMNNAME_A_Depreciation_Entry_ID, null);
-    else set_Value(COLUMNNAME_A_Depreciation_Entry_ID, A_Depreciation_Entry_ID);
-  }
-
-  /**
+    /**
    * Get Depreciation Entry.
    *
    * @return Depreciation Entry
@@ -347,17 +209,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     return ii;
   }
 
-  /**
-   * Set A_Depreciation_Exp_ID.
-   *
-   * @param A_Depreciation_Exp_ID A_Depreciation_Exp_ID
-   */
-  public void setA_Depreciation_Exp_ID(int A_Depreciation_Exp_ID) {
-    if (A_Depreciation_Exp_ID < 1) set_ValueNoCheck(COLUMNNAME_A_Depreciation_Exp_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_A_Depreciation_Exp_ID, A_Depreciation_Exp_ID);
-  }
-
-  /**
+    /**
    * Get A_Depreciation_Exp_ID.
    *
    * @return A_Depreciation_Exp_ID
@@ -377,25 +229,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     return new KeyNamePair(getId(), String.valueOf(getA_Depreciation_Exp_ID()));
   }
 
-  /**
-   * Set A_Depreciation_Exp_UU.
-   *
-   * @param A_Depreciation_Exp_UU A_Depreciation_Exp_UU
-   */
-  public void setA_Depreciation_Exp_UU(String A_Depreciation_Exp_UU) {
-    set_Value(COLUMNNAME_A_Depreciation_Exp_UU, A_Depreciation_Exp_UU);
-  }
-
-  /**
-   * Get A_Depreciation_Exp_UU.
-   *
-   * @return A_Depreciation_Exp_UU
-   */
-  public String getA_Depreciation_Exp_UU() {
-    return (String) get_Value(COLUMNNAME_A_Depreciation_Exp_UU);
-  }
-
-  /** A_Entry_Type AD_Reference_ID=53257 */
+    /** A_Entry_Type AD_Reference_ID=53257 */
   public static final int A_ENTRY_TYPE_AD_Reference_ID = 53257;
   /** Depreciation = DEP */
   public static final String A_ENTRY_TYPE_Depreciation = "DEP";
@@ -448,13 +282,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     return ii;
   }
 
-  public I_C_ValidCombination getCR_Account() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getCR_Account_ID(), null);
-  }
-
-  /**
+    /**
    * Set Account (credit).
    *
    * @param CR_Account_ID Account used
@@ -502,22 +330,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_Description, Description);
   }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  public I_C_ValidCombination getDR_Account() throws RuntimeException {
-    return (I_C_ValidCombination)
-        MTable.get(getCtx(), I_C_ValidCombination.Table_Name)
-            .getPO(getDR_Account_ID(), null);
-  }
-
-  /**
+    /**
    * Set Account (debit).
    *
    * @param DR_Account_ID Account used
@@ -587,16 +400,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_Help, Help);
   }
 
-  /**
-   * Get Comment/Help.
-   *
-   * @return Comment or Hint
-   */
-  public String getHelp() {
-    return (String) get_Value(COLUMNNAME_Help);
-  }
-
-  /**
+    /**
    * Set Depreciate.
    *
    * @param IsDepreciated The asset will be depreciated
@@ -605,21 +409,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_IsDepreciated, IsDepreciated);
   }
 
-  /**
-   * Get Depreciate.
-   *
-   * @return The asset will be depreciated
-   */
-  public boolean isDepreciated() {
-    Object oo = get_Value(COLUMNNAME_IsDepreciated);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /** PostingType AD_Reference_ID=125 */
+    /** PostingType AD_Reference_ID=125 */
   public static final int POSTINGTYPE_AD_Reference_ID = 125;
   /** Actual = A */
   public static final String POSTINGTYPE_Actual = "A";
@@ -673,30 +463,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     return false;
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Processing);
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return (Boolean) oo;
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Usable Life - Months.
    *
    * @param UseLifeMonths Months of the usable life of the asset
@@ -705,18 +472,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_UseLifeMonths, UseLifeMonths);
   }
 
-  /**
-   * Get Usable Life - Months.
-   *
-   * @return Months of the usable life of the asset
-   */
-  public int getUseLifeMonths() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_UseLifeMonths);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Use Life - Months (fiscal).
    *
    * @param UseLifeMonths_F Use Life - Months (fiscal)
@@ -725,14 +481,4 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     set_Value(COLUMNNAME_UseLifeMonths_F, UseLifeMonths_F);
   }
 
-  /**
-   * Get Use Life - Months (fiscal).
-   *
-   * @return Use Life - Months (fiscal)
-   */
-  public int getUseLifeMonths_F() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_UseLifeMonths_F);
-    if (ii == null) return 0;
-    return ii;
-  }
 }

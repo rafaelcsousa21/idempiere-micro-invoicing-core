@@ -1,7 +1,6 @@
 package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_NodeNext;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -50,13 +49,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_WF_Node getAD_WF_Next() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Node)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Next_ID(), null);
-  }
-
-  /**
+    /**
    * Set Next Node.
    *
    * @param AD_WF_Next_ID Next Node in workflow
@@ -77,13 +70,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
     return ii;
   }
 
-  public org.compiere.model.I_AD_WF_Node getAD_WF_Node() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Node)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Node_ID(), null);
-  }
-
-  /**
+    /**
    * Set Node.
    *
    * @param AD_WF_Node_ID Workflow Node (activity), step or process
@@ -113,17 +100,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
     return new KeyNamePair(getId(), String.valueOf(getAD_WF_Node_ID()));
   }
 
-  /**
-   * Set Node Transition.
-   *
-   * @param AD_WF_NodeNext_ID Workflow Node Transition
-   */
-  public void setAD_WF_NodeNext_ID(int AD_WF_NodeNext_ID) {
-    if (AD_WF_NodeNext_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_NodeNext_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_WF_NodeNext_ID, Integer.valueOf(AD_WF_NodeNext_ID));
-  }
-
-  /**
+    /**
    * Get Node Transition.
    *
    * @return Workflow Node Transition
@@ -134,34 +111,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
     return ii;
   }
 
-  /**
-   * Set AD_WF_NodeNext_UU.
-   *
-   * @param AD_WF_NodeNext_UU AD_WF_NodeNext_UU
-   */
-  public void setAD_WF_NodeNext_UU(String AD_WF_NodeNext_UU) {
-    set_Value(COLUMNNAME_AD_WF_NodeNext_UU, AD_WF_NodeNext_UU);
-  }
-
-  /**
-   * Get AD_WF_NodeNext_UU.
-   *
-   * @return AD_WF_NodeNext_UU
-   */
-  public String getAD_WF_NodeNext_UU() {
-    return (String) get_Value(COLUMNNAME_AD_WF_NodeNext_UU);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -182,16 +132,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
     set_Value(COLUMNNAME_EntityType, EntityType);
   }
 
-  /**
-   * Get Entity Type.
-   *
-   * @return Dictionary Entity Type; Determines ownership and synchronization
-   */
-  public String getEntityType() {
-    return (String) get_Value(COLUMNNAME_EntityType);
-  }
-
-  /**
+    /**
    * Set Std User Workflow.
    *
    * @param IsStdUserWorkflow Standard Manual User Approval Workflow
@@ -234,25 +175,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
     return ii;
   }
 
-  /**
-   * Set Transition Code.
-   *
-   * @param TransitionCode Code resulting in TRUE of FALSE
-   */
-  public void setTransitionCode(String TransitionCode) {
-    set_Value(COLUMNNAME_TransitionCode, TransitionCode);
-  }
-
-  /**
-   * Get Transition Code.
-   *
-   * @return Code resulting in TRUE of FALSE
-   */
-  public String getTransitionCode() {
-    return (String) get_Value(COLUMNNAME_TransitionCode);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_AD_WF_NodeNext.Table_ID;
   }

@@ -45,27 +45,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
     return sb.toString();
   }
 
-  /**
-   * Set Committed Amount.
-   *
-   * @param CommittedAmt The (legal) commitment amount
-   */
-  public void setCommittedAmt(BigDecimal CommittedAmt) {
-    set_Value(COLUMNNAME_CommittedAmt, CommittedAmt);
-  }
-
-  /**
-   * Get Committed Amount.
-   *
-   * @return The (legal) commitment amount
-   */
-  public BigDecimal getCommittedAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CommittedAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
+    public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
     return (org.compiere.model.I_C_ProjectPhase)
         MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
             .getPO(getC_ProjectPhase_ID(), null);
@@ -92,17 +72,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
     return ii;
   }
 
-  /**
-   * Set Project Task.
-   *
-   * @param C_ProjectTask_ID Actual Project Task in a Phase
-   */
-  public void setC_ProjectTask_ID(int C_ProjectTask_ID) {
-    if (C_ProjectTask_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ProjectTask_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
-  }
-
-  /**
+    /**
    * Get Project Task.
    *
    * @return Actual Project Task in a Phase
@@ -113,31 +83,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
     return ii;
   }
 
-  /**
-   * Set C_ProjectTask_UU.
-   *
-   * @param C_ProjectTask_UU C_ProjectTask_UU
-   */
-  public void setC_ProjectTask_UU(String C_ProjectTask_UU) {
-    set_Value(COLUMNNAME_C_ProjectTask_UU, C_ProjectTask_UU);
-  }
-
-  /**
-   * Get C_ProjectTask_UU.
-   *
-   * @return C_ProjectTask_UU
-   */
-  public String getC_ProjectTask_UU() {
-    return (String) get_Value(COLUMNNAME_C_ProjectTask_UU);
-  }
-
-  public org.compiere.model.I_C_Task getC_Task() throws RuntimeException {
-    return (org.compiere.model.I_C_Task)
-        MTable.get(getCtx(), org.compiere.model.I_C_Task.Table_Name)
-            .getPO(getC_Task_ID(), null);
-  }
-
-  /**
+    /**
    * Set Standard Task.
    *
    * @param C_Task_ID Standard Project Type Task
@@ -185,22 +131,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
     set_Value(COLUMNNAME_Help, Help);
   }
 
-  /**
-   * Get Comment/Help.
-   *
-   * @return Comment or Hint
-   */
-  public String getHelp() {
-    return (String) get_Value(COLUMNNAME_Help);
-  }
-
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -221,27 +152,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
     return ii;
   }
 
-  /**
-   * Set Planned Amount.
-   *
-   * @param PlannedAmt Planned amount for this project
-   */
-  public void setPlannedAmt(BigDecimal PlannedAmt) {
-    set_Value(COLUMNNAME_PlannedAmt, PlannedAmt);
-  }
-
-  /**
-   * Get Planned Amount.
-   *
-   * @return Planned amount for this project
-   */
-  public BigDecimal getPlannedAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PlannedAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /** ProjInvoiceRule AD_Reference_ID=383 */
+    /** ProjInvoiceRule AD_Reference_ID=383 */
   public static final int PROJINVOICERULE_AD_Reference_ID = 383;
   /** None = - */
   public static final String PROJINVOICERULE_None = "-";
@@ -253,26 +164,8 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
   public static final String PROJINVOICERULE_TimeMaterial = "T";
   /** Product Quantity = P */
   public static final String PROJINVOICERULE_ProductQuantity = "P";
-  /**
-   * Set Invoice Rule.
-   *
-   * @param ProjInvoiceRule Invoice Rule for the project
-   */
-  public void setProjInvoiceRule(String ProjInvoiceRule) {
 
-    set_Value(COLUMNNAME_ProjInvoiceRule, ProjInvoiceRule);
-  }
-
-  /**
-   * Get Invoice Rule.
-   *
-   * @return Invoice Rule for the project
-   */
-  public String getProjInvoiceRule() {
-    return (String) get_Value(COLUMNNAME_ProjInvoiceRule);
-  }
-
-  /**
+    /**
    * Set Quantity.
    *
    * @param Qty Quantity

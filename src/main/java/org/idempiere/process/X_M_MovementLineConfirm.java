@@ -1,7 +1,6 @@
 package org.idempiere.process;
 
 import org.compiere.model.I_M_MovementLineConfirm;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -71,25 +70,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     return bd;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Difference.
    *
    * @param DifferenceQty Difference Quantity
@@ -109,13 +90,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     return bd;
   }
 
-  public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
-    return (org.compiere.model.I_M_InventoryLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getM_InventoryLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Phys.Inventory Line.
    *
    * @param M_InventoryLine_ID Unique line in an Inventory document
@@ -136,13 +111,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     return ii;
   }
 
-  public org.compiere.model.I_M_MovementConfirm getM_MovementConfirm() throws RuntimeException {
-    return (org.compiere.model.I_M_MovementConfirm)
-        MTable.get(getCtx(), org.compiere.model.I_M_MovementConfirm.Table_Name)
-            .getPO(getM_MovementConfirm_ID(), null);
-  }
-
-  /**
+    /**
    * Set Move Confirm.
    *
    * @param M_MovementConfirm_ID Inventory Move Confirmation
@@ -172,54 +141,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     return new KeyNamePair(getId(), String.valueOf(getM_MovementConfirm_ID()));
   }
 
-  /**
-   * Set Move Line Confirm.
-   *
-   * @param M_MovementLineConfirm_ID Inventory Move Line Confirmation
-   */
-  public void setM_MovementLineConfirm_ID(int M_MovementLineConfirm_ID) {
-    if (M_MovementLineConfirm_ID < 1) set_ValueNoCheck(COLUMNNAME_M_MovementLineConfirm_ID, null);
-    else
-      set_ValueNoCheck(
-          COLUMNNAME_M_MovementLineConfirm_ID, Integer.valueOf(M_MovementLineConfirm_ID));
-  }
-
-  /**
-   * Get Move Line Confirm.
-   *
-   * @return Inventory Move Line Confirmation
-   */
-  public int getM_MovementLineConfirm_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_MovementLineConfirm_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set M_MovementLineConfirm_UU.
-   *
-   * @param M_MovementLineConfirm_UU M_MovementLineConfirm_UU
-   */
-  public void setM_MovementLineConfirm_UU(String M_MovementLineConfirm_UU) {
-    set_Value(COLUMNNAME_M_MovementLineConfirm_UU, M_MovementLineConfirm_UU);
-  }
-
-  /**
-   * Get M_MovementLineConfirm_UU.
-   *
-   * @return M_MovementLineConfirm_UU
-   */
-  public String getM_MovementLineConfirm_UU() {
-    return (String) get_Value(COLUMNNAME_M_MovementLineConfirm_UU);
-  }
-
-  public org.compiere.model.I_M_MovementLine getM_MovementLine() throws RuntimeException {
-    return (org.compiere.model.I_M_MovementLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-            .getPO(getM_MovementLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Move Line.
    *
    * @param M_MovementLine_ID Inventory Move document Line
@@ -249,21 +171,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Scrapped Quantity.
    *
    * @param ScrappedQty The Quantity scrapped due to QA issues

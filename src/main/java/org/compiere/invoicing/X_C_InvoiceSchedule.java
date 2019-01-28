@@ -45,16 +45,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
     return sb.toString();
   }
 
-  /**
-   * Set Amount.
-   *
-   * @param Amt Amount
-   */
-  public void setAmt(BigDecimal Amt) {
-    set_Value(COLUMNNAME_Amt, Amt);
-  }
-
-  /**
+    /**
    * Get Amount.
    *
    * @return Amount
@@ -65,96 +56,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
     return bd;
   }
 
-  /**
-   * Set Invoice Schedule.
-   *
-   * @param C_InvoiceSchedule_ID Schedule for generating Invoices
-   */
-  public void setC_InvoiceSchedule_ID(int C_InvoiceSchedule_ID) {
-    if (C_InvoiceSchedule_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceSchedule_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_InvoiceSchedule_ID, Integer.valueOf(C_InvoiceSchedule_ID));
-  }
-
-  /**
-   * Get Invoice Schedule.
-   *
-   * @return Schedule for generating Invoices
-   */
-  public int getC_InvoiceSchedule_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceSchedule_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set C_InvoiceSchedule_UU.
-   *
-   * @param C_InvoiceSchedule_UU C_InvoiceSchedule_UU
-   */
-  public void setC_InvoiceSchedule_UU(String C_InvoiceSchedule_UU) {
-    set_Value(COLUMNNAME_C_InvoiceSchedule_UU, C_InvoiceSchedule_UU);
-  }
-
-  /**
-   * Get C_InvoiceSchedule_UU.
-   *
-   * @return C_InvoiceSchedule_UU
-   */
-  public String getC_InvoiceSchedule_UU() {
-    return (String) get_Value(COLUMNNAME_C_InvoiceSchedule_UU);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set Invoice on even weeks.
-   *
-   * @param EvenInvoiceWeek Send invoices on even weeks
-   */
-  public void setEvenInvoiceWeek(boolean EvenInvoiceWeek) {
-    set_Value(COLUMNNAME_EvenInvoiceWeek, Boolean.valueOf(EvenInvoiceWeek));
-  }
-
-  /**
-   * Get Invoice on even weeks.
-   *
-   * @return Send invoices on even weeks
-   */
-  public boolean isEvenInvoiceWeek() {
-    Object oo = get_Value(COLUMNNAME_EvenInvoiceWeek);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Invoice Day.
-   *
-   * @param InvoiceDay Day of Invoice Generation
-   */
-  public void setInvoiceDay(int InvoiceDay) {
-    set_Value(COLUMNNAME_InvoiceDay, Integer.valueOf(InvoiceDay));
-  }
-
-  /**
+    /**
    * Get Invoice Day.
    *
    * @return Day of Invoice Generation
@@ -165,16 +67,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
     return ii;
   }
 
-  /**
-   * Set Invoice day cut-off.
-   *
-   * @param InvoiceDayCutoff Last day for including shipments
-   */
-  public void setInvoiceDayCutoff(int InvoiceDayCutoff) {
-    set_Value(COLUMNNAME_InvoiceDayCutoff, Integer.valueOf(InvoiceDayCutoff));
-  }
-
-  /**
+    /**
    * Get Invoice day cut-off.
    *
    * @return Last day for including shipments
@@ -195,17 +88,8 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
   public static final String INVOICEFREQUENCY_Monthly = "M";
   /** Twice Monthly = T */
   public static final String INVOICEFREQUENCY_TwiceMonthly = "T";
-  /**
-   * Set Invoice Frequency.
-   *
-   * @param InvoiceFrequency How often invoices will be generated
-   */
-  public void setInvoiceFrequency(String InvoiceFrequency) {
 
-    set_Value(COLUMNNAME_InvoiceFrequency, InvoiceFrequency);
-  }
-
-  /**
+    /**
    * Get Invoice Frequency.
    *
    * @return How often invoices will be generated
@@ -230,17 +114,8 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
   public static final String INVOICEWEEKDAY_Friday = "5";
   /** Saturday = 6 */
   public static final String INVOICEWEEKDAY_Saturday = "6";
-  /**
-   * Set Invoice Week Day.
-   *
-   * @param InvoiceWeekDay Day to generate invoices
-   */
-  public void setInvoiceWeekDay(String InvoiceWeekDay) {
 
-    set_Value(COLUMNNAME_InvoiceWeekDay, InvoiceWeekDay);
-  }
-
-  /**
+    /**
    * Get Invoice Week Day.
    *
    * @return Day to generate invoices
@@ -265,17 +140,8 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
   public static final String INVOICEWEEKDAYCUTOFF_Friday = "5";
   /** Saturday = 6 */
   public static final String INVOICEWEEKDAYCUTOFF_Saturday = "6";
-  /**
-   * Set Invoice weekday cutoff.
-   *
-   * @param InvoiceWeekDayCutoff Last day in the week for shipments to be included
-   */
-  public void setInvoiceWeekDayCutoff(String InvoiceWeekDayCutoff) {
 
-    set_Value(COLUMNNAME_InvoiceWeekDayCutoff, InvoiceWeekDayCutoff);
-  }
-
-  /**
+    /**
    * Get Invoice weekday cutoff.
    *
    * @return Last day in the week for shipments to be included
@@ -284,16 +150,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
     return (String) get_Value(COLUMNNAME_InvoiceWeekDayCutoff);
   }
 
-  /**
-   * Set Amount Limit.
-   *
-   * @param IsAmount Send invoices only if the amount exceeds the limit
-   */
-  public void setIsAmount(boolean IsAmount) {
-    set_Value(COLUMNNAME_IsAmount, Boolean.valueOf(IsAmount));
-  }
-
-  /**
+    /**
    * Get Amount Limit.
    *
    * @return Send invoices only if the amount exceeds the limit
@@ -307,39 +164,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
     return false;
   }
 
-  /**
-   * Set Default.
-   *
-   * @param IsDefault Default value
-   */
-  public void setIsDefault(boolean IsDefault) {
-    set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
-  }
-
-  /**
-   * Get Default.
-   *
-   * @return Default value
-   */
-  public boolean isDefault() {
-    Object oo = get_Value(COLUMNNAME_IsDefault);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Name.
-   *
-   * @param Name Alphanumeric identifier of the entity
-   */
-  public void setName(String Name) {
-    set_Value(HasName.Companion.getCOLUMNNAME_Name(), Name);
-  }
-
-  /**
+    /**
    * Get Name.
    *
    * @return Alphanumeric identifier of the entity
