@@ -1,6 +1,5 @@
 package org.idempiere.process;
 
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_MovementLineMA;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -92,13 +91,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA, I_Pers
     return false;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -148,34 +141,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA, I_Pers
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_MovementLine_ID()));
-  }
-
-  /**
-   * Set M_MovementLineMA_UU.
-   *
-   * @param M_MovementLineMA_UU M_MovementLineMA_UU
-   */
-  public void setM_MovementLineMA_UU(String M_MovementLineMA_UU) {
-    set_Value(COLUMNNAME_M_MovementLineMA_UU, M_MovementLineMA_UU);
-  }
-
-  /**
-   * Get M_MovementLineMA_UU.
-   *
-   * @return M_MovementLineMA_UU
-   */
-  public String getM_MovementLineMA_UU() {
-    return (String) get_Value(COLUMNNAME_M_MovementLineMA_UU);
-  }
-
-  /**
+    /**
    * Set Movement Quantity.
    *
    * @param MovementQty Quantity of a product moved.

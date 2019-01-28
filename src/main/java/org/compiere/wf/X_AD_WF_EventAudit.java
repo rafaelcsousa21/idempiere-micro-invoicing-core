@@ -1,9 +1,7 @@
 package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_EventAudit;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
@@ -51,13 +49,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
-    return (org.compiere.model.I_AD_Table)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), null);
-  }
-
-  /**
+    /**
    * Set Table.
    *
    * @param AD_Table_ID Database Table information
@@ -78,13 +70,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
+    /**
    * Set User/Contact.
    *
    * @param AD_User_ID User within the system - Internal or Business Partner Contact
@@ -105,17 +91,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     return ii;
   }
 
-  /**
-   * Set Workflow Event Audit.
-   *
-   * @param AD_WF_EventAudit_ID Workflow Process Activity Event Audit Information
-   */
-  public void setAD_WF_EventAudit_ID(int AD_WF_EventAudit_ID) {
-    if (AD_WF_EventAudit_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_EventAudit_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_WF_EventAudit_ID, Integer.valueOf(AD_WF_EventAudit_ID));
-  }
-
-  /**
+    /**
    * Get Workflow Event Audit.
    *
    * @return Workflow Process Activity Event Audit Information
@@ -126,40 +102,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getAD_WF_EventAudit_ID()));
-  }
-
-  /**
-   * Set AD_WF_EventAudit_UU.
-   *
-   * @param AD_WF_EventAudit_UU AD_WF_EventAudit_UU
-   */
-  public void setAD_WF_EventAudit_UU(String AD_WF_EventAudit_UU) {
-    set_Value(COLUMNNAME_AD_WF_EventAudit_UU, AD_WF_EventAudit_UU);
-  }
-
-  /**
-   * Get AD_WF_EventAudit_UU.
-   *
-   * @return AD_WF_EventAudit_UU
-   */
-  public String getAD_WF_EventAudit_UU() {
-    return (String) get_Value(COLUMNNAME_AD_WF_EventAudit_UU);
-  }
-
-  public org.compiere.model.I_AD_WF_Node getAD_WF_Node() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Node)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Node_ID(), null);
-  }
-
-  /**
+    /**
    * Set Node.
    *
    * @param AD_WF_Node_ID Workflow Node (activity), step or process
@@ -180,13 +123,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     return ii;
   }
 
-  public org.compiere.model.I_AD_WF_Process getAD_WF_Process() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Process)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Process.Table_Name)
-            .getPO(getAD_WF_Process_ID(), null);
-  }
-
-  /**
+    /**
    * Set Workflow Process.
    *
    * @param AD_WF_Process_ID Actual Workflow Process Instance
@@ -207,13 +144,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     return ii;
   }
 
-  public org.compiere.model.I_AD_WF_Responsible getAD_WF_Responsible() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Responsible)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Responsible.Table_Name)
-            .getPO(getAD_WF_Responsible_ID(), null);
-  }
-
-  /**
+    /**
    * Set Workflow Responsible.
    *
    * @param AD_WF_Responsible_ID Responsible for Workflow Execution
@@ -243,25 +174,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     set_Value(COLUMNNAME_AttributeName, AttributeName);
   }
 
-  /**
-   * Get Attribute Name.
-   *
-   * @return Name of the Attribute
-   */
-  public String getAttributeName() {
-    return (String) get_Value(COLUMNNAME_AttributeName);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -279,20 +192,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     set_Value(COLUMNNAME_ElapsedTimeMS, ElapsedTimeMS);
   }
 
-  /**
-   * Get Elapsed Time ms.
-   *
-   * @return Elapsed Time in milli seconds
-   */
-  public BigDecimal getElapsedTimeMS() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ElapsedTimeMS);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /** EventType AD_Reference_ID=306 */
-  public static final int EVENTTYPE_AD_Reference_ID = 306;
-  /** Process Created = PC */
+    /** Process Created = PC */
   public static final String EVENTTYPE_ProcessCreated = "PC";
   /** State Changed = SC */
   public static final String EVENTTYPE_StateChanged = "SC";
@@ -308,16 +208,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     set_Value(COLUMNNAME_EventType, EventType);
   }
 
-  /**
-   * Get Event Type.
-   *
-   * @return Type of Event
-   */
-  public String getEventType() {
-    return (String) get_Value(COLUMNNAME_EventType);
-  }
-
-  /**
+    /**
    * Set New Value.
    *
    * @param NewValue New field value
@@ -326,16 +217,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     set_Value(COLUMNNAME_NewValue, NewValue);
   }
 
-  /**
-   * Get New Value.
-   *
-   * @return New field value
-   */
-  public String getNewValue() {
-    return (String) get_Value(COLUMNNAME_NewValue);
-  }
-
-  /**
+    /**
    * Set Old Value.
    *
    * @param OldValue The old file data
@@ -344,16 +226,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     set_Value(COLUMNNAME_OldValue, OldValue);
   }
 
-  /**
-   * Get Old Value.
-   *
-   * @return The old file data
-   */
-  public String getOldValue() {
-    return (String) get_Value(COLUMNNAME_OldValue);
-  }
-
-  /**
+    /**
    * Set Record ID.
    *
    * @param Record_ID Direct internal record ID
@@ -363,18 +236,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     else set_Value(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
   }
 
-  /**
-   * Get Record ID.
-   *
-   * @return Direct internal record ID
-   */
-  public int getRecord_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Record_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Text Message.
    *
    * @param TextMsg Text Message
@@ -392,21 +254,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     return (String) get_Value(COLUMNNAME_TextMsg);
   }
 
-  /** WFState AD_Reference_ID=305 */
-  public static final int WFSTATE_AD_Reference_ID = 305;
-  /** Not Started = ON */
-  public static final String WFSTATE_NotStarted = "ON";
-  /** Running = OR */
-  public static final String WFSTATE_Running = "OR";
-  /** Suspended = OS */
-  public static final String WFSTATE_Suspended = "OS";
-  /** Completed = CC */
-  public static final String WFSTATE_Completed = "CC";
-  /** Aborted = CA */
-  public static final String WFSTATE_Aborted = "CA";
-  /** Terminated = CT */
-  public static final String WFSTATE_Terminated = "CT";
-  /**
+    /**
    * Set Workflow State.
    *
    * @param WFState State of the execution of the workflow
@@ -416,16 +264,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     set_Value(COLUMNNAME_WFState, WFState);
   }
 
-  /**
-   * Get Workflow State.
-   *
-   * @return State of the execution of the workflow
-   */
-  public String getWFState() {
-    return (String) get_Value(COLUMNNAME_WFState);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_AD_WF_EventAudit.Table_ID;
   }

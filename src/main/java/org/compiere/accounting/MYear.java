@@ -95,19 +95,7 @@ public class MYear extends X_C_Year {
     return 0;
   } //	getYearAsInt
 
-  /**
-   * Get last two characters of year
-   *
-   * @return 01
-   */
-  public String getYY() {
-    int yy = getYearAsInt();
-    String year = String.valueOf(yy);
-    if (year.length() == 4) return year.substring(2, 4);
-    return getFiscalYear();
-  } //	getYY
-
-  /**
+    /**
    * String Representation
    *
    * @return info

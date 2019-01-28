@@ -3,7 +3,6 @@ package org.compiere.wf;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.model.AdempiereProcessorLog;
-import org.compiere.model.I_AD_WorkflowProcessor;
 import org.compiere.orm.Query;
 import org.compiere.schedule.MSchedule;
 
@@ -12,8 +11,6 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-
-import static software.hsharp.core.util.DBKt.executeUpdate;
 
 
 /**
@@ -27,23 +24,7 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
   /** */
   private static final long serialVersionUID = 6110376502075157361L;
 
-  /**
-   * Get Active
-   *
-   * @param ctx context
-   * @return active processors
-   */
-  public static MWorkflowProcessor[] getActive(Properties ctx) {
-    List<MWorkflowProcessor> list =
-        new Query(ctx, I_AD_WorkflowProcessor.Table_Name, null, null)
-            .setOnlyActiveRecords(true)
-            .list();
-    MWorkflowProcessor[] retValue = new MWorkflowProcessor[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getActive
-
-  /**
+    /**
    * ************************************************************************ Standard Constructor
    *
    * @param ctx context
@@ -105,25 +86,7 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
     return retValue;
   } //	getLogs
 
-  /**
-   * Delete old Request Log
-   *
-   * @return number of records
-   */
-  public int deleteLog() {
-    if (getKeepLogDays() < 1) return 0;
-    String sql =
-        "DELETE AD_WorkflowProcessorLog "
-            + "WHERE AD_WorkflowProcessor_ID="
-            + getAD_WorkflowProcessor_ID()
-            + " AND (Created+"
-            + getKeepLogDays()
-            + ") < SysDate";
-    int no = executeUpdate(sql, null);
-    return no;
-  } //	deleteLog
-
-  /**
+    /**
    * Before Save
    *
    * @param newRecord new
@@ -169,4 +132,32 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
   public String getCronPattern() {
     return MSchedule.get(getCtx(), getAD_Schedule_ID()).getCronPattern();
   }
+
+  /**
+   * Get Description.
+   *
+   * @return Optional short description of the record
+   */
+  public String getDescription() {
+    return (String) get_Value(COLUMNNAME_Description);
+  }
+
+  /**
+   * Get Date last run.
+   *
+   * @return Date the process was last run.
+   */
+  public Timestamp getDateLastRun() {
+    return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
+  }
+
+  /**
+   * Set Date last run.
+   *
+   * @param DateLastRun Date the process was last run.
+   */
+  public void setDateLastRun(Timestamp DateLastRun) {
+    set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+  }
+
 } //	MWorkflowProcessor

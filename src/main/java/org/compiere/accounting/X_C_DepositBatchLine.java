@@ -1,9 +1,7 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_DepositBatchLine;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
@@ -52,13 +50,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_DepositBatch getC_DepositBatch() throws RuntimeException {
-    return (org.compiere.model.I_C_DepositBatch)
-        MTable.get(getCtx(), org.compiere.model.I_C_DepositBatch.Table_Name)
-            .getPO(getC_DepositBatch_ID(), null);
-  }
-
-  /**
+    /**
    * Set Deposit Batch.
    *
    * @param C_DepositBatch_ID Deposit Batch
@@ -79,61 +71,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_DepositBatch_ID()));
-  }
-
-  /**
-   * Set Deposit Batch Line.
-   *
-   * @param C_DepositBatchLine_ID Deposit Batch Line
-   */
-  public void setC_DepositBatchLine_ID(int C_DepositBatchLine_ID) {
-    if (C_DepositBatchLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_DepositBatchLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_DepositBatchLine_ID, Integer.valueOf(C_DepositBatchLine_ID));
-  }
-
-  /**
-   * Get Deposit Batch Line.
-   *
-   * @return Deposit Batch Line
-   */
-  public int getC_DepositBatchLine_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_DepositBatchLine_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set C_DepositBatchLine_UU.
-   *
-   * @param C_DepositBatchLine_UU C_DepositBatchLine_UU
-   */
-  public void setC_DepositBatchLine_UU(String C_DepositBatchLine_UU) {
-    set_Value(COLUMNNAME_C_DepositBatchLine_UU, C_DepositBatchLine_UU);
-  }
-
-  /**
-   * Get C_DepositBatchLine_UU.
-   *
-   * @return C_DepositBatchLine_UU
-   */
-  public String getC_DepositBatchLine_UU() {
-    return (String) get_Value(COLUMNNAME_C_DepositBatchLine_UU);
-  }
-
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment.
    *
    * @param C_Payment_ID Payment identifier
@@ -183,18 +121,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
     set_Value(COLUMNNAME_PayAmt, PayAmt);
   }
 
-  /**
-   * Get Payment amount.
-   *
-   * @return Amount being paid
-   */
-  public BigDecimal getPayAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PayAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -203,44 +130,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_DepositBatchLine.Table_ID;
   }

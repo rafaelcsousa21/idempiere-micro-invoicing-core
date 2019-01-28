@@ -82,32 +82,7 @@ public class X_C_OrderLandedCostAllocation extends PO
     set_Value(COLUMNNAME_Base, Base);
   }
 
-  /**
-   * Get Base.
-   *
-   * @return Calculation Base
-   */
-  public BigDecimal getBase() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Base);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Estimated Landed Cost Allocation.
-   *
-   * @param C_OrderLandedCostAllocation_ID Estimated Landed Cost Allocation
-   */
-  public void setC_OrderLandedCostAllocation_ID(int C_OrderLandedCostAllocation_ID) {
-    if (C_OrderLandedCostAllocation_ID < 1)
-      set_ValueNoCheck(COLUMNNAME_C_OrderLandedCostAllocation_ID, null);
-    else
-      set_ValueNoCheck(
-          COLUMNNAME_C_OrderLandedCostAllocation_ID,
-          Integer.valueOf(C_OrderLandedCostAllocation_ID));
-  }
-
-  /**
+    /**
    * Get Estimated Landed Cost Allocation.
    *
    * @return Estimated Landed Cost Allocation
@@ -118,25 +93,7 @@ public class X_C_OrderLandedCostAllocation extends PO
     return ii;
   }
 
-  /**
-   * Set C_OrderLandedCostAllocation_UU.
-   *
-   * @param C_OrderLandedCostAllocation_UU C_OrderLandedCostAllocation_UU
-   */
-  public void setC_OrderLandedCostAllocation_UU(String C_OrderLandedCostAllocation_UU) {
-    set_Value(COLUMNNAME_C_OrderLandedCostAllocation_UU, C_OrderLandedCostAllocation_UU);
-  }
-
-  /**
-   * Get C_OrderLandedCostAllocation_UU.
-   *
-   * @return C_OrderLandedCostAllocation_UU
-   */
-  public String getC_OrderLandedCostAllocation_UU() {
-    return (String) get_Value(COLUMNNAME_C_OrderLandedCostAllocation_UU);
-  }
-
-  public org.compiere.model.I_C_OrderLandedCost getC_OrderLandedCost() throws RuntimeException {
+    public org.compiere.model.I_C_OrderLandedCost getC_OrderLandedCost() throws RuntimeException {
     return (org.compiere.model.I_C_OrderLandedCost)
         MTable.get(getCtx(), org.compiere.model.I_C_OrderLandedCost.Table_Name)
             .getPO(getC_OrderLandedCost_ID(), null);
@@ -190,30 +147,7 @@ public class X_C_OrderLandedCostAllocation extends PO
     return ii;
   }
 
-  /**
-   * Set Processed.
-   *
-   * @param Processed The document has been processed
-   */
-  public void setProcessed(boolean Processed) {
-    set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
-  }
-
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Quantity.
    *
    * @param Qty Quantity

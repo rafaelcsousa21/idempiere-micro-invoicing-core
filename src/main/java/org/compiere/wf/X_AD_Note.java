@@ -1,7 +1,6 @@
 package org.compiere.wf;
 
 import org.compiere.model.I_AD_Note;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -45,23 +44,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_BroadcastMessage getAD_BroadcastMessage() throws RuntimeException {
-    return (org.compiere.model.I_AD_BroadcastMessage)
-        MTable.get(getCtx(), org.compiere.model.I_AD_BroadcastMessage.Table_Name)
-            .getPO(getAD_BroadcastMessage_ID(), null);
-  }
-
-  /**
-   * Set Broadcast Message.
-   *
-   * @param AD_BroadcastMessage_ID Broadcast Message
-   */
-  public void setAD_BroadcastMessage_ID(int AD_BroadcastMessage_ID) {
-    if (AD_BroadcastMessage_ID < 1) set_Value(COLUMNNAME_AD_BroadcastMessage_ID, null);
-    else set_Value(COLUMNNAME_AD_BroadcastMessage_ID, Integer.valueOf(AD_BroadcastMessage_ID));
-  }
-
-  /**
+    /**
    * Get Broadcast Message.
    *
    * @return Broadcast Message
@@ -72,13 +55,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_AD_Message getAD_Message() throws RuntimeException {
-    return (org.compiere.model.I_AD_Message)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Message.Table_Name)
-            .getPO(getAD_Message_ID(), null);
-  }
-
-  /**
+    /**
    * Set Message.
    *
    * @param AD_Message_ID System Message
@@ -99,26 +76,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getAD_Message_ID()));
-  }
-
-  /**
-   * Set Notice.
-   *
-   * @param AD_Note_ID System Notice
-   */
-  public void setAD_Note_ID(int AD_Note_ID) {
-    if (AD_Note_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Note_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_Note_ID, Integer.valueOf(AD_Note_ID));
-  }
-
-  /**
+    /**
    * Get Notice.
    *
    * @return System Notice
@@ -129,31 +87,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set AD_Note_UU.
-   *
-   * @param AD_Note_UU AD_Note_UU
-   */
-  public void setAD_Note_UU(String AD_Note_UU) {
-    set_Value(COLUMNNAME_AD_Note_UU, AD_Note_UU);
-  }
-
-  /**
-   * Get AD_Note_UU.
-   *
-   * @return AD_Note_UU
-   */
-  public String getAD_Note_UU() {
-    return (String) get_Value(COLUMNNAME_AD_Note_UU);
-  }
-
-  public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
-    return (org.compiere.model.I_AD_Table)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), null);
-  }
-
-  /**
+    /**
    * Set Table.
    *
    * @param AD_Table_ID Database Table information
@@ -174,13 +108,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
+    /**
    * Set User/Contact.
    *
    * @param AD_User_ID User within the system - Internal or Business Partner Contact
@@ -201,23 +129,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_AD_WF_Activity getAD_WF_Activity() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Activity.Table_Name)
-            .getPO(getAD_WF_Activity_ID(), null);
-  }
-
-  /**
-   * Set Workflow Activity.
-   *
-   * @param AD_WF_Activity_ID Workflow Activity
-   */
-  public void setAD_WF_Activity_ID(int AD_WF_Activity_ID) {
-    if (AD_WF_Activity_ID < 1) set_Value(COLUMNNAME_AD_WF_Activity_ID, null);
-    else set_Value(COLUMNNAME_AD_WF_Activity_ID, Integer.valueOf(AD_WF_Activity_ID));
-  }
-
-  /**
+    /**
    * Get Workflow Activity.
    *
    * @return Workflow Activity
@@ -237,16 +149,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     set_Value(COLUMNNAME_Description, Description);
   }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -278,21 +181,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Record ID.
    *
    * @param Record_ID Direct internal record ID
@@ -302,18 +191,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     else set_ValueNoCheck(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
   }
 
-  /**
-   * Get Record ID.
-   *
-   * @return Direct internal record ID
-   */
-  public int getRecord_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Record_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Reference.
    *
    * @param Reference Reference for this record
@@ -340,16 +218,7 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
     set_Value(COLUMNNAME_TextMsg, TextMsg);
   }
 
-  /**
-   * Get Text Message.
-   *
-   * @return Text Message
-   */
-  public String getTextMsg() {
-    return (String) get_Value(COLUMNNAME_TextMsg);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_AD_Note.Table_ID;
   }

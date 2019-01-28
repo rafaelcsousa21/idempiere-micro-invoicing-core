@@ -41,28 +41,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
   private static CCache<Integer, MAssetAcct> s_cache =
       new CCache<Integer, MAssetAcct>(I_A_Asset_Acct.Table_Name, 5);
 
-  /**
-   * Get Asset Accounting (from cache)
-   *
-   * @param ctx context
-   * @param A_Asset_Acct_ID asset accounting id
-   * @return asset accounting or null if not found
-   */
-  public static MAssetAcct get(Properties ctx, int A_Asset_Acct_ID) {
-    MAssetAcct acct = s_cache.get(A_Asset_Acct_ID);
-    if (acct != null) {
-      return acct;
-    }
-    acct = new MAssetAcct(ctx, A_Asset_Acct_ID, null);
-    if (acct.getId() > 0) {
-      addToCache(acct);
-    } else {
-      acct = null;
-    }
-    return acct;
-  }
-
-  /**
+    /**
    * Get asset accounting.
    *
    * @param ctx context
@@ -137,13 +116,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
     return MAcctSchema.get(getCtx(), getC_AcctSchema_ID());
   }
 
-  public MAccount getP_Asset_Acct(int M_Product_ID) {
-    MAcctSchema as = getC_AcctSchema();
-    ProductCost pc = new ProductCost(getCtx(), M_Product_ID, 0, null);
-    return pc.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
-  }
-
-  @Override
+    @Override
   protected boolean beforeSave(boolean newRecord) {
     if (getValidFrom() == null && newRecord) {
       setValidFrom(TimeUtil.getDay(1970, 01, 01)); // FIXME

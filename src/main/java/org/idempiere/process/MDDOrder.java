@@ -7,7 +7,6 @@ import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.*;
 import org.compiere.orm.MDocType;
-import org.compiere.orm.MRefList;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
@@ -22,79 +21,20 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
-import java.io.File;
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.orm.POKt.I_ZERO;
 import static software.hsharp.core.util.DBKt.*;
 
 public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
   /** */
   private static final long serialVersionUID = -5997157712614274458L;
 
-  /**
-   * Create new Order by copying
-   *
-   * @param from order
-   * @param dateDoc date of the document date
-   * @param C_DocTypeTarget_ID target document type
-   * @param isSOTrx sales order
-   * @param counter create counter links
-   * @param copyASI copy line attributes Attribute Set Instance, Resaouce Assignment
-   * @param trxName trx
-   * @return Distribution Order
-   */
-  public static MDDOrder copyFrom(
-      MDDOrder from,
-      Timestamp dateDoc,
-      int C_DocTypeTarget_ID,
-      boolean isSOTrx,
-      boolean counter,
-      boolean copyASI,
-      String trxName) {
-    MDDOrder to = new MDDOrder(from.getCtx(), 0, trxName);
-    to.set_TrxName(trxName);
-    copyValues(from, to, from.getClientId(), from.getOrgId());
-    to.set_ValueNoCheck("DD_Order_ID", I_ZERO);
-    to.set_ValueNoCheck("DocumentNo", null);
-    //
-    to.setDocStatus(DOCSTATUS_Drafted); // 	Draft
-    to.setDocAction(DOCACTION_Complete);
-    //
-    to.setC_DocType_ID(0);
-    to.setIsSOTrx(isSOTrx);
-    //
-    to.setIsSelected(false);
-    to.setDateOrdered(dateDoc);
-    to.setDatePromised(dateDoc); // 	assumption
-    to.setDatePrinted(null);
-    to.setIsPrinted(false);
-    //
-    to.setIsApproved(false);
-    //
-    to.setIsDelivered(false);
-    to.setPosted(false);
-    to.setProcessed(false);
-    if (counter) to.setRef_Order_ID(from.getDD_Order_ID());
-    else to.setRef_Order_ID(0);
-    //
-    if (!to.save(trxName)) throw new IllegalStateException("Could not create Order");
-    if (counter) from.setRef_Order_ID(to.getDD_Order_ID());
-
-    if (to.copyLinesFrom(from, counter, copyASI) == 0)
-      throw new IllegalStateException("Could not create Order Lines");
-
-    return to;
-  } //	copyFrom
-
-  /**
+    /**
    * ************************************************************************ Default Constructor
    *
    * @param ctx context
@@ -193,34 +133,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     else setDescription(desc + " | " + description);
   } //	addDescription
 
-  /**
-   * Set Ship Business Partner
-   *
-   * @param C_BPartner_ID bpartner
-   */
-  public void setShip_BPartner_ID(int C_BPartner_ID) {
-    super.setC_BPartner_ID(C_BPartner_ID);
-  } //	setShip_BPartner_ID
-
-  /**
-   * Set Ship Business Partner Location
-   *
-   * @param C_BPartner_Location_ID bp location
-   */
-  public void setShip_Location_ID(int C_BPartner_Location_ID) {
-    super.setC_BPartner_Location_ID(C_BPartner_Location_ID);
-  } //	setShip_Location_ID
-
-  /**
-   * Set Ship Business Partner Contact
-   *
-   * @param AD_User_ID user
-   */
-  public void setShip_User_ID(int AD_User_ID) {
-    super.setAD_User_ID(AD_User_ID);
-  } //	setShip_User_ID
-
-  /**
+    /**
    * Set Business Partner Defaults & Details. SOTrx should be set.
    *
    * @param bp business partner
@@ -274,42 +187,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     }
   } //	setBPartner
 
-  /**
-   * Copy Lines From other Order
-   *
-   * @param otherOrder order
-   * @param counter set counter info
-   * @param copyASI copy line attributes Attribute Set Instance, Resource Assignment
-   * @return number of lines copied
-   */
-  public int copyLinesFrom(MDDOrder otherOrder, boolean counter, boolean copyASI) {
-    if (isProcessed() || isPosted() || otherOrder == null) return 0;
-    MDDOrderLine[] fromLines = otherOrder.getLines(false, null);
-    int count = 0;
-    for (int i = 0; i < fromLines.length; i++) {
-      MDDOrderLine line = new MDDOrderLine(this);
-      copyValues(fromLines[i], line, getClientId(), getOrgId());
-      line.setDD_Order_ID(getDD_Order_ID());
-      line.setOrder(this);
-      //	References
-      if (!copyASI) {
-        line.setM_AttributeSetInstance_ID(0);
-        // line.setS_ResourceAssignment_ID(0);
-      }
-
-      line.setQtyDelivered(Env.ZERO);
-      line.setQtyReserved(Env.ZERO);
-      line.setDateDelivered(null);
-
-      line.setProcessed(false);
-      if (line.save(null)) count++;
-    }
-    if (fromLines.length != count)
-      log.log(Level.SEVERE, "Line difference - From=" + fromLines.length + " <> Saved=" + count);
-    return count;
-  } //	copyLinesFrom
-
-  /**
+    /**
    * ************************************************************************ String Representation
    *
    * @return info
@@ -338,32 +216,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     return dt.getNameTrl() + " " + getDocumentNo();
   } //	getDocumentInfo
 
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      File temp = File.createTempFile(get_TableName() + getId() + "_", ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    return null;
-  } //	createPDF
-
-  /**
+    /**
    * ************************************************************************ Get Lines of Order
    *
    * @param whereClause where clause or null (starting with AND)
@@ -413,68 +266,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     return getLines(false, null);
   } //	getLines
 
-  /**
-   * Renumber Lines
-   *
-   * @param step start and step
-   */
-  public void renumberLines(int step) {
-    int number = step;
-    MDDOrderLine[] lines = getLines(true, null); // 	Line is default
-    for (int i = 0; i < lines.length; i++) {
-      MDDOrderLine line = lines[i];
-      line.setLine(number);
-      line.saveEx(null);
-      number += step;
-    }
-    m_lines = null;
-  } //	renumberLines
-
-  /**
-   * Get Shipments of Order
-   *
-   * @return shipments
-   */
-  public MMovement[] getMovement() {
-    ArrayList<MMovement> list = new ArrayList<MMovement>();
-    String sql =
-        "SELECT DISTINCT io.* FROM M_MovementLine ml "
-            + "INNER JOIN M_Movement m ON (m.M_Movement_ID = ml.M_Movement_ID) "
-            + "INNER JOIN DD_ORDERLINE ol ON (ol.DD_ORDERLINE_ID=ml.DD_ORDERLINE_ID) "
-            + "INNER JOIN DD_ORDER o ON (o.DD_ORDER_ID=ol.DD_ORDER_ID) "
-            + "WHERE	o.DD_ORDER_ID=? "
-            + "ORDER BY m.Created DESC";
-
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, getDD_Order_ID());
-      rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MMovement(getCtx(), rs, null));
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql, e);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    //
-    MMovement[] retValue = new MMovement[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getShipments
-
-  /**
-   * Get Document Status
-   *
-   * @return Document Status Clear Text
-   */
-  public String getDocStatusName() {
-    return MRefList.getListName(getCtx(), 131, getDocStatus());
-  } //	getDocStatusName
-
-  /**
+    /**
    * Set DocAction
    *
    * @param DocAction doc action

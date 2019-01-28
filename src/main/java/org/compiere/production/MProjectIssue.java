@@ -109,18 +109,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     setMovementQty(MovementQty);
   } //	setMandatory
 
-  /**
-   * Get Parent
-   *
-   * @return project
-   */
-  public MProject getParent() {
-    if (m_parent == null && getC_Project_ID() != 0)
-      m_parent = new MProject(getCtx(), getC_Project_ID(), null);
-    return m_parent;
-  } //	getParent
-
-  /**
+    /**
    * ************************************************************************ Process Issue
    *
    * @return true if processed

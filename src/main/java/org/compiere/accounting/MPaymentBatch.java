@@ -13,22 +13,7 @@ public class MPaymentBatch extends X_C_PaymentBatch {
   /** */
   private static final long serialVersionUID = 779975501904633495L;
 
-  /**
-   * Get Payment Batch for PaySelection
-   *
-   * @param ctx context
-   * @param C_PaySelection_ID id
-   * @param trxName transaction
-   * @return payment batch
-   */
-  public static MPaymentBatch getForPaySelection(
-      Properties ctx, int C_PaySelection_ID, String trxName) {
-    MPaySelection ps = new MPaySelection(ctx, C_PaySelection_ID, trxName);
-    MPaymentBatch retValue = new MPaymentBatch(ps);
-    return retValue;
-  } //	getForPaySelection
-
-  /**
+    /**
    * Standard Constructor
    *
    * @param ctx context

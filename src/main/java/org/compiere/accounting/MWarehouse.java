@@ -80,25 +80,7 @@ public class MWarehouse extends X_M_Warehouse {
     return list.toArray(new MWarehouse[list.size()]);
   } //	get
 
-  /**
-   * FR [ 1966337 ] Get Warehouses Transit for Org
-   *
-   * @param ctx context
-   * @param AD_Org_ID id
-   * @return warehouse
-   */
-  public static MWarehouse[] getInTransitForOrg(Properties ctx, int AD_Org_ID) {
-    final String whereClause = "IsInTransit=? AND AD_Org_ID=?";
-    List<MWarehouse> list =
-        new Query(ctx, I_M_Warehouse.Table_Name, whereClause, null)
-            .setParameters("Y", AD_Org_ID)
-            .setOnlyActiveRecords(true)
-            .setOrderBy(I_M_Warehouse.COLUMNNAME_M_Warehouse_ID)
-            .list();
-    return list.toArray(new MWarehouse[list.size()]);
-  } //	get
-
-  /** Cache */
+    /** Cache */
   private static CCache<Integer, MWarehouse> s_cache =
       new CCache<Integer, MWarehouse>(I_M_Warehouse.Table_Name, 50);
   /**

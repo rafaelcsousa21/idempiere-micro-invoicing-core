@@ -117,23 +117,7 @@ public class MNote extends X_AD_Note {
     setClientOrg(AD_Client_ID, AD_Org_ID);
   } //	MNote
 
-  /**
-   * ************************************************************************ Set Record. (Ss Button
-   * and defaults to String)
-   *
-   * @param AD_Message AD_Message
-   */
-  public void setAD_Message_ID(String AD_Message) {
-    int AD_Message_ID =
-        getSQLValue(null, "SELECT AD_Message_ID FROM AD_Message WHERE Value=?", AD_Message);
-    if (AD_Message_ID != -1) super.setAD_Message_ID(AD_Message_ID);
-    else {
-      super.setAD_Message_ID(240); // 	Error
-      log.log(Level.SEVERE, "setAD_Message_ID - ID not found for '" + AD_Message + "'");
-    }
-  } //	setRecord_ID
-
-  /**
+    /**
    * Set AD_Message_ID. Looks up No Message Found if 0
    *
    * @param AD_Message_ID id
@@ -144,18 +128,7 @@ public class MNote extends X_AD_Note {
     else super.setAD_Message_ID(AD_Message_ID);
   } //	setAD_Message_ID
 
-  /**
-   * Get Message
-   *
-   * @return message
-   */
-  public String getMessage() {
-    int AD_Message_ID = getAD_Message_ID();
-    MMessage msg = MMessage.get(getCtx(), AD_Message_ID);
-    return msg.getMsgText();
-  } //	getMessage
-
-  /**
+    /**
    * Set Client Org
    *
    * @param AD_Client_ID client

@@ -56,27 +56,4 @@ public class NegativeInventoryDisallowedException extends AdempiereException {
     this.MovementQty = MovementQty;
   }
 
-  public int getM_Warehouse_ID() {
-    return M_Warehouse_ID;
-  }
-
-  public int getM_Product_ID() {
-    return M_Product_ID;
-  }
-
-  public int getMAttributeSetInstance_ID() {
-    return M_AttributeSetInstance_ID;
-  }
-
-  public int getM_Locator_ID() {
-    return M_Locator_ID;
-  }
-
-  public BigDecimal getQtyOnHand() {
-    return QtyOnHand;
-  }
-
-  public BigDecimal getMovementQty() {
-    return MovementQty;
-  }
 }

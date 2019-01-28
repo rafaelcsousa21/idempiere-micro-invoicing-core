@@ -1,7 +1,6 @@
 package org.compiere.invoicing;
 
 import org.compiere.model.I_C_BP_BankAccount;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -102,23 +101,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_A_Country);
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
-   * Set User/Contact.
-   *
-   * @param AD_User_ID User within the system - Internal or Business Partner Contact
-   */
-  public void setAD_User_ID(int AD_User_ID) {
-    if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-    else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
-  }
-
-  /**
+    /**
    * Get User/Contact.
    *
    * @return User within the system - Internal or Business Partner Contact
@@ -201,16 +184,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_A_Name);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getA_Name());
-  }
-
-  /**
+    /**
    * Set Account State.
    *
    * @param A_State State of the Credit Card or Account holder
@@ -264,40 +238,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_A_Zip);
   }
 
-  /** BankAccountType AD_Reference_ID=216 */
-  public static final int BANKACCOUNTTYPE_AD_Reference_ID = 216;
-  /** Checking = C */
-  public static final String BANKACCOUNTTYPE_Checking = "C";
-  /** Savings = S */
-  public static final String BANKACCOUNTTYPE_Savings = "S";
-  /** Cash = B */
-  public static final String BANKACCOUNTTYPE_Cash = "B";
-  /** Card = D */
-  public static final String BANKACCOUNTTYPE_Card = "D";
-  /**
-   * Set Bank Account Type.
-   *
-   * @param BankAccountType Bank Account Type
-   */
-  public void setBankAccountType(String BankAccountType) {
-
-    set_Value(COLUMNNAME_BankAccountType, BankAccountType);
-  }
-
-  /**
-   * Get Bank Account Type.
-   *
-   * @return Bank Account Type
-   */
-  public String getBankAccountType() {
-    return (String) get_Value(COLUMNNAME_BankAccountType);
-  }
-
-  /** BPBankAcctUse AD_Reference_ID=393 */
-  public static final int BPBANKACCTUSE_AD_Reference_ID = 393;
-  /** None = N */
-  public static final String BPBANKACCTUSE_None = "N";
-  /** Both = B */
+    /** Both = B */
   public static final String BPBANKACCTUSE_Both = "B";
   /** Direct Debit = D */
   public static final String BPBANKACCTUSE_DirectDebit = "D";
@@ -322,23 +263,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_BPBankAcctUse);
   }
 
-  public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException {
-    return (org.compiere.model.I_C_Bank)
-        MTable.get(getCtx(), org.compiere.model.I_C_Bank.Table_Name)
-            .getPO(getC_Bank_ID(), null);
-  }
-
-  /**
-   * Set Bank.
-   *
-   * @param C_Bank_ID Bank
-   */
-  public void setC_Bank_ID(int C_Bank_ID) {
-    if (C_Bank_ID < 1) set_Value(COLUMNNAME_C_Bank_ID, null);
-    else set_Value(COLUMNNAME_C_Bank_ID, Integer.valueOf(C_Bank_ID));
-  }
-
-  /**
+    /**
    * Get Bank.
    *
    * @return Bank
@@ -349,13 +274,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -376,17 +295,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return ii;
   }
 
-  /**
-   * Set Partner Bank Account.
-   *
-   * @param C_BP_BankAccount_ID Bank Account of the Business Partner
-   */
-  public void setC_BP_BankAccount_ID(int C_BP_BankAccount_ID) {
-    if (C_BP_BankAccount_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BP_BankAccount_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_BP_BankAccount_ID, Integer.valueOf(C_BP_BankAccount_ID));
-  }
-
-  /**
+    /**
    * Get Partner Bank Account.
    *
    * @return Bank Account of the Business Partner
@@ -397,41 +306,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return ii;
   }
 
-  /**
-   * Set C_BP_BankAccount_UU.
-   *
-   * @param C_BP_BankAccount_UU C_BP_BankAccount_UU
-   */
-  public void setC_BP_BankAccount_UU(String C_BP_BankAccount_UU) {
-    set_Value(COLUMNNAME_C_BP_BankAccount_UU, C_BP_BankAccount_UU);
-  }
-
-  /**
-   * Get C_BP_BankAccount_UU.
-   *
-   * @return C_BP_BankAccount_UU
-   */
-  public String getC_BP_BankAccount_UU() {
-    return (String) get_Value(COLUMNNAME_C_BP_BankAccount_UU);
-  }
-
-  public org.compiere.model.I_C_PaymentProcessor getC_PaymentProcessor() throws RuntimeException {
-    return (org.compiere.model.I_C_PaymentProcessor)
-        MTable.get(getCtx(), org.compiere.model.I_C_PaymentProcessor.Table_Name)
-            .getPO(getC_PaymentProcessor_ID(), null);
-  }
-
-  /**
-   * Set Payment Processor.
-   *
-   * @param C_PaymentProcessor_ID Payment processor for electronic payments
-   */
-  public void setC_PaymentProcessor_ID(int C_PaymentProcessor_ID) {
-    if (C_PaymentProcessor_ID < 1) set_Value(COLUMNNAME_C_PaymentProcessor_ID, null);
-    else set_Value(COLUMNNAME_C_PaymentProcessor_ID, Integer.valueOf(C_PaymentProcessor_ID));
-  }
-
-  /**
+    /**
    * Get Payment Processor.
    *
    * @return Payment processor for electronic payments
@@ -500,23 +375,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_CreditCardNumber);
   }
 
-  /** CreditCardType AD_Reference_ID=149 */
-  public static final int CREDITCARDTYPE_AD_Reference_ID = 149;
-  /** Amex = A */
-  public static final String CREDITCARDTYPE_Amex = "A";
-  /** MasterCard = M */
-  public static final String CREDITCARDTYPE_MasterCard = "M";
-  /** Visa = V */
-  public static final String CREDITCARDTYPE_Visa = "V";
-  /** ATM = C */
-  public static final String CREDITCARDTYPE_ATM = "C";
-  /** Diners = D */
-  public static final String CREDITCARDTYPE_Diners = "D";
-  /** Discover = N */
-  public static final String CREDITCARDTYPE_Discover = "N";
-  /** Purchase Card = P */
-  public static final String CREDITCARDTYPE_PurchaseCard = "P";
-  /**
+    /**
    * Set Credit Card.
    *
    * @param CreditCardType Credit Card (Visa, MC, AmEx)
@@ -553,25 +412,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return (String) get_Value(COLUMNNAME_CreditCardVV);
   }
 
-  /**
-   * Set Customer Payment Profile ID.
-   *
-   * @param CustomerPaymentProfileID Customer Payment Profile ID
-   */
-  public void setCustomerPaymentProfileID(String CustomerPaymentProfileID) {
-    set_Value(COLUMNNAME_CustomerPaymentProfileID, CustomerPaymentProfileID);
-  }
-
-  /**
-   * Get Customer Payment Profile ID.
-   *
-   * @return Customer Payment Profile ID
-   */
-  public String getCustomerPaymentProfileID() {
-    return (String) get_Value(COLUMNNAME_CustomerPaymentProfileID);
-  }
-
-  /**
+    /**
    * Set IBAN.
    *
    * @param IBAN International Bank Account Number
@@ -612,15 +453,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     return false;
   }
 
-  /** R_AvsAddr AD_Reference_ID=213 */
-  public static final int R_AVSADDR_AD_Reference_ID = 213;
-  /** Match = Y */
-  public static final String R_AVSADDR_Match = "Y";
-  /** No Match = N */
-  public static final String R_AVSADDR_NoMatch = "N";
-  /** Unavailable = X */
-  public static final String R_AVSADDR_Unavailable = "X";
-  /**
+    /**
    * Set Address verified.
    *
    * @param R_AvsAddr This address has been verified
@@ -630,24 +463,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     set_ValueNoCheck(COLUMNNAME_R_AvsAddr, R_AvsAddr);
   }
 
-  /**
-   * Get Address verified.
-   *
-   * @return This address has been verified
-   */
-  public String getR_AvsAddr() {
-    return (String) get_Value(COLUMNNAME_R_AvsAddr);
-  }
-
-  /** R_AvsZip AD_Reference_ID=213 */
-  public static final int R_AVSZIP_AD_Reference_ID = 213;
-  /** Match = Y */
-  public static final String R_AVSZIP_Match = "Y";
-  /** No Match = N */
-  public static final String R_AVSZIP_NoMatch = "N";
-  /** Unavailable = X */
-  public static final String R_AVSZIP_Unavailable = "X";
-  /**
+    /**
    * Set Zip verified.
    *
    * @param R_AvsZip The Zip Code has been verified
@@ -657,16 +473,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
     set_ValueNoCheck(COLUMNNAME_R_AvsZip, R_AvsZip);
   }
 
-  /**
-   * Get Zip verified.
-   *
-   * @return The Zip Code has been verified
-   */
-  public String getR_AvsZip() {
-    return (String) get_Value(COLUMNNAME_R_AvsZip);
-  }
-
-  /**
+    /**
    * Set Routing No.
    *
    * @param RoutingNo Bank Routing Number

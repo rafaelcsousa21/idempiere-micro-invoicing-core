@@ -1,7 +1,6 @@
 package org.compiere.invoicing;
 
 import org.compiere.model.I_C_InvoiceBatchLine;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -59,17 +58,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return sb.toString();
   }
 
-  /**
-   * Set Trx Organization.
-   *
-   * @param AD_OrgTrx_ID Performing or initiating organization
-   */
-  public void setAD_OrgTrx_ID(int AD_OrgTrx_ID) {
-    if (AD_OrgTrx_ID < 1) set_Value(COLUMNNAME_AD_OrgTrx_ID, null);
-    else set_Value(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
-  }
-
-  /**
+    /**
    * Get Trx Organization.
    *
    * @return Performing or initiating organization
@@ -80,23 +69,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
-   * Set User/Contact.
-   *
-   * @param AD_User_ID User within the system - Internal or Business Partner Contact
-   */
-  public void setAD_User_ID(int AD_User_ID) {
-    if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-    else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
-  }
-
-  /**
+    /**
    * Get User/Contact.
    *
    * @return User within the system - Internal or Business Partner Contact
@@ -107,23 +80,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
-   * Set Activity.
-   *
-   * @param C_Activity_ID Business Activity
-   */
-  public void setC_Activity_ID(int C_Activity_ID) {
-    if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-    else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
-  }
-
-  /**
+    /**
    * Get Activity.
    *
    * @return Business Activity
@@ -134,23 +91,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
-   * Set Business Partner .
-   *
-   * @param C_BPartner_ID Identifies a Business Partner
-   */
-  public void setC_BPartner_ID(int C_BPartner_ID) {
-    if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-    else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
-  }
-
-  /**
+    /**
    * Get Business Partner .
    *
    * @return Identifies a Business Partner
@@ -161,23 +102,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner_Location.Table_Name)
-            .getPO(getC_BPartner_Location_ID(), null);
-  }
-
-  /**
-   * Set Partner Location.
-   *
-   * @param C_BPartner_Location_ID Identifies the (ship to) address for this Business Partner
-   */
-  public void setC_BPartner_Location_ID(int C_BPartner_Location_ID) {
-    if (C_BPartner_Location_ID < 1) set_Value(COLUMNNAME_C_BPartner_Location_ID, null);
-    else set_Value(COLUMNNAME_C_BPartner_Location_ID, Integer.valueOf(C_BPartner_Location_ID));
-  }
-
-  /**
+    /**
    * Get Partner Location.
    *
    * @return Identifies the (ship to) address for this Business Partner
@@ -188,23 +113,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
-   * Set Charge.
-   *
-   * @param C_Charge_ID Additional document charges
-   */
-  public void setC_Charge_ID(int C_Charge_ID) {
-    if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
-    else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
-  }
-
-  /**
+    /**
    * Get Charge.
    *
    * @return Additional document charges
@@ -215,23 +124,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
-   * Set Document Type.
-   *
-   * @param C_DocType_ID Document type or rules
-   */
-  public void setC_DocType_ID(int C_DocType_ID) {
-    if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-    else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
-  }
-
-  /**
+    /**
    * Get Document Type.
    *
    * @return Document type or rules
@@ -242,23 +135,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_InvoiceBatch getC_InvoiceBatch() throws RuntimeException {
-    return (org.compiere.model.I_C_InvoiceBatch)
-        MTable.get(getCtx(), org.compiere.model.I_C_InvoiceBatch.Table_Name)
-            .getPO(getC_InvoiceBatch_ID(), null);
-  }
-
-  /**
-   * Set Invoice Batch.
-   *
-   * @param C_InvoiceBatch_ID Expense Invoice Batch Header
-   */
-  public void setC_InvoiceBatch_ID(int C_InvoiceBatch_ID) {
-    if (C_InvoiceBatch_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceBatch_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_InvoiceBatch_ID, Integer.valueOf(C_InvoiceBatch_ID));
-  }
-
-  /**
+    /**
    * Get Invoice Batch.
    *
    * @return Expense Invoice Batch Header
@@ -269,52 +146,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  /**
-   * Set Invoice Batch Line.
-   *
-   * @param C_InvoiceBatchLine_ID Expense Invoice Batch Line
-   */
-  public void setC_InvoiceBatchLine_ID(int C_InvoiceBatchLine_ID) {
-    if (C_InvoiceBatchLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceBatchLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_InvoiceBatchLine_ID, Integer.valueOf(C_InvoiceBatchLine_ID));
-  }
-
-  /**
-   * Get Invoice Batch Line.
-   *
-   * @return Expense Invoice Batch Line
-   */
-  public int getC_InvoiceBatchLine_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceBatchLine_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set C_InvoiceBatchLine_UU.
-   *
-   * @param C_InvoiceBatchLine_UU C_InvoiceBatchLine_UU
-   */
-  public void setC_InvoiceBatchLine_UU(String C_InvoiceBatchLine_UU) {
-    set_Value(COLUMNNAME_C_InvoiceBatchLine_UU, C_InvoiceBatchLine_UU);
-  }
-
-  /**
-   * Get C_InvoiceBatchLine_UU.
-   *
-   * @return C_InvoiceBatchLine_UU
-   */
-  public String getC_InvoiceBatchLine_UU() {
-    return (String) get_Value(COLUMNNAME_C_InvoiceBatchLine_UU);
-  }
-
-  public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice.
    *
    * @param C_Invoice_ID Invoice Identifier
@@ -335,13 +167,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
-    return (org.compiere.model.I_C_InvoiceLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice Line.
    *
    * @param C_InvoiceLine_ID Invoice Detail Line
@@ -362,23 +188,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
-   * Set Project.
-   *
-   * @param C_Project_ID Financial Project
-   */
-  public void setC_Project_ID(int C_Project_ID) {
-    if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-    else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-  }
-
-  /**
+    /**
    * Get Project.
    *
    * @return Financial Project
@@ -389,23 +199,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_Tax getC_Tax() throws RuntimeException {
-    return (org.compiere.model.I_C_Tax)
-        MTable.get(getCtx(), org.compiere.model.I_C_Tax.Table_Name)
-            .getPO(getC_Tax_ID(), null);
-  }
-
-  /**
-   * Set Tax.
-   *
-   * @param C_Tax_ID Tax identifier
-   */
-  public void setC_Tax_ID(int C_Tax_ID) {
-    if (C_Tax_ID < 1) set_Value(COLUMNNAME_C_Tax_ID, null);
-    else set_Value(COLUMNNAME_C_Tax_ID, Integer.valueOf(C_Tax_ID));
-  }
-
-  /**
+    /**
    * Get Tax.
    *
    * @return Tax identifier
@@ -452,16 +246,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return (Timestamp) get_Value(COLUMNNAME_DateInvoiced);
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -470,16 +255,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -511,16 +287,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return false;
   }
 
-  /**
-   * Set Line No.
-   *
-   * @param Line Unique line for this document
-   */
-  public void setLine(int Line) {
-    set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
-  }
-
-  /**
+    /**
    * Get Line No.
    *
    * @return Unique line for this document
@@ -531,16 +298,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getLine()));
-  }
-
-  /**
+    /**
    * Set Line Amount.
    *
    * @param LineNetAmt Line Extended Amount (Quantity * Actual Price) without Freight and Charges
@@ -609,21 +367,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     set_ValueNoCheck(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Quantity.
    *
    * @param QtyEntered The Quantity Entered is based on the selected UoM
@@ -663,23 +407,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return bd;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), null);
-  }
-
-  /**
-   * Set User Element List 1.
-   *
-   * @param User1_ID User defined list element #1
-   */
-  public void setUser1_ID(int User1_ID) {
-    if (User1_ID < 1) set_Value(COLUMNNAME_User1_ID, null);
-    else set_Value(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
-  }
-
-  /**
+    /**
    * Get User Element List 1.
    *
    * @return User defined list element #1
@@ -690,23 +418,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), null);
-  }
-
-  /**
-   * Set User Element List 2.
-   *
-   * @param User2_ID User defined list element #2
-   */
-  public void setUser2_ID(int User2_ID) {
-    if (User2_ID < 1) set_Value(COLUMNNAME_User2_ID, null);
-    else set_Value(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
-  }
-
-  /**
+    /**
    * Get User Element List 2.
    *
    * @return User defined list element #2

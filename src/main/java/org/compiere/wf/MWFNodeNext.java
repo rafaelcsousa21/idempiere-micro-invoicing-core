@@ -119,16 +119,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
     return m_conditions;
   } //	getConditions
 
-  /**
-   * Unconditional
-   *
-   * @return true if no conditions
-   */
-  public boolean isUnconditional() {
-    return !isStdUserWorkflow() && getConditions(false).length == 0;
-  } //	isUnconditional
-
-  /**
+    /**
    * Is this a Valid Transition For ..
    *
    * @param activity activity
@@ -177,17 +168,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
     return ok;
   } //	isValidFor
 
-  /**
-   * Split Element is AND
-   *
-   * @return Returns the from Split And.
-   */
-  public boolean isFromSplitAnd() {
-    if (m_fromSplitAnd != null) return m_fromSplitAnd.booleanValue();
-    return false;
-  } //	getFromSplitAnd
-
-  /**
+    /**
    * Split Element is AND. Set by MWFNode.loadNodes
    *
    * @param fromSplitAnd The from Split And
@@ -196,26 +177,4 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
     m_fromSplitAnd = new Boolean(fromSplitAnd);
   } //	setFromSplitAnd
 
-  /**
-   * Join Element is AND
-   *
-   * @return Returns the to Join And.
-   */
-  public boolean isToJoinAnd() {
-    if (m_toJoinAnd == null && getAD_WF_Next_ID() != 0) {
-      MWFNode next = MWFNode.get(getCtx(), getAD_WF_Next_ID());
-      setToJoinAnd(MWFNode.JOINELEMENT_AND.equals(next.getJoinElement()));
-    }
-    if (m_toJoinAnd != null) return m_toJoinAnd.booleanValue();
-    return false;
-  } //	getToJoinAnd
-
-  /**
-   * Join Element is AND.
-   *
-   * @param toJoinAnd The to Join And to set.
-   */
-  private void setToJoinAnd(boolean toJoinAnd) {
-    m_toJoinAnd = new Boolean(toJoinAnd);
-  } //	setToJoinAnd
 } //	MWFNodeNext

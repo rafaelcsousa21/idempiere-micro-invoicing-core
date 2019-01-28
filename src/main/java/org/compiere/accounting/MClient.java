@@ -3,20 +3,16 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_AD_Client;
 import org.compiere.model.I_AD_User;
-import org.compiere.model.Server;
 import org.compiere.orm.MSysConfig;
 import org.compiere.orm.Query;
-import org.idempiere.common.base.Service;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
 
 import java.io.File;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
-import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -81,17 +77,7 @@ public class MClient extends MBaseClient {
   @SuppressWarnings("unused")
   private static CLogger s_log = CLogger.getCLogger(MClient.class);
 
-  /**
-   * Do we have Multi-Lingual Documents. Set in loadOrgs
-   *
-   * @param ctx context
-   * @return true if multi lingual documents
-   */
-  public static boolean isMultiLingualDocument(Properties ctx) {
-    return MClient.get(ctx).isMultiLingualDocument();
-  } //	isMultiLingualDocument
-
-  /** Language */
+    /** Language */
   private Language m_language = null;
 
   /**
@@ -162,17 +148,7 @@ public class MClient extends MBaseClient {
     return Locale.getDefault();
   } //	getLocale
 
-  /**
-   * Is Auto Archive on
-   *
-   * @return true if auto archive
-   */
-  public boolean isAutoArchive() {
-    String aa = getAutoArchive();
-    return aa != null && !aa.equals(AUTOARCHIVE_None);
-  } //	isAutoArchive
-
-  /**
+    /**
    * Get Primary Accounting Schema
    *
    * @return Acct Schema or null
@@ -196,21 +172,7 @@ public class MClient extends MBaseClient {
     return super.save();
   } //	save
 
-  private static Server m_server;
-
-  /**
-   * Get Server
-   *
-   * @return Server
-   */
-  public static Server getServer() {
-    if (m_server == null) {
-      m_server = Service.Companion.locator().locate(Server.class).getService();
-    }
-    return m_server;
-  } //	getServer
-
-  public static boolean isClientAccounting() {
+    public static boolean isClientAccounting() {
     String ca =
         MSysConfig.getValue(
             MSysConfig.CLIENT_ACCOUNTING,
@@ -220,83 +182,9 @@ public class MClient extends MBaseClient {
         || ca.equalsIgnoreCase(CLIENT_ACCOUNTING_QUEUE));
   }
 
-  public static boolean isClientAccountingQueue() {
-    String ca =
-        MSysConfig.getValue(
-            MSysConfig.CLIENT_ACCOUNTING,
-            CLIENT_ACCOUNTING_QUEUE, // default
-            Env.getClientId(Env.getCtx()));
-    return ca.equalsIgnoreCase(CLIENT_ACCOUNTING_QUEUE);
-  }
+    /*  2870483 - SaaS too slow opening windows */
 
-  /*  2870483 - SaaS too slow opening windows */
-  /** Field Access */
-  private ArrayList<Integer> m_fieldAccess = null;
-  /**
-   * Define is a field is displayed based on ASP rules
-   *
-   * @param ad_field_id
-   * @return boolean indicating if it's displayed or not
-   */
-  public boolean isDisplayField(int aDFieldID) {
-    if (!isUseASP()) return true;
-
-    if (m_fieldAccess == null) {
-      m_fieldAccess = new ArrayList<Integer>(11000);
-      StringBuilder sqlvalidate =
-          new StringBuilder("SELECT AD_Field_ID ")
-              .append("  FROM AD_Field ")
-              .append(" WHERE (   AD_Field_ID NOT IN ( ")
-              // ASP subscribed fields for client)
-              .append("              SELECT f.AD_Field_ID ")
-              .append(
-                  "                FROM ASP_Field f, ASP_Tab t, ASP_Window w, ASP_Level l, ASP_ClientLevel cl ")
-              .append("               WHERE w.ASP_Level_ID = l.ASP_Level_ID ")
-              .append("                 AND cl.clientId = ")
-              .append( getClientId())
-              .append("                 AND cl.ASP_Level_ID = l.ASP_Level_ID ")
-              .append("                 AND f.ASP_Tab_ID = t.ASP_Tab_ID ")
-              .append("                 AND t.ASP_Window_ID = w.ASP_Window_ID ")
-              .append("                 AND f.IsActive = 'Y' ")
-              .append("                 AND t.IsActive = 'Y' ")
-              .append("                 AND w.IsActive = 'Y' ")
-              .append("                 AND l.IsActive = 'Y' ")
-              .append("                 AND cl.IsActive = 'Y' ")
-              .append("                 AND f.ASP_Status = 'H' ")
-              .append("                  AND f.AD_Field_ID NOT IN (")
-              .append(" 				 SELECT AD_Field_ID")
-              .append(" 				 FROM ASP_ClientException ce")
-              .append(" 				 WHERE ce.clientId =")
-              .append( getClientId())
-              .append(" 				 AND ce.IsActive = 'Y'")
-              .append("                  AND ce.AD_Field_ID IS NOT NULL")
-              .append(" 				 AND ce.ASP_Status <> 'H')")
-              .append("   UNION ALL ")
-              // minus ASP hide exceptions for client
-              .append("          SELECT AD_Field_ID ")
-              .append("            FROM ASP_ClientException ce ")
-              .append("           WHERE ce.clientId = ")
-              .append( getClientId())
-              .append("             AND ce.IsActive = 'Y' ")
-              .append("             AND ce.AD_Field_ID IS NOT NULL ")
-              .append("             AND ce.ASP_Status = 'H'))")
-              .append(" ORDER BY AD_Field_ID");
-      PreparedStatement pstmt = null;
-      ResultSet rs = null;
-      try {
-        pstmt = prepareStatement(sqlvalidate.toString(), null);
-        rs = pstmt.executeQuery();
-        while (rs.next()) m_fieldAccess.add(rs.getInt(1));
-      } catch (Exception e) {
-        log.log(Level.SEVERE, sqlvalidate.toString(), e);
-      } finally {
-        close(rs, pstmt);
-      }
-    }
-    return (Collections.binarySearch(m_fieldAccess, aDFieldID) > 0);
-  }
-
-  @Override
+    @Override
   public String getRequestUser() {
     // IDEMPIERE-722
     if ( getClientId() != 0 && isSendCredentialsSystem()) {
@@ -366,19 +254,9 @@ public class MClient extends MBaseClient {
 
   // IDEMPIERE-722
   private static final String MAIL_SEND_CREDENTIALS_USER = "U";
-  private static final String MAIL_SEND_CREDENTIALS_CLIENT = "C";
-  private static final String MAIL_SEND_CREDENTIALS_SYSTEM = "S";
+    private static final String MAIL_SEND_CREDENTIALS_SYSTEM = "S";
 
-  public static boolean isSendCredentialsClient() {
-    String msc =
-        MSysConfig.getValue(
-            MSysConfig.MAIL_SEND_CREDENTIALS,
-            MAIL_SEND_CREDENTIALS_USER, // default
-            Env.getClientId(Env.getCtx()));
-    return (MAIL_SEND_CREDENTIALS_CLIENT.equalsIgnoreCase(msc));
-  }
-
-  public static boolean isSendCredentialsSystem() {
+    public static boolean isSendCredentialsSystem() {
     String msc =
         MSysConfig.getValue(
             MSysConfig.MAIL_SEND_CREDENTIALS,

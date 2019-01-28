@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_PaySelectionLine;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -54,13 +53,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice.
    *
    * @param C_Invoice_ID Invoice Identifier
@@ -81,13 +74,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_PaySelectionCheck getC_PaySelectionCheck() throws RuntimeException {
-    return (org.compiere.model.I_C_PaySelectionCheck)
-        MTable.get(getCtx(), org.compiere.model.I_C_PaySelectionCheck.Table_Name)
-            .getPO(getC_PaySelectionCheck_ID(), null);
-  }
-
-  /**
+    /**
    * Set Pay Selection Check.
    *
    * @param C_PaySelectionCheck_ID Payment Selection Check
@@ -108,13 +95,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_PaySelection getC_PaySelection() throws RuntimeException {
-    return (org.compiere.model.I_C_PaySelection)
-        MTable.get(getCtx(), org.compiere.model.I_C_PaySelection.Table_Name)
-            .getPO(getC_PaySelection_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment Selection.
    *
    * @param C_PaySelection_ID Payment Selection
@@ -135,17 +116,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     return ii;
   }
 
-  /**
-   * Set Payment Selection Line.
-   *
-   * @param C_PaySelectionLine_ID Payment Selection Line
-   */
-  public void setC_PaySelectionLine_ID(int C_PaySelectionLine_ID) {
-    if (C_PaySelectionLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PaySelectionLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_PaySelectionLine_ID, Integer.valueOf(C_PaySelectionLine_ID));
-  }
-
-  /**
+    /**
    * Get Payment Selection Line.
    *
    * @return Payment Selection Line
@@ -156,52 +127,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_PaySelectionLine_ID()));
-  }
-
-  /**
-   * Set C_PaySelectionLine_UU.
-   *
-   * @param C_PaySelectionLine_UU C_PaySelectionLine_UU
-   */
-  public void setC_PaySelectionLine_UU(String C_PaySelectionLine_UU) {
-    set_Value(COLUMNNAME_C_PaySelectionLine_UU, C_PaySelectionLine_UU);
-  }
-
-  /**
-   * Get C_PaySelectionLine_UU.
-   *
-   * @return C_PaySelectionLine_UU
-   */
-  public String getC_PaySelectionLine_UU() {
-    return (String) get_Value(COLUMNNAME_C_PaySelectionLine_UU);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Difference.
    *
    * @param DifferenceAmt Difference Amount
@@ -250,21 +176,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     set_Value(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
   }
 
-  /**
-   * Get Manual.
-   *
-   * @return This is a manual process
-   */
-  public boolean isManual() {
-    Object oo = get_Value(COLUMNNAME_IsManual);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Sales Transaction.
    *
    * @param IsSOTrx This is a Sales Transaction
@@ -296,18 +208,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
   }
 
-  /**
-   * Get Line No.
-   *
-   * @return Unique line for this document
-   */
-  public int getLine() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Line);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Open Amount.
    *
    * @param OpenAmt Open item amount
@@ -347,23 +248,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     return bd;
   }
 
-  /** PaymentRule AD_Reference_ID=195 */
-  public static final int PAYMENTRULE_AD_Reference_ID = 195;
-  /** Cash = B */
-  public static final String PAYMENTRULE_Cash = "B";
-  /** Credit Card = K */
-  public static final String PAYMENTRULE_CreditCard = "K";
-  /** Direct Deposit = T */
-  public static final String PAYMENTRULE_DirectDeposit = "T";
-  /** Check = S */
-  public static final String PAYMENTRULE_Check = "S";
-  /** On Credit = P */
-  public static final String PAYMENTRULE_OnCredit = "P";
-  /** Direct Debit = D */
-  public static final String PAYMENTRULE_DirectDebit = "D";
-  /** Mixed POS Payment = M */
-  public static final String PAYMENTRULE_MixedPOSPayment = "M";
-  /**
+    /**
    * Set Payment Rule.
    *
    * @param PaymentRule How you pay the invoice

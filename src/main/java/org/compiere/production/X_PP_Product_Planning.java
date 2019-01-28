@@ -275,16 +275,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning, 
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_Product_ID()));
-  }
-
-  public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
+    public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
     return (org.compiere.model.I_M_Warehouse)
         MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
             .getPO(getM_Warehouse_ID(), null);
@@ -391,9 +382,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning, 
     return bd;
   }
 
-  /** Order_Policy AD_Reference_ID=53228 */
-  public static final int ORDER_POLICY_AD_Reference_ID = 53228;
-  /** Fixed Order Quantity = FOQ */
+    /** Fixed Order Quantity = FOQ */
   public static final String ORDER_POLICY_FixedOrderQuantity = "FOQ";
   /** Lot-for-Lot = LFL */
   public static final String ORDER_POLICY_Lot_For_Lot = "LFL";

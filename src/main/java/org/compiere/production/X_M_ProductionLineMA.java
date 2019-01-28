@@ -1,8 +1,6 @@
 package org.compiere.production;
 
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_ProductionLineMA;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -70,13 +68,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
     return (Timestamp) get_Value(COLUMNNAME_DateMaterialPolicy);
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -119,13 +111,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
     return bd;
   }
 
-  public org.compiere.model.I_M_ProductionLine getM_ProductionLine() throws RuntimeException {
-    return (org.compiere.model.I_M_ProductionLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_ProductionLine.Table_Name)
-            .getPO(getM_ProductionLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Production Line.
    *
    * @param M_ProductionLine_ID Document Line representing a production
@@ -146,34 +132,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getM_ProductionLine_ID()));
-  }
-
-  /**
-   * Set M_ProductionLineMA_UU.
-   *
-   * @param M_ProductionLineMA_UU M_ProductionLineMA_UU
-   */
-  public void setM_ProductionLineMA_UU(String M_ProductionLineMA_UU) {
-    set_Value(COLUMNNAME_M_ProductionLineMA_UU, M_ProductionLineMA_UU);
-  }
-
-  /**
-   * Get M_ProductionLineMA_UU.
-   *
-   * @return M_ProductionLineMA_UU
-   */
-  public String getM_ProductionLineMA_UU() {
-    return (String) get_Value(COLUMNNAME_M_ProductionLineMA_UU);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_M_ProductionLineMA.Table_ID;
   }

@@ -51,13 +51,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -78,13 +72,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     return ii;
   }
 
-  public org.compiere.model.I_C_BP_BankAccount getC_BP_BankAccount() throws RuntimeException {
-    return (org.compiere.model.I_C_BP_BankAccount)
-        MTable.get(getCtx(), org.compiere.model.I_C_BP_BankAccount.Table_Name)
-            .getPO(getC_BP_BankAccount_ID(), null);
-  }
-
-  /**
+    /**
    * Set Partner Bank Account.
    *
    * @param C_BP_BankAccount_ID Bank Account of the Business Partner
@@ -105,13 +93,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment.
    *
    * @param C_Payment_ID Payment identifier
@@ -132,18 +114,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     return ii;
   }
 
-  /**
-   * Set Pay Selection Check.
-   *
-   * @param C_PaySelectionCheck_ID Payment Selection Check
-   */
-  public void setC_PaySelectionCheck_ID(int C_PaySelectionCheck_ID) {
-    if (C_PaySelectionCheck_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PaySelectionCheck_ID, null);
-    else
-      set_ValueNoCheck(COLUMNNAME_C_PaySelectionCheck_ID, Integer.valueOf(C_PaySelectionCheck_ID));
-  }
-
-  /**
+    /**
    * Get Pay Selection Check.
    *
    * @return Payment Selection Check
@@ -154,25 +125,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     return ii;
   }
 
-  /**
-   * Set C_PaySelectionCheck_UU.
-   *
-   * @param C_PaySelectionCheck_UU C_PaySelectionCheck_UU
-   */
-  public void setC_PaySelectionCheck_UU(String C_PaySelectionCheck_UU) {
-    set_Value(COLUMNNAME_C_PaySelectionCheck_UU, C_PaySelectionCheck_UU);
-  }
-
-  /**
-   * Get C_PaySelectionCheck_UU.
-   *
-   * @return C_PaySelectionCheck_UU
-   */
-  public String getC_PaySelectionCheck_UU() {
-    return (String) get_Value(COLUMNNAME_C_PaySelectionCheck_UU);
-  }
-
-  public org.compiere.model.I_C_PaySelection getC_PaySelection() throws RuntimeException {
+    public org.compiere.model.I_C_PaySelection getC_PaySelection() throws RuntimeException {
     return (org.compiere.model.I_C_PaySelection)
         MTable.get(getCtx(), org.compiere.model.I_C_PaySelection.Table_Name)
             .getPO(getC_PaySelection_ID(), null);
@@ -269,21 +222,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     set_Value(COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
   }
 
-  /**
-   * Get Printed.
-   *
-   * @return Indicates if this document / line is printed
-   */
-  public boolean isPrinted() {
-    Object oo = get_Value(COLUMNNAME_IsPrinted);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Receipt.
    *
    * @param IsReceipt This is a sales transaction (receipt)
@@ -326,9 +265,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     return bd;
   }
 
-  /** PaymentRule AD_Reference_ID=195 */
-  public static final int PAYMENTRULE_AD_Reference_ID = 195;
-  /** Cash = B */
+    /** Cash = B */
   public static final String PAYMENTRULE_Cash = "B";
   /** Credit Card = K */
   public static final String PAYMENTRULE_CreditCard = "K";
@@ -336,13 +273,10 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
   public static final String PAYMENTRULE_DirectDeposit = "T";
   /** Check = S */
   public static final String PAYMENTRULE_Check = "S";
-  /** On Credit = P */
-  public static final String PAYMENTRULE_OnCredit = "P";
-  /** Direct Debit = D */
+    /** Direct Debit = D */
   public static final String PAYMENTRULE_DirectDebit = "D";
-  /** Mixed POS Payment = M */
-  public static final String PAYMENTRULE_MixedPOSPayment = "M";
-  /**
+
+    /**
    * Set Payment Rule.
    *
    * @param PaymentRule How you pay the invoice

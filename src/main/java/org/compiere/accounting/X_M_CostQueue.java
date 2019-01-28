@@ -1,8 +1,6 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_CostQueue;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
@@ -56,13 +54,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
-    return (org.compiere.model.I_C_AcctSchema)
-        MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
-  }
-
-  /**
+    /**
    * Set Accounting Schema.
    *
    * @param C_AcctSchema_ID Rules for accounting
@@ -123,13 +115,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
     return bd;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -152,13 +138,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
-    return (org.compiere.model.I_M_CostElement)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Element.
    *
    * @param M_CostElement_ID Product Cost Element
@@ -179,52 +159,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Cost Queue.
-   *
-   * @param M_CostQueue_ID FiFo/LiFo Cost Queue
-   */
-  public void setM_CostQueue_ID(int M_CostQueue_ID) {
-    if (M_CostQueue_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostQueue_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_CostQueue_ID, Integer.valueOf(M_CostQueue_ID));
-  }
-
-  /**
-   * Get Cost Queue.
-   *
-   * @return FiFo/LiFo Cost Queue
-   */
-  public int getM_CostQueue_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_CostQueue_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set M_CostQueue_UU.
-   *
-   * @param M_CostQueue_UU M_CostQueue_UU
-   */
-  public void setM_CostQueue_UU(String M_CostQueue_UU) {
-    set_Value(COLUMNNAME_M_CostQueue_UU, M_CostQueue_UU);
-  }
-
-  /**
-   * Get M_CostQueue_UU.
-   *
-   * @return M_CostQueue_UU
-   */
-  public String getM_CostQueue_UU() {
-    return (String) get_Value(COLUMNNAME_M_CostQueue_UU);
-  }
-
-  public org.compiere.model.I_M_CostType getM_CostType() throws RuntimeException {
-    return (org.compiere.model.I_M_CostType)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostType.Table_Name)
-            .getPO(getM_CostType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Type.
    *
    * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
@@ -245,13 +180,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item

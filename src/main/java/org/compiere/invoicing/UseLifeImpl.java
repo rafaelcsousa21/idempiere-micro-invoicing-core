@@ -265,15 +265,4 @@ public class UseLifeImpl implements UseLife {
         + "]";
   }
 
-  /**
-   * Calculate date accounting for = assetServiceDate + A_Current_Period
-   *
-   * @param assetServiceDate data PIF
-   * @param A_Current_Period (displacement)
-   * @return assetServiceDate + A_Current_Period
-   */
-  public static Timestamp getDateAcct(Timestamp assetServiceDate, int A_Current_Period) {
-    if (assetServiceDate == null) return null;
-    return TimeUtil.addMonths(assetServiceDate, A_Current_Period);
-  }
 }

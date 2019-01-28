@@ -286,7 +286,7 @@ class InvoiceTest: BaseComponentTest() {
     }
 
     @Test
-    fun `create invoice from BOM order with production step in between (on credit)`() {
+    fun `create invoice from BOM order with production step in between - on credit`() {
         DB.run {
             val bomProduct = createAProduct(BOM + randomString(5), I_M_Product.PRODUCTTYPE_Item) as MProduct
             bomProduct.setIsBOM(true)

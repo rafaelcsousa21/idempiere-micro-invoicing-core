@@ -45,19 +45,12 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
     return "X_M_CostElement[" + getId() + "]";
   }
 
-  /** CostElementType AD_Reference_ID=338 */
-  public static final int COSTELEMENTTYPE_AD_Reference_ID = 338;
-  /** Material = M */
+    /** Material = M */
   public static final String COSTELEMENTTYPE_Material = "M";
-  /** Overhead = O */
-  public static final String COSTELEMENTTYPE_Overhead = "O";
-  /** Burden (M.Overhead) = B */
-  public static final String COSTELEMENTTYPE_BurdenMOverhead = "B";
-  /** Outside Processing = X */
+    /** Outside Processing = X */
   public static final String COSTELEMENTTYPE_OutsideProcessing = "X";
-  /** Resource = R */
-  public static final String COSTELEMENTTYPE_Resource = "R";
-  /**
+
+    /**
    * Set Cost Element Type.
    *
    * @param CostElementType Type of Cost Element
@@ -94,9 +87,8 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
   public static final String COSTINGMETHOD_LastInvoice = "i";
   /** User Defined = U */
   public static final String COSTINGMETHOD_UserDefined = "U";
-  /** _ = x */
-  public static final String COSTINGMETHOD__ = "x";
-  /**
+
+    /**
    * Set Costing Method.
    *
    * @param CostingMethod Indicates how Costs will be calculated
@@ -115,25 +107,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
     return (String) get_Value(COLUMNNAME_CostingMethod);
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Calculated.
    *
    * @param IsCalculated The value is calculated by the system
@@ -156,17 +130,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
     return false;
   }
 
-  /**
-   * Set Cost Element.
-   *
-   * @param M_CostElement_ID Product Cost Element
-   */
-  public void setM_CostElement_ID(int M_CostElement_ID) {
-    if (M_CostElement_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, M_CostElement_ID);
-  }
-
-  /**
+    /**
    * Get Cost Element.
    *
    * @return Product Cost Element
@@ -177,25 +141,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
     return ii;
   }
 
-  /**
-   * Set M_CostElement_UU.
-   *
-   * @param M_CostElement_UU M_CostElement_UU
-   */
-  public void setM_CostElement_UU(String M_CostElement_UU) {
-    set_Value(COLUMNNAME_M_CostElement_UU, M_CostElement_UU);
-  }
-
-  /**
-   * Get M_CostElement_UU.
-   *
-   * @return M_CostElement_UU
-   */
-  public String getM_CostElement_UU() {
-    return (String) get_Value(COLUMNNAME_M_CostElement_UU);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_M_CostElement.Table_ID;
   }

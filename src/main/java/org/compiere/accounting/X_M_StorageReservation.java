@@ -1,15 +1,12 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_StorageReservation;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Properties;
 
 /**
@@ -51,25 +48,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
     return sb.toString();
   }
 
-  /**
-   * Set Date last inventory count.
-   *
-   * @param DateLastInventory Date of Last Inventory Count
-   */
-  public void setDateLastInventory(Timestamp DateLastInventory) {
-    set_Value(COLUMNNAME_DateLastInventory, DateLastInventory);
-  }
-
-  /**
-   * Get Date last inventory count.
-   *
-   * @return Date of Last Inventory Count
-   */
-  public Timestamp getDateLastInventory() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastInventory);
-  }
-
-  /**
+    /**
    * Set Sales Transaction.
    *
    * @param IsSOTrx This is a Sales Transaction
@@ -92,13 +71,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
     return false;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -121,13 +94,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -148,31 +115,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
     return ii;
   }
 
-  /**
-   * Set M_StorageReservation_UU.
-   *
-   * @param M_StorageReservation_UU M_StorageReservation_UU
-   */
-  public void setM_StorageReservation_UU(String M_StorageReservation_UU) {
-    set_Value(COLUMNNAME_M_StorageReservation_UU, M_StorageReservation_UU);
-  }
-
-  /**
-   * Get M_StorageReservation_UU.
-   *
-   * @return M_StorageReservation_UU
-   */
-  public String getM_StorageReservation_UU() {
-    return (String) get_Value(COLUMNNAME_M_StorageReservation_UU);
-  }
-
-  public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
-    return (org.compiere.model.I_M_Warehouse)
-        MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-            .getPO(getM_Warehouse_ID(), null);
-  }
-
-  /**
+    /**
    * Set Warehouse.
    *
    * @param M_Warehouse_ID Storage Warehouse and Service Point

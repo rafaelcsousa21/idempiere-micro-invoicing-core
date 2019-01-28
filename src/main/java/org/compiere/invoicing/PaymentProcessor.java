@@ -1,23 +1,11 @@
 package org.compiere.invoicing;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Properties;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
-import javax.net.ssl.HttpsURLConnection;
-import org.compiere.accounting.MBankAccountProcessor;
-import org.compiere.accounting.MPayment;
+
 import org.compiere.model.PaymentInterface;
-import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
 /**
  * Payment Processor Abstract Class
@@ -26,10 +14,8 @@ import org.idempiere.common.util.Env;
  * @version $Id: PaymentProcessor.java,v 1.3 2006/07/30 00:51:02 jjanke Exp $
  */
 public abstract class PaymentProcessor {
-  /** Public Constructor */
-  public PaymentProcessor() {} //  PaymentProcessor
 
-  /** Logger */
+    /** Logger */
   protected CLogger log = CLogger.getCLogger(getClass());
   /** Payment Processor Logger */
   @SuppressWarnings("unused")
@@ -43,144 +29,16 @@ public abstract class PaymentProcessor {
   /** Equals */
   public static final char EQ = '=';
 
-  /**
-   * @param mpp
-   * @param mp
-   */
-  public void initialize(MBankAccountProcessor mbap, PaymentInterface mp) {
-    p_mbap = mbap;
-    p_mp = mp;
-  }
-
-  /** ********************************************************************** */
-  protected MBankAccountProcessor p_mbap = null;
-
-  protected PaymentInterface p_mp = null;
+    protected PaymentInterface p_mp = null;
   //
   private int m_timeout = 30;
 
   /** ********************************************************************** */
 
-  /**
-   * Process CreditCard (no date check)
-   *
-   * @return true if processed successfully
-   * @throws IllegalArgumentException
-   */
-  public abstract boolean processCC() throws IllegalArgumentException;
-
-  /**
-   * Payment is processed successfully
-   *
-   * @return true if OK
-   */
-  public abstract boolean isProcessedOK();
-
-  /** *********************************************************************** */
+    /** *********************************************************************** */
   // Validation methods. Override if you have specific needs.
 
-  /**
-   * Validate payment before process.
-   *
-   * @return "" or Error AD_Message.
-   * @throws IllegalArgumentException
-   */
-  public String validate() throws IllegalArgumentException {
-    String msg = null;
-    if (MPayment.TENDERTYPE_CreditCard.equals(p_mp.getTenderType())) {
-      msg = validateCreditCard();
-    } else if (MPayment.TENDERTYPE_Check.equals(p_mp.getTenderType())) {
-      msg = validateCheckNo();
-    } else if (MPayment.TENDERTYPE_Account.equals(p_mp.getTenderType())) {
-      msg = validateAccountNo();
-    }
-    return (msg);
-  }
-
-  /**
-   * Standard account validation.
-   *
-   * @return
-   */
-  public String validateAccountNo() {
-    return MPaymentValidate.validateAccountNo(p_mp.getAccountNo());
-  }
-
-  public String validateCheckNo() {
-    return MPaymentValidate.validateCheckNo(p_mp.getCheckNo());
-  }
-
-  public String validateCreditCard() throws IllegalArgumentException {
-    String msg = null;
-    if (p_mp.getC_BP_BankAccount_ID() != 0
-        || (p_mp.getCustomerPaymentProfileID() != null
-            && p_mp.getCustomerPaymentProfileID().length() > 0)) return msg;
-    msg =
-        MPaymentValidate.validateCreditCardNumber(
-            p_mp.getCreditCardNumber(), p_mp.getCreditCardType());
-    if (msg != null && msg.length() > 0)
-      throw new IllegalArgumentException(Msg.getMsg(Env.getCtx(), msg));
-    msg =
-        MPaymentValidate.validateCreditCardExp(
-            p_mp.getCreditCardExpMM(), p_mp.getCreditCardExpYY());
-    if (msg != null && msg.length() > 0)
-      throw new IllegalArgumentException(Msg.getMsg(Env.getCtx(), msg));
-    if (p_mp.getCreditCardVV() != null && p_mp.getCreditCardVV().length() > 0) {
-      msg = MPaymentValidate.validateCreditCardVV(p_mp.getCreditCardVV(), p_mp.getCreditCardType());
-      if (msg != null && msg.length() > 0)
-        throw new IllegalArgumentException(Msg.getMsg(Env.getCtx(), msg));
-    }
-    return (msg);
-  }
-
-  /**
-   * ************************************************************************ Set Timeout
-   *
-   * @param newTimeout timeout
-   */
-  public void setTimeout(int newTimeout) {
-    m_timeout = newTimeout;
-  }
-  /**
-   * Get Timeout
-   *
-   * @return timeout
-   */
-  public int getTimeout() {
-    return m_timeout;
-  }
-
-  /**
-   * ************************************************************************ Check for delimiter
-   * fields &= and add length of not encoded
-   *
-   * @param name name
-   * @param value value
-   * @param maxLength maximum length
-   * @return name[5]=value or name=value
-   */
-  protected String createPair(String name, BigDecimal value, int maxLength) {
-    if (value == null) return createPair(name, "0", maxLength);
-    else {
-      if (value.scale() < 2) value = value.setScale(2, BigDecimal.ROUND_HALF_UP);
-      return createPair(name, String.valueOf(value), maxLength);
-    }
-  } //	createPair
-
-  /**
-   * Check for delimiter fields &= and add length of not encoded
-   *
-   * @param name name
-   * @param value value
-   * @param maxLength maximum length
-   * @return name[5]=value or name=value
-   */
-  protected String createPair(String name, int value, int maxLength) {
-    if (value == 0) return "";
-    else return createPair(name, String.valueOf(value), maxLength);
-  } //	createPair
-
-  /**
+    /**
    * Check for delimiter fields &= and add length of not encoded
    *
    * @param name name
@@ -209,89 +67,4 @@ public abstract class PaymentProcessor {
     return retValue.toString();
   } // createPair
 
-  /**
-   * Set Encoded
-   *
-   * @param doEncode true if encode
-   */
-  public void setEncoded(boolean doEncode) {
-    m_encoded = doEncode;
-  } //	setEncode
-  /**
-   * Is Encoded
-   *
-   * @return true if encoded
-   */
-  public boolean isEncoded() {
-    return m_encoded;
-  } //	setEncode
-
-  /**
-   * Get Connect Post Properties
-   *
-   * @param urlString POST url string
-   * @param parameter parameter
-   * @return result as properties
-   */
-  protected Properties getConnectPostProperties(String urlString, String parameter) {
-    long start = System.currentTimeMillis();
-    String result = connectPost(urlString, parameter);
-    if (result == null) return null;
-    Properties prop = new Properties();
-    try {
-      String info = URLDecoder.decode(result, ENCODING);
-      StringTokenizer st = new StringTokenizer(info, "&"); // 	AMP
-      while (st.hasMoreTokens()) {
-        String token = st.nextToken();
-        int index = token.indexOf('=');
-        if (index == -1) prop.put(token, "");
-        else {
-          String key = token.substring(0, index);
-          String value = token.substring(index + 1);
-          prop.put(key, value);
-        }
-      }
-    } catch (Exception e) {
-      log.log(Level.SEVERE, result, e);
-    }
-    long ms = System.currentTimeMillis() - start;
-    if (log.isLoggable(Level.FINE)) log.fine(ms + "ms - " + prop.toString());
-    return prop;
-  } //	connectPost
-
-  /**
-   * Connect via Post
-   *
-   * @param urlString url destination (assuming https)
-   * @param parameter parameter
-   * @return response or null if failure
-   */
-  protected String connectPost(String urlString, String parameter) {
-    String response = null;
-    try {
-      // open secure connection
-      URL url = new URL(urlString);
-      HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-      connection.setDoOutput(true);
-      connection.setUseCaches(false);
-      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-      if (log.isLoggable(Level.FINE)) log.fine(connection.getURL().toString());
-
-      // POST the parameter
-      DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-      out.write(parameter.getBytes());
-      out.flush();
-      out.close();
-
-      // process and read the gateway response
-      BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-      response = in.readLine();
-      in.close(); // no more data
-      log.finest(response);
-    } catch (Exception e) {
-      log.log(Level.SEVERE, urlString, e);
-    }
-    //
-    return response;
-  } //	connectPost
 } //  PaymentProcessor

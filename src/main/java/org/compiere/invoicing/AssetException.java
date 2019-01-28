@@ -17,11 +17,4 @@ public class AssetException extends AdempiereException {
     super(message);
   }
 
-  public AssetException(Throwable cause) {
-    super(cause);
-  }
-
-  public AssetException(String message, Throwable cause) {
-    super(message, cause);
-  }
 }

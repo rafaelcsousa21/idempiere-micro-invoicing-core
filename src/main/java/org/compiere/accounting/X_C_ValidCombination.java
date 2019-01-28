@@ -114,13 +114,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return (String) get_Value(COLUMNNAME_Alias);
   }
 
-  public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
-    return (org.compiere.model.I_C_AcctSchema)
-        MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
-  }
-
-  /**
+    /**
    * Set Accounting Schema.
    *
    * @param C_AcctSchema_ID Rules for accounting
@@ -141,13 +135,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
+    /**
    * Set Activity.
    *
    * @param C_Activity_ID Business Activity
@@ -168,13 +156,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -195,13 +177,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
+    /**
    * Set Campaign.
    *
    * @param C_Campaign_ID Marketing Campaign
@@ -222,13 +198,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_Location getC_LocFrom() throws RuntimeException {
-    return (org.compiere.model.I_C_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocFrom_ID(), null);
-  }
-
-  /**
+    /**
    * Set Location From.
    *
    * @param C_LocFrom_ID Location that inventory was moved from
@@ -249,13 +219,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_Location getC_LocTo() throws RuntimeException {
-    return (org.compiere.model.I_C_Location)
-        MTable.get(getCtx(), org.compiere.model.I_C_Location.Table_Name)
-            .getPO(getC_LocTo_ID(), null);
-  }
-
-  /**
+    /**
    * Set Location To.
    *
    * @param C_LocTo_ID Location that inventory was moved to
@@ -294,22 +258,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return (String) get_Value(COLUMNNAME_Combination);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getCombination());
-  }
-
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project.
    *
    * @param C_Project_ID Financial Project
@@ -330,13 +279,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_SalesRegion getC_SalesRegion() throws RuntimeException {
-    return (org.compiere.model.I_C_SalesRegion)
-        MTable.get(getCtx(), org.compiere.model.I_C_SalesRegion.Table_Name)
-            .getPO(getC_SalesRegion_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Region.
    *
    * @param C_SalesRegion_ID Sales coverage region
@@ -357,13 +300,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_SubAcct getC_SubAcct() throws RuntimeException {
-    return (org.compiere.model.I_C_SubAcct)
-        MTable.get(getCtx(), org.compiere.model.I_C_SubAcct.Table_Name)
-            .getPO(getC_SubAcct_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sub Account.
    *
    * @param C_SubAcct_ID Sub account for Element Value
@@ -384,17 +321,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  /**
-   * Set Combination.
-   *
-   * @param C_ValidCombination_ID Valid Account Combination
-   */
-  public void setC_ValidCombination_ID(int C_ValidCombination_ID) {
-    if (C_ValidCombination_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ValidCombination_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_ValidCombination_ID, Integer.valueOf(C_ValidCombination_ID));
-  }
-
-  /**
+    /**
    * Get Combination.
    *
    * @return Valid Account Combination
@@ -405,25 +332,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  /**
-   * Set C_ValidCombination_UU.
-   *
-   * @param C_ValidCombination_UU C_ValidCombination_UU
-   */
-  public void setC_ValidCombination_UU(String C_ValidCombination_UU) {
-    set_Value(COLUMNNAME_C_ValidCombination_UU, C_ValidCombination_UU);
-  }
-
-  /**
-   * Get C_ValidCombination_UU.
-   *
-   * @return C_ValidCombination_UU
-   */
-  public String getC_ValidCombination_UU() {
-    return (String) get_Value(COLUMNNAME_C_ValidCombination_UU);
-  }
-
-  /**
+    /**
    * Set Description.
    *
    * @param Description Optional short description of the record
@@ -464,13 +373,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return false;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -491,13 +394,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser1_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 1.
    *
    * @param User1_ID User defined list element #1
@@ -518,13 +415,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     return ii;
   }
 
-  public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
-    return (org.compiere.model.I_C_ElementValue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getUser2_ID(), null);
-  }
-
-  /**
+    /**
    * Set User Element List 2.
    *
    * @param User2_ID User defined list element #2

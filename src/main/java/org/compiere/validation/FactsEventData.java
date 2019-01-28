@@ -11,30 +11,4 @@ public class FactsEventData {
   private List<IFact> facts;
   private IPO po;
 
-  /**
-   * @param acctSchema
-   * @param facts
-   * @param po
-   */
-  public FactsEventData(I_C_AcctSchema acctSchema, List<IFact> facts, IPO po) {
-    super();
-    this.acctSchema = acctSchema;
-    this.facts = facts;
-    this.po = po;
-  }
-
-  /** @return the acctSchema */
-  public I_C_AcctSchema getAcctSchema() {
-    return acctSchema;
-  }
-
-  /** @return the facts */
-  public List<IFact> getFacts() {
-    return facts;
-  }
-
-  /** @return the po */
-  public IPO getPo() {
-    return po;
-  }
 }

@@ -14,10 +14,11 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
 
 /**
  * Copy Line Set at the end of the Line Set
@@ -26,10 +27,6 @@ import org.compiere.process.SvrProcess;
  * @version $Id: ReportLineSet_Copy.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class ReportLineSet_Copy extends SvrProcess {
-  /** Constructor */
-  public ReportLineSet_Copy() {
-    super();
-  } //	ReportLineSet_Copy
 
   /** Source Line Set */
   private int m_PA_ReportLineSet_ID = 0;
@@ -57,7 +54,7 @@ public class ReportLineSet_Copy extends SvrProcess {
     if (log.isLoggable(Level.INFO))
       log.info("From PA_ReportLineSet_ID=" + m_PA_ReportLineSet_ID + ", To=" + to_ID);
     if (to_ID < 1) throw new Exception(MSG_SaveErrorRowNotFound);
-    throw new NotImplementedException();
+    throw new Exception("NotImplementedException");
     //
     /*
     MReportLineSet to = new MReportLineSet(getCtx(), to_ID, null);

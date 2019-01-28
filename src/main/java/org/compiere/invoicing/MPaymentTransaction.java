@@ -1,7 +1,6 @@
 package org.compiere.invoicing;
 
 import org.compiere.accounting.MBankAccountProcessor;
-import org.compiere.accounting.MClient;
 import org.compiere.accounting.MPayment;
 import org.compiere.accounting.MPaymentProcessor;
 import org.compiere.bank.IBAN;
@@ -17,7 +16,6 @@ import org.idempiere.common.base.Service;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
@@ -84,52 +82,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     return true;
   }
 
-  public void setAmount(int C_Currency_ID, BigDecimal payAmt) {
-    if (C_Currency_ID == 0) C_Currency_ID = MClient.get(getCtx()).getC_Currency_ID();
-    setC_Currency_ID(C_Currency_ID);
-    setPayAmt(payAmt);
-  }
-
-  public boolean setCreditCard(
-      String TrxType,
-      String creditCardType,
-      String creditCardNumber,
-      String creditCardVV,
-      int creditCardExpMM,
-      int creditCardExpYY) {
-    setTenderType(X_C_PaymentTransaction.TENDERTYPE_CreditCard);
-    setTrxType(TrxType);
-    //
-    setCreditCardType(creditCardType);
-    setCreditCardNumber(creditCardNumber);
-    setCreditCardVV(creditCardVV);
-    setCreditCardExpMM(creditCardExpMM);
-    setCreditCardExpYY(creditCardExpYY);
-    //
-    int check =
-        MPaymentValidate.validateCreditCardNumber(creditCardNumber, creditCardType).length()
-            + MPaymentValidate.validateCreditCardExp(creditCardExpMM, creditCardExpYY).length();
-    if (creditCardVV.length() > 0)
-      check += MPaymentValidate.validateCreditCardVV(creditCardVV, creditCardType).length();
-    return check == 0;
-  }
-
-  public boolean setCreditCard(
-      String TrxType,
-      String creditCardType,
-      String creditCardNumber,
-      String creditCardVV,
-      String creditCardExp) {
-    return setCreditCard(
-        TrxType,
-        creditCardType,
-        creditCardNumber,
-        creditCardVV,
-        MPaymentValidate.getCreditCardExpMM(creditCardExp),
-        MPaymentValidate.getCreditCardExpYY(creditCardExp));
-  }
-
-  public boolean setPaymentProcessor() {
+    public boolean setPaymentProcessor() {
     return setPaymentProcessor(getTenderType(), getCreditCardType(), getC_PaymentProcessor_ID());
   }
 
@@ -561,12 +514,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     m_processUI = processUI;
   }
 
-  @Override
-  public PO getPO() {
-    return this;
-  }
-
-  public static MPaymentTransaction copyFrom(
+    public static MPaymentTransaction copyFrom(
       MPaymentTransaction from,
       Timestamp dateTrx,
       String trxType,
@@ -642,34 +590,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     return to;
   }
 
-  public static int[] getAuthorizationPaymentTransactionIDs(
-      int C_Order_ID, int C_Invoice_ID, String trxName) {
-    StringBuilder whereClause = new StringBuilder();
-    whereClause
-        .append("TenderType='")
-        .append(MPaymentTransaction.TENDERTYPE_CreditCard)
-        .append("' ");
-    whereClause
-        .append("AND TrxType='")
-        .append(MPaymentTransaction.TRXTYPE_Authorization)
-        .append("' ");
-    if (C_Order_ID > 0 && C_Invoice_ID > 0)
-      whereClause
-          .append(" AND (C_Order_ID=")
-          .append(C_Order_ID)
-          .append(" OR C_Invoice_ID=")
-          .append(C_Invoice_ID)
-          .append(")");
-    else if (C_Order_ID > 0) whereClause.append(" AND C_Order_ID=").append(C_Order_ID);
-    else if (C_Invoice_ID > 0) whereClause.append(" AND C_Invoice_ID=").append(C_Invoice_ID);
-    whereClause.append(" AND IsApproved='Y' AND IsVoided='N' AND IsDelayedCapture='N' ");
-    whereClause.append("ORDER BY DateTrx DESC");
-
-    return getAllIDs(
-        I_C_PaymentTransaction.Table_Name, whereClause.toString());
-  }
-
-  public static int[] getAuthorizationPaymentTransactionIDs(
+    public static int[] getAuthorizationPaymentTransactionIDs(
       int[] orderIDList, int C_Invoice_ID, String trxName) {
     StringBuilder sb = new StringBuilder();
     if (orderIDList != null) {

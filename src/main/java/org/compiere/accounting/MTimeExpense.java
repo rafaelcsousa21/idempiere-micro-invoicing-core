@@ -13,7 +13,6 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -68,16 +67,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
   /** Cached User */
   private int m_AD_User_ID = 0;
 
-  /**
-   * Get Lines Convenience Wrapper
-   *
-   * @return array of lines
-   */
-  public MTimeExpenseLine[] getLines() {
-    return getLines(true);
-  }
-
-  /**
+    /**
    * Get Lines
    *
    * @param requery true requeries
@@ -117,18 +107,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     return m_lines;
   } //	getLines
 
-  /**
-   * Add to Description
-   *
-   * @param description text
-   */
-  public void addDescription(String description) {
-    String desc = getDescription();
-    if (desc == null) setDescription(description);
-    else setDescription(desc + " | " + description);
-  } //	addDescription
-
-  /**
+    /**
    * Get Default Locator (from Warehouse)
    *
    * @return locator
@@ -184,35 +163,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     return Msg.getElement(getCtx(), "S_TimeExpense_ID") + " " + getDocumentNo();
   } //	getDocumentInfo
 
-  /**
-   * Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      File temp = File.createTempFile(get_TableName() + getId() + "_", ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    //	ReportEngine re = ReportEngine.get (getCtx(), ReportEngine.INVOICE, getC_Invoice_ID());
-    //	if (re == null)
-    return null;
-    //	return re.getPDF(file);
-  } //	createPDF
-
-  /**
+    /**
    * ************************************************************************ Process document
    *
    * @param processAction document action
@@ -543,4 +494,14 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
 
   @Override
   public void setProcessedOn(String processed, boolean b, boolean b1) {}
+
+    /**
+     * Set Document Status.
+     *
+     * @param DocStatus The current status of the document
+     */
+    public void setDocStatus(String DocStatus) {
+
+        set_Value(COLUMNNAME_DocStatus, DocStatus);
+    }
 } //	MTimeExpense

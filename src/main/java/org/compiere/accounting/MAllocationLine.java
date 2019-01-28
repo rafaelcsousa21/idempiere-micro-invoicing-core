@@ -8,7 +8,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -116,16 +115,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
     m_parent = parent;
   } //	setParent
 
-  /**
-   * Get Parent Trx Date
-   *
-   * @return date trx
-   */
-  public Timestamp getDateTrx() {
-    return getParent().getDateTrx();
-  } //	getDateTrx
-
-  /**
+    /**
    * Set Document Info
    *
    * @param C_BPartner_ID partner

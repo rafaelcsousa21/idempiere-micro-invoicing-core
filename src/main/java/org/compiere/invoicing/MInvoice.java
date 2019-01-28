@@ -33,7 +33,6 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.io.File;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -217,22 +216,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     return to;
   } //	copyFrom
 
-  /**
-   * Get PDF File Name
-   *
-   * @param documentDir directory
-   * @param C_Invoice_ID invoice
-   * @return file name
-   */
-  public static String getPDFFileName(String documentDir, int C_Invoice_ID) {
-    StringBuilder sb = new StringBuilder(documentDir);
-    if (sb.length() == 0) sb.append(".");
-    if (!sb.toString().endsWith(File.separator)) sb.append(File.separator);
-    sb.append("C_Invoice_ID_").append(C_Invoice_ID).append(".pdf");
-    return sb.toString();
-  } //	getPDFFileName
-
-  /**
+    /**
    * Get MInvoice from Cache
    *
    * @param ctx context
@@ -407,10 +391,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
   private MInvoiceLine[] m_lines;
   /** Invoice Taxes */
   private MInvoiceTax[] m_taxes;
-  /** Logger */
-  private static CLogger s_log = CLogger.getCLogger(MInvoice.class);
 
-  /**
+    /**
    * Overwrite Client/Org if required
    *
    * @param AD_Client_ID client
@@ -616,21 +598,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     return amt;
   } //	getGrandTotal
 
-  /**
-   * Get Total Lines
-   *
-   * @param creditMemoAdjusted adjusted for CM (negative)
-   * @return total lines
-   */
-  public BigDecimal getTotalLines(boolean creditMemoAdjusted) {
-    if (!creditMemoAdjusted) return super.getTotalLines();
-    //
-    BigDecimal amt = getTotalLines();
-    if (isCreditMemo()) return amt.negate();
-    return amt;
-  } //	getTotalLines
-
-  /**
+    /**
    * Get Invoice Lines of Invoice
    *
    * @param whereClause starting with AND
@@ -1155,42 +1123,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     return testAllocation(false);
   }
 
-  /**
-   * Set Paid Flag for invoices
-   *
-   * @param ctx context
-   * @param C_BPartner_ID if 0 all
-   * @param trxName transaction
-   */
-  public static void setIsPaid(Properties ctx, int C_BPartner_ID, String trxName) {
-    List<Object> params = new ArrayList<Object>();
-    StringBuilder whereClause = new StringBuilder("IsPaid='N' AND DocStatus IN ('CO','CL')");
-    if (C_BPartner_ID > 1) {
-      whereClause.append(" AND C_BPartner_ID=?");
-      params.add(C_BPartner_ID);
-    } else {
-      whereClause.append(" AND AD_Client_ID=?");
-      params.add(Env.getClientId(ctx));
-    }
-
-    POResultSet<MInvoice> rs =
-        new Query(ctx, MInvoice.Table_Name, whereClause.toString(), trxName)
-            .setParameters(params)
-            .scroll();
-    int counter = 0;
-    try {
-      while (rs.hasNext()) {
-        MInvoice invoice = rs.next();
-        if (invoice.testAllocation()) if (invoice.save()) counter++;
-      }
-    } finally {
-      POResultSet.close(rs);
-    }
-    if (s_log.isLoggable(Level.CONFIG)) s_log.config("#" + counter);
-    /**/
-  } //	setIsPaid
-
-  /**
+    /**
    * Get Open Amount. Used by web interface
    *
    * @return Open Amt
@@ -1227,62 +1160,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     return m_openAmt;
   } //	getOpenAmt
 
-  /**
-   * Get Document Status
-   *
-   * @return Document Status Clear Text
-   */
-  public String getDocStatusName() {
-    return MRefList.getListName(getCtx(), 131, getDocStatus());
-  } //	getDocStatusName
-
-  /**
-   * ************************************************************************ Create PDF
-   *
-   * @return File or null
-   */
-  public File createPDF() {
-    try {
-      StringBuilder msgfile =
-          new StringBuilder().append(get_TableName()).append(getId()).append("_");
-      File temp = File.createTempFile(msgfile.toString(), ".pdf");
-      return createPDF(temp);
-    } catch (Exception e) {
-      log.severe("Could not create PDF - " + e.getMessage());
-    }
-    return null;
-  } //	getPDF
-
-  /**
-   * Create PDF file
-   *
-   * @param file output file
-   * @return file if success
-   */
-  public File createPDF(File file) {
-    return null;
-  } //	createPDF
-
-  /**
-   * Get PDF File Name
-   *
-   * @param documentDir directory
-   * @return file name
-   */
-  public String getPDFFileName(String documentDir) {
-    return getPDFFileName(documentDir, getC_Invoice_ID());
-  } //	getPDFFileName
-
-  /**
-   * Get ISO Code of Currency
-   *
-   * @return Currency ISO
-   */
-  public String getCurrencyISO() {
-    return MCurrency.getISO_Code(getCtx(), getC_Currency_ID());
-  } //	getCurrencyISO
-
-  /**
+    /**
    * Get Currency Precision
    *
    * @return precision
@@ -2611,36 +2489,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         || X_C_Invoice.DOCSTATUS_Reversed.equals(ds);
   } //	isComplete
 
-  /**
-   * Get original order
-   *
-   * @return order
-   */
-  public org.compiere.order.MOrder getOriginalOrder() {
-    if (getM_RMA_ID() > 0) {
-      MRMA rma = new MRMA(getCtx(), getM_RMA_ID(), null);
-      org.compiere.order.MOrder originalOrder = rma.getOriginalOrder();
-      if (originalOrder != null) return originalOrder;
-
-      I_C_Invoice originalInvoice = rma.getOriginalInvoice();
-      if (originalInvoice.getC_Order_ID() > 0) {
-        originalOrder = new MOrder(getCtx(), originalInvoice.getC_Order_ID(), null);
-        if (originalOrder != null) return originalOrder;
-      }
-    } else if (getC_Order_ID() > 0) return new MOrder(getCtx(), getC_Order_ID(), null);
-    return null;
-  }
-
-  /**
-   * Set process message
-   *
-   * @param processMsg
-   */
-  public void setProcessMessage(String processMsg) {
-    m_processMsg = processMsg;
-  }
-
-  /**
+    /**
    * Get tax providers
    *
    * @return array of tax provider
@@ -2662,12 +2511,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     return retValue;
   }
 
-  /** Returns C_DocType_ID (or C_DocTypeTarget_ID if C_DocType_ID is not set) */
-  public int getDocTypeID() {
-    return getC_DocType_ID() > 0 ? getC_DocType_ID() : getC_DocTypeTarget_ID();
-  }
-
-  @Override
+    @Override
   public void setDoc(IDoc doc) {}
 
   @Override

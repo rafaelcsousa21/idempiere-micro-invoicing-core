@@ -5,7 +5,6 @@ import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
 import org.eevolution.model.I_PP_Product_BOM;
 import org.idempiere.common.util.CCache;
-import org.idempiere.common.util.Env;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -31,21 +30,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
   /** BOM Lines */
   private List<MPPProductBOMLine> m_lines = null;
 
-  /**
-   * get the Product BOM for a product
-   *
-   * @param product
-   * @return return List with <MPPProductBOM
-   */
-  public static List<MPPProductBOM> getProductBOMs(MProduct product) {
-    String whereClause = I_PP_Product_BOM.COLUMNNAME_Value + "=? AND M_Product_ID=?";
-    return new Query(
-            product.getCtx(), I_PP_Product_BOM.Table_Name, whereClause, null)
-        .setClient_ID()
-        .setParameters(product.getValue(), product.getM_Product_ID())
-        .list();
-  }
-  /**
+    /**
    * Get Product BOM by ID (cached)
    *
    * @param ctx
@@ -65,21 +50,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     return bom;
   }
 
-  /**
-   * Get PP_Product_BOM_ID for given M_Product_ID
-   *
-   * @param M_Product_ID
-   * @return PP_Product_BOM_ID
-   */
-  public static int getBOMSearchKey(MProduct product) {
-    int AD_Client_ID = Env.getClientId(product.getCtx());
-    String sql =
-        "SELECT PP_Product_BOM_ID FROM PP_Product_BOM"
-            + " WHERE Value=? AND M_Product_ID=? AND AD_Client_ID=?";
-    return getSQLValueEx(null, sql, product.getValue(), product.getId(), AD_Client_ID);
-  }
-
-  /**
+    /**
    * Get BOM with Default Logic (Product = BOM Product and BOM Value = Product Value)
    *
    * @param product
@@ -104,53 +75,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     return bom;
   }
 
-  /**
-   * Get BOM for Product
-   *
-   * @param product product
-   * @param ad_org_id Organization ID
-   * @param trxName Transaction Name
-   * @return BOM
-   */
-  public static MPPProductBOM get(MProduct product, int ad_org_id, String trxName) {
-    MPPProductBOM bom = null;
-    Properties ctx = product.getCtx();
-    // find Default BOM in Product Data Planning
-    if (ad_org_id > 0) {
-      MPPProductPlanning pp =
-          MPPProductPlanning.get(
-              ctx, product.getClientId(), ad_org_id, product.getM_Product_ID(), trxName);
-      if (pp != null && pp.getPP_Product_BOM_ID() > 0) {
-        bom = new MPPProductBOM(ctx, pp.getPP_Product_BOM_ID(), trxName);
-      }
-    }
-    if (bom == null) {
-      // Find BOM with Default Logic where product = bom product and bom value = value
-      bom = getDefault(product, trxName);
-    }
-
-    return bom;
-  }
-
-  /**
-   * Get BOM with valid dates for Product
-   *
-   * @param product product
-   * @param ad_org_id Organization ID
-   * @param valid Date to Validate
-   * @param trxName Transaction Name
-   * @return BOM
-   */
-  public static MPPProductBOM get(
-      MProduct product, int ad_org_id, Timestamp valid, String trxName) {
-    MPPProductBOM bom = get(product, ad_org_id, trxName);
-    if (bom != null && bom.isValidFromTo(valid)) {
-      return bom;
-    }
-    return null;
-  }
-
-  public MPPProductBOM(Properties ctx, int PP_Product_BOM_ID, String trxName) {
+    public MPPProductBOM(Properties ctx, int PP_Product_BOM_ID, String trxName) {
     super(ctx, PP_Product_BOM_ID, trxName);
   }
 
@@ -175,16 +100,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     return list.toArray(new MPPProductBOMLine[list.size()]);
   } //	getLines
 
-  /**
-   * Get BOM Lines for Product BOM from cache
-   *
-   * @return BOM Lines
-   */
-  public MPPProductBOMLine[] getLines() {
-    return getLines(false);
-  }
-
-  /**
+    /**
    * Get BOM Lines for Product BOM
    *
    * @return BOM Lines
@@ -202,16 +118,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     return this.m_lines.toArray(new MPPProductBOMLine[this.m_lines.size()]);
   } //	getLines
 
-  public boolean isValidFromTo(Timestamp date) {
-    Timestamp validFrom = getValidFrom();
-    Timestamp validTo = getValidTo();
-
-    if (validFrom != null && date.before(validFrom)) return false;
-    if (validTo != null && date.after(validTo)) return false;
-    return true;
-  }
-
-  @Override
+    @Override
   protected boolean afterDelete(boolean success) {
     if (!success) return false;
 

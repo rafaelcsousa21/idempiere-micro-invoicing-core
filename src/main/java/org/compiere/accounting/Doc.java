@@ -124,11 +124,7 @@ public abstract class Doc implements IDoc {
   public static final String DOCTYPE_MatShipment = "MMS";
   /** Material Receipt */
   public static final String DOCTYPE_MatReceipt = "MMR";
-  /** Material Inventory */
-  public static final String DOCTYPE_MatInventory = "MMI";
-  /** Material Movement */
-  public static final String DOCTYPE_MatMovement = "MMM";
-  /** Material Production */
+    /** Material Production */
   public static final String DOCTYPE_MatProduction = "MMP";
   /** Match Invoice */
   public static final String DOCTYPE_MatMatchInv = "MXI";
@@ -142,10 +138,8 @@ public abstract class Doc implements IDoc {
   public static final String DOCTYPE_SOrder = "SOO";
   /** Project Issue */
   public static final String DOCTYPE_ProjectIssue = "PJI";
-  /** Purchase Requisition */
-  public static final String DOCTYPE_PurchaseRequisition = "POR";
 
-  //  Posting Status - AD_Reference_ID=234     //
+    //  Posting Status - AD_Reference_ID=234     //
   /** Document Status */
   public static final String STATUS_NotPosted = "N";
   /** Document Status */
@@ -205,62 +199,7 @@ public abstract class Doc implements IDoc {
     return DocManager.INSTANCE.postDocument(ass, AD_Table_ID, Record_ID, force, true, trxName);
   } //  post
 
-  /**
-   * Manual posting by user
-   *
-   * @param WindowNo
-   * @param AD_Client_ID
-   * @param AD_Table_ID
-   * @param Record_ID
-   * @param force
-   * @return error message ( if any )
-   */
-  public static String manualPosting(
-      int WindowNo, int AD_Client_ID, int AD_Table_ID, int Record_ID, boolean force) {
-    String error = null;
-    MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(Env.getCtx(), AD_Client_ID);
-    try {
-      // Costing: Post MatchPO before MR
-      if (AD_Table_ID == MInOut.Table_ID) {
-        MMatchPO[] matchPos = MMatchPO.getInOut(Env.getCtx(), Record_ID, null);
-        for (MMatchPO matchPo : matchPos) {
-          if (!matchPo.isPosted()) {
-            error =
-                postImmediate(
-                    ass, matchPo.getTableId(), matchPo.getId(), force, null);
-            if (!Util.isEmpty(error)) break;
-          }
-        }
-      }
-      if (Util.isEmpty(error)) {
-        error = postImmediate(ass, AD_Table_ID, Record_ID, force, null);
-      }
-      // Costing: Post MatchInv after Invoice
-      if (Util.isEmpty(error)) {
-        if (AD_Table_ID == I_C_Invoice.Table_ID) {
-          MMatchInv[] matchInvs = MMatchInv.getInvoice(Env.getCtx(), Record_ID, null);
-          for (MMatchInv matchInv : matchInvs) {
-            if (!matchInv.isPosted()) {
-              error =
-                  postImmediate(
-                      ass,
-                      matchInv.getTableId(),
-                      matchInv.getId(),
-                      force,
-                      null);
-              if (!Util.isEmpty(error)) break;
-            }
-          }
-        }
-      }
-    } catch (Throwable t) {
-      throw new Error("@Error@ " + t.getLocalizedMessage());
-    }
-
-    return error;
-  }
-
-  /** Static Log */
+    /** Static Log */
   protected static CLogger s_log = CLogger.getCLogger(Doc.class);
   /** Log per Document */
   protected CLogger log = CLogger.getCLogger(getClass());
@@ -1051,16 +990,7 @@ public abstract class Doc implements IDoc {
     return m_Amounts[0];
   } //  getAmount
 
-  /**
-   * Set Quantity
-   *
-   * @param qty Quantity
-   */
-  public void setQty(BigDecimal qty) {
-    m_qty = qty;
-  } //  setQty
-
-  /**
+    /**
    * Get Quantity
    *
    * @return Quantity
@@ -1344,22 +1274,7 @@ public abstract class Doc implements IDoc {
     return acct;
   } //	getAccount
 
-  /**
-   * Get DocLine with ID
-   *
-   * @param Record_ID Record ID
-   * @return DocLine
-   */
-  public DocLine getDocLine(int Record_ID) {
-    if (p_lines == null || p_lines.length == 0 || Record_ID == 0) return null;
-
-    for (int i = 0; i < p_lines.length; i++) {
-      if (p_lines[i].get_ID() == Record_ID) return p_lines[i];
-    }
-    return null;
-  } //  getDocLine
-
-  /**
+    /**
    * String Representation
    *
    * @return String
@@ -1449,16 +1364,7 @@ public abstract class Doc implements IDoc {
     return m_MultiCurrency;
   } //	isMultiCurrency
 
-  /**
-   * Set Multi Currency
-   *
-   * @param mc multi currency
-   */
-  public void setIsMultiCurrency(boolean mc) {
-    m_MultiCurrency = mc;
-  } //	setIsMultiCurrency
-
-  /**
+    /**
    * Is Tax Included
    *
    * @return tax incl
@@ -1956,16 +1862,7 @@ public abstract class Doc implements IDoc {
     return m_C_LocFrom_ID;
   } //	getC_LocFrom_ID
 
-  /**
-   * Set C_LocFrom_ID
-   *
-   * @param C_LocFrom_ID loc from
-   */
-  public void setC_LocFrom_ID(int C_LocFrom_ID) {
-    m_C_LocFrom_ID = C_LocFrom_ID;
-  } //	setC_LocFrom_ID
-
-  /**
+    /**
    * Get C_LocTo_ID
    *
    * @return loc to
@@ -1974,16 +1871,7 @@ public abstract class Doc implements IDoc {
     return m_C_LocTo_ID;
   } //	getC_LocTo_ID
 
-  /**
-   * Set C_LocTo_ID
-   *
-   * @param C_LocTo_ID loc to
-   */
-  public void setC_LocTo_ID(int C_LocTo_ID) {
-    m_C_LocTo_ID = C_LocTo_ID;
-  } //	setC_LocTo_ID
-
-  /**
+    /**
    * Get User1_ID
    *
    * @return Campaign
@@ -2050,16 +1938,7 @@ public abstract class Doc implements IDoc {
    */
   public abstract ArrayList<IFact> createFacts(MAcctSchema as);
 
-  /**
-   * Get Facts (the accounting logic)
-   *
-   * @return Facts
-   */
-  public ArrayList<IFact> getFacts() {
-    return m_fact;
-  }
-
-  /** Return document whether need to defer posting or not */
+    /** Return document whether need to defer posting or not */
   public boolean isDeferPosting() {
     return false;
   }

@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_R_Request;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
@@ -53,23 +52,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return sb.toString();
   }
 
-  public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
-    return (org.compiere.model.I_A_Asset)
-        MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), null);
-  }
-
-  /**
-   * Set Asset.
-   *
-   * @param A_Asset_ID Asset used internally or by customers
-   */
-  public void setA_Asset_ID(int A_Asset_ID) {
-    if (A_Asset_ID < 1) set_Value(COLUMNNAME_A_Asset_ID, null);
-    else set_Value(COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
-  }
-
-  /**
+    /**
    * Get Asset.
    *
    * @return Asset used internally or by customers
@@ -80,23 +63,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException {
-    return (org.compiere.model.I_AD_Role)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
-            .getPO(getAD_Role_ID(), null);
-  }
-
-  /**
-   * Set Role.
-   *
-   * @param AD_Role_ID Responsibility Role
-   */
-  public void setAD_Role_ID(int AD_Role_ID) {
-    if (AD_Role_ID < 0) set_Value(COLUMNNAME_AD_Role_ID, null);
-    else set_Value(COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
-  }
-
-  /**
+    /**
    * Get Role.
    *
    * @return Responsibility Role
@@ -107,23 +74,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
-    return (org.compiere.model.I_AD_Table)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), null);
-  }
-
-  /**
-   * Set Table.
-   *
-   * @param AD_Table_ID Database Table information
-   */
-  public void setAD_Table_ID(int AD_Table_ID) {
-    if (AD_Table_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Table_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
-  }
-
-  /**
+    /**
    * Get Table.
    *
    * @return Database Table information
@@ -134,23 +85,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
-   * Set User/Contact.
-   *
-   * @param AD_User_ID User within the system - Internal or Business Partner Contact
-   */
-  public void setAD_User_ID(int AD_User_ID) {
-    if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-    else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
-  }
-
-  /**
+    /**
    * Get User/Contact.
    *
    * @return User within the system - Internal or Business Partner Contact
@@ -161,23 +96,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
-    return (org.compiere.model.I_C_Activity)
-        MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-            .getPO(getC_Activity_ID(), null);
-  }
-
-  /**
-   * Set Activity.
-   *
-   * @param C_Activity_ID Business Activity
-   */
-  public void setC_Activity_ID(int C_Activity_ID) {
-    if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-    else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
-  }
-
-  /**
+    /**
    * Get Activity.
    *
    * @return Business Activity
@@ -188,23 +107,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
-   * Set Business Partner .
-   *
-   * @param C_BPartner_ID Identifies a Business Partner
-   */
-  public void setC_BPartner_ID(int C_BPartner_ID) {
-    if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-    else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
-  }
-
-  /**
+    /**
    * Get Business Partner .
    *
    * @return Identifies a Business Partner
@@ -215,23 +118,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
-    return (org.compiere.model.I_C_Campaign)
-        MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-            .getPO(getC_Campaign_ID(), null);
-  }
-
-  /**
-   * Set Campaign.
-   *
-   * @param C_Campaign_ID Marketing Campaign
-   */
-  public void setC_Campaign_ID(int C_Campaign_ID) {
-    if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-    else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
-  }
-
-  /**
+    /**
    * Get Campaign.
    *
    * @return Marketing Campaign
@@ -242,23 +129,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
-  }
-
-  /**
-   * Set Invoice.
-   *
-   * @param C_Invoice_ID Invoice Identifier
-   */
-  public void setC_Invoice_ID(int C_Invoice_ID) {
-    if (C_Invoice_ID < 1) set_Value(COLUMNNAME_C_Invoice_ID, null);
-    else set_Value(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
-  }
-
-  /**
+    /**
    * Get Invoice.
    *
    * @return Invoice Identifier
@@ -269,23 +140,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Invoice getC_InvoiceRequest() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_InvoiceRequest_ID(), null);
-  }
-
-  /**
-   * Set Request Invoice.
-   *
-   * @param C_InvoiceRequest_ID The generated invoice for this request
-   */
-  public void setC_InvoiceRequest_ID(int C_InvoiceRequest_ID) {
-    if (C_InvoiceRequest_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceRequest_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_InvoiceRequest_ID, Integer.valueOf(C_InvoiceRequest_ID));
-  }
-
-  /**
+    /**
    * Get Request Invoice.
    *
    * @return The generated invoice for this request
@@ -372,23 +227,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return (String) get_Value(COLUMNNAME_ConfidentialTypeEntry);
   }
 
-  public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
-    return (org.compiere.model.I_C_Order)
-        MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), null);
-  }
-
-  /**
-   * Set Order.
-   *
-   * @param C_Order_ID Order
-   */
-  public void setC_Order_ID(int C_Order_ID) {
-    if (C_Order_ID < 1) set_Value(COLUMNNAME_C_Order_ID, null);
-    else set_Value(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
-  }
-
-  /**
+    /**
    * Get Order.
    *
    * @return Order
@@ -399,23 +238,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
-   * Set Payment.
-   *
-   * @param C_Payment_ID Payment identifier
-   */
-  public void setC_Payment_ID(int C_Payment_ID) {
-    if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-    else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
-  }
-
-  /**
+    /**
    * Get Payment.
    *
    * @return Payment identifier
@@ -426,23 +249,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
-    return (org.compiere.model.I_C_Project)
-        MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
-  }
-
-  /**
-   * Set Project.
-   *
-   * @param C_Project_ID Financial Project
-   */
-  public void setC_Project_ID(int C_Project_ID) {
-    if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-    else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-  }
-
-  /**
+    /**
    * Get Project.
    *
    * @return Financial Project
@@ -453,43 +260,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Complete Plan.
-   *
-   * @param DateCompletePlan Planned Completion Date
-   */
-  public void setDateCompletePlan(Timestamp DateCompletePlan) {
-    set_Value(COLUMNNAME_DateCompletePlan, DateCompletePlan);
-  }
-
-  /**
-   * Get Complete Plan.
-   *
-   * @return Planned Completion Date
-   */
-  public Timestamp getDateCompletePlan() {
-    return (Timestamp) get_Value(COLUMNNAME_DateCompletePlan);
-  }
-
-  /**
-   * Set Date last action.
-   *
-   * @param DateLastAction Date this request was last acted on
-   */
-  public void setDateLastAction(Timestamp DateLastAction) {
-    set_ValueNoCheck(COLUMNNAME_DateLastAction, DateLastAction);
-  }
-
-  /**
-   * Get Date last action.
-   *
-   * @return Date this request was last acted on
-   */
-  public Timestamp getDateLastAction() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastAction);
-  }
-
-  /**
+    /**
    * Set Last Alert.
    *
    * @param DateLastAlert Date when last alert were sent
@@ -498,16 +269,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     set_Value(COLUMNNAME_DateLastAlert, DateLastAlert);
   }
 
-  /**
-   * Get Last Alert.
-   *
-   * @return Date when last alert were sent
-   */
-  public Timestamp getDateLastAlert() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastAlert);
-  }
-
-  /**
+    /**
    * Set Date next action.
    *
    * @param DateNextAction Date that this request should be acted on
@@ -525,34 +287,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return (Timestamp) get_Value(COLUMNNAME_DateNextAction);
   }
 
-  /**
-   * Set Start Plan.
-   *
-   * @param DateStartPlan Planned Start Date
-   */
-  public void setDateStartPlan(Timestamp DateStartPlan) {
-    set_Value(COLUMNNAME_DateStartPlan, DateStartPlan);
-  }
-
-  /**
-   * Get Start Plan.
-   *
-   * @return Planned Start Date
-   */
-  public Timestamp getDateStartPlan() {
-    return (Timestamp) get_Value(COLUMNNAME_DateStartPlan);
-  }
-
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
+    /**
    * Get Document No.
    *
    * @return Document sequence number of the document
@@ -561,16 +296,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
-  /** DueType AD_Reference_ID=222 */
+    /** DueType AD_Reference_ID=222 */
   public static final int DUETYPE_AD_Reference_ID = 222;
   /** Overdue = 3 */
   public static final String DUETYPE_Overdue = "3";
@@ -597,25 +323,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return (String) get_Value(COLUMNNAME_DueType);
   }
 
-  /**
-   * Set End Time.
-   *
-   * @param EndTime End of the time span
-   */
-  public void setEndTime(Timestamp EndTime) {
-    set_Value(COLUMNNAME_EndTime, EndTime);
-  }
-
-  /**
-   * Get End Time.
-   *
-   * @return End of the time span
-   */
-  public Timestamp getEndTime() {
-    return (Timestamp) get_Value(COLUMNNAME_EndTime);
-  }
-
-  /**
+    /**
    * Set Escalated.
    *
    * @param IsEscalated This request has been escalated
@@ -624,21 +332,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     set_Value(COLUMNNAME_IsEscalated, Boolean.valueOf(IsEscalated));
   }
 
-  /**
-   * Get Escalated.
-   *
-   * @return This request has been escalated
-   */
-  public boolean isEscalated() {
-    Object oo = get_Value(COLUMNNAME_IsEscalated);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Invoiced.
    *
    * @param IsInvoiced Is this invoiced?
@@ -670,45 +364,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     set_ValueNoCheck(COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
   }
 
-  /**
-   * Get Self-Service.
-   *
-   * @return This is a Self-Service entry or this entry can be changed via Self-Service
-   */
-  public boolean isSelfService() {
-    Object oo = get_Value(COLUMNNAME_IsSelfService);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Last Result.
-   *
-   * @param LastResult Result of last contact
-   */
-  public void setLastResult(String LastResult) {
-    set_Value(COLUMNNAME_LastResult, LastResult);
-  }
-
-  /**
-   * Get Last Result.
-   *
-   * @return Result of last contact
-   */
-  public String getLastResult() {
-    return (String) get_Value(COLUMNNAME_LastResult);
-  }
-
-  public org.compiere.model.I_M_ChangeRequest getM_ChangeRequest() throws RuntimeException {
-    return (org.compiere.model.I_M_ChangeRequest)
-        MTable.get(getCtx(), org.compiere.model.I_M_ChangeRequest.Table_Name)
-            .getPO(getM_ChangeRequest_ID(), null);
-  }
-
-  /**
+    /**
    * Set Change Request.
    *
    * @param M_ChangeRequest_ID BOM (Engineering) Change Request
@@ -729,23 +385,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_ChangeNotice getM_FixChangeNotice() throws RuntimeException {
-    return (org.compiere.model.I_M_ChangeNotice)
-        MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_FixChangeNotice_ID(), null);
-  }
-
-  /**
-   * Set Fixed in.
-   *
-   * @param M_FixChangeNotice_ID Fixed in Change Notice
-   */
-  public void setM_FixChangeNotice_ID(int M_FixChangeNotice_ID) {
-    if (M_FixChangeNotice_ID < 1) set_Value(COLUMNNAME_M_FixChangeNotice_ID, null);
-    else set_Value(COLUMNNAME_M_FixChangeNotice_ID, Integer.valueOf(M_FixChangeNotice_ID));
-  }
-
-  /**
+    /**
    * Get Fixed in.
    *
    * @return Fixed in Change Notice
@@ -756,23 +396,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_InOut getM_InOut() throws RuntimeException {
-    return (org.compiere.model.I_M_InOut)
-        MTable.get(getCtx(), org.compiere.model.I_M_InOut.Table_Name)
-            .getPO(getM_InOut_ID(), null);
-  }
-
-  /**
-   * Set Shipment/Receipt.
-   *
-   * @param M_InOut_ID Material Shipment Document
-   */
-  public void setM_InOut_ID(int M_InOut_ID) {
-    if (M_InOut_ID < 1) set_Value(COLUMNNAME_M_InOut_ID, null);
-    else set_Value(COLUMNNAME_M_InOut_ID, Integer.valueOf(M_InOut_ID));
-  }
-
-  /**
+    /**
    * Get Shipment/Receipt.
    *
    * @return Material Shipment Document
@@ -783,23 +407,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
-   * Set Product.
-   *
-   * @param M_Product_ID Product, Service, Item
-   */
-  public void setM_Product_ID(int M_Product_ID) {
-    if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-  }
-
-  /**
+    /**
    * Get Product.
    *
    * @return Product, Service, Item
@@ -810,23 +418,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_ProductSpent() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_ProductSpent_ID(), null);
-  }
-
-  /**
-   * Set Product Used.
-   *
-   * @param M_ProductSpent_ID Product/Resource/Service used in Request
-   */
-  public void setM_ProductSpent_ID(int M_ProductSpent_ID) {
-    if (M_ProductSpent_ID < 1) set_Value(COLUMNNAME_M_ProductSpent_ID, null);
-    else set_Value(COLUMNNAME_M_ProductSpent_ID, Integer.valueOf(M_ProductSpent_ID));
-  }
-
-  /**
+    /**
    * Get Product Used.
    *
    * @return Product/Resource/Service used in Request
@@ -837,23 +429,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_RMA getM_RMA() throws RuntimeException {
-    return (org.compiere.model.I_M_RMA)
-        MTable.get(getCtx(), org.compiere.model.I_M_RMA.Table_Name)
-            .getPO(getM_RMA_ID(), null);
-  }
-
-  /**
-   * Set RMA.
-   *
-   * @param M_RMA_ID Return Material Authorization
-   */
-  public void setM_RMA_ID(int M_RMA_ID) {
-    if (M_RMA_ID < 1) set_Value(COLUMNNAME_M_RMA_ID, null);
-    else set_Value(COLUMNNAME_M_RMA_ID, Integer.valueOf(M_RMA_ID));
-  }
-
-  /**
+    /**
    * Get RMA.
    *
    * @return Return Material Authorization
@@ -864,32 +440,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  /** NextAction AD_Reference_ID=219 */
-  public static final int NEXTACTION_AD_Reference_ID = 219;
-  /** None = N */
-  public static final String NEXTACTION_None = "N";
-  /** Follow up = F */
-  public static final String NEXTACTION_FollowUp = "F";
-  /**
-   * Set Next action.
-   *
-   * @param NextAction Next Action to be taken
-   */
-  public void setNextAction(String NextAction) {
-
-    set_Value(COLUMNNAME_NextAction, NextAction);
-  }
-
-  /**
-   * Get Next action.
-   *
-   * @return Next Action to be taken
-   */
-  public String getNextAction() {
-    return (String) get_Value(COLUMNNAME_NextAction);
-  }
-
-  /** Priority AD_Reference_ID=154 */
+    /** Priority AD_Reference_ID=154 */
   public static final int PRIORITY_AD_Reference_ID = 154;
   /** High = 3 */
   public static final String PRIORITY_High = "3";
@@ -974,83 +525,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return false;
   }
 
-  /**
-   * Set Quantity Invoiced.
-   *
-   * @param QtyInvoiced Invoiced Quantity
-   */
-  public void setQtyInvoiced(BigDecimal QtyInvoiced) {
-    set_Value(COLUMNNAME_QtyInvoiced, QtyInvoiced);
-  }
-
-  /**
-   * Get Quantity Invoiced.
-   *
-   * @return Invoiced Quantity
-   */
-  public BigDecimal getQtyInvoiced() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyInvoiced);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Quantity Plan.
-   *
-   * @param QtyPlan Planned Quantity
-   */
-  public void setQtyPlan(BigDecimal QtyPlan) {
-    set_Value(COLUMNNAME_QtyPlan, QtyPlan);
-  }
-
-  /**
-   * Get Quantity Plan.
-   *
-   * @return Planned Quantity
-   */
-  public BigDecimal getQtyPlan() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyPlan);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Quantity Used.
-   *
-   * @param QtySpent Quantity used for this event
-   */
-  public void setQtySpent(BigDecimal QtySpent) {
-    set_Value(COLUMNNAME_QtySpent, QtySpent);
-  }
-
-  /**
-   * Get Quantity Used.
-   *
-   * @return Quantity used for this event
-   */
-  public BigDecimal getQtySpent() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtySpent);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  public org.compiere.model.I_R_Category getR_Category() throws RuntimeException {
-    return (org.compiere.model.I_R_Category)
-        MTable.get(getCtx(), org.compiere.model.I_R_Category.Table_Name)
-            .getPO(getR_Category_ID(), null);
-  }
-
-  /**
-   * Set Category.
-   *
-   * @param R_Category_ID Request Category
-   */
-  public void setR_Category_ID(int R_Category_ID) {
-    if (R_Category_ID < 1) set_Value(COLUMNNAME_R_Category_ID, null);
-    else set_Value(COLUMNNAME_R_Category_ID, Integer.valueOf(R_Category_ID));
-  }
-
-  /**
+    /**
    * Get Category.
    *
    * @return Request Category
@@ -1061,28 +536,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Record ID.
-   *
-   * @param Record_ID Direct internal record ID
-   */
-  public void setRecord_ID(int Record_ID) {
-    if (Record_ID < 0) set_ValueNoCheck(COLUMNNAME_Record_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
-  }
-
-  /**
-   * Get Record ID.
-   *
-   * @return Direct internal record ID
-   */
-  public int getRecord_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Record_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set Request Amount.
    *
    * @param RequestAmt Amount associated with this request
@@ -1091,18 +545,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     set_Value(COLUMNNAME_RequestAmt, RequestAmt);
   }
 
-  /**
-   * Get Request Amount.
-   *
-   * @return Amount associated with this request
-   */
-  public BigDecimal getRequestAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_RequestAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Result.
    *
    * @param Result Result of the action taken
@@ -1120,23 +563,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return (String) get_Value(COLUMNNAME_Result);
   }
 
-  public org.compiere.model.I_R_Group getR_Group() throws RuntimeException {
-    return (org.compiere.model.I_R_Group)
-        MTable.get(getCtx(), org.compiere.model.I_R_Group.Table_Name)
-            .getPO(getR_Group_ID(), null);
-  }
-
-  /**
-   * Set Group.
-   *
-   * @param R_Group_ID Request Group
-   */
-  public void setR_Group_ID(int R_Group_ID) {
-    if (R_Group_ID < 1) set_Value(COLUMNNAME_R_Group_ID, null);
-    else set_Value(COLUMNNAME_R_Group_ID, Integer.valueOf(R_Group_ID));
-  }
-
-  /**
+    /**
    * Get Group.
    *
    * @return Request Group
@@ -1147,23 +574,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_R_MailText getR_MailText() throws RuntimeException {
-    return (org.compiere.model.I_R_MailText)
-        MTable.get(getCtx(), org.compiere.model.I_R_MailText.Table_Name)
-            .getPO(getR_MailText_ID(), null);
-  }
-
-  /**
-   * Set Mail Template.
-   *
-   * @param R_MailText_ID Text templates for mailings
-   */
-  public void setR_MailText_ID(int R_MailText_ID) {
-    if (R_MailText_ID < 1) set_Value(COLUMNNAME_R_MailText_ID, null);
-    else set_Value(COLUMNNAME_R_MailText_ID, Integer.valueOf(R_MailText_ID));
-  }
-
-  /**
+    /**
    * Get Mail Template.
    *
    * @return Text templates for mailings
@@ -1174,17 +585,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Request.
-   *
-   * @param R_Request_ID Request from a Business Partner or Prospect
-   */
-  public void setR_Request_ID(int R_Request_ID) {
-    if (R_Request_ID < 1) set_ValueNoCheck(COLUMNNAME_R_Request_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_R_Request_ID, Integer.valueOf(R_Request_ID));
-  }
-
-  /**
+    /**
    * Get Request.
    *
    * @return Request from a Business Partner or Prospect
@@ -1195,23 +596,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_R_Request getR_RequestRelated() throws RuntimeException {
-    return (org.compiere.model.I_R_Request)
-        MTable.get(getCtx(), org.compiere.model.I_R_Request.Table_Name)
-            .getPO(getR_RequestRelated_ID(), null);
-  }
-
-  /**
-   * Set Related Request.
-   *
-   * @param R_RequestRelated_ID Related Request (Master Issue, ..)
-   */
-  public void setR_RequestRelated_ID(int R_RequestRelated_ID) {
-    if (R_RequestRelated_ID < 1) set_Value(COLUMNNAME_R_RequestRelated_ID, null);
-    else set_Value(COLUMNNAME_R_RequestRelated_ID, Integer.valueOf(R_RequestRelated_ID));
-  }
-
-  /**
+    /**
    * Get Related Request.
    *
    * @return Related Request (Master Issue, ..)
@@ -1222,13 +607,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_R_RequestType getR_RequestType() throws RuntimeException {
-    return (org.compiere.model.I_R_RequestType)
-        MTable.get(getCtx(), org.compiere.model.I_R_RequestType.Table_Name)
-            .getPO(getR_RequestType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Request Type.
    *
    * @param R_RequestType_ID Type of request (e.g. Inquiry, Complaint, ..)
@@ -1249,41 +628,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set R_Request_UU.
-   *
-   * @param R_Request_UU R_Request_UU
-   */
-  public void setR_Request_UU(String R_Request_UU) {
-    set_Value(COLUMNNAME_R_Request_UU, R_Request_UU);
-  }
-
-  /**
-   * Get R_Request_UU.
-   *
-   * @return R_Request_UU
-   */
-  public String getR_Request_UU() {
-    return (String) get_Value(COLUMNNAME_R_Request_UU);
-  }
-
-  public org.compiere.model.I_R_Resolution getR_Resolution() throws RuntimeException {
-    return (org.compiere.model.I_R_Resolution)
-        MTable.get(getCtx(), org.compiere.model.I_R_Resolution.Table_Name)
-            .getPO(getR_Resolution_ID(), null);
-  }
-
-  /**
-   * Set Resolution.
-   *
-   * @param R_Resolution_ID Request Resolution
-   */
-  public void setR_Resolution_ID(int R_Resolution_ID) {
-    if (R_Resolution_ID < 1) set_Value(COLUMNNAME_R_Resolution_ID, null);
-    else set_Value(COLUMNNAME_R_Resolution_ID, Integer.valueOf(R_Resolution_ID));
-  }
-
-  /**
+    /**
    * Get Resolution.
    *
    * @return Request Resolution
@@ -1294,23 +639,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_R_StandardResponse getR_StandardResponse() throws RuntimeException {
-    return (org.compiere.model.I_R_StandardResponse)
-        MTable.get(getCtx(), org.compiere.model.I_R_StandardResponse.Table_Name)
-            .getPO(getR_StandardResponse_ID(), null);
-  }
-
-  /**
-   * Set Standard Response.
-   *
-   * @param R_StandardResponse_ID Request Standard Response
-   */
-  public void setR_StandardResponse_ID(int R_StandardResponse_ID) {
-    if (R_StandardResponse_ID < 1) set_Value(COLUMNNAME_R_StandardResponse_ID, null);
-    else set_Value(COLUMNNAME_R_StandardResponse_ID, Integer.valueOf(R_StandardResponse_ID));
-  }
-
-  /**
+    /**
    * Get Standard Response.
    *
    * @return Request Standard Response
@@ -1321,13 +650,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_R_Status getR_Status() throws RuntimeException {
-    return (org.compiere.model.I_R_Status)
-        MTable.get(getCtx(), org.compiere.model.I_R_Status.Table_Name)
-            .getPO(getR_Status_ID(), null);
-  }
-
-  /**
+    /**
    * Set Status.
    *
    * @param R_Status_ID Request Status
@@ -1393,25 +716,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return (Timestamp) get_Value(COLUMNNAME_StartDate);
   }
 
-  /**
-   * Set Start Time.
-   *
-   * @param StartTime Time started
-   */
-  public void setStartTime(Timestamp StartTime) {
-    set_Value(COLUMNNAME_StartTime, StartTime);
-  }
-
-  /**
-   * Get Start Time.
-   *
-   * @return Time started
-   */
-  public Timestamp getStartTime() {
-    return (Timestamp) get_Value(COLUMNNAME_StartTime);
-  }
-
-  /**
+    /**
    * Set Summary.
    *
    * @param Summary Textual summary of this request
@@ -1429,46 +734,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     return (String) get_Value(COLUMNNAME_Summary);
   }
 
-  /** TaskStatus AD_Reference_ID=366 */
-  public static final int TASKSTATUS_AD_Reference_ID = 366;
-  /** 0% Not Started = 0 */
-  public static final String TASKSTATUS_0NotStarted = "0";
-  /** 100% Complete = D */
-  public static final String TASKSTATUS_100Complete = "D";
-  /** 20% Started = 2 */
-  public static final String TASKSTATUS_20Started = "2";
-  /** 80% Nearly Done = 8 */
-  public static final String TASKSTATUS_80NearlyDone = "8";
-  /** 40% Busy = 4 */
-  public static final String TASKSTATUS_40Busy = "4";
-  /** 60% Good Progress = 6 */
-  public static final String TASKSTATUS_60GoodProgress = "6";
-  /** 90% Finishing = 9 */
-  public static final String TASKSTATUS_90Finishing = "9";
-  /** 95% Almost Done = A */
-  public static final String TASKSTATUS_95AlmostDone = "A";
-  /** 99% Cleaning up = C */
-  public static final String TASKSTATUS_99CleaningUp = "C";
-  /**
-   * Set Task Status.
-   *
-   * @param TaskStatus Status of the Task
-   */
-  public void setTaskStatus(String TaskStatus) {
-
-    set_Value(COLUMNNAME_TaskStatus, TaskStatus);
-  }
-
-  /**
-   * Get Task Status.
-   *
-   * @return Status of the Task
-   */
-  public String getTaskStatus() {
-    return (String) get_Value(COLUMNNAME_TaskStatus);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_R_Request.Table_ID;
   }

@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
-import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -82,13 +81,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return bd;
   }
 
-  public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
-    return (org.compiere.model.I_C_AcctSchema)
-        MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
-  }
-
-  /**
+    /**
    * Set Accounting Schema.
    *
    * @param C_AcctSchema_ID Rules for accounting
@@ -109,13 +102,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_InvoiceLine getC_InvoiceLine() throws RuntimeException {
-    return (org.compiere.model.I_C_InvoiceLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_InvoiceLine.Table_Name)
-            .getPO(getC_InvoiceLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice Line.
    *
    * @param C_InvoiceLine_ID Invoice Detail Line
@@ -136,13 +123,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
-    return (org.compiere.model.I_C_OrderLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-            .getPO(getC_OrderLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Sales Order Line.
    *
    * @param C_OrderLine_ID Sales Order Line
@@ -163,13 +144,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_ProjectIssue getC_ProjectIssue() throws RuntimeException {
-    return (org.compiere.model.I_C_ProjectIssue)
-        MTable.get(getCtx(), org.compiere.model.I_C_ProjectIssue.Table_Name)
-            .getPO(getC_ProjectIssue_ID(), null);
-  }
-
-  /**
+    /**
    * Set Project Issue.
    *
    * @param C_ProjectIssue_ID Project Issues (Material, Labor)
@@ -199,18 +174,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     set_Value(COLUMNNAME_CumulatedAmt, CumulatedAmt);
   }
 
-  /**
-   * Get Accumulated Amt.
-   *
-   * @return Total Amount
-   */
-  public BigDecimal getCumulatedAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CumulatedAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Accumulated Qty.
    *
    * @param CumulatedQty Total Quantity
@@ -219,18 +183,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     set_Value(COLUMNNAME_CumulatedQty, CumulatedQty);
   }
 
-  /**
-   * Get Accumulated Qty.
-   *
-   * @return Total Quantity
-   */
-  public BigDecimal getCumulatedQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CumulatedQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Current Cost Price.
    *
    * @param CurrentCostPrice The currently used cost price
@@ -239,18 +192,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     set_Value(COLUMNNAME_CurrentCostPrice, CurrentCostPrice);
   }
 
-  /**
-   * Get Current Cost Price.
-   *
-   * @return The currently used cost price
-   */
-  public BigDecimal getCurrentCostPrice() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrentCostPrice);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Current Quantity.
    *
    * @param CurrentQty Current Quantity
@@ -259,18 +201,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     set_Value(COLUMNNAME_CurrentQty, CurrentQty);
   }
 
-  /**
-   * Get Current Quantity.
-   *
-   * @return Current Quantity
-   */
-  public BigDecimal getCurrentQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrentQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Delta Amount.
    *
    * @param DeltaAmt Difference Amount
@@ -319,16 +250,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     set_Value(COLUMNNAME_Description, Description);
   }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Sales Transaction.
    *
    * @param IsSOTrx This is a Sales Transaction
@@ -351,13 +273,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return false;
   }
 
-  public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
-    return (I_M_AttributeSetInstance)
-        MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
-  }
-
-  /**
+    /**
    * Set Attribute Set Instance.
    *
    * @param M_AttributeSetInstance_ID Product Attribute Set Instance
@@ -380,17 +296,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Cost Detail.
-   *
-   * @param M_CostDetail_ID Cost Detail Information
-   */
-  public void setM_CostDetail_ID(int M_CostDetail_ID) {
-    if (M_CostDetail_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostDetail_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_CostDetail_ID, Integer.valueOf(M_CostDetail_ID));
-  }
-
-  /**
+    /**
    * Get Cost Detail.
    *
    * @return Cost Detail Information
@@ -401,31 +307,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set M_CostDetail_UU.
-   *
-   * @param M_CostDetail_UU M_CostDetail_UU
-   */
-  public void setM_CostDetail_UU(String M_CostDetail_UU) {
-    set_Value(COLUMNNAME_M_CostDetail_UU, M_CostDetail_UU);
-  }
-
-  /**
-   * Get M_CostDetail_UU.
-   *
-   * @return M_CostDetail_UU
-   */
-  public String getM_CostDetail_UU() {
-    return (String) get_Value(COLUMNNAME_M_CostDetail_UU);
-  }
-
-  public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
-    return (org.compiere.model.I_M_CostElement)
-        MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cost Element.
    *
    * @param M_CostElement_ID Product Cost Element
@@ -446,13 +328,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
-    return (org.compiere.model.I_M_InOutLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Shipment/Receipt Line.
    *
    * @param M_InOutLine_ID Line on Shipment or Receipt document
@@ -500,13 +376,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_MatchInv getM_MatchInv() throws RuntimeException {
-    return (org.compiere.model.I_M_MatchInv)
-        MTable.get(getCtx(), org.compiere.model.I_M_MatchInv.Table_Name)
-            .getPO(getM_MatchInv_ID(), null);
-  }
-
-  /**
+    /**
    * Set Match Invoice.
    *
    * @param M_MatchInv_ID Match Shipment/Receipt to Invoice
@@ -527,13 +397,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_MovementLine getM_MovementLine() throws RuntimeException {
-    return (org.compiere.model.I_M_MovementLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-            .getPO(getM_MovementLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Move Line.
    *
    * @param M_MovementLine_ID Inventory Move document Line
@@ -554,13 +418,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
-    return (org.compiere.model.I_M_Product)
-        MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
-  }
-
-  /**
+    /**
    * Set Product.
    *
    * @param M_Product_ID Product, Service, Item
@@ -581,13 +439,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_M_ProductionLine getM_ProductionLine() throws RuntimeException {
-    return (org.compiere.model.I_M_ProductionLine)
-        MTable.get(getCtx(), org.compiere.model.I_M_ProductionLine.Table_Name)
-            .getPO(getM_ProductionLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Production Line.
    *
    * @param M_ProductionLine_ID Document Line representing a production
@@ -608,23 +460,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  public org.eevolution.model.I_PP_Cost_Collector getPP_Cost_Collector() throws RuntimeException {
-    return (org.eevolution.model.I_PP_Cost_Collector)
-        MTable.get(getCtx(), org.eevolution.model.I_PP_Cost_Collector.Table_Name)
-            .getPO(getPP_Cost_Collector_ID(), null);
-  }
-
-  /**
-   * Set Manufacturing Cost Collector.
-   *
-   * @param PP_Cost_Collector_ID Manufacturing Cost Collector
-   */
-  public void setPP_Cost_Collector_ID(int PP_Cost_Collector_ID) {
-    if (PP_Cost_Collector_ID < 1) set_ValueNoCheck(COLUMNNAME_PP_Cost_Collector_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_PP_Cost_Collector_ID, Integer.valueOf(PP_Cost_Collector_ID));
-  }
-
-  /**
+    /**
    * Get Manufacturing Cost Collector.
    *
    * @return Manufacturing Cost Collector
@@ -635,27 +471,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Price.
-   *
-   * @param Price Price
-   */
-  public void setPrice(BigDecimal Price) {
-    throw new IllegalArgumentException("Price is virtual column");
-  }
-
-  /**
-   * Get Price.
-   *
-   * @return Price
-   */
-  public BigDecimal getPrice() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Price);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed

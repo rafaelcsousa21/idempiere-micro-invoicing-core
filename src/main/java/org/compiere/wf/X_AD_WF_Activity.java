@@ -1,7 +1,6 @@
 package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_Activity;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
@@ -50,23 +49,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return sb.toString();
   }
 
-  public org.compiere.model.I_AD_Message getAD_Message() throws RuntimeException {
-    return (org.compiere.model.I_AD_Message)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Message.Table_Name)
-            .getPO(getAD_Message_ID(), null);
-  }
-
-  /**
-   * Set Message.
-   *
-   * @param AD_Message_ID System Message
-   */
-  public void setAD_Message_ID(int AD_Message_ID) {
-    if (AD_Message_ID < 1) set_Value(COLUMNNAME_AD_Message_ID, null);
-    else set_Value(COLUMNNAME_AD_Message_ID, Integer.valueOf(AD_Message_ID));
-  }
-
-  /**
+    /**
    * Get Message.
    *
    * @return System Message
@@ -77,13 +60,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  public org.compiere.model.I_AD_Table getAD_Table() throws RuntimeException {
-    return (org.compiere.model.I_AD_Table)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Table.Table_Name)
-            .getPO(getAD_Table_ID(), null);
-  }
-
-  /**
+    /**
    * Set Table.
    *
    * @param AD_Table_ID Database Table information
@@ -104,13 +81,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
-    return (org.compiere.model.I_AD_User)
-        MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getAD_User_ID(), null);
-  }
-
-  /**
+    /**
    * Set User/Contact.
    *
    * @param AD_User_ID User within the system - Internal or Business Partner Contact
@@ -131,17 +102,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  /**
-   * Set Workflow Activity.
-   *
-   * @param AD_WF_Activity_ID Workflow Activity
-   */
-  public void setAD_WF_Activity_ID(int AD_WF_Activity_ID) {
-    if (AD_WF_Activity_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_Activity_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_WF_Activity_ID, Integer.valueOf(AD_WF_Activity_ID));
-  }
-
-  /**
+    /**
    * Get Workflow Activity.
    *
    * @return Workflow Activity
@@ -152,31 +113,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  /**
-   * Set AD_WF_Activity_UU.
-   *
-   * @param AD_WF_Activity_UU AD_WF_Activity_UU
-   */
-  public void setAD_WF_Activity_UU(String AD_WF_Activity_UU) {
-    set_Value(COLUMNNAME_AD_WF_Activity_UU, AD_WF_Activity_UU);
-  }
-
-  /**
-   * Get AD_WF_Activity_UU.
-   *
-   * @return AD_WF_Activity_UU
-   */
-  public String getAD_WF_Activity_UU() {
-    return (String) get_Value(COLUMNNAME_AD_WF_Activity_UU);
-  }
-
-  public org.compiere.model.I_AD_WF_Node getAD_WF_Node() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Node)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Node.Table_Name)
-            .getPO(getAD_WF_Node_ID(), null);
-  }
-
-  /**
+    /**
    * Set Node.
    *
    * @param AD_WF_Node_ID Workflow Node (activity), step or process
@@ -197,22 +134,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getAD_WF_Node_ID()));
-  }
-
-  public org.compiere.model.I_AD_WF_Process getAD_WF_Process() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Process)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Process.Table_Name)
-            .getPO(getAD_WF_Process_ID(), null);
-  }
-
-  /**
+    /**
    * Set Workflow Process.
    *
    * @param AD_WF_Process_ID Actual Workflow Process Instance
@@ -233,13 +155,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  public org.compiere.model.I_AD_WF_Responsible getAD_WF_Responsible() throws RuntimeException {
-    return (org.compiere.model.I_AD_WF_Responsible)
-        MTable.get(getCtx(), org.compiere.model.I_AD_WF_Responsible.Table_Name)
-            .getPO(getAD_WF_Responsible_ID(), null);
-  }
-
-  /**
+    /**
    * Set Workflow Responsible.
    *
    * @param AD_WF_Responsible_ID Responsible for Workflow Execution
@@ -260,13 +176,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
-    return (org.compiere.model.I_AD_Workflow)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getAD_Workflow_ID(), null);
-  }
-
-  /**
+    /**
    * Set Workflow.
    *
    * @param AD_Workflow_ID Workflow or combination of tasks
@@ -287,45 +197,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return ii;
   }
 
-  /**
-   * Set Last Alert.
-   *
-   * @param DateLastAlert Date when last alert were sent
-   */
-  public void setDateLastAlert(Timestamp DateLastAlert) {
-    set_Value(COLUMNNAME_DateLastAlert, DateLastAlert);
-  }
-
-  /**
-   * Get Last Alert.
-   *
-   * @return Date when last alert were sent
-   */
-  public Timestamp getDateLastAlert() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastAlert);
-  }
-
-  /**
-   * Set Dyn Priority Start.
-   *
-   * @param DynPriorityStart Starting priority before changed dynamically
-   */
-  public void setDynPriorityStart(int DynPriorityStart) {
-    set_Value(COLUMNNAME_DynPriorityStart, Integer.valueOf(DynPriorityStart));
-  }
-
-  /**
-   * Get Dyn Priority Start.
-   *
-   * @return Starting priority before changed dynamically
-   */
-  public int getDynPriorityStart() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_DynPriorityStart);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
+    /**
    * Set End Wait.
    *
    * @param EndWaitTime End of sleep time
@@ -334,16 +206,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     set_Value(COLUMNNAME_EndWaitTime, EndWaitTime);
   }
 
-  /**
-   * Get End Wait.
-   *
-   * @return End of sleep time
-   */
-  public Timestamp getEndWaitTime() {
-    return (Timestamp) get_Value(COLUMNNAME_EndWaitTime);
-  }
-
-  /**
+    /**
    * Set Priority.
    *
    * @param Priority Indicates if this request is of a high, medium or low priority.
@@ -386,30 +249,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     return false;
   }
 
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Record ID.
    *
    * @param Record_ID Direct internal record ID
@@ -454,15 +294,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   public static final String WFSTATE_NotStarted = "ON";
   /** Running = OR */
   public static final String WFSTATE_Running = "OR";
-  /** Suspended = OS */
-  public static final String WFSTATE_Suspended = "OS";
-  /** Completed = CC */
-  public static final String WFSTATE_Completed = "CC";
-  /** Aborted = CA */
-  public static final String WFSTATE_Aborted = "CA";
-  /** Terminated = CT */
-  public static final String WFSTATE_Terminated = "CT";
-  /**
+
+    /**
    * Set Workflow State.
    *
    * @param WFState State of the execution of the workflow

@@ -462,34 +462,4 @@ public class MProductionLine extends X_M_ProductionLine {
           getM_ProductionPlan_ID());
   }
 
-  /** @return */
-  public MProductionLineMA[] getLineMAs() {
-    ArrayList<MProductionLineMA> list = new ArrayList<MProductionLineMA>();
-
-    String sql =
-        "SELECT pl.M_ProductionLine_ID, pl,M_AttributeSetInstance_ID , pl.MovementQty, pl.DateMaterialPolicy "
-            + "FROM M_ProductionLineMA pl "
-            + "WHERE pl.M_ProductionLine_ID = ?";
-
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, getId());
-      rs = pstmt.executeQuery();
-      while (rs.next())
-        list.add(
-            new MProductionLineMA(this, rs.getInt(2), rs.getBigDecimal(3), rs.getTimestamp(4)));
-    } catch (SQLException ex) {
-      throw new AdempiereException("Unable to load production lines", ex);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-
-    MProductionLineMA[] retValue = new MProductionLineMA[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  }
 }

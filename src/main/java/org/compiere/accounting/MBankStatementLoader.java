@@ -143,16 +143,7 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     return sb.toString();
   } //	toString
 
-  /**
-   * Return Local File Name
-   *
-   * @return Name
-   */
-  public String getLocalFileName() {
-    return localFileName;
-  } //	getLocalFileName
-
-  /**
+    /**
    * Start loading Bankstatements
    *
    * @return true if loading completed successfully
@@ -199,132 +190,7 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     return result;
   } //	loadLines
 
-  /**
-   * Load a bank statement into the I_BankStatement table
-   *
-   * @return Statement line was loaded successfully This method is called by the
-   *     BankStatementLoadere whenever a complete statement line has been read.
-   */
-  public boolean saveLine() {
-    log.info("MBankStatementLoader.importLine");
-    boolean result = false;
-    X_I_BankStatement imp = new X_I_BankStatement(getCtx(), 0, null);
-    if (m_loader == null) {
-      errorMessage = "LoadError";
-      return result;
-    }
-    //	Bank Account fields
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Bank Account=" + m_loader.getBankAccountNo());
-    imp.setBankAccountNo(m_loader.getBankAccountNo());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Routing No=" + m_loader.getRoutingNo());
-    imp.setRoutingNo(m_loader.getRoutingNo());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine IBAN=" + m_loader.getIBAN());
-    imp.setIBAN(m_loader.getIBAN());
-
-    //	Statement fields
-    if (log.isLoggable(Level.CONFIG))
-      log.config(
-          "MBankStatementLoader.importLine EFT Statement Reference No="
-              + m_loader.getStatementReference());
-    imp.setEftStatementReference(m_loader.getStatementReference());
-    if (log.isLoggable(Level.CONFIG))
-      log.config(
-          "MBankStatementLoader.importLine EFT Statement Date=" + m_loader.getStatementDate());
-    imp.setEftStatementDate(m_loader.getStatementDate());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Statement Date=" + m_loader.getStatementDate());
-    imp.setStatementDate(m_loader.getStatementDate());
-
-    //	Statement Line fields
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine EFT Transaction ID=" + m_loader.getTrxID());
-    imp.setEftTrxID(m_loader.getTrxID());
-    if (log.isLoggable(Level.CONFIG))
-      log.config(
-          "MBankStatementLoader.importLine Statement Line Date=" + m_loader.getStatementLineDate());
-    imp.setStatementLineDate(m_loader.getStatementLineDate());
-    imp.setStatementLineDate(m_loader.getStatementLineDate());
-    imp.setEftStatementLineDate(m_loader.getStatementLineDate());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Valuta Date=" + m_loader.getValutaDate());
-    imp.setValutaDate(m_loader.getValutaDate());
-    imp.setEftValutaDate(m_loader.getValutaDate());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Statement Amount=" + m_loader.getStmtAmt());
-    imp.setStmtAmt(m_loader.getStmtAmt());
-    imp.setEftAmt(m_loader.getStmtAmt());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Transaction Amount=" + m_loader.getTrxAmt());
-    imp.setTrxAmt(m_loader.getTrxAmt());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Interest Amount=" + m_loader.getInterestAmt());
-    imp.setInterestAmt(m_loader.getInterestAmt());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Reference No=" + m_loader.getReference());
-    imp.setReferenceNo(m_loader.getReference());
-    imp.setEftReference(m_loader.getReference());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Check No=" + m_loader.getCheckNo());
-    imp.setEftCheckNo(m_loader.getCheckNo());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Memo=" + m_loader.getMemo());
-    imp.setMemo(m_loader.getMemo());
-    imp.setEftMemo(m_loader.getMemo());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Payee Name=" + m_loader.getPayeeName());
-    imp.setEftPayee(m_loader.getPayeeName());
-    if (log.isLoggable(Level.CONFIG))
-      log.config(
-          "MBankStatementLoader.importLine Payee Account No=" + m_loader.getPayeeAccountNo());
-    imp.setEftPayeeAccount(m_loader.getPayeeAccountNo());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine EFT Transaction Type=" + m_loader.getTrxType());
-    imp.setEftTrxType(m_loader.getTrxType());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Currency=" + m_loader.getCurrency());
-    imp.setEftCurrency(m_loader.getCurrency());
-    imp.setISO_Code(m_loader.getCurrency());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Charge Name=" + m_loader.getChargeName());
-    imp.setChargeName(m_loader.getChargeName());
-    if (log.isLoggable(Level.CONFIG))
-      log.config("MBankStatementLoader.importLine Charge Amount=" + m_loader.getChargeAmt());
-    imp.setChargeAmt(m_loader.getChargeAmt());
-
-    // Lookup Bank Account
-    for (X_C_BankAccount bankAccount : bankAccountList) {
-      if ((!Util.isEmpty(imp.getIBAN()) && imp.getIBAN().equalsIgnoreCase(bankAccount.getIBAN()))
-          || (!Util.isEmpty(imp.getBankAccountNo())
-              && !Util.isEmpty(imp.getRoutingNo())
-              && imp.getBankAccountNo().equalsIgnoreCase(bankAccount.getAccountNo())
-              && imp.getRoutingNo().equalsIgnoreCase(bankAccount.getC_Bank().getRoutingNo()))) {
-        imp.setC_BankAccount_ID(bankAccount.getId());
-        break;
-      }
-    }
-
-    // Lookup Currency
-    if (!Util.isEmpty(imp.getEftCurrency())) {
-      imp.setC_Currency_ID(currencyMap.get(imp.getEftCurrency()));
-    }
-
-    imp.setProcessed(false);
-    imp.setI_IsImported(false);
-
-    result = imp.save();
-    if (result) {
-      loadCount++;
-    } else {
-      errorMessage = "LoadError";
-    }
-    imp = null;
-    return result;
-  } //	importLine
-
-  /**
+    /**
    * Return the most recent error
    *
    * @return Error message This error message will be handled as a Adempiere message, (e.g. it can

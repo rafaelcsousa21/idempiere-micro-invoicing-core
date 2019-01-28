@@ -63,17 +63,10 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     return (String) get_Value(COLUMNNAME_AccountNo);
   }
 
-  /** BankAccountType AD_Reference_ID=216 */
-  public static final int BANKACCOUNTTYPE_AD_Reference_ID = 216;
-  /** Checking = C */
+    /** Checking = C */
   public static final String BANKACCOUNTTYPE_Checking = "C";
-  /** Savings = S */
-  public static final String BANKACCOUNTTYPE_Savings = "S";
-  /** Cash = B */
-  public static final String BANKACCOUNTTYPE_Cash = "B";
-  /** Card = D */
-  public static final String BANKACCOUNTTYPE_Card = "D";
-  /**
+
+    /**
    * Set Bank Account Type.
    *
    * @param BankAccountType Bank Account Type
@@ -83,44 +76,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     set_Value(COLUMNNAME_BankAccountType, BankAccountType);
   }
 
-  /**
-   * Get Bank Account Type.
-   *
-   * @return Bank Account Type
-   */
-  public String getBankAccountType() {
-    return (String) get_Value(COLUMNNAME_BankAccountType);
-  }
-
-  /**
-   * Set BBAN.
-   *
-   * @param BBAN Basic Bank Account Number
-   */
-  public void setBBAN(String BBAN) {
-    set_Value(COLUMNNAME_BBAN, BBAN);
-  }
-
-  /**
-   * Get BBAN.
-   *
-   * @return Basic Bank Account Number
-   */
-  public String getBBAN() {
-    return (String) get_Value(COLUMNNAME_BBAN);
-  }
-
-  /**
-   * Set Bank Account.
-   *
-   * @param C_BankAccount_ID Account at the Bank
-   */
-  public void setC_BankAccount_ID(int C_BankAccount_ID) {
-    if (C_BankAccount_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BankAccount_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
-  }
-
-  /**
+    /**
    * Get Bank Account.
    *
    * @return Account at the Bank
@@ -131,25 +87,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     return ii;
   }
 
-  /**
-   * Set C_BankAccount_UU.
-   *
-   * @param C_BankAccount_UU C_BankAccount_UU
-   */
-  public void setC_BankAccount_UU(String C_BankAccount_UU) {
-    set_Value(COLUMNNAME_C_BankAccount_UU, C_BankAccount_UU);
-  }
-
-  /**
-   * Get C_BankAccount_UU.
-   *
-   * @return C_BankAccount_UU
-   */
-  public String getC_BankAccount_UU() {
-    return (String) get_Value(COLUMNNAME_C_BankAccount_UU);
-  }
-
-  public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException {
+    public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException {
     return (org.compiere.model.I_C_Bank)
         MTable.get(getCtx(), org.compiere.model.I_C_Bank.Table_Name)
             .getPO(getC_Bank_ID(), null);
@@ -176,13 +114,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -212,18 +144,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     set_Value(COLUMNNAME_CreditLimit, CreditLimit);
   }
 
-  /**
-   * Get Credit limit.
-   *
-   * @return Amount of Credit allowed
-   */
-  public BigDecimal getCreditLimit() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CreditLimit);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
+    /**
    * Set Current balance.
    *
    * @param CurrentBalance Current Balance
@@ -243,25 +164,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     return bd;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set IBAN.
    *
    * @param IBAN International Bank Account Number
@@ -288,39 +191,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
   }
 
-  /**
-   * Get Default.
-   *
-   * @return Default value
-   */
-  public boolean isDefault() {
-    Object oo = get_Value(COLUMNNAME_IsDefault);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Payment Export Class.
-   *
-   * @param PaymentExportClass Payment Export Class
-   */
-  public void setPaymentExportClass(String PaymentExportClass) {
-    set_Value(COLUMNNAME_PaymentExportClass, PaymentExportClass);
-  }
-
-  /**
-   * Get Payment Export Class.
-   *
-   * @return Payment Export Class
-   */
-  public String getPaymentExportClass() {
-    return (String) get_Value(COLUMNNAME_PaymentExportClass);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_BankAccount.Table_ID;
   }

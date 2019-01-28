@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_GL_JournalBatch;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -53,13 +52,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     return sb.toString();
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -80,13 +73,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     return ii;
   }
 
-  public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
-    return (org.compiere.model.I_C_DocType)
-        MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Document Type.
    *
    * @param C_DocType_ID Document type or rules
@@ -127,31 +114,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     return bd;
   }
 
-  /**
-   * Set Copy From.
-   *
-   * @param CopyFrom Copy From Record
-   */
-  public void setCopyFrom(String CopyFrom) {
-    set_Value(COLUMNNAME_CopyFrom, CopyFrom);
-  }
-
-  /**
-   * Get Copy From.
-   *
-   * @return Copy From Record
-   */
-  public String getCopyFrom() {
-    return (String) get_Value(COLUMNNAME_CopyFrom);
-  }
-
-  public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
-    return (org.compiere.model.I_C_Period)
-        MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), null);
-  }
-
-  /**
+    /**
    * Set Period.
    *
    * @param C_Period_ID Period of the Calendar
@@ -226,37 +189,16 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     return (String) get_Value(COLUMNNAME_Description);
   }
 
-  /** DocAction AD_Reference_ID=135 */
-  public static final int DOCACTION_AD_Reference_ID = 135;
-  /** Complete = CO */
+    /** Complete = CO */
   public static final String DOCACTION_Complete = "CO";
-  /** Approve = AP */
-  public static final String DOCACTION_Approve = "AP";
-  /** Reject = RJ */
-  public static final String DOCACTION_Reject = "RJ";
-  /** Post = PO */
-  public static final String DOCACTION_Post = "PO";
-  /** Void = VO */
-  public static final String DOCACTION_Void = "VO";
-  /** Close = CL */
+    /** Close = CL */
   public static final String DOCACTION_Close = "CL";
-  /** Reverse - Correct = RC */
-  public static final String DOCACTION_Reverse_Correct = "RC";
-  /** Reverse - Accrual = RA */
-  public static final String DOCACTION_Reverse_Accrual = "RA";
-  /** Invalidate = IN */
-  public static final String DOCACTION_Invalidate = "IN";
-  /** Re-activate = RE */
+    /** Re-activate = RE */
   public static final String DOCACTION_Re_Activate = "RE";
   /** <None> = -- */
   public static final String DOCACTION_None = "--";
-  /** Prepare = PR */
-  public static final String DOCACTION_Prepare = "PR";
-  /** Unlock = XL */
-  public static final String DOCACTION_Unlock = "XL";
-  /** Wait Complete = WC */
-  public static final String DOCACTION_WaitComplete = "WC";
-  /**
+
+    /**
    * Set Document Action.
    *
    * @param DocAction The targeted status of the document
@@ -275,17 +217,11 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     return (String) get_Value(COLUMNNAME_DocAction);
   }
 
-  /** DocStatus AD_Reference_ID=131 */
-  public static final int DOCSTATUS_AD_Reference_ID = 131;
-  /** Drafted = DR */
+    /** Drafted = DR */
   public static final String DOCSTATUS_Drafted = "DR";
   /** Completed = CO */
   public static final String DOCSTATUS_Completed = "CO";
-  /** Approved = AP */
-  public static final String DOCSTATUS_Approved = "AP";
-  /** Not Approved = NA */
-  public static final String DOCSTATUS_NotApproved = "NA";
-  /** Voided = VO */
+    /** Voided = VO */
   public static final String DOCSTATUS_Voided = "VO";
   /** Invalid = IN */
   public static final String DOCSTATUS_Invalid = "IN";
@@ -293,15 +229,10 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
   public static final String DOCSTATUS_Reversed = "RE";
   /** Closed = CL */
   public static final String DOCSTATUS_Closed = "CL";
-  /** Unknown = ?? */
-  public static final String DOCSTATUS_Unknown = "??";
-  /** In Progress = IP */
+    /** In Progress = IP */
   public static final String DOCSTATUS_InProgress = "IP";
-  /** Waiting Payment = WP */
-  public static final String DOCSTATUS_WaitingPayment = "WP";
-  /** Waiting Confirmation = WC */
-  public static final String DOCSTATUS_WaitingConfirmation = "WC";
-  /**
+
+    /**
    * Set Document Status.
    *
    * @param DocStatus The current status of the document
@@ -338,22 +269,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     return (String) get_Value(COLUMNNAME_DocumentNo);
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), getDocumentNo());
-  }
-
-  public org.compiere.model.I_GL_Category getGL_Category() throws RuntimeException {
-    return (org.compiere.model.I_GL_Category)
-        MTable.get(getCtx(), org.compiere.model.I_GL_Category.Table_Name)
-            .getPO(getGL_Category_ID(), null);
-  }
-
-  /**
+    /**
    * Set GL Category.
    *
    * @param GL_Category_ID General Ledger Category
@@ -374,17 +290,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     return ii;
   }
 
-  /**
-   * Set Journal Batch.
-   *
-   * @param GL_JournalBatch_ID General Ledger Journal Batch
-   */
-  public void setGL_JournalBatch_ID(int GL_JournalBatch_ID) {
-    if (GL_JournalBatch_ID < 1) set_ValueNoCheck(COLUMNNAME_GL_JournalBatch_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_GL_JournalBatch_ID, Integer.valueOf(GL_JournalBatch_ID));
-  }
-
-  /**
+    /**
    * Get Journal Batch.
    *
    * @return General Ledger Journal Batch
@@ -395,25 +301,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     return ii;
   }
 
-  /**
-   * Set GL_JournalBatch_UU.
-   *
-   * @param GL_JournalBatch_UU GL_JournalBatch_UU
-   */
-  public void setGL_JournalBatch_UU(String GL_JournalBatch_UU) {
-    set_Value(COLUMNNAME_GL_JournalBatch_UU, GL_JournalBatch_UU);
-  }
-
-  /**
-   * Get GL_JournalBatch_UU.
-   *
-   * @return GL_JournalBatch_UU
-   */
-  public String getGL_JournalBatch_UU() {
-    return (String) get_Value(COLUMNNAME_GL_JournalBatch_UU);
-  }
-
-  /**
+    /**
    * Set Approved.
    *
    * @param IsApproved Indicates if this document requires approval
@@ -422,33 +310,10 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
   }
 
-  /**
-   * Get Approved.
-   *
-   * @return Indicates if this document requires approval
-   */
-  public boolean isApproved() {
-    Object oo = get_Value(COLUMNNAME_IsApproved);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /** PostingType AD_Reference_ID=125 */
-  public static final int POSTINGTYPE_AD_Reference_ID = 125;
-  /** Actual = A */
+    /** Actual = A */
   public static final String POSTINGTYPE_Actual = "A";
-  /** Budget = B */
-  public static final String POSTINGTYPE_Budget = "B";
-  /** Commitment = E */
-  public static final String POSTINGTYPE_Commitment = "E";
-  /** Statistical = S */
-  public static final String POSTINGTYPE_Statistical = "S";
-  /** Reservation = R */
-  public static final String POSTINGTYPE_Reservation = "R";
-  /**
+
+    /**
    * Set PostingType.
    *
    * @param PostingType The type of posted amount for the transaction
@@ -499,27 +364,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
     set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
   }
 
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  public org.compiere.model.I_GL_JournalBatch getReversal() throws RuntimeException {
-    return (org.compiere.model.I_GL_JournalBatch)
-        MTable.get(getCtx(), org.compiere.model.I_GL_JournalBatch.Table_Name)
-            .getPO(getReversal_ID(), null);
-  }
-
-  /**
+    /**
    * Set Reversal ID.
    *
    * @param Reversal_ID ID of document reversal

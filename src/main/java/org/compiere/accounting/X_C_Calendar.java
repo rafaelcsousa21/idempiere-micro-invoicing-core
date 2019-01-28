@@ -42,17 +42,7 @@ public class X_C_Calendar extends BasePOName implements I_C_Calendar, I_Persiste
     return sb.toString();
   }
 
-  /**
-   * Set Calendar.
-   *
-   * @param C_Calendar_ID Accounting Calendar Name
-   */
-  public void setC_Calendar_ID(int C_Calendar_ID) {
-    if (C_Calendar_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Calendar_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Calendar_ID, Integer.valueOf(C_Calendar_ID));
-  }
-
-  /**
+    /**
    * Get Calendar.
    *
    * @return Accounting Calendar Name
@@ -63,43 +53,7 @@ public class X_C_Calendar extends BasePOName implements I_C_Calendar, I_Persiste
     return ii;
   }
 
-  /**
-   * Set C_Calendar_UU.
-   *
-   * @param C_Calendar_UU C_Calendar_UU
-   */
-  public void setC_Calendar_UU(String C_Calendar_UU) {
-    set_Value(COLUMNNAME_C_Calendar_UU, C_Calendar_UU);
-  }
-
-  /**
-   * Get C_Calendar_UU.
-   *
-   * @return C_Calendar_UU
-   */
-  public String getC_Calendar_UU() {
-    return (String) get_Value(COLUMNNAME_C_Calendar_UU);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_Calendar.Table_ID;
   }

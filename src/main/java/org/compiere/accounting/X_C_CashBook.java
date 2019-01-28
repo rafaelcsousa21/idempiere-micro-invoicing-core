@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_CashBook;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -47,17 +46,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
     return sb.toString();
   }
 
-  /**
-   * Set Cash Book.
-   *
-   * @param C_CashBook_ID Cash Book for recording petty cash transactions
-   */
-  public void setC_CashBook_ID(int C_CashBook_ID) {
-    if (C_CashBook_ID < 1) set_ValueNoCheck(COLUMNNAME_C_CashBook_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_CashBook_ID, Integer.valueOf(C_CashBook_ID));
-  }
-
-  /**
+    /**
    * Get Cash Book.
    *
    * @return Cash Book for recording petty cash transactions
@@ -68,31 +57,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
     return ii;
   }
 
-  /**
-   * Set C_CashBook_UU.
-   *
-   * @param C_CashBook_UU C_CashBook_UU
-   */
-  public void setC_CashBook_UU(String C_CashBook_UU) {
-    set_Value(COLUMNNAME_C_CashBook_UU, C_CashBook_UU);
-  }
-
-  /**
-   * Get C_CashBook_UU.
-   *
-   * @return C_CashBook_UU
-   */
-  public String getC_CashBook_UU() {
-    return (String) get_Value(COLUMNNAME_C_CashBook_UU);
-  }
-
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -113,48 +78,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
     return ii;
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set Default.
-   *
-   * @param IsDefault Default value
-   */
-  public void setIsDefault(boolean IsDefault) {
-    set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
-  }
-
-  /**
-   * Get Default.
-   *
-   * @return Default value
-   */
-  public boolean isDefault() {
-    Object oo = get_Value(COLUMNNAME_IsDefault);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  @Override
+    @Override
   public int getTableId() {
     return I_C_CashBook.Table_ID;
   }

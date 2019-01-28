@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_R_RequestType;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -70,17 +69,10 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     return ii;
   }
 
-  /** ConfidentialType AD_Reference_ID=340 */
-  public static final int CONFIDENTIALTYPE_AD_Reference_ID = 340;
-  /** Public Information = A */
+    /** Public Information = A */
   public static final String CONFIDENTIALTYPE_PublicInformation = "A";
-  /** Partner Confidential = C */
-  public static final String CONFIDENTIALTYPE_PartnerConfidential = "C";
-  /** Internal = I */
-  public static final String CONFIDENTIALTYPE_Internal = "I";
-  /** Private Information = P */
-  public static final String CONFIDENTIALTYPE_PrivateInformation = "P";
-  /**
+
+    /**
    * Set Confidentiality.
    *
    * @param ConfidentialType Type of Confidentiality
@@ -99,43 +91,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     return (String) get_Value(COLUMNNAME_ConfidentialType);
   }
 
-  /**
-   * Set Content Color.
-   *
-   * @param ContentColor Content color of calendar dashlet
-   */
-  public void setContentColor(String ContentColor) {
-    set_Value(COLUMNNAME_ContentColor, ContentColor);
-  }
-
-  /**
-   * Get Content Color.
-   *
-   * @return Content color of calendar dashlet
-   */
-  public String getContentColor() {
-    return (String) get_Value(COLUMNNAME_ContentColor);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
+    /**
    * Set Due Date Tolerance.
    *
    * @param DueDateTolerance Tolerance in days between the Date Next Action and the date the request
@@ -157,25 +113,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     return ii;
   }
 
-  /**
-   * Set Header Color.
-   *
-   * @param HeaderColor Header color of calendar dashlet
-   */
-  public void setHeaderColor(String HeaderColor) {
-    set_Value(COLUMNNAME_HeaderColor, HeaderColor);
-  }
-
-  /**
-   * Get Header Color.
-   *
-   * @return Header color of calendar dashlet
-   */
-  public String getHeaderColor() {
-    return (String) get_Value(COLUMNNAME_HeaderColor);
-  }
-
-  /**
+    /**
    * Set Create Change Request.
    *
    * @param IsAutoChangeRequest Automatically create BOM (Engineering) Change Request
@@ -184,21 +122,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     set_Value(COLUMNNAME_IsAutoChangeRequest, Boolean.valueOf(IsAutoChangeRequest));
   }
 
-  /**
-   * Get Create Change Request.
-   *
-   * @return Automatically create BOM (Engineering) Change Request
-   */
-  public boolean isAutoChangeRequest() {
-    Object oo = get_Value(COLUMNNAME_IsAutoChangeRequest);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Confidential Info.
    *
    * @param IsConfidentialInfo Can enter confidential information
@@ -207,21 +131,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     set_Value(COLUMNNAME_IsConfidentialInfo, Boolean.valueOf(IsConfidentialInfo));
   }
 
-  /**
-   * Get Confidential Info.
-   *
-   * @return Can enter confidential information
-   */
-  public boolean isConfidentialInfo() {
-    Object oo = get_Value(COLUMNNAME_IsConfidentialInfo);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Default.
    *
    * @param IsDefault Default value
@@ -253,21 +163,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     set_Value(COLUMNNAME_IsEMailWhenDue, Boolean.valueOf(IsEMailWhenDue));
   }
 
-  /**
-   * Get EMail when Due.
-   *
-   * @return Send EMail when Request becomes due
-   */
-  public boolean isEMailWhenDue() {
-    Object oo = get_Value(COLUMNNAME_IsEMailWhenDue);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set EMail when Overdue.
    *
    * @param IsEMailWhenOverdue Send EMail when Request becomes overdue
@@ -276,21 +172,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     set_Value(COLUMNNAME_IsEMailWhenOverdue, Boolean.valueOf(IsEMailWhenOverdue));
   }
 
-  /**
-   * Get EMail when Overdue.
-   *
-   * @return Send EMail when Request becomes overdue
-   */
-  public boolean isEMailWhenOverdue() {
-    Object oo = get_Value(COLUMNNAME_IsEMailWhenOverdue);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Indexed.
    *
    * @param IsIndexed Index the document for the internal search engine
@@ -299,21 +181,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     set_Value(COLUMNNAME_IsIndexed, Boolean.valueOf(IsIndexed));
   }
 
-  /**
-   * Get Indexed.
-   *
-   * @return Index the document for the internal search engine
-   */
-  public boolean isIndexed() {
-    Object oo = get_Value(COLUMNNAME_IsIndexed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Invoiced.
    *
    * @param IsInvoiced Is this invoiced?
@@ -345,31 +213,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     set_Value(COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
   }
 
-  /**
-   * Get Self-Service.
-   *
-   * @return This is a Self-Service entry or this entry can be changed via Self-Service
-   */
-  public boolean isSelfService() {
-    Object oo = get_Value(COLUMNNAME_IsSelfService);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Request Type.
-   *
-   * @param R_RequestType_ID Type of request (e.g. Inquiry, Complaint, ..)
-   */
-  public void setR_RequestType_ID(int R_RequestType_ID) {
-    if (R_RequestType_ID < 1) set_ValueNoCheck(COLUMNNAME_R_RequestType_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_R_RequestType_ID, Integer.valueOf(R_RequestType_ID));
-  }
-
-  /**
+    /**
    * Get Request Type.
    *
    * @return Type of request (e.g. Inquiry, Complaint, ..)
@@ -380,31 +224,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
     return ii;
   }
 
-  /**
-   * Set R_RequestType_UU.
-   *
-   * @param R_RequestType_UU R_RequestType_UU
-   */
-  public void setR_RequestType_UU(String R_RequestType_UU) {
-    set_Value(COLUMNNAME_R_RequestType_UU, R_RequestType_UU);
-  }
-
-  /**
-   * Get R_RequestType_UU.
-   *
-   * @return R_RequestType_UU
-   */
-  public String getR_RequestType_UU() {
-    return (String) get_Value(COLUMNNAME_R_RequestType_UU);
-  }
-
-  public org.compiere.model.I_R_StatusCategory getR_StatusCategory() throws RuntimeException {
-    return (org.compiere.model.I_R_StatusCategory)
-        MTable.get(getCtx(), org.compiere.model.I_R_StatusCategory.Table_Name)
-            .getPO(getR_StatusCategory_ID(), null);
-  }
-
-  /**
+    /**
    * Set Status Category.
    *
    * @param R_StatusCategory_ID Request Status Category

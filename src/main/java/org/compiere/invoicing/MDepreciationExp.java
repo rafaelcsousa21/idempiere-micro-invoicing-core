@@ -44,25 +44,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     super(ctx, rs, trxName);
   }
 
-  /**
-   * Gets depreciation expense
-   *
-   * @param ctx context
-   * @param A_Depreciation_Exp_ID depreciation expense id
-   * @return depreciation expense or null if A_Depreciation_Exp_ID=0 or not found
-   */
-  public static MDepreciationExp get(Properties ctx, int A_Depreciation_Exp_ID) {
-    if (A_Depreciation_Exp_ID <= 0) {
-      return null;
-    }
-    MDepreciationExp depexp = new MDepreciationExp(ctx, A_Depreciation_Exp_ID, null);
-    if (depexp.getId() != A_Depreciation_Exp_ID) {
-      depexp = null;
-    }
-    return depexp;
-  }
-
-  /** Create entry */
+    /** Create entry */
   public static MDepreciationExp createEntry(
       Properties ctx,
       String entryType,
@@ -261,25 +243,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     }
   }
 
-  public static List<MDepreciationExp> getNotProcessedEntries(
-      Properties ctx, int A_Asset_ID, String postingType, String trxName) {
-    final String whereClause =
-        MDepreciationExp.COLUMNNAME_A_Asset_ID
-            + "=?"
-            + " AND "
-            + MDepreciationExp.COLUMNNAME_PostingType
-            + "=?"
-            + " AND "
-            + MDepreciationExp.COLUMNNAME_Processed
-            + "=?";
-    List<MDepreciationExp> list =
-        new Query(ctx, MDepreciationExp.Table_Name, whereClause, trxName)
-            .setParameters(new Object[] {A_Asset_ID, postingType, false})
-            .list();
-    return list;
-  }
-
-  public void setProcessed(boolean Processed) {
+    public void setProcessed(boolean Processed) {
     super.setProcessed(Processed);
     //
     if (getId() > 0) {

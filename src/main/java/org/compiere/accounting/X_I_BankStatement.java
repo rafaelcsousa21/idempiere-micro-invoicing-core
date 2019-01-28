@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_I_BankStatement;
 import org.compiere.orm.BasePOName;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.I_Persistent;
 
@@ -65,31 +64,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return (String) get_Value(COLUMNNAME_BankAccountNo);
   }
 
-  /**
-   * Set Business Partner Key.
-   *
-   * @param BPartnerValue Key of the Business Partner
-   */
-  public void setBPartnerValue(String BPartnerValue) {
-    set_Value(COLUMNNAME_BPartnerValue, BPartnerValue);
-  }
-
-  /**
-   * Get Business Partner Key.
-   *
-   * @return Key of the Business Partner
-   */
-  public String getBPartnerValue() {
-    return (String) get_Value(COLUMNNAME_BPartnerValue);
-  }
-
-  public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
-    return (org.compiere.model.I_C_BankAccount)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), null);
-  }
-
-  /**
+    /**
    * Set Bank Account.
    *
    * @param C_BankAccount_ID Account at the Bank
@@ -110,13 +85,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return ii;
   }
 
-  public org.compiere.model.I_C_BankStatement getC_BankStatement() throws RuntimeException {
-    return (org.compiere.model.I_C_BankStatement)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankStatement.Table_Name)
-            .getPO(getC_BankStatement_ID(), null);
-  }
-
-  /**
+    /**
    * Set Bank Statement.
    *
    * @param C_BankStatement_ID Bank Statement of account
@@ -137,13 +106,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return ii;
   }
 
-  public org.compiere.model.I_C_BankStatementLine getC_BankStatementLine() throws RuntimeException {
-    return (org.compiere.model.I_C_BankStatementLine)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankStatementLine.Table_Name)
-            .getPO(getC_BankStatementLine_ID(), null);
-  }
-
-  /**
+    /**
    * Set Bank statement line.
    *
    * @param C_BankStatementLine_ID Line on a statement from this Bank
@@ -164,13 +127,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return ii;
   }
 
-  public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
-    return (org.compiere.model.I_C_BPartner)
-        MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
-            .getPO(getC_BPartner_ID(), null);
-  }
-
-  /**
+    /**
    * Set Business Partner .
    *
    * @param C_BPartner_ID Identifies a Business Partner
@@ -191,23 +148,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
-   * Set Charge.
-   *
-   * @param C_Charge_ID Additional document charges
-   */
-  public void setC_Charge_ID(int C_Charge_ID) {
-    if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
-    else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
-  }
-
-  /**
+    /**
    * Get Charge.
    *
    * @return Additional document charges
@@ -218,13 +159,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -274,22 +209,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     set_Value(COLUMNNAME_ChargeName, ChargeName);
   }
 
-  /**
-   * Get Charge Name.
-   *
-   * @return Name of the Charge
-   */
-  public String getChargeName() {
-    return (String) get_Value(COLUMNNAME_ChargeName);
-  }
-
-  public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice.
    *
    * @param C_Invoice_ID Invoice Identifier
@@ -310,13 +230,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return ii;
   }
 
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment.
    *
    * @param C_Payment_ID Payment identifier
@@ -337,34 +251,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return ii;
   }
 
-  /**
-   * Set Create Payment.
-   *
-   * @param CreatePayment Create Payment
-   */
-  public void setCreatePayment(String CreatePayment) {
-    set_Value(COLUMNNAME_CreatePayment, CreatePayment);
-  }
-
-  /**
-   * Get Create Payment.
-   *
-   * @return Create Payment
-   */
-  public String getCreatePayment() {
-    return (String) get_Value(COLUMNNAME_CreatePayment);
-  }
-
-  /**
-   * Set Account Date.
-   *
-   * @param DateAcct Accounting Date
-   */
-  public void setDateAcct(Timestamp DateAcct) {
-    set_Value(COLUMNNAME_DateAcct, DateAcct);
-  }
-
-  /**
+    /**
    * Get Account Date.
    *
    * @return Accounting Date
@@ -373,16 +260,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return (Timestamp) get_Value(COLUMNNAME_DateAcct);
   }
 
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
+    /**
    * Get Description.
    *
    * @return Optional short description of the record
@@ -645,64 +523,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return (String) get_Value(COLUMNNAME_IBAN);
   }
 
-  /**
-   * Set Import Bank Statement.
-   *
-   * @param I_BankStatement_ID Import of the Bank Statement
-   */
-  public void setI_BankStatement_ID(int I_BankStatement_ID) {
-    if (I_BankStatement_ID < 1) set_ValueNoCheck(COLUMNNAME_I_BankStatement_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_I_BankStatement_ID, Integer.valueOf(I_BankStatement_ID));
-  }
-
-  /**
-   * Get Import Bank Statement.
-   *
-   * @return Import of the Bank Statement
-   */
-  public int getI_BankStatement_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_I_BankStatement_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set I_BankStatement_UU.
-   *
-   * @param I_BankStatement_UU I_BankStatement_UU
-   */
-  public void setI_BankStatement_UU(String I_BankStatement_UU) {
-    set_Value(COLUMNNAME_I_BankStatement_UU, I_BankStatement_UU);
-  }
-
-  /**
-   * Get I_BankStatement_UU.
-   *
-   * @return I_BankStatement_UU
-   */
-  public String getI_BankStatement_UU() {
-    return (String) get_Value(COLUMNNAME_I_BankStatement_UU);
-  }
-
-  /**
-   * Set Import Error Message.
-   *
-   * @param I_ErrorMsg Messages generated from import process
-   */
-  public void setI_ErrorMsg(String I_ErrorMsg) {
-    set_Value(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
-  }
-
-  /**
-   * Get Import Error Message.
-   *
-   * @return Messages generated from import process
-   */
-  public String getI_ErrorMsg() {
-    return (String) get_Value(COLUMNNAME_I_ErrorMsg);
-  }
-
-  /**
+    /**
    * Set Imported.
    *
    * @param I_IsImported Has this import been processed
@@ -711,21 +532,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
   }
 
-  /**
-   * Get Imported.
-   *
-   * @return Has this import been processed
-   */
-  public boolean isI_IsImported() {
-    Object oo = get_Value(COLUMNNAME_I_IsImported);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Interest Amount.
    *
    * @param InterestAmt Interest Amount
@@ -745,25 +552,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return bd;
   }
 
-  /**
-   * Set Invoice Document No.
-   *
-   * @param InvoiceDocumentNo Document Number of the Invoice
-   */
-  public void setInvoiceDocumentNo(String InvoiceDocumentNo) {
-    set_Value(COLUMNNAME_InvoiceDocumentNo, InvoiceDocumentNo);
-  }
-
-  /**
-   * Get Invoice Document No.
-   *
-   * @return Document Number of the Invoice
-   */
-  public String getInvoiceDocumentNo() {
-    return (String) get_Value(COLUMNNAME_InvoiceDocumentNo);
-  }
-
-  /**
+    /**
    * Set ISO Currency Code.
    *
    * @param ISO_Code Three letter ISO 4217 Code of the Currency
@@ -772,25 +561,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     set_Value(COLUMNNAME_ISO_Code, ISO_Code);
   }
 
-  /**
-   * Get ISO Currency Code.
-   *
-   * @return Three letter ISO 4217 Code of the Currency
-   */
-  public String getISO_Code() {
-    return (String) get_Value(COLUMNNAME_ISO_Code);
-  }
-
-  /**
-   * Set Reversal.
-   *
-   * @param IsReversal This is a reversing transaction
-   */
-  public void setIsReversal(boolean IsReversal) {
-    set_Value(COLUMNNAME_IsReversal, Boolean.valueOf(IsReversal));
-  }
-
-  /**
+    /**
    * Get Reversal.
    *
    * @return This is a reversing transaction
@@ -804,36 +575,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return false;
   }
 
-  /**
-   * Set Line No.
-   *
-   * @param Line Unique line for this document
-   */
-  public void setLine(int Line) {
-    set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
-  }
-
-  /**
-   * Get Line No.
-   *
-   * @return Unique line for this document
-   */
-  public int getLine() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Line);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Line Description.
-   *
-   * @param LineDescription Description of the Line
-   */
-  public void setLineDescription(String LineDescription) {
-    set_Value(COLUMNNAME_LineDescription, LineDescription);
-  }
-
-  /**
+    /**
    * Get Line Description.
    *
    * @return Description of the Line
@@ -842,25 +584,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return (String) get_Value(COLUMNNAME_LineDescription);
   }
 
-  /**
-   * Set Match Statement.
-   *
-   * @param MatchStatement Match Statement
-   */
-  public void setMatchStatement(String MatchStatement) {
-    set_Value(COLUMNNAME_MatchStatement, MatchStatement);
-  }
-
-  /**
-   * Get Match Statement.
-   *
-   * @return Match Statement
-   */
-  public String getMatchStatement() {
-    return (String) get_Value(COLUMNNAME_MatchStatement);
-  }
-
-  /**
+    /**
    * Set Memo.
    *
    * @param Memo Memo Text
@@ -878,25 +602,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return (String) get_Value(COLUMNNAME_Memo);
   }
 
-  /**
-   * Set Payment Document No.
-   *
-   * @param PaymentDocumentNo Document number of the Payment
-   */
-  public void setPaymentDocumentNo(String PaymentDocumentNo) {
-    set_Value(COLUMNNAME_PaymentDocumentNo, PaymentDocumentNo);
-  }
-
-  /**
-   * Get Payment Document No.
-   *
-   * @return Document number of the Payment
-   */
-  public String getPaymentDocumentNo() {
-    return (String) get_Value(COLUMNNAME_PaymentDocumentNo);
-  }
-
-  /**
+    /**
    * Set Processed.
    *
    * @param Processed The document has been processed
@@ -905,44 +611,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
   }
 
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-  /**
-   * Get Process Now.
-   *
-   * @return Process Now
-   */
-  public boolean isProcessing() {
-    Object oo = get_Value(COLUMNNAME_Processing);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Reference No.
    *
    * @param ReferenceNo Your customer or vendor number at the Business Partner's site
@@ -1054,40 +723,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
     return bd;
   }
 
-  /** TrxType AD_Reference_ID=215 */
-  public static final int TRXTYPE_AD_Reference_ID = 215;
-  /** Sales = S */
-  public static final String TRXTYPE_Sales = "S";
-  /** Delayed Capture = D */
-  public static final String TRXTYPE_DelayedCapture = "D";
-  /** Credit (Payment) = C */
-  public static final String TRXTYPE_CreditPayment = "C";
-  /** Voice Authorization = F */
-  public static final String TRXTYPE_VoiceAuthorization = "F";
-  /** Authorization = A */
-  public static final String TRXTYPE_Authorization = "A";
-  /** Void = V */
-  public static final String TRXTYPE_Void = "V";
-  /**
-   * Set Transaction Type.
-   *
-   * @param TrxType Type of credit card transaction
-   */
-  public void setTrxType(String TrxType) {
-
-    set_Value(COLUMNNAME_TrxType, TrxType);
-  }
-
-  /**
-   * Get Transaction Type.
-   *
-   * @return Type of credit card transaction
-   */
-  public String getTrxType() {
-    return (String) get_Value(COLUMNNAME_TrxType);
-  }
-
-  /**
+    /**
    * Set Effective date.
    *
    * @param ValutaDate Date when money is available

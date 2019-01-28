@@ -1,7 +1,6 @@
 package org.compiere.conversionrate;
 
 import org.compiere.model.I_C_Conversion_Rate;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -52,21 +51,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
     return sb.toString();
   }
 
-  /**
-   * Set Conversion Rate.
-   *
-   * @param C_Conversion_Rate_ID Rate used for converting currencies
-   */
-  public void setC_Conversion_Rate_ID(int C_Conversion_Rate_ID) {
-    if (C_Conversion_Rate_ID < 1)
-      set_ValueNoCheck(I_C_Conversion_Rate.COLUMNNAME_C_Conversion_Rate_ID, null);
-    else
-      set_ValueNoCheck(
-          I_C_Conversion_Rate.COLUMNNAME_C_Conversion_Rate_ID,
-          Integer.valueOf(C_Conversion_Rate_ID));
-  }
-
-  /**
+    /**
    * Get Conversion Rate.
    *
    * @return Rate used for converting currencies
@@ -77,40 +62,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_Conversion_Rate_ID()));
-  }
-
-  /**
-   * Set C_Conversion_Rate_UU.
-   *
-   * @param C_Conversion_Rate_UU C_Conversion_Rate_UU
-   */
-  public void setC_Conversion_Rate_UU(String C_Conversion_Rate_UU) {
-    set_Value(I_C_Conversion_Rate.COLUMNNAME_C_Conversion_Rate_UU, C_Conversion_Rate_UU);
-  }
-
-  /**
-   * Get C_Conversion_Rate_UU.
-   *
-   * @return C_Conversion_Rate_UU
-   */
-  public String getC_Conversion_Rate_UU() {
-    return (String) get_Value(I_C_Conversion_Rate.COLUMNNAME_C_Conversion_Rate_UU);
-  }
-
-  public org.compiere.model.I_C_ConversionType getC_ConversionType() throws RuntimeException {
-    return (org.compiere.model.I_C_ConversionType)
-        MTable.get(getCtx(), org.compiere.model.I_C_ConversionType.Table_Name)
-            .getPO(getC_ConversionType_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency Type.
    *
    * @param C_ConversionType_ID Currency Conversion Rate Type
@@ -134,13 +86,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -161,13 +107,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency_To() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID_To(), null);
-  }
-
-  /**
+    /**
    * Set Currency To.
    *
    * @param C_Currency_ID_To Target currency

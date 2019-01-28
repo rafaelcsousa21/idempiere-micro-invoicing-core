@@ -25,23 +25,7 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
   /** */
   private static final long serialVersionUID = 6272423660330749776L;
 
-  /**
-   * Get table script validator from cache
-   *
-   * @param ctx context
-   * @param AD_Table_ScriptValidator_ID id
-   * @return MTableScriptValidator
-   */
-  public static MTableScriptValidator get(Properties ctx, int AD_Table_ScriptValidator_ID) {
-    final Integer key = AD_Table_ScriptValidator_ID;
-    MTableScriptValidator retValue = (MTableScriptValidator) s_cache.get(key);
-    if (retValue != null) return retValue;
-    retValue = new MTableScriptValidator(ctx, AD_Table_ScriptValidator_ID, null);
-    if (retValue.getId() != 0) s_cache.put(key, retValue);
-    return retValue;
-  } //	get
-
-  /**
+    /**
    * Get Model Validation Script Rules for a table/event
    *
    * @param ctx context

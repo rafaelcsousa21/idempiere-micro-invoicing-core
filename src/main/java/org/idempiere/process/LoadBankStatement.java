@@ -30,12 +30,8 @@ import java.util.logging.Level;
  * @version $Id: LoadBankStatement.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class LoadBankStatement extends SvrProcess {
-  public LoadBankStatement() {
-    super();
-    log.info("LoadBankStatement");
-  } //	LoadBankStatement
 
-  /** Client to be imported to */
+    /** Client to be imported to */
   private int m_AD_Client_ID = 0;
 
   /** Organization to be imported to */

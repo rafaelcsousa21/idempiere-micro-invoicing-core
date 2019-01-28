@@ -6,7 +6,6 @@ import org.compiere.model.AdempiereProcessor2;
 import org.compiere.model.AdempiereProcessorLog;
 import org.compiere.schedule.MSchedule;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.CLogger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,37 +23,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
   /** */
   private static final long serialVersionUID = 8231854734466233461L;
 
-  /**
-   * Get Active Request Processors
-   *
-   * @param ctx context
-   * @return array of Request
-   */
-  public static MRequestProcessor[] getActive(Properties ctx) {
-    ArrayList<MRequestProcessor> list = new ArrayList<MRequestProcessor>();
-    String sql = "SELECT * FROM R_RequestProcessor WHERE IsActive='Y'";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, null);
-      rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MRequestProcessor(ctx, rs, null));
-    } catch (Exception e) {
-      s_log.log(Level.SEVERE, sql, e);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    MRequestProcessor[] retValue = new MRequestProcessor[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getActive
-
-  /** Static Logger */
-  private static CLogger s_log = CLogger.getCLogger(MRequestProcessor.class);
-
-  /**
+    /**
    * ************************************************************************ Standard Constructor
    *
    * @param ctx context
@@ -97,42 +66,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
     setSupervisor_ID(Supervisor_ID);
   } //	MRequestProcessor
 
-  /** The Lines */
-  private MRequestProcessorRoute[] m_routes = null;
-
-  /**
-   * Get Routes
-   *
-   * @param reload reload data
-   * @return array of routes
-   */
-  public MRequestProcessorRoute[] getRoutes(boolean reload) {
-    if (m_routes != null && !reload) return m_routes;
-
-    String sql =
-        "SELECT * FROM R_RequestProcessor_Route WHERE R_RequestProcessor_ID=? ORDER BY SeqNo";
-    ArrayList<MRequestProcessorRoute> list = new ArrayList<MRequestProcessorRoute>();
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql, null);
-      pstmt.setInt(1, getR_RequestProcessor_ID());
-      rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MRequestProcessorRoute(getCtx(), rs, null));
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql, e);
-    } finally {
-      close(rs, pstmt);
-      rs = null;
-      pstmt = null;
-    }
-    //
-    m_routes = new MRequestProcessorRoute[list.size()];
-    list.toArray(m_routes);
-    return m_routes;
-  } //	getRoutes
-
-  /**
+    /**
    * Get Logs
    *
    * @return Array of Logs
@@ -163,25 +97,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
     return retValue;
   } //	getLogs
 
-  /**
-   * Delete old Request Log
-   *
-   * @return number of records
-   */
-  public int deleteLog() {
-    if (getKeepLogDays() < 1) return 0;
-    String sql =
-        "DELETE R_RequestProcessorLog "
-            + "WHERE R_RequestProcessor_ID="
-            + getR_RequestProcessor_ID()
-            + " AND (Created+"
-            + getKeepLogDays()
-            + ") < SysDate";
-    int no = executeUpdate(sql, null);
-    return no;
-  } //	deleteLog
-
-  /**
+    /**
    * Get the date Next run
    *
    * @param requery requery database
@@ -246,5 +162,34 @@ public class MRequestProcessor extends X_R_RequestProcessor
   @Override
   public String getCronPattern() {
     return MSchedule.get(getCtx(), getAD_Schedule_ID()).getCronPattern();
+  }
+
+  /**
+   * Set Date last run.
+   *
+   * @param DateLastRun Date the process was last run.
+   */
+  public void setDateLastRun(Timestamp DateLastRun) {
+    set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+  }
+
+
+  /**
+   * Get Description.
+   *
+   * @return Optional short description of the record
+   */
+  public String getDescription() {
+    return (String) get_Value(COLUMNNAME_Description);
+  }
+
+
+  /**
+   * Get Date last run.
+   *
+   * @return Date the process was last run.
+   */
+  public Timestamp getDateLastRun() {
+    return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
   }
 } //	MRequestProcessor

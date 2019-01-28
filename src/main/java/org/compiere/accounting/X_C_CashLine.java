@@ -1,7 +1,6 @@
 package org.compiere.accounting;
 
 import org.compiere.model.I_C_CashLine;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
@@ -71,9 +70,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return bd;
   }
 
-  /** CashType AD_Reference_ID=217 */
-  public static final int CASHTYPE_AD_Reference_ID = 217;
-  /** Bank Account Transfer = T */
+    /** Bank Account Transfer = T */
   public static final String CASHTYPE_BankAccountTransfer = "T";
   /** Invoice = I */
   public static final String CASHTYPE_Invoice = "I";
@@ -83,9 +80,8 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   public static final String CASHTYPE_GeneralReceipts = "R";
   /** Charge = C */
   public static final String CASHTYPE_Charge = "C";
-  /** Difference = D */
-  public static final String CASHTYPE_Difference = "D";
-  /**
+
+    /**
    * Set Cash Type.
    *
    * @param CashType Source of Cash
@@ -104,13 +100,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return (String) get_Value(COLUMNNAME_CashType);
   }
 
-  public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
-    return (org.compiere.model.I_C_BankAccount)
-        MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), null);
-  }
-
-  /**
+    /**
    * Set Bank Account.
    *
    * @param C_BankAccount_ID Account at the Bank
@@ -131,13 +121,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Cash getC_Cash() throws RuntimeException {
-    return (org.compiere.model.I_C_Cash)
-        MTable.get(getCtx(), org.compiere.model.I_C_Cash.Table_Name)
-            .getPO(getC_Cash_ID(), null);
-  }
-
-  /**
+    /**
    * Set Cash Journal.
    *
    * @param C_Cash_ID Cash Journal
@@ -158,26 +142,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return ii;
   }
 
-  /**
-   * Get Record ID/ColumnName
-   *
-   * @return ID/ColumnName pair
-   */
-  public KeyNamePair getKeyNamePair() {
-    return new KeyNamePair(getId(), String.valueOf(getC_Cash_ID()));
-  }
-
-  /**
-   * Set Cash Journal Line.
-   *
-   * @param C_CashLine_ID Cash Journal Line
-   */
-  public void setC_CashLine_ID(int C_CashLine_ID) {
-    if (C_CashLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_CashLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_CashLine_ID, Integer.valueOf(C_CashLine_ID));
-  }
-
-  /**
+    /**
    * Get Cash Journal Line.
    *
    * @return Cash Journal Line
@@ -188,31 +153,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set C_CashLine_UU.
-   *
-   * @param C_CashLine_UU C_CashLine_UU
-   */
-  public void setC_CashLine_UU(String C_CashLine_UU) {
-    set_Value(COLUMNNAME_C_CashLine_UU, C_CashLine_UU);
-  }
-
-  /**
-   * Get C_CashLine_UU.
-   *
-   * @return C_CashLine_UU
-   */
-  public String getC_CashLine_UU() {
-    return (String) get_Value(COLUMNNAME_C_CashLine_UU);
-  }
-
-  public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
-    return (org.compiere.model.I_C_Charge)
-        MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-            .getPO(getC_Charge_ID(), null);
-  }
-
-  /**
+    /**
    * Set Charge.
    *
    * @param C_Charge_ID Additional document charges
@@ -233,13 +174,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException {
-    return (org.compiere.model.I_C_Currency)
-        MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
-            .getPO(getC_Currency_ID(), null);
-  }
-
-  /**
+    /**
    * Set Currency.
    *
    * @param C_Currency_ID The Currency for this record
@@ -260,13 +195,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
-    return (org.compiere.model.I_C_Invoice)
-        MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
-  }
-
-  /**
+    /**
    * Set Invoice.
    *
    * @param C_Invoice_ID Invoice Identifier
@@ -287,13 +216,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return ii;
   }
 
-  public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
-  }
-
-  /**
+    /**
    * Set Payment.
    *
    * @param C_Payment_ID Payment identifier
@@ -361,21 +284,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     set_ValueNoCheck(COLUMNNAME_IsGenerated, Boolean.valueOf(IsGenerated));
   }
 
-  /**
-   * Get Generated.
-   *
-   * @return This Line is generated
-   */
-  public boolean isGenerated() {
-    Object oo = get_Value(COLUMNNAME_IsGenerated);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Line No.
    *
    * @param Line Unique line for this document
@@ -395,30 +304,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
     return ii;
   }
 
-  /**
-   * Set Processed.
-   *
-   * @param Processed The document has been processed
-   */
-  public void setProcessed(boolean Processed) {
-    set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
-  }
-
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
-    }
-    return false;
-  }
-
-  /**
+    /**
    * Set Write-off Amount.
    *
    * @param WriteOffAmt Amount to write-off
