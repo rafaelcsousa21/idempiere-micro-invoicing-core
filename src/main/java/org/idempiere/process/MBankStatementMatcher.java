@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MBankStatementMatcher extends X_C_BankStatementMatcher {
@@ -40,13 +39,13 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MBankStatementMatcher(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

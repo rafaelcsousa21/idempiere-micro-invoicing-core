@@ -408,7 +408,7 @@ public final class FactLine extends X_Fact_Acct {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, M_Locator_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) C_Location_ID = rs.getInt(1);
@@ -416,7 +416,7 @@ public final class FactLine extends X_Fact_Acct {
       log.log(Level.SEVERE, sql, e);
       return;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -436,7 +436,7 @@ public final class FactLine extends X_Fact_Acct {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_BPartner_Location_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) C_Location_ID = rs.getInt(1);
@@ -444,7 +444,7 @@ public final class FactLine extends X_Fact_Acct {
       log.log(Level.SEVERE, sql, e);
       return;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -464,7 +464,7 @@ public final class FactLine extends X_Fact_Acct {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, AD_Org_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) C_Location_ID = rs.getInt(1);
@@ -472,7 +472,7 @@ public final class FactLine extends X_Fact_Acct {
       log.log(Level.SEVERE, sql, e);
       return;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -673,7 +673,7 @@ public final class FactLine extends X_Fact_Acct {
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, null);
+        pstmt = prepareStatement(sql);
         pstmt.setInt(1, getM_Locator_ID());
         pstmt.setInt(2,  getClientId());
         rs = pstmt.executeQuery();
@@ -690,7 +690,7 @@ public final class FactLine extends X_Fact_Acct {
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        close(rs, pstmt);
+
         rs = null;
         pstmt = null;
       }
@@ -750,7 +750,7 @@ public final class FactLine extends X_Fact_Acct {
       {
         String sql =
             "SELECT COALESCE(C_SalesRegion_ID,0) FROM C_BPartner_Location WHERE C_BPartner_Location_ID=?";
-        setC_SalesRegion_ID(getSQLValue(null, sql, m_doc.getC_BPartner_Location_ID()));
+        setC_SalesRegion_ID(getSQLValue(sql, m_doc.getC_BPartner_Location_ID()));
         if (super.getC_SalesRegion_ID() != 0) // 	save in VO
         {
           m_doc.setBP_C_SalesRegion_ID(super.getC_SalesRegion_ID());
@@ -759,7 +759,7 @@ public final class FactLine extends X_Fact_Acct {
         } else //	From Sales Rep of Document -> Sales Region
         {
           sql = "SELECT COALESCE(MAX(C_SalesRegion_ID),0) FROM C_SalesRegion WHERE SalesRep_ID=?";
-          setC_SalesRegion_ID(getSQLValue(null, sql, m_doc.getSalesRep_ID()));
+          setC_SalesRegion_ID(getSQLValue(sql, m_doc.getSalesRep_ID()));
           if (super.getC_SalesRegion_ID() != 0) // 	save in VO
           {
             m_doc.setBP_C_SalesRegion_ID(super.getC_SalesRegion_ID());
@@ -928,7 +928,7 @@ public final class FactLine extends X_Fact_Acct {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_AcctSchema_ID());
       pstmt.setInt(2, C_BPartner_ID);
       rs = pstmt.executeQuery();
@@ -939,7 +939,7 @@ public final class FactLine extends X_Fact_Acct {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -1006,7 +1006,7 @@ public final class FactLine extends X_Fact_Acct {
     ResultSet rs = null;
     try {
       int pindex = 1;
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(pindex++, getC_AcctSchema_ID());
       pstmt.setInt(pindex++, AD_Table_ID);
       pstmt.setInt(pindex++, Record_ID);
@@ -1098,7 +1098,7 @@ public final class FactLine extends X_Fact_Acct {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

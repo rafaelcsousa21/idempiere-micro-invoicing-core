@@ -150,7 +150,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
           new StringBuilder("DELETE I_Inventory ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Delete Old Imported=" + no);
     }
 
@@ -176,7 +176,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
         .append(" M_Warehouse_ID = NULL,") // 	reset
         .append(" I_IsImported = 'N' ")
         .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Reset=" + no);
 
     ModelValidationEngine.get()
@@ -190,7 +190,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
                 " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Org=" + no);
 
     //	Document Type
@@ -202,7 +202,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE C_DocType_ID IS NULL AND DocTypeName IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set DocType=" + no);
     sql =
         new StringBuilder("UPDATE I_Inventory i ")
@@ -210,7 +210,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE C_DocType_ID IS NULL AND DocTypeName IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid DocType=" + no);
 
     //	Locator
@@ -221,7 +221,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE M_Locator_ID IS NULL AND LocatorValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Locator from Value =" + no);
     sql =
         new StringBuilder("UPDATE I_Inventory i ")
@@ -231,7 +231,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
                 "WHERE M_Locator_ID IS NULL AND X IS NOT NULL AND Y IS NOT NULL AND Z IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Locator from X,Y,Z =" + no);
     if (p_M_Locator_ID != 0) {
       sql =
@@ -241,7 +241,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
               .append(" WHERE M_Locator_ID IS NULL")
               .append(" AND I_IsImported<>'Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Set Locator from Parameter=" + no);
     }
     sql =
@@ -250,7 +250,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE M_Locator_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No Location=" + no);
 
     //	Set M_Warehouse_ID
@@ -261,7 +261,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE M_Locator_ID IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Warehouse from Locator =" + no);
     sql =
         new StringBuilder("UPDATE I_Inventory ")
@@ -269,7 +269,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE M_Warehouse_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No Warehouse=" + no);
 
     // IDEMPIERE-590 do not allow locator/wh from different org
@@ -281,7 +281,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck)
             .append(" )");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Locator not from Org=" + no);
 
     //	Product
@@ -292,7 +292,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE M_Product_ID IS NULL AND Value IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Product from Value=" + no);
     sql =
         new StringBuilder("UPDATE I_Inventory i ")
@@ -301,7 +301,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE M_Product_ID IS NULL AND UPC IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Product from UPC=" + no);
     sql =
         new StringBuilder("UPDATE I_Inventory ")
@@ -309,7 +309,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE M_Product_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No Product=" + no);
 
     //	Charge
@@ -319,7 +319,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append(" WHERE o.ChargeName=p.Name AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_Charge_ID IS NULL AND ChargeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Charge=" + no);
     sql =
         new StringBuilder("UPDATE I_Inventory ")
@@ -327,7 +327,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE C_Charge_ID IS NULL AND (ChargeName IS NOT NULL)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Charge=" + no);
 
     //	No QtyCount or QtyInternalUse
@@ -338,7 +338,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE QtyCount IS NULL AND QtyInternalUse IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No QtyCount or QtyInternalUse=" + no);
 
     //	Excluding quantities
@@ -348,7 +348,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE NVL(QtyInternalUse,0)<>0 AND (NVL(QtyCount,0)<>0 OR NVL(QtyBook,0)<>0) ")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Excluding quantities=" + no);
 
     //	Required charge for internal use
@@ -358,7 +358,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("WHERE NVL(QtyInternalUse,0)<>0 AND NVL(C_Charge_ID,0)=0 ")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Required charge=" + no);
 
     ModelValidationEngine.get()
@@ -379,7 +379,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       //
       int x_M_Warehouse_ID = -1;
@@ -512,7 +512,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     } catch (Exception e) {
       throw new AdempiereException(e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -523,7 +523,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             .append("SET I_IsImported='N', Updated=SysDate ")
             .append("WHERE I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@Errors@");
     //
     addLog(0, null, new BigDecimal(noInsert), "@M_Inventory_ID@: @Inserted@");

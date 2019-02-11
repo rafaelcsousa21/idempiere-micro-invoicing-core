@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -52,7 +51,7 @@ public class MCostQueue extends X_M_CostQueue {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, product. getClientId());
       pstmt.setInt(2, AD_Org_ID);
       pstmt.setInt(3, product.getM_Product_ID());
@@ -65,7 +64,7 @@ public class MCostQueue extends X_M_CostQueue {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -103,7 +102,7 @@ public class MCostQueue extends X_M_CostQueue {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), trxName);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, product. getClientId());
       pstmt.setInt(2, Org_ID);
       pstmt.setInt(3, product.getM_Product_ID());
@@ -116,7 +115,7 @@ public class MCostQueue extends X_M_CostQueue {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

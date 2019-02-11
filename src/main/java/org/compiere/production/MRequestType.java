@@ -138,7 +138,7 @@ public class MRequestType extends X_R_RequestType {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getR_RequestType_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -150,7 +150,7 @@ public class MRequestType extends X_R_RequestType {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

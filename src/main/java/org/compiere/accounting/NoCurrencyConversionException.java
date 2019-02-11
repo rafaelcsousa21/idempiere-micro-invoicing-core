@@ -76,7 +76,7 @@ public class NoCurrencyConversionException extends AdempiereException {
               + " WHERE "
               + MConversionType.COLUMNNAME_C_ConversionType_ID
               + "=?";
-      String name = getSQLValueString(null, sql, C_ConversionType_ID);
+      String name = getSQLValueString(sql, C_ConversionType_ID);
       sb.append(name);
     } else {
       sb.append("*");

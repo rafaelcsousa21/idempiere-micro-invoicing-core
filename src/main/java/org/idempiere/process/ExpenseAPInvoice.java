@@ -32,7 +32,6 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -88,7 +87,7 @@ public class ExpenseAPInvoice extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       int par = 1;
       pstmt.setInt(par++, getClientId());
       if (m_C_BPartner_ID != 0) pstmt.setInt(par++, m_C_BPartner_ID);
@@ -179,7 +178,7 @@ public class ExpenseAPInvoice extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

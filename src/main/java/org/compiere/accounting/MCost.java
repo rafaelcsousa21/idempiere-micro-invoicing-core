@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -146,7 +145,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, product. getClientId());
       pstmt.setInt(2, Org_ID);
       pstmt.setInt(3, product.getM_Product_ID());
@@ -188,7 +187,6 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -406,7 +404,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement st = null;
     ResultSet rs = null;
     try {
-      st = prepareStatement(sql, null);
+      st = prepareStatement(sql);
       st.setInt(1, as. getClientId());
       st.setInt(2, orgID);
       st.setInt(3, product.getM_Product_ID());
@@ -420,7 +418,6 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      close(rs, st);
     }
     return BigDecimal.ZERO;
   }
@@ -452,7 +449,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, product.getM_Product_ID());
       if (AD_Org_ID != 0) pstmt.setInt(3, AD_Org_ID);
@@ -462,7 +459,6 @@ public class MCost extends X_M_Cost {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -503,7 +499,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setInt(3, product.getM_Product_ID());
@@ -517,7 +513,7 @@ public class MCost extends X_M_Cost {
     } catch (SQLException e) {
       throw new DBException(e, sql.toString());
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -551,7 +547,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_Currency_ID);
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setInt(3, C_OrderLine_ID);
@@ -563,7 +559,7 @@ public class MCost extends X_M_Cost {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -595,7 +591,7 @@ public class MCost extends X_M_Cost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxNameUsed);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, client. getClientId());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -619,7 +615,7 @@ public class MCost extends X_M_Cost {
       s_log.log(Level.SEVERE, sql, e);
       success = false;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

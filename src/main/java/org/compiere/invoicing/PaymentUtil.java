@@ -1,8 +1,5 @@
 package org.compiere.invoicing;
 
-import static software.hsharp.core.util.DBKt.close;
-import static software.hsharp.core.util.DBKt.prepareStatement;
-
 /** @author Elaine */
 public class PaymentUtil {
 

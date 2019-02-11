@@ -119,7 +119,7 @@ public class InventoryCountCreate extends SvrProcess {
               .append(" AND Processed='N' AND M_Inventory_ID=")
               .append(p_M_Inventory_ID)
               .append(")");
-      int no1 = executeUpdate(sql1.toString(), null);
+      int no1 = executeUpdate(sql1.toString());
       if (log.isLoggable(Level.FINE)) log.fine("doIt - Deleted MA #" + no1);
       // End of Added Line
 
@@ -127,7 +127,7 @@ public class InventoryCountCreate extends SvrProcess {
           new StringBuilder("DELETE M_InventoryLine WHERE Processed='N' ")
               .append("AND M_Inventory_ID=")
               .append(p_M_Inventory_ID);
-      int no = executeUpdate(sql.toString(), null);
+      int no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("doIt - Deleted #" + no);
     }
 
@@ -152,7 +152,7 @@ public class InventoryCountCreate extends SvrProcess {
           .append(" INNER JOIN M_Locator sl ON (s.M_Locator_ID=sl.M_Locator_ID) ")
           .append("WHERE sl.M_Warehouse_ID=l.M_Warehouse_ID")
           .append(" AND s.M_Product_ID=p.M_Product_ID)");
-      int no = executeUpdate(sql.toString(), null);
+      int no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("'0' Inserted #" + no);
     }
 
@@ -199,7 +199,7 @@ public class InventoryCountCreate extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       int index = 1;
       pstmt.setInt(index++, m_inventory.getM_Warehouse_ID());
       if (p_M_Locator_ID != 0) pstmt.setInt(index++, p_M_Locator_ID);
@@ -236,7 +236,7 @@ public class InventoryCountCreate extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -248,7 +248,7 @@ public class InventoryCountCreate extends SvrProcess {
               .append("SET QtyCount=0 ")
               .append("WHERE M_Inventory_ID=")
               .append(p_M_Inventory_ID);
-      int no = executeUpdate(sql1.toString(), null);
+      int no = executeUpdate(sql1.toString());
       if (log.isLoggable(Level.INFO)) log.info("Set Cont to Zero=" + no);
     }
 
@@ -343,11 +343,11 @@ public class InventoryCountCreate extends SvrProcess {
     String sql =
         " SELECT M_Product_Category_ID, M_Product_Category_Parent_ID FROM M_Product_Category";
     final Vector<SimpleTreeNode> categories = new Vector<SimpleTreeNode>(100);
-    Statement stmt = null;
+    PreparedStatement stmt = null;
     ResultSet rs = null;
     try {
-      stmt = createStatement();
-      rs = stmt.executeQuery(sql);
+      stmt = prepareStatement(sql);
+      rs = stmt.executeQuery();
       while (rs.next()) {
         if (rs.getInt(1) == productCategoryId) {
           subTreeRootParentId = rs.getInt(2);
@@ -358,7 +358,7 @@ public class InventoryCountCreate extends SvrProcess {
     } catch (SQLException e) {
       throw e;
     } finally {
-      close(rs, stmt);
+
       rs = null;
       stmt = null;
     }

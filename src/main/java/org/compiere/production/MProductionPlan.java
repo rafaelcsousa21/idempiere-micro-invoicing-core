@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /** @author hengsin */
@@ -55,14 +54,14 @@ public class MProductionPlan extends X_M_ProductionPlan {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getId());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1), null));
     } catch (SQLException ex) {
       throw new AdempiereException("Unable to load production lines", ex);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -127,7 +126,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
     ResultSet rs = null;
 
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
 
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -280,7 +279,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
     } catch (Exception e) {
       throw new AdempiereException("Failed to create production lines", e);
     } finally {
-      close(rs, pstmt);
+
     }
 
     return count;

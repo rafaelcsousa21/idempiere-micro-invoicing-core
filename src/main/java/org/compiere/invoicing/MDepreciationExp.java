@@ -253,7 +253,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
               + " SET Processed=? WHERE "
               + I_A_Depreciation_Exp.COLUMNNAME_A_Depreciation_Exp_ID
               + "=?";
-      executeUpdateEx(sql, new Object[] {Processed, getId()}, null);
+      executeUpdateEx(sql, new Object[] {Processed, getId()});
     }
   }
 

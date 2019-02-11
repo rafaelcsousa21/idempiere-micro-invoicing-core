@@ -208,7 +208,6 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
       MInOutLine line = new MInOutLine(getCtx(), getM_InOutLine_ID(), null);
       BigDecimal matchedQty =
           getSQLValueBD(
-              null,
               "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE M_InOutLine_ID=?",
               getM_InOutLine_ID());
       if (matchedQty != null && matchedQty.compareTo(line.getMovementQty()) > 0) {
@@ -226,7 +225,6 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
       MInvoiceLine line = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), null);
       BigDecimal matchedQty =
           getSQLValueBD(
-              null,
               "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE C_InvoiceLine_ID=?",
               getC_InvoiceLine_ID());
       if (matchedQty != null && matchedQty.compareTo(line.getQtyInvoiced()) > 0) {
@@ -253,14 +251,14 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
             + "FROM C_InvoiceLine il"
             + " INNER JOIN C_Invoice i ON (i.C_Invoice_ID=il.C_Invoice_ID) "
             + "WHERE C_InvoiceLine_ID=?";
-    Timestamp invoiceDate = getSQLValueTS(null, sql, getC_InvoiceLine_ID());
+    Timestamp invoiceDate = getSQLValueTS(sql, getC_InvoiceLine_ID());
     //
     sql =
         "SELECT io.DateAcct "
             + "FROM M_InOutLine iol"
             + " INNER JOIN M_InOut io ON (io.M_InOut_ID=iol.M_InOut_ID) "
             + "WHERE iol.M_InOutLine_ID=?";
-    Timestamp shipDate = getSQLValueTS(null, sql, getM_InOutLine_ID());
+    Timestamp shipDate = getSQLValueTS(sql, getM_InOutLine_ID());
     //
     if (invoiceDate == null) return shipDate;
     if (shipDate == null) return invoiceDate;

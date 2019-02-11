@@ -68,14 +68,14 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_Payment_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MAllocationHdr(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -102,14 +102,14 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_Invoice_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MAllocationHdr(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -229,7 +229,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_AllocationHdr_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -240,7 +240,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -263,7 +263,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_AllocationHdr_ID=")
             .append(getC_AllocationHdr_ID());
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - #" + no);
   } //	setProcessed

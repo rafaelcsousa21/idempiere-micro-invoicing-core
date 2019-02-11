@@ -73,7 +73,7 @@ public class AD_PrintPaper_Default extends SvrProcess {
       if (p_AD_Client_ID != -1) {
         sql.append(" AND clientId = ").append(p_AD_Client_ID);
       }
-      cnt = executeUpdate(sql.toString(), null);
+      cnt = executeUpdate(sql.toString());
       if (log.isLoggable(Level.INFO)) log.info("Updated " + cnt + " columns");
     } catch (Exception e) {
       log.log(Level.SEVERE, "set print format", e);

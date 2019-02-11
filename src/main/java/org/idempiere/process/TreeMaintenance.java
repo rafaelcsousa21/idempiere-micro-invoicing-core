@@ -81,7 +81,7 @@ public class TreeMaintenance extends SvrProcess {
           new StringBuilder("SELECT C_Element_ID FROM C_Element ")
               .append("WHERE AD_Tree_ID=")
               .append(tree.getAD_Tree_ID());
-      C_Element_ID = getSQLValue(null, sql.toString());
+      C_Element_ID = getSQLValue(sql.toString());
       if (C_Element_ID <= 0) throw new IllegalStateException("No Account Element found");
     }
 
@@ -101,7 +101,7 @@ public class TreeMaintenance extends SvrProcess {
     sql.append(")");
     if (log.isLoggable(Level.FINER)) log.finer(sql.toString());
     //
-    int deletes = executeUpdate(sql.toString(), null);
+    int deletes = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(deletes), tree.getName() + " Deleted");
     if (!tree.isAllNodes()) {
       StringBuilder msgreturn = new StringBuilder().append(tree.getName()).append(" OK");
@@ -130,7 +130,7 @@ public class TreeMaintenance extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int Node_ID = rs.getInt(1);
@@ -150,7 +150,7 @@ public class TreeMaintenance extends SvrProcess {
       log.log(Level.SEVERE, "verifyTree", e);
       ok = false;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -169,7 +169,7 @@ public class TreeMaintenance extends SvrProcess {
       //
       MTable table = MTable.get(getCtx(), sourceTableName);
       try {
-        pstmt = prepareStatement(sql.toString(), null);
+        pstmt = prepareStatement(sql.toString());
         rs = pstmt.executeQuery();
         while (rs.next()) {
           int Node_ID = rs.getInt(1);
@@ -179,7 +179,7 @@ public class TreeMaintenance extends SvrProcess {
       } catch (Exception e) {
         log.log(Level.SEVERE, "verifyTree", e);
       } finally {
-        close(rs, pstmt);
+
         rs = null;
         pstmt = null;
       }

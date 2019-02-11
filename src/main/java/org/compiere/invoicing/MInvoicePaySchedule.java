@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -50,7 +49,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), trxName);
+      pstmt = prepareStatement(sql.toString());
       if (C_Invoice_ID != 0) pstmt.setInt(1, C_Invoice_ID);
       else pstmt.setInt(1, C_InvoicePaySchedule_ID);
       rs = pstmt.executeQuery();
@@ -60,7 +59,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, "getInvoicePaySchedule", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

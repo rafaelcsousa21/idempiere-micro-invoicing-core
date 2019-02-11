@@ -73,7 +73,7 @@ public class HouseKeeping extends SvrProcess {
               .append(tableName);
       if (whereClause != null && whereClause.length() > 0)
         sql.append(" WHERE ").append(whereClause);
-      noins = executeUpdate(sql.toString(), null);
+      noins = executeUpdate(sql.toString());
       if (noins == -1) throw new AdempiereSystemError("Cannot insert into hst_" + tableName);
       addLog("@Inserted@ " + noins);
     } // saveInHistoric
@@ -91,7 +91,7 @@ public class HouseKeeping extends SvrProcess {
       ResultSet rs = null;
       StringBuffer linexml = null;
       try {
-        pstmt = prepareStatement(sql.toString(), null);
+        pstmt = prepareStatement(sql.toString());
         rs = pstmt.executeQuery();
         while (rs.next()) {
           GenericPO po = new GenericPO(tableName, getCtx(), rs, null);
@@ -103,7 +103,7 @@ public class HouseKeeping extends SvrProcess {
       } catch (Exception e) {
         throw e;
       } finally {
-        close(rs, pstmt);
+
         pstmt = null;
         rs = null;
       }
@@ -112,7 +112,7 @@ public class HouseKeeping extends SvrProcess {
 
     StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName);
     if (whereClause != null && whereClause.length() > 0) sql.append(" WHERE ").append(whereClause);
-    nodel = executeUpdate(sql.toString(), null);
+    nodel = executeUpdate(sql.toString());
     if (nodel == -1) throw new AdempiereSystemError("Cannot delete from " + tableName);
     Timestamp time = new Timestamp(date.getTime());
     houseKeeping.setLastRun(time);

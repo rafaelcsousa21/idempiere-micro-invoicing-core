@@ -103,7 +103,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     if (id <= 0) { // Use old ID is current ID is missing (i.e. object was deleted)
       id = get_IDOld();
     }
-    int no = executeUpdateEx(sql, new Object[] {id}, null);
+    int no = executeUpdateEx(sql, new Object[] {id});
     if (log.isLoggable(Level.FINE)) log.fine("Updated #" + no);
   }
 
@@ -128,7 +128,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     Timestamp dateAcct = TimeUtil.trunc(getDateAcct(), TimeUtil.TRUNC_MONTH);
     int no =
         executeUpdateEx(
-            sql, new Object[] {getId(), dateAcct,  getClientId(),  getOrgId()}, null);
+            sql, new Object[] {getId(), dateAcct,  getClientId(),  getOrgId()});
     if (log.isLoggable(Level.FINE)) log.fine("Updated #" + no);
   }
 
@@ -321,7 +321,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         new Object[] {
           I_A_Depreciation_Entry.Table_ID, depexp.getA_Depreciation_Entry_ID(), depexp.getId()
         };
-    executeUpdateEx(sql, params, null);
+    executeUpdateEx(sql, params);
   }
 
   @Override

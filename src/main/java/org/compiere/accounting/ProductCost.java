@@ -10,7 +10,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -122,7 +121,7 @@ public class ProductCost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, m_M_Product_ID);
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
@@ -130,7 +129,7 @@ public class ProductCost {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -168,14 +167,14 @@ public class ProductCost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) validCombination_ID = rs.getInt(AcctType);
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -271,7 +270,7 @@ public class ProductCost {
   		log.log(Level.SEVERE, sql.toString(), e);
   	}
   	finally {
-  		close(rs, pstmt);
+
   		rs = null; pstmt = null;
   	}
   	//  nothing found
@@ -327,7 +326,7 @@ public class ProductCost {
   		log.log(Level.SEVERE, sql, e);
   	}
   	finally {
-  		close(rs, pstmt);
+
   		rs = null; pstmt = null;
   	}
   	//  nothing found

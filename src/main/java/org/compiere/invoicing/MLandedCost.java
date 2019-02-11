@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
@@ -35,7 +34,7 @@ public class MLandedCost extends X_C_LandedCost {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, il.getC_InvoiceLine_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -44,7 +43,7 @@ public class MLandedCost extends X_C_LandedCost {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

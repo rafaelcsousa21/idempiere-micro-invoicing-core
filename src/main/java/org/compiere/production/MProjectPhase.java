@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -99,14 +98,13 @@ public class MProjectPhase extends X_C_ProjectPhase {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_ProjectPhase_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MProjectTask(getCtx(), rs, null));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

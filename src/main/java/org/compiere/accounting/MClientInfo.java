@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -126,7 +125,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, AD_Client_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -136,7 +135,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

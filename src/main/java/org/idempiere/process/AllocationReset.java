@@ -27,7 +27,6 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -133,7 +132,7 @@ public class AllocationReset extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       int index = 1;
       if (p_C_BPartner_ID != 0) pstmt.setInt(index++, p_C_BPartner_ID);
       else if (p_C_BP_Group_ID != 0) pstmt.setInt(index++, p_C_BP_Group_ID);
@@ -149,7 +148,7 @@ public class AllocationReset extends SvrProcess {
       log.log(Level.SEVERE, sql.toString(), e);
       throw new Error(sql.toString());
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

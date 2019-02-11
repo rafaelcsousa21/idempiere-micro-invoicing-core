@@ -40,14 +40,14 @@ public class MStatusCategory extends X_R_StatusCategory {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, AD_Client_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) retValue = new MStatusCategory(ctx, rs, null);
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -72,7 +72,7 @@ public class MStatusCategory extends X_R_StatusCategory {
             + retValue.getR_StatusCategory_ID()
             + " WHERE R_StatusCategory_ID IS NULL AND AD_Client_ID="
             + AD_Client_ID;
-    int no = executeUpdate(sql, null);
+    int no = executeUpdate(sql);
     if (s_log.isLoggable(Level.INFO))
       s_log.info("Default for AD_Client_ID=" + AD_Client_ID + " - Status #" + no);
     return retValue;
@@ -142,14 +142,14 @@ public class MStatusCategory extends X_R_StatusCategory {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getR_StatusCategory_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MStatus(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

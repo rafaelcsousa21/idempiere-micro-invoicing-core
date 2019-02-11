@@ -142,7 +142,7 @@ public class TransactionXRef extends SvrProcess {
             .append(sqlSubSelect)
             .append(") ORDER BY M_Transaction_ID");
     //
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("#" + no);
 

@@ -29,7 +29,6 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -130,7 +129,7 @@ public class OrderPOCreate extends SvrProcess {
     ResultSet rs = null;
     int counter = 0;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       if (p_C_Order_ID != 0) pstmt.setInt(1, p_C_Order_ID);
       else {
         int index = 1;
@@ -149,7 +148,7 @@ public class OrderPOCreate extends SvrProcess {
         counter += createPOFromSO(new MOrder(getCtx(), rs, null));
       }
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -188,7 +187,7 @@ public class OrderPOCreate extends SvrProcess {
     ResultSet rs = null;
     MOrder po = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, so.getC_Order_ID());
       if (p_Vendor_ID != 0) pstmt.setInt(2, p_Vendor_ID);
       rs = pstmt.executeQuery();
@@ -228,7 +227,7 @@ public class OrderPOCreate extends SvrProcess {
       log.log(Level.SEVERE, sql, e);
       throw e;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

@@ -317,8 +317,7 @@ public class MWFProcess extends X_AD_WF_Process {
   public void setAD_WF_Responsible_ID() {
     int AD_WF_Responsible_ID =
         getSQLValueEx(
-            null,
-            MRole.getDefault(getCtx(), false)
+                MRole.getDefault(getCtx(), false)
                 .addAccessSQL(
                     "SELECT AD_WF_Responsible_ID FROM AD_WF_Responsible "
                         + "WHERE ResponsibleType='H' AND COALESCE(AD_User_ID,0)=0 "

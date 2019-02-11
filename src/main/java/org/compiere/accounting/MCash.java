@@ -701,7 +701,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_Cash_ID=")
             .append(getC_Cash_ID());
-    int noLine = executeUpdate(sql.toString(), null);
+    int noLine = executeUpdate(sql.toString());
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed

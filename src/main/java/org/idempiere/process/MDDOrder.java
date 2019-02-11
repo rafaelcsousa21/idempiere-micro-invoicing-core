@@ -285,7 +285,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     if (getId() == 0) return;
     String set =
         "SET Processed='" + (processed ? "Y" : "N") + "' WHERE DD_Order_ID=" + getDD_Order_ID();
-    int noLine = executeUpdate("UPDATE DD_OrderLine " + set, null);
+    int noLine = executeUpdate("UPDATE DD_OrderLine " + set);
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine("setProcessed - " + processed + " - Lines=" + noLine);
   } //	setProcessed
@@ -363,7 +363,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
               + "FROM DD_Order o WHERE i.DD_Order_ID=o.DD_Order_ID) "
               + "WHERE DocStatus NOT IN ('RE','CL') AND DD_Order_ID="
               + getDD_Order_ID();
-      int no = executeUpdate(sql, null);
+      int no = executeUpdate(sql);
       if (log.isLoggable(Level.FINE)) log.fine("Description -> #" + no);
     }
 
@@ -508,7 +508,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
             + mandatoryType
             + " AND ol.M_AttributeSetInstance_ID IS NULL"
             + " AND ol.DD_Order_ID=?";
-    int no = getSQLValue(null, sql, getDD_Order_ID());
+    int no = getSQLValue(sql, getDD_Order_ID());
     if (no != 0) {
       m_processMsg = "@LinesWithoutProductAttribute@ (" + no + ")";
       return DocAction.Companion.getSTATUS_Invalid();

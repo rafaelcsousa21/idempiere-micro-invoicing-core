@@ -380,7 +380,7 @@ public class MProductionLine extends X_M_ProductionLine {
 
   private int deleteMA() {
     String sql = "DELETE FROM M_ProductionLineMA WHERE M_ProductionLine_ID = " + getId();
-    int count = executeUpdateEx(sql, null);
+    int count = executeUpdateEx(sql);
     return count;
   }
 
@@ -452,12 +452,10 @@ public class MProductionLine extends X_M_ProductionLine {
   public int getProductionReversalId() {
     if (getM_Production_ID() > 0)
       return getSQLValueEx(
-          null,
           "SELECT Reversal_ID FROM M_Production WHERE M_Production_ID=?",
           getM_Production_ID());
     else
       return getSQLValueEx(
-          null,
           "SELECT p.Reversal_ID FROM M_ProductionPlan pp INNER JOIN M_Production p ON (pp.M_Production_ID = p.M_Production_ID) WHERE pp.M_ProductionPlan_ID=?",
           getM_ProductionPlan_ID());
   }

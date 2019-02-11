@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
@@ -76,7 +75,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_DocType_ID);
       rs = pstmt.executeQuery();
       while (rs.next() && retValue == null) {
@@ -89,7 +88,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, "getCounterDocType", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

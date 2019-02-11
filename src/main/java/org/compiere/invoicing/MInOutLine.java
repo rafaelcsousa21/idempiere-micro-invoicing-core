@@ -151,7 +151,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM M_InOutLine WHERE M_InOut_ID=?";
-      int ii = getSQLValueEx(null, sql, getM_InOut_ID());
+      int ii = getSQLValueEx(sql, getM_InOut_ID());
       setLine(ii);
     }
     //	UOM

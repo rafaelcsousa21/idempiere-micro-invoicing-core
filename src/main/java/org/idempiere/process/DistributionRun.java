@@ -201,9 +201,9 @@ public class DistributionRun extends SvrProcess {
     //	Handle NULL
     String sql =
         "UPDATE M_DistributionRunLine SET MinQty = 0 WHERE MinQty IS NULL AND M_DistributionRun_ID=?";
-    int no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, null);
+    int no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID});
     sql = "UPDATE M_DistributionListLine SET MinQty = 0 WHERE MinQty IS NULL";
-    no = executeUpdateEx(sql, null);
+    no = executeUpdateEx(sql);
     //	Total Ratio
     sql =
         "UPDATE M_DistributionList l "
@@ -212,11 +212,11 @@ public class DistributionRun extends SvrProcess {
             + "WHERE EXISTS (SELECT * FROM M_DistributionRunLine rl"
             + " WHERE l.M_DistributionList_ID=rl.M_DistributionList_ID"
             + " AND rl.M_DistributionRun_ID=?)";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, null);
+    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID});
 
     //	Delete Old
     sql = "DELETE FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=?";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, null);
+    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID});
     if (log.isLoggable(Level.FINE)) log.fine("insertDetails - deleted #" + no);
     //	Insert New
     sql =
@@ -238,7 +238,7 @@ public class DistributionRun extends SvrProcess {
             + " INNER JOIN M_DistributionListLine ll ON (rl.M_DistributionList_ID=ll.M_DistributionList_ID) "
             + "WHERE rl.M_DistributionRun_ID=?"
             + " AND l.RatioTotal<>0 AND rl.IsActive='Y' AND ll.IsActive='Y'";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID}, null);
+    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID});
     if (log.isLoggable(Level.FINE)) log.fine("inserted #" + no);
     return no;
   } //	insertDetails
@@ -663,7 +663,7 @@ public class DistributionRun extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setTimestamp(1, p_DatePromised);
       // pstmt.setTimestamp(2, p_DatePromised_To);
       pstmt.setInt(2, p_M_Warehouse_ID);
@@ -677,7 +677,7 @@ public class DistributionRun extends SvrProcess {
       log.log(Level.SEVERE, "doIt - " + sql, e);
       return Env.ZERO;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -818,7 +818,7 @@ public class DistributionRun extends SvrProcess {
      		}
      		finally
      		{
-     			close(rs, pstmt);
+
      			rs = null;
      			pstmt = null;
      		}

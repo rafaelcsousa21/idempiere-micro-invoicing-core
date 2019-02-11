@@ -364,7 +364,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             .append(element)
             .append(" IS NULL AND AD_Client_ID=")
             .append( getClientId());
-    int noC = executeUpdate(sql.toString(), null);
+    int noC = executeUpdate(sql.toString());
     //
     sql =
         new StringBuilder("UPDATE Fact_Acct SET ")
@@ -375,7 +375,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             .append(element)
             .append(" IS NULL AND C_AcctSchema_ID=")
             .append(getC_AcctSchema_ID());
-    int noF = executeUpdate(sql.toString(), null);
+    int noF = executeUpdate(sql.toString());
     //
     if (log.isLoggable(Level.FINE)) log.fine("ValidCombination=" + noC + ", Fact=" + noF);
   } //	updateData

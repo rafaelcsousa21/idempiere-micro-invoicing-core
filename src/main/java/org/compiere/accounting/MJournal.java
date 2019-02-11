@@ -262,7 +262,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
             .append((processed ? "Y" : "N"))
             .append("' WHERE GL_Journal_ID=")
             .append(getGL_Journal_ID());
-    int noLine = executeUpdate(sql.toString(), null);
+    int noLine = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed
 
@@ -310,9 +310,8 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
               "UPDATE GL_JournalLine SET "
                   + MJournalLine.COLUMNNAME_DateAcct
                   + "=? WHERE GL_Journal_ID=?",
-              new Object[] {getDateAcct(), getGL_Journal_ID()},
-              false,
-              null);
+              new Object[] {getDateAcct(), getGL_Journal_ID()}
+          );
       if (log.isLoggable(Level.FINEST)) log.finest("Updated GL_JournalLine.DateAcct #" + no);
     }
     return true;
@@ -356,7 +355,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
                   " FROM GL_Journal j WHERE j.IsActive='Y' AND jb.GL_JournalBatch_ID=j.GL_JournalBatch_ID) ")
               .append("WHERE GL_JournalBatch_ID=")
               .append(getGL_JournalBatch_ID());
-      int no = executeUpdate(sql.toString(), null);
+      int no = executeUpdate(sql.toString());
       if (no != 1) log.warning("afterSave - Update Batch #" + no);
       return no == 1;
     }

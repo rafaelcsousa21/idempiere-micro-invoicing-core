@@ -81,7 +81,7 @@ public class ImportReportLine extends SvrProcess {
           new StringBuilder("DELETE I_ReportLine ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Delete Old Impored =" + no);
     }
 
@@ -100,7 +100,7 @@ public class ImportReportLine extends SvrProcess {
             .append(" I_ErrorMsg = ' ',")
             .append(" I_IsImported = 'N' ")
             .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Reset=" + no);
 
     //	ReportLineSetName (Default)
@@ -114,7 +114,7 @@ public class ImportReportLine extends SvrProcess {
               .append("WHERE ReportLineSetName IS NULL AND PA_ReportLineSet_ID IS NULL")
               .append(" AND I_IsImported<>'Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Set ReportLineSetName Default=" + no);
     }
     //	Set PA_ReportLineSet_ID
@@ -125,7 +125,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE PA_ReportLineSet_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set PA_ReportLineSet_ID=" + no);
     //
     sql =
@@ -134,7 +134,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE PA_ReportLineSet_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid ReportLineSet=" + no);
 
     //	Ignore if there is no Report Line Name or ID
@@ -144,7 +144,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE PA_ReportLine_ID IS NULL AND Name IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid LineName=" + no);
 
     //	Validate ElementValue
@@ -155,7 +155,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE C_ElementValue_ID IS NULL AND ElementValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set C_ElementValue_ID=" + no);
 
     //	Validate C_ElementValue_ID
@@ -166,7 +166,7 @@ public class ImportReportLine extends SvrProcess {
                 "WHERE C_ElementValue_ID IS NULL AND LineType<>'C'") // MReportLine.LINETYPE_Calculation
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid AccountType=" + no);
 
     //	Set SeqNo
@@ -176,7 +176,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE SeqNo IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set SeqNo Default=" + no);
 
     //	Copy/Sync from first Row of Line
@@ -197,7 +197,7 @@ public class ImportReportLine extends SvrProcess {
             .append(" WHERE i.Name=iii.Name AND i.PA_ReportLineSet_ID=iii.PA_ReportLineSet_ID))")
             .append(" AND I_IsImported='N'")
             .append(clientCheck); // 	 not if previous error
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Sync from first Row of Line=" + no);
 
     //	Validate IsSummary - (N) Y
@@ -207,7 +207,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE IsSummary IS NULL OR IsSummary NOT IN ('Y','N')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set IsSummary Default=" + no);
 
     //	Validate IsPrinted - (Y) N
@@ -217,7 +217,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE IsPrinted IS NULL OR IsPrinted NOT IN ('Y','N')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set IsPrinted Default=" + no);
 
     //	Validate Line Type - (S) C
@@ -227,7 +227,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE LineType IS NULL OR LineType NOT IN ('S','C')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set LineType Default=" + no);
 
     //	Validate Optional Calculation Type - A P R S
@@ -238,7 +238,7 @@ public class ImportReportLine extends SvrProcess {
                 "WHERE CalculationType IS NOT NULL AND CalculationType NOT IN ('A','P','R','S')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid CalculationType=" + no);
 
     //	Convert Optional Amount Type to PAAmount Type and PAPeriodType
@@ -250,7 +250,7 @@ public class ImportReportLine extends SvrProcess {
                 "WHERE AmountType IS NOT NULL AND (PAAmountType IS NULL OR PAPeriodType IS NULL) ")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Converted AmountType=" + no);
 
     //		Validate Optional Amount Type -
@@ -261,7 +261,7 @@ public class ImportReportLine extends SvrProcess {
                 "WHERE PAAmountType IS NOT NULL AND UPPER(AmountType) NOT IN ('B','C','D','Q','S','R')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid AmountType=" + no);
 
     //		Validate Optional Period Type -
@@ -271,7 +271,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE PAPeriodType IS NOT NULL AND UPPER(AmountType) NOT IN ('P','Y','T','N')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid PeriodType=" + no);
 
     //	Validate Optional Posting Type - A B E S R
@@ -281,7 +281,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE PostingType IS NOT NULL AND PostingType NOT IN ('A','B','E','S','R')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid PostingType=" + no);
 
     //	Set PA_ReportLine_ID
@@ -292,7 +292,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE PA_ReportLine_ID IS NULL AND PA_ReportLineSet_ID IS NOT NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set PA_ReportLine_ID=" + no);
 
 
@@ -329,9 +329,9 @@ public class ImportReportLine extends SvrProcess {
               // jz + clientCheck, null);
               .append(clientCheck)
               .append(")");
-      pstmt_insertLine = prepareStatement(dbpst.toString(), null);
+      pstmt_insertLine = prepareStatement(dbpst.toString());
 
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int PA_ReportLineSet_ID = rs.getInt(1);
@@ -357,10 +357,9 @@ public class ImportReportLine extends SvrProcess {
     } catch (SQLException e) {
       log.log(Level.SEVERE, "Create ReportLine", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
-      close(pstmt_insertLine);
       pstmt_insertLine = null;
     }
 
@@ -372,7 +371,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE PA_ReportLine_ID IS NULL AND PA_ReportLineSet_ID IS NOT NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set PA_ReportLine_ID=" + no);
 
     //	****	Update ReportLine
@@ -393,7 +392,7 @@ public class ImportReportLine extends SvrProcess {
             .append(
                 " WHERE i.Name=iii.Name AND i.PA_ReportLineSet_ID=iii.PA_ReportLineSet_ID AND i.I_IsImported='N'))")
             .append(clientCheck);
-    noUpdateLine = executeUpdate(sql.toString(), null);
+    noUpdateLine = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Update PA_ReportLine=" + noUpdateLine);
 
     //	-------------------------------------------------------------------
@@ -425,7 +424,7 @@ public class ImportReportLine extends SvrProcess {
               .append("WHERE I_ReportLine_ID=?")
               .append(" AND I_IsImported='N'")
               .append(clientCheck);
-      pstmt_insertSource = prepareStatement(dbpst.toString(), null);
+      pstmt_insertSource = prepareStatement(dbpst.toString());
 
       //	Update ReportSource
       // jz
@@ -448,7 +447,7 @@ public class ImportReportLine extends SvrProcess {
               .append("WHERE C_ElementValue_ID IS NULL")
               .append(" AND PA_ReportSource_ID=?")
               .append(clientCheck);
-      pstmt_deleteSource = prepareStatement(dbpst.toString(), null);
+      pstmt_deleteSource = prepareStatement(dbpst.toString());
       // End afalcone 22/02/2007 - F.R. [ 1642250 ] Import ReportLine / Very Slow Reports
 
       //	Set Imported = Y
@@ -456,10 +455,10 @@ public class ImportReportLine extends SvrProcess {
           prepareStatement(
               "UPDATE I_ReportLine SET I_IsImported='Y',"
                   + " PA_ReportSource_ID=?, "
-                  + " Updated=SysDate, Processed='Y' WHERE I_ReportLine_ID=?",
-              null);
+                  + " Updated=SysDate, Processed='Y' WHERE I_ReportLine_ID=?"
+          );
 
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int I_ReportLine_ID = rs.getInt(1);
@@ -493,7 +492,7 @@ public class ImportReportLine extends SvrProcess {
                     .append(TO_STRING("Insert ElementSource: " + ex.toString()))
                     .append("WHERE I_ReportLine_ID=")
                     .append(I_ReportLine_ID);
-            executeUpdate(sql.toString(), null);
+            executeUpdate(sql.toString());
             continue;
           }
         } else //	update Report Source
@@ -513,7 +512,7 @@ public class ImportReportLine extends SvrProcess {
                   .append(" ")
                   .append(clientCheck);
           PreparedStatement pstmt_updateSource =
-              prepareStatement(sqlt.toString(), null);
+              prepareStatement(sqlt.toString());
           // pstmt_updateSource.setInt(1, I_ReportLine_ID);
           // pstmt_updateSource.setInt(2, PA_ReportSource_ID);
           try {
@@ -536,10 +535,9 @@ public class ImportReportLine extends SvrProcess {
                     .append(TO_STRING("Update ElementSource: " + ex.toString()))
                     .append("WHERE I_ReportLine_ID=")
                     .append(I_ReportLine_ID);
-            executeUpdate(sql.toString(), null);
+            executeUpdate(sql.toString());
             continue;
           } finally {
-            close(pstmt_updateSource);
             pstmt_updateSource = null;
           }
         } //	update source
@@ -568,12 +566,10 @@ public class ImportReportLine extends SvrProcess {
       }
     } catch (SQLException e) {
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
-      close(pstmt_insertSource);
       pstmt_insertSource = null;
-      close(pstmt_setImported);
       pstmt_setImported = null;
     }
 
@@ -584,7 +580,7 @@ public class ImportReportLine extends SvrProcess {
             .append("WHERE I_IsImported<>'Y'")
             .append(clientCheck);
 
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@Errors@");
     addLog(0, null, new BigDecimal(noInsertLine), "@PA_ReportLine_ID@: @Inserted@");
     addLog(0, null, new BigDecimal(noUpdateLine), "@PA_ReportLine_ID@: @Updated@");

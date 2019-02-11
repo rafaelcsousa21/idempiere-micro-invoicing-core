@@ -68,7 +68,7 @@ class ProductionCreate(
                 " WHERE cc.currentcostprice > 0 AND pp.M_Product_ID = ?" +
                 " AND ce.costingmethod='S'")
 
-        var costPercentageDiff: BigDecimal? = getSQLValueBD(null, sql, M_Product_ID)
+        var costPercentageDiff: BigDecimal? = getSQLValueBD(sql, M_Product_ID)
 
         if (costPercentageDiff == null) {
             costPercentageDiff = Env.ZERO
@@ -141,11 +141,11 @@ class ProductionCreate(
 
     @Throws(Exception::class)
     protected fun isBom(M_Product_ID: Int) {
-        val bom = getSQLValueString("", "SELECT isbom FROM M_Product WHERE M_Product_ID = ?", M_Product_ID)
+        val bom = getSQLValueString("SELECT isbom FROM M_Product WHERE M_Product_ID = ?", M_Product_ID)
         if (bom == null || bom == "N") {
             throw AdempiereUserError("Attempt to create product line for Non Bill Of Materials")
         }
-        val materials = getSQLValue("", "SELECT count(M_Product_BOM_ID) FROM M_Product_BOM WHERE M_Product_ID = ?", M_Product_ID)
+        val materials = getSQLValue("SELECT count(M_Product_BOM_ID) FROM M_Product_BOM WHERE M_Product_ID = ?", M_Product_ID)
         if (materials == 0) {
             throw AdempiereUserError("Attempt to create product line for Bill Of Materials with no BOM Products")
         }

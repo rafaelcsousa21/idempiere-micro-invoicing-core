@@ -99,7 +99,7 @@ public class CopyRole extends SvrProcess {
               .append(table)
               .append(" WHERE AD_Role_ID = ")
               .append(m_AD_Role_ID_To);
-      int no = executeUpdateEx(sql.toString(), null);
+      int no = executeUpdateEx(sql.toString());
       addLog(action++, null, BigDecimal.valueOf(no), "Old records deleted from " + table);
 
       final boolean column_IsReadWrite =
@@ -135,7 +135,7 @@ public class CopyRole extends SvrProcess {
       if (column_IsReadWrite) sql.append(", isReadWrite ");
       sql.append("FROM ").append(table).append(" WHERE AD_Role_ID = ").append(m_AD_Role_ID_From);
 
-      no = executeUpdateEx(sql.toString(), null);
+      no = executeUpdateEx(sql.toString());
 
       addLog(action++, null, new BigDecimal(no), "New records inserted into " + table);
     }

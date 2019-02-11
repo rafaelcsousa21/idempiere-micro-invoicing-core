@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
@@ -46,14 +45,14 @@ public class MLocator extends X_M_Locator {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, warehouse.getM_Warehouse_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) retValue = new MLocator(warehouse.getCtx(), rs, trxName);
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

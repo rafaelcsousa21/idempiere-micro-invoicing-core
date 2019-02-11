@@ -337,7 +337,7 @@ public class RequisitionPOCreate extends SvrProcess {
       m_orderLine.saveEx();
     }
     if (m_order != null) {
-      m_order.load(null);
+      m_order.load();
       String message = Msg.parseTranslation(getCtx(), "@GeneratedPO@ " + m_order.getDocumentNo());
       addBufferLog(
           0,

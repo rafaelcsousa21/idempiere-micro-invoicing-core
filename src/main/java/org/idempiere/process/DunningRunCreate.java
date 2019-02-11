@@ -279,7 +279,7 @@ public class DunningRunCreate extends SvrProcess {
   	}
   	finally
   	{
-  		close(rs, pstmt);
+
   		close(rs2, pstmt2);
   		rs = null; pstmt = null; rs2 = null; pstmt2 = null;
   	}
@@ -431,7 +431,7 @@ public class DunningRunCreate extends SvrProcess {
   	}
   	finally
   	{
-  		close(rs, pstmt);
+
   		rs = null; pstmt = null;
   	}
   	return count;

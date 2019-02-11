@@ -131,7 +131,7 @@ public class OrderBatchProcess extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, p_C_DocTypeTarget_ID);
       pstmt.setString(2, p_DocStatus);
       rs = pstmt.executeQuery();
@@ -142,7 +142,7 @@ public class OrderBatchProcess extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

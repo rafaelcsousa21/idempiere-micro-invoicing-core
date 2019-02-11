@@ -93,7 +93,7 @@ public class M_PriceList_Create extends SvrProcess {
     //
     sqlupd.append("UPDATE M_Product_PO  SET	PriceList = 0  ").append(" WHERE	PriceList IS NULL ");
 
-    cntu = executeUpdate(sqlupd.toString(), null);
+    cntu = executeUpdate(sqlupd.toString());
     if (cntu == -1)
       raiseError(
           "Update The PriceList to zero of M_Product_PO WHERE	PriceList IS NULL",
@@ -104,7 +104,7 @@ public class M_PriceList_Create extends SvrProcess {
     sqlupd = new StringBuilder("UPDATE M_Product_PO  SET PriceLastPO = 0  ");
     sqlupd.append(" WHERE	PriceLastPO IS NULL ");
 
-    cntu = executeUpdate(sqlupd.toString(), null);
+    cntu = executeUpdate(sqlupd.toString());
     if (cntu == -1)
       raiseError(
           "Update  The PriceListPO to zero of  M_Product_PO WHERE	PriceLastPO IS NULL",
@@ -115,7 +115,7 @@ public class M_PriceList_Create extends SvrProcess {
     sqlupd = new StringBuilder("UPDATE M_Product_PO  SET     PricePO = PriceLastPO ");
     sqlupd.append(" WHERE	(PricePO IS NULL OR PricePO = 0) AND PriceLastPO <> 0 ");
 
-    cntu = executeUpdate(sqlupd.toString(), null);
+    cntu = executeUpdate(sqlupd.toString());
     if (cntu == -1)
       raiseError(
           "Update  The PricePO to PriceLastPO of  M_Product_PO WHERE	(PricePO IS NULL OR PricePO = 0) AND PriceLastPO <> 0 ",
@@ -126,7 +126,7 @@ public class M_PriceList_Create extends SvrProcess {
     sqlupd = new StringBuilder("UPDATE M_Product_PO  SET     PricePO = 0  ");
     sqlupd.append(" WHERE	PricePO IS NULL ");
 
-    cntu = executeUpdate(sqlupd.toString(), null);
+    cntu = executeUpdate(sqlupd.toString());
     if (cntu == -1)
       raiseError(
           "Update  The PricePO to Zero of  M_Product_PO WHERE	PricePO IS NULL", sqlupd.toString());
@@ -141,7 +141,7 @@ public class M_PriceList_Create extends SvrProcess {
     sqlupd.append("  WHERE    pp.M_Product_ID = M_Product_PO.M_Product_ID");
     sqlupd.append("  GROUP BY pp.M_Product_ID HAVING COUNT(*) > 1) ");
 
-    cntu = executeUpdate(sqlupd.toString(), null);
+    cntu = executeUpdate(sqlupd.toString());
     if (cntu == -1) raiseError("Update  IsCurrentVendor to Y of  M_Product_PO ", sqlupd.toString());
     totu += cntu;
     if (log.isLoggable(Level.FINE)) log.fine("Updated " + cntu);
@@ -165,7 +165,7 @@ public class M_PriceList_Create extends SvrProcess {
     PreparedStatement stmtVendors = null;
     ResultSet rsVend = null;
     try {
-      stmtDupl = prepareStatement(sql.toString(), null);
+      stmtDupl = prepareStatement(sql.toString());
       rsDupl = stmtDupl.executeQuery();
       while (rsDupl.next()) {
         sql = new StringBuilder("SELECT	M_Product_ID         ,C_BPartner_ID ");
@@ -174,7 +174,7 @@ public class M_PriceList_Create extends SvrProcess {
         sql.append(" AND	M_Product_ID    = ").append(rsDupl.getInt("M_Product_ID"));
         sql.append(" ORDER BY PriceList DESC");
 
-        stmtVendors = prepareStatement(sql.toString(), null);
+        stmtVendors = prepareStatement(sql.toString());
         rsVend = stmtVendors.executeQuery();
 
         //
@@ -189,7 +189,7 @@ public class M_PriceList_Create extends SvrProcess {
           sqlupd.append(" AND     C_BPartner_ID= ");
           sqlupd.append(rsVend.getInt("C_BPartner_ID"));
 
-          cntu = executeUpdate(sqlupd.toString(), null);
+          cntu = executeUpdate(sqlupd.toString());
           if (cntu == -1)
             raiseError(
                 "Update  IsCurrentVendor to N of  M_Product_PO for a M_Product_ID and C_BPartner_ID ingresed",
@@ -201,10 +201,8 @@ public class M_PriceList_Create extends SvrProcess {
     } catch (SQLException e) {
       throw e;
     } finally {
-      close(rsDupl, stmtDupl);
       rsDupl = null;
       stmtDupl = null;
-      close(rsVend, stmtVendors);
       rsVend = null;
       stmtVendors = null;
     }
@@ -216,7 +214,7 @@ public class M_PriceList_Create extends SvrProcess {
     //
     if (p_DeleteOld.equals("Y")) {
       sqldel = "DELETE M_ProductPrice WHERE	M_PriceList_Version_ID=?";
-      cntd = executeUpdate(sqldel, p_PriceList_Version_ID, null);
+      cntd = executeUpdate(sqldel, p_PriceList_Version_ID);
       if (cntd == -1) raiseError(" DELETE	M_ProductPrice ", sqldel);
       totd += cntd;
       message = new StringBuilder("@Deleted@=").append(cntd).append(" - ");
@@ -241,7 +239,7 @@ public class M_PriceList_Create extends SvrProcess {
     PreparedStatement stmt = null;
     PreparedStatement pstmt = null;
     try {
-      stmtCurgen = prepareStatement(sql.toString(), null);
+      stmtCurgen = prepareStatement(sql.toString());
       rsCurgen = stmtCurgen.executeQuery();
       while (rsCurgen.next()) {
         //
@@ -261,14 +259,14 @@ public class M_PriceList_Create extends SvrProcess {
         sql.append(rsCurgen.getInt("M_DiscountSchema_ID"));
         sql.append(" AND IsActive='Y' ORDER BY SeqNo");
 
-        stmtDiscountLine = prepareStatement(sql.toString(), null);
+        stmtDiscountLine = prepareStatement(sql.toString());
         rsDiscountLine = stmtDiscountLine.executeQuery();
         while (rsDiscountLine.next()) {
           //
           // Clear Temporary Table
           //
           sqldel = "DELETE FROM T_Selection WHERE AD_PInstance_ID=?";
-          cntd = executeUpdate(sqldel, m_AD_PInstance_ID, null);
+          cntd = executeUpdate(sqldel, m_AD_PInstance_ID);
           if (cntd == -1) raiseError(" DELETE	T_Selection ", sqldel);
           totd += cntd;
           if (log.isLoggable(Level.FINE)) log.fine("Deleted " + cntd);
@@ -327,7 +325,7 @@ public class M_PriceList_Create extends SvrProcess {
                 .append(rsDiscountLine.getInt("M_Product_ID"))
                 .append(")");
 
-            stmt = prepareStatement(sqlins.toString(), null);
+            stmt = prepareStatement(sqlins.toString());
 
             int i = 1;
 
@@ -391,7 +389,7 @@ public class M_PriceList_Create extends SvrProcess {
                 .append(rsDiscountLine.getInt("M_Product_ID"))
                 .append(")");
 
-            stmt = prepareStatement(sqlins.toString(), null);
+            stmt = prepareStatement(sqlins.toString());
             int i = 1;
 
             if (dl_Group1 != null) stmt.setString(i++, dl_Group1);
@@ -417,9 +415,8 @@ public class M_PriceList_Create extends SvrProcess {
             cntd =
                 executeUpdate(
                     sqldel,
-                    new Object[] {p_PriceList_Version_ID, m_AD_PInstance_ID},
-                    false,
-                    null);
+                    new Object[] {p_PriceList_Version_ID, m_AD_PInstance_ID}
+                );
             if (cntd == -1) raiseError(" DELETE	M_ProductPrice ", sqldel);
             totd += cntd;
             message.append(", @Deleted@=").append(cntd);
@@ -513,10 +510,8 @@ public class M_PriceList_Create extends SvrProcess {
 
             pstmt =
                 prepareStatement(
-                    sqlins.toString(),
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE,
-                    null);
+                    sqlins.toString()
+                );
             pstmt.setTimestamp(1, rsDiscountLine.getTimestamp("ConversionDate"));
             pstmt.setTimestamp(2, rsDiscountLine.getTimestamp("ConversionDate"));
             pstmt.setTimestamp(3, rsDiscountLine.getTimestamp("ConversionDate"));
@@ -543,7 +538,7 @@ public class M_PriceList_Create extends SvrProcess {
             int product_id = 0;
             MUOMConversion conversion = null;
             try {
-              pstmtconversion = prepareStatement(sqlconversion.toString(), null);
+              pstmtconversion = prepareStatement(sqlconversion.toString());
               pstmtconversion.setInt(1, p_PriceList_Version_ID);
               pstmtconversion.setInt(2, m_AD_PInstance_ID);
 
@@ -570,7 +565,7 @@ public class M_PriceList_Create extends SvrProcess {
                     .append(p_PriceList_Version_ID)
                     .append(" AND M_Product_ID= ")
                     .append(product_id);
-                int count = executeUpdate(sqlupdate.toString(), null);
+                int count = executeUpdate(sqlupdate.toString());
                 if (count == -1) {
                   raiseError(" UPDATE M_ProductPrice set PriceList=? ", sqlupdate.toString());
                 }
@@ -578,7 +573,6 @@ public class M_PriceList_Create extends SvrProcess {
             } catch (Exception e) {
               throw e;
             } finally {
-              close(rsconversion, pstmtconversion);
             }
           } else {
             //
@@ -646,10 +640,8 @@ public class M_PriceList_Create extends SvrProcess {
 
             pstmt =
                 prepareStatement(
-                    sqlins.toString(),
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_UPDATABLE,
-                    null);
+                    sqlins.toString()
+                );
             pstmt.setTimestamp(1, rsDiscountLine.getTimestamp("ConversionDate"));
             pstmt.setTimestamp(2, rsDiscountLine.getTimestamp("ConversionDate"));
             pstmt.setTimestamp(3, rsDiscountLine.getTimestamp("ConversionDate"));
@@ -684,10 +676,8 @@ public class M_PriceList_Create extends SvrProcess {
 
           PreparedStatement pstmu =
               prepareStatement(
-                  sqlupd.toString(),
-                  ResultSet.TYPE_SCROLL_INSENSITIVE,
-                  ResultSet.CONCUR_UPDATABLE,
-                  null);
+                  sqlupd.toString()
+              );
 
           pstmu.setDouble(1, rsDiscountLine.getDouble("List_AddAmt"));
           pstmu.setDouble(2, rsDiscountLine.getDouble("List_Discount"));
@@ -728,7 +718,7 @@ public class M_PriceList_Create extends SvrProcess {
             ResultSet rs = null;
 
             try {
-              ps = prepareStatement(sqlpc.toString(), null);
+              ps = prepareStatement(sqlpc.toString());
               rs = ps.executeQuery();
               while (rs.next()) {
                 int M_Product_ID = rs.getInt(MProductPrice.COLUMNNAME_M_Product_ID);
@@ -765,10 +755,8 @@ public class M_PriceList_Create extends SvrProcess {
 
                   pstmu =
                       prepareStatement(
-                          sqlupd.toString(),
-                          ResultSet.TYPE_SCROLL_INSENSITIVE,
-                          ResultSet.CONCUR_UPDATABLE,
-                          null);
+                          sqlupd.toString()
+                      );
 
                   pstmu.setBigDecimal(1, costs);
                   pstmu.setDouble(
@@ -796,7 +784,6 @@ public class M_PriceList_Create extends SvrProcess {
             } catch (SQLException e) {
               throw e;
             } finally {
-              close(rs, ps);
               rs = null;
               ps = null;
             }
@@ -855,7 +842,7 @@ public class M_PriceList_Create extends SvrProcess {
           sqlupd.append(" WHERE s.T_Selection_ID=p.M_Product_ID");
           sqlupd.append(" AND s.AD_PInstance_ID=").append(m_AD_PInstance_ID).append(")");
 
-          cntu = executeUpdate(sqlupd.toString(), null);
+          cntu = executeUpdate(sqlupd.toString());
           if (cntu == -1) raiseError("Update  M_ProductPrice ", sqlupd.toString());
           totu += cntu;
           if (log.isLoggable(Level.FINE)) log.fine("Updated " + cntu);
@@ -880,7 +867,7 @@ public class M_PriceList_Create extends SvrProcess {
           sqlupd.append(" WHERE s.T_Selection_ID=p.M_Product_ID");
           sqlupd.append(" AND s.AD_PInstance_ID=").append(m_AD_PInstance_ID).append(")");
 
-          cntu = executeUpdate(sqlupd.toString(), null);
+          cntu = executeUpdate(sqlupd.toString());
           if (cntu == -1) raiseError("Update  M_ProductPrice ", sqlupd.toString());
           totu += cntu;
           if (log.isLoggable(Level.FINE)) log.fine("Updated " + cntu);
@@ -893,7 +880,7 @@ public class M_PriceList_Create extends SvrProcess {
         //	Delete Temporary Selection
         //
         sqldel = "DELETE FROM T_Selection WHERE AD_PInstance_ID=?";
-        cntd = executeUpdate(sqldel, m_AD_PInstance_ID, null);
+        cntd = executeUpdate(sqldel, m_AD_PInstance_ID);
         if (cntd == -1) raiseError(" DELETE	T_Selection ", sqldel);
         totd += cntd;
         if (log.isLoggable(Level.FINE)) log.fine("Deleted " + cntd);
@@ -908,15 +895,11 @@ public class M_PriceList_Create extends SvrProcess {
     } catch (SQLException e) {
       throw e;
     } finally {
-      close(rsCurgen, stmtCurgen);
       rsCurgen = null;
       stmtCurgen = null;
-      close(rsDiscountLine, stmtDiscountLine);
       rsDiscountLine = null;
       stmtDiscountLine = null;
-      close(stmt);
       stmt = null;
-      close(pstmt);
       pstmt = null;
     }
 
@@ -949,11 +932,11 @@ public class M_PriceList_Create extends SvrProcess {
     String sql =
         " SELECT M_Product_Category_ID, M_Product_Category_Parent_ID FROM M_Product_Category";
     final Vector<SimpleTreeNode> categories = new Vector<SimpleTreeNode>(100);
-    Statement stmt = null;
+      PreparedStatement stmt = null;
     ResultSet rs = null;
     try {
-      stmt = createStatement();
-      rs = stmt.executeQuery(sql);
+      stmt = prepareStatement(sql);
+      rs = stmt.executeQuery();
       while (rs.next()) {
         if (rs.getInt(1) == productCategoryId) {
           subTreeRootParentId = rs.getInt(2);
@@ -964,7 +947,6 @@ public class M_PriceList_Create extends SvrProcess {
     } catch (SQLException e) {
       throw e;
     } finally {
-      close(rs, stmt);
       rs = null;
       stmt = null;
     }

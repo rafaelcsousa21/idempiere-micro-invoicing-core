@@ -101,7 +101,7 @@ public class ClientAcctProcessor extends SvrProcess {
     listProcessedOn.add(Env.ZERO); // to include potential null values
 
     // get current time from db
-    Timestamp ts = getSQLValueTS(null, "SELECT CURRENT_TIMESTAMP FROM DUAL");
+    Timestamp ts = getSQLValueTS( "SELECT CURRENT_TIMESTAMP FROM DUAL");
 
     // go back 2 second to be safe (to avoid posting documents being completed at this precise
     // moment)
@@ -127,7 +127,7 @@ public class ClientAcctProcessor extends SvrProcess {
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql.toString(), null);
+        pstmt = prepareStatement(sql.toString());
         pstmt.setInt(1, getClientId());
         pstmt.setBigDecimal(2, value);
         rs = pstmt.executeQuery();
@@ -138,7 +138,7 @@ public class ClientAcctProcessor extends SvrProcess {
       } catch (Exception e) {
         log.log(Level.SEVERE, sql.toString(), e);
       } finally {
-        close(rs, pstmt);
+
       }
     }
 
@@ -172,7 +172,7 @@ public class ClientAcctProcessor extends SvrProcess {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-          pstmt = prepareStatement(sql.toString(), null);
+          pstmt = prepareStatement(sql.toString());
           pstmt.setInt(1, getClientId());
           if (processedOn.compareTo(Env.ZERO) != 0) pstmt.setBigDecimal(2, processedOn);
           rs = pstmt.executeQuery();
@@ -195,7 +195,7 @@ public class ClientAcctProcessor extends SvrProcess {
         } catch (Exception e) {
           log.log(Level.SEVERE, sql.toString(), e);
         } finally {
-          close(rs, pstmt);
+
         }
       } // for tableID
     } // for processedOn

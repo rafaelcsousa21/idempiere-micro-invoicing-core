@@ -90,7 +90,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
               + " WHERE "
               + I_PP_Product_BOMLine.COLUMNNAME_PP_Product_BOM_ID
               + "=?";
-      int line = getSQLValueEx(null, sql, getPP_Product_BOM_ID());
+      int line = getSQLValueEx(sql, getPP_Product_BOM_ID());
       setLine(line);
     }
 

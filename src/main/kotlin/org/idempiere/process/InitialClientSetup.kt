@@ -165,13 +165,13 @@ class InitialClientSetup(
 
         // Validate Uniqueness of client and users name
         // 	Unique Client Name+
-        if (executeUpdate("UPDATE AD_Client SET CreatedBy=0 WHERE Name=?", listOf(p_ClientName), false, null) != 0)
+        if (executeUpdate("UPDATE AD_Client SET CreatedBy=0 WHERE Name=?", listOf(p_ClientName)) != 0)
             throw AdempiereException("@NotUnique@ " + p_ClientName)
 
         // 	Unique User Names
-        if (executeUpdate("UPDATE AD_User SET CreatedBy=0 WHERE Name=?", listOf(p_AdminUserName), false, null) != 0)
+        if (executeUpdate("UPDATE AD_User SET CreatedBy=0 WHERE Name=?", listOf(p_AdminUserName)) != 0)
             throw AdempiereException("@NotUnique@ " + p_AdminUserName)
-        if (executeUpdate("UPDATE AD_User SET CreatedBy=0 WHERE Name=?", listOf(p_NormalUserName), false, null) != 0)
+        if (executeUpdate("UPDATE AD_User SET CreatedBy=0 WHERE Name=?", listOf(p_NormalUserName)) != 0)
             throw AdempiereException("@NotUnique@ " + p_NormalUserName)
 
         // City_ID overrides CityName if both used

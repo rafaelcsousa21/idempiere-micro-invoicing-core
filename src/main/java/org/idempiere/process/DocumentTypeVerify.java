@@ -74,7 +74,7 @@ public class DocumentTypeVerify extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, AD_Client_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -93,7 +93,7 @@ public class DocumentTypeVerify extends SvrProcess {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -123,7 +123,7 @@ public class DocumentTypeVerify extends SvrProcess {
             + "(SELECT MIN(C_PeriodControl_ID) "
             + "FROM C_PeriodControl pc3 "
             + "GROUP BY C_Period_ID, DocBaseType)";
-    int no = executeUpdate(sql, false, trxName);
+    int no = executeUpdate(sql, false);
     if (s_log.isLoggable(Level.INFO)) s_log.info("Duplicates deleted #" + no);
 
     //	Insert Missing
@@ -139,7 +139,7 @@ public class DocumentTypeVerify extends SvrProcess {
     ResultSet rs = null;
     int counter = 0;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, AD_Client_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -164,7 +164,7 @@ public class DocumentTypeVerify extends SvrProcess {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

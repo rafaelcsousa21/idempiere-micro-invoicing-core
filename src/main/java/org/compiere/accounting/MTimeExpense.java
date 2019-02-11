@@ -86,7 +86,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getS_TimeExpense_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -97,7 +97,6 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     } catch (SQLException ex) {
       log.log(Level.SEVERE, "getLines", ex);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -121,14 +120,14 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getM_Warehouse_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) m_M_Locator_ID = rs.getInt(1);
     } catch (SQLException ex) {
       log.log(Level.SEVERE, "getM_Locator_ID", ex);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -149,7 +148,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             + (processed ? "Y" : "N")
             + "' WHERE S_TimeExpense_ID="
             + getS_TimeExpense_ID();
-    int noLine = executeUpdate(sql, null);
+    int noLine = executeUpdate(sql);
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
   } //	setProcessed

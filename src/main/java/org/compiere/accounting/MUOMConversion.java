@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.*;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -224,7 +223,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_UOM_From_ID);
       pstmt.setInt(2, C_UOM_To_ID);
       rs = pstmt.executeQuery();
@@ -235,7 +234,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

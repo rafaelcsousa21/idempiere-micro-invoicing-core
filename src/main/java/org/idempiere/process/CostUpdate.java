@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -202,7 +201,7 @@ public class CostUpdate extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, as.getM_CostType_ID());
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       pstmt.setInt(3, m_ce.getM_CostElement_ID());
@@ -215,7 +214,7 @@ public class CostUpdate extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -255,7 +254,7 @@ public class CostUpdate extends SvrProcess {
       MClient client = MClient.get(getCtx());
       MAcctSchema primarySchema = client.getAcctSchema();
       MInventory inventoryDoc = null;
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, m_ce.getM_CostElement_ID());
       if (p_M_Product_Category_ID != 0) pstmt.setInt(2, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
@@ -316,7 +315,7 @@ public class CostUpdate extends SvrProcess {
         throw new RuntimeException(e);
       }
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -600,7 +599,7 @@ public class CostUpdate extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, cost.getM_Product_ID());
       pstmt.setInt(2, p_M_PriceList_Version_ID);
       rs = pstmt.executeQuery();
@@ -610,7 +609,7 @@ public class CostUpdate extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

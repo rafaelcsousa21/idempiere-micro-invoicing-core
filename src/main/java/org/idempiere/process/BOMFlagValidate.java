@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class BOMFlagValidate extends SvrProcess {
@@ -48,7 +47,7 @@ public class BOMFlagValidate extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId(getCtx()));
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
@@ -61,7 +60,7 @@ public class BOMFlagValidate extends SvrProcess {
     } catch (SQLException e) {
       throw e;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -74,14 +73,13 @@ public class BOMFlagValidate extends SvrProcess {
               .append("(SELECT M_Product_ID FROM M_Product_BOM ) AND ");
       if (p_M_Product_Category_ID == 0) update.append("AD_Client_ID= ?");
       else update.append("M_Product_Category_ID= ?");
-      upstmt = prepareStatement(update.toString(), null);
+      upstmt = prepareStatement(update.toString());
       if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
       else upstmt.setInt(1, p_M_Product_Category_ID);
       upstmt.executeUpdate();
     } catch (SQLException e) {
       throw e;
     } finally {
-      close(upstmt);
       upstmt = null;
     }
   }
@@ -97,7 +95,7 @@ public class BOMFlagValidate extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       if (p_M_Product_Category_ID == 0) pstmt.setInt(1, Env.getClientId(getCtx()));
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
@@ -110,7 +108,7 @@ public class BOMFlagValidate extends SvrProcess {
     } catch (SQLException e) {
       throw e;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -122,14 +120,13 @@ public class BOMFlagValidate extends SvrProcess {
     else update.append("M_Product_Category_ID= ?");
     PreparedStatement upstmt = null;
     try {
-      upstmt = prepareStatement(update.toString(), null);
+      upstmt = prepareStatement(update.toString());
       if (p_M_Product_Category_ID == 0) upstmt.setInt(1, Env.getClientId(getCtx()));
       else upstmt.setInt(1, p_M_Product_Category_ID);
       upstmt.executeUpdate();
     } catch (SQLException e) {
       throw e;
     } finally {
-      close(upstmt);
       upstmt = null;
     }
   }

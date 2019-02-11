@@ -230,7 +230,7 @@ public class Aging extends SvrProcess {
     }
     finally
     {
-    	close(rs, pstmt);
+
     	rs = null; pstmt = null;
     }
     //

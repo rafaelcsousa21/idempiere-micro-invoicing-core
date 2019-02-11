@@ -14,6 +14,7 @@
  */
 package org.idempiere.process;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -108,14 +109,14 @@ public class AssetDelivery extends SvrProcess {
     //	Clean up
     if (s.endsWith(" AND ")) s = sql.substring(0, sql.length() - 5);
     //
-    Statement stmt = null;
+    PreparedStatement stmt = null;
     int count = 0;
     int errors = 0;
     int reminders = 0;
     ResultSet rs = null;
     try {
-      stmt = createStatement();
-      rs = stmt.executeQuery(s);
+      stmt = prepareStatement(s);
+      rs = stmt.executeQuery();
       while (rs.next()) {
         int A_Asset_ID = rs.getInt(1);
         Timestamp GuaranteeDate = rs.getTimestamp(2);
@@ -137,7 +138,7 @@ public class AssetDelivery extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, s, e);
     } finally {
-      close(rs, stmt);
+
       rs = null;
       stmt = null;
     }

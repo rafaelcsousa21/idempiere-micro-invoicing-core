@@ -18,7 +18,6 @@ import java.util.*;
 import java.util.logging.Level;
 
 import static org.compiere.crm.MBaseUserKt.getWithRole;
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -586,7 +585,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int doc_id = rs.getInt(1);
@@ -597,7 +596,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -672,7 +671,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
         //	Set Document Status
         if (m_po != null && m_po instanceof DocAction && m_docStatus != null) {
-          m_po.load(null);
+          m_po.load();
           DocAction doc = (DocAction) m_po;
           doc.setDocStatus(m_docStatus);
           m_po.saveEx();

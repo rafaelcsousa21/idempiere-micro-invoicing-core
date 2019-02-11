@@ -21,7 +21,6 @@ import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
 import org.idempiere.common.util.KeyNamePair
 import software.hsharp.core.util.TO_STRING
-import software.hsharp.core.util.close
 import software.hsharp.core.util.executeUpdateEx
 import software.hsharp.core.util.prepareStatement
 import java.io.File
@@ -324,18 +323,18 @@ class MSetup
         //  ClientUser          - Admin & User
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
                 + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + admin.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
-        no = executeUpdateEx(sql, null)
+        no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole ClientUser+Admin NOT inserted")
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
                 + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + user.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
-        no = executeUpdateEx(sql, null)
+        no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole ClientUser+User NOT inserted")
         //  OrgUser             - User
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
                 + " VALUES (" + m_stdValues + "," + AD_User_U_ID + "," + user.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
-        no = executeUpdateEx(sql, null)
+        no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole OrgUser+Org NOT inserted")
 
@@ -438,9 +437,10 @@ class MSetup
         val summary_ID = m_nap!!.getC_ElementValue_ID("SUMMARY")
         if (log.isLoggable(Level.FINE)) log.fine("summary_ID=$summary_ID")
         if (summary_ID > 0) {
-            executeUpdateEx("UPDATE AD_TreeNode SET Parent_ID=? WHERE AD_Tree_ID=? AND Node_ID!=?",
-                    arrayOf<Any>(summary_ID, m_AD_Tree_Account_ID, summary_ID),
-                    null)
+            executeUpdateEx(
+                "UPDATE AD_TreeNode SET Parent_ID=? WHERE AD_Tree_ID=? AND Node_ID!=?",
+                arrayOf<Any>(summary_ID, m_AD_Tree_Account_ID, summary_ID)
+            )
         }
 
         val C_ElementValue_ID = m_nap!!.getC_ElementValue_ID("DEFAULT_ACCT")
@@ -474,7 +474,7 @@ class MSetup
         var rs: ResultSet? = null
         try {
             val AD_Client_ID = m_client!!.clientId
-            stmt = prepareStatement(sql2, null)
+            stmt = prepareStatement(sql2)
             rs = stmt!!.executeQuery()
             while (rs!!.next()) {
                 val ElementType = rs.getString(1)
@@ -528,7 +528,7 @@ class MSetup
                     sqlCmd.append(m_stdValues).append(",").append(C_AcctSchema_Element_ID).append(",").append(m_as!!.c_AcctSchema_ID).append(",")
                             .append("'").append(ElementType).append("','").append(name).append("',").append(SeqNo).append(",'")
                             .append(IsMandatory).append("','").append(IsBalanced).append("',").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-                    no = executeUpdateEx(sqlCmd.toString(), null)
+                    no = executeUpdateEx(sqlCmd.toString())
                     if (no == 1)
                         m_info!!.append(Msg.translate(m_lang, "C_AcctSchema_Element_ID")).append("=").append(name).append("\n")
 
@@ -536,7 +536,7 @@ class MSetup
                     if (ElementType == "OO") {
                         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET Org_ID=")
                         sqlCmd.append(aD_Org_ID).append(" WHERE C_AcctSchema_Element_ID=").append(C_AcctSchema_Element_ID)
-                        no = executeUpdateEx(sqlCmd.toString(), null)
+                        no = executeUpdateEx(sqlCmd.toString())
                         if (no != 1)
                             log.log(Level.SEVERE, "Default Org in AcctSchemaElement NOT updated")
                     }
@@ -544,7 +544,7 @@ class MSetup
                         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET C_ElementValue_ID=")
                         sqlCmd.append(C_ElementValue_ID).append(", C_Element_ID=").append(C_Element_ID)
                         sqlCmd.append(" WHERE C_AcctSchema_Element_ID=").append(C_AcctSchema_Element_ID)
-                        no = executeUpdateEx(sqlCmd.toString(), null)
+                        no = executeUpdateEx(sqlCmd.toString())
                         if (no != 1)
                             log.log(Level.SEVERE, "Default Account in AcctSchemaElement NOT updated")
                     }
@@ -555,7 +555,6 @@ class MSetup
             m_info!!.append(e1.message)
             throw Error(e1.message)
         } finally {
-            close(rs, stmt)
         }
         //  Create AcctSchema
 
@@ -715,7 +714,7 @@ class MSetup
         sqlCmd.append("C_AcctSchema1_ID=").append(m_as!!.c_AcctSchema_ID)
                 .append(", C_Calendar_ID=").append(m_calendar!!.c_Calendar_ID)
                 .append(" WHERE AD_Client_ID=").append(m_client!!.clientId)
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1) {
             val err = "ClientInfo not updated"
             log.log(Level.SEVERE, err)
@@ -909,7 +908,7 @@ class MSetup
         sqlCmd.append(m_stdColumns).append(",C_Channel_UU) VALUES (")
         sqlCmd.append(C_Channel_ID).append(",").append(defaultEntry)
         sqlCmd.append(m_stdValues).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "Channel NOT inserted")
 
@@ -919,7 +918,7 @@ class MSetup
         sqlCmd.append(" Value,Name,Costs,C_Campaign_UU) VALUES (")
         sqlCmd.append(C_Campaign_ID).append(",").append(C_Channel_ID).append(",").append(m_stdValues).append(",")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("0").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Campaign_ID")).append("=").append(defaultName).append("\n")
         else
@@ -930,7 +929,7 @@ class MSetup
             sqlCmd.append("C_Campaign_ID=").append(C_Campaign_ID)
             sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
             sqlCmd.append(" AND ElementType='MC'")
-            no = executeUpdateEx(sqlCmd.toString(), null)
+            no = executeUpdateEx(sqlCmd.toString())
             if (no != 1)
                 log.log(Level.SEVERE, "AcctSchema Element Campaign NOT updated")
         }
@@ -939,7 +938,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_Campaign_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Campaign t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Campaign_ID=").append(C_Campaign_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Campaign_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Campaign_ID=t.C_Campaign_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
             log.log(Level.SEVERE, "Campaign Translation NOT inserted")
 
@@ -950,7 +949,7 @@ class MSetup
         sqlCmd.append(" Value,Name,IsSummary,C_SalesRegion_UU) VALUES (")
         sqlCmd.append(C_SalesRegion_ID).append(",").append(m_stdValues).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_SalesRegion_ID")).append("=").append(defaultName).append("\n")
         else
@@ -961,7 +960,7 @@ class MSetup
             sqlCmd.append("C_SalesRegion_ID=").append(C_SalesRegion_ID)
             sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
             sqlCmd.append(" AND ElementType='SR'")
-            no = executeUpdateEx(sqlCmd.toString(), null)
+            no = executeUpdateEx(sqlCmd.toString())
             if (no != 1)
                 log.log(Level.SEVERE, "AcctSchema Element SalesRegion NOT updated")
         }
@@ -970,7 +969,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_SalesRegion_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_SalesRegion t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_SalesRegion_ID=").append(C_SalesRegion_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_SalesRegion_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_SalesRegion_ID=t.C_SalesRegion_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
             log.log(Level.SEVERE, "Sales Region Translation NOT inserted")
 
@@ -981,7 +980,7 @@ class MSetup
         sqlCmd.append(" Value,Name,IsSummary,C_Activity_UU) VALUES (")
         sqlCmd.append(C_Activity_ID).append(",").append(m_stdValues).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Activity_ID")).append("=").append(defaultName).append("\n")
         else
@@ -992,7 +991,7 @@ class MSetup
             sqlCmd.append("C_Activity_ID=").append(C_Activity_ID)
             sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
             sqlCmd.append(" AND ElementType='AY'")
-            no = executeUpdateEx(sqlCmd.toString(), null)
+            no = executeUpdateEx(sqlCmd.toString())
             if (no != 1)
                 log.log(Level.SEVERE, "AcctSchema Element Activity NOT updated")
         }
@@ -1001,7 +1000,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_Activity_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Activity t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Activity_ID=").append(C_Activity_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Activity_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Activity_ID=t.C_Activity_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
             log.log(Level.SEVERE, "Activity Translation NOT inserted")
 
@@ -1039,7 +1038,7 @@ class MSetup
         sqlCmd.append("C_BPartner_ID=").append(bp.c_BPartner_ID)
         sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
         sqlCmd.append(" AND ElementType='BP'")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "AcctSchema Element BPartner NOT updated")
         createPreference("C_BPartner_ID", bp.c_BPartner_ID.toString(), 143)
@@ -1072,7 +1071,7 @@ class MSetup
         else
             sqlCmd.append(defaultEntry).append("'Y',")
         sqlCmd.append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "TaxCategory NOT inserted")
 
@@ -1081,7 +1080,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_TaxCategory_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_TaxCategory t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_TaxCategory_ID=").append(C_TaxCategory_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_TaxCategory_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_TaxCategory_ID=t.C_TaxCategory_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
             log.log(Level.SEVERE, "TaxCategory Translation NOT inserted")
 
@@ -1110,7 +1109,7 @@ class MSetup
         sqlCmd.append("M_Product_ID=").append(product.m_Product_ID)
         sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
         sqlCmd.append(" AND ElementType='PR'")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "AcctSchema Element Product NOT updated")
 
@@ -1124,7 +1123,7 @@ class MSetup
         loc.saveEx()
         sqlCmd = StringBuffer("UPDATE AD_OrgInfo SET C_Location_ID=")
         sqlCmd.append(loc.c_Location_ID).append(" WHERE AD_Org_ID=").append(aD_Org_ID)
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "Location NOT inserted")
         createPreference("C_Country_ID", C_Country_ID.toString(), 0)
@@ -1156,7 +1155,7 @@ class MSetup
         //		sqlCmd.append(",C_UOM_Length_ID=");
         //		sqlCmd.append(",C_UOM_Time_ID=");
         sqlCmd.append(" WHERE AD_Client_ID=").append(aD_Client_ID)
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1) {
             val err = "ClientInfo not updated"
             log.log(Level.SEVERE, err)
@@ -1214,7 +1213,7 @@ class MSetup
         //  Update User
         sqlCmd = StringBuffer("UPDATE AD_User SET C_BPartner_ID=")
         sqlCmd.append(bpCU.c_BPartner_ID).append(" WHERE AD_User_ID=").append(AD_User_U_ID)
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "User of SalesRep (User) NOT updated")
 
@@ -1240,7 +1239,7 @@ class MSetup
         //  Update User
         sqlCmd = StringBuffer("UPDATE AD_User SET C_BPartner_ID=")
         sqlCmd.append(bpCA.c_BPartner_ID).append(" WHERE AD_User_ID=").append(aD_User_ID)
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "User of SalesRep (Admin) NOT updated")
 
@@ -1252,7 +1251,7 @@ class MSetup
         sqlCmd.append("Value,Name,NetDays,GraceDays,DiscountDays,Discount,DiscountDays2,Discount2,IsDefault,C_PaymentTerm_UU) VALUES (")
         sqlCmd.append(C_PaymentTerm_ID).append(",").append(m_stdValues).append(",")
         sqlCmd.append("'Immediate','Immediate',0,0,0,0,0,0,'Y'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "PaymentTerm NOT inserted")
         // Payment Term Translation
@@ -1260,7 +1259,7 @@ class MSetup
         sqlCmd.append(" SELECT l.AD_Language,t.C_PaymentTerm_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_PaymentTerm t")
         sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_PaymentTerm_ID=").append(C_PaymentTerm_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_PaymentTerm_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_PaymentTerm_ID=t.C_PaymentTerm_ID)")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
             log.log(Level.SEVERE, "Payment Term Translation NOT inserted")
 
@@ -1271,7 +1270,7 @@ class MSetup
         sqlCmd.append(" Name,C_Currency_ID,C_Cycle_UU) VALUES (")
         sqlCmd.append(C_Cycle_ID).append(",").append(m_stdValues).append(", ")
         sqlCmd.append(defaultEntry).append(C_Currency_ID).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "Cycle NOT inserted")
 
@@ -1286,7 +1285,7 @@ class MSetup
         sqlCmd.append(" Value,Name,C_Currency_ID,IsSummary,C_Project_UU) VALUES (")
         sqlCmd.append(C_Project_ID).append(",").append(m_stdValuesOrg).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append(C_Currency_ID).append(",'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
-        no = executeUpdateEx(sqlCmd.toString(), null)
+        no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Project_ID")).append("=").append(defaultName).append("\n")
         else
@@ -1297,7 +1296,7 @@ class MSetup
             sqlCmd.append("C_Project_ID=").append(C_Project_ID)
             sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
             sqlCmd.append(" AND ElementType='PJ'")
-            no = executeUpdateEx(sqlCmd.toString(), null)
+            no = executeUpdateEx(sqlCmd.toString())
             if (no != 1)
                 log.log(Level.SEVERE, "AcctSchema Element Project NOT updated")
         }
@@ -1332,7 +1331,7 @@ class MSetup
             sqlCmd.append("NULL)")
         else
             sqlCmd.append(AD_Window_ID).append(")")
-        val no = executeUpdateEx(sqlCmd.toString(), null)
+        val no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "Preference NOT inserted - $Attribute")
     }   //  createPreference

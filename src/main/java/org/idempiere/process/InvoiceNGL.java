@@ -108,7 +108,7 @@ public class InvoiceNGL extends SvrProcess {
     //	Delete - just to be sure
     StringBuilder sql =
         new StringBuilder("DELETE T_InvoiceGL WHERE AD_PInstance_ID=").append(getAD_PInstance_ID());
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Deleted #" + no);
 
     //	Insert Trx
@@ -164,7 +164,7 @@ public class InvoiceNGL extends SvrProcess {
     if (!p_IsAllCurrencies && p_C_Currency_ID != 0)
       sql.append(" AND i.C_Currency_ID=").append(p_C_Currency_ID);
 
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) {
       if (log.isLoggable(Level.INFO)) log.info("Inserted #" + no);
     } else if (log.isLoggable(Level.FINER)) {
@@ -182,7 +182,7 @@ public class InvoiceNGL extends SvrProcess {
             .append("WHERE gl.Fact_Acct_ID=fa.Fact_Acct_ID) ")
             .append("WHERE AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    int noT = executeUpdate(sql.toString(), null);
+    int noT = executeUpdate(sql.toString());
     if (noT > 0) if (log.isLoggable(Level.CONFIG)) log.config("Difference #" + noT);
 
     //	Percentage
@@ -190,14 +190,14 @@ public class InvoiceNGL extends SvrProcess {
         new StringBuilder("UPDATE T_InvoiceGL SET Percent = 100 ")
             .append("WHERE GrandTotal=OpenAmt AND AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Not Paid #" + no);
 
     sql =
         new StringBuilder("UPDATE T_InvoiceGL SET Percent = ROUND(OpenAmt*100/GrandTotal,6) ")
             .append("WHERE GrandTotal<>OpenAmt AND GrandTotal <> 0 AND AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Partial Paid #" + no);
 
     sql =
@@ -207,7 +207,7 @@ public class InvoiceNGL extends SvrProcess {
             .append(" AmtRevalCrDiff = AmtRevalCrDiff * Percent/100 ")
             .append("WHERE Percent <> 100 AND AD_PInstance_ID=")
             .append(getAD_PInstance_ID());
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.CONFIG)) log.config("Partial Calc #" + no);
 
     //	Create Document

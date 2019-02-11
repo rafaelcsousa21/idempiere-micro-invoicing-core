@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, IPODoc {
@@ -133,14 +132,14 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getM_MovementConfirm_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMovementLineConfirm(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

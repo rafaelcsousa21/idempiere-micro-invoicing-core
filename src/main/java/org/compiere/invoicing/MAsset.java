@@ -231,8 +231,7 @@ public class MAsset extends org.compiere.product.MAsset {
       int A_Asset_ID = getA_Asset_ID();
       setA_Parent_Asset_ID(A_Asset_ID);
       executeUpdateEx(
-          "UPDATE A_Asset SET A_Parent_Asset_ID=A_Asset_ID WHERE A_Asset_ID=" + A_Asset_ID,
-          null);
+          "UPDATE A_Asset SET A_Parent_Asset_ID=A_Asset_ID WHERE A_Asset_ID=" + A_Asset_ID);
       if (log.isLoggable(Level.FINE)) log.fine("A_Parent_Asset_ID=" + getA_Parent_Asset_ID());
     }
 
@@ -246,8 +245,7 @@ public class MAsset extends org.compiere.product.MAsset {
           "UPDATE A_Asset SET InventoryNo="
               + TO_STRING(invNo)
               + " WHERE A_Asset_ID="
-              + getA_Asset_ID(),
-          null);
+              + getA_Asset_ID());
       if (log.isLoggable(Level.FINE)) log.fine("InventoryNo=" + getInventoryNo());
     }
 
@@ -265,8 +263,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + "', isOwned ='"
               + isOwned
               + "' WHERE A_Asset_ID="
-              + getA_Asset_ID(),
-          null);
+              + getA_Asset_ID());
       // end @win
 
       // for each asset group acounting create an asset accounting and a workfile too
@@ -307,7 +304,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + " WHERE "
               + MDepreciationWorkfile.COLUMNNAME_A_Asset_ID
               + "=?";
-      executeUpdateEx(sql, new Object[] {isDepreciated(), getA_Asset_ID()}, null);
+      executeUpdateEx(sql, new Object[] {isDepreciated(), getA_Asset_ID()});
     }
 
     return true;
@@ -325,7 +322,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + "=? AND "
               + I_A_Asset_Addition.COLUMNNAME_A_Asset_ID
               + "=?";
-      int no = executeUpdateEx(sql, new Object[] {false, getA_Asset_ID()}, null);
+      int no = executeUpdateEx(sql, new Object[] {false, getA_Asset_ID()});
       if (log.isLoggable(Level.INFO)) log.info("@A_Asset_Addition@ @Deleted@ #" + no);
     }
     //
@@ -344,7 +341,7 @@ public class MAsset extends org.compiere.product.MAsset {
               + " WHERE "
               + MInvoiceLine.COLUMNNAME_A_Asset_ID
               + "=?";
-      int no = executeUpdateEx(sql, new Object[] {null, false, getA_Asset_ID()}, null);
+      int no = executeUpdateEx(sql, new Object[] {null, false, getA_Asset_ID()});
       if (log.isLoggable(Level.INFO)) log.info("@C_InvoiceLine@ @Updated@ #" + no);
     }
     return true;

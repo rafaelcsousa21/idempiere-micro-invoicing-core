@@ -104,7 +104,7 @@ public class FactAcctReset extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int AD_Table_ID = rs.getInt(1);
@@ -115,7 +115,7 @@ public class FactAcctReset extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -135,7 +135,7 @@ public class FactAcctReset extends SvrProcess {
             + " SET Processing='N' WHERE AD_Client_ID="
             + p_AD_Client_ID
             + " AND (Processing<>'N' OR Processing IS NULL)";
-    int unlocked = executeUpdate(sql, null);
+    int unlocked = executeUpdate(sql);
     //
     sql =
         "UPDATE "
@@ -143,7 +143,7 @@ public class FactAcctReset extends SvrProcess {
             + " SET Posted='N' WHERE AD_Client_ID="
             + p_AD_Client_ID
             + " AND (Posted NOT IN ('Y','N') OR Posted IS NULL) AND Processed='Y'";
-    int invalid = executeUpdate(sql, null);
+    int invalid = executeUpdate(sql);
     //
     if (unlocked + invalid != 0)
       if (log.isLoggable(Level.FINE))
@@ -286,7 +286,7 @@ public class FactAcctReset extends SvrProcess {
 
     if (log.isLoggable(Level.FINE)) log.log(Level.FINE, sql1);
 
-    int reset = executeUpdate(sql1, null);
+    int reset = executeUpdate(sql1);
     //	Fact
     String sql2 =
         "DELETE Fact_Acct "
@@ -311,7 +311,7 @@ public class FactAcctReset extends SvrProcess {
 
     if (log.isLoggable(Level.FINE)) log.log(Level.FINE, sql2);
 
-    int deleted = executeUpdate(sql2, null);
+    int deleted = executeUpdate(sql2);
     //
     if (log.isLoggable(Level.INFO))
       log.info(TableName + "(" + AD_Table_ID + ") - Reset=" + reset + " - Deleted=" + deleted);

@@ -39,7 +39,6 @@ import java.text.DecimalFormat;
 import java.util.logging.Level;
 
 import static org.compiere.crm.MBaseLocationKt.getBPLocation;
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -161,7 +160,7 @@ public class InvoiceGenerate extends SvrProcess {
 
     PreparedStatement pstmt = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       int index = 1;
       if (p_Selection) {
         pstmt.setInt(index, getAD_PInstance_ID());
@@ -319,7 +318,7 @@ public class InvoiceGenerate extends SvrProcess {
     } catch (Exception e) {
       throw new AdempiereException(e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -428,7 +427,7 @@ public class InvoiceGenerate extends SvrProcess {
         m_invoice.setPaymentRule(order.getPaymentRule());
         m_invoice.setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
         m_invoice.saveEx();
-        m_invoice.load(null); // refresh from DB
+        m_invoice.load(); // refresh from DB
         // copy payment schedule from order if invoice doesn't have a current payment schedule
         MOrderPaySchedule[] opss =
             MOrderPaySchedule.getOrderPaySchedule(

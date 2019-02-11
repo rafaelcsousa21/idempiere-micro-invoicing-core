@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -62,14 +61,13 @@ public class MProjectTypePhase extends X_C_Phase {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_Phase_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MProjectTypeTask(getCtx(), rs, null));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

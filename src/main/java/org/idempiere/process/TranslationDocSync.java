@@ -128,7 +128,7 @@ public class TranslationDocSync extends SvrProcess {
                 .append(" AND AD_Language=")
                 .append(TO_STRING(client.getADLanguage()));
 
-        int no = executeUpdate(sql.toString(), null);
+        int no = executeUpdate(sql.toString());
         addLog(0, null, new BigDecimal(no), baseTable);
       }
     } else {
@@ -151,7 +151,7 @@ public class TranslationDocSync extends SvrProcess {
               .append("_ID) WHERE AD_Client_ID=")
               .append(getClientId());
 
-      int no = executeUpdate(sql.toString(), null);
+      int no = executeUpdate(sql.toString());
       addLog(0, null, new BigDecimal(no), baseTable);
     }
   } //	processTable

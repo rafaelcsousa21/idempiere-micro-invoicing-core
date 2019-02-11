@@ -84,7 +84,7 @@ public class PeriodStatus extends SvrProcess {
         .append(p_PeriodAction)
         .append("'");
 
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
 
     CacheMgt.get().reset("C_PeriodControl", 0);
     CacheMgt.get().reset("C_Period", p_C_Period_ID);

@@ -319,13 +319,12 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 " FROM GL_JournalLine jl WHERE jl.IsActive='Y' AND j.GL_Journal_ID=jl.GL_Journal_ID) ")
             .append("WHERE GL_Journal_ID=")
             .append(getGL_Journal_ID());
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     if (no != 1) log.warning("afterSave - Update Journal #" + no);
 
     //	Update Batch Total
     int GL_JournalBatch_ID =
         getSQLValue(
-            null,
             "SELECT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=?",
             getGL_Journal_ID());
     if (GL_JournalBatch_ID != 0) { // idempiere 344 - nmicoud
@@ -338,7 +337,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
               .append("(SELECT DISTINCT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=")
               .append(getGL_Journal_ID())
               .append(")");
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (no != 1) log.warning("Update Batch #" + no);
     }
     return no == 1;

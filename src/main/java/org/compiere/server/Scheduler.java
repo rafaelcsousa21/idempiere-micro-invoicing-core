@@ -29,7 +29,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -405,7 +404,7 @@ public class Scheduler extends AdempiereServer {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-          stmt = prepareStatement(sql, null);
+          stmt = prepareStatement(sql);
           rs = stmt.executeQuery();
           if (rs.next()) defStr = rs.getString(1);
           else {
@@ -415,7 +414,7 @@ public class Scheduler extends AdempiereServer {
         } catch (SQLException e) {
           log.log(Level.WARNING, "(" + sPara.getColumnName() + ") " + sql, e);
         } finally {
-          close(rs, stmt);
+
           rs = null;
           stmt = null;
         }

@@ -33,7 +33,7 @@ public class MConversionType extends X_C_ConversionType {
    */
   public static int getDefault(int AD_Client_ID) {
     //	Try Cache
-    Integer key = new Integer(AD_Client_ID);
+    Integer key = AD_Client_ID;
     Integer ii = (Integer) s_cache.get(key);
     if (ii != null) return ii;
 
@@ -45,9 +45,9 @@ public class MConversionType extends X_C_ConversionType {
             + "WHERE IsActive='Y'"
             + " AND clientId IN (0,?) " //	#1
             + "ORDER BY IsDefault DESC, clientId DESC";
-    C_ConversionType_ID = getSQLValue(null, sql, AD_Client_ID);
+    C_ConversionType_ID = getSQLValue(sql, AD_Client_ID);
     //	Return
-    s_cache.put(key, new Integer(C_ConversionType_ID));
+    s_cache.put(key, C_ConversionType_ID);
     return C_ConversionType_ID;
   } //	getDefault
 

@@ -93,14 +93,13 @@ public class MProjectType extends X_C_ProjectType {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_ProjectType_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MProjectTypePhase(getCtx(), rs, null));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

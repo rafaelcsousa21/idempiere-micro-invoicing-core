@@ -89,7 +89,7 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
               .append("WHERE h.C_InvoiceBatch_ID=l.C_InvoiceBatch_ID AND l.IsActive='Y'),0) ")
               .append("WHERE C_InvoiceBatch_ID=")
               .append(getC_InvoiceBatch_ID());
-      executeUpdate(sql.toString(), null);
+      executeUpdate(sql.toString());
     }
     return success;
   } //	afterSave

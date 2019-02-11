@@ -99,7 +99,7 @@ public class ImportConversionRate extends SvrProcess {
           new StringBuilder("DELETE I_Conversion_Rate ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Delete Old Impored =" + no);
     }
 
@@ -133,7 +133,7 @@ public class ImportConversionRate extends SvrProcess {
         .append(" Processed = 'N',")
         .append(" I_IsImported = 'N' ")
         .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Reset =" + no);
 
     //	Org
@@ -145,7 +145,7 @@ public class ImportConversionRate extends SvrProcess {
                 " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Org =" + no);
 
     //	Conversion Type
@@ -157,7 +157,7 @@ public class ImportConversionRate extends SvrProcess {
             .append("WHERE C_ConversionType_ID IS NULL AND ConversionTypeValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.FINE)) log.fine("Set ConversionType =" + no);
     sql =
         new StringBuilder("UPDATE I_Conversion_Rate i ")
@@ -168,7 +168,7 @@ public class ImportConversionRate extends SvrProcess {
             .append(" AND c.clientId IN (0,i.clientId)))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid ConversionType =" + no);
 
     //	Currency
@@ -180,7 +180,7 @@ public class ImportConversionRate extends SvrProcess {
             .append("WHERE C_Currency_ID IS NULL AND ISO_Code IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.FINE)) log.fine("Set Currency =" + no);
     sql =
         new StringBuilder("UPDATE I_Conversion_Rate i ")
@@ -191,7 +191,7 @@ public class ImportConversionRate extends SvrProcess {
             .append(" AND c.clientId IN (0,i.clientId)))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Currency =" + no);
 
     //	Currency To
@@ -203,7 +203,7 @@ public class ImportConversionRate extends SvrProcess {
             .append("WHERE C_Currency_ID_To IS NULL AND ISO_Code_To IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.FINE)) log.fine("Set Currency To =" + no);
     sql =
         new StringBuilder("UPDATE I_Conversion_Rate i ")
@@ -214,7 +214,7 @@ public class ImportConversionRate extends SvrProcess {
             .append(" AND c.clientId IN (0,i.clientId)))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Currency To =" + no);
 
     //	Rates
@@ -225,7 +225,7 @@ public class ImportConversionRate extends SvrProcess {
                 "WHERE (MultiplyRate IS NULL OR MultiplyRate = 0) AND DivideRate IS NOT NULL AND DivideRate<>0")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.FINE)) log.fine("Set MultiplyRate =" + no);
     sql =
         new StringBuilder("UPDATE I_Conversion_Rate i ")
@@ -234,7 +234,7 @@ public class ImportConversionRate extends SvrProcess {
                 "WHERE (DivideRate IS NULL OR DivideRate = 0) AND MultiplyRate IS NOT NULL AND MultiplyRate<>0")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no > 0) if (log.isLoggable(Level.FINE)) log.fine("Set DivideRate =" + no);
     sql =
         new StringBuilder("UPDATE I_Conversion_Rate i ")
@@ -243,7 +243,7 @@ public class ImportConversionRate extends SvrProcess {
                 "WHERE (MultiplyRate IS NULL OR MultiplyRate = 0 OR DivideRate IS NULL OR DivideRate = 0)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Rates =" + no);
     //	sql = new StringBuffer ("UPDATE I_Conversion_Rate i "	//	Rate diff > 10%
     //		+ "SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'ERR=Inconsistent Rates='||(MultiplyRate -
@@ -264,7 +264,7 @@ public class ImportConversionRate extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         X_I_Conversion_Rate imp = new X_I_Conversion_Rate(getCtx(), rs, null);
@@ -301,7 +301,7 @@ public class ImportConversionRate extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -312,7 +312,7 @@ public class ImportConversionRate extends SvrProcess {
             .append("SET I_IsImported='N', Updated=SysDate ")
             .append("WHERE I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@Errors@");
     //
     addLog(0, null, new BigDecimal(noInsert), "@C_Conversion_Rate_ID@: @Inserted@");

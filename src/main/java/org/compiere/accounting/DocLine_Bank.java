@@ -60,7 +60,7 @@ public class DocLine_Bank extends DocLine {
   public int getOrgId(boolean payment) {
     if (payment && getC_Payment_ID() != 0) {
       String sql = "SELECT AD_Org_ID FROM C_Payment WHERE C_Payment_ID=?";
-      int id = getSQLValue(null, sql, getC_Payment_ID());
+      int id = getSQLValue(sql, getC_Payment_ID());
       if (id > 0) return id;
     }
     return super. getOrgId();

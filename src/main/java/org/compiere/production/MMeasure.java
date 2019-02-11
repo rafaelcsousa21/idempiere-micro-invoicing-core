@@ -239,7 +239,7 @@ public class MMeasure extends X_PA_Measure {
               getMeasureDataType(),
               null,
               role);
-      BigDecimal ManualActual = getSQLValueBD(null, sql, new Object[] {});
+      BigDecimal ManualActual = getSQLValueBD(sql, new Object[] {});
       //	SQL may return no rows or null
       if (ManualActual == null) {
         ManualActual = Env.ZERO;
@@ -290,7 +290,7 @@ public class MMeasure extends X_PA_Measure {
               getMeasureDataType(),
               null,
               role);
-      BigDecimal ManualActual = getSQLValueBD(null, sql, new Object[] {});
+      BigDecimal ManualActual = getSQLValueBD(sql, new Object[] {});
       //	SQL may return no rows or null
       if (ManualActual == null) {
         ManualActual = Env.ZERO;
@@ -331,7 +331,7 @@ public class MMeasure extends X_PA_Measure {
               getMeasureDataType(),
               null,
               role);
-      BigDecimal ManualActual = getSQLValueBD(null, sql, new Object[] {});
+      BigDecimal ManualActual = getSQLValueBD(sql, new Object[] {});
       //	SQL may return no rows or null
       if (ManualActual == null) {
         ManualActual = Env.ZERO;

@@ -56,7 +56,7 @@ public class RollUpCosts extends SvrProcess {
       String sql =
           "SELECT M_Product_ID FROM M_Product WHERE M_Product_Category_ID = ? AND clientId = ? "
               + " AND M_Product_ID IN (SELECT M_Product_ID FROM M_Product_BOM)";
-      int[] prodids = getIDsEx(null, sql, category, client_id);
+      int[] prodids = getIDsEx(sql, category, client_id);
       for (int prodid : prodids) {
         rollUpCosts(prodid);
       }
@@ -65,7 +65,7 @@ public class RollUpCosts extends SvrProcess {
       String sql =
           "SELECT M_Product_ID FROM M_Product WHERE clientId = ? "
               + " AND M_Product_ID IN (SELECT M_Product_ID FROM M_Product_BOM)";
-      int[] prodids = getIDsEx(null, sql, client_id);
+      int[] prodids = getIDsEx(sql, client_id);
       for (int prodid : prodids) {
         rollUpCosts(prodid);
       }
@@ -84,7 +84,7 @@ public class RollUpCosts extends SvrProcess {
         new StringBuilder("SELECT M_ProductBOM_ID FROM M_Product_BOM WHERE M_Product_ID = ? ")
             .append(" AND clientId = ")
             .append(client_id);
-    int[] prodbomids = getIDsEx(null, sql.toString(), p_id);
+    int[] prodbomids = getIDsEx(sql.toString(), p_id);
 
     for (int prodbomid : prodbomids) {
       if (!processed.contains(p_id)) {
@@ -119,7 +119,7 @@ public class RollUpCosts extends SvrProcess {
             .append(costelement_id)
             .append(" AND M_PRODUCT_ID IN (SELECT M_PRODUCT_ID FROM M_PRODUCT_BOM)");
 
-    executeUpdate(update.toString(), null);
+    executeUpdate(update.toString());
 
     processed.add(p_id);
   }

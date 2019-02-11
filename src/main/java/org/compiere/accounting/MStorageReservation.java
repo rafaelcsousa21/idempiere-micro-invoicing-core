@@ -49,7 +49,7 @@ public class MStorageReservation extends X_M_StorageReservation {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, M_Warehouse_ID);
       pstmt.setInt(2, M_Product_ID);
       pstmt.setString(3, isSOTrx ? "Y" : "N");
@@ -59,7 +59,7 @@ public class MStorageReservation extends X_M_StorageReservation {
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -172,7 +172,7 @@ public class MStorageReservation extends X_M_StorageReservation {
       params.add(M_AttributeSetInstance_ID);
     }
 
-    BigDecimal qty = getSQLValueBD(trxName, sql.toString(), params);
+    BigDecimal qty = getSQLValueBD(sql.toString(), params);
     if (qty == null) qty = Env.ZERO;
 
     return qty;
@@ -273,8 +273,8 @@ public class MStorageReservation extends X_M_StorageReservation {
           getM_Warehouse_ID(),
           getMAttributeSetInstance_ID(),
           isSOTrx()
-        },
-        null);
+        }
+    );
     load((HashMap)null);
   }
 

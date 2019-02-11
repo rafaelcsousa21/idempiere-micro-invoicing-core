@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -177,7 +176,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_Invoice_ID());
       pstmt.setInt(2, getC_Tax_ID());
       rs = pstmt.executeQuery();
@@ -203,7 +202,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

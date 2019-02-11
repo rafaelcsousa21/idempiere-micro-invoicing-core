@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
@@ -39,14 +38,14 @@ public class MMessage extends X_AD_Message {
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, null);
+        pstmt = prepareStatement(sql);
         pstmt.setString(1, Value);
         rs = pstmt.executeQuery();
         if (rs.next()) retValue = new MMessage(ctx, rs, null);
       } catch (Exception e) {
         s_log.log(Level.SEVERE, "get", e);
       } finally {
-        close(rs, pstmt);
+
         rs = null;
         pstmt = null;
       }

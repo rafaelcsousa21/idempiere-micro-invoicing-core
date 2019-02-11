@@ -564,7 +564,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             + "WHERE AD_Client_ID=? AND orgId in (0,?) AND DocBaseType=?"
             + " AND IsActive='Y' "
             + "ORDER BY IsDefault DESC, orgId DESC";
-    int C_DocType_ID = getSQLValueEx(null, sql, getClientId(), getOrgId(), DocBaseType);
+    int C_DocType_ID = getSQLValueEx(sql, getClientId(), getOrgId(), DocBaseType);
     if (C_DocType_ID <= 0)
       log.log(Level.SEVERE, "Not found for AD_Client_ID=" + getClientId() + " - " + DocBaseType);
     else {
@@ -798,9 +798,9 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             .append(getC_Invoice_ID());
 
     StringBuilder msgdb = new StringBuilder("UPDATE C_InvoiceLine ").append(set);
-    int noLine = executeUpdate(msgdb.toString(), null);
+    int noLine = executeUpdate(msgdb.toString());
     msgdb = new StringBuilder("UPDATE C_InvoiceTax ").append(set);
-    int noTax = executeUpdate(msgdb.toString(), null);
+    int noTax = executeUpdate(msgdb.toString());
     m_lines = null;
     m_taxes = null;
     if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine + ", Tax=" + noTax);
@@ -864,7 +864,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
       if (getM_PriceList_ID() == 0) {
         String sql =
             "SELECT M_PriceList_ID FROM M_PriceList WHERE AD_Client_ID=? AND IsSOPriceList=? AND IsActive='Y' ORDER BY IsDefault DESC";
-        ii = getSQLValue(null, sql,  getClientId(), isSOTrx());
+        ii = getSQLValue(sql,  getClientId(), isSOTrx());
         if (ii != 0) setM_PriceList_ID(ii);
       }
     }
@@ -872,7 +872,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     //	Currency
     if (getC_Currency_ID() == 0) {
       String sql = "SELECT C_Currency_ID FROM M_PriceList WHERE M_PriceList_ID=?";
-      int ii = getSQLValue(null, sql, getM_PriceList_ID());
+      int ii = getSQLValue(sql, getM_PriceList_ID());
       if (ii != 0) setC_Currency_ID(ii);
       else setC_Currency_ID(Env.getContextAsInt(getCtx(), "#C_Currency_ID"));
     }
@@ -896,7 +896,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
       else {
         String sql =
             "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE AD_Client_ID=? AND IsDefault='Y' AND IsActive='Y'";
-        ii = getSQLValue(null, sql,  getClientId());
+        ii = getSQLValue(sql,  getClientId());
         if (ii != 0) setC_PaymentTerm_ID(ii);
       }
     }
@@ -913,7 +913,6 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             || is_ValueChanged(I_C_Invoice.COLUMNNAME_DateInvoiced))) {
       int cnt =
           getSQLValueEx(
-              null,
               "SELECT COUNT(*) FROM C_InvoiceLine WHERE C_Invoice_ID=? AND M_Product_ID>0",
               getC_Invoice_ID());
       if (cnt > 0) {
@@ -1040,7 +1039,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
               .append(" FROM C_Invoice o WHERE ol.C_Invoice_ID=o.C_Invoice_ID) ")
               .append("WHERE C_Invoice_ID=")
               .append(getC_Invoice_ID());
-      int no = executeUpdate(sql.toString(), null);
+      int no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Lines -> #" + no);
     }
     return true;
@@ -1078,7 +1077,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_Invoice_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -1087,7 +1086,6 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1316,7 +1314,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             + " AND	p.IsBOM='Y' AND p.IsVerified='Y' AND p.IsStocked='N')";
     //
     String sql = "SELECT COUNT(*) FROM C_InvoiceLine " + "WHERE C_Invoice_ID=? " + where;
-    int count = getSQLValueEx(null, sql, getC_Invoice_ID());
+    int count = getSQLValueEx(sql, getC_Invoice_ID());
     while (count != 0) {
       renumberLines(100);
 
@@ -1379,7 +1377,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
       } //	for all lines with BOM
 
       m_lines = null;
-      count = getSQLValue(null, sql, getC_Invoice_ID());
+      count = getSQLValue(sql, getC_Invoice_ID());
       renumberLines(10);
     } //	while count != 0
   } //	explodeBOM
@@ -1394,7 +1392,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
     //	Delete Taxes
     StringBuilder msgdb =
         new StringBuilder("DELETE C_InvoiceTax WHERE C_Invoice_ID=").append(getC_Invoice_ID());
-    executeUpdateEx(msgdb.toString(), null);
+    executeUpdateEx(msgdb.toString());
     m_taxes = null;
 
     MTaxProvider[] providers = getTaxProviders();

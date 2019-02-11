@@ -90,7 +90,7 @@ public class MPaySelection extends X_C_PaySelection {
   public int getC_Currency_ID() {
     if (m_C_Currency_ID == 0) {
       String sql = "SELECT C_Currency_ID FROM C_BankAccount " + "WHERE C_BankAccount_ID=?";
-      m_C_Currency_ID = getSQLValue(null, sql, getC_BankAccount_ID());
+      m_C_Currency_ID = getSQLValue(sql, getC_BankAccount_ID());
     }
     return m_C_Currency_ID;
   } //	getC_Currency_ID

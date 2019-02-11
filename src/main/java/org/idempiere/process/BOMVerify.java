@@ -25,7 +25,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -94,7 +93,7 @@ public class BOMVerify extends SvrProcess {
     sql += "ORDER BY Name";
     int AD_Client_ID = Env.getClientId(getCtx());
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       if (p_M_Product_Category_ID == 0) pstmt.setInt(1, AD_Client_ID);
       else pstmt.setInt(1, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
@@ -107,7 +106,7 @@ public class BOMVerify extends SvrProcess {
     } catch (Exception e) {
       throw e;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

@@ -73,7 +73,6 @@ public class ImportPriceList extends SvrProcess {
 
     int m_discountschema_id =
         getSQLValue(
-            null,
             "SELECT MIN(M_DiscountSchema_ID) FROM M_DiscountSchema WHERE DiscountType='P' AND IsActive='Y' AND AD_Client_ID=?",
             m_AD_Client_ID);
     if (m_discountschema_id <= 0) throw new AdempiereUserError("Price List Schema not configured");
@@ -83,7 +82,7 @@ public class ImportPriceList extends SvrProcess {
     //	Delete Old Imported
     if (m_deleteOldImported) {
       sql = new StringBuilder("DELETE I_PriceList " + "WHERE I_IsImported='Y'").append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.INFO)) log.info("Delete Old Impored =" + no);
     }
 
@@ -107,7 +106,7 @@ public class ImportPriceList extends SvrProcess {
             .append(" I_ErrorMsg = ' ',")
             .append(" I_IsImported = 'N' ")
             .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Reset=" + no);
 
     //	Set Optional BPartner
@@ -119,7 +118,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NULL AND BPartner_Value IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("BPartner=" + no);
     //
     sql =
@@ -128,7 +127,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NULL AND BPartner_Value IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid BPartner=" + no);
 
     //	Product
@@ -140,7 +139,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE M_Product_ID IS NULL AND ProductValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     log.fine("Set Product from Value=" + no);
     sql =
         new StringBuilder("UPDATE I_PriceList ")
@@ -148,7 +147,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE M_Product_ID IS NULL AND (ProductValue IS NOT NULL)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Product=" + no);
 
     //	****	Find Price List
@@ -160,7 +159,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE M_PriceList_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Price List Existing Value=" + no);
 
     //	****	Find Price List Version
@@ -174,7 +173,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE M_PriceList_ID IS NOT NULL AND M_PriceList_Version_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Price List Version Existing Value=" + no);
 
     /* UOM For Future USE
@@ -213,7 +212,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE C_Currency_ID IS NULL AND ISO_Code IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     log.fine("Set Currency Default=" + no);
     //
     sql =
@@ -224,7 +223,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE C_Currency_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("doIt- Set Currency=" + no);
     //
     sql =
@@ -233,7 +232,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE C_Currency_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Currency=" + no);
 
     //	Mandatory Name or PriceListID
@@ -244,7 +243,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE Name IS NULL AND M_PriceList_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No Mandatory Name=" + no);
 
     //	Mandatory ValidFrom or PriceListVersionID
@@ -255,7 +254,7 @@ public class ImportPriceList extends SvrProcess {
             .append("WHERE ValidFrom IS NULL AND M_PriceList_Version_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No Mandatory ValidFrom=" + no);
 
     //	Mandatory BreakValue if BPartner set
@@ -266,7 +265,7 @@ public class ImportPriceList extends SvrProcess {
                 "WHERE BreakValue IS NULL AND (C_BPartner_ID IS NOT NULL OR BPartner_Value IS NOT NULL)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No Mandatory BreakValue=" + no);
 
     //	-------------------------------------------------------------------
@@ -288,11 +287,11 @@ public class ImportPriceList extends SvrProcess {
       pstmt_setImported =
           prepareStatement(
               "UPDATE I_PriceList SET I_IsImported='Y', M_PriceList_ID=?, M_PriceList_Version_ID=?, "
-                  + "Updated=SysDate, Processed='Y' WHERE I_PriceList_ID=?",
-              null);
+                  + "Updated=SysDate, Processed='Y' WHERE I_PriceList_ID=?"
+          );
 
       //
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         X_I_PriceList imp = new X_I_PriceList(getCtx(), rs, null);
@@ -302,7 +301,6 @@ public class ImportPriceList extends SvrProcess {
           // try to obtain the ID directly from DB
           M_PriceList_ID =
               getSQLValue(
-                  null,
                   "SELECT M_PriceList_ID FROM M_PriceList WHERE IsActive='Y' AND AD_Client_ID=? AND Name=?",
                   m_AD_Client_ID,
                   imp.getName());
@@ -332,7 +330,7 @@ public class ImportPriceList extends SvrProcess {
                     .append(TO_STRING("Insert Price List failed"))
                     .append("WHERE I_PriceList_ID=")
                     .append(I_PriceList_ID);
-            executeUpdate(sql0.toString(), null);
+            executeUpdate(sql0.toString());
             continue;
           }
         } else {
@@ -345,7 +343,6 @@ public class ImportPriceList extends SvrProcess {
           // try to obtain the ID directly from DB
           M_PriceList_Version_ID =
               getSQLValue(
-                  null,
                   "SELECT M_PriceList_Version_ID FROM M_PriceList_Version WHERE IsActive='Y' AND ValidFrom=? AND M_PriceList_ID=?",
                   new Object[] {imp.getValidFrom(), M_PriceList_ID});
           if (M_PriceList_Version_ID < 0) M_PriceList_Version_ID = 0;
@@ -377,7 +374,7 @@ public class ImportPriceList extends SvrProcess {
                     .append(TO_STRING("Insert Price List Version failed"))
                     .append("WHERE I_PriceList_ID=")
                     .append(I_PriceList_ID);
-            executeUpdate(sql0.toString(), null);
+            executeUpdate(sql0.toString());
             continue;
           }
         } else {
@@ -393,7 +390,6 @@ public class ImportPriceList extends SvrProcess {
           // M_ProductPriceVendorBreak
           int M_ProductPriceVendorBreak_ID =
               getSQLValue(
-                  null,
                   "SELECT M_ProductPriceVendorBreak_ID "
                       + "FROM M_ProductPriceVendorBreak "
                       + "WHERE M_PriceList_Version_ID=? AND "
@@ -433,7 +429,7 @@ public class ImportPriceList extends SvrProcess {
                     .append(TO_STRING("Insert/Update Product Price Vendor Break Version failed"))
                     .append("WHERE I_PriceList_ID=")
                     .append(I_PriceList_ID);
-            executeUpdate(sql0.toString(), null);
+            executeUpdate(sql0.toString());
             continue;
           }
         } else {
@@ -470,7 +466,7 @@ public class ImportPriceList extends SvrProcess {
                     .append(TO_STRING("Insert/Update Product Price failed"))
                     .append("WHERE I_PriceList_ID=")
                     .append(I_PriceList_ID);
-            executeUpdate(sql0.toString(), null);
+            executeUpdate(sql0.toString());
             continue;
           }
         }
@@ -484,10 +480,9 @@ public class ImportPriceList extends SvrProcess {
       } //	for all I_PriceList
       //
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
-      close(pstmt_setImported);
       pstmt_setImported = null;
     }
 
@@ -497,7 +492,7 @@ public class ImportPriceList extends SvrProcess {
             .append("SET I_IsImported='N', Updated=SysDate ")
             .append("WHERE I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@Errors@");
     addLog(0, null, new BigDecimal(noInsertpl), "@M_PriceList_ID@: @Inserted@");
     addLog(0, null, new BigDecimal(noInsertplv), "@M_PriceList_Version_ID@: @Inserted@");

@@ -146,7 +146,7 @@ public class MMovementLine extends X_M_MovementLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_MovementLine WHERE M_Movement_ID=?";
-      int ii = getSQLValue(null, sql, getM_Movement_ID());
+      int ii = getSQLValue(sql, getM_Movement_ID());
       setLine(ii);
     }
 

@@ -99,7 +99,7 @@ public class ExpenseSOrder extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       int par = 1;
       pstmt.setInt(par++, getClientId());
       if (p_C_BPartner_ID != 0) pstmt.setInt(par++, p_C_BPartner_ID);
@@ -129,7 +129,6 @@ public class ExpenseSOrder extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }

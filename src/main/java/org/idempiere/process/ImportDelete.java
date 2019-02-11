@@ -70,7 +70,7 @@ public class ImportDelete extends SvrProcess {
             .append(tableName)
             .append(" WHERE AD_Client_ID=")
             .append(getClientId());
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     StringBuilder msg =
         new StringBuilder()
             .append(Msg.translate(getCtx(), tableName + "_ID"))

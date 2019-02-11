@@ -84,7 +84,7 @@ class OrderLineCreateProduction(
         // If we don't ignore previous production, and there has been a previous one,
         // throw an exception
         if (!ignorePrevProduction) {
-            val docNo = getSQLValueString(null,
+            val docNo = getSQLValueString(
                     "SELECT max(DocumentNo) " + "FROM M_Production WHERE C_OrderLine_ID = ?",
                     p_C_OrderLine_ID)
             if (docNo != null) {

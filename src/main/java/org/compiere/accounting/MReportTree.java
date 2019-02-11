@@ -13,7 +13,6 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -154,7 +153,7 @@ public class MReportTree {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, AD_Client_ID);
       pstmt.setString(2, m_TreeType);
       rs = pstmt.executeQuery();
@@ -162,7 +161,7 @@ public class MReportTree {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

@@ -205,7 +205,7 @@ public class MWarehouse extends X_M_Warehouse {
               + " GROUP BY M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID "
               + " HAVING SUM(s.QtyOnHand) < 0 ";
 
-      int prdid = getSQLValueEx(null, sql, getM_Warehouse_ID());
+      int prdid = getSQLValueEx(sql, getM_Warehouse_ID());
       if (prdid > 0) {
         log.saveError("Error", Msg.translate(getCtx(), "NegativeOnhandExists"));
         return false;

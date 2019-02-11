@@ -187,7 +187,7 @@ public class MWorkflow extends X_AD_Workflow {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getId());
       pstmt.setString(2, Env.getADLanguage(getCtx()));
       rs = pstmt.executeQuery();
@@ -201,7 +201,7 @@ public class MWorkflow extends X_AD_Workflow {
       // log.log(Level.SEVERE, sql, e);
       throw new DBException(e, sql);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

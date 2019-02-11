@@ -94,7 +94,7 @@ public class ImportAccount extends SvrProcess {
           new StringBuilder("DELETE I_ElementValue ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Delete Old Impored =" + no);
     }
 
@@ -115,7 +115,7 @@ public class ImportAccount extends SvrProcess {
             .append(" Processing = 'Y', ")
             .append(" I_IsImported = 'N' ")
             .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Reset=" + no);
 
     //	****	Prepare	****
@@ -130,7 +130,7 @@ public class ImportAccount extends SvrProcess {
               .append("WHERE ElementName IS NULL AND C_Element_ID IS NULL")
               .append(" AND I_IsImported<>'Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Set Element Default=" + no);
     }
     //
@@ -141,7 +141,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE C_Element_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Element=" + no);
     //
     sql =
@@ -150,7 +150,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE C_Element_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid Element=" + no);
 
     //	No Name, Value
@@ -160,7 +160,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE (Value IS NULL OR Name IS NULL)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid Name=" + no);
 
     //	Set Column
@@ -172,7 +172,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE Default_Account IS NOT NULL AND AD_Column_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Column=" + no);
     //
     sql =
@@ -182,7 +182,7 @@ public class ImportAccount extends SvrProcess {
             .append(" AND UPPER(Default_Account)<>'DEFAULT_ACCT'") // 	ignore default account
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid Column=" + no);
 
     //	Set Post* Defaults (ignore errors)
@@ -199,7 +199,7 @@ public class ImportAccount extends SvrProcess {
               .append(" NOT IN ('Y','N')")
               .append(" AND I_IsImported<>'Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       StringBuilder msglog =
           new StringBuilder("Set ").append(yColumns[i]).append(" Default=").append(no);
       if (log.isLoggable(Level.FINE)) log.fine(msglog.toString());
@@ -211,7 +211,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE IsSummary IS NULL OR IsSummary NOT IN ('Y','N')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set IsSummary Default=" + no);
 
     //	Doc Controlled
@@ -222,7 +222,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE IsDocControlled IS NULL OR IsDocControlled NOT IN ('Y','N')")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set IsDocumentControlled Default=" + no);
 
     //	Check Account Type A (E) L M O R
@@ -232,7 +232,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE AccountType IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set AccountType Default=" + no);
     //
     sql =
@@ -241,7 +241,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE AccountType NOT IN ('A','E','L','M','O','R')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid AccountType=" + no);
 
     //	Check Account Sign (N) C B
@@ -251,7 +251,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE AccountSign IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set AccountSign Default=" + no);
     //
     sql =
@@ -260,7 +260,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE AccountSign NOT IN ('N','C','D')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid AccountSign=" + no);
 
     //	No Value
@@ -270,7 +270,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE (Value IS NULL OR Value='')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Invalid Key=" + no);
 
     //	****	Update ElementValue from existing
@@ -283,7 +283,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE C_ElementValue_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Found ElementValue=" + no);
 
     //	-------------------------------------------------------------------
@@ -300,7 +300,7 @@ public class ImportAccount extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         X_I_ElementValue impEV = new X_I_ElementValue(getCtx(), rs, null);
@@ -323,7 +323,7 @@ public class ImportAccount extends SvrProcess {
                     .append(TO_STRING("Insert ElementValue "))
                     .append("WHERE I_ElementValue_ID=")
                     .append(I_ElementValue_ID);
-            executeUpdate(sql.toString(), null);
+            executeUpdate(sql.toString());
           }
         } else //	Update existing
         {
@@ -342,14 +342,14 @@ public class ImportAccount extends SvrProcess {
                     .append(TO_STRING("Update ElementValue"))
                     .append("WHERE I_ElementValue_ID=")
                     .append(I_ElementValue_ID);
-            executeUpdate(sql.toString(), null);
+            executeUpdate(sql.toString());
           }
         }
       } //	for all I_Product
     } catch (SQLException e) {
       throw new Exception("create", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -360,7 +360,7 @@ public class ImportAccount extends SvrProcess {
             .append("SET I_IsImported='N', Updated=SysDate ")
             .append("WHERE I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@Errors@");
     addLog(0, null, new BigDecimal(noInsert), "@C_ElementValue_ID@: @Inserted@");
     addLog(0, null, new BigDecimal(noUpdate), "@C_ElementValue_ID@: @Updated@");
@@ -374,7 +374,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE ParentElementValue_ID IS NULL")
             .append(" AND I_IsImported='Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Found Parent ElementValue=" + no);
     //
     sql =
@@ -383,7 +383,7 @@ public class ImportAccount extends SvrProcess {
             .append("WHERE ParentElementValue_ID IS NULL AND ParentValue IS NOT NULL")
             .append(" AND I_IsImported='Y' AND Processed='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.CONFIG)) log.config("Not Found Parent ElementValue=" + no);
     //
     sql =
@@ -396,7 +396,7 @@ public class ImportAccount extends SvrProcess {
             .append(m_AD_Client_ID);
     int noParentUpdate = 0;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       //
       String updateSQL =
@@ -405,7 +405,7 @@ public class ImportAccount extends SvrProcess {
       // PreparedStatement updateStmt = prepareStatement(updateSQL, null);
       PreparedStatement updateStmt =
           prepareStatement(
-              updateSQL, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE, null);
+              updateSQL);
       // end
       //
       while (rs.next()) {
@@ -426,7 +426,7 @@ public class ImportAccount extends SvrProcess {
     } catch (SQLException e) {
       log.log(Level.SEVERE, "(ParentUpdateLoop) " + sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -440,7 +440,7 @@ public class ImportAccount extends SvrProcess {
             .append(" AND C_ElementValue_ID IS NOT NULL")
             .append(clientCheck);
     if (m_updateDefaultAccounts) sql.append(" AND AD_Column_ID IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Reset Processing Flag=" + no);
 
     if (m_updateDefaultAccounts) updateDefaults(clientCheck.toString());
@@ -457,7 +457,7 @@ public class ImportAccount extends SvrProcess {
             .append("SET Processing='N', Processed='Y'")
             .append("WHERE I_IsImported='Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Processed=" + no);
 
     return "";
@@ -480,14 +480,14 @@ public class ImportAccount extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, m_C_Element_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) updateDefaultAccounts(rs.getInt(1));
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -503,7 +503,7 @@ public class ImportAccount extends SvrProcess {
             .append(" AND UPPER(i.Default_Account)='DEFAULT_ACCT' ")
             .append("	AND i.I_IsImported='Y' AND i.Processing='-')")
             .append(clientCheck);
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@C_AcctSchema_Element_ID@: @Updated@");
   } //	updateDefaults
 
@@ -539,7 +539,7 @@ public class ImportAccount extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, m_C_Element_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -555,14 +555,14 @@ public class ImportAccount extends SvrProcess {
               new StringBuilder("UPDATE I_ElementValue SET Processing='N' ")
                   .append("WHERE I_ElementValue_ID=")
                   .append(I_ElementValue_ID);
-          int no = executeUpdate(sql.toString(), null);
+          int no = executeUpdate(sql.toString());
           if (no != 1) log.log(Level.SEVERE, "Updated=" + no);
         }
       }
     } catch (SQLException e) {
       log.log(Level.SEVERE, "", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -611,7 +611,7 @@ public class ImportAccount extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       if (rs.next()) {
         int C_ValidCombination_ID = rs.getInt(1);
@@ -639,7 +639,7 @@ public class ImportAccount extends SvrProcess {
                         .append(newC_ValidCombination_ID)
                         .append(" WHERE C_AcctSchema_ID=")
                         .append(C_AcctSchema_ID);
-                int no = executeUpdate(sql.toString(), null);
+                int no = executeUpdate(sql.toString());
                 msglog =
                     new StringBuilder("New #")
                         .append(no)
@@ -665,7 +665,7 @@ public class ImportAccount extends SvrProcess {
                     .append(C_ElementValue_ID)
                     .append(" WHERE C_ValidCombination_ID=")
                     .append(C_ValidCombination_ID);
-            int no = executeUpdate(sql.toString(), null);
+            int no = executeUpdate(sql.toString());
             msglog =
                 new StringBuilder("Replace #")
                     .append(no)
@@ -683,7 +683,7 @@ public class ImportAccount extends SvrProcess {
                       .append(C_ElementValue_ID)
                       .append(" WHERE Account_ID=")
                       .append(Account_ID);
-              no = executeUpdate(sql.toString(), null);
+              no = executeUpdate(sql.toString());
               msglog =
                   new StringBuilder("ImportAccount.updateDefaultAccount - Replace VC #")
                       .append(no)
@@ -698,7 +698,7 @@ public class ImportAccount extends SvrProcess {
                       .append(C_ElementValue_ID)
                       .append(" WHERE Account_ID=")
                       .append(Account_ID);
-              no = executeUpdate(sql.toString(), null);
+              no = executeUpdate(sql.toString());
               msglog =
                   new StringBuilder("ImportAccount.updateDefaultAccount - Replace Fact #")
                       .append(no)
@@ -727,7 +727,7 @@ public class ImportAccount extends SvrProcess {
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

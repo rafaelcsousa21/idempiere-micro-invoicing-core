@@ -77,7 +77,6 @@ public class OrderLineCreateShipment extends SvrProcess {
 
     int C_DocTypeShipment_ID =
         getSQLValue(
-            null,
             "SELECT C_DocTypeShipment_ID FROM C_DocType WHERE C_DocType_ID=?",
             order.getC_DocType_ID());
 

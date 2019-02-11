@@ -202,9 +202,9 @@ public class DocumentEngine implements DocAction {
                 + " WHERE "
                 + docPO.get_KeyColumns()[0]
                 + " = ? ";
-        String currentStatus = getSQLValueString((String) null, statusSql, docPO.getId());
+        String currentStatus = getSQLValueString(statusSql, docPO.getId());
         if (!docStatusOriginal.equals(currentStatus) && currentStatus != null) {
-          currentStatus = getSQLValueString(null, statusSql, docPO.getId());
+          currentStatus = getSQLValueString(statusSql, docPO.getId());
           if (!docStatusOriginal.equals(currentStatus)) {
             throw new IllegalStateException(
                 Msg.getMsg(docPO.getCtx(), "DocStatusChanged") + " " + docPO.toString());

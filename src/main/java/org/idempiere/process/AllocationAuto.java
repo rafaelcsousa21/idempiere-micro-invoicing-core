@@ -29,7 +29,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -99,7 +98,7 @@ public class AllocationAuto extends SvrProcess {
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, null);
+        pstmt = prepareStatement(sql);
         pstmt.setInt(1, p_C_BP_Group_ID);
         rs = pstmt.executeQuery();
         while (rs.next()) {
@@ -113,7 +112,7 @@ public class AllocationAuto extends SvrProcess {
       } catch (Exception e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        close(rs, pstmt);
+
         rs = null;
         pstmt = null;
       }
@@ -122,7 +121,7 @@ public class AllocationAuto extends SvrProcess {
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, null);
+        pstmt = prepareStatement(sql);
         pstmt.setInt(1, Env.getClientId(getCtx()));
         rs = pstmt.executeQuery();
         while (rs.next()) {
@@ -136,7 +135,7 @@ public class AllocationAuto extends SvrProcess {
       } catch (Exception e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        close(rs, pstmt);
+
         rs = null;
         pstmt = null;
       }
@@ -262,7 +261,7 @@ public class AllocationAuto extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, C_BPartner_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -276,7 +275,7 @@ public class AllocationAuto extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -302,7 +301,7 @@ public class AllocationAuto extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, C_BPartner_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -315,7 +314,7 @@ public class AllocationAuto extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

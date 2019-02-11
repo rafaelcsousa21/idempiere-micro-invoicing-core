@@ -162,7 +162,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
     super.setProcessed(processed);
     if (getId() == 0) return;
     final String sql = "UPDATE M_MovementLine SET Processed=? WHERE M_Movement_ID=?";
-    int noLine = executeUpdateEx(sql, new Object[] {processed, getId()}, null);
+    int noLine = executeUpdateEx(sql, new Object[] {processed, getId()});
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine("Processed=" + processed + " - Lines=" + noLine);
   } //	setProcessed

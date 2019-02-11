@@ -257,7 +257,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_InventoryLine WHERE M_Inventory_ID=?";
-      int ii = getSQLValue(null, sql, getM_Inventory_ID());
+      int ii = getSQLValue(sql, getM_Inventory_ID());
       setLine(ii);
     }
 

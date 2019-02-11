@@ -128,7 +128,7 @@ public class MProject extends X_C_Project {
     if (m_M_PriceList_ID > 0) return m_M_PriceList_ID;
     //
     String sql = "SELECT M_PriceList_ID FROM M_PriceList_Version WHERE M_PriceList_Version_ID=?";
-    m_M_PriceList_ID = getSQLValue(null, sql, getM_PriceList_Version_ID());
+    m_M_PriceList_ID = getSQLValue(sql, getM_PriceList_Version_ID());
     return m_M_PriceList_ID;
   } //	getM_PriceList_ID
 

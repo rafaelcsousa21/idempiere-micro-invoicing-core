@@ -94,8 +94,8 @@ public class M_Production_Run extends SvrProcess {
         int no =
             executeUpdateEx(
                 "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = ?",
-                new Object[] {pp.getM_ProductionPlan_ID()},
-                null);
+                new Object[] {pp.getM_ProductionPlan_ID()}
+            );
         if (no == -1)
           raiseError(
               "ERROR",

@@ -252,7 +252,7 @@ public class MCostElement extends X_M_CostElement {
               + "WHERE AD_Client_ID=? AND CostingMethod=? AND CostElementType=?";
       int id =
           getSQLValue(
-              null, sql,  getClientId(), getCostingMethod(), getCostElementType());
+              sql,  getClientId(), getCostingMethod(), getCostElementType());
       if (id > 0 && id != getId()) {
         log.saveError("AlreadyExists", Msg.getElement(getCtx(), "CostingMethod"));
         return false;

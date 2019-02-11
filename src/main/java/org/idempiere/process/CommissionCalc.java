@@ -366,7 +366,7 @@ public class CommissionCalc extends SvrProcess {
   	}
   	finally
   	{
-  		close(rs, pstmt);
+
   		rs = null; pstmt = null;
   	}
   }	//	createDetail*/

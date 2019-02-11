@@ -78,7 +78,6 @@ public class MProjectLine extends X_C_ProjectLine {
   private void setLine() {
     setLine(
         getSQLValue(
-            null,
             "SELECT COALESCE(MAX(Line),0)+10 FROM C_ProjectLine WHERE C_Project_ID=?",
             getC_Project_ID()));
   } //	setLine
@@ -112,7 +111,7 @@ public class MProjectLine extends X_C_ProjectLine {
   public MProject getProject() {
     if (m_parent == null && getC_Project_ID() != 0) {
       m_parent = new MProject(getCtx(), getC_Project_ID(), null);
-      if (null != null) m_parent.load(null);
+      if (null != null) m_parent.load();
     }
     return m_parent;
   } //	getProject
@@ -244,7 +243,7 @@ public class MProjectLine extends X_C_ProjectLine {
             + "WHERE pl.C_Project_ID=p.C_Project_ID AND pl.IsActive='Y') "
             + "WHERE C_Project_ID="
             + getC_Project_ID();
-    int no = executeUpdate(sql, null);
+    int no = executeUpdate(sql);
     if (no != 1) log.log(Level.SEVERE, "updateHeader project - #" + no);
     /*onhate + globalqss BF 3060367*/
     if (getC_ProjectPhase_ID() != 0) {
@@ -262,7 +261,7 @@ public class MProjectLine extends X_C_ProjectLine {
               + getC_Project_ID()
               + "  AND x.C_ProjectPhase_ID="
               + getC_ProjectPhase_ID();
-      no = executeUpdate(sql, null);
+      no = executeUpdate(sql);
       if (no != 1) log.log(Level.SEVERE, "updateHeader project phase - #" + no);
     }
     if (getC_ProjectTask_ID() != 0) {
@@ -280,7 +279,7 @@ public class MProjectLine extends X_C_ProjectLine {
               + getC_ProjectPhase_ID()
               + "  AND x.C_ProjectTask_ID="
               + getC_ProjectTask_ID();
-      no = executeUpdate(sql, null);
+      no = executeUpdate(sql);
       if (no != 1) log.log(Level.SEVERE, "updateHeader project task - #" + no);
     }
     /*onhate + globalqss BF 3060367*/

@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -332,7 +331,7 @@ public class MMailText extends X_R_MailText {
     ResultSet rs = null;
     String sql = "SELECT * FROM R_MailText_Trl WHERE R_MailText_ID=? AND AD_Language=?";
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getR_MailText_ID());
       pstmt.setString(2, AD_Language);
       rs = pstmt.executeQuery();
@@ -347,7 +346,7 @@ public class MMailText extends X_R_MailText {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

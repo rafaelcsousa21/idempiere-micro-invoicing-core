@@ -57,7 +57,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
       invId = shipment.getC_Invoice_ID();
     } else {
       String sqlStmt = "SELECT C_Invoice_ID FROM C_Invoice WHERE C_Order_ID=?";
-      invId = getSQLValueEx(null, sqlStmt, shipment.getC_Order_ID());
+      invId = getSQLValueEx(sqlStmt, shipment.getC_Order_ID());
     }
 
     if (invId <= 0) {
@@ -309,7 +309,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         "SELECT COUNT(1) "
             + "FROM M_InOut "
             + "WHERE M_RMA_ID=? AND (DocStatus NOT IN ('VO','RE'))";
-    int count = getSQLValueEx(null, validation, getM_RMA_ID());
+    int count = getSQLValueEx(validation, getM_RMA_ID());
 
     if (count == 0) {
       MRMALine lines[] = getLines(true);

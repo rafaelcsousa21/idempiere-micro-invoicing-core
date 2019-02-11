@@ -325,7 +325,7 @@ public class InvoicePrint extends SvrProcess {
     	throw new Exception (e);
     }
     finally {
-    	close(rs, pstmt);
+
     }
     //
     if (p_EMailPDF){

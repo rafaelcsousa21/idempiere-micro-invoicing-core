@@ -105,7 +105,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM C_DepositBatchLine WHERE C_DepositBatch_ID=?";
-      int ii = getSQLValue(null, sql, getC_DepositBatch_ID());
+      int ii = getSQLValue(sql, getC_DepositBatch_ID());
       setLine(ii);
     }
 
@@ -113,7 +113,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
     if (getC_Payment_ID() != 0) {
       String sql = "UPDATE C_Payment p SET C_DepositBatch_ID=? WHERE p.C_Payment_ID=?";
       executeUpdateEx(
-          sql, new Object[] {getC_DepositBatch_ID(), getC_Payment_ID()}, null);
+          sql, new Object[] {getC_DepositBatch_ID(), getC_Payment_ID()});
 
       MPayment payment = new MPayment(getCtx(), getC_Payment_ID(), null);
       setPayment(payment); // set payment amount
@@ -146,7 +146,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
     updateHeader();
     if (getC_Payment_ID() != 0) {
       String sql = "UPDATE C_Payment p SET C_DepositBatch_ID= Null WHERE p.C_Payment_ID=?";
-      executeUpdateEx(sql, new Object[] {getC_Payment_ID()}, null);
+      executeUpdateEx(sql, new Object[] {getC_Payment_ID()});
     }
 
     return success;
@@ -159,6 +159,6 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
             + " SET DepositAmt=(SELECT COALESCE(SUM(PayAmt),0) FROM C_DepositBatchLine dpl "
             + "WHERE dpl.C_DepositBatch_ID=dp.C_DepositBatch_ID AND dpl.IsActive='Y') "
             + "WHERE C_DepositBatch_ID=?";
-    executeUpdateEx(sql, new Object[] {getC_DepositBatch_ID()}, null);
+    executeUpdateEx(sql, new Object[] {getC_DepositBatch_ID()});
   } //	updateHeader
 } //	MDepositBatchLine

@@ -238,7 +238,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_CashLine WHERE C_Cash_ID=?";
-      int ii = getSQLValue(null, sql, getC_Cash_ID());
+      int ii = getSQLValue(sql, getC_Cash_ID());
       setLine(ii);
     }
 
@@ -275,7 +275,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
             + ") "
             + "WHERE C_Cash_ID="
             + getC_Cash_ID();
-    int no = executeUpdate(sql, null);
+    int no = executeUpdate(sql);
     if (no != 1) log.warning("Difference #" + no);
     //	Ending Balance
     sql =
@@ -283,7 +283,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
             + " SET EndingBalance = BeginningBalance + StatementDifference "
             + "WHERE C_Cash_ID="
             + getC_Cash_ID();
-    no = executeUpdate(sql, null);
+    no = executeUpdate(sql);
     if (no != 1) log.warning("Balance #" + no);
     return no == 1;
   } //	updateHeader

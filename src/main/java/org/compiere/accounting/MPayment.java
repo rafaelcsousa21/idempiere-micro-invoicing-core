@@ -272,7 +272,7 @@ public class MPayment extends X_C_Payment
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_BankAccount_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -284,7 +284,7 @@ public class MPayment extends X_C_Payment
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -624,14 +624,14 @@ public class MPayment extends X_C_Payment
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_Payment_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) retValue = rs.getBigDecimal(1);
     } catch (Exception e) {
       log.log(Level.SEVERE, "getAllocatedAmt", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -995,7 +995,7 @@ public class MPayment extends X_C_Payment
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1,  getClientId());
       if (isReceipt) pstmt.setString(2, X_C_DocType.DOCBASETYPE_ARReceipt);
       else pstmt.setString(2, X_C_DocType.DOCBASETYPE_APPayment);
@@ -1005,7 +1005,7 @@ public class MPayment extends X_C_Payment
     } catch (SQLException e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -1042,14 +1042,14 @@ public class MPayment extends X_C_Payment
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, null);
+        pstmt = prepareStatement(sql);
         pstmt.setInt(1, getC_Invoice_ID());
         rs = pstmt.executeQuery();
         if (rs.next()) documentSO = new Boolean("Y".equals(rs.getString(1)));
       } catch (Exception e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        close(rs, pstmt);
+
         rs = null;
         pstmt = null;
       }
@@ -1063,14 +1063,14 @@ public class MPayment extends X_C_Payment
       PreparedStatement pstmt = null;
       ResultSet rs = null;
       try {
-        pstmt = prepareStatement(sql, null);
+        pstmt = prepareStatement(sql);
         pstmt.setInt(1, getC_Order_ID());
         rs = pstmt.executeQuery();
         if (rs.next()) documentSO = new Boolean("Y".equals(rs.getString(1)));
       } catch (Exception e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        close(rs, pstmt);
+
         rs = null;
         pstmt = null;
       }
@@ -1089,7 +1089,7 @@ public class MPayment extends X_C_Payment
           PreparedStatement pstmt = null;
           ResultSet rs = null;
           try {
-            pstmt = prepareStatement(sql, null);
+            pstmt = prepareStatement(sql);
             pstmt.setInt(1, pAlloc.getC_Invoice_ID());
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -1104,7 +1104,7 @@ public class MPayment extends X_C_Payment
           } catch (Exception e) {
             log.log(Level.SEVERE, sql, e);
           } finally {
-            close(rs, pstmt);
+
             rs = null;
             pstmt = null;
           }
@@ -1118,14 +1118,14 @@ public class MPayment extends X_C_Payment
     ResultSet rs = null;
     String sql = "SELECT IsSOTrx " + "FROM C_DocType " + "WHERE C_DocType_ID=?";
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_DocType_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) paymentSO = new Boolean("Y".equals(rs.getString(1)));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -1639,7 +1639,7 @@ public class MPayment extends X_C_Payment
         "SELECT C_BankAccount_ID FROM C_BankAccount "
             + "WHERE C_Currency_ID=? AND orgId IN (0,?) AND IsActive='Y' "
             + "ORDER BY IsDefault DESC";
-    int C_BankAccount_ID = getSQLValue(null, sql, getC_Currency_ID(), counterAD_Org_ID);
+    int C_BankAccount_ID = getSQLValue(sql, getC_Currency_ID(), counterAD_Org_ID);
     counter.setC_BankAccount_ID(C_BankAccount_ID);
 
     //	References
@@ -1788,7 +1788,6 @@ public class MPayment extends X_C_Payment
     //	Get Project from Invoice
     int C_Project_ID =
         getSQLValue(
-            null,
             "SELECT MAX(C_Project_ID) FROM C_Invoice WHERE C_Invoice_ID=?",
             getC_Invoice_ID());
     if (C_Project_ID > 0 && getC_Project_ID() == 0) setC_Project_ID(C_Project_ID);
@@ -1824,7 +1823,7 @@ public class MPayment extends X_C_Payment
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_Payment_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -1861,7 +1860,7 @@ public class MPayment extends X_C_Payment
     } catch (Exception e) {
       log.log(Level.SEVERE, "allocatePaySelection", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -1925,7 +1924,7 @@ public class MPayment extends X_C_Payment
               + getC_Invoice_ID()
               + " AND C_Payment_ID="
               + getC_Payment_ID();
-      int no = executeUpdate(sql, null);
+      int no = executeUpdate(sql);
       if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Unlink Invoice #" + no);
       //	Order
       sql =
@@ -1937,7 +1936,7 @@ public class MPayment extends X_C_Payment
               + ")"
               + " AND C_Payment_ID="
               + getC_Payment_ID();
-      no = executeUpdate(sql, null);
+      no = executeUpdate(sql);
       if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Unlink Order #" + no);
     }
     //
@@ -2175,7 +2174,7 @@ public class MPayment extends X_C_Payment
    */
   private int getC_BankStatementLine_ID() {
     String sql = "SELECT C_BankStatementLine_ID FROM C_BankStatementLine WHERE C_Payment_ID=?";
-    int id = getSQLValue(null, sql, getC_Payment_ID());
+    int id = getSQLValue(sql, getC_Payment_ID());
     if (id < 0) return 0;
     return id;
   } //	getC_BankStatementLine_ID

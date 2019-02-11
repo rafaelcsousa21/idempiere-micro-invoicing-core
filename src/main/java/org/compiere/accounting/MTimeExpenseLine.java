@@ -258,6 +258,6 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
             + "WHERE S_TimeExpense_ID="
             + getS_TimeExpense_ID();
     @SuppressWarnings("unused")
-    int no = executeUpdate(sql, null);
+    int no = executeUpdate(sql);
   } //	updateHeader
 } //	MTimeExpenseLine

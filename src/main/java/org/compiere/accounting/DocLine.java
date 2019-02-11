@@ -460,7 +460,7 @@ public class DocLine {
     int C_OrderLine_ID = getC_OrderLine_ID();
     if (C_OrderLine_ID != 0) {
       String sql = "SELECT ad_org_id FROM C_OrderLine WHERE C_OrderLine_ID=?";
-      int AD_Org_ID = getSQLValue(null, sql, C_OrderLine_ID);
+      int AD_Org_ID = getSQLValue(sql, C_OrderLine_ID);
       if (AD_Org_ID > 0) return AD_Org_ID;
     }
     return  getOrgId();
@@ -805,7 +805,7 @@ public class DocLine {
       {
         String sql =
             "SELECT COALESCE(C_SalesRegion_ID,0) FROM C_BPartner_Location WHERE C_BPartner_Location_ID=?";
-        m_C_SalesRegion_ID = getSQLValue(null, sql, getC_BPartner_Location_ID());
+        m_C_SalesRegion_ID = getSQLValue(sql, getC_BPartner_Location_ID());
         if (log.isLoggable(Level.FINE))
           log.fine("C_SalesRegion_ID=" + m_C_SalesRegion_ID + " (from BPL)");
         if (m_C_SalesRegion_ID == 0) m_C_SalesRegion_ID = -2; // 	don't try again

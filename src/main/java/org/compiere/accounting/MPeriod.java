@@ -1,15 +1,11 @@
 package org.compiere.accounting;
 
-import org.compiere.invoicing.MInvoice;
 import org.compiere.model.*;
-import org.compiere.order.MOrder;
 import org.compiere.orm.*;
-import org.compiere.production.MProduction;
 import org.compiere.util.DisplayType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Util;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +18,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -142,7 +137,7 @@ public class MPeriod extends X_C_Period {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_Calendar_ID);
       pstmt.setTimestamp(2, TimeUtil.getDay(DateAcct));
       pstmt.setString(3, "Y");
@@ -157,7 +152,7 @@ public class MPeriod extends X_C_Period {
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, "DateAcct=" + DateAcct, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -277,7 +272,7 @@ public class MPeriod extends X_C_Period {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_Calendar_ID);
       pstmt.setTimestamp(2, DateAcct);
       pstmt.setString(3, "Y");
@@ -288,7 +283,7 @@ public class MPeriod extends X_C_Period {
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -371,14 +366,14 @@ public class MPeriod extends X_C_Period {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_Period_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MPeriodControl(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

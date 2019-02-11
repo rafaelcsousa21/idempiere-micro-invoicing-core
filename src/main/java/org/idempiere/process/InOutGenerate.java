@@ -165,7 +165,7 @@ public class InOutGenerate extends SvrProcess {
 
     PreparedStatement pstmt = null;
     try {
-      pstmt = prepareStatement(m_sql.toString(), null);
+      pstmt = prepareStatement(m_sql.toString());
       int index = 1;
       if (p_Selection) {
         pstmt.setInt(index++, Env.getClientId(getCtx()));
@@ -421,7 +421,7 @@ public class InOutGenerate extends SvrProcess {
     } catch (Exception e) {
       throw new AdempiereException(e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

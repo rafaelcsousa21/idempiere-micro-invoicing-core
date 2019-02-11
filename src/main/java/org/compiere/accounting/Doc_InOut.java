@@ -97,7 +97,7 @@ public class Doc_InOut extends Doc {
       String sql =
           "SELECT PP_Cost_Collector_ID  FROM C_OrderLine WHERE C_OrderLine_ID=? AND PP_Cost_Collector_ID IS NOT NULL";
       int PP_Cost_Collector_ID =
-          getSQLValueEx(getTrxName(), sql, new Object[] {line.getC_OrderLine_ID()});
+          getSQLValueEx(sql, new Object[] {line.getC_OrderLine_ID()});
       docLine.setPP_Cost_Collector_ID(PP_Cost_Collector_ID);
       //
       if (log.isLoggable(Level.FINE)) log.fine(docLine.toString());
@@ -190,7 +190,6 @@ public class Doc_InOut extends Doc {
               // ok if we have purchased zero cost item from vendor before
               int count =
                   getSQLValue(
-                      null,
                       "SELECT Count(*) FROM M_CostDetail WHERE M_Product_ID=? AND Processed='Y' AND Amt=0.00 AND Qty > 0 AND (C_OrderLine_ID > 0 OR C_InvoiceLine_ID > 0)",
                       product.getM_Product_ID());
               if (count > 0) {

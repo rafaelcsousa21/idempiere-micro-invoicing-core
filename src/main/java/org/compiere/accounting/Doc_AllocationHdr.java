@@ -645,7 +645,7 @@ public class Doc_AllocationHdr extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, getTrxName());
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_Payment_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -662,7 +662,7 @@ public class Doc_AllocationHdr extends Doc {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -687,7 +687,7 @@ public class Doc_AllocationHdr extends Doc {
         "SELECT c.C_CashBook_ID "
             + "FROM C_Cash c, C_CashLine cl "
             + "WHERE c.C_Cash_ID=cl.C_Cash_ID AND cl.C_CashLine_ID=?";
-    setC_CashBook_ID(getSQLValue(null, sql, C_CashLine_ID));
+    setC_CashBook_ID(getSQLValue(sql, C_CashLine_ID));
 
     if (getC_CashBook_ID() <= 0) {
       log.log(Level.SEVERE, "NONE for C_CashLine_ID=" + C_CashLine_ID);
@@ -733,7 +733,7 @@ public class Doc_AllocationHdr extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), getTrxName());
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, invoice.getC_Invoice_ID());
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
@@ -744,7 +744,7 @@ public class Doc_AllocationHdr extends Doc {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -885,7 +885,7 @@ public class Doc_AllocationHdr extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, getTrxName());
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, line.getC_Invoice_ID());
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
@@ -893,7 +893,7 @@ public class Doc_AllocationHdr extends Doc {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

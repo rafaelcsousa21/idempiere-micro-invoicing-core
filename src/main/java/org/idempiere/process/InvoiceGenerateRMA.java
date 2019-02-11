@@ -82,7 +82,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, Env.getClientId(getCtx()));
       pstmt.setInt(2, getAD_PInstance_ID());
       rs = pstmt.executeQuery();
@@ -93,7 +93,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
     } catch (Exception ex) {
       throw new AdempiereException(ex);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -107,7 +107,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
             + "INNER JOIN M_RMA rma ON dt.C_DocType_ID=rma.C_DocType_ID "
             + "WHERE rma.M_RMA_ID=?";
 
-    int docTypeId = getSQLValue(null, docTypeSQl, M_RMA_ID);
+    int docTypeId = getSQLValue(docTypeSQl, M_RMA_ID);
 
     return docTypeId;
   }

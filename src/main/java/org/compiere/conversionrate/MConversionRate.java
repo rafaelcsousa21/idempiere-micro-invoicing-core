@@ -2,7 +2,6 @@ package org.compiere.conversionrate;
 
 import org.compiere.model.I_C_Conversion_Rate;
 import org.compiere.orm.PO;
-import org.compiere.orm.Query;
 import org.compiere.product.MCurrency;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
@@ -14,13 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -177,7 +172,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, CurFrom_ID);
       pstmt.setInt(2, CurTo_ID);
       pstmt.setInt(3, C_ConversionType_ID);
@@ -189,7 +184,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, "getRate", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

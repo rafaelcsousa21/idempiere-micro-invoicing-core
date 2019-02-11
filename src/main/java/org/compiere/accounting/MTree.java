@@ -156,7 +156,7 @@ public class MTree extends MTree_Base {
       // load Node details - addToTree -> getNodeDetail
       getNodeDetails();
       //
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       int idx = 1;
       if (AD_User_ID != -1 && getTreeType().equals(TREETYPE_Menu)) // IDEMPIERE 329 - nmicoud
       pstmt.setInt(idx++, AD_User_ID);
@@ -183,7 +183,7 @@ public class MTree extends MTree_Base {
       m_nodeRowSet = null;
       m_nodeIdMap = null;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

@@ -81,14 +81,14 @@ public class MRequestProcessor extends X_R_RequestProcessor
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getR_RequestProcessor_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MRequestProcessorLog(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

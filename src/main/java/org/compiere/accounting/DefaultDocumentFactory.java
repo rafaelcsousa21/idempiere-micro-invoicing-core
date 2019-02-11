@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /** @author hengsin */
@@ -34,7 +33,7 @@ public class DefaultDocumentFactory implements IDocFactory {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), trxName);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, Record_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -43,7 +42,7 @@ public class DefaultDocumentFactory implements IDocFactory {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

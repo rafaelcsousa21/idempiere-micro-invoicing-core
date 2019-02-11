@@ -200,7 +200,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
     if (getLine() == 0) {
       String sql =
           "SELECT COALESCE(MAX(Line),0)+10 FROM GL_DistributionLine WHERE GL_Distribution_ID=?";
-      int ii = getSQLValue(null, sql, getGL_Distribution_ID());
+      int ii = getSQLValue(sql, getGL_Distribution_ID());
       setLine(ii);
     }
     //	Reset not selected Overwrite

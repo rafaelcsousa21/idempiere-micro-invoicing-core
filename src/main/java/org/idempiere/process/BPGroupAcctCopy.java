@@ -85,7 +85,7 @@ public class BPGroupAcctCopy extends SvrProcess {
             + " AND p.C_BP_Group_ID="
             + p_C_BP_Group_ID
             + ")";
-    updated = executeUpdate(sql, null);
+    updated = executeUpdate(sql);
     addLog(0, null, new BigDecimal(updated), "@Updated@ @C_BPartner_ID@ @IsCustomer@");
     updatedTotal += updated;
 
@@ -107,7 +107,7 @@ public class BPGroupAcctCopy extends SvrProcess {
             + " AND NOT EXISTS (SELECT * FROM C_BP_Customer_Acct ca "
             + "WHERE ca.C_BPartner_ID=p.C_BPartner_ID"
             + " AND ca.C_AcctSchema_ID=acct.C_AcctSchema_ID)";
-    created = executeUpdate(sql, null);
+    created = executeUpdate(sql);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsCustomer@");
     createdTotal += created;
 
@@ -129,7 +129,7 @@ public class BPGroupAcctCopy extends SvrProcess {
             + " AND p.C_BP_Group_ID="
             + p_C_BP_Group_ID
             + ")";
-    updated = executeUpdate(sql, null);
+    updated = executeUpdate(sql);
     addLog(0, null, new BigDecimal(updated), "@Updated@ @C_BPartner_ID@ @IsVendor@");
     updatedTotal += updated;
 
@@ -150,7 +150,7 @@ public class BPGroupAcctCopy extends SvrProcess {
             + p_C_BP_Group_ID
             + " AND NOT EXISTS (SELECT * FROM C_BP_Vendor_Acct va "
             + "WHERE va.C_BPartner_ID=p.C_BPartner_ID AND va.C_AcctSchema_ID=acct.C_AcctSchema_ID)";
-    created = executeUpdate(sql, null);
+    created = executeUpdate(sql);
     addLog(0, null, new BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsVendor@");
     createdTotal += created;
 

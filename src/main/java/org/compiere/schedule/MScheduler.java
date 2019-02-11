@@ -110,7 +110,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
             + " AND (Created+"
             + getKeepLogDays()
             + ") < SysDate";
-    int no = executeUpdateEx(sql, null);
+    int no = executeUpdateEx(sql);
     return no;
   } //	deleteLog
 

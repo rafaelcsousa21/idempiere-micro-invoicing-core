@@ -24,7 +24,6 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class ServerProcessCtl implements Runnable {
@@ -148,7 +147,7 @@ public class ServerProcessCtl implements Runnable {
     ResultSet rs = null;
     try {
       pstmt =
-          prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, null);
+          prepareStatement(sql);
       pstmt.setInt(1, m_pi.getAD_PInstance_ID());
       rs = pstmt.executeQuery();
       if (rs.next()) {
@@ -176,7 +175,7 @@ public class ServerProcessCtl implements Runnable {
       log.log(Level.SEVERE, "run", e);
       return;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

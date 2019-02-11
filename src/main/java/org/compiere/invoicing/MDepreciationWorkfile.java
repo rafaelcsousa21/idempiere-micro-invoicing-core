@@ -467,7 +467,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
             + MDepreciationExp.COLUMNNAME_PostingType
             + "=?";
     Object[] params = new Object[] {false, A_Current_Period, getA_Asset_ID(), getPostingType()};
-    int no = executeUpdateEx(sql, params, trxName);
+    int no = executeUpdateEx(sql, params);
     if (log.isLoggable(Level.FINE)) log.fine("sql=" + sql + "\nDeleted #" + no);
   } //	truncDepreciation
 

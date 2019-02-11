@@ -201,7 +201,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     //
     final String sql = "UPDATE M_InventoryLine SET Processed=? WHERE M_Inventory_ID=?";
     int noLine =
-        executeUpdateEx(sql, new Object[] {processed, getM_Inventory_ID()}, null);
+        executeUpdateEx(sql, new Object[] {processed, getM_Inventory_ID()});
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine("Processed=" + processed + " - Lines=" + noLine);
   } //	setProcessed

@@ -104,7 +104,7 @@ public class OrgOwnership extends SvrProcess {
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "M_Warehouse_ID"));
 
     //	Set Accounts
@@ -118,7 +118,7 @@ public class OrgOwnership extends SvrProcess {
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
 
     //	Set Locators
@@ -132,7 +132,7 @@ public class OrgOwnership extends SvrProcess {
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "M_Locator_ID"));
 
     //	Set Storage
@@ -148,7 +148,7 @@ public class OrgOwnership extends SvrProcess {
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "Storage"));
 
     //	Set Storage Reservation
@@ -162,7 +162,7 @@ public class OrgOwnership extends SvrProcess {
         .append(getClientId())
         .append(" AND orgId<>")
         .append(p_AD_Org_ID);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "StorageReservation"));
 
     return "";
@@ -196,27 +196,27 @@ public class OrgOwnership extends SvrProcess {
 
     //	Product
     StringBuilder sql = new StringBuilder("UPDATE M_Product x ").append(set);
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "M_Product_ID"));
 
     //	Acct
     sql = new StringBuilder("UPDATE M_Product_Acct x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
 
     //	BOM
     sql = new StringBuilder("UPDATE M_Product_BOM x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "M_Product_BOM_ID"));
 
     //	PO
     sql = new StringBuilder("UPDATE M_Product_PO x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "PO"));
 
     //	Trl
     sql = new StringBuilder("UPDATE M_Product_Trl x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "AD_Language"));
 
     return "";
@@ -250,33 +250,33 @@ public class OrgOwnership extends SvrProcess {
 
     //	BPartner
     StringBuilder sql = new StringBuilder("UPDATE C_BPartner x ").append(set);
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_BPartner_ID"));
 
     //	Acct xxx
     sql = new StringBuilder("UPDATE C_BP_Customer_Acct x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
     sql = new StringBuilder("UPDATE C_BP_Employee_Acct x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
     sql = new StringBuilder("UPDATE C_BP_Vendor_Acct x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_AcctSchema_ID"));
 
     //	Location
     sql = new StringBuilder("UPDATE C_BPartner_Location x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_BPartner_Location_ID"));
 
     //	Contcat/User
     sql = new StringBuilder("UPDATE AD_User x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "AD_User_ID"));
 
     //	BankAcct
     sql = new StringBuilder("UPDATE C_BP_BankAccount x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), Msg.translate(getCtx(), "C_BP_BankAccount_ID"));
 
     return "";
@@ -291,30 +291,30 @@ public class OrgOwnership extends SvrProcess {
 
     //	R_ContactInterest
     StringBuilder sql = new StringBuilder("UPDATE R_ContactInterest ").append(set);
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     if (no != 0)
       if (log.isLoggable(Level.FINE)) log.fine("generalOwnership - R_ContactInterest=" + no);
 
     //	AD_User_Roles
     sql = new StringBuilder("UPDATE AD_User_Roles ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("generalOwnership - AD_User_Roles=" + no);
 
     //	C_BPartner_Product
     sql = new StringBuilder("UPDATE C_BPartner_Product ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0)
       if (log.isLoggable(Level.FINE)) log.fine("generalOwnership - C_BPartner_Product=" + no);
 
     //	Withholding
     sql = new StringBuilder("UPDATE C_BP_Withholding x ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0)
       if (log.isLoggable(Level.FINE)) log.fine("generalOwnership - C_BP_Withholding=" + no);
 
     //	Replenish
     sql = new StringBuilder("UPDATE M_Replenish ").append(set);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("generalOwnership - M_Replenish=" + no);
   } //	generalOwnership
 } //	OrgOwnership

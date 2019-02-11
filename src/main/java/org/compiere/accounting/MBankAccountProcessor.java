@@ -1,7 +1,5 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_C_BankAccount_Processor;
-import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
@@ -89,7 +86,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), trxName);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, AD_Client_ID);
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setBigDecimal(3, Amt);
@@ -99,7 +96,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
       s_log.log(Level.SEVERE, "find - " + sql, e);
       return null;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

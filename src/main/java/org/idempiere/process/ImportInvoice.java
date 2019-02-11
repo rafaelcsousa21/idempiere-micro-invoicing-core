@@ -90,7 +90,7 @@ public class ImportInvoice extends SvrProcess {
           new StringBuilder("DELETE I_Invoice ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Delete Old Impored =" + no);
     }
 
@@ -111,7 +111,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" I_ErrorMsg = ' ',")
             .append(" I_IsImported = 'N' ")
             .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Reset=" + no);
 
     sql =
@@ -122,7 +122,7 @@ public class ImportInvoice extends SvrProcess {
                 " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Org=" + no);
 
     //	Document Type - PO - SO
@@ -134,7 +134,7 @@ public class ImportInvoice extends SvrProcess {
             .append(
                 "WHERE C_DocType_ID IS NULL AND IsSOTrx='N' AND DocTypeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set PO DocType=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -144,7 +144,7 @@ public class ImportInvoice extends SvrProcess {
             .append(
                 "WHERE C_DocType_ID IS NULL AND IsSOTrx='Y' AND DocTypeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set SO DocType=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -156,7 +156,7 @@ public class ImportInvoice extends SvrProcess {
             // I_IsImported<>'Y'").append (clientCheck);
             .append("WHERE C_DocType_ID IS NULL AND DocTypeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set DocType=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice ")
@@ -164,7 +164,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_DocType_ID IS NULL AND DocTypeName IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid DocTypeName=" + no);
     //	DocType Default
     sql =
@@ -174,7 +174,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" AND d.DocBaseType='API' AND o.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND IsSOTrx='N' AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set PO Default DocType=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -183,7 +183,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" AND d.DocBaseType='ARI' AND o.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND IsSOTrx='Y' AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set SO Default DocType=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -192,7 +192,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" AND d.DocBaseType IN('ARI','API') AND o.AD_Client_ID=d.AD_Client_ID) ")
             .append("WHERE C_DocType_ID IS NULL AND IsSOTrx IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set Default DocType=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice ")
@@ -200,7 +200,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_DocType_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No DocType=" + no);
 
     //	Set IsSOTrx
@@ -211,7 +211,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" AND C_DocType_ID IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set IsSOTrx=Y=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o SET IsSOTrx='N' ")
@@ -220,7 +220,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" AND C_DocType_ID IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set IsSOTrx=N=" + no);
 
     //	Price List
@@ -232,7 +232,7 @@ public class ImportInvoice extends SvrProcess {
                 " AND p.C_Currency_ID=o.C_Currency_ID AND p.IsSOPriceList=o.IsSOTrx AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Default Currency PriceList=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -241,7 +241,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" AND p.IsSOPriceList=o.IsSOTrx AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL AND C_Currency_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Default PriceList=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -250,7 +250,7 @@ public class ImportInvoice extends SvrProcess {
                 " WHERE p.C_Currency_ID=o.C_Currency_ID AND p.IsSOPriceList=o.IsSOTrx AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Currency PriceList=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -258,7 +258,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" WHERE p.IsSOPriceList=o.IsSOTrx AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE M_PriceList_ID IS NULL AND C_Currency_ID IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set PriceList=" + no);
     //
     sql =
@@ -267,7 +267,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE M_PriceList_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No PriceList=" + no);
 
     //	Payment Term
@@ -278,7 +278,7 @@ public class ImportInvoice extends SvrProcess {
             .append(
                 "WHERE C_PaymentTerm_ID IS NULL AND PaymentTermValue IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set PaymentTerm=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -287,7 +287,7 @@ public class ImportInvoice extends SvrProcess {
             .append(
                 "WHERE C_PaymentTerm_ID IS NULL AND o.PaymentTermValue IS NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Default PaymentTerm=" + no);
     //
     sql =
@@ -296,7 +296,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_PaymentTerm_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No PaymentTerm=" + no);
 
     // globalqss - Add project and activity
@@ -307,7 +307,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" WHERE o.ProjectValue=p.Value AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_Project_ID IS NULL AND ProjectValue IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Project=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice ")
@@ -315,7 +315,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_Project_ID IS NULL AND (ProjectValue IS NOT NULL)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Project=" + no);
     //	Activity
     sql =
@@ -325,7 +325,7 @@ public class ImportInvoice extends SvrProcess {
             .append(
                 "WHERE C_Activity_ID IS NULL AND ActivityValue IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Activity=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice ")
@@ -333,7 +333,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_Activity_ID IS NULL AND (ActivityValue IS NOT NULL)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Activity=" + no);
     // globalqss - add charge
     //	Charge
@@ -343,7 +343,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" WHERE o.ChargeName=p.Name AND o.AD_Client_ID=p.AD_Client_ID) ")
             .append("WHERE C_Charge_ID IS NULL AND ChargeName IS NOT NULL AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Charge=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice ")
@@ -351,7 +351,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_Charge_ID IS NULL AND (ChargeName IS NOT NULL)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Charge=" + no);
     //
 
@@ -365,7 +365,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NULL AND EMail IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set BP from EMail=" + no);
     //	BP from ContactName
     sql =
@@ -379,7 +379,7 @@ public class ImportInvoice extends SvrProcess {
                 " AND EXISTS (SELECT Name FROM AD_User u WHERE o.ContactName=u.Name AND o.AD_Client_ID=u.AD_Client_ID AND u.C_BPartner_ID IS NOT NULL GROUP BY Name HAVING COUNT(*)=1)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set BP from ContactName=" + no);
     //	BP from Value
     sql =
@@ -389,7 +389,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NULL AND BPartnerValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set BP from Value=" + no);
     //	Default BP
     sql =
@@ -399,7 +399,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NULL AND BPartnerValue IS NULL AND Name IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Default BP=" + no);
 
     //	Existing Location ? Exact Match
@@ -415,7 +415,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NOT NULL AND C_BPartner_Location_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Found Location=" + no);
     //	Set Location from BPartner
     sql =
@@ -428,7 +428,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NOT NULL AND C_BPartner_Location_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set BP Location from BP=" + no);
     //
     sql =
@@ -437,7 +437,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NOT NULL AND C_BPartner_Location_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No BP Location=" + no);
 
     //	Set Country
@@ -457,7 +457,7 @@ public class ImportInvoice extends SvrProcess {
                 "WHERE C_BPartner_ID IS NULL AND C_Country_ID IS NULL AND CountryCode IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Country=" + no);
     //
     sql =
@@ -466,7 +466,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NULL AND C_Country_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Country=" + no);
 
     //	Set Region
@@ -478,7 +478,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NULL AND C_Region_ID IS NULL AND RegionName IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Region Default=" + no);
     //
     sql =
@@ -490,7 +490,7 @@ public class ImportInvoice extends SvrProcess {
                 "WHERE C_BPartner_ID IS NULL AND C_Region_ID IS NULL AND RegionName IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Region=" + no);
     //
     sql =
@@ -501,7 +501,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" WHERE c.C_Country_ID=o.C_Country_ID AND c.HasRegion='Y')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Region=" + no);
 
     //	Product
@@ -512,7 +512,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE M_Product_ID IS NULL AND ProductValue IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Product from Value=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -521,7 +521,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE M_Product_ID IS NULL AND UPC IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Product from UPC=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice o ")
@@ -530,7 +530,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE M_Product_ID IS NULL AND SKU IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Product fom SKU=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice ")
@@ -539,7 +539,7 @@ public class ImportInvoice extends SvrProcess {
                 "WHERE M_Product_ID IS NULL AND (ProductValue IS NOT NULL OR UPC IS NOT NULL OR SKU IS NOT NULL)")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Product=" + no);
 
     // globalqss - charge and product are exclusive
@@ -549,7 +549,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE M_Product_ID IS NOT NULL AND C_Charge_ID IS NOT NULL ")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Product and Charge exclusive=" + no);
 
     //	Tax
@@ -560,7 +560,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_Tax_ID IS NULL AND TaxIndicator IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Tax=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice ")
@@ -568,7 +568,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_Tax_ID IS NULL AND TaxIndicator IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Tax=" + no);
 
     // Set 1099 Box
@@ -579,7 +579,7 @@ public class ImportInvoice extends SvrProcess {
             .append(" WHERE C_1099Box_ID IS NULL and C_1099Box_Value IS NOT NULL")
             .append(" AND I_IsImported<>'Y' AND IsSOTrx='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     log.fine("Set C_1099Box_ID=" + no);
     sql =
         new StringBuilder("UPDATE I_Invoice ")
@@ -587,7 +587,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_1099Box_ID IS NULL AND (C_1099Box_Value IS NOT NULL)")
             .append(" AND I_IsImported<>'Y' AND IsSOTrx='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid C_1099Box_Value=" + no);
 
     //	-- New BPartner ---------------------------------------------------
@@ -600,7 +600,7 @@ public class ImportInvoice extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         X_I_Invoice imp = new X_I_Invoice(getCtx(), rs, null);
@@ -689,7 +689,7 @@ public class ImportInvoice extends SvrProcess {
     } catch (SQLException e) {
       log.log(Level.SEVERE, "CreateBP", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -699,7 +699,7 @@ public class ImportInvoice extends SvrProcess {
             .append("WHERE C_BPartner_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No BPartner=" + no);
 
     //	-- New Invoices -----------------------------------------------------
@@ -714,7 +714,7 @@ public class ImportInvoice extends SvrProcess {
             .append(clientCheck)
             .append(" ORDER BY C_BPartner_ID, C_BPartner_Location_ID, I_Invoice_ID");
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       //	Group Change
       int oldC_BPartner_ID = 0;
@@ -819,7 +819,7 @@ public class ImportInvoice extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, "CreateInvoice", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -830,7 +830,7 @@ public class ImportInvoice extends SvrProcess {
             .append("SET I_IsImported='N', Updated=SysDate ")
             .append("WHERE I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@Errors@");
     //
     addLog(0, null, new BigDecimal(noInsert), "@C_Invoice_ID@: @Inserted@");

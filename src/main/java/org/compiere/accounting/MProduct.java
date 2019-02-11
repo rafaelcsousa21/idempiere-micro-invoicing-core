@@ -137,7 +137,7 @@ public class MProduct extends org.compiere.product.MProduct {
               //	+ " AND GuaranteeDate > SysDate"
               + "  AND M_Product_ID="
               + getM_Product_ID();
-      int no = executeUpdate(sql, null);
+      int no = executeUpdate(sql);
       if (log.isLoggable(Level.FINE)) log.fine("Asset Description updated #" + no);
     }
 
@@ -339,7 +339,6 @@ public class MProduct extends org.compiere.product.MProduct {
                 null);
         int cnt =
             getSQLValueEx(
-                null,
                 "SELECT COUNT(*) FROM M_Product WHERE M_AttributeSetInstance_ID=?",
                 oldasi.getMAttributeSetInstance_ID());
         if (cnt == 1) {

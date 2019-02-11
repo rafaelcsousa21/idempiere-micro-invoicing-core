@@ -120,7 +120,7 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
   protected boolean afterDelete(boolean success) {
     if (getC_DepositBatch_ID() != 0) {
       String sql = "UPDATE C_Payment p SET C_DepositBatch_ID= 0  WHERE p.C_DepositBatch_ID=?";
-      executeUpdateEx(sql, new Object[] {getC_DepositBatch_ID()}, null);
+      executeUpdateEx(sql, new Object[] {getC_DepositBatch_ID()});
     }
 
     return success;

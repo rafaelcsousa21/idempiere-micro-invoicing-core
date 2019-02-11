@@ -14,9 +14,6 @@ import java.io.File;
 import java.sql.ResultSet;
 import java.util.*;
 
-import static software.hsharp.core.util.DBKt.close;
-import static software.hsharp.core.util.DBKt.prepareStatement;
-
 /**
  * Client Model
  *

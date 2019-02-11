@@ -155,7 +155,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
             + "=?";
     int plant_id =
         getSQLValueEx(
-            null, sql, true, MResource.MANUFACTURINGRESOURCETYPE_Plant, M_Warehouse_ID);
+            sql, true, MResource.MANUFACTURINGRESOURCETYPE_Plant, M_Warehouse_ID);
     return plant_id;
   }
 

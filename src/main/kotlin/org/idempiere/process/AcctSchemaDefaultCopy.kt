@@ -97,7 +97,7 @@ class AcctSchemaDefaultCopy(
                 .append(p_C_AcctSchema_ID)
                 .append(" AND EXISTS (SELECT * FROM M_Product_Category p ")
                 .append("WHERE p.M_Product_Category_ID=pa.M_Product_Category_ID)")
-            updated = executeUpdate(sql!!.toString(), null)
+            updated = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(updated), "@Updated@ @M_Product_Category_ID@")
             updatedTotal += updated
         }
@@ -130,7 +130,7 @@ class AcctSchemaDefaultCopy(
             .append(" AND NOT EXISTS (SELECT * FROM M_Product_Category_Acct pa ")
             .append("WHERE pa.M_Product_Category_ID=p.M_Product_Category_ID")
             .append(" AND pa.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-        created = executeUpdate(sql!!.toString(), null)
+        created = executeUpdate(sql!!.toString())
         addLog(0, null, BigDecimal(created), "@Created@ @M_Product_Category_ID@")
         createdTotal += created
         if (!p_CopyOverwriteAcct)
@@ -167,7 +167,7 @@ class AcctSchemaDefaultCopy(
                 .append(" AND NOT EXISTS (SELECT * FROM M_Product_Acct pa ")
                 .append("WHERE pa.M_Product_ID=p.M_Product_ID")
                 .append(" AND pa.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-            created = executeUpdate(sql!!.toString(), null)
+            created = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(created), "@Created@ @M_Product_ID@")
             createdTotal += created
         }
@@ -202,7 +202,7 @@ class AcctSchemaDefaultCopy(
                 .append(p_C_AcctSchema_ID)
                 .append(" AND EXISTS (SELECT * FROM C_BP_Group_Acct x ")
                 .append("WHERE x.C_BP_Group_ID=a.C_BP_Group_ID)")
-            updated = executeUpdate(sql!!.toString(), null)
+            updated = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_BP_Group_ID@")
             updatedTotal += updated
         }
@@ -231,7 +231,7 @@ class AcctSchemaDefaultCopy(
             .append(" AND NOT EXISTS (SELECT * FROM C_BP_Group_Acct a ")
             .append("WHERE a.C_BP_Group_ID=x.C_BP_Group_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-        created = executeUpdate(sql!!.toString(), null)
+        created = executeUpdate(sql!!.toString())
         addLog(0, null, BigDecimal(created), "@Created@ @C_BP_Group_ID@")
         createdTotal += created
 
@@ -288,7 +288,7 @@ class AcctSchemaDefaultCopy(
                 .append(" AND NOT EXISTS (SELECT * FROM C_BP_Customer_Acct ca ")
                 .append("WHERE ca.C_BPartner_ID=p.C_BPartner_ID")
                 .append(" AND ca.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-            created = executeUpdate(sql!!.toString(), null)
+            created = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsCustomer@")
             createdTotal += created
             //
@@ -310,7 +310,7 @@ class AcctSchemaDefaultCopy(
                 .append(
                     "WHERE va.C_BPartner_ID=p.C_BPartner_ID AND va.C_AcctSchema_ID=acct.C_AcctSchema_ID)"
                 )
-            created = executeUpdate(sql!!.toString(), null)
+            created = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(created), "@Created@ @C_BPartner_ID@ @IsVendor@")
             createdTotal += created
         }
@@ -325,7 +325,7 @@ class AcctSchemaDefaultCopy(
                 .append(p_C_AcctSchema_ID)
                 .append(" AND EXISTS (SELECT * FROM M_Warehouse_Acct x ")
                 .append("WHERE x.M_Warehouse_ID=a.M_Warehouse_ID)")
-            updated = executeUpdate(sql!!.toString(), null)
+            updated = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(updated), "@Updated@ @M_Warehouse_ID@")
             updatedTotal += updated
         }
@@ -344,7 +344,7 @@ class AcctSchemaDefaultCopy(
             .append(" AND NOT EXISTS (SELECT * FROM M_Warehouse_Acct a ")
             .append("WHERE a.M_Warehouse_ID=x.M_Warehouse_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-        created = executeUpdate(sql!!.toString(), null)
+        created = executeUpdate(sql!!.toString())
         addLog(0, null, BigDecimal(created), "@Created@ @M_Warehouse_ID@")
         createdTotal += created
 
@@ -360,7 +360,7 @@ class AcctSchemaDefaultCopy(
                 .append(p_C_AcctSchema_ID)
                 .append(" AND EXISTS (SELECT * FROM C_Project_Acct x ")
                 .append("WHERE x.C_Project_ID=a.C_Project_ID)")
-            updated = executeUpdate(sql!!.toString(), null)
+            updated = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_Project_ID@")
             updatedTotal += updated
         }
@@ -379,7 +379,7 @@ class AcctSchemaDefaultCopy(
             .append(" AND NOT EXISTS (SELECT * FROM C_Project_Acct a ")
             .append("WHERE a.C_Project_ID=x.C_Project_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-        created = executeUpdate(sql!!.toString(), null)
+        created = executeUpdate(sql!!.toString())
         addLog(0, null, BigDecimal(created), "@Created@ @C_Project_ID@")
         createdTotal += created
 
@@ -398,7 +398,7 @@ class AcctSchemaDefaultCopy(
                 .append(p_C_AcctSchema_ID)
                 .append(" AND EXISTS (SELECT * FROM C_Tax_Acct x ")
                 .append("WHERE x.C_Tax_ID=a.C_Tax_ID)")
-            updated = executeUpdate(sql!!.toString(), null)
+            updated = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_Tax_ID@")
             updatedTotal += updated
         }
@@ -417,7 +417,7 @@ class AcctSchemaDefaultCopy(
             .append(" AND NOT EXISTS (SELECT * FROM C_Tax_Acct a ")
             .append("WHERE a.C_Tax_ID=x.C_Tax_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-        created = executeUpdate(sql!!.toString(), null)
+        created = executeUpdate(sql!!.toString())
         addLog(0, null, BigDecimal(created), "@Created@ @C_Tax_ID@")
         createdTotal += created
 
@@ -441,7 +441,7 @@ class AcctSchemaDefaultCopy(
                 .append(p_C_AcctSchema_ID)
                 .append(" AND EXISTS (SELECT * FROM C_BankAccount_Acct x ")
                 .append("WHERE x.C_BankAccount_ID=a.C_BankAccount_ID)")
-            updated = executeUpdate(sql!!.toString(), null)
+            updated = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_BankAccount_ID@")
             updatedTotal += updated
         }
@@ -464,7 +464,7 @@ class AcctSchemaDefaultCopy(
             .append(" AND NOT EXISTS (SELECT * FROM C_BankAccount_Acct a ")
             .append("WHERE a.C_BankAccount_ID=x.C_BankAccount_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-        created = executeUpdate(sql!!.toString(), null)
+        created = executeUpdate(sql!!.toString())
         addLog(0, null, BigDecimal(created), "@Created@ @C_BankAccount_ID@")
         createdTotal += created
 
@@ -512,7 +512,7 @@ class AcctSchemaDefaultCopy(
                 .append(p_C_AcctSchema_ID)
                 .append(" AND EXISTS (SELECT * FROM C_Charge_Acct x ")
                 .append("WHERE x.C_Charge_ID=a.C_Charge_ID)")
-            updated = executeUpdate(sql!!.toString(), null)
+            updated = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_Charge_ID@")
             updatedTotal += updated
         }
@@ -531,7 +531,7 @@ class AcctSchemaDefaultCopy(
             .append(" AND NOT EXISTS (SELECT * FROM C_Charge_Acct a ")
             .append("WHERE a.C_Charge_ID=x.C_Charge_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-        created = executeUpdate(sql!!.toString(), null)
+        created = executeUpdate(sql!!.toString())
         addLog(0, null, BigDecimal(created), "@Created@ @C_Charge_ID@")
         createdTotal += created
 
@@ -553,7 +553,7 @@ class AcctSchemaDefaultCopy(
                 .append(p_C_AcctSchema_ID)
                 .append(" AND EXISTS (SELECT * FROM C_Cashbook_Acct x ")
                 .append("WHERE x.C_Cashbook_ID=a.C_Cashbook_ID)")
-            updated = executeUpdate(sql!!.toString(), null)
+            updated = executeUpdate(sql!!.toString())
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_Cashbook_ID@")
             updatedTotal += updated
         }
@@ -574,7 +574,7 @@ class AcctSchemaDefaultCopy(
             .append(" AND NOT EXISTS (SELECT * FROM C_Cashbook_Acct a ")
             .append("WHERE a.C_Cashbook_ID=x.C_Cashbook_ID")
             .append(" AND a.C_AcctSchema_ID=acct.C_AcctSchema_ID)")
-        created = executeUpdate(sql!!.toString(), null)
+        created = executeUpdate(sql!!.toString())
         addLog(0, null, BigDecimal(created), "@Created@ @C_Cashbook_ID@")
         createdTotal += created
 

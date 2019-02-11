@@ -94,7 +94,7 @@ public class ImportBankStatement extends SvrProcess {
           new StringBuilder("DELETE I_BankStatement ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Delete Old Impored =" + no);
     }
 
@@ -116,7 +116,7 @@ public class ImportBankStatement extends SvrProcess {
         .append(" I_IsImported = 'N' ")
         .append(
             "WHERE I_IsImported<>'Y' OR I_IsImported IS NULL OR clientId IS NULL OR orgId IS NULL OR clientId=0 OR orgId=0");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Reset=" + no);
 
     sql =
@@ -127,7 +127,7 @@ public class ImportBankStatement extends SvrProcess {
                 " OR EXISTS (SELECT * FROM AD_Org oo WHERE o.AD_Org_ID=oo.orgId AND (oo.IsSummary='Y' OR oo.IsActive='N')))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Org=" + no);
 
     //	Set Bank Account
@@ -148,7 +148,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("AND i.I_IsImported<>'Y' ")
             .append("OR i.I_IsImported IS NULL")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Bank Account (With Routing No)=" + no);
     //
     sql =
@@ -166,7 +166,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("AND i.I_isImported<>'Y' ")
             .append("OR i.I_isImported IS NULL")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0)
       if (log.isLoggable(Level.INFO)) log.info("Bank Account (Without Routing No)=" + no);
     //
@@ -181,7 +181,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("AND i.I_isImported<>'Y' ")
             .append("OR i.I_isImported IS NULL")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Bank Account=" + no);
     //
     sql =
@@ -191,7 +191,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("AND I_isImported<>'Y' ")
             .append("OR I_isImported IS NULL")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Bank Account=" + no);
 
     //	Set Currency
@@ -202,7 +202,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("WHERE C_Currency_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Set Currency=" + no);
     //
     sql =
@@ -212,7 +212,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("WHERE i.C_Currency_ID IS NULL ")
             .append("AND i.ISO_Code IS NULL")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Set Currency=" + no);
     //
     sql =
@@ -222,7 +222,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("AND I_IsImported<>'E' ")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Currency=" + no);
 
     //	Set Amount
@@ -232,7 +232,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("WHERE ChargeAmt IS NULL ")
             .append("AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Charge Amount=" + no);
     //
     sql =
@@ -241,7 +241,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("WHERE InterestAmt IS NULL ")
             .append("AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Interest Amount=" + no);
     //
     sql =
@@ -250,7 +250,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("WHERE TrxAmt IS NULL ")
             .append("AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Transaction Amount=" + no);
     //
     sql =
@@ -259,7 +259,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("WHERE TrxAmt + ChargeAmt + InterestAmt <> StmtAmt ")
             .append("AND I_isImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Invalid Amount=" + no);
 
     //	Set Valuta Date
@@ -269,7 +269,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("WHERE ValutaDate IS NULL ")
             .append("AND I_isImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Valuta Date=" + no);
 
     //	Check Payment<->Invoice combination
@@ -285,7 +285,7 @@ public class ImportBankStatement extends SvrProcess {
             .append(" AND p.C_Invoice_ID IS NOT NULL ")
             .append(" AND p.C_Invoice_ID<>i.C_Invoice_ID) ")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Payment<->Invoice Mismatch=" + no);
 
     //	Check Payment<->BPartner combination
@@ -301,7 +301,7 @@ public class ImportBankStatement extends SvrProcess {
             .append(" AND p.C_BPartner_ID IS NOT NULL ")
             .append(" AND p.C_BPartner_ID<>i.C_BPartner_ID) ")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Payment<->BPartner Mismatch=" + no);
 
     //	Check Invoice<->BPartner combination
@@ -317,7 +317,7 @@ public class ImportBankStatement extends SvrProcess {
             .append(" AND v.C_BPartner_ID IS NOT NULL ")
             .append(" AND v.C_BPartner_ID<>i.C_BPartner_ID) ")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Invoice<->BPartner Mismatch=" + no);
 
     //	Check Invoice.BPartner<->Payment.BPartner combination
@@ -333,7 +333,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("WHERE p.C_Invoice_ID<>v.C_Invoice_ID")
             .append(" AND v.C_BPartner_ID<>p.C_BPartner_ID) ")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0)
       if (log.isLoggable(Level.INFO))
         log.info("Invoice.BPartner<->Payment.BPartner Mismatch=" + no);
@@ -359,13 +359,13 @@ public class ImportBankStatement extends SvrProcess {
             .append("SET I_IsImported='E', I_ErrorMsg=I_ErrorMsg||'Err=Duplicate['||?||']' ")
             .append("WHERE I_BankStatement_ID=?")
             .append(clientCheck);
-    PreparedStatement pupdt = prepareStatement(updateSql.toString(), null);
+    PreparedStatement pupdt = prepareStatement(updateSql.toString());
 
     PreparedStatement pstmtDuplicates = null;
     ResultSet rs = null;
     no = 0;
     try {
-      pstmtDuplicates = prepareStatement(sql.toString(), null);
+      pstmtDuplicates = prepareStatement(sql.toString());
       rs = pstmtDuplicates.executeQuery();
       while (rs.next()) {
         StringBuilder info =
@@ -381,10 +381,8 @@ public class ImportBankStatement extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, "DetectDuplicates " + e.getMessage());
     } finally {
-      close(rs, pstmtDuplicates);
       rs = null;
       pstmtDuplicates = null;
-      close(pupdt);
       pupdt = null;
     }
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Duplicates=" + no);
@@ -402,7 +400,7 @@ public class ImportBankStatement extends SvrProcess {
     int noInsert = 0;
     int noInsertLine = 0;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
@@ -529,7 +527,7 @@ public class ImportBankStatement extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -540,7 +538,7 @@ public class ImportBankStatement extends SvrProcess {
             .append("SET I_IsImported='N', Updated=SysDate ")
             .append("WHERE I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@Errors@");
     //
     addLog(0, null, new BigDecimal(noInsert), "@C_BankStatement_ID@: @Inserted@");

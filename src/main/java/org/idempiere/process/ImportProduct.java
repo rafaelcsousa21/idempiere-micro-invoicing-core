@@ -106,7 +106,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
           new StringBuilder("DELETE I_Product ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.INFO)) log.info("Delete Old Imported =" + no);
     }
 
@@ -126,7 +126,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append(" I_ErrorMsg = ' ',")
             .append(" I_IsImported = 'N' ")
             .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Reset=" + no);
 
     ModelValidationEngine.get()
@@ -140,7 +140,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE C_BPartner_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("BPartner=" + no);
     //
     sql =
@@ -149,7 +149,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE C_BPartner_ID IS NULL AND BPartner_Value IS NOT NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid BPartner=" + no);
 
     //	****	Find Product
@@ -161,7 +161,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE M_Product_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Product Existing UPC=" + no);
 
     //	Value
@@ -172,7 +172,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE M_Product_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Product Existing Value=" + no);
 
     //	BP ProdNo
@@ -184,7 +184,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE M_Product_ID IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Product Existing Vendor ProductNo=" + no);
 
     //	Set Product Category
@@ -198,7 +198,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append(" AND M_Product_ID IS NULL") // 	set category only if product not found
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Category Default Value=" + no);
     //
     sql =
@@ -209,7 +209,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE ProductCategory_Value IS NOT NULL AND M_Product_Category_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Set Category=" + no);
 
     //	Copy From Product if Import does not have value
@@ -228,7 +228,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
               .append(" IS NULL")
               .append(" AND I_IsImported='N'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (no != 0)
         if (log.isLoggable(Level.FINE))
           log.fine(strFieldsToCopy[i] + " - default from existing Product=" + no);
@@ -261,7 +261,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
               .append("=0)")
               .append(" AND I_IsImported='N'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (no != 0)
         if (log.isLoggable(Level.FINE))
           log.fine(numFields[i] + " default from existing Product=" + no);
@@ -295,7 +295,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
               .append(" IS NULL")
               .append(" AND I_IsImported='N'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (no != 0)
         if (log.isLoggable(Level.FINE))
           log.fine(strFieldsPO[i] + " default from existing Product PO=" + no);
@@ -330,7 +330,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
               .append("=0)")
               .append(" AND I_IsImported='N'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (no != 0)
         if (log.isLoggable(Level.FINE))
           log.fine(numFieldsPO[i] + " default from existing Product PO=" + no);
@@ -343,7 +343,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE M_Product_Category_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Category=" + no);
 
     //	Set UOM (System/own)
@@ -355,7 +355,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE X12DE355 IS NULL AND C_UOM_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set UOM Default=" + no);
     //
     sql =
@@ -365,7 +365,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE C_UOM_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Set UOM=" + no);
     //
     sql =
@@ -374,7 +374,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE C_UOM_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid UOM=" + no);
 
     //	Set Currency
@@ -387,7 +387,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE C_Currency_ID IS NULL AND ISO_Code IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Currency Default=" + no);
     //
     sql =
@@ -397,7 +397,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE C_Currency_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("doIt- Set Currency=" + no);
     //
     sql =
@@ -406,7 +406,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE C_Currency_ID IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Currency=" + no);
 
     //	Verify ProductType
@@ -416,7 +416,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE ProductType NOT IN ('E','I','R','S','A')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid ProductType=" + no);
 
     //	Unique UPC/Value
@@ -427,7 +427,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append(
                 " AND Value IN (SELECT Value FROM I_Product ii WHERE i.AD_Client_ID=ii.AD_Client_ID GROUP BY Value HAVING COUNT(*) > 1)")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Not Unique Value=" + no);
     //
     sql =
@@ -437,7 +437,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append(
                 " AND UPC IN (SELECT UPC FROM I_Product ii WHERE i.AD_Client_ID=ii.AD_Client_ID GROUP BY UPC HAVING COUNT(*) > 1)")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Not Unique UPC=" + no);
 
     //	Mandatory Value
@@ -447,7 +447,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE Value IS NULL")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("No Mandatory Value=" + no);
 
     //	Vendor Product No
@@ -464,7 +464,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("WHERE C_BPartner_ID IS NOT NULL AND VendorProductNo IS NULL")
             .append(" AND I_IsImported='N'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("VendorProductNo Set to Value=" + no);
     //
     sql =
@@ -477,7 +477,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append(
                 " (SELECT C_BPartner_ID, VendorProductNo FROM I_Product ii WHERE i.AD_Client_ID=ii.AD_Client_ID GROUP BY C_BPartner_ID, VendorProductNo HAVING COUNT(*) > 1)")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Not Unique VendorProductNo=" + no);
 
     //	Get Default Tax Category
@@ -488,13 +488,13 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
       StringBuilder dbpst =
           new StringBuilder("SELECT C_TaxCategory_ID FROM C_TaxCategory WHERE IsDefault='Y'")
               .append(clientCheck);
-      pstmt = prepareStatement(dbpst.toString(), null);
+      pstmt = prepareStatement(dbpst.toString());
       rs = pstmt.executeQuery();
       if (rs.next()) C_TaxCategory_ID = rs.getInt(1);
     } catch (SQLException e) {
       throw new Exception("TaxCategory", e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -583,18 +583,18 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
                   + "Discontinued,DiscontinuedBy, DiscontinuedAt, Order_Min,Order_Pack,"
                   + "CostPerOrder,DeliveryTime_Promised "
                   + "FROM I_Product "
-                  + "WHERE I_Product_ID=?",
-              null);
+                  + "WHERE I_Product_ID=?"
+          );
 
       //	Set Imported = Y
       pstmt_setImported =
           prepareStatement(
               "UPDATE I_Product SET I_IsImported='Y', M_Product_ID=?, "
-                  + "Updated=SysDate, Processed='Y' WHERE I_Product_ID=?",
-              null);
+                  + "Updated=SysDate, Processed='Y' WHERE I_Product_ID=?"
+          );
 
       //
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         X_I_Product imp = new X_I_Product(getCtx(), rs, null);
@@ -629,7 +629,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
                     .append(TO_STRING("Insert Product failed"))
                     .append("WHERE I_Product_ID=")
                     .append(I_Product_ID);
-            executeUpdate(sql0.toString(), null);
+            executeUpdate(sql0.toString());
             continue;
           }
         } else //	Update Product
@@ -650,7 +650,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
                   .append("WHERE M_Product_ID=")
                   .append(M_Product_ID);
           PreparedStatement pstmt_updateProduct =
-              prepareStatement(sqlt.toString(), null);
+              prepareStatement(sqlt.toString());
 
           // jz pstmt_updateProduct.setInt(1, I_Product_ID);
           //   pstmt_updateProduct.setInt(2, M_Product_ID);
@@ -666,10 +666,9 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
                     .append(TO_STRING("Update Product: " + ex.toString()))
                     .append("WHERE I_Product_ID=")
                     .append(I_Product_ID);
-            executeUpdate(sql0.toString(), null);
+            executeUpdate(sql0.toString());
             continue;
           } finally {
-            close(pstmt_updateProduct);
             pstmt_updateProduct = null;
           }
         }
@@ -702,7 +701,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
                     .append(" AND C_BPartner_ID=")
                     .append(C_BPartner_ID);
             PreparedStatement pstmt_updateProductPO =
-                prepareStatement(sqlt.toString(), null);
+                prepareStatement(sqlt.toString());
             // jz pstmt_updateProductPO.setInt(1, I_Product_ID);
             // pstmt_updateProductPO.setInt(2, M_Product_ID);
             // pstmt_updateProductPO.setInt(3, C_BPartner_ID);
@@ -720,10 +719,9 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
                       .append(TO_STRING("Update Product_PO: " + ex.toString()))
                       .append("WHERE I_Product_ID=")
                       .append(I_Product_ID);
-              executeUpdate(sql0.toString(), null);
+              executeUpdate(sql0.toString());
               continue;
             } finally {
-              close(pstmt_updateProductPO);
               pstmt_updateProductPO = null;
             }
           }
@@ -746,7 +744,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
                       .append(TO_STRING("Insert Product_PO: " + ex.toString()))
                       .append("WHERE I_Product_ID=")
                       .append(I_Product_ID);
-              executeUpdate(sql0.toString(), null);
+              executeUpdate(sql0.toString());
               continue;
             }
           }
@@ -780,12 +778,10 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
       } //	for all I_Product
     } catch (SQLException e) {
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
-      close(pstmt_insertProductPO);
       pstmt_insertProductPO = null;
-      close(pstmt_setImported);
       pstmt_setImported = null;
     }
 
@@ -795,7 +791,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
             .append("SET I_IsImported='N', Updated=SysDate ")
             .append("WHERE I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(no), "@Errors@");
     addLog(0, null, new BigDecimal(noInsert), "@M_Product_ID@: @Inserted@");
     addLog(0, null, new BigDecimal(noUpdate), "@M_Product_ID@: @Updated@");

@@ -30,7 +30,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -190,7 +189,7 @@ public class PaySelectionCreateFrom extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       int index = 1;
       pstmt.setInt(index++, C_CurrencyTo_ID);
       pstmt.setTimestamp(index++, psel.getPayDate());
@@ -237,7 +236,7 @@ public class PaySelectionCreateFrom extends SvrProcess {
     } catch (Exception e) {
       throw new AdempiereException(e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

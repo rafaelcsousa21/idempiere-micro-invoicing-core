@@ -91,7 +91,6 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
    */
   private int getNextLine() {
     return getSQLValue(
-        null,
         "SELECT COALESCE(MAX(Line),0)+10 FROM C_ProjectIssue WHERE C_Project_ID=?",
         getC_Project_ID());
   } //	getLineFromProject

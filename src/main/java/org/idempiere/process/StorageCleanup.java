@@ -59,12 +59,12 @@ public class StorageCleanup extends SvrProcess {
     //	Clean up empty Storage
     String sql =
         "DELETE FROM M_StorageOnHand " + "WHERE QtyOnHand = 0" + " AND Created < SysDate-3";
-    int no = executeUpdate(sql, null);
+    int no = executeUpdate(sql);
     if (log.isLoggable(Level.INFO)) log.info("Delete Empty #" + no);
 
     //	Clean up empty Reservation Storage
     sql = "DELETE FROM M_StorageReservation " + "WHERE Qty = 0" + " AND Created < SysDate-3";
-    no = executeUpdate(sql, null);
+    no = executeUpdate(sql);
     if (log.isLoggable(Level.INFO)) log.info("Delete Empty #" + no);
 
     //
@@ -93,7 +93,7 @@ public class StorageCleanup extends SvrProcess {
     ResultSet rs = null;
     int lines = 0;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, Env.getClientId(getCtx()));
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -102,7 +102,7 @@ public class StorageCleanup extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -260,7 +260,7 @@ public class StorageCleanup extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, M_Product_ID);
       pstmt.setInt(2, M_Locator_ID);
       rs = pstmt.executeQuery();
@@ -270,7 +270,7 @@ public class StorageCleanup extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

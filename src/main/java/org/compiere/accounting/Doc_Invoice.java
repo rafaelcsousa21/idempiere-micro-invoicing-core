@@ -90,7 +90,7 @@ public class Doc_Invoice extends Doc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, getTrxName());
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, get_ID());
       rs = pstmt.executeQuery();
       //
@@ -110,7 +110,7 @@ public class Doc_Invoice extends Doc {
       log.log(Level.SEVERE, sql, e);
       return null;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -905,7 +905,6 @@ public class Doc_Invoice extends Doc {
                   .append("AND AD_Client_ID=? ");
           BigDecimal otherAmt =
               getSQLValueBD(
-                  getTrxName(),
                   sql.toString(),
                   lca.getM_InOutLine_ID(),
                   lca.getC_LandedCostAllocation_ID(),
@@ -1118,7 +1117,7 @@ public class Doc_Invoice extends Doc {
         .append(" AND i.C_Invoice_ID=")
         .append(get_ID())
         .append(")");
-    int no = executeUpdate(sql.toString(), getTrxName());
+    int no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Updated=" + no);
   } //	updateProductPO
 } //  Doc_Invoice

@@ -74,7 +74,7 @@ public class ImportInOutConfirm extends SvrProcess {
           new StringBuilder("DELETE I_InOutLineConfirm ")
               .append("WHERE I_IsImported='Y'")
               .append(clientCheck);
-      no = executeUpdate(sql.toString(), null);
+      no = executeUpdate(sql.toString());
       if (log.isLoggable(Level.FINE)) log.fine("Delete Old Impored =" + no);
     }
 
@@ -89,7 +89,7 @@ public class ImportInOutConfirm extends SvrProcess {
             .append(" I_ErrorMsg = ' ',")
             .append(" I_IsImported = 'N' ")
             .append("WHERE I_IsImported<>'Y' OR I_IsImported IS NULL");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Reset=" + no);
 
     //	Set Client from Name
@@ -100,7 +100,7 @@ public class ImportInOutConfirm extends SvrProcess {
             .append(") ")
             .append("WHERE (clientId IS NULL OR clientId=0)")
             .append(" AND I_IsImported<>'Y'");
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (log.isLoggable(Level.FINE)) log.fine("Set Client from Value=" + no);
 
     //	Error Confirmation Line
@@ -113,7 +113,7 @@ public class ImportInOutConfirm extends SvrProcess {
                 " OR NOT EXISTS (SELECT * FROM M_InOutLineConfirm c WHERE i.M_InOutLineConfirm_ID=c.M_InOutLineConfirm_ID))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid InOutLineConfirm=" + no);
 
     //	Error Confirmation No
@@ -123,7 +123,7 @@ public class ImportInOutConfirm extends SvrProcess {
             .append("WHERE (ConfirmationNo IS NULL OR ConfirmationNo='')")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid ConfirmationNo=" + no);
 
     //	Qty
@@ -136,7 +136,7 @@ public class ImportInOutConfirm extends SvrProcess {
             .append(" AND c.TargetQty<>(i.ConfirmedQty+i.ScrappedQty+i.DifferenceQty))")
             .append(" AND I_IsImported<>'Y'")
             .append(clientCheck);
-    no = executeUpdate(sql.toString(), null);
+    no = executeUpdate(sql.toString());
     if (no != 0) log.warning("Invalid Qty=" + no);
 
 
@@ -150,7 +150,7 @@ public class ImportInOutConfirm extends SvrProcess {
             .append(" ORDER BY I_InOutLineConfirm_ID");
     no = 0;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
         X_I_InOutLineConfirm importLine = new X_I_InOutLineConfirm(getCtx(), rs, null);
@@ -178,7 +178,7 @@ public class ImportInOutConfirm extends SvrProcess {
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

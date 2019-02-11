@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MGLCategory extends X_GL_Category {
@@ -45,7 +44,7 @@ public class MGLCategory extends X_GL_Category {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, Env.getClientId(ctx));
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -59,7 +58,7 @@ public class MGLCategory extends X_GL_Category {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

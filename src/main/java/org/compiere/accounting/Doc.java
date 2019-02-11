@@ -234,8 +234,7 @@ public abstract class Doc implements IDoc {
       log.severe(msg);
       throw new IllegalArgumentException(msg);
     }
-    p_po.load(
-        null); // reload the PO to get any virtual column that was not obtained using
+    p_po.load(); // reload the PO to get any virtual column that was not obtained using
     // the rs (IDEMPIERE-775)
 
     //	DocStatus
@@ -250,7 +249,6 @@ public abstract class Doc implements IDoc {
       m_trxName = "Post" + m_DocumentType + p_po.getId();
       m_manageLocalTrx = true;
     }
-    p_po.set_TrxName(m_trxName);
 
     //	Amounts
     for (int i = 0; i < m_Amounts.length; i++) {
@@ -425,7 +423,7 @@ public abstract class Doc implements IDoc {
         .append(" AND Processed='Y' AND IsActive='Y'");
     if (!force) sql.append(" AND (Processing='N' OR Processing IS NULL)");
     if (!repost) sql.append(" AND Posted='N'");
-    if (executeUpdate(sql.toString(), trxName) == 1) {
+    if (executeUpdate(sql.toString()) == 1) {
       if (log.isLoggable(Level.INFO)) log.info("Locked: " + get_TableName() + "_ID=" + get_ID());
     } else {
       log.log(
@@ -583,7 +581,7 @@ public abstract class Doc implements IDoc {
             .append(p_po.getId())
             .append(" AND C_AcctSchema_ID=")
             .append(m_as.getC_AcctSchema_ID());
-    int no = executeUpdate(sql.toString(), getTrxName());
+    int no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("deleted=" + no);
     return no;
   } //	deleteAcct
@@ -708,7 +706,7 @@ public abstract class Doc implements IDoc {
         .append(get_TableName())
         .append("_ID=")
         .append(p_po.getId());
-    executeUpdate(sql.toString(), trxName);
+    executeUpdate(sql.toString());
   } //  unlock
 
   /**
@@ -736,7 +734,7 @@ public abstract class Doc implements IDoc {
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
       try {
-        pstmt = prepareStatement(sql, null);
+        pstmt = prepareStatement(sql);
         pstmt.setInt(1, getC_DocType_ID());
         rsDT = pstmt.executeQuery();
         if (rsDT.next()) {
@@ -746,7 +744,6 @@ public abstract class Doc implements IDoc {
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        close(rsDT, pstmt);
         rsDT = null;
         pstmt = null;
       }
@@ -767,7 +764,7 @@ public abstract class Doc implements IDoc {
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
       try {
-        pstmt = prepareStatement(sql.toString(), null);
+        pstmt = prepareStatement(sql.toString());
         pstmt.setInt(1,  getClientId());
         pstmt.setString(2, m_DocumentType);
         rsDT = pstmt.executeQuery();
@@ -775,7 +772,6 @@ public abstract class Doc implements IDoc {
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        close(rsDT, pstmt);
         rsDT = null;
         pstmt = null;
       }
@@ -790,14 +786,13 @@ public abstract class Doc implements IDoc {
       PreparedStatement pstmt = null;
       ResultSet rsDT = null;
       try {
-        pstmt = prepareStatement(sql, null);
+        pstmt = prepareStatement(sql);
         pstmt.setInt(1,  getClientId());
         rsDT = pstmt.executeQuery();
         if (rsDT.next()) m_GL_Category_ID = rsDT.getInt(1);
       } catch (SQLException e) {
         log.log(Level.SEVERE, sql, e);
       } finally {
-        close(rsDT, pstmt);
         rsDT = null;
         pstmt = null;
       }
@@ -1234,7 +1229,7 @@ public abstract class Doc implements IDoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       if (para_1 == -1) //  GL Accounts
       pstmt.setInt(1, as.getC_AcctSchema_ID());
       else {
@@ -1247,7 +1242,7 @@ public abstract class Doc implements IDoc {
       log.log(Level.SEVERE, "AcctType=" + AcctType + " - SQL=" + sql, e);
       return 0;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -1523,7 +1518,6 @@ public abstract class Doc implements IDoc {
       if (p_po.get_TableName().equals(I_M_MatchPO.Table_Name)) {
         int docTypeId =
             getSQLValue(
-                (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                 p_po. getClientId(),
                 Doc.DOCTYPE_MatMatchPO);
@@ -1531,7 +1525,6 @@ public abstract class Doc implements IDoc {
       } else if (p_po.get_TableName().equals(I_M_MatchInv.Table_Name)) {
         int docTypeId =
             getSQLValue(
-                (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                 p_po. getClientId(),
                 Doc.DOCTYPE_MatMatchInv);
@@ -1539,7 +1532,6 @@ public abstract class Doc implements IDoc {
       } else if (p_po.get_TableName().equals(I_C_AllocationHdr.Table_Name)) {
         int docTypeId =
             getSQLValue(
-                (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                 p_po. getClientId(),
                 Doc.DOCTYPE_Allocation);
@@ -1547,7 +1539,6 @@ public abstract class Doc implements IDoc {
       } else if (p_po.get_TableName().equals(I_C_BankStatement.Table_Name)) {
         int docTypeId =
             getSQLValue(
-                (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                 p_po. getClientId(),
                 Doc.DOCTYPE_BankStatement);
@@ -1555,7 +1546,6 @@ public abstract class Doc implements IDoc {
       } else if (p_po.get_TableName().equals(I_C_Cash.Table_Name)) {
         int docTypeId =
             getSQLValue(
-                (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                 p_po. getClientId(),
                 Doc.DOCTYPE_CashJournal);
@@ -1563,7 +1553,6 @@ public abstract class Doc implements IDoc {
       } else if (p_po.get_TableName().equals(I_C_ProjectIssue.Table_Name)) {
         int docTypeId =
             getSQLValue(
-                (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                 p_po. getClientId(),
                 Doc.DOCTYPE_ProjectIssue);
@@ -1571,7 +1560,6 @@ public abstract class Doc implements IDoc {
       } else if (p_po.get_TableName().equals(I_M_Production.Table_Name)) {
         int docTypeId =
             getSQLValue(
-                (String) null,
                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                 p_po. getClientId(),
                 Doc.DOCTYPE_MatProduction);

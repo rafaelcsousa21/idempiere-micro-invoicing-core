@@ -305,7 +305,7 @@ public class MCostDetail extends X_M_CostDetail {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, ID);
       pstmt.setInt(2, M_AttributeSetInstance_ID);
       if (C_AcctSchema_ID > 0) {
@@ -316,7 +316,7 @@ public class MCostDetail extends X_M_CostDetail {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql + " - " + ID, e);
     } finally {
-      close(rs, pstmt);
+
     }
     return retValue;
   }
@@ -494,7 +494,7 @@ public class MCostDetail extends X_M_CostDetail {
   public boolean isVendorRMA() {
     if (!isSOTrx() && getM_InOutLine_ID() > 0) {
       String docBaseType =
-          getSQLValueString((String) null, INOUTLINE_DOCBASETYPE_SQL, getM_InOutLine_ID());
+          getSQLValueString(INOUTLINE_DOCBASETYPE_SQL, getM_InOutLine_ID());
       return Doc.DOCTYPE_MatShipment.equals(docBaseType);
     }
     return false;

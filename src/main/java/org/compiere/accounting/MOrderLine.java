@@ -200,7 +200,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     //	Get Line No
     if (getLine() == 0) {
       String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_OrderLine WHERE C_Order_ID=?";
-      int ii = getSQLValue(null, sql, getC_Order_ID());
+      int ii = getSQLValue(sql, getC_Order_ID());
       setLine(ii);
     }
 

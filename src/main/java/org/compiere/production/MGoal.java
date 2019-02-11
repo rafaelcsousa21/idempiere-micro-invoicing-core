@@ -16,7 +16,6 @@ import org.idempiere.common.util.CLogger;
 
 import org.idempiere.common.util.Env;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -46,14 +45,14 @@ public class MGoal extends X_PA_Goal {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, PA_Measure_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MGoal(ctx, rs, null));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -138,14 +137,14 @@ public class MGoal extends X_PA_Goal {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getPA_Goal_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MGoalRestriction(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

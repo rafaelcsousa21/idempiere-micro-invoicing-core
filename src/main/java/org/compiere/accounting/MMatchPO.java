@@ -61,7 +61,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, M_InOutLine_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
@@ -73,7 +73,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         throw new IllegalStateException(e);
       }
     } finally {
-      close(rs, pstmt);
+
     }
 
     MMatchPO[] retValue = new MMatchPO[list.size()];
@@ -100,14 +100,14 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, M_InOut_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -135,14 +135,14 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_Invoice_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -168,14 +168,14 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_OrderLine_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MMatchPO(ctx, rs, trxName));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -257,7 +257,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_OrderLine_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -299,7 +299,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
             // verify invoiceline not already linked to another inoutline
             int tmpInOutLineId =
                 getSQLValue(
-                    null,
                     "SELECT M_InOutLine_ID FROM C_InvoiceLine WHERE C_InvoiceLine_ID="
                         + C_InvoiceLine_ID);
             if (tmpInOutLineId > 0 && tmpInOutLineId != M_InOutLine_ID) {
@@ -309,7 +308,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
             // verify m_matchinv not created yet
             int cnt =
                 getSQLValue(
-                    null,
                     "SELECT Count(*) FROM M_MatchInv WHERE M_InOutLine_ID="
                         + M_InOutLine_ID
                         + " AND C_InvoiceLine_ID="
@@ -369,7 +367,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         throw new IllegalStateException(e);
       }
     } finally {
-      close(rs, pstmt);
+
     }
 
     //	Create New
@@ -378,7 +376,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
       if (sLine != null && iLine != null) {
         sLineMatchedQty =
             getSQLValueBD(
-                null,
                 "SELECT Sum(Qty) FROM M_MatchPO WHERE C_OrderLine_ID="
                     + C_OrderLine_ID
                     + " AND M_InOutLine_ID=?",
@@ -714,7 +711,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
       if (getM_InOutLine_ID() > 0 && getC_InvoiceLine_ID() > 0) {
         int cnt =
             getSQLValue(
-                null,
                 "SELECT Count(*) FROM M_MatchInv WHERE M_InOutLine_ID="
                     + getM_InOutLine_ID()
                     + " AND C_InvoiceLine_ID="
@@ -750,7 +746,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         MInOutLine line = new MInOutLine(getCtx(), getM_InOutLine_ID(), null);
         BigDecimal matchedQty =
             getSQLValueBD(
-                null,
                 "SELECT Coalesce(SUM(Qty),0) FROM M_MatchPO WHERE M_InOutLine_ID=?",
                 getM_InOutLine_ID());
         if (matchedQty != null && matchedQty.compareTo(line.getMovementQty()) > 0) {
@@ -768,7 +763,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         MInvoiceLine line = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), null);
         BigDecimal matchedQty =
             getSQLValueBD(
-                null,
                 "SELECT Coalesce(SUM(Qty),0) FROM M_MatchPO WHERE C_InvoiceLine_ID=?",
                 getC_InvoiceLine_ID());
         if (matchedQty != null && matchedQty.compareTo(line.getQtyInvoiced()) > 0) {
@@ -790,7 +784,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
           MOrderLine line = new MOrderLine(getCtx(), getC_OrderLine_ID(), null);
           BigDecimal invoicedQty =
               getSQLValueBD(
-                  null,
                   "SELECT Coalesce(SUM(Qty),0) FROM M_MatchPO WHERE C_InvoiceLine_ID > 0 and C_OrderLine_ID=? AND Reversal_ID IS NULL",
                   getC_OrderLine_ID());
           if (invoicedQty != null && invoicedQty.compareTo(line.getQtyOrdered()) > 0) {
@@ -805,7 +798,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
 
           BigDecimal deliveredQty =
               getSQLValueBD(
-                  null,
                   "SELECT Coalesce(SUM(Qty),0) FROM M_MatchPO WHERE M_InOutLine_ID > 0 and C_OrderLine_ID=? AND Reversal_ID IS NULL",
                   getC_OrderLine_ID());
           if (deliveredQty != null && deliveredQty.compareTo(line.getQtyOrdered()) > 0) {
@@ -870,7 +862,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
               + "FROM C_InvoiceLine il"
               + " INNER JOIN C_Invoice i ON (i.C_Invoice_ID=il.C_Invoice_ID) "
               + "WHERE C_InvoiceLine_ID=?";
-      invoiceDate = getSQLValueTS(null, sql, getC_InvoiceLine_ID());
+      invoiceDate = getSQLValueTS(sql, getC_InvoiceLine_ID());
     }
     //
     if (getM_InOutLine_ID() != 0) {
@@ -879,7 +871,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
               + "FROM M_InOutLine iol"
               + " INNER JOIN M_InOut io ON (io.M_InOut_ID=iol.M_InOut_ID) "
               + "WHERE iol.M_InOutLine_ID=?";
-      shipDate = getSQLValueTS(null, sql, getM_InOutLine_ID());
+      shipDate = getSQLValueTS(sql, getM_InOutLine_ID());
     }
     //
     //	Assuming that order date is always earlier

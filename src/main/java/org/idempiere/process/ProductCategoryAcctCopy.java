@@ -90,7 +90,7 @@ public class ProductCategoryAcctCopy extends SvrProcess {
             .append(" AND p.M_Product_Category_ID=")
             .append(p_M_Product_Category_ID)
             .append(")");
-    int updated = executeUpdate(sql.toString(), null);
+    int updated = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(updated), "@Updated@");
 
     //	Insert new Products
@@ -122,7 +122,7 @@ public class ProductCategoryAcctCopy extends SvrProcess {
             .append(" AND NOT EXISTS (SELECT * FROM M_Product_Acct pa ")
             .append("WHERE pa.M_Product_ID=p.M_Product_ID")
             .append(" AND pa.C_AcctSchema_ID=acct.C_AcctSchema_ID)");
-    int created = executeUpdate(sql.toString(), null);
+    int created = executeUpdate(sql.toString());
     addLog(0, null, new BigDecimal(created), "@Created@");
 
     StringBuilder msgreturn =

@@ -92,7 +92,7 @@ public class SequenceCheck extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         String tableName = rs.getString(1);
@@ -107,7 +107,7 @@ public class SequenceCheck extends SvrProcess {
       s_log.log(Level.SEVERE, sql, e);
       throw new AdempiereException(e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -121,7 +121,7 @@ public class SequenceCheck extends SvrProcess {
             + " AND EXISTS (SELECT * FROM AD_Table t "
             + "WHERE t.IsActive='Y' AND t.IsView='N'"
             + " AND UPPER(s.Name)=UPPER(t.TableName) AND s.Name<>t.TableName)";
-    int no = executeUpdateEx(sql, trxName);
+    int no = executeUpdateEx(sql);
     if (no > 0) {
       if (sp != null) {
         StringBuilder msglog = new StringBuilder("SyncName #").append(no);
@@ -138,7 +138,7 @@ public class SequenceCheck extends SvrProcess {
             + " AND UPPER(s.Name)=UPPER(t.TableName) AND s.Name<>t.TableName";
     //
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         String TableName = rs.getString(1);
@@ -154,7 +154,7 @@ public class SequenceCheck extends SvrProcess {
       s_log.log(Level.SEVERE, sql, e);
       throw new AdempiereException(e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -167,9 +167,9 @@ public class SequenceCheck extends SvrProcess {
    * @param sp server process or null
    */
   private static void checkTableID(Properties ctx, SvrProcess sp) {
-    int IDRangeEnd = getSQLValue(null, "SELECT IDRangeEnd FROM AD_System");
+    int IDRangeEnd = getSQLValue("SELECT IDRangeEnd FROM AD_System");
     if (IDRangeEnd <= 0)
-      IDRangeEnd = getSQLValue(null, "SELECT MIN(IDRangeStart)-1 FROM AD_Replication");
+      IDRangeEnd = getSQLValue("SELECT MIN(IDRangeStart)-1 FROM AD_Replication");
     if (s_log.isLoggable(Level.INFO)) s_log.info("IDRangeEnd = " + IDRangeEnd);
     //
     String sql = "SELECT * FROM AD_Sequence " + "WHERE IsTableID='Y' " + "ORDER BY Name";
@@ -179,7 +179,7 @@ public class SequenceCheck extends SvrProcess {
     String trxName = null;
     if (sp != null) trxName = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       rs = pstmt.executeQuery();
       while (rs.next()) {
         MSequence seq = new MSequence(ctx, rs, trxName);
@@ -200,7 +200,7 @@ public class SequenceCheck extends SvrProcess {
       s_log.log(Level.SEVERE, sql, e);
       throw new AdempiereException(e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

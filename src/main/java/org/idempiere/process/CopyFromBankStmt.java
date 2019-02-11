@@ -80,7 +80,7 @@ public class CopyFromBankStmt extends SvrProcess {
                 + " WHERE bs.C_BankStatement_ID=bsl.C_BankStatement_ID"
                 + " AND bs.DocStatus IN ('DR', 'CO', 'CL')"
                 + " AND bsl.C_Payment_ID=?";
-        if (getSQLValueEx(null, sql, fromLine.getC_Payment_ID()) < 0) {
+        if (getSQLValueEx(sql, fromLine.getC_Payment_ID()) < 0) {
           MBankStatementLine toLine = new MBankStatementLine(to);
           toLine.setPayment(new MPayment(getCtx(), fromLine.getC_Payment_ID(), null));
           toLine.saveEx();

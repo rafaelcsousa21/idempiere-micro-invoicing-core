@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -178,7 +177,7 @@ public class MWFNode extends X_AD_WF_Node {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getId());
       pstmt.setString(2, Env.getADLanguage(getCtx()));
       rs = pstmt.executeQuery();
@@ -192,7 +191,7 @@ public class MWFNode extends X_AD_WF_Node {
       // log.log(Level.SEVERE, sql, e);
       throw new DBException(e, sql);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

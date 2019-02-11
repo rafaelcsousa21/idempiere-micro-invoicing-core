@@ -100,7 +100,7 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
           "SELECT COALESCE(MAX(SeqNo),0) + 10 FROM "
               + Table_Name
               + " WHERE AD_Table_ID=? AND EventModelValidator=?";
-      int seqNo = getSQLValueEx(null, sql, getAD_Table_ID(), getEventModelValidator());
+      int seqNo = getSQLValueEx(sql, getAD_Table_ID(), getEventModelValidator());
       setSeqNo(seqNo);
     }
     //

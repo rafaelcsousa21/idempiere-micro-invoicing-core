@@ -149,7 +149,7 @@ public class MBOMProduct extends X_M_BOMProduct {
     //	Set Line Number
     if (getLine() == 0) {
       String sql = "SELECT NVL(MAX(Line),0)+10 FROM M_BOMProduct WHERE M_BOM_ID=?";
-      int ii = getSQLValue(null, sql, getM_BOM_ID());
+      int ii = getSQLValue(sql, getM_BOM_ID());
       setLine(ii);
     }
 

@@ -11,7 +11,6 @@ import org.idempiere.common.exceptions.DBException
 import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
-import software.hsharp.core.util.close
 import software.hsharp.core.util.executeUpdate
 import software.hsharp.core.util.prepareStatement
 import java.sql.PreparedStatement
@@ -60,7 +59,7 @@ object DocManager {
             var pstmt: PreparedStatement? = null
             var rs: ResultSet? = null
             try {
-                pstmt = prepareStatement(sql, null)
+                pstmt = prepareStatement(sql)
                 rs = pstmt!!.executeQuery()
                 while (rs!!.next()) {
                     tableIDs.add(rs.getInt(1))
@@ -69,7 +68,6 @@ object DocManager {
             } catch (e: SQLException) {
                 throw DBException(e, sql)
             } finally {
-                close(rs, pstmt)
             }
             // 	Convert to array
             documentsTableID = tableIDs.toIntArray()
@@ -216,7 +214,7 @@ object DocManager {
         var pstmt: PreparedStatement? = null
         var rs: ResultSet? = null
         try {
-            pstmt = prepareStatement(sql.toString(), trxName)
+            pstmt = prepareStatement(sql.toString())
             pstmt!!.setInt(1, Record_ID)
             rs = pstmt.executeQuery()
             if (rs!!.next()) {
@@ -231,7 +229,6 @@ object DocManager {
             else
                 throw AdempiereException(e)
         } finally {
-            close(rs, pstmt)
         }
     }
 
@@ -297,7 +294,7 @@ object DocManager {
                 .append("WHERE ")
                 .append(table.tableName).append("_ID=").append(Record_ID)
         CLogger.resetLast()
-        val no = executeUpdate(sql.toString(), trxName ?: "")
+        val no = executeUpdate(sql.toString())
         return no == 1
     } //  save
 }

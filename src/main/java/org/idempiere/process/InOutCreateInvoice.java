@@ -99,7 +99,7 @@ public class InOutCreateInvoice extends SvrProcess {
       invoice.setPaymentRule(order.getPaymentRule());
       invoice.setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
       invoice.saveEx();
-      invoice.load(null); // refresh from DB
+      invoice.load(); // refresh from DB
       // copy payment schedule from order if invoice doesn't have a current payment schedule
       MOrderPaySchedule[] opss =
           MOrderPaySchedule.getOrderPaySchedule(getCtx(), order.getC_Order_ID(), 0, null);

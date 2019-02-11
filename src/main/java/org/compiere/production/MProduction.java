@@ -201,14 +201,14 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getId());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1), null));
     } catch (SQLException ex) {
       throw new AdempiereException("Unable to load production lines", ex);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -271,7 +271,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     ResultSet rs = null;
 
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
 
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -424,7 +424,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     } catch (Exception e) {
       throw new AdempiereException("Failed to create production lines", e);
     } finally {
-      close(rs, pstmt);
+
     }
 
     return count;
@@ -529,13 +529,12 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
   protected String isBom(int M_Product_ID) {
     String bom =
         getSQLValueString(
-            null, "SELECT isbom FROM M_Product WHERE M_Product_ID = ?", M_Product_ID);
+            "SELECT isbom FROM M_Product WHERE M_Product_ID = ?", M_Product_ID);
     if ("N".compareTo(bom) == 0) {
       return "Attempt to create product line for Non Bill Of Materials";
     }
     int materials =
         getSQLValue(
-            null,
             "SELECT count(M_Product_BOM_ID) FROM M_Product_BOM WHERE M_Product_ID = ?",
             M_Product_ID);
     if (materials == 0) {
@@ -562,7 +561,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
               + " WHERE cc.currentcostprice > 0 AND pp.M_Product_ID = ?"
               + " AND ce.costingmethod='S'";
 
-      BigDecimal costPercentageDiff = getSQLValueBD(null, sql, M_Product_ID);
+      BigDecimal costPercentageDiff = getSQLValueBD(sql, M_Product_ID);
 
       if (costPercentageDiff == null) {
         costPercentageDiff = Env.ZERO;

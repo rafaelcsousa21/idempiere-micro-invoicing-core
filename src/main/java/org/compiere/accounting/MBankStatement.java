@@ -159,7 +159,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
             .append((processed ? "Y" : "N"))
             .append("' WHERE C_BankStatement_ID=")
             .append(getC_BankStatement_ID());
-    int noLine = executeUpdate(sql.toString(), null);
+    int noLine = executeUpdate(sql.toString());
     m_lines = null;
     if (log.isLoggable(Level.FINE)) log.fine("setProcessed - " + processed + " - Lines=" + noLine);
   } //	setProcessed
@@ -202,7 +202,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
   protected boolean beforeSave(boolean newRecord) {
     if (!isProcessed() && getBeginningBalance().compareTo(Env.ZERO) == 0) {
       MBankAccount ba = getBankAccount();
-      ba.load(null);
+      ba.load();
       setBeginningBalance(ba.getCurrentBalance());
     }
     setEndingBalance(getBeginningBalance().add(getStatementDifference()));
@@ -350,7 +350,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     }
     //	Update Bank Account
     MBankAccount ba = getBankAccount();
-    ba.load(null);
+    ba.load();
     // BF 1933645
     ba.setCurrentBalance(ba.getCurrentBalance().add(getStatementDifference()));
     ba.saveEx(null);
@@ -405,7 +405,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
       // Added Lines by AZ Goodwill
       // Restore Bank Account Balance
       MBankAccount ba = getBankAccount();
-      ba.load(null);
+      ba.load();
       ba.setCurrentBalance(ba.getCurrentBalance().subtract(getStatementDifference()));
       ba.saveEx();
       // End of Added Lines

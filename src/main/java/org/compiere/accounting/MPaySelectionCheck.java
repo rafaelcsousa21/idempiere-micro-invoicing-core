@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -43,7 +42,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, trxName);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_Payment_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -55,7 +54,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -340,14 +339,14 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_PaySelectionCheck_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) list.add(new MPaySelectionLine(getCtx(), rs, null));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

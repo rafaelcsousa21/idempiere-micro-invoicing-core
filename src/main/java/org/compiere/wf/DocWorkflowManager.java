@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -144,7 +143,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, wf.getClientId());
       pstmt.setInt(2, document.getId());
       pstmt.setInt(3, document.getTableId());
@@ -154,7 +153,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
     } catch (Exception e) {
       log.log(Level.SEVERE, "Logic=" + logic + " - SQL=" + sql.toString(), e);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

@@ -31,7 +31,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.close;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -113,7 +112,7 @@ public class RequestInvoice extends SvrProcess {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql.toString(), null);
+      pstmt = prepareStatement(sql.toString());
       int index = 1;
       pstmt.setInt(index++, p_R_RequestType_ID);
       if (p_R_Group_ID != 0) pstmt.setInt(index++, p_R_Group_ID);
@@ -137,7 +136,7 @@ public class RequestInvoice extends SvrProcess {
       log.log(Level.SEVERE, sql.toString(), e);
       throw e;
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }

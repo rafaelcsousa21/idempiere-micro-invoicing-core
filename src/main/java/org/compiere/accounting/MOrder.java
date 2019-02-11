@@ -259,7 +259,6 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     if (getM_PriceList_ID() == 0) {
       int ii =
           getSQLValueEx(
-              null,
               "SELECT M_PriceList_ID FROM M_PriceList "
                   + "WHERE AD_Client_ID=? AND IsSOPriceList=? AND IsActive=?"
                   + "ORDER BY IsDefault DESC",
@@ -271,7 +270,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     //	Default Currency
     if (getC_Currency_ID() == 0) {
       String sql = "SELECT C_Currency_ID FROM M_PriceList WHERE M_PriceList_ID=?";
-      int ii = getSQLValue(null, sql, getM_PriceList_ID());
+      int ii = getSQLValue(sql, getM_PriceList_ID());
       if (ii != 0) setC_Currency_ID(ii);
       else setC_Currency_ID(Env.getContextAsInt(getCtx(), "#C_Currency_ID"));
     }
@@ -292,7 +291,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
       else {
         String sql =
             "SELECT C_PaymentTerm_ID FROM C_PaymentTerm WHERE AD_Client_ID=? AND IsDefault='Y' AND IsActive='Y'";
-        ii = getSQLValue(null, sql,  getClientId());
+        ii = getSQLValue(sql,  getClientId());
         if (ii != 0) setC_PaymentTerm_ID(ii);
       }
     }
@@ -327,7 +326,6 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             || is_ValueChanged(COLUMNNAME_DateOrdered))) {
       int cnt =
           getSQLValueEx(
-              null,
               "SELECT COUNT(*) FROM C_OrderLine WHERE C_Order_ID=? AND M_Product_ID>0",
               getC_Order_ID());
       if (cnt > 0) {

@@ -684,19 +684,19 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
    * @return precision
    */
   public int getPrecision() {
-    if (m_precision != null) return m_precision.intValue();
+    if (m_precision != null) return m_precision;
 
     String sql =
         "SELECT c.StdPrecision "
             + "FROM C_Currency c INNER JOIN C_Invoice x ON (x.C_Currency_ID=c.C_Currency_ID) "
             + "WHERE x.C_Invoice_ID=?";
-    int i = getSQLValue(null, sql, getC_Invoice_ID());
+    int i = getSQLValue(sql, getC_Invoice_ID());
     if (i < 0) {
       log.warning("getPrecision = " + i + " - set to 2");
       i = 2;
     }
-    m_precision = new Integer(i);
-    return m_precision.intValue();
+    m_precision = i;
+    return m_precision;
   } //	getPrecision
 
   /**
@@ -708,7 +708,6 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     if (m_M_PriceList_ID == 0) {
       m_M_PriceList_ID =
           getSQLValue(
-              null,
               "SELECT M_PriceList_ID FROM C_Invoice WHERE C_Invoice_ID=?",
               getC_Invoice_ID());
     }
@@ -764,7 +763,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       //	Get Line No
       if (getLine() == 0) {
         String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_InvoiceLine WHERE C_Invoice_ID=?";
-        int ii = getSQLValue(null, sql, getC_Invoice_ID());
+        int ii = getSQLValue(sql, getC_Invoice_ID());
         setLine(ii);
       }
       //	UOM
@@ -890,7 +889,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     StringBuilder sql =
         new StringBuilder("DELETE C_LandedCostAllocation WHERE C_InvoiceLine_ID=")
             .append(getC_InvoiceLine_ID());
-    int no = executeUpdate(sql.toString(), null);
+    int no = executeUpdate(sql.toString());
     if (no != 0) if (log.isLoggable(Level.INFO)) log.info("Deleted #" + no);
     MLandedCost[] lcs = MLandedCost.getLandedCosts(this);
     if (lcs.length == 0) return "";
@@ -1111,7 +1110,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, null);
+      pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_InvoiceLine_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -1121,7 +1120,6 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     } catch (Exception e) {
       log.log(Level.SEVERE, "getLandedCost", e);
     } finally {
-      close(rs, pstmt);
       rs = null;
       pstmt = null;
     }
@@ -1211,6 +1209,6 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                     + " AND "
                     + MMatchInv.COLUMNNAME_Processed
                     + "=?";
-    return getSQLValueBDEx(null, sql, new Object[] {getC_InvoiceLine_ID(), true} );
+    return getSQLValueBDEx(sql, new Object[] {getC_InvoiceLine_ID(), true});
   }
 } //	MInvoiceLine

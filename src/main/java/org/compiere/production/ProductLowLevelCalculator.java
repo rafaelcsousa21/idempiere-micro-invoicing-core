@@ -62,7 +62,7 @@ class ProductLowLevelCalculator {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, m_trxName);
+      pstmt = prepareStatement(sql);
       setParameters(pstmt, new Object[] {true, AD_Client_ID, M_Product_ID});
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -80,7 +80,7 @@ class ProductLowLevelCalculator {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
@@ -103,7 +103,7 @@ class ProductLowLevelCalculator {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     try {
-      pstmt = prepareStatement(sql, m_trxName);
+      pstmt = prepareStatement(sql);
       setParameters(pstmt, new Object[] {true, true, AD_Client_ID, PP_Product_BOMLine_ID});
       rs = pstmt.executeQuery();
       while (rs.next()) {
@@ -134,7 +134,7 @@ class ProductLowLevelCalculator {
     } catch (SQLException e) {
       throw new DBException(e, sql);
     } finally {
-      close(rs, pstmt);
+
       rs = null;
       pstmt = null;
     }
