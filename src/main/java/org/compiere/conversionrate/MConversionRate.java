@@ -214,8 +214,8 @@ public class MConversionRate extends X_C_Conversion_Rate {
    * @param C_Conversion_Rate_ID id
    * @param trxName transaction
    */
-  public MConversionRate(Properties ctx, int C_Conversion_Rate_ID, String trxName) {
-    super(ctx, C_Conversion_Rate_ID, trxName);
+  public MConversionRate(Properties ctx, int C_Conversion_Rate_ID) {
+    super(ctx, C_Conversion_Rate_ID);
     if (C_Conversion_Rate_ID == 0) {
       //	setC_Conversion_Rate_ID (0);
       //	setC_Currency_ID (0);
@@ -233,8 +233,8 @@ public class MConversionRate extends X_C_Conversion_Rate {
    * @param rs result set
    * @param trxName transaction
    */
-  public MConversionRate(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MConversionRate(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MConversionRate
 
   /**
@@ -254,7 +254,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
       int C_Currency_ID_To,
       BigDecimal MultiplyRate,
       Timestamp ValidFrom) {
-    this(po.getCtx(), 0, null);
+    this(po.getCtx(), 0);
     setClientOrg(po);
     setC_ConversionType_ID(C_ConversionType_ID);
     setC_Currency_ID(C_Currency_ID);

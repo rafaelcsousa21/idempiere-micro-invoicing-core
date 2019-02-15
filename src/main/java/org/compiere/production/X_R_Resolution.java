@@ -19,14 +19,14 @@ public class X_R_Resolution extends BasePOName implements I_R_Resolution, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_Resolution(Properties ctx, int R_Resolution_ID, String trxName) {
-    super(ctx, R_Resolution_ID, trxName);
+  public X_R_Resolution(Properties ctx, int R_Resolution_ID) {
+    super(ctx, R_Resolution_ID);
     /** if (R_Resolution_ID == 0) { setName (null); setR_Resolution_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_R_Resolution(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_Resolution(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

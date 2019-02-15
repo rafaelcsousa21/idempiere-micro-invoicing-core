@@ -52,8 +52,8 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
    * @param GL_Journal_ID id
    * @param trxName transaction
    */
-  public MJournal(Properties ctx, int GL_Journal_ID, String trxName) {
-    super(ctx, GL_Journal_ID, trxName);
+  public MJournal(Properties ctx, int GL_Journal_ID) {
+    super(ctx, GL_Journal_ID);
     if (GL_Journal_ID == 0) {
       //	setGL_Journal_ID (0);		//	PK
       //	setC_AcctSchema_ID (0);
@@ -87,8 +87,8 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
    * @param rs result set
    * @param trxName transaction
    */
-  public MJournal(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MJournal(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MJournal
 
   /**
@@ -97,7 +97,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
    * @param parent batch
    */
   public MJournal(MJournalBatch parent) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setGL_JournalBatch_ID(parent.getGL_JournalBatch_ID());
     setC_DocType_ID(parent.getC_DocType_ID());
@@ -115,7 +115,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
    * @param original original
    */
   public MJournal(MJournal original) {
-    this(original.getCtx(), 0, null);
+    this(original.getCtx(), 0);
     setClientOrg(original);
     setGL_JournalBatch_ID(original.getGL_JournalBatch_ID());
     //
@@ -199,7 +199,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     final String whereClause = "GL_Journal_ID=?";
     List<MJournalLine> list =
-        new Query(getCtx(), I_GL_JournalLine.Table_Name, whereClause, null)
+        new Query(getCtx(), I_GL_JournalLine.Table_Name, whereClause)
             .setParameters(getGL_Journal_ID())
             .setOrderBy("Line")
             .list();
@@ -222,7 +222,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     int count = 0;
     MJournalLine[] fromLines = fromJournal.getLines(false);
     for (int i = 0; i < fromLines.length; i++) {
-      MJournalLine toLine = new MJournalLine(getCtx(), 0, null);
+      MJournalLine toLine = new MJournalLine(getCtx(), 0);
       PO.copyValues(fromLines[i], toLine,  getClientId(),  getOrgId());
       toLine.setGL_Journal_ID(getGL_Journal_ID());
       //
@@ -415,7 +415,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     // Get Period
     MPeriod period = (MPeriod) getC_Period();
     if (!period.isInPeriod(getDateAcct())) {
-      period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId(), null);
+      period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId());
       if (period == null) {
         log.warning("No Period for " + getDateAcct());
         m_processMsg = "@PeriodNotFound@";
@@ -641,7 +641,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
           line.setAmtSourceDr(Env.ZERO);
           line.setAmtSourceCr(Env.ZERO);
           line.setQty(Env.ZERO);
-          line.saveEx(null);
+          line.saveEx();
         }
       }
       setProcessed(true);
@@ -746,7 +746,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     reverse.setProcessing(false);
     reverse.setDocStatus(X_GL_Journal.DOCSTATUS_Reversed);
     reverse.setDocAction(X_GL_Journal.DOCACTION_None);
-    reverse.saveEx(null);
+    reverse.saveEx();
     //
     msgd = new StringBuilder("(").append(reverse.getDocumentNo()).append("<-)");
     addDescription(msgd.toString());
@@ -819,7 +819,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     reverse.setProcessing(false);
     reverse.setDocStatus(X_GL_Journal.DOCSTATUS_Reversed);
     reverse.setDocAction(X_GL_Journal.DOCACTION_None);
-    reverse.saveEx(null);
+    reverse.saveEx();
     //
     msgd = new StringBuilder("(").append(reverse.getDocumentNo()).append("<-)");
     addDescription(msgd.toString());
@@ -845,7 +845,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
 
     // teo_sarca - FR [ 1776045 ] Add ReActivate action to GL Journal
     MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(),  getOrgId());
-    MFactAcct.deleteEx(MJournal.Table_ID, getId(), null);
+    MFactAcct.deleteEx(MJournal.Table_ID, getId());
     setPosted(false);
     setProcessed(false);
     setDocAction(X_GL_Journal.DOCACTION_Complete);

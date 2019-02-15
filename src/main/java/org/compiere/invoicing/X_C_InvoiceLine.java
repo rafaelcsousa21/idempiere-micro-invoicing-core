@@ -5,7 +5,6 @@ import org.compiere.model.I_C_InvoiceLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -25,8 +24,8 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_InvoiceLine(Properties ctx, int C_InvoiceLine_ID, String trxName) {
-    super(ctx, C_InvoiceLine_ID, trxName);
+  public X_C_InvoiceLine(Properties ctx, int C_InvoiceLine_ID) {
+    super(ctx, C_InvoiceLine_ID);
     /**
      * if (C_InvoiceLine_ID == 0) { setC_Invoice_ID (0); setC_InvoiceLine_ID (0); setC_Tax_ID (0);
      * setIsDescription (false); // N setIsPrinted (true); // Y setLine (0); // @SQL=SELECT
@@ -38,8 +37,8 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
   }
 
   /** Load Constructor */
-  public X_C_InvoiceLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_InvoiceLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_C_InvoiceLine(Properties ctx, Row row) {
     super(ctx, row);
@@ -177,7 +176,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
+            .getPO(getC_Invoice_ID());
   }
 
   /**
@@ -187,7 +186,7 @@ public class X_C_InvoiceLine extends PO implements I_Persistent {
    */
   public void setC_Invoice_ID(int C_Invoice_ID) {
     if (C_Invoice_ID < 1) set_ValueNoCheck(I_C_InvoiceLine.COLUMNNAME_C_Invoice_ID, null);
-    else set_ValueNoCheck(I_C_InvoiceLine.COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    else set_ValueNoCheck(I_C_InvoiceLine.COLUMNNAME_C_Invoice_ID, C_Invoice_ID);
   }
 
   /**

@@ -267,7 +267,7 @@ public class ImportConversionRate extends SvrProcess {
       pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        X_I_Conversion_Rate imp = new X_I_Conversion_Rate(getCtx(), rs, null);
+        X_I_Conversion_Rate imp = new X_I_Conversion_Rate(getCtx(), rs);
         MConversionRate rate =
             new MConversionRate(
                 imp,

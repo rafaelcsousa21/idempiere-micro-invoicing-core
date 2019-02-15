@@ -6,7 +6,6 @@ import org.compiere.model.I_AD_Workflow;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.process.ProcessInfo;
-import org.compiere.product.MProduct;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.exceptions.DBException;
@@ -17,7 +16,6 @@ import org.idempiere.common.util.Env;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -50,7 +48,7 @@ public class MWorkflow extends X_AD_Workflow {
     String key = Env.getADLanguage(ctx) + "_" + AD_Workflow_ID;
     MWorkflow retValue = (MWorkflow) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MWorkflow(ctx, AD_Workflow_ID, null);
+    retValue = new MWorkflow(ctx, AD_Workflow_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -74,7 +72,7 @@ public class MWorkflow extends X_AD_Workflow {
     if (s_cacheDocValue.isReset()) {
       final String whereClause = "WorkflowType=? AND IsValid=?";
       List<MWorkflow> workflows =
-          new Query(ctx, I_AD_Workflow.Table_Name, whereClause, trxName)
+          new Query(ctx, I_AD_Workflow.Table_Name, whereClause)
               .setParameters(new Object[] {X_AD_Workflow.WORKFLOWTYPE_DocumentValue, true})
               .setOnlyActiveRecords(true)
               .setOrderBy("AD_Client_ID, AD_Table_ID")
@@ -134,8 +132,8 @@ public class MWorkflow extends X_AD_Workflow {
    * @param AD_Workflow_ID ID
    * @param trxName transaction
    */
-  public MWorkflow(Properties ctx, int AD_Workflow_ID, String trxName) {
-    super(ctx, AD_Workflow_ID, trxName);
+  public MWorkflow(Properties ctx, int AD_Workflow_ID) {
+    super(ctx, AD_Workflow_ID);
     if (AD_Workflow_ID == 0) {
       setWFAccessLevel(X_AD_Workflow.ACCESSLEVEL_Organization);
       setAuthor("ComPiere, Inc.");
@@ -161,8 +159,8 @@ public class MWorkflow extends X_AD_Workflow {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWorkflow(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWorkflow(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
     loadTrl();
     loadNodes();
   } //	Workflow
@@ -211,7 +209,7 @@ public class MWorkflow extends X_AD_Workflow {
   /** Load All Nodes */
   private void loadNodes() {
     m_nodes =
-        new Query(getCtx(), MWFNode.Table_Name, "AD_WorkFlow_ID=?", null)
+        new Query(getCtx(), MWFNode.Table_Name, "AD_WorkFlow_ID=?")
             .setParameters(new Object[] {getId()})
             .setOnlyActiveRecords(true)
             .list();
@@ -376,7 +374,7 @@ public class MWorkflow extends X_AD_Workflow {
       //	save all nodes -- Creating new Workflow
       MWFNode[] nodes = getNodesInOrder(0);
       for (int i = 0; i < nodes.length; i++) {
-        nodes[i].saveEx(null);
+        nodes[i].saveEx();
       }
     }
 
@@ -407,23 +405,12 @@ public class MWorkflow extends X_AD_Workflow {
    * ************************************************************************ Start Workflow.
    *
    * @param pi Process Info (Record_ID)
-   * @deprecated
    * @return process
    */
-  public MWFProcess start(ProcessInfo pi) {
-    return start(pi, null);
-  }
-
-  /**
-   * ************************************************************************ Start Workflow.
-   *
-   * @param pi Process Info (Record_ID)
-   * @return process
-   */
-  public MWFProcess start(IProcessInfo pi, String trxName) {
+  public MWFProcess start(IProcessInfo pi) {
     MWFProcess retValue = null;
     try {
-      retValue = new MWFProcess(this, pi, null);
+      retValue = new MWFProcess(this, pi);
       retValue.saveEx();
       pi.setSummary(Msg.getMsg(getCtx(), "Processing"));
       retValue.startWork();

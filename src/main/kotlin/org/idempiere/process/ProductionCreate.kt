@@ -41,7 +41,7 @@ class ProductionCreate(
         }
 
         if (p_M_Production_ID == 0) p_M_Production_ID = record_ID
-        if (m_production == null) m_production = MProduction(ctx, p_M_Production_ID, null)
+        if (m_production == null) m_production = MProduction(ctx, p_M_Production_ID)
     } // prepare
 
     @Throws(Exception::class)
@@ -99,7 +99,7 @@ class ProductionCreate(
             m_production!!.deleteLines(null)
             created = m_production!!.createLines(mustBeStocked)
         } else {
-            val planQuery = Query(ctx, I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?", null)
+            val planQuery = Query(ctx, I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?")
             val plans = planQuery.setParameters(m_production!!.m_Production_ID).list<MProductionPlan>()
             for (plan in plans) {
                 validateEndProduct(plan.m_Product_ID)
@@ -120,7 +120,7 @@ class ProductionCreate(
         }
 
         m_production!!.isCreated = "Y"
-        m_production!!.save(null)
+        m_production!!.save()
         val msgreturn = StringBuilder().append(created).append(" production lines were created")
         return msgreturn.toString()
     }

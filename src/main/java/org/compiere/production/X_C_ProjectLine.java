@@ -4,7 +4,6 @@ import org.compiere.model.I_C_ProjectLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_ProjectLine(Properties ctx, int C_ProjectLine_ID, String trxName) {
-    super(ctx, C_ProjectLine_ID, trxName);
+  public X_C_ProjectLine(Properties ctx, int C_ProjectLine_ID) {
+    super(ctx, C_ProjectLine_ID);
     /**
      * if (C_ProjectLine_ID == 0) { setC_Project_ID (0); setC_ProjectLine_ID (0); setInvoicedAmt
      * (Env.ZERO); setInvoicedQty (Env.ZERO); // 0 setIsPrinted (true); // Y setLine (0);
@@ -35,8 +34,8 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
   }
 
   /** Load Constructor */
-  public X_C_ProjectLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_ProjectLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -107,7 +106,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
   public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
     return (org.compiere.model.I_C_Project)
         MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-            .getPO(getC_Project_ID(), null);
+            .getPO(getC_Project_ID());
   }
 
   /**
@@ -117,7 +116,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
    */
   public void setC_Project_ID(int C_Project_ID) {
     if (C_Project_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Project_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_Project_ID, C_Project_ID);
   }
 
   /**
@@ -138,7 +137,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
    */
   public void setC_ProjectIssue_ID(int C_ProjectIssue_ID) {
     if (C_ProjectIssue_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, Integer.valueOf(C_ProjectIssue_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, C_ProjectIssue_ID);
   }
 
   /**

@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_PaymentAllocate;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -22,8 +21,8 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_PaymentAllocate(Properties ctx, int C_PaymentAllocate_ID, String trxName) {
-    super(ctx, C_PaymentAllocate_ID, trxName);
+  public X_C_PaymentAllocate(Properties ctx, int C_PaymentAllocate_ID) {
+    super(ctx, C_PaymentAllocate_ID);
     /**
      * if (C_PaymentAllocate_ID == 0) { setAmount (Env.ZERO); setC_Invoice_ID (0);
      * setC_PaymentAllocate_ID (0); setC_Payment_ID (0); setDiscountAmt (Env.ZERO); setOverUnderAmt
@@ -32,8 +31,8 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
   }
 
   /** Load Constructor */
-  public X_C_PaymentAllocate(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_PaymentAllocate(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

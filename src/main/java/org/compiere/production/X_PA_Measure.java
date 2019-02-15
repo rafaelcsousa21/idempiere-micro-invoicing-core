@@ -21,8 +21,8 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_PA_Measure(Properties ctx, int PA_Measure_ID, String trxName) {
-    super(ctx, PA_Measure_ID, trxName);
+  public X_PA_Measure(Properties ctx, int PA_Measure_ID) {
+    super(ctx, PA_Measure_ID);
     /**
      * if (PA_Measure_ID == 0) { setMeasureDataType (null); // T setMeasureType (null); // M setName
      * (null); setPA_Measure_ID (0); }
@@ -30,8 +30,8 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure, I_Persiste
   }
 
   /** Load Constructor */
-  public X_PA_Measure(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_PA_Measure(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

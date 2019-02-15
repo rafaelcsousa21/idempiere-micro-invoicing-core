@@ -37,8 +37,8 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
    * @param C_BankStatementLine_ID id
    * @param trxName transaction
    */
-  public MBankStatementLine(Properties ctx, int C_BankStatementLine_ID, String trxName) {
-    super(ctx, C_BankStatementLine_ID, trxName);
+  public MBankStatementLine(Properties ctx, int C_BankStatementLine_ID) {
+    super(ctx, C_BankStatementLine_ID);
     if (C_BankStatementLine_ID == 0) {
       //	setC_BankStatement_ID (0);		//	Parent
       //	setC_Charge_ID (0);
@@ -62,8 +62,8 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
    * @param rs result set
    * @param trxName transaction
    */
-  public MBankStatementLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBankStatementLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MBankStatementLine
 
   /**
@@ -72,7 +72,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
    * @param statement Bank Statement that the line is part of
    */
   public MBankStatementLine(MBankStatement statement) {
-    this(statement.getCtx(), 0, null);
+    this(statement.getCtx(), 0);
     setClientOrg(statement);
     setC_BankStatement_ID(statement.getC_BankStatement_ID());
     setStatementLineDate(statement.getStatementDate());
@@ -170,12 +170,12 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
 
     //	Set References
     if (getC_Payment_ID() != 0 && getC_BPartner_ID() == 0) {
-      MPayment payment = new MPayment(getCtx(), getC_Payment_ID(), null);
+      MPayment payment = new MPayment(getCtx(), getC_Payment_ID());
       setC_BPartner_ID(payment.getC_BPartner_ID());
       if (payment.getC_Invoice_ID() != 0) setC_Invoice_ID(payment.getC_Invoice_ID());
     }
     if (getC_Invoice_ID() != 0 && getC_BPartner_ID() == 0) {
-      MInvoice invoice = new MInvoice(getCtx(), getC_Invoice_ID(), null);
+      MInvoice invoice = new MInvoice(getCtx(), getC_Invoice_ID());
       setC_BPartner_ID(invoice.getC_BPartner_ID());
     }
 
@@ -192,7 +192,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
    */
   public MBankStatement getParent() {
     if (m_parent == null)
-      m_parent = new MBankStatement(getCtx(), getC_BankStatement_ID(), null);
+      m_parent = new MBankStatement(getCtx(), getC_BankStatement_ID());
     return m_parent;
   } //	getParent
 

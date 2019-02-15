@@ -612,7 +612,7 @@ public class ImportOrder extends SvrProcess {
       pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        X_I_Order imp = new X_I_Order(getCtx(), rs, null);
+        X_I_Order imp = new X_I_Order(getCtx(), rs);
         if (imp.getBPartnerValue() == null) {
           if (imp.getEMail() != null) imp.setBPartnerValue(imp.getEMail());
           else if (imp.getName() != null) imp.setBPartnerValue(imp.getName());
@@ -623,9 +623,9 @@ public class ImportOrder extends SvrProcess {
           else imp.setName(imp.getBPartnerValue());
         }
         //	BPartner
-        MBPartner bp = MBPartner.get(getCtx(), imp.getBPartnerValue(), null);
+        MBPartner bp = MBPartner.get(getCtx(), imp.getBPartnerValue());
         if (bp == null) {
-          bp = new MBPartner(getCtx(), -1, null);
+          bp = new MBPartner(getCtx(), -1);
           bp.setClientOrg(imp.getClientId(), imp.getOrgId());
           bp.setValue(imp.getBPartnerValue());
           bp.setName(imp.getName());
@@ -655,7 +655,7 @@ public class ImportOrder extends SvrProcess {
         }
         if (bpl == null) {
           //	New Location
-          MLocation loc = new MLocation(getCtx(), 0, null);
+          MLocation loc = new MLocation(getCtx(), 0);
           loc.setAddress1(imp.getAddress1());
           loc.setAddress2(imp.getAddress2());
           loc.setCity(imp.getCity());
@@ -734,7 +734,7 @@ public class ImportOrder extends SvrProcess {
       MOrder order = null;
       int lineNo = 0;
       while (rs.next()) {
-        X_I_Order imp = new X_I_Order(getCtx(), rs, null);
+        X_I_Order imp = new X_I_Order(getCtx(), rs);
         String cmpDocumentNo = imp.getDocumentNo();
         if (cmpDocumentNo == null) cmpDocumentNo = "";
         //	New Order
@@ -759,7 +759,7 @@ public class ImportOrder extends SvrProcess {
           oldDocumentNo = imp.getDocumentNo();
           if (oldDocumentNo == null) oldDocumentNo = "";
           //
-          order = new MOrder(getCtx(), 0, null);
+          order = new MOrder(getCtx(), 0);
           order.setClientOrg(imp.getClientId(), imp.getOrgId());
           order.setC_DocTypeTarget_ID(imp.getC_DocType_ID());
           order.setIsSOTrx(imp.isSOTrx());

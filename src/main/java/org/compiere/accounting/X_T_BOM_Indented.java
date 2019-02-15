@@ -14,14 +14,14 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_T_BOM_Indented(Properties ctx, int T_BOM_Indented_ID, String trxName) {
-    super(ctx, T_BOM_Indented_ID, trxName);
+  public X_T_BOM_Indented(Properties ctx, int T_BOM_Indented_ID) {
+    super(ctx, T_BOM_Indented_ID);
     /** if (T_BOM_Indented_ID == 0) { setT_BOM_Indented_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_T_BOM_Indented(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_T_BOM_Indented(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

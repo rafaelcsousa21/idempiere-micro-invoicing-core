@@ -30,8 +30,8 @@ public class MProductionPlan extends X_M_ProductionPlan {
    * @param M_ProductionPlan_ID
    * @param trxName
    */
-  public MProductionPlan(Properties ctx, int M_ProductionPlan_ID, String trxName) {
-    super(ctx, M_ProductionPlan_ID, trxName);
+  public MProductionPlan(Properties ctx, int M_ProductionPlan_ID) {
+    super(ctx, M_ProductionPlan_ID);
   }
 
   /**
@@ -39,8 +39,8 @@ public class MProductionPlan extends X_M_ProductionPlan {
    * @param rs
    * @param trxName
    */
-  public MProductionPlan(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProductionPlan(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   public MProductionLine[] getLines() {
@@ -57,7 +57,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getId());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1), null));
+      while (rs.next()) list.add(new MProductionLine(getCtx(), rs.getInt(1)));
     } catch (SQLException ex) {
       throw new AdempiereException("Unable to load production lines", ex);
     } finally {
@@ -85,7 +85,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
     int count = 0;
 
     // product to be produced
-    MProduct finishedProduct = new MProduct(getCtx(), getM_Product_ID(), null);
+    MProduct finishedProduct = new MProduct(getCtx(), getM_Product_ID());
 
     MProductionLine line = new MProductionLine(this);
     line.setLine(lineno);
@@ -136,7 +136,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
         BigDecimal BOMQty = rs.getBigDecimal(2);
         BigDecimal BOMMovementQty = BOMQty.multiply(requiredQty);
 
-        MProduct bomproduct = new MProduct(Env.getCtx(), BOMProduct_ID, null);
+        MProduct bomproduct = new MProduct(Env.getCtx(), BOMProduct_ID);
 
         if (bomproduct.isBOM() && bomproduct.isPhantom()) {
           count = count + createLines(mustBeStocked, bomproduct, BOMMovementQty, lineno);
@@ -153,7 +153,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
             BOMLine.setM_Locator_ID(defaultLocator);
             BOMLine.setQtyUsed(BOMMovementQty);
             BOMLine.setPlannedQty(BOMMovementQty);
-            BOMLine.saveEx(null);
+            BOMLine.saveEx();
 
             lineno = lineno + 10;
             count++;
@@ -165,7 +165,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
             BOMLine.setM_Locator_ID(defaultLocator);
             BOMLine.setQtyUsed(BOMMovementQty);
             BOMLine.setPlannedQty(BOMMovementQty);
-            BOMLine.saveEx(null);
+            BOMLine.saveEx();
 
             lineno = lineno + 10;
             count++;
@@ -211,13 +211,13 @@ public class MProductionPlan extends X_M_ProductionPlan {
                 int loc = storages[sl].getM_Locator_ID();
                 int slASI = storages[sl].getMAttributeSetInstance_ID();
                 int locAttribSet =
-                    new MAttributeSetInstance(getCtx(), asi, null).getMAttributeSet_ID();
+                    new MAttributeSetInstance(getCtx(), asi).getMAttributeSet_ID();
 
                 // roll up costing attributes if in the same locator
                 if (locAttribSet == 0 && previousAttribSet == 0 && prevLoc == loc) {
                   BOMLine.setQtyUsed(BOMLine.getQtyUsed().add(lineQty));
                   BOMLine.setPlannedQty(BOMLine.getQtyUsed());
-                  BOMLine.saveEx(null);
+                  BOMLine.saveEx();
 
                 }
                 // otherwise create new line
@@ -230,7 +230,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                   BOMLine.setPlannedQty(lineQty);
                   if (slASI != 0 && locAttribSet != 0) // ie non costing attribute
                   BOMLine.setM_AttributeSetInstance_ID(slASI);
-                  BOMLine.saveEx(null);
+                  BOMLine.saveEx();
 
                   lineno = lineno + 10;
                   count++;
@@ -251,7 +251,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                 if (previousAttribSet == 0 && prevLoc == defaultLocator) {
                   BOMLine.setQtyUsed(BOMLine.getQtyUsed().add(BOMMovementQty));
                   BOMLine.setPlannedQty(BOMLine.getQtyUsed());
-                  BOMLine.saveEx(null);
+                  BOMLine.saveEx();
 
                 }
                 // otherwise create new line
@@ -263,7 +263,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                   BOMLine.setM_Locator_ID(defaultLocator);
                   BOMLine.setQtyUsed(BOMMovementQty);
                   BOMLine.setPlannedQty(BOMMovementQty);
-                  BOMLine.saveEx(null);
+                  BOMLine.saveEx();
 
                   lineno = lineno + 10;
                   count++;

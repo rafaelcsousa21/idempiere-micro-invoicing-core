@@ -57,7 +57,7 @@ public class TreeMaintenance extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("AD_Tree_ID=" + m_AD_Tree_ID);
     if (m_AD_Tree_ID == 0) throw new IllegalArgumentException("Tree_ID = 0");
-    MTree tree = new MTree(getCtx(), m_AD_Tree_ID, null);
+    MTree tree = new MTree(getCtx(), m_AD_Tree_ID);
     if (tree == null || tree.getAD_Tree_ID() == 0)
       throw new IllegalArgumentException("No Tree -" + tree);
     //
@@ -173,15 +173,13 @@ public class TreeMaintenance extends SvrProcess {
         rs = pstmt.executeQuery();
         while (rs.next()) {
           int Node_ID = rs.getInt(1);
-          PO rec = (PO) table.getPO(Node_ID, null);
+          PO rec = (PO) table.getPO(Node_ID);
           rec.update_Tree(tree.getTreeType());
         }
       } catch (Exception e) {
         log.log(Level.SEVERE, "verifyTree", e);
       } finally {
 
-        rs = null;
-        pstmt = null;
       }
     }
 

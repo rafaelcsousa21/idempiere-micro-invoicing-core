@@ -3,7 +3,6 @@ package org.idempiere.process;
 import org.compiere.model.I_I_Conversion_Rate;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -17,14 +16,14 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_I_Conversion_Rate(Properties ctx, int I_Conversion_Rate_ID, String trxName) {
-    super(ctx, I_Conversion_Rate_ID, trxName);
+  public X_I_Conversion_Rate(Properties ctx, int I_Conversion_Rate_ID) {
+    super(ctx, I_Conversion_Rate_ID);
     /** if (I_Conversion_Rate_ID == 0) { setI_Conversion_Rate_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_I_Conversion_Rate(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_I_Conversion_Rate(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

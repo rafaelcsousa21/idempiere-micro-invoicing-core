@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
@@ -82,18 +68,18 @@ public class ProjectGenPO extends SvrProcess {
               + " - Consolidate="
               + m_ConsolidateDocument);
     if (m_C_ProjectLine_ID != 0) {
-      MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID, null);
-      MProject project = new MProject(getCtx(), projectLine.getC_Project_ID(), null);
+      MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
+      MProject project = new MProject(getCtx(), projectLine.getC_Project_ID());
       createPO(project, projectLine);
     } else if (m_C_ProjectPhase_ID != 0) {
-      MProject project = new MProject(getCtx(), m_C_Project_ID, null);
+      MProject project = new MProject(getCtx(), m_C_Project_ID);
       for (MProjectLine line : project.getPhaseLines(m_C_ProjectPhase_ID)) {
         if (line.isActive()) {
           createPO(project, line);
         }
       }
     } else {
-      MProject project = new MProject(getCtx(), m_C_Project_ID, null);
+      MProject project = new MProject(getCtx(), m_C_Project_ID);
       for (MProjectLine line : project.getLines()) {
         if (line.isActive()) {
           createPO(project, line);
@@ -120,7 +106,7 @@ public class ProjectGenPO extends SvrProcess {
 
     //	PO Record
     MProductPO[] pos =
-        MProductPO.getOfProduct(getCtx(), projectLine.getM_Product_ID(), null);
+        MProductPO.getOfProduct(getCtx(), projectLine.getM_Product_ID());
     if (pos == null || pos.length == 0) {
       addLog(projectLine.getLine(), null, null, "Product has no PO record");
       return;
@@ -139,7 +125,7 @@ public class ProjectGenPO extends SvrProcess {
     if (order == null) // 	create new Order
     {
       //	Vendor
-      MBPartner bp = new MBPartner(getCtx(), pos[0].getC_BPartner_ID(), null);
+      MBPartner bp = new MBPartner(getCtx(), pos[0].getC_BPartner_ID());
       //	New Order
       order = new MOrder(project, false, null);
       int AD_Org_ID = projectLine.getOrgId();

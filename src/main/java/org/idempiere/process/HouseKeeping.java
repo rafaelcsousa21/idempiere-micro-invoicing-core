@@ -56,9 +56,9 @@ public class HouseKeeping extends SvrProcess {
   protected String doIt() throws Exception {
 
     X_AD_HouseKeeping houseKeeping =
-        new X_AD_HouseKeeping(getCtx(), p_AD_HouseKeeping_ID, null);
+        new X_AD_HouseKeeping(getCtx(), p_AD_HouseKeeping_ID);
     int tableID = houseKeeping.getAD_Table_ID();
-    MTable table = new MTable(getCtx(), tableID, null);
+    MTable table = new MTable(getCtx(), tableID);
     String tableName = table.getTableName();
     String whereClause = houseKeeping.getWhereClause();
     int noins = 0;
@@ -94,7 +94,7 @@ public class HouseKeeping extends SvrProcess {
         pstmt = prepareStatement(sql.toString());
         rs = pstmt.executeQuery();
         while (rs.next()) {
-          GenericPO po = new GenericPO(tableName, getCtx(), rs, null);
+          GenericPO po = new GenericPO(tableName, getCtx(), rs);
           linexml = po.get_xmlString(linexml);
           noexp++;
         }

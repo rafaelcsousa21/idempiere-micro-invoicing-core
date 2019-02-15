@@ -37,8 +37,8 @@ public class MRequest extends X_R_Request {
    * @param R_Request_ID request or 0 for new
    * @param trxName transaction
    */
-  public MRequest(Properties ctx, int R_Request_ID, String trxName) {
-    super(ctx, R_Request_ID, trxName);
+  public MRequest(Properties ctx, int R_Request_ID) {
+    super(ctx, R_Request_ID);
     if (R_Request_ID == 0) {
       setDueType(X_R_Request.DUETYPE_Due);
       //  setSalesRep_ID (0);
@@ -73,7 +73,7 @@ public class MRequest extends X_R_Request {
       String Summary,
       boolean isSelfService,
       String trxName) {
-    this(ctx, 0, trxName);
+    this(ctx, 0);
     set_Value("SalesRep_ID", new Integer(SalesRep_ID)); // 	could be 0
     set_Value("R_RequestType_ID", new Integer(R_RequestType_ID));
     setSummary(Summary);
@@ -95,8 +95,8 @@ public class MRequest extends X_R_Request {
    * @param rs result set
    * @param trxName transaction
    */
-  public MRequest(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequest(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequest
 
   /** Request Type */
@@ -148,7 +148,7 @@ public class MRequest extends X_R_Request {
   public MRequestUpdate[] getUpdates(String confidentialType) {
     final String whereClause = MRequestUpdate.COLUMNNAME_R_Request_ID + "=?";
     List<MRequestUpdate> listUpdates =
-        new Query(getCtx(), I_R_RequestUpdate.Table_Name, whereClause, null)
+        new Query(getCtx(), I_R_RequestUpdate.Table_Name, whereClause)
             .setParameters(getId())
             .setOrderBy("Created DESC")
             .list();
@@ -214,7 +214,7 @@ public class MRequest extends X_R_Request {
   public MBPartner getBPartner() {
     if (getC_BPartner_ID() == 0) return null;
     if (m_partner != null && m_partner.getC_BPartner_ID() != getC_BPartner_ID()) m_partner = null;
-    if (m_partner == null) m_partner = new MBPartner(getCtx(), getC_BPartner_ID(), null);
+    if (m_partner == null) m_partner = new MBPartner(getCtx(), getC_BPartner_ID());
     return m_partner;
   } //	getBPartner
 
@@ -424,7 +424,7 @@ public class MRequest extends X_R_Request {
         MGroup newG = MGroup.get(getCtx(), getR_Group_ID());
         if (oldG.getPP_Product_BOM_ID() != newG.getPP_Product_BOM_ID()
             || oldG.getM_ChangeNotice_ID() != newG.getM_ChangeNotice_ID()) {
-          MChangeRequest ecr = new MChangeRequest(getCtx(), getM_ChangeRequest_ID(), null);
+          MChangeRequest ecr = new MChangeRequest(getCtx(), getM_ChangeRequest_ID());
           if (!ecr.isProcessed() || ecr.getM_FixChangeNotice_ID() == 0) {
             ecr.setPP_Product_BOM_ID(newG.getPP_Product_BOM_ID());
             ecr.setM_ChangeNotice_ID(newG.getM_ChangeNotice_ID());

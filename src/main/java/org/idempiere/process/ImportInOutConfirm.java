@@ -153,9 +153,9 @@ public class ImportInOutConfirm extends SvrProcess {
       pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        X_I_InOutLineConfirm importLine = new X_I_InOutLineConfirm(getCtx(), rs, null);
+        X_I_InOutLineConfirm importLine = new X_I_InOutLineConfirm(getCtx(), rs);
         MInOutLineConfirm confirmLine =
-            new MInOutLineConfirm(getCtx(), importLine.getM_InOutLineConfirm_ID(), null);
+            new MInOutLineConfirm(getCtx(), importLine.getM_InOutLineConfirm_ID());
         if (confirmLine.getId() == 0
             || confirmLine.getId() != importLine.getM_InOutLineConfirm_ID()) {
           importLine.setI_IsImported(false);

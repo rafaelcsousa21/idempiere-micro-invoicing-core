@@ -4,7 +4,6 @@ import org.compiere.model.I_C_Payment;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -24,8 +23,8 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_Payment(Properties ctx, int C_Payment_ID, String trxName) {
-    super(ctx, C_Payment_ID, trxName);
+  public X_C_Payment(Properties ctx, int C_Payment_ID) {
+    super(ctx, C_Payment_ID);
     /**
      * if (C_Payment_ID == 0) { setC_BPartner_ID (0); setC_Currency_ID (0); setC_DocType_ID (0);
      * setC_Payment_ID (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); // @#Date@
@@ -39,8 +38,8 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_C_Payment(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_Payment(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -1438,7 +1437,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
   public org.compiere.model.I_C_Payment getReversal() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getReversal_ID(), null);
+            .getPO(getReversal_ID());
   }
 
   /**
@@ -1448,7 +1447,7 @@ public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
    */
   public void setReversal_ID(int Reversal_ID) {
     if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
-    else set_Value(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+    else set_Value(COLUMNNAME_Reversal_ID, Reversal_ID);
   }
 
   /**

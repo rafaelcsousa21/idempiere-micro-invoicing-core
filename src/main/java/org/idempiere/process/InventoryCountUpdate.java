@@ -57,7 +57,7 @@ public class InventoryCountUpdate extends SvrProcess {
    */
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("M_Inventory_ID=" + p_M_Inventory_ID);
-    MInventory inventory = new MInventory(getCtx(), p_M_Inventory_ID, null);
+    MInventory inventory = new MInventory(getCtx(), p_M_Inventory_ID);
     if (inventory.getId() == 0)
       throw new AdempiereSystemError("Not found: M_Inventory_ID=" + p_M_Inventory_ID);
 
@@ -76,7 +76,7 @@ public class InventoryCountUpdate extends SvrProcess {
     int multiple = executeUpdate(sql.toString());
     if (log.isLoggable(Level.INFO)) log.info("Multiple=" + multiple);
 
-    int delMA = MInventoryLineMA.deleteInventoryMA(p_M_Inventory_ID, null);
+    int delMA = MInventoryLineMA.deleteInventoryMA(p_M_Inventory_ID);
     if (log.isLoggable(Level.INFO)) log.info("DeletedMA=" + delMA);
 
     //	ASI

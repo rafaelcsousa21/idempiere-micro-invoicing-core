@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_GL_JournalBatch;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_GL_JournalBatch(Properties ctx, int GL_JournalBatch_ID, String trxName) {
-    super(ctx, GL_JournalBatch_ID, trxName);
+  public X_GL_JournalBatch(Properties ctx, int GL_JournalBatch_ID) {
+    super(ctx, GL_JournalBatch_ID);
     /**
      * if (GL_JournalBatch_ID == 0) { setC_DocType_ID (0); setDescription (null); setDocAction
      * (null); // CO setDocStatus (null); // DR setDocumentNo (null); setGL_JournalBatch_ID (0);
@@ -34,8 +33,8 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch, I_Persis
   }
 
   /** Load Constructor */
-  public X_GL_JournalBatch(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_GL_JournalBatch(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

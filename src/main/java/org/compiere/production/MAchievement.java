@@ -30,7 +30,7 @@ public class MAchievement extends X_PA_Achievement {
   public static MAchievement[] getOfMeasure(Properties ctx, int PA_Measure_ID) {
     final String whereClause = "PA_Measure_ID=? AND IsAchieved='Y'";
     List<MAchievement> list =
-        new Query(ctx, I_PA_Achievement.Table_Name, whereClause, null)
+        new Query(ctx, I_PA_Achievement.Table_Name, whereClause)
             .setParameters(PA_Measure_ID)
             .setOrderBy("SeqNo, DateDoc")
             .list();
@@ -51,8 +51,8 @@ public class MAchievement extends X_PA_Achievement {
    * @param PA_Achievement_ID id
    * @param trxName trx
    */
-  public MAchievement(Properties ctx, int PA_Achievement_ID, String trxName) {
-    super(ctx, PA_Achievement_ID, trxName);
+  public MAchievement(Properties ctx, int PA_Achievement_ID) {
+    super(ctx, PA_Achievement_ID);
   } //	MAchievement
 
   /**
@@ -62,8 +62,8 @@ public class MAchievement extends X_PA_Achievement {
    * @param rs result set
    * @param trxName trx
    */
-  public MAchievement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAchievement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MAchievement
 
   /**

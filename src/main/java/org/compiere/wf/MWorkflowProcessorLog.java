@@ -23,8 +23,8 @@ public class MWorkflowProcessorLog extends X_AD_WorkflowProcessorLog
    * @param AD_WorkflowProcessorLog_ID id
    * @param trxName transaction
    */
-  public MWorkflowProcessorLog(Properties ctx, int AD_WorkflowProcessorLog_ID, String trxName) {
-    super(ctx, AD_WorkflowProcessorLog_ID, trxName);
+  public MWorkflowProcessorLog(Properties ctx, int AD_WorkflowProcessorLog_ID) {
+    super(ctx, AD_WorkflowProcessorLog_ID);
     if (AD_WorkflowProcessorLog_ID == 0) {
       setIsError(false);
     }
@@ -37,8 +37,8 @@ public class MWorkflowProcessorLog extends X_AD_WorkflowProcessorLog
    * @param rs result set
    * @param trxName transaction
    */
-  public MWorkflowProcessorLog(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWorkflowProcessorLog(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWorkflowProcessorLog
 
   /**
@@ -48,7 +48,7 @@ public class MWorkflowProcessorLog extends X_AD_WorkflowProcessorLog
    * @param Summary Summary
    */
   public MWorkflowProcessorLog(MWorkflowProcessor parent, String Summary) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setAD_WorkflowProcessor_ID(parent.getAD_WorkflowProcessor_ID());
     setSummary(Summary);

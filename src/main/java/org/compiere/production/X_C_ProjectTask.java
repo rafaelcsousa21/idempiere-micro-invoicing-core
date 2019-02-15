@@ -22,13 +22,13 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_ProjectTask(Properties ctx, int C_ProjectTask_ID, String trxName) {
-    super(ctx, C_ProjectTask_ID, trxName);
+  public X_C_ProjectTask(Properties ctx, int C_ProjectTask_ID) {
+    super(ctx, C_ProjectTask_ID);
   }
 
   /** Load Constructor */
-  public X_C_ProjectTask(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_ProjectTask(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -48,7 +48,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
     public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
     return (org.compiere.model.I_C_ProjectPhase)
         MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
-            .getPO(getC_ProjectPhase_ID(), null);
+            .getPO(getC_ProjectPhase_ID());
   }
 
   /**
@@ -58,7 +58,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
    */
   public void setC_ProjectPhase_ID(int C_ProjectPhase_ID) {
     if (C_ProjectPhase_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, Integer.valueOf(C_ProjectPhase_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, C_ProjectPhase_ID);
   }
 
   /**

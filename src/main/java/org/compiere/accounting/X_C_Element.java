@@ -19,13 +19,13 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_Element(Properties ctx, int C_Element_ID, String trxName) {
-    super(ctx, C_Element_ID, trxName);
+  public X_C_Element(Properties ctx, int C_Element_ID) {
+    super(ctx, C_Element_ID);
   }
 
   /** Load Constructor */
-  public X_C_Element(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_Element(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

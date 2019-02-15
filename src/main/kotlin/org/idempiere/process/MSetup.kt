@@ -130,7 +130,7 @@ class MSetup
         if (name.isEmpty())
             name = "newClient"
         m_clientName = name
-        m_client = MClient(m_ctx, 0, true, null)
+        m_client = MClient(m_ctx, 0, true)
         m_client!!.setValue(m_clientName!!)
         m_client!!.name = m_clientName!!
         if (!m_client!!.save()) {
@@ -187,7 +187,7 @@ class MSetup
         m_info!!.append(Msg.translate(m_lang, "AD_Org_ID")).append("=").append(name).append("\n")
 
         // Set Organization Phone, Phone2, Fax, EMail
-        val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID, null)
+        val orgInfo = MOrgInfo.get(m_ctx, aD_Org_ID)
         orgInfo!!.setPhone(phone)
         orgInfo.setPhone2(phone2)
         orgInfo.setFax(fax)
@@ -208,7 +208,7 @@ class MSetup
          * - User
          */
         name = m_clientName!! + " Admin"
-        val admin = MRole(m_ctx, 0, null)
+        val admin = MRole(m_ctx, 0)
         admin.setClientOrg(m_client)
         admin.name = name
         admin.userLevel = MRole.USERLEVEL_ClientPlusOrganization
@@ -235,7 +235,7 @@ class MSetup
 
         //
         name = m_clientName!! + " User"
-        val user = MRole(m_ctx, 0, null)
+        val user = MRole(m_ctx, 0)
         user.setClientOrg(m_client)
         user.name = name
         user.setIsAccessAdvanced(false)
@@ -258,7 +258,7 @@ class MSetup
          * - Client
          * - Org
          */
-        val clientAdminUser = MUser(m_ctx, 0, null)
+        val clientAdminUser = MUser(m_ctx, 0)
 
         name = userClient
         if (name.isEmpty())
@@ -288,7 +288,7 @@ class MSetup
         //  Info
         m_info!!.append(Msg.translate(m_lang, "AD_User_ID")).append("=").append(AD_User_Name).append("/").append(AD_User_Name).append("\n")
 
-        val clientUser = MUser(m_ctx, 0, null)
+        val clientUser = MUser(m_ctx, 0)
 
         name = userOrg
         if (name.isEmpty())
@@ -418,7 +418,7 @@ class MSetup
         m_info!!.append(Msg.translate(m_lang, "C_Element_ID")).append("=").append(name).append("\n")
 
         //	Create Account Values
-        m_nap = NaturalAccountMap(m_ctx, null)
+        m_nap = NaturalAccountMap(m_ctx)
         val errMsg = m_nap!!.parseFile(AccountingFile)
         if (errMsg.length != 0) {
             log.log(Level.SEVERE, errMsg)
@@ -741,7 +741,7 @@ class MSetup
     @Throws(Exception::class)
     private fun createAccountingRecord(tableName: String) {
         val table = MTable.get(m_ctx, tableName)
-        val acct = table.getPO(-1, null) as PO // Note this should create a new Acct; ugly hack, because we return null for 0
+        val acct = table.getPO(-1) as PO // Note this should create a new Acct; ugly hack, because we return null for 0
 
         val cols = table.getColumns(false)
         for (c in cols) {
@@ -802,7 +802,7 @@ class MSetup
      * @return GL_Category_ID
      */
     private fun createGLCategory(Name: String, CategoryType: String, isDefault: Boolean): Int {
-        val cat = MGLCategory(m_ctx, 0, null)
+        val cat = MGLCategory(m_ctx, 0)
         cat.name = Name
         cat.categoryType = CategoryType
         cat.setIsDefault(isDefault)
@@ -833,14 +833,14 @@ class MSetup
                               StartNo: Int, GL_Category_ID: Int, isReturnTrx: Boolean): Int {
         var sequence: MSequence? = null
         if (StartNo != 0) {
-            sequence = MSequence(m_ctx, aD_Client_ID, Name, StartNo, null)
+            sequence = MSequence(m_ctx, aD_Client_ID, Name, StartNo)
             if (!sequence.save()) {
                 log.log(Level.SEVERE, "Sequence NOT created - $Name")
                 return 0
             }
         }
 
-        val dt = MDocType(m_ctx, DocBaseType, Name, null)
+        val dt = MDocType(m_ctx, DocBaseType, Name)
         if (PrintName != null && PrintName.length > 0)
             dt.printName = PrintName    //	Defaults to Name
         if (DocSubTypeSO != null) {
@@ -1008,7 +1008,7 @@ class MSetup
          * Business Partner
          */
         //  Create BP Group
-        val bpg = MBPGroup(m_ctx, 0, null)
+        val bpg = MBPGroup(m_ctx, 0)
         bpg.setValue(defaultName)
         bpg.name = defaultName
         bpg.setIsDefault(true)
@@ -1018,7 +1018,7 @@ class MSetup
             log.log(Level.SEVERE, "BP Group NOT inserted")
 
         //	Create BPartner
-        val bp = MBPartner(m_ctx, 0, null)
+        val bp = MBPartner(m_ctx, 0)
         bp.setValue(defaultName)
         bp.setName(defaultName)
         bp.setBPGroup(bpg)
@@ -1027,7 +1027,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "BPartner NOT inserted")
         //  Location for Standard BP
-        val bpLoc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
+        val bpLoc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
         bpLoc.saveEx()
         val bpl = MBPartnerLocation(bp)
         bpl.c_Location_ID = bpLoc.c_Location_ID
@@ -1047,7 +1047,7 @@ class MSetup
          * Product
          */
         //  Create Product Category
-        val pc = MProductCategory(m_ctx, 0, null)
+        val pc = MProductCategory(m_ctx, 0)
         pc.setValue(defaultName)
         pc.name = defaultName
         pc.setIsDefault(true)
@@ -1085,7 +1085,7 @@ class MSetup
             log.log(Level.SEVERE, "TaxCategory Translation NOT inserted")
 
         //  Tax - Zero Rate
-        val tax = MTax(m_ctx, "Standard", Env.ZERO, C_TaxCategory_ID, null)
+        val tax = MTax(m_ctx, "Standard", Env.ZERO, C_TaxCategory_ID)
         tax.setIsDefault(true)
         if (tax.save())
             m_info!!.append(Msg.translate(m_lang, "C_Tax_ID"))
@@ -1094,7 +1094,7 @@ class MSetup
             log.log(Level.SEVERE, "Tax NOT inserted")
 
         //	Create Product
-        val product = MProduct(m_ctx, 0, null)
+        val product = MProduct(m_ctx, 0)
         product.value = defaultName
         product.name = defaultName
         product.c_UOM_ID = C_UOM_ID
@@ -1117,7 +1117,7 @@ class MSetup
          * Location, Warehouse, Locator
          */
         //  Location (Company)
-        val loc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
+        val loc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
         loc.address1 = address1
         loc.postal = postal
         loc.saveEx()
@@ -1129,11 +1129,11 @@ class MSetup
         createPreference("C_Country_ID", C_Country_ID.toString(), 0)
 
         //  Default Warehouse
-        val locwh = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
+        val locwh = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
         locwh.address1 = address1
         locwh.postal = postal
         locwh.saveEx()
-        val wh = MWarehouse(m_ctx, 0, null)
+        val wh = MWarehouse(m_ctx, 0)
         wh.setValue(defaultName)
         wh.name = defaultName
         wh.c_Location_ID = locwh.c_Location_ID
@@ -1167,14 +1167,14 @@ class MSetup
          * Other
          */
         //  PriceList
-        val pl = MPriceList(m_ctx, 0, null)
+        val pl = MPriceList(m_ctx, 0)
         pl.name = defaultName
         pl.c_Currency_ID = C_Currency_ID
         pl.setIsDefault(true)
         if (!pl.save())
             log.log(Level.SEVERE, "PriceList NOT inserted")
         //  Price List
-        val ds = MDiscountSchema(m_ctx, 0, null)
+        val ds = MDiscountSchema(m_ctx, 0)
         ds.name = defaultName
         ds.discountType = MDiscountSchema.DISCOUNTTYPE_Pricelist
         if (!ds.save())
@@ -1193,7 +1193,7 @@ class MSetup
 
 
         //	Create Sales Rep for Client-User
-        val bpCU = MBPartner(m_ctx, 0, null)
+        val bpCU = MBPartner(m_ctx, 0)
         bpCU.setValue(AD_User_U_Name!!)
         bpCU.setName(AD_User_U_Name!!)
         bpCU.setBPGroup(bpg)
@@ -1204,7 +1204,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "SalesRep (User) NOT inserted")
         //  Location for Client-User
-        val bpLocCU = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
+        val bpLocCU = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
         bpLocCU.saveEx()
         val bplCU = MBPartnerLocation(bpCU)
         bplCU.c_Location_ID = bpLocCU.c_Location_ID
@@ -1219,7 +1219,7 @@ class MSetup
 
 
         //	Create Sales Rep for Client-Admin
-        val bpCA = MBPartner(m_ctx, 0, null)
+        val bpCA = MBPartner(m_ctx, 0)
         bpCA.setValue(AD_User_Name!!)
         bpCA.setName(AD_User_Name!!)
         bpCA.setBPGroup(bpg)
@@ -1230,7 +1230,7 @@ class MSetup
         else
             log.log(Level.SEVERE, "SalesRep (Admin) NOT inserted")
         //  Location for Client-Admin
-        val bpLocCA = MLocation(m_ctx, C_Country_ID, C_Region_ID, City, null)
+        val bpLocCA = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
         bpLocCA.saveEx()
         val bplCA = MBPartnerLocation(bpCA)
         bplCA.c_Location_ID = bpLocCA.c_Location_ID
@@ -1302,7 +1302,7 @@ class MSetup
         }
 
         //  CashBook
-        val cb = MCashBook(m_ctx, 0, null)
+        val cb = MCashBook(m_ctx, 0)
         cb.name = defaultName
         cb.c_Currency_ID = C_Currency_ID
         if (cb.save())
@@ -1345,6 +1345,6 @@ class MSetup
      */
     private fun getNextID(AD_Client_ID: Int, TableName: String): Int {
         //	TODO: Exception
-        return MSequence.getNextID(AD_Client_ID, TableName, null)
+        return MSequence.getNextID(AD_Client_ID, TableName)
     }    //	getNextID
 }   //  MSetup

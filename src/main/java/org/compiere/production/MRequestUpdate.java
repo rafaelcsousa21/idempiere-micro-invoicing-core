@@ -29,8 +29,8 @@ public class MRequestUpdate extends X_R_RequestUpdate {
    * @param R_RequestUpdate_ID id
    * @param trxName trx
    */
-  public MRequestUpdate(Properties ctx, int R_RequestUpdate_ID, String trxName) {
-    super(ctx, R_RequestUpdate_ID, trxName);
+  public MRequestUpdate(Properties ctx, int R_RequestUpdate_ID) {
+    super(ctx, R_RequestUpdate_ID);
   } //	MRequestUpdate
 
   /**
@@ -40,8 +40,8 @@ public class MRequestUpdate extends X_R_RequestUpdate {
    * @param rs result set
    * @param trxName trx
    */
-  public MRequestUpdate(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequestUpdate(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequestUpdate
 
   /**
@@ -50,7 +50,7 @@ public class MRequestUpdate extends X_R_RequestUpdate {
    * @param parent request
    */
   public MRequestUpdate(MRequest parent) {
-    super(parent.getCtx(), 0, null);
+    super(parent.getCtx(), 0);
     setClientOrg(parent);
     setR_Request_ID(parent.getR_Request_ID());
     //

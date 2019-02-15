@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_GL_DistributionLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -22,8 +21,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_GL_DistributionLine(Properties ctx, int GL_DistributionLine_ID, String trxName) {
-    super(ctx, GL_DistributionLine_ID, trxName);
+  public X_GL_DistributionLine(Properties ctx, int GL_DistributionLine_ID) {
+    super(ctx, GL_DistributionLine_ID);
     /**
      * if (GL_DistributionLine_ID == 0) { setGL_Distribution_ID (0); setGL_DistributionLine_ID (0);
      * setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM GL_DistributionLine
@@ -36,8 +35,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
   }
 
   /** Load Constructor */
-  public X_GL_DistributionLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_GL_DistributionLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

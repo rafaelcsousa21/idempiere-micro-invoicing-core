@@ -19,13 +19,13 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_PA_Hierarchy(Properties ctx, int PA_Hierarchy_ID, String trxName) {
-    super(ctx, PA_Hierarchy_ID, trxName);
+  public X_PA_Hierarchy(Properties ctx, int PA_Hierarchy_ID) {
+    super(ctx, PA_Hierarchy_ID);
   }
 
   /** Load Constructor */
-  public X_PA_Hierarchy(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_PA_Hierarchy(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

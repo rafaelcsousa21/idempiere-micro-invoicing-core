@@ -19,13 +19,13 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, 
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_ChangeRequest(Properties ctx, int M_ChangeRequest_ID, String trxName) {
-    super(ctx, M_ChangeRequest_ID, trxName);
+  public X_M_ChangeRequest(Properties ctx, int M_ChangeRequest_ID) {
+    super(ctx, M_ChangeRequest_ID);
   }
 
   /** Load Constructor */
-  public X_M_ChangeRequest(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_ChangeRequest(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

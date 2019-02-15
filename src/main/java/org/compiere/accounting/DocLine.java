@@ -583,7 +583,7 @@ public class DocLine {
     if (m_productCost == null)
       m_productCost =
           new ProductCost(
-              Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID(), null);
+              Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID());
     return m_productCost;
   } //	getProductCost
 
@@ -607,8 +607,7 @@ public class DocLine {
               whereClause,
               get_ID(),
               getMAttributeSetInstance_ID(),
-              as.getC_AcctSchema_ID(),
-              null);
+              as.getC_AcctSchema_ID());
       if (cd != null) return cd.getAmt();
     }
     return getProductCosts(as, AD_Org_ID, zeroCostsOK);
@@ -642,9 +641,8 @@ public class DocLine {
     if (m_productCost == null)
       m_productCost =
           new ProductCost(
-              Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID(), null);
-    if (m_productCost != null) return m_productCost.getProduct();
-    return null;
+              Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID());
+    return m_productCost.getProduct();
   } //	getProduct
 
   /**

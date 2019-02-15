@@ -13,8 +13,8 @@ public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_AcctProcessorLog(Properties ctx, int C_AcctProcessorLog_ID, String trxName) {
-    super(ctx, C_AcctProcessorLog_ID, trxName);
+  public X_C_AcctProcessorLog(Properties ctx, int C_AcctProcessorLog_ID) {
+    super(ctx, C_AcctProcessorLog_ID);
     /**
      * if (C_AcctProcessorLog_ID == 0) { setC_AcctProcessor_ID (0); setC_AcctProcessorLog_ID (0);
      * setIsError (false); }
@@ -22,8 +22,8 @@ public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog, I_
   }
 
   /** Load Constructor */
-  public X_C_AcctProcessorLog(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_AcctProcessorLog(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

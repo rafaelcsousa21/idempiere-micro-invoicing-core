@@ -24,7 +24,7 @@ public class MBOM extends X_M_BOM {
     Integer key = new Integer(M_BOM_ID);
     MBOM retValue = (MBOM) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MBOM(ctx, M_BOM_ID, null);
+    retValue = new MBOM(ctx, M_BOM_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -44,7 +44,7 @@ public class MBOM extends X_M_BOM {
     StringBuilder where = new StringBuilder("M_Product_ID=?");
     if (whereClause != null && whereClause.length() > 0) where.append(" AND ").append(whereClause);
     List<MBOM> list =
-        new Query(ctx, I_M_BOM.Table_Name, where.toString(), trxName)
+        new Query(ctx, I_M_BOM.Table_Name, where.toString())
             .setParameters(M_Product_ID)
             .list();
 
@@ -66,8 +66,8 @@ public class MBOM extends X_M_BOM {
    * @param M_BOM_ID id
    * @param trxName trx
    */
-  public MBOM(Properties ctx, int M_BOM_ID, String trxName) {
-    super(ctx, M_BOM_ID, trxName);
+  public MBOM(Properties ctx, int M_BOM_ID) {
+    super(ctx, M_BOM_ID);
     if (M_BOM_ID == 0) {
       //	setM_Product_ID (0);
       //	setName (null);
@@ -83,8 +83,8 @@ public class MBOM extends X_M_BOM {
    * @param rs result set
    * @param trxName trx
    */
-  public MBOM(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBOM(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MBOM
 
   /**

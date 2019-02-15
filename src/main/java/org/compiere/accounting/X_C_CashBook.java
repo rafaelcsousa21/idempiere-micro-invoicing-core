@@ -19,8 +19,8 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_CashBook(Properties ctx, int C_CashBook_ID, String trxName) {
-    super(ctx, C_CashBook_ID, trxName);
+  public X_C_CashBook(Properties ctx, int C_CashBook_ID) {
+    super(ctx, C_CashBook_ID);
     /**
      * if (C_CashBook_ID == 0) { setC_CashBook_ID (0); setC_Currency_ID (0); setIsDefault (false);
      * setName (null); }
@@ -28,8 +28,8 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
   }
 
   /** Load Constructor */
-  public X_C_CashBook(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_CashBook(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

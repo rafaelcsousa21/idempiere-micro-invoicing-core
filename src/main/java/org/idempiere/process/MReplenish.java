@@ -19,8 +19,8 @@ public class MReplenish extends X_M_Replenish {
    * @param M_Replenish_ID
    * @param trxName
    */
-  public MReplenish(Properties ctx, int M_Replenish_ID, String trxName) {
-    super(ctx, M_Replenish_ID, trxName);
+  public MReplenish(Properties ctx, int M_Replenish_ID) {
+    super(ctx, M_Replenish_ID);
   }
 
   /**
@@ -30,8 +30,8 @@ public class MReplenish extends X_M_Replenish {
    * @param rs
    * @param trxName
    */
-  public MReplenish(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MReplenish(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -40,9 +40,9 @@ public class MReplenish extends X_M_Replenish {
    * @param trxName
    * @return A list of active replenish lines for given product.
    */
-  public static List<MReplenish> getForProduct(Properties ctx, int M_ProductID, String trxName) {
+  public static List<MReplenish> getForProduct(Properties ctx, int M_ProductID) {
     final String whereClause = "M_Product_ID=? AND orgId IN (0, ?) ";
-    return new Query(ctx, I_M_Replenish.Table_Name, whereClause, trxName)
+    return new Query(ctx, I_M_Replenish.Table_Name, whereClause)
         .setParameters(M_ProductID, Env.getOrgId(ctx))
         .setClient_ID()
         .setOrderBy("AD_Org_ID")

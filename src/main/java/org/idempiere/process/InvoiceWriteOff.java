@@ -211,7 +211,7 @@ public class InvoiceWriteOff extends SvrProcess {
     }
 
     //	Invoice
-    MInvoice invoice = new MInvoice(getCtx(), C_Invoice_ID, null);
+    MInvoice invoice = new MInvoice(getCtx(), C_Invoice_ID);
     if (!invoice.isSOTrx()) OpenAmt = OpenAmt.negate();
 
     //	Allocation
@@ -237,7 +237,7 @@ public class InvoiceWriteOff extends SvrProcess {
             || invoice.getC_BPartner_ID() != m_payment.getC_BPartner_ID()
             || C_Currency_ID != m_payment.getC_Currency_ID())) {
       processPayment();
-      m_payment = new MPayment(getCtx(), 0, null);
+      m_payment = new MPayment(getCtx(), 0);
       m_payment.setAD_Org_ID(invoice.getOrgId());
       m_payment.setC_BankAccount_ID(p_C_BankAccount_ID);
       m_payment.setTenderType(MPayment.TENDERTYPE_Check);

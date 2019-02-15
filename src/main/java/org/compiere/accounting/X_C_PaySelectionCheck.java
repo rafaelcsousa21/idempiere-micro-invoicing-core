@@ -22,8 +22,8 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_PaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID, String trxName) {
-    super(ctx, C_PaySelectionCheck_ID, trxName);
+  public X_C_PaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID) {
+    super(ctx, C_PaySelectionCheck_ID);
     /**
      * if (C_PaySelectionCheck_ID == 0) { setC_BPartner_ID (0); setC_PaySelectionCheck_ID (0);
      * setC_PaySelection_ID (0); setDiscountAmt (Env.ZERO); setIsGeneratedDraft (false); // N
@@ -33,8 +33,8 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
   }
 
   /** Load Constructor */
-  public X_C_PaySelectionCheck(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_PaySelectionCheck(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -128,7 +128,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
     public org.compiere.model.I_C_PaySelection getC_PaySelection() throws RuntimeException {
     return (org.compiere.model.I_C_PaySelection)
         MTable.get(getCtx(), org.compiere.model.I_C_PaySelection.Table_Name)
-            .getPO(getC_PaySelection_ID(), null);
+            .getPO(getC_PaySelection_ID());
   }
 
   /**
@@ -138,7 +138,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck, 
    */
   public void setC_PaySelection_ID(int C_PaySelection_ID) {
     if (C_PaySelection_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PaySelection_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_PaySelection_ID, Integer.valueOf(C_PaySelection_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_PaySelection_ID, C_PaySelection_ID);
   }
 
   /**

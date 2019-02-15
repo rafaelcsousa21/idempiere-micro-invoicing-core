@@ -22,8 +22,8 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
    * @param S_TimeExpenseLine_ID id
    * @param trxName transaction
    */
-  public MTimeExpenseLine(Properties ctx, int S_TimeExpenseLine_ID, String trxName) {
-    super(ctx, S_TimeExpenseLine_ID, trxName);
+  public MTimeExpenseLine(Properties ctx, int S_TimeExpenseLine_ID) {
+    super(ctx, S_TimeExpenseLine_ID);
     if (S_TimeExpenseLine_ID == 0) {
       //	setS_TimeExpenseLine_ID (0);		//	PK
       //	setS_TimeExpense_ID (0);			//	Parent
@@ -52,8 +52,8 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MTimeExpenseLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MTimeExpenseLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MTimeExpenseLine
 
   /** Parent */
@@ -66,7 +66,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
    */
   public MTimeExpense getParent() {
     if (m_parent == null)
-      m_parent = new MTimeExpense(getCtx(), getS_TimeExpense_ID(), null);
+      m_parent = new MTimeExpense(getCtx(), getS_TimeExpense_ID());
     return m_parent;
   } //	getParent
 
@@ -134,7 +134,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
   public int getC_Currency_Report_ID() {
     if (m_C_Currency_Report_ID != 0) return m_C_Currency_Report_ID;
     //	Get it from header
-    MTimeExpense te = new MTimeExpense(getCtx(), getS_TimeExpense_ID(), null);
+    MTimeExpense te = new MTimeExpense(getCtx(), getS_TimeExpense_ID());
     m_C_Currency_Report_ID = te.getC_Currency_ID();
     return m_C_Currency_Report_ID;
   } //	getC_Currency_Report_ID
@@ -203,7 +203,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
             if (old_S_ResourceAssignment_ID != S_ResourceAssignment_ID
                 && old_S_ResourceAssignment_ID != 0) {
               MResourceAssignment ra =
-                  new MResourceAssignment(getCtx(), old_S_ResourceAssignment_ID, null);
+                  new MResourceAssignment(getCtx(), old_S_ResourceAssignment_ID);
               ra.delete(false);
             }
           }
@@ -211,7 +211,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
         //	Sync Assignment
         if (S_ResourceAssignment_ID != 0) {
           MResourceAssignment ra =
-              new MResourceAssignment(getCtx(), S_ResourceAssignment_ID, null);
+              new MResourceAssignment(getCtx(), S_ResourceAssignment_ID);
           if (getQty().compareTo(ra.getQty()) != 0) {
             ra.setQty(getQty());
             if (getDescription() != null && getDescription().length() > 0)
@@ -240,7 +240,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
         //	Deleted Assignment
         if (old_S_ResourceAssignment_ID != 0) {
           MResourceAssignment ra =
-              new MResourceAssignment(getCtx(), old_S_ResourceAssignment_ID, null);
+              new MResourceAssignment(getCtx(), old_S_ResourceAssignment_ID);
           ra.delete(false);
         }
       }

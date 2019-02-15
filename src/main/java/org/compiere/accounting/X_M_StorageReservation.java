@@ -21,8 +21,8 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_StorageReservation(Properties ctx, int M_StorageReservation_ID, String trxName) {
-    super(ctx, M_StorageReservation_ID, trxName);
+  public X_M_StorageReservation(Properties ctx, int M_StorageReservation_ID) {
+    super(ctx, M_StorageReservation_ID);
     /**
      * if (M_StorageReservation_ID == 0) { setIsSOTrx (true); // Y setM_AttributeSetInstance_ID (0);
      * setM_Product_ID (0); setM_Warehouse_ID (0); setQty (Env.ZERO); }
@@ -30,8 +30,8 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
   }
 
   /** Load Constructor */
-  public X_M_StorageReservation(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_StorageReservation(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

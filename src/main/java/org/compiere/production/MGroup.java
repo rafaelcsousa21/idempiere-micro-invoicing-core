@@ -26,7 +26,7 @@ public class MGroup extends X_R_Group {
     Integer key = new Integer(R_Group_ID);
     MGroup retValue = (MGroup) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MGroup(ctx, R_Group_ID, null);
+    retValue = new MGroup(ctx, R_Group_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -42,8 +42,8 @@ public class MGroup extends X_R_Group {
    * @param R_Group_ID group
    * @param trxName trx
    */
-  public MGroup(Properties ctx, int R_Group_ID, String trxName) {
-    super(ctx, R_Group_ID, trxName);
+  public MGroup(Properties ctx, int R_Group_ID) {
+    super(ctx, R_Group_ID);
   } //	MGroup
 
   /**
@@ -53,7 +53,7 @@ public class MGroup extends X_R_Group {
    * @param rs result set
    * @param trxName trx
    */
-  public MGroup(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MGroup(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MGroup
 } //	MGroup

@@ -22,8 +22,8 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
    * @param ctx
    * @param S_ResourceAssignment_ID
    */
-  public MResourceAssignment(Properties ctx, int S_ResourceAssignment_ID, String trxName) {
-    super(ctx, S_ResourceAssignment_ID, trxName);
+  public MResourceAssignment(Properties ctx, int S_ResourceAssignment_ID) {
+    super(ctx, S_ResourceAssignment_ID);
     getP_info().setUpdateable(true); // 	default table is not updateable
     //	Default values
     if (S_ResourceAssignment_ID == 0) {
@@ -40,8 +40,8 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
    * @param ctx context
    * @param rs result set
    */
-  public MResourceAssignment(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MResourceAssignment(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MResourceAssignment
 
   /**

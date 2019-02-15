@@ -19,8 +19,8 @@ public class MRequestAction extends X_R_RequestAction {
    * @param ctx context
    * @param R_RequestAction_ID id
    */
-  public MRequestAction(Properties ctx, int R_RequestAction_ID, String trxName) {
-    super(ctx, R_RequestAction_ID, trxName);
+  public MRequestAction(Properties ctx, int R_RequestAction_ID) {
+    super(ctx, R_RequestAction_ID);
   } //	MRequestAction
 
   /**
@@ -29,8 +29,8 @@ public class MRequestAction extends X_R_RequestAction {
    * @param ctx context
    * @param rs result set
    */
-  public MRequestAction(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequestAction(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequestAction
 
   /**
@@ -40,7 +40,7 @@ public class MRequestAction extends X_R_RequestAction {
    * @param newRecord new (copy all)
    */
   public MRequestAction(MRequest request, boolean newRecord) {
-    this(request.getCtx(), 0, null);
+    this(request.getCtx(), 0);
     setClientOrg(request);
     setR_Request_ID(request.getR_Request_ID());
   } //	MRequestAction

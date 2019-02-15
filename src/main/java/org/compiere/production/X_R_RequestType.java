@@ -19,8 +19,8 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_RequestType(Properties ctx, int R_RequestType_ID, String trxName) {
-    super(ctx, R_RequestType_ID, trxName);
+  public X_R_RequestType(Properties ctx, int R_RequestType_ID) {
+    super(ctx, R_RequestType_ID);
     /**
      * if (R_RequestType_ID == 0) { setConfidentialType (null); // C setDueDateTolerance (0); // 7
      * setIsAutoChangeRequest (false); setIsConfidentialInfo (false); // N setIsDefault (false); //
@@ -31,8 +31,8 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
   }
 
   /** Load Constructor */
-  public X_R_RequestType(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_RequestType(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

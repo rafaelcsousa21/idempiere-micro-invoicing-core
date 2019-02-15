@@ -404,7 +404,7 @@ public class ImportBankStatement extends SvrProcess {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
-        X_I_BankStatement imp = new X_I_BankStatement(m_ctx, rs, null);
+        X_I_BankStatement imp = new X_I_BankStatement(m_ctx, rs);
         //	Get the bank account for the first statement
         if (account == null) {
           account = MBankAccount.get(m_ctx, imp.getC_BankAccount_ID());
@@ -468,7 +468,7 @@ public class ImportBankStatement extends SvrProcess {
           statement.setDescription(imp.getDescription());
           statement.setEftStatementReference(imp.getEftStatementReference());
           statement.setEftStatementDate(imp.getEftStatementDate());
-          if (statement.save(null)) {
+          if (statement.save()) {
             noInsert++;
           }
           lineNo = 10;
@@ -513,7 +513,7 @@ public class ImportBankStatement extends SvrProcess {
         line.setEftAmt(imp.getEftAmt());
 
         //	Save statement line
-        if (line.save(null)) {
+        if (line.save()) {
           imp.setC_BankStatement_ID(statement.getC_BankStatement_ID());
           imp.setC_BankStatementLine_ID(line.getC_BankStatementLine_ID());
           imp.setI_IsImported(true);

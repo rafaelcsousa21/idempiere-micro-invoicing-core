@@ -12,10 +12,10 @@ import java.util.*
 import java.util.logging.Level
 
 open class MBaseClient : org.compiere.orm.MClient {
-    constructor(ctx: Properties, ID: Int, trxName: String?) : super(ctx, ID, trxName)
-    constructor (ctx: Properties, rs: ResultSet, trxName: String?) : super(ctx, rs, trxName)
+    constructor(ctx: Properties, ID: Int) : super(ctx, ID)
+    constructor (ctx: Properties, rs: ResultSet) : super(ctx, rs)
     constructor(ctx: Properties, rs: Row) : super(ctx, rs)
-    constructor(ctx: Properties , clientId: Int, createNew: Boolean, trxName: String?): super(ctx, clientId, createNew, trxName)
+    constructor(ctx: Properties , clientId: Int, createNew: Boolean): super(ctx, clientId, createNew)
 
     /** Client Info Setup Tree for Account  */
     private var m_AD_Tree_Account_ID: Int = 0

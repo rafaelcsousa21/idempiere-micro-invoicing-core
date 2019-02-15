@@ -20,8 +20,8 @@ public class MPaymentBatch extends X_C_PaymentBatch {
    * @param C_PaymentBatch_ID id
    * @param trxName transaction
    */
-  public MPaymentBatch(Properties ctx, int C_PaymentBatch_ID, String trxName) {
-    super(ctx, C_PaymentBatch_ID, trxName);
+  public MPaymentBatch(Properties ctx, int C_PaymentBatch_ID) {
+    super(ctx, C_PaymentBatch_ID);
     if (C_PaymentBatch_ID == 0) {
       //	setName (null);
       setProcessed(false);
@@ -36,8 +36,8 @@ public class MPaymentBatch extends X_C_PaymentBatch {
    * @param rs result set
    * @param trxName transaction
    */
-  public MPaymentBatch(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPaymentBatch(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MPaymentBatch
 
   /**
@@ -47,8 +47,8 @@ public class MPaymentBatch extends X_C_PaymentBatch {
    * @param Name name
    * @param trxName trx
    */
-  public MPaymentBatch(Properties ctx, String Name, String trxName) {
-    this(ctx, 0, trxName);
+  public MPaymentBatch(Properties ctx, String Name) {
+    this(ctx, 0);
     setName(Name);
   } //	MPaymentBatch
 
@@ -58,7 +58,7 @@ public class MPaymentBatch extends X_C_PaymentBatch {
    * @param ps Pay Selection
    */
   public MPaymentBatch(MPaySelection ps) {
-    this(ps.getCtx(), 0, null);
+    this(ps.getCtx(), 0);
     setClientOrg(ps);
     setName(ps.getName());
   } //	MPaymentBatch

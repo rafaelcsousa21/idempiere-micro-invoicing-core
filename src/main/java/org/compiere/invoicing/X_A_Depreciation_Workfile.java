@@ -4,7 +4,6 @@ import org.compiere.model.I_A_Depreciation_Workfile;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -25,8 +24,8 @@ public class X_A_Depreciation_Workfile extends PO
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_A_Depreciation_Workfile(Properties ctx, int A_Depreciation_Workfile_ID, String trxName) {
-    super(ctx, A_Depreciation_Workfile_ID, trxName);
+  public X_A_Depreciation_Workfile(Properties ctx, int A_Depreciation_Workfile_ID) {
+    super(ctx, A_Depreciation_Workfile_ID);
     /**
      * if (A_Depreciation_Workfile_ID == 0) { setA_Accumulated_Depr (Env.ZERO); // 0
      * setA_Accumulated_Depr_F (Env.ZERO); // 0 setA_Asset_Cost (Env.ZERO); // 0 setA_Asset_ID (0);
@@ -40,8 +39,8 @@ public class X_A_Depreciation_Workfile extends PO
   }
 
   /** Load Constructor */
-  public X_A_Depreciation_Workfile(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_A_Depreciation_Workfile(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -121,7 +120,7 @@ public class X_A_Depreciation_Workfile extends PO
   public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
     return (org.compiere.model.I_A_Asset)
         MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-            .getPO(getA_Asset_ID(), null);
+            .getPO(getA_Asset_ID());
   }
 
   /**

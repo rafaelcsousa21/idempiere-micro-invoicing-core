@@ -20,8 +20,8 @@ public class MSchedulerRecipient extends X_AD_SchedulerRecipient {
    * @param AD_SchedulerRecipient_ID id
    * @param trxName transaction
    */
-  public MSchedulerRecipient(Properties ctx, int AD_SchedulerRecipient_ID, String trxName) {
-    super(ctx, AD_SchedulerRecipient_ID, trxName);
+  public MSchedulerRecipient(Properties ctx, int AD_SchedulerRecipient_ID) {
+    super(ctx, AD_SchedulerRecipient_ID);
   } //	MSchedulerRecipient
 
   /**
@@ -31,7 +31,7 @@ public class MSchedulerRecipient extends X_AD_SchedulerRecipient {
    * @param rs result set
    * @param trxName transaction
    */
-  public MSchedulerRecipient(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MSchedulerRecipient(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MSchedulerRecipient
 } //	MSchedulerRecipient

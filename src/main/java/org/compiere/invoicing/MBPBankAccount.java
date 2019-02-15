@@ -36,7 +36,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
   public static MBPBankAccount[] getOfBPartner(Properties ctx, int C_BPartner_ID) {
     final String whereClause = MBPBankAccount.COLUMNNAME_C_BPartner_ID + "=?";
     List<MBPBankAccount> list =
-        new Query(ctx, I_C_BP_BankAccount.Table_Name, whereClause, null)
+        new Query(ctx, I_C_BP_BankAccount.Table_Name, whereClause)
             .setParameters(C_BPartner_ID)
             .setOnlyActiveRecords(true)
             .list();
@@ -57,8 +57,8 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
    * @param C_BP_BankAccount_ID BP bank account
    * @param trxName transaction
    */
-  public MBPBankAccount(Properties ctx, int C_BP_BankAccount_ID, String trxName) {
-    super(ctx, C_BP_BankAccount_ID, trxName);
+  public MBPBankAccount(Properties ctx, int C_BP_BankAccount_ID) {
+    super(ctx, C_BP_BankAccount_ID);
     if (C_BP_BankAccount_ID == 0) {
       //	setC_BPartner_ID (0);
       setIsACH(false);
@@ -73,8 +73,8 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
    * @param rs result set
    * @param trxName transaction
    */
-  public MBPBankAccount(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBPBankAccount(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MBP_BankAccount
 
   /**
@@ -86,7 +86,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
    * @param location Location
    */
   public MBPBankAccount(Properties ctx, MBPartner bp, MUser bpc, MLocation location) {
-    this(ctx, 0, null);
+    this(ctx, 0);
     setIsACH(false);
     //
     setC_BPartner_ID(bp.getC_BPartner_ID());
@@ -138,7 +138,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
   public MBank getBank() {
     int C_Bank_ID = getC_Bank_ID();
     if (C_Bank_ID == 0) return null;
-    if (m_bank == null) m_bank = new MBank(getCtx(), C_Bank_ID, null);
+    if (m_bank == null) m_bank = new MBank(getCtx(), C_Bank_ID);
     return m_bank;
   } //	getBank
 

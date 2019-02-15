@@ -74,7 +74,7 @@ public class M_Production_Run extends SvrProcess {
   protected String doIt() throws Exception {
     log.info("Search fields in M_Production");
 
-    X_M_Production production = new X_M_Production(getCtx(), p_Record_ID, null);
+    X_M_Production production = new X_M_Production(getCtx(), p_Record_ID);
     /** No Action */
     if (production.isProcessed()) {
       log.info("Already Posted");
@@ -83,7 +83,7 @@ public class M_Production_Run extends SvrProcess {
 
     String whereClause = "M_Production_ID=? ";
     List<X_M_ProductionPlan> lines =
-        new Query(getCtx(), X_M_ProductionPlan.Table_Name, whereClause, null)
+        new Query(getCtx(), X_M_ProductionPlan.Table_Name, whereClause)
             .setParameters(p_Record_ID)
             .setOrderBy("Line, M_Product_ID")
             .list();
@@ -103,7 +103,7 @@ public class M_Production_Run extends SvrProcess {
 
         MProduct product = MProduct.get(getCtx(), pp.getM_Product_ID());
 
-        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0, null);
+        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
         pl.setAD_Org_ID(pp.getOrgId());
         pl.setLine(line);
         pl.setDescription(pp.getDescription());
@@ -118,7 +118,7 @@ public class M_Production_Run extends SvrProcess {
       } else {
         whereClause = "M_ProductionPlan_ID= ? ";
         List<X_M_ProductionLine> production_lines =
-            new Query(getCtx(), X_M_ProductionLine.Table_Name, whereClause, null)
+            new Query(getCtx(), X_M_ProductionLine.Table_Name, whereClause)
                 .setParameters(pp.getM_ProductionPlan_ID())
                 .setOrderBy("Line")
                 .list();
@@ -133,8 +133,7 @@ public class M_Production_Run extends SvrProcess {
                 MStorageReservation.getQtyAvailable(
                     locator.getM_Warehouse_ID(),
                     pline.getM_Product_ID(),
-                    pline.getMAttributeSetInstance_ID(),
-                    null);
+                    pline.getMAttributeSetInstance_ID());
 
             if (mustBeStocked && QtyAvailable.add(MovementQty).signum() < 0) {
               raiseError("@NotEnoughStocked@: " + pline.getM_Product().getName(), "");
@@ -147,7 +146,7 @@ public class M_Production_Run extends SvrProcess {
           if (pline.getMAttributeSetInstance_ID() > 0) {
             Timestamp t =
                 MStorageOnHand.getDateMaterialPolicy(
-                    pline.getM_Product_ID(), pline.getMAttributeSetInstance_ID(), null);
+                    pline.getM_Product_ID(), pline.getMAttributeSetInstance_ID());
             if (t != null) dateMPolicy = t;
           }
 
@@ -221,7 +220,7 @@ public class M_Production_Run extends SvrProcess {
    */
   private int explosion(X_M_ProductionPlan pp, MProduct product, BigDecimal qty, int line)
       throws Exception {
-    MPPProductBOM bom = MPPProductBOM.getDefault(product, null);
+    MPPProductBOM bom = MPPProductBOM.getDefault(product);
     if (bom == null) {
       raiseError(
           "Do not exist default BOM for this product :"
@@ -241,7 +240,7 @@ public class M_Production_Run extends SvrProcess {
         explosion(pp, component, bomline.getQtyBOM().multiply(qty), line);
       } else {
         line += 1;
-        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0, null);
+        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
         pl.setAD_Org_ID(pp.getOrgId());
         pl.setLine(line);
         pl.setDescription(bomline.getDescription());

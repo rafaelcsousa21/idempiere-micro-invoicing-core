@@ -41,8 +41,8 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
    * @param C_BankStatementLine_ID id
    * @param trxName transaction
    */
-  public MDepositBatchLine(Properties ctx, int C_DepositBatchLine_ID, String trxName) {
-    super(ctx, C_DepositBatchLine_ID, trxName);
+  public MDepositBatchLine(Properties ctx, int C_DepositBatchLine_ID) {
+    super(ctx, C_DepositBatchLine_ID);
     if (C_DepositBatchLine_ID == 0) {
       setPayAmt(Env.ZERO);
     }
@@ -55,8 +55,8 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MDepositBatchLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDepositBatchLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MDepositBatchLine
 
   /**
@@ -65,7 +65,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
    * @param statement Bank Statement that the line is part of
    */
   public MDepositBatchLine(MDepositBatch statement) {
-    this(statement.getCtx(), 0, null);
+    this(statement.getCtx(), 0);
     setClientOrg(statement);
     setC_DepositBatch_ID(statement.getC_DepositBatch_ID());
   } //	MDepositBatchLine
@@ -115,7 +115,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
       executeUpdateEx(
           sql, new Object[] {getC_DepositBatch_ID(), getC_Payment_ID()});
 
-      MPayment payment = new MPayment(getCtx(), getC_Payment_ID(), null);
+      MPayment payment = new MPayment(getCtx(), getC_Payment_ID());
       setPayment(payment); // set payment amount
     }
 

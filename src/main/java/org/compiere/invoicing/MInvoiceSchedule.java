@@ -21,11 +21,11 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
    * @param trxName transaction
    * @return MInvoiceSchedule
    */
-  public static MInvoiceSchedule get(Properties ctx, int C_InvoiceSchedule_ID, String trxName) {
+  public static MInvoiceSchedule get(Properties ctx, int C_InvoiceSchedule_ID) {
     Integer key = new Integer(C_InvoiceSchedule_ID);
     MInvoiceSchedule retValue = (MInvoiceSchedule) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MInvoiceSchedule(ctx, C_InvoiceSchedule_ID, trxName);
+    retValue = new MInvoiceSchedule(ctx, C_InvoiceSchedule_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -41,8 +41,8 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
    * @param C_InvoiceSchedule_ID id
    * @param trxName transaction
    */
-  public MInvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID, String trxName) {
-    super(ctx, C_InvoiceSchedule_ID, trxName);
+  public MInvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID) {
+    super(ctx, C_InvoiceSchedule_ID);
   } //	MInvoiceSchedule
 
   /**
@@ -52,8 +52,8 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
    * @param rs result set
    * @param trxName transaction
    */
-  public MInvoiceSchedule(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInvoiceSchedule(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInvoiceSchedule
 
   /**

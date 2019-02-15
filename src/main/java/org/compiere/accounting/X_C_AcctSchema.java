@@ -20,13 +20,13 @@ public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_AcctSchema(Properties ctx, int C_AcctSchema_ID, String trxName) {
-    super(ctx, C_AcctSchema_ID, trxName);
+  public X_C_AcctSchema(Properties ctx, int C_AcctSchema_ID) {
+    super(ctx, C_AcctSchema_ID);
   }
 
   /** Load Constructor */
-  public X_C_AcctSchema(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_AcctSchema(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_C_AcctSchema(Properties ctx, Row row)  {
     super(ctx, row);

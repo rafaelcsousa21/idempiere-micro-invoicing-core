@@ -301,7 +301,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     }
 
     List<MUOMConversion> conversions =
-        new Query(ctx, I_C_UOM_Conversion.Table_Name, "C_UOM_ID=? AND C_UOM_TO_ID=?", null)
+        new Query(ctx, I_C_UOM_Conversion.Table_Name, "C_UOM_ID=? AND C_UOM_TO_ID=?")
             .setParameters(MProduct.get(ctx, M_Product_ID).getC_UOM_ID(), C_UOM_To_ID)
             .setOnlyActiveRecords(true)
             .list();
@@ -335,7 +335,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
             + " AND EXISTS (SELECT 1 FROM M_Product p "
             + "WHERE C_UOM_Conversion.M_Product_ID=p.M_Product_ID AND C_UOM_Conversion.C_UOM_ID=p.C_UOM_ID)";
     List<MUOMConversion> conversions =
-        new Query(ctx, I_C_UOM_Conversion.Table_Name, whereClause, null)
+        new Query(ctx, I_C_UOM_Conversion.Table_Name, whereClause)
             .setParameters(M_Product_ID)
             .setOnlyActiveRecords(true)
             .list();
@@ -366,8 +366,8 @@ public class MUOMConversion extends X_C_UOM_Conversion {
    * @param C_UOM_Conversion_ID id
    * @param trxName transaction
    */
-  public MUOMConversion(Properties ctx, int C_UOM_Conversion_ID, String trxName) {
-    super(ctx, C_UOM_Conversion_ID, trxName);
+  public MUOMConversion(Properties ctx, int C_UOM_Conversion_ID) {
+    super(ctx, C_UOM_Conversion_ID);
   } //	MUOMConversion
 
   /**
@@ -377,8 +377,8 @@ public class MUOMConversion extends X_C_UOM_Conversion {
    * @param rs result set
    * @param trxName transaction
    */
-  public MUOMConversion(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MUOMConversion(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MUOMConversion
 
   /**
@@ -387,7 +387,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
    * @param parent uom parent
    */
   public MUOMConversion(MUOM parent) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setC_UOM_ID(parent.getC_UOM_ID());
     setM_Product_ID(0);
@@ -403,7 +403,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
    * @param parent product parent
    */
   public MUOMConversion(MProduct parent) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setC_UOM_ID(parent.getC_UOM_ID());
     setM_Product_ID(parent.getM_Product_ID());
@@ -435,7 +435,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
         MSysConfig.ProductUOMConversionUOMValidate, true,  getClientId())) {
       if (getM_Product_ID() != 0 && (newRecord || is_ValueChanged("M_Product_ID"))) {
         // Check of product must be in the same transaction as the conversion being saved
-        MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
+        MProduct product = new MProduct(getCtx(), getM_Product_ID());
         if (product.getC_UOM_ID() != getC_UOM_ID()) {
           MUOM uom = MUOM.get(getCtx(), product.getC_UOM_ID());
           log.saveError("ProductUOMConversionUOMError", uom.getName());

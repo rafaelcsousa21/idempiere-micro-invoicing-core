@@ -1,18 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html * Contributor(s):
- * Layda Salas (globalqss) Contributor(s): Carlos Ruiz (globalqss)
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.*;
@@ -703,9 +688,9 @@ public class M_PriceList_Create extends SvrProcess {
                   .getString(MDiscountSchemaLine.COLUMNNAME_Limit_Base)
                   .equals(MDiscountSchemaLine.LIMIT_BASE_ProductCost)) {
             MClientInfo m_clientInfo =
-                MClientInfo.get(getCtx(), rsCurgen.getInt("AD_Client_ID"), null);
+                MClientInfo.get(getCtx(), rsCurgen.getInt("AD_Client_ID"));
             MAcctSchema as =
-                new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID(), null);
+                new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID());
 
             StringBuilder sqlpc = new StringBuilder("SELECT p.M_Product_ID ");
             sqlpc.append(" FROM M_ProductPrice p");
@@ -723,14 +708,14 @@ public class M_PriceList_Create extends SvrProcess {
               while (rs.next()) {
                 int M_Product_ID = rs.getInt(MProductPrice.COLUMNNAME_M_Product_ID);
                 ProductCost m_productCost =
-                    new ProductCost(getCtx(), M_Product_ID, 0, null);
+                    new ProductCost(getCtx(), M_Product_ID, 0);
                 m_productCost.setQty(BigDecimal.ONE);
                 BigDecimal costs =
                     m_productCost.getProductCosts(as, rsCurgen.getInt("AD_Org_ID"), null, 0, false);
 
                 if (costs == null || costs.signum() == 0) // 	zero costs OK
                 {
-                  MProduct product = new MProduct(getCtx(), M_Product_ID, null);
+                  MProduct product = new MProduct(getCtx(), M_Product_ID);
                   if (product.isStocked())
                     log.log(Level.WARNING, "No Costs for " + product.getName());
                 } else {

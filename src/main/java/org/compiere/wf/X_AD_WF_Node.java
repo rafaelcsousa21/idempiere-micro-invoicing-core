@@ -23,8 +23,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WF_Node(Properties ctx, int AD_WF_Node_ID, String trxName) {
-    super(ctx, AD_WF_Node_ID, trxName);
+  public X_AD_WF_Node(Properties ctx, int AD_WF_Node_ID) {
+    super(ctx, AD_WF_Node_ID);
     /**
      * if (AD_WF_Node_ID == 0) { setAction (null); // Z setAD_WF_Node_ID (0); setAD_Workflow_ID (0);
      * setCost (Env.ZERO); setDuration (0); setEntityType (null); // @SQL=select
@@ -35,8 +35,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   }
 
   /** Load Constructor */
-  public X_AD_WF_Node(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WF_Node(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -220,7 +220,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
   public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
     return (org.compiere.model.I_AD_Workflow)
         MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getAD_Workflow_ID(), null);
+            .getPO(getAD_Workflow_ID());
   }
 
   /**
@@ -230,7 +230,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
    */
   public void setAD_Workflow_ID(int AD_Workflow_ID) {
     if (AD_Workflow_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
+    else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, AD_Workflow_ID);
   }
 
   /**

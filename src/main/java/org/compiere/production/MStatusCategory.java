@@ -43,7 +43,7 @@ public class MStatusCategory extends X_R_StatusCategory {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, AD_Client_ID);
       rs = pstmt.executeQuery();
-      if (rs.next()) retValue = new MStatusCategory(ctx, rs, null);
+      if (rs.next()) retValue = new MStatusCategory(ctx, rs);
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
@@ -62,7 +62,7 @@ public class MStatusCategory extends X_R_StatusCategory {
    */
   public static MStatusCategory createDefault(Properties ctx) {
     int AD_Client_ID = Env.getClientId(ctx);
-    MStatusCategory retValue = new MStatusCategory(ctx, 0, null);
+    MStatusCategory retValue = new MStatusCategory(ctx, 0);
     retValue.setClientOrg(AD_Client_ID, 0);
     retValue.setName(Msg.getMsg(ctx, "Standard"));
     retValue.setIsDefault(true);
@@ -89,7 +89,7 @@ public class MStatusCategory extends X_R_StatusCategory {
     Integer key = new Integer(R_StatusCategory_ID);
     MStatusCategory retValue = (MStatusCategory) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MStatusCategory(ctx, R_StatusCategory_ID, null);
+    retValue = new MStatusCategory(ctx, R_StatusCategory_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -107,8 +107,8 @@ public class MStatusCategory extends X_R_StatusCategory {
    * @param R_StatusCategory_ID id
    * @param trxName trx
    */
-  public MStatusCategory(Properties ctx, int R_StatusCategory_ID, String trxName) {
-    super(ctx, R_StatusCategory_ID, trxName);
+  public MStatusCategory(Properties ctx, int R_StatusCategory_ID) {
+    super(ctx, R_StatusCategory_ID);
     if (R_StatusCategory_ID == 0) {
       //	setName (null);
       setIsDefault(false);
@@ -122,8 +122,8 @@ public class MStatusCategory extends X_R_StatusCategory {
    * @param rs result set
    * @param trxName trx
    */
-  public MStatusCategory(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MStatusCategory(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	RStatusCategory
 
   /** The Status */
@@ -145,7 +145,7 @@ public class MStatusCategory extends X_R_StatusCategory {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getR_StatusCategory_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MStatus(getCtx(), rs, null));
+      while (rs.next()) list.add(new MStatus(getCtx(), rs));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {

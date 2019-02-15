@@ -26,8 +26,8 @@ public class MDistributionLine extends X_GL_DistributionLine {
    * @param GL_DistributionLine_ID id
    * @param trxName transaction
    */
-  public MDistributionLine(Properties ctx, int GL_DistributionLine_ID, String trxName) {
-    super(ctx, GL_DistributionLine_ID, trxName);
+  public MDistributionLine(Properties ctx, int GL_DistributionLine_ID) {
+    super(ctx, GL_DistributionLine_ID);
     if (GL_DistributionLine_ID == 0) {
       //	setGL_Distribution_ID (0);		//	Parent
       //	setLine (0);
@@ -57,8 +57,8 @@ public class MDistributionLine extends X_GL_DistributionLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MDistributionLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDistributionLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MDistributionLine
 
   /** The Parent */
@@ -77,7 +77,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
    */
   public MDistribution getParent() {
     if (m_parent == null)
-      m_parent = new MDistribution(getCtx(), getGL_Distribution_ID(), null);
+      m_parent = new MDistribution(getCtx(), getGL_Distribution_ID());
     return m_parent;
   } //	getParent
 

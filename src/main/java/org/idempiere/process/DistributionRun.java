@@ -81,7 +81,7 @@ public class DistributionRun extends SvrProcess {
       if (para[i].getParameter() == null) ;
       else if (name.equals("C_DocType_ID")) {
         p_C_DocType_ID = ((BigDecimal) para[i].getParameter()).intValue();
-        m_docType = new MDocType(getCtx(), p_C_DocType_ID, null);
+        m_docType = new MDocType(getCtx(), p_C_DocType_ID);
       } else if (name.equals("DatePromised")) {
         p_DatePromised = (Timestamp) para[i].getParameter();
         // p_DatePromised_To = (Timestamp)para[i].getParameter_To();

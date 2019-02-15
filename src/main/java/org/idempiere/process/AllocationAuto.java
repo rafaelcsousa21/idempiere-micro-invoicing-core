@@ -265,7 +265,7 @@ public class AllocationAuto extends SvrProcess {
       pstmt.setInt(1, C_BPartner_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MPayment payment = new MPayment(getCtx(), rs, null);
+        MPayment payment = new MPayment(getCtx(), rs);
         BigDecimal allocated = payment.getAllocatedAmt();
         if (allocated != null && allocated.compareTo(payment.getPayAmt()) == 0) {
           payment.setIsAllocated(true);
@@ -305,7 +305,7 @@ public class AllocationAuto extends SvrProcess {
       pstmt.setInt(1, C_BPartner_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MInvoice invoice = new MInvoice(getCtx(), rs, null);
+        MInvoice invoice = new MInvoice(getCtx(), rs);
         if (invoice.getOpenAmt(false, null).signum() == 0) {
           invoice.setIsPaid(true);
           invoice.saveEx();
@@ -384,7 +384,7 @@ public class AllocationAuto extends SvrProcess {
       else //	No direct invoice
       {
         MPaySelectionCheck psCheck =
-            MPaySelectionCheck.getOfPayment(getCtx(), payment.getC_Payment_ID(), null);
+            MPaySelectionCheck.getOfPayment(getCtx(), payment.getC_Payment_ID());
         if (psCheck == null) continue;
         //
         BigDecimal totalInvoice = Env.ZERO;

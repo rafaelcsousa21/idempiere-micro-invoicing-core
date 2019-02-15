@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_C_LandedCost;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -20,8 +19,8 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_LandedCost(Properties ctx, int C_LandedCost_ID, String trxName) {
-    super(ctx, C_LandedCost_ID, trxName);
+  public X_C_LandedCost(Properties ctx, int C_LandedCost_ID) {
+    super(ctx, C_LandedCost_ID);
     /**
      * if (C_LandedCost_ID == 0) { setC_InvoiceLine_ID (0); setC_LandedCost_ID (0);
      * setLandedCostDistribution (null); // Q setM_CostElement_ID (0); }
@@ -29,8 +28,8 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_C_LandedCost(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_LandedCost(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

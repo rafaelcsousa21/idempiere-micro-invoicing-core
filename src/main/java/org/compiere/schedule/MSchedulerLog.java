@@ -22,8 +22,8 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
    * @param AD_SchedulerLog_ID id
    * @param trxName transaction
    */
-  public MSchedulerLog(Properties ctx, int AD_SchedulerLog_ID, String trxName) {
-    super(ctx, AD_SchedulerLog_ID, trxName);
+  public MSchedulerLog(Properties ctx, int AD_SchedulerLog_ID) {
+    super(ctx, AD_SchedulerLog_ID);
     if (AD_SchedulerLog_ID == 0) setIsError(false);
   } //	MSchedulerLog
 
@@ -34,8 +34,8 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
    * @param rs result set
    * @param trxName transaction
    */
-  public MSchedulerLog(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MSchedulerLog(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MSchedulerLog
 
   /**
@@ -45,7 +45,7 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
    * @param summary summary
    */
   public MSchedulerLog(MScheduler parent, String summary) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setAD_Scheduler_ID(parent.getAD_Scheduler_ID());
     setSummary(summary);

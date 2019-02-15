@@ -41,7 +41,7 @@ public class MMessage extends X_AD_Message {
         pstmt = prepareStatement(sql);
         pstmt.setString(1, Value);
         rs = pstmt.executeQuery();
-        if (rs.next()) retValue = new MMessage(ctx, rs, null);
+        if (rs.next()) retValue = new MMessage(ctx, rs);
       } catch (Exception e) {
         s_log.log(Level.SEVERE, "get", e);
       } finally {
@@ -65,7 +65,7 @@ public class MMessage extends X_AD_Message {
     String key = String.valueOf(AD_Message_ID);
     MMessage retValue = (MMessage) s_cache.get(key);
     if (retValue == null) {
-      retValue = new MMessage(ctx, AD_Message_ID, null);
+      retValue = new MMessage(ctx, AD_Message_ID);
       s_cache.put(key, retValue);
     }
     return retValue;
@@ -97,8 +97,8 @@ public class MMessage extends X_AD_Message {
    * @param AD_Message_ID id
    * @param trxName transaction
    */
-  public MMessage(Properties ctx, int AD_Message_ID, String trxName) {
-    super(ctx, AD_Message_ID, trxName);
+  public MMessage(Properties ctx, int AD_Message_ID) {
+    super(ctx, AD_Message_ID);
   } //	MMessage
 
   /**
@@ -108,7 +108,7 @@ public class MMessage extends X_AD_Message {
    * @param rs result set
    * @param trxName transaction
    */
-  public MMessage(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MMessage(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MMessage
 } //	MMessage

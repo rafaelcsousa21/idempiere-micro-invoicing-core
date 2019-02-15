@@ -4,7 +4,6 @@ import org.compiere.model.I_M_InventoryLineMA;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -24,8 +23,8 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_InventoryLineMA(Properties ctx, int M_InventoryLineMA_ID, String trxName) {
-    super(ctx, M_InventoryLineMA_ID, trxName);
+  public X_M_InventoryLineMA(Properties ctx, int M_InventoryLineMA_ID) {
+    super(ctx, M_InventoryLineMA_ID);
     /**
      * if (M_InventoryLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setM_InventoryLine_ID (0);
      * setMovementQty (Env.ZERO); // 1 }
@@ -33,8 +32,8 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA, I_Pe
   }
 
   /** Load Constructor */
-  public X_M_InventoryLineMA(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_InventoryLineMA(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -124,7 +123,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA, I_Pe
   public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
     return (org.compiere.model.I_M_InventoryLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getM_InventoryLine_ID(), null);
+            .getPO(getM_InventoryLine_ID());
   }
 
   /**
@@ -134,7 +133,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA, I_Pe
    */
   public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
     if (M_InventoryLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InventoryLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
+    else set_ValueNoCheck(COLUMNNAME_M_InventoryLine_ID, M_InventoryLine_ID);
   }
 
   /**

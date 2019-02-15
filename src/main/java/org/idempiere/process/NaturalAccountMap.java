@@ -24,16 +24,13 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
    * @param ctx context
    * @param trxName transaction
    */
-  public NaturalAccountMap(Properties ctx, String trxName) {
+  public NaturalAccountMap(Properties ctx) {
     super(null, "NaturalAccountMap", 100, false);
     m_ctx = ctx;
-    m_trxName = trxName;
   } //  NaturalAccountMap
 
   /** Context */
   private Properties m_ctx = null;
-  /** Transaction */
-  private String m_trxName = null;
   /** Map of Values and Element */
   private HashMap<String, MElementValue> m_valueMap = new HashMap<String, MElementValue>();
   /** Logger */
@@ -192,8 +189,7 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
                 AccountType,
                 AccountSign,
                 IsDocControlled.toUpperCase().startsWith("Y"),
-                IsSummary.toUpperCase().startsWith("Y"),
-                m_trxName);
+                IsSummary.toUpperCase().startsWith("Y"));
         m_valueMap.put(Value, na);
       }
 

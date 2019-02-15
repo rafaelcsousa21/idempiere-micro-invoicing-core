@@ -303,7 +303,7 @@ public class ImportAccount extends SvrProcess {
       pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        X_I_ElementValue impEV = new X_I_ElementValue(getCtx(), rs, null);
+        X_I_ElementValue impEV = new X_I_ElementValue(getCtx(), rs);
         int C_ElementValue_ID = impEV.getC_ElementValue_ID();
         int I_ElementValue_ID = impEV.getI_ElementValue_ID();
 
@@ -327,7 +327,7 @@ public class ImportAccount extends SvrProcess {
           }
         } else //	Update existing
         {
-          MElementValue ev = new MElementValue(getCtx(), C_ElementValue_ID, null);
+          MElementValue ev = new MElementValue(getCtx(), C_ElementValue_ID);
           if (ev.getId() != C_ElementValue_ID) {}
 
           ev.set(impEV);
@@ -515,7 +515,7 @@ public class ImportAccount extends SvrProcess {
   private void updateDefaultAccounts(int C_AcctSchema_ID) {
     if (log.isLoggable(Level.CONFIG)) log.config("C_AcctSchema_ID=" + C_AcctSchema_ID);
 
-    MAcctSchema as = new MAcctSchema(getCtx(), C_AcctSchema_ID, null);
+    MAcctSchema as = new MAcctSchema(getCtx(), C_AcctSchema_ID);
     if (as.getAcctSchemaElement("AC").getC_Element_ID() != m_C_Element_ID) {
       StringBuilder msglog =
           new StringBuilder("C_Element_ID=")
@@ -715,7 +715,7 @@ public class ImportAccount extends SvrProcess {
       else {
         // check if column is active before logging on SEVERE level
         int columnID = getColumnId(TableName, ColumnName);
-        if (new MColumn(getCtx(), columnID, null).isActive())
+        if (new MColumn(getCtx(), columnID).isActive())
           log.log(Level.SEVERE, "Account not found " + sql);
         else
           log.log(

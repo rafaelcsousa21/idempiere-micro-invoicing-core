@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_AllocationHdr(Properties ctx, int C_AllocationHdr_ID, String trxName) {
-    super(ctx, C_AllocationHdr_ID, trxName);
+  public X_C_AllocationHdr(Properties ctx, int C_AllocationHdr_ID) {
+    super(ctx, C_AllocationHdr_ID);
     /**
      * if (C_AllocationHdr_ID == 0) { setApprovalAmt (Env.ZERO); setC_AllocationHdr_ID (0);
      * setC_Currency_ID (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); setDateTrx
@@ -35,8 +34,8 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
   }
 
   /** Load Constructor */
-  public X_C_AllocationHdr(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_AllocationHdr(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

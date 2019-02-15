@@ -15,8 +15,8 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_T_InvoiceGL(Properties ctx, int T_InvoiceGL_ID, String trxName) {
-    super(ctx, T_InvoiceGL_ID, trxName);
+  public X_T_InvoiceGL(Properties ctx, int T_InvoiceGL_ID) {
+    super(ctx, T_InvoiceGL_ID);
     /**
      * if (T_InvoiceGL_ID == 0) { setAD_PInstance_ID (0); setAmtAcctBalance (Env.ZERO);
      * setAmtRevalCr (Env.ZERO); setAmtRevalCrDiff (Env.ZERO); setAmtRevalDr (Env.ZERO);
@@ -28,8 +28,8 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_T_InvoiceGL(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_T_InvoiceGL(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

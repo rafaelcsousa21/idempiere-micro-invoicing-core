@@ -21,11 +21,11 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
     for (I_C_InvoiceLine line : lines) {
       totalLines = totalLines.add(line.getLineNetAmt());
       if (!taxList.contains(line.getC_Tax_ID())) {
-        MTax tax = new MTax(invoice.getCtx(), line.getC_Tax_ID(), null);
+        MTax tax = new MTax(invoice.getCtx(), line.getC_Tax_ID());
         if (tax.getC_TaxProvider_ID() != 0) continue;
         MInvoiceTax iTax =
             MInvoiceTax.get(
-                line, invoice.getPrecision(), false, null); // 	current Tax
+                line, invoice.getPrecision(), false); // 	current Tax
         if (iTax != null) {
           iTax.setIsTaxIncluded(invoice.isTaxIncluded());
           if (!iTax.calculateTaxFromLines()) return false;
@@ -50,7 +50,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
           BigDecimal taxAmt =
               cTax.calculateTax(iTax.getTaxBaseAmt(), false, invoice.getPrecision());
           //
-          MInvoiceTax newITax = new MInvoiceTax(invoice.getCtx(), 0, null);
+          MInvoiceTax newITax = new MInvoiceTax(invoice.getCtx(), 0);
           newITax.setClientOrg(invoice);
           newITax.setAD_Org_ID(invoice. getOrgId());
           newITax.setC_Invoice_ID(invoice.getC_Invoice_ID());
@@ -59,11 +59,11 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
           newITax.setIsTaxIncluded(invoice.isTaxIncluded());
           newITax.setTaxBaseAmt(iTax.getTaxBaseAmt());
           newITax.setTaxAmt(taxAmt);
-          newITax.saveEx(null);
+          newITax.saveEx();
           //
           if (!invoice.isTaxIncluded()) grandTotal = grandTotal.add(taxAmt);
         }
-        iTax.deleteEx(true, null);
+        iTax.deleteEx(true);
       } else {
         if (!invoice.isTaxIncluded()) grandTotal = grandTotal.add(iTax.getTaxAmt());
       }
@@ -76,7 +76,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
 
   @Override
   public boolean updateInvoiceTax(I_C_TaxProvider provider, I_C_InvoiceLine line) {
-    MTax mtax = new MTax(line.getCtx(), line.getC_Tax_ID(), null);
+    MTax mtax = new MTax(line.getCtx(), line.getC_Tax_ID());
     if (mtax.getC_TaxProvider_ID() == 0) return line.updateInvoiceTax(false);
     return true;
   }
@@ -86,7 +86,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
     if (!newRecord
         && (line instanceof org.idempiere.orm.PO)
         && ((org.idempiere.orm.PO) line).is_ValueChanged(MInvoiceLine.COLUMNNAME_C_Tax_ID)) {
-      MTax mtax = new MTax(line.getCtx(), line.getC_Tax_ID(), null);
+      MTax mtax = new MTax(line.getCtx(), line.getC_Tax_ID());
       if (mtax.getC_TaxProvider_ID() == 0) {
         //	Recalculate Tax for old Tax
         if (!line.updateInvoiceTax(true)) return false;

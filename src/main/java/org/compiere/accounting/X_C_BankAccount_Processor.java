@@ -20,8 +20,8 @@ public class X_C_BankAccount_Processor extends PO
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_BankAccount_Processor(Properties ctx, int C_BankAccount_Processor_ID, String trxName) {
-    super(ctx, C_BankAccount_Processor_ID, trxName);
+  public X_C_BankAccount_Processor(Properties ctx, int C_BankAccount_Processor_ID) {
+    super(ctx, C_BankAccount_Processor_ID);
     /**
      * if (C_BankAccount_Processor_ID == 0) { setAcceptAMEX (false); // N setAcceptATM (false); // N
      * setAcceptCheck (false); // N setAcceptCorporate (false); // N setAcceptDiners (false); // N
@@ -33,8 +33,8 @@ public class X_C_BankAccount_Processor extends PO
   }
 
   /** Load Constructor */
-  public X_C_BankAccount_Processor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_BankAccount_Processor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

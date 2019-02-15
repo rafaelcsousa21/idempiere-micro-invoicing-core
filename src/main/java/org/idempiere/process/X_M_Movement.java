@@ -3,7 +3,6 @@ package org.idempiere.process;
 import org.compiere.model.I_M_Movement;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -17,8 +16,8 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Movement(Properties ctx, int M_Movement_ID, String trxName) {
-    super(ctx, M_Movement_ID, trxName);
+  public X_M_Movement(Properties ctx, int M_Movement_ID) {
+    super(ctx, M_Movement_ID);
     /**
      * if (M_Movement_ID == 0) { setC_DocType_ID (0); setDocAction (null); // CO setDocStatus
      * (null); // DR setDocumentNo (null); setIsApproved (false); setIsInTransit (false);
@@ -28,8 +27,8 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_Movement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Movement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

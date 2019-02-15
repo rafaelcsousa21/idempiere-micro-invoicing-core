@@ -2,7 +2,6 @@ package org.compiere.validation;
 
 import org.compiere.model.I_AD_Table_ScriptValidator;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -22,8 +21,8 @@ public class X_AD_Table_ScriptValidator extends PO
 
   /** Standard Constructor */
   public X_AD_Table_ScriptValidator(
-      Properties ctx, int AD_Table_ScriptValidator_ID, String trxName) {
-    super(ctx, AD_Table_ScriptValidator_ID, trxName);
+      Properties ctx, int AD_Table_ScriptValidator_ID) {
+    super(ctx, AD_Table_ScriptValidator_ID);
     /**
      * if (AD_Table_ScriptValidator_ID == 0) { setAD_Rule_ID (0); setAD_Table_ID (0);
      * setAD_Table_ScriptValidator_ID (0); setEventModelValidator (null); setSeqNo (0); // 0 }
@@ -31,8 +30,8 @@ public class X_AD_Table_ScriptValidator extends PO
   }
 
   /** Load Constructor */
-  public X_AD_Table_ScriptValidator(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_Table_ScriptValidator(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

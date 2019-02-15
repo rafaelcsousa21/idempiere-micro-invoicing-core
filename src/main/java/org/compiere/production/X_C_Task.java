@@ -21,13 +21,13 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_Task(Properties ctx, int C_Task_ID, String trxName) {
-    super(ctx, C_Task_ID, trxName);
+  public X_C_Task(Properties ctx, int C_Task_ID) {
+    super(ctx, C_Task_ID);
   }
 
   /** Load Constructor */
-  public X_C_Task(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_Task(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

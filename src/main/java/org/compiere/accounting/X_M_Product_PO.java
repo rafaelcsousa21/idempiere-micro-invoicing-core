@@ -21,8 +21,8 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Product_PO(Properties ctx, int M_Product_PO_ID, String trxName) {
-    super(ctx, M_Product_PO_ID, trxName);
+  public X_M_Product_PO(Properties ctx, int M_Product_PO_ID) {
+    super(ctx, M_Product_PO_ID);
     /**
      * if (M_Product_PO_ID == 0) { setC_BPartner_ID (0); setIsCurrentVendor (true); // Y
      * setM_Product_ID (0); // @M_Product_ID@ setVendorProductNo (null); // @Value@ }
@@ -30,8 +30,8 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_Product_PO(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Product_PO(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

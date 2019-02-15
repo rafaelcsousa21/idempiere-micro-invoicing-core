@@ -64,11 +64,11 @@ public class ChangeBaseLanguage extends SvrProcess {
     // Disable the base flag on the actual
     I_AD_Language baselang = MLanguage.get(getCtx(), Language.getBaseAD_Language());
     baselang.setIsBaseLanguage(false);
-    baselang.saveEx(null);
+    baselang.saveEx();
 
     // Enable base flag on new language
     lang.setIsBaseLanguage(true);
-    lang.saveEx(null);
+    lang.saveEx();
 
     Language.setBaseLanguage(p_Language);
 

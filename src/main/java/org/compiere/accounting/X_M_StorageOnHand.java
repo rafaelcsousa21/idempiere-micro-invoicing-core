@@ -23,8 +23,8 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_StorageOnHand(Properties ctx, int M_StorageOnHand_ID, String trxName) {
-    super(ctx, M_StorageOnHand_ID, trxName);
+  public X_M_StorageOnHand(Properties ctx, int M_StorageOnHand_ID) {
+    super(ctx, M_StorageOnHand_ID);
     /**
      * if (M_StorageOnHand_ID == 0) { setDateMaterialPolicy (new Timestamp(
      * System.currentTimeMillis() )); setM_AttributeSetInstance_ID (0); setM_Locator_ID (0);
@@ -33,8 +33,8 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand, I_Persis
   }
 
   /** Load Constructor */
-  public X_M_StorageOnHand(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_StorageOnHand(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_M_StorageOnHand(Properties ctx, Row row) {
     super(ctx, row);

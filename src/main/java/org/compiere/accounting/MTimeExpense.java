@@ -35,8 +35,8 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
    * @param S_TimeExpense_ID id
    * @param trxName transaction
    */
-  public MTimeExpense(Properties ctx, int S_TimeExpense_ID, String trxName) {
-    super(ctx, S_TimeExpense_ID, trxName);
+  public MTimeExpense(Properties ctx, int S_TimeExpense_ID) {
+    super(ctx, S_TimeExpense_ID);
     if (S_TimeExpense_ID == 0) {
       //	setC_BPartner_ID (0);
       setDateReport(new Timestamp(System.currentTimeMillis()));
@@ -56,8 +56,8 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
    * @param rs result set
    * @param trxName transaction
    */
-  public MTimeExpense(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MTimeExpense(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MTimeExpense
 
   /** Default Locator */
@@ -75,7 +75,6 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
    */
   public MTimeExpenseLine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      set_TrxName(m_lines, null);
       return m_lines;
     }
     //
@@ -90,7 +89,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
       pstmt.setInt(1, getS_TimeExpense_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MTimeExpenseLine te = new MTimeExpenseLine(getCtx(), rs, null);
+        MTimeExpenseLine te = new MTimeExpenseLine(getCtx(), rs);
         te.setC_Currency_Report_ID(C_Currency_ID);
         list.add(te);
       }
@@ -457,7 +456,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
   public int getDoc_User_ID() {
     if (m_AD_User_ID != 0) return m_AD_User_ID;
     if (getC_BPartner_ID() != 0) {
-      MUser[] users = MUser.getOfBPartner(getCtx(), getC_BPartner_ID(), null);
+      MUser[] users = MUser.getOfBPartner(getCtx(), getC_BPartner_ID());
       if (users.length > 0) {
         m_AD_User_ID = users[0].getAD_User_ID();
         return m_AD_User_ID;
@@ -472,7 +471,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
    * @return C_Currency_ID
    */
   public int getC_Currency_ID() {
-    MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID(), null);
+    MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
     return pl.getC_Currency_ID();
   } //	getC_Currency_ID
 

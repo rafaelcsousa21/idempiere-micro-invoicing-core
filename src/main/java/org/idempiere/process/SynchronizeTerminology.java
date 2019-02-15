@@ -62,7 +62,7 @@ public class SynchronizeTerminology extends SvrProcess {
         String desc = rs.getString(3);
         String help = rs.getString(4);
         String entityType = rs.getString(5);
-        M_Element elem = new M_Element(getCtx(), columnName, entityType, null);
+        M_Element elem = new M_Element(getCtx(), columnName, entityType);
         elem.setDescription(desc);
         elem.setHelp(help);
         elem.setPrintName(name);

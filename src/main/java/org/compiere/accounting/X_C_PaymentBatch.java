@@ -19,8 +19,8 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_PaymentBatch(Properties ctx, int C_PaymentBatch_ID, String trxName) {
-    super(ctx, C_PaymentBatch_ID, trxName);
+  public X_C_PaymentBatch(Properties ctx, int C_PaymentBatch_ID) {
+    super(ctx, C_PaymentBatch_ID);
     /**
      * if (C_PaymentBatch_ID == 0) { setC_PaymentBatch_ID (0); setC_PaymentProcessor_ID (0); setName
      * (null); setProcessed (false); setProcessing (false); }
@@ -28,8 +28,8 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch, I_
   }
 
   /** Load Constructor */
-  public X_C_PaymentBatch(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_PaymentBatch(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

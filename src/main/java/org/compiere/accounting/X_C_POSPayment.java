@@ -21,8 +21,8 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_POSPayment(Properties ctx, int C_POSPayment_ID, String trxName) {
-    super(ctx, C_POSPayment_ID, trxName);
+  public X_C_POSPayment(Properties ctx, int C_POSPayment_ID) {
+    super(ctx, C_POSPayment_ID);
     /**
      * if (C_POSPayment_ID == 0) { setC_Order_ID (0); setC_POSPayment_ID (0); setC_POSTenderType_ID
      * (0); setIsPostDated (false); // N setPayAmt (Env.ZERO); setProcessed (false); }
@@ -30,8 +30,8 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_C_POSPayment(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_POSPayment(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

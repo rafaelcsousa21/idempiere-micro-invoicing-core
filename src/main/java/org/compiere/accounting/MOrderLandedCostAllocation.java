@@ -20,8 +20,8 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
    * @param trxName
    */
   public MOrderLandedCostAllocation(
-      Properties ctx, int C_OrderLandedCostAllocation_ID, String trxName) {
-    super(ctx, C_OrderLandedCostAllocation_ID, trxName);
+      Properties ctx, int C_OrderLandedCostAllocation_ID) {
+    super(ctx, C_OrderLandedCostAllocation_ID);
   }
 
   /**
@@ -29,8 +29,8 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
    * @param rs
    * @param trxName
    */
-  public MOrderLandedCostAllocation(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MOrderLandedCostAllocation(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -51,15 +51,15 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
    * @param whereClause starting with AND
    * @return lines
    */
-  public static MOrderLandedCostAllocation[] getOfOrderLine(int C_OrderLine_ID, String trxName) {
+  public static MOrderLandedCostAllocation[] getOfOrderLine(int C_OrderLine_ID) {
     StringBuilder whereClause =
         new StringBuilder(I_C_OrderLandedCostAllocation.COLUMNNAME_C_OrderLine_ID).append("=?");
     List<MOrderLandedCostAllocation> list =
         new Query(
                 Env.getCtx(),
                 I_C_OrderLandedCostAllocation.Table_Name,
-                whereClause.toString(),
-                trxName)
+                whereClause.toString()
+        )
             .setParameters(C_OrderLine_ID)
             .list();
     return list.toArray(new MOrderLandedCostAllocation[list.size()]);

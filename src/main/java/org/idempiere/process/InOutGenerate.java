@@ -194,7 +194,7 @@ public class InOutGenerate extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) // 	Order
       {
-        MOrder order = new MOrder(getCtx(), rs, null);
+        MOrder order = new MOrder(getCtx(), rs);
         statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + order.getDocumentInfo());
 
         //	New Header different Shipper, Shipment Location
@@ -251,7 +251,7 @@ public class InOutGenerate extends SvrProcess {
             String where2 =
                 "EXISTS (SELECT * FROM M_InOut io WHERE io.M_InOut_ID=M_InOutLine.M_InOut_ID AND io.DocStatus IN ('DR','IN','IP','WC'))";
             MInOutLine[] iols =
-                MInOutLine.getOfOrderLine(getCtx(), line.getC_OrderLine_ID(), where2, null);
+                MInOutLine.getOfOrderLine(getCtx(), line.getC_OrderLine_ID(), where2);
             for (int j = 0; j < iols.length; j++)
               unconfirmedShippedQty = unconfirmedShippedQty.add(iols[j].getMovementQty());
             StringBuilder logInfo =

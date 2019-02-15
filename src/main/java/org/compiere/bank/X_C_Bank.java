@@ -19,13 +19,13 @@ public class X_C_Bank extends BasePOName implements I_C_Bank, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_Bank(Properties ctx, int C_Bank_ID, String trxName) {
-    super(ctx, C_Bank_ID, trxName);
+  public X_C_Bank(Properties ctx, int C_Bank_ID) {
+    super(ctx, C_Bank_ID);
   }
 
   /** Load Constructor */
-  public X_C_Bank(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_Bank(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

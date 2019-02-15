@@ -41,8 +41,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
    * @param DD_Order_ID order to load, (0 create new order)
    * @param trxName trx name
    */
-  public MDDOrder(Properties ctx, int DD_Order_ID, String trxName) {
-    super(ctx, DD_Order_ID, trxName);
+  public MDDOrder(Properties ctx, int DD_Order_ID) {
+    super(ctx, DD_Order_ID);
     //  New
     if (DD_Order_ID == 0) {
       setDocStatus(DOCSTATUS_Drafted);
@@ -82,7 +82,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
    * @param DocSubTypeSO if SO DocType Target (default DocSubTypeSO_OnCredit)
    */
   public MDDOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
-    this(project.getCtx(), 0, null);
+    this(project.getCtx(), 0);
     setADClientID(project.getClientId());
     setAD_Org_ID(project.getOrgId());
     setC_Campaign_ID(project.getC_Campaign_ID());
@@ -111,8 +111,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
    * @param rs result set record
    * @param trxName transaction
    */
-  public MDDOrder(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDDOrder(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MDDOrder
 
   /** Order Lines */
@@ -230,7 +230,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
       whereClauseFinal.append(" AND (").append(whereClause).append(")");
     //
     List<MDDOrderLine> list =
-        new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClauseFinal.toString(), null)
+        new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClauseFinal.toString())
             .setParameters(getDD_Order_ID())
             .setOrderBy(orderClause)
             .list();
@@ -246,7 +246,6 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
    */
   public MDDOrderLine[] getLines(boolean requery, String orderBy) {
     if (m_lines != null && !requery) {
-      set_TrxName(m_lines, null);
       return m_lines;
     }
     //
@@ -333,7 +332,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     //	No Partner Info - set Template
     if (getC_BPartner_ID() == 0) setBPartner(MBPartner.getTemplate(getCtx(), getClientId()));
     if (getC_BPartner_Location_ID() == 0)
-      setBPartner(new MBPartner(getCtx(), getC_BPartner_ID(), null));
+      setBPartner(new MBPartner(getCtx(), getC_BPartner_ID()));
 
     //	Default Sales Rep
     if (getSalesRep_ID() == 0) {
@@ -382,7 +381,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     if (is_ValueChanged(columnName)) {
       final String whereClause = I_DD_Order.COLUMNNAME_DD_Order_ID + "=?";
       List<MDDOrderLine> lines =
-          new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClause, null)
+          new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClause)
               .setParameters(getDD_Order_ID())
               .list();
 
@@ -704,7 +703,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
       BigDecimal old = line.getQtyOrdered();
       if (old.signum() != 0) {
         line.addDescription(Msg.getMsg(getCtx(), "Voided") + " (" + old + ")");
-        line.saveEx(null);
+        line.saveEx();
       }
     }
     addDescription(Msg.getMsg(getCtx(), "Voided"));
@@ -827,7 +826,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         line.setQtyOrdered(line.getQtyDelivered());
         //	QtyEntered unchanged
         line.addDescription("Close (" + old + ")");
-        line.saveEx(null);
+        line.saveEx();
       }
     }
     //	Clear Reservations

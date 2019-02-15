@@ -27,7 +27,7 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
   public static MWFNodePara[] getParameters(Properties ctx, int AD_WF_Node_ID) {
 
     List<MWFNodePara> list =
-        new Query(ctx, I_AD_WF_Node_Para.Table_Name, "AD_WF_Node_ID=?", null)
+        new Query(ctx, I_AD_WF_Node_Para.Table_Name, "AD_WF_Node_ID=?")
             .setParameters(new Object[] {AD_WF_Node_ID})
             .list();
     MWFNodePara[] retValue = new MWFNodePara[list.size()];
@@ -42,8 +42,8 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
    * @param id id
    * @param trxName transaction
    */
-  public MWFNodePara(Properties ctx, int id, String trxName) {
-    super(ctx, id, trxName);
+  public MWFNodePara(Properties ctx, int id) {
+    super(ctx, id);
   } //	MWFNodePara
 
   /**
@@ -53,8 +53,8 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWFNodePara(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWFNodePara(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWFNodePara
 
   /** Linked Process Parameter */
@@ -67,7 +67,7 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
    */
   public MProcessPara getProcessPara() {
     if (m_processPara == null)
-      m_processPara = new MProcessPara(getCtx(), getAD_Process_Para_ID(), null);
+      m_processPara = new MProcessPara(getCtx(), getAD_Process_Para_ID());
     return m_processPara;
   } //	getProcessPara
 

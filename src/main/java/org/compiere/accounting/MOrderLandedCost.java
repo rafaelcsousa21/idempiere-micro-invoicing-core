@@ -23,8 +23,8 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
    * @param C_OrderLandedCost_ID
    * @param trxName
    */
-  public MOrderLandedCost(Properties ctx, int C_OrderLandedCost_ID, String trxName) {
-    super(ctx, C_OrderLandedCost_ID, trxName);
+  public MOrderLandedCost(Properties ctx, int C_OrderLandedCost_ID) {
+    super(ctx, C_OrderLandedCost_ID);
   }
 
   /**
@@ -32,8 +32,8 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
    * @param rs
    * @param trxName
    */
-  public MOrderLandedCost(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MOrderLandedCost(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -42,11 +42,11 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
    * @param C_Order_ID
    * @return lines
    */
-  public static MOrderLandedCost[] getOfOrder(int C_Order_ID, String trxName) {
+  public static MOrderLandedCost[] getOfOrder(int C_Order_ID) {
     StringBuilder whereClause =
         new StringBuilder(I_C_OrderLandedCost.COLUMNNAME_C_Order_ID).append("=?");
     List<MOrderLandedCostAllocation> list =
-        new Query(Env.getCtx(), I_C_OrderLandedCost.Table_Name, whereClause.toString(), trxName)
+        new Query(Env.getCtx(), I_C_OrderLandedCost.Table_Name, whereClause.toString())
             .setParameters(C_Order_ID)
             .list();
     return list.toArray(new MOrderLandedCost[list.size()]);
@@ -66,8 +66,8 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
         new Query(
                 getCtx(),
                 I_C_OrderLandedCostAllocation.Table_Name,
-                whereClauseFinal.toString(),
-                null)
+                whereClauseFinal.toString()
+        )
             .setParameters(getC_OrderLandedCost_ID())
             .list();
     return list.toArray(new MOrderLandedCostAllocation[list.size()]);
@@ -83,7 +83,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
         for (MOrderLine line : orderLines) {
           if (line.getM_Product_ID() > 0) {
             MOrderLandedCostAllocation allocation =
-                new MOrderLandedCostAllocation(getCtx(), 0, null);
+                new MOrderLandedCostAllocation(getCtx(), 0);
             allocation.setC_OrderLandedCost_ID(getC_OrderLandedCost_ID());
             allocation.setC_OrderLine_ID(line.getC_OrderLine_ID());
             allocation.setClientOrg( getClientId(),  getOrgId());

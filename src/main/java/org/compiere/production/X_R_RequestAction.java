@@ -19,14 +19,14 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_RequestAction(Properties ctx, int R_RequestAction_ID, String trxName) {
-    super(ctx, R_RequestAction_ID, trxName);
+  public X_R_RequestAction(Properties ctx, int R_RequestAction_ID) {
+    super(ctx, R_RequestAction_ID);
     /** if (R_RequestAction_ID == 0) { setR_RequestAction_ID (0); setR_Request_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_R_RequestAction(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_RequestAction(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

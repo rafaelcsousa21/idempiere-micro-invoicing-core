@@ -32,7 +32,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
    * @return client
    */
   public static MClientInfo get(Properties ctx) {
-    return get(ctx, Env.getClientId(ctx), null);
+    return get(ctx, Env.getClientId(ctx));
   } //	get
 
   /** Logger */
@@ -48,7 +48,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
    */
   public MAcctSchema getMAcctSchema1() {
     if (m_acctSchema == null && getC_AcctSchema1_ID() != 0)
-      m_acctSchema = new MAcctSchema(getCtx(), getC_AcctSchema1_ID(), null);
+      m_acctSchema = new MAcctSchema(getCtx(), getC_AcctSchema1_ID());
     return m_acctSchema;
   } //	getMAcctSchema1
 
@@ -82,8 +82,8 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
    * @param rs result set
    * @param trxName transaction
    */
-  public MClientInfo(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MClientInfo(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   public MClientInfo(
@@ -116,7 +116,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
    * @param trxName optional trx
    * @return Client Info
    */
-  public static MClientInfo get(Properties ctx, int AD_Client_ID, String trxName) {
+  public static MClientInfo get(Properties ctx, int AD_Client_ID) {
     Integer key = new Integer(AD_Client_ID);
     MClientInfo info = (MClientInfo) s_cache.get(key);
     if (info != null) return info;
@@ -129,8 +129,8 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
       pstmt.setInt(1, AD_Client_ID);
       rs = pstmt.executeQuery();
       if (rs.next()) {
-        info = new MClientInfo(ctx, rs, null);
-        if (trxName == null) s_cache.put(key, info);
+        info = new MClientInfo(ctx, rs);
+        s_cache.put(key, info);
       }
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
@@ -143,14 +143,4 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
     return info;
   } //	get
 
-  /**
-   * Get Client Info
-   *
-   * @param ctx context
-   * @param AD_Client_ID id
-   * @return Client Info
-   */
-  public static MClientInfo get(Properties ctx, int AD_Client_ID) {
-    return get(ctx, AD_Client_ID, null);
-  } //	get
 } //	MClientInfo

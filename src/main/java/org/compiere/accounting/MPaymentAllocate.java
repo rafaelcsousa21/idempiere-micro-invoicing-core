@@ -32,7 +32,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
     final String whereClause = "C_Payment_ID=?";
     Query query =
         MTable.get(parent.getCtx(), I_C_PaymentAllocate.Table_ID)
-            .createQuery(whereClause, null);
+            .createQuery(whereClause);
     query.setParameters(parent.getC_Payment_ID()).setOnlyActiveRecords(true);
     List<MPaymentAllocate> list = query.list();
     return list.toArray(new MPaymentAllocate[list.size()]);
@@ -45,8 +45,8 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
    * @param C_PaymentAllocate_ID id
    * @param trxName trx
    */
-  public MPaymentAllocate(Properties ctx, int C_PaymentAllocate_ID, String trxName) {
-    super(ctx, C_PaymentAllocate_ID, trxName);
+  public MPaymentAllocate(Properties ctx, int C_PaymentAllocate_ID) {
+    super(ctx, C_PaymentAllocate_ID);
     if (C_PaymentAllocate_ID == 0) {
       //	setC_Payment_ID (0);	//	Parent
       //	setC_Invoice_ID (0);
@@ -68,8 +68,8 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
    * @param rs result set
    * @param trxName trx
    */
-  public MPaymentAllocate(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPaymentAllocate(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MPaymentAllocate
 
   /**
@@ -89,7 +89,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
    */
   public MInvoice getInvoice() {
     if (m_invoice == null && getC_Invoice_ID() != 0)
-      m_invoice = new MInvoice(getCtx(), getC_Invoice_ID(), null);
+      m_invoice = new MInvoice(getCtx(), getC_Invoice_ID());
     return m_invoice;
   } //	getInvoice
 
@@ -111,7 +111,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
    * @return true
    */
   protected boolean beforeSave(boolean newRecord) {
-    MPayment payment = new MPayment(getCtx(), getC_Payment_ID(), null);
+    MPayment payment = new MPayment(getCtx(), getC_Payment_ID());
     if ((newRecord || is_ValueChanged("C_Invoice_ID"))
         && (payment.getC_Charge_ID() != 0
             || payment.getC_Invoice_ID() != 0

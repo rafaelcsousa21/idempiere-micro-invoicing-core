@@ -209,7 +209,7 @@ public class CostUpdate extends SvrProcess {
       if (p_M_Product_Category_ID != 0) pstmt.setInt(5, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        if (createNew(new MProduct(getCtx(), rs, null), as)) counter++;
+        if (createNew(new MProduct(getCtx(), rs), as)) counter++;
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
@@ -259,7 +259,7 @@ public class CostUpdate extends SvrProcess {
       if (p_M_Product_Category_ID != 0) pstmt.setInt(2, p_M_Product_Category_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MCost cost = new MCost(getCtx(), rs, null);
+        MCost cost = new MCost(getCtx(), rs);
         for (int i = 0; i < m_ass.length; i++) {
           //	Update Costs only for default Cost Type
           if (m_ass[i].getC_AcctSchema_ID() == cost.getC_AcctSchema_ID()
@@ -273,7 +273,7 @@ public class CostUpdate extends SvrProcess {
         }
       }
       if (lines.size() > 0) {
-        inventoryDoc = new MInventory(getCtx(), 0, null);
+        inventoryDoc = new MInventory(getCtx(), 0);
         inventoryDoc.setC_DocType_ID(p_C_DocType_ID);
         inventoryDoc.setCostingMethod(MCostElement.COSTINGMETHOD_StandardCosting);
         inventoryDoc.setDocAction(DocAction.Companion.getACTION_Complete());
@@ -343,7 +343,7 @@ public class CostUpdate extends SvrProcess {
         if (lines != null) {
           BigDecimal currentCost = cost.getCurrentCostPrice();
           if (currentCost == null || currentCost.compareTo(costs) != 0) {
-            MInventoryLine line = new MInventoryLine(getCtx(), 0, null);
+            MInventoryLine line = new MInventoryLine(getCtx(), 0);
             line.setM_Product_ID(cost.getM_Product_ID());
             line.setCurrentCostPrice(cost.getCurrentCostPrice());
             line.setNewCostPrice(costs);
@@ -359,7 +359,7 @@ public class CostUpdate extends SvrProcess {
           if (costs != null && costs.signum() != 0) {
             BigDecimal currentCost = cost.getCurrentCostPrice();
             if (currentCost == null || currentCost.compareTo(costs) != 0) {
-              MInventoryLine line = new MInventoryLine(getCtx(), 0, null);
+              MInventoryLine line = new MInventoryLine(getCtx(), 0);
               line.setM_Product_ID(cost.getM_Product_ID());
               line.setCurrentCostPrice(cost.getCurrentCostPrice());
               line.setNewCostPrice(costs);
@@ -502,7 +502,7 @@ public class CostUpdate extends SvrProcess {
         if (xCost != null) retValue = xCost.getCurrentCostPrice();
       }
       if (retValue == null) {
-        MProduct product = new MProduct(getCtx(), cost.getM_Product_ID(), null);
+        MProduct product = new MProduct(getCtx(), cost.getM_Product_ID());
         MAcctSchema as = MAcctSchema.get(getCtx(), cost.getC_AcctSchema_ID());
         retValue =
             MCost.getLastInvoicePrice(
@@ -531,7 +531,7 @@ public class CostUpdate extends SvrProcess {
         if (xCost != null) retValue = xCost.getCurrentCostPrice();
       }
       if (retValue == null) {
-        MProduct product = new MProduct(getCtx(), cost.getM_Product_ID(), null);
+        MProduct product = new MProduct(getCtx(), cost.getM_Product_ID());
         MAcctSchema as = MAcctSchema.get(getCtx(), cost.getC_AcctSchema_ID());
         retValue =
             MCost.getLastPOPrice(

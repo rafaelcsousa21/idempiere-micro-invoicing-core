@@ -1,19 +1,3 @@
-/**
- * ****************************************************************************
- *
- * <p>Product: Adempiere ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc.
- * All Rights Reserved. * This program is free software; you can redistribute it and/or modify it *
- * under the terms version 2 of the GNU General Public License as published * by the Free Software
- * Foundation. This program is distributed in the hope * that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
- * PURPOSE. * See the GNU General Public License for more details. * You should have received a copy
- * of the GNU General Public License along * with this program; if not, write to the Free Software
- * Foundation, Inc., * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an
- * alternative of this public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245,
- * Santa Clara, CA 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * Contributor(s): Chris Farley - northernbrewer *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.*;
@@ -438,10 +422,10 @@ public class ReplenishReportProduction extends SvrProcess {
       if (order == null
           || order.getC_BPartner_ID() != replenish.getC_BPartner_ID()
           || order.getM_Warehouse_ID() != replenish.getM_Warehouse_ID()) {
-        order = new MOrder(getCtx(), 0, null);
+        order = new MOrder(getCtx(), 0);
         order.setIsSOTrx(false);
         order.setC_DocTypeTarget_ID(p_C_DocType_ID);
-        MBPartner bp = new MBPartner(getCtx(), replenish.getC_BPartner_ID(), null);
+        MBPartner bp = new MBPartner(getCtx(), replenish.getC_BPartner_ID());
         order.setBPartner(bp);
         order.setSalesRep_ID(getAD_User_ID());
         order.setDescription(Msg.getMsg(getCtx(), "Replenishment"));
@@ -485,7 +469,7 @@ public class ReplenishReportProduction extends SvrProcess {
         wh = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
       //
       if (requisition == null || requisition.getM_Warehouse_ID() != replenish.getM_Warehouse_ID()) {
-        requisition = new MRequisition(getCtx(), 0, null);
+        requisition = new MRequisition(getCtx(), 0);
         requisition.setAD_User_ID(getAD_User_ID());
         requisition.setC_DocType_ID(p_C_DocType_ID);
         requisition.setDescription(Msg.getMsg(getCtx(), "Replenishment"));
@@ -546,7 +530,7 @@ public class ReplenishReportProduction extends SvrProcess {
         M_WarehouseSource_ID = replenish.getM_WarehouseSource_ID();
         M_Warehouse_ID = replenish.getM_Warehouse_ID();
 
-        move = new MMovement(getCtx(), 0, null);
+        move = new MMovement(getCtx(), 0);
         move.setC_DocType_ID(p_C_DocType_ID);
         StringBuilder msgsd =
             new StringBuilder(Msg.getMsg(getCtx(), "Replenishment"))
@@ -652,7 +636,7 @@ public class ReplenishReportProduction extends SvrProcess {
         M_WarehouseSource_ID = replenish.getM_WarehouseSource_ID();
         M_Warehouse_ID = replenish.getM_Warehouse_ID();
 
-        order = new MDDOrder(getCtx(), 0, null);
+        order = new MDDOrder(getCtx(), 0);
         order.setC_DocType_ID(p_C_DocType_ID);
         StringBuilder msgsd =
             new StringBuilder(Msg.getMsg(getCtx(), "Replenishment"))
@@ -670,7 +654,7 @@ public class ReplenishReportProduction extends SvrProcess {
         if (C_BPartner_ID == 0)
           throw new AdempiereUserError(
               Msg.translate(getCtx(), "C_BPartner_ID") + " @FillMandatory@ ");
-        MBPartner bp = new MBPartner(getCtx(), C_BPartner_ID, null);
+        MBPartner bp = new MBPartner(getCtx(), C_BPartner_ID);
         // Set BPartner Link to Org
         order.setBPartner(bp);
         order.setDateOrdered(new Timestamp(System.currentTimeMillis()));
@@ -793,7 +777,7 @@ public class ReplenishReportProduction extends SvrProcess {
       BigDecimal batchQty = null;
 
       for (MReplenish rep :
-          MReplenish.getForProduct(getCtx(), replenish.getM_Product_ID(), null)) {
+          MReplenish.getForProduct(getCtx(), replenish.getM_Product_ID())) {
         if (rep.getM_Warehouse_ID() == replenish.getM_Warehouse_ID())
           batchQty = rep.getQtyBatchSize();
       }
@@ -810,7 +794,7 @@ public class ReplenishReportProduction extends SvrProcess {
         } else {
           qtyToProduce = Env.ZERO;
         }
-        production = new MProduction(getCtx(), 0, null);
+        production = new MProduction(getCtx(), 0);
         production.setDescription(Msg.getMsg(getCtx(), "Replenishment"));
         //	Set Org/WH
         production.setAD_Org_ID(wh.getOrgId());
@@ -823,7 +807,7 @@ public class ReplenishReportProduction extends SvrProcess {
         production.createLines(false);
 
         production.setIsCreated("Y");
-        production.saveEx(null);
+        production.saveEx();
         addBufferLog(
             production.getM_Production_ID(),
             production.getMovementDate(),
@@ -858,7 +842,7 @@ public class ReplenishReportProduction extends SvrProcess {
       pstmt = prepareStatement(sql.toString());
       pstmt.setInt(1, getAD_PInstance_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new X_T_Replenish(getCtx(), rs, null));
+      while (rs.next()) list.add(new X_T_Replenish(getCtx(), rs));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql.toString(), e);
     } finally {

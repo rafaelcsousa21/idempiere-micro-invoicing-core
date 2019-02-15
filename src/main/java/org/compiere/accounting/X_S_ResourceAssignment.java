@@ -23,13 +23,13 @@ public class X_S_ResourceAssignment extends BasePOName
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_S_ResourceAssignment(Properties ctx, int S_ResourceAssignment_ID, String trxName) {
-    super(ctx, S_ResourceAssignment_ID, trxName);
+  public X_S_ResourceAssignment(Properties ctx, int S_ResourceAssignment_ID) {
+    super(ctx, S_ResourceAssignment_ID);
   }
 
   /** Load Constructor */
-  public X_S_ResourceAssignment(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_S_ResourceAssignment(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

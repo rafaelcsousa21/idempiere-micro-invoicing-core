@@ -23,8 +23,8 @@ public class MPaymentProcessor extends X_C_PaymentProcessor {
    * @param C_PaymentProcessor_ID payment processor
    * @param trxName transaction
    */
-  public MPaymentProcessor(Properties ctx, int C_PaymentProcessor_ID, String trxName) {
-    super(ctx, C_PaymentProcessor_ID, trxName);
+  public MPaymentProcessor(Properties ctx, int C_PaymentProcessor_ID) {
+    super(ctx, C_PaymentProcessor_ID);
     if (C_PaymentProcessor_ID == 0) {
       //	setC_BankAccount_ID (0);		//	Parent
       //	setUserID (null);
@@ -55,8 +55,8 @@ public class MPaymentProcessor extends X_C_PaymentProcessor {
    * @param rs result set
    * @param trxName transaction
    */
-  public MPaymentProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPaymentProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MPaymentProcessor
 
   /** @deprecated Use C_BankAccount.C_PaymentProcessor_ID */

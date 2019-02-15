@@ -135,7 +135,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
       if (p_C_DocType_ID <= 0) {
         throw new IllegalArgumentException("Cost Adjustment Document Type required!");
       }
-      acctSchema = MAcctSchema.get(getCtx(), p_C_AcctSchema_ID, null);
+      acctSchema = MAcctSchema.get(getCtx(), p_C_AcctSchema_ID);
     }
 
     StringBuilder sql = null;
@@ -389,7 +389,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
 
       X_I_Inventory lastImp = null;
       while (rs.next()) {
-        X_I_Inventory imp = new X_I_Inventory(getCtx(), rs, null);
+        X_I_Inventory imp = new X_I_Inventory(getCtx(), rs);
         Timestamp MovementDate = TimeUtil.getDay(imp.getMovementDate());
         int isInternalUse = (imp.getQtyInternalUse().signum() != 0) ? 1 : 0;
 
@@ -413,7 +413,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
               inventory.saveEx();
             }
           }
-          inventory = new MInventory(getCtx(), 0, null);
+          inventory = new MInventory(getCtx(), 0);
           if (imp.getC_DocType_ID() > 0) inventory.setC_DocType_ID(imp.getC_DocType_ID());
           inventory.setClientOrg(imp.getClientId(), imp.getOrgId());
           inventory.setDescription("I " + imp.getM_Warehouse_ID() + " " + MovementDate);
@@ -438,7 +438,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
           x_isInternalUse = isInternalUse;
           noInsert++;
         }
-        MProduct product = new MProduct(getCtx(), imp.getM_Product_ID(), null);
+        MProduct product = new MProduct(getCtx(), imp.getM_Product_ID());
         //	Line
         int M_AttributeSetInstance_ID = generateASI(product, imp);
 
@@ -539,7 +539,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
       if (product.isInstanceAttribute()) {
         MAttributeSet mas = product.getAttributeSet();
         MAttributeSetInstance masi =
-            new MAttributeSetInstance(getCtx(), 0, mas.getMAttributeSet_ID(), null);
+            new MAttributeSetInstance(getCtx(), 0, mas.getMAttributeSet_ID());
         if (mas.isLot() && imp.getLot() != null) masi.setLot(imp.getLot(), imp.getM_Product_ID());
         if (mas.isSerNo() && imp.getSerNo() != null) masi.setSerNo(imp.getSerNo());
         masi.setDescription();
@@ -555,7 +555,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
     if (product.getM_Product_Category_ID() > 0) {
       MProductCategoryAcct pca =
           MProductCategoryAcct.get(
-              getCtx(), product.getM_Product_Category_ID(), p_C_AcctSchema_ID, null);
+              getCtx(), product.getM_Product_Category_ID(), p_C_AcctSchema_ID);
       costingLevel = pca.getCostingLevel();
       if (costingLevel == null) {
         costingLevel = acctSchema.getCostingLevel();
@@ -576,7 +576,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
         MCost.get(product, costASI, acctSchema, costOrgID, p_M_CostElement_ID, null);
     if (cost.is_new()) cost.saveEx();
     if (costingDoc == null) {
-      costingDoc = new MInventory(getCtx(), 0, null);
+      costingDoc = new MInventory(getCtx(), 0);
       costingDoc.setC_DocType_ID(p_C_DocType_ID);
       costingDoc.setCostingMethod(cost.getM_CostElement().getCostingMethod());
       costingDoc.setAD_Org_ID(imp.getOrgId());
@@ -584,7 +584,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
       costingDoc.saveEx();
     }
 
-    MInventoryLine costingLine = new MInventoryLine(getCtx(), 0, null);
+    MInventoryLine costingLine = new MInventoryLine(getCtx(), 0);
     costingLine.setM_Inventory_ID(costingDoc.getM_Inventory_ID());
     costingLine.setM_Product_ID(cost.getM_Product_ID());
     costingLine.setCurrentCostPrice(cost.getCurrentCostPrice());

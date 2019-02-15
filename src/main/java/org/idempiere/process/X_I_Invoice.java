@@ -16,13 +16,13 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice, I_Persistent
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_I_Invoice(Properties ctx, int I_Invoice_ID, String trxName) {
-    super(ctx, I_Invoice_ID, trxName);
+  public X_I_Invoice(Properties ctx, int I_Invoice_ID) {
+    super(ctx, I_Invoice_ID);
   }
 
   /** Load Constructor */
-  public X_I_Invoice(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_I_Invoice(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

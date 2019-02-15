@@ -786,7 +786,7 @@ public class ImportGLJournal extends SvrProcess {
       rs = pstmt.executeQuery();
       //
       while (rs.next()) {
-        X_I_GLJournal imp = new X_I_GLJournal(getCtx(), rs, null);
+        X_I_GLJournal imp = new X_I_GLJournal(getCtx(), rs);
         //	New Batch if Batch Document No changes
         String impBatchDocumentNo = imp.getBatchDocumentNo();
         if (impBatchDocumentNo == null) impBatchDocumentNo = "";
@@ -806,7 +806,7 @@ public class ImportGLJournal extends SvrProcess {
 
         if (imp.isCreateNewBatch() || (batch == null && imp.getBatchDocumentNo() != null)) {
           BatchDocumentNo = impBatchDocumentNo; // 	cannot compare real DocumentNo
-          batch = new MJournalBatch(getCtx(), 0, null);
+          batch = new MJournalBatch(getCtx(), 0);
           batch.setClientOrg(imp.getClientId(), imp.getAD_OrgDoc_ID());
           if (imp.getBatchDocumentNo() != null && imp.getBatchDocumentNo().length() > 0)
             batch.setDocumentNo(imp.getBatchDocumentNo());
@@ -845,7 +845,7 @@ public class ImportGLJournal extends SvrProcess {
             || !impDateAcct.equals(DateAcct)) {
           JournalDocumentNo = impJournalDocumentNo; // 	cannot compare real DocumentNo
           DateAcct = impDateAcct;
-          journal = new MJournal(getCtx(), 0, null);
+          journal = new MJournal(getCtx(), 0);
           if (batch != null) journal.setGL_JournalBatch_ID(batch.getGL_JournalBatch_ID());
           journal.setClientOrg(imp.getClientId(), imp.getAD_OrgDoc_ID());
           //

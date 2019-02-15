@@ -1,16 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 2007 ADempiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * Adempiere, Inc. *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import java.util.logging.Level;
@@ -69,12 +56,12 @@ public class CopyColumnsFromTable extends SvrProcess {
               + ", Target AD_Table_ID="
               + p_target_AD_Table_ID);
 
-    MTable targetTable = new MTable(getCtx(), p_target_AD_Table_ID, null);
+    MTable targetTable = new MTable(getCtx(), p_target_AD_Table_ID);
     MColumn[] targetColumns = targetTable.getColumns(true);
     if (targetColumns.length > 0)
       throw new AdempiereSystemError(Msg.getMsg(Env.getCtx(), "ErrorCopyColumns"));
 
-    MTable sourceTable = new MTable(getCtx(), p_source_AD_Table_ID, null);
+    MTable sourceTable = new MTable(getCtx(), p_source_AD_Table_ID);
     MColumn[] sourceColumns = sourceTable.getColumns(true);
 
     for (int i = 0; i < sourceColumns.length; i++) {
@@ -90,13 +77,13 @@ public class CopyColumnsFromTable extends SvrProcess {
         M_Element element = M_Element.get(getCtx(), targetColumnName);
         if (element == null) {
           element =
-              new M_Element(getCtx(), targetColumnName, targetTable.getEntityType(), null);
+              new M_Element(getCtx(), targetColumnName, targetTable.getEntityType());
           if (targetColumnName.equalsIgnoreCase(targetTable.getTableName() + "_ID")) {
             element.setColumnName(targetTable.getTableName() + "_ID");
             element.setName(targetTable.getName());
             element.setPrintName(targetTable.getName());
           }
-          element.saveEx(null);
+          element.saveEx();
         }
         colTarget.setAD_Element_ID(element.getAD_Element_ID());
         colTarget.setName(targetTable.getName());
@@ -111,13 +98,13 @@ public class CopyColumnsFromTable extends SvrProcess {
         M_Element element = M_Element.get(getCtx(), targetColumnName);
         if (element == null) {
           element =
-              new M_Element(getCtx(), targetColumnName, targetTable.getEntityType(), null);
+              new M_Element(getCtx(), targetColumnName, targetTable.getEntityType());
           if (targetColumnName.equalsIgnoreCase(targetTable.getTableName() + "_UU")) {
             element.setColumnName(targetTable.getTableName() + "_UU");
             element.setName(targetTable.getTableName() + "_UU");
             element.setPrintName(targetTable.getTableName() + "_UU");
           }
-          element.saveEx(null);
+          element.saveEx();
         }
         colTarget.setAD_Element_ID(element.getAD_Element_ID());
         colTarget.setName(targetTable.getName());
@@ -125,7 +112,7 @@ public class CopyColumnsFromTable extends SvrProcess {
         colTarget.setHelp(targetTable.getHelp());
       }
       colTarget.setIsActive(sourceColumns[i].isActive());
-      colTarget.saveEx(null);
+      colTarget.saveEx();
       // TODO: Copy translations
       m_count++;
     }

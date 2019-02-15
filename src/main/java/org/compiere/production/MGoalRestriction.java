@@ -20,8 +20,8 @@ public class MGoalRestriction extends X_PA_GoalRestriction {
    * @param PA_GoalRestriction_ID id
    * @param trxName trx
    */
-  public MGoalRestriction(Properties ctx, int PA_GoalRestriction_ID, String trxName) {
-    super(ctx, PA_GoalRestriction_ID, trxName);
+  public MGoalRestriction(Properties ctx, int PA_GoalRestriction_ID) {
+    super(ctx, PA_GoalRestriction_ID);
   } //	MGoalRestriction
 
   /**
@@ -31,8 +31,8 @@ public class MGoalRestriction extends X_PA_GoalRestriction {
    * @param rs result set
    * @param trxName trx
    */
-  public MGoalRestriction(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MGoalRestriction(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MGoalRestriction
 
   /**

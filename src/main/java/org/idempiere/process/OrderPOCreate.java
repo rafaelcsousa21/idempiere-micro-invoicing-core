@@ -145,7 +145,7 @@ public class OrderPOCreate extends SvrProcess {
       }
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        counter += createPOFromSO(new MOrder(getCtx(), rs, null));
+        counter += createPOFromSO(new MOrder(getCtx(), rs));
       }
     } finally {
 
@@ -246,7 +246,7 @@ public class OrderPOCreate extends SvrProcess {
    * @param so sales order
    */
   public MOrder createPOForVendor(int C_BPartner_ID, MOrder so) {
-    MOrder po = new MOrder(getCtx(), 0, null);
+    MOrder po = new MOrder(getCtx(), 0);
     po.setClientOrg(so.getClientId(), so.getOrgId());
     po.setLink_Order_ID(so.getC_Order_ID());
     po.setIsSOTrx(false);
@@ -258,7 +258,7 @@ public class OrderPOCreate extends SvrProcess {
     po.setSalesRep_ID(so.getSalesRep_ID());
     po.setM_Warehouse_ID(so.getM_Warehouse_ID());
     //	Set Vendor
-    MBPartner vendor = new MBPartner(getCtx(), C_BPartner_ID, null);
+    MBPartner vendor = new MBPartner(getCtx(), C_BPartner_ID);
     po.setBPartner(vendor);
     //	Drop Ship
     if (p_IsDropShip) {
@@ -276,7 +276,7 @@ public class OrderPOCreate extends SvrProcess {
         po.setDropShip_User_ID(so.getAD_User_ID());
       }
       // get default drop ship warehouse
-      MOrgInfo orginfo = MOrgInfo.get(getCtx(), po.getOrgId(), null);
+      MOrgInfo orginfo = MOrgInfo.get(getCtx(), po.getOrgId());
       if (orginfo.getDropShip_Warehouse_ID() != 0)
         po.setM_Warehouse_ID(orginfo.getDropShip_Warehouse_ID());
       else log.log(Level.SEVERE, "Must specify drop ship warehouse in org info.");

@@ -71,12 +71,12 @@ public class CopyComponentsFromView extends SvrProcess {
               + ", Target AD_Table_ID="
               + p_target_AD_Table_ID);
 
-    MTable targetTable = new MTable(getCtx(), p_target_AD_Table_ID, null);
+    MTable targetTable = new MTable(getCtx(), p_target_AD_Table_ID);
     MViewComponent[] targetViewComponents = targetTable.getViewComponent(true);
     if (targetViewComponents.length > 0)
       throw new AdempiereSystemError(Msg.getMsg(Env.getCtx(), "ErrorCopyView"));
 
-    MTable sourceTable = new MTable(getCtx(), p_source_AD_Table_ID, null);
+    MTable sourceTable = new MTable(getCtx(), p_source_AD_Table_ID);
     MViewComponent[] sourceViewComponents = sourceTable.getViewComponent(true);
 
     for (int i = 0; i < sourceViewComponents.length; i++) {
@@ -86,7 +86,7 @@ public class CopyComponentsFromView extends SvrProcess {
       viewComponentTarget.setEntityType(targetTable.getEntityType());
 
       viewComponentTarget.setIsActive(sourceViewComponents[i].isActive());
-      viewComponentTarget.saveEx(null);
+      viewComponentTarget.saveEx();
 
       copyViewColumns(sourceViewComponents[i], viewComponentTarget);
 
@@ -109,7 +109,7 @@ public class CopyComponentsFromView extends SvrProcess {
       columnTarget.setEntityType(targetComponent.getEntityType());
 
       columnTarget.setIsActive(sourceColumns[i].isActive());
-      columnTarget.saveEx(null);
+      columnTarget.saveEx();
     }
   }
 }

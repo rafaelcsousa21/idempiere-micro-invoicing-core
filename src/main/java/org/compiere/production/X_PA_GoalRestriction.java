@@ -19,13 +19,13 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_PA_GoalRestriction(Properties ctx, int PA_GoalRestriction_ID, String trxName) {
-    super(ctx, PA_GoalRestriction_ID, trxName);
+  public X_PA_GoalRestriction(Properties ctx, int PA_GoalRestriction_ID) {
+    super(ctx, PA_GoalRestriction_ID);
   }
 
   /** Load Constructor */
-  public X_PA_GoalRestriction(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_PA_GoalRestriction(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

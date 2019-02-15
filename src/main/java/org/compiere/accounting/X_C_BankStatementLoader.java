@@ -14,8 +14,8 @@ public class X_C_BankStatementLoader extends BasePOName
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_BankStatementLoader(Properties ctx, int C_BankStatementLoader_ID, String trxName) {
-    super(ctx, C_BankStatementLoader_ID, trxName);
+  public X_C_BankStatementLoader(Properties ctx, int C_BankStatementLoader_ID) {
+    super(ctx, C_BankStatementLoader_ID);
     /**
      * if (C_BankStatementLoader_ID == 0) { setC_BankAccount_ID (0); setC_BankStatementLoader_ID
      * (0); setName (null); }
@@ -23,8 +23,8 @@ public class X_C_BankStatementLoader extends BasePOName
   }
 
   /** Load Constructor */
-  public X_C_BankStatementLoader(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_BankStatementLoader(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

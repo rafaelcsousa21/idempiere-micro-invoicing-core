@@ -7,7 +7,6 @@ import java.util.Properties;
 import org.compiere.model.I_I_GLJournal;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 public class X_I_GLJournal extends PO implements I_I_GLJournal, I_Persistent {
@@ -16,14 +15,14 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_I_GLJournal(Properties ctx, int I_GLJournal_ID, String trxName) {
-    super(ctx, I_GLJournal_ID, trxName);
+  public X_I_GLJournal(Properties ctx, int I_GLJournal_ID) {
+    super(ctx, I_GLJournal_ID);
     /** if (I_GLJournal_ID == 0) { setI_GLJournal_ID (0); setI_IsImported (false); } */
   }
 
   /** Load Constructor */
-  public X_I_GLJournal(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_I_GLJournal(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -41,7 +41,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     if (PP_Product_BOM_ID <= 0) return null;
     MPPProductBOM bom = s_cache.get(PP_Product_BOM_ID);
     if (bom != null) return bom;
-    bom = new MPPProductBOM(ctx, PP_Product_BOM_ID, null);
+    bom = new MPPProductBOM(ctx, PP_Product_BOM_ID);
     if (bom.getId() == PP_Product_BOM_ID) {
       s_cache.put(PP_Product_BOM_ID, bom);
     } else {
@@ -57,30 +57,30 @@ public class MPPProductBOM extends X_PP_Product_BOM {
    * @param trxName
    * @return product BOM
    */
-  public static MPPProductBOM getDefault(MProduct product, String trxName) {
+  public static MPPProductBOM getDefault(MProduct product) {
     MPPProductBOM bom =
         new Query(
                 product.getCtx(),
                 I_PP_Product_BOM.Table_Name,
-                "M_Product_ID=? AND Value=?",
-                trxName)
+                "M_Product_ID=? AND Value=?"
+        )
             .setParameters(new Object[] {product.getM_Product_ID(), product.getValue()})
             .setClient_ID()
             .firstOnly();
     // If outside trx, then cache it
-    if (bom != null && trxName == null) {
+    if (bom != null) {
       s_cache.put(bom.getId(), bom);
     }
     //
     return bom;
   }
 
-    public MPPProductBOM(Properties ctx, int PP_Product_BOM_ID, String trxName) {
-    super(ctx, PP_Product_BOM_ID, trxName);
+    public MPPProductBOM(Properties ctx, int PP_Product_BOM_ID) {
+    super(ctx, PP_Product_BOM_ID);
   }
 
-  public MPPProductBOM(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPPProductBOM(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -109,7 +109,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     if (this.m_lines == null || reload) {
       final String whereClause = MPPProductBOMLine.COLUMNNAME_PP_Product_BOM_ID + "=?";
       this.m_lines =
-          new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause, null)
+          new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause)
               .setParameters(new Object[] {getPP_Product_BOM_ID()})
               .setOnlyActiveRecords(true)
               .setOrderBy(MPPProductBOMLine.COLUMNNAME_Line)
@@ -141,12 +141,12 @@ public class MPPProductBOM extends X_PP_Product_BOM {
         new Query(
                 getCtx(),
                 I_PP_Product_BOM.Table_Name,
-                I_PP_Product_BOM.COLUMNNAME_M_Product_ID + "=?",
-                null)
+                I_PP_Product_BOM.COLUMNNAME_M_Product_ID + "=?"
+        )
             .setParameters(new Object[] {getM_Product_ID()})
             .setOnlyActiveRecords(true)
             .count();
-    MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
+    MProduct product = new MProduct(getCtx(), getM_Product_ID());
     product.setIsBOM(count > 0);
     product.saveEx();
   }

@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -21,8 +20,8 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_AcctSchema_GL(Properties ctx, int C_AcctSchema_GL_ID, String trxName) {
-    super(ctx, C_AcctSchema_GL_ID, trxName);
+  public X_C_AcctSchema_GL(Properties ctx, int C_AcctSchema_GL_ID) {
+    super(ctx, C_AcctSchema_GL_ID);
     /**
      * if (C_AcctSchema_GL_ID == 0) { setC_AcctSchema_ID (0); setCommitmentOffset_Acct (0);
      * setCommitmentOffsetSales_Acct (0); setIntercompanyDueFrom_Acct (0); setIntercompanyDueTo_Acct
@@ -32,8 +31,8 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
   }
 
   /** Load Constructor */
-  public X_C_AcctSchema_GL(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_AcctSchema_GL(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_C_AcctSchema_GL(Properties ctx, Row row) {
     super(ctx, row);

@@ -41,8 +41,8 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
    * @param C_CashLine_ID id
    * @param trxName transaction
    */
-  public MCashLine(Properties ctx, int C_CashLine_ID, String trxName) {
-    super(ctx, C_CashLine_ID, trxName);
+  public MCashLine(Properties ctx, int C_CashLine_ID) {
+    super(ctx, C_CashLine_ID);
     if (C_CashLine_ID == 0) {
       //	setLine (0);
       //	setCashType (CASHTYPE_GeneralExpense);
@@ -60,8 +60,8 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MCashLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCashLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCashLine
 
   /**
@@ -70,7 +70,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
    * @param cash parent
    */
   public MCashLine(MCash cash) {
-    this(cash.getCtx(), 0, null);
+    this(cash.getCtx(), 0);
     setClientOrg(cash);
     setC_Cash_ID(cash.getC_Cash_ID());
     m_parent = cash;
@@ -103,7 +103,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
    * @return cash
    */
   public MCash getParent() {
-    if (m_parent == null) m_parent = new MCash(getCtx(), getC_Cash_ID(), null);
+    if (m_parent == null) m_parent = new MCash(getCtx(), getC_Cash_ID());
     return m_parent;
   } //	getCash
 

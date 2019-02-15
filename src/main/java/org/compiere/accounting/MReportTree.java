@@ -102,8 +102,7 @@ public class MReportTree {
             AD_Tree_ID,
             true,
             clientTree,
-            allNodes,
-            null); // include inactive and empty summary nodes
+            allNodes); // include inactive and empty summary nodes
     // remove summary nodes without children
     m_tree.trimTree();
   } //	MReportTree

@@ -4,7 +4,6 @@ import org.compiere.model.I_GL_Journal;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -24,8 +23,8 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_GL_Journal(Properties ctx, int GL_Journal_ID, String trxName) {
-    super(ctx, GL_Journal_ID, trxName);
+  public X_GL_Journal(Properties ctx, int GL_Journal_ID) {
+    super(ctx, GL_Journal_ID);
     /**
      * if (GL_Journal_ID == 0) { setC_AcctSchema_ID (0); // @$C_AcctSchema_ID@
      * setC_ConversionType_ID (0); setC_Currency_ID (0); // @C_Currency_ID@ setC_DocType_ID (0);
@@ -40,8 +39,8 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_GL_Journal(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_GL_Journal(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -61,7 +60,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
+            .getPO(getC_AcctSchema_ID());
   }
 
   /**
@@ -171,7 +170,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
     return (org.compiere.model.I_C_Period)
         MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-            .getPO(getC_Period_ID(), null);
+            .getPO(getC_Period_ID());
   }
 
   /**
@@ -181,7 +180,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
    */
   public void setC_Period_ID(int C_Period_ID) {
     if (C_Period_ID < 1) set_Value(COLUMNNAME_C_Period_ID, null);
-    else set_Value(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
+    else set_Value(COLUMNNAME_C_Period_ID, C_Period_ID);
   }
 
   /**
@@ -350,7 +349,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
    */
   public void setGL_Budget_ID(int GL_Budget_ID) {
     if (GL_Budget_ID < 1) set_Value(COLUMNNAME_GL_Budget_ID, null);
-    else set_Value(COLUMNNAME_GL_Budget_ID, Integer.valueOf(GL_Budget_ID));
+    else set_Value(COLUMNNAME_GL_Budget_ID, GL_Budget_ID);
   }
 
   /**
@@ -371,7 +370,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
    */
   public void setGL_Category_ID(int GL_Category_ID) {
     if (GL_Category_ID < 1) set_Value(COLUMNNAME_GL_Category_ID, null);
-    else set_Value(COLUMNNAME_GL_Category_ID, Integer.valueOf(GL_Category_ID));
+    else set_Value(COLUMNNAME_GL_Category_ID, GL_Category_ID);
   }
 
   /**

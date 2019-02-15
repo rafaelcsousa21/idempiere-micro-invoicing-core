@@ -37,8 +37,8 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
    * @param PP_Product_BOMLine BOM line to load
    * @param Transaction Line
    */
-  public MPPProductBOMLine(Properties ctx, int PP_Product_BOMLine, String trxName) {
-    super(ctx, PP_Product_BOMLine, trxName);
+  public MPPProductBOMLine(Properties ctx, int PP_Product_BOMLine) {
+    super(ctx, PP_Product_BOMLine);
   } //	MPPProductBOMLine
 
   /**
@@ -47,7 +47,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
    * @param bom parent BOM
    */
   public MPPProductBOMLine(MPPProductBOM bom) {
-    super(bom.getCtx(), 0, bom.get_TableName());
+    super(bom.getCtx(), 0);
     if (bom.getId() <= 0) throw new IllegalArgumentException("Header not saved");
     setPP_Product_BOM_ID(bom.getPP_Product_BOM_ID()); // 	parent
   }
@@ -58,8 +58,8 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
    * @param ctx context
    * @param rs result set record
    */
-  public MPPProductBOMLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPPProductBOMLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	 MPPProductBOMLine
 
   /**
@@ -69,7 +69,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
    * @return int low level
    */
   public int getLowLevel() {
-    return new ProductLowLevelCalculator(getCtx(), null).getLowLevel(getM_Product_ID());
+    return new ProductLowLevelCalculator(getCtx()).getLowLevel(getM_Product_ID());
   }
 
     @Override
@@ -102,7 +102,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
     if (!success) return false;
 
     int lowlevel = getLowLevel();
-    MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
+    MProduct product = new MProduct(getCtx(), getM_Product_ID());
     product.setLowLevel(lowlevel); // update lowlevel
     product.saveEx();
 

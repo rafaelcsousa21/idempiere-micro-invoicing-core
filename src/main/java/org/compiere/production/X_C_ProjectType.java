@@ -19,8 +19,8 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_ProjectType(Properties ctx, int C_ProjectType_ID, String trxName) {
-    super(ctx, C_ProjectType_ID, trxName);
+  public X_C_ProjectType(Properties ctx, int C_ProjectType_ID) {
+    super(ctx, C_ProjectType_ID);
     /**
      * if (C_ProjectType_ID == 0) { setC_ProjectType_ID (0); setName (null); setProjectCategory
      * (null); // N }
@@ -28,8 +28,8 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType, I_Pe
   }
 
   /** Load Constructor */
-  public X_C_ProjectType(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_ProjectType(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

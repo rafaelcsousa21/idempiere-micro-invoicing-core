@@ -48,7 +48,7 @@ public class MLocator extends X_M_Locator {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, warehouse.getM_Warehouse_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) retValue = new MLocator(warehouse.getCtx(), rs, trxName);
+      while (rs.next()) retValue = new MLocator(warehouse.getCtx(), rs);
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
@@ -72,7 +72,7 @@ public class MLocator extends X_M_Locator {
     Integer key = new Integer(M_Locator_ID);
     MLocator retValue = (MLocator) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MLocator(ctx, M_Locator_ID, null);
+    retValue = new MLocator(ctx, M_Locator_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -91,8 +91,8 @@ public class MLocator extends X_M_Locator {
    * @param M_Locator_ID id
    * @param trxName transaction
    */
-  public MLocator(Properties ctx, int M_Locator_ID, String trxName) {
-    super(ctx, M_Locator_ID, trxName);
+  public MLocator(Properties ctx, int M_Locator_ID) {
+    super(ctx, M_Locator_ID);
     if (M_Locator_ID == 0) {
       //	setM_Locator_ID (0);		//	PK
       //	setM_Warehouse_ID (0);		//	Parent
@@ -112,7 +112,7 @@ public class MLocator extends X_M_Locator {
    * @param Value value
    */
   public MLocator(MWarehouse warehouse, String Value) {
-    this(warehouse.getCtx(), 0, null);
+    this(warehouse.getCtx(), 0);
     setClientOrg(warehouse);
     setM_Warehouse_ID(warehouse.getM_Warehouse_ID()); // 	Parent
     setValue(Value);
@@ -126,8 +126,8 @@ public class MLocator extends X_M_Locator {
    * @param rs result set
    * @param trxName transaction
    */
-  public MLocator(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MLocator(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MLocator
 
   /**

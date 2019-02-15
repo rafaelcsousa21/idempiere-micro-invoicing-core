@@ -19,13 +19,13 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_Schedule(Properties ctx, int AD_Schedule_ID, String trxName) {
-    super(ctx, AD_Schedule_ID, trxName);
+  public X_AD_Schedule(Properties ctx, int AD_Schedule_ID) {
+    super(ctx, AD_Schedule_ID);
   }
 
   /** Load Constructor */
-  public X_AD_Schedule(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_Schedule(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

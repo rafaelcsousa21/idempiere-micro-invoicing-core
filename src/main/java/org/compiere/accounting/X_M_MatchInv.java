@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_M_MatchInv;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_MatchInv(Properties ctx, int M_MatchInv_ID, String trxName) {
-    super(ctx, M_MatchInv_ID, trxName);
+  public X_M_MatchInv(Properties ctx, int M_MatchInv_ID) {
+    super(ctx, M_MatchInv_ID);
     /**
      * if (M_MatchInv_ID == 0) { setC_InvoiceLine_ID (0); setDateAcct (new Timestamp(
      * System.currentTimeMillis() )); setDateTrx (new Timestamp( System.currentTimeMillis() ));
@@ -34,8 +33,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_MatchInv(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_MatchInv(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

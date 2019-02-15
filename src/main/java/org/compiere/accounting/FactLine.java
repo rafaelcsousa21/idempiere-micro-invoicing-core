@@ -41,8 +41,8 @@ public final class FactLine extends X_Fact_Acct {
    * @param Line_ID - Optional line id
    * @param trxName transaction
    */
-  public FactLine(Properties ctx, int AD_Table_ID, int Record_ID, int Line_ID, String trxName) {
-    super(ctx, 0, trxName);
+  public FactLine(Properties ctx, int AD_Table_ID, int Record_ID, int Line_ID) {
+    super(ctx, 0);
     setADClientID(0); // 	do not derive
     setAD_Org_ID(0); // 	do not derive
     //
@@ -73,7 +73,7 @@ public final class FactLine extends X_Fact_Acct {
    */
   public FactLine reverse(String description) {
     FactLine reversal =
-        new FactLine(getCtx(), getAD_Table_ID(), getRecord_ID(), getLine_ID(), null);
+        new FactLine(getCtx(), getAD_Table_ID(), getRecord_ID(), getLine_ID());
     reversal.setClientOrg(this); // 	needs to be set explicitly
     reversal.setDocumentInfo(m_doc, m_docLine);
     reversal.setAccount(m_acctSchema, m_acct);
@@ -948,7 +948,7 @@ public final class FactLine extends X_Fact_Acct {
       return Account_ID;
     }
 
-    MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), 0, null);
+    MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), 0);
     plan.setC_RevenueRecognition_ID(C_RevenueRecognition_ID);
     plan.setC_AcctSchema_ID(getC_AcctSchema_ID());
     plan.setC_InvoiceLine_ID(C_InvoiceLine_ID);
@@ -956,7 +956,7 @@ public final class FactLine extends X_Fact_Acct {
     plan.setP_Revenue_Acct(P_Revenue_Acct);
     plan.setC_Currency_ID(getC_Currency_ID());
     plan.setTotalAmt(getAcctBalance());
-    if (!plan.save(null)) {
+    if (!plan.save()) {
       log.severe("Plan NOT created");
       return Account_ID;
     }
@@ -1020,7 +1020,7 @@ public final class FactLine extends X_Fact_Acct {
       // end MZ
       rs = pstmt.executeQuery();
       if (rs.next()) {
-        MFactAcct fact = new MFactAcct(getCtx(), rs, null);
+        MFactAcct fact = new MFactAcct(getCtx(), rs);
         //  Accounted Amounts - reverse
         BigDecimal dr = fact.getAmtAcctDr();
         BigDecimal cr = fact.getAmtAcctCr();

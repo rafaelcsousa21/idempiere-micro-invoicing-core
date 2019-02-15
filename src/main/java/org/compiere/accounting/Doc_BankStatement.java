@@ -33,8 +33,8 @@ public class Doc_BankStatement extends Doc {
    * @param rs record
    * @param trxName trx
    */
-  public Doc_BankStatement(MAcctSchema as, ResultSet rs, String trxName) {
-    super(as, MBankStatement.class, rs, DOCTYPE_BankStatement, trxName);
+  public Doc_BankStatement(MAcctSchema as, ResultSet rs) {
+    super(as, MBankStatement.class, rs, DOCTYPE_BankStatement);
   } //	Doc_Bank
 
   /** Bank Account */

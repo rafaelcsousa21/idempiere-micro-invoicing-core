@@ -19,8 +19,8 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_LocatorType(Properties ctx, int M_LocatorType_ID, String trxName) {
-    super(ctx, M_LocatorType_ID, trxName);
+  public X_M_LocatorType(Properties ctx, int M_LocatorType_ID) {
+    super(ctx, M_LocatorType_ID);
     /**
      * if (M_LocatorType_ID == 0) { setIsAvailableForReplenishment (true); // Y
      * setIsAvailableForReservation (true); // Y setIsAvailableForShipping (true); // Y
@@ -29,8 +29,8 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
   }
 
   /** Load Constructor */
-  public X_M_LocatorType(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_LocatorType(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

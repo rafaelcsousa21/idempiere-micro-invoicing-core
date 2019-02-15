@@ -77,7 +77,7 @@ public class BPartnerOrgLink extends SvrProcess {
               + ", AD_Role_ID="
               + p_AD_Role_ID);
     if (p_C_BPartner_ID == 0) throw new AdempiereUserError("No Business Partner ID");
-    MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID, null);
+    MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID);
     if (bp.getId() == 0)
       throw new AdempiereUserError("Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);
     //	BP Location
@@ -91,7 +91,7 @@ public class BPartnerOrgLink extends SvrProcess {
 
     //	Create Org
     boolean newOrg = p_AD_Org_ID == 0;
-    MOrg org = new MOrg(getCtx(), p_AD_Org_ID, null);
+    MOrg org = new MOrg(getCtx(), p_AD_Org_ID);
     if (newOrg) {
       org.setValue(bp.getValue());
       org.setName(bp.getName());
@@ -124,19 +124,19 @@ public class BPartnerOrgLink extends SvrProcess {
     //	New Warehouse
     if (wh == null) {
       wh = new MWarehouse(org);
-      if (!wh.save(null)) throw new Exception("Warehouse not saved");
+      if (!wh.save()) throw new Exception("Warehouse not saved");
     }
     //	Create Locator
     I_M_Locator mLoc = wh.getDefaultLocator();
     if (mLoc == null) {
       mLoc = new MLocator(wh, "Standard");
       mLoc.setIsDefault(true);
-      mLoc.saveEx(null);
+      mLoc.saveEx();
     }
 
     //	Update/Save Org Info
     oInfo.setM_Warehouse_ID(wh.getM_Warehouse_ID());
-    if (!oInfo.save(null)) throw new Exception("Organization Info not saved");
+    if (!oInfo.save()) throw new Exception("Organization Info not saved");
 
     //	Update BPartner
     bp.setAD_OrgBP_ID(p_AD_Org_ID);
@@ -157,7 +157,7 @@ public class BPartnerOrgLink extends SvrProcess {
       //	create access
       if (!found) {
         MRoleOrgAccess orgAccess = new MRoleOrgAccess(org, p_AD_Role_ID);
-        orgAccess.saveEx(null);
+        orgAccess.saveEx();
       }
     }
 

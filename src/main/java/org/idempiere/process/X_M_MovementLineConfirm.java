@@ -3,7 +3,6 @@ package org.idempiere.process;
 import org.compiere.model.I_M_MovementLineConfirm;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -16,8 +15,8 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_MovementLineConfirm(Properties ctx, int M_MovementLineConfirm_ID, String trxName) {
-    super(ctx, M_MovementLineConfirm_ID, trxName);
+  public X_M_MovementLineConfirm(Properties ctx, int M_MovementLineConfirm_ID) {
+    super(ctx, M_MovementLineConfirm_ID);
     /**
      * if (M_MovementLineConfirm_ID == 0) { setConfirmedQty (Env.ZERO); setDifferenceQty (Env.ZERO);
      * setM_MovementConfirm_ID (0); setM_MovementLineConfirm_ID (0); setM_MovementLine_ID (0);
@@ -26,8 +25,8 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
   }
 
   /** Load Constructor */
-  public X_M_MovementLineConfirm(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_MovementLineConfirm(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

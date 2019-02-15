@@ -2,7 +2,6 @@ package org.idempiere.process;
 
 import org.compiere.model.I_R_RequestProcessor_Route;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -16,8 +15,8 @@ public class X_R_RequestProcessor_Route extends PO
 
   /** Standard Constructor */
   public X_R_RequestProcessor_Route(
-      Properties ctx, int R_RequestProcessor_Route_ID, String trxName) {
-    super(ctx, R_RequestProcessor_Route_ID, trxName);
+      Properties ctx, int R_RequestProcessor_Route_ID) {
+    super(ctx, R_RequestProcessor_Route_ID);
     /**
      * if (R_RequestProcessor_Route_ID == 0) { setAD_User_ID (0); setR_RequestProcessor_ID (0);
      * setR_RequestProcessor_Route_ID (0); setSeqNo (0); }
@@ -25,8 +24,8 @@ public class X_R_RequestProcessor_Route extends PO
   }
 
   /** Load Constructor */
-  public X_R_RequestProcessor_Route(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_RequestProcessor_Route(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

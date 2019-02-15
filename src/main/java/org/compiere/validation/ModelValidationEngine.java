@@ -64,7 +64,7 @@ public class ModelValidationEngine {
     // Load global validators
 
     MTable table = MTable.get(Env.getCtx(), X_AD_ModelValidator.Table_ID);
-    Query query = table.createQuery("IsActive='Y'", null);
+    Query query = table.createQuery("IsActive='Y'");
     query.setOrderBy("SeqNo");
     try {
       List<X_AD_ModelValidator> entityTypes = query.list();

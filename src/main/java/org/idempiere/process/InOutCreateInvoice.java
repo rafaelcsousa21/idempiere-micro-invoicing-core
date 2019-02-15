@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
@@ -71,7 +57,7 @@ public class InOutCreateInvoice extends SvrProcess {
               + p_InvoiceDocumentNo);
     if (p_M_InOut_ID == 0) throw new IllegalArgumentException("No Shipment");
     //
-    MInOut ship = new MInOut(getCtx(), p_M_InOut_ID, null);
+    MInOut ship = new MInOut(getCtx(), p_M_InOut_ID);
     if (ship.getId() == 0) throw new IllegalArgumentException("Shipment not found");
     if (!MInOut.DOCSTATUS_Completed.equals(ship.getDocStatus()))
       throw new IllegalArgumentException("Shipment not completed");
@@ -95,17 +81,17 @@ public class InOutCreateInvoice extends SvrProcess {
     }
 
     if (invoice.getC_Order_ID() > 0) {
-      MOrder order = new MOrder(getCtx(), invoice.getC_Order_ID(), null);
+      MOrder order = new MOrder(getCtx(), invoice.getC_Order_ID());
       invoice.setPaymentRule(order.getPaymentRule());
       invoice.setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
       invoice.saveEx();
       invoice.load(); // refresh from DB
       // copy payment schedule from order if invoice doesn't have a current payment schedule
       MOrderPaySchedule[] opss =
-          MOrderPaySchedule.getOrderPaySchedule(getCtx(), order.getC_Order_ID(), 0, null);
+          MOrderPaySchedule.getOrderPaySchedule(getCtx(), order.getC_Order_ID(), 0);
       MInvoicePaySchedule[] ipss =
           MInvoicePaySchedule.getInvoicePaySchedule(
-              getCtx(), invoice.getC_Invoice_ID(), 0, null);
+              getCtx(), invoice.getC_Invoice_ID(), 0);
       if (ipss.length == 0 && opss.length > 0) {
         BigDecimal ogt = order.getGrandTotal();
         BigDecimal igt = invoice.getGrandTotal();
@@ -115,7 +101,7 @@ public class InOutCreateInvoice extends SvrProcess {
         int scale = cur.getStdPrecision();
 
         for (MOrderPaySchedule ops : opss) {
-          MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, null);
+          MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0);
           PO.copyValues(ops, ips);
           if (percent != Env.ONE) {
             BigDecimal propDueAmt = ops.getDueAmt().multiply(percent);

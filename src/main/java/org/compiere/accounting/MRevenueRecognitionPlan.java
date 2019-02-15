@@ -20,8 +20,8 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan {
    * @param ctx context
    * @param C_RevenueRecognition_Plan_ID id
    */
-  public MRevenueRecognitionPlan(Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName) {
-    super(ctx, C_RevenueRecognition_Plan_ID, trxName);
+  public MRevenueRecognitionPlan(Properties ctx, int C_RevenueRecognition_Plan_ID) {
+    super(ctx, C_RevenueRecognition_Plan_ID);
     if (C_RevenueRecognition_Plan_ID == 0) {
       //	setC_AcctSchema_ID (0);
       //	setC_Currency_ID (0);
@@ -41,8 +41,8 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan {
    * @param ctx context
    * @param rs result set
    */
-  public MRevenueRecognitionPlan(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRevenueRecognitionPlan(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRevenueRecognitionPlan
 
   /**

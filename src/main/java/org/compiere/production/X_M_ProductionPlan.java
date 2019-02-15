@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_M_ProductionPlan;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -22,8 +21,8 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_ProductionPlan(Properties ctx, int M_ProductionPlan_ID, String trxName) {
-    super(ctx, M_ProductionPlan_ID, trxName);
+  public X_M_ProductionPlan(Properties ctx, int M_ProductionPlan_ID) {
+    super(ctx, M_ProductionPlan_ID);
     /**
      * if (M_ProductionPlan_ID == 0) { setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS
      * DefaultValue FROM M_ProductionPlan WHERE M_Production_ID=@M_Production_ID@ setM_Locator_ID
@@ -33,8 +32,8 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan, I_Pers
   }
 
   /** Load Constructor */
-  public X_M_ProductionPlan(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_ProductionPlan(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

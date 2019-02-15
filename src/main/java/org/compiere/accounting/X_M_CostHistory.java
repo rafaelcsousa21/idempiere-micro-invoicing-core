@@ -21,8 +21,8 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_CostHistory(Properties ctx, int M_CostHistory_ID, String trxName) {
-    super(ctx, M_CostHistory_ID, trxName);
+  public X_M_CostHistory(Properties ctx, int M_CostHistory_ID) {
+    super(ctx, M_CostHistory_ID);
     /**
      * if (M_CostHistory_ID == 0) { setM_AttributeSetInstance_ID (0); setM_CostDetail_ID (0);
      * setM_CostElement_ID (0); setM_CostHistory_ID (0); setM_CostHistory_UU (null);
@@ -32,8 +32,8 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
   }
 
   /** Load Constructor */
-  public X_M_CostHistory(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_CostHistory(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

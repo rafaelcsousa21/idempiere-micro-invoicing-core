@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -30,8 +29,8 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
   private CLogger log = CLogger.getCLogger(this.getClass());
 
   /** Standard Constructor */
-  public MDepreciationExp(Properties ctx, int A_Depreciation_Exp_ID, String trxName) {
-    super(ctx, A_Depreciation_Exp_ID, trxName);
+  public MDepreciationExp(Properties ctx, int A_Depreciation_Exp_ID) {
+    super(ctx, A_Depreciation_Exp_ID);
     /**
      * if (A_Depreciation_Exp_ID == 0) { setA_Account_Number (0); setA_Asset_ID (0);
      * setA_Depreciation_Exp_ID (0); setA_Entry_Type (null); setA_Period (0); setDescription (null);
@@ -40,8 +39,8 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
   }
 
   /** Load Constructor */
-  public MDepreciationExp(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDepreciationExp(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
     /** Create entry */
@@ -57,7 +56,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
       BigDecimal expense,
       String description,
       MDepreciationWorkfile assetwk) {
-    MDepreciationExp depexp = new MDepreciationExp(ctx, 0, null);
+    MDepreciationExp depexp = new MDepreciationExp(ctx, 0);
     depexp.setA_Entry_Type(entryType);
     depexp.setA_Asset_ID(A_Asset_ID);
     depexp.setDR_Account_ID(drAcct);
@@ -92,7 +91,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
   }
 
   private MDepreciationWorkfile getA_Depreciation_Workfile() {
-    return MDepreciationWorkfile.get(getCtx(), getA_Asset_ID(), getPostingType(), null);
+    return MDepreciationWorkfile.get(getCtx(), getA_Asset_ID(), getPostingType());
   }
 
   /**
@@ -114,7 +113,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
       String trxName) {
     ArrayList<MDepreciationExp> list = new ArrayList<MDepreciationExp>();
     Properties ctx = assetwk.getCtx();
-    MAssetAcct assetAcct = assetwk.getA_AssetAcct(dateAcct, trxName);
+    MAssetAcct assetAcct = assetwk.getA_AssetAcct(dateAcct);
     MDepreciationExp depexp = null;
 
     depexp =
@@ -138,7 +137,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
       depexp.setExpense_F(amt_F);
       depexp.setA_Accumulated_Depr_Delta(amt);
       depexp.setA_Accumulated_Depr_F_Delta(amt_F);
-      depexp.saveEx(null);
+      depexp.saveEx();
       list.add(depexp);
     }
     return list;
@@ -160,7 +159,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     String entryType = getA_Entry_Type();
     if (MDepreciationExp.A_ENTRY_TYPE_Depreciation.equals(entryType)) {
       checkExistsNotProcessedEntries(
-          getCtx(), getA_Asset_ID(), getDateAcct(), getPostingType(), null);
+          getCtx(), getA_Asset_ID(), getDateAcct(), getPostingType());
       //
       // Check if the asset is Active:
       if (!assetwk.getAsset().getA_Asset_Status().equals(MAsset.A_ASSET_STATUS_Activated)) {
@@ -220,7 +219,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
   }
 
   public static void checkExistsNotProcessedEntries(
-      Properties ctx, int A_Asset_ID, Timestamp dateAcct, String postingType, String trxName) {
+      Properties ctx, int A_Asset_ID, Timestamp dateAcct, String postingType) {
     final String whereClause =
         MDepreciationExp.COLUMNNAME_A_Asset_ID
             + "=?"
@@ -234,7 +233,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             + MDepreciationExp.COLUMNNAME_Processed
             + "=?";
     boolean match =
-        new Query(ctx, MDepreciationExp.Table_Name, whereClause, trxName)
+        new Query(ctx, MDepreciationExp.Table_Name, whereClause)
             .setParameters(
                 new Object[] {A_Asset_ID, TimeUtil.getMonthFirstDay(dateAcct), postingType, false})
             .match();

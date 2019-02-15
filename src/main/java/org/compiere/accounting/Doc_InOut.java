@@ -43,8 +43,8 @@ public class Doc_InOut extends Doc {
    * @param rs record
    * @param trxName trx
    */
-  public Doc_InOut(MAcctSchema as, ResultSet rs, String trxName) {
-    super(as, MInOut.class, rs, null, trxName);
+  public Doc_InOut(MAcctSchema as, ResultSet rs) {
+    super(as, MInOut.class, rs, null);
   } //  DocInOut
 
   private int m_Reversal_ID = 0;
@@ -159,7 +159,7 @@ public class Doc_InOut extends Doc {
           if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
             if (line.getMAttributeSetInstance_ID() == 0) {
               MInOutLine ioLine = (MInOutLine) line.getPO();
-              MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId(), getTrxName());
+              MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId());
               if (mas != null && mas.length > 0) {
                 costs = BigDecimal.ZERO;
                 for (int j = 0; j < mas.length; j++) {
@@ -268,7 +268,7 @@ public class Doc_InOut extends Doc {
         if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
           if (line.getMAttributeSetInstance_ID() == 0) {
             MInOutLine ioLine = (MInOutLine) line.getPO();
-            MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId(), getTrxName());
+            MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId());
             if (mas != null && mas.length > 0) {
               for (int j = 0; j < mas.length; j++) {
                 MInOutLineMA ma = mas[j];
@@ -282,8 +282,8 @@ public class Doc_InOut extends Doc {
                     costs,
                     ma.getMovementQty().negate(),
                     line.getDescription(),
-                    true,
-                    getTrxName())) {
+                    true
+                    )) {
                   p_Error = "Failed to create cost detail record";
                   return null;
                 }
@@ -302,8 +302,8 @@ public class Doc_InOut extends Doc {
                   costs,
                   line.getQty(),
                   line.getDescription(),
-                  true,
-                  getTrxName())) {
+                  true
+                  )) {
                 p_Error = "Failed to create cost detail record";
                 return null;
               }
@@ -322,8 +322,7 @@ public class Doc_InOut extends Doc {
                 costs,
                 line.getQty(),
                 line.getDescription(),
-                true,
-                getTrxName())) {
+                true)) {
               p_Error = "Failed to create cost detail record";
               return null;
             }
@@ -352,7 +351,7 @@ public class Doc_InOut extends Doc {
           if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
             if (line.getMAttributeSetInstance_ID() == 0) {
               MInOutLine ioLine = (MInOutLine) line.getPO();
-              MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId(), getTrxName());
+              MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId());
               costs = BigDecimal.ZERO;
               if (mas != null && mas.length > 0) {
                 for (int j = 0; j < mas.length; j++) {
@@ -421,7 +420,7 @@ public class Doc_InOut extends Doc {
         if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
           if (line.getMAttributeSetInstance_ID() == 0) {
             MInOutLine ioLine = (MInOutLine) line.getPO();
-            MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId(), getTrxName());
+            MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId());
             if (mas != null && mas.length > 0) {
               for (int j = 0; j < mas.length; j++) {
                 MInOutLineMA ma = mas[j];
@@ -435,8 +434,7 @@ public class Doc_InOut extends Doc {
                     costs,
                     ma.getMovementQty(),
                     line.getDescription(),
-                    true,
-                    getTrxName())) {
+                    true)) {
                   p_Error = "Failed to create cost detail record";
                   return null;
                 }
@@ -454,8 +452,7 @@ public class Doc_InOut extends Doc {
                   costs,
                   line.getQty(),
                   line.getDescription(),
-                  true,
-                  getTrxName())) {
+                  true)) {
                 p_Error = "Failed to create cost detail record";
                 return null;
               }
@@ -474,8 +471,7 @@ public class Doc_InOut extends Doc {
                 costs,
                 line.getQty(),
                 line.getDescription(),
-                true,
-                getTrxName())) {
+                true)) {
               p_Error = "Failed to create cost detail record";
               return null;
             }
@@ -526,9 +522,9 @@ public class Doc_InOut extends Doc {
         if (!isReversal(line)) {
           int C_OrderLine_ID = line.getC_OrderLine_ID();
           if (C_OrderLine_ID > 0) {
-            orderLine = new MOrderLine(getCtx(), C_OrderLine_ID, getTrxName());
+            orderLine = new MOrderLine(getCtx(), C_OrderLine_ID);
             MOrderLandedCostAllocation[] allocations =
-                MOrderLandedCostAllocation.getOfOrderLine(C_OrderLine_ID, getTrxName());
+                MOrderLandedCostAllocation.getOfOrderLine(C_OrderLine_ID);
             for (MOrderLandedCostAllocation allocation : allocations) {
               BigDecimal totalAmt = allocation.getAmt();
               BigDecimal totalQty = allocation.getQty();
@@ -735,7 +731,7 @@ public class Doc_InOut extends Doc {
           } else {
             if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
               if (line.getMAttributeSetInstance_ID() == 0) {
-                MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId(), getTrxName());
+                MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), ioLine.getId());
                 costs = BigDecimal.ZERO;
                 if (mas != null && mas.length > 0) {
                   for (int j = 0; j < mas.length; j++) {
@@ -854,7 +850,7 @@ public class Doc_InOut extends Doc {
     MProduct product = line.getProduct();
     if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(as))) {
       if (line.getMAttributeSetInstance_ID() == 0) {
-        MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), line.get_ID(), getTrxName());
+        MInOutLineMA mas[] = MInOutLineMA.get(getCtx(), line.get_ID());
         if (mas != null && mas.length > 0) {
           for (int j = 0; j < mas.length; j++) {
             MInOutLineMA ma = mas[j];
@@ -868,8 +864,7 @@ public class Doc_InOut extends Doc {
                 tAmt,
                 ma.getMovementQty().negate(),
                 line.getDescription(),
-                false,
-                getTrxName())) return "SaveError";
+                false)) return "SaveError";
           }
         }
       } else {
@@ -883,8 +878,7 @@ public class Doc_InOut extends Doc {
             tAmt,
             tQty,
             line.getDescription(),
-            false,
-            getTrxName())) return "SaveError";
+            false)) return "SaveError";
       }
     } else {
       if (!MCostDetail.createShipment(
@@ -897,8 +891,7 @@ public class Doc_InOut extends Doc {
           tAmt,
           tQty,
           line.getDescription(),
-          false,
-          getTrxName())) return "SaveError";
+          false)) return "SaveError";
     }
     return "";
   }

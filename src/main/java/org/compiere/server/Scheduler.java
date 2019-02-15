@@ -55,7 +55,7 @@ public class Scheduler extends AdempiereServer {
     Env.setContext(getCtx(), "#AD_Language", schedclient.getADLanguage());
     Env.setContext(getCtx(), "#orgId", m_model.getOrgId());
     if (m_model.getOrgId() != 0) {
-      MOrgInfo schedorg = MOrgInfo.get(getCtx(), m_model.getOrgId(), null);
+      MOrgInfo schedorg = MOrgInfo.get(getCtx(), m_model.getOrgId());
       if (schedorg.getM_Warehouse_ID() > 0)
         Env.setContext(getCtx(), "#M_Warehouse_ID", schedorg.getM_Warehouse_ID());
     }
@@ -74,7 +74,7 @@ public class Scheduler extends AdempiereServer {
     Env.setContext(
         getCtx(), "#Date", dateFormat4Timestamp.format(ts) + " 00:00:00"); //  JDBC format
 
-    MProcess process = new MProcess(getCtx(), m_model.getAD_Process_ID(), null);
+    MProcess process = new MProcess(getCtx(), m_model.getAD_Process_ID());
     try {
       m_summary.append(runProcess(process));
     } catch (Throwable e) {
@@ -127,7 +127,7 @@ public class Scheduler extends AdempiereServer {
     pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
     pi.setIsBatch(true);
     pi.setPrintPreview(true);
-    MUser from = new MUser(getCtx(), pi.getAD_User_ID(), null);
+    MUser from = new MUser(getCtx(), pi.getAD_User_ID());
 
     pi.setTransactionName(null);
     ServerProcessCtl.process(pi);
@@ -136,7 +136,7 @@ public class Scheduler extends AdempiereServer {
       // notify supervisor if error
       int supervisor = m_model.getSupervisor_ID();
       if (supervisor > 0) {
-        MUser user = new MUser(getCtx(), supervisor, null);
+        MUser user = new MUser(getCtx(), supervisor);
         boolean email = user.isNotificationEMail();
         boolean notice = user.isNotificationNote();
 
@@ -149,7 +149,7 @@ public class Scheduler extends AdempiereServer {
         }
         if (notice) {
           int AD_Message_ID = 442; // HARDCODED ProcessRunError
-          MNote note = new MNote(getCtx(), AD_Message_ID, supervisor, null);
+          MNote note = new MNote(getCtx(), AD_Message_ID, supervisor);
           note.setClientOrg(m_model.getClientId(), m_model.getOrgId());
           note.setTextMsg(schedulerName + "\n" + pi.getSummary());
           note.setRecord(MPInstance.Table_ID, pi.getAD_PInstance_ID());
@@ -157,7 +157,7 @@ public class Scheduler extends AdempiereServer {
           String log = pi.getLogInfo(true);
           if (log != null && log.trim().length() > 0) {
             MAttachment attachment =
-                new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID(), null);
+                new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID());
             attachment.setClientOrg(m_model.getClientId(), m_model.getOrgId());
             attachment.setTextMsg(schedulerName);
             attachment.addEntry("ProcessLog.html", log.getBytes("UTF-8"));
@@ -180,14 +180,14 @@ public class Scheduler extends AdempiereServer {
       }
 
       for (int i = 0; i < userIDs.length; i++) {
-        MUser user = new MUser(getCtx(), userIDs[i].intValue(), null);
+        MUser user = new MUser(getCtx(), userIDs[i]);
         boolean email = user.isNotificationEMail();
         boolean notice = user.isNotificationNote();
 
         if (notice) {
           int AD_Message_ID = 441; // ProcessOK
           if (isReport) AD_Message_ID = 884; // 	HARDCODED SchedulerResult
-          MNote note = new MNote(getCtx(), AD_Message_ID, userIDs[i].intValue(), null);
+          MNote note = new MNote(getCtx(), AD_Message_ID, userIDs[i]);
           note.setClientOrg(m_model.getClientId(), m_model.getOrgId());
           if (isReport) {
             note.setTextMsg(schedulerName);
@@ -201,7 +201,7 @@ public class Scheduler extends AdempiereServer {
             MAttachment attachment = null;
             if (fileList != null && !fileList.isEmpty()) {
               //	Attachment
-              attachment = new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID(), null);
+              attachment = new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID());
               attachment.setClientOrg(m_model.getClientId(), m_model.getOrgId());
               attachment.setTextMsg(schedulerName);
               for (File entry : fileList) attachment.addEntry(entry);
@@ -209,7 +209,7 @@ public class Scheduler extends AdempiereServer {
             String log = pi.getLogInfo(true);
             if (log != null && log.trim().length() > 0) {
               if (attachment == null) {
-                attachment = new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID(), null);
+                attachment = new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID());
                 attachment.setClientOrg(m_model.getClientId(), m_model.getOrgId());
                 attachment.setTextMsg(schedulerName);
               }
@@ -221,7 +221,7 @@ public class Scheduler extends AdempiereServer {
         }
 
         if (email) {
-          MMailText mailTemplate = new MMailText(getCtx(), m_model.getR_MailText_ID(), null);
+          MMailText mailTemplate = new MMailText(getCtx(), m_model.getR_MailText_ID());
           String mailContent = "";
 
           if (mailTemplate.is_new()) {

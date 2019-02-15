@@ -597,7 +597,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
       pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        X_I_Product imp = new X_I_Product(getCtx(), rs, null);
+        X_I_Product imp = new X_I_Product(getCtx(), rs);
         int I_Product_ID = imp.getI_Product_ID();
         int M_Product_ID = imp.getM_Product_ID();
         int C_BPartner_ID = imp.getC_BPartner_ID();
@@ -757,11 +757,11 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
           BigDecimal PriceLimit = imp.getPriceLimit();
           if (PriceStd.signum() != 0 || PriceLimit.signum() != 0 || PriceList.signum() != 0) {
             MProductPrice pp =
-                MProductPrice.get(getCtx(), p_M_PriceList_Version_ID, M_Product_ID, null);
+                MProductPrice.get(getCtx(), p_M_PriceList_Version_ID, M_Product_ID);
             if (pp == null)
               pp =
                   new MProductPrice(
-                      getCtx(), p_M_PriceList_Version_ID, M_Product_ID, null);
+                      getCtx(), p_M_PriceList_Version_ID, M_Product_ID);
             pp.setPrices(PriceList, PriceStd, PriceLimit);
             ModelValidationEngine.get()
                 .fireImportValidate(this, imp, pp, ImportValidator.TIMING_AFTER_IMPORT);

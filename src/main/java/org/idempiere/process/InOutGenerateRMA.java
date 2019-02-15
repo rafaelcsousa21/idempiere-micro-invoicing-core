@@ -128,7 +128,7 @@ public class InOutGenerateRMA extends SvrProcess {
 
     MInOut originalReceipt = rma.getShipment();
 
-    MInOut shipment = new MInOut(getCtx(), 0, null);
+    MInOut shipment = new MInOut(getCtx(), 0);
     shipment.setM_RMA_ID(rma.getId());
     shipment.setAD_Org_ID(rma.getOrgId());
     shipment.setAD_OrgTrx_ID(originalReceipt.getAD_OrgTrx_ID());
@@ -194,8 +194,8 @@ public class InOutGenerateRMA extends SvrProcess {
             new Query(
                     shipment.getCtx(),
                     I_C_InvoiceLine.Table_Name,
-                    I_C_InvoiceLine.COLUMNNAME_M_RMALine_ID + "=?",
-                    null)
+                    I_C_InvoiceLine.COLUMNNAME_M_RMALine_ID + "=?"
+            )
                 .setParameters(rmaLine.getM_RMALine_ID())
                 .firstOnly();
         if (invoiceLine != null) {
@@ -212,7 +212,7 @@ public class InOutGenerateRMA extends SvrProcess {
   }
 
   private void generateShipment(int M_RMA_ID) {
-    MRMA rma = new MRMA(getCtx(), M_RMA_ID, null);
+    MRMA rma = new MRMA(getCtx(), M_RMA_ID);
     statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
 
     MInOut shipment = createShipment(rma);

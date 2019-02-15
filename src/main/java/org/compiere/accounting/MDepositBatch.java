@@ -41,8 +41,8 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
    * @param C_DepositBatch_ID The unique ID of the object
    * @param trxName transaction name
    */
-  public MDepositBatch(Properties ctx, int C_DepositBatch_ID, String trxName) {
-    super(ctx, C_DepositBatch_ID, trxName);
+  public MDepositBatch(Properties ctx, int C_DepositBatch_ID) {
+    super(ctx, C_DepositBatch_ID);
     if (C_DepositBatch_ID == 0) {
       setDocStatus(X_C_DepositBatch.DOCSTATUS_Drafted);
       setProcessed(false);
@@ -58,8 +58,8 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
    * @param rs result set
    * @param trxName transaction
    */
-  public MDepositBatch(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDepositBatch(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MDepositBatch
 
   /**
@@ -68,7 +68,7 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
    * @param original original
    */
   public MDepositBatch(MDepositBatch original) {
-    this(original.getCtx(), 0, null);
+    this(original.getCtx(), 0);
     setClientOrg(original);
     setC_DepositBatch_ID(original.getC_DepositBatch_ID());
 

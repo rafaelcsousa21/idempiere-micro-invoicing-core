@@ -31,14 +31,14 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
    * @return category acct
    */
   public static MProductCategoryAcct get(
-      Properties ctx, int M_Product_Category_ID, int C_AcctSchema_ID, String trxName) {
+      Properties ctx, int M_Product_Category_ID, int C_AcctSchema_ID) {
     String key = M_Product_Category_ID + "#" + C_AcctSchema_ID;
     MProductCategoryAcct acct = s_cache.get(key);
     if (acct != null) return acct;
 
     final String whereClause = "M_Product_Category_ID=? AND C_AcctSchema_ID=?";
     acct =
-        new Query(ctx, I_M_Product_Category_Acct.Table_Name, whereClause, trxName)
+        new Query(ctx, I_M_Product_Category_Acct.Table_Name, whereClause)
             .setParameters(M_Product_Category_ID, C_AcctSchema_ID)
             .firstOnly();
     if (acct != null) {
@@ -54,8 +54,8 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
    * @param ignored ignored
    * @param trxName
    */
-  public MProductCategoryAcct(Properties ctx, int ignored, String trxName) {
-    super(ctx, ignored, trxName);
+  public MProductCategoryAcct(Properties ctx, int ignored) {
+    super(ctx, ignored);
     if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
   } //	MProductCategoryAcct
 
@@ -66,8 +66,8 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
    * @param rs result set
    * @param trxName trx
    */
-  public MProductCategoryAcct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProductCategoryAcct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProductCategoryAcct
   public MProductCategoryAcct(Properties ctx, Row row)  {
     super(ctx, row);

@@ -26,7 +26,7 @@ public class MResolution extends X_R_Resolution {
     Integer key = new Integer(R_Resolution_ID);
     MResolution retValue = (MResolution) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MResolution(ctx, R_Resolution_ID, null);
+    retValue = new MResolution(ctx, R_Resolution_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -42,8 +42,8 @@ public class MResolution extends X_R_Resolution {
    * @param R_Resolution_ID id
    * @param trxName
    */
-  public MResolution(Properties ctx, int R_Resolution_ID, String trxName) {
-    super(ctx, R_Resolution_ID, trxName);
+  public MResolution(Properties ctx, int R_Resolution_ID) {
+    super(ctx, R_Resolution_ID);
   } //	MResolution
 
   /**
@@ -53,7 +53,7 @@ public class MResolution extends X_R_Resolution {
    * @param rs result set
    * @param trxName trx
    */
-  public MResolution(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MResolution(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MResolution
 } //	MResolution

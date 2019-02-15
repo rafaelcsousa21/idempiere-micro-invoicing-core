@@ -32,8 +32,8 @@ public class MProjectPhase extends X_C_ProjectPhase {
    * @param C_ProjectPhase_ID id
    * @param trxName transaction
    */
-  public MProjectPhase(Properties ctx, int C_ProjectPhase_ID, String trxName) {
-    super(ctx, C_ProjectPhase_ID, trxName);
+  public MProjectPhase(Properties ctx, int C_ProjectPhase_ID) {
+    super(ctx, C_ProjectPhase_ID);
     if (C_ProjectPhase_ID == 0) {
       //	setC_ProjectPhase_ID (0);	//	PK
       //	setC_Project_ID (0);		//	Parent
@@ -54,8 +54,8 @@ public class MProjectPhase extends X_C_ProjectPhase {
    * @param rs result set
    * @param trxName transaction
    */
-  public MProjectPhase(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProjectPhase(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProjectPhase
 
   /**
@@ -64,7 +64,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
    * @param project parent
    */
   public MProjectPhase(MProject project) {
-    this(project.getCtx(), 0, null);
+    this(project.getCtx(), 0);
     setClientOrg(project);
     setC_Project_ID(project.getC_Project_ID());
   } //	MProjectPhase
@@ -101,7 +101,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_ProjectPhase_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MProjectTask(getCtx(), rs, null));
+      while (rs.next()) list.add(new MProjectTask(getCtx(), rs));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {
@@ -128,7 +128,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
     //	Copy Project Lines
     for (int i = 0; i < fromLines.length; i++) {
       if (fromLines[i].getC_ProjectTask_ID() != 0) continue;
-      MProjectLine toLine = new MProjectLine(getCtx(), 0, null);
+      MProjectLine toLine = new MProjectLine(getCtx(), 0);
       PO.copyValues(fromLines[i], toLine,  getClientId(), getOrgId());
       toLine.setC_Project_ID(getC_Project_ID());
       toLine.setC_ProjectPhase_ID(getC_ProjectPhase_ID());
@@ -172,7 +172,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
         if (log.isLoggable(Level.INFO))
           log.info("Task already exists here, ignored - " + fromTasks[i]);
       } else {
-        MProjectTask toTask = new MProjectTask(getCtx(), 0, null);
+        MProjectTask toTask = new MProjectTask(getCtx(), 0);
         PO.copyValues(fromTasks[i], toTask,  getClientId(),  getOrgId());
         toTask.setC_ProjectPhase_ID(getC_ProjectPhase_ID());
         toTask.saveEx();
@@ -219,7 +219,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
   public MProjectLine[] getLines() {
     final String whereClause = "C_Project_ID=? and C_ProjectPhase_ID=?";
     List<MProjectLine> list =
-        new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause, null)
+        new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause)
             .setParameters(getC_Project_ID(), getC_ProjectPhase_ID())
             .setOrderBy("Line")
             .list();

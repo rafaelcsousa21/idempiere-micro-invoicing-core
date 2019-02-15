@@ -44,9 +44,9 @@ public class BankStatementPayment extends SvrProcess {
     if (log.isLoggable(Level.INFO)) log.info("Table_ID=" + Table_ID + ", Record_ID=" + Record_ID);
 
     if (Table_ID == X_I_BankStatement.Table_ID)
-      return createPayment(new X_I_BankStatement(getCtx(), Record_ID, null));
+      return createPayment(new X_I_BankStatement(getCtx(), Record_ID));
     else if (Table_ID == MBankStatementLine.Table_ID)
-      return createPayment(new MBankStatementLine(getCtx(), Record_ID, null));
+      return createPayment(new MBankStatementLine(getCtx(), Record_ID));
 
     throw new AdempiereSystemError("??");
   } //	doIt
@@ -107,7 +107,7 @@ public class BankStatementPayment extends SvrProcess {
     if (bsl.getC_Invoice_ID() == 0 && bsl.getC_BPartner_ID() == 0)
       throw new AdempiereUserError("@NotFound@ @C_Invoice_ID@ / @C_BPartner_ID@");
     //
-    MBankStatement bs = new MBankStatement(getCtx(), bsl.getC_BankStatement_ID(), null);
+    MBankStatement bs = new MBankStatement(getCtx(), bsl.getC_BankStatement_ID());
     //
     MPayment payment =
         createPayment(
@@ -166,7 +166,7 @@ public class BankStatementPayment extends SvrProcess {
       throw new IllegalStateException("@PayAmt@ = 0");
     if (PayAmt == null) PayAmt = Env.ZERO;
     //
-    MPayment payment = new MPayment(getCtx(), 0, null);
+    MPayment payment = new MPayment(getCtx(), 0);
     payment.setAD_Org_ID(AD_Org_ID);
     payment.setC_BankAccount_ID(C_BankAccount_ID);
     payment.setTenderType(MPayment.TENDERTYPE_Check);
@@ -177,7 +177,7 @@ public class BankStatementPayment extends SvrProcess {
     payment.setDescription(Description);
     //
     if (C_Invoice_ID != 0) {
-      MInvoice invoice = new MInvoice(getCtx(), C_Invoice_ID, null);
+      MInvoice invoice = new MInvoice(getCtx(), C_Invoice_ID);
       payment.setC_DocType_ID(invoice.isSOTrx()); // 	Receipt
       payment.setC_Invoice_ID(invoice.getC_Invoice_ID());
       payment.setC_BPartner_ID(invoice.getC_BPartner_ID());

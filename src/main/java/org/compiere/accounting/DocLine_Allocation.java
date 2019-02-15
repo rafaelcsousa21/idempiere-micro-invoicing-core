@@ -37,7 +37,7 @@ public class DocLine_Allocation extends DocLine {
 
     //	Get Payment Conversion Rate
     if (line.getC_Payment_ID() != 0) {
-      MPayment payment = new MPayment(doc.getCtx(), line.getC_Payment_ID(), doc.getTrxName());
+      MPayment payment = new MPayment(doc.getCtx(), line.getC_Payment_ID());
       int C_ConversionType_ID = payment.getC_ConversionType_ID();
       this.setC_ConversionType_ID(C_ConversionType_ID);
     }
@@ -129,7 +129,7 @@ public class DocLine_Allocation extends DocLine {
   @Override
   public Timestamp getDateConv() {
     if (getC_Payment_ID() > 0) {
-      MPayment payment = new MPayment(p_po.getCtx(), getC_Payment_ID(), null);
+      MPayment payment = new MPayment(p_po.getCtx(), getC_Payment_ID());
       return payment.getDateAcct(); // use payment date
     }
     return super.getDateConv();

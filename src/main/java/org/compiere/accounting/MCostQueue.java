@@ -60,7 +60,7 @@ public class MCostQueue extends X_M_CostQueue {
       pstmt.setInt(6, as.getC_AcctSchema_ID());
       pstmt.setInt(7, M_CostElement_ID);
       rs = pstmt.executeQuery();
-      if (rs.next()) costQ = new MCostQueue(product.getCtx(), rs, trxName);
+      if (rs.next()) costQ = new MCostQueue(product.getCtx(), rs);
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
@@ -72,7 +72,7 @@ public class MCostQueue extends X_M_CostQueue {
     if (costQ == null)
       costQ =
           new MCostQueue(
-              product, M_AttributeSetInstance_ID, as, AD_Org_ID, M_CostElement_ID, trxName);
+              product, M_AttributeSetInstance_ID, as, AD_Org_ID, M_CostElement_ID);
     return costQ;
   } //	get
 
@@ -88,7 +88,7 @@ public class MCostQueue extends X_M_CostQueue {
    * @return cost queue or null
    */
   public static MCostQueue[] getQueue(
-      MProduct product, int M_ASI_ID, MAcctSchema as, int Org_ID, MCostElement ce, String trxName) {
+      MProduct product, int M_ASI_ID, MAcctSchema as, int Org_ID, MCostElement ce) {
     ArrayList<MCostQueue> list = new ArrayList<MCostQueue>();
     StringBuilder sql =
         new StringBuilder("SELECT * FROM M_CostQueue ")
@@ -111,7 +111,7 @@ public class MCostQueue extends X_M_CostQueue {
       pstmt.setInt(6, ce.getM_CostElement_ID());
       if (M_ASI_ID != 0) pstmt.setInt(7, M_ASI_ID);
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MCostQueue(product.getCtx(), rs, trxName));
+      while (rs.next()) list.add(new MCostQueue(product.getCtx(), rs));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql.toString(), e);
     } finally {
@@ -145,7 +145,7 @@ public class MCostQueue extends X_M_CostQueue {
       BigDecimal Qty,
       String trxName) {
     if (Qty.signum() == 0) return Env.ZERO;
-    MCostQueue[] costQ = getQueue(product, M_ASI_ID, as, Org_ID, ce, trxName);
+    MCostQueue[] costQ = getQueue(product, M_ASI_ID, as, Org_ID, ce);
     BigDecimal remainingQty = Qty;
     for (int i = 0; i < costQ.length; i++) {
       MCostQueue queue = costQ[i];
@@ -218,10 +218,9 @@ public class MCostQueue extends X_M_CostQueue {
       MAcctSchema as,
       int Org_ID,
       MCostElement ce,
-      BigDecimal Qty,
-      String trxName) {
+      BigDecimal Qty) {
     if (Qty.signum() == 0) return Env.ZERO;
-    MCostQueue[] costQ = getQueue(product, M_ASI_ID, as, Org_ID, ce, trxName);
+    MCostQueue[] costQ = getQueue(product, M_ASI_ID, as, Org_ID, ce);
     //
     BigDecimal cost = Env.ZERO;
     BigDecimal remainingQty = Qty;
@@ -304,8 +303,8 @@ public class MCostQueue extends X_M_CostQueue {
    * @param ignored multi-key
    * @param trxName trx
    */
-  public MCostQueue(Properties ctx, int ignored, String trxName) {
-    super(ctx, ignored, trxName);
+  public MCostQueue(Properties ctx, int ignored) {
+    super(ctx, ignored);
     if (ignored == 0) {
       //	setC_AcctSchema_ID (0);
       //	setM_AttributeSetInstance_ID (0);
@@ -324,8 +323,8 @@ public class MCostQueue extends X_M_CostQueue {
    * @param rs result set
    * @param trxName trx
    */
-  public MCostQueue(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCostQueue(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCostQueue
 
   /**
@@ -343,9 +342,8 @@ public class MCostQueue extends X_M_CostQueue {
       int M_AttributeSetInstance_ID,
       MAcctSchema as,
       int AD_Org_ID,
-      int M_CostElement_ID,
-      String trxName) {
-    this(product.getCtx(), 0, trxName);
+      int M_CostElement_ID) {
+    this(product.getCtx(), 0);
     setClientOrg(product. getClientId(), AD_Org_ID);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
     setM_CostType_ID(as.getM_CostType_ID());

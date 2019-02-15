@@ -18,12 +18,12 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
   /** */
   private static final long serialVersionUID = -3935841562652510880L;
 
-  public MProductionLineMA(Properties ctx, int M_ProductionLineMA_ID, String trxName) {
-    super(ctx, M_ProductionLineMA_ID, trxName);
+  public MProductionLineMA(Properties ctx, int M_ProductionLineMA_ID) {
+    super(ctx, M_ProductionLineMA_ID);
   }
 
-  public MProductionLineMA(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProductionLineMA(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -36,7 +36,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
    */
   public MProductionLineMA(
       MProductionLine parent, int asi, BigDecimal qty, Timestamp dateMaterialPolicy) {
-    super(parent.getCtx(), 0, null);
+    super(parent.getCtx(), 0);
     setM_AttributeSetInstance_ID(asi);
     setM_ProductionLine_ID(parent.getId());
     setMovementQty(qty);
@@ -45,7 +45,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
       if (asi > 0) {
         dateMaterialPolicy =
             MStorageOnHand.getDateMaterialPolicy(
-                parent.getM_Product_ID(), asi, null);
+                parent.getM_Product_ID(), asi);
       }
       if (dateMaterialPolicy == null) {
         dateMaterialPolicy = parent.getM_Production().getMovementDate();
@@ -69,7 +69,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
 
     MProductionLineMA lineMA =
         MTable.get(parent.getCtx(), I_M_ProductionLineMA.Table_Name)
-            .createQuery(where, null)
+            .createQuery(where)
             .setParameters(parent.getM_ProductionLine_ID(), asi, dateMPolicy)
             .first();
 
@@ -85,11 +85,11 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
    * @param trxName trx
    * @return allocations
    */
-  public static MProductionLineMA[] get(Properties ctx, int M_ProductionLine_ID, String trxName) {
+  public static MProductionLineMA[] get(Properties ctx, int M_ProductionLine_ID) {
 
     Query query =
         MTable.get(ctx, I_M_ProductionLineMA.Table_Name)
-            .createQuery(I_M_ProductionLineMA.COLUMNNAME_M_ProductionLine_ID + "=?", trxName);
+            .createQuery(I_M_ProductionLineMA.COLUMNNAME_M_ProductionLine_ID + "=?");
     query.setParameters(M_ProductionLine_ID);
     List<MProductionLineMA> list = query.list();
     MProductionLineMA[] retValue = list.toArray(new MProductionLineMA[0]);

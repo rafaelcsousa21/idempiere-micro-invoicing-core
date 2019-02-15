@@ -31,10 +31,10 @@ public class MFactAcct extends X_Fact_Acct {
    * @return number of rows or -1 for error
    * @deprecated Since ADempiere 3.5.2a; please use {@link #deleteEx(int, int, String)} instead.
    */
-  public static int delete(int AD_Table_ID, int Record_ID, String trxName) {
+  public static int delete(int AD_Table_ID, int Record_ID) {
     int no = -1;
     try {
-      no = deleteEx(AD_Table_ID, Record_ID, trxName);
+      no = deleteEx(AD_Table_ID, Record_ID);
     } catch (DBException e) {
       s_log.log(Level.SEVERE, "failed: AD_Table_ID=" + AD_Table_ID + ", Record_ID" + Record_ID, e);
       no = -1;
@@ -51,7 +51,7 @@ public class MFactAcct extends X_Fact_Acct {
    * @return number of rows deleted
    * @throws DBException on database exception
    */
-  public static int deleteEx(int AD_Table_ID, int Record_ID, String trxName) throws DBException {
+  public static int deleteEx(int AD_Table_ID, int Record_ID) throws DBException {
     final String sql = "DELETE Fact_Acct WHERE AD_Table_ID=? AND Record_ID=?";
     int no = executeUpdateEx(sql, new Object[] {AD_Table_ID, Record_ID});
     if (s_log.isLoggable(Level.FINE))
@@ -69,8 +69,8 @@ public class MFactAcct extends X_Fact_Acct {
    * @param Fact_Acct_ID id
    * @param trxName transaction
    */
-  public MFactAcct(Properties ctx, int Fact_Acct_ID, String trxName) {
-    super(ctx, Fact_Acct_ID, trxName);
+  public MFactAcct(Properties ctx, int Fact_Acct_ID) {
+    super(ctx, Fact_Acct_ID);
   } //	MFactAcct
 
   /**
@@ -80,8 +80,8 @@ public class MFactAcct extends X_Fact_Acct {
    * @param rs result set
    * @param trxName transaction
    */
-  public MFactAcct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MFactAcct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MFactAcct
 
   /**

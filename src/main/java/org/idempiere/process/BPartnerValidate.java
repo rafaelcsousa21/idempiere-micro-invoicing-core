@@ -68,7 +68,7 @@ public class BPartnerValidate extends SvrProcess {
       throw new AdempiereUserError("No Business Partner/Group selected");
 
     if (p_C_BP_Group_ID == 0) {
-      MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID, null);
+      MBPartner bp = new MBPartner(getCtx(), p_C_BPartner_ID);
       if (bp.getId() == 0)
         throw new AdempiereUserError(
             "Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);
@@ -76,7 +76,7 @@ public class BPartnerValidate extends SvrProcess {
     } else {
       final String whereClause = "C_BP_Group_ID=?";
       Iterator<MBPartner> it =
-          new Query(getCtx(), I_C_BPartner.Table_Name, whereClause, null)
+          new Query(getCtx(), I_C_BPartner.Table_Name, whereClause)
               .setParameters(p_C_BP_Group_ID)
               .setOnlyActiveRecords(true)
               .iterate();
@@ -119,7 +119,7 @@ public class BPartnerValidate extends SvrProcess {
   private void checkPayments(MBPartner bp) {
     //	See also VMerge.postMerge
     int changed = 0;
-    MPayment[] payments = MPayment.getOfBPartner(getCtx(), bp.getC_BPartner_ID(), null);
+    MPayment[] payments = MPayment.getOfBPartner(getCtx(), bp.getC_BPartner_ID());
     for (int i = 0; i < payments.length; i++) {
       MPayment payment = payments[i];
       if (payment.testAllocation()) {
@@ -143,7 +143,7 @@ public class BPartnerValidate extends SvrProcess {
   private void checkInvoices(MBPartner bp) {
     //	See also VMerge.postMerge
     int changed = 0;
-    MInvoice[] invoices = MInvoice.getOfBPartner(getCtx(), bp.getC_BPartner_ID(), null);
+    MInvoice[] invoices = MInvoice.getOfBPartner(getCtx(), bp.getC_BPartner_ID());
     for (int i = 0; i < invoices.length; i++) {
       MInvoice invoice = invoices[i];
       if (invoice.testAllocation()) {

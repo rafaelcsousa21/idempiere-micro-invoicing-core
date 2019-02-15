@@ -19,13 +19,13 @@ public class X_M_QualityTest extends BasePOName implements I_M_QualityTest, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_QualityTest(Properties ctx, int M_QualityTest_ID, String trxName) {
-    super(ctx, M_QualityTest_ID, trxName);
+  public X_M_QualityTest(Properties ctx, int M_QualityTest_ID) {
+    super(ctx, M_QualityTest_ID);
   }
 
   /** Load Constructor */
-  public X_M_QualityTest(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_QualityTest(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

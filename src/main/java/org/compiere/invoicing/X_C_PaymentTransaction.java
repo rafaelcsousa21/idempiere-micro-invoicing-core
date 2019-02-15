@@ -22,8 +22,8 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_PaymentTransaction(Properties ctx, int C_PaymentTransaction_ID, String trxName) {
-    super(ctx, C_PaymentTransaction_ID, trxName);
+  public X_C_PaymentTransaction(Properties ctx, int C_PaymentTransaction_ID) {
+    super(ctx, C_PaymentTransaction_ID);
     /**
      * if (C_PaymentTransaction_ID == 0) { setC_BPartner_ID (0); setC_Currency_ID (0);
      * setC_PaymentTransaction_ID (0); setDateTrx (new Timestamp( System.currentTimeMillis() ));
@@ -35,8 +35,8 @@ public class X_C_PaymentTransaction extends PO implements I_C_PaymentTransaction
   }
 
   /** Load Constructor */
-  public X_C_PaymentTransaction(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_PaymentTransaction(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

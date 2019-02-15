@@ -19,8 +19,8 @@ public class X_C_Activity extends BasePONameValue implements I_C_Activity, I_Per
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_Activity(Properties ctx, int C_Activity_ID, String trxName) {
-    super(ctx, C_Activity_ID, trxName);
+  public X_C_Activity(Properties ctx, int C_Activity_ID) {
+    super(ctx, C_Activity_ID);
     /**
      * if (C_Activity_ID == 0) { setC_Activity_ID (0); setIsSummary (false); setName (null);
      * setValue (null); }
@@ -28,8 +28,8 @@ public class X_C_Activity extends BasePONameValue implements I_C_Activity, I_Per
   }
 
   /** Load Constructor */
-  public X_C_Activity(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_Activity(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

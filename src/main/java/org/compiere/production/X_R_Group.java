@@ -19,14 +19,14 @@ public class X_R_Group extends BasePOName implements I_R_Group, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_Group(Properties ctx, int R_Group_ID, String trxName) {
-    super(ctx, R_Group_ID, trxName);
+  public X_R_Group(Properties ctx, int R_Group_ID) {
+    super(ctx, R_Group_ID);
     /** if (R_Group_ID == 0) { setName (null); setR_Group_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_R_Group(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_Group(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

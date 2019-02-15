@@ -66,8 +66,8 @@ public class TranslationDocSync extends SvrProcess {
         new Query(
                 getCtx(),
                 "AD_Table",
-                "TableName LIKE '%_Trl' AND TableName NOT LIKE 'AD%'",
-                null)
+                "TableName LIKE '%_Trl' AND TableName NOT LIKE 'AD%'"
+        )
             .setOrderBy("TableName")
             .list();
     for (MTable table : tables) {

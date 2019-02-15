@@ -19,14 +19,14 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_I_ElementValue(Properties ctx, int I_ElementValue_ID, String trxName) {
-    super(ctx, I_ElementValue_ID, trxName);
+  public X_I_ElementValue(Properties ctx, int I_ElementValue_ID) {
+    super(ctx, I_ElementValue_ID);
     /** if (I_ElementValue_ID == 0) { setI_ElementValue_ID (0); setI_IsImported (false); } */
   }
 
   /** Load Constructor */
-  public X_I_ElementValue(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_I_ElementValue(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

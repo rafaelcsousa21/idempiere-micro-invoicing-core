@@ -119,7 +119,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
       throw new IllegalStateException("Could not get invoice document type for Vendor RMA");
     }
 
-    MInvoice invoice = new MInvoice(getCtx(), 0, null);
+    MInvoice invoice = new MInvoice(getCtx(), 0);
     invoice.setRMA(rma);
 
     invoice.setC_DocTypeTarget_ID(docTypeId);
@@ -162,7 +162,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
   }
 
   private void generateInvoice(int M_RMA_ID) {
-    MRMA rma = new MRMA(getCtx(), M_RMA_ID, null);
+    MRMA rma = new MRMA(getCtx(), M_RMA_ID);
     statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
 
     MInvoice invoice = createInvoice(rma);

@@ -25,7 +25,7 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
    * @param trxName transaction
    * @return matchers
    */
-  public static MBankStatementMatcher[] getMatchers(Properties ctx, String trxName) {
+  public static MBankStatementMatcher[] getMatchers(Properties ctx) {
     ArrayList<MBankStatementMatcher> list = new ArrayList<MBankStatementMatcher>();
     String sql =
         MRole.getDefault(ctx, false)
@@ -41,7 +41,7 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
     try {
       pstmt = prepareStatement(sql);
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MBankStatementMatcher(ctx, rs, trxName));
+      while (rs.next()) list.add(new MBankStatementMatcher(ctx, rs));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
@@ -65,8 +65,8 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
    * @param C_BankStatementMatcher_ID id
    * @param trxName transaction
    */
-  public MBankStatementMatcher(Properties ctx, int C_BankStatementMatcher_ID, String trxName) {
-    super(ctx, C_BankStatementMatcher_ID, trxName);
+  public MBankStatementMatcher(Properties ctx, int C_BankStatementMatcher_ID) {
+    super(ctx, C_BankStatementMatcher_ID);
   } //	MBankStatementMatcher
 
   /**
@@ -76,8 +76,8 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
    * @param rs result set
    * @param trxName transaction
    */
-  public MBankStatementMatcher(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBankStatementMatcher(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MBankStatementMatcher
 
   private BankStatementMatcherInterface m_matcher = null;

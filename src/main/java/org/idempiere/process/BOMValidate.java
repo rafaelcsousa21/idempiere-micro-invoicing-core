@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MProduct;
@@ -69,7 +55,7 @@ public class BOMValidate extends SvrProcess {
   protected String doIt() throws Exception {
     if (p_M_Product_ID != 0) {
       if (log.isLoggable(Level.INFO)) log.info("M_Product_ID=" + p_M_Product_ID);
-      return validateProduct(new MProduct(getCtx(), p_M_Product_ID, null));
+      return validateProduct(new MProduct(getCtx(), p_M_Product_ID));
     }
     if (log.isLoggable(Level.INFO))
       log.info(
@@ -91,7 +77,7 @@ public class BOMValidate extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) {
         String info =
-            validateProduct(new MProduct(getCtx(), rs.getInt("M_Product_ID"), null));
+            validateProduct(new MProduct(getCtx(), rs.getInt("M_Product_ID")));
         addBufferLog(0, null, null, info, MProduct.Table_ID, rs.getInt("M_Product_ID"));
         counter++;
       }
@@ -160,7 +146,7 @@ public class BOMValidate extends SvrProcess {
     MProductBOM[] productsBOMs = MProductBOM.getBOMLines(product);
     for (int i = 0; i < productsBOMs.length; i++) {
       MProductBOM productsBOM = productsBOMs[i];
-      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID(), null);
+      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID());
       if (!pp.isBOM()) {
         if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
       } else if (!validateOldProduct(pp)) {
@@ -180,7 +166,7 @@ public class BOMValidate extends SvrProcess {
     MBOMProduct[] BOMproducts = MBOMProduct.getOfBOM(bom);
     for (int i = 0; i < BOMproducts.length; i++) {
       MBOMProduct BOMproduct = BOMproducts[i];
-      MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID(), null);
+      MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID());
       if (pp.isBOM()) return validateProduct(pp, bom.getBOMType(), bom.getBOMUse());
     }
     return true;
@@ -214,7 +200,7 @@ public class BOMValidate extends SvrProcess {
     MBOMProduct[] BOMproducts = MBOMProduct.getOfBOM(bom);
     for (int i = 0; i < BOMproducts.length; i++) {
       MBOMProduct BOMproduct = BOMproducts[i];
-      MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID(), null);
+      MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID());
       if (pp.isBOM()) return validateProduct(pp, bom.getBOMType(), bom.getBOMUse());
     }
     return true;

@@ -5,7 +5,6 @@ import org.compiere.model.I_M_InventoryLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -24,8 +23,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_InventoryLine(Properties ctx, int M_InventoryLine_ID, String trxName) {
-    super(ctx, M_InventoryLine_ID, trxName);
+  public X_M_InventoryLine(Properties ctx, int M_InventoryLine_ID) {
+    super(ctx, M_InventoryLine_ID);
     /**
      * if (M_InventoryLine_ID == 0) { setInventoryType (null); // D setM_AttributeSetInstance_ID
      * (0); setM_Inventory_ID (0); setM_InventoryLine_ID (0); setM_Product_ID (0); setProcessed
@@ -34,8 +33,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   }
 
   /** Load Constructor */
-  public X_M_InventoryLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_InventoryLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_M_InventoryLine(Properties ctx, Row row) {
     super(ctx, row);
@@ -182,7 +181,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   public org.compiere.model.I_M_Inventory getM_Inventory() throws RuntimeException {
     return (org.compiere.model.I_M_Inventory)
         MTable.get(getCtx(), org.compiere.model.I_M_Inventory.Table_Name)
-            .getPO(getM_Inventory_ID(), null);
+            .getPO(getM_Inventory_ID());
   }
 
   /**
@@ -241,7 +240,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
+            .getPO(getM_Product_ID());
   }
 
   /**
@@ -251,7 +250,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
    */
   public void setM_Product_ID(int M_Product_ID) {
     if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+    else set_Value(COLUMNNAME_M_Product_ID, M_Product_ID);
   }
 
   /**

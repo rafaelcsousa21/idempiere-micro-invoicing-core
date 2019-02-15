@@ -20,13 +20,13 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Warehouse(Properties ctx, int M_Warehouse_ID, String trxName) {
-    super(ctx, M_Warehouse_ID, trxName);
+  public X_M_Warehouse(Properties ctx, int M_Warehouse_ID) {
+    super(ctx, M_Warehouse_ID);
   }
 
   /** Load Constructor */
-  public X_M_Warehouse(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Warehouse(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_M_Warehouse(Properties ctx, Row row) {
     super(ctx, row);

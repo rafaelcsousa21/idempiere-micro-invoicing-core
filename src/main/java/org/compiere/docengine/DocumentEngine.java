@@ -839,7 +839,7 @@ public class DocumentEngine implements DocAction {
     String error = null;
     if (log.isLoggable(Level.INFO)) log.info("Table=" + AD_Table_ID + ", Record=" + Record_ID);
     MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(ctx, AD_Client_ID);
-    error = Doc.postImmediate(ass, AD_Table_ID, Record_ID, force, trxName);
+    error = Doc.postImmediate(ass, AD_Table_ID, Record_ID, force);
     return error;
   } //	postImmediate
 

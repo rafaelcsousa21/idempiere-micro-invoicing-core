@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_GL_JournalLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_GL_JournalLine(Properties ctx, int GL_JournalLine_ID, String trxName) {
-    super(ctx, GL_JournalLine_ID, trxName);
+  public X_GL_JournalLine(Properties ctx, int GL_JournalLine_ID) {
+    super(ctx, GL_JournalLine_ID);
     /**
      * if (GL_JournalLine_ID == 0) { setAmtAcctCr (Env.ZERO); setAmtAcctDr (Env.ZERO);
      * setAmtSourceCr (Env.ZERO); setAmtSourceDr (Env.ZERO); setC_ConversionType_ID (0);
@@ -37,8 +36,8 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine, I_Persiste
   }
 
   /** Load Constructor */
-  public X_GL_JournalLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_GL_JournalLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

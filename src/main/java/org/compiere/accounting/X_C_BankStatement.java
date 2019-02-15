@@ -22,8 +22,8 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_BankStatement(Properties ctx, int C_BankStatement_ID, String trxName) {
-    super(ctx, C_BankStatement_ID, trxName);
+  public X_C_BankStatement(Properties ctx, int C_BankStatement_ID) {
+    super(ctx, C_BankStatement_ID);
     /**
      * if (C_BankStatement_ID == 0) { setC_BankAccount_ID (0); setC_BankStatement_ID (0);
      * setDateAcct (new Timestamp( System.currentTimeMillis() )); setDocAction (null); // CO
@@ -34,8 +34,8 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement, 
   }
 
   /** Load Constructor */
-  public X_C_BankStatement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_BankStatement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

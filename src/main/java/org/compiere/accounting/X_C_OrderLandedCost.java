@@ -22,8 +22,8 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_OrderLandedCost(Properties ctx, int C_OrderLandedCost_ID, String trxName) {
-    super(ctx, C_OrderLandedCost_ID, trxName);
+  public X_C_OrderLandedCost(Properties ctx, int C_OrderLandedCost_ID) {
+    super(ctx, C_OrderLandedCost_ID);
     /**
      * if (C_OrderLandedCost_ID == 0) { setAmt (Env.ZERO); // 0 setC_Order_ID (0);
      * setC_OrderLandedCost_ID (0); setLandedCostDistribution (null); // Q setM_CostElement_ID (0);
@@ -32,8 +32,8 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
   }
 
   /** Load Constructor */
-  public X_C_OrderLandedCost(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_OrderLandedCost(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -70,7 +70,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
   public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
     return (org.compiere.model.I_C_Order)
         MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-            .getPO(getC_Order_ID(), null);
+            .getPO(getC_Order_ID());
   }
 
     /**

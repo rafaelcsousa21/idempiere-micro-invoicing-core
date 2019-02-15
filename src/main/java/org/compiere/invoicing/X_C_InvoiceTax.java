@@ -22,8 +22,8 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_InvoiceTax(Properties ctx, int C_InvoiceTax_ID, String trxName) {
-    super(ctx, C_InvoiceTax_ID, trxName);
+  public X_C_InvoiceTax(Properties ctx, int C_InvoiceTax_ID) {
+    super(ctx, C_InvoiceTax_ID);
     /**
      * if (C_InvoiceTax_ID == 0) { setC_Invoice_ID (0); setC_Tax_ID (0); setIsTaxIncluded (false);
      * setProcessed (false); setTaxAmt (Env.ZERO); setTaxBaseAmt (Env.ZERO); }
@@ -31,8 +31,8 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
   }
 
   /** Load Constructor */
-  public X_C_InvoiceTax(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_InvoiceTax(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_C_InvoiceTax(Properties ctx, Row row) {
     super(ctx, row);

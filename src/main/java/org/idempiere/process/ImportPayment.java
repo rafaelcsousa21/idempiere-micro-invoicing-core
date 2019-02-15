@@ -451,7 +451,7 @@ public class ImportPayment extends SvrProcess {
       rs = pstmt.executeQuery();
 
       while (rs.next()) {
-        X_I_Payment imp = new X_I_Payment(m_ctx, rs, null);
+        X_I_Payment imp = new X_I_Payment(m_ctx, rs);
         //	Get the bank account
         if (account == null || account.getC_BankAccount_ID() != imp.getC_BankAccount_ID()) {
           account = MBankAccount.get(m_ctx, imp.getC_BankAccount_ID());
@@ -459,7 +459,7 @@ public class ImportPayment extends SvrProcess {
         }
 
         //	New Payment
-        MPayment payment = new MPayment(m_ctx, 0, null);
+        MPayment payment = new MPayment(m_ctx, 0);
         payment.setAD_Org_ID(imp.getOrgId());
         payment.setDocumentNo(imp.getDocumentNo());
         payment.setPONum(imp.getPONum());

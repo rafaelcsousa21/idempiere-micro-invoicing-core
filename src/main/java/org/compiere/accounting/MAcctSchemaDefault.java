@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Default;
 import org.compiere.orm.Query;
-import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.KeyNamePair;
 
 import java.sql.ResultSet;
@@ -33,7 +32,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
    */
   public static MAcctSchemaDefault get(Properties ctx, int C_AcctSchema_ID) {
     final String whereClause = "C_AcctSchema_ID=?";
-    return new Query(ctx, I_C_AcctSchema_Default.Table_Name, whereClause, null)
+    return new Query(ctx, I_C_AcctSchema_Default.Table_Name, whereClause)
         .setParameters(C_AcctSchema_ID)
         .firstOnly();
   } //	get
@@ -45,8 +44,8 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
    * @param C_AcctSchema_ID parent
    * @param trxName transaction
    */
-  public MAcctSchemaDefault(Properties ctx, int C_AcctSchema_ID, String trxName) {
-    super(ctx, C_AcctSchema_ID, trxName);
+  public MAcctSchemaDefault(Properties ctx, int C_AcctSchema_ID) {
+    super(ctx, C_AcctSchema_ID);
   } //	MAcctSchemaDefault
 
   /**
@@ -56,8 +55,8 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
    * @param rs result set
    * @param trxName transaction
    */
-  public MAcctSchemaDefault(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAcctSchemaDefault(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MAcctSchemaDefault
   public MAcctSchemaDefault(Properties ctx, Row row) {
     super(ctx, row);

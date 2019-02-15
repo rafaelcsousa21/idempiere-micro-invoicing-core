@@ -49,7 +49,7 @@ public class MMeasure extends X_PA_Measure {
     Integer key = new Integer(PA_Measure_ID);
     MMeasure retValue = (MMeasure) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MMeasure(ctx, PA_Measure_ID, null);
+    retValue = new MMeasure(ctx, PA_Measure_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -65,8 +65,8 @@ public class MMeasure extends X_PA_Measure {
    * @param PA_Measure_ID id
    * @param trxName trx
    */
-  public MMeasure(Properties ctx, int PA_Measure_ID, String trxName) {
-    super(ctx, PA_Measure_ID, trxName);
+  public MMeasure(Properties ctx, int PA_Measure_ID) {
+    super(ctx, PA_Measure_ID);
   } //	MMeasure
 
   /**
@@ -76,8 +76,8 @@ public class MMeasure extends X_PA_Measure {
    * @param rs result set
    * @param trxName trx
    */
-  public MMeasure(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MMeasure(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MMeasure
 
   /**
@@ -168,7 +168,7 @@ public class MMeasure extends X_PA_Measure {
     for (int i = 0; i < goals.length; i++) {
       MGoal goal = goals[i];
       goal.setMeasureActual(getManualActual());
-      goal.saveEx(null);
+      goal.saveEx();
     }
     return true;
   } //	updateManualGoals
@@ -202,7 +202,7 @@ public class MMeasure extends X_PA_Measure {
         }
       }
       goal.setMeasureActual(ManualActual);
-      goal.saveEx(null);
+      goal.saveEx();
     }
     return true;
   } //	updateAchievementGoals
@@ -246,7 +246,7 @@ public class MMeasure extends X_PA_Measure {
         if (log.isLoggable(Level.FINE)) log.fine("No Value = " + sql);
       }
       goal.setMeasureActual(ManualActual);
-      goal.saveEx(null);
+      goal.saveEx();
     }
     return true;
   } //	updateCalculatedGoals
@@ -297,7 +297,7 @@ public class MMeasure extends X_PA_Measure {
         if (log.isLoggable(Level.FINE)) log.fine("No Value = " + sql);
       }
       goal.setMeasureActual(ManualActual);
-      goal.saveEx(null);
+      goal.saveEx();
     }
     return true;
   } //	updateRequests
@@ -338,7 +338,7 @@ public class MMeasure extends X_PA_Measure {
         if (log.isLoggable(Level.FINE)) log.fine("No Value = " + sql);
       }
       goal.setMeasureActual(ManualActual);
-      goal.saveEx(null);
+      goal.saveEx();
     }
     return true;
   } //	updateProjects
@@ -352,7 +352,7 @@ public class MMeasure extends X_PA_Measure {
     for (MGoal goal : goals) {
       BigDecimal amt = Env.ZERO;
       PO po =
-          (PO) new MTable(getCtx(), getTableId(), null).getPO(getId(), null);
+          (PO) new MTable(getCtx(), getTableId()).getPO(getId());
       StringTokenizer st = new StringTokenizer(getCalculationClass(), ";,", false);
       while (st.hasMoreTokens()) //  for each class
       {
@@ -412,7 +412,7 @@ public class MMeasure extends X_PA_Measure {
         }
       }
       goal.setMeasureActual(amt);
-      goal.saveEx(null);
+      goal.saveEx();
     }
     return true;
   } //	updateUserDefinedGoals

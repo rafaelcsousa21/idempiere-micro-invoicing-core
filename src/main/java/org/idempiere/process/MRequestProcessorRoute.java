@@ -13,8 +13,8 @@ public class MRequestProcessorRoute extends X_R_RequestProcessor_Route {
    * @param ctx context
    * @param R_RequestProcessor_Route_ID id
    */
-  public MRequestProcessorRoute(Properties ctx, int R_RequestProcessor_Route_ID, String trxName) {
-    super(ctx, R_RequestProcessor_Route_ID, trxName);
+  public MRequestProcessorRoute(Properties ctx, int R_RequestProcessor_Route_ID) {
+    super(ctx, R_RequestProcessor_Route_ID);
   } //	MRequestProcessorRoute
 
   /**
@@ -23,7 +23,7 @@ public class MRequestProcessorRoute extends X_R_RequestProcessor_Route {
    * @param ctx context
    * @param rs result set
    */
-  public MRequestProcessorRoute(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequestProcessorRoute(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequestProcessorRoute
 } //	MRequestProcessorRoute

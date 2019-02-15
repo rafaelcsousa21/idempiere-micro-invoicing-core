@@ -62,7 +62,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     if (sLine == null) return null;
     final String whereClause = I_M_InOutLine.COLUMNNAME_M_InOutLine_ID + "=?";
     List<MInvoiceLine> list =
-        new Query(sLine.getCtx(), I_C_InvoiceLine.Table_Name, whereClause, null)
+        new Query(sLine.getCtx(), I_C_InvoiceLine.Table_Name, whereClause)
             .setParameters(sLine.getM_InOutLine_ID())
             .list();
 
@@ -86,7 +86,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     final String whereClause =
         "C_InvoiceLine_ID IN (SELECT C_InvoiceLine_ID FROM M_MatchInv WHERE M_InOutLine_ID=?)";
     List<MInvoiceLine> list =
-        new Query(sLine.getCtx(), Table_Name, whereClause, null)
+        new Query(sLine.getCtx(), Table_Name, whereClause)
             .setParameters(sLine.getM_InOutLine_ID())
             .list();
 
@@ -113,8 +113,8 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
    * @param C_InvoiceLine_ID invoice line or 0
    * @param trxName transaction name
    */
-  public MInvoiceLine(Properties ctx, int C_InvoiceLine_ID, String trxName) {
-    super(ctx, C_InvoiceLine_ID, trxName);
+  public MInvoiceLine(Properties ctx, int C_InvoiceLine_ID) {
+    super(ctx, C_InvoiceLine_ID);
     if (C_InvoiceLine_ID == 0) {
       setIsDescription(false);
       setIsPrinted(true);
@@ -137,7 +137,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
    * @param invoice parent
    */
   public MInvoiceLine(MInvoice invoice) {
-    this(invoice.getCtx(), 0, null);
+    this(invoice.getCtx(), 0);
     if (invoice.getId() == 0) throw new IllegalArgumentException("Header not saved");
     setClientOrg(invoice. getClientId(), invoice. getOrgId());
     setC_Invoice_ID(invoice.getC_Invoice_ID());
@@ -151,8 +151,8 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
    * @param rs result set record
    * @param trxName transaction
    */
-  public MInvoiceLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInvoiceLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInvoiceLine
   public MInvoiceLine(Properties ctx, Row row) {
     super(ctx, row);
@@ -198,7 +198,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
    * @return parent
    */
   public MInvoice getParent() {
-    if (m_parent == null) m_parent = new MInvoice(getCtx(), getC_Invoice_ID(), null);
+    if (m_parent == null) m_parent = new MInvoice(getCtx(), getC_Invoice_ID());
     return m_parent;
   } //	getParent
 
@@ -269,7 +269,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     //
     int C_OrderLine_ID = sLine.getC_OrderLine_ID();
     if (C_OrderLine_ID != 0) {
-      MOrderLine oLine = new MOrderLine(getCtx(), C_OrderLine_ID, null);
+      MOrderLine oLine = new MOrderLine(getCtx(), C_OrderLine_ID);
       setS_ResourceAssignment_ID(oLine.getS_ResourceAssignment_ID());
       //
       if (sLine.sameOrderLineUOM()) setPriceEntered(oLine.getPriceEntered());
@@ -285,7 +285,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     // Check if shipment line is based on RMA
     else if (sLine.getM_RMALine_ID() != 0) {
       // Set Pricing details from the RMA Line on which it is based
-      MRMALine rmaLine = new MRMALine(getCtx(), sLine.getM_RMALine_ID(), null);
+      MRMALine rmaLine = new MRMALine(getCtx(), sLine.getM_RMALine_ID());
 
       setPrice();
       setPrice(rmaLine.getAmt());
@@ -354,7 +354,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     //
     if (log.isLoggable(Level.FINE)) log.fine("M_PriceList_ID=" + M_PriceList_ID);
     m_productPricing = MProduct.getProductPricing();
-    m_productPricing.setInvoiceLine(this, null);
+    m_productPricing.setInvoiceLine(this);
     m_productPricing.setM_PriceList_ID(M_PriceList_ID);
     //
     setPriceActual(m_productPricing.getPriceStd());
@@ -461,16 +461,14 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
           stdTax =
               new MTax(
                   getCtx(),
-                  ((MTaxCategory) getCharge().getC_TaxCategory()).getDefaultTax().getC_Tax_ID(),
-                  null);
+                  ((MTaxCategory) getCharge().getC_TaxCategory()).getDefaultTax().getC_Tax_ID());
         }
 
       } else // Product
       stdTax =
             new MTax(
                 getCtx(),
-                ((MTaxCategory) getProduct().getC_TaxCategory()).getDefaultTax().getC_Tax_ID(),
-                null);
+                ((MTaxCategory) getProduct().getC_TaxCategory()).getDefaultTax().getC_Tax_ID());
 
       if (stdTax != null) {
 
@@ -711,7 +709,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
               "SELECT M_PriceList_ID FROM C_Invoice WHERE C_Invoice_ID=?",
               getC_Invoice_ID());
     }
-    MPriceList pl = MPriceList.get(getCtx(), m_M_PriceList_ID, null);
+    MPriceList pl = MPriceList.get(getCtx(), m_M_PriceList_ID);
     return pl.isTaxIncluded();
   } //	isTaxIncluded
 
@@ -806,15 +804,15 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
    * @author teo_sarca [ 1583825 ]
    */
   public boolean updateInvoiceTax(boolean oldTax) {
-    MInvoiceTax tax = MInvoiceTax.get(this, getPrecision(), oldTax, null);
+    MInvoiceTax tax = MInvoiceTax.get(this, getPrecision(), oldTax);
     if (tax != null) {
       if (!tax.calculateTaxFromLines()) return false;
 
       // red1 - solving BUGS #[ 1701331 ] , #[ 1786103 ]
       if (tax.getTaxAmt().signum() != 0) {
-        if (!tax.save(null)) return false;
+        if (!tax.save()) return false;
       } else {
-        if (!tax.is_new() && !tax.delete(false, null)) return false;
+        if (!tax.is_new() && !tax.delete(false)) return false;
       }
     }
     return true;
@@ -829,9 +827,9 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
    */
   protected boolean afterSave(boolean newRecord, boolean success) {
     if (!success) return success;
-    MTax tax = new MTax(getCtx(), getC_Tax_ID(), null);
+    MTax tax = new MTax(getCtx(), getC_Tax_ID());
     MTaxProvider provider =
-        new MTaxProvider(tax.getCtx(), tax.getC_TaxProvider_ID(), null);
+        new MTaxProvider(tax.getCtx(), tax.getC_TaxProvider_ID());
     IInvoiceTaxProvider calculator =
         MTaxProvider.getTaxProvider(provider, new StandardInvoiceTaxProvider());
     if (calculator == null) throw new AdempiereException(Msg.getMsg(getCtx(), "TaxNoProvider"));
@@ -850,7 +848,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     // reset shipment line invoiced flag
     if (getM_InOutLine_ID() > 0) {
       org.compiere.order.MInOutLine sLine =
-          new org.compiere.order.MInOutLine(getCtx(), getM_InOutLine_ID(), null);
+          new org.compiere.order.MInOutLine(getCtx(), getM_InOutLine_ID());
       sLine.setIsInvoiced(false);
       sLine.saveEx();
     }
@@ -868,9 +866,9 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     if (isProcessed() && !is_ValueChanged(COLUMNNAME_Processed)) return true;
 
     //	Recalculate Tax for this Tax
-    MTax tax = new MTax(getCtx(), getC_Tax_ID(), null);
+    MTax tax = new MTax(getCtx(), getC_Tax_ID());
     MTaxProvider provider =
-        new MTaxProvider(tax.getCtx(), tax.getC_TaxProvider_ID(), null);
+        new MTaxProvider(tax.getCtx(), tax.getC_TaxProvider_ID());
     IInvoiceTaxProvider calculator =
         MTaxProvider.getTaxProvider(provider, new StandardInvoiceTaxProvider());
     if (calculator == null) throw new AdempiereException(Msg.getMsg(getCtx(), "TaxNoProvider"));
@@ -902,7 +900,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       if (lc.getM_InOut_ID() != 0 && lc.getM_InOutLine_ID() == 0) {
         //	Create List
         ArrayList<MInOutLine> list = new ArrayList<MInOutLine>();
-        MInOut ship = new MInOut(getCtx(), lc.getM_InOut_ID(), null);
+        MInOut ship = new MInOut(getCtx(), lc.getM_InOut_ID());
         MInOutLine[] lines = ship.getLines();
         for (int i = 0; i < lines.length; i++) {
           if (lines[i].isDescription() || lines[i].getM_Product_ID() == 0) continue;
@@ -952,7 +950,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       }
       //	Single Line
       else if (lc.getM_InOutLine_ID() != 0) {
-        MInOutLine iol = new MInOutLine(getCtx(), lc.getM_InOutLine_ID(), null);
+        MInOutLine iol = new MInOutLine(getCtx(), lc.getM_InOutLine_ID());
         if (iol.isDescription() || iol.getM_Product_ID() == 0) {
           msgreturn = new StringBuilder("Invalid Receipt Line - ").append(iol);
           return msgreturn.toString();
@@ -1012,7 +1010,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       MLandedCost lc = lcs[ii];
       if (lc.getM_InOut_ID() != 0 && lc.getM_InOutLine_ID() == 0) // 	entire receipt
       {
-        org.compiere.order.MInOut ship = new MInOut(getCtx(), lc.getM_InOut_ID(), null);
+        org.compiere.order.MInOut ship = new MInOut(getCtx(), lc.getM_InOut_ID());
         org.compiere.order.MInOutLine[] lines = ship.getLines();
         for (int i = 0; i < lines.length; i++) {
           if (lines[i].isDescription() // 	decription or no product
@@ -1023,7 +1021,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       } else if (lc.getM_InOutLine_ID() != 0) // 	receipt line
       {
         org.compiere.order.MInOutLine iol =
-            new org.compiere.order.MInOutLine(getCtx(), lc.getM_InOutLine_ID(), null);
+            new org.compiere.order.MInOutLine(getCtx(), lc.getM_InOutLine_ID());
         if (!iol.isDescription() && iol.getM_Product_ID() != 0) list.add(iol);
       }
     }
@@ -1071,7 +1069,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
   /** Allocate Landed Cost - Enforce Rounding */
   private void allocateLandedCostRounding() {
     MLandedCostAllocation[] allocations =
-        MLandedCostAllocation.getOfInvoiceLine(getCtx(), getC_InvoiceLine_ID(), null);
+        MLandedCostAllocation.getOfInvoiceLine(getCtx(), getC_InvoiceLine_ID());
     MLandedCostAllocation largestAmtAllocation = null;
     BigDecimal allocationAmt = Env.ZERO;
     for (int i = 0; i < allocations.length; i++) {
@@ -1114,7 +1112,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
       pstmt.setInt(1, getC_InvoiceLine_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MLandedCost lc = new MLandedCost(getCtx(), rs, null);
+        MLandedCost lc = new MLandedCost(getCtx(), rs);
         list.add(lc);
       }
     } catch (Exception e) {
@@ -1141,7 +1139,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     MLandedCost[] fromLandedCosts = otherInvoiceLine.getLandedCost(null);
     int count = 0;
     for (int i = 0; i < fromLandedCosts.length; i++) {
-      MLandedCost landedCost = new MLandedCost(getCtx(), 0, null);
+      MLandedCost landedCost = new MLandedCost(getCtx(), 0);
       MLandedCost fromLandedCost = fromLandedCosts[i];
       PO.copyValues(
           fromLandedCost,
@@ -1150,7 +1148,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
           fromLandedCost. getOrgId());
       landedCost.setC_InvoiceLine_ID(getC_InvoiceLine_ID());
       landedCost.set_ValueNoCheck("C_LandedCost_ID", I_ZERO); // new
-      if (landedCost.save(null)) count++;
+      if (landedCost.save()) count++;
     }
     if (fromLandedCosts.length != count)
       log.log(

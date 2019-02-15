@@ -1,17 +1,3 @@
-/**
- * ******************************************************************** This file is part of
- * Adempiere ERP Bazaar * http://www.adempiere.org * * Copyright (C) Carlos Ruiz - globalqss *
- * Copyright (C) Contributors * * This program is free software; you can redistribute it and/or *
- * modify it under the terms of the GNU General Public License * as published by the Free Software
- * Foundation; either version 2 * of the License, or (at your option) any later version. * * This
- * program is distributed in the hope that it will be useful, * but WITHOUT ANY WARRANTY; without
- * even the implied warranty of * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the * GNU
- * General Public License for more details. * * You should have received a copy of the GNU General
- * Public License * along with this program; if not, write to the Free Software * Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, * MA 02110-1301, USA. * * Contributors: * - Carlos Ruiz
- * - globalqss * * Sponsors: * - Company (http://www.globalqss.com) *
- * ********************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.DocManager;
@@ -85,7 +71,7 @@ public class ClientAcctProcessor extends SvrProcess {
 
     if (p_C_AcctSchema_ID == 0) m_ass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId());
     else //	only specific accounting schema
-    m_ass = new MAcctSchema[] {new MAcctSchema(getCtx(), p_C_AcctSchema_ID, null)};
+    m_ass = new MAcctSchema[] {new MAcctSchema(getCtx(), p_C_AcctSchema_ID)};
 
     postSession();
     MCost.create(m_client);
@@ -184,7 +170,7 @@ public class ClientAcctProcessor extends SvrProcess {
             try {
               String error =
                   DocManager.INSTANCE.postDocument(
-                      m_ass, AD_Table_ID, rs, false, false, null);
+                      m_ass, AD_Table_ID, rs, false, false);
               ok = (error == null);
             } catch (Exception e) {
               log.log(Level.SEVERE, getName() + ": " + TableName, e);

@@ -4,7 +4,6 @@ import org.compiere.model.I_C_AllocationLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_AllocationLine(Properties ctx, int C_AllocationLine_ID, String trxName) {
-    super(ctx, C_AllocationLine_ID, trxName);
+  public X_C_AllocationLine(Properties ctx, int C_AllocationLine_ID) {
+    super(ctx, C_AllocationLine_ID);
     /**
      * if (C_AllocationLine_ID == 0) { setAmount (Env.ZERO); setC_AllocationHdr_ID (0);
      * setC_AllocationLine_ID (0); setDiscountAmt (Env.ZERO); setWriteOffAmt (Env.ZERO); }
@@ -32,8 +31,8 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   }
 
   /** Load Constructor */
-  public X_C_AllocationLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_AllocationLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -158,7 +157,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
     return (org.compiere.model.I_C_Invoice)
         MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-            .getPO(getC_Invoice_ID(), null);
+            .getPO(getC_Invoice_ID());
   }
 
   /**
@@ -206,7 +205,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
   public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
     return (org.compiere.model.I_C_Payment)
         MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getC_Payment_ID(), null);
+            .getPO(getC_Payment_ID());
   }
 
   /**
@@ -216,7 +215,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
    */
   public void setC_Payment_ID(int C_Payment_ID) {
     if (C_Payment_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Payment_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_Payment_ID, C_Payment_ID);
   }
 
   /**

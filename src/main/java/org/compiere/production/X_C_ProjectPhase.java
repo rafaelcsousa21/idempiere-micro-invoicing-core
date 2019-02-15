@@ -21,8 +21,8 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_ProjectPhase(Properties ctx, int C_ProjectPhase_ID, String trxName) {
-    super(ctx, C_ProjectPhase_ID, trxName);
+  public X_C_ProjectPhase(Properties ctx, int C_ProjectPhase_ID) {
+    super(ctx, C_ProjectPhase_ID);
     /**
      * if (C_ProjectPhase_ID == 0) { setCommittedAmt (Env.ZERO); setC_Project_ID (0);
      * setC_ProjectPhase_ID (0); setIsCommitCeiling (false); setIsComplete (false); setName (null);
@@ -33,8 +33,8 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase, I_
   }
 
   /** Load Constructor */
-  public X_C_ProjectPhase(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_ProjectPhase(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -19,14 +19,14 @@ public class X_R_Category extends BasePOName implements I_R_Category, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_Category(Properties ctx, int R_Category_ID, String trxName) {
-    super(ctx, R_Category_ID, trxName);
+  public X_R_Category(Properties ctx, int R_Category_ID) {
+    super(ctx, R_Category_ID);
     /** if (R_Category_ID == 0) { setName (null); setR_Category_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_R_Category(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_Category(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

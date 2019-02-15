@@ -23,8 +23,8 @@ public class MWorkflowAccess extends X_AD_Workflow_Access {
    * @param ignored -
    * @param trxName transaction
    */
-  public MWorkflowAccess(Properties ctx, int ignored, String trxName) {
-    super(ctx, 0, trxName);
+  public MWorkflowAccess(Properties ctx, int ignored) {
+    super(ctx, 0);
     if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
     else {
       //	setAD_Role_ID (0);
@@ -40,8 +40,8 @@ public class MWorkflowAccess extends X_AD_Workflow_Access {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWorkflowAccess(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWorkflowAccess(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWorkflowAccess
 
   /**
@@ -51,7 +51,7 @@ public class MWorkflowAccess extends X_AD_Workflow_Access {
    * @param AD_Role_ID role id
    */
   public MWorkflowAccess(MWorkflow parent, int AD_Role_ID) {
-    super(parent.getCtx(), 0, null);
+    super(parent.getCtx(), 0);
     MRole role = MRole.get(parent.getCtx(), AD_Role_ID);
     setClientOrg(role);
     setAD_Workflow_ID(parent.getAD_Workflow_ID());

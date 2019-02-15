@@ -37,8 +37,8 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
   private static final long serialVersionUID = 6631244784741228058L;
 
   /** Standard Constructor */
-  public MDepreciationEntry(Properties ctx, int A_Depreciation_Entry_ID, String trxName) {
-    super(ctx, A_Depreciation_Entry_ID, trxName);
+  public MDepreciationEntry(Properties ctx, int A_Depreciation_Entry_ID) {
+    super(ctx, A_Depreciation_Entry_ID);
     if (A_Depreciation_Entry_ID == 0) {
       MAcctSchema acctSchema = MClient.get(getCtx()).getAcctSchema();
       setC_AcctSchema_ID(acctSchema.getId());
@@ -52,8 +52,8 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
   }
 
   /** Load Constructor */
-  public MDepreciationEntry(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDepreciationEntry(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   protected boolean beforeSave(boolean newRecord) {
@@ -82,7 +82,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
   }
 
   public void setC_Period_ID() {
-    MPeriod period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId(), null);
+    MPeriod period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId());
     if (period == null) {
       throw new AdempiereException("@NotFound@ @C_Period_ID@");
     }
@@ -124,7 +124,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             + MDepreciationExp.COLUMNNAME_DateAcct
             + ",'MONTH') = ?"
             + " AND AD_Client_ID=? AND AD_Org_ID=?";
-    ;
+
     Timestamp dateAcct = TimeUtil.trunc(getDateAcct(), TimeUtil.TRUNC_MONTH);
     int no =
         executeUpdateEx(
@@ -155,7 +155,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             + MDepreciationExp.COLUMNNAME_A_Entry_Type;
 
     Iterator<MDepreciationExp> it =
-        new Query(getCtx(), MDepreciationExp.Table_Name, whereClause, trxName)
+        new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
             .setOrderBy(orderBy)
             .setParameters(params)
             .iterate();

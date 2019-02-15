@@ -24,8 +24,8 @@ public class MDepreciation extends X_A_Depreciation {
   private static final long serialVersionUID = -632058079835100100L;
 
   /** Standard Constructor */
-  public MDepreciation(Properties ctx, int A_Depreciation_ID, String trxName) {
-    super(ctx, A_Depreciation_ID, trxName);
+  public MDepreciation(Properties ctx, int A_Depreciation_ID) {
+    super(ctx, A_Depreciation_ID);
   } //	MDepreciation
 
   /**
@@ -34,8 +34,8 @@ public class MDepreciation extends X_A_Depreciation {
    * @param ctx context
    * @param rs result set record
    */
-  public MDepreciation(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDepreciation(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MDepreciation
 
   /** Cache */
@@ -74,7 +74,7 @@ public class MDepreciation extends X_A_Depreciation {
     if (depr != null) {
       return depr;
     }
-    depr = new MDepreciation(ctx, A_Depreciation_ID, null);
+    depr = new MDepreciation(ctx, A_Depreciation_ID);
     if (depr.getId() > 0) {
       addToCache(depr);
     } else {
@@ -100,7 +100,7 @@ public class MDepreciation extends X_A_Depreciation {
     final String whereClause =
         I_A_Depreciation.COLUMNNAME_DepreciationType + "=?" + " AND clientId IN (0,?)";
     depr =
-        new Query(ctx, I_A_Depreciation.Table_Name, whereClause, null)
+        new Query(ctx, I_A_Depreciation.Table_Name, whereClause)
             .setOrderBy("AD_Client_ID DESC")
             .setParameters(new Object[] {depreciationType, AD_Client_ID})
             .firstOnly();

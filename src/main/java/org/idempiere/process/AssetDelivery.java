@@ -124,7 +124,7 @@ public class AssetDelivery extends SvrProcess {
         //	Guarantee Expired
         if (GuaranteeDate != null && GuaranteeDate.before(m_GuaranteeDate)) {
           if (m_NoGuarantee_MailText_ID != 0) {
-            sendNoGuaranteeMail(A_Asset_ID, m_NoGuarantee_MailText_ID, null);
+            sendNoGuaranteeMail(A_Asset_ID, m_NoGuarantee_MailText_ID);
             reminders++;
           }
         } else //	Guarantee valid
@@ -166,11 +166,11 @@ public class AssetDelivery extends SvrProcess {
    * @param R_MailText_ID mail to send
    * @return message - delivery errors start with **
    */
-  private String sendNoGuaranteeMail(int A_Asset_ID, int R_MailText_ID, String trxName)
+  private String sendNoGuaranteeMail(int A_Asset_ID, int R_MailText_ID)
       throws NotImplementedException {
     throw new NotImplementedException();
 
-    /*MAsset asset = new MAsset (getCtx(), A_Asset_ID, trxName);
+    /*MAsset asset = new MAsset (getCtx(), A_Asset_ID);
     if (asset.getAD_User_ID() == 0)
     	return "** No Asset User";
     MUser user = new MUser (getCtx(), asset.getAD_User_ID(), null);

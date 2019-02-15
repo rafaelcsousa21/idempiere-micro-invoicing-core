@@ -83,7 +83,7 @@ public class DunningPrint extends SvrProcess {
     //		String subject = "";
     MMailText mText = null;
     if (p_EMailPDF) {
-      mText = new MMailText(getCtx(), p_R_MailText_ID, null);
+      mText = new MMailText(getCtx(), p_R_MailText_ID);
       if (p_EMailPDF && mText.getId() == 0)
         throw new AdempiereUserError("@NotFound@: @R_MailText_ID@ - " + p_R_MailText_ID);
       //			subject = mText.getMailHeader();

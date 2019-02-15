@@ -34,8 +34,8 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
    * @param M_InOutLine_ID id
    * @param trxName trx name
    */
-  public MInOutLine(Properties ctx, int M_InOutLine_ID, String trxName) {
-    super(ctx, M_InOutLine_ID, trxName);
+  public MInOutLine(Properties ctx, int M_InOutLine_ID) {
+    super(ctx, M_InOutLine_ID);
   }
 
   /**
@@ -54,8 +54,8 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
    * @param rs result set record
    * @param trxName transaction
    */
-  public MInOutLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInOutLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInOutLine
   public MInOutLine(Properties ctx, Row row) {
     super(ctx, row);
@@ -201,7 +201,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
         && isAutoGenerateLot
         && getMAttributeSetInstance_ID() == 0) {
       MAttributeSetInstance asi =
-          MAttributeSetInstance.generateLot(getCtx(), (MProduct) getM_Product(), null);
+          MAttributeSetInstance.generateLot(getCtx(), (MProduct) getM_Product());
       setM_AttributeSetInstance_ID(asi.getMAttributeSetInstance_ID());
     }
     //	if (getC_Charge_ID() == 0 && getM_Product_ID() == 0)
@@ -324,10 +324,10 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
    * @return array of receipt lines
    */
   public static MInOutLine[] getOfOrderLine(
-      Properties ctx, int C_OrderLine_ID, String where, String trxName) {
+      Properties ctx, int C_OrderLine_ID, String where) {
     String whereClause = "C_OrderLine_ID=?" + (!Util.isEmpty(where, true) ? " AND " + where : "");
     List<org.compiere.order.MInOutLine> list =
-        new Query(ctx, I_M_InOutLine.Table_Name, whereClause, trxName)
+        new Query(ctx, I_M_InOutLine.Table_Name, whereClause)
             .setParameters(C_OrderLine_ID)
             .list();
     return list.toArray(new MInOutLine[list.size()]);

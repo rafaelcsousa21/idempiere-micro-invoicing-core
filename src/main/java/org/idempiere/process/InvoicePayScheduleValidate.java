@@ -49,11 +49,11 @@ public class InvoicePayScheduleValidate extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("C_InvoicePaySchedule_ID=" + getRecord_ID());
     MInvoicePaySchedule[] schedule =
-        MInvoicePaySchedule.getInvoicePaySchedule(getCtx(), 0, getRecord_ID(), null);
+        MInvoicePaySchedule.getInvoicePaySchedule(getCtx(), 0, getRecord_ID());
     if (schedule.length == 0)
       throw new IllegalArgumentException("InvoicePayScheduleValidate - No Schedule");
     //	Get Invoice
-    MInvoice invoice = new MInvoice(getCtx(), schedule[0].getC_Invoice_ID(), null);
+    MInvoice invoice = new MInvoice(getCtx(), schedule[0].getC_Invoice_ID());
     if (invoice.getId() == 0)
       throw new IllegalArgumentException("InvoicePayScheduleValidate - No Invoice");
     //

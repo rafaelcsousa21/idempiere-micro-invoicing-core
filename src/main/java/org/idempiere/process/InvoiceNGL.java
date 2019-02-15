@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.*;
@@ -229,7 +215,7 @@ public class InvoiceNGL extends SvrProcess {
     // FR: [ 2214883 ] Remove SQL code and Replace for Query
     final String whereClause = "AD_PInstance_ID=?";
     List<X_T_InvoiceGL> list =
-        new Query(getCtx(), X_T_InvoiceGL.Table_Name, whereClause, null)
+        new Query(getCtx(), X_T_InvoiceGL.Table_Name, whereClause)
             .setParameters(getAD_PInstance_ID())
             .setOrderBy("AD_Org_ID")
             .list();
@@ -246,7 +232,7 @@ public class InvoiceNGL extends SvrProcess {
       cat = MGLCategory.get(getCtx(), docType.getGL_Category_ID());
     }
     //
-    MJournal journal = new MJournal(getCtx(), 0, null);
+    MJournal journal = new MJournal(getCtx(), 0);
     journal.setC_DocType_ID(p_C_DocTypeReval_ID);
     journal.setPostingType(MJournal.POSTINGTYPE_Actual);
     journal.setDateDoc(p_DateReval);
@@ -265,7 +251,7 @@ public class InvoiceNGL extends SvrProcess {
     for (int i = 0; i < list.size(); i++) {
       X_T_InvoiceGL gl = list.get(i);
       if (gl.getAmtRevalDrDiff().signum() == 0 && gl.getAmtRevalCrDiff().signum() == 0) continue;
-      MInvoice invoice = new MInvoice(getCtx(), gl.getC_Invoice_ID(), null);
+      MInvoice invoice = new MInvoice(getCtx(), gl.getC_Invoice_ID());
       if (invoice.getC_Currency_ID() == as.getC_Currency_ID()) continue;
       //
       if (AD_Org_ID == 0) // 	invoice org id
@@ -290,7 +276,7 @@ public class InvoiceNGL extends SvrProcess {
       line.setLine((i + 1) * 10);
       line.setDescription(invoice.getSummary());
       //
-      MFactAcct fa = new MFactAcct(getCtx(), gl.getFact_Acct_ID(), null);
+      MFactAcct fa = new MFactAcct(getCtx(), gl.getFact_Acct_ID());
       MAccount acct = MAccount.get(fa);
       line.setC_ValidCombination_ID(acct);
       BigDecimal dr = gl.getAmtRevalDrDiff();

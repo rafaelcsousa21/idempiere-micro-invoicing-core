@@ -21,13 +21,13 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_Workflow(Properties ctx, int AD_Workflow_ID, String trxName) {
-    super(ctx, AD_Workflow_ID, trxName);
+  public X_AD_Workflow(Properties ctx, int AD_Workflow_ID) {
+    super(ctx, AD_Workflow_ID);
   }
 
   /** Load Constructor */
-  public X_AD_Workflow(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_Workflow(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -29,24 +29,11 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
    * @param ctx context
    * @param AD_WF_Process_ID process
    * @param AD_WF_Node_ID optional node
-   * @return event audit or null
-   * @deprecated Deprecated since 3.4.0. Use instead {@link #get(Properties, int, int, String)}
-   */
-  public static MWFEventAudit[] get(Properties ctx, int AD_WF_Process_ID, int AD_WF_Node_ID) {
-    return get(ctx, AD_WF_Process_ID, AD_WF_Node_ID, null);
-  }
-
-  /**
-   * Get Event Audit for node
-   *
-   * @param ctx context
-   * @param AD_WF_Process_ID process
-   * @param AD_WF_Node_ID optional node
    * @param trxName
    * @return event audit or null
    */
   public static MWFEventAudit[] get(
-      Properties ctx, int AD_WF_Process_ID, int AD_WF_Node_ID, String trxName) {
+      Properties ctx, int AD_WF_Process_ID, int AD_WF_Node_ID) {
     ArrayList<Object> params = new ArrayList<Object>();
     StringBuilder whereClause = new StringBuilder("AD_WF_Process_ID=?");
     params.add(AD_WF_Process_ID);
@@ -55,7 +42,7 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
       params.add(AD_WF_Node_ID);
     }
     List<MWFEventAudit> list =
-        new Query(ctx, I_AD_WF_EventAudit.Table_Name, whereClause.toString(), trxName)
+        new Query(ctx, I_AD_WF_EventAudit.Table_Name, whereClause.toString())
             .setParameters(params)
             .setOrderBy(I_AD_WF_EventAudit.COLUMNNAME_AD_WF_EventAudit_ID)
             .list();
@@ -70,23 +57,11 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
    *
    * @param ctx context
    * @param AD_WF_Process_ID process
-   * @return event audit or null
-   * @deprecated Deprecated since 3.4.0. Use instead {@link #get(Properties, int, String)}
-   */
-  public static MWFEventAudit[] get(Properties ctx, int AD_WF_Process_ID) {
-    return get(ctx, AD_WF_Process_ID, null);
-  }
-
-  /**
-   * Get Event Audit for node
-   *
-   * @param ctx context
-   * @param AD_WF_Process_ID process
    * @param trxName
    * @return event audit or null
    */
-  public static MWFEventAudit[] get(Properties ctx, int AD_WF_Process_ID, String trxName) {
-    return get(ctx, AD_WF_Process_ID, 0, trxName);
+  public static MWFEventAudit[] get(Properties ctx, int AD_WF_Process_ID) {
+    return get(ctx, AD_WF_Process_ID, 0);
   } //	get
 
   /**
@@ -96,8 +71,8 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
    * @param AD_WF_EventAudit_ID id
    * @param trxName transaction
    */
-  public MWFEventAudit(Properties ctx, int AD_WF_EventAudit_ID, String trxName) {
-    super(ctx, AD_WF_EventAudit_ID, trxName);
+  public MWFEventAudit(Properties ctx, int AD_WF_EventAudit_ID) {
+    super(ctx, AD_WF_EventAudit_ID);
   } //	MWFEventAudit
 
   /**
@@ -107,8 +82,8 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWFEventAudit(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWFEventAudit(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWFEventAudit
 
   /**
@@ -117,7 +92,7 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
    * @param activity activity
    */
   public MWFEventAudit(MWFActivity activity) {
-    super(activity.getCtx(), 0, null);
+    super(activity.getCtx(), 0);
     setAD_WF_Process_ID(activity.getAD_WF_Process_ID());
     setAD_WF_Node_ID(activity.getAD_WF_Node_ID());
     setAD_Table_ID(activity.getAD_Table_ID());

@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_Activity;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -21,8 +20,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WF_Activity(Properties ctx, int AD_WF_Activity_ID, String trxName) {
-    super(ctx, AD_WF_Activity_ID, trxName);
+  public X_AD_WF_Activity(Properties ctx, int AD_WF_Activity_ID) {
+    super(ctx, AD_WF_Activity_ID);
     /**
      * if (AD_WF_Activity_ID == 0) { setAD_Table_ID (0); setAD_WF_Activity_ID (0); setAD_WF_Node_ID
      * (0); setAD_WF_Process_ID (0); setAD_Workflow_ID (0); setProcessed (false); setRecord_ID (0);
@@ -31,8 +30,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
   }
 
   /** Load Constructor */
-  public X_AD_WF_Activity(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WF_Activity(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

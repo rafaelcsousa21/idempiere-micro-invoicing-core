@@ -35,10 +35,10 @@ public class MProjectType extends X_C_ProjectType {
    * @return MProjectType
    */
   public static MProjectType get(Properties ctx, int C_ProjectType_ID) {
-    Integer key = new Integer(C_ProjectType_ID);
+    Integer key = C_ProjectType_ID;
     MProjectType retValue = (MProjectType) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MProjectType(ctx, C_ProjectType_ID, null);
+    retValue = new MProjectType(ctx, C_ProjectType_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -54,8 +54,8 @@ public class MProjectType extends X_C_ProjectType {
    * @param C_ProjectType_ID id
    * @param trxName trx
    */
-  public MProjectType(Properties ctx, int C_ProjectType_ID, String trxName) {
-    super(ctx, C_ProjectType_ID, trxName);
+  public MProjectType(Properties ctx, int C_ProjectType_ID) {
+    super(ctx, C_ProjectType_ID);
     /** if (C_ProjectType_ID == 0) { setC_ProjectType_ID (0); setName (null); } */
   } //	MProjectType
 
@@ -66,8 +66,8 @@ public class MProjectType extends X_C_ProjectType {
    * @param rs result set
    * @param trxName trx
    */
-  public MProjectType(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProjectType(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProjectType
 
   /**
@@ -96,7 +96,7 @@ public class MProjectType extends X_C_ProjectType {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_ProjectType_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MProjectTypePhase(getCtx(), rs, null));
+      while (rs.next()) list.add(new MProjectTypePhase(getCtx(), rs));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {

@@ -14,7 +14,6 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.PO;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -52,8 +51,8 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
    * @param C_BankStatement_ID id
    * @param trxName transaction
    */
-  public MBankStatement(Properties ctx, int C_BankStatement_ID, String trxName) {
-    super(ctx, C_BankStatement_ID, trxName);
+  public MBankStatement(Properties ctx, int C_BankStatement_ID) {
+    super(ctx, C_BankStatement_ID);
     if (C_BankStatement_ID == 0) {
       //	setC_BankAccount_ID (0);	//	parent
       setStatementDate(new Timestamp(System.currentTimeMillis())); // @Date@
@@ -76,8 +75,8 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
    * @param rs result set
    * @param trxName transaction
    */
-  public MBankStatement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBankStatement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MBankStatement
 
   /**
@@ -87,7 +86,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
    * @param isManual Manual statement
    */
   public MBankStatement(MBankAccount account, boolean isManual) {
-    this(account.getCtx(), 0, null);
+    this(account.getCtx(), 0);
     setClientOrg(account);
     setC_BankAccount_ID(account.getC_BankAccount_ID());
     setStatementDate(new Timestamp(System.currentTimeMillis()));
@@ -117,13 +116,12 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
    */
   public MBankStatementLine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     //
     final String whereClause = I_C_BankStatementLine.COLUMNNAME_C_BankStatement_ID + "=?";
     List<MBankStatementLine> list =
-        new Query(getCtx(), I_C_BankStatementLine.Table_Name, whereClause, null)
+        new Query(getCtx(), I_C_BankStatementLine.Table_Name, whereClause)
             .setParameters(getC_BankStatement_ID())
             .setOrderBy("Line")
             .list();
@@ -343,9 +341,9 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     for (int i = 0; i < lines.length; i++) {
       MBankStatementLine line = lines[i];
       if (line.getC_Payment_ID() != 0) {
-        MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), null);
+        MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID());
         payment.setIsReconciled(true);
-        payment.saveEx(null);
+        payment.saveEx();
       }
     }
     //	Update Bank Account
@@ -353,7 +351,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     ba.load();
     // BF 1933645
     ba.setCurrentBalance(ba.getCurrentBalance().add(getStatementDifference()));
-    ba.saveEx(null);
+    ba.saveEx();
 
     //	User Validation
     String valid =
@@ -398,7 +396,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     else {
       MPeriod.testPeriodOpen(
           getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement,  getOrgId());
-      MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getC_BankStatement_ID(), null);
+      MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getC_BankStatement_ID());
     }
 
     if (isProcessed()) {
@@ -448,7 +446,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         line.setChargeAmt(Env.ZERO);
         line.setInterestAmt(Env.ZERO);
         if (line.getC_Payment_ID() != 0) {
-          MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID(), null);
+          MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID());
           payment.setIsReconciled(false);
           payment.saveEx();
           line.setC_Payment_ID(0);

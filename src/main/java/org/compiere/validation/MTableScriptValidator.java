@@ -46,7 +46,7 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
     // Fetch now
     final String whereClause = "AD_Table_ID=? AND EventModelValidator=?";
     mvrs =
-        new Query(ctx, Table_Name, whereClause, null)
+        new Query(ctx, Table_Name, whereClause)
             .setParameters(ad_table_id, event)
             .setOnlyActiveRecords(true)
             .setOrderBy(COLUMNNAME_SeqNo)
@@ -78,8 +78,8 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
    * @param AD_Table_ScriptValidator_ID id
    * @param trxName transaction
    */
-  public MTableScriptValidator(Properties ctx, int AD_Table_ScriptValidator_ID, String trxName) {
-    super(ctx, AD_Table_ScriptValidator_ID, trxName);
+  public MTableScriptValidator(Properties ctx, int AD_Table_ScriptValidator_ID) {
+    super(ctx, AD_Table_ScriptValidator_ID);
   } //	MTableScriptValidator
 
   /**
@@ -89,8 +89,8 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
    * @param rs result set
    * @param trxName transaction
    */
-  public MTableScriptValidator(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MTableScriptValidator(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MTableScriptValidator
 
   @Override

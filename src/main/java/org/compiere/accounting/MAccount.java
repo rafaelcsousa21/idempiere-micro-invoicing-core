@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.crm.MLocation;
 import org.compiere.crm.X_C_BPartner;
-import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.Query;
 import org.compiere.product.X_M_Product;
@@ -215,7 +214,7 @@ public class MAccount extends X_C_ValidCombination {
     //	whereClause.append(" ORDER BY IsFullyQualified DESC");
 
     MAccount existingAccount =
-        new Query(ctx, MAccount.Table_Name, whereClause.toString(), trxName)
+        new Query(ctx, MAccount.Table_Name, whereClause.toString())
             .setParameters(params)
             .setOnlyActiveRecords(true)
             .firstOnly();
@@ -224,7 +223,7 @@ public class MAccount extends X_C_ValidCombination {
     if (existingAccount != null) return existingAccount;
 
     //	New
-    MAccount newAccount = new MAccount(ctx, 0, trxName);
+    MAccount newAccount = new MAccount(ctx, 0);
     newAccount.setClientOrg(AD_Client_ID, AD_Org_ID);
     newAccount.setC_AcctSchema_ID(C_AcctSchema_ID);
     newAccount.setAccount_ID(Account_ID);
@@ -355,7 +354,7 @@ public class MAccount extends X_C_ValidCombination {
    */
   public static MAccount get(Properties ctx, int C_ValidCombination_ID) {
     //	Maybe later cache
-    return new MAccount(ctx, C_ValidCombination_ID, null);
+    return new MAccount(ctx, C_ValidCombination_ID);
   } //  getAccount
 
   /**
@@ -365,9 +364,9 @@ public class MAccount extends X_C_ValidCombination {
    * @param where where clause
    * @param trxName transaction
    */
-  public static void updateValueDescription(Properties ctx, final String where, String trxName) {
+  public static void updateValueDescription(Properties ctx, final String where) {
     List<MAccount> accounts =
-        new Query(ctx, MAccount.Table_Name, where, trxName)
+        new Query(ctx, MAccount.Table_Name, where)
             .setOrderBy(MAccount.COLUMNNAME_C_ValidCombination_ID)
             .list();
 
@@ -387,8 +386,8 @@ public class MAccount extends X_C_ValidCombination {
    * @param C_ValidCombination_ID combination
    * @param trxName transaction
    */
-  public MAccount(Properties ctx, int C_ValidCombination_ID, String trxName) {
-    super(ctx, C_ValidCombination_ID, trxName);
+  public MAccount(Properties ctx, int C_ValidCombination_ID) {
+    super(ctx, C_ValidCombination_ID);
     if (C_ValidCombination_ID == 0) {
       //	setAccount_ID (0);
       //	setC_AcctSchema_ID (0);
@@ -403,8 +402,8 @@ public class MAccount extends X_C_ValidCombination {
    * @param rs result set
    * @param trxName transaction
    */
-  public MAccount(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAccount(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //  MAccount
 
   /**
@@ -413,7 +412,7 @@ public class MAccount extends X_C_ValidCombination {
    * @param as account schema
    */
   public MAccount(MAcctSchema as) {
-    this(as.getCtx(), 0, null);
+    this(as.getCtx(), 0);
     setClientOrg(as);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
   } //	Account
@@ -477,7 +476,7 @@ public class MAccount extends X_C_ValidCombination {
   public MElementValue getAccount() {
     if (m_accountEV == null) {
       if (getAccount_ID() != 0)
-        m_accountEV = new MElementValue(getCtx(), getAccount_ID(), null);
+        m_accountEV = new MElementValue(getCtx(), getAccount_ID());
     }
     return m_accountEV;
   } //	setAccount
@@ -523,7 +522,7 @@ public class MAccount extends X_C_ValidCombination {
     StringBuilder descr = new StringBuilder();
     boolean fullyQualified = true;
     //
-    MAcctSchema as = new MAcctSchema(getCtx(), getC_AcctSchema_ID(), null); // 	In Trx!
+    MAcctSchema as = new MAcctSchema(getCtx(), getC_AcctSchema_ID()); // 	In Trx!
     MAcctSchemaElement[] elements = MAcctSchemaElement.getAcctSchemaElements(as);
     for (int i = 0; i < elements.length; i++) {
       if (i > 0) {
@@ -536,7 +535,7 @@ public class MAccount extends X_C_ValidCombination {
 
       if (MAcctSchemaElement.ELEMENTTYPE_Organization.equals(element.getElementType())) {
         if ( getOrgId() != 0) {
-          MOrg org = new MOrg(getCtx(),  getOrgId(), null); // 	in Trx!
+          MOrg org = new MOrg(getCtx(),  getOrgId()); // 	in Trx!
           combiStr = org.getValue();
           descrStr = org.getName();
         } else {
@@ -547,7 +546,7 @@ public class MAccount extends X_C_ValidCombination {
       } else if (MAcctSchemaElement.ELEMENTTYPE_Account.equals(element.getElementType())) {
         if (getAccount_ID() != 0) {
           if (m_accountEV == null)
-            m_accountEV = new MElementValue(getCtx(), getAccount_ID(), null);
+            m_accountEV = new MElementValue(getCtx(), getAccount_ID());
           combiStr = m_accountEV.getValue();
           descrStr = m_accountEV.getName();
         } else if (element.isMandatory()) {
@@ -556,13 +555,13 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_SubAccount.equals(element.getElementType())) {
         if (getC_SubAcct_ID() != 0) {
-          X_C_SubAcct sa = new X_C_SubAcct(getCtx(), getC_SubAcct_ID(), null);
+          X_C_SubAcct sa = new X_C_SubAcct(getCtx(), getC_SubAcct_ID());
           combiStr = sa.getValue();
           descrStr = sa.getName();
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_Product.equals(element.getElementType())) {
         if (getM_Product_ID() != 0) {
-          X_M_Product product = new X_M_Product(getCtx(), getM_Product_ID(), null);
+          X_M_Product product = new X_M_Product(getCtx(), getM_Product_ID());
           combiStr = product.getValue();
           descrStr = product.getName();
         } else if (element.isMandatory()) {
@@ -571,7 +570,7 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_BPartner.equals(element.getElementType())) {
         if (getC_BPartner_ID() != 0) {
-          X_C_BPartner partner = new X_C_BPartner(getCtx(), getC_BPartner_ID(), null);
+          X_C_BPartner partner = new X_C_BPartner(getCtx(), getC_BPartner_ID());
           combiStr = partner.getValue();
           descrStr = partner.getName();
         } else if (element.isMandatory()) {
@@ -580,7 +579,7 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_OrgTrx.equals(element.getElementType())) {
         if (getAD_OrgTrx_ID() != 0) {
-          MOrg org = new MOrg(getCtx(), getAD_OrgTrx_ID(), null); // in Trx!
+          MOrg org = new MOrg(getCtx(), getAD_OrgTrx_ID()); // in Trx!
           combiStr = org.getValue();
           descrStr = org.getName();
         } else if (element.isMandatory()) {
@@ -589,7 +588,7 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_LocationFrom.equals(element.getElementType())) {
         if (getC_LocFrom_ID() != 0) {
-          MLocation loc = new MLocation(getCtx(), getC_LocFrom_ID(), null); // 	in Trx!
+          MLocation loc = new MLocation(getCtx(), getC_LocFrom_ID()); // 	in Trx!
           combiStr = loc.getPostal();
           descrStr = loc.getCity();
         } else if (element.isMandatory()) {
@@ -598,7 +597,7 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_LocationTo.equals(element.getElementType())) {
         if (getC_LocTo_ID() != 0) {
-          MLocation loc = new MLocation(getCtx(), getC_LocFrom_ID(), null); // 	in Trx!
+          MLocation loc = new MLocation(getCtx(), getC_LocFrom_ID()); // 	in Trx!
           combiStr = loc.getPostal();
           descrStr = loc.getCity();
         } else if (element.isMandatory()) {
@@ -607,7 +606,7 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_SalesRegion.equals(element.getElementType())) {
         if (getC_SalesRegion_ID() != 0) {
-          MSalesRegion loc = new MSalesRegion(getCtx(), getC_SalesRegion_ID(), null);
+          MSalesRegion loc = new MSalesRegion(getCtx(), getC_SalesRegion_ID());
           combiStr = loc.getValue();
           descrStr = loc.getName();
         } else if (element.isMandatory()) {
@@ -616,7 +615,7 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_Project.equals(element.getElementType())) {
         if (getC_Project_ID() != 0) {
-          X_C_Project project = new X_C_Project(getCtx(), getC_Project_ID(), null);
+          X_C_Project project = new X_C_Project(getCtx(), getC_Project_ID());
           combiStr = project.getValue();
           descrStr = project.getName();
         } else if (element.isMandatory()) {
@@ -625,7 +624,7 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_Campaign.equals(element.getElementType())) {
         if (getC_Campaign_ID() != 0) {
-          X_C_Campaign campaign = new X_C_Campaign(getCtx(), getC_Campaign_ID(), null);
+          X_C_Campaign campaign = new X_C_Campaign(getCtx(), getC_Campaign_ID());
           combiStr = campaign.getValue();
           descrStr = campaign.getName();
         } else if (element.isMandatory()) {
@@ -634,7 +633,7 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_Activity.equals(element.getElementType())) {
         if (getC_Activity_ID() != 0) {
-          X_C_Activity act = new X_C_Activity(getCtx(), getC_Activity_ID(), null);
+          X_C_Activity act = new X_C_Activity(getCtx(), getC_Activity_ID());
           combiStr = act.getValue();
           descrStr = act.getName();
         } else if (element.isMandatory()) {
@@ -643,13 +642,13 @@ public class MAccount extends X_C_ValidCombination {
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_UserElementList1.equals(element.getElementType())) {
         if (getUser1_ID() != 0) {
-          MElementValue ev = new MElementValue(getCtx(), getUser1_ID(), null);
+          MElementValue ev = new MElementValue(getCtx(), getUser1_ID());
           combiStr = ev.getValue();
           descrStr = ev.getName();
         }
       } else if (MAcctSchemaElement.ELEMENTTYPE_UserElementList2.equals(element.getElementType())) {
         if (getUser2_ID() != 0) {
-          MElementValue ev = new MElementValue(getCtx(), getUser2_ID(), null);
+          MElementValue ev = new MElementValue(getCtx(), getUser2_ID());
           combiStr = ev.getValue();
           descrStr = ev.getName();
         }
@@ -684,7 +683,7 @@ public class MAccount extends X_C_ValidCombination {
     boolean ok = true;
     //	Validate Sub-Account
     if (getC_SubAcct_ID() != 0) {
-      X_C_SubAcct sa = new X_C_SubAcct(getCtx(), getC_SubAcct_ID(), null);
+      X_C_SubAcct sa = new X_C_SubAcct(getCtx(), getC_SubAcct_ID());
       if (sa.getC_ElementValue_ID() != getAccount_ID()) {
         log.saveError(
             "Error",

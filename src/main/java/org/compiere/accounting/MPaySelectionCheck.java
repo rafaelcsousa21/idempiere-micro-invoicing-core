@@ -6,7 +6,6 @@ import org.compiere.process.DocAction;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.PO;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -35,7 +34,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    * @param trxName transaction
    * @return pay selection check for payment or null
    */
-  public static MPaySelectionCheck getOfPayment(Properties ctx, int C_Payment_ID, String trxName) {
+  public static MPaySelectionCheck getOfPayment(Properties ctx, int C_Payment_ID) {
     MPaySelectionCheck retValue = null;
     String sql = "SELECT * FROM C_PaySelectionCheck WHERE C_Payment_ID=?";
     int count = 0;
@@ -46,7 +45,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
       pstmt.setInt(1, C_Payment_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MPaySelectionCheck psc = new MPaySelectionCheck(ctx, rs, trxName);
+        MPaySelectionCheck psc = new MPaySelectionCheck(ctx, rs);
         if (retValue == null) retValue = psc;
         else if (!retValue.isProcessed() && psc.isProcessed()) retValue = psc;
         count++;
@@ -73,7 +72,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     boolean localTrx = false;
     String trxName = null;
     try {
-      MPayment payment = new MPayment(check.getCtx(), check.getC_Payment_ID(), trxName);
+      MPayment payment = new MPayment(check.getCtx(), check.getC_Payment_ID());
       //	Existing Payment
       if (check.getC_Payment_ID() != 0) {
         //	Update check number
@@ -83,7 +82,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         }
       } else //	New Payment
       {
-        payment = new MPayment(check.getCtx(), 0, trxName);
+        payment = new MPayment(check.getCtx(), 0);
         payment.setAD_Org_ID(check. getOrgId());
         //
         if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_Check))
@@ -107,7 +106,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         payment.setC_BPartner_ID(check.getC_BPartner_ID());
         //	Link to Batch
         if (batch != null) {
-          if (batch.getC_PaymentBatch_ID() == 0) batch.saveEx(trxName); // 	new
+          if (batch.getC_PaymentBatch_ID() == 0) batch.saveEx(); // 	new
           payment.setC_PaymentBatch_ID(batch.getC_PaymentBatch_ID());
         }
         //	Link to Invoice
@@ -166,8 +165,8 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    * @param C_PaySelectionCheck_ID C_PaySelectionCheck_ID
    * @param trxName transaction
    */
-  public MPaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID, String trxName) {
-    super(ctx, C_PaySelectionCheck_ID, trxName);
+  public MPaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID) {
+    super(ctx, C_PaySelectionCheck_ID);
     if (C_PaySelectionCheck_ID == 0) {
       //	setC_PaySelection_ID (0);
       //	setC_BPartner_ID (0);
@@ -188,8 +187,8 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    * @param rs result set
    * @param trxName transaction
    */
-  public MPaySelectionCheck(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPaySelectionCheck(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //  MPaySelectionCheck
 
   /**
@@ -199,7 +198,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    * @param PaymentRule payment rule
    */
   public MPaySelectionCheck(MPaySelectionLine line, String PaymentRule) {
-    this(line.getCtx(), 0, null);
+    this(line.getCtx(), 0);
     setClientOrg(line);
     setC_PaySelection_ID(line.getC_PaySelection_ID());
     int C_BPartner_ID = line.getInvoice().getC_BPartner_ID();
@@ -240,7 +239,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    * @param PaymentRule payment rule
    */
   public MPaySelectionCheck(MPaySelection ps, String PaymentRule) {
-    this(ps.getCtx(), 0, null);
+    this(ps.getCtx(), 0);
     setClientOrg(ps);
     setC_PaySelection_ID(ps.getC_PaySelection_ID());
     setPaymentRule(PaymentRule);
@@ -279,7 +278,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    */
   public MPaySelection getParent() {
     if (m_parent == null)
-      m_parent = new MPaySelection(getCtx(), getC_PaySelection_ID(), null);
+      m_parent = new MPaySelection(getCtx(), getC_PaySelection_ID());
     return m_parent;
   } //	getParent
 
@@ -331,7 +330,6 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    */
   public MPaySelectionLine[] getPaySelectionLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     ArrayList<MPaySelectionLine> list = new ArrayList<MPaySelectionLine>();
@@ -342,7 +340,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_PaySelectionCheck_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MPaySelectionLine(getCtx(), rs, null));
+      while (rs.next()) list.add(new MPaySelectionLine(getCtx(), rs));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
@@ -364,23 +362,23 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
    * @param trxName transaction
    * @return
    */
-  public static boolean deleteGeneratedDraft(Properties ctx, int C_Payment_ID, String trxName) {
+  public static boolean deleteGeneratedDraft(Properties ctx, int C_Payment_ID) {
 
-    MPaySelectionCheck mpsc = MPaySelectionCheck.getOfPayment(ctx, C_Payment_ID, trxName);
+    MPaySelectionCheck mpsc = MPaySelectionCheck.getOfPayment(ctx, C_Payment_ID);
 
     if (mpsc != null && mpsc.isGeneratedDraft()) {
-      MPaySelection mps = new MPaySelection(ctx, mpsc.getC_PaySelection_ID(), trxName);
+      MPaySelection mps = new MPaySelection(ctx, mpsc.getC_PaySelection_ID());
       MPaySelectionLine[] mpsl = mps.getLines(true);
 
       // Delete Pay Selection lines
       for (int i = 0; i < mpsl.length; i++) {
-        if (!mpsl[i].delete(true, trxName)) return false;
+        if (!mpsl[i].delete(true)) return false;
       }
       // Delete Pay Selection Check
-      if (!mpsc.delete(true, trxName)) return false;
+      if (!mpsc.delete(true)) return false;
 
       // Delete Pay Selection
-      if (!mps.delete(true, trxName)) return false;
+      if (!mps.delete(true)) return false;
     }
     return true;
   }

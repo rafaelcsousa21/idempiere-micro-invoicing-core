@@ -5,7 +5,6 @@ import org.compiere.model.I_M_ProductionLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -24,8 +23,8 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_ProductionLine(Properties ctx, int M_ProductionLine_ID, String trxName) {
-    super(ctx, M_ProductionLine_ID, trxName);
+  public X_M_ProductionLine(Properties ctx, int M_ProductionLine_ID) {
+    super(ctx, M_ProductionLine_ID);
     /**
      * if (M_ProductionLine_ID == 0) { setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS
      * DefaultValue FROM M_ProductionLine WHERE M_Production_ID=@M_Production_ID@
@@ -35,8 +34,8 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
   }
 
   /** Load Constructor */
-  public X_M_ProductionLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_ProductionLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -174,7 +173,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
+            .getPO(getM_Product_ID());
   }
 
   /**
@@ -184,7 +183,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
    */
   public void setM_Product_ID(int M_Product_ID) {
     if (M_Product_ID < 1) set_Value(I_M_ProductionLine.COLUMNNAME_M_Product_ID, null);
-    else set_Value(I_M_ProductionLine.COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+    else set_Value(I_M_ProductionLine.COLUMNNAME_M_Product_ID, M_Product_ID);
   }
 
   /**
@@ -201,7 +200,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
   public org.compiere.model.I_M_Production getM_Production() throws RuntimeException {
     return (org.compiere.model.I_M_Production)
         MTable.get(getCtx(), org.compiere.model.I_M_Production.Table_Name)
-            .getPO(getM_Production_ID(), null);
+            .getPO(getM_Production_ID());
   }
 
   /**
@@ -254,7 +253,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
     public org.compiere.model.I_M_ProductionPlan getM_ProductionPlan() throws RuntimeException {
     return (org.compiere.model.I_M_ProductionPlan)
         MTable.get(getCtx(), org.compiere.model.I_M_ProductionPlan.Table_Name)
-            .getPO(getM_ProductionPlan_ID(), null);
+            .getPO(getM_ProductionPlan_ID());
   }
 
   /**
@@ -267,7 +266,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
       set_ValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID, null);
     else
       set_ValueNoCheck(
-          I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID, Integer.valueOf(M_ProductionPlan_ID));
+          I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID, M_ProductionPlan_ID);
   }
 
   /**

@@ -26,13 +26,13 @@ public class MSchedule extends X_AD_Schedule {
       "(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])";
   private static final String ipv6Pattern = "([0-9a-f]{1,4}:){7}([0-9a-f]){1,4}";
 
-  public MSchedule(Properties ctx, int AD_Schedule_ID, String trxName) {
-    super(ctx, AD_Schedule_ID, trxName);
+  public MSchedule(Properties ctx, int AD_Schedule_ID) {
+    super(ctx, AD_Schedule_ID);
     // TODO Auto-generated constructor stub
   }
 
-  public MSchedule(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MSchedule(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
     // TODO Auto-generated constructor stub
   }
 
@@ -114,10 +114,10 @@ public class MSchedule extends X_AD_Schedule {
   } // checkIP
 
   public static MSchedule get(Properties ctx, int AD_Schedule_ID) {
-    Integer key = new Integer(AD_Schedule_ID);
+    Integer key = AD_Schedule_ID;
     MSchedule retValue = (MSchedule) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MSchedule(ctx, AD_Schedule_ID, null);
+    retValue = new MSchedule(ctx, AD_Schedule_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   }

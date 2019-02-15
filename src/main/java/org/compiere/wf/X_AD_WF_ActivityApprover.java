@@ -19,8 +19,8 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WF_ActivityApprover(Properties ctx, int AD_WF_ActivityApprover_ID, String trxName) {
-    super(ctx, AD_WF_ActivityApprover_ID, trxName);
+  public X_AD_WF_ActivityApprover(Properties ctx, int AD_WF_ActivityApprover_ID) {
+    super(ctx, AD_WF_ActivityApprover_ID);
     /**
      * if (AD_WF_ActivityApprover_ID == 0) { setAD_User_ID (0); setAD_WF_ActivityApprover_ID (0);
      * setAD_WF_Activity_ID (0); }
@@ -28,8 +28,8 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
   }
 
   /** Load Constructor */
-  public X_AD_WF_ActivityApprover(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WF_ActivityApprover(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -48,8 +48,8 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
    * @param ctx context
    * @param M_Requisition_ID id
    */
-  public MRequisition(Properties ctx, int M_Requisition_ID, String trxName) {
-    super(ctx, M_Requisition_ID, trxName);
+  public MRequisition(Properties ctx, int M_Requisition_ID) {
+    super(ctx, M_Requisition_ID);
     if (M_Requisition_ID == 0) {
       //	setDocumentNo (null);
       //	setAD_User_ID (0);
@@ -73,8 +73,8 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
    * @param ctx context
    * @param rs result set
    */
-  public MRequisition(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequisition(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequisition
 
   /** Lines */
@@ -87,14 +87,13 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
    */
   public MRequisitionLine[] getLines() {
     if (m_lines != null) {
-      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
 
     // red1 - FR: [ 2214883 ] Remove SQL code and Replace for Query
     final String whereClause = I_M_RequisitionLine.COLUMNNAME_M_Requisition_ID + "=?";
     List<MRequisitionLine> list =
-        new Query(getCtx(), I_M_RequisitionLine.Table_Name, whereClause, null)
+        new Query(getCtx(), I_M_RequisitionLine.Table_Name, whereClause)
             .setParameters(getId())
             .setOrderBy(I_M_RequisitionLine.COLUMNNAME_Line)
             .list();
@@ -365,7 +364,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
       BigDecimal finalQty = line.getQty();
       if (line.getC_OrderLine_ID() == 0) finalQty = Env.ZERO;
       else {
-        MOrderLine ol = new MOrderLine(getCtx(), line.getC_OrderLine_ID(), null);
+        MOrderLine ol = new MOrderLine(getCtx(), line.getC_OrderLine_ID());
         finalQty = ol.getQtyOrdered();
       }
       //	final qty is not line qty
@@ -507,7 +506,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
    * @return C_Currency_ID
    */
   public int getC_Currency_ID() {
-    MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID(), null);
+    MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
     return pl.getC_Currency_ID();
   }
 

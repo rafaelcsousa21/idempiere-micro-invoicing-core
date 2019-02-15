@@ -24,8 +24,8 @@ public class X_C_OrderLandedCostAllocation extends PO
 
   /** Standard Constructor */
   public X_C_OrderLandedCostAllocation(
-      Properties ctx, int C_OrderLandedCostAllocation_ID, String trxName) {
-    super(ctx, C_OrderLandedCostAllocation_ID, trxName);
+      Properties ctx, int C_OrderLandedCostAllocation_ID) {
+    super(ctx, C_OrderLandedCostAllocation_ID);
     /**
      * if (C_OrderLandedCostAllocation_ID == 0) { setAmt (Env.ZERO); setBase (Env.ZERO);
      * setC_OrderLandedCostAllocation_ID (0); setC_OrderLandedCost_ID (0); setC_OrderLine_ID (0);
@@ -34,8 +34,8 @@ public class X_C_OrderLandedCostAllocation extends PO
   }
 
   /** Load Constructor */
-  public X_C_OrderLandedCostAllocation(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_OrderLandedCostAllocation(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -96,7 +96,7 @@ public class X_C_OrderLandedCostAllocation extends PO
     public org.compiere.model.I_C_OrderLandedCost getC_OrderLandedCost() throws RuntimeException {
     return (org.compiere.model.I_C_OrderLandedCost)
         MTable.get(getCtx(), org.compiere.model.I_C_OrderLandedCost.Table_Name)
-            .getPO(getC_OrderLandedCost_ID(), null);
+            .getPO(getC_OrderLandedCost_ID());
   }
 
   /**
@@ -106,7 +106,7 @@ public class X_C_OrderLandedCostAllocation extends PO
    */
   public void setC_OrderLandedCost_ID(int C_OrderLandedCost_ID) {
     if (C_OrderLandedCost_ID < 1) set_ValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, Integer.valueOf(C_OrderLandedCost_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, C_OrderLandedCost_ID);
   }
 
   /**
@@ -123,7 +123,7 @@ public class X_C_OrderLandedCostAllocation extends PO
   public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
     return (org.compiere.model.I_C_OrderLine)
         MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-            .getPO(getC_OrderLine_ID(), null);
+            .getPO(getC_OrderLine_ID());
   }
 
   /**
@@ -133,7 +133,7 @@ public class X_C_OrderLandedCostAllocation extends PO
    */
   public void setC_OrderLine_ID(int C_OrderLine_ID) {
     if (C_OrderLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_OrderLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_OrderLine_ID, Integer.valueOf(C_OrderLine_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_OrderLine_ID, C_OrderLine_ID);
   }
 
   /**

@@ -27,8 +27,8 @@ public class MMovementLine extends X_M_MovementLine {
    * @param M_MovementLine_ID id
    * @param trxName transaction
    */
-  public MMovementLine(Properties ctx, int M_MovementLine_ID, String trxName) {
-    super(ctx, M_MovementLine_ID, trxName);
+  public MMovementLine(Properties ctx, int M_MovementLine_ID) {
+    super(ctx, M_MovementLine_ID);
     if (M_MovementLine_ID == 0) {
       //	setM_LocatorTo_ID (0);	// @M_LocatorTo_ID@
       //	setM_Locator_ID (0);	// @M_Locator_ID@
@@ -51,8 +51,8 @@ public class MMovementLine extends X_M_MovementLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MMovementLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MMovementLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MMovementLine
 
   /**
@@ -61,7 +61,7 @@ public class MMovementLine extends X_M_MovementLine {
    * @param parent parent
    */
   public MMovementLine(MMovement parent) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setM_Movement_ID(parent.getM_Movement_ID());
   } //	MMovementLine
@@ -126,7 +126,7 @@ public class MMovementLine extends X_M_MovementLine {
    * @return Parent Movement
    */
   public MMovement getParent() {
-    if (m_parent == null) m_parent = new MMovement(getCtx(), getM_Movement_ID(), null);
+    if (m_parent == null) m_parent = new MMovement(getCtx(), getM_Movement_ID());
     return m_parent;
   } //	getParent
 

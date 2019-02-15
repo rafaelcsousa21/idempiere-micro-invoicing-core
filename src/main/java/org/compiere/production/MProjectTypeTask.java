@@ -14,8 +14,8 @@ public class MProjectTypeTask extends X_C_Task {
   /** */
   private static final long serialVersionUID = -5649262800489348606L;
 
-  public MProjectTypeTask(Properties ctx, int C_Task_ID, String trxName) {
-    super(ctx, C_Task_ID, trxName);
+  public MProjectTypeTask(Properties ctx, int C_Task_ID) {
+    super(ctx, C_Task_ID);
     if (C_Task_ID == 0) {
       //	setC_Task_ID (0);		//	PK
       //	setC_Phase_ID (0);		//	Parent
@@ -25,7 +25,7 @@ public class MProjectTypeTask extends X_C_Task {
     }
   } //	MProjectTypeTask
 
-  public MProjectTypeTask(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProjectTypeTask(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProjectTypeTask
 } //	MProjectTypeTask

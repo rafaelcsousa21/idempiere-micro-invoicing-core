@@ -97,7 +97,7 @@ public class StorageCleanup extends SvrProcess {
       pstmt.setInt(1, Env.getClientId(getCtx()));
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        lines += move(new MStorageOnHand(getCtx(), rs, null));
+        lines += move(new MStorageOnHand(getCtx(), rs));
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
@@ -265,7 +265,7 @@ public class StorageCleanup extends SvrProcess {
       pstmt.setInt(2, M_Locator_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        list.add(new MStorageOnHand(getCtx(), rs, null));
+        list.add(new MStorageOnHand(getCtx(), rs));
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);

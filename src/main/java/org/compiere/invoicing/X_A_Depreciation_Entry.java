@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_A_Depreciation_Entry;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -21,13 +20,13 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_A_Depreciation_Entry(Properties ctx, int A_Depreciation_Entry_ID, String trxName) {
-    super(ctx, A_Depreciation_Entry_ID, trxName);
+  public X_A_Depreciation_Entry(Properties ctx, int A_Depreciation_Entry_ID) {
+    super(ctx, A_Depreciation_Entry_ID);
   }
 
   /** Load Constructor */
-  public X_A_Depreciation_Entry(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_A_Depreciation_Entry(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

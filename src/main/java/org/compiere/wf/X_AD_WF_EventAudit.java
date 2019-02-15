@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_EventAudit;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -21,8 +20,8 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WF_EventAudit(Properties ctx, int AD_WF_EventAudit_ID, String trxName) {
-    super(ctx, AD_WF_EventAudit_ID, trxName);
+  public X_AD_WF_EventAudit(Properties ctx, int AD_WF_EventAudit_ID) {
+    super(ctx, AD_WF_EventAudit_ID);
     /**
      * if (AD_WF_EventAudit_ID == 0) { setAD_Table_ID (0); setAD_WF_EventAudit_ID (0);
      * setAD_WF_Node_ID (0); setAD_WF_Process_ID (0); setAD_WF_Responsible_ID (0); setElapsedTimeMS
@@ -31,8 +30,8 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
   }
 
   /** Load Constructor */
-  public X_AD_WF_EventAudit(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WF_EventAudit(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

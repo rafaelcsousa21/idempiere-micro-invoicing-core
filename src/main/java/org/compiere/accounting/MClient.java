@@ -30,12 +30,12 @@ public class MClient extends MBaseClient {
   /** */
   private static final long serialVersionUID = -4420908648355523008L;
 
-  public MClient(Properties ctx, int ad_client_id, String trxName) {
-    super(ctx, ad_client_id, trxName);
+  public MClient(Properties ctx, int ad_client_id) {
+    super(ctx, ad_client_id);
   }
 
-  public MClient(Properties ctx, int AD_Client_ID, boolean createNew, String trxName) {
-    super(ctx, AD_Client_ID, createNew, trxName);
+  public MClient(Properties ctx, int AD_Client_ID, boolean createNew) {
+    super(ctx, AD_Client_ID, createNew);
   }
 
   public MClient(Properties ctx, Row row) {
@@ -61,9 +61,9 @@ public class MClient extends MBaseClient {
    */
   public static MClient[] getAll(Properties ctx, String orderBy) {
     List<MClient> list =
-        new Query(ctx, I_AD_Client.Table_Name, null, null).setOrderBy(orderBy).list();
+        new Query(ctx, I_AD_Client.Table_Name, null).setOrderBy(orderBy).list();
     for (MClient client : list) {
-      s_cache.put(new Integer(client. getClientId()), client);
+      s_cache.put(client.getClientId(), client);
     }
     MClient[] retValue = new MClient[list.size()];
     list.toArray(retValue);
@@ -96,7 +96,7 @@ public class MClient extends MBaseClient {
   @Override
   public MClientInfo getInfo() {
     if (m_info == null)
-      m_info = org.compiere.orm.MClientInfo.get(getCtx(),  getClientId(), null);
+      m_info = org.compiere.orm.MClientInfo.get(getCtx(),  getClientId());
     return (MClientInfo) m_info;
   } //	getMClientInfo
 
@@ -151,7 +151,7 @@ public class MClient extends MBaseClient {
    * @return Acct Schema or null
    */
   public MAcctSchema getAcctSchema() {
-    if (m_info == null) m_info = MClientInfo.get(getCtx(),  getClientId(), null);
+    if (m_info == null) m_info = MClientInfo.get(getCtx(),  getClientId());
     if (m_info != null) {
       int C_AcctSchema_ID = m_info.getC_AcctSchema1_ID();
       if (C_AcctSchema_ID != 0) return MAcctSchema.get(getCtx(), C_AcctSchema_ID);
@@ -283,13 +283,13 @@ public class MClient extends MBaseClient {
     Integer key = AD_Client_ID;
     MClient client = (MClient) s_cache.get(key);
     if (client != null) return client;
-    client = new MClient(ctx, AD_Client_ID, null);
+    client = new MClient(ctx, AD_Client_ID);
     s_cache.put(key, client);
     return client;
   } //	get
 
-  public MClient(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MClient(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

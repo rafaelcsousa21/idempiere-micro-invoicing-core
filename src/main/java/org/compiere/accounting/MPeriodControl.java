@@ -20,8 +20,8 @@ public class MPeriodControl extends X_C_PeriodControl {
    * @param C_PeriodControl_ID 0
    * @param trxName transaction
    */
-  public MPeriodControl(Properties ctx, int C_PeriodControl_ID, String trxName) {
-    super(ctx, C_PeriodControl_ID, trxName);
+  public MPeriodControl(Properties ctx, int C_PeriodControl_ID) {
+    super(ctx, C_PeriodControl_ID);
     if (C_PeriodControl_ID == 0) {
       //	setC_Period_ID (0);
       //	setDocBaseType (null);
@@ -37,8 +37,8 @@ public class MPeriodControl extends X_C_PeriodControl {
    * @param rs result set
    * @param trxName transaction
    */
-  public MPeriodControl(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPeriodControl(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MPeriodControl
 
   /**
@@ -52,8 +52,7 @@ public class MPeriodControl extends X_C_PeriodControl {
         period.getCtx(),
         period. getClientId(),
         period.getC_Period_ID(),
-        DocBaseType,
-        null);
+        DocBaseType);
     setClientOrg(period);
   } //	MPeriodControl
 
@@ -67,8 +66,8 @@ public class MPeriodControl extends X_C_PeriodControl {
    * @param trxName transaction
    */
   public MPeriodControl(
-      Properties ctx, int AD_Client_ID, int C_Period_ID, String DocBaseType, String trxName) {
-    this(ctx, 0, trxName);
+      Properties ctx, int AD_Client_ID, int C_Period_ID, String DocBaseType) {
+    this(ctx, 0);
     setClientOrg(AD_Client_ID, 0);
     setC_Period_ID(C_Period_ID);
     setDocBaseType(DocBaseType);

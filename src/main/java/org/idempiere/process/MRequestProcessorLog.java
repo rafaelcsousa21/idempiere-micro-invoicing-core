@@ -15,8 +15,8 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
    * @param ctx context
    * @param R_RequestProcessorLog_ID id
    */
-  public MRequestProcessorLog(Properties ctx, int R_RequestProcessorLog_ID, String trxName) {
-    super(ctx, R_RequestProcessorLog_ID, trxName);
+  public MRequestProcessorLog(Properties ctx, int R_RequestProcessorLog_ID) {
+    super(ctx, R_RequestProcessorLog_ID);
     if (R_RequestProcessorLog_ID == 0) {
       setIsError(false);
     }
@@ -28,8 +28,8 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
    * @param ctx context
    * @param rs result set
    */
-  public MRequestProcessorLog(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequestProcessorLog(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequestProcessorLog
 
   /**
@@ -39,7 +39,7 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
    * @param summary summary
    */
   public MRequestProcessorLog(MRequestProcessor parent, String summary) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setR_RequestProcessor_ID(parent.getR_RequestProcessor_ID());
     setSummary(summary);

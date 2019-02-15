@@ -19,8 +19,8 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_PA_MeasureCalc(Properties ctx, int PA_MeasureCalc_ID, String trxName) {
-    super(ctx, PA_MeasureCalc_ID, trxName);
+  public X_PA_MeasureCalc(Properties ctx, int PA_MeasureCalc_ID) {
+    super(ctx, PA_MeasureCalc_ID);
     /**
      * if (PA_MeasureCalc_ID == 0) { setAD_Table_ID (0); setDateColumn (null); // x.Date
      * setEntityType (null); // @SQL=select get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual
@@ -30,8 +30,8 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc, I_
   }
 
   /** Load Constructor */
-  public X_PA_MeasureCalc(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_PA_MeasureCalc(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

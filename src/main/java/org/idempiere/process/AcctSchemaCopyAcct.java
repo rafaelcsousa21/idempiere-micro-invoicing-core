@@ -66,10 +66,10 @@ public class AcctSchemaCopyAcct extends SvrProcess {
     if (p_SourceAcctSchema_ID == p_TargetAcctSchema_ID)
       throw new AdempiereUserError("Must be different");
 
-    MAcctSchema source = MAcctSchema.get(getCtx(), p_SourceAcctSchema_ID, null);
+    MAcctSchema source = MAcctSchema.get(getCtx(), p_SourceAcctSchema_ID);
     if (source.getId() == 0)
       throw new AdempiereSystemError("NotFound Source C_AcctSchema_ID=" + p_SourceAcctSchema_ID);
-    MAcctSchema target = new MAcctSchema(getCtx(), p_TargetAcctSchema_ID, null);
+    MAcctSchema target = new MAcctSchema(getCtx(), p_TargetAcctSchema_ID);
     if (target.getId() == 0)
       throw new AdempiereSystemError("NotFound Target C_AcctSchema_ID=" + p_TargetAcctSchema_ID);
 
@@ -104,7 +104,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
    */
   private void copyGL(MAcctSchema targetAS) throws Exception {
     MAcctSchemaGL source = MAcctSchemaGL.get(getCtx(), p_SourceAcctSchema_ID);
-    MAcctSchemaGL target = new MAcctSchemaGL(getCtx(), 0, null);
+    MAcctSchemaGL target = new MAcctSchemaGL(getCtx(), 0);
     target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
     ArrayList<KeyNamePair> list = source.getAcctInfo();
     for (int i = 0; i < list.size(); i++) {
@@ -113,7 +113,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
       String columnName = pp.getName();
       MAccount sourceAccount = MAccount.get(getCtx(), sourceC_ValidCombination_ID);
       MAccount targetAccount = createAccount(targetAS, sourceAccount);
-      target.setValue(columnName, new Integer(targetAccount.getC_ValidCombination_ID()));
+      target.setValue(columnName, targetAccount.getC_ValidCombination_ID());
     }
     if (!target.save()) throw new AdempiereSystemError("Could not Save GL");
   } //	copyGL
@@ -126,7 +126,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
    */
   private void copyDefault(MAcctSchema targetAS) throws Exception {
     MAcctSchemaDefault source = MAcctSchemaDefault.get(getCtx(), p_SourceAcctSchema_ID);
-    MAcctSchemaDefault target = new MAcctSchemaDefault(getCtx(), 0, null);
+    MAcctSchemaDefault target = new MAcctSchemaDefault(getCtx(), 0);
     target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
     target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
     ArrayList<KeyNamePair> list = source.getAcctInfo();
@@ -136,7 +136,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
       String columnName = pp.getName();
       MAccount sourceAccount = MAccount.get(getCtx(), sourceC_ValidCombination_ID);
       MAccount targetAccount = createAccount(targetAS, sourceAccount);
-      target.setValue(columnName, new Integer(targetAccount.getC_ValidCombination_ID()));
+      target.setValue(columnName, targetAccount.getC_ValidCombination_ID());
     }
     if (!target.save()) throw new AdempiereSystemError("Could not Save Default");
   } //	copyDefault

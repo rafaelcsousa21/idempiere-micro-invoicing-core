@@ -30,8 +30,8 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
    * @param rs result set record
    * @param trxName transaction
    */
-  public MOrderLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MOrderLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public MOrderLine(Properties ctx, Row row) {
     super(ctx, row);
@@ -44,8 +44,8 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
    * @param C_OrderLine_ID order line to load
    * @param trxName trx name
    */
-  public MOrderLine(Properties ctx, int C_OrderLine_ID, String trxName) {
-    super(ctx, C_OrderLine_ID, trxName);
+  public MOrderLine(Properties ctx, int C_OrderLine_ID) {
+    super(ctx, C_OrderLine_ID);
   }
 
   /**
@@ -247,7 +247,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     }
 
     // UnLink All Requisitions
-    MRequisitionLine.unlinkC_OrderLine_ID(getCtx(), getId(), null);
+    MRequisitionLine.unlinkC_OrderLine_ID(getCtx(), getId());
 
     return true;
   } //	beforeDelete
@@ -263,7 +263,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     if (!success) return success;
     if (getS_ResourceAssignment_ID() != 0) {
       MResourceAssignment ra =
-          new MResourceAssignment(getCtx(), getS_ResourceAssignment_ID(), null);
+          new MResourceAssignment(getCtx(), getS_ResourceAssignment_ID());
       ra.delete(true);
     }
 

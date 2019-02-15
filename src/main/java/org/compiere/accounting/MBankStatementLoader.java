@@ -45,8 +45,8 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
    * @param C_BankStatementLoader_ID loader to use
    * @param trxName transaction
    */
-  public MBankStatementLoader(Properties ctx, int C_BankStatementLoader_ID, String trxName) {
-    super(ctx, C_BankStatementLoader_ID, trxName);
+  public MBankStatementLoader(Properties ctx, int C_BankStatementLoader_ID) {
+    super(ctx, C_BankStatementLoader_ID);
     init(null);
   } //	MBankStatementLoader
 
@@ -59,8 +59,8 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
    * @param trxName transaction
    */
   public MBankStatementLoader(
-      Properties ctx, int C_BankStatementLoader_ID, String fileName, String trxName) {
-    super(ctx, C_BankStatementLoader_ID, trxName);
+      Properties ctx, int C_BankStatementLoader_ID, String fileName) {
+    super(ctx, C_BankStatementLoader_ID);
     init(fileName);
   } //	MBankStatementLoader
 
@@ -71,8 +71,8 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
    * @param rs ResultSet
    * @param trxName transaction
    */
-  public MBankStatementLoader(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBankStatementLoader(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
     init(null);
   } //	MBankStatementLoader
 
@@ -157,11 +157,11 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     }
     // Initialize lookup lists
     MTable table = MTable.get(Env.getCtx(), X_C_BankAccount.Table_ID);
-    Query query = table.createQuery("IsActive='Y'", null);
+    Query query = table.createQuery("IsActive='Y'");
     bankAccountList = query.list();
 
     table = MTable.get(Env.getCtx(), X_C_Currency.Table_ID);
-    query = table.createQuery("IsActive='Y'", null);
+    query = table.createQuery("IsActive='Y'");
     List<X_C_Currency> currencyList = query.list();
     currencyMap = new HashMap<String, Integer>();
 

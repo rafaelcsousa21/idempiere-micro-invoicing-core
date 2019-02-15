@@ -14,13 +14,13 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_RequestProcessor(Properties ctx, int R_RequestProcessor_ID, String trxName) {
-    super(ctx, R_RequestProcessor_ID, trxName);
+  public X_R_RequestProcessor(Properties ctx, int R_RequestProcessor_ID) {
+    super(ctx, R_RequestProcessor_ID);
   }
 
   /** Load Constructor */
-  public X_R_RequestProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_RequestProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_RevenueRecognition_Plan;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_RevenueRecognition_Plan extends PO
 
   /** Standard Constructor */
   public X_C_RevenueRecognition_Plan(
-      Properties ctx, int C_RevenueRecognition_Plan_ID, String trxName) {
-    super(ctx, C_RevenueRecognition_Plan_ID, trxName);
+      Properties ctx, int C_RevenueRecognition_Plan_ID) {
+    super(ctx, C_RevenueRecognition_Plan_ID);
     /**
      * if (C_RevenueRecognition_Plan_ID == 0) { setC_AcctSchema_ID (0); setC_Currency_ID (0);
      * setC_InvoiceLine_ID (0); setC_RevenueRecognition_ID (0); setC_RevenueRecognition_Plan_ID (0);
@@ -34,8 +33,8 @@ public class X_C_RevenueRecognition_Plan extends PO
   }
 
   /** Load Constructor */
-  public X_C_RevenueRecognition_Plan(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_RevenueRecognition_Plan(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

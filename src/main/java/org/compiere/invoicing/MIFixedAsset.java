@@ -22,8 +22,8 @@ public class MIFixedAsset extends X_I_FixedAsset {
   private static final String s_defaultDepreciationType = "SL";
 
   /** Standard Constructor */
-  public MIFixedAsset(Properties ctx, int I_FixedAsset_ID, String trxName) {
-    super(ctx, I_FixedAsset_ID, trxName);
+  public MIFixedAsset(Properties ctx, int I_FixedAsset_ID) {
+    super(ctx, I_FixedAsset_ID);
   } //	MIFixedAsset
 
   /**
@@ -32,8 +32,8 @@ public class MIFixedAsset extends X_I_FixedAsset {
    * @param ctx context
    * @param rs result set record
    */
-  public MIFixedAsset(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MIFixedAsset(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MIFixedAsset
 
     /** */
@@ -54,7 +54,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
 
   public MProduct getProduct() {
     if (m_product == null && getM_Product_ID() > 0) {
-      m_product = new MProduct(getCtx(), getM_Product_ID(), null);
+      m_product = new MProduct(getCtx(), getM_Product_ID());
     }
     return m_product;
   }

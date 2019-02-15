@@ -37,8 +37,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @param AD_WF_Activity_ID id
    * @param trxName transaction
    */
-  public MWFActivity(Properties ctx, int AD_WF_Activity_ID, String trxName) {
-    super(ctx, AD_WF_Activity_ID, trxName);
+  public MWFActivity(Properties ctx, int AD_WF_Activity_ID) {
+    super(ctx, AD_WF_Activity_ID);
     if (AD_WF_Activity_ID == 0)
       throw new IllegalArgumentException("Cannot create new WF Activity directly");
     m_state = new StateEngine(getWFState());
@@ -51,8 +51,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWFActivity(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWFActivity(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
     m_state = new StateEngine(getWFState());
   } //	MWFActivity
 
@@ -63,7 +63,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
    * @param AD_WF_Node_ID start node
    */
   public MWFActivity(MWFProcess process, int AD_WF_Node_ID) {
-    super(process.getCtx(), 0, null);
+    super(process.getCtx(), 0);
     setAD_WF_Process_ID(process.getAD_WF_Process_ID());
     setPriority(process.getPriority());
     //	Document Link
@@ -162,7 +162,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
       //	Inform Process
       if (m_process == null)
-        m_process = new MWFProcess(getCtx(), getAD_WF_Process_ID(), null);
+        m_process = new MWFProcess(getCtx(), getAD_WF_Process_ID());
       m_process.checkActivities(null, m_po);
     } else {
       String msg =
@@ -210,7 +210,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
   public MWFEventAudit getEventAudit() {
     if (m_audit != null) return m_audit;
     MWFEventAudit[] events =
-        MWFEventAudit.get(getCtx(), getAD_WF_Process_ID(), getAD_WF_Node_ID(), null);
+        MWFEventAudit.get(getCtx(), getAD_WF_Process_ID(), getAD_WF_Node_ID());
     if (events == null || events.length == 0) m_audit = new MWFEventAudit(this);
     else m_audit = events[events.length - 1]; // 	last event
     return m_audit;
@@ -229,7 +229,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     }
 
     MTable table = MTable.get(getCtx(), getAD_Table_ID());
-    m_po = (PO) table.getPO(getRecord_ID(), null);
+    m_po = (PO) table.getPO(getRecord_ID());
     return m_po;
   } //	getPO
 
@@ -589,7 +589,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       rs = pstmt.executeQuery();
       while (rs.next()) {
         int doc_id = rs.getInt(1);
-        PO doc = (PO) tablepo.getPO(doc_id, null);
+        PO doc = (PO) tablepo.getPO(doc_id);
         BigDecimal docamt = ((DocAction) doc).getApprovalAmt();
         if (docamt != null) amtaccum = amtaccum.add(docamt);
       }
@@ -776,7 +776,6 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       if (log.isLoggable(Level.FINE)) log.fine("Report:AD_Process_ID=" + m_node.getAD_Process_ID());
       //	Process
       MProcess process = MProcess.get(getCtx(), m_node.getAD_Process_ID());
-      process.set_TrxName(null);
       if (!process.isReport() || process.getAD_ReportView_ID() == 0)
         throw new IllegalStateException("Not a Report AD_Process_ID=" + m_node.getAD_Process_ID());
       //
@@ -786,20 +785,19 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       pi.setAD_User_ID(getAD_User_ID());
       pi.setADClientID(getClientId());
       MPInstance pInstance = new MPInstance(process, getRecord_ID());
-      pInstance.set_TrxName(null);
       fillParameter(pInstance);
       pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
       File report = null;
       //	Notice
       int AD_Message_ID = SystemIDs.MESSAGE_WORKFLOWRESULT; // 	HARDCODED WorkflowResult
-      MNote note = new MNote(getCtx(), AD_Message_ID, getAD_User_ID(), null);
+      MNote note = new MNote(getCtx(), AD_Message_ID, getAD_User_ID());
       note.setTextMsg(m_node.getName(true));
       note.setDescription(m_node.getDescription(true));
       note.setRecord(getAD_Table_ID(), getRecord_ID());
       note.saveEx();
       //	Attachment
       MAttachment attachment =
-          new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID(), null);
+          new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID());
       attachment.addEntry(report);
       attachment.setTextMsg(m_node.getName(true));
       attachment.saveEx();
@@ -853,7 +851,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         setTextMsg(m_emails.toString());
       } else {
         MClient client = MClient.get(getCtx(), getClientId());
-        MMailText mailtext = new MMailText(getCtx(), getNode().getR_MailText_ID(), null);
+        MMailText mailtext = new MMailText(getCtx(), getNode().getR_MailText_ID());
         mailtext.setPO(m_po, false);
 
         String subject = getNode().getDescription() + ": " + mailtext.getMailHeader();
@@ -927,7 +925,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             }
           } else if (resp.isManual()) {
             MWFActivityApprover[] approvers =
-                MWFActivityApprover.getOfActivity(getCtx(), getAD_WF_Activity_ID(), null);
+                MWFActivityApprover.getOfActivity(getCtx(), getAD_WF_Activity_ID());
             for (int i = 0; i < approvers.length; i++) {
               if (approvers[i].getAD_User_ID() == Env.getAD_User_ID(getCtx())) {
                 autoApproval = true;
@@ -997,7 +995,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         MTable refTable = MTable.get(Env.getCtx(), referenceTableName);
         dbValue = Integer.valueOf(value);
         boolean validValue = true;
-        PO po = (PO) refTable.getPO((Integer) dbValue, null);
+        PO po = (PO) refTable.getPO((Integer) dbValue);
         if (po == null || po.getId() == 0) {
           // foreign key does not exist
           validValue = false;
@@ -1168,7 +1166,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
   /** ******************************* Send EMail */
   private void sendEMail() {
     DocAction doc = (DocAction) m_po;
-    MMailText text = new MMailText(getCtx(), m_node.getR_MailText_ID(), null);
+    MMailText text = new MMailText(getCtx(), m_node.getR_MailText_ID());
     text.setPO(m_po, true);
     //
     String subject = doc.getDocumentInfo() + ": " + text.getMailHeader();
@@ -1212,7 +1210,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             sendEMail(client, users[i].getAD_User_ID(), null, subject, message, pdf, text.isHtml());
         }
       } else if (resp.isOrganization()) {
-        MOrgInfo org = MOrgInfo.get(getCtx(), m_po. getOrgId(), null);
+        MOrgInfo org = MOrgInfo.get(getCtx(), m_po. getOrgId());
         if (org.getSupervisor_ID() == 0) {
           if (log.isLoggable(Level.FINE))
             log.fine("No Supervisor for AD_Org_ID=" + m_po. getOrgId());
@@ -1243,7 +1241,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
       File pdf,
       boolean isHtml) {
     if (AD_User_ID != 0) {
-      MUser user = new MUser(getCtx(), AD_User_ID, null);
+      MUser user = new MUser(getCtx(), AD_User_ID);
       email = user.getEMail();
       if (email != null && email.length() > 0) {
         email = email.trim();

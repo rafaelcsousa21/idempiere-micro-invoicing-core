@@ -41,7 +41,7 @@ public class MLocatorType extends X_M_LocatorType {
     Integer key = new Integer(M_LocatorType_ID);
     MLocatorType retValue = (MLocatorType) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MLocatorType(ctx, M_LocatorType_ID, null);
+    retValue = new MLocatorType(ctx, M_LocatorType_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -61,8 +61,8 @@ public class MLocatorType extends X_M_LocatorType {
    * @param M_LocatorType_ID id
    * @param trxName transaction
    */
-  public MLocatorType(Properties ctx, int M_LocatorType_ID, String trxName) {
-    super(ctx, M_LocatorType_ID, trxName);
+  public MLocatorType(Properties ctx, int M_LocatorType_ID) {
+    super(ctx, M_LocatorType_ID);
     if (M_LocatorType_ID == 0) {
       setIsAvailableForReplenishment(true);
       setIsAvailableForReservation(true);
@@ -77,8 +77,8 @@ public class MLocatorType extends X_M_LocatorType {
    * @param rs result set
    * @param trxName transaction
    */
-  public MLocatorType(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MLocatorType(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MLocatorType
 
   /**

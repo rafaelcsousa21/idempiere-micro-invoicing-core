@@ -36,8 +36,8 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
    * @param AD_Scheduler_ID id
    * @param trxName transaction
    */
-  public MScheduler(Properties ctx, int AD_Scheduler_ID, String trxName) {
-    super(ctx, AD_Scheduler_ID, trxName);
+  public MScheduler(Properties ctx, int AD_Scheduler_ID) {
+    super(ctx, AD_Scheduler_ID);
     if (AD_Scheduler_ID == 0) {
       setKeepLogDays(7);
     }
@@ -50,8 +50,8 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
    * @param rs result set
    * @param trxName transaction
    */
-  public MScheduler(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MScheduler(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MScheduler
 
   /** Process Parameter */
@@ -87,7 +87,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
   public AdempiereProcessorLog[] getLogs() {
     final String whereClause = MSchedulerLog.COLUMNNAME_AD_Scheduler_ID + "=?";
     List<MSchedulerLog> list =
-        new Query(getCtx(), I_AD_SchedulerLog.Table_Name, whereClause, null)
+        new Query(getCtx(), I_AD_SchedulerLog.Table_Name, whereClause)
             .setParameters(getAD_Scheduler_ID())
             .setOrderBy("Created DESC")
             .list();
@@ -125,7 +125,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
     //
     final String whereClause = MSchedulerPara.COLUMNNAME_AD_Scheduler_ID + "=?";
     List<MSchedulerPara> list =
-        new Query(getCtx(), I_AD_Scheduler_Para.Table_Name, whereClause, null)
+        new Query(getCtx(), I_AD_Scheduler_Para.Table_Name, whereClause)
             .setParameters(getAD_Scheduler_ID())
             .setOnlyActiveRecords(true)
             .list();
@@ -145,7 +145,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
     //
     final String whereClause = MSchedulerRecipient.COLUMNNAME_AD_Scheduler_ID + "=?";
     List<MSchedulerRecipient> list =
-        new Query(getCtx(), I_AD_SchedulerRecipient.Table_Name, whereClause, null)
+        new Query(getCtx(), I_AD_SchedulerRecipient.Table_Name, whereClause)
             .setParameters(getAD_Scheduler_ID())
             .setOnlyActiveRecords(true)
             .list();
@@ -197,8 +197,8 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
           new Query(
                   getCtx(),
                   MColumn.Table_Name,
-                  "AD_Table_ID=? AND AD_Reference_ID=? AND AD_Process_ID=?",
-                  null)
+                  "AD_Table_ID=? AND AD_Reference_ID=? AND AD_Process_ID=?"
+          )
               .setOnlyActiveRecords(true)
               .setParameters(getAD_Table_ID(), DisplayType.Button, getAD_Process_ID())
               .firstId();
@@ -218,7 +218,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
       }
       // Validate the record must exists on the same client of the scheduler
       MTable table = MTable.get(getCtx(), getAD_Table_ID());
-      IPO po = (IPO) table.getPO(getRecord_ID(), null);
+      IPO po = (IPO) table.getPO(getRecord_ID());
       if (po == null || po.getId() <= 0 || po.getClientId() != getClientId()) {
         log.saveError("Error", Msg.getMsg(getCtx(), "NoRecordID"));
         return false;

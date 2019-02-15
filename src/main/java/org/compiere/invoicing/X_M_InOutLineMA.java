@@ -5,7 +5,6 @@ import org.compiere.model.I_M_InOutLineMA;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -25,8 +24,8 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA, I_Persistent
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_InOutLineMA(Properties ctx, int M_InOutLineMA_ID, String trxName) {
-    super(ctx, M_InOutLineMA_ID, trxName);
+  public X_M_InOutLineMA(Properties ctx, int M_InOutLineMA_ID) {
+    super(ctx, M_InOutLineMA_ID);
     /**
      * if (M_InOutLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setM_InOutLine_ID (0);
      * setMovementQty (Env.ZERO); // 1 }
@@ -34,8 +33,8 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA, I_Persistent
   }
 
   /** Load Constructor */
-  public X_M_InOutLineMA(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_InOutLineMA(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_M_InOutLineMA(Properties ctx, Row row) {
     super(ctx, row);
@@ -108,7 +107,7 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA, I_Persistent
   public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
     return (org.compiere.model.I_M_InOutLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), null);
+            .getPO(getM_InOutLine_ID());
   }
 
   /**
@@ -118,7 +117,7 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA, I_Persistent
    */
   public void setM_InOutLine_ID(int M_InOutLine_ID) {
     if (M_InOutLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
+    else set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, M_InOutLine_ID);
   }
 
   /**

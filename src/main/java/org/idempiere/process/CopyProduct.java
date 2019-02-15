@@ -42,7 +42,7 @@ public class CopyProduct extends SvrProcess {
 
     // Get product price from the source product
     List<MProductPrice> prices =
-        new Query(getCtx(), MProductPrice.Table_Name, "M_Product_ID=?", null)
+        new Query(getCtx(), MProductPrice.Table_Name, "M_Product_ID=?")
             .setParameters(new Object[] {m_copyFromId})
             .setOnlyActiveRecords(true)
             .list();
@@ -52,11 +52,11 @@ public class CopyProduct extends SvrProcess {
     MProductPrice priceDst;
     for (Iterator<MProductPrice> it = prices.iterator(); it.hasNext(); ) {
       priceSrc = it.next();
-      priceDst = new MProductPrice(getCtx(), 0, null);
+      priceDst = new MProductPrice(getCtx(), 0);
       priceDst.setM_Product_ID(toMProductID);
       priceDst.setM_PriceList_Version_ID(priceSrc.getM_PriceList_Version_ID());
       priceDst.setPrices(priceSrc.getPriceList(), priceSrc.getPriceStd(), priceSrc.getPriceLimit());
-      priceDst.saveEx(null);
+      priceDst.saveEx();
     }
 
     int count = prices.size();

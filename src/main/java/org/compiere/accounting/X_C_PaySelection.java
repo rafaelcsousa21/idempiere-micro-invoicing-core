@@ -21,8 +21,8 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_PaySelection(Properties ctx, int C_PaySelection_ID, String trxName) {
-    super(ctx, C_PaySelection_ID, trxName);
+  public X_C_PaySelection(Properties ctx, int C_PaySelection_ID) {
+    super(ctx, C_PaySelection_ID);
     /**
      * if (C_PaySelection_ID == 0) { setC_BankAccount_ID (0); setC_PaySelection_ID (0);
      * setIsApproved (false); setName (null); // @#Date@ setPayDate (new Timestamp(
@@ -32,8 +32,8 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
   }
 
   /** Load Constructor */
-  public X_C_PaySelection(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_PaySelection(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

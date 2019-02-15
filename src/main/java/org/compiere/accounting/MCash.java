@@ -15,7 +15,6 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.PO;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -57,7 +56,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
    * @return cash
    */
   public static MCash get(
-      Properties ctx, int AD_Org_ID, Timestamp dateAcct, int C_Currency_ID, String trxName) {
+      Properties ctx, int AD_Org_ID, Timestamp dateAcct, int C_Currency_ID) {
     //	Existing Journal
     final String whereClause =
         "C_Cash.AD_Org_ID=?" //	#1
@@ -67,7 +66,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             + "WHERE C_Cash.C_CashBook_ID=cb.C_CashBook_ID AND cb.AD_Org_ID=C_Cash.orgId"
             + " AND cb.C_Currency_ID=?)"; //	#3
     MCash retValue =
-        new Query(ctx, I_C_Cash.Table_Name, whereClause, trxName)
+        new Query(ctx, I_C_Cash.Table_Name, whereClause)
             .setParameters(AD_Org_ID, TimeUtil.getDay(dateAcct), C_Currency_ID)
             .first();
 
@@ -82,7 +81,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
     //	Create New Journal
     retValue = new MCash(cb, dateAcct);
-    retValue.saveEx(trxName);
+    retValue.saveEx();
     return retValue;
   } //	get
 
@@ -96,8 +95,8 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
    * @param C_Cash_ID id
    * @param trxName transaction
    */
-  public MCash(Properties ctx, int C_Cash_ID, String trxName) {
-    super(ctx, C_Cash_ID, trxName);
+  public MCash(Properties ctx, int C_Cash_ID) {
+    super(ctx, C_Cash_ID);
     if (C_Cash_ID == 0) {
       //	setC_CashBook_ID (0);		//	FK
       setBeginningBalance(Env.ZERO);
@@ -128,8 +127,8 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
    * @param rs result set
    * @param trxName transaction
    */
-  public MCash(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCash(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCash
 
   /**
@@ -139,7 +138,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
    * @param today date - if null today
    */
   public MCash(MCashBook cb, Timestamp today) {
-    this(cb.getCtx(), 0, null);
+    this(cb.getCtx(), 0);
     setClientOrg(cb);
     setC_CashBook_ID(cb.getC_CashBook_ID());
     if (today != null) {
@@ -167,13 +166,12 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
    */
   public MCashLine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
 
     final String whereClause = MCashLine.COLUMNNAME_C_Cash_ID + "=?";
     List<MCashLine> list =
-        new Query(getCtx(), I_C_CashLine.Table_Name, whereClause, null)
+        new Query(getCtx(), I_C_CashLine.Table_Name, whereClause)
             .setParameters(getC_Cash_ID())
             .setOrderBy(I_C_CashLine.COLUMNNAME_Line)
             .setOnlyActiveRecords(true)
@@ -435,7 +433,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         }
       } else if (MCashLine.CASHTYPE_BankAccountTransfer.equals(line.getCashType())) {
         //	Payment just as intermediate info
-        MPayment pay = new MPayment(getCtx(), 0, null);
+        MPayment pay = new MPayment(getCtx(), 0);
         pay.setAD_Org_ID( getOrgId());
         String documentNo = getName();
         pay.setDocumentNo(documentNo);
@@ -533,7 +531,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
     //	Reverse Allocations
     MAllocationHdr[] allocations =
-        MAllocationHdr.getOfCash(getCtx(), getC_Cash_ID(), null);
+        MAllocationHdr.getOfCash(getCtx(), getC_Cash_ID());
     for (MAllocationHdr allocation : allocations) {
       allocation.reverseCorrectIt();
       if (!allocation.save()) throw new IllegalStateException("Cannot reverse allocations");
@@ -562,7 +560,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         if (cashline.getC_Payment_ID() == 0)
           throw new IllegalStateException("Cannot reverse payment");
 
-        MPayment payment = new MPayment(getCtx(), cashline.getC_Payment_ID(), null);
+        MPayment payment = new MPayment(getCtx(), cashline.getC_Payment_ID());
         payment.reverseCorrectIt();
         payment.saveEx();
       }
@@ -578,7 +576,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     saveEx();
 
     //	Delete Posting
-    MFactAcct.deleteEx(I_C_Cash.Table_ID, getC_Cash_ID(), null);
+    MFactAcct.deleteEx(I_C_Cash.Table_ID, getC_Cash_ID());
 
     return true;
   } //	reverse

@@ -22,13 +22,13 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_PA_Goal(Properties ctx, int PA_Goal_ID, String trxName) {
-    super(ctx, PA_Goal_ID, trxName);
+  public X_PA_Goal(Properties ctx, int PA_Goal_ID) {
+    super(ctx, PA_Goal_ID);
   }
 
   /** Load Constructor */
-  public X_PA_Goal(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_PA_Goal(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

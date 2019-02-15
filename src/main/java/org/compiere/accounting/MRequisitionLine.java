@@ -44,13 +44,13 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    * @param trxName
    * @return Requisition Line
    */
-  public static MRequisitionLine[] forC_Order_ID(Properties ctx, int C_Order_ID, String trxName) {
+  public static MRequisitionLine[] forC_Order_ID(Properties ctx, int C_Order_ID) {
     final String whereClause =
         "EXISTS (SELECT 1 FROM C_OrderLine ol"
             + " WHERE ol.C_OrderLine_ID=M_RequisitionLine.C_OrderLine_ID"
             + " AND ol.C_Order_ID=?)";
     List<MRequisitionLine> list =
-        new Query(ctx, I_M_RequisitionLine.Table_Name, whereClause, trxName)
+        new Query(ctx, I_M_RequisitionLine.Table_Name, whereClause)
             .setParameters(C_Order_ID)
             .list();
     return list.toArray(new MRequisitionLine[list.size()]);
@@ -63,8 +63,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    * @param C_Order_ID
    * @param trxName
    */
-  public static void unlinkC_Order_ID(Properties ctx, int C_Order_ID, String trxName) {
-    for (MRequisitionLine line : MRequisitionLine.forC_Order_ID(ctx, C_Order_ID, trxName)) {
+  public static void unlinkC_Order_ID(Properties ctx, int C_Order_ID) {
+    for (MRequisitionLine line : MRequisitionLine.forC_Order_ID(ctx, C_Order_ID)) {
       line.setC_OrderLine_ID(0);
       line.saveEx();
     }
@@ -79,10 +79,10 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    * @return array of Requisition Line(s)
    */
   public static MRequisitionLine[] forC_OrderLine_ID(
-      Properties ctx, int C_OrderLine_ID, String trxName) {
+      Properties ctx, int C_OrderLine_ID) {
     final String whereClause = I_M_RequisitionLine.COLUMNNAME_C_OrderLine_ID + "=?";
     List<MRequisitionLine> list =
-        new Query(ctx, I_M_RequisitionLine.Table_Name, whereClause, trxName)
+        new Query(ctx, I_M_RequisitionLine.Table_Name, whereClause)
             .setParameters(C_OrderLine_ID)
             .list();
     return list.toArray(new MRequisitionLine[list.size()]);
@@ -95,8 +95,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    * @param C_OrderLine_ID
    * @param trxName
    */
-  public static void unlinkC_OrderLine_ID(Properties ctx, int C_OrderLine_ID, String trxName) {
-    for (MRequisitionLine line : forC_OrderLine_ID(ctx, C_OrderLine_ID, trxName)) {
+  public static void unlinkC_OrderLine_ID(Properties ctx, int C_OrderLine_ID) {
+    for (MRequisitionLine line : forC_OrderLine_ID(ctx, C_OrderLine_ID)) {
       line.setC_OrderLine_ID(0);
       line.saveEx();
     }
@@ -109,8 +109,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    * @param M_RequisitionLine_ID id
    * @param trxName transaction
    */
-  public MRequisitionLine(Properties ctx, int M_RequisitionLine_ID, String trxName) {
-    super(ctx, M_RequisitionLine_ID, trxName);
+  public MRequisitionLine(Properties ctx, int M_RequisitionLine_ID) {
+    super(ctx, M_RequisitionLine_ID);
     if (M_RequisitionLine_ID == 0) {
       //	setM_Requisition_ID (0);
       setLine(
@@ -129,8 +129,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MRequisitionLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequisitionLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequisitionLine
 
   /**
@@ -139,7 +139,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    * @param req requisition
    */
   public MRequisitionLine(MRequisition req) {
-    this(req.getCtx(), 0, null);
+    this(req.getCtx(), 0);
     setClientOrg(req);
     setM_Requisition_ID(req.getM_Requisition_ID());
     m_M_PriceList_ID = req.getM_PriceList_ID();
@@ -159,7 +159,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
    */
   public MRequisition getParent() {
     if (m_parent == null)
-      m_parent = new MRequisition(getCtx(), getM_Requisition_ID(), null);
+      m_parent = new MRequisition(getCtx(), getM_Requisition_ID());
     return m_parent;
   } //	getParent
 
@@ -195,7 +195,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     //
     if (log.isLoggable(Level.FINE)) log.fine("M_PriceList_ID=" + M_PriceList_ID);
     IProductPricing pp = MProduct.getProductPricing();
-    pp.setRequisitionLine(this, null);
+    pp.setRequisitionLine(this);
     pp.setM_PriceList_ID(M_PriceList_ID);
     //	pp.setPriceDate(getDateOrdered());
     //

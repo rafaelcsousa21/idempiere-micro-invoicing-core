@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_I_InOutLineConfirm;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -16,8 +15,8 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_I_InOutLineConfirm(Properties ctx, int I_InOutLineConfirm_ID, String trxName) {
-    super(ctx, I_InOutLineConfirm_ID, trxName);
+  public X_I_InOutLineConfirm(Properties ctx, int I_InOutLineConfirm_ID) {
+    super(ctx, I_InOutLineConfirm_ID);
     /**
      * if (I_InOutLineConfirm_ID == 0) { setConfirmationNo (null); setConfirmedQty (Env.ZERO);
      * setDifferenceQty (Env.ZERO); setI_InOutLineConfirm_ID (0); setI_IsImported (false);
@@ -26,8 +25,8 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm, I_
   }
 
   /** Load Constructor */
-  public X_I_InOutLineConfirm(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_I_InOutLineConfirm(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -76,7 +76,7 @@ public class BOMVerify extends SvrProcess {
   protected String doIt() throws Exception {
     if (p_M_Product_ID != 0) {
       if (log.isLoggable(Level.INFO)) log.info("M_Product_ID=" + p_M_Product_ID);
-      checkProduct(new MProduct(getCtx(), p_M_Product_ID, null));
+      checkProduct(new MProduct(getCtx(), p_M_Product_ID));
       return "Product Checked";
     }
     if (log.isLoggable(Level.INFO))
@@ -99,7 +99,7 @@ public class BOMVerify extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) {
         p_M_Product_ID = rs.getInt(1); // ADAXA - validate the product retrieved from database
-        checkProduct(new MProduct(getCtx(), p_M_Product_ID, null));
+        checkProduct(new MProduct(getCtx(), p_M_Product_ID));
 
         counter++;
       }
@@ -139,7 +139,7 @@ public class BOMVerify extends SvrProcess {
     for (MProductBOM productsBOM : productsBOMs) {
       if (!productsBOM.isActive()) continue;
       lines++;
-      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID(), null);
+      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID());
       if (!pp.isBOM()) {
         if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
       } else {

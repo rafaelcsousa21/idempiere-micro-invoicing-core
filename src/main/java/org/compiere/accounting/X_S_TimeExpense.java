@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_S_TimeExpense;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -17,8 +16,8 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_S_TimeExpense(Properties ctx, int S_TimeExpense_ID, String trxName) {
-    super(ctx, S_TimeExpense_ID, trxName);
+  public X_S_TimeExpense(Properties ctx, int S_TimeExpense_ID) {
+    super(ctx, S_TimeExpense_ID);
     /**
      * if (S_TimeExpense_ID == 0) { setC_BPartner_ID (0); setDateReport (new Timestamp(
      * System.currentTimeMillis() )); // @#Date@ setDocAction (null); // CO setDocStatus (null); //
@@ -28,8 +27,8 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense, I_Persistent
   }
 
   /** Load Constructor */
-  public X_S_TimeExpense(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_S_TimeExpense(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

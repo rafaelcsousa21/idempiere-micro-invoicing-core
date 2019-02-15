@@ -27,8 +27,8 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
    * @param AD_WF_NodeNext_ID id
    * @param trxName transaction
    */
-  public MWFNodeNext(Properties ctx, int AD_WF_NodeNext_ID, String trxName) {
-    super(ctx, AD_WF_NodeNext_ID, trxName);
+  public MWFNodeNext(Properties ctx, int AD_WF_NodeNext_ID) {
+    super(ctx, AD_WF_NodeNext_ID);
     if (AD_WF_NodeNext_ID == 0) {
       //	setAD_WF_Next_ID (0);
       //	setAD_WF_Node_ID (0);
@@ -45,8 +45,8 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
    * @param rs result set to load info from
    * @param trxName transaction
    */
-  public MWFNodeNext(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWFNodeNext(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWFNodeNext
 
   /**
@@ -56,7 +56,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
    * @param AD_WF_Next_ID Next
    */
   public MWFNodeNext(MWFNode parent, int AD_WF_Next_ID) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setAD_WF_Node_ID(parent.getAD_WF_Node_ID());
     setAD_WF_Next_ID(AD_WF_Next_ID);
@@ -109,7 +109,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
     //
     final String whereClause = "AD_WF_NodeNext_ID=? AND clientId IN (0,?)";
     List<MWFNextCondition> list =
-        new Query(getCtx(), MWFNextCondition.Table_Name, whereClause, null)
+        new Query(getCtx(), MWFNextCondition.Table_Name, whereClause)
             .setParameters(new Object[] {getAD_WF_NodeNext_ID(), Env.getClientId(Env.getCtx())})
             .setOnlyActiveRecords(true)
             .setOrderBy(MWFNextCondition.COLUMNNAME_SeqNo)

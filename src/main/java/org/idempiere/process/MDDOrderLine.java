@@ -31,8 +31,8 @@ public class MDDOrderLine extends X_DD_OrderLine {
    * @param C_OrderLine_ID order line to load
    * @param trxName trx name
    */
-  public MDDOrderLine(Properties ctx, int C_OrderLine_ID, String trxName) {
-    super(ctx, C_OrderLine_ID, trxName);
+  public MDDOrderLine(Properties ctx, int C_OrderLine_ID) {
+    super(ctx, C_OrderLine_ID);
     if (C_OrderLine_ID == 0) {
       //	setC_Order_ID (0);
       //	setLine (0);
@@ -73,7 +73,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
    * @param order parent order
    */
   public MDDOrderLine(MDDOrder order) {
-    this(order.getCtx(), 0, null);
+    this(order.getCtx(), 0);
     if (order.getId() == 0) throw new IllegalArgumentException("Header not saved");
     setDD_Order_ID(order.getDD_Order_ID()); // 	parent
     setOrder(order);
@@ -86,8 +86,8 @@ public class MDDOrderLine extends X_DD_OrderLine {
    * @param rs result set record
    * @param trxName transaction
    */
-  public MDDOrderLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDDOrderLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MDDOrderLine
 
   private int m_M_PriceList_ID = 0;
@@ -134,7 +134,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
    * @return parent
    */
   public MDDOrder getParent() {
-    if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDD_Order_ID(), null);
+    if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDD_Order_ID());
     return m_parent;
   } //	getParent
 

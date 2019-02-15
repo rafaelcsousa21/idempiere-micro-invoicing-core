@@ -16,14 +16,14 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement, 
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_I_BankStatement(Properties ctx, int I_BankStatement_ID, String trxName) {
-    super(ctx, I_BankStatement_ID, trxName);
+  public X_I_BankStatement(Properties ctx, int I_BankStatement_ID) {
+    super(ctx, I_BankStatement_ID);
     /** if (I_BankStatement_ID == 0) { setI_BankStatement_ID (0); setI_IsImported (false); } */
   }
 
   /** Load Constructor */
-  public X_I_BankStatement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_I_BankStatement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

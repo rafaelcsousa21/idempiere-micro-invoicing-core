@@ -19,8 +19,8 @@ public class X_C_SubAcct extends BasePONameValue implements I_C_SubAcct, I_Persi
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_SubAcct(Properties ctx, int C_SubAcct_ID, String trxName) {
-    super(ctx, C_SubAcct_ID, trxName);
+  public X_C_SubAcct(Properties ctx, int C_SubAcct_ID) {
+    super(ctx, C_SubAcct_ID);
     /**
      * if (C_SubAcct_ID == 0) { setC_ElementValue_ID (0); setC_SubAcct_ID (0); setName (null);
      * setValue (null); }
@@ -28,8 +28,8 @@ public class X_C_SubAcct extends BasePONameValue implements I_C_SubAcct, I_Persi
   }
 
   /** Load Constructor */
-  public X_C_SubAcct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_SubAcct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

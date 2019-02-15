@@ -30,7 +30,7 @@ public class MCalendar extends X_C_Calendar {
     Integer key = new Integer(C_Calendar_ID);
     MCalendar retValue = (MCalendar) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MCalendar(ctx, C_Calendar_ID, null);
+    retValue = new MCalendar(ctx, C_Calendar_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -46,8 +46,8 @@ public class MCalendar extends X_C_Calendar {
    * @param C_Calendar_ID id
    * @param trxName transaction
    */
-  public MCalendar(Properties ctx, int C_Calendar_ID, String trxName) {
-    super(ctx, C_Calendar_ID, trxName);
+  public MCalendar(Properties ctx, int C_Calendar_ID) {
+    super(ctx, C_Calendar_ID);
   } //	MCalendar
 
   /**
@@ -57,8 +57,8 @@ public class MCalendar extends X_C_Calendar {
    * @param rs result set
    * @param trxName transaction
    */
-  public MCalendar(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCalendar(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCalendar
 
   /**
@@ -67,7 +67,7 @@ public class MCalendar extends X_C_Calendar {
    * @param client parent
    */
   public MCalendar(MClient client) {
-    super(client.getCtx(), 0, null);
+    super(client.getCtx(), 0);
     setClientOrg(client);
     StringBuilder msgset =
         new StringBuilder()

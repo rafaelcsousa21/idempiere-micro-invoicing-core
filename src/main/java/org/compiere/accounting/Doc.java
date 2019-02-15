@@ -166,8 +166,8 @@ public abstract class Doc implements IDoc {
    * @param trxName transaction name
    * @return Document or null
    */
-  public static IDoc get(MAcctSchema as, int AD_Table_ID, int Record_ID, String trxName) {
-    return DocManager.INSTANCE.getDocument(as, AD_Table_ID, Record_ID, trxName);
+  public static IDoc get(MAcctSchema as, int AD_Table_ID, int Record_ID) {
+    return DocManager.INSTANCE.getDocument(as, AD_Table_ID, Record_ID);
   } //	get
 
   /**
@@ -180,8 +180,8 @@ public abstract class Doc implements IDoc {
    * @return Document
    * @throws AdempiereUserError
    */
-  public static IDoc get(MAcctSchema as, int AD_Table_ID, ResultSet rs, String trxName) {
-    return DocManager.INSTANCE.getDocument(as, AD_Table_ID, rs, trxName);
+  public static IDoc get(MAcctSchema as, int AD_Table_ID, ResultSet rs) {
+    return DocManager.INSTANCE.getDocument(as, AD_Table_ID, rs);
   } //  get
 
   /**
@@ -195,17 +195,14 @@ public abstract class Doc implements IDoc {
    * @return null if the document was posted or error message
    */
   public static String postImmediate(
-      MAcctSchema[] ass, int AD_Table_ID, int Record_ID, boolean force, String trxName) {
-    return DocManager.INSTANCE.postDocument(ass, AD_Table_ID, Record_ID, force, true, trxName);
+      MAcctSchema[] ass, int AD_Table_ID, int Record_ID, boolean force) {
+    return DocManager.INSTANCE.postDocument(ass, AD_Table_ID, Record_ID, force, true);
   } //  post
 
     /** Static Log */
   protected static CLogger s_log = CLogger.getCLogger(Doc.class);
   /** Log per Document */
   protected CLogger log = CLogger.getCLogger(getClass());
-
-  /* If the transaction must be managed locally (false if it's managed externally by the caller) */
-  private boolean m_manageLocalTrx;
 
   /**
    * ************************************************************************ Constructor
@@ -217,7 +214,7 @@ public abstract class Doc implements IDoc {
    * @param trxName trx
    */
   public Doc(
-      MAcctSchema as, Class<?> clazz, ResultSet rs, String defaultDocumentType, String trxName) {
+      MAcctSchema as, Class<?> clazz, ResultSet rs, String defaultDocumentType) {
     p_Status = STATUS_Error;
     m_as = as;
     m_ctx = new Properties(m_as.getCtx());
@@ -227,8 +224,8 @@ public abstract class Doc implements IDoc {
     className = className.substring(className.lastIndexOf('.') + 1);
     try {
       Constructor<?> constructor =
-          clazz.getConstructor(new Class[] {Properties.class, ResultSet.class, String.class});
-      p_po = (IPODoc) constructor.newInstance(new Object[] {m_ctx, rs, trxName});
+          clazz.getConstructor(new Class[] {Properties.class, ResultSet.class});
+      p_po = (IPODoc) constructor.newInstance(new Object[] {m_ctx, rs});
     } catch (Exception e) {
       String msg = className + ": " + e.getLocalizedMessage();
       log.severe(msg);
@@ -243,12 +240,6 @@ public abstract class Doc implements IDoc {
 
     //	Document Type
     setDocumentType(defaultDocumentType);
-    m_trxName = trxName;
-    m_manageLocalTrx = false;
-    if (m_trxName == null) {
-      m_trxName = "Post" + m_DocumentType + p_po.getId();
-      m_manageLocalTrx = true;
-    }
 
     //	Amounts
     for (int i = 0; i < m_Amounts.length; i++) {
@@ -260,8 +251,6 @@ public abstract class Doc implements IDoc {
   private MAcctSchema m_as = null;
   /** Properties */
   private Properties m_ctx = null;
-  /** Transaction Name */
-  private String m_trxName = null;
   /** The Document */
   protected IPODoc p_po = null;
   /** Document Type */
@@ -413,7 +402,6 @@ public abstract class Doc implements IDoc {
 
     //  Lock Record ----
     String trxName = null; // 	outside trx if on server
-    if (!m_manageLocalTrx) trxName = getTrxName(); // on trx if it's in client
     StringBuilder sql = new StringBuilder("UPDATE ");
     sql.append(get_TableName())
         .append(" SET Processing='Y' WHERE ")
@@ -665,7 +653,7 @@ public abstract class Doc implements IDoc {
         for (int i = 0; i < m_fact.size(); i++) {
           IFact fact = m_fact.get(i);
           if (fact == null) ;
-          else if (fact.save(getTrxName())) ;
+          else if (fact.save()) ;
           else {
             log.log(Level.SEVERE, "(fact not saved) ... rolling back");
             unlock();
@@ -687,19 +675,9 @@ public abstract class Doc implements IDoc {
     return status;
   } //  postCommit
 
-  /**
-   * Get Trx Name and create Transaction
-   *
-   * @return Trx Name
-   */
-  public String getTrxName() {
-    return m_trxName;
-  } //	getTrxName
-
   /** Unlock Document */
   private void unlock() {
     String trxName = null; // 	outside trx if on server
-    if (!m_manageLocalTrx) trxName = getTrxName(); // on trx if it's in client
     StringBuilder sql = new StringBuilder("UPDATE ");
     sql.append(get_TableName())
         .append(" SET Processing='N' WHERE ")
@@ -902,7 +880,7 @@ public abstract class Doc implements IDoc {
       if (ii != null) m_period = MPeriod.get(getCtx(), ii.intValue());
     }
     if (m_period == null)
-      m_period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId(), m_trxName);
+      m_period = MPeriod.get(getCtx(), getDateAcct(),  getOrgId());
     //	Is Period Open?
     if (m_period != null && m_period.isOpen(getDocumentType(), getDateAcct()))
       m_C_Period_ID = m_period.getC_Period_ID();

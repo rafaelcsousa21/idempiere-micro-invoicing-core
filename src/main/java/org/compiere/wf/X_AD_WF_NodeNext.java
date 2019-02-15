@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_NodeNext;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -20,8 +19,8 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WF_NodeNext(Properties ctx, int AD_WF_NodeNext_ID, String trxName) {
-    super(ctx, AD_WF_NodeNext_ID, trxName);
+  public X_AD_WF_NodeNext(Properties ctx, int AD_WF_NodeNext_ID) {
+    super(ctx, AD_WF_NodeNext_ID);
     /**
      * if (AD_WF_NodeNext_ID == 0) { setAD_WF_Next_ID (0); setAD_WF_Node_ID (0);
      * // @1|AD_WF_Node_ID@ setAD_WF_NodeNext_ID (0); setEntityType (null); // @SQL=select
@@ -31,8 +30,8 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
   }
 
   /** Load Constructor */
-  public X_AD_WF_NodeNext(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WF_NodeNext(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -34,17 +34,6 @@ public class MWarehouse extends X_M_Warehouse {
   private static final long serialVersionUID = 2696705459515717619L;
 
   /**
-   * Get from Cache
-   *
-   * @param ctx context
-   * @param M_Warehouse_ID id
-   * @return warehouse
-   */
-  public static MWarehouse get(Properties ctx, int M_Warehouse_ID) {
-    return get(ctx, M_Warehouse_ID, null);
-  }
-
-  /**
    * Retrieves warehouse from cache under transaction scope
    *
    * @param ctx context
@@ -52,12 +41,12 @@ public class MWarehouse extends X_M_Warehouse {
    * @param trxName transaction name
    * @return warehouse
    */
-  public static MWarehouse get(Properties ctx, int M_Warehouse_ID, String trxName) {
+  public static MWarehouse get(Properties ctx, int M_Warehouse_ID) {
     Integer key = new Integer(M_Warehouse_ID);
     MWarehouse retValue = (MWarehouse) s_cache.get(key);
     if (retValue != null) return retValue;
     //
-    retValue = new MWarehouse(ctx, M_Warehouse_ID, trxName);
+    retValue = new MWarehouse(ctx, M_Warehouse_ID);
     s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -72,7 +61,7 @@ public class MWarehouse extends X_M_Warehouse {
   public static MWarehouse[] getForOrg(Properties ctx, int AD_Org_ID) {
     final String whereClause = "AD_Org_ID=?";
     List<MWarehouse> list =
-        new Query(ctx, I_M_Warehouse.Table_Name, whereClause, null)
+        new Query(ctx, I_M_Warehouse.Table_Name, whereClause)
             .setParameters(AD_Org_ID)
             .setOnlyActiveRecords(true)
             .setOrderBy(I_M_Warehouse.COLUMNNAME_M_Warehouse_ID)
@@ -90,8 +79,8 @@ public class MWarehouse extends X_M_Warehouse {
    * @param M_Warehouse_ID id
    * @param trxName transaction
    */
-  public MWarehouse(Properties ctx, int M_Warehouse_ID, String trxName) {
-    super(ctx, M_Warehouse_ID, trxName);
+  public MWarehouse(Properties ctx, int M_Warehouse_ID) {
+    super(ctx, M_Warehouse_ID);
     if (M_Warehouse_ID == 0) {
       //	setValue (null);
       //	setName (null);
@@ -107,8 +96,8 @@ public class MWarehouse extends X_M_Warehouse {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWarehouse(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWarehouse(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWarehouse
   public MWarehouse(Properties ctx, Row row) {
     super(ctx, row);
@@ -120,7 +109,7 @@ public class MWarehouse extends X_M_Warehouse {
    * @param org parent
    */
   public MWarehouse(MOrg org) {
-    this(org.getCtx(), 0, null);
+    this(org.getCtx(), 0);
     setClientOrg(org);
     setValue(org.getValue());
     setName(org.getName());
@@ -141,7 +130,7 @@ public class MWarehouse extends X_M_Warehouse {
     //
     final String whereClause = "M_Warehouse_ID=?";
     List<PO> list =
-        new Query(getCtx(), I_M_Locator.Table_Name, whereClause, null)
+        new Query(getCtx(), I_M_Locator.Table_Name, whereClause)
             .setParameters(getM_Warehouse_ID())
             .setOnlyActiveRecords(true)
             .setOrderBy("X,Y,Z")
@@ -167,7 +156,7 @@ public class MWarehouse extends X_M_Warehouse {
     } else {
       String whereClause = "M_Warehouse_ID=?";
       List<PO> list =
-          new Query(getCtx(), I_M_Locator.Table_Name, whereClause, null)
+          new Query(getCtx(), I_M_Locator.Table_Name, whereClause)
               .setParameters(getM_Warehouse_ID())
               .setOnlyActiveRecords(false)
               .list();

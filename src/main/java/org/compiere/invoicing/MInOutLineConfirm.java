@@ -25,8 +25,8 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
    * @param M_InOutLineConfirm_ID id
    * @param trxName transaction
    */
-  public MInOutLineConfirm(Properties ctx, int M_InOutLineConfirm_ID, String trxName) {
-    super(ctx, M_InOutLineConfirm_ID, trxName);
+  public MInOutLineConfirm(Properties ctx, int M_InOutLineConfirm_ID) {
+    super(ctx, M_InOutLineConfirm_ID);
     if (M_InOutLineConfirm_ID == 0) {
       //	setM_InOutConfirm_ID (0);
       //	setM_InOutLine_ID (0);
@@ -45,8 +45,8 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
    * @param rs result set
    * @param trxName transaction
    */
-  public MInOutLineConfirm(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInOutLineConfirm(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInOutLineConfirm
 
   /**
@@ -55,7 +55,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
    * @param header parent
    */
   public MInOutLineConfirm(MInOutConfirm header) {
-    this(header.getCtx(), 0, null);
+    this(header.getCtx(), 0);
     setClientOrg(header);
     setM_InOutConfirm_ID(header.getM_InOutConfirm_ID());
   } //	MInOutLineConfirm
@@ -81,7 +81,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
    * @return line
    */
   public MInOutLine getLine() {
-    if (m_line == null) m_line = new MInOutLine(getCtx(), getM_InOutLine_ID(), null);
+    if (m_line == null) m_line = new MInOutLine(getCtx(), getM_InOutLine_ID());
     return m_line;
   } //	getLine
 
@@ -129,7 +129,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
       line.setConfirmedQty(getConfirmedQty());
     }
 
-    return line.save(null);
+    return line.save();
   } //	processConfirmation
 
   /**

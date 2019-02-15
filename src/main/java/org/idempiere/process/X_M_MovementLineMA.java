@@ -4,7 +4,6 @@ import org.compiere.model.I_M_MovementLineMA;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -18,16 +17,16 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_MovementLineMA(Properties ctx, int M_MovementLineMA_ID, String trxName) {
-    super(ctx, M_MovementLineMA_ID, trxName);
+  public X_M_MovementLineMA(Properties ctx, int M_MovementLineMA_ID) {
+    super(ctx, M_MovementLineMA_ID);
     /**
      * if (M_MovementLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setM_MovementLine_ID (0); }
      */
   }
 
   /** Load Constructor */
-  public X_M_MovementLineMA(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_MovementLineMA(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -117,7 +116,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA, I_Pers
   public org.compiere.model.I_M_MovementLine getM_MovementLine() throws RuntimeException {
     return (org.compiere.model.I_M_MovementLine)
         MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-            .getPO(getM_MovementLine_ID(), null);
+            .getPO(getM_MovementLine_ID());
   }
 
   /**

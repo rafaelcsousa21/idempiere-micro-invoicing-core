@@ -4,7 +4,6 @@ import org.compiere.model.I_M_Requisition;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -24,8 +23,8 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Requisition(Properties ctx, int M_Requisition_ID, String trxName) {
-    super(ctx, M_Requisition_ID, trxName);
+  public X_M_Requisition(Properties ctx, int M_Requisition_ID) {
+    super(ctx, M_Requisition_ID);
     /**
      * if (M_Requisition_ID == 0) { setAD_User_ID (0); setC_DocType_ID (0); setDateDoc (new
      * Timestamp( System.currentTimeMillis() )); // @#Date@ setDateRequired (new Timestamp(
@@ -37,8 +36,8 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
   }
 
   /** Load Constructor */
-  public X_M_Requisition(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Requisition(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -79,7 +78,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
+            .getPO(getC_DocType_ID());
   }
 
   /**
@@ -89,7 +88,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
    */
   public void setC_DocType_ID(int C_DocType_ID) {
     if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-    else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+    else set_Value(COLUMNNAME_C_DocType_ID, C_DocType_ID);
   }
 
   /**

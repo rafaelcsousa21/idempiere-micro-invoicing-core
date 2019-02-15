@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_M_Locator;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -21,8 +20,8 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Locator(Properties ctx, int M_Locator_ID, String trxName) {
-    super(ctx, M_Locator_ID, trxName);
+  public X_M_Locator(Properties ctx, int M_Locator_ID) {
+    super(ctx, M_Locator_ID);
     /**
      * if (M_Locator_ID == 0) { setIsDefault (false); setM_Locator_ID (0); setM_Warehouse_ID (0);
      * setPriorityNo (0); // 50 setValue (null); setX (null); setY (null); setZ (null); }
@@ -30,8 +29,8 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_Locator(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Locator(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_M_Locator(Properties ctx, Row row) {
     super(ctx, row);

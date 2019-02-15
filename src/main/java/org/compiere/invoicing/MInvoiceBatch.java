@@ -30,8 +30,8 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
    * @param C_InvoiceBatch_ID id
    * @param trxName trx
    */
-  public MInvoiceBatch(Properties ctx, int C_InvoiceBatch_ID, String trxName) {
-    super(ctx, C_InvoiceBatch_ID, trxName);
+  public MInvoiceBatch(Properties ctx, int C_InvoiceBatch_ID) {
+    super(ctx, C_InvoiceBatch_ID);
     if (C_InvoiceBatch_ID == 0) {
       //	setDocumentNo (null);
       //	setC_Currency_ID (0);	// @$C_Currency_ID@
@@ -51,8 +51,8 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
    * @param rs result set
    * @param trxName trx
    */
-  public MInvoiceBatch(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInvoiceBatch(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInvoiceBatch
 
   /** The Lines */
@@ -66,7 +66,6 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
    */
   public MInvoiceBatchLine[] getLines(boolean reload) {
     if (m_lines != null && !reload) {
-      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     String sql = "SELECT * FROM C_InvoiceBatchLine WHERE C_InvoiceBatch_ID=? ORDER BY Line";
@@ -78,7 +77,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
       pstmt.setInt(1, getC_InvoiceBatch_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        list.add(new MInvoiceBatchLine(getCtx(), rs, null));
+        list.add(new MInvoiceBatchLine(getCtx(), rs));
       }
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);

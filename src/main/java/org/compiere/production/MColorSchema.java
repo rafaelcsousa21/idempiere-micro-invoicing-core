@@ -40,14 +40,14 @@ public class MColorSchema extends X_PA_ColorSchema {
    */
   public static MColorSchema get(Properties ctx, int PA_ColorSchema_ID) {
     if (PA_ColorSchema_ID == 0) {
-      MColorSchema retValue = new MColorSchema(ctx, 0, null);
+      MColorSchema retValue = new MColorSchema(ctx, 0);
       retValue.setDefault();
       return retValue;
     }
-    Integer key = new Integer(PA_ColorSchema_ID);
+    Integer key = PA_ColorSchema_ID;
     MColorSchema retValue = (MColorSchema) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MColorSchema(ctx, PA_ColorSchema_ID, null);
+    retValue = new MColorSchema(ctx, PA_ColorSchema_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -63,8 +63,8 @@ public class MColorSchema extends X_PA_ColorSchema {
    * @param PA_ColorSchema_ID id
    * @param trxName trx
    */
-  public MColorSchema(Properties ctx, int PA_ColorSchema_ID, String trxName) {
-    super(ctx, PA_ColorSchema_ID, trxName);
+  public MColorSchema(Properties ctx, int PA_ColorSchema_ID) {
+    super(ctx, PA_ColorSchema_ID);
     if (PA_ColorSchema_ID == 0) {
       //	setName (null);
       //	setMark1Percent (50);
@@ -81,8 +81,8 @@ public class MColorSchema extends X_PA_ColorSchema {
    * @param rs result set
    * @param trxName trx
    */
-  public MColorSchema(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MColorSchema(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MColorSchema
 
   /** Set Default. Red (50) - Yellow (100) - Green */

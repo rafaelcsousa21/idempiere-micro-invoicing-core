@@ -339,7 +339,7 @@ public class ImportReportLine extends SvrProcess {
         //
         try {
           int PA_ReportLine_ID =
-              MSequence.getNextID(m_AD_Client_ID, "PA_ReportLine", null);
+              MSequence.getNextID(m_AD_Client_ID, "PA_ReportLine");
           if (PA_ReportLine_ID <= 0) throw new DBException("No NextID (" + PA_ReportLine_ID + ")");
           pstmt_insertLine.setInt(1, PA_ReportLine_ID);
           pstmt_insertLine.setInt(2, PA_ReportLineSet_ID);
@@ -468,7 +468,7 @@ public class ImportReportLine extends SvrProcess {
         {
           try {
             PA_ReportSource_ID =
-                MSequence.getNextID(m_AD_Client_ID, "PA_ReportSource", null);
+                MSequence.getNextID(m_AD_Client_ID, "PA_ReportSource");
             if (PA_ReportSource_ID <= 0)
               throw new DBException("No NextID (" + PA_ReportSource_ID + ")");
             pstmt_insertSource.setInt(1, PA_ReportSource_ID);

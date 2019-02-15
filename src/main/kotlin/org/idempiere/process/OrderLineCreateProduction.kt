@@ -64,14 +64,14 @@ class OrderLineCreateProduction(
         if (p_C_OrderLine_ID == 0)
             throw IllegalArgumentException("No OrderLine")
         //
-        val line = MOrderLine(ctx, p_C_OrderLine_ID, null)
+        val line = MOrderLine(ctx, p_C_OrderLine_ID)
         if (line.id == 0)
             throw IllegalArgumentException("Order line not found")
-        val order: I_C_Order = MOrder(ctx, line.c_Order_ID, null)
+        val order: I_C_Order = MOrder(ctx, line.c_Order_ID)
         if (MOrder.DOCSTATUS_Completed != order.docStatus)
             throw IllegalArgumentException("Order not completed")
 
-        val doc = MDocType(ctx, order.c_DocType_ID, null)
+        val doc = MDocType(ctx, order.c_DocType_ID)
 
         if (line.qtyOrdered.subtract(line.qtyDelivered).compareTo(Env.ZERO) <= 0) {
             if (doc.docSubTypeSO != "ON")
@@ -93,7 +93,7 @@ class OrderLineCreateProduction(
         }
 
         val production: I_M_Production = MProduction(line)
-        val product = MProduct(ctx, line.m_Product_ID, null)
+        val product = MProduct(ctx, line.m_Product_ID)
 
         production.m_Product_ID = line.m_Product_ID
         production.setProductionQty(line.qtyOrdered.subtract(line.qtyDelivered))

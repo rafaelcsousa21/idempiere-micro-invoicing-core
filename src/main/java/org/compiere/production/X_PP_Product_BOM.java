@@ -5,7 +5,6 @@ import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_BOM;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -24,8 +23,8 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_PP_Product_BOM(Properties ctx, int PP_Product_BOM_ID, String trxName) {
-    super(ctx, PP_Product_BOM_ID, trxName);
+  public X_PP_Product_BOM(Properties ctx, int PP_Product_BOM_ID) {
+    super(ctx, PP_Product_BOM_ID);
     /**
      * if (PP_Product_BOM_ID == 0) { setM_Product_ID (0); setName (null); setPP_Product_BOM_ID (0);
      * setValidFrom (new Timestamp( System.currentTimeMillis() )); // @#Date@ setValue (null); }
@@ -33,8 +32,8 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
   }
 
   /** Load Constructor */
-  public X_PP_Product_BOM(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_PP_Product_BOM(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -110,7 +109,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
   public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
     return (org.compiere.model.I_C_UOM)
         MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), null);
+            .getPO(getC_UOM_ID());
   }
 
   /**
@@ -120,7 +119,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
    */
   public void setC_UOM_ID(int C_UOM_ID) {
     if (C_UOM_ID < 1) set_Value(COLUMNNAME_C_UOM_ID, null);
-    else set_Value(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
+    else set_Value(COLUMNNAME_C_UOM_ID, C_UOM_ID);
   }
 
   /**
@@ -191,7 +190,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
+            .getPO(getMAttributeSetInstance_ID());
   }
 
   /**
@@ -202,7 +201,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
   public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
     if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
     else
-      set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+      set_Value(COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
   }
 
   /**
@@ -219,7 +218,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
   public org.compiere.model.I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException {
     return (org.compiere.model.I_M_ChangeNotice)
         MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_ChangeNotice_ID(), null);
+            .getPO(getM_ChangeNotice_ID());
   }
 
   /**
@@ -229,7 +228,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
    */
   public void setM_ChangeNotice_ID(int M_ChangeNotice_ID) {
     if (M_ChangeNotice_ID < 1) set_Value(COLUMNNAME_M_ChangeNotice_ID, null);
-    else set_Value(COLUMNNAME_M_ChangeNotice_ID, Integer.valueOf(M_ChangeNotice_ID));
+    else set_Value(COLUMNNAME_M_ChangeNotice_ID, M_ChangeNotice_ID);
   }
 
   /**
@@ -246,7 +245,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
+            .getPO(getM_Product_ID());
   }
 
   /**
@@ -256,7 +255,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
    */
   public void setM_Product_ID(int M_Product_ID) {
     if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+    else set_Value(COLUMNNAME_M_Product_ID, M_Product_ID);
   }
 
   /**
@@ -295,7 +294,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
    */
   public void setPP_Product_BOM_ID(int PP_Product_BOM_ID) {
     if (PP_Product_BOM_ID < 1) set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, Integer.valueOf(PP_Product_BOM_ID));
+    else set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
   }
 
   /**

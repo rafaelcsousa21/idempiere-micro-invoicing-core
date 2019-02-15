@@ -4,7 +4,6 @@ import org.compiere.model.I_A_Asset_Acct;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -24,8 +23,8 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_A_Asset_Acct(Properties ctx, int A_Asset_Acct_ID, String trxName) {
-    super(ctx, A_Asset_Acct_ID, trxName);
+  public X_A_Asset_Acct(Properties ctx, int A_Asset_Acct_ID) {
+    super(ctx, A_Asset_Acct_ID);
     /**
      * if (A_Asset_Acct_ID == 0) { setA_Accumdepreciation_Acct (0); setA_Asset_Acct (0);
      * setA_Asset_Acct_ID (0); setA_Asset_ID (0); setA_Depreciation_Acct (0); setA_Depreciation_F_ID
@@ -36,8 +35,8 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_A_Asset_Acct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_A_Asset_Acct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -455,7 +454,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct, I_Persistent {
     public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
+            .getPO(getC_AcctSchema_ID());
   }
 
     /**

@@ -42,8 +42,8 @@ public class MProduct extends org.compiere.product.MProduct {
    * @param M_Product_ID id
    * @param trxName transaction
    */
-  public MProduct(Properties ctx, int M_Product_ID, String trxName) {
-    super(ctx, M_Product_ID, trxName);
+  public MProduct(Properties ctx, int M_Product_ID) {
+    super(ctx, M_Product_ID);
   }
 
   /**
@@ -53,8 +53,8 @@ public class MProduct extends org.compiere.product.MProduct {
    * @param rs result set
    * @param trxName transaction
    */
-  public MProduct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProduct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProduct
   public MProduct(Properties ctx, Row row) {
     super(ctx, row);
@@ -64,11 +64,11 @@ public class MProduct extends org.compiere.product.MProduct {
     BigDecimal qtyOnHand = Env.ZERO;
     BigDecimal qtyOrdered = Env.ZERO;
     BigDecimal qtyReserved = Env.ZERO;
-    for (MStorageOnHand ohs : MStorageOnHand.getOfProduct(getCtx(), getId(), null)) {
+    for (MStorageOnHand ohs : MStorageOnHand.getOfProduct(getCtx(), getId())) {
       qtyOnHand = qtyOnHand.add(ohs.getQtyOnHand());
     }
     for (MStorageReservation rs :
-        MStorageReservation.getOfProduct(getCtx(), getId(), null)) {
+        MStorageReservation.getOfProduct(getCtx(), getId())) {
       if (rs.isSOTrx()) qtyReserved = qtyReserved.add(rs.getQty());
       else qtyOrdered = qtyOrdered.add(rs.getQty());
     }
@@ -91,8 +91,8 @@ public class MProduct extends org.compiere.product.MProduct {
         new Query(
                 getCtx(),
                 I_M_Transaction.Table_Name,
-                I_M_Transaction.COLUMNNAME_M_Product_ID + "=?",
-                null)
+                I_M_Transaction.COLUMNNAME_M_Product_ID + "=?"
+        )
             .setOnlyActiveRecords(true)
             .setParameters(new Object[] {getId()})
             .match();
@@ -105,8 +105,8 @@ public class MProduct extends org.compiere.product.MProduct {
         new Query(
                 getCtx(),
                 I_M_CostDetail.Table_Name,
-                I_M_CostDetail.COLUMNNAME_M_Product_ID + "=?",
-                null)
+                I_M_CostDetail.COLUMNNAME_M_Product_ID + "=?"
+        )
             .setOnlyActiveRecords(true)
             .setParameters(getId())
             .match();
@@ -123,7 +123,7 @@ public class MProduct extends org.compiere.product.MProduct {
 
     //	Value/Name change in Account
     if (!newRecord && (is_ValueChanged("Value") || is_ValueChanged("Name")))
-      MAccount.updateValueDescription(getCtx(), "M_Product_ID=" + getM_Product_ID(), null);
+      MAccount.updateValueDescription(getCtx(), "M_Product_ID=" + getM_Product_ID());
 
     //	Name/Description Change in Asset	MAsset.setValueNameDescription
     if (!newRecord && (is_ValueChanged("Name") || is_ValueChanged("Description"))) {
@@ -210,7 +210,7 @@ public class MProduct extends org.compiere.product.MProduct {
   public boolean isASIMandatory(boolean isSOTrx) {
     //
     //	If CostingLevel is BatchLot ASI is always mandatory - check all client acct schemas
-    MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(),  getClientId(), null);
+    MAcctSchema[] mass = MAcctSchema.getClientAcctSchema(getCtx(),  getClientId());
     for (MAcctSchema as : mass) {
       String cl = getCostingLevel(as);
       if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(cl)) {
@@ -243,7 +243,7 @@ public class MProduct extends org.compiere.product.MProduct {
   public String getCostingLevel(MAcctSchema as) {
     String costingLevel = null;
     MProductCategoryAcct pca =
-        MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId(), null);
+        MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId());
     if (pca != null) {
       costingLevel = pca.getCostingLevel();
     }
@@ -262,7 +262,7 @@ public class MProduct extends org.compiere.product.MProduct {
   public String getCostingMethod(MAcctSchema as) {
     String costingMethod = null;
     MProductCategoryAcct pca =
-        MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId(), null);
+        MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId());
     if (pca != null) {
       costingMethod = pca.getCostingMethod();
     }
@@ -325,7 +325,7 @@ public class MProduct extends org.compiere.product.MProduct {
     if (getMAttributeSetInstance_ID() > 0
         && is_ValueChanged(I_M_Product.COLUMNNAME_M_AttributeSet_ID)) {
       MAttributeSetInstance asi =
-          new MAttributeSetInstance(getCtx(), getMAttributeSetInstance_ID(), null);
+          new MAttributeSetInstance(getCtx(), getMAttributeSetInstance_ID());
       if (asi.getMAttributeSet_ID() != getMAttributeSet_ID()) setM_AttributeSetInstance_ID(0);
     }
     if (!newRecord && is_ValueChanged(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID)) {
@@ -335,8 +335,7 @@ public class MProduct extends org.compiere.product.MProduct {
         MAttributeSetInstance oldasi =
             new MAttributeSetInstance(
                 getCtx(),
-                get_ValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID),
-                null);
+                get_ValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID));
         int cnt =
             getSQLValueEx(
                 "SELECT COUNT(*) FROM M_Product WHERE M_AttributeSetInstance_ID=?",
@@ -344,7 +343,7 @@ public class MProduct extends org.compiere.product.MProduct {
         if (cnt == 1) {
           // Delete the old m_attributesetinstance
           try {
-            oldasi.deleteEx(true, null);
+            oldasi.deleteEx(true);
           } catch (AdempiereException ex) {
             log.saveError("Error", "Error deleting the AttributeSetInstance");
             return false;
@@ -372,12 +371,12 @@ public class MProduct extends org.compiere.product.MProduct {
     if (M_Product_ID <= 0) {
       return null;
     }
-    Integer key = new Integer(M_Product_ID);
+    Integer key = M_Product_ID;
     MProduct retValue = (MProduct) s_cache.get(key);
     if (retValue != null) {
       return retValue;
     }
-    retValue = new MProduct(ctx, M_Product_ID, null);
+    retValue = new MProduct(ctx, M_Product_ID);
     if (retValue.getId() != 0) {
       s_cache.put(key, retValue);
     }

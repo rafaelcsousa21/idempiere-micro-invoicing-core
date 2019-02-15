@@ -79,7 +79,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
       pstmt.setInt(1, C_DocType_ID);
       rs = pstmt.executeQuery();
       while (rs.next() && retValue == null) {
-        retValue = new MDocTypeCounter(ctx, rs, null);
+        retValue = new MDocTypeCounter(ctx, rs);
         if (!retValue.isCreateCounter() || !retValue.isValid()) {
           temp = retValue;
           retValue = null;
@@ -152,8 +152,8 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
    * @param C_DocTypeCounter_ID id
    * @param trxName transaction
    */
-  public MDocTypeCounter(Properties ctx, int C_DocTypeCounter_ID, String trxName) {
-    super(ctx, C_DocTypeCounter_ID, trxName);
+  public MDocTypeCounter(Properties ctx, int C_DocTypeCounter_ID) {
+    super(ctx, C_DocTypeCounter_ID);
     if (C_DocTypeCounter_ID == 0) {
       setIsCreateCounter(true); // Y
       setIsValid(false);
@@ -167,8 +167,8 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
    * @param rs result set
    * @param trxName transaction
    */
-  public MDocTypeCounter(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDocTypeCounter(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MDocTypeCounter
 
   /**

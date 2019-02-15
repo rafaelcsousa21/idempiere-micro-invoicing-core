@@ -15,8 +15,8 @@ public class X_T_Replenish extends PO implements I_T_Replenish, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_T_Replenish(Properties ctx, int T_Replenish_ID, String trxName) {
-    super(ctx, T_Replenish_ID, trxName);
+  public X_T_Replenish(Properties ctx, int T_Replenish_ID) {
+    super(ctx, T_Replenish_ID);
     /**
      * if (T_Replenish_ID == 0) { setAD_PInstance_ID (0); setC_BPartner_ID (0); setLevel_Max
      * (Env.ZERO); setLevel_Min (Env.ZERO); setM_Product_ID (0); setM_Warehouse_ID (0);
@@ -25,8 +25,8 @@ public class X_T_Replenish extends PO implements I_T_Replenish, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_T_Replenish(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_T_Replenish(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

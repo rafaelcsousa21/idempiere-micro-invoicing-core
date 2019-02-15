@@ -187,7 +187,7 @@ public class InvoiceGenerate extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) {
         p_MinimumAmtInvSched = null;
-        MOrder order = new MOrder(getCtx(), rs, null);
+        MOrder order = new MOrder(getCtx(), rs);
         StringBuilder msgsup =
             new StringBuilder(Msg.getMsg(getCtx(), "Processing"))
                 .append(" ")
@@ -205,14 +205,14 @@ public class InvoiceGenerate extends SvrProcess {
         //	Schedule After Delivery
         boolean doInvoice = false;
         if (MOrder.INVOICERULE_CustomerScheduleAfterDelivery.equals(order.getInvoiceRule())) {
-          m_bp = new MBPartner(getCtx(), order.getBill_BPartner_ID(), null);
+          m_bp = new MBPartner(getCtx(), order.getBill_BPartner_ID());
           if (m_bp.getC_InvoiceSchedule_ID() == 0) {
             log.warning("BPartner has no Schedule - set to After Delivery");
             order.setInvoiceRule(MOrder.INVOICERULE_AfterDelivery);
             order.saveEx();
           } else {
             MInvoiceSchedule is =
-                MInvoiceSchedule.get(getCtx(), m_bp.getC_InvoiceSchedule_ID(), null);
+                MInvoiceSchedule.get(getCtx(), m_bp.getC_InvoiceSchedule_ID());
             if (is.canInvoice(order.getDateOrdered())) {
               if (is.isAmount() && is.getAmt() != null) p_MinimumAmtInvSched = is.getAmt();
               doInvoice = true;
@@ -368,7 +368,7 @@ public class InvoiceGenerate extends SvrProcess {
     if (m_ship == null || m_ship.getM_InOut_ID() != ship.getM_InOut_ID()) {
       MDocType dt = MDocType.get(getCtx(), ship.getC_DocType_ID());
       if (m_bp == null || m_bp.getC_BPartner_ID() != ship.getC_BPartner_ID())
-        m_bp = new MBPartner(getCtx(), ship.getC_BPartner_ID(), null);
+        m_bp = new MBPartner(getCtx(), ship.getC_BPartner_ID());
 
       //	Reference: Delivery: 12345 - 12.12.12
       MClient client = MClient.get(getCtx(), order.getClientId());
@@ -422,7 +422,7 @@ public class InvoiceGenerate extends SvrProcess {
   /** Complete Invoice */
   private void completeInvoice() {
     if (m_invoice != null) {
-      MOrder order = new MOrder(getCtx(), m_invoice.getC_Order_ID(), null);
+      MOrder order = new MOrder(getCtx(), m_invoice.getC_Order_ID());
       if (order != null) {
         m_invoice.setPaymentRule(order.getPaymentRule());
         m_invoice.setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
@@ -431,10 +431,10 @@ public class InvoiceGenerate extends SvrProcess {
         // copy payment schedule from order if invoice doesn't have a current payment schedule
         MOrderPaySchedule[] opss =
             MOrderPaySchedule.getOrderPaySchedule(
-                getCtx(), order.getC_Order_ID(), 0, null);
+                getCtx(), order.getC_Order_ID(), 0);
         MInvoicePaySchedule[] ipss =
             MInvoicePaySchedule.getInvoicePaySchedule(
-                getCtx(), m_invoice.getC_Invoice_ID(), 0, null);
+                getCtx(), m_invoice.getC_Invoice_ID(), 0);
         if (ipss.length == 0 && opss.length > 0) {
           BigDecimal ogt = order.getGrandTotal();
           BigDecimal igt = m_invoice.getGrandTotal();
@@ -444,7 +444,7 @@ public class InvoiceGenerate extends SvrProcess {
           int scale = cur.getStdPrecision();
 
           for (MOrderPaySchedule ops : opss) {
-            MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0, null);
+            MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0);
             PO.copyValues(ops, ips);
             if (percent != Env.ONE) {
               BigDecimal propDueAmt = ops.getDueAmt().multiply(percent);

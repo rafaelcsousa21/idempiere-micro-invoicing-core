@@ -26,8 +26,8 @@ public class MWFNextCondition extends X_AD_WF_NextCondition {
    * @param id id
    * @param trxName transaction
    */
-  public MWFNextCondition(Properties ctx, int id, String trxName) {
-    super(ctx, id, trxName);
+  public MWFNextCondition(Properties ctx, int id) {
+    super(ctx, id);
   } //	MWFNextCondition
 
   /**
@@ -37,8 +37,8 @@ public class MWFNextCondition extends X_AD_WF_NextCondition {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWFNextCondition(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWFNextCondition(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWFNextCondition
 
   /** Numeric evaluation */

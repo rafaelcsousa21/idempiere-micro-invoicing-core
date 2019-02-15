@@ -273,7 +273,7 @@ public class ServerProcessCtl implements Runnable {
 
   public static MWFProcess startWorkFlow(Properties ctx, IProcessInfo pi, int AD_Workflow_ID) {
     MWorkflow wf = MWorkflow.get(ctx, AD_Workflow_ID);
-    MWFProcess wfProcess = wf.start(pi, pi.getTransactionName());
+    MWFProcess wfProcess = wf.start(pi);
     if (log.isLoggable(Level.FINE)) log.fine(pi.toString());
     return wfProcess;
   }

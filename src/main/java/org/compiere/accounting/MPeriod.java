@@ -50,7 +50,7 @@ public class MPeriod extends X_C_Period {
     MPeriod retValue = (MPeriod) s_cache.get(key);
     if (retValue != null) return retValue;
     //
-    retValue = new MPeriod(ctx, C_Period_ID, null);
+    retValue = new MPeriod(ctx, C_Period_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -75,30 +75,14 @@ public class MPeriod extends X_C_Period {
    * @param AD_Org_ID Organization
    * @return active Period or null
    */
-  public static MPeriod get(Properties ctx, Timestamp DateAcct, int AD_Org_ID, String trxName) {
+  public static MPeriod get(Properties ctx, Timestamp DateAcct, int AD_Org_ID) {
 
     if (DateAcct == null) return null;
 
     int C_Calendar_ID = getC_Calendar_ID(ctx, AD_Org_ID);
 
-    return findByCalendar(ctx, DateAcct, C_Calendar_ID, trxName);
+    return findByCalendar(ctx, DateAcct, C_Calendar_ID);
   } //	get
-
-  @Deprecated
-  public static MPeriod get(Properties ctx, Timestamp DateAcct, int AD_Org_ID) {
-    return get(ctx, DateAcct, AD_Org_ID, null);
-  }
-
-  /**
-   * @param ctx
-   * @param DateAcct
-   * @param C_Calendar_ID
-   * @return MPeriod
-   * @deprecated
-   */
-  public static MPeriod findByCalendar(Properties ctx, Timestamp DateAcct, int C_Calendar_ID) {
-    return findByCalendar(ctx, DateAcct, C_Calendar_ID, null);
-  }
 
   /**
    * @param ctx
@@ -108,7 +92,7 @@ public class MPeriod extends X_C_Period {
    * @return MPeriod
    */
   public static MPeriod findByCalendar(
-      Properties ctx, Timestamp DateAcct, int C_Calendar_ID, String trxName) {
+      Properties ctx, Timestamp DateAcct, int C_Calendar_ID) {
 
     int AD_Client_ID = Env.getClientId(ctx);
     //	Search in Cache first
@@ -144,7 +128,7 @@ public class MPeriod extends X_C_Period {
       pstmt.setString(4, "S");
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MPeriod period = new MPeriod(ctx, rs, trxName);
+        MPeriod period = new MPeriod(ctx, rs);
         Integer key = new Integer(period.getC_Period_ID());
         s_cache.put(key, period);
         if (period.isStandardPeriod()) retValue = period;
@@ -279,7 +263,7 @@ public class MPeriod extends X_C_Period {
       pstmt.setString(4, "S");
       rs = pstmt.executeQuery();
       if (rs.next()) // 	first only
-      retValue = new MPeriod(ctx, rs, null);
+      retValue = new MPeriod(ctx, rs);
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
@@ -307,8 +291,8 @@ public class MPeriod extends X_C_Period {
    * @param C_Period_ID id
    * @param trxName transaction
    */
-  public MPeriod(Properties ctx, int C_Period_ID, String trxName) {
-    super(ctx, C_Period_ID, trxName);
+  public MPeriod(Properties ctx, int C_Period_ID) {
+    super(ctx, C_Period_ID);
     if (C_Period_ID == 0) {
       //	setC_Period_ID (0);		//	PK
       //  setC_Year_ID (0);		//	Parent
@@ -326,8 +310,8 @@ public class MPeriod extends X_C_Period {
    * @param rs result set
    * @param trxName transaction
    */
-  public MPeriod(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPeriod(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MPeriod
 
   /**
@@ -340,7 +324,7 @@ public class MPeriod extends X_C_Period {
    * @param endDate end
    */
   public MPeriod(MYear year, int PeriodNo, String name, Timestamp startDate, Timestamp endDate) {
-    this(year.getCtx(), 0, null);
+    this(year.getCtx(), 0);
     setClientOrg(year);
     setC_Year_ID(year.getC_Year_ID());
     setPeriodNo(PeriodNo);
@@ -369,7 +353,7 @@ public class MPeriod extends X_C_Period {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_Period_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MPeriodControl(getCtx(), rs, null));
+      while (rs.next()) list.add(new MPeriodControl(getCtx(), rs));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
@@ -519,7 +503,7 @@ public class MPeriod extends X_C_Period {
       return false;
     }
 
-    MYear year = new MYear(getCtx(), getC_Year_ID(), null);
+    MYear year = new MYear(getCtx(), getC_Year_ID());
 
     Query query =
         MTable.get(getCtx(), "C_Period")
@@ -528,8 +512,7 @@ public class MPeriod extends X_C_Period {
                     + "                   y.C_Calendar_ID =?)"
                     + " AND (? BETWEEN StartDate AND EndDate"
                     + " OR ? BETWEEN StartDate AND EndDate)"
-                    + " AND PeriodType=?",
-                null);
+                    + " AND PeriodType=?");
     query.setParameters(year.getC_Calendar_ID(), getStartDate(), getEndDate(), getPeriodType());
 
     List<MPeriod> periods = query.list();
@@ -682,7 +665,7 @@ public class MPeriod extends X_C_Period {
   public static int getC_Calendar_ID(Properties ctx, int AD_Org_ID) {
     int C_Calendar_ID = 0;
     if (AD_Org_ID != 0) {
-      MOrgInfo info = MOrgInfo.get(ctx, AD_Org_ID, null);
+      MOrgInfo info = MOrgInfo.get(ctx, AD_Org_ID);
       C_Calendar_ID = info.getC_Calendar_ID();
     }
 

@@ -20,8 +20,8 @@ public class MWFBlock extends X_AD_WF_Block {
    * @param AD_WF_Block_ID id
    * @param trxName transaction
    */
-  public MWFBlock(Properties ctx, int AD_WF_Block_ID, String trxName) {
-    super(ctx, AD_WF_Block_ID, trxName);
+  public MWFBlock(Properties ctx, int AD_WF_Block_ID) {
+    super(ctx, AD_WF_Block_ID);
   } //	MWFBlock
 
   /**
@@ -31,7 +31,7 @@ public class MWFBlock extends X_AD_WF_Block {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWFBlock(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWFBlock(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWFBlock
 } //	MWFBlock

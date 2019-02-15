@@ -20,13 +20,13 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_CostElement(Properties ctx, int M_CostElement_ID, String trxName) {
-    super(ctx, M_CostElement_ID, trxName);
+  public X_M_CostElement(Properties ctx, int M_CostElement_ID) {
+    super(ctx, M_CostElement_ID);
   }
 
   /** Load Constructor */
-  public X_M_CostElement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_CostElement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_M_CostElement(Properties ctx, Row row)  {
     super(ctx, row);

@@ -26,8 +26,8 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
    * @param C_InvoiceBatchLine_ID id
    * @param trxName trx
    */
-  public MInvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID, String trxName) {
-    super(ctx, C_InvoiceBatchLine_ID, trxName);
+  public MInvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID) {
+    super(ctx, C_InvoiceBatchLine_ID);
     if (C_InvoiceBatchLine_ID == 0) {
       //	setC_InvoiceBatch_ID (0);
       /**
@@ -55,8 +55,8 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
    * @param rs result set
    * @param trxName trx
    */
-  public MInvoiceBatchLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInvoiceBatchLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInvoiceBatchLine
 
   /**

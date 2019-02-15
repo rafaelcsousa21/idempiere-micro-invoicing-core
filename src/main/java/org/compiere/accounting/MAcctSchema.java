@@ -35,40 +35,19 @@ public class MAcctSchema extends X_C_AcctSchema {
    *
    * @param ctx context
    * @param C_AcctSchema_ID schema id
-   * @return Accounting schema
-   */
-  public static MAcctSchema get(Properties ctx, int C_AcctSchema_ID) {
-    return get(ctx, C_AcctSchema_ID, null);
-  } //	get
-
-  /**
-   * Get AccountSchema of Client
-   *
-   * @param ctx context
-   * @param C_AcctSchema_ID schema id
    * @param trxName optional trx
    * @return Accounting schema
    */
-  public static MAcctSchema get(Properties ctx, int C_AcctSchema_ID, String trxName) {
+  public static MAcctSchema get(Properties ctx, int C_AcctSchema_ID) {
     //  Check Cache
-    Integer key = new Integer(C_AcctSchema_ID);
+    Integer key = C_AcctSchema_ID;
     MAcctSchema retValue = (MAcctSchema) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MAcctSchema(ctx, C_AcctSchema_ID, trxName);
-    if (trxName == null) s_cache.put(key, retValue);
+    retValue = new MAcctSchema(ctx, C_AcctSchema_ID);
+    s_cache.put(key, retValue);
     return retValue;
   } //	get
 
-  /**
-   * Get AccountSchema of Client
-   *
-   * @param ctx context
-   * @param AD_Client_ID client or 0 for all
-   * @return Array of AcctSchema of Client
-   */
-  public static MAcctSchema[] getClientAcctSchema(Properties ctx, int AD_Client_ID) {
-    return getClientAcctSchema(ctx, AD_Client_ID, null);
-  } //	getClientAcctSchema
 
   /**
    * Get AccountSchema of Client
@@ -79,15 +58,15 @@ public class MAcctSchema extends X_C_AcctSchema {
    * @return Array of AcctSchema of Client
    */
   public static synchronized MAcctSchema[] getClientAcctSchema(
-      Properties ctx, int AD_Client_ID, String trxName) {
+      Properties ctx, int AD_Client_ID) {
     //  Check Cache
-    Integer key = new Integer(AD_Client_ID);
+    Integer key = AD_Client_ID;
     if (s_schema.containsKey(key)) return (MAcctSchema[]) s_schema.get(key);
 
     //  Create New
     ArrayList<MAcctSchema> list = new ArrayList<MAcctSchema>();
-    MClientInfo info = MClientInfo.get(ctx, AD_Client_ID, trxName);
-    MAcctSchema as = MAcctSchema.get(ctx, info.getC_AcctSchema1_ID(), trxName);
+    MClientInfo info = MClientInfo.get(ctx, AD_Client_ID);
+    MAcctSchema as = MAcctSchema.get(ctx, info.getC_AcctSchema1_ID());
     if (as.getId() != 0) list.add(as);
 
     ArrayList<Object> params = new ArrayList<Object>();
@@ -104,7 +83,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     }
 
     List<MAcctSchema> ass =
-        new Query(ctx, I_C_AcctSchema.Table_Name, whereClause.toString(), trxName)
+        new Query(ctx, I_C_AcctSchema.Table_Name, whereClause.toString())
             .setParameters(params)
             .setOrderBy(MAcctSchema.COLUMNNAME_C_AcctSchema_ID)
             .list();
@@ -118,7 +97,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     //  Save
     MAcctSchema[] retValue = new MAcctSchema[list.size()];
     list.toArray(retValue);
-    if (trxName == null) s_schema.put(key, retValue);
+    s_schema.put(key, retValue);
     return retValue;
   } //  getClientAcctSchema
 
@@ -137,8 +116,8 @@ public class MAcctSchema extends X_C_AcctSchema {
    * @param C_AcctSchema_ID id
    * @param trxName transaction
    */
-  public MAcctSchema(Properties ctx, int C_AcctSchema_ID, String trxName) {
-    super(ctx, C_AcctSchema_ID, trxName);
+  public MAcctSchema(Properties ctx, int C_AcctSchema_ID) {
+    super(ctx, C_AcctSchema_ID);
     if (C_AcctSchema_ID == 0) {
       //	setC_Currency_ID (0);
       //	setName (null);
@@ -169,8 +148,8 @@ public class MAcctSchema extends X_C_AcctSchema {
    * @param rs result set
    * @param trxName transaction
    */
-  public MAcctSchema(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAcctSchema(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MAcctSchema
   public MAcctSchema(Properties ctx, Row row)  {
     super(ctx, row);
@@ -183,7 +162,7 @@ public class MAcctSchema extends X_C_AcctSchema {
    * @param currency currency
    */
   public MAcctSchema(MClient client, KeyNamePair currency) {
-    this(client.getCtx(), 0, null);
+    this(client.getCtx(), 0);
     setClientOrg(client);
     setC_Currency_ID(currency.getKey());
     StringBuilder msgset =
@@ -393,7 +372,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     if (log.isLoggable(Level.INFO)) log.info(toString());
     //	Create Cost Type
     if (getM_CostType_ID() == 0) {
-      MCostType ct = new MCostType(getCtx(), 0, null);
+      MCostType ct = new MCostType(getCtx(), 0);
       ct.setClientOrg( getClientId(), 0);
       ct.setName(getName());
       ct.saveEx();

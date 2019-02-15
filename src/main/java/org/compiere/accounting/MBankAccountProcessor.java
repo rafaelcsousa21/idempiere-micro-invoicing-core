@@ -91,7 +91,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
       pstmt.setInt(2, C_Currency_ID);
       pstmt.setBigDecimal(3, Amt);
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MBankAccountProcessor(ctx, rs, trxName));
+      while (rs.next()) list.add(new MBankAccountProcessor(ctx, rs));
     } catch (SQLException e) {
       s_log.log(Level.SEVERE, "find - " + sql, e);
       return null;
@@ -124,18 +124,18 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     return retValue;
   } //  find
 
-    public MBankAccountProcessor(Properties ctx, int ignored, String trxName) {
-    super(ctx, 0, trxName);
+    public MBankAccountProcessor(Properties ctx, int ignored) {
+    super(ctx, 0);
     if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
   }
 
-  public MBankAccountProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBankAccountProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   public MBankAccountProcessor(
-      Properties ctx, int C_BankAccount_ID, int C_PaymentProcessor_ID, String trxName) {
-    this(ctx, 0, trxName);
+      Properties ctx, int C_BankAccount_ID, int C_PaymentProcessor_ID) {
+    this(ctx, 0);
     setC_BankAccount_ID(C_BankAccount_ID); // 	FK
     setC_PaymentProcessor_ID(C_PaymentProcessor_ID); // 	FK
   }
@@ -144,7 +144,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
   protected boolean beforeSave(boolean newRecord) {
     if (getC_PaymentProcessor_ID() > 0 && isActive()) {
       MPaymentProcessor pp =
-          new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
+          new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID());
       if (!pp.isActive())
         throw new AdempiereException(
             Msg.translate(getCtx(), "InactivePaymentProcessor") + ". " + pp.toString());
@@ -163,7 +163,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
   public boolean accepts(String TenderType, String CreditCardType) {
     if (getC_PaymentProcessor_ID() > 0) {
       MPaymentProcessor pp =
-          new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
+          new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID());
 
       if ((MPayment.TENDERTYPE_DirectDeposit.equals(TenderType)
               && isAcceptDirectDeposit()

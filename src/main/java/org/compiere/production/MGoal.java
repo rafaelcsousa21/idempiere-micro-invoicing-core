@@ -48,7 +48,7 @@ public class MGoal extends X_PA_Goal {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, PA_Measure_ID);
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MGoal(ctx, rs, null));
+      while (rs.next()) list.add(new MGoal(ctx, rs));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
@@ -71,8 +71,8 @@ public class MGoal extends X_PA_Goal {
    * @param PA_Goal_ID id
    * @param trxName trx
    */
-  public MGoal(Properties ctx, int PA_Goal_ID, String trxName) {
-    super(ctx, PA_Goal_ID, trxName);
+  public MGoal(Properties ctx, int PA_Goal_ID) {
+    super(ctx, PA_Goal_ID);
     if (PA_Goal_ID == 0) {
       //	setName (null);
       //	setAD_User_ID (0);
@@ -94,8 +94,8 @@ public class MGoal extends X_PA_Goal {
    * @param rs result set
    * @param trxName trx
    */
-  public MGoal(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MGoal(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MGoal
 
   /**
@@ -108,8 +108,8 @@ public class MGoal extends X_PA_Goal {
    * @param trxName trx
    */
   public MGoal(
-      Properties ctx, String Name, String Description, BigDecimal MeasureTarget, String trxName) {
-    super(ctx, 0, trxName);
+      Properties ctx, String Name, String Description, BigDecimal MeasureTarget) {
+    super(ctx, 0);
     setName(Name);
     setDescription(Description);
     setMeasureTarget(MeasureTarget);
@@ -140,7 +140,7 @@ public class MGoal extends X_PA_Goal {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getPA_Goal_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MGoalRestriction(getCtx(), rs, null));
+      while (rs.next()) list.add(new MGoalRestriction(getCtx(), rs));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {
@@ -177,10 +177,9 @@ public class MGoal extends X_PA_Goal {
     }
 
     if (force || getDateLastRun() == null || isUpdateByInterfal) {
-      measure.set_TrxName(null);
       if (measure.updateGoals()) // 	saves
       {
-        load(getId(), null);
+        load(getId());
         return true;
       }
     }

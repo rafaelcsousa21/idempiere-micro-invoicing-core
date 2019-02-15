@@ -36,7 +36,7 @@ public class MStatus extends X_R_Status {
     Integer key = new Integer(R_Status_ID);
     MStatus retValue = (MStatus) s_cache.get(key);
     if (retValue == null) {
-      retValue = new MStatus(ctx, R_Status_ID, null);
+      retValue = new MStatus(ctx, R_Status_ID);
       s_cache.put(key, retValue);
     }
     return retValue;
@@ -67,7 +67,7 @@ public class MStatus extends X_R_Status {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, R_RequestType_ID);
       rs = pstmt.executeQuery();
-      if (rs.next()) retValue = new MStatus(ctx, rs, null);
+      if (rs.next()) retValue = new MStatus(ctx, rs);
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
     } finally {
@@ -98,7 +98,7 @@ public class MStatus extends X_R_Status {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, AD_Client_ID);
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MStatus(ctx, rs, null));
+      while (rs.next()) list.add(new MStatus(ctx, rs));
     } catch (SQLException ex) {
       s_log.log(Level.SEVERE, sql, ex);
     } finally {
@@ -127,8 +127,8 @@ public class MStatus extends X_R_Status {
    * @param R_Status_ID is
    * @param trxName trx
    */
-  public MStatus(Properties ctx, int R_Status_ID, String trxName) {
-    super(ctx, R_Status_ID, trxName);
+  public MStatus(Properties ctx, int R_Status_ID) {
+    super(ctx, R_Status_ID);
     if (R_Status_ID == 0) {
       //	setValue (null);
       //	setName (null);
@@ -147,8 +147,8 @@ public class MStatus extends X_R_Status {
    * @param rs result set
    * @param trxName trx
    */
-  public MStatus(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MStatus(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MStatus
 
   /**

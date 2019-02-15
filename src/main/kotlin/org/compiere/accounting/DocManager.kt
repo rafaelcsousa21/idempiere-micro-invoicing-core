@@ -56,8 +56,8 @@ object DocManager {
                     "ORDER BY t.AD_Table_ID"
             val tableIDs: MutableList<Int> = mutableListOf()
             val tableNames: MutableList<String> = mutableListOf()
-            var pstmt: PreparedStatement? = null
-            var rs: ResultSet? = null
+            var pstmt: PreparedStatement?
+            var rs: ResultSet?
             try {
                 pstmt = prepareStatement(sql)
                 rs = pstmt!!.executeQuery()
@@ -83,7 +83,7 @@ object DocManager {
      * @param trxName transaction name
      * @return Document or null
      */
-    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, Record_ID: Int, trxName: String): IDoc? {
+    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, Record_ID: Int): IDoc? {
         var TableName: String? = null
         for (i in 0 until DocManager.getDocumentsTableID()!!.size) {
             if (DocManager.getDocumentsTableID()!![i] == AD_Table_ID) {
@@ -107,7 +107,7 @@ object DocManager {
             factoryList = DefaultDocumentFactoryHolder().services
         }
         for (factory in factoryList) {
-            val doc = factory.getDocument(`as`, AD_Table_ID, Record_ID, trxName)
+            val doc = factory.getDocument(`as`, AD_Table_ID, Record_ID)
             if (doc != null)
                 return doc
         }
@@ -120,7 +120,7 @@ object DocManager {
             factoryList = DefaultDocumentFactoryHolder().services
         }
         for (factory in factoryList) {
-            val doc = factory.getDocument(`as`, AD_Table_ID, Record_ID, trxName)
+            val doc = factory.getDocument(`as`, AD_Table_ID, Record_ID)
             if (doc != null)
                 return doc
         }
@@ -137,7 +137,7 @@ object DocManager {
      * @return Document
      * @throws AdempiereUserError
      */
-    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: ResultSet, trxName: String?): IDoc? {
+    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: ResultSet): IDoc? {
         val query = ServiceQuery()
         query["gaap"] = `as`.gaap
         val locator = Service.locator()
@@ -155,7 +155,7 @@ object DocManager {
             factoryList = DefaultDocumentFactoryHolder().services
         }
         for (factory in factoryList) {
-            val doc = factory.getDocument(`as`, AD_Table_ID, rs, trxName)
+            val doc = factory.getDocument(`as`, AD_Table_ID, rs)
             if (doc != null)
                 return doc
         }
@@ -168,7 +168,7 @@ object DocManager {
             factoryList = DefaultDocumentFactoryHolder().services
         }
         for (factory in factoryList) {
-            val doc = factory.getDocument(`as`, AD_Table_ID, rs, trxName)
+            val doc = factory.getDocument(`as`, AD_Table_ID, rs)
             if (doc != null)
                 return doc
         }
@@ -191,8 +191,7 @@ object DocManager {
         AD_Table_ID: Int,
         Record_ID: Int,
         force: Boolean,
-        repost: Boolean,
-        trxName: String?
+        repost: Boolean
     ): String? {
 
         var tableName: String? = null
@@ -211,14 +210,14 @@ object DocManager {
         val sql = StringBuilder("SELECT * FROM ")
                 .append(tableName)
                 .append(" WHERE ").append(tableName).append("_ID=? AND Processed='Y'")
-        var pstmt: PreparedStatement? = null
-        var rs: ResultSet? = null
+        var pstmt: PreparedStatement?
+        var rs: ResultSet?
         try {
             pstmt = prepareStatement(sql.toString())
             pstmt!!.setInt(1, Record_ID)
             rs = pstmt.executeQuery()
             if (rs!!.next()) {
-                return postDocument(ass, AD_Table_ID, rs, force, repost, trxName)
+                return postDocument(ass, AD_Table_ID, rs, force, repost)
             } else {
                 s_log.severe("Not Found: " + tableName + "_ID=" + Record_ID)
                 return "NoDoc"
@@ -247,13 +246,12 @@ object DocManager {
         AD_Table_ID: Int,
         rs: ResultSet,
         force: Boolean,
-        repost: Boolean,
-        trxName: String?
+        repost: Boolean
     ): String? {
         var error: String? = null
         var status = ""
         for (`as` in ass) {
-            val doc = Doc.get(`as`, AD_Table_ID, rs, null)
+            val doc = Doc.get(`as`, AD_Table_ID, rs)
             if (doc != null) {
                 error = doc.post(force, repost) // 	repost
                 status = doc.postStatus

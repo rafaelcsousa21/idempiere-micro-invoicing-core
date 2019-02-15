@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_DepositBatch;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_DepositBatch(Properties ctx, int C_DepositBatch_ID, String trxName) {
-    super(ctx, C_DepositBatch_ID, trxName);
+  public X_C_DepositBatch(Properties ctx, int C_DepositBatch_ID) {
+    super(ctx, C_DepositBatch_ID);
     /**
      * if (C_DepositBatch_ID == 0) { setC_BankAccount_ID (0); setC_DepositBatch_ID (0);
      * setC_DocType_ID (0); setDateDeposit (new Timestamp( System.currentTimeMillis() )); // @#Date@
@@ -34,8 +33,8 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
   }
 
   /** Load Constructor */
-  public X_C_DepositBatch(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_DepositBatch(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

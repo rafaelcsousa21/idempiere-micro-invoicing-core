@@ -29,7 +29,7 @@ public class MBankAccount extends X_C_BankAccount {
     Integer key = new Integer(C_BankAccount_ID);
     MBankAccount retValue = (MBankAccount) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MBankAccount(ctx, C_BankAccount_ID, null);
+    retValue = new MBankAccount(ctx, C_BankAccount_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -45,8 +45,8 @@ public class MBankAccount extends X_C_BankAccount {
    * @param C_BankAccount_ID bank account
    * @param trxName transaction
    */
-  public MBankAccount(Properties ctx, int C_BankAccount_ID, String trxName) {
-    super(ctx, C_BankAccount_ID, trxName);
+  public MBankAccount(Properties ctx, int C_BankAccount_ID) {
+    super(ctx, C_BankAccount_ID);
     if (C_BankAccount_ID == 0) {
       setIsDefault(false);
       setBankAccountType(X_C_BankAccount.BANKACCOUNTTYPE_Checking);
@@ -64,8 +64,8 @@ public class MBankAccount extends X_C_BankAccount {
    * @param rs result set
    * @param trxName transaction
    */
-  public MBankAccount(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBankAccount(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MBankAccount
 
   /**

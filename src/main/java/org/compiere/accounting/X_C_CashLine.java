@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_CashLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -22,8 +21,8 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_CashLine(Properties ctx, int C_CashLine_ID, String trxName) {
-    super(ctx, C_CashLine_ID, trxName);
+  public X_C_CashLine(Properties ctx, int C_CashLine_ID) {
+    super(ctx, C_CashLine_ID);
     /**
      * if (C_CashLine_ID == 0) { setAmount (Env.ZERO); setCashType (null); // E setC_Cash_ID (0);
      * setC_CashLine_ID (0); setLine (0); // @SQL=SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue
@@ -32,8 +31,8 @@ public class X_C_CashLine extends PO implements I_C_CashLine, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_C_CashLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_CashLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

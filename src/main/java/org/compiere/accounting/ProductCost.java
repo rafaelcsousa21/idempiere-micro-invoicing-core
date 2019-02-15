@@ -28,11 +28,10 @@ public class ProductCost {
    * @param trxName trx
    */
   public ProductCost(
-      Properties ctx, int M_Product_ID, int M_AttributeSetInstance_ID, String trxName) {
+      Properties ctx, int M_Product_ID, int M_AttributeSetInstance_ID) {
     m_M_Product_ID = M_Product_ID;
-    if (m_M_Product_ID != 0) m_product = new MProduct(ctx, M_Product_ID, trxName);
+    if (m_M_Product_ID != 0) m_product = new MProduct(ctx, M_Product_ID);
     m_M_AttributeSetInstance_ID = M_AttributeSetInstance_ID;
-    m_trxName = trxName;
   } //	ProductCost
 
   /** The ID */
@@ -41,8 +40,6 @@ public class ProductCost {
   private int m_M_AttributeSetInstance_ID = 0;
   /** The Product */
   private MProduct m_product = null;
-  /** Transaction */
-  private String m_trxName = null;
 
     private BigDecimal m_qty = Env.ZERO;
 
@@ -219,8 +216,7 @@ public class ProductCost {
             costingMethod,
             m_qty,
             C_OrderLine_ID,
-            zeroCostsOK,
-            m_trxName);
+            zeroCostsOK);
     if (cost == null) {
       log.fine("No Costs");
       return null;

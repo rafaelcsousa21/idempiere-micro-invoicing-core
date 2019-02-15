@@ -45,7 +45,7 @@ public class MWFNode extends X_AD_WF_Node {
     String key = Env.getADLanguage(ctx) + "_" + AD_WF_Node_ID;
     MWFNode retValue = (MWFNode) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MWFNode(ctx, AD_WF_Node_ID, null);
+    retValue = new MWFNode(ctx, AD_WF_Node_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -62,8 +62,8 @@ public class MWFNode extends X_AD_WF_Node {
    * @param AD_WF_Node_ID id
    * @param trxName transaction
    */
-  public MWFNode(Properties ctx, int AD_WF_Node_ID, String trxName) {
-    super(ctx, AD_WF_Node_ID, trxName);
+  public MWFNode(Properties ctx, int AD_WF_Node_ID) {
+    super(ctx, AD_WF_Node_ID);
     if (AD_WF_Node_ID == 0) {
       //	setAD_WF_Node_ID (0);
       //	setAD_Workflow_ID (0);
@@ -95,7 +95,7 @@ public class MWFNode extends X_AD_WF_Node {
    * @param Name name
    */
   public MWFNode(MWorkflow wf, String Value, String Name) {
-    this(wf.getCtx(), 0, null);
+    this(wf.getCtx(), 0);
     setClientOrg(wf);
     setAD_Workflow_ID(wf.getAD_Workflow_ID());
     setValue(Value);
@@ -110,8 +110,8 @@ public class MWFNode extends X_AD_WF_Node {
    * @param rs result set to load info from
    * @param trxName transaction
    */
-  public MWFNode(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWFNode(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
     loadNext();
     loadTrl();
     //	Save to Cache
@@ -123,7 +123,7 @@ public class MWFNode extends X_AD_WF_Node {
     } catch (SQLException e) {
       throw new AdempiereException(e);
     }
-    if (key != null && trxName == null && !s_cache.containsKey(key)) s_cache.put(key, this);
+    if (key != null && !s_cache.containsKey(key)) s_cache.put(key, this);
   } //	MWFNode
 
   /** Next Modes */
@@ -156,7 +156,7 @@ public class MWFNode extends X_AD_WF_Node {
   /** Load Next */
   private void loadNext() {
     m_next =
-        new Query(getCtx(), MWFNodeNext.Table_Name, "AD_WF_Node_ID=?", null)
+        new Query(getCtx(), MWFNodeNext.Table_Name, "AD_WF_Node_ID=?")
             .setParameters(new Object[] {getId()})
             .setOnlyActiveRecords(true)
             .setOrderBy(MWFNodeNext.COLUMNNAME_SeqNo)

@@ -121,7 +121,7 @@ public class RequestInvoice extends SvrProcess {
       rs = pstmt.executeQuery();
       int oldC_BPartner_ID = 0;
       while (rs.next()) {
-        MRequest request = new MRequest(getCtx(), rs, null);
+        MRequest request = new MRequest(getCtx(), rs);
         if (!request.isInvoiced()) continue;
         if (oldC_BPartner_ID != request.getC_BPartner_ID()) invoiceDone();
         if (m_invoice == null) {
@@ -176,10 +176,10 @@ public class RequestInvoice extends SvrProcess {
    * @param request request
    */
   private void invoiceNew(MRequest request) {
-    m_invoice = new MInvoice(getCtx(), 0, null);
+    m_invoice = new MInvoice(getCtx(), 0);
     m_invoice.setIsSOTrx(true);
 
-    MBPartner partner = new MBPartner(getCtx(), request.getC_BPartner_ID(), null);
+    MBPartner partner = new MBPartner(getCtx(), request.getC_BPartner_ID());
     m_invoice.setBPartner(partner);
 
     m_invoice.saveEx();

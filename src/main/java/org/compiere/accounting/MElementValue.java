@@ -32,8 +32,8 @@ public class MElementValue extends X_C_ElementValue {
    * @param C_ElementValue_ID ID or 0 for new
    * @param trxName transaction
    */
-  public MElementValue(Properties ctx, int C_ElementValue_ID, String trxName) {
-    super(ctx, C_ElementValue_ID, trxName);
+  public MElementValue(Properties ctx, int C_ElementValue_ID) {
+    super(ctx, C_ElementValue_ID);
     if (C_ElementValue_ID == 0) {
       //	setC_Element_ID (0);	//	Parent
       //	setName (null);
@@ -59,8 +59,8 @@ public class MElementValue extends X_C_ElementValue {
    * @param rs result set
    * @param trxName transaction
    */
-  public MElementValue(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MElementValue(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MElementValue
 
   /**
@@ -84,9 +84,8 @@ public class MElementValue extends X_C_ElementValue {
       String AccountType,
       String AccountSign,
       boolean IsDocControlled,
-      boolean IsSummary,
-      String trxName) {
-    this(ctx, 0, trxName);
+      boolean IsSummary) {
+    this(ctx, 0);
     setValue(Value);
     setName(Name);
     setDescription(Description);
@@ -102,7 +101,7 @@ public class MElementValue extends X_C_ElementValue {
    * @param imp import
    */
   public MElementValue(X_I_ElementValue imp) {
-    this(imp.getCtx(), 0, null);
+    this(imp.getCtx(), 0);
     setClientOrg(imp);
     set(imp);
   } //	MElementValue
@@ -158,8 +157,8 @@ public class MElementValue extends X_C_ElementValue {
           new Query(
                   getCtx(),
                   I_Fact_Acct.Table_Name,
-                  I_Fact_Acct.COLUMNNAME_Account_ID + "=?",
-                  null)
+                  I_Fact_Acct.COLUMNNAME_Account_ID + "=?"
+          )
               .setParameters(getC_ElementValue_ID())
               .match();
       if (match) {
@@ -171,7 +170,7 @@ public class MElementValue extends X_C_ElementValue {
       POResultSet<MAccount> rs = null;
       try {
         rs =
-            new Query(getCtx(), I_C_ValidCombination.Table_Name, whereClause, null)
+            new Query(getCtx(), I_C_ValidCombination.Table_Name, whereClause)
                 .setParameters(getId())
                 .scroll();
         while (rs.hasNext()) {
@@ -190,8 +189,8 @@ public class MElementValue extends X_C_ElementValue {
     if (!success) return success;
     if (newRecord || is_ValueChanged(I_C_ElementValue.COLUMNNAME_Value)) {
       // afalcone [Bugs #1837219]
-      int ad_Tree_ID = (new MElement(getCtx(), getC_Element_ID(), null)).getAD_Tree_ID();
-      String treeType = (new MTree(getCtx(), ad_Tree_ID, null)).getTreeType();
+      int ad_Tree_ID = (new MElement(getCtx(), getC_Element_ID())).getAD_Tree_ID();
+      String treeType = (new MTree(getCtx(), ad_Tree_ID)).getTreeType();
 
       if (newRecord) insert_Tree(treeType, getC_Element_ID());
 
@@ -203,13 +202,13 @@ public class MElementValue extends X_C_ElementValue {
         && (is_ValueChanged(I_C_ElementValue.COLUMNNAME_Value)
             || is_ValueChanged(HasName.Companion.getCOLUMNNAME_Name()))) {
       MAccount.updateValueDescription(
-          getCtx(), "Account_ID=" + getC_ElementValue_ID(), null);
+          getCtx(), "Account_ID=" + getC_ElementValue_ID());
       if ("Y".equals(Env.getContext(getCtx(), "$Element_U1")))
         MAccount.updateValueDescription(
-            getCtx(), "User1_ID=" + getC_ElementValue_ID(), null);
+            getCtx(), "User1_ID=" + getC_ElementValue_ID());
       if ("Y".equals(Env.getContext(getCtx(), "$Element_U2")))
         MAccount.updateValueDescription(
-            getCtx(), "User2_ID=" + getC_ElementValue_ID(), null);
+            getCtx(), "User2_ID=" + getC_ElementValue_ID());
     }
 
     return success;

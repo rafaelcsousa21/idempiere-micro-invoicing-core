@@ -43,7 +43,7 @@ public class WFActivityManage extends SvrProcess {
    * @throws Exception if not successful
    */
   protected String doIt() throws Exception {
-    MWFActivity activity = new MWFActivity(getCtx(), p_AD_WF_Activity_ID, null);
+    MWFActivity activity = new MWFActivity(getCtx(), p_AD_WF_Activity_ID);
     if (log.isLoggable(Level.INFO)) log.info("doIt - " + activity);
 
     MUser user = MUser.get(getCtx(), getAD_User_ID());

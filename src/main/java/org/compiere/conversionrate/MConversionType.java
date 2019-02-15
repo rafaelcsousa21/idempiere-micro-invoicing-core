@@ -62,8 +62,8 @@ public class MConversionType extends X_C_ConversionType {
    * @param C_ConversionType_ID id
    * @param trxName transaction
    */
-  public MConversionType(Properties ctx, int C_ConversionType_ID, String trxName) {
-    super(ctx, C_ConversionType_ID, trxName);
+  public MConversionType(Properties ctx, int C_ConversionType_ID) {
+    super(ctx, C_ConversionType_ID);
   } //	MConversionType
 
   /**
@@ -73,7 +73,7 @@ public class MConversionType extends X_C_ConversionType {
    * @param rs result set
    * @param trxName transaction
    */
-  public MConversionType(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MConversionType(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MConversionType
 } //	MConversionType

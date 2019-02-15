@@ -16,7 +16,6 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.PO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,8 +30,8 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
    * @param M_InOutConfirm_ID id
    * @param trxName transaction
    */
-  public MInOutConfirm(Properties ctx, int M_InOutConfirm_ID, String trxName) {
-    super(ctx, M_InOutConfirm_ID, trxName);
+  public MInOutConfirm(Properties ctx, int M_InOutConfirm_ID) {
+    super(ctx, M_InOutConfirm_ID);
   }
 
   /**
@@ -60,12 +59,11 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
    */
   public MInOutLineConfirm[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     final String whereClause = I_M_InOutLineConfirm.COLUMNNAME_M_InOutConfirm_ID + "=?";
     List<MInOutLineConfirm> list =
-        new Query(getCtx(), I_M_InOutLineConfirm.Table_Name, whereClause, null)
+        new Query(getCtx(), I_M_InOutLineConfirm.Table_Name, whereClause)
             .setParameters(getM_InOutConfirm_ID())
             .list();
     m_lines = new MInOutLineConfirm[list.size()];
@@ -153,7 +151,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
     if (!isApproved()) approveIt();
     if (log.isLoggable(Level.INFO)) log.info(toString());
     //
-    MInOut inout = new MInOut(getCtx(), getM_InOut_ID(), null);
+    MInOut inout = new MInOut(getCtx(), getM_InOut_ID());
     MInOutLineConfirm[] lines = getLines(false);
 
     //	Check if we need to split Shipment
@@ -172,7 +170,6 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
     //	All lines
     for (int i = 0; i < lines.length; i++) {
       MInOutLineConfirm confirmLine = lines[i];
-      confirmLine.set_TrxName(null);
       if (!confirmLine.processLine(inout.isSOTrx(), getConfirmType())) {
         m_processMsg = "ShipLine not saved - " + confirmLine;
         return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -358,7 +355,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
       if (log.isLoggable(Level.INFO)) log.info("Scrapped=" + confirm.getScrappedQty());
       if (m_inventory == null) {
         MWarehouse wh = MWarehouse.get(getCtx(), inout.getM_Warehouse_ID());
-        m_inventory = new MInventory(wh, null);
+        m_inventory = new MInventory(wh);
         StringBuilder msgd =
             new StringBuilder()
                 .append(Msg.translate(getCtx(), "M_InOutConfirm_ID"))
@@ -378,7 +375,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
               ioLine.getMAttributeSetInstance_ID(),
               confirm.getScrappedQty(),
               Env.ZERO);
-      if (!line.save(null)) {
+      if (!line.save()) {
         m_processMsg += "Inventory Line not created";
         return false;
       }
@@ -386,7 +383,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
     }
 
     //
-    if (!confirm.save(null)) {
+    if (!confirm.save()) {
       m_processMsg += "Confirmation Line not saved";
       return false;
     }

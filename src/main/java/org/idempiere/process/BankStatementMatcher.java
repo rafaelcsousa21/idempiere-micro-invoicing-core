@@ -39,7 +39,7 @@ public class BankStatementMatcher extends SvrProcess {
       if (para[i].getParameter() == null) ;
       else log.log(Level.SEVERE, "Unknown Parameter: " + name);
     }
-    m_matchers = MBankStatementMatcher.getMatchers(getCtx(), null);
+    m_matchers = MBankStatementMatcher.getMatchers(getCtx());
   } //	prepare
 
   /**
@@ -64,11 +64,11 @@ public class BankStatementMatcher extends SvrProcess {
               + m_matchers.length);
 
     if (Table_ID == X_I_BankStatement.Table_ID)
-      return match(new X_I_BankStatement(getCtx(), Record_ID, null));
+      return match(new X_I_BankStatement(getCtx(), Record_ID));
     else if (Table_ID == MBankStatement.Table_ID)
-      return match(new MBankStatement(getCtx(), Record_ID, null));
+      return match(new MBankStatement(getCtx(), Record_ID));
     else if (Table_ID == MBankStatementLine.Table_ID)
-      return match(new MBankStatementLine(getCtx(), Record_ID, null));
+      return match(new MBankStatementLine(getCtx(), Record_ID));
 
     return "??";
   } //	doIt

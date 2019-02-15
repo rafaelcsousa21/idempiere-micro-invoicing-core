@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_C_BP_BankAccount;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -20,8 +19,8 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_BP_BankAccount(Properties ctx, int C_BP_BankAccount_ID, String trxName) {
-    super(ctx, C_BP_BankAccount_ID, trxName);
+  public X_C_BP_BankAccount(Properties ctx, int C_BP_BankAccount_ID) {
+    super(ctx, C_BP_BankAccount_ID);
     /**
      * if (C_BP_BankAccount_ID == 0) { setA_Name (null); setC_BPartner_ID (0);
      * setC_BP_BankAccount_ID (0); setIsACH (false); }
@@ -29,8 +28,8 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount, I_Pers
   }
 
   /** Load Constructor */
-  public X_C_BP_BankAccount(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_BP_BankAccount(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

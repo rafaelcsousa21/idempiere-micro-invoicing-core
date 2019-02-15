@@ -102,7 +102,7 @@ public class AllocationReset extends SvrProcess {
     int count = 0;
 
     if (p_C_AllocationHdr_ID != 0) {
-      MAllocationHdr hdr = new MAllocationHdr(getCtx(), p_C_AllocationHdr_ID, null);
+      MAllocationHdr hdr = new MAllocationHdr(getCtx(), p_C_AllocationHdr_ID);
       if (delete(hdr)) count++;
       else throw new AdempiereException("Cannot delete");
       StringBuilder msgreturn = new StringBuilder("@Deleted@ #").append(count);
@@ -141,7 +141,7 @@ public class AllocationReset extends SvrProcess {
       if (p_DateAcct_To != null) pstmt.setTimestamp(index++, p_DateAcct_To);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MAllocationHdr hdr = new MAllocationHdr(getCtx(), rs, null);
+        MAllocationHdr hdr = new MAllocationHdr(getCtx(), rs);
         if (delete(hdr)) count++;
       }
     } catch (Exception e) {
@@ -159,7 +159,7 @@ public class AllocationReset extends SvrProcess {
   private boolean delete(MAllocationHdr hdr) {
     //	m_trx.start();
     boolean success = false;
-    if (hdr.delete(true, null)) {
+    if (hdr.delete(true)) {
       if (log.isLoggable(Level.FINE)) log.fine(hdr.toString());
       success = true;
     }

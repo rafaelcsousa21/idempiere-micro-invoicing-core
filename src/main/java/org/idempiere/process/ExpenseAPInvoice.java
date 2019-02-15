@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MTimeExpense;
@@ -96,15 +82,15 @@ public class ExpenseAPInvoice extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) // 	********* Expense Line Loop
       {
-        MTimeExpense te = new MTimeExpense(getCtx(), rs, null);
+        MTimeExpense te = new MTimeExpense(getCtx(), rs);
 
         //	New BPartner - New Order
         if (te.getC_BPartner_ID() != old_BPartner_ID) {
           completeInvoice(invoice);
-          MBPartner bp = new MBPartner(getCtx(), te.getC_BPartner_ID(), null);
+          MBPartner bp = new MBPartner(getCtx(), te.getC_BPartner_ID());
           //
           if (log.isLoggable(Level.INFO)) log.info("New Invoice for " + bp);
-          invoice = new MInvoice(getCtx(), 0, null);
+          invoice = new MInvoice(getCtx(), 0);
           invoice.setClientOrg(te.getClientId(), te.getOrgId());
           invoice.setC_DocTypeTarget_ID(MDocType.DOCBASETYPE_APInvoice); // 	API
           invoice.setDocumentNo(te.getDocumentNo());

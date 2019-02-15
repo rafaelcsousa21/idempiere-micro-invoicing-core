@@ -17,11 +17,9 @@ import static software.hsharp.core.util.DBKt.*;
 class ProductLowLevelCalculator {
   private Hashtable<Integer, Integer> tableproduct = new Hashtable<Integer, Integer>();
   private Properties m_ctx = null;
-  private String m_trxName = null;
 
-  public ProductLowLevelCalculator(Properties ctx, String trxName) {
+  public ProductLowLevelCalculator(Properties ctx) {
     m_ctx = ctx;
-    m_trxName = trxName;
   }
 
   /**

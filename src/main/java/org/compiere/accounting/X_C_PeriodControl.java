@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_PeriodControl;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -20,8 +19,8 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_PeriodControl(Properties ctx, int C_PeriodControl_ID, String trxName) {
-    super(ctx, C_PeriodControl_ID, trxName);
+  public X_C_PeriodControl(Properties ctx, int C_PeriodControl_ID) {
+    super(ctx, C_PeriodControl_ID);
     /**
      * if (C_PeriodControl_ID == 0) { setC_PeriodControl_ID (0); setC_Period_ID (0); setDocBaseType
      * (null); setPeriodAction (null); // N }
@@ -29,8 +28,8 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
   }
 
   /** Load Constructor */
-  public X_C_PeriodControl(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_PeriodControl(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

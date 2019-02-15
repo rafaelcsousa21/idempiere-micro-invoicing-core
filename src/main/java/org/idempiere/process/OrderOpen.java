@@ -51,7 +51,7 @@ public class OrderOpen extends SvrProcess {
     if (log.isLoggable(Level.INFO)) log.info("doIt - Open C_Order_ID=" + p_C_Order_ID);
     if (p_C_Order_ID == 0) return "";
     //
-    MOrder order = new MOrder(getCtx(), p_C_Order_ID, null);
+    MOrder order = new MOrder(getCtx(), p_C_Order_ID);
     String msg = order.reopenIt();
     if (msg.length() != 0) {
       throw new AdempiereSystemError(msg);

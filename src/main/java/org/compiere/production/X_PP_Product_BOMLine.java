@@ -5,7 +5,6 @@ import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_BOMLine;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -25,8 +24,8 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_PP_Product_BOMLine(Properties ctx, int PP_Product_BOMLine_ID, String trxName) {
-    super(ctx, PP_Product_BOMLine_ID, trxName);
+  public X_PP_Product_BOMLine(Properties ctx, int PP_Product_BOMLine_ID) {
+    super(ctx, PP_Product_BOMLine_ID);
     /**
      * if (PP_Product_BOMLine_ID == 0) { setIssueMethod (null); // 1 setLine (0); // @SQL=SELECT
      * COALESCE(MAX(Line),0)+10 AS DefaultValue FROM PP_Product_BOMLine WHERE
@@ -37,8 +36,8 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   }
 
   /** Load Constructor */
-  public X_PP_Product_BOMLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_PP_Product_BOMLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -139,7 +138,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
     return (org.compiere.model.I_C_UOM)
         MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-            .getPO(getC_UOM_ID(), null);
+            .getPO(getC_UOM_ID());
   }
 
   /**
@@ -345,7 +344,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
     return (I_M_AttributeSetInstance)
         MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-            .getPO(getMAttributeSetInstance_ID(), null);
+            .getPO(getMAttributeSetInstance_ID());
   }
 
   /**
@@ -373,7 +372,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public org.compiere.model.I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException {
     return (org.compiere.model.I_M_ChangeNotice)
         MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-            .getPO(getM_ChangeNotice_ID(), null);
+            .getPO(getM_ChangeNotice_ID());
   }
 
   /**
@@ -400,7 +399,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
+            .getPO(getM_Product_ID());
   }
 
   /**
@@ -427,7 +426,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
     public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
     return (org.eevolution.model.I_PP_Product_BOM)
         MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-            .getPO(getPP_Product_BOM_ID(), null);
+            .getPO(getPP_Product_BOM_ID());
   }
 
   /**
@@ -437,7 +436,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
    */
   public void setPP_Product_BOM_ID(int PP_Product_BOM_ID) {
     if (PP_Product_BOM_ID < 1) set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, Integer.valueOf(PP_Product_BOM_ID));
+    else set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
   }
 
   /**
@@ -458,7 +457,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine, I_
    */
   public void setPP_Product_BOMLine_ID(int PP_Product_BOMLine_ID) {
     if (PP_Product_BOMLine_ID < 1) set_ValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, Integer.valueOf(PP_Product_BOMLine_ID));
+    else set_ValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, PP_Product_BOMLine_ID);
   }
 
   /**

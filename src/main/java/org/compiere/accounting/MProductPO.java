@@ -30,10 +30,10 @@ public class MProductPO extends X_M_Product_PO {
    * @param trxName transaction
    * @return PO - current vendor first
    */
-  public static MProductPO[] getOfProduct(Properties ctx, int M_Product_ID, String trxName) {
+  public static MProductPO[] getOfProduct(Properties ctx, int M_Product_ID) {
     final String whereClause = "M_Product_ID=?";
     List<MProductPO> list =
-        new Query(ctx, I_M_Product_PO.Table_Name, whereClause, trxName)
+        new Query(ctx, I_M_Product_PO.Table_Name, whereClause)
             .setParameters(M_Product_ID)
             .setOnlyActiveRecords(true)
             .setOrderBy("IsCurrentVendor DESC")
@@ -48,8 +48,8 @@ public class MProductPO extends X_M_Product_PO {
    * @param ignored ignored
    * @param trxName transaction
    */
-  public MProductPO(Properties ctx, int ignored, String trxName) {
-    super(ctx, 0, trxName);
+  public MProductPO(Properties ctx, int ignored) {
+    super(ctx, 0);
     if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
     else {
       //	setM_Product_ID (0);	// @M_Product_ID@
@@ -66,8 +66,8 @@ public class MProductPO extends X_M_Product_PO {
    * @param rs result set
    * @param trxName transaction
    */
-  public MProductPO(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProductPO(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProductPO
 
   /**

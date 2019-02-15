@@ -21,8 +21,8 @@ public class MCostType extends X_M_CostType {
    * @param M_CostType_ID id
    * @param trxName trx
    */
-  public MCostType(Properties ctx, int M_CostType_ID, String trxName) {
-    super(ctx, M_CostType_ID, trxName);
+  public MCostType(Properties ctx, int M_CostType_ID) {
+    super(ctx, M_CostType_ID);
   } //	MCostType
 
   /**
@@ -32,8 +32,8 @@ public class MCostType extends X_M_CostType {
    * @param rs result set
    * @param trxName trx
    */
-  public MCostType(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCostType(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCostType
 
   /**

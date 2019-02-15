@@ -21,13 +21,13 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WF_Responsible(Properties ctx, int AD_WF_Responsible_ID, String trxName) {
-    super(ctx, AD_WF_Responsible_ID, trxName);
+  public X_AD_WF_Responsible(Properties ctx, int AD_WF_Responsible_ID) {
+    super(ctx, AD_WF_Responsible_ID);
   }
 
   /** Load Constructor */
-  public X_AD_WF_Responsible(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WF_Responsible(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

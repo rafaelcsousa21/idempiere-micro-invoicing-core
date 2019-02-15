@@ -26,7 +26,7 @@ public class MGLCategory extends X_GL_Category {
     Integer key = new Integer(GL_Category_ID);
     MGLCategory retValue = (MGLCategory) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MGLCategory(ctx, GL_Category_ID, null);
+    retValue = new MGLCategory(ctx, GL_Category_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -48,7 +48,7 @@ public class MGLCategory extends X_GL_Category {
       pstmt.setInt(1, Env.getClientId(ctx));
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MGLCategory temp = new MGLCategory(ctx, rs, null);
+        MGLCategory temp = new MGLCategory(ctx, rs);
         if (CategoryType != null && CategoryType.equals(temp.getCategoryType())) {
           retValue = temp;
           break;
@@ -74,7 +74,7 @@ public class MGLCategory extends X_GL_Category {
   public static MGLCategory getDefaultSystem(Properties ctx) {
     MGLCategory retValue = getDefault(ctx, CATEGORYTYPE_SystemGenerated);
     if (retValue == null || !retValue.getCategoryType().equals(CATEGORYTYPE_SystemGenerated)) {
-      retValue = new MGLCategory(ctx, 0, null);
+      retValue = new MGLCategory(ctx, 0);
       retValue.setName("Default System");
       retValue.setCategoryType(CATEGORYTYPE_SystemGenerated);
       retValue.setIsDefault(true);
@@ -97,8 +97,8 @@ public class MGLCategory extends X_GL_Category {
    * @param GL_Category_ID id
    * @param trxName transaction
    */
-  public MGLCategory(Properties ctx, int GL_Category_ID, String trxName) {
-    super(ctx, GL_Category_ID, trxName);
+  public MGLCategory(Properties ctx, int GL_Category_ID) {
+    super(ctx, GL_Category_ID);
     if (GL_Category_ID == 0) {
       //	setName (null);
       setCategoryType(CATEGORYTYPE_Manual);
@@ -113,8 +113,8 @@ public class MGLCategory extends X_GL_Category {
    * @param rs result set
    * @param trxName transaction
    */
-  public MGLCategory(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MGLCategory(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MGLCategory
 
   @Override

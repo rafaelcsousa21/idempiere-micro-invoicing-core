@@ -3,7 +3,6 @@ package org.compiere.invoicing;
 import org.compiere.model.I_C_InvoiceBatchLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_InvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID, String trxName) {
-    super(ctx, C_InvoiceBatchLine_ID, trxName);
+  public X_C_InvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID) {
+    super(ctx, C_InvoiceBatchLine_ID);
     /**
      * if (C_InvoiceBatchLine_ID == 0) { setC_BPartner_ID (0); // @C_BPartner_ID@
      * setC_BPartner_Location_ID (0); // @C_BPartner_Location_ID@ setC_Charge_ID (0);
@@ -40,8 +39,8 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine, I_
   }
 
   /** Load Constructor */
-  public X_C_InvoiceBatchLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_InvoiceBatchLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

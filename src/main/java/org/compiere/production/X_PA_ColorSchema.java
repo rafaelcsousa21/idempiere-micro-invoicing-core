@@ -19,8 +19,8 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_PA_ColorSchema(Properties ctx, int PA_ColorSchema_ID, String trxName) {
-    super(ctx, PA_ColorSchema_ID, trxName);
+  public X_PA_ColorSchema(Properties ctx, int PA_ColorSchema_ID) {
+    super(ctx, PA_ColorSchema_ID);
     /**
      * if (PA_ColorSchema_ID == 0) { setAD_PrintColor1_ID (0); setAD_PrintColor2_ID (0);
      * setEntityType (null); // @SQL=select get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual
@@ -29,8 +29,8 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema, I_
   }
 
   /** Load Constructor */
-  public X_PA_ColorSchema(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_PA_ColorSchema(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

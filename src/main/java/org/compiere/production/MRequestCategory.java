@@ -23,10 +23,10 @@ public class MRequestCategory extends X_R_Category {
    * @return MCategory
    */
   public static MRequestCategory get(Properties ctx, int R_Category_ID) {
-    Integer key = new Integer(R_Category_ID);
+    Integer key = R_Category_ID;
     MRequestCategory retValue = (MRequestCategory) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MRequestCategory(ctx, R_Category_ID, null);
+    retValue = new MRequestCategory(ctx, R_Category_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -42,8 +42,8 @@ public class MRequestCategory extends X_R_Category {
    * @param R_Category_ID id
    * @param trxName trx
    */
-  public MRequestCategory(Properties ctx, int R_Category_ID, String trxName) {
-    super(ctx, R_Category_ID, trxName);
+  public MRequestCategory(Properties ctx, int R_Category_ID) {
+    super(ctx, R_Category_ID);
   } //	MCategory
 
   /**
@@ -53,7 +53,7 @@ public class MRequestCategory extends X_R_Category {
    * @param rs result set
    * @param trxName trx
    */
-  public MRequestCategory(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequestCategory(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCategory
 } //	MCategory

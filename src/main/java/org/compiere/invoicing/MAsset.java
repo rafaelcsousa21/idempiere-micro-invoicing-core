@@ -30,12 +30,12 @@ import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 public class MAsset extends org.compiere.product.MAsset {
 
-  public MAsset(Properties ctx, int A_Asset_ID, String trxName) {
-    super(ctx, A_Asset_ID, trxName);
+  public MAsset(Properties ctx, int A_Asset_ID) {
+    super(ctx, A_Asset_ID);
   }
 
-  public MAsset(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAsset(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MAsset
 
   /**
@@ -44,11 +44,11 @@ public class MAsset extends org.compiere.product.MAsset {
    * @param match match invoice
    */
   public MAsset(MMatchInv match) {
-    this(match.getCtx(), 0, null);
+    this(match.getCtx(), 0);
 
     MInvoiceLine invoiceLine =
-        new MInvoiceLine(getCtx(), match.getC_InvoiceLine_ID(), null);
-    MInOutLine inoutLine = new MInOutLine(getCtx(), match.getM_InOutLine_ID(), null);
+        new MInvoiceLine(getCtx(), match.getC_InvoiceLine_ID());
+    MInOutLine inoutLine = new MInOutLine(getCtx(), match.getM_InOutLine_ID());
 
     setIsOwned(true);
     setIsInPosession(true);
@@ -74,7 +74,7 @@ public class MAsset extends org.compiere.product.MAsset {
       setM_Product_ID(inoutLine.getM_Product_ID());
       setM_AttributeSetInstance_ID(inoutLine.getMAttributeSetInstance_ID());
     }
-    MBPartner bp = new MBPartner(getCtx(), invoiceLine.getC_Invoice().getC_BPartner_ID(), null);
+    MBPartner bp = new MBPartner(getCtx(), invoiceLine.getC_Invoice().getC_BPartner_ID());
     name += bp.getName() + "-" + invoiceLine.getC_Invoice().getDocumentNo();
     if (log.isLoggable(Level.FINE)) log.fine("name=" + name);
     setValue(name);
@@ -88,7 +88,7 @@ public class MAsset extends org.compiere.product.MAsset {
    * @param match match invoice
    */
   public MAsset(MIFixedAsset ifa) {
-    this(ifa.getCtx(), 0, null);
+    this(ifa.getCtx(), 0);
 
     setAD_Org_ID(ifa.getOrgId()); // added by @win
     setIsOwned(true);
@@ -110,7 +110,7 @@ public class MAsset extends org.compiere.product.MAsset {
     if (product != null) {
       setM_Product_ID(product.getM_Product_ID());
       setA_Asset_Group_ID(ifa.getA_Asset_Group_ID());
-      MAttributeSetInstance asi = MAttributeSetInstance.create(getCtx(), product, null);
+      MAttributeSetInstance asi = MAttributeSetInstance.create(getCtx(), product);
       setM_AttributeSetInstance_ID(asi.getMAttributeSetInstance_ID());
     }
 
@@ -124,7 +124,7 @@ public class MAsset extends org.compiere.product.MAsset {
    * @param project
    */
   public MAsset(I_C_Project project) {
-    this(project.getCtx(), 0, null);
+    this(project.getCtx(), 0);
     setIsOwned(true);
     setIsInPosession(true);
     setA_Asset_CreateDate(new Timestamp(System.currentTimeMillis()));
@@ -138,7 +138,7 @@ public class MAsset extends org.compiere.product.MAsset {
   }
 
   public MAsset(MInOut mInOut, MInOutLine sLine, int deliveryCount) {
-    this(mInOut.getCtx(), 0, null);
+    this(mInOut.getCtx(), 0);
     setIsOwned(false);
     setIsInPosession(false);
     setA_Asset_CreateDate(new Timestamp(System.currentTimeMillis()));
@@ -160,7 +160,7 @@ public class MAsset extends org.compiere.product.MAsset {
    * @return A_Asset_ID
    */
   public MAsset(MInventory inventory, MInventoryLine invLine, BigDecimal qty, BigDecimal costs) {
-    super(invLine.getCtx(), 0, null);
+    super(invLine.getCtx(), 0);
     setClientOrg(invLine);
 
     org.compiere.accounting.MProduct product = MProduct.get(getCtx(), invLine.getM_Product_ID());
@@ -188,7 +188,7 @@ public class MAsset extends org.compiere.product.MAsset {
     // ASI
     if (invLine.getMAttributeSetInstance_ID() != 0) {
       MAttributeSetInstance asi =
-          new MAttributeSetInstance(getCtx(), invLine.getMAttributeSetInstance_ID(), null);
+          new MAttributeSetInstance(getCtx(), invLine.getMAttributeSetInstance_ID());
       setASI(asi);
     }
     // setSerNo(invLine.getSerNo());
@@ -252,7 +252,7 @@ public class MAsset extends org.compiere.product.MAsset {
     // If new record, create accounting and workfile
     if (newRecord) {
       // @win: set value at asset group as default value for asset
-      MAssetGroup assetgroup = new MAssetGroup(getCtx(), getA_Asset_Group_ID(), null);
+      MAssetGroup assetgroup = new MAssetGroup(getCtx(), getA_Asset_Group_ID());
       String isDepreciated = (assetgroup.isDepreciated()) ? "Y" : "N";
       String isOwned = (assetgroup.isOwned()) ? "Y" : "N";
       setIsDepreciated(assetgroup.isDepreciated());
@@ -285,11 +285,11 @@ public class MAsset extends org.compiere.product.MAsset {
         assetwk.saveEx();
 
         // Change Log
-        MAssetChange.createAndSave(getCtx(), "CRT", new IPO[] {this, assetwk, assetacct}, null);
+        MAssetChange.createAndSave(getCtx(), "CRT", new IPO[] {this, assetwk, assetacct});
       }
 
     } else {
-      MAssetChange.createAndSave(getCtx(), "UPD", new IPO[] {this}, null);
+      MAssetChange.createAndSave(getCtx(), "UPD", new IPO[] {this});
     }
 
     //
@@ -376,7 +376,7 @@ public class MAsset extends org.compiere.product.MAsset {
       setAssetDisposalDate(date);
       // TODO: move to MAsetDisposal
       Collection<MDepreciationWorkfile> workFiles =
-          MDepreciationWorkfile.forA_Asset_ID(getCtx(), getA_Asset_ID(), null);
+          MDepreciationWorkfile.forA_Asset_ID(getCtx(), getA_Asset_ID());
       for (MDepreciationWorkfile assetwk : workFiles) {
         assetwk.truncDepreciation();
         assetwk.saveEx();
@@ -391,12 +391,12 @@ public class MAsset extends org.compiere.product.MAsset {
     setA_Asset_Status(newStatus);
   } //	changeStatus
 
-  public static MAsset getFromShipment(Properties ctx, int i, String trxName) {
+  public static MAsset getFromShipment(Properties ctx, int i) {
     // TODO Auto-generated method stub
     return null;
   }
 
-  public static MAsset get(Properties ctx, int A_Asset_ID, String trxName) {
-    return (MAsset) MTable.get(ctx, MAsset.Table_Name).getPO(A_Asset_ID, trxName);
+  public static MAsset get(Properties ctx, int A_Asset_ID) {
+    return (MAsset) MTable.get(ctx, MAsset.Table_Name).getPO(A_Asset_ID);
   } //	get
 }

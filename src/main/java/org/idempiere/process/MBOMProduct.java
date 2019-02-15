@@ -26,7 +26,7 @@ public class MBOMProduct extends X_M_BOMProduct {
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     String whereClause = "M_BOM_ID=?";
     List<MBOMProduct> list =
-        new Query(bom.getCtx(), I_M_BOMProduct.Table_Name, whereClause, null)
+        new Query(bom.getCtx(), I_M_BOMProduct.Table_Name, whereClause)
             .setParameters(bom.getM_BOM_ID())
             .setOrderBy("SeqNo")
             .list();
@@ -47,8 +47,8 @@ public class MBOMProduct extends X_M_BOMProduct {
    * @param M_BOMProduct_ID id
    * @param trxName trx
    */
-  public MBOMProduct(Properties ctx, int M_BOMProduct_ID, String trxName) {
-    super(ctx, M_BOMProduct_ID, trxName);
+  public MBOMProduct(Properties ctx, int M_BOMProduct_ID) {
+    super(ctx, M_BOMProduct_ID);
     if (M_BOMProduct_ID == 0) {
       //	setM_BOM_ID (0);
       setBOMProductType(BOMPRODUCTTYPE_StandardProduct); // S
@@ -66,7 +66,7 @@ public class MBOMProduct extends X_M_BOMProduct {
    * @param bom product
    */
   public MBOMProduct(MBOM bom) {
-    this(bom.getCtx(), 0, null);
+    this(bom.getCtx(), 0);
     m_bom = bom;
   } //	MBOMProduct
 
@@ -77,8 +77,8 @@ public class MBOMProduct extends X_M_BOMProduct {
    * @param rs result set
    * @param trxName trx
    */
-  public MBOMProduct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBOMProduct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MBOMProduct
 
   /** BOM Parent */

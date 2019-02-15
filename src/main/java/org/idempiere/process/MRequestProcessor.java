@@ -29,8 +29,8 @@ public class MRequestProcessor extends X_R_RequestProcessor
    * @param ctx context
    * @param R_RequestProcessor_ID id
    */
-  public MRequestProcessor(Properties ctx, int R_RequestProcessor_ID, String trxName) {
-    super(ctx, R_RequestProcessor_ID, trxName);
+  public MRequestProcessor(Properties ctx, int R_RequestProcessor_ID) {
+    super(ctx, R_RequestProcessor_ID);
     if (R_RequestProcessor_ID == 0) {
       //	setName (null);
       // setFrequencyType (FREQUENCYTYPE_Day);
@@ -49,8 +49,8 @@ public class MRequestProcessor extends X_R_RequestProcessor
    * @param ctx context
    * @param rs result set
    */
-  public MRequestProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequestProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequestProcessor
 
   /**
@@ -60,7 +60,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
    * @param Supervisor_ID Supervisor
    */
   public MRequestProcessor(MClient parent, int Supervisor_ID) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setName(parent.getName() + " - " + Msg.translate(getCtx(), "R_RequestProcessor_ID"));
     setSupervisor_ID(Supervisor_ID);
@@ -84,7 +84,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getR_RequestProcessor_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MRequestProcessorLog(getCtx(), rs, null));
+      while (rs.next()) list.add(new MRequestProcessorLog(getCtx(), rs));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {

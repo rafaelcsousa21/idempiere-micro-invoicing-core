@@ -31,8 +31,8 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
    * @param AD_WorkflowProcessor_ID id
    * @param trxName transaction
    */
-  public MWorkflowProcessor(Properties ctx, int AD_WorkflowProcessor_ID, String trxName) {
-    super(ctx, AD_WorkflowProcessor_ID, trxName);
+  public MWorkflowProcessor(Properties ctx, int AD_WorkflowProcessor_ID) {
+    super(ctx, AD_WorkflowProcessor_ID);
   } //	MWorkflowProcessor
 
   /**
@@ -42,8 +42,8 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
    * @param rs result set
    * @param trxName transaction
    */
-  public MWorkflowProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWorkflowProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MWorkflowProcessor
 
   /**
@@ -76,8 +76,8 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
         new Query(
                 getCtx(),
                 MWorkflowProcessorLog.Table_Name,
-                "AD_WorkflowProcessor_ID=?",
-                null)
+                "AD_WorkflowProcessor_ID=?"
+        )
             .setParameters(new Object[] {getAD_WorkflowProcessor_ID()})
             .setOrderBy("Created DESC")
             .list();

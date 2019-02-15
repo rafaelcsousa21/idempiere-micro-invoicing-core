@@ -19,13 +19,13 @@ public class X_AD_WF_Block extends BasePOName implements I_AD_WF_Block, I_Persis
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WF_Block(Properties ctx, int AD_WF_Block_ID, String trxName) {
-    super(ctx, AD_WF_Block_ID, trxName);
+  public X_AD_WF_Block(Properties ctx, int AD_WF_Block_ID) {
+    super(ctx, AD_WF_Block_ID);
   }
 
   /** Load Constructor */
-  public X_AD_WF_Block(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WF_Block(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

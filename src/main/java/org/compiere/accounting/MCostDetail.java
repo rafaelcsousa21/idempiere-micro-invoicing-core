@@ -67,8 +67,7 @@ public class MCostDetail extends X_M_CostDetail {
       int M_CostElement_ID,
       BigDecimal Amt,
       BigDecimal Qty,
-      String Description,
-      String trxName) {
+      String Description) {
     MCostDetail cd =
         get(
             as.getCtx(),
@@ -78,8 +77,7 @@ public class MCostDetail extends X_M_CostDetail {
                 + M_Product_ID,
             C_InvoiceLine_ID,
             M_AttributeSetInstance_ID,
-            as.getC_AcctSchema_ID(),
-            trxName);
+            as.getC_AcctSchema_ID());
     //
     if (cd == null) // 	createNew
     {
@@ -92,8 +90,7 @@ public class MCostDetail extends X_M_CostDetail {
               M_CostElement_ID,
               Amt,
               Qty,
-              Description,
-              trxName);
+              Description);
       cd.setC_InvoiceLine_ID(C_InvoiceLine_ID);
     } else {
       if (cd.isProcessed()) {
@@ -149,16 +146,14 @@ public class MCostDetail extends X_M_CostDetail {
       BigDecimal Amt,
       BigDecimal Qty,
       String Description,
-      boolean IsSOTrx,
-      String trxName) {
+      boolean IsSOTrx) {
     MCostDetail cd =
         get(
             as.getCtx(),
             "M_InOutLine_ID=? AND Coalesce(M_CostElement_ID,0)=" + M_CostElement_ID,
             M_InOutLine_ID,
             M_AttributeSetInstance_ID,
-            as.getC_AcctSchema_ID(),
-            trxName);
+            as.getC_AcctSchema_ID());
     //
     if (cd == null) // 	createNew
     {
@@ -171,8 +166,7 @@ public class MCostDetail extends X_M_CostDetail {
               M_CostElement_ID,
               Amt,
               Qty,
-              Description,
-              trxName);
+              Description);
       cd.setM_InOutLine_ID(M_InOutLine_ID);
       cd.setIsSOTrx(IsSOTrx);
     } else {
@@ -235,8 +229,7 @@ public class MCostDetail extends X_M_CostDetail {
             "M_InventoryLine_ID=? AND Coalesce(M_CostElement_ID,0)=" + M_CostElement_ID,
             M_InventoryLine_ID,
             M_AttributeSetInstance_ID,
-            as.getC_AcctSchema_ID(),
-            trxName);
+            as.getC_AcctSchema_ID());
     //
     if (cd == null) // 	createNew
     {
@@ -249,8 +242,7 @@ public class MCostDetail extends X_M_CostDetail {
               M_CostElement_ID,
               Amt,
               Qty,
-              Description,
-              trxName);
+              Description);
       cd.setM_InventoryLine_ID(M_InventoryLine_ID);
     } else {
       if (cd.isProcessed()) {
@@ -292,7 +284,7 @@ public class MCostDetail extends X_M_CostDetail {
    * @deprecated
    */
   public static MCostDetail get(
-      Properties ctx, String whereClause, int ID, int M_AttributeSetInstance_ID, String trxName) {
+      Properties ctx, String whereClause, int ID, int M_AttributeSetInstance_ID) {
     StringBuilder sql = new StringBuilder("SELECT * FROM M_CostDetail WHERE ").append(whereClause);
 
     MClientInfo clientInfo = MClientInfo.get(ctx);
@@ -312,7 +304,7 @@ public class MCostDetail extends X_M_CostDetail {
         pstmt.setInt(3, C_AcctSchema_ID);
       }
       rs = pstmt.executeQuery();
-      if (rs.next()) retValue = new MCostDetail(ctx, rs, trxName);
+      if (rs.next()) retValue = new MCostDetail(ctx, rs);
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql + " - " + ID, e);
     } finally {
@@ -336,14 +328,13 @@ public class MCostDetail extends X_M_CostDetail {
       String whereClause,
       int ID,
       int M_AttributeSetInstance_ID,
-      int C_AcctSchema_ID,
-      String trxName) {
+      int C_AcctSchema_ID) {
     StringBuilder localWhereClause =
         new StringBuilder(whereClause)
             .append(" AND M_AttributeSetInstance_ID=?")
             .append(" AND C_AcctSchema_ID=?");
     MCostDetail retValue =
-        new Query(ctx, I_M_CostDetail.Table_Name, localWhereClause.toString(), trxName)
+        new Query(ctx, I_M_CostDetail.Table_Name, localWhereClause.toString())
             .setParameters(ID, M_AttributeSetInstance_ID, C_AcctSchema_ID)
             .first();
     return retValue;
@@ -356,7 +347,7 @@ public class MCostDetail extends X_M_CostDetail {
    * @param trxName transaction
    * @return true if no error
    */
-  public static boolean processProduct(I_M_Product product, String trxName) {
+  public static boolean processProduct(I_M_Product product) {
     final String whereClause =
         I_M_CostDetail.COLUMNNAME_M_Product_ID
             + "=?"
@@ -366,7 +357,7 @@ public class MCostDetail extends X_M_CostDetail {
     int counterOK = 0;
     int counterError = 0;
     List<MCostDetail> list =
-        new Query(product.getCtx(), I_M_CostDetail.Table_Name, whereClause, trxName)
+        new Query(product.getCtx(), I_M_CostDetail.Table_Name, whereClause)
             .setParameters(product.getM_Product_ID(), false)
             .setOrderBy(
                 "C_AcctSchema_ID, M_CostElement_ID, AD_Org_ID, M_AttributeSetInstance_ID, Created")
@@ -391,8 +382,8 @@ public class MCostDetail extends X_M_CostDetail {
    * @param M_CostDetail_ID id
    * @param trxName trx
    */
-  public MCostDetail(Properties ctx, int M_CostDetail_ID, String trxName) {
-    super(ctx, M_CostDetail_ID, trxName);
+  public MCostDetail(Properties ctx, int M_CostDetail_ID) {
+    super(ctx, M_CostDetail_ID);
     if (M_CostDetail_ID == 0) {
       //	setC_AcctSchema_ID (0);
       //	setM_Product_ID (0);
@@ -416,8 +407,8 @@ public class MCostDetail extends X_M_CostDetail {
    * @param rs result set
    * @param trxName trx
    */
-  public MCostDetail(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCostDetail(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCostDetail
   public MCostDetail(Properties ctx, Row row) {
     super(ctx, row);
@@ -444,9 +435,8 @@ public class MCostDetail extends X_M_CostDetail {
       int M_CostElement_ID,
       BigDecimal Amt,
       BigDecimal Qty,
-      String Description,
-      String trxName) {
-    this(as.getCtx(), 0, trxName);
+      String Description) {
+    this(as.getCtx(), 0);
     setClientOrg(as. getClientId(), AD_Org_ID);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
     setM_Product_ID(M_Product_ID);
@@ -559,7 +549,7 @@ public class MCostDetail extends X_M_CostDetail {
 
     //	get costing level for product
     MAcctSchema as = MAcctSchema.get(getCtx(), getC_AcctSchema_ID());
-    MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
+    MProduct product = new MProduct(getCtx(), getM_Product_ID());
     String CostingLevel = product.getCostingLevel(as);
     //	Org Element
     int Org_ID =  getOrgId();
@@ -645,7 +635,7 @@ public class MCostDetail extends X_M_CostDetail {
     //			as, Org_ID, ce.getM_CostElement_ID());
 
     // save history for m_cost
-    X_M_CostHistory history = new X_M_CostHistory(getCtx(), 0, null);
+    X_M_CostHistory history = new X_M_CostHistory(getCtx(), 0);
     history.setM_AttributeSetInstance_ID(cost.getMAttributeSetInstance_ID());
     history.setM_CostDetail_ID(this.getM_CostDetail_ID());
     history.setM_CostElement_ID(ce.getM_CostElement_ID());
@@ -757,7 +747,7 @@ public class MCostDetail extends X_M_CostDetail {
         cq.setCosts(amt, qty, precision);
         cq.saveEx();
         //	Get Costs - costing level Org/ASI
-        MCostQueue[] cQueue = MCostQueue.getQueue(product, M_ASI_ID, as, Org_ID, ce, null);
+        MCostQueue[] cQueue = MCostQueue.getQueue(product, M_ASI_ID, as, Org_ID, ce);
         if (cQueue != null && cQueue.length > 0)
           cost.setCurrentCostPrice(cQueue[0].getCurrentCostPrice());
         cost.add(amt, qty);
@@ -885,7 +875,7 @@ public class MCostDetail extends X_M_CostDetail {
           }
           //	Get Costs - costing level Org/ASI
           MCostQueue[] cQueue =
-              MCostQueue.getQueue(product, M_ASI_ID, as, Org_ID, ce, null);
+              MCostQueue.getQueue(product, M_ASI_ID, as, Org_ID, ce);
           if (cQueue != null && cQueue.length > 0)
             cost.setCurrentCostPrice(cQueue[0].getCurrentCostPrice());
           cost.setCurrentQty(cost.getCurrentQty().add(qty));
@@ -907,7 +897,7 @@ public class MCostDetail extends X_M_CostDetail {
         } else if (addition) {
           MProductionLine productionLine =
               getM_ProductionLine_ID() > 0
-                  ? new MProductionLine(getCtx(), getM_ProductionLine_ID(), null)
+                  ? new MProductionLine(getCtx(), getM_ProductionLine_ID())
                   : null;
           if (productionLine != null && productionLine.getProductionReversalId() > 0)
             cost.setCurrentQty(cost.getCurrentQty().add(qty));

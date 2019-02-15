@@ -4,7 +4,6 @@ import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_RequisitionLine(Properties ctx, int M_RequisitionLine_ID, String trxName) {
-    super(ctx, M_RequisitionLine_ID, trxName);
+  public X_M_RequisitionLine(Properties ctx, int M_RequisitionLine_ID) {
+    super(ctx, M_RequisitionLine_ID);
     /**
      * if (M_RequisitionLine_ID == 0) { setLine (0); // @SQL=SELECT COALESCE(MAX(Line),0)+10 AS
      * DefaultValue FROM M_RequisitionLine WHERE M_Requisition_ID=@M_Requisition_ID@ setLineNetAmt
@@ -34,8 +33,8 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   }
 
   /** Load Constructor */
-  public X_M_RequisitionLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_RequisitionLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -219,7 +218,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
   public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
+            .getPO(getM_Product_ID());
   }
 
   /**
@@ -229,7 +228,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
    */
   public void setM_Product_ID(int M_Product_ID) {
     if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+    else set_Value(COLUMNNAME_M_Product_ID, M_Product_ID);
   }
 
   /**
@@ -250,7 +249,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
    */
   public void setM_Requisition_ID(int M_Requisition_ID) {
     if (M_Requisition_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Requisition_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Requisition_ID, Integer.valueOf(M_Requisition_ID));
+    else set_ValueNoCheck(COLUMNNAME_M_Requisition_ID, M_Requisition_ID);
   }
 
   /**

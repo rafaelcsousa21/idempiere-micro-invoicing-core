@@ -15,8 +15,8 @@ public class MCharge extends org.compiere.order.MCharge {
    * @param C_Charge_ID id
    * @param trxName transaction
    */
-  public MCharge(Properties ctx, int C_Charge_ID, String trxName) {
-    super(ctx, C_Charge_ID, trxName);
+  public MCharge(Properties ctx, int C_Charge_ID) {
+    super(ctx, C_Charge_ID);
   }
 
   /**

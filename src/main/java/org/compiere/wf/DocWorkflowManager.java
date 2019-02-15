@@ -91,7 +91,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
       pi.setAD_User_ID(Env.getAD_User_ID(document.getCtx()));
       pi.setADClientID(document.getClientId());
       //
-      if (wf.start(pi, null) != null) {
+      if (wf.start(pi) != null) {
         if (log.isLoggable(Level.CONFIG)) log.config(wf.getName());
         m_noStarted++;
         started = true;

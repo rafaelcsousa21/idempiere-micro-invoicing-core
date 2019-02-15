@@ -38,8 +38,8 @@ public class MTree extends MTree_Base {
    * @param AD_Tree_ID The tree to build
    * @param trxName transaction
    */
-  public MTree(Properties ctx, int AD_Tree_ID, String trxName) {
-    super(ctx, AD_Tree_ID, trxName);
+  public MTree(Properties ctx, int AD_Tree_ID) {
+    super(ctx, AD_Tree_ID);
   } //  MTree
 
   /**
@@ -52,8 +52,8 @@ public class MTree extends MTree_Base {
    * @param trxName transaction
    */
   public MTree(
-      Properties ctx, int AD_Tree_ID, boolean editable, boolean clientTree, String trxName) {
-    this(ctx, AD_Tree_ID, editable, clientTree, false, trxName);
+      Properties ctx, int AD_Tree_ID, boolean editable, boolean clientTree) {
+    this(ctx, AD_Tree_ID, editable, clientTree, false);
   } //  MTree
 
   public MTree(
@@ -61,9 +61,8 @@ public class MTree extends MTree_Base {
       int AD_Tree_ID,
       boolean editable,
       boolean clientTree,
-      boolean allNodes,
-      String trxName) {
-    this(ctx, AD_Tree_ID, trxName);
+      boolean allNodes) {
+    this(ctx, AD_Tree_ID);
     m_editable = editable;
     int AD_User_ID;
     if (allNodes) AD_User_ID = -1;
@@ -379,13 +378,13 @@ public class MTree extends MTree_Base {
       while (m_nodeRowSet.next()) {
         i++;
         int node = m_nodeRowSet.getInt(1);
-        Integer nodeId = Integer.valueOf(node);
+        Integer nodeId = node;
         ArrayList<Integer> list = m_nodeIdMap.get(nodeId);
         if (list == null) {
           list = new ArrayList<Integer>(5);
           m_nodeIdMap.put(nodeId, list);
         }
-        list.add(Integer.valueOf(i));
+        list.add(i);
       }
     } catch (SQLException e) {
       log.log(Level.SEVERE, "", e);
@@ -405,14 +404,14 @@ public class MTree extends MTree_Base {
     MTreeNode retValue = null;
     try {
       // m_nodeRowSet.beforeFirst();
-      ArrayList<Integer> nodeList = m_nodeIdMap.get(Integer.valueOf(node_ID));
+      ArrayList<Integer> nodeList = m_nodeIdMap.get(node_ID);
       int size = nodeList != null ? nodeList.size() : 0;
       int i = 0;
       // while (m_nodeRowSet.next())
       while (i < size) {
         Integer nodeId = nodeList.get(i);
         i++;
-        m_nodeRowSet.absolute(nodeId.intValue());
+        m_nodeRowSet.absolute(nodeId);
         int node = m_nodeRowSet.getInt(1);
         if (node_ID != node) // 	search for correct one
         continue;
@@ -540,7 +539,7 @@ public class MTree extends MTree_Base {
    * @param rs result set
    * @param trxName transaction
    */
-  public MTree(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MTree(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MTree_Base
 } //  MTree

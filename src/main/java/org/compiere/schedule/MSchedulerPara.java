@@ -21,8 +21,8 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
    * @param AD_Scheduler_Para_ID id
    * @param trxName transaction
    */
-  public MSchedulerPara(Properties ctx, int AD_Scheduler_Para_ID, String trxName) {
-    super(ctx, AD_Scheduler_Para_ID, trxName);
+  public MSchedulerPara(Properties ctx, int AD_Scheduler_Para_ID) {
+    super(ctx, AD_Scheduler_Para_ID);
   } //	MSchedulerPara
 
   /**
@@ -32,8 +32,8 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
    * @param rs result set
    * @param trxName transaction
    */
-  public MSchedulerPara(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MSchedulerPara(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MSchedulerPara
 
   /** Parameter Column Name */

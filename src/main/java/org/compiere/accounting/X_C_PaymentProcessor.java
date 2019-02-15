@@ -21,13 +21,13 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_PaymentProcessor(Properties ctx, int C_PaymentProcessor_ID, String trxName) {
-    super(ctx, C_PaymentProcessor_ID, trxName);
+  public X_C_PaymentProcessor(Properties ctx, int C_PaymentProcessor_ID) {
+    super(ctx, C_PaymentProcessor_ID);
   }
 
   /** Load Constructor */
-  public X_C_PaymentProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_PaymentProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -288,7 +288,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
   public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
     return (org.compiere.model.I_C_BankAccount)
         MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-            .getPO(getC_BankAccount_ID(), null);
+            .getPO(getC_BankAccount_ID());
   }
 
   /**

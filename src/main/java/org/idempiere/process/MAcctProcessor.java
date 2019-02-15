@@ -28,8 +28,8 @@ public class MAcctProcessor extends X_C_AcctProcessor
    * @param C_AcctProcessor_ID id
    * @param trxName transaction
    */
-  public MAcctProcessor(Properties ctx, int C_AcctProcessor_ID, String trxName) {
-    super(ctx, C_AcctProcessor_ID, trxName);
+  public MAcctProcessor(Properties ctx, int C_AcctProcessor_ID) {
+    super(ctx, C_AcctProcessor_ID);
     if (C_AcctProcessor_ID == 0) {
       //	setName (null);
       //	setSupervisor_ID (0);
@@ -46,8 +46,8 @@ public class MAcctProcessor extends X_C_AcctProcessor
    * @param rs result set
    * @param trxName transaction
    */
-  public MAcctProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAcctProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MAcctProcessor
 
   /**
@@ -57,7 +57,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
    * @param Supervisor_ID admin
    */
   public MAcctProcessor(MClient client, int Supervisor_ID) {
-    this(client.getCtx(), 0, null);
+    this(client.getCtx(), 0);
     setClientOrg(client);
     StringBuilder msgset =
         new StringBuilder()
@@ -119,7 +119,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
   public AdempiereProcessorLog[] getLogs() {
     String whereClause = "C_AcctProcessor_ID=? ";
     List<MAcctProcessor> list =
-        new Query(getCtx(), I_C_AcctProcessorLog.Table_Name, whereClause, null)
+        new Query(getCtx(), I_C_AcctProcessorLog.Table_Name, whereClause)
             .setParameters(getC_AcctProcessor_ID())
             .setOrderBy("Created DESC")
             .list();

@@ -12,8 +12,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
-  public MPaymentTerm(Properties ctx, int C_PaymentTerm_ID, String trxName) {
-    super(ctx, C_PaymentTerm_ID, trxName);
+  public MPaymentTerm(Properties ctx, int C_PaymentTerm_ID) {
+    super(ctx, C_PaymentTerm_ID);
   }
 
   /**
@@ -49,21 +49,21 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
    * @return true if payment schedule is valid
    */
   private boolean applySchedule(MInvoice invoice) {
-    deleteInvoicePaySchedule(invoice.getC_Invoice_ID(), null);
+    deleteInvoicePaySchedule(invoice.getC_Invoice_ID());
     //	Create Schedule
     MInvoicePaySchedule ips = null;
     BigDecimal remainder = invoice.getGrandTotal();
     MPaySchedule[] m_schedule = getSchedule(false);
     for (int i = 0; i < m_schedule.length; i++) {
       ips = new MInvoicePaySchedule(invoice, m_schedule[i]);
-      ips.saveEx(null);
+      ips.saveEx();
       if (log.isLoggable(Level.FINE)) log.fine(ips.toString());
       remainder = remainder.subtract(ips.getDueAmt());
     } //	for all schedules
     //	Remainder - update last
     if (remainder.compareTo(Env.ZERO) != 0 && ips != null) {
       ips.setDueAmt(ips.getDueAmt().add(remainder));
-      ips.saveEx(null);
+      ips.saveEx();
       if (log.isLoggable(Level.FINE)) log.fine("Remainder=" + remainder + " - " + ips);
     }
 
@@ -80,7 +80,7 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
    * @return false as no payment schedule
    */
   private boolean applyNoSchedule(I_C_Invoice invoice) {
-    deleteInvoicePaySchedule(invoice.getC_Invoice_ID(), null);
+    deleteInvoicePaySchedule(invoice.getC_Invoice_ID());
     //	updateInvoice
     if (invoice.getC_PaymentTerm_ID() != getC_PaymentTerm_ID())
       invoice.setC_PaymentTerm_ID(getC_PaymentTerm_ID());
@@ -94,9 +94,9 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
    * @param C_Invoice_ID id
    * @param trxName transaction
    */
-  private void deleteInvoicePaySchedule(int C_Invoice_ID, String trxName) {
+  private void deleteInvoicePaySchedule(int C_Invoice_ID) {
     Query query =
-        new Query(Env.getCtx(), I_C_InvoicePaySchedule.Table_Name, "C_Invoice_ID=?", trxName);
+        new Query(Env.getCtx(), I_C_InvoicePaySchedule.Table_Name, "C_Invoice_ID=?");
     List<I_C_InvoicePaySchedule> ipsList = query.setParameters(C_Invoice_ID).list();
     for (I_C_InvoicePaySchedule ips : ipsList) {
       ips.deleteEx(true);

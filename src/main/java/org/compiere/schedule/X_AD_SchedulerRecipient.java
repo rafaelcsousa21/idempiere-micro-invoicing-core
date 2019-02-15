@@ -2,7 +2,6 @@ package org.compiere.schedule;
 
 import org.compiere.model.I_AD_SchedulerRecipient;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -20,8 +19,8 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_SchedulerRecipient(Properties ctx, int AD_SchedulerRecipient_ID, String trxName) {
-    super(ctx, AD_SchedulerRecipient_ID, trxName);
+  public X_AD_SchedulerRecipient(Properties ctx, int AD_SchedulerRecipient_ID) {
+    super(ctx, AD_SchedulerRecipient_ID);
     /**
      * if (AD_SchedulerRecipient_ID == 0) { setAD_Scheduler_ID (0); setAD_SchedulerRecipient_ID (0);
      * }
@@ -29,8 +28,8 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
   }
 
   /** Load Constructor */
-  public X_AD_SchedulerRecipient(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_SchedulerRecipient(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

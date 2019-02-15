@@ -35,8 +35,8 @@ public class Doc_Order extends Doc {
    * @param rs record
    * @param trxName trx
    */
-  public Doc_Order(MAcctSchema as, ResultSet rs, String trxName) {
-    super(as, MOrder.class, rs, null, trxName);
+  public Doc_Order(MAcctSchema as, ResultSet rs) {
+    super(as, MOrder.class, rs, null);
   } //	Doc_Order
 
   /** Contained Optional Tax Lines */
@@ -149,7 +149,7 @@ public class Doc_Order extends Doc {
       pstmt.setInt(1, order.getC_Order_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MRequisitionLine line = new MRequisitionLine(getCtx(), rs, null);
+        MRequisitionLine line = new MRequisitionLine(getCtx(), rs);
         DocLine docLine = new DocLine(line, this);
         //	Quantity - not more then OrderLine
         //	Issue: Split of Requisition to multiple POs & different price
@@ -457,7 +457,7 @@ public class Doc_Order extends Doc {
       rs = pstmt.executeQuery();
       while (rs.next()) {
         if (maxQty.signum() == 0) continue;
-        MOrderLine line = new MOrderLine(doc.getCtx(), rs, null);
+        MOrderLine line = new MOrderLine(doc.getCtx(), rs);
         DocLine docLine = new DocLine(line, doc);
         //	Currency
         if (precision == -1) {
@@ -580,7 +580,7 @@ public class Doc_Order extends Doc {
       rs = pstmt.executeQuery();
       while (rs.next()) {
         if (maxQty.signum() == 0) continue;
-        MOrderLine line = new MOrderLine(doc.getCtx(), rs, null);
+        MOrderLine line = new MOrderLine(doc.getCtx(), rs);
         DocLine docLine = new DocLine(line, doc);
         //	Currency
         if (precision == -1) {

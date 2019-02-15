@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_Note;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -20,14 +19,14 @@ public class X_AD_Note extends PO implements I_AD_Note, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_Note(Properties ctx, int AD_Note_ID, String trxName) {
-    super(ctx, AD_Note_ID, trxName);
+  public X_AD_Note(Properties ctx, int AD_Note_ID) {
+    super(ctx, AD_Note_ID);
     /** if (AD_Note_ID == 0) { setAD_Message_ID (0); setAD_Note_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_AD_Note(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_Note(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

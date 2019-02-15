@@ -31,7 +31,7 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
    * @return landed cost alloc
    */
   public static MLandedCostAllocation[] getOfInvoiceLine(
-      Properties ctx, int C_InvoiceLine_ID, String trxName) {
+      Properties ctx, int C_InvoiceLine_ID) {
     ArrayList<MLandedCostAllocation> list = new ArrayList<MLandedCostAllocation>();
     String sql = "SELECT * FROM C_LandedCostAllocation WHERE C_InvoiceLine_ID=?";
     PreparedStatement pstmt = null;
@@ -40,7 +40,7 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, C_InvoiceLine_ID);
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MLandedCostAllocation(ctx, rs, trxName));
+      while (rs.next()) list.add(new MLandedCostAllocation(ctx, rs));
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
     } finally {
@@ -63,8 +63,8 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
    * @param C_LandedCostAllocation_ID id
    * @param trxName trx
    */
-  public MLandedCostAllocation(Properties ctx, int C_LandedCostAllocation_ID, String trxName) {
-    super(ctx, C_LandedCostAllocation_ID, trxName);
+  public MLandedCostAllocation(Properties ctx, int C_LandedCostAllocation_ID) {
+    super(ctx, C_LandedCostAllocation_ID);
     if (C_LandedCostAllocation_ID == 0) {
       //	setM_CostElement_ID(0);
       setAmt(Env.ZERO);
@@ -80,8 +80,8 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
    * @param rs result name
    * @param trxName trx
    */
-  public MLandedCostAllocation(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MLandedCostAllocation(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MLandedCostAllocation
 
   /**
@@ -91,7 +91,7 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
    * @param M_CostElement_ID cost element
    */
   public MLandedCostAllocation(MInvoiceLine parent, int M_CostElement_ID) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setC_InvoiceLine_ID(parent.getC_InvoiceLine_ID());
     setM_CostElement_ID(M_CostElement_ID);

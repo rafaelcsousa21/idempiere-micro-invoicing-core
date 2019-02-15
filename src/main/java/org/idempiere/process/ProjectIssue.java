@@ -99,7 +99,7 @@ public class ProjectIssue extends SvrProcess {
    */
   protected String doIt() throws Exception {
     //	Check Parameter
-    m_project = new MProject(getCtx(), m_C_Project_ID, null);
+    m_project = new MProject(getCtx(), m_C_Project_ID);
     if (!(MProject.PROJECTCATEGORY_WorkOrderJob.equals(m_project.getProjectCategory())
         || MProject.PROJECTCATEGORY_AssetProject.equals(m_project.getProjectCategory())))
       throw new IllegalArgumentException(
@@ -119,7 +119,7 @@ public class ProjectIssue extends SvrProcess {
    * @return Message (clear text)
    */
   private String issueReceipt() {
-    MInOut inOut = new MInOut(getCtx(), m_M_InOut_ID, null);
+    MInOut inOut = new MInOut(getCtx(), m_M_InOut_ID);
     if (inOut.isSOTrx()
         || !inOut.isProcessed()
         || !(MInOut.DOCSTATUS_Completed.equals(inOut.getDocStatus())
@@ -189,7 +189,7 @@ public class ProjectIssue extends SvrProcess {
    */
   private String issueExpense() {
     //	Get Expense Report
-    MTimeExpense expense = new MTimeExpense(getCtx(), m_S_TimeExpense_ID, null);
+    MTimeExpense expense = new MTimeExpense(getCtx(), m_S_TimeExpense_ID);
     if (!expense.isProcessed())
       throw new IllegalArgumentException("Time+Expense not processed - " + expense);
 
@@ -248,7 +248,7 @@ public class ProjectIssue extends SvrProcess {
    * @return Message (clear text)
    */
   private String issueProjectLine() {
-    MProjectLine pl = new MProjectLine(getCtx(), m_C_ProjectLine_ID, null);
+    MProjectLine pl = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
     if (pl.getM_Product_ID() == 0) throw new IllegalArgumentException("Projet Line has no Product");
     if (pl.getC_ProjectIssue_ID() != 0)
       throw new IllegalArgumentException("Projet Line already been issued");

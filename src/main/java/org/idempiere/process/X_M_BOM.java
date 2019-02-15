@@ -13,8 +13,8 @@ public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_BOM(Properties ctx, int M_BOM_ID, String trxName) {
-    super(ctx, M_BOM_ID, trxName);
+  public X_M_BOM(Properties ctx, int M_BOM_ID) {
+    super(ctx, M_BOM_ID);
     /**
      * if (M_BOM_ID == 0) { setBOMType (null); // A setBOMUse (null); // A setM_BOM_ID (0);
      * setM_Product_ID (0); setName (null); }
@@ -22,8 +22,8 @@ public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_BOM(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_BOM(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

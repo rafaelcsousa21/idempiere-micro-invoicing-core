@@ -22,13 +22,13 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_BankAccount(Properties ctx, int C_BankAccount_ID, String trxName) {
-    super(ctx, C_BankAccount_ID, trxName);
+  public X_C_BankAccount(Properties ctx, int C_BankAccount_ID) {
+    super(ctx, C_BankAccount_ID);
   }
 
   /** Load Constructor */
-  public X_C_BankAccount(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_BankAccount(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -90,7 +90,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
     public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException {
     return (org.compiere.model.I_C_Bank)
         MTable.get(getCtx(), org.compiere.model.I_C_Bank.Table_Name)
-            .getPO(getC_Bank_ID(), null);
+            .getPO(getC_Bank_ID());
   }
 
   /**
@@ -100,7 +100,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
    */
   public void setC_Bank_ID(int C_Bank_ID) {
     if (C_Bank_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Bank_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Bank_ID, Integer.valueOf(C_Bank_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_Bank_ID, C_Bank_ID);
   }
 
   /**

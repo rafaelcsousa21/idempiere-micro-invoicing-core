@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_BankStatementLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_BankStatementLine(Properties ctx, int C_BankStatementLine_ID, String trxName) {
-    super(ctx, C_BankStatementLine_ID, trxName);
+  public X_C_BankStatementLine(Properties ctx, int C_BankStatementLine_ID) {
+    super(ctx, C_BankStatementLine_ID);
     /**
      * if (C_BankStatementLine_ID == 0) { setC_BankStatement_ID (0); setC_BankStatementLine_ID (0);
      * setC_Currency_ID (0); // @SQL=SELECT C_Currency_ID FROM C_BankAccount WHERE
@@ -39,8 +38,8 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
   }
 
   /** Load Constructor */
-  public X_C_BankStatementLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_BankStatementLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

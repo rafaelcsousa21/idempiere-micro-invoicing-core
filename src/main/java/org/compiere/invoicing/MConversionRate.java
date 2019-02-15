@@ -7,8 +7,8 @@ import org.compiere.accounting.MClient;
 
 public class MConversionRate extends org.compiere.conversionrate.MConversionRate {
 
-  public MConversionRate(Properties ctx, int C_Conversion_Rate_ID, String trxName) {
-    super(ctx, C_Conversion_Rate_ID, trxName);
+  public MConversionRate(Properties ctx, int C_Conversion_Rate_ID) {
+    super(ctx, C_Conversion_Rate_ID);
   }
 
   /**

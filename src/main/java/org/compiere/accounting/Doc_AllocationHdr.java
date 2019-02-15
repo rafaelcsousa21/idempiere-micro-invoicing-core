@@ -39,8 +39,8 @@ public class Doc_AllocationHdr extends Doc {
    * @param rs record
    * @param trxName trx
    */
-  public Doc_AllocationHdr(MAcctSchema as, ResultSet rs, String trxName) {
-    super(as, MAllocationHdr.class, rs, DOCTYPE_Allocation, trxName);
+  public Doc_AllocationHdr(MAcctSchema as, ResultSet rs) {
+    super(as, MAllocationHdr.class, rs, DOCTYPE_Allocation);
   } //  Doc_Allocation
 
   /** Tolerance G&L */
@@ -176,10 +176,10 @@ public class Doc_AllocationHdr extends Doc {
       //
       MPayment payment = null;
       if (line.getC_Payment_ID() != 0)
-        payment = new MPayment(getCtx(), line.getC_Payment_ID(), getTrxName());
+        payment = new MPayment(getCtx(), line.getC_Payment_ID());
       MInvoice invoice = null;
       if (line.getC_Invoice_ID() != 0)
-        invoice = new MInvoice(getCtx(), line.getC_Invoice_ID(), getTrxName());
+        invoice = new MInvoice(getCtx(), line.getC_Invoice_ID());
 
       //	No Invoice
       if (invoice == null) {
@@ -256,7 +256,7 @@ public class Doc_AllocationHdr extends Doc {
                     getC_Currency_ID(),
                     line.getAmtSource(),
                     null);
-            MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID(), getTrxName());
+            MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID());
             if (fl != null && cashLine.getId() != 0) fl.setAD_Org_ID(cashLine. getOrgId());
           }
         }
@@ -406,7 +406,7 @@ public class Doc_AllocationHdr extends Doc {
                   getC_Currency_ID(),
                   null,
                   line.getAmtSource().negate());
-          MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID(), getTrxName());
+          MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID());
           if (fl != null && cashLine.getId() != 0) fl.setAD_Org_ID(cashLine. getOrgId());
         }
       }
@@ -504,25 +504,25 @@ public class Doc_AllocationHdr extends Doc {
       int orgpayment = startorg;
       MPayment payment = null;
       if (line.getC_Payment_ID() != 0) {
-        payment = new MPayment(getCtx(), line.getC_Payment_ID(), getTrxName());
+        payment = new MPayment(getCtx(), line.getC_Payment_ID());
         orgpayment = payment. getOrgId();
       }
       int orginvoice = startorg;
       MInvoice invoice = null;
       if (line.getC_Invoice_ID() != 0) {
-        invoice = new MInvoice(getCtx(), line.getC_Invoice_ID(), getTrxName());
+        invoice = new MInvoice(getCtx(), line.getC_Invoice_ID());
         orginvoice = invoice. getOrgId();
       }
       int orgcashline = startorg;
       MCashLine cashline = null;
       if (line.getC_CashLine_ID() != 0) {
-        cashline = new MCashLine(getCtx(), line.getC_CashLine_ID(), getTrxName());
+        cashline = new MCashLine(getCtx(), line.getC_CashLine_ID());
         orgcashline = cashline. getOrgId();
       }
       int orgorder = startorg;
       MOrder order = null;
       if (line.getC_Order_ID() != 0) {
-        order = new MOrder(getCtx(), line.getC_Order_ID(), getTrxName());
+        order = new MOrder(getCtx(), line.getC_Order_ID());
         orgorder = order. getOrgId();
       }
 
@@ -601,7 +601,7 @@ public class Doc_AllocationHdr extends Doc {
 
     //	Get Invoice Postings
     Doc_Invoice docInvoice =
-        (Doc_Invoice) Doc.get(as, MInvoice.Table_ID, invoice.getC_Invoice_ID(), getTrxName());
+        (Doc_Invoice) Doc.get(as, MInvoice.Table_ID, invoice.getC_Invoice_ID());
     docInvoice.loadDocumentDetails();
     allocationAccounted = docInvoice.createFactCash(as, fact, BigDecimal.valueOf(percent));
     if (log.isLoggable(Level.CONFIG)) log.config("Allocation Accounted=" + allocationAccounted);
@@ -889,7 +889,7 @@ public class Doc_AllocationHdr extends Doc {
       pstmt.setInt(1, line.getC_Invoice_ID());
       pstmt.setInt(2, as.getC_AcctSchema_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) tax.addInvoiceFact(new MFactAcct(getCtx(), rs, null));
+      while (rs.next()) tax.addInvoiceFact(new MFactAcct(getCtx(), rs));
     } catch (Exception e) {
       log.log(Level.SEVERE, sql, e);
     } finally {

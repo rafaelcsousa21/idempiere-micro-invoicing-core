@@ -4,7 +4,6 @@ import org.compiere.model.I_M_Inventory;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -24,8 +23,8 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Inventory(Properties ctx, int M_Inventory_ID, String trxName) {
-    super(ctx, M_Inventory_ID, trxName);
+  public X_M_Inventory(Properties ctx, int M_Inventory_ID) {
+    super(ctx, M_Inventory_ID);
     /**
      * if (M_Inventory_ID == 0) { setC_DocType_ID (0); setDocAction (null); // CO setDocStatus
      * (null); // DR setDocumentNo (null); setIsApproved (false); setM_Inventory_ID (0);
@@ -35,8 +34,8 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_Inventory(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Inventory(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -111,7 +110,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
   public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
     return (org.compiere.model.I_C_DocType)
         MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-            .getPO(getC_DocType_ID(), null);
+            .getPO(getC_DocType_ID());
   }
 
   /**

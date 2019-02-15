@@ -38,7 +38,7 @@ public class MRequestType extends X_R_RequestType {
     Integer key = new Integer(R_RequestType_ID);
     MRequestType retValue = (MRequestType) s_cache.get(key);
     if (retValue == null) {
-      retValue = new MRequestType(ctx, R_RequestType_ID, null);
+      retValue = new MRequestType(ctx, R_RequestType_ID);
       s_cache.put(key, retValue);
     }
     return retValue;
@@ -63,7 +63,7 @@ public class MRequestType extends X_R_RequestType {
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     final String whereClause = "AD_Client_ID IN (0," + AD_Client_ID + ")";
     MRequestType retValue =
-        new Query(ctx, I_R_RequestType.Table_Name, whereClause, null)
+        new Query(ctx, I_R_RequestType.Table_Name, whereClause)
             .setOrderBy("IsDefault DESC, clientId DESC")
             .first();
 
@@ -79,8 +79,8 @@ public class MRequestType extends X_R_RequestType {
    * @param R_RequestType_ID id
    * @param trxName transaction
    */
-  public MRequestType(Properties ctx, int R_RequestType_ID, String trxName) {
-    super(ctx, R_RequestType_ID, trxName);
+  public MRequestType(Properties ctx, int R_RequestType_ID) {
+    super(ctx, R_RequestType_ID);
     if (R_RequestType_ID == 0) {
       //	setR_RequestType_ID (0);
       //	setName (null);
@@ -105,8 +105,8 @@ public class MRequestType extends X_R_RequestType {
    * @param rs result set
    * @param trxName transaction
    */
-  public MRequestType(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MRequestType(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MRequestType
 
   /** Next time stats to be created */

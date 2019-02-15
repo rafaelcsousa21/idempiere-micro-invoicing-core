@@ -2,7 +2,6 @@ package org.idempiere.process;
 
 import org.compiere.model.I_M_BOMProduct;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -15,8 +14,8 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_BOMProduct(Properties ctx, int M_BOMProduct_ID, String trxName) {
-    super(ctx, M_BOMProduct_ID, trxName);
+  public X_M_BOMProduct(Properties ctx, int M_BOMProduct_ID) {
+    super(ctx, M_BOMProduct_ID);
     /**
      * if (M_BOMProduct_ID == 0) { setBOMProductType (null); // S setBOMQty (Env.ZERO); // 1
      * setIsPhantom (false); setLeadTimeOffset (0); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10
@@ -26,8 +25,8 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_BOMProduct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_BOMProduct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

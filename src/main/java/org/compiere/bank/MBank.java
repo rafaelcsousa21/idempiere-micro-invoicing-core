@@ -26,7 +26,7 @@ public class MBank extends X_C_Bank {
     Integer key = new Integer(C_Bank_ID);
     MBank retValue = (MBank) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MBank(ctx, C_Bank_ID, null);
+    retValue = new MBank(ctx, C_Bank_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -42,8 +42,8 @@ public class MBank extends X_C_Bank {
    * @param C_Bank_ID bank
    * @param trxName trx
    */
-  public MBank(Properties ctx, int C_Bank_ID, String trxName) {
-    super(ctx, C_Bank_ID, trxName);
+  public MBank(Properties ctx, int C_Bank_ID) {
+    super(ctx, C_Bank_ID);
   } //	MBank
 
   /**
@@ -53,8 +53,8 @@ public class MBank extends X_C_Bank {
    * @param rs result set
    * @param trxName trx
    */
-  public MBank(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MBank(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MBank
 
   /**

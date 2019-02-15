@@ -22,8 +22,8 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_I_FixedAsset(Properties ctx, int I_FixedAsset_ID, String trxName) {
-    super(ctx, I_FixedAsset_ID, trxName);
+  public X_I_FixedAsset(Properties ctx, int I_FixedAsset_ID) {
+    super(ctx, I_FixedAsset_ID);
     /**
      * if (I_FixedAsset_ID == 0) { setA_Asset_Cost (Env.ZERO); // 0 setA_Remaining_Period (0); // 0
      * setAssetPeriodDepreciationAmt (Env.ZERO); // 0 setDocAction (null); // 'CO' setI_IsImported
@@ -32,8 +32,8 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset, I_Pers
   }
 
   /** Load Constructor */
-  public X_I_FixedAsset(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_I_FixedAsset(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

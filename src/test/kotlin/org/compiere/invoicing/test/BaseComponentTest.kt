@@ -58,9 +58,9 @@ abstract class BaseComponentTest {
     protected val tax: I_C_Tax get() = _tax!!
 
     protected val org: I_AD_Org
-        get() = MOrg(ctx, 1000000, null)
+        get() = MOrg(ctx, 1000000)
     protected val warehouse: I_M_Warehouse
-        get() = MWarehouse(ctx, 1000000, null)
+        get() = MWarehouse(ctx, 1000000)
     private var _paymentTerm: I_C_PaymentTerm? = null
     protected val paymentTerm: I_C_PaymentTerm get() = _paymentTerm!!
     private var _bankAccount: I_C_BankAccount? = null
@@ -71,7 +71,7 @@ abstract class BaseComponentTest {
     @Before
     fun prepareEnv() {
         DB.run {
-            val query = Query(this.ctx, "AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID", null)
+            val query = Query(this.ctx, "AD_Client", "ad_client_id=$NEW_AD_CLIENT_ID")
             val result = query.list<MClient>()
             if (result.isEmpty()) {
                 createClient(ctx) { loginClient(0) }
@@ -86,11 +86,11 @@ abstract class BaseComponentTest {
     }
 
     private fun ensureBankAccount() {
-        val newBank = MBank(ctx, 0, null)
+        val newBank = MBank(ctx, 0)
         newBank.name = "B-" + randomString(10)
         newBank.routingNo = newBank.name
         newBank.save()
-        val newBankAccount = MBankAccount(ctx, 0, null)
+        val newBankAccount = MBankAccount(ctx, 0)
         newBankAccount.c_Bank_ID = newBank.id
         newBankAccount.name = newBank.name
         newBankAccount.setValue(newBankAccount.name)
@@ -102,21 +102,21 @@ abstract class BaseComponentTest {
     }
 
     private fun ensureCharge() {
-        val newCharge = MCharge(ctx, 0, null)
+        val newCharge = MCharge(ctx, 0)
         newCharge.name = "CH-" + randomString(5)
         newCharge.save()
         _charge = getById(newCharge.id, I_C_Charge.Table_Name)
     }
 
     private fun ensurePaymentTerm14Days() {
-        val newPaymentTerm = MPaymentTerm(ctx, 0, null)
+        val newPaymentTerm = MPaymentTerm(ctx, 0)
         newPaymentTerm.setIsValid(true)
         newPaymentTerm.name = "P-" + randomString(10)
         newPaymentTerm.setValue(newPaymentTerm.name)
         newPaymentTerm.save()
         _paymentTerm = getById(newPaymentTerm.id, I_C_PaymentTerm.Table_Name)
         assertNotNull(_paymentTerm)
-        val paySchedule = MPaySchedule(ctx, 0, null)
+        val paySchedule = MPaySchedule(ctx, 0)
         paySchedule.c_PaymentTerm_ID = paymentTerm.id
         paySchedule.percentage = 100.toBigDecimal()
         paySchedule.save()
@@ -124,7 +124,7 @@ abstract class BaseComponentTest {
 
     fun <T : IPO> getById(id: Int, tableName: String): T {
         val modelFactory: IModelFactory = DefaultModelFactory()
-        val result = modelFactory.getPO(tableName, id, null)
+        val result = modelFactory.getPO(tableName, id)
         println(result)
         assertNotNull(result)
         val obj = result as T
@@ -138,7 +138,7 @@ abstract class BaseComponentTest {
 
     protected fun getProductById(product_id: Int): I_M_Product {
         val modelFactory: IModelFactory = DefaultModelFactory()
-        val result = modelFactory.getPO(I_M_Product.Table_Name, product_id, null)
+        val result = modelFactory.getPO(I_M_Product.Table_Name, product_id)
         println(result)
         assertNotNull(result)
         val product = result as I_M_Product
@@ -148,12 +148,12 @@ abstract class BaseComponentTest {
     }
 
     fun ensureTaxCategory10Pct() {
-        val newCategory = MTaxCategory(ctx, 0, null)
+        val newCategory = MTaxCategory(ctx, 0)
         newCategory.name = "T-" + randomString(10)
         newCategory.save()
         _taxCategory = getById(newCategory.id, I_C_TaxCategory.Table_Name)
         assertNotNull(_taxCategory)
-        val newTax = MTax(ctx, newCategory.name, 10.toBigDecimal(), taxCategory.id, null)
+        val newTax = MTax(ctx, newCategory.name, 10.toBigDecimal(), taxCategory.id)
         newTax.setIsActive(true)
         newTax.setIsDefault(true)
         newTax.save()
@@ -162,9 +162,9 @@ abstract class BaseComponentTest {
     }
 
     fun createAProduct(name: String, productType: String): I_M_Product {
-        val standardProduct = MProduct.get(ctx, "name = 'Standard'", null).first()
+        val standardProduct = MProduct.get(ctx, "name = 'Standard'").first()
         val ctx = Env.getCtx()
-        val product = MProduct(ctx, 0, null)
+        val product = MProduct(ctx, 0)
         product.name = name
         product.value = name
         product.c_UOM_ID = MUOM.getDefault_UOM_ID(ctx)
@@ -177,7 +177,7 @@ abstract class BaseComponentTest {
         val warehouse = MWarehouse.getForOrg(ctx, org.id).first()
         val attributeSetInstance = MAttributeSetInstance.get(ctx, 0, product.id)
 
-        val inventory = MInventory(warehouse, null)
+        val inventory = MInventory(warehouse)
         inventory.c_DocType_ID = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "PI" }.id
         inventory.save()
 
@@ -193,7 +193,7 @@ abstract class BaseComponentTest {
                 product.id,
                 attributeSetInstance.id,
                 inventoryLine.id,
-                MCostElement.getElements(ctx, null).first().id,
+                MCostElement.getElements(ctx).first().id,
                 // amount (costs), quantity
                 0.8.toBigDecimal(), 1.toBigDecimal(),
                 "initial", null

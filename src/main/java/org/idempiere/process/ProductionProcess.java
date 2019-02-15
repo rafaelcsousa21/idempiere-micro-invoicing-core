@@ -40,7 +40,7 @@ public class ProductionProcess extends SvrProcess {
 
     p_M_Production_ID = getRecord_ID();
     if (p_M_Production_ID > 0)
-      m_production = new MProduction(getCtx(), p_M_Production_ID, null);
+      m_production = new MProduction(getCtx(), p_M_Production_ID);
   } // prepare
 
   @Override
@@ -69,8 +69,8 @@ public class ProductionProcess extends SvrProcess {
             new Query(
                 Env.getCtx(),
                 I_M_ProductionPlan.Table_Name,
-                "M_ProductionPlan.M_Production_ID=?",
-                null);
+                "M_ProductionPlan.M_Production_ID=?"
+            );
         List<MProductionPlan> plans =
             planQuery.setParameters(production.getM_Production_ID()).list();
         int linesCount = 0;

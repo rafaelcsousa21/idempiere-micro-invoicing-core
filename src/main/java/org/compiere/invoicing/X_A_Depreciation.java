@@ -19,13 +19,13 @@ public class X_A_Depreciation extends BasePOName implements I_A_Depreciation, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_A_Depreciation(Properties ctx, int A_Depreciation_ID, String trxName) {
-    super(ctx, A_Depreciation_ID, trxName);
+  public X_A_Depreciation(Properties ctx, int A_Depreciation_ID) {
+    super(ctx, A_Depreciation_ID);
   }
 
   /** Load Constructor */
-  public X_A_Depreciation(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_A_Depreciation(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

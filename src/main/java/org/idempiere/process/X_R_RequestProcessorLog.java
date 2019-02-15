@@ -13,8 +13,8 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_RequestProcessorLog(Properties ctx, int R_RequestProcessorLog_ID, String trxName) {
-    super(ctx, R_RequestProcessorLog_ID, trxName);
+  public X_R_RequestProcessorLog(Properties ctx, int R_RequestProcessorLog_ID) {
+    super(ctx, R_RequestProcessorLog_ID);
     /**
      * if (R_RequestProcessorLog_ID == 0) { setIsError (false); setR_RequestProcessor_ID (0);
      * setR_RequestProcessorLog_ID (0); }
@@ -22,8 +22,8 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
   }
 
   /** Load Constructor */
-  public X_R_RequestProcessorLog(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_RequestProcessorLog(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

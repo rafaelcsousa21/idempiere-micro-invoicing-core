@@ -30,8 +30,6 @@ public final class Fact implements IFact {
     m_doc = document;
     m_acctSchema = acctSchema;
     m_postingType = defaultPostingType;
-    // Fix [ 1884676 ] Fact not setting transaction
-    m_trxName = document.getTrxName();
     //
     if (log.isLoggable(Level.CONFIG)) log.config(toString());
   } //	Fact
@@ -103,8 +101,7 @@ public final class Fact implements IFact {
             m_doc.getCtx(),
             m_doc.getTableId(),
             m_doc.get_ID(),
-            docLine == null ? 0 : docLine.get_ID(),
-            m_trxName);
+            docLine == null ? 0 : docLine.get_ID());
     //  Set Info & Account
     line.setDocumentInfo(m_doc, docLine);
     line.setPostingType(m_postingType);
@@ -245,7 +242,7 @@ public final class Fact implements IFact {
 
     //  new line
     FactLine line =
-        new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0, m_trxName);
+        new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0);
     line.setDocumentInfo(m_doc, null);
     line.setPostingType(m_postingType);
 
@@ -385,7 +382,7 @@ public final class Fact implements IFact {
         if (!difference.isZeroBalance()) {
           //  Create Balancing Entry
           FactLine line =
-              new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0, m_trxName);
+              new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0);
           line.setDocumentInfo(m_doc, null);
           line.setPostingType(m_postingType);
           //  Amount & Account
@@ -491,7 +488,7 @@ public final class Fact implements IFact {
 
     //  Create Currency Balancing Entry
     if (m_acctSchema.isCurrencyBalancing()) {
-      line = new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0, m_trxName);
+      line = new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0);
       line.setDocumentInfo(m_doc, null);
       line.setPostingType(m_postingType);
       line.setAccount(m_acctSchema, m_acctSchema.getCurrencyBalancing_Acct());
@@ -647,8 +644,7 @@ public final class Fact implements IFact {
                 m_doc.getCtx(),
                 m_doc.getTableId(),
                 m_doc.get_ID(),
-                dLine.getLine_ID(),
-                m_trxName);
+                dLine.getLine_ID());
         //  Set Info & Account
         factLine.setDocumentInfo(m_doc, dLine.getDocLine());
         factLine.setAccount(m_acctSchema, dl.getAccount());
@@ -723,27 +719,16 @@ public final class Fact implements IFact {
    * @param trxName transaction
    * @return true if all lines were saved
    */
-  public boolean save(String trxName) {
-    m_trxName = trxName;
+  public boolean save() {
     //  save Lines
     for (int i = 0; i < m_lines.size(); i++) {
       FactLine fl = (FactLine) m_lines.get(i);
       //	log.fine("save - " + fl);
-      if (!fl.save(trxName)) //  abort on first error
+      if (!fl.save()) //  abort on first error
       return false;
     }
     return true;
   } //  commit
-
-  /**
-   * Set Transaction name
-   *
-   * @param trxName
-   */
-  @SuppressWarnings("unused")
-  private void set_TrxName(String trxName) {
-    m_trxName = trxName;
-  } //	set_TrxName
 
   /**
    * Fact Balance Utility

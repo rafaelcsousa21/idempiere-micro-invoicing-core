@@ -53,11 +53,11 @@ public class ProjectLinePricing extends SvrProcess {
    */
   protected String doIt() throws Exception {
     if (m_C_ProjectLine_ID == 0) throw new IllegalArgumentException("No Project Line");
-    MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID, null);
+    MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
     if (log.isLoggable(Level.INFO)) log.info("doIt - " + projectLine);
     if (projectLine.getM_Product_ID() == 0) throw new IllegalArgumentException("No Product");
     //
-    MProject project = new MProject(getCtx(), projectLine.getC_Project_ID(), null);
+    MProject project = new MProject(getCtx(), projectLine.getC_Project_ID());
     if (project.getM_PriceList_ID() == 0) throw new IllegalArgumentException("No PriceList");
     //
     boolean isSOTrx = true;
@@ -66,8 +66,7 @@ public class ProjectLinePricing extends SvrProcess {
         projectLine.getM_Product_ID(),
         project.getC_BPartner_ID(),
         projectLine.getPlannedQty(),
-        isSOTrx,
-        null);
+        isSOTrx);
     pp.setM_PriceList_ID(project.getM_PriceList_ID());
     pp.setPriceDate(project.getDateContract());
     //

@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_M_Transaction;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Transaction(Properties ctx, int M_Transaction_ID, String trxName) {
-    super(ctx, M_Transaction_ID, trxName);
+  public X_M_Transaction(Properties ctx, int M_Transaction_ID) {
+    super(ctx, M_Transaction_ID);
     /**
      * if (M_Transaction_ID == 0) { setM_AttributeSetInstance_ID (0); setM_Locator_ID (0);
      * setMovementDate (new Timestamp( System.currentTimeMillis() )); setMovementQty (Env.ZERO);
@@ -33,8 +32,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction, I_Persistent
   }
 
   /** Load Constructor */
-  public X_M_Transaction(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Transaction(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -108,13 +108,13 @@ public class ExpenseSOrder extends SvrProcess {
       rs = pstmt.executeQuery();
       while (rs.next()) // 	********* Expense Line Loop
       {
-        MTimeExpenseLine tel = new MTimeExpenseLine(getCtx(), rs, null);
+        MTimeExpenseLine tel = new MTimeExpenseLine(getCtx(), rs);
         if (!tel.isInvoiced()) continue;
 
         //	New BPartner - New Order
         if (oldBPartner == null || oldBPartner.getC_BPartner_ID() != tel.getC_BPartner_ID()) {
           completeOrder();
-          oldBPartner = new MBPartner(getCtx(), tel.getC_BPartner_ID(), null);
+          oldBPartner = new MBPartner(getCtx(), tel.getC_BPartner_ID());
         }
         //	New Project - New Order
         if (old_Project_ID != tel.getC_Project_ID()) {
@@ -122,7 +122,7 @@ public class ExpenseSOrder extends SvrProcess {
           old_Project_ID = tel.getC_Project_ID();
         }
         if (te == null || te.getS_TimeExpense_ID() != tel.getS_TimeExpense_ID())
-          te = new MTimeExpense(getCtx(), tel.getS_TimeExpense_ID(), null);
+          te = new MTimeExpense(getCtx(), tel.getS_TimeExpense_ID());
         //
         processLine(te, tel, oldBPartner);
       } //	********* Expense Line Loop
@@ -148,7 +148,7 @@ public class ExpenseSOrder extends SvrProcess {
     if (m_order == null) {
       if (log.isLoggable(Level.INFO))
         log.info("New Order for " + bp + ", Project=" + tel.getC_Project_ID());
-      m_order = new MOrder(getCtx(), 0, null);
+      m_order = new MOrder(getCtx(), 0);
       m_order.setAD_Org_ID(tel.getOrgId());
       m_order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_OnCredit);
       //
@@ -171,7 +171,7 @@ public class ExpenseSOrder extends SvrProcess {
       if (tel.getC_Project_ID() != 0) {
         m_order.setC_Project_ID(tel.getC_Project_ID());
         //	Optionally Overwrite BP Price list from Project
-        MProject project = new MProject(getCtx(), tel.getC_Project_ID(), null);
+        MProject project = new MProject(getCtx(), tel.getC_Project_ID());
         if (project.getM_PriceList_ID() != 0)
           m_order.setM_PriceList_ID(project.getM_PriceList_ID());
       }

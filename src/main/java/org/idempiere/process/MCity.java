@@ -26,7 +26,7 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
     Integer key = new Integer(C_City_ID);
     MCity r = s_Cities.get(key);
     if (r != null) return r;
-    r = new MCity(ctx, C_City_ID, null);
+    r = new MCity(ctx, C_City_ID);
     if (r.getC_City_ID() == C_City_ID) {
       s_Cities.put(key, r);
       return r;
@@ -50,8 +50,8 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
    * @param C_City_ID id
    * @param trxName transaction
    */
-  public MCity(Properties ctx, int C_City_ID, String trxName) {
-    super(ctx, C_City_ID, trxName);
+  public MCity(Properties ctx, int C_City_ID) {
+    super(ctx, C_City_ID);
     if (C_City_ID == 0) {}
   } //  MCity
 
@@ -62,8 +62,8 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
    * @param rs result set
    * @param trxName transaction
    */
-  public MCity(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCity(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCity
 
   /**
@@ -73,7 +73,7 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
    * @param CityName City Name
    */
   public MCity(MRegion region, String cityName) {
-    super(region.getCtx(), 0, null);
+    super(region.getCtx(), 0);
     setC_Region_ID(region.getC_Region_ID());
     setName(cityName);
   } //  MCity

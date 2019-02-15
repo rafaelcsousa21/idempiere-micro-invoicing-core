@@ -24,8 +24,8 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     return new Query(
             ctx,
             I_A_Asset_Group_Acct.Table_Name,
-            I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID + "=?",
-            null)
+            I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID + "=?"
+    )
         .setParameters(new Object[] {A_Asset_Group_ID})
         .list();
   }
@@ -38,7 +38,7 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
             + "=? AND "
             + I_A_Asset_Group_Acct.COLUMNNAME_PostingType
             + "=?";
-    return new Query(ctx, I_A_Asset_Group_Acct.Table_Name, whereClause, null)
+    return new Query(ctx, I_A_Asset_Group_Acct.Table_Name, whereClause)
         .setParameters(new Object[] {A_Asset_Group_ID, postingType})
         .firstOnly();
   }
@@ -49,8 +49,8 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
    * @param ctx context
    * @param X_A_Asset_Group_Acct_ID id
    */
-  public MAssetGroupAcct(Properties ctx, int X_A_Asset_Group_Acct_ID, String trxName) {
-    super(ctx, X_A_Asset_Group_Acct_ID, trxName);
+  public MAssetGroupAcct(Properties ctx, int X_A_Asset_Group_Acct_ID) {
+    super(ctx, X_A_Asset_Group_Acct_ID);
   } //	MAssetGroupAcct
 
   /**
@@ -59,8 +59,8 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
    * @param ctx context
    * @param rs result set
    */
-  public MAssetGroupAcct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAssetGroupAcct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MAssetGroupAcct
 
   /* commented by @win

@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_S_TimeExpenseLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -17,8 +16,8 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_S_TimeExpenseLine(Properties ctx, int S_TimeExpenseLine_ID, String trxName) {
-    super(ctx, S_TimeExpenseLine_ID, trxName);
+  public X_S_TimeExpenseLine(Properties ctx, int S_TimeExpenseLine_ID) {
+    super(ctx, S_TimeExpenseLine_ID);
     /**
      * if (S_TimeExpenseLine_ID == 0) { setDateExpense (new Timestamp( System.currentTimeMillis()
      * )); // @DateExpense@;@DateReport@ setIsInvoiced (false); setIsTimeReport (false); setLine
@@ -29,8 +28,8 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
   }
 
   /** Load Constructor */
-  public X_S_TimeExpenseLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_S_TimeExpenseLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

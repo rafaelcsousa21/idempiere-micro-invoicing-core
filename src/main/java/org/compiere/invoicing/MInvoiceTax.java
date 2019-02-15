@@ -42,7 +42,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
    * @return existing or new tax
    */
   public static MInvoiceTax get(
-      I_C_InvoiceLine line, int precision, boolean oldTax, String trxName) {
+      I_C_InvoiceLine line, int precision, boolean oldTax) {
     MInvoiceTax retValue = null;
     if (line == null || line.getC_Invoice_ID() == 0) return null;
     int C_Tax_ID = line.getC_Tax_ID();
@@ -61,11 +61,10 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     }
 
     retValue =
-        new Query(line.getCtx(), Table_Name, "C_Invoice_ID=? AND C_Tax_ID=?", trxName)
+        new Query(line.getCtx(), Table_Name, "C_Invoice_ID=? AND C_Tax_ID=?")
             .setParameters(line.getC_Invoice_ID(), C_Tax_ID)
             .firstOnly();
     if (retValue != null) {
-      retValue.set_TrxName(trxName);
       retValue.setPrecision(precision);
       if (s_log.isLoggable(Level.FINE)) s_log.fine("(old=" + oldTax + ") " + retValue);
       return retValue;
@@ -77,8 +76,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     }
 
     //	Create New
-    retValue = new MInvoiceTax(line.getCtx(), 0, trxName);
-    retValue.set_TrxName(trxName);
+    retValue = new MInvoiceTax(line.getCtx(), 0);
     retValue.setClientOrg(line);
     retValue.setC_Invoice_ID(line.getC_Invoice_ID());
     retValue.setC_Tax_ID(line.getC_Tax_ID());
@@ -99,8 +97,8 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
    * @param ignored ignored
    * @param trxName transaction
    */
-  public MInvoiceTax(Properties ctx, int ignored, String trxName) {
-    super(ctx, 0, trxName);
+  public MInvoiceTax(Properties ctx, int ignored) {
+    super(ctx, 0);
     if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
     setTaxAmt(Env.ZERO);
     setTaxBaseAmt(Env.ZERO);
@@ -114,8 +112,8 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
    * @param rs result set
    * @param trxName transaction
    */
-  public MInvoiceTax(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInvoiceTax(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInvoiceTax
   public MInvoiceTax(Properties ctx, Row row) {
     super(ctx, row);

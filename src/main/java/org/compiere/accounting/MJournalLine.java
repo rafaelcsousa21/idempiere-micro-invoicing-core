@@ -35,8 +35,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
    * @param GL_JournalLine_ID id
    * @param trxName transaction
    */
-  public MJournalLine(Properties ctx, int GL_JournalLine_ID, String trxName) {
-    super(ctx, GL_JournalLine_ID, trxName);
+  public MJournalLine(Properties ctx, int GL_JournalLine_ID) {
+    super(ctx, GL_JournalLine_ID);
     if (GL_JournalLine_ID == 0) {
       //	setGL_JournalLine_ID (0);		//	PK
       //	setGL_Journal_ID (0);			//	Parent
@@ -61,8 +61,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
    * @param rs result set
    * @param trxName transaction
    */
-  public MJournalLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MJournalLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MJournalLine
 
   /**
@@ -71,7 +71,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
    * @param parent journal
    */
   public MJournalLine(MJournal parent) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setGL_Journal_ID(parent.getGL_Journal_ID());
     setC_Currency_ID(parent.getC_Currency_ID());
@@ -88,7 +88,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
    * @return parent
    */
   public MJournal getParent() {
-    if (m_parent == null) m_parent = new MJournal(getCtx(), getGL_Journal_ID(), null);
+    if (m_parent == null) m_parent = new MJournal(getCtx(), getGL_Journal_ID());
     return m_parent;
   } //	getParent
 
@@ -212,7 +212,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
    */
   public MAccount getAccount_Combi() {
     if (m_account == null && getC_ValidCombination_ID() != 0)
-      m_account = new MAccount(getCtx(), getC_ValidCombination_ID(), null);
+      m_account = new MAccount(getCtx(), getC_ValidCombination_ID());
     return m_account;
   } //	getValidCombination
 
@@ -225,7 +225,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     if (m_accountElement == null) {
       MAccount vc = getAccount_Combi();
       if (vc != null && vc.getAccount_ID() != 0)
-        m_accountElement = new MElementValue(getCtx(), vc.getAccount_ID(), null);
+        m_accountElement = new MElementValue(getCtx(), vc.getAccount_ID());
     }
     return m_accountElement;
   } //	getAccountElement
@@ -361,7 +361,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 || is_ValueChanged("C_Activity_ID")
                 || is_ValueChanged("User1_ID")
                 || is_ValueChanged("User2_ID")))) {
-      MJournal gl = new MJournal(getCtx(), getGL_Journal_ID(), null);
+      MJournal gl = new MJournal(getCtx(), getGL_Journal_ID());
 
       // Validate all mandatory combinations are set
       MAcctSchema as = (MAcctSchema) getParent().getC_AcctSchema();
@@ -424,7 +424,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
               null);
 
       if (acct != null) {
-        acct.saveEx(null); // get ID from transaction
+        acct.saveEx(); // get ID from transaction
         setC_ValidCombination_ID(acct.getId());
         if (acct.getAlias() != null && acct.getAlias().length() > 0)
           setAlias_ValidCombination_ID(acct.getId());
@@ -437,7 +437,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
   /** Fill Accounting Dimensions from line combination * */
   private void fillDimensionsFromCombination() {
     if (getC_ValidCombination_ID() > 0) {
-      MAccount combi = new MAccount(getCtx(), getC_ValidCombination_ID(), null);
+      MAccount combi = new MAccount(getCtx(), getC_ValidCombination_ID());
       setAccount_ID(combi.getAccount_ID() > 0 ? combi.getAccount_ID() : 0);
       setC_SubAcct_ID(combi.getC_SubAcct_ID() > 0 ? combi.getC_SubAcct_ID() : 0);
       setM_Product_ID(combi.getM_Product_ID() > 0 ? combi.getM_Product_ID() : 0);

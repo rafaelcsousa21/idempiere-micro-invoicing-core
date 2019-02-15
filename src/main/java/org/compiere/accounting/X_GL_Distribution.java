@@ -21,13 +21,13 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_GL_Distribution(Properties ctx, int GL_Distribution_ID, String trxName) {
-    super(ctx, GL_Distribution_ID, trxName);
+  public X_GL_Distribution(Properties ctx, int GL_Distribution_ID) {
+    super(ctx, GL_Distribution_ID);
   }
 
   /** Load Constructor */
-  public X_GL_Distribution(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_GL_Distribution(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

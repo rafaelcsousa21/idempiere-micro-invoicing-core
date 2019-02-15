@@ -22,13 +22,13 @@ public class X_M_Production extends BasePOName implements I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Production(Properties ctx, int M_Production_ID, String trxName) {
-    super(ctx, M_Production_ID, trxName);
+  public X_M_Production(Properties ctx, int M_Production_ID) {
+    super(ctx, M_Production_ID);
   }
 
   /** Load Constructor */
-  public X_M_Production(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Production(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

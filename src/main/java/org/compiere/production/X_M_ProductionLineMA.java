@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_M_ProductionLineMA;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_ProductionLineMA(Properties ctx, int M_ProductionLineMA_ID, String trxName) {
-    super(ctx, M_ProductionLineMA_ID, trxName);
+  public X_M_ProductionLineMA(Properties ctx, int M_ProductionLineMA_ID) {
+    super(ctx, M_ProductionLineMA_ID);
     /**
      * if (M_ProductionLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setMovementQty
      * (Env.ZERO); setM_ProductionLine_ID (0); }
@@ -32,8 +31,8 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
   }
 
   /** Load Constructor */
-  public X_M_ProductionLineMA(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_ProductionLineMA(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_R_Request;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_Request(Properties ctx, int R_Request_ID, String trxName) {
-    super(ctx, R_Request_ID, trxName);
+  public X_R_Request(Properties ctx, int R_Request_ID) {
+    super(ctx, R_Request_ID);
     /**
      * if (R_Request_ID == 0) { setConfidentialType (null); // C setConfidentialTypeEntry (null); //
      * C setDocumentNo (null); setDueType (null); // 5 setIsEscalated (false); setIsInvoiced
@@ -34,8 +33,8 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_R_Request(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_Request(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -674,7 +673,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
   public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
     return (org.compiere.model.I_AD_User)
         MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-            .getPO(getSalesRep_ID(), null);
+            .getPO(getSalesRep_ID());
   }
 
   /**
@@ -684,7 +683,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
    */
   public void setSalesRep_ID(int SalesRep_ID) {
     if (SalesRep_ID < 1) set_Value(COLUMNNAME_SalesRep_ID, null);
-    else set_Value(COLUMNNAME_SalesRep_ID, Integer.valueOf(SalesRep_ID));
+    else set_Value(COLUMNNAME_SalesRep_ID, SalesRep_ID);
   }
 
   /**

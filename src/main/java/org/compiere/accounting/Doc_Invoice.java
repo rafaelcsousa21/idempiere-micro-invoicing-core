@@ -41,8 +41,8 @@ public class Doc_Invoice extends Doc {
    * @param rs record
    * @param trxName trx
    */
-  public Doc_Invoice(MAcctSchema as, ResultSet rs, String trxName) {
-    super(as, MInvoice.class, rs, null, trxName);
+  public Doc_Invoice(MAcctSchema as, ResultSet rs) {
+    super(as, MInvoice.class, rs, null);
   } //	Doc_Invoice
 
   /** Contained Optional Tax Lines */
@@ -561,8 +561,7 @@ public class Doc_Invoice extends Doc {
                 0, //	No Cost Element
                 line.getAmtSource(),
                 line.getQty(),
-                line.getDescription(),
-                getTrxName());
+                line.getDescription());
         }
       }
       //  Set Locations
@@ -676,8 +675,7 @@ public class Doc_Invoice extends Doc {
                 0, //	No Cost Element
                 line.getAmtSource().negate(),
                 line.getQty(),
-                line.getDescription(),
-                getTrxName());
+                line.getDescription());
         }
       }
       //  Set Locations
@@ -834,7 +832,7 @@ public class Doc_Invoice extends Doc {
   protected boolean landedCost(MAcctSchema as, Fact fact, DocLine line, boolean dr) {
     int C_InvoiceLine_ID = line.get_ID();
     MLandedCostAllocation[] lcas =
-        MLandedCostAllocation.getOfInvoiceLine(getCtx(), C_InvoiceLine_ID, getTrxName());
+        MLandedCostAllocation.getOfInvoiceLine(getCtx(), C_InvoiceLine_ID);
     if (lcas.length == 0) return false;
 
     //	Calculate Total Base
@@ -844,7 +842,7 @@ public class Doc_Invoice extends Doc {
     Map<String, BigDecimal> costDetailAmtMap = new HashMap<String, BigDecimal>();
 
     //	Create New
-    MInvoiceLine il = new MInvoiceLine(getCtx(), C_InvoiceLine_ID, getTrxName());
+    MInvoiceLine il = new MInvoiceLine(getCtx(), C_InvoiceLine_ID);
     for (int i = 0; i < lcas.length; i++) {
       MLandedCostAllocation lca = lcas[i];
       if (lca.getBase().signum() == 0) continue;
@@ -860,7 +858,7 @@ public class Doc_Invoice extends Doc {
       MAccount account = null;
       ProductCost pc =
           new ProductCost(
-              Env.getCtx(), lca.getM_Product_ID(), lca.getMAttributeSetInstance_ID(), getTrxName());
+              Env.getCtx(), lca.getM_Product_ID(), lca.getMAttributeSetInstance_ID());
       String costingMethod = pc.getProduct().getCostingMethod(as);
       if (X_M_Cost.COSTINGMETHOD_AverageInvoice.equals(costingMethod)
           || X_M_Cost.COSTINGMETHOD_AveragePO.equals(costingMethod)) {
@@ -876,7 +874,7 @@ public class Doc_Invoice extends Doc {
             oCurrencyId = iol.getC_OrderLine().getC_Currency_ID();
             oDateAcct = iol.getC_OrderLine().getC_Order().getDateAcct();
             MOrderLandedCostAllocation[] allocations =
-                MOrderLandedCostAllocation.getOfOrderLine(iol.getC_OrderLine_ID(), getTrxName());
+                MOrderLandedCostAllocation.getOfOrderLine(iol.getC_OrderLine_ID());
             for (MOrderLandedCostAllocation allocation : allocations) {
               if (allocation.getC_OrderLandedCost().getM_CostElement_ID()
                   != lca.getM_CostElement_ID()) continue;
@@ -990,8 +988,7 @@ public class Doc_Invoice extends Doc {
                 lca.getM_CostElement_ID(),
                 costDetailAmt,
                 lca.getQty(),
-                desc,
-                getTrxName())) {
+                desc)) {
               throw new RuntimeException("Failed to create cost detail record.");
             }
           } catch (AverageCostingZeroQtyException e) {

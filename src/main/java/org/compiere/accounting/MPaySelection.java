@@ -29,8 +29,8 @@ public class MPaySelection extends X_C_PaySelection {
    * @param C_PaySelection_ID id
    * @param trxName transaction
    */
-  public MPaySelection(Properties ctx, int C_PaySelection_ID, String trxName) {
-    super(ctx, C_PaySelection_ID, trxName);
+  public MPaySelection(Properties ctx, int C_PaySelection_ID) {
+    super(ctx, C_PaySelection_ID);
     if (C_PaySelection_ID == 0) {
       //	setC_BankAccount_ID (0);
       //	setName (null);	// @#Date@
@@ -49,8 +49,8 @@ public class MPaySelection extends X_C_PaySelection {
    * @param rs result set
    * @param trxName transaction
    */
-  public MPaySelection(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPaySelection(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MPaySelection
 
   /** Lines */
@@ -66,13 +66,12 @@ public class MPaySelection extends X_C_PaySelection {
    */
   public MPaySelectionLine[] getLines(boolean requery) {
     if (m_lines != null && !requery) {
-      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     // FR: [ 2214883 ] Remove SQL code and Replace for Query - red1
     final String whereClause = "C_PaySelection_ID=?";
     List<MPaySelectionLine> list =
-        new Query(getCtx(), I_C_PaySelectionLine.Table_Name, whereClause, null)
+        new Query(getCtx(), I_C_PaySelectionLine.Table_Name, whereClause)
             .setParameters(getC_PaySelection_ID())
             .setOrderBy("Line")
             .list();

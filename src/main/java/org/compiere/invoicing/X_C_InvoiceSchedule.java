@@ -4,7 +4,6 @@ import org.compiere.model.HasName;
 import org.compiere.model.I_C_InvoiceSchedule;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -17,8 +16,8 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_InvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID, String trxName) {
-    super(ctx, C_InvoiceSchedule_ID, trxName);
+  public X_C_InvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID) {
+    super(ctx, C_InvoiceSchedule_ID);
     /**
      * if (C_InvoiceSchedule_ID == 0) { setAmt (Env.ZERO); setC_InvoiceSchedule_ID (0);
      * setInvoiceDay (0); // 1 setInvoiceFrequency (null); setInvoiceWeekDay (null); setIsAmount
@@ -27,8 +26,8 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
   }
 
   /** Load Constructor */
-  public X_C_InvoiceSchedule(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_InvoiceSchedule(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

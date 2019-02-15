@@ -157,7 +157,7 @@ public class MDistribution extends X_GL_Distribution {
       parameters = new Object[] {Account_ID};
     }
     List<MDistribution> list =
-        new Query(ctx, I_GL_Distribution.Table_Name, whereClause, null)
+        new Query(ctx, I_GL_Distribution.Table_Name, whereClause)
             .setClient_ID()
             .setParameters(parameters)
             .list();
@@ -193,8 +193,8 @@ public class MDistribution extends X_GL_Distribution {
    * @param GL_Distribution_ID id
    * @param trxName transaction
    */
-  public MDistribution(Properties ctx, int GL_Distribution_ID, String trxName) {
-    super(ctx, GL_Distribution_ID, trxName);
+  public MDistribution(Properties ctx, int GL_Distribution_ID) {
+    super(ctx, GL_Distribution_ID);
     if (GL_Distribution_ID == 0) {
       //	setC_AcctSchema_ID (0);
       //	setName (null);
@@ -225,8 +225,8 @@ public class MDistribution extends X_GL_Distribution {
    * @param rs result set
    * @param trxName transaction
    */
-  public MDistribution(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MDistribution(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MDistribution
 
   /** The Lines */
@@ -240,14 +240,13 @@ public class MDistribution extends X_GL_Distribution {
    */
   public MDistributionLine[] getLines(boolean reload) {
     if (m_lines != null && !reload) {
-      PO.set_TrxName(m_lines, null);
       return m_lines;
     }
     BigDecimal PercentTotal = Env.ZERO;
     // red1 Query
     final String whereClause = I_GL_DistributionLine.COLUMNNAME_GL_Distribution_ID + "=?";
     List<MDistributionLine> list =
-        new Query(getCtx(), I_GL_DistributionLine.Table_Name, whereClause, null)
+        new Query(getCtx(), I_GL_DistributionLine.Table_Name, whereClause)
             .setParameters(getGL_Distribution_ID())
             .setOrderBy("Line")
             .list();

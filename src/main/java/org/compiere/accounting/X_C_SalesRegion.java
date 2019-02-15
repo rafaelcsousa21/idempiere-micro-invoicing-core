@@ -19,8 +19,8 @@ public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion,
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_SalesRegion(Properties ctx, int C_SalesRegion_ID, String trxName) {
-    super(ctx, C_SalesRegion_ID, trxName);
+  public X_C_SalesRegion(Properties ctx, int C_SalesRegion_ID) {
+    super(ctx, C_SalesRegion_ID);
     /**
      * if (C_SalesRegion_ID == 0) { setC_SalesRegion_ID (0); setIsDefault (false); setIsSummary
      * (false); setName (null); setValue (null); }
@@ -28,8 +28,8 @@ public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion,
   }
 
   /** Load Constructor */
-  public X_C_SalesRegion(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_SalesRegion(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

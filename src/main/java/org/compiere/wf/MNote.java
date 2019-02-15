@@ -24,8 +24,8 @@ public class MNote extends X_AD_Note {
    * @param AD_Note_ID id
    * @param trxName transaction
    */
-  public MNote(Properties ctx, int AD_Note_ID, String trxName) {
-    super(ctx, AD_Note_ID, trxName);
+  public MNote(Properties ctx, int AD_Note_ID) {
+    super(ctx, AD_Note_ID);
     if (AD_Note_ID == 0) {
       setProcessed(false);
       setProcessing(false);
@@ -39,8 +39,8 @@ public class MNote extends X_AD_Note {
    * @param rs result set
    * @param trxName transaction
    */
-  public MNote(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MNote(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MNote
 
   /**
@@ -51,8 +51,8 @@ public class MNote extends X_AD_Note {
    * @param AD_User_ID targeted user
    * @param trxName transaction
    */
-  public MNote(Properties ctx, int AD_Message_ID, int AD_User_ID, String trxName) {
-    this(ctx, 0, trxName);
+  public MNote(Properties ctx, int AD_Message_ID, int AD_User_ID) {
+    this(ctx, 0);
     setAD_Message_ID(AD_Message_ID);
     setAD_User_ID(AD_User_ID);
   } //	MNote
@@ -65,8 +65,8 @@ public class MNote extends X_AD_Note {
    * @param AD_User_ID targeted user
    * @param trxName transaction
    */
-  public MNote(Properties ctx, String AD_MessageValue, int AD_User_ID, String trxName) {
-    this(ctx, MMessage.getAD_Message_ID(ctx, AD_MessageValue), AD_User_ID, trxName);
+  public MNote(Properties ctx, String AD_MessageValue, int AD_User_ID) {
+    this(ctx, MMessage.getAD_Message_ID(ctx, AD_MessageValue), AD_User_ID);
   } //	MNote
 
   /**
@@ -90,7 +90,7 @@ public class MNote extends X_AD_Note {
       String Reference,
       String TextMsg,
       String trxName) {
-    this(ctx, AD_Message_ID, AD_User_ID, trxName);
+    this(ctx, AD_Message_ID, AD_User_ID);
     setRecord(AD_Table_ID, Record_ID);
     setReference(Reference);
     setTextMsg(TextMsg);
@@ -113,7 +113,7 @@ public class MNote extends X_AD_Note {
       int AD_Client_ID,
       int AD_Org_ID,
       String trxName) {
-    this(ctx, MMessage.getAD_Message_ID(ctx, AD_MessageValue), AD_User_ID, trxName);
+    this(ctx, MMessage.getAD_Message_ID(ctx, AD_MessageValue), AD_User_ID);
     setClientOrg(AD_Client_ID, AD_Org_ID);
   } //	MNote
 

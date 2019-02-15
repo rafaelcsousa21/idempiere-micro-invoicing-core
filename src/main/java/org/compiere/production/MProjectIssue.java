@@ -35,8 +35,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
    * @param C_ProjectIssue_ID id
    * @param trxName transaction
    */
-  public MProjectIssue(Properties ctx, int C_ProjectIssue_ID, String trxName) {
-    super(ctx, C_ProjectIssue_ID, trxName);
+  public MProjectIssue(Properties ctx, int C_ProjectIssue_ID) {
+    super(ctx, C_ProjectIssue_ID);
     if (C_ProjectIssue_ID == 0) {
       //	setC_Project_ID (0);
       //	setLine (0);
@@ -56,8 +56,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MProjectIssue(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProjectIssue(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProjectIssue
 
   /**
@@ -66,7 +66,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
    * @param project parent
    */
   public MProjectIssue(MProject project) {
-    this(project.getCtx(), 0, null);
+    this(project.getCtx(), 0);
     setClientOrg(project. getClientId(), project. getOrgId());
     setC_Project_ID(project.getC_Project_ID()); // 	Parent
     setLine(getNextLine());
@@ -151,7 +151,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     if (getMAttributeSetInstance_ID() > 0) {
       Timestamp t =
           MStorageOnHand.getDateMaterialPolicy(
-              getM_Product_ID(), getMAttributeSetInstance_ID(), null);
+              getM_Product_ID(), getMAttributeSetInstance_ID());
       if (t != null) dateMPolicy = t;
     }
 
@@ -221,7 +221,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     }
 
     if (ok) {
-      if (mTrx.save(null)) {
+      if (mTrx.save()) {
         setProcessed(true);
         if (save()) return true;
         else log.log(Level.SEVERE, "Issue not saved"); // 	requires trx !!

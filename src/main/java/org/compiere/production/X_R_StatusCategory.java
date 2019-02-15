@@ -19,13 +19,13 @@ public class X_R_StatusCategory extends BasePOName implements I_R_StatusCategory
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_StatusCategory(Properties ctx, int R_StatusCategory_ID, String trxName) {
-    super(ctx, R_StatusCategory_ID, trxName);
+  public X_R_StatusCategory(Properties ctx, int R_StatusCategory_ID) {
+    super(ctx, R_StatusCategory_ID);
   }
 
   /** Load Constructor */
-  public X_R_StatusCategory(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_StatusCategory(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

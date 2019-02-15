@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_Year;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -20,14 +19,14 @@ public class X_C_Year extends PO implements I_C_Year, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_Year(Properties ctx, int C_Year_ID, String trxName) {
-    super(ctx, C_Year_ID, trxName);
+  public X_C_Year(Properties ctx, int C_Year_ID) {
+    super(ctx, C_Year_ID);
     /** if (C_Year_ID == 0) { setC_Calendar_ID (0); setC_Year_ID (0); setFiscalYear (null); } */
   }
 
   /** Load Constructor */
-  public X_C_Year(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_Year(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

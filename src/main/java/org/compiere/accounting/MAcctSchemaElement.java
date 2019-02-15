@@ -3,14 +3,11 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.model.I_C_ValidCombination;
-import org.compiere.orm.MClient;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
-import org.idempiere.common.util.Language;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -53,7 +50,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
 
     final String whereClause = "C_AcctSchema_ID=? AND IsActive=?";
     List<MAcctSchemaElement> elements =
-        new Query(as.getCtx(), I_C_AcctSchema_Element.Table_Name, whereClause, null)
+        new Query(as.getCtx(), I_C_AcctSchema_Element.Table_Name, whereClause)
             .setParameters(as.getC_AcctSchema_ID(), "Y")
             .setOrderBy("SeqNo")
             .list();
@@ -125,8 +122,8 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    * @param C_AcctSchema_Element_ID id
    * @param trxName transaction
    */
-  public MAcctSchemaElement(Properties ctx, int C_AcctSchema_Element_ID, String trxName) {
-    super(ctx, C_AcctSchema_Element_ID, trxName);
+  public MAcctSchemaElement(Properties ctx, int C_AcctSchema_Element_ID) {
+    super(ctx, C_AcctSchema_Element_ID);
     if (C_AcctSchema_Element_ID == 0) {
       //	setC_AcctSchema_Element_ID (0);
       //	setC_AcctSchema_ID (0);
@@ -147,8 +144,8 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    * @param rs result set
    * @param trxName transaction
    */
-  public MAcctSchemaElement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAcctSchemaElement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MAcctSchemaElement
   public MAcctSchemaElement(Properties ctx, Row row) {
     super(ctx, row);
@@ -160,7 +157,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    * @param as accounting schema
    */
   public MAcctSchemaElement(MAcctSchema as) {
-    this(as.getCtx(), 0, null);
+    this(as.getCtx(), 0);
     setClientOrg(as);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
 
@@ -340,7 +337,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     //	Resequence
     if (newRecord || is_ValueChanged(I_C_AcctSchema_Element.COLUMNNAME_SeqNo)) {
       StringBuilder msguvd = new StringBuilder("AD_Client_ID=").append( getClientId());
-      MAccount.updateValueDescription(getCtx(), msguvd.toString(), null);
+      MAccount.updateValueDescription(getCtx(), msguvd.toString());
     }
     return success;
   } //	afterSave
@@ -353,7 +350,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
    */
   private void updateData(String element, int id) {
     StringBuilder msguvd = new StringBuilder(element).append("=").append(id);
-    MAccount.updateValueDescription(getCtx(), msguvd.toString(), null);
+    MAccount.updateValueDescription(getCtx(), msguvd.toString());
     //
     StringBuilder sql =
         new StringBuilder("UPDATE C_ValidCombination SET ")
@@ -402,7 +399,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
   protected boolean afterDelete(boolean success) {
     if (!success) return success;
     //	Update Account Info
-    MAccount.updateValueDescription(getCtx(), "AD_Client_ID=" + getClientId(), null);
+    MAccount.updateValueDescription(getCtx(), "AD_Client_ID=" + getClientId());
     //
     s_cache.clear();
     return success;

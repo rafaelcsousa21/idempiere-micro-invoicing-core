@@ -26,8 +26,8 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
    * @param C_PaySelectionLine_ID id
    * @param trxName transaction
    */
-  public MPaySelectionLine(Properties ctx, int C_PaySelectionLine_ID, String trxName) {
-    super(ctx, C_PaySelectionLine_ID, trxName);
+  public MPaySelectionLine(Properties ctx, int C_PaySelectionLine_ID) {
+    super(ctx, C_PaySelectionLine_ID);
     if (C_PaySelectionLine_ID == 0) {
       //	setC_PaySelection_ID (0);
       //	setPaymentRule (null);	// S
@@ -51,8 +51,8 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MPaySelectionLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPaySelectionLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MPaySelectionLine
 
   /**
@@ -63,7 +63,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
    * @param PaymentRule payment rule
    */
   public MPaySelectionLine(MPaySelection ps, int Line, String PaymentRule) {
-    this(ps.getCtx(), 0, null);
+    this(ps.getCtx(), 0);
     setClientOrg(ps);
     setC_PaySelection_ID(ps.getC_PaySelection_ID());
     setLine(Line);
@@ -105,7 +105,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
    * @return invoice
    */
   public MInvoice getInvoice() {
-    if (m_invoice == null) m_invoice = new MInvoice(getCtx(), getC_Invoice_ID(), null);
+    if (m_invoice == null) m_invoice = new MInvoice(getCtx(), getC_Invoice_ID());
     return m_invoice;
   } //	getInvoice
 

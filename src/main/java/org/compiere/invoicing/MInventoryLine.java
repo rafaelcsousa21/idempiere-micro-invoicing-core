@@ -36,8 +36,8 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
    * @param M_InventoryLine_ID line
    * @param trxName transaction
    */
-  public MInventoryLine(Properties ctx, int M_InventoryLine_ID, String trxName) {
-    super(ctx, M_InventoryLine_ID, trxName);
+  public MInventoryLine(Properties ctx, int M_InventoryLine_ID) {
+    super(ctx, M_InventoryLine_ID);
     if (M_InventoryLine_ID == 0) {
       //	setM_Inventory_ID (0);			//	Parent
       //	setM_InventoryLine_ID (0);		//	PK
@@ -59,8 +59,8 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
    * @param rs result set
    * @param trxName transaction
    */
-  public MInventoryLine(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInventoryLine(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInventoryLine
   public MInventoryLine(Properties ctx, Row row) {
     super(ctx, row);
@@ -85,7 +85,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
       BigDecimal QtyBook,
       BigDecimal QtyCount,
       BigDecimal QtyInternalUse) {
-    this(inventory.getCtx(), 0, null);
+    this(inventory.getCtx(), 0);
     if (inventory.getId() == 0) throw new IllegalArgumentException("Header not saved");
     m_parent = inventory;
     setM_Inventory_ID(inventory.getM_Inventory_ID()); // 	Parent
@@ -194,7 +194,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
    * @return parent
    */
   public MInventory getParent() {
-    if (m_parent == null) m_parent = new MInventory(getCtx(), getM_Inventory_ID(), null);
+    if (m_parent == null) m_parent = new MInventory(getCtx(), getM_Inventory_ID());
     return m_parent;
   } //	getParent
 
@@ -323,7 +323,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
       }
     } else if (MDocType.DOCSUBTYPEINV_CostAdjustment.equals(docSubTypeInv)) {
       int M_ASI_ID = getMAttributeSetInstance_ID();
-      MProduct product = new MProduct(getCtx(), getM_Product_ID(), null);
+      MProduct product = new MProduct(getCtx(), getM_Product_ID());
       MClient client = MClient.get(getCtx());
       MAcctSchema as = client.getAcctSchema();
       String costingLevel = product.getCostingLevel(as);

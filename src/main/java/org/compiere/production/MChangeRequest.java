@@ -22,8 +22,8 @@ public class MChangeRequest extends X_M_ChangeRequest {
    * @param M_ChangeRequest_ID ix
    * @param trxName trx
    */
-  public MChangeRequest(Properties ctx, int M_ChangeRequest_ID, String trxName) {
-    super(ctx, M_ChangeRequest_ID, trxName);
+  public MChangeRequest(Properties ctx, int M_ChangeRequest_ID) {
+    super(ctx, M_ChangeRequest_ID);
     if (M_ChangeRequest_ID == 0) {
       //	setName (null);
       setIsApproved(false);
@@ -38,7 +38,7 @@ public class MChangeRequest extends X_M_ChangeRequest {
    * @param group request group
    */
   public MChangeRequest(MRequest request, MGroup group) {
-    this(request.getCtx(), 0, null);
+    this(request.getCtx(), 0);
     setClientOrg(request);
     StringBuilder msgset =
         new StringBuilder()
@@ -59,8 +59,8 @@ public class MChangeRequest extends X_M_ChangeRequest {
    * @param rs result set
    * @param trxName trx
    */
-  public MChangeRequest(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MChangeRequest(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MChangeRequest
 
     /**

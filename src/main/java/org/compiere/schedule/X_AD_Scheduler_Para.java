@@ -19,14 +19,14 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_Scheduler_Para(Properties ctx, int AD_Scheduler_Para_ID, String trxName) {
-    super(ctx, AD_Scheduler_Para_ID, trxName);
+  public X_AD_Scheduler_Para(Properties ctx, int AD_Scheduler_Para_ID) {
+    super(ctx, AD_Scheduler_Para_ID);
     /** if (AD_Scheduler_Para_ID == 0) { setAD_Process_Para_ID (0); setAD_Scheduler_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_AD_Scheduler_Para(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_Scheduler_Para(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

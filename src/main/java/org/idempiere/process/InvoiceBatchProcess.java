@@ -70,7 +70,7 @@ public class InvoiceBatchProcess extends SvrProcess {
     if (log.isLoggable(Level.INFO))
       log.info("C_InvoiceBatch_ID=" + p_C_InvoiceBatch_ID + ", DocAction=" + p_DocAction);
     if (p_C_InvoiceBatch_ID == 0) throw new AdempiereUserError("C_InvoiceBatch_ID = 0");
-    MInvoiceBatch batch = new MInvoiceBatch(getCtx(), p_C_InvoiceBatch_ID, null);
+    MInvoiceBatch batch = new MInvoiceBatch(getCtx(), p_C_InvoiceBatch_ID);
     if (batch.getId() == 0)
       throw new AdempiereUserError("@NotFound@: @C_InvoiceBatch_ID@ - " + p_C_InvoiceBatch_ID);
     if (batch.isProcessed()) throw new AdempiereUserError("@Processed@");

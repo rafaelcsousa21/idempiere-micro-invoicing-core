@@ -26,8 +26,8 @@ public class Doc_GLJournal extends Doc {
    * @param rs record
    * @param trxName trx
    */
-  public Doc_GLJournal(MAcctSchema as, ResultSet rs, String trxName) {
-    super(as, MJournal.class, rs, null, trxName);
+  public Doc_GLJournal(MAcctSchema as, ResultSet rs) {
+    super(as, MJournal.class, rs, null);
   } //	Doc_GL_Journal
 
   /** Posting Type */

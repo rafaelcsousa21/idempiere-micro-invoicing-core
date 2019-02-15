@@ -21,8 +21,8 @@ public class X_M_Product_Category_Acct extends PO
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Product_Category_Acct(Properties ctx, int M_Product_Category_Acct_ID, String trxName) {
-    super(ctx, M_Product_Category_Acct_ID, trxName);
+  public X_M_Product_Category_Acct(Properties ctx, int M_Product_Category_Acct_ID) {
+    super(ctx, M_Product_Category_Acct_ID);
     /**
      * if (M_Product_Category_Acct_ID == 0) { setC_AcctSchema_ID (0); setM_Product_Category_ID (0);
      * setP_Asset_Acct (0); setP_COGS_Acct (0); setP_CostAdjustment_Acct (0); setP_Expense_Acct (0);
@@ -33,8 +33,8 @@ public class X_M_Product_Category_Acct extends PO
   }
 
   /** Load Constructor */
-  public X_M_Product_Category_Acct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Product_Category_Acct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_M_Product_Category_Acct(Properties ctx, Row row)  {
     super(ctx, row);

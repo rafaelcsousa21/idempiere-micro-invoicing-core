@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_Message;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -20,8 +19,8 @@ public class X_AD_Message extends PO implements I_AD_Message, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_Message(Properties ctx, int AD_Message_ID, String trxName) {
-    super(ctx, AD_Message_ID, trxName);
+  public X_AD_Message(Properties ctx, int AD_Message_ID) {
+    super(ctx, AD_Message_ID);
     /**
      * if (AD_Message_ID == 0) { setAD_Message_ID (0); setEntityType (null); // @SQL=select
      * get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual setMsgText (null); setMsgType (null);
@@ -30,8 +29,8 @@ public class X_AD_Message extends PO implements I_AD_Message, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_AD_Message(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_Message(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

@@ -32,8 +32,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
   /** */
   private static final long serialVersionUID = 8722189788479132158L;
 
-  public MPaymentTransaction(Properties ctx, int C_PaymentTransaction_ID, String trxName) {
-    super(ctx, C_PaymentTransaction_ID, trxName);
+  public MPaymentTransaction(Properties ctx, int C_PaymentTransaction_ID) {
+    super(ctx, C_PaymentTransaction_ID);
 
     //  New
     if (C_PaymentTransaction_ID == 0) {
@@ -57,8 +57,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     }
   }
 
-  public MPaymentTransaction(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MPaymentTransaction(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   @Override
@@ -175,7 +175,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     if (m_mBankAccountProcessor == null) {
       if (getC_PaymentProcessor_ID() > 0) {
         MPaymentProcessor pp =
-            new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID(), null);
+            new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID());
         log.log(Level.WARNING, "No Payment Processor Model " + pp.toString());
         setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNoProcessorModel") + ": " + pp.toString());
       } else {
@@ -243,7 +243,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     else if (getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_DelayedCapture))
       setIsDelayedCapture(approved);
 
-    MOnlineTrxHistory history = new MOnlineTrxHistory(getCtx(), 0, null);
+    MOnlineTrxHistory history = new MOnlineTrxHistory(getCtx(), 0);
     history.setAD_Table_ID(MPaymentTransaction.Table_ID);
     history.setRecord_ID(getC_PaymentTransaction_ID());
     history.setIsError(!(approved && processed));
@@ -274,7 +274,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     if (s_log.isLoggable(Level.FINE)) s_log.fine("create for " + mbap);
 
     MPaymentProcessor mpp =
-        new MPaymentProcessor(mbap.getCtx(), mbap.getC_PaymentProcessor_ID(), null);
+        new MPaymentProcessor(mbap.getCtx(), mbap.getC_PaymentProcessor_ID());
     String className = mpp.getPayProcessorClass();
     if (className == null || className.length() == 0) {
       s_log.log(Level.SEVERE, "No PaymentProcessor class name in " + mbap);
@@ -416,7 +416,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
   }
 
   public MPayment createPayment(String trxName) {
-    MPayment payment = new MPayment(getCtx(), 0, trxName);
+    MPayment payment = new MPayment(getCtx(), 0);
     payment.setA_City(getA_City());
     payment.setA_Country(getA_Country());
     payment.setA_EMail(getA_EMail());
@@ -520,8 +520,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
       String trxType,
       String orig_TrxID,
       String trxName) {
-    MPaymentTransaction to = new MPaymentTransaction(from.getCtx(), 0, trxName);
-    to.set_TrxName(trxName);
+    MPaymentTransaction to = new MPaymentTransaction(from.getCtx(), 0);
     PO.copyValues(from, to, from. getClientId(), from. getOrgId());
     to.set_ValueNoCheck(I_C_PaymentTransaction.COLUMNNAME_C_PaymentTransaction_ID, I_ZERO);
     //
@@ -585,13 +584,13 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     to.setTrxType(trxType);
     to.setVoiceAuthCode(from.getVoiceAuthCode());
     //
-    if (!to.save(trxName)) throw new IllegalStateException("Could not create Payment Transaction");
+    if (!to.save()) throw new IllegalStateException("Could not create Payment Transaction");
 
     return to;
   }
 
     public static int[] getAuthorizationPaymentTransactionIDs(
-      int[] orderIDList, int C_Invoice_ID, String trxName) {
+      int[] orderIDList, int C_Invoice_ID) {
     StringBuilder sb = new StringBuilder();
     if (orderIDList != null) {
       for (int orderID : orderIDList) sb.append(orderID).append(",");

@@ -14,13 +14,13 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_AcctProcessor(Properties ctx, int C_AcctProcessor_ID, String trxName) {
-    super(ctx, C_AcctProcessor_ID, trxName);
+  public X_C_AcctProcessor(Properties ctx, int C_AcctProcessor_ID) {
+    super(ctx, C_AcctProcessor_ID);
   }
 
   /** Load Constructor */
-  public X_C_AcctProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_AcctProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

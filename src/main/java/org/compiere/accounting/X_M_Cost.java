@@ -23,8 +23,8 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_Cost(Properties ctx, int M_Cost_ID, String trxName) {
-    super(ctx, M_Cost_ID, trxName);
+  public X_M_Cost(Properties ctx, int M_Cost_ID) {
+    super(ctx, M_Cost_ID);
     /**
      * if (M_Cost_ID == 0) { setC_AcctSchema_ID (0); setCurrentCostPrice (Env.ZERO);
      * setCurrentCostPriceLL (Env.ZERO); setCurrentQty (Env.ZERO); setFutureCostPrice (Env.ZERO);
@@ -34,8 +34,8 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_Cost(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_Cost(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
   public X_M_Cost(Properties ctx, Row row) {
     super(ctx, row);
@@ -59,7 +59,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
   public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
     return (org.compiere.model.I_C_AcctSchema)
         MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-            .getPO(getC_AcctSchema_ID(), null);
+            .getPO(getC_AcctSchema_ID());
   }
 
   /**
@@ -69,7 +69,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
    */
   public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
     if (C_AcctSchema_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
+    else set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
   }
 
   /**
@@ -226,7 +226,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
   public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
     return (org.compiere.model.I_M_CostElement)
         MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-            .getPO(getM_CostElement_ID(), null);
+            .getPO(getM_CostElement_ID());
   }
 
   /**
@@ -274,7 +274,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
     return (org.compiere.model.I_M_Product)
         MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-            .getPO(getM_Product_ID(), null);
+            .getPO(getM_Product_ID());
   }
 
   /**
@@ -284,7 +284,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
    */
   public void setM_Product_ID(int M_Product_ID) {
     if (M_Product_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+    else set_ValueNoCheck(COLUMNNAME_M_Product_ID, M_Product_ID);
   }
 
   /**

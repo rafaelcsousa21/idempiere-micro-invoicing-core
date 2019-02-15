@@ -37,8 +37,8 @@ public class MMailText extends X_R_MailText {
    * @param R_MailText_ID id
    * @param trxName transaction
    */
-  public MMailText(Properties ctx, int R_MailText_ID, String trxName) {
-    super(ctx, R_MailText_ID, trxName);
+  public MMailText(Properties ctx, int R_MailText_ID) {
+    super(ctx, R_MailText_ID);
   } //	MMailText
 
   /**
@@ -48,8 +48,8 @@ public class MMailText extends X_R_MailText {
    * @param rs result set
    * @param trxName transaction
    */
-  public MMailText(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MMailText(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MMailText
 
   /** Parse User */
@@ -249,7 +249,7 @@ public class MMailText extends X_R_MailText {
    * @param C_BPartner_ID bp
    */
   public void setBPartner(int C_BPartner_ID) {
-    m_bpartner = new MBPartner(getCtx(), C_BPartner_ID, null);
+    m_bpartner = new MBPartner(getCtx(), C_BPartner_ID);
   } //	setBPartner
 
     /**

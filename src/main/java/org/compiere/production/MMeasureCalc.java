@@ -34,10 +34,10 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
    * @return MMeasureCalc
    */
   public static MMeasureCalc get(Properties ctx, int PA_MeasureCalc_ID) {
-    Integer key = new Integer(PA_MeasureCalc_ID);
+    Integer key = PA_MeasureCalc_ID;
     MMeasureCalc retValue = (MMeasureCalc) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MMeasureCalc(ctx, PA_MeasureCalc_ID, null);
+    retValue = new MMeasureCalc(ctx, PA_MeasureCalc_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -53,8 +53,8 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
    * @param PA_MeasureCalc_ID id
    * @param trxName trx
    */
-  public MMeasureCalc(Properties ctx, int PA_MeasureCalc_ID, String trxName) {
-    super(ctx, PA_MeasureCalc_ID, trxName);
+  public MMeasureCalc(Properties ctx, int PA_MeasureCalc_ID) {
+    super(ctx, PA_MeasureCalc_ID);
   } //	MMeasureCalc
 
   /**
@@ -64,8 +64,8 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
    * @param rs result set
    * @param trxName trx
    */
-  public MMeasureCalc(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MMeasureCalc(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MMeasureCalc
 
   /**

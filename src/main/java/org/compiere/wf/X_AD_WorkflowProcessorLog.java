@@ -20,8 +20,8 @@ public class X_AD_WorkflowProcessorLog extends PO
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WorkflowProcessorLog(Properties ctx, int AD_WorkflowProcessorLog_ID, String trxName) {
-    super(ctx, AD_WorkflowProcessorLog_ID, trxName);
+  public X_AD_WorkflowProcessorLog(Properties ctx, int AD_WorkflowProcessorLog_ID) {
+    super(ctx, AD_WorkflowProcessorLog_ID);
     /**
      * if (AD_WorkflowProcessorLog_ID == 0) { setAD_WorkflowProcessor_ID (0);
      * setAD_WorkflowProcessorLog_ID (0); setIsError (false); }
@@ -29,8 +29,8 @@ public class X_AD_WorkflowProcessorLog extends PO
   }
 
   /** Load Constructor */
-  public X_AD_WorkflowProcessorLog(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WorkflowProcessorLog(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

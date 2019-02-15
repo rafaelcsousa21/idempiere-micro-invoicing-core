@@ -1,8 +1,6 @@
 package org.compiere.invoicing;
 
-import org.compiere.accounting.MAccount;
 import org.compiere.accounting.MAcctSchema;
-import org.compiere.accounting.ProductCost;
 import org.compiere.model.I_A_Asset_Acct;
 import org.compiere.orm.Query;
 import org.compiere.orm.SetGetUtil;
@@ -26,15 +24,15 @@ public class MAssetAcct extends X_A_Asset_Acct {
   private static final long serialVersionUID = -3919172418904053712L;
 
   /** DO NOT USE DIRECTLY */
-  public MAssetAcct(Properties ctx, int X_A_Asset_Acct_ID, String trxName) {
-    super(ctx, X_A_Asset_Acct_ID, trxName);
+  public MAssetAcct(Properties ctx, int X_A_Asset_Acct_ID) {
+    super(ctx, X_A_Asset_Acct_ID);
     if (X_A_Asset_Acct_ID == 0) {
       setA_Salvage_Value(Env.ZERO);
     }
   }
 
-  public MAssetAcct(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAssetAcct(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /** Static Cache: A_Asset_Acct_ID -> MAssetAcct */
@@ -51,7 +49,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
    * @return asset accounting for the given asset
    */
   public static MAssetAcct forA_Asset_ID(
-      Properties ctx, int A_Asset_ID, String postingType, Timestamp dateAcct, String trxName) {
+      Properties ctx, int A_Asset_ID, String postingType, Timestamp dateAcct) {
     //
     ArrayList<Object> params = new ArrayList<Object>();
     StringBuilder whereClause =
@@ -67,13 +65,11 @@ public class MAssetAcct extends X_A_Asset_Acct {
       params.add(dateAcct);
     }
     MAssetAcct acct =
-        new Query(ctx, I_A_Asset_Acct.Table_Name, whereClause.toString(), trxName)
+        new Query(ctx, I_A_Asset_Acct.Table_Name, whereClause.toString())
             .setParameters(params)
             .setOrderBy(I_A_Asset_Acct.COLUMNNAME_ValidFrom + " DESC NULLS LAST")
             .first();
-    if (trxName == null) {
-      addToCache(acct);
-    }
+    addToCache(acct);
     return acct;
   }
 
@@ -91,7 +87,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
    * @param assetgrpacct asset group accounting
    */
   public MAssetAcct(MAsset asset, MAssetGroupAcct assetgrpacct) {
-    this(assetgrpacct.getCtx(), 0, null);
+    this(assetgrpacct.getCtx(), 0);
 
     SetGetUtil.copyValues(this, assetgrpacct, null, null);
     setA_Asset_ID(asset.getA_Asset_ID());

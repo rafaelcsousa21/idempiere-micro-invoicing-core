@@ -8,7 +8,6 @@ import org.eevolution.model.I_PP_Product_Planning;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -37,8 +36,8 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
    * @param trxName
    * @return MPPProductPlanning Data Product Planning
    */
-  public MPPProductPlanning(Properties ctx, int pp_product_planning_id, String trxname) {
-    super(ctx, pp_product_planning_id, trxname);
+  public MPPProductPlanning(Properties ctx, int pp_product_planning_id) {
+    super(ctx, pp_product_planning_id);
     if (pp_product_planning_id == 0) {}
   } //	MPPProductPlanning
 
@@ -50,8 +49,8 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
    * @param trxName Transaction Name
    * @return MPPProductPlanning Data Product Planning
    */
-  public MPPProductPlanning(Properties ctx, ResultSet rs, String trxname) {
-    super(ctx, rs, trxname);
+  public MPPProductPlanning(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -64,8 +63,8 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
    * @return MPPProductPlanning
    */
   public static MPPProductPlanning get(
-      Properties ctx, int ad_client_id, int ad_org_id, int m_product_id, String trxName) {
-    int M_Warehouse_ID = MOrgInfo.get(ctx, ad_org_id, trxName).getM_Warehouse_ID();
+      Properties ctx, int ad_client_id, int ad_org_id, int m_product_id) {
+    int M_Warehouse_ID = MOrgInfo.get(ctx, ad_org_id).getM_Warehouse_ID();
     if (M_Warehouse_ID <= 0) {
       return null;
     }
@@ -73,7 +72,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     int S_Resource_ID = getPlantForWarehouse(M_Warehouse_ID);
     if (S_Resource_ID <= 0) return null;
 
-    return get(ctx, ad_client_id, ad_org_id, M_Warehouse_ID, S_Resource_ID, m_product_id, trxName);
+    return get(ctx, ad_client_id, ad_org_id, M_Warehouse_ID, S_Resource_ID, m_product_id);
   }
 
   /**
@@ -94,8 +93,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
       int ad_org_id,
       int m_warehouse_id,
       int s_resource_id,
-      int m_product_id,
-      String trxname) {
+      int m_product_id) {
     if (log.isLoggable(Level.INFO))
       log.info(
           "AD_Client_ID="
@@ -125,7 +123,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
             + I_PP_Product_Planning.COLUMNNAME_S_Resource_ID
             + "=?";
 
-    return new Query(ctx, MPPProductPlanning.Table_Name, whereClause, trxname)
+    return new Query(ctx, MPPProductPlanning.Table_Name, whereClause)
         .setParameters(ad_client_id, ad_org_id, m_product_id, m_warehouse_id, s_resource_id)
         .setOnlyActiveRecords(true)
         .firstOnly();

@@ -31,8 +31,8 @@ public class MWFProcess extends X_AD_WF_Process {
    * @param AD_WF_Process_ID process
    * @param trxName transaction
    */
-  public MWFProcess(Properties ctx, int AD_WF_Process_ID, String trxName) {
-    super(ctx, AD_WF_Process_ID, trxName);
+  public MWFProcess(Properties ctx, int AD_WF_Process_ID) {
+    super(ctx, AD_WF_Process_ID);
     if (AD_WF_Process_ID == 0)
       throw new IllegalArgumentException("Cannot create new WF Process directly");
     m_state = new StateEngine(getWFState());
@@ -45,22 +45,10 @@ public class MWFProcess extends X_AD_WF_Process {
    * @param rs result set
    * @param trxName transaction
    */
-  public MWFProcess(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MWFProcess(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
     m_state = new StateEngine(getWFState());
   } //	MWFProcess
-
-  /**
-   * New Constructor
-   *
-   * @param wf workflow
-   * @param pi Process Info (Record_ID)
-   * @deprecated
-   * @throws Exception
-   */
-  public MWFProcess(MWorkflow wf, IProcessInfo pi) throws Exception {
-    this(wf, pi, null);
-  }
 
   /**
    * New Constructor
@@ -70,8 +58,8 @@ public class MWFProcess extends X_AD_WF_Process {
    * @param trxName
    * @throws Exception
    */
-  public MWFProcess(MWorkflow wf, IProcessInfo pi, String trxName) throws Exception {
-    super(wf.getCtx(), 0, trxName);
+  public MWFProcess(MWorkflow wf, IProcessInfo pi) throws Exception {
+    super(wf.getCtx(), 0);
     if (!TimeUtil.isValid(wf.getValidFrom(), wf.getValidTo()))
       throw new IllegalStateException("Workflow not valid");
     m_wf = wf;
@@ -127,17 +115,6 @@ public class MWFProcess extends X_AD_WF_Process {
    * @return array of activities
    */
   public MWFActivity[] getActivities(boolean requery, boolean onlyActive) {
-    return getActivities(requery, onlyActive, null);
-  }
-
-  /**
-   * Get active Activities of Process
-   *
-   * @param requery if true requery
-   * @param onlyActive only active activities
-   * @return array of activities
-   */
-  public MWFActivity[] getActivities(boolean requery, boolean onlyActive, String trxName) {
     if (!requery && m_activities != null) return m_activities;
     //
     ArrayList<Object> params = new ArrayList<Object>();
@@ -148,7 +125,7 @@ public class MWFProcess extends X_AD_WF_Process {
       params.add(false);
     }
     List<MWFActivity> list =
-        new Query(getCtx(), MWFActivity.Table_Name, whereClause.toString(), trxName)
+        new Query(getCtx(), MWFActivity.Table_Name, whereClause.toString())
             .setParameters(params)
             .list();
     m_activities = new MWFActivity[list.size()];
@@ -206,7 +183,6 @@ public class MWFProcess extends X_AD_WF_Process {
    * @param trxName transaction
    */
   public void checkActivities(String trxName, PO lastPO) {
-    this.set_TrxName(trxName); // ensure process is working on the same transaction
     if (log.isLoggable(Level.INFO))
       log.info(
           "("
@@ -219,7 +195,7 @@ public class MWFProcess extends X_AD_WF_Process {
     if (lastPO != null && lastPO.getId() == this.getRecord_ID()) m_po = lastPO;
 
     //
-    MWFActivity[] activities = getActivities(true, true, trxName); // 	requery active
+    MWFActivity[] activities = getActivities(true, true); // 	requery active
     String closedState = null;
     boolean suspended = false;
     boolean running = false;
@@ -229,7 +205,7 @@ public class MWFProcess extends X_AD_WF_Process {
 
       //	Completed - Start Next
       if (activityState.isCompleted()) {
-        if (startNext(activity, activities, lastPO, trxName)) continue;
+        if (startNext(activity, activities, lastPO)) continue;
       }
       //
       String activityWFState = activity.getWFState();
@@ -276,7 +252,7 @@ public class MWFProcess extends X_AD_WF_Process {
    * @param activities all activities
    * @return true if there is a next activity
    */
-  private boolean startNext(MWFActivity last, MWFActivity[] activities, PO lastPO, String trxName) {
+  private boolean startNext(MWFActivity last, MWFActivity[] activities, PO lastPO) {
     if (log.isLoggable(Level.FINE)) log.fine("Last=" + last);
     //	transitions from the last processed node
     MWFNodeNext[] transitions =
@@ -301,7 +277,6 @@ public class MWFProcess extends X_AD_WF_Process {
 
       //	Start new Activity...
       MWFActivity activity = new MWFActivity(this, transitions[i].getAD_WF_Next_ID(), lastPO);
-      activity.set_TrxName(trxName);
       activity.run();
 
       //	only the first valid if XOR
@@ -421,7 +396,7 @@ public class MWFProcess extends X_AD_WF_Process {
     if (getRecord_ID() == 0) return null;
 
     MTable table = MTable.get(getCtx(), getAD_Table_ID());
-    m_po = (PO) table.getPO(getRecord_ID(), null);
+    m_po = (PO) table.getPO(getRecord_ID());
     return m_po;
   } //	getPO
 

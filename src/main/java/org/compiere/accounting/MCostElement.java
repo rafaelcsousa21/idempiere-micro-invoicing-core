@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.MRefList;
-import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
@@ -50,7 +49,7 @@ public class MCostElement extends X_M_CostElement {
     //
     final String whereClause = "AD_Client_ID=? AND CostingMethod=? AND CostElementType=?";
     MCostElement retValue =
-        new Query(po.getCtx(), I_M_CostElement.Table_Name, whereClause, null)
+        new Query(po.getCtx(), I_M_CostElement.Table_Name, whereClause)
             .setParameters(
                 po.getClientId(), CostingMethod, X_M_CostElement.COSTELEMENTTYPE_Material)
             .setOrderBy("AD_Org_ID")
@@ -58,7 +57,7 @@ public class MCostElement extends X_M_CostElement {
     if (retValue != null) return retValue;
 
     //	Create New
-    retValue = new MCostElement(po.getCtx(), 0, null);
+    retValue = new MCostElement(po.getCtx(), 0);
     retValue.setClientOrg(po. getClientId(), 0);
     String name =
         MRefList.getListName(
@@ -83,7 +82,7 @@ public class MCostElement extends X_M_CostElement {
   public static MCostElement getMaterialCostElement(Properties ctx, String CostingMethod) {
     final String whereClause = "AD_Client_ID=? AND CostingMethod=? AND CostElementType=?";
     List<MCostElement> list =
-        new Query(ctx, I_M_CostElement.Table_Name, whereClause, null)
+        new Query(ctx, I_M_CostElement.Table_Name, whereClause)
             .setParameters(
                 Env.getClientId(ctx), CostingMethod, X_M_CostElement.COSTELEMENTTYPE_Material)
             .setOrderBy(I_M_CostElement.COLUMNNAME_AD_Org_ID)
@@ -108,7 +107,7 @@ public class MCostElement extends X_M_CostElement {
     final String whereClause =
         "AD_Client_ID=? AND CostingMethod=? AND CostElementType=? AND orgId In (0, ?)";
     List<MCostElement> list =
-        new Query(ctx, I_M_CostElement.Table_Name, whereClause, null)
+        new Query(ctx, I_M_CostElement.Table_Name, whereClause)
             .setParameters(
                 Env.getClientId(ctx),
                 CostingMethod,
@@ -132,7 +131,7 @@ public class MCostElement extends X_M_CostElement {
    */
   public static List<MCostElement> getCostElementsWithCostingMethods(IPO po) {
     final String whereClause = "AD_Client_ID=? AND CostingMethod IS NOT NULL";
-    return new Query(po.getCtx(), MCostElement.Table_Name, whereClause, null)
+    return new Query(po.getCtx(), MCostElement.Table_Name, whereClause)
         .setParameters(po.getClientId())
         .setOnlyActiveRecords(true)
         .list();
@@ -147,7 +146,7 @@ public class MCostElement extends X_M_CostElement {
   public static MCostElement[] getCostingMethods(IPO po) {
     final String whereClause = "AD_Client_ID=? AND CostElementType=? AND CostingMethod IS NOT NULL";
     List<MCostElement> list =
-        new Query(po.getCtx(), I_M_CostElement.Table_Name, whereClause, null)
+        new Query(po.getCtx(), I_M_CostElement.Table_Name, whereClause)
             .setParameters(po.getClientId(), X_M_CostElement.COSTELEMENTTYPE_Material)
             .setOnlyActiveRecords(true)
             .list();
@@ -171,7 +170,7 @@ public class MCostElement extends X_M_CostElement {
     Integer key = new Integer(M_CostElement_ID);
     MCostElement retValue = (MCostElement) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MCostElement(ctx, M_CostElement_ID, null);
+    retValue = new MCostElement(ctx, M_CostElement_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -183,12 +182,12 @@ public class MCostElement extends X_M_CostElement {
    * @param trxName transaction
    * @return array cost elements
    */
-  public static MCostElement[] getElements(Properties ctx, String trxName) {
+  public static MCostElement[] getElements(Properties ctx) {
     int AD_Org_ID = 0; // Org is always ZERO - see beforeSave
 
     final String whereClause = "AD_Client_ID = ? AND AD_Org_ID=?";
     List<MCostElement> list =
-        new Query(ctx, I_M_CostElement.Table_Name, whereClause, trxName)
+        new Query(ctx, I_M_CostElement.Table_Name, whereClause)
             .setParameters(Env.getClientId(ctx), AD_Org_ID)
             .list();
     MCostElement[] retValue = new MCostElement[list.size()];
@@ -210,8 +209,8 @@ public class MCostElement extends X_M_CostElement {
    * @param M_CostElement_ID id
    * @param trxName trx
    */
-  public MCostElement(Properties ctx, int M_CostElement_ID, String trxName) {
-    super(ctx, M_CostElement_ID, trxName);
+  public MCostElement(Properties ctx, int M_CostElement_ID) {
+    super(ctx, M_CostElement_ID);
     if (M_CostElement_ID == 0) {
       //	setName (null);
       setCostElementType(X_M_CostElement.COSTELEMENTTYPE_Material);
@@ -226,8 +225,8 @@ public class MCostElement extends X_M_CostElement {
    * @param rs result set
    * @param trxName trx
    */
-  public MCostElement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCostElement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCostElement
   public MCostElement(Properties ctx, Row row)  {
     super(ctx, row);
@@ -307,7 +306,7 @@ public class MCostElement extends X_M_CostElement {
     int M_Product_Category_ID = 0;
     final String whereClause = "AD_Client_ID=? AND CostingMethod=?";
     MProductCategoryAcct retValue =
-        new Query(getCtx(), I_M_Product_Category_Acct.Table_Name, whereClause, null)
+        new Query(getCtx(), I_M_Product_Category_Acct.Table_Name, whereClause)
             .setParameters( getClientId(), getCostingMethod())
             .first();
     if (retValue != null) M_Product_Category_ID = retValue.getM_Product_Category_ID();

@@ -33,8 +33,8 @@ public class MYear extends X_C_Year {
    * @param C_Year_ID id
    * @param trxName transaction
    */
-  public MYear(Properties ctx, int C_Year_ID, String trxName) {
-    super(ctx, C_Year_ID, trxName);
+  public MYear(Properties ctx, int C_Year_ID) {
+    super(ctx, C_Year_ID);
     if (C_Year_ID == 0) {
       //	setC_Calendar_ID (0);
       //	setYear (null);
@@ -49,8 +49,8 @@ public class MYear extends X_C_Year {
    * @param rs result set
    * @param trxName transaction
    */
-  public MYear(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MYear(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MYear
 
   /**
@@ -59,7 +59,7 @@ public class MYear extends X_C_Year {
    * @param calendar parent
    */
   public MYear(MCalendar calendar) {
-    this(calendar.getCtx(), 0, null);
+    this(calendar.getCtx(), 0);
     setClientOrg(calendar);
     setC_Calendar_ID(calendar.getC_Calendar_ID());
     setYear();
@@ -184,7 +184,7 @@ public class MYear extends X_C_Year {
       cal.add(Calendar.DAY_OF_YEAR, -1);
       Timestamp end = new Timestamp(cal.getTimeInMillis());
       //
-      MPeriod period = MPeriod.findByCalendar(getCtx(), start, getC_Calendar_ID(), null);
+      MPeriod period = MPeriod.findByCalendar(getCtx(), start, getC_Calendar_ID());
       if (period == null) {
         period = new MPeriod(this, month + 1, name, start, end);
       } else {
@@ -197,7 +197,7 @@ public class MYear extends X_C_Year {
       if (processMonitor != null) {
         processMonitor.statusUpdate(period.toString());
       }
-      period.saveEx(null); // 	Creates Period Control
+      period.saveEx(); // 	Creates Period Control
       // get first day of next month
       cal.add(Calendar.DAY_OF_YEAR, 1);
     }

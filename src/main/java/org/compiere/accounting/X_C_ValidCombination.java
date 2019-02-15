@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
@@ -21,8 +20,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_ValidCombination(Properties ctx, int C_ValidCombination_ID, String trxName) {
-    super(ctx, C_ValidCombination_ID, trxName);
+  public X_C_ValidCombination(Properties ctx, int C_ValidCombination_ID) {
+    super(ctx, C_ValidCombination_ID);
     /**
      * if (C_ValidCombination_ID == 0) { setAccount_ID (0); setC_AcctSchema_ID (0);
      * setC_ValidCombination_ID (0); setIsFullyQualified (false); }
@@ -30,8 +29,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
   }
 
   /** Load Constructor */
-  public X_C_ValidCombination(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_ValidCombination(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -51,7 +50,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
   public org.compiere.model.I_C_ElementValue getAccount() throws RuntimeException {
     return (org.compiere.model.I_C_ElementValue)
         MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-            .getPO(getAccount_ID(), null);
+            .getPO(getAccount_ID());
   }
 
   /**
@@ -61,7 +60,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
    */
   public void setAccount_ID(int Account_ID) {
     if (Account_ID < 1) set_ValueNoCheck(COLUMNNAME_Account_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_Account_ID, Integer.valueOf(Account_ID));
+    else set_ValueNoCheck(COLUMNNAME_Account_ID, Account_ID);
   }
 
   /**

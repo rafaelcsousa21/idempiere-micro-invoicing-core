@@ -20,17 +20,6 @@ public class MCashBook extends X_C_CashBook {
   private static final long serialVersionUID = 3991585668643587699L;
 
   /**
-   * Get MCashBook from Cache
-   *
-   * @param ctx context
-   * @param C_CashBook_ID id
-   * @return MCashBook
-   */
-  public static MCashBook get(Properties ctx, int C_CashBook_ID) {
-    return get(ctx, C_CashBook_ID, null);
-  } //	get
-
-  /**
    * Gets MCashBook from Cache under transaction scope
    *
    * @param ctx context
@@ -38,11 +27,11 @@ public class MCashBook extends X_C_CashBook {
    * @param trxName transaction name
    * @return Cashbook
    */
-  public static MCashBook get(Properties ctx, int C_CashBook_ID, String trxName) {
+  public static MCashBook get(Properties ctx, int C_CashBook_ID) {
     Integer key = new Integer(C_CashBook_ID);
     MCashBook retValue = (MCashBook) s_cache.get(key);
     if (retValue != null) return retValue;
-    retValue = new MCashBook(ctx, C_CashBook_ID, trxName);
+    retValue = new MCashBook(ctx, C_CashBook_ID);
     if (retValue.getId() != 0) s_cache.put(key, retValue);
     return retValue;
   } //	get
@@ -70,7 +59,7 @@ public class MCashBook extends X_C_CashBook {
             + I_C_CashBook.COLUMNNAME_C_Currency_ID
             + "=?";
     MCashBook retValue =
-        new Query(ctx, I_C_CashBook.Table_Name, whereClause, null)
+        new Query(ctx, I_C_CashBook.Table_Name, whereClause)
             .setParameters(AD_Org_ID, C_Currency_ID)
             .setOrderBy("IsDefault DESC")
             .first();
@@ -95,8 +84,8 @@ public class MCashBook extends X_C_CashBook {
    * @param C_CashBook_ID id
    * @param trxName transaction
    */
-  public MCashBook(Properties ctx, int C_CashBook_ID, String trxName) {
-    super(ctx, C_CashBook_ID, trxName);
+  public MCashBook(Properties ctx, int C_CashBook_ID) {
+    super(ctx, C_CashBook_ID);
   } //	MCashBook
 
   /**
@@ -106,8 +95,8 @@ public class MCashBook extends X_C_CashBook {
    * @param rs result set
    * @param trxName transaction
    */
-  public MCashBook(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCashBook(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MCashBook
 
   /**

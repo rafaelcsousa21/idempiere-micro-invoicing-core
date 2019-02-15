@@ -294,7 +294,7 @@ public class ImportPriceList extends SvrProcess {
       pstmt = prepareStatement(sql.toString());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        X_I_PriceList imp = new X_I_PriceList(getCtx(), rs, null);
+        X_I_PriceList imp = new X_I_PriceList(getCtx(), rs);
         int I_PriceList_ID = imp.getI_PriceList_ID();
         int M_PriceList_ID = imp.getM_PriceList_ID();
         if (M_PriceList_ID == 0) {
@@ -335,7 +335,7 @@ public class ImportPriceList extends SvrProcess {
           }
         } else {
           // NOTE no else clause - if the price list already exists it's not updated
-          pricelist = new MPriceList(getCtx(), M_PriceList_ID, null);
+          pricelist = new MPriceList(getCtx(), M_PriceList_ID);
         }
 
         int M_PriceList_Version_ID = imp.getM_PriceList_Version_ID();
@@ -379,7 +379,7 @@ public class ImportPriceList extends SvrProcess {
           }
         } else {
           // NOTE no else clause - if the price list version already exists it's not updated
-          pricelistversion = new MPriceListVersion(getCtx(), M_PriceList_Version_ID, null);
+          pricelistversion = new MPriceListVersion(getCtx(), M_PriceList_Version_ID);
         }
 
         // @TODO: C_UOM is intended for future USE - not useful at this moment
@@ -406,7 +406,7 @@ public class ImportPriceList extends SvrProcess {
           if (M_ProductPriceVendorBreak_ID < 0) M_ProductPriceVendorBreak_ID = 0;
           X_M_ProductPriceVendorBreak ppvb =
               new X_M_ProductPriceVendorBreak(
-                  getCtx(), M_ProductPriceVendorBreak_ID, null);
+                  getCtx(), M_ProductPriceVendorBreak_ID);
           boolean isInsert = false;
           if (M_ProductPriceVendorBreak_ID == 0) {
             ppvb.setM_PriceList_Version_ID(pricelistversion.getM_PriceList_Version_ID());
@@ -438,8 +438,7 @@ public class ImportPriceList extends SvrProcess {
               MProductPrice.get(
                   getCtx(),
                   pricelistversion.getM_PriceList_Version_ID(),
-                  imp.getM_Product_ID(),
-                  null);
+                  imp.getM_Product_ID());
           boolean isInsert = false;
           if (pp != null) {
             if (p_importPriceLimit) pp.setPriceLimit(imp.getPriceLimit());

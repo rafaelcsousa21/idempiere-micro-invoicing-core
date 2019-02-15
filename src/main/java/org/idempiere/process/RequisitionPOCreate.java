@@ -104,7 +104,7 @@ public class RequisitionPOCreate extends SvrProcess {
     //	Specific
     if (p_M_Requisition_ID != 0) {
       if (log.isLoggable(Level.INFO)) log.info("M_Requisition_ID=" + p_M_Requisition_ID);
-      MRequisition req = new MRequisition(getCtx(), p_M_Requisition_ID, null);
+      MRequisition req = new MRequisition(getCtx(), p_M_Requisition_ID);
       if (!MRequisition.DOCSTATUS_Completed.equals(req.getDocStatus())) {
         throw new AdempiereUserError("@DocStatus@ = " + req.getDocStatus());
       }
@@ -216,7 +216,7 @@ public class RequisitionPOCreate extends SvrProcess {
     orderClause.append("M_Product_ID, C_Charge_ID, M_AttributeSetInstance_ID");
 
     POResultSet<MRequisitionLine> rs =
-        new Query(getCtx(), MRequisitionLine.Table_Name, whereClause.toString(), null)
+        new Query(getCtx(), MRequisitionLine.Table_Name, whereClause.toString())
             .setParameters(params)
             .setOrderBy(orderClause.toString())
             .setClient_ID()
@@ -301,7 +301,7 @@ public class RequisitionPOCreate extends SvrProcess {
     MultiKey key = new MultiKey(C_BPartner_ID, DateRequired, M_PriceList_ID);
     m_order = m_cacheOrders.get(key);
     if (m_order == null) {
-      m_order = new MOrder(getCtx(), 0, null);
+      m_order = new MOrder(getCtx(), 0);
       m_order.setAD_Org_ID(rLine.getOrgId());
       m_order.setM_Warehouse_ID(rLine.getParent().getM_Warehouse_ID());
       m_order.setDatePromised(DateRequired);
@@ -376,7 +376,7 @@ public class RequisitionPOCreate extends SvrProcess {
     } else {
       // Find Strategic Vendor for Product
       // TODO: refactor
-      MProductPO[] ppos = MProductPO.getOfProduct(getCtx(), product.getM_Product_ID(), null);
+      MProductPO[] ppos = MProductPO.getOfProduct(getCtx(), product.getM_Product_ID());
       for (int i = 0; i < ppos.length; i++) {
         if (ppos[i].isCurrentVendor() && ppos[i].getC_BPartner_ID() != 0) {
           C_BPartner_ID = ppos[i].getC_BPartner_ID();
@@ -437,8 +437,8 @@ public class RequisitionPOCreate extends SvrProcess {
         new Query(
                 getCtx(),
                 MBPartner.Table_Name,
-                "C_BPartner_ID=? AND C_BP_Group_ID=?",
-                null)
+                "C_BPartner_ID=? AND C_BP_Group_ID=?"
+        )
             .setParameters(new Object[] {C_BPartner_ID, p_C_BP_Group_ID})
             .match();
     if (!match) {

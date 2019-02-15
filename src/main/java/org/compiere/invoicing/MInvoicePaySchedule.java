@@ -36,7 +36,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
    * @return array of schedule
    */
   public static MInvoicePaySchedule[] getInvoicePaySchedule(
-      Properties ctx, int C_Invoice_ID, int C_InvoicePaySchedule_ID, String trxName) {
+      Properties ctx, int C_Invoice_ID, int C_InvoicePaySchedule_ID) {
     StringBuilder sql =
         new StringBuilder("SELECT * FROM C_InvoicePaySchedule ips WHERE IsActive='Y' ");
     if (C_Invoice_ID != 0) sql.append("AND C_Invoice_ID=? ");
@@ -54,7 +54,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
       else pstmt.setInt(1, C_InvoicePaySchedule_ID);
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        list.add(new MInvoicePaySchedule(ctx, rs, trxName));
+        list.add(new MInvoicePaySchedule(ctx, rs));
       }
     } catch (Exception e) {
       s_log.log(Level.SEVERE, "getInvoicePaySchedule", e);
@@ -79,8 +79,8 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
    * @param C_InvoicePaySchedule_ID id
    * @param trxName transaction
    */
-  public MInvoicePaySchedule(Properties ctx, int C_InvoicePaySchedule_ID, String trxName) {
-    super(ctx, C_InvoicePaySchedule_ID, trxName);
+  public MInvoicePaySchedule(Properties ctx, int C_InvoicePaySchedule_ID) {
+    super(ctx, C_InvoicePaySchedule_ID);
     if (C_InvoicePaySchedule_ID == 0) {
       //	setC_Invoice_ID (0);
       //	setDiscountAmt (Env.ZERO);
@@ -98,8 +98,8 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
    * @param rs result set
    * @param trxName transaction
    */
-  public MInvoicePaySchedule(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MInvoicePaySchedule(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MInvoicePaySchedule
 
   /**
@@ -109,7 +109,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
    * @param paySchedule payment schedule
    */
   public MInvoicePaySchedule(MInvoice invoice, MPaySchedule paySchedule) {
-    super(invoice.getCtx(), 0, null);
+    super(invoice.getCtx(), 0);
     m_parent = invoice;
     setClientOrg(invoice);
     setC_Invoice_ID(invoice.getC_Invoice_ID());
@@ -147,7 +147,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
 
   /** @return Returns the parent. */
   public MInvoice getParent() {
-    if (m_parent == null) m_parent = new MInvoice(getCtx(), getC_Invoice_ID(), null);
+    if (m_parent == null) m_parent = new MInvoice(getCtx(), getC_Invoice_ID());
     return m_parent;
   } //	getParent
 

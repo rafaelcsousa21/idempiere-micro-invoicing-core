@@ -23,8 +23,8 @@ public class MTransaction extends X_M_Transaction {
    * @param M_Transaction_ID id
    * @param trxName transaction
    */
-  public MTransaction(Properties ctx, int M_Transaction_ID, String trxName) {
-    super(ctx, M_Transaction_ID, trxName);
+  public MTransaction(Properties ctx, int M_Transaction_ID) {
+    super(ctx, M_Transaction_ID);
     if (M_Transaction_ID == 0) {
       //	setM_Transaction_ID (0);		//	PK
       //	setM_Locator_ID (0);
@@ -42,8 +42,8 @@ public class MTransaction extends X_M_Transaction {
    * @param rs result set
    * @param trxName transaction
    */
-  public MTransaction(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MTransaction(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MTransaction
 
   /**
@@ -69,7 +69,7 @@ public class MTransaction extends X_M_Transaction {
       BigDecimal MovementQty,
       Timestamp MovementDate,
       String trxName) {
-    super(ctx, 0, trxName);
+    super(ctx, 0);
     setAD_Org_ID(AD_Org_ID);
     setMovementType(MovementType);
     if (M_Locator_ID == 0) throw new IllegalArgumentException("No Locator");

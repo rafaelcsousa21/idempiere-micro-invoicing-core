@@ -44,7 +44,7 @@ public class LandedCostDistribute extends SvrProcess {
    * @throws Exception
    */
   protected String doIt() throws Exception {
-    m_lc = new MLandedCost(getCtx(), p_C_LandedCost_ID, null);
+    m_lc = new MLandedCost(getCtx(), p_C_LandedCost_ID);
     if (log.isLoggable(Level.INFO)) log.info(m_lc.toString());
     if (m_lc.getId() == 0)
       throw new AdempiereUserError("@NotFound@: @C_LandedCost_ID@ - " + p_C_LandedCost_ID);

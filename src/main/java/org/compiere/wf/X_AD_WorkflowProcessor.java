@@ -21,8 +21,8 @@ public class X_AD_WorkflowProcessor extends BasePOName
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_WorkflowProcessor(Properties ctx, int AD_WorkflowProcessor_ID, String trxName) {
-    super(ctx, AD_WorkflowProcessor_ID, trxName);
+  public X_AD_WorkflowProcessor(Properties ctx, int AD_WorkflowProcessor_ID) {
+    super(ctx, AD_WorkflowProcessor_ID);
     /**
      * if (AD_WorkflowProcessor_ID == 0) { setAD_Schedule_ID (0); setAD_WorkflowProcessor_ID (0);
      * setKeepLogDays (0); // 7 setName (null); setSupervisor_ID (0); }
@@ -30,8 +30,8 @@ public class X_AD_WorkflowProcessor extends BasePOName
   }
 
   /** Load Constructor */
-  public X_AD_WorkflowProcessor(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_WorkflowProcessor(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

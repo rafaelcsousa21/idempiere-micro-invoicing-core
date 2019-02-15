@@ -3,7 +3,6 @@ package org.compiere.invoicing;
 import org.compiere.model.I_C_InvoiceBatch;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_InvoiceBatch(Properties ctx, int C_InvoiceBatch_ID, String trxName) {
-    super(ctx, C_InvoiceBatch_ID, trxName);
+  public X_C_InvoiceBatch(Properties ctx, int C_InvoiceBatch_ID) {
+    super(ctx, C_InvoiceBatch_ID);
     /**
      * if (C_InvoiceBatch_ID == 0) { setC_Currency_ID (0); // @$C_Currency_ID@ setC_InvoiceBatch_ID
      * (0); setControlAmt (Env.ZERO); // 0 setDateDoc (new Timestamp( System.currentTimeMillis() ));
@@ -34,8 +33,8 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
   }
 
   /** Load Constructor */
-  public X_C_InvoiceBatch(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_InvoiceBatch(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

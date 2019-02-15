@@ -1,15 +1,3 @@
-/**
- * **************************************************************************** Product: iDempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 2011-2012 iDempiere Open Source ERP All Rights
- * Reserved. * This program is free software; you can redistribute it and/or modify it * under the
- * terms version 2 of the GNU General Public License as published * by the Free Software Foundation.
- * This program is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See
- * the GNU General Public License for more details. * You should have received a copy of the GNU
- * General Public License along * with this program; if not, write to the Free Software Foundation,
- * Inc., * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA. *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import java.math.BigDecimal;
@@ -50,8 +38,8 @@ public class CopyFromJournalDoc extends SvrProcess {
       log.info("doIt - From GL_Journal_ID=" + m_GL_Journal_ID + " to " + To_GL_Journal_ID);
     if (To_GL_Journal_ID == 0) throw new IllegalArgumentException("Target GL_Journal_ID == 0");
     if (m_GL_Journal_ID == 0) throw new IllegalArgumentException("Source GL_Journal_ID == 0");
-    MJournal from = new MJournal(getCtx(), m_GL_Journal_ID, null);
-    MJournal to = new MJournal(getCtx(), To_GL_Journal_ID, null);
+    MJournal from = new MJournal(getCtx(), m_GL_Journal_ID);
+    MJournal to = new MJournal(getCtx(), To_GL_Journal_ID);
     //
     int no = to.copyLinesFrom(from, to.getDateAcct(), 'x');
     //

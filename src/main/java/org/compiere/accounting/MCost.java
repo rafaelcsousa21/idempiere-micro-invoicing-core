@@ -61,8 +61,7 @@ public class MCost extends X_M_Cost {
       String costingMethod,
       BigDecimal qty,
       int C_OrderLine_ID,
-      boolean zeroCostsOK,
-      String trxName) {
+      boolean zeroCostsOK) {
     String CostingLevel = product.getCostingLevel(as);
     if (MAcctSchema.COSTINGLEVEL_Client.equals(CostingLevel)) {
       AD_Org_ID = 0;
@@ -79,7 +78,7 @@ public class MCost extends X_M_Cost {
     }
 
     //	Create/Update Costs
-    MCostDetail.processProduct(product, trxName);
+    MCostDetail.processProduct(product);
 
     return getCurrentCost(
         product,
@@ -90,8 +89,7 @@ public class MCost extends X_M_Cost {
         costingMethod,
         qty,
         C_OrderLine_ID,
-        zeroCostsOK,
-        trxName);
+        zeroCostsOK);
   } //	getCurrentCost
 
   /**
@@ -118,8 +116,7 @@ public class MCost extends X_M_Cost {
       String costingMethod,
       BigDecimal qty,
       int C_OrderLine_ID,
-      boolean zeroCostsOK,
-      String trxName) {
+      boolean zeroCostsOK) {
     String costElementType = null;
     BigDecimal percent = null;
     //
@@ -217,7 +214,7 @@ public class MCost extends X_M_Cost {
     if (MCostElement.COSTINGMETHOD_Fifo.equals(costingMethod)
         || MCostElement.COSTINGMETHOD_Lifo.equals(costingMethod)) {
       MCostElement ce = MCostElement.getMaterialCostElement(as, costingMethod);
-      materialCost = MCostQueue.getCosts(product, M_ASI_ID, as, Org_ID, ce, qty, trxName);
+      materialCost = MCostQueue.getCosts(product, M_ASI_ID, as, Org_ID, ce, qty);
     }
 
     //	Other Costs
@@ -355,7 +352,7 @@ public class MCost extends X_M_Cost {
 
     //	Still nothing try ProductPO
     MProductPO[] pos =
-        MProductPO.getOfProduct(product.getCtx(), product.getM_Product_ID(), null);
+        MProductPO.getOfProduct(product.getCtx(), product.getM_Product_ID());
     for (int i = 0; i < pos.length; i++) {
       BigDecimal price = pos[i].getPricePO();
       if (price == null || price.signum() == 0) price = pos[i].getPriceList();
@@ -579,8 +576,6 @@ public class MCost extends X_M_Cost {
    */
   public static void create(MClient client) {
     MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(client.getCtx(), client. getClientId());
-    String trxName = null;
-    String trxNameUsed = trxName;
     boolean success = true;
     //	For all Products
     String sql =
@@ -595,7 +590,7 @@ public class MCost extends X_M_Cost {
       pstmt.setInt(1, client. getClientId());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        MProduct product = new MProduct(client.getCtx(), rs, trxNameUsed);
+        MProduct product = new MProduct(client.getCtx(), rs);
         for (int i = 0; i < ass.length; i++) {
           BigDecimal cost =
               getCurrentCost(
@@ -606,8 +601,7 @@ public class MCost extends X_M_Cost {
                   null,
                   Env.ONE,
                   0,
-                  false,
-                  trxNameUsed); //	create non-zero costs
+                  false); //	create non-zero costs
           if (s_log.isLoggable(Level.INFO)) s_log.info(product.getName() + " = " + cost);
         }
       }
@@ -645,7 +639,7 @@ public class MCost extends X_M_Cost {
 
     MAcctSchema[] mass =
         MAcctSchema.getClientAcctSchema(
-            product.getCtx(), product. getClientId(), null);
+            product.getCtx(), product. getClientId());
     MOrg[] orgs = null;
 
     int M_ASI_ID = 0; // 	No Attribute
@@ -665,8 +659,7 @@ public class MCost extends X_M_Cost {
                   ci.getAD_Tree_Org_ID(),
                   false,
                   true,
-                  true,
-                  null);
+                  true);
 
           MTreeNode root = vTree.getRoot();
           createForChildOrg(root, product, as, M_ASI_ID, ce, false);
@@ -739,7 +732,7 @@ public class MCost extends X_M_Cost {
 
     MAcctSchema[] mass =
         MAcctSchema.getClientAcctSchema(
-            product.getCtx(), product. getClientId(), null);
+            product.getCtx(), product. getClientId());
     MOrg[] orgs = null;
 
     int M_ASI_ID = 0; // 	No Attribute
@@ -820,7 +813,7 @@ public class MCost extends X_M_Cost {
             + " AND M_CostType_ID=? AND C_AcctSchema_ID=?"
             + " AND M_CostElement_ID=?";
     cost =
-        new Query(product.getCtx(), I_M_Cost.Table_Name, whereClause, trxName)
+        new Query(product.getCtx(), I_M_Cost.Table_Name, whereClause)
             .setParameters(
                 product. getClientId(),
                 AD_Org_ID,
@@ -899,7 +892,7 @@ public class MCost extends X_M_Cost {
           M_CostElement_ID,
           M_AttributeSetInstance_ID
         };
-    return new Query(ctx, I_M_Cost.Table_Name, whereClause, trxName)
+    return new Query(ctx, I_M_Cost.Table_Name, whereClause)
         .setOnlyActiveRecords(true)
         .setParameters(params)
         .firstOnly();
@@ -937,8 +930,8 @@ public class MCost extends X_M_Cost {
    * @param ignored multi-key
    * @param trxName trx
    */
-  public MCost(Properties ctx, int ignored, String trxName) {
-    super(ctx, ignored, trxName);
+  public MCost(Properties ctx, int ignored) {
+    super(ctx, ignored);
     if (ignored == 0) {
       //	setC_AcctSchema_ID (0);
       //	setM_CostElement_ID (0);
@@ -961,8 +954,8 @@ public class MCost extends X_M_Cost {
    * @param rs result set
    * @param trxName trx
    */
-  public MCost(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MCost(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
     m_manual = false;
   } //	MCost
   public MCost(Properties ctx, Row row) {
@@ -985,7 +978,7 @@ public class MCost extends X_M_Cost {
       MAcctSchema as,
       int AD_Org_ID,
       int M_CostElement_ID) {
-    this(product.getCtx(), 0, null);
+    this(product.getCtx(), 0);
     setClientOrg(product. getClientId(), AD_Org_ID);
     setC_AcctSchema_ID(as.getC_AcctSchema_ID());
     setM_CostType_ID(as.getM_CostType_ID());
@@ -1166,7 +1159,7 @@ public class MCost extends X_M_Cost {
     MCostElement ce = (MCostElement) getM_CostElement();
     //	Check if data entry makes sense
     if (m_manual) {
-      MAcctSchema as = new MAcctSchema(getCtx(), getC_AcctSchema_ID(), null);
+      MAcctSchema as = new MAcctSchema(getCtx(), getC_AcctSchema_ID());
       MProduct product = MProduct.get(getCtx(), getM_Product_ID());
       String CostingLevel = product.getCostingLevel(as);
       if (MAcctSchema.COSTINGLEVEL_Client.equals(CostingLevel)) {

@@ -24,8 +24,8 @@ public class MElement extends X_C_Element {
    * @param C_Element_ID id
    * @param trxName transaction
    */
-  public MElement(Properties ctx, int C_Element_ID, String trxName) {
-    super(ctx, C_Element_ID, trxName);
+  public MElement(Properties ctx, int C_Element_ID) {
+    super(ctx, C_Element_ID);
     if (C_Element_ID == 0) {
       //	setName (null);
       //	setAD_Tree_ID (0);
@@ -42,8 +42,8 @@ public class MElement extends X_C_Element {
    * @param rs result set
    * @param trxName transaction
    */
-  public MElement(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MElement(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MElement
 
   /**
@@ -55,7 +55,7 @@ public class MElement extends X_C_Element {
    * @param AD_Tree_ID tree
    */
   public MElement(MClient client, String Name, String ElementType, int AD_Tree_ID) {
-    this(client.getCtx(), 0, null);
+    this(client.getCtx(), 0);
     setClientOrg(client);
     setName(Name);
     setElementType(ElementType); // A
@@ -72,7 +72,7 @@ public class MElement extends X_C_Element {
    * @return tree
    */
   public X_AD_Tree getTree() {
-    if (m_tree == null) m_tree = new X_AD_Tree(getCtx(), getAD_Tree_ID(), null);
+    if (m_tree == null) m_tree = new X_AD_Tree(getCtx(), getAD_Tree_ID());
     return m_tree;
   } //	getTree
 

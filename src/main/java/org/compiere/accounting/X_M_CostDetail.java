@@ -23,8 +23,8 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_M_CostDetail(Properties ctx, int M_CostDetail_ID, String trxName) {
-    super(ctx, M_CostDetail_ID, trxName);
+  public X_M_CostDetail(Properties ctx, int M_CostDetail_ID) {
+    super(ctx, M_CostDetail_ID);
     /**
      * if (M_CostDetail_ID == 0) { setAmt (Env.ZERO); setC_AcctSchema_ID (0); setIsSOTrx (false);
      * setM_AttributeSetInstance_ID (0); setM_CostDetail_ID (0); setM_Product_ID (0); setProcessed
@@ -33,8 +33,8 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
   }
 
   /** Load Constructor */
-  public X_M_CostDetail(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_M_CostDetail(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   public X_M_CostDetail(Properties ctx, Row row) {
@@ -352,7 +352,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
   public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
     return (org.compiere.model.I_M_InventoryLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-            .getPO(getM_InventoryLine_ID(), null);
+            .getPO(getM_InventoryLine_ID());
   }
 
   /**
@@ -362,7 +362,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
    */
   public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
     if (M_InventoryLine_ID < 1) set_Value(COLUMNNAME_M_InventoryLine_ID, null);
-    else set_Value(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
+    else set_Value(COLUMNNAME_M_InventoryLine_ID, M_InventoryLine_ID);
   }
 
   /**
@@ -383,7 +383,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail, I_Persistent {
    */
   public void setM_MatchInv_ID(int M_MatchInv_ID) {
     if (M_MatchInv_ID < 1) set_ValueNoCheck(COLUMNNAME_M_MatchInv_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_MatchInv_ID, Integer.valueOf(M_MatchInv_ID));
+    else set_ValueNoCheck(COLUMNNAME_M_MatchInv_ID, M_MatchInv_ID);
   }
 
   /**

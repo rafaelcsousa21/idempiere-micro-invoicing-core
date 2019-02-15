@@ -28,8 +28,8 @@ public class MProjectTypePhase extends X_C_Phase {
    * @param C_Phase_ID id
    * @param trxName trx
    */
-  public MProjectTypePhase(Properties ctx, int C_Phase_ID, String trxName) {
-    super(ctx, C_Phase_ID, trxName);
+  public MProjectTypePhase(Properties ctx, int C_Phase_ID) {
+    super(ctx, C_Phase_ID);
     if (C_Phase_ID == 0) {
       //	setC_Phase_ID (0);			//	PK
       //	setC_ProjectType_ID (0);	//	Parent
@@ -46,8 +46,8 @@ public class MProjectTypePhase extends X_C_Phase {
    * @param rs result set
    * @param trxName
    */
-  public MProjectTypePhase(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProjectTypePhase(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProjectTypePhase
 
   /**
@@ -64,7 +64,7 @@ public class MProjectTypePhase extends X_C_Phase {
       pstmt = prepareStatement(sql);
       pstmt.setInt(1, getC_Phase_ID());
       rs = pstmt.executeQuery();
-      while (rs.next()) list.add(new MProjectTypeTask(getCtx(), rs, null));
+      while (rs.next()) list.add(new MProjectTypeTask(getCtx(), rs));
     } catch (SQLException ex) {
       log.log(Level.SEVERE, sql, ex);
     } finally {

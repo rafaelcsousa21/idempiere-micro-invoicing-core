@@ -4,7 +4,6 @@ import org.compiere.model.I_C_LandedCostAllocation;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
@@ -23,8 +22,8 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_C_LandedCostAllocation(Properties ctx, int C_LandedCostAllocation_ID, String trxName) {
-    super(ctx, C_LandedCostAllocation_ID, trxName);
+  public X_C_LandedCostAllocation(Properties ctx, int C_LandedCostAllocation_ID) {
+    super(ctx, C_LandedCostAllocation_ID);
     /**
      * if (C_LandedCostAllocation_ID == 0) { setAmt (Env.ZERO); setBase (Env.ZERO);
      * setC_InvoiceLine_ID (0); setC_LandedCostAllocation_ID (0); setM_CostElement_ID (0);
@@ -33,8 +32,8 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
   }
 
   /** Load Constructor */
-  public X_C_LandedCostAllocation(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_C_LandedCostAllocation(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**
@@ -170,7 +169,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
   public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
     return (org.compiere.model.I_M_InOutLine)
         MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-            .getPO(getM_InOutLine_ID(), null);
+            .getPO(getM_InOutLine_ID());
   }
 
   /**
@@ -180,7 +179,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
    */
   public void setM_InOutLine_ID(int M_InOutLine_ID) {
     if (M_InOutLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
+    else set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, M_InOutLine_ID);
   }
 
   /**

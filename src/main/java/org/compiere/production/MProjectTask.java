@@ -26,8 +26,8 @@ public class MProjectTask extends X_C_ProjectTask {
    * @param C_ProjectTask_ID id
    * @param trxName transaction
    */
-  public MProjectTask(Properties ctx, int C_ProjectTask_ID, String trxName) {
-    super(ctx, C_ProjectTask_ID, trxName);
+  public MProjectTask(Properties ctx, int C_ProjectTask_ID) {
+    super(ctx, C_ProjectTask_ID);
     if (C_ProjectTask_ID == 0) {
       //	setC_ProjectTask_ID (0);	//	PK
       //	setC_ProjectPhase_ID (0);	//	Parent
@@ -45,8 +45,8 @@ public class MProjectTask extends X_C_ProjectTask {
    * @param rs result set
    * @param trxName transaction
    */
-  public MProjectTask(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MProjectTask(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MProjectTask
 
   /**
@@ -55,7 +55,7 @@ public class MProjectTask extends X_C_ProjectTask {
    * @param phase parent
    */
   public MProjectTask(MProjectPhase phase) {
-    this(phase.getCtx(), 0, null);
+    this(phase.getCtx(), 0);
     setClientOrg(phase);
     setC_ProjectPhase_ID(phase.getC_ProjectPhase_ID());
   } //	MProjectTask
@@ -87,7 +87,7 @@ public class MProjectTask extends X_C_ProjectTask {
   public MProjectLine[] getLines() {
     final String whereClause = "C_ProjectPhase_ID=? and C_ProjectTask_ID=? ";
     List<MProjectLine> list =
-        new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause, null)
+        new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause)
             .setParameters(getC_ProjectPhase_ID(), getC_ProjectTask_ID())
             .setOrderBy("Line")
             .list();
@@ -110,7 +110,7 @@ public class MProjectTask extends X_C_ProjectTask {
     MProjectLine[] fromLines = fromTask.getLines();
     //	Copy Project Lines
     for (int i = 0; i < fromLines.length; i++) {
-      MProjectLine toLine = new MProjectLine(getCtx(), 0, null);
+      MProjectLine toLine = new MProjectLine(getCtx(), 0);
       PO.copyValues(fromLines[i], toLine,  getClientId(),  getOrgId());
       toLine.setC_Project_ID(getC_Project_ID(false));
       toLine.setC_ProjectPhase_ID(getC_ProjectPhase_ID());

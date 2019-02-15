@@ -19,13 +19,13 @@ public class X_R_Status extends BasePONameValue implements I_R_Status, I_Persist
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_R_Status(Properties ctx, int R_Status_ID, String trxName) {
-    super(ctx, R_Status_ID, trxName);
+  public X_R_Status(Properties ctx, int R_Status_ID) {
+    super(ctx, R_Status_ID);
   }
 
   /** Load Constructor */
-  public X_R_Status(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_R_Status(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

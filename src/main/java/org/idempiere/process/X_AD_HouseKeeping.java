@@ -14,8 +14,8 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_AD_HouseKeeping(Properties ctx, int AD_HouseKeeping_ID, String trxName) {
-    super(ctx, AD_HouseKeeping_ID, trxName);
+  public X_AD_HouseKeeping(Properties ctx, int AD_HouseKeeping_ID) {
+    super(ctx, AD_HouseKeeping_ID);
     /**
      * if (AD_HouseKeeping_ID == 0) { setAD_HouseKeeping_ID (0); setAD_Table_ID (0); setName (null);
      * setValue (null); }
@@ -23,8 +23,8 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
   }
 
   /** Load Constructor */
-  public X_AD_HouseKeeping(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_AD_HouseKeeping(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

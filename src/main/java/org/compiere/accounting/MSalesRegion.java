@@ -22,8 +22,8 @@ public class MSalesRegion extends X_C_SalesRegion {
    * @param C_SalesRegion_ID id
    * @param trxName transaction
    */
-  public MSalesRegion(Properties ctx, int C_SalesRegion_ID, String trxName) {
-    super(ctx, C_SalesRegion_ID, trxName);
+  public MSalesRegion(Properties ctx, int C_SalesRegion_ID) {
+    super(ctx, C_SalesRegion_ID);
   } //	MSalesRegion
 
   /**
@@ -33,8 +33,8 @@ public class MSalesRegion extends X_C_SalesRegion {
    * @param rs result set
    * @param trxName transaction
    */
-  public MSalesRegion(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MSalesRegion(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MSalesRegion
 
   /**
@@ -52,7 +52,7 @@ public class MSalesRegion extends X_C_SalesRegion {
     //	Value/Name change
     if (!newRecord && (is_ValueChanged("Value") || is_ValueChanged("Name")))
       MAccount.updateValueDescription(
-          getCtx(), "C_SalesRegion_ID=" + getC_SalesRegion_ID(), null);
+          getCtx(), "C_SalesRegion_ID=" + getC_SalesRegion_ID());
 
     return true;
   } //	afterSave

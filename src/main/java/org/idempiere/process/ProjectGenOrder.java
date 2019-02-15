@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import java.util.Properties;
@@ -54,7 +40,7 @@ public class ProjectGenOrder extends SvrProcess {
   protected String doIt() throws Exception {
     if (log.isLoggable(Level.INFO)) log.info("C_Project_ID=" + m_C_Project_ID);
     if (m_C_Project_ID == 0) throw new IllegalArgumentException("C_Project_ID == 0");
-    MProject fromProject = getProject(getCtx(), m_C_Project_ID, null);
+    MProject fromProject = getProject(getCtx(), m_C_Project_ID);
     Env.setSOTrx(getCtx(), true); // 	Set SO context
 
     /** @todo duplicate invoice prevention */
@@ -109,8 +95,8 @@ public class ProjectGenOrder extends SvrProcess {
    * @return valid project
    * @param trxName transaction
    */
-  protected static MProject getProject(Properties ctx, int C_Project_ID, String trxName) {
-    MProject fromProject = new MProject(ctx, C_Project_ID, trxName);
+  protected static MProject getProject(Properties ctx, int C_Project_ID) {
+    MProject fromProject = new MProject(ctx, C_Project_ID);
     if (fromProject.getC_Project_ID() == 0)
       throw new IllegalArgumentException("Project not found C_Project_ID=" + C_Project_ID);
     if (fromProject.getM_PriceList_Version_ID() == 0)

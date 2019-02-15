@@ -38,7 +38,7 @@ public class MLandedCost extends X_C_LandedCost {
       pstmt.setInt(1, il.getC_InvoiceLine_ID());
       rs = pstmt.executeQuery();
       while (rs.next()) {
-        list.add(new MLandedCost(il.getCtx(), rs, null));
+        list.add(new MLandedCost(il.getCtx(), rs));
       }
     } catch (Exception e) {
       s_log.log(Level.SEVERE, sql, e);
@@ -63,8 +63,8 @@ public class MLandedCost extends X_C_LandedCost {
    * @param C_LandedCost_ID id
    * @param trxName trx
    */
-  public MLandedCost(Properties ctx, int C_LandedCost_ID, String trxName) {
-    super(ctx, C_LandedCost_ID, trxName);
+  public MLandedCost(Properties ctx, int C_LandedCost_ID) {
+    super(ctx, C_LandedCost_ID);
     if (C_LandedCost_ID == 0) {
       //	setC_InvoiceLine_ID (0);
       //	setM_CostElement_ID (0);
@@ -79,8 +79,8 @@ public class MLandedCost extends X_C_LandedCost {
    * @param rs result set
    * @param trxName trx
    */
-  public MLandedCost(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MLandedCost(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MLandedCost
 
   /**
@@ -110,7 +110,7 @@ public class MLandedCost extends X_C_LandedCost {
    * @return error message or ""
    */
   public String allocateCosts() {
-    MInvoiceLine il = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID(), null);
+    MInvoiceLine il = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID());
     return il.allocateLandedCosts();
   } //	allocateCosts
 

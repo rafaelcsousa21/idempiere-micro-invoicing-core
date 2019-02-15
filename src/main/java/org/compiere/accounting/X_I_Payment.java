@@ -16,14 +16,14 @@ public class X_I_Payment extends PO implements I_I_Payment, I_Persistent {
   private static final long serialVersionUID = 20171031L;
 
   /** Standard Constructor */
-  public X_I_Payment(Properties ctx, int I_Payment_ID, String trxName) {
-    super(ctx, I_Payment_ID, trxName);
+  public X_I_Payment(Properties ctx, int I_Payment_ID) {
+    super(ctx, I_Payment_ID);
     /** if (I_Payment_ID == 0) { setI_IsImported (false); setI_Payment_ID (0); } */
   }
 
   /** Load Constructor */
-  public X_I_Payment(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public X_I_Payment(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   }
 
   /**

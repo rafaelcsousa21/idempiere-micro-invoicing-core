@@ -17,8 +17,8 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
    * @param C_AcctProcessorLog_ID id
    * @param trxName transaction
    */
-  public MAcctProcessorLog(Properties ctx, int C_AcctProcessorLog_ID, String trxName) {
-    super(ctx, C_AcctProcessorLog_ID, trxName);
+  public MAcctProcessorLog(Properties ctx, int C_AcctProcessorLog_ID) {
+    super(ctx, C_AcctProcessorLog_ID);
   } //	MAcctProcessorLog
 
   /**
@@ -28,8 +28,8 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
    * @param rs result set
    * @param trxName transaction
    */
-  public MAcctProcessorLog(Properties ctx, ResultSet rs, String trxName) {
-    super(ctx, rs, trxName);
+  public MAcctProcessorLog(Properties ctx, ResultSet rs) {
+    super(ctx, rs);
   } //	MAcctProcessorLog
 
   /**
@@ -39,7 +39,7 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
    * @param summary summary
    */
   public MAcctProcessorLog(MAcctProcessor parent, String summary) {
-    this(parent.getCtx(), 0, null);
+    this(parent.getCtx(), 0);
     setClientOrg(parent);
     setC_AcctProcessor_ID(parent.getC_AcctProcessor_ID());
     setSummary(summary);
