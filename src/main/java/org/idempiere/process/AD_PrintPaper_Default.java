@@ -30,56 +30,62 @@ import static software.hsharp.core.util.DBKt.executeUpdate;
  */
 public class AD_PrintPaper_Default extends SvrProcess {
 
-  /** The Client */
-  private int p_AD_Client_ID = -1;
-  /** The Record */
-  private int p_Record_ID = 0;
+    /**
+     * The Client
+     */
+    private int p_AD_Client_ID = -1;
+    /**
+     * The Record
+     */
+    private int p_Record_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_Record_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_Record_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    StringBuilder sql = new StringBuilder();
-    int cnt = 0;
+    /**
+     * Process
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        StringBuilder sql = new StringBuilder();
+        int cnt = 0;
 
-    log.info("Set Print Format");
+        log.info("Set Print Format");
 
-    try {
-      sql.append("UPDATE AD_PrintFormat pf ")
-          .append("SET AD_PrintPaper_ID = ")
-          .append(p_Record_ID)
-          .append(" ")
-          .append("WHERE EXISTS (SELECT * FROM AD_PrintPaper pp ")
-          .append("WHERE pf.AD_PrintPaper_ID=pp.AD_PrintPaper_ID ")
-          .append("AND IsLandscape = (SELECT IsLandscape FROM AD_PrintPaper ")
-          .append("WHERE AD_PrintPaper_ID=")
-          .append(p_Record_ID)
-          .append("))");
-      if (p_AD_Client_ID != -1) {
-        sql.append(" AND clientId = ").append(p_AD_Client_ID);
-      }
-      cnt = executeUpdate(sql.toString());
-      if (log.isLoggable(Level.INFO)) log.info("Updated " + cnt + " columns");
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "set print format", e);
-    }
+        try {
+            sql.append("UPDATE AD_PrintFormat pf ")
+                    .append("SET AD_PrintPaper_ID = ")
+                    .append(p_Record_ID)
+                    .append(" ")
+                    .append("WHERE EXISTS (SELECT * FROM AD_PrintPaper pp ")
+                    .append("WHERE pf.AD_PrintPaper_ID=pp.AD_PrintPaper_ID ")
+                    .append("AND IsLandscape = (SELECT IsLandscape FROM AD_PrintPaper ")
+                    .append("WHERE AD_PrintPaper_ID=")
+                    .append(p_Record_ID)
+                    .append("))");
+            if (p_AD_Client_ID != -1) {
+                sql.append(" AND clientId = ").append(p_AD_Client_ID);
+            }
+            cnt = executeUpdate(sql.toString());
+            if (log.isLoggable(Level.INFO)) log.info("Updated " + cnt + " columns");
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "set print format", e);
+        }
 
-    StringBuilder msgreturn = new StringBuilder("@Copied@=").append(cnt);
-    return msgreturn.toString();
-  } //	doIt
+        StringBuilder msgreturn = new StringBuilder("@Copied@=").append(cnt);
+        return msgreturn.toString();
+    } //	doIt
 } //	AD_PrintPaper_Default

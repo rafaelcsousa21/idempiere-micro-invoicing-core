@@ -17,9 +17,9 @@ import java.util.logging.Level
  */
 class AcctSchemaDefaultCopy(
     /** Acct Schema  */
-    private var p_C_AcctSchema_ID : Int,
+    private var p_C_AcctSchema_ID: Int,
     /** Copy & Overwrite  */
-    private var p_CopyOverwriteAcct : Boolean
+    private var p_CopyOverwriteAcct: Boolean
 ) : SvrProcess() {
 
     /** Prepare - e.g., get Parameters.  */

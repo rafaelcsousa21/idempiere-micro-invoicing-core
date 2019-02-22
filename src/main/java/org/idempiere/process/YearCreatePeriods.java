@@ -14,12 +14,13 @@
  */
 package org.idempiere.process;
 
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MYear;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.sql.Timestamp;
+import java.util.logging.Level;
 
 /**
  * Create Periods of year
@@ -28,37 +29,39 @@ import org.idempiere.common.util.AdempiereUserError;
  * @version $Id: YearCreatePeriods.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class YearCreatePeriods extends SvrProcess {
-  private int p_C_Year_ID = 0;
-  private Timestamp p_StartDate;
-  private String p_DateFormat;
+    private int p_C_Year_ID = 0;
+    private Timestamp p_StartDate;
+    private String p_DateFormat;
 
-  /** Prepare */
-  protected void prepare() {
+    /**
+     * Prepare
+     */
+    protected void prepare() {
 
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("StartDate")) p_StartDate = (Timestamp) para[i].getParameter();
-      else if (name.equals("DateFormat")) p_DateFormat = (String) para[i].getParameter();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_C_Year_ID = getRecord_ID();
-  } //	prepare
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("StartDate")) p_StartDate = (Timestamp) para[i].getParameter();
+            else if (name.equals("DateFormat")) p_DateFormat = (String) para[i].getParameter();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_C_Year_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return info
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    MYear year = new MYear(getCtx(), p_C_Year_ID);
-    if (p_C_Year_ID == 0 || year.getId() != p_C_Year_ID)
-      throw new AdempiereUserError("@NotFound@: @C_Year_ID@ - " + p_C_Year_ID);
-    if (log.isLoggable(Level.INFO)) log.info(year.toString());
-    //
-    if (year.createStdPeriods(null, p_StartDate, p_DateFormat)) return "@OK@";
-    return "@Error@";
-  } //	doIt
+    /**
+     * Process
+     *
+     * @return info
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        MYear year = new MYear(getCtx(), p_C_Year_ID);
+        if (p_C_Year_ID == 0 || year.getId() != p_C_Year_ID)
+            throw new AdempiereUserError("@NotFound@: @C_Year_ID@ - " + p_C_Year_ID);
+        if (log.isLoggable(Level.INFO)) log.info(year.toString());
+        //
+        if (year.createStdPeriods(null, p_StartDate, p_DateFormat)) return "@OK@";
+        return "@Error@";
+    } //	doIt
 } //	YearCreatePeriods

@@ -14,63 +14,66 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
 
 /**
  * Create Dunning Run Entries/Lines
  *
  * @author Jorg Janke
  * @version $Id: DunningRunCreate.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
- *     <p>FR 2872010 - Dunning Run for a complete Dunning (not just level) - Developer: Carlos Ruiz
- *     - globalqss - Sponsor: Metas
+ * <p>FR 2872010 - Dunning Run for a complete Dunning (not just level) - Developer: Carlos Ruiz
+ * - globalqss - Sponsor: Metas
  */
 public class DunningRunCreate extends SvrProcess {
-  private boolean p_IncludeInDispute = false;
-  private boolean p_OnlySOTrx = false;
-  private boolean p_IsAllCurrencies = false;
-  private int p_SalesRep_ID = 0;
-  private int p_C_Currency_ID = 0;
-  private int p_C_BPartner_ID = 0;
-  private int p_C_BP_Group_ID = 0;
-  private int p_C_DunningRun_ID = 0;
-  private int p_AD_Org_ID = 0;
+    private boolean p_IncludeInDispute = false;
+    private boolean p_OnlySOTrx = false;
+    private boolean p_IsAllCurrencies = false;
+    private int p_SalesRep_ID = 0;
+    private int p_C_Currency_ID = 0;
+    private int p_C_BPartner_ID = 0;
+    private int p_C_BP_Group_ID = 0;
+    private int p_C_DunningRun_ID = 0;
+    private int p_AD_Org_ID = 0;
 
   /*throw new NotImplementedException();
 
   private MDunningRun m_run = null;*/
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("IncludeInDispute"))
-        p_IncludeInDispute = "Y".equals(para[i].getParameter());
-      else if (name.equals("OnlySOTrx")) p_OnlySOTrx = "Y".equals(para[i].getParameter());
-      else if (name.equals("IsAllCurrencies"))
-        p_IsAllCurrencies = "Y".equals(para[i].getParameter());
-      else if (name.equals("SalesRep_ID")) p_SalesRep_ID = para[i].getParameterAsInt();
-      else if (name.equals("C_Currency_ID")) p_C_Currency_ID = para[i].getParameterAsInt();
-      else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-      else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
-      else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_C_DunningRun_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("IncludeInDispute"))
+                p_IncludeInDispute = "Y".equals(para[i].getParameter());
+            else if (name.equals("OnlySOTrx")) p_OnlySOTrx = "Y".equals(para[i].getParameter());
+            else if (name.equals("IsAllCurrencies"))
+                p_IsAllCurrencies = "Y".equals(para[i].getParameter());
+            else if (name.equals("SalesRep_ID")) p_SalesRep_ID = para[i].getParameterAsInt();
+            else if (name.equals("C_Currency_ID")) p_C_Currency_ID = para[i].getParameterAsInt();
+            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
+            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
+            else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_C_DunningRun_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Process
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
 
     /*
     if (log.isLoggable(Level.INFO)) log.info("C_DunningRun_ID=" + p_C_DunningRun_ID
@@ -104,14 +107,14 @@ public class DunningRunCreate extends SvrProcess {
     StringBuilder msgreturn = new StringBuilder("@C_DunningRunEntry_ID@ #").append(entries);
     return msgreturn.toString();
     */
-  } //	doIt
+    } //	doIt
 
-  /**
-   * ************************************************************************ Add Invoices to Run
-   *
-   * @param level the Dunning level
-   * @return no of invoices
-   */
+    /**
+     * ************************************************************************ Add Invoices to Run
+     *
+     * @param level the Dunning level
+     * @return no of invoices
+     */
   /*
   private int addInvoices(MDunningLevel level)
   {
@@ -287,34 +290,34 @@ public class DunningRunCreate extends SvrProcess {
   }	//	addInvoices
   */
 
-  /**
-   * Create Invoice Line
-   *
-   * @param C_Invoice_ID
-   * @param C_Currency_ID
-   * @param GrandTotal
-   * @param Open
-   * @param DaysDue
-   * @param IsInDispute
-   * @param C_BPartner_ID
-   * @param TimesDunned
-   * @param DaysAfterLast
-   * @param c_DunningLevel_ID
-   */
-  private boolean createInvoiceLine(
-      int C_Invoice_ID,
-      int C_InvoicePaySchedule_ID,
-      int C_Currency_ID,
-      BigDecimal GrandTotal,
-      BigDecimal Open,
-      int DaysDue,
-      boolean IsInDispute,
-      int C_BPartner_ID,
-      int TimesDunned,
-      int DaysAfterLast,
-      int c_DunningLevel_ID)
-      throws NotImplementedException {
-    throw new NotImplementedException();
+    /**
+     * Create Invoice Line
+     *
+     * @param C_Invoice_ID
+     * @param C_Currency_ID
+     * @param GrandTotal
+     * @param Open
+     * @param DaysDue
+     * @param IsInDispute
+     * @param C_BPartner_ID
+     * @param TimesDunned
+     * @param DaysAfterLast
+     * @param c_DunningLevel_ID
+     */
+    private boolean createInvoiceLine(
+            int C_Invoice_ID,
+            int C_InvoicePaySchedule_ID,
+            int C_Currency_ID,
+            BigDecimal GrandTotal,
+            BigDecimal Open,
+            int DaysDue,
+            boolean IsInDispute,
+            int C_BPartner_ID,
+            int TimesDunned,
+            int DaysAfterLast,
+            int c_DunningLevel_ID)
+            throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*
     MDunningRunEntry entry = null;
@@ -349,14 +352,14 @@ public class DunningRunCreate extends SvrProcess {
 
     return true;
     */
-  } //	createInvoiceLine
+    } //	createInvoiceLine
 
-  /**
-   * ************************************************************************ Add Payments to Run
-   *
-   * @param level the Dunning level
-   * @return no of payments
-   */
+    /**
+     * ************************************************************************ Add Payments to Run
+     *
+     * @param level the Dunning level
+     * @return no of payments
+     */
   /*
   private int addPayments(MDunningLevel level)
   {
@@ -438,25 +441,25 @@ public class DunningRunCreate extends SvrProcess {
   }	//	addPayments
   */
 
-  /**
-   * Create Payment Line
-   *
-   * @param C_Payment_ID
-   * @param C_Currency_ID
-   * @param PayAmt
-   * @param OpenAmt
-   * @param C_BPartner_ID
-   * @param c_DunningLevel_ID
-   */
-  private boolean createPaymentLine(
-      int C_Payment_ID,
-      int C_Currency_ID,
-      BigDecimal PayAmt,
-      BigDecimal OpenAmt,
-      int C_BPartner_ID,
-      int c_DunningLevel_ID)
-      throws NotImplementedException {
-    throw new NotImplementedException();
+    /**
+     * Create Payment Line
+     *
+     * @param C_Payment_ID
+     * @param C_Currency_ID
+     * @param PayAmt
+     * @param OpenAmt
+     * @param C_BPartner_ID
+     * @param c_DunningLevel_ID
+     */
+    private boolean createPaymentLine(
+            int C_Payment_ID,
+            int C_Currency_ID,
+            BigDecimal PayAmt,
+            BigDecimal OpenAmt,
+            int C_BPartner_ID,
+            int c_DunningLevel_ID)
+            throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*
     MDunningRunEntry entry = null;
@@ -483,9 +486,9 @@ public class DunningRunCreate extends SvrProcess {
     	throw new IllegalStateException("Cannot save MDunningRunLine");
     return true;
     */
-  } //	createPaymentLine
+    } //	createPaymentLine
 
-  /** Add Fees for every line */
+    /** Add Fees for every line */
   /*
   private void addFees(MDunningLevel level)
   {
@@ -508,10 +511,10 @@ public class DunningRunCreate extends SvrProcess {
   }	//	addFees
   */
 
-  /**
-   * Check the dunning run 1) Check for following Rule: ShowAll should produce only a record if at
-   * least one new line is found
-   */
+    /**
+     * Check the dunning run 1) Check for following Rule: ShowAll should produce only a record if at
+     * least one new line is found
+     */
   /*
   private void checkDunningEntry(MDunningLevel level)
   {

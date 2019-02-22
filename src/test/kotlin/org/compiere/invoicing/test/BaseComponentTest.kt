@@ -23,14 +23,14 @@ import org.idempiere.common.util.Env
 import org.idempiere.icommon.model.IPO
 import org.junit.Before
 import org.slf4j.impl.SimpleLogger
-import software.hsharp.core.orm.DummyEventManager
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.HikariCPI
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-internal val sessionUrl = System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
+internal val sessionUrl =
+    System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
 
 abstract class BaseComponentTest {
     companion object {
@@ -41,7 +41,6 @@ abstract class BaseComponentTest {
     init {
         System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "WARN")
         HikariCPI.default(sessionUrl, "adempiere", "adempiere")
-        DummyEventManager()
     }
 
     protected fun loginClient(idClient: Int) {
@@ -181,7 +180,14 @@ abstract class BaseComponentTest {
         inventory.c_DocType_ID = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "PI" }.id
         inventory.save()
 
-        val inventoryLine = MInventoryLine(inventory, warehouse.defaultLocator.id, product.id, attributeSetInstance.id, 0.toBigDecimal(), 0.toBigDecimal())
+        val inventoryLine = MInventoryLine(
+            inventory,
+            warehouse.defaultLocator.id,
+            product.id,
+            attributeSetInstance.id,
+            0.toBigDecimal(),
+            0.toBigDecimal()
+        )
         inventoryLine.c_Charge_ID = charge.id
         inventoryLine.qtyInternalUse = 0.toBigDecimal()
         inventoryLine.save()

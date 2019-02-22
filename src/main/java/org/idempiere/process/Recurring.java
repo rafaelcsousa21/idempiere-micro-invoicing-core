@@ -14,9 +14,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Recurring Process
@@ -25,28 +26,30 @@ import org.compiere.process.SvrProcess;
  * @version $Id: Recurring.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class Recurring extends SvrProcess {
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (clear text)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Perform process.
+     *
+     * @return Message (clear text)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
     /*
     MRecurring rec = new MRecurring (getCtx(), getRecord_ID(), null);
     if (log.isLoggable(Level.INFO)) log.info(rec.toString());
     return rec.executeRun();
     */
-  } //	doIt
+    } //	doIt
 } //	Recurring

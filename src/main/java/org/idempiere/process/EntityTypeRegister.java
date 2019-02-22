@@ -14,11 +14,12 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.orm.MEntityType;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.util.logging.Level;
 
 /**
  * Register Entity Type
@@ -27,28 +28,32 @@ import org.idempiere.common.util.AdempiereUserError;
  * @version $Id: EntityTypeRegister.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class EntityTypeRegister extends SvrProcess {
-  /** Register Entity Type */
-  protected int p_AD_EntityType_ID = 0;
+    /**
+     * Register Entity Type
+     */
+    protected int p_AD_EntityType_ID = 0;
 
-  /** Prepare */
-  protected void prepare() {
-    p_AD_EntityType_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        p_AD_EntityType_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return summary
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("AD_EntityType_ID=" + p_AD_EntityType_ID);
-    MEntityType et = new MEntityType(getCtx(), p_AD_EntityType_ID);
-    if (et.isSystemMaintained())
-      throw new AdempiereUserError("You cannot register a System maintained entity");
+    /**
+     * Process
+     *
+     * @return summary
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("AD_EntityType_ID=" + p_AD_EntityType_ID);
+        MEntityType et = new MEntityType(getCtx(), p_AD_EntityType_ID);
+        if (et.isSystemMaintained())
+            throw new AdempiereUserError("You cannot register a System maintained entity");
 
-    throw new AdempiereSystemError("To register an Entity Type, contact Adempiere directly");
+        throw new AdempiereSystemError("To register an Entity Type, contact Adempiere directly");
 
-    //	return "Not Supported Yet";
-  } //	doIt
+        //	return "Not Supported Yet";
+    } //	doIt
 } //	EntityTypeRegister

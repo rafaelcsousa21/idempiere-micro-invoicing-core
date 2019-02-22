@@ -14,9 +14,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /*
  * Populate Fact_Acct_Summary table with pre-calculated totals of
@@ -25,29 +26,29 @@ import org.compiere.process.SvrProcess;
  */
 public class FactAcctSummary extends SvrProcess {
 
-  private boolean p_reset = false;
-  private int p_Cube_ID = 0;
-  private boolean p_force = false;
+    private boolean p_reset = false;
+    private int p_Cube_ID = 0;
+    private boolean p_force = false;
 
-  @Override
-  protected void prepare() {
+    @Override
+    protected void prepare() {
 
-    IProcessInfoParameter[] params = getParameter();
-    for (IProcessInfoParameter p : params) {
-      if (p.getParameterName().equals("Reset")) p_reset = p.getParameterAsBoolean();
-      else if (p.getParameterName().equals("PA_ReportCube_ID")) p_Cube_ID = p.getParameterAsInt();
-      else if (p.getParameterName().equals("Force")) p_force = p.getParameterAsBoolean();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + p.getParameterName());
+        IProcessInfoParameter[] params = getParameter();
+        for (IProcessInfoParameter p : params) {
+            if (p.getParameterName().equals("Reset")) p_reset = p.getParameterAsBoolean();
+            else if (p.getParameterName().equals("PA_ReportCube_ID")) p_Cube_ID = p.getParameterAsInt();
+            else if (p.getParameterName().equals("Force")) p_force = p.getParameterAsBoolean();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + p.getParameterName());
+        }
     }
-  }
 
-  @Override
-  protected String doIt() throws Exception {
+    @Override
+    protected String doIt() throws Exception {
 
-    StringBuilder where = new StringBuilder();
-    if (p_Cube_ID > 0) where = new StringBuilder("PA_ReportCube_ID = ").append(p_Cube_ID);
+        StringBuilder where = new StringBuilder();
+        if (p_Cube_ID > 0) where = new StringBuilder("PA_ReportCube_ID = ").append(p_Cube_ID);
 
-    throw new NotImplementedException();
+        throw new NotImplementedException();
 
     /*
     List<MReportCube> cubes = new Query(getCtx(), MReportCube.Table_Name, where.toString(), null)
@@ -61,5 +62,5 @@ public class FactAcctSummary extends SvrProcess {
 
     return "@OK@";
     */
-  }
+    }
 }

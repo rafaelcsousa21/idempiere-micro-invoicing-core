@@ -14,9 +14,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Copy Commission
@@ -25,34 +26,40 @@ import org.compiere.process.SvrProcess;
  * @version $Id: CommissionCopy.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class CommissionCopy extends SvrProcess {
-  /** From Commission */
-  private int p_C_Commission_ID = 0;
-  /** To Commission */
-  private int p_C_CommissionTo_ID = 0;
+    /**
+     * From Commission
+     */
+    private int p_C_Commission_ID = 0;
+    /**
+     * To Commission
+     */
+    private int p_C_CommissionTo_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("C_Commission_ID")) p_C_Commission_ID = para[i].getParameterAsInt();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-    p_C_CommissionTo_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("C_Commission_ID")) p_C_Commission_ID = para[i].getParameterAsInt();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+        p_C_CommissionTo_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process - copy
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO))
-      log.info("doIt - C_Commission_ID=" + p_C_Commission_ID + " - copy to " + p_C_CommissionTo_ID);
+    /**
+     * Process - copy
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO))
+            log.info("doIt - C_Commission_ID=" + p_C_Commission_ID + " - copy to " + p_C_CommissionTo_ID);
 
-    throw new NotImplementedException();
+        throw new NotImplementedException();
 
     /*
     MCommission comFrom = new MCommission (getCtx(), p_C_Commission_ID, null);
@@ -66,5 +73,5 @@ public class CommissionCopy extends SvrProcess {
     int no = comTo.copyLinesFrom(comFrom);
     return "@Copied@: " + no;
     */
-  } //	doIt
+    } //	doIt
 } //	CommissionCopy

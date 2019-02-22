@@ -1,9 +1,10 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_R_Group;
 import org.idempiere.common.util.CCache;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Request Group Model
@@ -12,48 +13,51 @@ import org.idempiere.common.util.CCache;
  * @version $Id: MGroup.java,v 1.2 2006/07/30 00:51:05 jjanke Exp $
  */
 public class MGroup extends X_R_Group {
-  /** */
-  private static final long serialVersionUID = 3218102715154328611L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 3218102715154328611L;
+    /**
+     * Cache
+     */
+    private static CCache<Integer, MGroup> s_cache =
+            new CCache<Integer, MGroup>(I_R_Group.Table_Name, 20);
 
-  /**
-   * Get MGroup from Cache
-   *
-   * @param ctx context
-   * @param R_Group_ID id
-   * @return MGroup
-   */
-  public static MGroup get(Properties ctx, int R_Group_ID) {
-    Integer key = new Integer(R_Group_ID);
-    MGroup retValue = (MGroup) s_cache.get(key);
-    if (retValue != null) return retValue;
-    retValue = new MGroup(ctx, R_Group_ID);
-    if (retValue.getId() != 0) s_cache.put(key, retValue);
-    return retValue;
-  } //	get
+    /**
+     * ************************************************************************ Standard Constructor
+     *
+     * @param ctx        context
+     * @param R_Group_ID group
+     * @param trxName    trx
+     */
+    public MGroup(Properties ctx, int R_Group_ID) {
+        super(ctx, R_Group_ID);
+    } //	MGroup
 
-  /** Cache */
-  private static CCache<Integer, MGroup> s_cache =
-      new CCache<Integer, MGroup>(I_R_Group.Table_Name, 20);
+    /**
+     * Load Constructor
+     *
+     * @param ctx     context
+     * @param rs      result set
+     * @param trxName trx
+     */
+    public MGroup(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    } //	MGroup
 
-  /**
-   * ************************************************************************ Standard Constructor
-   *
-   * @param ctx context
-   * @param R_Group_ID group
-   * @param trxName trx
-   */
-  public MGroup(Properties ctx, int R_Group_ID) {
-    super(ctx, R_Group_ID);
-  } //	MGroup
-
-  /**
-   * Load Constructor
-   *
-   * @param ctx context
-   * @param rs result set
-   * @param trxName trx
-   */
-  public MGroup(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  } //	MGroup
+    /**
+     * Get MGroup from Cache
+     *
+     * @param ctx        context
+     * @param R_Group_ID id
+     * @return MGroup
+     */
+    public static MGroup get(Properties ctx, int R_Group_ID) {
+        Integer key = new Integer(R_Group_ID);
+        MGroup retValue = (MGroup) s_cache.get(key);
+        if (retValue != null) return retValue;
+        retValue = new MGroup(ctx, R_Group_ID);
+        if (retValue.getId() != 0) s_cache.put(key, retValue);
+        return retValue;
+    } //	get
 } //	MGroup

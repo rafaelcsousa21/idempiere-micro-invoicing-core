@@ -14,8 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MOrderPaySchedule;
@@ -23,63 +21,68 @@ import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
+import java.math.BigDecimal;
+import java.util.logging.Level;
+
 /**
  * Validate Order Payment Schedule
  *
  * @author Carlos Ruiz - GlobalQSS
  */
 public class OrderPayScheduleValidate extends SvrProcess {
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (clear text)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("C_OrderPaySchedule_ID=" + getRecord_ID());
-    MOrderPaySchedule[] schedule =
-        MOrderPaySchedule.getOrderPaySchedule(getCtx(), 0, getRecord_ID());
-    if (schedule.length == 0)
-      throw new IllegalArgumentException("OrderPayScheduleValidate - No Schedule");
-    //	Get Order
-    MOrder order = new MOrder(getCtx(), schedule[0].getC_Order_ID());
-    if (order.getId() == 0)
-      throw new IllegalArgumentException("OrderPayScheduleValidate - No Order");
-    //
-    BigDecimal total = Env.ZERO;
-    for (int i = 0; i < schedule.length; i++) {
-      BigDecimal due = schedule[i].getDueAmt();
-      if (due != null) total = total.add(due);
-    }
-    boolean valid = order.getGrandTotal().compareTo(total) == 0;
-    order.setIsPayScheduleValid(valid);
-    order.saveEx();
-    //	Schedule
-    for (int i = 0; i < schedule.length; i++) {
-      if (schedule[i].isValid() != valid) {
-        schedule[i].setIsValid(valid);
-        schedule[i].saveEx();
-      }
-    }
-    StringBuilder msg = new StringBuilder("@OK@");
-    if (!valid)
-      msg =
-          new StringBuilder("@GrandTotal@ = ")
-              .append(order.getGrandTotal())
-              .append(" <> @Total@ = ")
-              .append(total)
-              .append("  - @Difference@ = ")
-              .append(order.getGrandTotal().subtract(total));
-    return Msg.parseTranslation(getCtx(), msg.toString());
-  } //	doIt
+    /**
+     * Perform process.
+     *
+     * @return Message (clear text)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("C_OrderPaySchedule_ID=" + getRecord_ID());
+        MOrderPaySchedule[] schedule =
+                MOrderPaySchedule.getOrderPaySchedule(getCtx(), 0, getRecord_ID());
+        if (schedule.length == 0)
+            throw new IllegalArgumentException("OrderPayScheduleValidate - No Schedule");
+        //	Get Order
+        MOrder order = new MOrder(getCtx(), schedule[0].getC_Order_ID());
+        if (order.getId() == 0)
+            throw new IllegalArgumentException("OrderPayScheduleValidate - No Order");
+        //
+        BigDecimal total = Env.ZERO;
+        for (int i = 0; i < schedule.length; i++) {
+            BigDecimal due = schedule[i].getDueAmt();
+            if (due != null) total = total.add(due);
+        }
+        boolean valid = order.getGrandTotal().compareTo(total) == 0;
+        order.setIsPayScheduleValid(valid);
+        order.saveEx();
+        //	Schedule
+        for (int i = 0; i < schedule.length; i++) {
+            if (schedule[i].isValid() != valid) {
+                schedule[i].setIsValid(valid);
+                schedule[i].saveEx();
+            }
+        }
+        StringBuilder msg = new StringBuilder("@OK@");
+        if (!valid)
+            msg =
+                    new StringBuilder("@GrandTotal@ = ")
+                            .append(order.getGrandTotal())
+                            .append(" <> @Total@ = ")
+                            .append(total)
+                            .append("  - @Difference@ = ")
+                            .append(order.getGrandTotal().subtract(total));
+        return Msg.parseTranslation(getCtx(), msg.toString());
+    } //	doIt
 } //	OrderPayScheduleValidate

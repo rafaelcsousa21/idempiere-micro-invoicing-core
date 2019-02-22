@@ -15,7 +15,7 @@ open class MBaseClient : org.compiere.orm.MClient {
     constructor(ctx: Properties, ID: Int) : super(ctx, ID)
     constructor (ctx: Properties, rs: ResultSet) : super(ctx, rs)
     constructor(ctx: Properties, rs: Row) : super(ctx, rs)
-    constructor(ctx: Properties , clientId: Int, createNew: Boolean): super(ctx, clientId, createNew)
+    constructor(ctx: Properties, clientId: Int, createNew: Boolean) : super(ctx, clientId, createNew)
 
     /** Client Info Setup Tree for Account  */
     private var m_AD_Tree_Account_ID: Int = 0
@@ -35,63 +35,63 @@ open class MBaseClient : org.compiere.orm.MClient {
             val name = StringBuilder().append(name).append(" ").append(row.string(2))
             val success =
             //
-            if (value == X_AD_Tree.TREETYPE_Organization) {
-                val tree = MTree_Base(this, name.toString(), value)
-                val result = tree.save()
-                AD_Tree_Org_ID = tree.aD_Tree_ID
-                result
-            } else if (value == X_AD_Tree.TREETYPE_BPartner) {
-                val tree = MTree_Base(this, name.toString(), value)
-                val result = tree.save()
-                AD_Tree_BPartner_ID = tree.aD_Tree_ID
-                result
-            } else if (value == X_AD_Tree.TREETYPE_Project) {
-                val tree = MTree_Base(this, name.toString(), value)
-                val result = tree.save()
-                AD_Tree_Project_ID = tree.aD_Tree_ID
-                result
-            } else if (value == X_AD_Tree.TREETYPE_SalesRegion) {
-                val tree = MTree_Base(this, name.toString(), value)
-                val result = tree.save()
-                AD_Tree_SalesRegion_ID = tree.aD_Tree_ID
-                result
-            } else if (value == X_AD_Tree.TREETYPE_Product) {
-                val tree = MTree_Base(this, name.toString(), value)
-                val result = tree.save()
-                AD_Tree_Product_ID = tree.aD_Tree_ID
-                result
-            } else if (value == X_AD_Tree.TREETYPE_ElementValue) {
-                val tree = MTree_Base(this, name.toString(), value)
-                val result = tree.save()
-                m_AD_Tree_Account_ID = tree.aD_Tree_ID
-                result
-            } else if (value == X_AD_Tree.TREETYPE_Campaign) {
-                val tree = MTree_Base(this, name.toString(), value)
-                val result = tree.save()
-                AD_Tree_Campaign_ID = tree.aD_Tree_ID
-                result
-            } else if (value == X_AD_Tree.TREETYPE_Activity) {
-                val tree = MTree_Base(this, name.toString(), value)
-                val result = tree.save()
-                AD_Tree_Activity_ID = tree.aD_Tree_ID
-                result
-            } else if (value == X_AD_Tree.TREETYPE_Menu // 	No Menu
+                if (value == X_AD_Tree.TREETYPE_Organization) {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    val result = tree.save()
+                    AD_Tree_Org_ID = tree.aD_Tree_ID
+                    result
+                } else if (value == X_AD_Tree.TREETYPE_BPartner) {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    val result = tree.save()
+                    AD_Tree_BPartner_ID = tree.aD_Tree_ID
+                    result
+                } else if (value == X_AD_Tree.TREETYPE_Project) {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    val result = tree.save()
+                    AD_Tree_Project_ID = tree.aD_Tree_ID
+                    result
+                } else if (value == X_AD_Tree.TREETYPE_SalesRegion) {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    val result = tree.save()
+                    AD_Tree_SalesRegion_ID = tree.aD_Tree_ID
+                    result
+                } else if (value == X_AD_Tree.TREETYPE_Product) {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    val result = tree.save()
+                    AD_Tree_Product_ID = tree.aD_Tree_ID
+                    result
+                } else if (value == X_AD_Tree.TREETYPE_ElementValue) {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    val result = tree.save()
+                    m_AD_Tree_Account_ID = tree.aD_Tree_ID
+                    result
+                } else if (value == X_AD_Tree.TREETYPE_Campaign) {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    val result = tree.save()
+                    AD_Tree_Campaign_ID = tree.aD_Tree_ID
+                    result
+                } else if (value == X_AD_Tree.TREETYPE_Activity) {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    val result = tree.save()
+                    AD_Tree_Activity_ID = tree.aD_Tree_ID
+                    result
+                } else if (value == X_AD_Tree.TREETYPE_Menu // 	No Menu
 
-                || value == X_AD_Tree.TREETYPE_CustomTable // 	No Custom Table
+                    || value == X_AD_Tree.TREETYPE_CustomTable // 	No Custom Table
 
-                || value == X_AD_Tree.TREETYPE_User1 // 	No custom user trees
+                    || value == X_AD_Tree.TREETYPE_User1 // 	No custom user trees
 
-                || value == X_AD_Tree.TREETYPE_User2
-                || value == X_AD_Tree.TREETYPE_User3
-                || value == X_AD_Tree.TREETYPE_User4
-            )
-                true
-            else
-            //	PC (Product Category), BB (BOM)
-            {
-                val tree = MTree_Base(this, name.toString(), value)
-                tree.save()
-            }
+                    || value == X_AD_Tree.TREETYPE_User2
+                    || value == X_AD_Tree.TREETYPE_User3
+                    || value == X_AD_Tree.TREETYPE_User4
+                )
+                    true
+                else
+                //	PC (Product Category), BB (BOM)
+                {
+                    val tree = MTree_Base(this, name.toString(), value)
+                    tree.save()
+                }
 
             if (!success) {
                 log.log(Level.SEVERE, "Tree NOT created: $name")

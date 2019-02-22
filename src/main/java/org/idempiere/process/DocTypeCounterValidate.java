@@ -14,9 +14,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.invoicing.MDocTypeCounter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Validate Counter Document
@@ -25,31 +26,37 @@ import org.compiere.process.SvrProcess;
  * @version $Id: DocTypeCounterValidate.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class DocTypeCounterValidate extends SvrProcess {
-  /** Counter Document */
-  private int p_C_DocTypeCounter_ID = 0;
-  /** Document Relationship */
-  private MDocTypeCounter m_counter = null;
+    /**
+     * Counter Document
+     */
+    private int p_C_DocTypeCounter_ID = 0;
+    /**
+     * Document Relationship
+     */
+    private MDocTypeCounter m_counter = null;
 
-  /** Prepare */
-  protected void prepare() {
-    p_C_DocTypeCounter_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        p_C_DocTypeCounter_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Do It
-   *
-   * @return message
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("C_DocTypeCounter_ID=" + p_C_DocTypeCounter_ID);
-    m_counter = new MDocTypeCounter(getCtx(), p_C_DocTypeCounter_ID);
-    if (m_counter == null || m_counter.getId() == 0)
-      throw new IllegalArgumentException("Not found C_DocTypeCounter_ID=" + p_C_DocTypeCounter_ID);
-    //
-    String error = m_counter.validate();
-    m_counter.saveEx();
-    if (error != null) throw new Exception(error);
+    /**
+     * Do It
+     *
+     * @return message
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("C_DocTypeCounter_ID=" + p_C_DocTypeCounter_ID);
+        m_counter = new MDocTypeCounter(getCtx(), p_C_DocTypeCounter_ID);
+        if (m_counter == null || m_counter.getId() == 0)
+            throw new IllegalArgumentException("Not found C_DocTypeCounter_ID=" + p_C_DocTypeCounter_ID);
+        //
+        String error = m_counter.validate();
+        m_counter.saveEx();
+        if (error != null) throw new Exception(error);
 
-    return "OK";
-  } //	doIt
+        return "OK";
+    } //	doIt
 } //	DocTypeCounterValidate

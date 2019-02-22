@@ -30,7 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * House Keeping
@@ -39,91 +40,91 @@ import static software.hsharp.core.util.DBKt.*;
  */
 public class HouseKeeping extends SvrProcess {
 
-  private int p_AD_HouseKeeping_ID = 0;
+    private int p_AD_HouseKeeping_ID = 0;
 
-  protected void prepare() {
-    IProcessInfoParameter[] parameter = getParameter();
-    for (int i = 0; i < parameter.length; i++) {
-      String name = parameter[i].getParameterName();
-      if (parameter[i].getParameter() == null) ;
-      else if (name.equals("AD_HouseKeeping_ID"))
-        p_AD_HouseKeeping_ID = parameter[i].getParameterAsInt();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    if (p_AD_HouseKeeping_ID == 0) p_AD_HouseKeeping_ID = getRecord_ID();
-  } // prepare
-
-  protected String doIt() throws Exception {
-
-    X_AD_HouseKeeping houseKeeping =
-        new X_AD_HouseKeeping(getCtx(), p_AD_HouseKeeping_ID);
-    int tableID = houseKeeping.getAD_Table_ID();
-    MTable table = new MTable(getCtx(), tableID);
-    String tableName = table.getTableName();
-    String whereClause = houseKeeping.getWhereClause();
-    int noins = 0;
-    int noexp = 0;
-    int nodel = 0;
-
-    if (houseKeeping.isSaveInHistoric()) {
-      StringBuilder sql =
-          new StringBuilder("INSERT INTO hst_")
-              .append(tableName)
-              .append(" SELECT * FROM ")
-              .append(tableName);
-      if (whereClause != null && whereClause.length() > 0)
-        sql.append(" WHERE ").append(whereClause);
-      noins = executeUpdate(sql.toString());
-      if (noins == -1) throw new AdempiereSystemError("Cannot insert into hst_" + tableName);
-      addLog("@Inserted@ " + noins);
-    } // saveInHistoric
-
-    Date date = new Date();
-    if (houseKeeping.isExportXMLBackup()) {
-      String pathFile = houseKeeping.getBackupFolder();
-      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-      String dateString = dateFormat.format(date);
-      FileWriter file = new FileWriter(pathFile + File.separator + tableName + dateString + ".xml");
-      StringBuilder sql = new StringBuilder("SELECT * FROM ").append(tableName);
-      if (whereClause != null && whereClause.length() > 0)
-        sql.append(" WHERE ").append(whereClause);
-      PreparedStatement pstmt = null;
-      ResultSet rs = null;
-      StringBuffer linexml = null;
-      try {
-        pstmt = prepareStatement(sql.toString());
-        rs = pstmt.executeQuery();
-        while (rs.next()) {
-          GenericPO po = new GenericPO(tableName, getCtx(), rs);
-          linexml = po.get_xmlString(linexml);
-          noexp++;
+    protected void prepare() {
+        IProcessInfoParameter[] parameter = getParameter();
+        for (int i = 0; i < parameter.length; i++) {
+            String name = parameter[i].getParameterName();
+            if (parameter[i].getParameter() == null) ;
+            else if (name.equals("AD_HouseKeeping_ID"))
+                p_AD_HouseKeeping_ID = parameter[i].getParameterAsInt();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        if (linexml != null) file.write(linexml.toString());
-        file.close();
-      } catch (Exception e) {
-        throw e;
-      } finally {
+        if (p_AD_HouseKeeping_ID == 0) p_AD_HouseKeeping_ID = getRecord_ID();
+    } // prepare
 
-        pstmt = null;
-        rs = null;
-      }
-      addLog("@Exported@ " + noexp);
-    } // XmlExport
+    protected String doIt() throws Exception {
 
-    StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName);
-    if (whereClause != null && whereClause.length() > 0) sql.append(" WHERE ").append(whereClause);
-    nodel = executeUpdate(sql.toString());
-    if (nodel == -1) throw new AdempiereSystemError("Cannot delete from " + tableName);
-    Timestamp time = new Timestamp(date.getTime());
-    houseKeeping.setLastRun(time);
-    houseKeeping.setLastDeleted(nodel);
-    houseKeeping.saveEx();
-    addLog("@Deleted@ " + nodel);
-    StringBuilder msg =
-        new StringBuilder()
-            .append(Msg.getElement(getCtx(), tableName + "_ID"))
-            .append(" #")
-            .append(nodel);
-    return msg.toString();
-  } // doIt
+        X_AD_HouseKeeping houseKeeping =
+                new X_AD_HouseKeeping(getCtx(), p_AD_HouseKeeping_ID);
+        int tableID = houseKeeping.getAD_Table_ID();
+        MTable table = new MTable(getCtx(), tableID);
+        String tableName = table.getTableName();
+        String whereClause = houseKeeping.getWhereClause();
+        int noins = 0;
+        int noexp = 0;
+        int nodel = 0;
+
+        if (houseKeeping.isSaveInHistoric()) {
+            StringBuilder sql =
+                    new StringBuilder("INSERT INTO hst_")
+                            .append(tableName)
+                            .append(" SELECT * FROM ")
+                            .append(tableName);
+            if (whereClause != null && whereClause.length() > 0)
+                sql.append(" WHERE ").append(whereClause);
+            noins = executeUpdate(sql.toString());
+            if (noins == -1) throw new AdempiereSystemError("Cannot insert into hst_" + tableName);
+            addLog("@Inserted@ " + noins);
+        } // saveInHistoric
+
+        Date date = new Date();
+        if (houseKeeping.isExportXMLBackup()) {
+            String pathFile = houseKeeping.getBackupFolder();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+            String dateString = dateFormat.format(date);
+            FileWriter file = new FileWriter(pathFile + File.separator + tableName + dateString + ".xml");
+            StringBuilder sql = new StringBuilder("SELECT * FROM ").append(tableName);
+            if (whereClause != null && whereClause.length() > 0)
+                sql.append(" WHERE ").append(whereClause);
+            PreparedStatement pstmt = null;
+            ResultSet rs = null;
+            StringBuffer linexml = null;
+            try {
+                pstmt = prepareStatement(sql.toString());
+                rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    GenericPO po = new GenericPO(tableName, getCtx(), rs);
+                    linexml = po.get_xmlString(linexml);
+                    noexp++;
+                }
+                if (linexml != null) file.write(linexml.toString());
+                file.close();
+            } catch (Exception e) {
+                throw e;
+            } finally {
+
+                pstmt = null;
+                rs = null;
+            }
+            addLog("@Exported@ " + noexp);
+        } // XmlExport
+
+        StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName);
+        if (whereClause != null && whereClause.length() > 0) sql.append(" WHERE ").append(whereClause);
+        nodel = executeUpdate(sql.toString());
+        if (nodel == -1) throw new AdempiereSystemError("Cannot delete from " + tableName);
+        Timestamp time = new Timestamp(date.getTime());
+        houseKeeping.setLastRun(time);
+        houseKeeping.setLastDeleted(nodel);
+        houseKeeping.saveEx();
+        addLog("@Deleted@ " + nodel);
+        StringBuilder msg =
+                new StringBuilder()
+                        .append(Msg.getElement(getCtx(), tableName + "_ID"))
+                        .append(" #")
+                        .append(nodel);
+        return msg.toString();
+    } // doIt
 }

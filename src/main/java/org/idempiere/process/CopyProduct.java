@@ -1,12 +1,13 @@
 package org.idempiere.process;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.product.MProductPrice;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Process that copies product information such as substitutes, related, prices, downloads etc from
@@ -16,52 +17,52 @@ import org.compiere.product.MProductPrice;
  */
 public class CopyProduct extends SvrProcess {
 
-  private int m_copyFromId;
+    private int m_copyFromId;
 
-  @Override
-  protected void prepare() {
+    @Override
+    protected void prepare() {
 
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("C_CopyFrom_ID")) m_copyFromId = para[i].getParameterAsInt();
-      else if (name.equals("M_Product_ID")) m_copyFromId = para[i].getParameterAsInt();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  }
-
-  @Override
-  protected String doIt() throws Exception {
-
-    int toMProductID = getRecord_ID();
-    if (log.isLoggable(Level.INFO))
-      log.info("From M_Product_ID=" + m_copyFromId + " to " + toMProductID);
-    if (toMProductID == 0) throw new IllegalArgumentException("Target M_Product_ID == 0");
-    if (m_copyFromId == 0) throw new IllegalArgumentException("Source M_Product_ID == 0");
-
-    // Get product price from the source product
-    List<MProductPrice> prices =
-        new Query(getCtx(), MProductPrice.Table_Name, "M_Product_ID=?")
-            .setParameters(new Object[] {m_copyFromId})
-            .setOnlyActiveRecords(true)
-            .list();
-
-    // Copy prices
-    MProductPrice priceSrc;
-    MProductPrice priceDst;
-    for (Iterator<MProductPrice> it = prices.iterator(); it.hasNext(); ) {
-      priceSrc = it.next();
-      priceDst = new MProductPrice(getCtx(), 0);
-      priceDst.setM_Product_ID(toMProductID);
-      priceDst.setM_PriceList_Version_ID(priceSrc.getM_PriceList_Version_ID());
-      priceDst.setPrices(priceSrc.getPriceList(), priceSrc.getPriceStd(), priceSrc.getPriceLimit());
-      priceDst.saveEx();
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("C_CopyFrom_ID")) m_copyFromId = para[i].getParameterAsInt();
+            else if (name.equals("M_Product_ID")) m_copyFromId = para[i].getParameterAsInt();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
     }
 
-    int count = prices.size();
+    @Override
+    protected String doIt() throws Exception {
 
-    throw new NotImplementedException();
+        int toMProductID = getRecord_ID();
+        if (log.isLoggable(Level.INFO))
+            log.info("From M_Product_ID=" + m_copyFromId + " to " + toMProductID);
+        if (toMProductID == 0) throw new IllegalArgumentException("Target M_Product_ID == 0");
+        if (m_copyFromId == 0) throw new IllegalArgumentException("Source M_Product_ID == 0");
+
+        // Get product price from the source product
+        List<MProductPrice> prices =
+                new Query(getCtx(), MProductPrice.Table_Name, "M_Product_ID=?")
+                        .setParameters(new Object[]{m_copyFromId})
+                        .setOnlyActiveRecords(true)
+                        .list();
+
+        // Copy prices
+        MProductPrice priceSrc;
+        MProductPrice priceDst;
+        for (Iterator<MProductPrice> it = prices.iterator(); it.hasNext(); ) {
+            priceSrc = it.next();
+            priceDst = new MProductPrice(getCtx(), 0);
+            priceDst.setM_Product_ID(toMProductID);
+            priceDst.setM_PriceList_Version_ID(priceSrc.getM_PriceList_Version_ID());
+            priceDst.setPrices(priceSrc.getPriceList(), priceSrc.getPriceStd(), priceSrc.getPriceLimit());
+            priceDst.saveEx();
+        }
+
+        int count = prices.size();
+
+        throw new NotImplementedException();
 
     /*
     // Copy substitutes
@@ -179,5 +180,5 @@ public class CopyProduct extends SvrProcess {
     // TODO Auto-generated method stub
     return "@Copied@=" + count;
     */
-  }
+    }
 }

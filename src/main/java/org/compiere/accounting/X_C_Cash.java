@@ -18,359 +18,381 @@ import java.util.Properties;
  */
 public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_C_Cash(Properties ctx, int C_Cash_ID) {
-    super(ctx, C_Cash_ID);
-  }
-
-  /** Load Constructor */
-  public X_C_Cash(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_C_Cash[").append(getId()).append("]");
-    return sb.toString();
-  }
+    /**
+     * Complete = CO
+     */
+    public static final String DOCACTION_Complete = "CO";
+    /**
+     * Close = CL
+     */
+    public static final String DOCACTION_Close = "CL";
+    /**
+     * <None> = --
+     */
+    public static final String DOCACTION_None = "--";
+    /**
+     * Prepare = PR
+     */
+    public static final String DOCACTION_Prepare = "PR";
+    /**
+     * Drafted = DR
+     */
+    public static final String DOCSTATUS_Drafted = "DR";
+    /**
+     * Completed = CO
+     */
+    public static final String DOCSTATUS_Completed = "CO";
+    /**
+     * Voided = VO
+     */
+    public static final String DOCSTATUS_Voided = "VO";
+    /**
+     * Reversed = RE
+     */
+    public static final String DOCSTATUS_Reversed = "RE";
+    /**
+     * Closed = CL
+     */
+    public static final String DOCSTATUS_Closed = "CL";
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Set Beginning Balance.
-   *
-   * @param BeginningBalance Balance prior to any transactions
-   */
-  public void setBeginningBalance(BigDecimal BeginningBalance) {
-    set_Value(COLUMNNAME_BeginningBalance, BeginningBalance);
-  }
-
-  /**
-   * Get Beginning Balance.
-   *
-   * @return Balance prior to any transactions
-   */
-  public BigDecimal getBeginningBalance() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_BeginningBalance);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-    /**
-   * Get Activity.
-   *
-   * @return Business Activity
-   */
-  public int getC_Activity_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Get Campaign.
-   *
-   * @return Marketing Campaign
-   */
-  public int getC_Campaign_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Cash Book.
-   *
-   * @param C_CashBook_ID Cash Book for recording petty cash transactions
-   */
-  public void setC_CashBook_ID(int C_CashBook_ID) {
-    if (C_CashBook_ID < 1) set_ValueNoCheck(COLUMNNAME_C_CashBook_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_CashBook_ID, Integer.valueOf(C_CashBook_ID));
-  }
-
-  /**
-   * Get Cash Book.
-   *
-   * @return Cash Book for recording petty cash transactions
-   */
-  public int getC_CashBook_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_CashBook_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Get Cash Journal.
-   *
-   * @return Cash Journal
-   */
-  public int getC_Cash_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Cash_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Get Project.
-   *
-   * @return Financial Project
-   */
-  public int getC_Project_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Account Date.
-   *
-   * @param DateAcct Accounting Date
-   */
-  public void setDateAcct(Timestamp DateAcct) {
-    set_Value(COLUMNNAME_DateAcct, DateAcct);
-  }
-
-  /**
-   * Get Account Date.
-   *
-   * @return Accounting Date
-   */
-  public Timestamp getDateAcct() {
-    return (Timestamp) get_Value(COLUMNNAME_DateAcct);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-    /** Complete = CO */
-  public static final String DOCACTION_Complete = "CO";
-    /** Close = CL */
-  public static final String DOCACTION_Close = "CL";
-    /** <None> = -- */
-  public static final String DOCACTION_None = "--";
-  /** Prepare = PR */
-  public static final String DOCACTION_Prepare = "PR";
-
-    /**
-   * Set Document Action.
-   *
-   * @param DocAction The targeted status of the document
-   */
-  public void setDocAction(String DocAction) {
-
-    set_Value(COLUMNNAME_DocAction, DocAction);
-  }
-
-  /**
-   * Get Document Action.
-   *
-   * @return The targeted status of the document
-   */
-  public String getDocAction() {
-    return (String) get_Value(COLUMNNAME_DocAction);
-  }
-
-    /** Drafted = DR */
-  public static final String DOCSTATUS_Drafted = "DR";
-  /** Completed = CO */
-  public static final String DOCSTATUS_Completed = "CO";
-    /** Voided = VO */
-  public static final String DOCSTATUS_Voided = "VO";
-    /** Reversed = RE */
-  public static final String DOCSTATUS_Reversed = "RE";
-  /** Closed = CL */
-  public static final String DOCSTATUS_Closed = "CL";
-
-    /**
-   * Set Document Status.
-   *
-   * @param DocStatus The current status of the document
-   */
-  public void setDocStatus(String DocStatus) {
-
-    set_Value(COLUMNNAME_DocStatus, DocStatus);
-  }
-
-  /**
-   * Get Document Status.
-   *
-   * @return The current status of the document
-   */
-  public String getDocStatus() {
-    return (String) get_Value(COLUMNNAME_DocStatus);
-  }
-
-  /**
-   * Set Ending balance.
-   *
-   * @param EndingBalance Ending or closing balance
-   */
-  public void setEndingBalance(BigDecimal EndingBalance) {
-    set_Value(COLUMNNAME_EndingBalance, EndingBalance);
-  }
-
-  /**
-   * Get Ending balance.
-   *
-   * @return Ending or closing balance
-   */
-  public BigDecimal getEndingBalance() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_EndingBalance);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Approved.
-   *
-   * @param IsApproved Indicates if this document requires approval
-   */
-  public void setIsApproved(boolean IsApproved) {
-    set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
-  }
-
-  /**
-   * Get Approved.
-   *
-   * @return Indicates if this document requires approval
-   */
-  public boolean isApproved() {
-    Object oo = get_Value(COLUMNNAME_IsApproved);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Standard Constructor
+     */
+    public X_C_Cash(Properties ctx, int C_Cash_ID) {
+        super(ctx, C_Cash_ID);
     }
-    return false;
-  }
-
-  /**
-   * Set Posted.
-   *
-   * @param Posted Posting status
-   */
-  public void setPosted(boolean Posted) {
-    set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
-  }
 
     /**
-   * Set Processed.
-   *
-   * @param Processed The document has been processed
-   */
-  public void setProcessed(boolean Processed) {
-    set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
-  }
-
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Load Constructor
+     */
+    public X_C_Cash(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
     }
-    return false;
-  }
 
     /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_C_Cash[").append(getId()).append("]");
+        return sb.toString();
+    }
 
     /**
-   * Set Statement date.
-   *
-   * @param StatementDate Date of the statement
-   */
-  public void setStatementDate(Timestamp StatementDate) {
-    set_Value(COLUMNNAME_StatementDate, StatementDate);
-  }
-
-  /**
-   * Get Statement date.
-   *
-   * @return Date of the statement
-   */
-  public Timestamp getStatementDate() {
-    return (Timestamp) get_Value(COLUMNNAME_StatementDate);
-  }
-
-  /**
-   * Set Statement difference.
-   *
-   * @param StatementDifference Difference between statement ending balance and actual ending
-   *     balance
-   */
-  public void setStatementDifference(BigDecimal StatementDifference) {
-    set_Value(COLUMNNAME_StatementDifference, StatementDifference);
-  }
-
-  /**
-   * Get Statement difference.
-   *
-   * @return Difference between statement ending balance and actual ending balance
-   */
-  public BigDecimal getStatementDifference() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_StatementDifference);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+     * Get Beginning Balance.
+     *
+     * @return Balance prior to any transactions
+     */
+    public BigDecimal getBeginningBalance() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_BeginningBalance);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
 
     /**
-   * Get User Element List 1.
-   *
-   * @return User defined list element #1
-   */
-  public int getUser1_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Set Beginning Balance.
+     *
+     * @param BeginningBalance Balance prior to any transactions
+     */
+    public void setBeginningBalance(BigDecimal BeginningBalance) {
+        set_Value(COLUMNNAME_BeginningBalance, BeginningBalance);
+    }
 
     /**
-   * Get User Element List 2.
-   *
-   * @return User defined list element #2
-   */
-  public int getUser2_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Activity.
+     *
+     * @return Business Activity
+     */
+    public int getC_Activity_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-  @Override
-  public int getTableId() {
-    return I_C_Cash.Table_ID;
-  }
+    /**
+     * Get Campaign.
+     *
+     * @return Marketing Campaign
+     */
+    public int getC_Campaign_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Cash Book.
+     *
+     * @return Cash Book for recording petty cash transactions
+     */
+    public int getC_CashBook_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_CashBook_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Cash Book.
+     *
+     * @param C_CashBook_ID Cash Book for recording petty cash transactions
+     */
+    public void setC_CashBook_ID(int C_CashBook_ID) {
+        if (C_CashBook_ID < 1) set_ValueNoCheck(COLUMNNAME_C_CashBook_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_C_CashBook_ID, Integer.valueOf(C_CashBook_ID));
+    }
+
+    /**
+     * Get Cash Journal.
+     *
+     * @return Cash Journal
+     */
+    public int getC_Cash_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Cash_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Project.
+     *
+     * @return Financial Project
+     */
+    public int getC_Project_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Account Date.
+     *
+     * @return Accounting Date
+     */
+    public Timestamp getDateAcct() {
+        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+    }
+
+    /**
+     * Set Account Date.
+     *
+     * @param DateAcct Accounting Date
+     */
+    public void setDateAcct(Timestamp DateAcct) {
+        set_Value(COLUMNNAME_DateAcct, DateAcct);
+    }
+
+    /**
+     * Get Description.
+     *
+     * @return Optional short description of the record
+     */
+    public String getDescription() {
+        return (String) get_Value(COLUMNNAME_Description);
+    }
+
+    /**
+     * Set Description.
+     *
+     * @param Description Optional short description of the record
+     */
+    public void setDescription(String Description) {
+        set_Value(COLUMNNAME_Description, Description);
+    }
+
+    /**
+     * Get Document Action.
+     *
+     * @return The targeted status of the document
+     */
+    public String getDocAction() {
+        return (String) get_Value(COLUMNNAME_DocAction);
+    }
+
+    /**
+     * Set Document Action.
+     *
+     * @param DocAction The targeted status of the document
+     */
+    public void setDocAction(String DocAction) {
+
+        set_Value(COLUMNNAME_DocAction, DocAction);
+    }
+
+    /**
+     * Get Document Status.
+     *
+     * @return The current status of the document
+     */
+    public String getDocStatus() {
+        return (String) get_Value(COLUMNNAME_DocStatus);
+    }
+
+    /**
+     * Set Document Status.
+     *
+     * @param DocStatus The current status of the document
+     */
+    public void setDocStatus(String DocStatus) {
+
+        set_Value(COLUMNNAME_DocStatus, DocStatus);
+    }
+
+    /**
+     * Get Ending balance.
+     *
+     * @return Ending or closing balance
+     */
+    public BigDecimal getEndingBalance() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_EndingBalance);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Ending balance.
+     *
+     * @param EndingBalance Ending or closing balance
+     */
+    public void setEndingBalance(BigDecimal EndingBalance) {
+        set_Value(COLUMNNAME_EndingBalance, EndingBalance);
+    }
+
+    /**
+     * Set Approved.
+     *
+     * @param IsApproved Indicates if this document requires approval
+     */
+    public void setIsApproved(boolean IsApproved) {
+        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+    }
+
+    /**
+     * Get Approved.
+     *
+     * @return Indicates if this document requires approval
+     */
+    public boolean isApproved() {
+        Object oo = get_Value(COLUMNNAME_IsApproved);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Posted.
+     *
+     * @param Posted Posting status
+     */
+    public void setPosted(boolean Posted) {
+        set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+    }
+
+    /**
+     * Get Processed.
+     *
+     * @return The document has been processed
+     */
+    public boolean isProcessed() {
+        Object oo = get_Value(COLUMNNAME_Processed);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Processed.
+     *
+     * @param Processed The document has been processed
+     */
+    public void setProcessed(boolean Processed) {
+        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+    }
+
+    /**
+     * Set Process Now.
+     *
+     * @param Processing Process Now
+     */
+    public void setProcessing(boolean Processing) {
+        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+    }
+
+    /**
+     * Get Statement date.
+     *
+     * @return Date of the statement
+     */
+    public Timestamp getStatementDate() {
+        return (Timestamp) get_Value(COLUMNNAME_StatementDate);
+    }
+
+    /**
+     * Set Statement date.
+     *
+     * @param StatementDate Date of the statement
+     */
+    public void setStatementDate(Timestamp StatementDate) {
+        set_Value(COLUMNNAME_StatementDate, StatementDate);
+    }
+
+    /**
+     * Get Statement difference.
+     *
+     * @return Difference between statement ending balance and actual ending balance
+     */
+    public BigDecimal getStatementDifference() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_StatementDifference);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Statement difference.
+     *
+     * @param StatementDifference Difference between statement ending balance and actual ending
+     *                            balance
+     */
+    public void setStatementDifference(BigDecimal StatementDifference) {
+        set_Value(COLUMNNAME_StatementDifference, StatementDifference);
+    }
+
+    /**
+     * Get User Element List 1.
+     *
+     * @return User defined list element #1
+     */
+    public int getUser1_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get User Element List 2.
+     *
+     * @return User defined list element #2
+     */
+    public int getUser2_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    @Override
+    public int getTableId() {
+        return I_C_Cash.Table_ID;
+    }
 }

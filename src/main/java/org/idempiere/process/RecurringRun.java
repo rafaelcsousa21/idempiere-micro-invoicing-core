@@ -13,9 +13,6 @@
  */
 package org.idempiere.process;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MSequence;
 import org.compiere.process.SvrProcess;
@@ -23,50 +20,56 @@ import org.idempiere.common.util.Util;
 import org.idempiere.common.util.ValueNamePair;
 import org.idempiere.icommon.model.IPO;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.logging.Level;
+
 /**
  * IDEMPIERE-2100 Automate Recurring Run
  *
  * @author Carlos Ruiz - globalqss
  */
 public class RecurringRun extends SvrProcess {
-  /* The recurring group */
-  private int p_C_RecurringGroup_ID = 0;
-  /* Cut Date */
-  private Timestamp p_Cut_Date = null;
-  /* Document Action */
-  private String p_DocAction = null;
-  /* Tag Parameters to replace */
-  ArrayList<ValueNamePair> prms = new ArrayList<ValueNamePair>();
+    /* Tag Parameters to replace */
+    ArrayList<ValueNamePair> prms = new ArrayList<ValueNamePair>();
+    /* The recurring group */
+    private int p_C_RecurringGroup_ID = 0;
+    /* Cut Date */
+    private Timestamp p_Cut_Date = null;
+    /* Document Action */
+    private String p_DocAction = null;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    for (IProcessInfoParameter para : getParameter()) {
-      String name = para.getParameterName();
-      if ("C_RecurringGroup_ID".equals(name)) {
-        p_C_RecurringGroup_ID = para.getParameterAsInt();
-      } else if ("Cut_Date".equals(name)) {
-        p_Cut_Date = para.getParameterAsTimestamp();
-      } else if ("DocAction".equals(name)) {
-        p_DocAction = para.getParameterAsString();
-      } else if (name.startsWith("Prm_")) {
-        String prm = para.getParameterAsString();
-        if (!Util.isEmpty(prm, true)) {
-          prms.add(new ValueNamePair(name, prm));
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        for (IProcessInfoParameter para : getParameter()) {
+            String name = para.getParameterName();
+            if ("C_RecurringGroup_ID".equals(name)) {
+                p_C_RecurringGroup_ID = para.getParameterAsInt();
+            } else if ("Cut_Date".equals(name)) {
+                p_Cut_Date = para.getParameterAsTimestamp();
+            } else if ("DocAction".equals(name)) {
+                p_DocAction = para.getParameterAsString();
+            } else if (name.startsWith("Prm_")) {
+                String prm = para.getParameterAsString();
+                if (!Util.isEmpty(prm, true)) {
+                    prms.add(new ValueNamePair(name, prm));
+                }
+            } else {
+                log.log(Level.SEVERE, "Unknown Parameter: " + name);
+            }
         }
-      } else {
-        log.log(Level.SEVERE, "Unknown Parameter: " + name);
-      }
-    }
-  } //	prepare
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
     /*
 
     if (log.isLoggable(Level.INFO)) log.info("C_RecurringGroup_ID=" + p_C_RecurringGroup_ID
@@ -146,30 +149,30 @@ public class RecurringRun extends SvrProcess {
 
     return "@OK@";
     */
-  } //	doIt
+    } //	doIt
 
-  private void replaceTagsInDescription(IPO _po) {
-    if (_po instanceof org.compiere.orm.PO) {
-      org.compiere.orm.PO po = (org.compiere.orm.PO) _po;
-      /* Parse context and prm tags on description */
-      if (po.get_ColumnIndex("Description") >= 0) {
-        String description = po.get_ValueAsString("Description");
-        String description_org = description;
-        description = MSequence.parseVariable(description, po, null, true);
+    private void replaceTagsInDescription(IPO _po) {
+        if (_po instanceof org.compiere.orm.PO) {
+            org.compiere.orm.PO po = (org.compiere.orm.PO) _po;
+            /* Parse context and prm tags on description */
+            if (po.get_ColumnIndex("Description") >= 0) {
+                String description = po.get_ValueAsString("Description");
+                String description_org = description;
+                description = MSequence.parseVariable(description, po, null, true);
 
-        if (prms.size() > 0) {
-          for (ValueNamePair prm : prms) {
-            String prmName = prm.getValue();
-            String prmValue = prm.getName();
-            String tag = "@" + prmName + "@";
-            description = description.replaceAll(tag, prmValue);
-          }
+                if (prms.size() > 0) {
+                    for (ValueNamePair prm : prms) {
+                        String prmName = prm.getValue();
+                        String prmValue = prm.getName();
+                        String tag = "@" + prmName + "@";
+                        description = description.replaceAll(tag, prmValue);
+                    }
+                }
+                if (description_org != null && !description_org.equals(description)) {
+                    po.set_ValueOfColumn("Description", description);
+                    po.saveEx();
+                }
+            }
         }
-        if (description_org != null && !description_org.equals(description)) {
-          po.set_ValueOfColumn("Description", description);
-          po.saveEx();
-        }
-      }
     }
-  }
 } //	RecurringRun

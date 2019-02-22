@@ -45,7 +45,7 @@ data class MaterialMovementImportantTestAttributes(
     val amountOut: BigDecimal
 )
 
-class InvoiceTest: BaseComponentTest() {
+class InvoiceTest : BaseComponentTest() {
     companion object {
         const val QTY = 1
         private var index = 0
@@ -174,7 +174,8 @@ class InvoiceTest: BaseComponentTest() {
         order.setAD_Org_ID(1000000)
         order.m_Warehouse_ID = 1000000
         order.setIsSOTrx(true)
-        order.c_DocType_ID = c_DocType_ID // 133 on credit order (generates invoice), 130 prepay order, 132 standard order
+        order.c_DocType_ID =
+            c_DocType_ID // 133 on credit order (generates invoice), 130 prepay order, 132 standard order
         order.c_DocTypeTarget_ID = c_DocType_ID
         order.m_PriceList_ID = MPriceList.getDefault(ctx, true).id
         order.setC_Currency_ID(EUR) // EUR
@@ -219,7 +220,12 @@ class InvoiceTest: BaseComponentTest() {
         }
     }
 
-    private fun createInvoiceFromOrder(c_DocType_ID: Int, productId: Int, expectedPrice: BigDecimal, doAfterOrderTask: (MOrder) -> Unit) {
+    private fun createInvoiceFromOrder(
+        c_DocType_ID: Int,
+        productId: Int,
+        expectedPrice: BigDecimal,
+        doAfterOrderTask: (MOrder) -> Unit
+    ) {
         val (order, id, product_id) = createOrder(c_DocType_ID, productId)
         doAfterOrderTask(order)
 
@@ -254,14 +260,14 @@ class InvoiceTest: BaseComponentTest() {
         "/sql/invoice_details.sql".asResource {
             val sql = it.replace("\$P{RECORD_ID}", invoice1.id.toString())
             val loadQuery =
-                queryOf(sql,listOf())
-                .map { row ->
-                    InvoiceImportantTestAttributes(
-                        row.bigDecimal("grandtotal"), row.bigDecimal("grandtotalvat"),
-                        row.boolean("reverse_charge"), row.sqlDate("due_previous_business_day"),
-                        row.sqlDate("due_previous_5business_days")
-                    )
-                }.asList
+                queryOf(sql, listOf())
+                    .map { row ->
+                        InvoiceImportantTestAttributes(
+                            row.bigDecimal("grandtotal"), row.bigDecimal("grandtotalvat"),
+                            row.boolean("reverse_charge"), row.sqlDate("due_previous_business_day"),
+                            row.sqlDate("due_previous_5business_days")
+                        )
+                    }.asList
             val list = DB.current.run(loadQuery)
             assertEquals(1, list.count())
             val details = list.first()
@@ -309,9 +315,9 @@ class InvoiceTest: BaseComponentTest() {
                 val production = MProduction(orderLine)
                 production.setAD_Org_ID(1000000)
                 production.m_Product_ID =
-                        orderLine.m_Product_ID // TODO: Why? Should not this be done automatically in the constructor?
+                    orderLine.m_Product_ID // TODO: Why? Should not this be done automatically in the constructor?
                 production.productionQty =
-                        orderLine.qtyOrdered // TODO: Why? Should not this be done automatically in the constructor?
+                    orderLine.qtyOrdered // TODO: Why? Should not this be done automatically in the constructor?
                 production.m_Locator_ID = 1000000
                 production.save()
 
@@ -365,20 +371,22 @@ class InvoiceTest: BaseComponentTest() {
             "/sql/recent_material_movements.sql".asResource {
                 val loadQuery =
                     queryOf(it, listOf())
-                    .map { row ->
-                        MaterialMovementImportantTestAttributes(
-                            row.string("pro_name"), row.sqlDate("move_date"),
-                            row.bigDecimal("amout_in"), row.bigDecimal("amout_out")
-                        )
-                    }
-                    .asList
+                        .map { row ->
+                            MaterialMovementImportantTestAttributes(
+                                row.string("pro_name"), row.sqlDate("move_date"),
+                                row.bigDecimal("amout_in"), row.bigDecimal("amout_out")
+                            )
+                        }
+                        .asList
 
                 val list = DB.current.run(loadQuery)
                 kotlin.test.assertEquals(11, list.count())
                 val standards = list.filter { it.productName.startsWith(MAT) }
                 val bom1s = list.filter { it.productName.startsWith(BOM) }
                 kotlin.test.assertEquals(9, standards.count())
-                kotlin.test.assertEquals(6 * 1000000 - 2 * 1 - 10, standards.sumBy { (it.amountIn - it.amountOut).toInt() })
+                kotlin.test.assertEquals(
+                    6 * 1000000 - 2 * 1 - 10,
+                    standards.sumBy { (it.amountIn - it.amountOut).toInt() })
                 kotlin.test.assertEquals(2, bom1s.count())
                 kotlin.test.assertEquals(1 - 1, bom1s.sumBy { (it.amountIn - it.amountOut).toInt() })
             }

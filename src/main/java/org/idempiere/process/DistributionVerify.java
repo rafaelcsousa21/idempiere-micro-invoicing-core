@@ -24,17 +24,20 @@ import org.compiere.process.SvrProcess;
  */
 public class DistributionVerify extends SvrProcess {
 
-  /** Prepare */
-  protected void prepare() {} // 	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+    } // 	prepare
 
-  /**
-   * Process
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Process
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
 
     /*
     if (log.isLoggable(Level.INFO)) log.info("doIt - GL_Distribution_ID=" + getRecord_ID());
@@ -51,5 +54,5 @@ public class DistributionVerify extends SvrProcess {
 
     return "@OK@";
     */
-  } //	doIt
+    } //	doIt
 } //	DistributionVerify

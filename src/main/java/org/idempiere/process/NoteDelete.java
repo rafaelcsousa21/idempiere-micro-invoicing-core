@@ -27,46 +27,48 @@ import static software.hsharp.core.util.DBKt.executeUpdate;
  *
  * @author Jorg Janke
  * @version $Id: NoteDelete.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
- *     <p>CarlosRuiz - globalqss [ 1639204 ] Delete Old Notes is deleting all notes Add parameter
- *     KeepLogDays
+ * <p>CarlosRuiz - globalqss [ 1639204 ] Delete Old Notes is deleting all notes Add parameter
+ * KeepLogDays
  */
 public class NoteDelete extends SvrProcess {
-  private int p_AD_User_ID = -1;
+    private int p_AD_User_ID = -1;
 
-  private int p_KeepLogDays = 0;
+    private int p_KeepLogDays = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("AD_User_ID"))
-        p_AD_User_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("KeepLogDays"))
-        p_KeepLogDays = ((BigDecimal) para[i].getParameter()).intValue();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("AD_User_ID"))
+                p_AD_User_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (name.equals("KeepLogDays"))
+                p_KeepLogDays = ((BigDecimal) para[i].getParameter()).intValue();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (clear text)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("doIt - AD_User_ID=" + p_AD_User_ID);
+    /**
+     * Perform process.
+     *
+     * @return Message (clear text)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("doIt - AD_User_ID=" + p_AD_User_ID);
 
-    StringBuilder sql =
-        new StringBuilder(
-                "DELETE FROM AD_Note WHERE AD_BroadcastMessage_ID IS NULL AND AD_Client_ID=")
-            .append(getClientId());
-    if (p_AD_User_ID > 0) sql.append(" AND AD_User_ID=").append(p_AD_User_ID);
-    if (p_KeepLogDays > 0) sql.append(" AND (Created+").append(p_KeepLogDays).append(") < SysDate");
-    //
-    int no = executeUpdate(sql.toString());
-    StringBuilder msgreturn = new StringBuilder("@Deleted@ = ").append(no);
-    return msgreturn.toString();
-  } //	doIt
+        StringBuilder sql =
+                new StringBuilder(
+                        "DELETE FROM AD_Note WHERE AD_BroadcastMessage_ID IS NULL AND AD_Client_ID=")
+                        .append(getClientId());
+        if (p_AD_User_ID > 0) sql.append(" AND AD_User_ID=").append(p_AD_User_ID);
+        if (p_KeepLogDays > 0) sql.append(" AND (Created+").append(p_KeepLogDays).append(") < SysDate");
+        //
+        int no = executeUpdate(sql.toString());
+        StringBuilder msgreturn = new StringBuilder("@Deleted@ = ").append(no);
+        return msgreturn.toString();
+    } //	doIt
 } //	NoteDelete

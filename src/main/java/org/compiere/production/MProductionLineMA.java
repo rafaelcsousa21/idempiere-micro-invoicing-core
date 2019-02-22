@@ -15,84 +15,86 @@ import java.util.List;
 import java.util.Properties;
 
 public class MProductionLineMA extends X_M_ProductionLineMA {
-  /** */
-  private static final long serialVersionUID = -3935841562652510880L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3935841562652510880L;
 
-  public MProductionLineMA(Properties ctx, int M_ProductionLineMA_ID) {
-    super(ctx, M_ProductionLineMA_ID);
-  }
-
-  public MProductionLineMA(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * Parent constructor
-   *
-   * @param parent
-   * @param asi
-   * @param qty
-   * @param dateMaterialPolicy
-   */
-  public MProductionLineMA(
-      MProductionLine parent, int asi, BigDecimal qty, Timestamp dateMaterialPolicy) {
-    super(parent.getCtx(), 0);
-    setM_AttributeSetInstance_ID(asi);
-    setM_ProductionLine_ID(parent.getId());
-    setMovementQty(qty);
-    setAD_Org_ID(parent. getOrgId());
-    if (dateMaterialPolicy == null) {
-      if (asi > 0) {
-        dateMaterialPolicy =
-            MStorageOnHand.getDateMaterialPolicy(
-                parent.getM_Product_ID(), asi);
-      }
-      if (dateMaterialPolicy == null) {
-        dateMaterialPolicy = parent.getM_Production().getMovementDate();
-      }
+    public MProductionLineMA(Properties ctx, int M_ProductionLineMA_ID) {
+        super(ctx, M_ProductionLineMA_ID);
     }
-    setDateMaterialPolicy(dateMaterialPolicy);
-  }
 
-  @Override
-  public void setDateMaterialPolicy(Timestamp DateMaterialPolicy) {
-    if (DateMaterialPolicy != null) DateMaterialPolicy = Util.removeTime(DateMaterialPolicy);
-    super.setDateMaterialPolicy(DateMaterialPolicy);
-  }
-
-  public static MProductionLineMA get(MProductionLine parent, int asi, Timestamp dateMPolicy) {
-    String where = " M_ProductionLine_ID = ? AND M_AttributeSetInstance_ID = ? ";
-    if (dateMPolicy == null) {
-      dateMPolicy = new Timestamp(new Date().getTime());
+    public MProductionLineMA(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
     }
-    where = where + "AND DateMaterialPolicy = trunc(cast(? as date))";
 
-    MProductionLineMA lineMA =
-        MTable.get(parent.getCtx(), I_M_ProductionLineMA.Table_Name)
-            .createQuery(where)
-            .setParameters(parent.getM_ProductionLine_ID(), asi, dateMPolicy)
-            .first();
+    /**
+     * Parent constructor
+     *
+     * @param parent
+     * @param asi
+     * @param qty
+     * @param dateMaterialPolicy
+     */
+    public MProductionLineMA(
+            MProductionLine parent, int asi, BigDecimal qty, Timestamp dateMaterialPolicy) {
+        super(parent.getCtx(), 0);
+        setM_AttributeSetInstance_ID(asi);
+        setM_ProductionLine_ID(parent.getId());
+        setMovementQty(qty);
+        setAD_Org_ID(parent.getOrgId());
+        if (dateMaterialPolicy == null) {
+            if (asi > 0) {
+                dateMaterialPolicy =
+                        MStorageOnHand.getDateMaterialPolicy(
+                                parent.getM_Product_ID(), asi);
+            }
+            if (dateMaterialPolicy == null) {
+                dateMaterialPolicy = parent.getM_Production().getMovementDate();
+            }
+        }
+        setDateMaterialPolicy(dateMaterialPolicy);
+    }
 
-    if (lineMA != null) return lineMA;
-    else return new MProductionLineMA(parent, asi, Env.ZERO, dateMPolicy);
-  }
+    public static MProductionLineMA get(MProductionLine parent, int asi, Timestamp dateMPolicy) {
+        String where = " M_ProductionLine_ID = ? AND M_AttributeSetInstance_ID = ? ";
+        if (dateMPolicy == null) {
+            dateMPolicy = new Timestamp(new Date().getTime());
+        }
+        where = where + "AND DateMaterialPolicy = trunc(cast(? as date))";
 
-  /**
-   * Get Material Allocations for Line
-   *
-   * @param ctx context
-   * @param M_ProductionLine_ID line
-   * @param trxName trx
-   * @return allocations
-   */
-  public static MProductionLineMA[] get(Properties ctx, int M_ProductionLine_ID) {
+        MProductionLineMA lineMA =
+                MTable.get(parent.getCtx(), I_M_ProductionLineMA.Table_Name)
+                        .createQuery(where)
+                        .setParameters(parent.getM_ProductionLine_ID(), asi, dateMPolicy)
+                        .first();
 
-    Query query =
-        MTable.get(ctx, I_M_ProductionLineMA.Table_Name)
-            .createQuery(I_M_ProductionLineMA.COLUMNNAME_M_ProductionLine_ID + "=?");
-    query.setParameters(M_ProductionLine_ID);
-    List<MProductionLineMA> list = query.list();
-    MProductionLineMA[] retValue = list.toArray(new MProductionLineMA[0]);
-    return retValue;
-  } //	get
+        if (lineMA != null) return lineMA;
+        else return new MProductionLineMA(parent, asi, Env.ZERO, dateMPolicy);
+    }
+
+    /**
+     * Get Material Allocations for Line
+     *
+     * @param ctx                 context
+     * @param M_ProductionLine_ID line
+     * @param trxName             trx
+     * @return allocations
+     */
+    public static MProductionLineMA[] get(Properties ctx, int M_ProductionLine_ID) {
+
+        Query query =
+                MTable.get(ctx, I_M_ProductionLineMA.Table_Name)
+                        .createQuery(I_M_ProductionLineMA.COLUMNNAME_M_ProductionLine_ID + "=?");
+        query.setParameters(M_ProductionLine_ID);
+        List<MProductionLineMA> list = query.list();
+        MProductionLineMA[] retValue = list.toArray(new MProductionLineMA[0]);
+        return retValue;
+    } //	get
+
+    @Override
+    public void setDateMaterialPolicy(Timestamp DateMaterialPolicy) {
+        if (DateMaterialPolicy != null) DateMaterialPolicy = Util.removeTime(DateMaterialPolicy);
+        super.setDateMaterialPolicy(DateMaterialPolicy);
+    }
 }

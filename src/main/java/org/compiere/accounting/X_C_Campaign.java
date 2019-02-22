@@ -15,48 +15,54 @@ import java.util.Properties;
  */
 public class X_C_Campaign extends BasePONameValue implements I_C_Campaign, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_C_Campaign(Properties ctx, int C_Campaign_ID) {
-    super(ctx, C_Campaign_ID);
-  }
-
-  /** Load Constructor */
-  public X_C_Campaign(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-
-  @Override
-  public int getTableId() {
-    return Table_ID;
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_C_Campaign[").append(getId()).append("]");
-    return sb.toString();
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get Channel.
-   *
-   * @return Sales Channel
-   */
-  public int getC_Channel_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Channel_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Standard Constructor
+     */
+    public X_C_Campaign(Properties ctx, int C_Campaign_ID) {
+        super(ctx, C_Campaign_ID);
+    }
+
+    /**
+     * Load Constructor
+     */
+    public X_C_Campaign(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
+
+    /**
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+
+    @Override
+    public int getTableId() {
+        return Table_ID;
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_C_Campaign[").append(getId()).append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Get Channel.
+     *
+     * @return Sales Channel
+     */
+    public int getC_Channel_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Channel_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
 }

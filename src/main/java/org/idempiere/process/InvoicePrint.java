@@ -33,148 +33,154 @@ import static software.hsharp.core.util.DBKt.TO_STRING;
  * @version $Id: InvoicePrint.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class InvoicePrint extends SvrProcess {
-  /** Mail PDF */
-  private boolean p_EMailPDF = false;
-  /** Mail Template */
-  private int p_R_MailText_ID = 0;
+    /**
+     * Mail PDF
+     */
+    private boolean p_EMailPDF = false;
+    /**
+     * Mail Template
+     */
+    private int p_R_MailText_ID = 0;
 
-  private Timestamp m_dateInvoiced_From = null;
-  private Timestamp m_dateInvoiced_To = null;
-  private int m_C_BPartner_ID = 0;
-  private int m_C_Invoice_ID = 0;
-  private String m_DocumentNo_From = null;
-  private String m_DocumentNo_To = null;
+    private Timestamp m_dateInvoiced_From = null;
+    private Timestamp m_dateInvoiced_To = null;
+    private int m_C_BPartner_ID = 0;
+    private int m_C_Invoice_ID = 0;
+    private String m_DocumentNo_From = null;
+    private String m_DocumentNo_To = null;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
-      else if (name.equals("DateInvoiced")) {
-        m_dateInvoiced_From = ((Timestamp) para[i].getParameter());
-        m_dateInvoiced_To = ((Timestamp) para[i].getParameter_To());
-      } else if (name.equals("EMailPDF")) p_EMailPDF = "Y".equals(para[i].getParameter());
-      else if (name.equals("R_MailText_ID")) p_R_MailText_ID = para[i].getParameterAsInt();
-      else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
-      else if (name.equals("C_Invoice_ID")) m_C_Invoice_ID = para[i].getParameterAsInt();
-      else if (name.equals("DocumentNo")) {
-        m_DocumentNo_From = (String) para[i].getParameter();
-        m_DocumentNo_To = (String) para[i].getParameter_To();
-      } else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-    if (m_DocumentNo_From != null && m_DocumentNo_From.length() == 0) m_DocumentNo_From = null;
-    if (m_DocumentNo_To != null && m_DocumentNo_To.length() == 0) m_DocumentNo_To = null;
-  } //	prepare
-
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception
-   */
-  protected String doIt() throws java.lang.Exception {
-    //	Need to have Template
-    if (p_EMailPDF && p_R_MailText_ID == 0)
-      throw new AdempiereUserError("@NotFound@: @R_MailText_ID@");
-    if (log.isLoggable(Level.INFO))
-      log.info(
-          "C_BPartner_ID="
-              + m_C_BPartner_ID
-              + ", C_Invoice_ID="
-              + m_C_Invoice_ID
-              + ", EmailPDF="
-              + p_EMailPDF
-              + ",R_MailText_ID="
-              + p_R_MailText_ID
-              + ", DateInvoiced="
-              + m_dateInvoiced_From
-              + "-"
-              + m_dateInvoiced_To
-              + ", DocumentNo="
-              + m_DocumentNo_From
-              + "-"
-              + m_DocumentNo_To);
-
-    MMailText mText = null;
-    if (p_R_MailText_ID != 0) {
-      mText = new MMailText(getCtx(), p_R_MailText_ID);
-      if (mText.getId() != p_R_MailText_ID)
-        throw new AdempiereUserError("@NotFound@: @R_MailText_ID@ - " + p_R_MailText_ID);
-    }
-
-    //	Too broad selection
-    if (m_C_BPartner_ID == 0
-        && m_C_Invoice_ID == 0
-        && m_dateInvoiced_From == null
-        && m_dateInvoiced_To == null
-        && m_DocumentNo_From == null
-        && m_DocumentNo_To == null) throw new AdempiereUserError("@RestrictSelection@");
-
-    MClient client = MClient.get(getCtx());
-
-    //	Get Info
-    StringBuilder sql =
-        new StringBuilder("SELECT i.C_Invoice_ID,bp.AD_Language,c.IsMultiLingualDocument,") // 	1..3
-            //	Prio: 1. BPartner 2. DocType, 3. PrintFormat (Org)	//	see ReportCtl+MInvoice
-            .append(
-                " COALESCE(bp.Invoice_PrintFormat_ID, dt.AD_PrintFormat_ID, pf.Invoice_PrintFormat_ID),") //	4
-            .append(" dt.DocumentCopies+bp.DocumentCopies,") // 	5
-            .append(" bpc.AD_User_ID, i.DocumentNo,") // 	6..7
-            .append(" bp.C_BPartner_ID ") // 	8
-            .append("FROM C_Invoice i")
-            .append(" INNER JOIN C_BPartner bp ON (i.C_BPartner_ID=bp.C_BPartner_ID)")
-            .append(" LEFT OUTER JOIN AD_User bpc ON (i.AD_User_ID=bpc.AD_User_ID)")
-            .append(" INNER JOIN AD_Client c ON (i.AD_Client_ID=c.AD_Client_ID)")
-            .append(" INNER JOIN AD_PrintForm pf ON (i.AD_Client_ID=pf.AD_Client_ID)")
-            .append(" INNER JOIN C_DocType dt ON (i.C_DocType_ID=dt.C_DocType_ID)")
-            .append(" WHERE i.AD_Client_ID=? AND i.AD_Org_ID=? AND i.isSOTrx='Y' AND ")
-            .append("       pf.orgId IN (0,i.orgId) AND "); // 	more them 1 PF
-    boolean needAnd = false;
-    if (m_C_Invoice_ID != 0) sql.append("i.C_Invoice_ID=").append(m_C_Invoice_ID);
-    else {
-      if (m_C_BPartner_ID != 0) {
-        sql.append("i.C_BPartner_ID=").append(m_C_BPartner_ID);
-        needAnd = true;
-      }
-      if (m_dateInvoiced_From != null && m_dateInvoiced_To != null) {
-        if (needAnd) sql.append(" AND ");
-        sql.append("TRUNC(i.DateInvoiced) BETWEEN ")
-            .append(TO_DATE(m_dateInvoiced_From, true))
-            .append(" AND ")
-            .append(TO_DATE(m_dateInvoiced_To, true));
-        needAnd = true;
-      } else if (m_dateInvoiced_From != null) {
-        if (needAnd) sql.append(" AND ");
-        sql.append("TRUNC(i.DateInvoiced) >= ").append(TO_DATE(m_dateInvoiced_From, true));
-        needAnd = true;
-      } else if (m_dateInvoiced_To != null) {
-        if (needAnd) sql.append(" AND ");
-        sql.append("TRUNC(i.DateInvoiced) <= ").append(TO_DATE(m_dateInvoiced_To, true));
-        needAnd = true;
-      } else if (m_DocumentNo_From != null && m_DocumentNo_To != null) {
-        if (needAnd) sql.append(" AND ");
-        sql.append("i.DocumentNo BETWEEN ")
-            .append(TO_STRING(m_DocumentNo_From))
-            .append(" AND ")
-            .append(TO_STRING(m_DocumentNo_To));
-      } else if (m_DocumentNo_From != null) {
-        if (needAnd) sql.append(" AND ");
-        if (m_DocumentNo_From.indexOf('%') == -1)
-          sql.append("i.DocumentNo >= ").append(TO_STRING(m_DocumentNo_From));
-        else sql.append("i.DocumentNo LIKE ").append(TO_STRING(m_DocumentNo_From));
-      }
-
-      if (p_EMailPDF) {
-        if (needAnd) {
-          sql.append(" AND ");
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            else if (name.equals("DateInvoiced")) {
+                m_dateInvoiced_From = ((Timestamp) para[i].getParameter());
+                m_dateInvoiced_To = ((Timestamp) para[i].getParameter_To());
+            } else if (name.equals("EMailPDF")) p_EMailPDF = "Y".equals(para[i].getParameter());
+            else if (name.equals("R_MailText_ID")) p_R_MailText_ID = para[i].getParameterAsInt();
+            else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
+            else if (name.equals("C_Invoice_ID")) m_C_Invoice_ID = para[i].getParameterAsInt();
+            else if (name.equals("DocumentNo")) {
+                m_DocumentNo_From = (String) para[i].getParameter();
+                m_DocumentNo_To = (String) para[i].getParameter_To();
+            } else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        /* if emailed to customer only select COmpleted & CLosed invoices */
-        sql.append("i.DocStatus IN ('CO','CL') ");
-      }
-    }
-    sql.append(" ORDER BY i.C_Invoice_ID, pf.orgId DESC"); // 	more than 1 PF record
-    if (log.isLoggable(Level.FINE)) log.fine(sql.toString());
+        if (m_DocumentNo_From != null && m_DocumentNo_From.length() == 0) m_DocumentNo_From = null;
+        if (m_DocumentNo_To != null && m_DocumentNo_To.length() == 0) m_DocumentNo_To = null;
+    } //	prepare
+
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception
+     */
+    protected String doIt() throws java.lang.Exception {
+        //	Need to have Template
+        if (p_EMailPDF && p_R_MailText_ID == 0)
+            throw new AdempiereUserError("@NotFound@: @R_MailText_ID@");
+        if (log.isLoggable(Level.INFO))
+            log.info(
+                    "C_BPartner_ID="
+                            + m_C_BPartner_ID
+                            + ", C_Invoice_ID="
+                            + m_C_Invoice_ID
+                            + ", EmailPDF="
+                            + p_EMailPDF
+                            + ",R_MailText_ID="
+                            + p_R_MailText_ID
+                            + ", DateInvoiced="
+                            + m_dateInvoiced_From
+                            + "-"
+                            + m_dateInvoiced_To
+                            + ", DocumentNo="
+                            + m_DocumentNo_From
+                            + "-"
+                            + m_DocumentNo_To);
+
+        MMailText mText = null;
+        if (p_R_MailText_ID != 0) {
+            mText = new MMailText(getCtx(), p_R_MailText_ID);
+            if (mText.getId() != p_R_MailText_ID)
+                throw new AdempiereUserError("@NotFound@: @R_MailText_ID@ - " + p_R_MailText_ID);
+        }
+
+        //	Too broad selection
+        if (m_C_BPartner_ID == 0
+                && m_C_Invoice_ID == 0
+                && m_dateInvoiced_From == null
+                && m_dateInvoiced_To == null
+                && m_DocumentNo_From == null
+                && m_DocumentNo_To == null) throw new AdempiereUserError("@RestrictSelection@");
+
+        MClient client = MClient.get(getCtx());
+
+        //	Get Info
+        StringBuilder sql =
+                new StringBuilder("SELECT i.C_Invoice_ID,bp.AD_Language,c.IsMultiLingualDocument,") // 	1..3
+                        //	Prio: 1. BPartner 2. DocType, 3. PrintFormat (Org)	//	see ReportCtl+MInvoice
+                        .append(
+                                " COALESCE(bp.Invoice_PrintFormat_ID, dt.AD_PrintFormat_ID, pf.Invoice_PrintFormat_ID),") //	4
+                        .append(" dt.DocumentCopies+bp.DocumentCopies,") // 	5
+                        .append(" bpc.AD_User_ID, i.DocumentNo,") // 	6..7
+                        .append(" bp.C_BPartner_ID ") // 	8
+                        .append("FROM C_Invoice i")
+                        .append(" INNER JOIN C_BPartner bp ON (i.C_BPartner_ID=bp.C_BPartner_ID)")
+                        .append(" LEFT OUTER JOIN AD_User bpc ON (i.AD_User_ID=bpc.AD_User_ID)")
+                        .append(" INNER JOIN AD_Client c ON (i.AD_Client_ID=c.AD_Client_ID)")
+                        .append(" INNER JOIN AD_PrintForm pf ON (i.AD_Client_ID=pf.AD_Client_ID)")
+                        .append(" INNER JOIN C_DocType dt ON (i.C_DocType_ID=dt.C_DocType_ID)")
+                        .append(" WHERE i.AD_Client_ID=? AND i.AD_Org_ID=? AND i.isSOTrx='Y' AND ")
+                        .append("       pf.orgId IN (0,i.orgId) AND "); // 	more them 1 PF
+        boolean needAnd = false;
+        if (m_C_Invoice_ID != 0) sql.append("i.C_Invoice_ID=").append(m_C_Invoice_ID);
+        else {
+            if (m_C_BPartner_ID != 0) {
+                sql.append("i.C_BPartner_ID=").append(m_C_BPartner_ID);
+                needAnd = true;
+            }
+            if (m_dateInvoiced_From != null && m_dateInvoiced_To != null) {
+                if (needAnd) sql.append(" AND ");
+                sql.append("TRUNC(i.DateInvoiced) BETWEEN ")
+                        .append(TO_DATE(m_dateInvoiced_From, true))
+                        .append(" AND ")
+                        .append(TO_DATE(m_dateInvoiced_To, true));
+                needAnd = true;
+            } else if (m_dateInvoiced_From != null) {
+                if (needAnd) sql.append(" AND ");
+                sql.append("TRUNC(i.DateInvoiced) >= ").append(TO_DATE(m_dateInvoiced_From, true));
+                needAnd = true;
+            } else if (m_dateInvoiced_To != null) {
+                if (needAnd) sql.append(" AND ");
+                sql.append("TRUNC(i.DateInvoiced) <= ").append(TO_DATE(m_dateInvoiced_To, true));
+                needAnd = true;
+            } else if (m_DocumentNo_From != null && m_DocumentNo_To != null) {
+                if (needAnd) sql.append(" AND ");
+                sql.append("i.DocumentNo BETWEEN ")
+                        .append(TO_STRING(m_DocumentNo_From))
+                        .append(" AND ")
+                        .append(TO_STRING(m_DocumentNo_To));
+            } else if (m_DocumentNo_From != null) {
+                if (needAnd) sql.append(" AND ");
+                if (m_DocumentNo_From.indexOf('%') == -1)
+                    sql.append("i.DocumentNo >= ").append(TO_STRING(m_DocumentNo_From));
+                else sql.append("i.DocumentNo LIKE ").append(TO_STRING(m_DocumentNo_From));
+            }
+
+            if (p_EMailPDF) {
+                if (needAnd) {
+                    sql.append(" AND ");
+                }
+                /* if emailed to customer only select COmpleted & CLosed invoices */
+                sql.append("i.DocStatus IN ('CO','CL') ");
+            }
+        }
+        sql.append(" ORDER BY i.C_Invoice_ID, pf.orgId DESC"); // 	more than 1 PF record
+        if (log.isLoggable(Level.FINE)) log.fine(sql.toString());
 
     /*MPrintFormat format = null;
     int old_AD_PrintFormat_ID = -1;
@@ -334,6 +340,6 @@ public class InvoicePrint extends SvrProcess {
     }
     StringBuilder msgreturn = new StringBuilder("@Printed@=").append(count);
     return msgreturn.toString();*/
-    return null;
-  } //	doIt
+        return null;
+    } //	doIt
 } //	InvoicePrint

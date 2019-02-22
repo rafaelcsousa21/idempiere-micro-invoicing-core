@@ -14,11 +14,12 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;
+
+import java.util.logging.Level;
 
 /**
  * Re-Open Order Process (from Closed to Completed)
@@ -27,36 +28,40 @@ import org.idempiere.common.util.AdempiereSystemError;
  * @version $Id: OrderOpen.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class OrderOpen extends SvrProcess {
-  /** The Order */
-  private int p_C_Order_ID = 0;
+    /**
+     * The Order
+     */
+    private int p_C_Order_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("C_Order_ID")) p_C_Order_ID = para[i].getParameterAsInt();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("C_Order_ID")) p_C_Order_ID = para[i].getParameterAsInt();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws AdempiereSystemError {
-    if (log.isLoggable(Level.INFO)) log.info("doIt - Open C_Order_ID=" + p_C_Order_ID);
-    if (p_C_Order_ID == 0) return "";
-    //
-    MOrder order = new MOrder(getCtx(), p_C_Order_ID);
-    String msg = order.reopenIt();
-    if (msg.length() != 0) {
-      throw new AdempiereSystemError(msg);
-    }
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws AdempiereSystemError {
+        if (log.isLoggable(Level.INFO)) log.info("doIt - Open C_Order_ID=" + p_C_Order_ID);
+        if (p_C_Order_ID == 0) return "";
+        //
+        MOrder order = new MOrder(getCtx(), p_C_Order_ID);
+        String msg = order.reopenIt();
+        if (msg.length() != 0) {
+            throw new AdempiereSystemError(msg);
+        }
 
-    return order.save() ? "@OK@" : "@Error@";
-  } //	doIt
+        return order.save() ? "@OK@" : "@Error@";
+    } //	doIt
 } //	OrderOpen

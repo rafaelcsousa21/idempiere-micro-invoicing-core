@@ -1,10 +1,11 @@
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
 
 /**
  * Copy Invoice Lines
@@ -13,37 +14,39 @@ import org.compiere.process.SvrProcess;
  * @version $Id: CopyFromInvoice.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class CopyFromInvoice extends SvrProcess {
-  private int m_C_Invoice_ID = 0;
+    private int m_C_Invoice_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("C_Invoice_ID"))
-        m_C_Invoice_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("C_Invoice_ID"))
+                m_C_Invoice_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    int To_C_Invoice_ID = getRecord_ID();
-    if (log.isLoggable(Level.INFO))
-      log.info("From C_Invoice_ID=" + m_C_Invoice_ID + " to " + To_C_Invoice_ID);
-    if (To_C_Invoice_ID == 0) throw new IllegalArgumentException("Target C_Invoice_ID == 0");
-    if (m_C_Invoice_ID == 0) throw new IllegalArgumentException("Source C_Invoice_ID == 0");
-    MInvoice from = new MInvoice(getCtx(), m_C_Invoice_ID);
-    MInvoice to = new MInvoice(getCtx(), To_C_Invoice_ID);
-    //
-    int no = to.copyLinesFrom(from, false, false);
-    //
-    return "@Copied@=" + no;
-  } //	doIt
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        int To_C_Invoice_ID = getRecord_ID();
+        if (log.isLoggable(Level.INFO))
+            log.info("From C_Invoice_ID=" + m_C_Invoice_ID + " to " + To_C_Invoice_ID);
+        if (To_C_Invoice_ID == 0) throw new IllegalArgumentException("Target C_Invoice_ID == 0");
+        if (m_C_Invoice_ID == 0) throw new IllegalArgumentException("Source C_Invoice_ID == 0");
+        MInvoice from = new MInvoice(getCtx(), m_C_Invoice_ID);
+        MInvoice to = new MInvoice(getCtx(), To_C_Invoice_ID);
+        //
+        int no = to.copyLinesFrom(from, false, false);
+        //
+        return "@Copied@=" + no;
+    } //	doIt
 } //	CopyFromInvoice

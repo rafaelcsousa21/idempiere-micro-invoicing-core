@@ -15,95 +15,101 @@ import java.util.Properties;
  */
 public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_M_LocatorType(Properties ctx, int M_LocatorType_ID) {
-    super(ctx, M_LocatorType_ID);
     /**
-     * if (M_LocatorType_ID == 0) { setIsAvailableForReplenishment (true); // Y
-     * setIsAvailableForReservation (true); // Y setIsAvailableForShipping (true); // Y
-     * setM_LocatorType_ID (0); setName (null); }
+     *
      */
-  }
-
-  /** Load Constructor */
-  public X_M_LocatorType(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_M_LocatorType[").append(getId()).append("]");
-    return sb.toString();
-  }
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Set Available for Replenishment.
-   *
-   * @param IsAvailableForReplenishment Available for Replenishment
-   */
-  public void setIsAvailableForReplenishment(boolean IsAvailableForReplenishment) {
-    set_Value(COLUMNNAME_IsAvailableForReplenishment, Boolean.valueOf(IsAvailableForReplenishment));
-  }
-
-  /**
-   * Get Available for Replenishment.
-   *
-   * @return Available for Replenishment
-   */
-  public boolean isAvailableForReplenishment() {
-    Object oo = get_Value(COLUMNNAME_IsAvailableForReplenishment);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Standard Constructor
+     */
+    public X_M_LocatorType(Properties ctx, int M_LocatorType_ID) {
+        super(ctx, M_LocatorType_ID);
+        /**
+         * if (M_LocatorType_ID == 0) { setIsAvailableForReplenishment (true); // Y
+         * setIsAvailableForReservation (true); // Y setIsAvailableForShipping (true); // Y
+         * setM_LocatorType_ID (0); setName (null); }
+         */
     }
-    return false;
-  }
-
-  /**
-   * Set Available for Reservation.
-   *
-   * @param IsAvailableForReservation Available for Reservation
-   */
-  public void setIsAvailableForReservation(boolean IsAvailableForReservation) {
-    set_Value(COLUMNNAME_IsAvailableForReservation, Boolean.valueOf(IsAvailableForReservation));
-  }
 
     /**
-   * Set Available for Shipping.
-   *
-   * @param IsAvailableForShipping Available for Shipping
-   */
-  public void setIsAvailableForShipping(boolean IsAvailableForShipping) {
-    set_Value(COLUMNNAME_IsAvailableForShipping, Boolean.valueOf(IsAvailableForShipping));
-  }
-
-  /**
-   * Get Available for Shipping.
-   *
-   * @return Available for Shipping
-   */
-  public boolean isAvailableForShipping() {
-    Object oo = get_Value(COLUMNNAME_IsAvailableForShipping);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Load Constructor
+     */
+    public X_M_LocatorType(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
     }
-    return false;
-  }
+
+    /**
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_M_LocatorType[").append(getId()).append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Set Available for Replenishment.
+     *
+     * @param IsAvailableForReplenishment Available for Replenishment
+     */
+    public void setIsAvailableForReplenishment(boolean IsAvailableForReplenishment) {
+        set_Value(COLUMNNAME_IsAvailableForReplenishment, Boolean.valueOf(IsAvailableForReplenishment));
+    }
+
+    /**
+     * Get Available for Replenishment.
+     *
+     * @return Available for Replenishment
+     */
+    public boolean isAvailableForReplenishment() {
+        Object oo = get_Value(COLUMNNAME_IsAvailableForReplenishment);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Available for Reservation.
+     *
+     * @param IsAvailableForReservation Available for Reservation
+     */
+    public void setIsAvailableForReservation(boolean IsAvailableForReservation) {
+        set_Value(COLUMNNAME_IsAvailableForReservation, Boolean.valueOf(IsAvailableForReservation));
+    }
+
+    /**
+     * Set Available for Shipping.
+     *
+     * @param IsAvailableForShipping Available for Shipping
+     */
+    public void setIsAvailableForShipping(boolean IsAvailableForShipping) {
+        set_Value(COLUMNNAME_IsAvailableForShipping, Boolean.valueOf(IsAvailableForShipping));
+    }
+
+    /**
+     * Get Available for Shipping.
+     *
+     * @return Available for Shipping
+     */
+    public boolean isAvailableForShipping() {
+        Object oo = get_Value(COLUMNNAME_IsAvailableForShipping);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
 
     @Override
-  public int getTableId() {
-    return I_M_LocatorType.Table_ID;
-  }
+    public int getTableId() {
+        return I_M_LocatorType.Table_ID;
+    }
 }

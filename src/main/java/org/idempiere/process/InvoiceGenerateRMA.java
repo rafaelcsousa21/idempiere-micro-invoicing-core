@@ -31,178 +31,189 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Generate invoice for Vendor RMA
  *
  * @author Ashley Ramdass
- *     <p>Based on org.compiere.process.InvoiceGenerate
+ * <p>Based on org.compiere.process.InvoiceGenerate
  */
 public class InvoiceGenerateRMA extends SvrProcess {
-  /** Manual Selection */
-  private boolean p_Selection = false;
-  /** Invoice Document Action */
-  private String p_docAction = DocAction.Companion.getACTION_Complete();
+    /**
+     * Manual Selection
+     */
+    private boolean p_Selection = false;
+    /**
+     * Invoice Document Action
+     */
+    private String p_docAction = DocAction.Companion.getACTION_Complete();
 
-  /** Number of Invoices */
-  private int m_created = 0;
-  /** Invoice Date */
-  private Timestamp m_dateinvoiced = null;
+    /**
+     * Number of Invoices
+     */
+    private int m_created = 0;
+    /**
+     * Invoice Date
+     */
+    private Timestamp m_dateinvoiced = null;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
 
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("Selection")) p_Selection = "Y".equals(para[i].getParameter());
-      else if (name.equals("DocAction")) p_docAction = (String) para[i].getParameter();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("Selection")) p_Selection = "Y".equals(para[i].getParameter());
+            else if (name.equals("DocAction")) p_docAction = (String) para[i].getParameter();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+
+        m_dateinvoiced = Env.getContextAsDate(getCtx(), "#Date");
+        if (m_dateinvoiced == null) {
+            m_dateinvoiced = new Timestamp(System.currentTimeMillis());
+        }
     }
 
-    m_dateinvoiced = Env.getContextAsDate(getCtx(), "#Date");
-    if (m_dateinvoiced == null) {
-      m_dateinvoiced = new Timestamp(System.currentTimeMillis());
-    }
-  }
+    protected String doIt() throws Exception {
+        if (!p_Selection) {
+            throw new IllegalStateException("Shipments can only be generated from selection");
+        }
 
-  protected String doIt() throws Exception {
-    if (!p_Selection) {
-      throw new IllegalStateException("Shipments can only be generated from selection");
-    }
+        String sql =
+                "SELECT rma.M_RMA_ID FROM M_RMA rma, T_Selection "
+                        + "WHERE rma.DocStatus='CO' AND rma.IsSOTrx='Y' AND rma.AD_Client_ID=? "
+                        + "AND rma.M_RMA_ID = T_Selection.T_Selection_ID "
+                        + "AND T_Selection.AD_PInstance_ID=? ";
 
-    String sql =
-        "SELECT rma.M_RMA_ID FROM M_RMA rma, T_Selection "
-            + "WHERE rma.DocStatus='CO' AND rma.IsSOTrx='Y' AND rma.AD_Client_ID=? "
-            + "AND rma.M_RMA_ID = T_Selection.T_Selection_ID "
-            + "AND T_Selection.AD_PInstance_ID=? ";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = prepareStatement(sql);
+            pstmt.setInt(1, Env.getClientId(getCtx()));
+            pstmt.setInt(2, getAD_PInstance_ID());
+            rs = pstmt.executeQuery();
 
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql);
-      pstmt.setInt(1, Env.getClientId(getCtx()));
-      pstmt.setInt(2, getAD_PInstance_ID());
-      rs = pstmt.executeQuery();
+            while (rs.next()) {
+                generateInvoice(rs.getInt(1));
+            }
+        } catch (Exception ex) {
+            throw new AdempiereException(ex);
+        } finally {
 
-      while (rs.next()) {
-        generateInvoice(rs.getInt(1));
-      }
-    } catch (Exception ex) {
-      throw new AdempiereException(ex);
-    } finally {
-
-      rs = null;
-      pstmt = null;
-    }
-    StringBuilder msgreturn = new StringBuilder("@Created@ = ").append(m_created);
-    return msgreturn.toString();
-  }
-
-  private int getInvoiceDocTypeId(int M_RMA_ID) {
-    String docTypeSQl =
-        "SELECT dt.C_DocTypeInvoice_ID FROM C_DocType dt "
-            + "INNER JOIN M_RMA rma ON dt.C_DocType_ID=rma.C_DocType_ID "
-            + "WHERE rma.M_RMA_ID=?";
-
-    int docTypeId = getSQLValue(docTypeSQl, M_RMA_ID);
-
-    return docTypeId;
-  }
-
-  private MInvoice createInvoice(MRMA rma) {
-    int docTypeId = getInvoiceDocTypeId(rma.getId());
-
-    if (docTypeId == -1) {
-      throw new IllegalStateException("Could not get invoice document type for Vendor RMA");
+            rs = null;
+            pstmt = null;
+        }
+        StringBuilder msgreturn = new StringBuilder("@Created@ = ").append(m_created);
+        return msgreturn.toString();
     }
 
-    MInvoice invoice = new MInvoice(getCtx(), 0);
-    invoice.setRMA(rma);
+    private int getInvoiceDocTypeId(int M_RMA_ID) {
+        String docTypeSQl =
+                "SELECT dt.C_DocTypeInvoice_ID FROM C_DocType dt "
+                        + "INNER JOIN M_RMA rma ON dt.C_DocType_ID=rma.C_DocType_ID "
+                        + "WHERE rma.M_RMA_ID=?";
 
-    invoice.setC_DocTypeTarget_ID(docTypeId);
-    if (!invoice.save()) {
-      throw new IllegalStateException("Could not create invoice");
+        int docTypeId = getSQLValue(docTypeSQl, M_RMA_ID);
+
+        return docTypeId;
     }
 
-    return invoice;
-  }
+    private MInvoice createInvoice(MRMA rma) {
+        int docTypeId = getInvoiceDocTypeId(rma.getId());
 
-  private MInvoiceLine[] createInvoiceLines(MRMA rma, MInvoice invoice) {
-    ArrayList<MInvoiceLine> invLineList = new ArrayList<MInvoiceLine>();
+        if (docTypeId == -1) {
+            throw new IllegalStateException("Could not get invoice document type for Vendor RMA");
+        }
 
-    MRMALine rmaLines[] = rma.getLines(true);
+        MInvoice invoice = new MInvoice(getCtx(), 0);
+        invoice.setRMA(rma);
 
-    for (MRMALine rmaLine : rmaLines) {
-      if (rmaLine.getM_InOutLine_ID() == 0 && rmaLine.getC_Charge_ID() == 0) {
-        StringBuilder msgiste =
-            new StringBuilder("No customer return line - RMA = ")
-                .append(rma.getDocumentNo())
-                .append(", Line = ")
-                .append(rmaLine.getLine());
-        throw new IllegalStateException(msgiste.toString());
-      }
+        invoice.setC_DocTypeTarget_ID(docTypeId);
+        if (!invoice.save()) {
+            throw new IllegalStateException("Could not create invoice");
+        }
 
-      MInvoiceLine invLine = new MInvoiceLine(invoice);
-      invLine.setRMALine(rmaLine);
-
-      if (!invLine.save()) {
-        throw new IllegalStateException("Could not create invoice line");
-      }
-
-      invLineList.add(invLine);
+        return invoice;
     }
 
-    MInvoiceLine invLines[] = new MInvoiceLine[invLineList.size()];
-    invLineList.toArray(invLines);
+    private MInvoiceLine[] createInvoiceLines(MRMA rma, MInvoice invoice) {
+        ArrayList<MInvoiceLine> invLineList = new ArrayList<MInvoiceLine>();
 
-    return invLines;
-  }
+        MRMALine rmaLines[] = rma.getLines(true);
 
-  private void generateInvoice(int M_RMA_ID) {
-    MRMA rma = new MRMA(getCtx(), M_RMA_ID);
-    statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
+        for (MRMALine rmaLine : rmaLines) {
+            if (rmaLine.getM_InOutLine_ID() == 0 && rmaLine.getC_Charge_ID() == 0) {
+                StringBuilder msgiste =
+                        new StringBuilder("No customer return line - RMA = ")
+                                .append(rma.getDocumentNo())
+                                .append(", Line = ")
+                                .append(rmaLine.getLine());
+                throw new IllegalStateException(msgiste.toString());
+            }
 
-    MInvoice invoice = createInvoice(rma);
-    MInvoiceLine invoiceLines[] = createInvoiceLines(rma, invoice);
+            MInvoiceLine invLine = new MInvoiceLine(invoice);
+            invLine.setRMALine(rmaLine);
 
-    if (invoiceLines.length == 0) {
-      StringBuilder msglog =
-          new StringBuilder("No invoice lines created: M_RMA_ID=")
-              .append(M_RMA_ID)
-              .append(", M_Invoice_ID=")
-              .append(invoice.getId());
-      log.log(Level.WARNING, msglog.toString());
+            if (!invLine.save()) {
+                throw new IllegalStateException("Could not create invoice line");
+            }
+
+            invLineList.add(invLine);
+        }
+
+        MInvoiceLine invLines[] = new MInvoiceLine[invLineList.size()];
+        invLineList.toArray(invLines);
+
+        return invLines;
     }
 
-    StringBuilder processMsg = new StringBuilder().append(invoice.getDocumentNo());
+    private void generateInvoice(int M_RMA_ID) {
+        MRMA rma = new MRMA(getCtx(), M_RMA_ID);
+        statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
 
-    if (!invoice.processIt(p_docAction)) {
-      processMsg.append(" (NOT Processed)");
-      StringBuilder msg =
-          new StringBuilder("Invoice Processing failed: ")
-              .append(invoice)
-              .append(" - ")
-              .append(invoice.getProcessMsg());
-      log.warning(msg.toString());
-      throw new IllegalStateException(msg.toString());
+        MInvoice invoice = createInvoice(rma);
+        MInvoiceLine invoiceLines[] = createInvoiceLines(rma, invoice);
+
+        if (invoiceLines.length == 0) {
+            StringBuilder msglog =
+                    new StringBuilder("No invoice lines created: M_RMA_ID=")
+                            .append(M_RMA_ID)
+                            .append(", M_Invoice_ID=")
+                            .append(invoice.getId());
+            log.log(Level.WARNING, msglog.toString());
+        }
+
+        StringBuilder processMsg = new StringBuilder().append(invoice.getDocumentNo());
+
+        if (!invoice.processIt(p_docAction)) {
+            processMsg.append(" (NOT Processed)");
+            StringBuilder msg =
+                    new StringBuilder("Invoice Processing failed: ")
+                            .append(invoice)
+                            .append(" - ")
+                            .append(invoice.getProcessMsg());
+            log.warning(msg.toString());
+            throw new IllegalStateException(msg.toString());
+        }
+
+        if (!invoice.save()) {
+            throw new IllegalStateException("Could not update invoice");
+        }
+
+        // Add processing information to process log
+        String message = Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + processMsg.toString());
+        addBufferLog(
+                invoice.getC_Invoice_ID(),
+                invoice.getDateInvoiced(),
+                null,
+                message,
+                invoice.getTableId(),
+                invoice.getC_Invoice_ID());
+        m_created++;
     }
-
-    if (!invoice.save()) {
-      throw new IllegalStateException("Could not update invoice");
-    }
-
-    // Add processing information to process log
-    String message = Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + processMsg.toString());
-    addBufferLog(
-        invoice.getC_Invoice_ID(),
-        invoice.getDateInvoiced(),
-        null,
-        message,
-        invoice.getTableId(),
-        invoice.getC_Invoice_ID());
-    m_created++;
-  }
 }

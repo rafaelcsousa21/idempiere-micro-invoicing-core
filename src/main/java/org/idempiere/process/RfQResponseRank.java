@@ -14,48 +14,53 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Rank RfQ Responses
  *
  * @author Jorg Janke
- * @version $Id: RfQResponseRank.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  * @author Teo Sarca, teo.sarca@gmail.com
- *     <li>BF [ 2892595 ] RfQResponseRank - ranking is not good
- *         https://sourceforge.net/tracker/?func=detail&aid=2892595&group_id=176962&atid=879332
+ * <li>BF [ 2892595 ] RfQResponseRank - ranking is not good
+ * https://sourceforge.net/tracker/?func=detail&aid=2892595&group_id=176962&atid=879332
+ * @version $Id: RfQResponseRank.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class RfQResponseRank extends SvrProcess {
-  /** RfQ */
-  private int p_C_RfQ_ID = 0;
+    /**
+     * RfQ
+     */
+    private int p_C_RfQ_ID = 0;
 
-  /** Prepare */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_C_RfQ_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_C_RfQ_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process.
-   *
-   * <pre>
-   * 	- ignore 0 or invalid responses
-   * 	- rank among qty
-   * 	- for selected PO qty select winner
-   * 	- if all lines are winner - select that
-   *  </pre>
-   *
-   * @return message
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Process.
+     *
+     * <pre>
+     * 	- ignore 0 or invalid responses
+     * 	- rank among qty
+     * 	- for selected PO qty select winner
+     * 	- if all lines are winner - select that
+     *  </pre>
+     *
+     * @return message
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
 
     /*
     MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
@@ -85,14 +90,14 @@ public class RfQResponseRank extends SvrProcess {
     	rankLines (rfq, responses);
     StringBuilder msgreturn = new StringBuilder("# ").append(responses.length);
     return msgreturn.toString();*/
-  } //	doIt
+    } //	doIt
 
-  /**
-   * ************************************************************************ Rank Lines
-   *
-   * @param rfq RfQ
-   * @param responses responses
-   */
+    /**
+     * ************************************************************************ Rank Lines
+     *
+     * @param rfq RfQ
+     * @param responses responses
+     */
   /*
   private void rankLines (MRfQ rfq, MRfQResponse[] responses)
   {
@@ -230,13 +235,13 @@ public class RfQResponseRank extends SvrProcess {
   }	//	rankLines
   */
 
-  /**
-   * ************************************************************************ Rank Response based on
-   * Header
-   *
-   * @param rfq RfQ
-   * @param responses responses
-   */
+    /**
+     * ************************************************************************ Rank Response based on
+     * Header
+     *
+     * @param rfq RfQ
+     * @param responses responses
+     */
   /*
   private void rankResponses (MRfQ rfq, MRfQResponse[] responses)
   {

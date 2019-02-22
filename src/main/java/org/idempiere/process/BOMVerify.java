@@ -34,170 +34,180 @@ import static software.hsharp.core.util.DBKt.prepareStatement;
  * @version $Id: BOMVerify.java,v 1.1 2007/07/23 05:34:35 mfuggle Exp $
  */
 public class BOMVerify extends SvrProcess {
-  /** The Product */
-  private int p_M_Product_ID = 0;
-  /** Product Category */
-  private int p_M_Product_Category_ID = 0;
-  /** Re-Validate */
-  private boolean p_IsReValidate = false;
+    /**
+     * The Product
+     */
+    private int p_M_Product_ID = 0;
+    /**
+     * Product Category
+     */
+    private int p_M_Product_Category_ID = 0;
+    /**
+     * Re-Validate
+     */
+    private boolean p_IsReValidate = false;
 
-  private boolean p_fromButton = false;
+    private boolean p_fromButton = false;
 
-  /** List of Products */
-  private ArrayList<MProduct> foundproducts = new ArrayList<MProduct>();
+    /**
+     * List of Products
+     */
+    private ArrayList<MProduct> foundproducts = new ArrayList<MProduct>();
 
-  private ArrayList<MProduct> validproducts = new ArrayList<MProduct>();
-  private ArrayList<MProduct> invalidproducts = new ArrayList<MProduct>();
-  private ArrayList<MProduct> containinvalidproducts = new ArrayList<MProduct>();
-  private ArrayList<MProduct> checkedproducts = new ArrayList<MProduct>();
+    private ArrayList<MProduct> validproducts = new ArrayList<MProduct>();
+    private ArrayList<MProduct> invalidproducts = new ArrayList<MProduct>();
+    private ArrayList<MProduct> containinvalidproducts = new ArrayList<MProduct>();
+    private ArrayList<MProduct> checkedproducts = new ArrayList<MProduct>();
 
-  /** Prepare */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("M_Product_ID")) p_M_Product_ID = para[i].getParameterAsInt();
-      else if (name.equals("M_Product_Category_ID"))
-        p_M_Product_Category_ID = para[i].getParameterAsInt();
-      else if (name.equals("IsReValidate")) p_IsReValidate = "Y".equals(para[i].getParameter());
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    if (p_M_Product_ID == 0) p_M_Product_ID = getRecord_ID();
-    p_fromButton = (getRecord_ID() > 0);
-  } //	prepare
-
-  /**
-   * Process
-   *
-   * @return Info
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (p_M_Product_ID != 0) {
-      if (log.isLoggable(Level.INFO)) log.info("M_Product_ID=" + p_M_Product_ID);
-      checkProduct(new MProduct(getCtx(), p_M_Product_ID));
-      return "Product Checked";
-    }
-    if (log.isLoggable(Level.INFO))
-      log.info(
-          "M_Product_Category_ID=" + p_M_Product_Category_ID + ", IsReValidate=" + p_IsReValidate);
-    //
-    int counter = 0;
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    String sql = "SELECT M_Product_ID FROM M_Product " + "WHERE IsBOM='Y' AND ";
-    if (p_M_Product_Category_ID == 0) sql += "AD_Client_ID=? ";
-    else sql += "M_Product_Category_ID=? ";
-    if (!p_IsReValidate) sql += "AND IsVerified<>'Y' ";
-    sql += "ORDER BY Name";
-    int AD_Client_ID = Env.getClientId(getCtx());
-    try {
-      pstmt = prepareStatement(sql);
-      if (p_M_Product_Category_ID == 0) pstmt.setInt(1, AD_Client_ID);
-      else pstmt.setInt(1, p_M_Product_Category_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        p_M_Product_ID = rs.getInt(1); // ADAXA - validate the product retrieved from database
-        checkProduct(new MProduct(getCtx(), p_M_Product_ID));
-
-        counter++;
-      }
-    } catch (Exception e) {
-      throw e;
-    } finally {
-
-      rs = null;
-      pstmt = null;
-    }
-    return "#" + counter;
-  } //	doIt
-
-  private void checkProduct(MProduct product) {
-    if (product.isBOM() && !checkedproducts.contains(product)) {
-      validateProduct(product);
-    }
-  }
-
-  /**
-   * Validate Product
-   *
-   * @param product product
-   * @return Info
-   */
-  private boolean validateProduct(MProduct product) {
-    if (!product.isBOM()) return false;
-
-    //	Check Old Product BOM Structure
-    if (log.isLoggable(Level.CONFIG)) log.config(product.getName());
-
-    foundproducts.add(product);
-    MProductBOM[] productsBOMs = MProductBOM.getBOMLines(product);
-    boolean containsinvalid = false;
-    boolean invalid = false;
-    int lines = 0;
-    for (MProductBOM productsBOM : productsBOMs) {
-      if (!productsBOM.isActive()) continue;
-      lines++;
-      MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID());
-      if (!pp.isBOM()) {
-        if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
-      } else {
-        if (validproducts.contains(pp)) {
-          // Do nothing, no need to recheck
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("M_Product_ID")) p_M_Product_ID = para[i].getParameterAsInt();
+            else if (name.equals("M_Product_Category_ID"))
+                p_M_Product_Category_ID = para[i].getParameterAsInt();
+            else if (name.equals("IsReValidate")) p_IsReValidate = "Y".equals(para[i].getParameter());
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        if (invalidproducts.contains(pp)) {
-          containsinvalid = true;
-        } else if (foundproducts.contains(pp)) {
-          invalid = true;
-          if (p_fromButton)
-            addLog(0, null, null, product.getValue() + " recursively contains " + pp.getValue());
-          else
-            addBufferLog(
-                0,
-                null,
-                null,
-                product.getValue() + " recursively contains " + pp.getValue(),
-                MProduct.Table_ID,
-                product.getM_Product_ID());
+        if (p_M_Product_ID == 0) p_M_Product_ID = getRecord_ID();
+        p_fromButton = (getRecord_ID() > 0);
+    } //	prepare
+
+    /**
+     * Process
+     *
+     * @return Info
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (p_M_Product_ID != 0) {
+            if (log.isLoggable(Level.INFO)) log.info("M_Product_ID=" + p_M_Product_ID);
+            checkProduct(new MProduct(getCtx(), p_M_Product_ID));
+            return "Product Checked";
+        }
+        if (log.isLoggable(Level.INFO))
+            log.info(
+                    "M_Product_Category_ID=" + p_M_Product_Category_ID + ", IsReValidate=" + p_IsReValidate);
+        //
+        int counter = 0;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT M_Product_ID FROM M_Product " + "WHERE IsBOM='Y' AND ";
+        if (p_M_Product_Category_ID == 0) sql += "AD_Client_ID=? ";
+        else sql += "M_Product_Category_ID=? ";
+        if (!p_IsReValidate) sql += "AND IsVerified<>'Y' ";
+        sql += "ORDER BY Name";
+        int AD_Client_ID = Env.getClientId(getCtx());
+        try {
+            pstmt = prepareStatement(sql);
+            if (p_M_Product_Category_ID == 0) pstmt.setInt(1, AD_Client_ID);
+            else pstmt.setInt(1, p_M_Product_Category_ID);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                p_M_Product_ID = rs.getInt(1); // ADAXA - validate the product retrieved from database
+                checkProduct(new MProduct(getCtx(), p_M_Product_ID));
+
+                counter++;
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+
+            rs = null;
+            pstmt = null;
+        }
+        return "#" + counter;
+    } //	doIt
+
+    private void checkProduct(MProduct product) {
+        if (product.isBOM() && !checkedproducts.contains(product)) {
+            validateProduct(product);
+        }
+    }
+
+    /**
+     * Validate Product
+     *
+     * @param product product
+     * @return Info
+     */
+    private boolean validateProduct(MProduct product) {
+        if (!product.isBOM()) return false;
+
+        //	Check Old Product BOM Structure
+        if (log.isLoggable(Level.CONFIG)) log.config(product.getName());
+
+        foundproducts.add(product);
+        MProductBOM[] productsBOMs = MProductBOM.getBOMLines(product);
+        boolean containsinvalid = false;
+        boolean invalid = false;
+        int lines = 0;
+        for (MProductBOM productsBOM : productsBOMs) {
+            if (!productsBOM.isActive()) continue;
+            lines++;
+            MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID());
+            if (!pp.isBOM()) {
+                if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
+            } else {
+                if (validproducts.contains(pp)) {
+                    // Do nothing, no need to recheck
+                }
+                if (invalidproducts.contains(pp)) {
+                    containsinvalid = true;
+                } else if (foundproducts.contains(pp)) {
+                    invalid = true;
+                    if (p_fromButton)
+                        addLog(0, null, null, product.getValue() + " recursively contains " + pp.getValue());
+                    else
+                        addBufferLog(
+                                0,
+                                null,
+                                null,
+                                product.getValue() + " recursively contains " + pp.getValue(),
+                                MProduct.Table_ID,
+                                product.getM_Product_ID());
+                } else {
+                    if (!validateProduct(pp)) {
+                        containsinvalid = true;
+                    }
+                }
+            }
+        }
+
+        if (lines == 0) {
+            invalid = true;
+            if (p_fromButton) addLog(0, null, null, product.getValue() + " does not have lines");
+            else
+                addBufferLog(
+                        0,
+                        null,
+                        null,
+                        product.getValue() + " does not have lines",
+                        MProduct.Table_ID,
+                        product.getM_Product_ID());
+        }
+
+        checkedproducts.add(product);
+        foundproducts.remove(product);
+        if (invalid) {
+            invalidproducts.add(product);
+            product.setIsVerified(false);
+            product.saveEx();
+            return false;
+        } else if (containsinvalid) {
+            containinvalidproducts.add(product);
+            product.setIsVerified(false);
+            product.saveEx();
+            return false;
         } else {
-          if (!validateProduct(pp)) {
-            containsinvalid = true;
-          }
+            validproducts.add(product);
+            product.setIsVerified(true);
+            product.saveEx();
+            return true;
         }
-      }
-    }
-
-    if (lines == 0) {
-      invalid = true;
-      if (p_fromButton) addLog(0, null, null, product.getValue() + " does not have lines");
-      else
-        addBufferLog(
-            0,
-            null,
-            null,
-            product.getValue() + " does not have lines",
-            MProduct.Table_ID,
-            product.getM_Product_ID());
-    }
-
-    checkedproducts.add(product);
-    foundproducts.remove(product);
-    if (invalid) {
-      invalidproducts.add(product);
-      product.setIsVerified(false);
-      product.saveEx();
-      return false;
-    } else if (containsinvalid) {
-      containinvalidproducts.add(product);
-      product.setIsVerified(false);
-      product.saveEx();
-      return false;
-    } else {
-      validproducts.add(product);
-      product.setIsVerified(true);
-      product.saveEx();
-      return true;
-    }
-  } //	validateProduct
+    } //	validateProduct
 } //	BOMValidate

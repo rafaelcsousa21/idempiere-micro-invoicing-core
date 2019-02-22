@@ -13,48 +13,50 @@ import java.util.Properties;
  */
 public class MWorkflowAccess extends X_AD_Workflow_Access {
 
-  /** */
-  private static final long serialVersionUID = 2598861248782340850L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2598861248782340850L;
 
-  /**
-   * Standard Constructor
-   *
-   * @param ctx context
-   * @param ignored -
-   * @param trxName transaction
-   */
-  public MWorkflowAccess(Properties ctx, int ignored) {
-    super(ctx, 0);
-    if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
-    else {
-      //	setAD_Role_ID (0);
-      //	setAD_Workflow_ID (0);
-      setIsReadWrite(true);
-    }
-  } //	MWorkflowAccess
+    /**
+     * Standard Constructor
+     *
+     * @param ctx     context
+     * @param ignored -
+     * @param trxName transaction
+     */
+    public MWorkflowAccess(Properties ctx, int ignored) {
+        super(ctx, 0);
+        if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
+        else {
+            //	setAD_Role_ID (0);
+            //	setAD_Workflow_ID (0);
+            setIsReadWrite(true);
+        }
+    } //	MWorkflowAccess
 
-  /**
-   * Load Constructor
-   *
-   * @param ctx context
-   * @param rs result set
-   * @param trxName transaction
-   */
-  public MWorkflowAccess(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  } //	MWorkflowAccess
+    /**
+     * Load Constructor
+     *
+     * @param ctx     context
+     * @param rs      result set
+     * @param trxName transaction
+     */
+    public MWorkflowAccess(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    } //	MWorkflowAccess
 
-  /**
-   * Parent Constructor
-   *
-   * @param parent parent
-   * @param AD_Role_ID role id
-   */
-  public MWorkflowAccess(MWorkflow parent, int AD_Role_ID) {
-    super(parent.getCtx(), 0);
-    MRole role = MRole.get(parent.getCtx(), AD_Role_ID);
-    setClientOrg(role);
-    setAD_Workflow_ID(parent.getAD_Workflow_ID());
-    setAD_Role_ID(AD_Role_ID);
-  } //	MWorkflowAccess
+    /**
+     * Parent Constructor
+     *
+     * @param parent     parent
+     * @param AD_Role_ID role id
+     */
+    public MWorkflowAccess(MWorkflow parent, int AD_Role_ID) {
+        super(parent.getCtx(), 0);
+        MRole role = MRole.get(parent.getCtx(), AD_Role_ID);
+        setClientOrg(role);
+        setAD_Workflow_ID(parent.getAD_Workflow_ID());
+        setAD_Role_ID(AD_Role_ID);
+    } //	MWorkflowAccess
 } //	MWorkflowAccess

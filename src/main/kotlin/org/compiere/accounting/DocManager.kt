@@ -1,11 +1,7 @@
 package org.compiere.accounting
 
 import org.compiere.model.IDoc
-import org.compiere.model.IDocFactory
 import org.compiere.orm.MTable
-import org.idempiere.common.base.IServicesHolder
-import org.idempiere.common.base.Service
-import org.idempiere.common.base.ServiceQuery
 import org.idempiere.common.exceptions.AdempiereException
 import org.idempiere.common.exceptions.DBException
 import org.idempiere.common.util.AdempiereUserError
@@ -96,34 +92,10 @@ object DocManager {
             return null
         }
 
-        val query = ServiceQuery()
-        query["gaap"] = `as`.gaap
-        var holder: IServicesHolder<IDocFactory>? = Service.locator()!!.list(IDocFactory::class.java, query)
-        if (holder == null) {
-            holder = DefaultDocumentFactoryHolder()
-        }
-        var factoryList: List<IDocFactory>? = holder.services
-        if (factoryList == null || factoryList.isEmpty()) {
-            factoryList = DefaultDocumentFactoryHolder().services
-        }
-        for (factory in factoryList) {
-            val doc = factory.getDocument(`as`, AD_Table_ID, Record_ID)
-            if (doc != null)
-                return doc
-        }
-
-        query.clear()
-        query["gaap"] = "*"
-        holder = Service.locator()!!.list(IDocFactory::class.java, query)
-        factoryList = holder.services
-        if (factoryList.isEmpty()) {
-            factoryList = DefaultDocumentFactoryHolder().services
-        }
-        for (factory in factoryList) {
-            val doc = factory.getDocument(`as`, AD_Table_ID, Record_ID)
-            if (doc != null)
-                return doc
-        }
+        val factory = DefaultDocumentFactory()
+        val doc = factory.getDocument(`as`, AD_Table_ID, Record_ID)
+        if (doc != null)
+            return doc
 
         return null
     }
@@ -138,40 +110,10 @@ object DocManager {
      * @throws AdempiereUserError
      */
     fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: ResultSet): IDoc? {
-        val query = ServiceQuery()
-        query["gaap"] = `as`.gaap
-        val locator = Service.locator()
-        var holder: IServicesHolder<IDocFactory>?
-        if ( locator != null) {
-            holder = locator.list(IDocFactory::class.java, query)
-            if (holder == null) {
-                holder = DefaultDocumentFactoryHolder()
-            }
-        } else {
-            holder = DefaultDocumentFactoryHolder()
-        }
-        var factoryList: List<IDocFactory>? = holder.services
-        if (factoryList == null || factoryList.isEmpty()) {
-            factoryList = DefaultDocumentFactoryHolder().services
-        }
-        for (factory in factoryList) {
-            val doc = factory.getDocument(`as`, AD_Table_ID, rs)
-            if (doc != null)
-                return doc
-        }
-
-        query.clear()
-        query["gaap"] = "*"
-        holder = Service.locator()!!.list(IDocFactory::class.java, query)
-        factoryList = holder.services
-        if (factoryList.isEmpty()) {
-            factoryList = DefaultDocumentFactoryHolder().services
-        }
-        for (factory in factoryList) {
-            val doc = factory.getDocument(`as`, AD_Table_ID, rs)
-            if (doc != null)
-                return doc
-        }
+        val factory = DefaultDocumentFactory()
+        val doc = factory.getDocument(`as`, AD_Table_ID, rs)
+        if (doc != null)
+            return doc
 
         return null
     }
@@ -208,8 +150,8 @@ object DocManager {
         }
 
         val sql = StringBuilder("SELECT * FROM ")
-                .append(tableName)
-                .append(" WHERE ").append(tableName).append("_ID=? AND Processed='Y'")
+            .append(tableName)
+            .append(" WHERE ").append(tableName).append("_ID=? AND Processed='Y'")
         var pstmt: PreparedStatement?
         var rs: ResultSet?
         try {
@@ -288,9 +230,9 @@ object DocManager {
         val table = MTable.get(Env.getCtx(), AD_Table_ID)
         val sql = StringBuilder("UPDATE ")
         sql.append(table.tableName).append(" SET Posted='").append(status)
-                .append("',Processing='N' ")
-                .append("WHERE ")
-                .append(table.tableName).append("_ID=").append(Record_ID)
+            .append("',Processing='N' ")
+            .append("WHERE ")
+            .append(table.tableName).append("_ID=").append(Record_ID)
         CLogger.resetLast()
         val no = executeUpdate(sql.toString())
         return no == 1

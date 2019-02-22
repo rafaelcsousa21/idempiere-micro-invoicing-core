@@ -14,71 +14,78 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.TimeUtil;
 import org.compiere.process.SvrProcess;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.logging.Level;
 
 /**
  * Invoice Aging Report. Based on RV_Aging.
  *
  * @author Jorg Janke
  * @author victor.perez@e-evolution.com FR 1933937 Is necessary a new Aging to Date
- * @see http://sourceforge.net/tracker/index.php?func=detail&aid=1933937&group_id=176962&atid=879335
  * @author Carlos Ruiz - globalqss BF 2655587 Multi-org not supported in Aging
- * @see https://sourceforge.net/tracker2/?func=detail&aid=2655587&group_id=176962&atid=879332
  * @version $Id: Aging.java,v 1.5 2006/10/07 00:58:44 jjanke Exp $
+ * @see http://sourceforge.net/tracker/index.php?func=detail&aid=1933937&group_id=176962&atid=879335
+ * @see https://sourceforge.net/tracker2/?func=detail&aid=2655587&group_id=176962&atid=879332
  */
 public class Aging extends SvrProcess {
-  /** The date to calculate the days due from */
-  private Timestamp p_StatementDate = null;
-  // FR 1933937
-  private boolean p_DateAcct = false;
-  private boolean p_IsSOTrx = false;
-  private int p_C_Currency_ID = 0;
-  private int p_AD_Org_ID = 0;
-  private int p_C_BP_Group_ID = 0;
-  private int p_C_BPartner_ID = 0;
-  private boolean p_IsListInvoices = false;
-  /** Number of days between today and statement date */
-  private int m_statementOffset = 0;
+    /**
+     * The date to calculate the days due from
+     */
+    private Timestamp p_StatementDate = null;
+    // FR 1933937
+    private boolean p_DateAcct = false;
+    private boolean p_IsSOTrx = false;
+    private int p_C_Currency_ID = 0;
+    private int p_AD_Org_ID = 0;
+    private int p_C_BP_Group_ID = 0;
+    private int p_C_BPartner_ID = 0;
+    private boolean p_IsListInvoices = false;
+    /**
+     * Number of days between today and statement date
+     */
+    private int m_statementOffset = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("StatementDate")) p_StatementDate = (Timestamp) para[i].getParameter();
-      else if (name.equals("DateAcct")) p_DateAcct = "Y".equals(para[i].getParameter());
-      else if (name.equals("IsSOTrx")) p_IsSOTrx = "Y".equals(para[i].getParameter());
-      else if (name.equals("C_Currency_ID"))
-        p_C_Currency_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("AD_Org_ID"))
-        p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("C_BP_Group_ID"))
-        p_C_BP_Group_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("C_BPartner_ID"))
-        p_C_BPartner_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("IsListInvoices")) p_IsListInvoices = "Y".equals(para[i].getParameter());
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    if (p_StatementDate == null) p_StatementDate = new Timestamp(System.currentTimeMillis());
-    else
-      m_statementOffset =
-          TimeUtil.getDaysBetween(new Timestamp(System.currentTimeMillis()), p_StatementDate);
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("StatementDate")) p_StatementDate = (Timestamp) para[i].getParameter();
+            else if (name.equals("DateAcct")) p_DateAcct = "Y".equals(para[i].getParameter());
+            else if (name.equals("IsSOTrx")) p_IsSOTrx = "Y".equals(para[i].getParameter());
+            else if (name.equals("C_Currency_ID"))
+                p_C_Currency_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (name.equals("AD_Org_ID"))
+                p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (name.equals("C_BP_Group_ID"))
+                p_C_BP_Group_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (name.equals("C_BPartner_ID"))
+                p_C_BPartner_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (name.equals("IsListInvoices")) p_IsListInvoices = "Y".equals(para[i].getParameter());
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        if (p_StatementDate == null) p_StatementDate = new Timestamp(System.currentTimeMillis());
+        else
+            m_statementOffset =
+                    TimeUtil.getDaysBetween(new Timestamp(System.currentTimeMillis()), p_StatementDate);
+    } //	prepare
 
-  /**
-   * DoIt
-   *
-   * @return Message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * DoIt
+     *
+     * @return Message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
     /*
     if (log.isLoggable(Level.INFO)) log.info("StatementDate=" + p_StatementDate + ", IsSOTrx=" + p_IsSOTrx
     	+ ", C_Currency_ID=" + p_C_Currency_ID + ", AD_Org_ID=" + p_AD_Org_ID
@@ -237,5 +244,5 @@ public class Aging extends SvrProcess {
     if (log.isLoggable(Level.INFO)) log.info("#" + counter + " - rows=" + rows);
     return "";
     */
-  } //	doIt
+    } //	doIt
 } //	Aging

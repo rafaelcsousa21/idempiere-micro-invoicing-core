@@ -29,127 +29,127 @@ import org.compiere.process.SvrProcess;
  */
 public class RMACreateOrder extends SvrProcess {
 
-  private int rmaId = 0;
+    private int rmaId = 0;
 
-  @Override
-  protected void prepare() {
-    rmaId = getRecord_ID();
-  }
-
-  @Override
-  protected String doIt() throws Exception {
-    // Load RMA
-    MRMA rma = new MRMA(getCtx(), rmaId);
-
-    // Load Original Order
-    org.compiere.order.MOrder originalOrder = rma.getOriginalOrder();
-
-    if (rma.getId() == 0) {
-      throw new Exception("No RMA defined");
+    @Override
+    protected void prepare() {
+        rmaId = getRecord_ID();
     }
 
-    if (originalOrder == null) {
-      throw new Exception("Could not load the original order");
-    }
+    @Override
+    protected String doIt() throws Exception {
+        // Load RMA
+        MRMA rma = new MRMA(getCtx(), rmaId);
 
-    // Create new order and set the different values based on original order/RMA doc
-    MOrder order = new MOrder(getCtx(), 0);
-    order.setAD_Org_ID(rma.getOrgId());
-    order.setC_BPartner_ID(originalOrder.getC_BPartner_ID());
-    order.setC_BPartner_Location_ID(originalOrder.getC_BPartner_Location_ID());
-    order.setAD_User_ID(originalOrder.getAD_User_ID());
-    order.setBill_BPartner_ID(originalOrder.getBill_BPartner_ID());
-    order.setBill_Location_ID(originalOrder.getBill_Location_ID());
-    order.setBill_User_ID(originalOrder.getBill_User_ID());
-    order.setSalesRep_ID(rma.getSalesRep_ID());
-    order.setM_PriceList_ID(originalOrder.getM_PriceList_ID());
-    order.setIsSOTrx(originalOrder.isSOTrx());
-    order.setM_Warehouse_ID(originalOrder.getM_Warehouse_ID());
-    order.setC_DocTypeTarget_ID(originalOrder.getC_DocTypeTarget_ID());
-    order.setC_PaymentTerm_ID(originalOrder.getC_PaymentTerm_ID());
-    order.setDeliveryRule(originalOrder.getDeliveryRule());
+        // Load Original Order
+        org.compiere.order.MOrder originalOrder = rma.getOriginalOrder();
 
-    if (!order.save()) {
-      throw new IllegalStateException("Could not create order");
-    }
-
-    MInOut originalShipment = rma.getShipment();
-    I_C_Invoice originalInvoice = rma.getOriginalInvoice();
-
-    MRMALine lines[] = rma.getLines(true);
-    for (MRMALine line : lines) {
-      if (line.getShipLine() != null
-          && line.getShipLine().getC_OrderLine_ID() != 0
-          && line.getM_Product_ID() != 0) {
-        // Create order lines if the RMA Doc line has a shipment line
-        MOrderLine orderLine = new MOrderLine(order);
-        MOrderLine originalOLine =
-            new MOrderLine(getCtx(), line.getShipLine().getC_OrderLine_ID());
-        orderLine.setAD_Org_ID(line.getOrgId());
-        orderLine.setM_Product_ID(originalOLine.getM_Product_ID());
-        orderLine.setM_AttributeSetInstance_ID(originalOLine.getMAttributeSetInstance_ID());
-        orderLine.setC_UOM_ID(originalOLine.getC_UOM_ID());
-        orderLine.setC_Tax_ID(originalOLine.getC_Tax_ID());
-        orderLine.setM_Warehouse_ID(originalOLine.getM_Warehouse_ID());
-        orderLine.setC_Currency_ID(originalOLine.getC_Currency_ID());
-        orderLine.setQty(line.getQty());
-        orderLine.setC_Project_ID(originalOLine.getC_Project_ID());
-        orderLine.setC_Activity_ID(originalOLine.getC_Activity_ID());
-        orderLine.setC_Campaign_ID(originalOLine.getC_Campaign_ID());
-        orderLine.setPrice();
-        orderLine.setPrice(line.getAmt());
-
-        if (!orderLine.save()) {
-          throw new IllegalStateException("Could not create Order Line");
+        if (rma.getId() == 0) {
+            throw new Exception("No RMA defined");
         }
-      } else if (line.getM_Product_ID() != 0) {
-        if (originalInvoice != null) {
-          MOrderLine orderLine = new MOrderLine(order);
-          orderLine.setAD_Org_ID(line.getOrgId());
-          orderLine.setM_Product_ID(line.getM_Product_ID());
-          orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
-          orderLine.setC_UOM_ID(line.getC_UOM_ID());
-          orderLine.setC_Tax_ID(line.getC_Tax_ID());
-          orderLine.setM_Warehouse_ID(originalShipment.getM_Warehouse_ID());
-          orderLine.setC_Currency_ID(originalInvoice.getC_Currency_ID());
-          orderLine.setQty(line.getQty());
-          orderLine.setC_Project_ID(line.getC_Project_ID());
-          orderLine.setC_Activity_ID(line.getC_Activity_ID());
-          orderLine.setC_Campaign_ID(line.getC_Campaign_ID());
-          orderLine.setPrice();
-          orderLine.setPrice(line.getAmt());
 
-          if (!orderLine.save()) {
-            throw new IllegalStateException("Could not create Order Line");
-          }
-        } else if (originalOrder != null) {
-          MOrderLine orderLine = new MOrderLine(order);
-          orderLine.setAD_Org_ID(line.getOrgId());
-          orderLine.setM_Product_ID(line.getM_Product_ID());
-          orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
-          orderLine.setC_UOM_ID(line.getC_UOM_ID());
-          orderLine.setC_Tax_ID(line.getC_Tax_ID());
-          orderLine.setM_Warehouse_ID(originalOrder.getM_Warehouse_ID());
-          orderLine.setC_Currency_ID(originalOrder.getC_Currency_ID());
-          orderLine.setQty(line.getQty());
-          orderLine.setC_Project_ID(line.getC_Project_ID());
-          orderLine.setC_Activity_ID(line.getC_Activity_ID());
-          orderLine.setC_Campaign_ID(line.getC_Campaign_ID());
-          orderLine.setPrice();
-          orderLine.setPrice(line.getAmt());
-
-          if (!orderLine.save()) {
-            throw new IllegalStateException("Could not create Order Line");
-          }
+        if (originalOrder == null) {
+            throw new Exception("Could not load the original order");
         }
-      }
-    }
 
-    rma.setC_Order_ID(order.getC_Order_ID());
-    if (!rma.save()) {
-      throw new IllegalStateException("Could not update RMA document");
-    }
+        // Create new order and set the different values based on original order/RMA doc
+        MOrder order = new MOrder(getCtx(), 0);
+        order.setAD_Org_ID(rma.getOrgId());
+        order.setC_BPartner_ID(originalOrder.getC_BPartner_ID());
+        order.setC_BPartner_Location_ID(originalOrder.getC_BPartner_Location_ID());
+        order.setAD_User_ID(originalOrder.getAD_User_ID());
+        order.setBill_BPartner_ID(originalOrder.getBill_BPartner_ID());
+        order.setBill_Location_ID(originalOrder.getBill_Location_ID());
+        order.setBill_User_ID(originalOrder.getBill_User_ID());
+        order.setSalesRep_ID(rma.getSalesRep_ID());
+        order.setM_PriceList_ID(originalOrder.getM_PriceList_ID());
+        order.setIsSOTrx(originalOrder.isSOTrx());
+        order.setM_Warehouse_ID(originalOrder.getM_Warehouse_ID());
+        order.setC_DocTypeTarget_ID(originalOrder.getC_DocTypeTarget_ID());
+        order.setC_PaymentTerm_ID(originalOrder.getC_PaymentTerm_ID());
+        order.setDeliveryRule(originalOrder.getDeliveryRule());
 
-    return "Order Created: " + order.getDocumentNo();
-  }
+        if (!order.save()) {
+            throw new IllegalStateException("Could not create order");
+        }
+
+        MInOut originalShipment = rma.getShipment();
+        I_C_Invoice originalInvoice = rma.getOriginalInvoice();
+
+        MRMALine lines[] = rma.getLines(true);
+        for (MRMALine line : lines) {
+            if (line.getShipLine() != null
+                    && line.getShipLine().getC_OrderLine_ID() != 0
+                    && line.getM_Product_ID() != 0) {
+                // Create order lines if the RMA Doc line has a shipment line
+                MOrderLine orderLine = new MOrderLine(order);
+                MOrderLine originalOLine =
+                        new MOrderLine(getCtx(), line.getShipLine().getC_OrderLine_ID());
+                orderLine.setAD_Org_ID(line.getOrgId());
+                orderLine.setM_Product_ID(originalOLine.getM_Product_ID());
+                orderLine.setM_AttributeSetInstance_ID(originalOLine.getMAttributeSetInstance_ID());
+                orderLine.setC_UOM_ID(originalOLine.getC_UOM_ID());
+                orderLine.setC_Tax_ID(originalOLine.getC_Tax_ID());
+                orderLine.setM_Warehouse_ID(originalOLine.getM_Warehouse_ID());
+                orderLine.setC_Currency_ID(originalOLine.getC_Currency_ID());
+                orderLine.setQty(line.getQty());
+                orderLine.setC_Project_ID(originalOLine.getC_Project_ID());
+                orderLine.setC_Activity_ID(originalOLine.getC_Activity_ID());
+                orderLine.setC_Campaign_ID(originalOLine.getC_Campaign_ID());
+                orderLine.setPrice();
+                orderLine.setPrice(line.getAmt());
+
+                if (!orderLine.save()) {
+                    throw new IllegalStateException("Could not create Order Line");
+                }
+            } else if (line.getM_Product_ID() != 0) {
+                if (originalInvoice != null) {
+                    MOrderLine orderLine = new MOrderLine(order);
+                    orderLine.setAD_Org_ID(line.getOrgId());
+                    orderLine.setM_Product_ID(line.getM_Product_ID());
+                    orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
+                    orderLine.setC_UOM_ID(line.getC_UOM_ID());
+                    orderLine.setC_Tax_ID(line.getC_Tax_ID());
+                    orderLine.setM_Warehouse_ID(originalShipment.getM_Warehouse_ID());
+                    orderLine.setC_Currency_ID(originalInvoice.getC_Currency_ID());
+                    orderLine.setQty(line.getQty());
+                    orderLine.setC_Project_ID(line.getC_Project_ID());
+                    orderLine.setC_Activity_ID(line.getC_Activity_ID());
+                    orderLine.setC_Campaign_ID(line.getC_Campaign_ID());
+                    orderLine.setPrice();
+                    orderLine.setPrice(line.getAmt());
+
+                    if (!orderLine.save()) {
+                        throw new IllegalStateException("Could not create Order Line");
+                    }
+                } else if (originalOrder != null) {
+                    MOrderLine orderLine = new MOrderLine(order);
+                    orderLine.setAD_Org_ID(line.getOrgId());
+                    orderLine.setM_Product_ID(line.getM_Product_ID());
+                    orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
+                    orderLine.setC_UOM_ID(line.getC_UOM_ID());
+                    orderLine.setC_Tax_ID(line.getC_Tax_ID());
+                    orderLine.setM_Warehouse_ID(originalOrder.getM_Warehouse_ID());
+                    orderLine.setC_Currency_ID(originalOrder.getC_Currency_ID());
+                    orderLine.setQty(line.getQty());
+                    orderLine.setC_Project_ID(line.getC_Project_ID());
+                    orderLine.setC_Activity_ID(line.getC_Activity_ID());
+                    orderLine.setC_Campaign_ID(line.getC_Campaign_ID());
+                    orderLine.setPrice();
+                    orderLine.setPrice(line.getAmt());
+
+                    if (!orderLine.save()) {
+                        throw new IllegalStateException("Could not create Order Line");
+                    }
+                }
+            }
+        }
+
+        rma.setC_Order_ID(order.getC_Order_ID());
+        if (!rma.save()) {
+            throw new IllegalStateException("Could not update RMA document");
+        }
+
+        return "Order Created: " + order.getDocumentNo();
+    }
 }

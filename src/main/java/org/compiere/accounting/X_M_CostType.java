@@ -15,46 +15,52 @@ import java.util.Properties;
  */
 public class X_M_CostType extends BasePOName implements I_M_CostType, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_M_CostType(Properties ctx, int M_CostType_ID) {
-    super(ctx, M_CostType_ID);
-  }
-
-  /** Load Constructor */
-  public X_M_CostType(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 2 - Client
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_M_CostType[").append(getId()).append("]");
-    return sb.toString();
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get Cost Type.
-   *
-   * @return Type of Cost (e.g. Current, Plan, Future)
-   */
-  public int getM_CostType_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_CostType_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Standard Constructor
+     */
+    public X_M_CostType(Properties ctx, int M_CostType_ID) {
+        super(ctx, M_CostType_ID);
+    }
+
+    /**
+     * Load Constructor
+     */
+    public X_M_CostType(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
+
+    /**
+     * AccessLevel
+     *
+     * @return 2 - Client
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_M_CostType[").append(getId()).append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Get Cost Type.
+     *
+     * @return Type of Cost (e.g. Current, Plan, Future)
+     */
+    public int getM_CostType_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostType_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     @Override
-  public int getTableId() {
-    return I_M_CostType.Table_ID;
-  }
+    public int getTableId() {
+        return I_M_CostType.Table_ID;
+    }
 }

@@ -19,7 +19,7 @@ import java.util.logging.Level
  * [ 2598506 ] FR - Implement Initial Client Setup
  */
 class InitialClientSetup(
-        // Process Parameters
+    // Process Parameters
     private var p_ClientName: String,
     private var p_OrgValue: String? = null,
     private var p_OrgName: String,
@@ -131,26 +131,26 @@ class InitialClientSetup(
     override fun doIt(): String {
 
         var msglog = StringBuilder("InitialClientSetup")
-                .append(": ClientName=").append(p_ClientName)
-                .append(", OrgValue=").append(p_OrgValue)
-                .append(", OrgName=").append(p_OrgName)
-                .append(", AdminUserName=").append(p_AdminUserName)
-                .append(", NormalUserName=").append(p_NormalUserName)
-                .append(", IsSetInitialPassword=").append(p_IsSetInitialPassword)
-                .append(", C_Currency_ID=").append(p_C_Currency_ID)
-                .append(", C_Country_ID=").append(p_C_Country_ID)
-                .append(", C_Region_ID=").append(p_C_Region_ID)
-                .append(", CityName=").append(p_CityName)
-                .append(", C_City_ID=").append(p_C_City_ID)
-                .append(", IsUseBPDimension=").append(p_IsUseBPDimension)
-                .append(", IsUseProductDimension=").append(p_IsUseProductDimension)
-                .append(", IsUseProjectDimension=").append(p_IsUseProjectDimension)
-                .append(", IsUseCampaignDimension=").append(p_IsUseCampaignDimension)
-                .append(", IsUseSalesRegionDimension=").append(p_IsUseSalesRegionDimension)
-                .append(", IsUseActivityDimension=").append(p_IsUseActivityDimension)
-                .append(", UseDefaultCoA=").append(p_UseDefaultCoA)
-                .append(", InactivateDefaults=").append(p_InactivateDefaults)
-                .append(", CoAFile=").append(p_CoAFile)
+            .append(": ClientName=").append(p_ClientName)
+            .append(", OrgValue=").append(p_OrgValue)
+            .append(", OrgName=").append(p_OrgName)
+            .append(", AdminUserName=").append(p_AdminUserName)
+            .append(", NormalUserName=").append(p_NormalUserName)
+            .append(", IsSetInitialPassword=").append(p_IsSetInitialPassword)
+            .append(", C_Currency_ID=").append(p_C_Currency_ID)
+            .append(", C_Country_ID=").append(p_C_Country_ID)
+            .append(", C_Region_ID=").append(p_C_Region_ID)
+            .append(", CityName=").append(p_CityName)
+            .append(", C_City_ID=").append(p_C_City_ID)
+            .append(", IsUseBPDimension=").append(p_IsUseBPDimension)
+            .append(", IsUseProductDimension=").append(p_IsUseProductDimension)
+            .append(", IsUseProjectDimension=").append(p_IsUseProjectDimension)
+            .append(", IsUseCampaignDimension=").append(p_IsUseCampaignDimension)
+            .append(", IsUseSalesRegionDimension=").append(p_IsUseSalesRegionDimension)
+            .append(", IsUseActivityDimension=").append(p_IsUseActivityDimension)
+            .append(", UseDefaultCoA=").append(p_UseDefaultCoA)
+            .append(", InactivateDefaults=").append(p_InactivateDefaults)
+            .append(", CoAFile=").append(p_CoAFile)
 
         if (log.isLoggable(Level.INFO)) log.info(msglog.toString())
 
@@ -160,7 +160,8 @@ class InitialClientSetup(
 
         // Validate Mandatory parameters
         if (p_ClientName.length == 0 || p_OrgName.length == 0 || p_AdminUserName.length == 0 || p_NormalUserName.length == 0 ||
-                p_C_Currency_ID <= 0 || p_C_Country_ID <= 0 || !p_UseDefaultCoA && (p_CoAFile == null || p_CoAFile!!.length == 0))
+            p_C_Currency_ID <= 0 || p_C_Country_ID <= 0 || !p_UseDefaultCoA && (p_CoAFile == null || p_CoAFile!!.length == 0)
+        )
             throw IllegalArgumentException("Missing required parameters")
 
         // Validate Uniqueness of client and users name
@@ -197,10 +198,12 @@ class InitialClientSetup(
                 throw AdempiereException("NormalUserEmail $p_NormalUserEmail is incorrect")
         }
         if (Util.isEmpty(p_CoAFile, true))
-            p_CoAFile = MSysConfig.getValue(MSysConfig.DEFAULT_COA_PATH,
-                    File.separator + "data" +
-                            File.separator + "import" +
-                            File.separator + "AccountingDefaultsOnly.csv")
+            p_CoAFile = MSysConfig.getValue(
+                MSysConfig.DEFAULT_COA_PATH,
+                File.separator + "data" +
+                        File.separator + "import" +
+                        File.separator + "AccountingDefaultsOnly.csv"
+            )
         val coaFile = File(p_CoAFile!!)
         if (!coaFile.exists())
             throw AdempiereException("CoaFile $p_CoAFile does not exist")
@@ -213,8 +216,11 @@ class InitialClientSetup(
 
         // Process
         val ms = MSetup(Env.getCtx(), WINDOW_THIS_PROCESS)
-        if (!ms.createClient(p_ClientName, p_OrgValue, p_OrgName, p_AdminUserName, p_NormalUserName, p_Phone,
-                p_Phone2, p_Fax, p_EMail, p_TaxID, p_AdminUserEmail, p_NormalUserEmail, p_IsSetInitialPassword)) {
+        if (!ms.createClient(
+                p_ClientName, p_OrgValue, p_OrgName, p_AdminUserName, p_NormalUserName, p_Phone,
+                p_Phone2, p_Fax, p_EMail, p_TaxID, p_AdminUserEmail, p_NormalUserEmail, p_IsSetInitialPassword
+            )
+        ) {
             throw AdempiereException("Create client failed")
         }
 
@@ -223,9 +229,18 @@ class InitialClientSetup(
         //  Generate Accounting
         val currency = MCurrency.get(ctx, p_C_Currency_ID)
         val currency_kp = KeyNamePair(p_C_Currency_ID, currency.description)
-        if (!ms.createAccounting(currency_kp,
-                        p_IsUseProductDimension, p_IsUseBPDimension, p_IsUseProjectDimension, p_IsUseCampaignDimension, p_IsUseSalesRegionDimension, p_IsUseActivityDimension,
-                        coaFile, p_InactivateDefaults)) {
+        if (!ms.createAccounting(
+                currency_kp,
+                p_IsUseProductDimension,
+                p_IsUseBPDimension,
+                p_IsUseProjectDimension,
+                p_IsUseCampaignDimension,
+                p_IsUseSalesRegionDimension,
+                p_IsUseActivityDimension,
+                coaFile,
+                p_InactivateDefaults
+            )
+        ) {
             throw AdempiereException("@AccountSetupError@")
         }
 

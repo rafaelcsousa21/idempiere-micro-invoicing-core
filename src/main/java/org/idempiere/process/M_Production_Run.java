@@ -40,226 +40,230 @@ import static software.hsharp.core.util.DBKt.executeUpdateEx;
  *
  * @author victor.perez@e-evolution.com
  * @contributor: Carlos Ruiz (globalqss) - review backward compatibility - implement mustBeStocked
- *     properly
+ * properly
  */
 @Deprecated // replaced by ProductionProcess
 public class M_Production_Run extends SvrProcess {
 
-  /** The Record */
-  private int p_Record_ID = 0;
+    /**
+     * The Record
+     */
+    private int p_Record_ID = 0;
 
-  private boolean mustBeStocked = false;
+    private boolean mustBeStocked = false;
 
-  private int m_level = 0;
+    private int m_level = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("MustBeStocked"))
-        mustBeStocked = ((String) para[i].getParameter()).equals("Y");
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_Record_ID = getRecord_ID();
-  } // prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("MustBeStocked"))
+                mustBeStocked = ((String) para[i].getParameter()).equals("Y");
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_Record_ID = getRecord_ID();
+    } // prepare
 
-  /**
-   * Process
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    log.info("Search fields in M_Production");
+    /**
+     * Process
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        log.info("Search fields in M_Production");
 
-    X_M_Production production = new X_M_Production(getCtx(), p_Record_ID);
-    /** No Action */
-    if (production.isProcessed()) {
-      log.info("Already Posted");
-      return "@AlreadyPosted@";
-    }
+        X_M_Production production = new X_M_Production(getCtx(), p_Record_ID);
+        /** No Action */
+        if (production.isProcessed()) {
+            log.info("Already Posted");
+            return "@AlreadyPosted@";
+        }
 
-    String whereClause = "M_Production_ID=? ";
-    List<X_M_ProductionPlan> lines =
-        new Query(getCtx(), X_M_ProductionPlan.Table_Name, whereClause)
-            .setParameters(p_Record_ID)
-            .setOrderBy("Line, M_Product_ID")
-            .list();
-    for (X_M_ProductionPlan pp : lines) {
+        String whereClause = "M_Production_ID=? ";
+        List<X_M_ProductionPlan> lines =
+                new Query(getCtx(), X_M_ProductionPlan.Table_Name, whereClause)
+                        .setParameters(p_Record_ID)
+                        .setOrderBy("Line, M_Product_ID")
+                        .list();
+        for (X_M_ProductionPlan pp : lines) {
 
-      if (!"Y".equals(production.getIsCreated())) {
-        int line = 100;
-        int no =
-            executeUpdateEx(
-                "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = ?",
-                new Object[] {pp.getM_ProductionPlan_ID()}
-            );
-        if (no == -1)
-          raiseError(
-              "ERROR",
-              "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = " + pp.getM_ProductionPlan_ID());
+            if (!"Y".equals(production.getIsCreated())) {
+                int line = 100;
+                int no =
+                        executeUpdateEx(
+                                "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = ?",
+                                new Object[]{pp.getM_ProductionPlan_ID()}
+                        );
+                if (no == -1)
+                    raiseError(
+                            "ERROR",
+                            "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = " + pp.getM_ProductionPlan_ID());
 
-        MProduct product = MProduct.get(getCtx(), pp.getM_Product_ID());
+                MProduct product = MProduct.get(getCtx(), pp.getM_Product_ID());
 
-        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
-        pl.setAD_Org_ID(pp.getOrgId());
-        pl.setLine(line);
-        pl.setDescription(pp.getDescription());
-        pl.setM_Product_ID(pp.getM_Product_ID());
-        pl.setM_Locator_ID(pp.getM_Locator_ID());
-        pl.setM_ProductionPlan_ID(pp.getM_ProductionPlan_ID());
-        pl.setMovementQty(pp.getProductionQty());
-        pl.saveEx();
-        if (explosion(pp, product, pp.getProductionQty(), line) == 0)
-          raiseError("No BOM Lines", "");
+                X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
+                pl.setAD_Org_ID(pp.getOrgId());
+                pl.setLine(line);
+                pl.setDescription(pp.getDescription());
+                pl.setM_Product_ID(pp.getM_Product_ID());
+                pl.setM_Locator_ID(pp.getM_Locator_ID());
+                pl.setM_ProductionPlan_ID(pp.getM_ProductionPlan_ID());
+                pl.setMovementQty(pp.getProductionQty());
+                pl.saveEx();
+                if (explosion(pp, product, pp.getProductionQty(), line) == 0)
+                    raiseError("No BOM Lines", "");
 
-      } else {
-        whereClause = "M_ProductionPlan_ID= ? ";
-        List<X_M_ProductionLine> production_lines =
-            new Query(getCtx(), X_M_ProductionLine.Table_Name, whereClause)
-                .setParameters(pp.getM_ProductionPlan_ID())
-                .setOrderBy("Line")
-                .list();
+            } else {
+                whereClause = "M_ProductionPlan_ID= ? ";
+                List<X_M_ProductionLine> production_lines =
+                        new Query(getCtx(), X_M_ProductionLine.Table_Name, whereClause)
+                                .setParameters(pp.getM_ProductionPlan_ID())
+                                .setOrderBy("Line")
+                                .list();
 
-        for (X_M_ProductionLine pline : production_lines) {
-          MLocator locator = MLocator.get(getCtx(), pline.getM_Locator_ID());
-          String MovementType = MTransaction.MOVEMENTTYPE_ProductionPlus;
-          BigDecimal MovementQty = pline.getMovementQty();
-          if (MovementQty.signum() == 0) continue;
-          else if (MovementQty.signum() < 0) {
-            BigDecimal QtyAvailable =
-                MStorageReservation.getQtyAvailable(
-                    locator.getM_Warehouse_ID(),
-                    pline.getM_Product_ID(),
-                    pline.getMAttributeSetInstance_ID());
+                for (X_M_ProductionLine pline : production_lines) {
+                    MLocator locator = MLocator.get(getCtx(), pline.getM_Locator_ID());
+                    String MovementType = MTransaction.MOVEMENTTYPE_ProductionPlus;
+                    BigDecimal MovementQty = pline.getMovementQty();
+                    if (MovementQty.signum() == 0) continue;
+                    else if (MovementQty.signum() < 0) {
+                        BigDecimal QtyAvailable =
+                                MStorageReservation.getQtyAvailable(
+                                        locator.getM_Warehouse_ID(),
+                                        pline.getM_Product_ID(),
+                                        pline.getMAttributeSetInstance_ID());
 
-            if (mustBeStocked && QtyAvailable.add(MovementQty).signum() < 0) {
-              raiseError("@NotEnoughStocked@: " + pline.getM_Product().getName(), "");
+                        if (mustBeStocked && QtyAvailable.add(MovementQty).signum() < 0) {
+                            raiseError("@NotEnoughStocked@: " + pline.getM_Product().getName(), "");
+                        }
+
+                        MovementType = MTransaction.MOVEMENTTYPE_Production_;
+                    }
+
+                    Timestamp dateMPolicy = production.getMovementDate();
+                    if (pline.getMAttributeSetInstance_ID() > 0) {
+                        Timestamp t =
+                                MStorageOnHand.getDateMaterialPolicy(
+                                        pline.getM_Product_ID(), pline.getMAttributeSetInstance_ID());
+                        if (t != null) dateMPolicy = t;
+                    }
+
+                    if (!MStorageOnHand.add(
+                            getCtx(),
+                            locator.getM_Warehouse_ID(),
+                            locator.getM_Locator_ID(),
+                            pline.getM_Product_ID(),
+                            pline.getMAttributeSetInstance_ID(),
+                            MovementQty,
+                            dateMPolicy,
+                            null)) {
+                        raiseError("Cannot correct Inventory", "");
+                    }
+
+                    // Create Transaction
+                    MTransaction mtrx =
+                            new MTransaction(
+                                    getCtx(),
+                                    pline.getOrgId(),
+                                    MovementType,
+                                    locator.getM_Locator_ID(),
+                                    pline.getM_Product_ID(),
+                                    pline.getMAttributeSetInstance_ID(),
+                                    MovementQty,
+                                    production.getMovementDate(),
+                                    null);
+                    mtrx.setM_ProductionLine_ID(pline.getM_ProductionLine_ID());
+                    mtrx.saveEx();
+
+                    pline.setProcessed(true);
+                    pline.saveEx();
+                } // Production Line
+
+                pp.setProcessed(true);
+                pp.saveEx();
             }
+        } // Production Plan
 
-            MovementType = MTransaction.MOVEMENTTYPE_Production_;
-          }
+        if (!"Y".equals(production.getIsCreated())) {
+            production.setIsCreated("Y");
+            production.saveEx();
+        } else {
+            production.setProcessed(true);
+            production.saveEx();
 
-          Timestamp dateMPolicy = production.getMovementDate();
-          if (pline.getMAttributeSetInstance_ID() > 0) {
-            Timestamp t =
-                MStorageOnHand.getDateMaterialPolicy(
-                    pline.getM_Product_ID(), pline.getMAttributeSetInstance_ID());
-            if (t != null) dateMPolicy = t;
-          }
+            /* Immediate accounting */
+            if (MClient.get(Env.getCtx()).isClientAccountingImmediate()) {
+                @SuppressWarnings("unused")
+                String ignoreError =
+                        DocumentEngine.postImmediate(
+                                getCtx(),
+                                getClientId(),
+                                production.getTableId(),
+                                production.getId(),
+                                true,
+                                null);
+            }
+        }
 
-          if (!MStorageOnHand.add(
-              getCtx(),
-              locator.getM_Warehouse_ID(),
-              locator.getM_Locator_ID(),
-              pline.getM_Product_ID(),
-              pline.getMAttributeSetInstance_ID(),
-              MovementQty,
-              dateMPolicy,
-              null)) {
-            raiseError("Cannot correct Inventory", "");
-          }
-
-          // Create Transaction
-          MTransaction mtrx =
-              new MTransaction(
-                  getCtx(),
-                  pline.getOrgId(),
-                  MovementType,
-                  locator.getM_Locator_ID(),
-                  pline.getM_Product_ID(),
-                  pline.getMAttributeSetInstance_ID(),
-                  MovementQty,
-                  production.getMovementDate(),
-                  null);
-          mtrx.setM_ProductionLine_ID(pline.getM_ProductionLine_ID());
-          mtrx.saveEx();
-
-          pline.setProcessed(true);
-          pline.saveEx();
-        } // Production Line
-
-        pp.setProcessed(true);
-        pp.saveEx();
-      }
-    } // Production Plan
-
-    if (!"Y".equals(production.getIsCreated())) {
-      production.setIsCreated("Y");
-      production.saveEx();
-    } else {
-      production.setProcessed(true);
-      production.saveEx();
-
-      /* Immediate accounting */
-      if (MClient.get(Env.getCtx()).isClientAccountingImmediate()) {
-        @SuppressWarnings("unused")
-        String ignoreError =
-            DocumentEngine.postImmediate(
-                getCtx(),
-                getClientId(),
-                production.getTableId(),
-                production.getId(),
-                true,
-                null);
-      }
+        return "@OK@";
     }
 
-    return "@OK@";
-  }
+    /**
+     * Explosion the Production Plan
+     *
+     * @param pp
+     * @param product
+     * @param qty
+     * @throws Exception
+     */
+    private int explosion(X_M_ProductionPlan pp, MProduct product, BigDecimal qty, int line)
+            throws Exception {
+        MPPProductBOM bom = MPPProductBOM.getDefault(product);
+        if (bom == null) {
+            raiseError(
+                    "Do not exist default BOM for this product :"
+                            + product.getValue()
+                            + "-"
+                            + product.getName(),
+                    "");
+        }
+        MPPProductBOMLine[] bom_lines = bom.getLines(new Timestamp(System.currentTimeMillis()));
+        m_level += 1;
+        int components = 0;
+        line = line * m_level;
+        for (MPPProductBOMLine bomline : bom_lines) {
+            MProduct component = MProduct.get(getCtx(), bomline.getM_Product_ID());
 
-  /**
-   * Explosion the Production Plan
-   *
-   * @param pp
-   * @param product
-   * @param qty
-   * @throws Exception
-   */
-  private int explosion(X_M_ProductionPlan pp, MProduct product, BigDecimal qty, int line)
-      throws Exception {
-    MPPProductBOM bom = MPPProductBOM.getDefault(product);
-    if (bom == null) {
-      raiseError(
-          "Do not exist default BOM for this product :"
-              + product.getValue()
-              + "-"
-              + product.getName(),
-          "");
+            if (component.isBOM() && !component.isStocked()) {
+                explosion(pp, component, bomline.getQtyBOM().multiply(qty), line);
+            } else {
+                line += 1;
+                X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
+                pl.setAD_Org_ID(pp.getOrgId());
+                pl.setLine(line);
+                pl.setDescription(bomline.getDescription());
+                pl.setM_Product_ID(bomline.getM_Product_ID());
+                pl.setM_Locator_ID(pp.getM_Locator_ID());
+                pl.setM_ProductionPlan_ID(pp.getM_ProductionPlan_ID());
+                pl.setMovementQty(bomline.getQtyBOM().multiply(qty).negate());
+                pl.saveEx();
+                components += 1;
+            }
+        }
+        return components;
     }
-    MPPProductBOMLine[] bom_lines = bom.getLines(new Timestamp(System.currentTimeMillis()));
-    m_level += 1;
-    int components = 0;
-    line = line * m_level;
-    for (MPPProductBOMLine bomline : bom_lines) {
-      MProduct component = MProduct.get(getCtx(), bomline.getM_Product_ID());
 
-      if (component.isBOM() && !component.isStocked()) {
-        explosion(pp, component, bomline.getQtyBOM().multiply(qty), line);
-      } else {
-        line += 1;
-        X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
-        pl.setAD_Org_ID(pp.getOrgId());
-        pl.setLine(line);
-        pl.setDescription(bomline.getDescription());
-        pl.setM_Product_ID(bomline.getM_Product_ID());
-        pl.setM_Locator_ID(pp.getM_Locator_ID());
-        pl.setM_ProductionPlan_ID(pp.getM_ProductionPlan_ID());
-        pl.setMovementQty(bomline.getQtyBOM().multiply(qty).negate());
-        pl.saveEx();
-        components += 1;
-      }
+    private void raiseError(String string, String sql) throws Exception {
+        StringBuilder msg = new StringBuilder(string);
+        ValueNamePair pp = CLogger.retrieveError();
+        if (pp != null) msg = new StringBuilder(pp.getName()).append(" - ");
+        msg.append(sql);
+        throw new AdempiereUserError(msg.toString());
     }
-    return components;
-  }
-
-  private void raiseError(String string, String sql) throws Exception {
-    StringBuilder msg = new StringBuilder(string);
-    ValueNamePair pp = CLogger.retrieveError();
-    if (pp != null) msg = new StringBuilder(pp.getName()).append(" - ");
-    msg.append(sql);
-    throw new AdempiereUserError(msg.toString());
-  }
 } // M_Production_Run

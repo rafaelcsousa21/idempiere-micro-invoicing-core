@@ -28,34 +28,38 @@ import java.util.logging.Level;
  */
 public class ReportLineSet_Copy extends SvrProcess {
 
-  /** Source Line Set */
-  private int m_PA_ReportLineSet_ID = 0;
+    /**
+     * Source Line Set
+     */
+    private int m_PA_ReportLineSet_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("PA_ReportLineSet_ID"))
-        m_PA_ReportLineSet_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("PA_ReportLineSet_ID"))
+                m_PA_ReportLineSet_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    int to_ID = super.getRecord_ID();
-    if (log.isLoggable(Level.INFO))
-      log.info("From PA_ReportLineSet_ID=" + m_PA_ReportLineSet_ID + ", To=" + to_ID);
-    if (to_ID < 1) throw new Exception(MSG_SaveErrorRowNotFound);
-    throw new Exception("NotImplementedException");
-    //
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        int to_ID = super.getRecord_ID();
+        if (log.isLoggable(Level.INFO))
+            log.info("From PA_ReportLineSet_ID=" + m_PA_ReportLineSet_ID + ", To=" + to_ID);
+        if (to_ID < 1) throw new Exception(MSG_SaveErrorRowNotFound);
+        throw new Exception("NotImplementedException");
+        //
     /*
     MReportLineSet to = new MReportLineSet(getCtx(), to_ID, null);
     MReportLineSet rlSet = new MReportLineSet(getCtx(), m_PA_ReportLineSet_ID, null);
@@ -77,5 +81,5 @@ public class ReportLineSet_Copy extends SvrProcess {
     }
     StringBuilder msgreturn = new StringBuilder("@Copied@=").append(rls.length);
     return msgreturn.toString();*/
-  } //	doIt
+    } //	doIt
 } //	ReportLineSet_Copy

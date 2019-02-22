@@ -15,55 +15,61 @@ import java.util.Properties;
  */
 public class X_R_StatusCategory extends BasePOName implements I_R_StatusCategory, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_R_StatusCategory(Properties ctx, int R_StatusCategory_ID) {
-    super(ctx, R_StatusCategory_ID);
-  }
-
-  /** Load Constructor */
-  public X_R_StatusCategory(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 6 - System - Client
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_R_StatusCategory[").append(getId()).append("]");
-    return sb.toString();
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Set Default.
-   *
-   * @param IsDefault Default value
-   */
-  public void setIsDefault(boolean IsDefault) {
-    set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
-  }
+     * Standard Constructor
+     */
+    public X_R_StatusCategory(Properties ctx, int R_StatusCategory_ID) {
+        super(ctx, R_StatusCategory_ID);
+    }
 
     /**
-   * Get Status Category.
-   *
-   * @return Request Status Category
-   */
-  public int getR_StatusCategory_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_R_StatusCategory_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Load Constructor
+     */
+    public X_R_StatusCategory(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
+
+    /**
+     * AccessLevel
+     *
+     * @return 6 - System - Client
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_R_StatusCategory[").append(getId()).append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Set Default.
+     *
+     * @param IsDefault Default value
+     */
+    public void setIsDefault(boolean IsDefault) {
+        set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+    }
+
+    /**
+     * Get Status Category.
+     *
+     * @return Request Status Category
+     */
+    public int getR_StatusCategory_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_R_StatusCategory_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     @Override
-  public int getTableId() {
-    return I_R_StatusCategory.Table_ID;
-  }
+    public int getTableId() {
+        return I_R_StatusCategory.Table_ID;
+    }
 }

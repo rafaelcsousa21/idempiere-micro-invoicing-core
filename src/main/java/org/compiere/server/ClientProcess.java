@@ -5,4 +5,5 @@ package org.compiere.server;
  *
  * @author Low Heng Sin
  */
-public interface ClientProcess {}
+public interface ClientProcess {
+}

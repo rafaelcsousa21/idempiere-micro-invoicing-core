@@ -14,8 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
 import org.compiere.accounting.MPaySelection;
 import org.compiere.accounting.MPaySelectionCheck;
 import org.compiere.accounting.MPaySelectionLine;
@@ -26,6 +24,9 @@ import org.compiere.order.X_C_Order;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
 
+import java.util.ArrayList;
+import java.util.logging.Level;
+
 /**
  * Create Checks from Payment Selection Line
  *
@@ -33,93 +34,101 @@ import org.idempiere.common.util.AdempiereUserError;
  * @version $Id: PaySelectionCreateCheck.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class PaySelectionCreateCheck extends SvrProcess {
-  /** Target Payment Rule */
-  private String p_PaymentRule = null;
-  /** Payment Selection */
-  private int p_C_PaySelection_ID = 0;
-  /** The checks */
-  private ArrayList<MPaySelectionCheck> m_list = new ArrayList<MPaySelectionCheck>();
+    /**
+     * Target Payment Rule
+     */
+    private String p_PaymentRule = null;
+    /**
+     * Payment Selection
+     */
+    private int p_C_PaySelection_ID = 0;
+    /**
+     * The checks
+     */
+    private ArrayList<MPaySelectionCheck> m_list = new ArrayList<MPaySelectionCheck>();
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("PaymentRule")) p_PaymentRule = (String) para[i].getParameter();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_C_PaySelection_ID = getRecord_ID();
-    if (p_PaymentRule != null && p_PaymentRule.equals(X_C_Order.PAYMENTRULE_DirectDebit))
-      p_PaymentRule = null;
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("PaymentRule")) p_PaymentRule = (String) para[i].getParameter();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_C_PaySelection_ID = getRecord_ID();
+        if (p_PaymentRule != null && p_PaymentRule.equals(X_C_Order.PAYMENTRULE_DirectDebit))
+            p_PaymentRule = null;
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (clear text)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO))
-      log.info("C_PaySelection_ID=" + p_C_PaySelection_ID + ", PaymentRule=" + p_PaymentRule);
+    /**
+     * Perform process.
+     *
+     * @return Message (clear text)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO))
+            log.info("C_PaySelection_ID=" + p_C_PaySelection_ID + ", PaymentRule=" + p_PaymentRule);
 
-    MPaySelection psel = new MPaySelection(getCtx(), p_C_PaySelection_ID);
-    if (psel.getId() == 0)
-      throw new IllegalArgumentException("Not found C_PaySelection_ID=" + p_C_PaySelection_ID);
-    if (psel.isProcessed()) throw new IllegalArgumentException("@Processed@");
-    //
-    MPaySelectionLine[] lines = psel.getLines(false);
-    for (int i = 0; i < lines.length; i++) {
-      MPaySelectionLine line = lines[i];
-      if (!line.isActive() || line.isProcessed()) continue;
-      createCheck(line);
-    }
-    //
-    psel.setProcessed(true);
-    psel.saveEx();
+        MPaySelection psel = new MPaySelection(getCtx(), p_C_PaySelection_ID);
+        if (psel.getId() == 0)
+            throw new IllegalArgumentException("Not found C_PaySelection_ID=" + p_C_PaySelection_ID);
+        if (psel.isProcessed()) throw new IllegalArgumentException("@Processed@");
+        //
+        MPaySelectionLine[] lines = psel.getLines(false);
+        for (int i = 0; i < lines.length; i++) {
+            MPaySelectionLine line = lines[i];
+            if (!line.isActive() || line.isProcessed()) continue;
+            createCheck(line);
+        }
+        //
+        psel.setProcessed(true);
+        psel.saveEx();
 
-    StringBuilder msgreturn =
-        new StringBuilder("@C_PaySelectionCheck_ID@ - #").append(m_list.size());
-    return msgreturn.toString();
-  } //	doIt
+        StringBuilder msgreturn =
+                new StringBuilder("@C_PaySelectionCheck_ID@ - #").append(m_list.size());
+        return msgreturn.toString();
+    } //	doIt
 
-  /**
-   * Create Check from line
-   *
-   * @param line
-   * @throws Exception for invalid bank accounts
-   */
-  private void createCheck(MPaySelectionLine line) throws Exception {
-    //	Try to find one
-    for (int i = 0; i < m_list.size(); i++) {
-      MPaySelectionCheck check = (MPaySelectionCheck) m_list.get(i);
-      //	Add to existing
-      if (check.getC_BPartner_ID() == line.getInvoice().getC_BPartner_ID()) {
-        check.addLine(line);
+    /**
+     * Create Check from line
+     *
+     * @param line
+     * @throws Exception for invalid bank accounts
+     */
+    private void createCheck(MPaySelectionLine line) throws Exception {
+        //	Try to find one
+        for (int i = 0; i < m_list.size(); i++) {
+            MPaySelectionCheck check = (MPaySelectionCheck) m_list.get(i);
+            //	Add to existing
+            if (check.getC_BPartner_ID() == line.getInvoice().getC_BPartner_ID()) {
+                check.addLine(line);
+                if (!check.save()) throw new IllegalStateException("Cannot save MPaySelectionCheck");
+                line.setC_PaySelectionCheck_ID(check.getC_PaySelectionCheck_ID());
+                line.setProcessed(true);
+                if (!line.save()) throw new IllegalStateException("Cannot save MPaySelectionLine");
+                return;
+            }
+        }
+        //	Create new
+        String PaymentRule = line.getPaymentRule();
+        if (p_PaymentRule != null) {
+            if (!X_C_Order.PAYMENTRULE_DirectDebit.equals(PaymentRule)) PaymentRule = p_PaymentRule;
+        }
+        MPaySelectionCheck check = new MPaySelectionCheck(line, PaymentRule);
+        if (!check.isValid()) {
+            int C_BPartner_ID = check.getC_BPartner_ID();
+            I_C_BPartner bp = MBPartner.get(getCtx(), C_BPartner_ID);
+            StringBuilder msg = new StringBuilder("@NotFound@ @C_BP_BankAccount@: ").append(bp.getName());
+            throw new AdempiereUserError(msg.toString());
+        }
         if (!check.save()) throw new IllegalStateException("Cannot save MPaySelectionCheck");
         line.setC_PaySelectionCheck_ID(check.getC_PaySelectionCheck_ID());
         line.setProcessed(true);
         if (!line.save()) throw new IllegalStateException("Cannot save MPaySelectionLine");
-        return;
-      }
-    }
-    //	Create new
-    String PaymentRule = line.getPaymentRule();
-    if (p_PaymentRule != null) {
-      if (!X_C_Order.PAYMENTRULE_DirectDebit.equals(PaymentRule)) PaymentRule = p_PaymentRule;
-    }
-    MPaySelectionCheck check = new MPaySelectionCheck(line, PaymentRule);
-    if (!check.isValid()) {
-      int C_BPartner_ID = check.getC_BPartner_ID();
-      I_C_BPartner bp = MBPartner.get(getCtx(), C_BPartner_ID);
-      StringBuilder msg = new StringBuilder("@NotFound@ @C_BP_BankAccount@: ").append(bp.getName());
-      throw new AdempiereUserError(msg.toString());
-    }
-    if (!check.save()) throw new IllegalStateException("Cannot save MPaySelectionCheck");
-    line.setC_PaySelectionCheck_ID(check.getC_PaySelectionCheck_ID());
-    line.setProcessed(true);
-    if (!line.save()) throw new IllegalStateException("Cannot save MPaySelectionLine");
-    m_list.add(check);
-  } //	createCheck
+        m_list.add(check);
+    } //	createCheck
 } //	PaySelectionCreateCheck

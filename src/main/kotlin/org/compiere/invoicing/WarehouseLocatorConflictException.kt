@@ -14,10 +14,12 @@ class WarehouseLocatorConflictException
  * @param locator locator
  * @param lineNo Document Line#
  */
-    (wh: I_M_Warehouse?, locator: I_M_Locator?, lineNo: Int) : AdempiereException("@WarehouseLocatorConflict@" +
-        " @M_Warehouse_ID@: " + (if (wh != null) wh.name else "?") +
-        " @M_Locator_ID@: " + (if (locator != null) locator.value else "?") +
-        " @Line@: " + lineNo) {
+    (wh: I_M_Warehouse?, locator: I_M_Locator?, lineNo: Int) : AdempiereException(
+    "@WarehouseLocatorConflict@" +
+            " @M_Warehouse_ID@: " + (if (wh != null) wh.name else "?") +
+            " @M_Locator_ID@: " + (if (locator != null) locator.value else "?") +
+            " @Line@: " + lineNo
+) {
     companion object {
         /**
          *

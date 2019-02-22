@@ -10,245 +10,259 @@ import java.util.Properties;
 
 public class X_M_BOMProduct extends PO implements I_M_BOMProduct, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_M_BOMProduct(Properties ctx, int M_BOMProduct_ID) {
-    super(ctx, M_BOMProduct_ID);
     /**
-     * if (M_BOMProduct_ID == 0) { setBOMProductType (null); // S setBOMQty (Env.ZERO); // 1
-     * setIsPhantom (false); setLeadTimeOffset (0); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10
-     * AS DefaultValue FROM M_BOMProduct WHERE M_BOM_ID=@M_BOM_ID@ setM_BOM_ID (0);
-     * setM_BOMProduct_ID (0); }
+     * Standard Product = S
      */
-  }
+    public static final String BOMPRODUCTTYPE_StandardProduct = "S";
+    /**
+     * Alternative = A
+     */
+    public static final String BOMPRODUCTTYPE_Alternative = "A";
+    /**
+     * Alternative (Default) = D
+     */
+    public static final String BOMPRODUCTTYPE_AlternativeDefault = "D";
+    /**
+     * Outside Processing = X
+     */
+    public static final String BOMPRODUCTTYPE_OutsideProcessing = "X";
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
-  /** Load Constructor */
-  public X_M_BOMProduct(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  @Override
-  public int getTableId() {
-    return Table_ID;
-  }
-
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_M_BOMProduct[").append(getId()).append("]");
-    return sb.toString();
-  }
-
-    /** Standard Product = S */
-  public static final String BOMPRODUCTTYPE_StandardProduct = "S";
-    /** Alternative = A */
-  public static final String BOMPRODUCTTYPE_Alternative = "A";
-  /** Alternative (Default) = D */
-  public static final String BOMPRODUCTTYPE_AlternativeDefault = "D";
-  /** Outside Processing = X */
-  public static final String BOMPRODUCTTYPE_OutsideProcessing = "X";
-  /**
-   * Set Component Type.
-   *
-   * @param BOMProductType BOM Product Type
-   */
-  public void setBOMProductType(String BOMProductType) {
-
-    set_Value(COLUMNNAME_BOMProductType, BOMProductType);
-  }
-
-  /**
-   * Get Component Type.
-   *
-   * @return BOM Product Type
-   */
-  public String getBOMProductType() {
-    return (String) get_Value(COLUMNNAME_BOMProductType);
-  }
-
-  /**
-   * Set BOM Quantity.
-   *
-   * @param BOMQty Bill of Materials Quantity
-   */
-  public void setBOMQty(BigDecimal BOMQty) {
-    set_Value(COLUMNNAME_BOMQty, BOMQty);
-  }
 
     /**
-   * Set Phantom.
-   *
-   * @param IsPhantom Phantom Component
-   */
-  public void setIsPhantom(boolean IsPhantom) {
-    set_Value(COLUMNNAME_IsPhantom, Boolean.valueOf(IsPhantom));
-  }
+     * Standard Constructor
+     */
+    public X_M_BOMProduct(Properties ctx, int M_BOMProduct_ID) {
+        super(ctx, M_BOMProduct_ID);
+        /**
+         * if (M_BOMProduct_ID == 0) { setBOMProductType (null); // S setBOMQty (Env.ZERO); // 1
+         * setIsPhantom (false); setLeadTimeOffset (0); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10
+         * AS DefaultValue FROM M_BOMProduct WHERE M_BOM_ID=@M_BOM_ID@ setM_BOM_ID (0);
+         * setM_BOMProduct_ID (0); }
+         */
+    }
 
     /**
-   * Set Lead Time Offset.
-   *
-   * @param LeadTimeOffset Optional Lead Time offset before starting production
-   */
-  public void setLeadTimeOffset(int LeadTimeOffset) {
-    set_Value(COLUMNNAME_LeadTimeOffset, Integer.valueOf(LeadTimeOffset));
-  }
-
-  /**
-   * Get Lead Time Offset.
-   *
-   * @return Optional Lead Time offset before starting production
-   */
-  public int getLeadTimeOffset() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_LeadTimeOffset);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Line No.
-   *
-   * @param Line Unique line for this document
-   */
-  public void setLine(int Line) {
-    set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
-  }
-
-  /**
-   * Get Line No.
-   *
-   * @return Unique line for this document
-   */
-  public int getLine() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Line);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Load Constructor
+     */
+    public X_M_BOMProduct(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Set Attribute Set Instance.
-   *
-   * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-   */
-  public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-    if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
-    else
-      set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-  }
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
 
-  /**
-   * Get Attribute Set Instance.
-   *
-   * @return Product Attribute Set Instance
-   */
-  public int getMAttributeSetInstance_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    @Override
+    public int getTableId() {
+        return Table_ID;
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_M_BOMProduct[").append(getId()).append("]");
+        return sb.toString();
+    }
 
     /**
-   * Get Alternative Group.
-   *
-   * @return Product BOM Alternative Group
-   */
-  public int getM_BOMAlternative_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_BOMAlternative_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Component Type.
+     *
+     * @return BOM Product Type
+     */
+    public String getBOMProductType() {
+        return (String) get_Value(COLUMNNAME_BOMProductType);
+    }
 
     /**
-   * Get BOM.
-   *
-   * @return Bill of Material
-   */
-  public int getM_BOM_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_BOM_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Set Component Type.
+     *
+     * @param BOMProductType BOM Product Type
+     */
+    public void setBOMProductType(String BOMProductType) {
+
+        set_Value(COLUMNNAME_BOMProductType, BOMProductType);
+    }
 
     /**
-   * Get BOM Component.
-   *
-   * @return Bill of Material Component (Product)
-   */
-  public int getM_BOMProduct_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_BOMProduct_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Set BOM Quantity.
+     *
+     * @param BOMQty Bill of Materials Quantity
+     */
+    public void setBOMQty(BigDecimal BOMQty) {
+        set_Value(COLUMNNAME_BOMQty, BOMQty);
+    }
 
     /**
-   * Get Change Notice.
-   *
-   * @return Bill of Materials (Engineering) Change Notice (Version)
-   */
-  public int getM_ChangeNotice_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_ChangeNotice_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Set Phantom.
+     *
+     * @param IsPhantom Phantom Component
+     */
+    public void setIsPhantom(boolean IsPhantom) {
+        set_Value(COLUMNNAME_IsPhantom, Boolean.valueOf(IsPhantom));
+    }
 
     /**
-   * Set BOM Product.
-   *
-   * @param M_ProductBOM_ID Bill of Material Component Product
-   */
-  public void setM_ProductBOM_ID(int M_ProductBOM_ID) {
-    if (M_ProductBOM_ID < 1) set_Value(COLUMNNAME_M_ProductBOM_ID, null);
-    else set_Value(COLUMNNAME_M_ProductBOM_ID, Integer.valueOf(M_ProductBOM_ID));
-  }
-
-  /**
-   * Get BOM Product.
-   *
-   * @return Bill of Material Component Product
-   */
-  public int getM_ProductBOM_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_ProductBOM_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Lead Time Offset.
+     *
+     * @return Optional Lead Time offset before starting production
+     */
+    public int getLeadTimeOffset() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_LeadTimeOffset);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Product Operation.
-   *
-   * @return Product Manufacturing Operation
-   */
-  public int getM_ProductOperation_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_ProductOperation_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Set Lead Time Offset.
+     *
+     * @param LeadTimeOffset Optional Lead Time offset before starting production
+     */
+    public void setLeadTimeOffset(int LeadTimeOffset) {
+        set_Value(COLUMNNAME_LeadTimeOffset, Integer.valueOf(LeadTimeOffset));
+    }
 
-  /**
-   * Set Sequence.
-   *
-   * @param SeqNo Method of ordering records; lowest number comes first
-   */
-  public void setSeqNo(int SeqNo) {
-    set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
-  }
+    /**
+     * Get Line No.
+     *
+     * @return Unique line for this document
+     */
+    public int getLine() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-  /**
-   * Get Sequence.
-   *
-   * @return Method of ordering records; lowest number comes first
-   */
-  public int getSeqNo() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
-    if (ii == null) return 0;
-    return ii;
-  }
+    /**
+     * Set Line No.
+     *
+     * @param Line Unique line for this document
+     */
+    public void setLine(int Line) {
+        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+    }
+
+    /**
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+    }
+
+    /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getMAttributeSetInstance_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Alternative Group.
+     *
+     * @return Product BOM Alternative Group
+     */
+    public int getM_BOMAlternative_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_BOMAlternative_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get BOM.
+     *
+     * @return Bill of Material
+     */
+    public int getM_BOM_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_BOM_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get BOM Component.
+     *
+     * @return Bill of Material Component (Product)
+     */
+    public int getM_BOMProduct_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_BOMProduct_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Change Notice.
+     *
+     * @return Bill of Materials (Engineering) Change Notice (Version)
+     */
+    public int getM_ChangeNotice_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_ChangeNotice_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get BOM Product.
+     *
+     * @return Bill of Material Component Product
+     */
+    public int getM_ProductBOM_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_ProductBOM_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set BOM Product.
+     *
+     * @param M_ProductBOM_ID Bill of Material Component Product
+     */
+    public void setM_ProductBOM_ID(int M_ProductBOM_ID) {
+        if (M_ProductBOM_ID < 1) set_Value(COLUMNNAME_M_ProductBOM_ID, null);
+        else set_Value(COLUMNNAME_M_ProductBOM_ID, Integer.valueOf(M_ProductBOM_ID));
+    }
+
+    /**
+     * Get Product Operation.
+     *
+     * @return Product Manufacturing Operation
+     */
+    public int getM_ProductOperation_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_ProductOperation_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Sequence.
+     *
+     * @return Method of ordering records; lowest number comes first
+     */
+    public int getSeqNo() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Sequence.
+     *
+     * @param SeqNo Method of ordering records; lowest number comes first
+     */
+    public void setSeqNo(int SeqNo) {
+        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+    }
 }

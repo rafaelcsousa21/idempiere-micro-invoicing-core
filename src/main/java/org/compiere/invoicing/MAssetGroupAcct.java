@@ -16,52 +16,58 @@ import java.util.Properties;
  */
 public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
 
-  /** */
-  private static final long serialVersionUID = -3458020679308192943L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3458020679308192943L;
 
-  /** Get Asset Group Accountings for given group */
-  public static List<MAssetGroupAcct> forA_Asset_Group_ID(Properties ctx, int A_Asset_Group_ID) {
-    return new Query(
-            ctx,
-            I_A_Asset_Group_Acct.Table_Name,
-            I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID + "=?"
-    )
-        .setParameters(new Object[] {A_Asset_Group_ID})
-        .list();
-  }
+    /**
+     * Default ConstructorX_A_Asset_Group_Acct
+     *
+     * @param ctx                     context
+     * @param X_A_Asset_Group_Acct_ID id
+     */
+    public MAssetGroupAcct(Properties ctx, int X_A_Asset_Group_Acct_ID) {
+        super(ctx, X_A_Asset_Group_Acct_ID);
+    } //	MAssetGroupAcct
 
-  /** Get Asset Group Accountings for given group */
-  public static MAssetGroupAcct forA_Asset_Group_ID(
-      Properties ctx, int A_Asset_Group_ID, String postingType) {
-    final String whereClause =
-        I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID
-            + "=? AND "
-            + I_A_Asset_Group_Acct.COLUMNNAME_PostingType
-            + "=?";
-    return new Query(ctx, I_A_Asset_Group_Acct.Table_Name, whereClause)
-        .setParameters(new Object[] {A_Asset_Group_ID, postingType})
-        .firstOnly();
-  }
+    /**
+     * Load Constructor
+     *
+     * @param ctx context
+     * @param rs  result set
+     */
+    public MAssetGroupAcct(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    } //	MAssetGroupAcct
 
-  /**
-   * Default ConstructorX_A_Asset_Group_Acct
-   *
-   * @param ctx context
-   * @param X_A_Asset_Group_Acct_ID id
-   */
-  public MAssetGroupAcct(Properties ctx, int X_A_Asset_Group_Acct_ID) {
-    super(ctx, X_A_Asset_Group_Acct_ID);
-  } //	MAssetGroupAcct
+    /**
+     * Get Asset Group Accountings for given group
+     */
+    public static List<MAssetGroupAcct> forA_Asset_Group_ID(Properties ctx, int A_Asset_Group_ID) {
+        return new Query(
+                ctx,
+                I_A_Asset_Group_Acct.Table_Name,
+                I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID + "=?"
+        )
+                .setParameters(new Object[]{A_Asset_Group_ID})
+                .list();
+    }
 
-  /**
-   * Load Constructor
-   *
-   * @param ctx context
-   * @param rs result set
-   */
-  public MAssetGroupAcct(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  } //	MAssetGroupAcct
+    /**
+     * Get Asset Group Accountings for given group
+     */
+    public static MAssetGroupAcct forA_Asset_Group_ID(
+            Properties ctx, int A_Asset_Group_ID, String postingType) {
+        final String whereClause =
+                I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID
+                        + "=? AND "
+                        + I_A_Asset_Group_Acct.COLUMNNAME_PostingType
+                        + "=?";
+        return new Query(ctx, I_A_Asset_Group_Acct.Table_Name, whereClause)
+                .setParameters(new Object[]{A_Asset_Group_ID, postingType})
+                .firstOnly();
+    }
 
   /* commented by @win
   public int getA_Asset_Class_ID()
@@ -70,32 +76,32 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
   }
   */
 
-  public Timestamp getAssetServiceDate() {
-    return null;
-  }
+    public Timestamp getAssetServiceDate() {
+        return null;
+    }
 
     public boolean beforeSave(boolean newRecord) {
-    if (!UseLifeImpl.get(this).validate()) {
-      return false;
+        if (!UseLifeImpl.get(this).validate()) {
+            return false;
+        }
+        return true;
     }
-    return true;
-  }
 
-  public boolean set_AttrValue(String ColumnName, Object value) {
-    int index = get_ColumnIndex(ColumnName);
-    if (index < 0) return false;
-    return set_ValueNoCheck(ColumnName, value);
-  }
+    public boolean set_AttrValue(String ColumnName, Object value) {
+        int index = get_ColumnIndex(ColumnName);
+        if (index < 0) return false;
+        return set_ValueNoCheck(ColumnName, value);
+    }
 
-  public Object get_AttrValue(String ColumnName) {
-    int index = get_ColumnIndex(ColumnName);
-    if (index < 0) return null;
-    return get_Value(index);
-  }
+    public Object get_AttrValue(String ColumnName) {
+        int index = get_ColumnIndex(ColumnName);
+        if (index < 0) return null;
+        return get_Value(index);
+    }
 
-  public boolean is_AttrValueChanged(String ColumnName) {
-    int index = get_ColumnIndex(ColumnName);
-    if (index < 0) return false;
-    return is_ValueChanged(index);
-  }
+    public boolean is_AttrValueChanged(String ColumnName) {
+        int index = get_ColumnIndex(ColumnName);
+        if (index < 0) return false;
+        return is_ValueChanged(index);
+    }
 } //	MAssetGroupAcct

@@ -14,9 +14,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Create RfQ Response from RfQ Topic
@@ -25,31 +26,37 @@ import org.compiere.process.SvrProcess;
  * @version $Id: RfQCreate.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class RfQCreate extends SvrProcess {
-  /** Send RfQ */
-  private boolean p_IsSendRfQ = false;
-  /** RfQ */
-  private int p_C_RfQ_ID = 0;
+    /**
+     * Send RfQ
+     */
+    private boolean p_IsSendRfQ = false;
+    /**
+     * RfQ
+     */
+    private int p_C_RfQ_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("IsSendRfQ")) p_IsSendRfQ = "Y".equals(para[i].getParameter());
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_C_RfQ_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("IsSendRfQ")) p_IsSendRfQ = "Y".equals(para[i].getParameter());
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_C_RfQ_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (translated text)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Perform process.
+     *
+     * @return Message (translated text)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
 
     /*
     MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
@@ -105,5 +112,5 @@ public class RfQCreate extends SvrProcess {
     	retValue.append(" - @IsSendRfQ@=").append(sent).append(" - @Error@=").append(notSent);
     return retValue.toString();
     */
-  } //	doIt
+    } //	doIt
 } //	RfQCreate

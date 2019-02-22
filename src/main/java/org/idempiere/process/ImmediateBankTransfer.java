@@ -15,10 +15,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.logging.Level;
 import org.compiere.accounting.MCash;
 import org.compiere.accounting.MCashBook;
 import org.compiere.accounting.MCashLine;
@@ -28,6 +24,11 @@ import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * Bank Transfer. Generate a CashJournal entry with 2 lines (Bank Transfer)
@@ -40,203 +41,211 @@ import org.idempiere.common.util.Env;
  * @author Alejandro Falcone
  */
 public class ImmediateBankTransfer extends SvrProcess {
-  /** DocAction */
-  private String p_docAction = DocAction.Companion.getACTION_Complete();
-  /** Created # */
-  private int m_created = 0;
+    /**
+     * DocAction
+     */
+    private String p_docAction = DocAction.Companion.getACTION_Complete();
+    /**
+     * Created #
+     */
+    private int m_created = 0;
 
-  private int m_C_Currency_ID; // Currency
+    private int m_C_Currency_ID; // Currency
 
-  private String p_Name = ""; // Name
-  private String p_Description = ""; // Description
-  private int p_C_CashBook_ID = 0; // CashBook to be used as bridge
-  private BigDecimal p_Amount = Env.ZERO; // Amount to be transfered between the accounts
-  private int p_From_C_BankAccount_ID = 0; // Bank Account From
-  private int p_To_C_BankAccount_ID = 0; // Bank Account To
-  private Timestamp p_StatementDate = null; // Date Statement
-  private Timestamp p_DateAcct = null; // Date Account
+    private String p_Name = ""; // Name
+    private String p_Description = ""; // Description
+    private int p_C_CashBook_ID = 0; // CashBook to be used as bridge
+    private BigDecimal p_Amount = Env.ZERO; // Amount to be transfered between the accounts
+    private int p_From_C_BankAccount_ID = 0; // Bank Account From
+    private int p_To_C_BankAccount_ID = 0; // Bank Account To
+    private Timestamp p_StatementDate = null; // Date Statement
+    private Timestamp p_DateAcct = null; // Date Account
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (name.equals("From_C_BankAccount_ID"))
-        p_From_C_BankAccount_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("To_C_BankAccount_ID"))
-        p_To_C_BankAccount_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("C_CashBook_ID"))
-        p_C_CashBook_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (name.equals("Amount")) p_Amount = ((BigDecimal) para[i].getParameter());
-      else if (name.equals("Name")) p_Name = (String) para[i].getParameter();
-      else if (name.equals("Description")) p_Description = (String) para[i].getParameter();
-      else if (name.equals("StatementDate")) p_StatementDate = (Timestamp) para[i].getParameter();
-      else if (name.equals("DateAcct")) p_DateAcct = (Timestamp) para[i].getParameter();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (name.equals("From_C_BankAccount_ID"))
+                p_From_C_BankAccount_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (name.equals("To_C_BankAccount_ID"))
+                p_To_C_BankAccount_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (name.equals("C_CashBook_ID"))
+                p_C_CashBook_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (name.equals("Amount")) p_Amount = ((BigDecimal) para[i].getParameter());
+            else if (name.equals("Name")) p_Name = (String) para[i].getParameter();
+            else if (name.equals("Description")) p_Description = (String) para[i].getParameter();
+            else if (name.equals("StatementDate")) p_StatementDate = (Timestamp) para[i].getParameter();
+            else if (name.equals("DateAcct")) p_DateAcct = (Timestamp) para[i].getParameter();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (translated text)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    StringBuilder msglog =
-        new StringBuilder("From Bank=")
-            .append(p_From_C_BankAccount_ID)
-            .append(" - To Bank=")
-            .append(p_To_C_BankAccount_ID)
-            .append(" - C_CashBook_ID=")
-            .append(p_C_CashBook_ID)
-            .append(" - Amount=")
-            .append(p_Amount)
-            .append(" - Name=")
-            .append(p_Name)
-            .append(" - Description=")
-            .append(p_Description)
-            .append(" - Statement Date=")
-            .append(p_StatementDate)
-            .append(" - Date Account=")
-            .append(p_DateAcct);
-    if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
+    /**
+     * Perform process.
+     *
+     * @return Message (translated text)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        StringBuilder msglog =
+                new StringBuilder("From Bank=")
+                        .append(p_From_C_BankAccount_ID)
+                        .append(" - To Bank=")
+                        .append(p_To_C_BankAccount_ID)
+                        .append(" - C_CashBook_ID=")
+                        .append(p_C_CashBook_ID)
+                        .append(" - Amount=")
+                        .append(p_Amount)
+                        .append(" - Name=")
+                        .append(p_Name)
+                        .append(" - Description=")
+                        .append(p_Description)
+                        .append(" - Statement Date=")
+                        .append(p_StatementDate)
+                        .append(" - Date Account=")
+                        .append(p_DateAcct);
+        if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
 
-    if (p_To_C_BankAccount_ID == 0 || p_From_C_BankAccount_ID == 0)
-      throw new IllegalArgumentException("Banks required");
+        if (p_To_C_BankAccount_ID == 0 || p_From_C_BankAccount_ID == 0)
+            throw new IllegalArgumentException("Banks required");
 
-    if (p_Name == null || p_Name.length() == 0) throw new IllegalArgumentException("Name required");
+        if (p_Name == null || p_Name.length() == 0) throw new IllegalArgumentException("Name required");
 
-    // To_C_BankAccount_ID MUST be different than From_C_BankAccount_ID
-    if (p_To_C_BankAccount_ID == p_From_C_BankAccount_ID)
-      throw new AdempiereUserError("Banks From and To must be different");
+        // To_C_BankAccount_ID MUST be different than From_C_BankAccount_ID
+        if (p_To_C_BankAccount_ID == p_From_C_BankAccount_ID)
+            throw new AdempiereUserError("Banks From and To must be different");
 
-    // Banks and CashBook must have same currency
-    if (!isSameCurrency())
-      throw new AdempiereUserError("Banks and CashBook must have same currency");
+        // Banks and CashBook must have same currency
+        if (!isSameCurrency())
+            throw new AdempiereUserError("Banks and CashBook must have same currency");
 
-    if (p_Amount.signum() == 0) throw new AdempiereUserError("Amount required");
+        if (p_Amount.signum() == 0) throw new AdempiereUserError("Amount required");
 
-    //	Login Date
-    if (p_StatementDate == null) p_StatementDate = Env.getContextAsDate(getCtx(), "#Date");
-    if (p_StatementDate == null) p_StatementDate = new Timestamp(System.currentTimeMillis());
+        //	Login Date
+        if (p_StatementDate == null) p_StatementDate = Env.getContextAsDate(getCtx(), "#Date");
+        if (p_StatementDate == null) p_StatementDate = new Timestamp(System.currentTimeMillis());
 
-    if (p_DateAcct == null) p_DateAcct = p_StatementDate;
+        if (p_DateAcct == null) p_DateAcct = p_StatementDate;
 
-    generateBankTransfer();
+        generateBankTransfer();
 
-    return "@Created@ = " + m_created;
-  } //	doIt
+        return "@Created@ = " + m_created;
+    } //	doIt
 
-  /**
-   * To check CashBook and Banks have the same currency
-   *
-   * @return
-   */
-  private boolean isSameCurrency() {
+    /**
+     * To check CashBook and Banks have the same currency
+     *
+     * @return
+     */
+    private boolean isSameCurrency() {
 
-    MCashBook mcash = new MCashBook(getCtx(), p_C_CashBook_ID);
-    MBankAccount mBankFrom = new MBankAccount(getCtx(), p_From_C_BankAccount_ID);
-    MBankAccount mBankTo = new MBankAccount(getCtx(), p_To_C_BankAccount_ID);
+        MCashBook mcash = new MCashBook(getCtx(), p_C_CashBook_ID);
+        MBankAccount mBankFrom = new MBankAccount(getCtx(), p_From_C_BankAccount_ID);
+        MBankAccount mBankTo = new MBankAccount(getCtx(), p_To_C_BankAccount_ID);
 
-    if ((mcash.getC_Currency_ID() != mBankFrom.getC_Currency_ID())
-        || (mcash.getC_Currency_ID() != mBankTo.getC_Currency_ID())) return false;
+        if ((mcash.getC_Currency_ID() != mBankFrom.getC_Currency_ID())
+                || (mcash.getC_Currency_ID() != mBankTo.getC_Currency_ID())) return false;
 
-    m_C_Currency_ID = mcash.getC_Currency_ID();
+        m_C_Currency_ID = mcash.getC_Currency_ID();
 
-    return true;
-  } // isSameCurrency
+        return true;
+    } // isSameCurrency
 
-  private MCash createCash() {
+    private MCash createCash() {
 
-    MCash cash = new MCash(getCtx(), 0);
+        MCash cash = new MCash(getCtx(), 0);
 
-    cash.setName(p_Name);
-    cash.setDescription(p_Description);
-    cash.setDateAcct(p_DateAcct);
-    cash.setStatementDate(p_StatementDate);
-    cash.setC_CashBook_ID(p_C_CashBook_ID);
-    if (!cash.save()) {
-      throw new IllegalStateException("Could not create Cash");
-    }
-    return cash;
-  } //  createCash
+        cash.setName(p_Name);
+        cash.setDescription(p_Description);
+        cash.setDateAcct(p_DateAcct);
+        cash.setStatementDate(p_StatementDate);
+        cash.setC_CashBook_ID(p_C_CashBook_ID);
+        if (!cash.save()) {
+            throw new IllegalStateException("Could not create Cash");
+        }
+        return cash;
+    } //  createCash
 
-  private MCashLine[] createCashLines(MCash cash) {
+    private MCashLine[] createCashLines(MCash cash) {
 
-    ArrayList<MCashLine> cashLineList = new ArrayList<MCashLine>();
+        ArrayList<MCashLine> cashLineList = new ArrayList<MCashLine>();
 
-    // From Bank (From) to CashLine
-    MCashLine cashLine = new MCashLine(cash);
-    cashLine.setAmount(p_Amount);
-    cashLine.setC_BankAccount_ID(p_From_C_BankAccount_ID);
-    cashLine.setC_Currency_ID(m_C_Currency_ID);
+        // From Bank (From) to CashLine
+        MCashLine cashLine = new MCashLine(cash);
+        cashLine.setAmount(p_Amount);
+        cashLine.setC_BankAccount_ID(p_From_C_BankAccount_ID);
+        cashLine.setC_Currency_ID(m_C_Currency_ID);
 
-    if (p_Description != null) cashLine.setDescription(p_Description);
-    else cashLine.setDescription(p_Name);
+        if (p_Description != null) cashLine.setDescription(p_Description);
+        else cashLine.setDescription(p_Name);
 
-    cashLine.setCashType("T"); // Transfer
+        cashLine.setCashType("T"); // Transfer
 
-    if (!cashLine.save()) {
-      throw new IllegalStateException("Could not create Cash line (From Bank)");
-    }
-    cashLineList.add(cashLine);
+        if (!cashLine.save()) {
+            throw new IllegalStateException("Could not create Cash line (From Bank)");
+        }
+        cashLineList.add(cashLine);
 
-    // From CashLine to Bank (To)
-    cashLine = new MCashLine(cash);
-    cashLine.setAmount(p_Amount.negate());
-    cashLine.setC_BankAccount_ID(p_To_C_BankAccount_ID);
-    cashLine.setC_Currency_ID(m_C_Currency_ID);
-    if (p_Description != null) cashLine.setDescription(p_Description);
-    else cashLine.setDescription(p_Name);
+        // From CashLine to Bank (To)
+        cashLine = new MCashLine(cash);
+        cashLine.setAmount(p_Amount.negate());
+        cashLine.setC_BankAccount_ID(p_To_C_BankAccount_ID);
+        cashLine.setC_Currency_ID(m_C_Currency_ID);
+        if (p_Description != null) cashLine.setDescription(p_Description);
+        else cashLine.setDescription(p_Name);
 
-    cashLine.setCashType("T"); // Transfer
+        cashLine.setCashType("T"); // Transfer
 
-    if (!cashLine.save()) {
-      throw new IllegalStateException("Could not create Cash line (To Bank)");
-    }
-    cashLineList.add(cashLine);
+        if (!cashLine.save()) {
+            throw new IllegalStateException("Could not create Cash line (To Bank)");
+        }
+        cashLineList.add(cashLine);
 
-    MCashLine cashLines[] = new MCashLine[cashLineList.size()];
-    cashLineList.toArray(cashLines);
-    return cashLines;
-  } //  createCashLines
+        MCashLine cashLines[] = new MCashLine[cashLineList.size()];
+        cashLineList.toArray(cashLines);
+        return cashLines;
+    } //  createCashLines
 
-  /** Generate CashJournal */
-  private void generateBankTransfer() {
+    /**
+     * Generate CashJournal
+     */
+    private void generateBankTransfer() {
 
-    //	Create Cash & CashLines
-    MCash cash = createCash();
-    @SuppressWarnings("unused")
-    MCashLine cashLines[] = createCashLines(cash);
+        //	Create Cash & CashLines
+        MCash cash = createCash();
+        @SuppressWarnings("unused")
+        MCashLine cashLines[] = createCashLines(cash);
 
-    StringBuilder processMsg = new StringBuilder().append(cash.getDocumentNo());
+        StringBuilder processMsg = new StringBuilder().append(cash.getDocumentNo());
 
-    cash.setDocAction(p_docAction);
-    if (!cash.processIt(p_docAction)) {
-      processMsg.append(" (NOT Processed)");
-      StringBuilder msglog =
-          new StringBuilder("Cash Processing failed: ")
-              .append(cash)
-              .append(" - ")
-              .append(cash.getProcessMsg());
-      log.warning(msglog.toString());
-      msglog =
-          new StringBuilder("Cash Processing failed: ")
-              .append(cash)
-              .append(" - ")
-              .append(cash.getProcessMsg())
-              .append(" / please complete it manually");
-      addLog(cash.getC_Cash_ID(), cash.getStatementDate(), null, msglog.toString());
-      throw new IllegalStateException(
-          "Cash Processing failed: " + cash + " - " + cash.getProcessMsg());
-    }
-    if (!cash.save()) {
-      throw new IllegalStateException("Could not create Cash");
-    }
+        cash.setDocAction(p_docAction);
+        if (!cash.processIt(p_docAction)) {
+            processMsg.append(" (NOT Processed)");
+            StringBuilder msglog =
+                    new StringBuilder("Cash Processing failed: ")
+                            .append(cash)
+                            .append(" - ")
+                            .append(cash.getProcessMsg());
+            log.warning(msglog.toString());
+            msglog =
+                    new StringBuilder("Cash Processing failed: ")
+                            .append(cash)
+                            .append(" - ")
+                            .append(cash.getProcessMsg())
+                            .append(" / please complete it manually");
+            addLog(cash.getC_Cash_ID(), cash.getStatementDate(), null, msglog.toString());
+            throw new IllegalStateException(
+                    "Cash Processing failed: " + cash + " - " + cash.getProcessMsg());
+        }
+        if (!cash.save()) {
+            throw new IllegalStateException("Could not create Cash");
+        }
 
-    // Add processing information to process log
-    addLog(cash.getC_Cash_ID(), cash.getStatementDate(), null, processMsg.toString());
-    m_created++;
-  } //  generateBankTransfer
+        // Add processing information to process log
+        addLog(cash.getC_Cash_ID(), cash.getStatementDate(), null, processMsg.toString());
+        m_created++;
+    } //  generateBankTransfer
 } //	ImmediateBankTransfer

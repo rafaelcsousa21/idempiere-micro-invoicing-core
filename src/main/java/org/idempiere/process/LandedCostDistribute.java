@@ -27,30 +27,36 @@ import java.util.logging.Level;
  * @version $Id: LandedCostDistribute.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class LandedCostDistribute extends SvrProcess {
-  /** Parameter */
-  private int p_C_LandedCost_ID = 0;
-  /** LC */
-  private MLandedCost m_lc = null;
+    /**
+     * Parameter
+     */
+    private int p_C_LandedCost_ID = 0;
+    /**
+     * LC
+     */
+    private MLandedCost m_lc = null;
 
-  /** Prepare */
-  protected void prepare() {
-    p_C_LandedCost_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        p_C_LandedCost_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return info
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    m_lc = new MLandedCost(getCtx(), p_C_LandedCost_ID);
-    if (log.isLoggable(Level.INFO)) log.info(m_lc.toString());
-    if (m_lc.getId() == 0)
-      throw new AdempiereUserError("@NotFound@: @C_LandedCost_ID@ - " + p_C_LandedCost_ID);
+    /**
+     * Process
+     *
+     * @return info
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        m_lc = new MLandedCost(getCtx(), p_C_LandedCost_ID);
+        if (log.isLoggable(Level.INFO)) log.info(m_lc.toString());
+        if (m_lc.getId() == 0)
+            throw new AdempiereUserError("@NotFound@: @C_LandedCost_ID@ - " + p_C_LandedCost_ID);
 
-    String error = m_lc.allocateCosts();
-    if (error == null || error.length() == 0) return "@OK@";
-    return error;
-  } //	doIt
+        String error = m_lc.allocateCosts();
+        if (error == null || error.length() == 0) return "@OK@";
+        return error;
+    } //	doIt
 } //	LandedCostDistribute

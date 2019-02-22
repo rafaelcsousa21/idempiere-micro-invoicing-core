@@ -13,11 +13,12 @@
  */
 package org.compiere.invoicing;
 
-import java.sql.ResultSet;
-import java.util.Properties;
 import org.compiere.model.I_M_LocatorType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
+
+import java.sql.ResultSet;
+import java.util.Properties;
 
 /**
  * Warehouse Locator Type Object
@@ -25,68 +26,72 @@ import org.idempiere.common.util.CLogger;
  * @author Carlos Ruiz - Quality Systems & Solutions - globalqss
  */
 public class MLocatorType extends X_M_LocatorType {
-  /** */
-  private static final long serialVersionUID = -7567584133468332781L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -7567584133468332781L;
+    /**
+     * Cache
+     */
+    private static volatile CCache<Integer, MLocatorType> s_cache;
+    /**
+     * Logger
+     */
+    @SuppressWarnings("unused")
+    private static CLogger s_log = CLogger.getCLogger(MLocatorType.class);
 
-  /**
-   * Get Locator Type from Cache
-   *
-   * @param ctx context
-   * @param M_LocatorType_ID id
-   * @return MLocator
-   */
-  public static MLocatorType get(Properties ctx, int M_LocatorType_ID) {
-    if (s_cache == null)
-      s_cache = new CCache<Integer, MLocatorType>(I_M_LocatorType.Table_Name, 20);
-    Integer key = new Integer(M_LocatorType_ID);
-    MLocatorType retValue = (MLocatorType) s_cache.get(key);
-    if (retValue != null) return retValue;
-    retValue = new MLocatorType(ctx, M_LocatorType_ID);
-    if (retValue.getId() != 0) s_cache.put(key, retValue);
-    return retValue;
-  } //	get
+    /**
+     * ************************************************************************ Standard Locator
+     * Constructor
+     *
+     * @param ctx              Context
+     * @param M_LocatorType_ID id
+     * @param trxName          transaction
+     */
+    public MLocatorType(Properties ctx, int M_LocatorType_ID) {
+        super(ctx, M_LocatorType_ID);
+        if (M_LocatorType_ID == 0) {
+            setIsAvailableForReplenishment(true);
+            setIsAvailableForReservation(true);
+            setIsAvailableForShipping(true);
+        }
+    } //	MLocatorType
 
-  /** Cache */
-  private static volatile CCache<Integer, MLocatorType> s_cache;
+    /**
+     * Load Constructor
+     *
+     * @param ctx     context
+     * @param rs      result set
+     * @param trxName transaction
+     */
+    public MLocatorType(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    } //	MLocatorType
 
-  /** Logger */
-  @SuppressWarnings("unused")
-  private static CLogger s_log = CLogger.getCLogger(MLocatorType.class);
+    /**
+     * Get Locator Type from Cache
+     *
+     * @param ctx              context
+     * @param M_LocatorType_ID id
+     * @return MLocator
+     */
+    public static MLocatorType get(Properties ctx, int M_LocatorType_ID) {
+        if (s_cache == null)
+            s_cache = new CCache<Integer, MLocatorType>(I_M_LocatorType.Table_Name, 20);
+        Integer key = new Integer(M_LocatorType_ID);
+        MLocatorType retValue = (MLocatorType) s_cache.get(key);
+        if (retValue != null) return retValue;
+        retValue = new MLocatorType(ctx, M_LocatorType_ID);
+        if (retValue.getId() != 0) s_cache.put(key, retValue);
+        return retValue;
+    } //	get
 
-  /**
-   * ************************************************************************ Standard Locator
-   * Constructor
-   *
-   * @param ctx Context
-   * @param M_LocatorType_ID id
-   * @param trxName transaction
-   */
-  public MLocatorType(Properties ctx, int M_LocatorType_ID) {
-    super(ctx, M_LocatorType_ID);
-    if (M_LocatorType_ID == 0) {
-      setIsAvailableForReplenishment(true);
-      setIsAvailableForReservation(true);
-      setIsAvailableForShipping(true);
-    }
-  } //	MLocatorType
-
-  /**
-   * Load Constructor
-   *
-   * @param ctx context
-   * @param rs result set
-   * @param trxName transaction
-   */
-  public MLocatorType(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  } //	MLocatorType
-
-  /**
-   * Get String Representation
-   *
-   * @return Name
-   */
-  public String toString() {
-    return getName();
-  } //	toString
+    /**
+     * Get String Representation
+     *
+     * @return Name
+     */
+    public String toString() {
+        return getName();
+    } //	toString
 } //	MLocatorType

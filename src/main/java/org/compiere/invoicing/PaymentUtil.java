@@ -1,37 +1,39 @@
 package org.compiere.invoicing;
 
-/** @author Elaine */
+/**
+ * @author Elaine
+ */
 public class PaymentUtil {
 
     public static String encrpytCreditCard(String value) {
-    if (value == null) return "";
-    else if (value.length() <= 4) return value;
+        if (value == null) return "";
+        else if (value.length() <= 4) return value;
 
-    Integer valueLength = value.length();
+        Integer valueLength = value.length();
 
-    StringBuilder encryptedCC = new StringBuilder();
+        StringBuilder encryptedCC = new StringBuilder();
 
-    for (int i = 0; i < (valueLength - 4); i++) {
-      encryptedCC.append("0");
+        for (int i = 0; i < (valueLength - 4); i++) {
+            encryptedCC.append("0");
+        }
+
+        encryptedCC.append(value.substring(valueLength - 4, valueLength));
+
+        return encryptedCC.toString();
     }
 
-    encryptedCC.append(value.substring(valueLength - 4, valueLength));
+    public static String encrpytCvv(String creditCardVV) {
+        if (creditCardVV == null) return "";
+        else {
+            Integer valueLength = creditCardVV.length();
 
-    return encryptedCC.toString();
-  }
+            StringBuilder encryptedCC = new StringBuilder();
 
-  public static String encrpytCvv(String creditCardVV) {
-    if (creditCardVV == null) return "";
-    else {
-      Integer valueLength = creditCardVV.length();
-
-      StringBuilder encryptedCC = new StringBuilder();
-
-      for (int i = 0; i < valueLength; i++) {
-        encryptedCC.append("0");
-      }
-      return encryptedCC.toString();
+            for (int i = 0; i < valueLength; i++) {
+                encryptedCC.append("0");
+            }
+            return encryptedCC.toString();
+        }
     }
-  }
 
 }

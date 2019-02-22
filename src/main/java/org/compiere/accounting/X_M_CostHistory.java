@@ -17,269 +17,275 @@ import java.util.Properties;
  */
 public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_M_CostHistory(Properties ctx, int M_CostHistory_ID) {
-    super(ctx, M_CostHistory_ID);
     /**
-     * if (M_CostHistory_ID == 0) { setM_AttributeSetInstance_ID (0); setM_CostDetail_ID (0);
-     * setM_CostElement_ID (0); setM_CostHistory_ID (0); setM_CostHistory_UU (null);
-     * setM_CostType_ID (0); setNewCostPrice (Env.ZERO); setNewQty (Env.ZERO); setOldCostPrice
-     * (Env.ZERO); setOldQty (Env.ZERO); }
+     *
      */
-  }
-
-  /** Load Constructor */
-  public X_M_CostHistory(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_M_CostHistory[").append(getId()).append("]");
-    return sb.toString();
-  }
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Set Attribute Set Instance.
-   *
-   * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-   */
-  public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-    if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
-    else
-      set_ValueNoCheck(
-          COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-  }
-
-  /**
-   * Get Attribute Set Instance.
-   *
-   * @return Product Attribute Set Instance
-   */
-  public int getMAttributeSetInstance_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Standard Constructor
+     */
+    public X_M_CostHistory(Properties ctx, int M_CostHistory_ID) {
+        super(ctx, M_CostHistory_ID);
+        /**
+         * if (M_CostHistory_ID == 0) { setM_AttributeSetInstance_ID (0); setM_CostDetail_ID (0);
+         * setM_CostElement_ID (0); setM_CostHistory_ID (0); setM_CostHistory_UU (null);
+         * setM_CostType_ID (0); setNewCostPrice (Env.ZERO); setNewQty (Env.ZERO); setOldCostPrice
+         * (Env.ZERO); setOldQty (Env.ZERO); }
+         */
+    }
 
     /**
-   * Set Cost Detail.
-   *
-   * @param M_CostDetail_ID Cost Detail Information
-   */
-  public void setM_CostDetail_ID(int M_CostDetail_ID) {
-    if (M_CostDetail_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostDetail_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_CostDetail_ID, Integer.valueOf(M_CostDetail_ID));
-  }
-
-  /**
-   * Get Cost Detail.
-   *
-   * @return Cost Detail Information
-   */
-  public int getM_CostDetail_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_CostDetail_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Load Constructor
+     */
+    public X_M_CostHistory(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Set Cost Element.
-   *
-   * @param M_CostElement_ID Product Cost Element
-   */
-  public void setM_CostElement_ID(int M_CostElement_ID) {
-    if (M_CostElement_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
-  }
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
 
-  /**
-   * Get Cost Element.
-   *
-   * @return Product Cost Element
-   */
-  public int getM_CostElement_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_M_CostHistory[").append(getId()).append("]");
+        return sb.toString();
+    }
 
     /**
-   * Set Cost Type.
-   *
-   * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
-   */
-  public void setM_CostType_ID(int M_CostType_ID) {
-    if (M_CostType_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostType_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_CostType_ID, Integer.valueOf(M_CostType_ID));
-  }
-
-  /**
-   * Get Cost Type.
-   *
-   * @return Type of Cost (e.g. Current, Plan, Future)
-   */
-  public int getM_CostType_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_CostType_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set New Accumulated Amt.
-   *
-   * @param NewCAmt Accumulated Amt after processing of M_CostDetail
-   */
-  public void setNewCAmt(BigDecimal NewCAmt) {
-    set_ValueNoCheck(COLUMNNAME_NewCAmt, NewCAmt);
-  }
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            set_ValueNoCheck(
+                    COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+    }
 
     /**
-   * Set New Cost Price.
-   *
-   * @param NewCostPrice New current cost price after processing of M_CostDetail
-   */
-  public void setNewCostPrice(BigDecimal NewCostPrice) {
-    set_ValueNoCheck(COLUMNNAME_NewCostPrice, NewCostPrice);
-  }
-
-  /**
-   * Get New Cost Price.
-   *
-   * @return New current cost price after processing of M_CostDetail
-   */
-  public BigDecimal getNewCostPrice() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewCostPrice);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set New Accumulated Qty.
-   *
-   * @param NewCQty New Accumulated Qty after processing of M_CostDetail
-   */
-  public void setNewCQty(BigDecimal NewCQty) {
-    set_ValueNoCheck(COLUMNNAME_NewCQty, NewCQty);
-  }
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getMAttributeSetInstance_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Set New Current Quantity.
-   *
-   * @param NewQty New current quantity after processing of M_CostDetail
-   */
-  public void setNewQty(BigDecimal NewQty) {
-    set_ValueNoCheck(COLUMNNAME_NewQty, NewQty);
-  }
+     * Get Cost Detail.
+     *
+     * @return Cost Detail Information
+     */
+    public int getM_CostDetail_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostDetail_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-  /**
-   * Get New Current Quantity.
-   *
-   * @return New current quantity after processing of M_CostDetail
-   */
-  public BigDecimal getNewQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    /**
+     * Set Cost Detail.
+     *
+     * @param M_CostDetail_ID Cost Detail Information
+     */
+    public void setM_CostDetail_ID(int M_CostDetail_ID) {
+        if (M_CostDetail_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostDetail_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_M_CostDetail_ID, Integer.valueOf(M_CostDetail_ID));
+    }
 
-  /**
-   * Set Old Accumulated Amt.
-   *
-   * @param OldCAmt Old accumulated amt before the processing of M_CostDetail
-   */
-  public void setOldCAmt(BigDecimal OldCAmt) {
-    set_ValueNoCheck(COLUMNNAME_OldCAmt, OldCAmt);
-  }
+    /**
+     * Get Cost Element.
+     *
+     * @return Product Cost Element
+     */
+    public int getM_CostElement_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-  /**
-   * Get Old Accumulated Amt.
-   *
-   * @return Old accumulated amt before the processing of M_CostDetail
-   */
-  public BigDecimal getOldCAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    /**
+     * Set Cost Element.
+     *
+     * @param M_CostElement_ID Product Cost Element
+     */
+    public void setM_CostElement_ID(int M_CostElement_ID) {
+        if (M_CostElement_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
+    }
 
-  /**
-   * Set Old Current Cost Price.
-   *
-   * @param OldCostPrice Old current cost price before the processing of M_CostDetail
-   */
-  public void setOldCostPrice(BigDecimal OldCostPrice) {
-    set_ValueNoCheck(COLUMNNAME_OldCostPrice, OldCostPrice);
-  }
+    /**
+     * Get Cost Type.
+     *
+     * @return Type of Cost (e.g. Current, Plan, Future)
+     */
+    public int getM_CostType_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostType_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-  /**
-   * Get Old Current Cost Price.
-   *
-   * @return Old current cost price before the processing of M_CostDetail
-   */
-  public BigDecimal getOldCostPrice() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCostPrice);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    /**
+     * Set Cost Type.
+     *
+     * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
+     */
+    public void setM_CostType_ID(int M_CostType_ID) {
+        if (M_CostType_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostType_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_M_CostType_ID, Integer.valueOf(M_CostType_ID));
+    }
 
-  /**
-   * Set Old Accumulated Qty.
-   *
-   * @param OldCQty Old accumulated qty before the processing of M_CostDetail
-   */
-  public void setOldCQty(BigDecimal OldCQty) {
-    set_ValueNoCheck(COLUMNNAME_OldCQty, OldCQty);
-  }
+    /**
+     * Set New Accumulated Amt.
+     *
+     * @param NewCAmt Accumulated Amt after processing of M_CostDetail
+     */
+    public void setNewCAmt(BigDecimal NewCAmt) {
+        set_ValueNoCheck(COLUMNNAME_NewCAmt, NewCAmt);
+    }
 
-  /**
-   * Get Old Accumulated Qty.
-   *
-   * @return Old accumulated qty before the processing of M_CostDetail
-   */
-  public BigDecimal getOldCQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    /**
+     * Get New Cost Price.
+     *
+     * @return New current cost price after processing of M_CostDetail
+     */
+    public BigDecimal getNewCostPrice() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewCostPrice);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
 
-  /**
-   * Set Old Current Quantity.
-   *
-   * @param OldQty Old current quantity before the processing of M_CostDetail
-   */
-  public void setOldQty(BigDecimal OldQty) {
-    set_ValueNoCheck(COLUMNNAME_OldQty, OldQty);
-  }
+    /**
+     * Set New Cost Price.
+     *
+     * @param NewCostPrice New current cost price after processing of M_CostDetail
+     */
+    public void setNewCostPrice(BigDecimal NewCostPrice) {
+        set_ValueNoCheck(COLUMNNAME_NewCostPrice, NewCostPrice);
+    }
 
-  /**
-   * Get Old Current Quantity.
-   *
-   * @return Old current quantity before the processing of M_CostDetail
-   */
-  public BigDecimal getOldQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldQty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    /**
+     * Set New Accumulated Qty.
+     *
+     * @param NewCQty New Accumulated Qty after processing of M_CostDetail
+     */
+    public void setNewCQty(BigDecimal NewCQty) {
+        set_ValueNoCheck(COLUMNNAME_NewCQty, NewCQty);
+    }
 
-  public void setClientOrg(int a, int b) {
-    super.setClientOrg(a, b);
-  }
+    /**
+     * Get New Current Quantity.
+     *
+     * @return New current quantity after processing of M_CostDetail
+     */
+    public BigDecimal getNewQty() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewQty);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
 
-  @Override
-  public int getTableId() {
-    return I_M_CostHistory.Table_ID;
-  }
+    /**
+     * Set New Current Quantity.
+     *
+     * @param NewQty New current quantity after processing of M_CostDetail
+     */
+    public void setNewQty(BigDecimal NewQty) {
+        set_ValueNoCheck(COLUMNNAME_NewQty, NewQty);
+    }
+
+    /**
+     * Get Old Accumulated Amt.
+     *
+     * @return Old accumulated amt before the processing of M_CostDetail
+     */
+    public BigDecimal getOldCAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Old Accumulated Amt.
+     *
+     * @param OldCAmt Old accumulated amt before the processing of M_CostDetail
+     */
+    public void setOldCAmt(BigDecimal OldCAmt) {
+        set_ValueNoCheck(COLUMNNAME_OldCAmt, OldCAmt);
+    }
+
+    /**
+     * Get Old Current Cost Price.
+     *
+     * @return Old current cost price before the processing of M_CostDetail
+     */
+    public BigDecimal getOldCostPrice() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCostPrice);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Old Current Cost Price.
+     *
+     * @param OldCostPrice Old current cost price before the processing of M_CostDetail
+     */
+    public void setOldCostPrice(BigDecimal OldCostPrice) {
+        set_ValueNoCheck(COLUMNNAME_OldCostPrice, OldCostPrice);
+    }
+
+    /**
+     * Get Old Accumulated Qty.
+     *
+     * @return Old accumulated qty before the processing of M_CostDetail
+     */
+    public BigDecimal getOldCQty() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCQty);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Old Accumulated Qty.
+     *
+     * @param OldCQty Old accumulated qty before the processing of M_CostDetail
+     */
+    public void setOldCQty(BigDecimal OldCQty) {
+        set_ValueNoCheck(COLUMNNAME_OldCQty, OldCQty);
+    }
+
+    /**
+     * Get Old Current Quantity.
+     *
+     * @return Old current quantity before the processing of M_CostDetail
+     */
+    public BigDecimal getOldQty() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldQty);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Old Current Quantity.
+     *
+     * @param OldQty Old current quantity before the processing of M_CostDetail
+     */
+    public void setOldQty(BigDecimal OldQty) {
+        set_ValueNoCheck(COLUMNNAME_OldQty, OldQty);
+    }
+
+    public void setClientOrg(int a, int b) {
+        super.setClientOrg(a, b);
+    }
+
+    @Override
+    public int getTableId() {
+        return I_M_CostHistory.Table_ID;
+    }
 }

@@ -36,7 +36,7 @@ class MSetup
  * @param ctx context
  * @param WindowNo window
  */
-(ctx: Properties, private val m_WindowNo: Int) {
+    (ctx: Properties, private val m_WindowNo: Int) {
 
     /**	Logger			 */
     protected var log = CLogger.getCLogger(javaClass)
@@ -110,9 +110,11 @@ class MSetup
      * @param isSetInitialPassword
      * @return true if created
      */
-    fun createClient(clientName: String, orgValue: String?, orgName: String,
-                     userClient: String, userOrg: String, phone: String, phone2: String, fax: String, eMail: String, taxID: String?,
-                     adminEmail: String, userEmail: String, isSetInitialPassword: Boolean): Boolean {
+    fun createClient(
+        clientName: String, orgValue: String?, orgName: String,
+        userClient: String, userOrg: String, phone: String, phone2: String, fax: String, eMail: String, taxID: String?,
+        adminEmail: String, userEmail: String, isSetInitialPassword: Boolean
+    ): Boolean {
         var orgValue1 = orgValue
         log.info(clientName)
 
@@ -286,7 +288,8 @@ class MSetup
         AD_User_Name = name
 
         //  Info
-        m_info!!.append(Msg.translate(m_lang, "AD_User_ID")).append("=").append(AD_User_Name).append("/").append(AD_User_Name).append("\n")
+        m_info!!.append(Msg.translate(m_lang, "AD_User_ID")).append("=").append(AD_User_Name).append("/")
+            .append(AD_User_Name).append("\n")
 
         val clientUser = MUser(m_ctx, 0)
 
@@ -315,7 +318,8 @@ class MSetup
         AD_User_U_ID = clientUser.aD_User_ID
         AD_User_U_Name = name
         //  Info
-        m_info!!.append(Msg.translate(m_lang, "AD_User_ID")).append("=").append(AD_User_U_Name).append("/").append(AD_User_U_Name).append("\n")
+        m_info!!.append(Msg.translate(m_lang, "AD_User_ID")).append("=").append(AD_User_U_Name).append("/")
+            .append(AD_User_U_Name).append("\n")
 
         /**
          * Create User-Role
@@ -371,10 +375,12 @@ class MSetup
      * @param useDefaultCoA use the Default CoA (load and group summary account)
      * @return true if created
      */
-    fun createAccounting(currency: KeyNamePair,
-                         hasProduct: Boolean, hasBPartner: Boolean, hasProject: Boolean,
-                         hasMCampaign: Boolean, hasSRegion: Boolean,
-                         hasActivity: Boolean, AccountingFile: File, inactivateDefaults: Boolean): Boolean {
+    fun createAccounting(
+        currency: KeyNamePair,
+        hasProduct: Boolean, hasBPartner: Boolean, hasProject: Boolean,
+        hasMCampaign: Boolean, hasSRegion: Boolean,
+        hasActivity: Boolean, AccountingFile: File, inactivateDefaults: Boolean
+    ): Boolean {
         if (log.isLoggable(Level.INFO)) log.info(m_client!!.toString())
         //
         m_hasProject = hasProject
@@ -406,8 +412,10 @@ class MSetup
 
         //	Create Account Elements
         name = m_clientName + " " + Msg.translate(m_lang, "Account_ID")
-        val element = MElement(m_client!!, name,
-                MElement.ELEMENTTYPE_Account, m_AD_Tree_Account_ID)
+        val element = MElement(
+            m_client!!, name,
+            MElement.ELEMENTTYPE_Account, m_AD_Tree_Account_ID
+        )
         if (!element.save()) {
             val err = "Acct Element NOT inserted"
             log.log(Level.SEVERE, err)
@@ -524,18 +532,27 @@ class MSetup
                 if (IsMandatory != null) {
                     sqlCmd = StringBuffer("INSERT INTO C_AcctSchema_Element(")
                     sqlCmd.append(m_stdColumns).append(",C_AcctSchema_Element_ID,C_AcctSchema_ID,")
-                            .append("ElementType,Name,SeqNo,IsMandatory,IsBalanced,C_AcctSchema_Element_UU) VALUES (")
-                    sqlCmd.append(m_stdValues).append(",").append(C_AcctSchema_Element_ID).append(",").append(m_as!!.c_AcctSchema_ID).append(",")
-                            .append("'").append(ElementType).append("','").append(name).append("',").append(SeqNo).append(",'")
-                            .append(IsMandatory).append("','").append(IsBalanced).append("',").append(TO_STRING(UUID.randomUUID().toString())).append(")")
+                        .append("ElementType,Name,SeqNo,IsMandatory,IsBalanced,C_AcctSchema_Element_UU) VALUES (")
+                    sqlCmd.append(m_stdValues).append(",").append(C_AcctSchema_Element_ID).append(",")
+                        .append(m_as!!.c_AcctSchema_ID).append(",")
+                        .append("'").append(ElementType).append("','").append(name).append("',").append(SeqNo)
+                        .append(",'")
+                        .append(IsMandatory).append("','").append(IsBalanced).append("',")
+                        .append(TO_STRING(UUID.randomUUID().toString())).append(")")
                     no = executeUpdateEx(sqlCmd.toString())
                     if (no == 1)
-                        m_info!!.append(Msg.translate(m_lang, "C_AcctSchema_Element_ID")).append("=").append(name).append("\n")
+                        m_info!!.append(
+                            Msg.translate(
+                                m_lang,
+                                "C_AcctSchema_Element_ID"
+                            )
+                        ).append("=").append(name).append("\n")
 
                     /** Default value for mandatory elements: OO and AC  */
                     if (ElementType == "OO") {
                         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET Org_ID=")
-                        sqlCmd.append(aD_Org_ID).append(" WHERE C_AcctSchema_Element_ID=").append(C_AcctSchema_Element_ID)
+                        sqlCmd.append(aD_Org_ID).append(" WHERE C_AcctSchema_Element_ID=")
+                            .append(C_AcctSchema_Element_ID)
                         no = executeUpdateEx(sqlCmd.toString())
                         if (no != 1)
                             log.log(Level.SEVERE, "Default Org in AcctSchemaElement NOT updated")
@@ -586,134 +603,239 @@ class MSetup
         val GL_Payroll = createGLCategory("Payroll", MGLCategory.CATEGORYTYPE_Document, false)
 
         //	Base DocumentTypes
-        val ii = createDocType("GL Journal", Msg.getElement(m_ctx, "GL_Journal_ID"),
-                MDocType.DOCBASETYPE_GLJournal, null, 0, 0, 1000, GL_GL, false)
+        val ii = createDocType(
+            "GL Journal", Msg.getElement(m_ctx, "GL_Journal_ID"),
+            MDocType.DOCBASETYPE_GLJournal, null, 0, 0, 1000, GL_GL, false
+        )
         if (ii == 0) {
             val err = "Document Type not created"
             m_info!!.append(err)
             throw Error(err)
         }
-        createDocType("GL Journal Batch", Msg.getElement(m_ctx, "GL_JournalBatch_ID"),
-                MDocType.DOCBASETYPE_GLJournal, null, 0, 0, 100, GL_GL, false)
+        createDocType(
+            "GL Journal Batch", Msg.getElement(m_ctx, "GL_JournalBatch_ID"),
+            MDocType.DOCBASETYPE_GLJournal, null, 0, 0, 100, GL_GL, false
+        )
         //	MDocType.DOCBASETYPE_GLDocument
         //
-        val DT_I = createDocType("AR Invoice", Msg.getElement(m_ctx, "C_Invoice_ID", true),
-                MDocType.DOCBASETYPE_ARInvoice, null, 0, 0, 100000, GL_ARI, false)
-        val DT_II = createDocType("AR Invoice Indirect", Msg.getElement(m_ctx, "C_Invoice_ID", true),
-                MDocType.DOCBASETYPE_ARInvoice, null, 0, 0, 150000, GL_ARI, false)
-        val DT_IC = createDocType("AR Credit Memo", Msg.getMsg(m_ctx, "CreditMemo"),
-                MDocType.DOCBASETYPE_ARCreditMemo, null, 0, 0, 170000, GL_ARI, false)
+        val DT_I = createDocType(
+            "AR Invoice", Msg.getElement(m_ctx, "C_Invoice_ID", true),
+            MDocType.DOCBASETYPE_ARInvoice, null, 0, 0, 100000, GL_ARI, false
+        )
+        val DT_II = createDocType(
+            "AR Invoice Indirect", Msg.getElement(m_ctx, "C_Invoice_ID", true),
+            MDocType.DOCBASETYPE_ARInvoice, null, 0, 0, 150000, GL_ARI, false
+        )
+        val DT_IC = createDocType(
+            "AR Credit Memo", Msg.getMsg(m_ctx, "CreditMemo"),
+            MDocType.DOCBASETYPE_ARCreditMemo, null, 0, 0, 170000, GL_ARI, false
+        )
         //	MDocType.DOCBASETYPE_ARProFormaInvoice
 
-        createDocType("AP Invoice", Msg.getElement(m_ctx, "C_Invoice_ID", false),
-                MDocType.DOCBASETYPE_APInvoice, null, 0, 0, 0, GL_API, false)
-        val DT_IPC = createDocType("AP CreditMemo", Msg.getMsg(m_ctx, "CreditMemo"),
-                MDocType.DOCBASETYPE_APCreditMemo, null, 0, 0, 0, GL_API, false)
-        createDocType("Match Invoice", Msg.getElement(m_ctx, "M_MatchInv_ID", false),
-                MDocType.DOCBASETYPE_MatchInvoice, null, 0, 0, 390000, GL_API, false)
+        createDocType(
+            "AP Invoice", Msg.getElement(m_ctx, "C_Invoice_ID", false),
+            MDocType.DOCBASETYPE_APInvoice, null, 0, 0, 0, GL_API, false
+        )
+        val DT_IPC = createDocType(
+            "AP CreditMemo", Msg.getMsg(m_ctx, "CreditMemo"),
+            MDocType.DOCBASETYPE_APCreditMemo, null, 0, 0, 0, GL_API, false
+        )
+        createDocType(
+            "Match Invoice", Msg.getElement(m_ctx, "M_MatchInv_ID", false),
+            MDocType.DOCBASETYPE_MatchInvoice, null, 0, 0, 390000, GL_API, false
+        )
 
-        createDocType("AR Receipt", Msg.getElement(m_ctx, "C_Payment_ID", true),
-                MDocType.DOCBASETYPE_ARReceipt, null, 0, 0, 0, GL_ARR, false)
-        createDocType("AP Payment", Msg.getElement(m_ctx, "C_Payment_ID", false),
-                MDocType.DOCBASETYPE_APPayment, null, 0, 0, 0, GL_APP, false)
-        createDocType("Allocation", "Allocation",
-                MDocType.DOCBASETYPE_PaymentAllocation, null, 0, 0, 490000, GL_CASH, false)
+        createDocType(
+            "AR Receipt", Msg.getElement(m_ctx, "C_Payment_ID", true),
+            MDocType.DOCBASETYPE_ARReceipt, null, 0, 0, 0, GL_ARR, false
+        )
+        createDocType(
+            "AP Payment", Msg.getElement(m_ctx, "C_Payment_ID", false),
+            MDocType.DOCBASETYPE_APPayment, null, 0, 0, 0, GL_APP, false
+        )
+        createDocType(
+            "Allocation", "Allocation",
+            MDocType.DOCBASETYPE_PaymentAllocation, null, 0, 0, 490000, GL_CASH, false
+        )
 
-        val DT_S = createDocType("MM Shipment", "Delivery Note",
-                MDocType.DOCBASETYPE_MaterialDelivery, null, 0, 0, 500000, GL_MM, false)
-        val DT_SI = createDocType("MM Shipment Indirect", "Delivery Note",
-                MDocType.DOCBASETYPE_MaterialDelivery, null, 0, 0, 550000, GL_MM, false)
-        val DT_VRM = createDocType("MM Vendor Return", "Vendor Return",
-                MDocType.DOCBASETYPE_MaterialDelivery, null, 0, 0, 590000, GL_MM, true)
+        val DT_S = createDocType(
+            "MM Shipment", "Delivery Note",
+            MDocType.DOCBASETYPE_MaterialDelivery, null, 0, 0, 500000, GL_MM, false
+        )
+        val DT_SI = createDocType(
+            "MM Shipment Indirect", "Delivery Note",
+            MDocType.DOCBASETYPE_MaterialDelivery, null, 0, 0, 550000, GL_MM, false
+        )
+        val DT_VRM = createDocType(
+            "MM Vendor Return", "Vendor Return",
+            MDocType.DOCBASETYPE_MaterialDelivery, null, 0, 0, 590000, GL_MM, true
+        )
 
-        createDocType("MM Receipt", "Vendor Delivery",
-                MDocType.DOCBASETYPE_MaterialReceipt, null, 0, 0, 0, GL_MM, false)
-        val DT_RM = createDocType("MM Customer Return", "Customer Return",
-                MDocType.DOCBASETYPE_MaterialReceipt, null, 0, 0, 570000, GL_MM, true)
+        createDocType(
+            "MM Receipt", "Vendor Delivery",
+            MDocType.DOCBASETYPE_MaterialReceipt, null, 0, 0, 0, GL_MM, false
+        )
+        val DT_RM = createDocType(
+            "MM Customer Return", "Customer Return",
+            MDocType.DOCBASETYPE_MaterialReceipt, null, 0, 0, 570000, GL_MM, true
+        )
 
-        createDocType("Purchase Order", Msg.getElement(m_ctx, "C_Order_ID", false),
-                MDocType.DOCBASETYPE_PurchaseOrder, null, 0, 0, 800000, GL_None, false)
-        createDocType("Match PO", Msg.getElement(m_ctx, "M_MatchPO_ID", false),
-                MDocType.DOCBASETYPE_MatchPO, null, 0, 0, 890000, GL_None, false)
-        createDocType("Purchase Requisition", Msg.getElement(m_ctx, "M_Requisition_ID", false),
-                MDocType.DOCBASETYPE_PurchaseRequisition, null, 0, 0, 900000, GL_None, false)
-        createDocType("Vendor Return Material", "Vendor Return Material Authorization",
-                MDocType.DOCBASETYPE_PurchaseOrder, MDocType.DOCSUBTYPESO_ReturnMaterial, DT_VRM,
-                DT_IPC, 990000, GL_MM, false)
+        createDocType(
+            "Purchase Order", Msg.getElement(m_ctx, "C_Order_ID", false),
+            MDocType.DOCBASETYPE_PurchaseOrder, null, 0, 0, 800000, GL_None, false
+        )
+        createDocType(
+            "Match PO", Msg.getElement(m_ctx, "M_MatchPO_ID", false),
+            MDocType.DOCBASETYPE_MatchPO, null, 0, 0, 890000, GL_None, false
+        )
+        createDocType(
+            "Purchase Requisition", Msg.getElement(m_ctx, "M_Requisition_ID", false),
+            MDocType.DOCBASETYPE_PurchaseRequisition, null, 0, 0, 900000, GL_None, false
+        )
+        createDocType(
+            "Vendor Return Material", "Vendor Return Material Authorization",
+            MDocType.DOCBASETYPE_PurchaseOrder, MDocType.DOCSUBTYPESO_ReturnMaterial, DT_VRM,
+            DT_IPC, 990000, GL_MM, false
+        )
 
-        createDocType("Bank Statement", Msg.getElement(m_ctx, "C_BankStatemet_ID", true),
-                MDocType.DOCBASETYPE_BankStatement, null, 0, 0, 700000, GL_CASH, false)
-        createDocType("Cash Journal", Msg.getElement(m_ctx, "C_Cash_ID", true),
-                MDocType.DOCBASETYPE_CashJournal, null, 0, 0, 750000, GL_CASH, false)
+        createDocType(
+            "Bank Statement", Msg.getElement(m_ctx, "C_BankStatemet_ID", true),
+            MDocType.DOCBASETYPE_BankStatement, null, 0, 0, 700000, GL_CASH, false
+        )
+        createDocType(
+            "Cash Journal", Msg.getElement(m_ctx, "C_Cash_ID", true),
+            MDocType.DOCBASETYPE_CashJournal, null, 0, 0, 750000, GL_CASH, false
+        )
 
-        createDocType("Material Movement", Msg.getElement(m_ctx, "M_Movement_ID", false),
-                MDocType.DOCBASETYPE_MaterialMovement, null, 0, 0, 610000, GL_MM, false)
-        createDocType("Physical Inventory", Msg.getElement(m_ctx, "M_Inventory_ID", false),
-                MDocType.DOCBASETYPE_MaterialPhysicalInventory, MDocType.DOCSUBTYPEINV_PhysicalInventory, 0, 0, 620000, GL_MM, false)
-        createDocType("Material Production", Msg.getElement(m_ctx, "M_Production_ID", false),
-                MDocType.DOCBASETYPE_MaterialProduction, null, 0, 0, 630000, GL_MM, false)
-        createDocType("Project Issue", Msg.getElement(m_ctx, "C_ProjectIssue_ID", false),
-                MDocType.DOCBASETYPE_ProjectIssue, null, 0, 0, 640000, GL_MM, false)
-        createDocType("Internal Use Inventory", "Internal Use Inventory",
-                MDocType.DOCBASETYPE_MaterialPhysicalInventory, MDocType.DOCSUBTYPEINV_InternalUseInventory, 0, 0, 650000, GL_MM, false)
-        createDocType("Cost Adjustment", "Cost Adjustment",
-                MDocType.DOCBASETYPE_MaterialPhysicalInventory, MDocType.DOCSUBTYPEINV_CostAdjustment, 0, 0, 660000, GL_MM, false)
+        createDocType(
+            "Material Movement", Msg.getElement(m_ctx, "M_Movement_ID", false),
+            MDocType.DOCBASETYPE_MaterialMovement, null, 0, 0, 610000, GL_MM, false
+        )
+        createDocType(
+            "Physical Inventory",
+            Msg.getElement(m_ctx, "M_Inventory_ID", false),
+            MDocType.DOCBASETYPE_MaterialPhysicalInventory,
+            MDocType.DOCSUBTYPEINV_PhysicalInventory,
+            0,
+            0,
+            620000,
+            GL_MM,
+            false
+        )
+        createDocType(
+            "Material Production", Msg.getElement(m_ctx, "M_Production_ID", false),
+            MDocType.DOCBASETYPE_MaterialProduction, null, 0, 0, 630000, GL_MM, false
+        )
+        createDocType(
+            "Project Issue", Msg.getElement(m_ctx, "C_ProjectIssue_ID", false),
+            MDocType.DOCBASETYPE_ProjectIssue, null, 0, 0, 640000, GL_MM, false
+        )
+        createDocType(
+            "Internal Use Inventory",
+            "Internal Use Inventory",
+            MDocType.DOCBASETYPE_MaterialPhysicalInventory,
+            MDocType.DOCSUBTYPEINV_InternalUseInventory,
+            0,
+            0,
+            650000,
+            GL_MM,
+            false
+        )
+        createDocType(
+            "Cost Adjustment",
+            "Cost Adjustment",
+            MDocType.DOCBASETYPE_MaterialPhysicalInventory,
+            MDocType.DOCSUBTYPEINV_CostAdjustment,
+            0,
+            0,
+            660000,
+            GL_MM,
+            false
+        )
 
         //  Order Entry
-        createDocType("Binding offer", "Quotation",
-                MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_Quotation,
-                0, 0, 10000, GL_None, false)
-        createDocType("Non binding offer", "Proposal",
-                MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_Proposal,
-                0, 0, 20000, GL_None, false)
-        createDocType("Prepay Order", "Prepay Order",
-                MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_PrepayOrder,
-                DT_S, DT_I, 30000, GL_None, false)
-        createDocType("Customer Return Material", "Customer Return Material Authorization",
-                MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_ReturnMaterial,
-                DT_RM, DT_IC, 30000, GL_None, false)
-        createDocType("Standard Order", "Order Confirmation",
-                MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_StandardOrder,
-                DT_S, DT_I, 50000, GL_None, false)
-        createDocType("Credit Order", "Order Confirmation",
-                MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_OnCreditOrder,
-                DT_SI, DT_I, 60000, GL_None, false)   //  RE
-        createDocType("Warehouse Order", "Order Confirmation",
-                MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_WarehouseOrder,
-                DT_S, DT_I, 70000, GL_None, false)    //  LS
+        createDocType(
+            "Binding offer", "Quotation",
+            MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_Quotation,
+            0, 0, 10000, GL_None, false
+        )
+        createDocType(
+            "Non binding offer", "Proposal",
+            MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_Proposal,
+            0, 0, 20000, GL_None, false
+        )
+        createDocType(
+            "Prepay Order", "Prepay Order",
+            MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_PrepayOrder,
+            DT_S, DT_I, 30000, GL_None, false
+        )
+        createDocType(
+            "Customer Return Material", "Customer Return Material Authorization",
+            MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_ReturnMaterial,
+            DT_RM, DT_IC, 30000, GL_None, false
+        )
+        createDocType(
+            "Standard Order", "Order Confirmation",
+            MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_StandardOrder,
+            DT_S, DT_I, 50000, GL_None, false
+        )
+        createDocType(
+            "Credit Order", "Order Confirmation",
+            MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_OnCreditOrder,
+            DT_SI, DT_I, 60000, GL_None, false
+        )   //  RE
+        createDocType(
+            "Warehouse Order", "Order Confirmation",
+            MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_WarehouseOrder,
+            DT_S, DT_I, 70000, GL_None, false
+        )    //  LS
 
         //Manufacturing Document
-        createDocType("Manufacturing Order", "Manufacturing Order",
-                MDocType.DOCBASETYPE_ManufacturingOrder, null,
-                0, 0, 80000, GL_Manufacturing, false)
-        createDocType("Manufacturing Cost Collector", "Cost Collector",
-                MDocType.DOCBASETYPE_ManufacturingCostCollector, null,
-                0, 0, 81000, GL_Manufacturing, false)
-        createDocType("Maintenance Order", "Maintenance Order",
-                MDocType.DOCBASETYPE_MaintenanceOrder, null,
-                0, 0, 86000, GL_Manufacturing, false)
-        createDocType("Quality Order", "Quality Order",
-                MDocType.DOCBASETYPE_QualityOrder, null,
-                0, 0, 87000, GL_Manufacturing, false)
-        createDocType("Distribution Order", "Distribution Order",
-                MDocType.DOCBASETYPE_DistributionOrder, null,
-                0, 0, 88000, GL_Distribution, false)
+        createDocType(
+            "Manufacturing Order", "Manufacturing Order",
+            MDocType.DOCBASETYPE_ManufacturingOrder, null,
+            0, 0, 80000, GL_Manufacturing, false
+        )
+        createDocType(
+            "Manufacturing Cost Collector", "Cost Collector",
+            MDocType.DOCBASETYPE_ManufacturingCostCollector, null,
+            0, 0, 81000, GL_Manufacturing, false
+        )
+        createDocType(
+            "Maintenance Order", "Maintenance Order",
+            MDocType.DOCBASETYPE_MaintenanceOrder, null,
+            0, 0, 86000, GL_Manufacturing, false
+        )
+        createDocType(
+            "Quality Order", "Quality Order",
+            MDocType.DOCBASETYPE_QualityOrder, null,
+            0, 0, 87000, GL_Manufacturing, false
+        )
+        createDocType(
+            "Distribution Order", "Distribution Order",
+            MDocType.DOCBASETYPE_DistributionOrder, null,
+            0, 0, 88000, GL_Distribution, false
+        )
         //Payroll
-        createDocType("Payroll", "Payroll",
-                MDocType.DOCBASETYPE_Payroll, null,
-                0, 0, 90000, GL_Payroll, false)
+        createDocType(
+            "Payroll", "Payroll",
+            MDocType.DOCBASETYPE_Payroll, null,
+            0, 0, 90000, GL_Payroll, false
+        )
 
-        val DT = createDocType("POS Order", "Order Confirmation",
-                MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_POSOrder,
-                DT_SI, DT_II, 80000, GL_None, false)    // Bar
+        val DT = createDocType(
+            "POS Order", "Order Confirmation",
+            MDocType.DOCBASETYPE_SalesOrder, MDocType.DOCSUBTYPESO_POSOrder,
+            DT_SI, DT_II, 80000, GL_None, false
+        )    // Bar
         //	POS As Default for window SO
         createPreference("C_DocTypeTarget_ID", DT.toString(), 143)
 
         //  Update ClientInfo
         sqlCmd = StringBuffer("UPDATE AD_ClientInfo SET ")
         sqlCmd.append("C_AcctSchema1_ID=").append(m_as!!.c_AcctSchema_ID)
-                .append(", C_Calendar_ID=").append(m_calendar!!.c_Calendar_ID)
-                .append(" WHERE AD_Client_ID=").append(m_client!!.clientId)
+            .append(", C_Calendar_ID=").append(m_calendar!!.c_Calendar_ID)
+            .append(" WHERE AD_Client_ID=").append(m_client!!.clientId)
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1) {
             val err = "ClientInfo not updated"
@@ -827,10 +949,12 @@ class MSetup
      * @param isReturnTrx is return trx
      * @return C_DocType_ID doc type or 0 for error
      */
-    private fun createDocType(Name: String, PrintName: String?,
-                              DocBaseType: String, DocSubTypeSO: String?,
-                              C_DocTypeShipment_ID: Int, C_DocTypeInvoice_ID: Int,
-                              StartNo: Int, GL_Category_ID: Int, isReturnTrx: Boolean): Int {
+    private fun createDocType(
+        Name: String, PrintName: String?,
+        DocBaseType: String, DocSubTypeSO: String?,
+        C_DocTypeShipment_ID: Int, C_DocTypeInvoice_ID: Int,
+        StartNo: Int, GL_Category_ID: Int, isReturnTrx: Boolean
+    ): Int {
         var sequence: MSequence? = null
         if (StartNo != 0) {
             sequence = MSequence(m_ctx, aD_Client_ID, Name, StartNo)
@@ -886,14 +1010,23 @@ class MSetup
      * @param C_Currency_ID currency
      * @return true if created
      */
-    fun createEntities(C_Country_ID: Int, City: String, C_Region_ID: Int, C_Currency_ID: Int, postal: String, address1: String): Boolean {
+    fun createEntities(
+        C_Country_ID: Int,
+        City: String,
+        C_Region_ID: Int,
+        C_Currency_ID: Int,
+        postal: String,
+        address1: String
+    ): Boolean {
         if (m_as == null) {
             log.severe("No AcctountingSChema")
             throw Error("No AcctountingSChema")
         }
         if (log.isLoggable(Level.INFO))
-            log.info("C_Country_ID=" + C_Country_ID
-                    + ", City=" + City + ", C_Region_ID=" + C_Region_ID)
+            log.info(
+                "C_Country_ID=" + C_Country_ID
+                        + ", City=" + City + ", C_Region_ID=" + C_Region_ID
+            )
         m_info!!.append("\n----\n")
         //
         val defaultName = Msg.translate(m_lang, "Standard")
@@ -917,7 +1050,8 @@ class MSetup
         sqlCmd.append("(C_Campaign_ID,C_Channel_ID,").append(m_stdColumns).append(",")
         sqlCmd.append(" Value,Name,Costs,C_Campaign_UU) VALUES (")
         sqlCmd.append(C_Campaign_ID).append(",").append(C_Channel_ID).append(",").append(m_stdValues).append(",")
-        sqlCmd.append(defaultEntry).append(defaultEntry).append("0").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
+        sqlCmd.append(defaultEntry).append(defaultEntry).append("0").append(",")
+            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Campaign_ID")).append("=").append(defaultName).append("\n")
@@ -934,9 +1068,11 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element Campaign NOT updated")
         }
         // Campaign Translation
-        sqlCmd = StringBuffer("INSERT INTO C_Campaign_Trl (AD_Language,C_Campaign_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_Campaign_Trl_UU)")
+        sqlCmd =
+            StringBuffer("INSERT INTO C_Campaign_Trl (AD_Language,C_Campaign_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_Campaign_Trl_UU)")
         sqlCmd.append(" SELECT l.AD_Language,t.C_Campaign_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Campaign t")
-        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Campaign_ID=").append(C_Campaign_ID)
+        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Campaign_ID=")
+            .append(C_Campaign_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Campaign_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Campaign_ID=t.C_Campaign_ID)")
         no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
@@ -948,7 +1084,8 @@ class MSetup
         sqlCmd.append("(C_SalesRegion_ID,").append(m_stdColumns).append(",")
         sqlCmd.append(" Value,Name,IsSummary,C_SalesRegion_UU) VALUES (")
         sqlCmd.append(C_SalesRegion_ID).append(",").append(m_stdValues).append(", ")
-        sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
+        sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",")
+            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_SalesRegion_ID")).append("=").append(defaultName).append("\n")
@@ -965,9 +1102,11 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element SalesRegion NOT updated")
         }
         // Sales Region Translation
-        sqlCmd = StringBuffer("INSERT INTO C_SalesRegion_Trl (AD_Language,C_SalesRegion_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_SalesRegion_Trl_UU)")
+        sqlCmd =
+            StringBuffer("INSERT INTO C_SalesRegion_Trl (AD_Language,C_SalesRegion_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_SalesRegion_Trl_UU)")
         sqlCmd.append(" SELECT l.AD_Language,t.C_SalesRegion_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_SalesRegion t")
-        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_SalesRegion_ID=").append(C_SalesRegion_ID)
+        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_SalesRegion_ID=")
+            .append(C_SalesRegion_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_SalesRegion_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_SalesRegion_ID=t.C_SalesRegion_ID)")
         no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
@@ -979,7 +1118,8 @@ class MSetup
         sqlCmd.append("(C_Activity_ID,").append(m_stdColumns).append(",")
         sqlCmd.append(" Value,Name,IsSummary,C_Activity_UU) VALUES (")
         sqlCmd.append(C_Activity_ID).append(",").append(m_stdValues).append(", ")
-        sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
+        sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",")
+            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Activity_ID")).append("=").append(defaultName).append("\n")
@@ -996,9 +1136,11 @@ class MSetup
                 log.log(Level.SEVERE, "AcctSchema Element Activity NOT updated")
         }
         // Activity Translation
-        sqlCmd = StringBuffer("INSERT INTO C_Activity_Trl (AD_Language,C_Activity_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_Activity_Trl_UU)")
+        sqlCmd =
+            StringBuffer("INSERT INTO C_Activity_Trl (AD_Language,C_Activity_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_Activity_Trl_UU)")
         sqlCmd.append(" SELECT l.AD_Language,t.C_Activity_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_Activity t")
-        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Activity_ID=").append(C_Activity_ID)
+        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_Activity_ID=")
+            .append(C_Activity_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_Activity_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_Activity_ID=t.C_Activity_ID)")
         no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
@@ -1076,9 +1218,11 @@ class MSetup
             log.log(Level.SEVERE, "TaxCategory NOT inserted")
 
         //  TaxCategory translation
-        sqlCmd = StringBuffer("INSERT INTO C_TaxCategory_Trl (AD_Language,C_TaxCategory_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_TaxCategory_Trl_UU)")
+        sqlCmd =
+            StringBuffer("INSERT INTO C_TaxCategory_Trl (AD_Language,C_TaxCategory_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_TaxCategory_Trl_UU)")
         sqlCmd.append(" SELECT l.AD_Language,t.C_TaxCategory_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_TaxCategory t")
-        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_TaxCategory_ID=").append(C_TaxCategory_ID)
+        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_TaxCategory_ID=")
+            .append(C_TaxCategory_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_TaxCategory_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_TaxCategory_ID=t.C_TaxCategory_ID)")
         no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
@@ -1089,7 +1233,7 @@ class MSetup
         tax.setIsDefault(true)
         if (tax.save())
             m_info!!.append(Msg.translate(m_lang, "C_Tax_ID"))
-                    .append("=").append(tax.name).append("\n")
+                .append("=").append(tax.name).append("\n")
         else
             log.log(Level.SEVERE, "Tax NOT inserted")
 
@@ -1186,8 +1330,10 @@ class MSetup
         if (!plv.save())
             log.log(Level.SEVERE, "PriceList_Version NOT inserted")
         //  ProductPrice
-        val pp = MProductPrice(plv, product.m_Product_ID,
-                Env.ONE, Env.ONE, Env.ONE)
+        val pp = MProductPrice(
+            plv, product.m_Product_ID,
+            Env.ONE, Env.ONE, Env.ONE
+        )
         if (!pp.save())
             log.log(Level.SEVERE, "ProductPrice NOT inserted")
 
@@ -1250,14 +1396,17 @@ class MSetup
         sqlCmd.append("(C_PaymentTerm_ID,").append(m_stdColumns).append(",")
         sqlCmd.append("Value,Name,NetDays,GraceDays,DiscountDays,Discount,DiscountDays2,Discount2,IsDefault,C_PaymentTerm_UU) VALUES (")
         sqlCmd.append(C_PaymentTerm_ID).append(",").append(m_stdValues).append(",")
-        sqlCmd.append("'Immediate','Immediate',0,0,0,0,0,0,'Y'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
+        sqlCmd.append("'Immediate','Immediate',0,0,0,0,0,0,'Y'").append(",")
+            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "PaymentTerm NOT inserted")
         // Payment Term Translation
-        sqlCmd = StringBuffer("INSERT INTO C_PaymentTerm_Trl (AD_Language,C_PaymentTerm_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_PaymentTerm_Trl_UU)")
+        sqlCmd =
+            StringBuffer("INSERT INTO C_PaymentTerm_Trl (AD_Language,C_PaymentTerm_ID, Description,Name, IsTranslated,AD_Client_ID,AD_Org_ID,Created,Createdby,Updated,UpdatedBy,C_PaymentTerm_Trl_UU)")
         sqlCmd.append(" SELECT l.AD_Language,t.C_PaymentTerm_ID, t.Description,t.Name, 'N',t.AD_Client_ID,t.AD_Org_ID,t.Created,t.Createdby,t.Updated,t.UpdatedBy, generate_uuid() FROM AD_Language l, C_PaymentTerm t")
-        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_PaymentTerm_ID=").append(C_PaymentTerm_ID)
+        sqlCmd.append(" WHERE l.IsActive='Y' AND l.IsSystemLanguage='Y' AND l.IsBaseLanguage='N' AND t.C_PaymentTerm_ID=")
+            .append(C_PaymentTerm_ID)
         sqlCmd.append(" AND NOT EXISTS (SELECT * FROM C_PaymentTerm_Trl tt WHERE tt.AD_Language=l.AD_Language AND tt.C_PaymentTerm_ID=t.C_PaymentTerm_ID)")
         no = executeUpdateEx(sqlCmd.toString())
         if (no < 0)
@@ -1269,7 +1418,8 @@ class MSetup
         sqlCmd.append("(C_Cycle_ID,").append(m_stdColumns).append(",")
         sqlCmd.append(" Name,C_Currency_ID,C_Cycle_UU) VALUES (")
         sqlCmd.append(C_Cycle_ID).append(",").append(m_stdValues).append(", ")
-        sqlCmd.append(defaultEntry).append(C_Currency_ID).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
+        sqlCmd.append(defaultEntry).append(C_Currency_ID).append(",").append(TO_STRING(UUID.randomUUID().toString()))
+            .append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "Cycle NOT inserted")
@@ -1284,7 +1434,8 @@ class MSetup
         sqlCmd.append("(C_Project_ID,").append(m_stdColumns).append(",")
         sqlCmd.append(" Value,Name,C_Currency_ID,IsSummary,C_Project_UU) VALUES (")
         sqlCmd.append(C_Project_ID).append(",").append(m_stdValuesOrg).append(", ")
-        sqlCmd.append(defaultEntry).append(defaultEntry).append(C_Currency_ID).append(",'N'").append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
+        sqlCmd.append(defaultEntry).append(defaultEntry).append(C_Currency_ID).append(",'N'").append(",")
+            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Project_ID")).append("=").append(defaultName).append("\n")
@@ -1325,7 +1476,8 @@ class MSetup
         val sqlCmd = StringBuilder("INSERT INTO AD_Preference ")
         sqlCmd.append("(AD_Preference_ID,").append("AD_Preference_UU,").append(m_stdColumns).append(",")
         sqlCmd.append("Attribute,Value,AD_Window_ID) VALUES (")
-        sqlCmd.append(AD_Preference_ID).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(",").append(m_stdValues).append(",")
+        sqlCmd.append(AD_Preference_ID).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(",")
+            .append(m_stdValues).append(",")
         sqlCmd.append("'").append(Attribute).append("','").append(Value).append("',")
         if (AD_Window_ID == 0)
             sqlCmd.append("NULL)")

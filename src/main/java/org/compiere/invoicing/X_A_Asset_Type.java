@@ -15,62 +15,68 @@ import java.util.Properties;
  */
 public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_A_Asset_Type(Properties ctx, int A_Asset_Type_ID) {
-    super(ctx, A_Asset_Type_ID);
-  }
-
-  /** Load Constructor */
-  public X_A_Asset_Type(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_A_Asset_Type[").append(getId()).append("]");
-    return sb.toString();
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get Is Depreciable.
-   *
-   * @return This asset CAN be depreciated
-   */
-  public String getIsDepreciable() {
-    return (String) get_Value(COLUMNNAME_IsDepreciable);
-  }
+     * Standard Constructor
+     */
+    public X_A_Asset_Type(Properties ctx, int A_Asset_Type_ID) {
+        super(ctx, A_Asset_Type_ID);
+    }
 
     /**
-   * Get In Possession.
-   *
-   * @return The asset is in the possession of the organization
-   */
-  public String getIsInPosession() {
-    return (String) get_Value(COLUMNNAME_IsInPosession);
-  }
+     * Load Constructor
+     */
+    public X_A_Asset_Type(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Get Owned.
-   *
-   * @return The asset is owned by the organization
-   */
-  public String getIsOwned() {
-    return (String) get_Value(COLUMNNAME_IsOwned);
-  }
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
 
-  @Override
-  public int getTableId() {
-    return I_A_Asset_Type.Table_ID;
-  }
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_A_Asset_Type[").append(getId()).append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Get Is Depreciable.
+     *
+     * @return This asset CAN be depreciated
+     */
+    public String getIsDepreciable() {
+        return (String) get_Value(COLUMNNAME_IsDepreciable);
+    }
+
+    /**
+     * Get In Possession.
+     *
+     * @return The asset is in the possession of the organization
+     */
+    public String getIsInPosession() {
+        return (String) get_Value(COLUMNNAME_IsInPosession);
+    }
+
+    /**
+     * Get Owned.
+     *
+     * @return The asset is owned by the organization
+     */
+    public String getIsOwned() {
+        return (String) get_Value(COLUMNNAME_IsOwned);
+    }
+
+    @Override
+    public int getTableId() {
+        return I_A_Asset_Type.Table_ID;
+    }
 }

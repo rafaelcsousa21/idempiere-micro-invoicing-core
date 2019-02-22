@@ -17,147 +17,153 @@ import java.util.Properties;
  */
 public class X_M_StorageReservation extends PO implements I_M_StorageReservation, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_M_StorageReservation(Properties ctx, int M_StorageReservation_ID) {
-    super(ctx, M_StorageReservation_ID);
     /**
-     * if (M_StorageReservation_ID == 0) { setIsSOTrx (true); // Y setM_AttributeSetInstance_ID (0);
-     * setM_Product_ID (0); setM_Warehouse_ID (0); setQty (Env.ZERO); }
+     *
      */
-  }
-
-  /** Load Constructor */
-  public X_M_StorageReservation(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_M_StorageReservation[").append(getId()).append("]");
-    return sb.toString();
-  }
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Set Sales Transaction.
-   *
-   * @param IsSOTrx This is a Sales Transaction
-   */
-  public void setIsSOTrx(boolean IsSOTrx) {
-    set_ValueNoCheck(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
-  }
-
-  /**
-   * Get Sales Transaction.
-   *
-   * @return This is a Sales Transaction
-   */
-  public boolean isSOTrx() {
-    Object oo = get_Value(COLUMNNAME_IsSOTrx);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Standard Constructor
+     */
+    public X_M_StorageReservation(Properties ctx, int M_StorageReservation_ID) {
+        super(ctx, M_StorageReservation_ID);
+        /**
+         * if (M_StorageReservation_ID == 0) { setIsSOTrx (true); // Y setM_AttributeSetInstance_ID (0);
+         * setM_Product_ID (0); setM_Warehouse_ID (0); setQty (Env.ZERO); }
+         */
     }
-    return false;
-  }
 
     /**
-   * Set Attribute Set Instance.
-   *
-   * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-   */
-  public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-    if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
-    else
-      set_ValueNoCheck(
-          COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-  }
-
-  /**
-   * Get Attribute Set Instance.
-   *
-   * @return Product Attribute Set Instance
-   */
-  public int getMAttributeSetInstance_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Load Constructor
+     */
+    public X_M_StorageReservation(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Set Product.
-   *
-   * @param M_Product_ID Product, Service, Item
-   */
-  public void setM_Product_ID(int M_Product_ID) {
-    if (M_Product_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-  }
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
 
-  /**
-   * Get Product.
-   *
-   * @return Product, Service, Item
-   */
-  public int getM_Product_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_M_StorageReservation[").append(getId()).append("]");
+        return sb.toString();
+    }
 
     /**
-   * Set Warehouse.
-   *
-   * @param M_Warehouse_ID Storage Warehouse and Service Point
-   */
-  public void setM_Warehouse_ID(int M_Warehouse_ID) {
-    if (M_Warehouse_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
-  }
+     * Set Sales Transaction.
+     *
+     * @param IsSOTrx This is a Sales Transaction
+     */
+    public void setIsSOTrx(boolean IsSOTrx) {
+        set_ValueNoCheck(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
+    }
 
-  /**
-   * Get Warehouse.
-   *
-   * @return Storage Warehouse and Service Point
-   */
-  public int getM_Warehouse_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    /**
+     * Get Sales Transaction.
+     *
+     * @return This is a Sales Transaction
+     */
+    public boolean isSOTrx() {
+        Object oo = get_Value(COLUMNNAME_IsSOTrx);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
 
-  /**
-   * Set Quantity.
-   *
-   * @param Qty Quantity
-   */
-  public void setQty(BigDecimal Qty) {
-    set_ValueNoCheck(COLUMNNAME_Qty, Qty);
-  }
+    /**
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            set_ValueNoCheck(
+                    COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+    }
 
-  /**
-   * Get Quantity.
-   *
-   * @return Quantity
-   */
-  public BigDecimal getQty() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getMAttributeSetInstance_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-  @Override
-  public int getTableId() {
-    return I_M_StorageReservation.Table_ID;
-  }
+    /**
+     * Get Product.
+     *
+     * @return Product, Service, Item
+     */
+    public int getM_Product_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Product.
+     *
+     * @param M_Product_ID Product, Service, Item
+     */
+    public void setM_Product_ID(int M_Product_ID) {
+        if (M_Product_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+    }
+
+    /**
+     * Get Warehouse.
+     *
+     * @return Storage Warehouse and Service Point
+     */
+    public int getM_Warehouse_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Warehouse.
+     *
+     * @param M_Warehouse_ID Storage Warehouse and Service Point
+     */
+    public void setM_Warehouse_ID(int M_Warehouse_ID) {
+        if (M_Warehouse_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
+    }
+
+    /**
+     * Get Quantity.
+     *
+     * @return Quantity
+     */
+    public BigDecimal getQty() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Quantity.
+     *
+     * @param Qty Quantity
+     */
+    public void setQty(BigDecimal Qty) {
+        set_ValueNoCheck(COLUMNNAME_Qty, Qty);
+    }
+
+    @Override
+    public int getTableId() {
+        return I_M_StorageReservation.Table_ID;
+    }
 }

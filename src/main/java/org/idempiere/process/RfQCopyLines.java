@@ -14,10 +14,11 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
 
 /**
  * Copy Lines
@@ -26,35 +27,41 @@ import org.compiere.process.SvrProcess;
  * @version $Id: RfQCopyLines.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class RfQCopyLines extends SvrProcess {
-  /** From RfQ */
-  private int p_From_RfQ_ID = 0;
-  /** From RfQ */
-  private int p_To_RfQ_ID = 0;
+    /**
+     * From RfQ
+     */
+    private int p_From_RfQ_ID = 0;
+    /**
+     * From RfQ
+     */
+    private int p_To_RfQ_ID = 0;
 
-  /** Prepare */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("C_RfQ_ID"))
-        p_From_RfQ_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-    p_To_RfQ_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("C_RfQ_ID"))
+                p_From_RfQ_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+        p_To_RfQ_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @see org.compiere.process.SvrProcess#doIt()
-   * @return message
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO))
-      log.info("doIt - From_RfQ_ID=" + p_From_RfQ_ID + ", To_RfQ_ID=" + p_To_RfQ_ID);
+    /**
+     * Process
+     *
+     * @return message
+     * @see org.compiere.process.SvrProcess#doIt()
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO))
+            log.info("doIt - From_RfQ_ID=" + p_From_RfQ_ID + ", To_RfQ_ID=" + p_To_RfQ_ID);
 
-    throw new NotImplementedException();
+        throw new NotImplementedException();
 
     /*
     //
@@ -99,5 +106,5 @@ public class RfQCopyLines extends SvrProcess {
     StringBuilder msgreturn = new StringBuilder("# ").append(counter);
     return msgreturn.toString();
     */
-  } //	doIt
+    } //	doIt
 }

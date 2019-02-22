@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static software.hsharp.core.util.DBKt.getSQLValueEx;
-
 /**
  * PP Product BOM Model.
  *
@@ -22,145 +20,151 @@ import static software.hsharp.core.util.DBKt.getSQLValueEx;
  */
 public class MPPProductBOM extends X_PP_Product_BOM {
 
-  /** */
-  private static final long serialVersionUID = 1561124355655122911L;
-  /** Cache */
-  private static CCache<Integer, MPPProductBOM> s_cache =
-      new CCache<Integer, MPPProductBOM>(I_PP_Product_BOM.Table_Name, 40, 5);
-  /** BOM Lines */
-  private List<MPPProductBOMLine> m_lines = null;
-
     /**
-   * Get Product BOM by ID (cached)
-   *
-   * @param ctx
-   * @param PP_Product_BOM_ID
-   * @return product bom
-   */
-  public static MPPProductBOM get(Properties ctx, int PP_Product_BOM_ID) {
-    if (PP_Product_BOM_ID <= 0) return null;
-    MPPProductBOM bom = s_cache.get(PP_Product_BOM_ID);
-    if (bom != null) return bom;
-    bom = new MPPProductBOM(ctx, PP_Product_BOM_ID);
-    if (bom.getId() == PP_Product_BOM_ID) {
-      s_cache.put(PP_Product_BOM_ID, bom);
-    } else {
-      bom = null;
-    }
-    return bom;
-  }
-
+     *
+     */
+    private static final long serialVersionUID = 1561124355655122911L;
     /**
-   * Get BOM with Default Logic (Product = BOM Product and BOM Value = Product Value)
-   *
-   * @param product
-   * @param trxName
-   * @return product BOM
-   */
-  public static MPPProductBOM getDefault(MProduct product) {
-    MPPProductBOM bom =
-        new Query(
-                product.getCtx(),
-                I_PP_Product_BOM.Table_Name,
-                "M_Product_ID=? AND Value=?"
-        )
-            .setParameters(new Object[] {product.getM_Product_ID(), product.getValue()})
-            .setClient_ID()
-            .firstOnly();
-    // If outside trx, then cache it
-    if (bom != null) {
-      s_cache.put(bom.getId(), bom);
-    }
-    //
-    return bom;
-  }
+     * Cache
+     */
+    private static CCache<Integer, MPPProductBOM> s_cache =
+            new CCache<Integer, MPPProductBOM>(I_PP_Product_BOM.Table_Name, 40, 5);
+    /**
+     * BOM Lines
+     */
+    private List<MPPProductBOMLine> m_lines = null;
 
     public MPPProductBOM(Properties ctx, int PP_Product_BOM_ID) {
-    super(ctx, PP_Product_BOM_ID);
-  }
-
-  public MPPProductBOM(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * Get BOM Lines valid date for Product BOM
-   *
-   * @param valid Date to Validate
-   * @return BOM Lines
-   */
-  public MPPProductBOMLine[] getLines(Timestamp valid) {
-    List<MPPProductBOMLine> list = new ArrayList<MPPProductBOMLine>(); // Selected BOM Lines Only
-    for (MPPProductBOMLine bl : getLines(true)) {
-      if (bl.isValidFromTo(valid)) {
-        list.add(bl);
-      }
+        super(ctx, PP_Product_BOM_ID);
     }
-    //
-    return list.toArray(new MPPProductBOMLine[list.size()]);
-  } //	getLines
+
+    public MPPProductBOM(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Get BOM Lines for Product BOM
-   *
-   * @return BOM Lines
-   */
-  public MPPProductBOMLine[] getLines(boolean reload) {
-    if (this.m_lines == null || reload) {
-      final String whereClause = MPPProductBOMLine.COLUMNNAME_PP_Product_BOM_ID + "=?";
-      this.m_lines =
-          new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause)
-              .setParameters(new Object[] {getPP_Product_BOM_ID()})
-              .setOnlyActiveRecords(true)
-              .setOrderBy(MPPProductBOMLine.COLUMNNAME_Line)
-              .list();
+     * Get Product BOM by ID (cached)
+     *
+     * @param ctx
+     * @param PP_Product_BOM_ID
+     * @return product bom
+     */
+    public static MPPProductBOM get(Properties ctx, int PP_Product_BOM_ID) {
+        if (PP_Product_BOM_ID <= 0) return null;
+        MPPProductBOM bom = s_cache.get(PP_Product_BOM_ID);
+        if (bom != null) return bom;
+        bom = new MPPProductBOM(ctx, PP_Product_BOM_ID);
+        if (bom.getId() == PP_Product_BOM_ID) {
+            s_cache.put(PP_Product_BOM_ID, bom);
+        } else {
+            bom = null;
+        }
+        return bom;
     }
-    return this.m_lines.toArray(new MPPProductBOMLine[this.m_lines.size()]);
-  } //	getLines
+
+    /**
+     * Get BOM with Default Logic (Product = BOM Product and BOM Value = Product Value)
+     *
+     * @param product
+     * @param trxName
+     * @return product BOM
+     */
+    public static MPPProductBOM getDefault(MProduct product) {
+        MPPProductBOM bom =
+                new Query(
+                        product.getCtx(),
+                        I_PP_Product_BOM.Table_Name,
+                        "M_Product_ID=? AND Value=?"
+                )
+                        .setParameters(new Object[]{product.getM_Product_ID(), product.getValue()})
+                        .setClient_ID()
+                        .firstOnly();
+        // If outside trx, then cache it
+        if (bom != null) {
+            s_cache.put(bom.getId(), bom);
+        }
+        //
+        return bom;
+    }
+
+    /**
+     * Get BOM Lines valid date for Product BOM
+     *
+     * @param valid Date to Validate
+     * @return BOM Lines
+     */
+    public MPPProductBOMLine[] getLines(Timestamp valid) {
+        List<MPPProductBOMLine> list = new ArrayList<MPPProductBOMLine>(); // Selected BOM Lines Only
+        for (MPPProductBOMLine bl : getLines(true)) {
+            if (bl.isValidFromTo(valid)) {
+                list.add(bl);
+            }
+        }
+        //
+        return list.toArray(new MPPProductBOMLine[list.size()]);
+    } //	getLines
+
+    /**
+     * Get BOM Lines for Product BOM
+     *
+     * @return BOM Lines
+     */
+    public MPPProductBOMLine[] getLines(boolean reload) {
+        if (this.m_lines == null || reload) {
+            final String whereClause = MPPProductBOMLine.COLUMNNAME_PP_Product_BOM_ID + "=?";
+            this.m_lines =
+                    new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause)
+                            .setParameters(new Object[]{getPP_Product_BOM_ID()})
+                            .setOnlyActiveRecords(true)
+                            .setOrderBy(MPPProductBOMLine.COLUMNNAME_Line)
+                            .list();
+        }
+        return this.m_lines.toArray(new MPPProductBOMLine[this.m_lines.size()]);
+    } //	getLines
 
     @Override
-  protected boolean afterDelete(boolean success) {
-    if (!success) return false;
+    protected boolean afterDelete(boolean success) {
+        if (!success) return false;
 
-    updateProduct();
-    return true;
-  }
-
-  @Override
-  protected boolean afterSave(boolean newRecord, boolean success) {
-    if (!success) return false;
-
-    if (newRecord || is_ValueChanged("IsActive")) {
-      updateProduct();
+        updateProduct();
+        return true;
     }
-    return true;
-  }
 
-  private void updateProduct() {
-    int count =
-        new Query(
-                getCtx(),
-                I_PP_Product_BOM.Table_Name,
-                I_PP_Product_BOM.COLUMNNAME_M_Product_ID + "=?"
-        )
-            .setParameters(new Object[] {getM_Product_ID()})
-            .setOnlyActiveRecords(true)
-            .count();
-    MProduct product = new MProduct(getCtx(), getM_Product_ID());
-    product.setIsBOM(count > 0);
-    product.saveEx();
-  }
+    @Override
+    protected boolean afterSave(boolean newRecord, boolean success) {
+        if (!success) return false;
 
-  @Override
-  public String toString() {
-    StringBuffer sb =
-        new StringBuffer("MPPProductBOM[")
-            .append(getId())
-            .append("-")
-            .append(getDocumentNo())
-            .append(", Value=")
-            .append(getValue())
-            .append("]");
-    return sb.toString();
-  }
+        if (newRecord || is_ValueChanged("IsActive")) {
+            updateProduct();
+        }
+        return true;
+    }
+
+    private void updateProduct() {
+        int count =
+                new Query(
+                        getCtx(),
+                        I_PP_Product_BOM.Table_Name,
+                        I_PP_Product_BOM.COLUMNNAME_M_Product_ID + "=?"
+                )
+                        .setParameters(new Object[]{getM_Product_ID()})
+                        .setOnlyActiveRecords(true)
+                        .count();
+        MProduct product = new MProduct(getCtx(), getM_Product_ID());
+        product.setIsBOM(count > 0);
+        product.saveEx();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb =
+                new StringBuffer("MPPProductBOM[")
+                        .append(getId())
+                        .append("-")
+                        .append(getDocumentNo())
+                        .append(", Value=")
+                        .append(getValue())
+                        .append("]");
+        return sb.toString();
+    }
 } //	MPPProductBOM

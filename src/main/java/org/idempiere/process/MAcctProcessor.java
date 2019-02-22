@@ -17,164 +17,166 @@ import java.util.Properties;
 
 
 public class MAcctProcessor extends X_C_AcctProcessor
-    implements AdempiereProcessor, AdempiereProcessor2 {
-  /** */
-  private static final long serialVersionUID = -4760475718973777369L;
+        implements AdempiereProcessor, AdempiereProcessor2 {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4760475718973777369L;
 
     /**
-   * Standard Construvtor
-   *
-   * @param ctx context
-   * @param C_AcctProcessor_ID id
-   * @param trxName transaction
-   */
-  public MAcctProcessor(Properties ctx, int C_AcctProcessor_ID) {
-    super(ctx, C_AcctProcessor_ID);
-    if (C_AcctProcessor_ID == 0) {
-      //	setName (null);
-      //	setSupervisor_ID (0);
-      //	setFrequencyType (FREQUENCYTYPE_Hour);
-      //	setFrequency (1);
-      setKeepLogDays(7); // 7
-    }
-  } //	MAcctProcessor
+     * Standard Construvtor
+     *
+     * @param ctx                context
+     * @param C_AcctProcessor_ID id
+     * @param trxName            transaction
+     */
+    public MAcctProcessor(Properties ctx, int C_AcctProcessor_ID) {
+        super(ctx, C_AcctProcessor_ID);
+        if (C_AcctProcessor_ID == 0) {
+            //	setName (null);
+            //	setSupervisor_ID (0);
+            //	setFrequencyType (FREQUENCYTYPE_Hour);
+            //	setFrequency (1);
+            setKeepLogDays(7); // 7
+        }
+    } //	MAcctProcessor
 
-  /**
-   * Load Constructor
-   *
-   * @param ctx context
-   * @param rs result set
-   * @param trxName transaction
-   */
-  public MAcctProcessor(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  } //	MAcctProcessor
+    /**
+     * Load Constructor
+     *
+     * @param ctx     context
+     * @param rs      result set
+     * @param trxName transaction
+     */
+    public MAcctProcessor(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    } //	MAcctProcessor
 
-  /**
-   * Parent Constructor
-   *
-   * @param client parent
-   * @param Supervisor_ID admin
-   */
-  public MAcctProcessor(MClient client, int Supervisor_ID) {
-    this(client.getCtx(), 0);
-    setClientOrg(client);
-    StringBuilder msgset =
-        new StringBuilder()
-            .append(client.getName())
-            .append(" - ")
-            .append(Msg.translate(getCtx(), "C_AcctProcessor_ID"));
-    setName(msgset.toString());
-    setSupervisor_ID(Supervisor_ID);
-  } //	MAcctProcessor
+    /**
+     * Parent Constructor
+     *
+     * @param client        parent
+     * @param Supervisor_ID admin
+     */
+    public MAcctProcessor(MClient client, int Supervisor_ID) {
+        this(client.getCtx(), 0);
+        setClientOrg(client);
+        StringBuilder msgset =
+                new StringBuilder()
+                        .append(client.getName())
+                        .append(" - ")
+                        .append(Msg.translate(getCtx(), "C_AcctProcessor_ID"));
+        setName(msgset.toString());
+        setSupervisor_ID(Supervisor_ID);
+    } //	MAcctProcessor
 
-  /**
-   * Before Save
-   *
-   * @param newRecord new
-   * @return true
-   */
-  @Override
-  protected boolean beforeSave(boolean newRecord) {
-    if (newRecord || is_ValueChanged("AD_Schedule_ID")) {
-      long nextWork =
-          MSchedule.getNextRunMS(
-              System.currentTimeMillis(),
-              getScheduleType(),
-              getFrequencyType(),
-              getFrequency(),
-              getCronPattern());
-      if (nextWork > 0) setDateNextRun(new Timestamp(nextWork));
-    }
+    /**
+     * Before Save
+     *
+     * @param newRecord new
+     * @return true
+     */
+    @Override
+    protected boolean beforeSave(boolean newRecord) {
+        if (newRecord || is_ValueChanged("AD_Schedule_ID")) {
+            long nextWork =
+                    MSchedule.getNextRunMS(
+                            System.currentTimeMillis(),
+                            getScheduleType(),
+                            getFrequencyType(),
+                            getFrequency(),
+                            getCronPattern());
+            if (nextWork > 0) setDateNextRun(new Timestamp(nextWork));
+        }
 
-    return true;
-  } //	beforeSave
+        return true;
+    } //	beforeSave
 
-  /**
-   * Get Server ID
-   *
-   * @return id
-   */
-  public String getServerID() {
-    StringBuilder msgreturn = new StringBuilder("AcctProcessor").append(getId());
-    return msgreturn.toString();
-  } //	getServerID
+    /**
+     * Get Server ID
+     *
+     * @return id
+     */
+    public String getServerID() {
+        StringBuilder msgreturn = new StringBuilder("AcctProcessor").append(getId());
+        return msgreturn.toString();
+    } //	getServerID
 
-  /**
-   * Get Date Next Run
-   *
-   * @param requery requery
-   * @return date next run
-   */
-  public Timestamp getDateNextRun(boolean requery) {
-    if (requery) load((HashMap)null);
-    return getDateNextRun();
-  } //	getDateNextRun
+    /**
+     * Get Date Next Run
+     *
+     * @param requery requery
+     * @return date next run
+     */
+    public Timestamp getDateNextRun(boolean requery) {
+        if (requery) load((HashMap) null);
+        return getDateNextRun();
+    } //	getDateNextRun
 
-  /**
-   * Get Logs
-   *
-   * @return logs
-   */
-  public AdempiereProcessorLog[] getLogs() {
-    String whereClause = "C_AcctProcessor_ID=? ";
-    List<MAcctProcessor> list =
-        new Query(getCtx(), I_C_AcctProcessorLog.Table_Name, whereClause)
-            .setParameters(getC_AcctProcessor_ID())
-            .setOrderBy("Created DESC")
-            .list();
-    return list.toArray(new MAcctProcessorLog[list.size()]);
-  } //	getLogs
+    /**
+     * Get Logs
+     *
+     * @return logs
+     */
+    public AdempiereProcessorLog[] getLogs() {
+        String whereClause = "C_AcctProcessor_ID=? ";
+        List<MAcctProcessor> list =
+                new Query(getCtx(), I_C_AcctProcessorLog.Table_Name, whereClause)
+                        .setParameters(getC_AcctProcessor_ID())
+                        .setOrderBy("Created DESC")
+                        .list();
+        return list.toArray(new MAcctProcessorLog[list.size()]);
+    } //	getLogs
 
     @Override
-  public String getFrequencyType() {
-    return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequencyType();
-  }
+    public String getFrequencyType() {
+        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequencyType();
+    }
 
-  @Override
-  public int getFrequency() {
-    return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequency();
-  }
+    @Override
+    public int getFrequency() {
+        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequency();
+    }
 
-  @Override
-  public boolean isIgnoreProcessingTime() {
-    return MSchedule.get(getCtx(), getAD_Schedule_ID()).isIgnoreProcessingTime();
-  }
+    @Override
+    public boolean isIgnoreProcessingTime() {
+        return MSchedule.get(getCtx(), getAD_Schedule_ID()).isIgnoreProcessingTime();
+    }
 
-  @Override
-  public String getScheduleType() {
-    return MSchedule.get(getCtx(), getAD_Schedule_ID()).getScheduleType();
-  }
+    @Override
+    public String getScheduleType() {
+        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getScheduleType();
+    }
 
-  @Override
-  public String getCronPattern() {
-    return MSchedule.get(getCtx(), getAD_Schedule_ID()).getCronPattern();
-  }
+    @Override
+    public String getCronPattern() {
+        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getCronPattern();
+    }
 
-  /**
-   * Set Date last run.
-   *
-   * @param DateLastRun Date the process was last run.
-   */
-  public void setDateLastRun(Timestamp DateLastRun) {
-    set_Value(COLUMNNAME_DateLastRun, DateLastRun);
-  }
+    /**
+     * Get Description.
+     *
+     * @return Optional short description of the record
+     */
+    public String getDescription() {
+        return (String) get_Value(COLUMNNAME_Description);
+    }
 
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
+    /**
+     * Get Date last run.
+     *
+     * @return Date the process was last run.
+     */
+    public Timestamp getDateLastRun() {
+        return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
+    }
 
-  /**
-   * Get Date last run.
-   *
-   * @return Date the process was last run.
-   */
-  public Timestamp getDateLastRun() {
-    return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
-  }
+    /**
+     * Set Date last run.
+     *
+     * @param DateLastRun Date the process was last run.
+     */
+    public void setDateLastRun(Timestamp DateLastRun) {
+        set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+    }
 } //	MAcctProcessor

@@ -16,49 +16,56 @@ import java.util.Properties;
  */
 public class X_AD_ModelValidator extends BasePOName implements I_AD_ModelValidator, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_AD_ModelValidator(Properties ctx, int AD_ModelValidator_ID) {
-    super(ctx, AD_ModelValidator_ID);
-  }
-
-  /** Load Constructor */
-  public X_AD_ModelValidator(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-  public X_AD_ModelValidator(Properties ctx, Row row) {
-    super(ctx, row);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 4 - System
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-
-  @Override
-  public int getTableId() {
-    return Table_ID;
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_AD_ModelValidator[").append(getId()).append("]");
-    return sb.toString();
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get Model Validation Class.
-   *
-   * @return Model Validation Class
-   */
-  public String getModelValidationClass() {
-    return (String) get_Value(COLUMNNAME_ModelValidationClass);
-  }
+     * Standard Constructor
+     */
+    public X_AD_ModelValidator(Properties ctx, int AD_ModelValidator_ID) {
+        super(ctx, AD_ModelValidator_ID);
+    }
+
+    /**
+     * Load Constructor
+     */
+    public X_AD_ModelValidator(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
+
+    public X_AD_ModelValidator(Properties ctx, Row row) {
+        super(ctx, row);
+    }
+
+    /**
+     * AccessLevel
+     *
+     * @return 4 - System
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+
+    @Override
+    public int getTableId() {
+        return Table_ID;
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_AD_ModelValidator[").append(getId()).append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Get Model Validation Class.
+     *
+     * @return Model Validation Class
+     */
+    public String getModelValidationClass() {
+        return (String) get_Value(COLUMNNAME_ModelValidationClass);
+    }
 
 }

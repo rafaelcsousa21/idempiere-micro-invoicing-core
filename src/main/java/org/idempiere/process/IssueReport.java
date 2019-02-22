@@ -23,22 +23,26 @@ import org.compiere.process.SvrProcess;
  * @version $Id: IssueReport.java,v 1.2 2006/07/30 00:54:44 jjanke Exp $
  */
 public class IssueReport extends SvrProcess {
-  /** Issue to report */
-  private int m_AD_Issue_ID = 0;
+    /**
+     * Issue to report
+     */
+    private int m_AD_Issue_ID = 0;
 
-  /** Prepare */
-  protected void prepare() {
-    m_AD_Issue_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        m_AD_Issue_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Do It
-   *
-   * @return info
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Do It
+     *
+     * @return info
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
 
     /*
     if (log.isLoggable(Level.INFO)) log.info("AD_Issue_ID=" + m_AD_Issue_ID);
@@ -59,5 +63,5 @@ public class IssueReport extends SvrProcess {
     	return msgreturn.toString();
     }
     throw new AdempiereSystemError("Issue Not Saved");*/
-  } //	doIt
+    } //	doIt
 } //	IssueReport

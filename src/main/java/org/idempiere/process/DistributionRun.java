@@ -25,36 +25,54 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
+import static software.hsharp.core.util.DBKt.prepareStatement;
+
 /**
  * Create Distribution
  *
  * @author Jorg Janke
  * @author victor.perez@e-evolution.com
- *     <li>FR Let use the Distribution List and Distribution Run for DO
- * @see http://sourceforge.net/tracker/index.php?func=detail&aid=2030865&group_id=176962&atid=879335
+ * <li>FR Let use the Distribution List and Distribution Run for DO
  * @version $Id: DistributionRun.java,v 1.4 2006/07/30 00:51:02 jjanke Exp $
+ * @see http://sourceforge.net/tracker/index.php?func=detail&aid=2030865&group_id=176962&atid=879335
  */
 public class DistributionRun extends SvrProcess {
-  /** The Run to execute */
-  private int p_M_DistributionRun_ID = 0;
-  /** Date Promised */
-  private Timestamp p_DatePromised = null;
-  /** Date Promised To */
-  // private Timestamp			p_DatePromised_To = null;
-  /** Document Type */
-  private int p_C_DocType_ID = 0;
-  /** Test Mode */
-  private boolean p_IsTest = false;
-  /** Warehouse to Distribution Order */
-  private int p_M_Warehouse_ID = 0;
-  /** Consolidate Document * */
-  private boolean p_ConsolidateDocument = false;
-  /** Distribution List * */
-  @SuppressWarnings("unused")
-  private int p_M_DistributionList_ID = 0;
-  /** Distribute Based in DRP Demand * */
-  private boolean p_BasedInDamnd = false;
+    /**
+     * The Run to execute
+     */
+    private int p_M_DistributionRun_ID = 0;
+    /**
+     * Date Promised
+     */
+    private Timestamp p_DatePromised = null;
+    /** Date Promised To */
+    // private Timestamp			p_DatePromised_To = null;
+    /**
+     * Document Type
+     */
+    private int p_C_DocType_ID = 0;
+    /**
+     * Test Mode
+     */
+    private boolean p_IsTest = false;
+    /**
+     * Warehouse to Distribution Order
+     */
+    private int p_M_Warehouse_ID = 0;
+    /**
+     * Consolidate Document *
+     */
+    private boolean p_ConsolidateDocument = false;
+    /**
+     * Distribution List *
+     */
+    @SuppressWarnings("unused")
+    private int p_M_DistributionList_ID = 0;
+    /**
+     * Distribute Based in DRP Demand *
+     */
+    private boolean p_BasedInDamnd = false;
 
   /* 		throw new NotImplementedException();
   //
@@ -65,52 +83,60 @@ public class DistributionRun extends SvrProcess {
   private MDistributionRunDetail[]	m_details = null;
   */
 
-  /** Date Ordered */
-  private Timestamp m_DateOrdered = null;
-  /** Orders Created */
-  private int m_counter = 0;
-  /** Document Type */
-  private MDocType m_docType = null;
+    /**
+     * Date Ordered
+     */
+    private Timestamp m_DateOrdered = null;
+    /**
+     * Orders Created
+     */
+    private int m_counter = 0;
+    /**
+     * Document Type
+     */
+    private MDocType m_docType = null;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      //	log.fine("prepare - " + para[i]);
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("C_DocType_ID")) {
-        p_C_DocType_ID = ((BigDecimal) para[i].getParameter()).intValue();
-        m_docType = new MDocType(getCtx(), p_C_DocType_ID);
-      } else if (name.equals("DatePromised")) {
-        p_DatePromised = (Timestamp) para[i].getParameter();
-        // p_DatePromised_To = (Timestamp)para[i].getParameter_To();
-      } else if (name.equals("IsTest")) p_IsTest = "Y".equals(para[i].getParameter());
-      else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
-          && name.equals("M_Warehouse_ID"))
-        p_M_Warehouse_ID = ((BigDecimal) para[i].getParameter()).intValue();
-      else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
-          && name.equals("ConsolidateDocument"))
-        p_ConsolidateDocument = "Y".equals((String) para[i].getParameter());
-      else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
-          && name.equals("M_DistributionList_ID"))
-        p_M_DistributionList_ID = para[i].getParameterAsInt();
-      else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
-          && name.equals("IsRequiredDRP"))
-        p_BasedInDamnd = "Y".equals((String) para[i].getParameter());
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-    p_M_DistributionRun_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            //	log.fine("prepare - " + para[i]);
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("C_DocType_ID")) {
+                p_C_DocType_ID = ((BigDecimal) para[i].getParameter()).intValue();
+                m_docType = new MDocType(getCtx(), p_C_DocType_ID);
+            } else if (name.equals("DatePromised")) {
+                p_DatePromised = (Timestamp) para[i].getParameter();
+                // p_DatePromised_To = (Timestamp)para[i].getParameter_To();
+            } else if (name.equals("IsTest")) p_IsTest = "Y".equals(para[i].getParameter());
+            else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
+                    && name.equals("M_Warehouse_ID"))
+                p_M_Warehouse_ID = ((BigDecimal) para[i].getParameter()).intValue();
+            else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
+                    && name.equals("ConsolidateDocument"))
+                p_ConsolidateDocument = "Y".equals((String) para[i].getParameter());
+            else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
+                    && name.equals("M_DistributionList_ID"))
+                p_M_DistributionList_ID = para[i].getParameterAsInt();
+            else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
+                    && name.equals("IsRequiredDRP"))
+                p_BasedInDamnd = "Y".equals((String) para[i].getParameter());
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+        p_M_DistributionRun_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (text with variables)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Perform process.
+     *
+     * @return Message (text with variables)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
 
     /*
     if (log.isLoggable(Level.INFO)) log.info("M_DistributionRun_ID=" + p_M_DistributionRun_ID
@@ -190,62 +216,64 @@ public class DistributionRun extends SvrProcess {
     StringBuilder msgreturn = new StringBuilder("@Created@ #").append(m_counter);
     return msgreturn.toString();
     */
-  } //	doIt
+    } //	doIt
 
-  /**
-   * Insert Details
-   *
-   * @return number of rows inserted
-   */
-  private int insertDetails() {
-    //	Handle NULL
-    String sql =
-        "UPDATE M_DistributionRunLine SET MinQty = 0 WHERE MinQty IS NULL AND M_DistributionRun_ID=?";
-    int no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID});
-    sql = "UPDATE M_DistributionListLine SET MinQty = 0 WHERE MinQty IS NULL";
-    no = executeUpdateEx(sql);
-    //	Total Ratio
-    sql =
-        "UPDATE M_DistributionList l "
-            + "SET RatioTotal = (SELECT SUM(Ratio) FROM M_DistributionListLine ll "
-            + " WHERE l.M_DistributionList_ID=ll.M_DistributionList_ID) "
-            + "WHERE EXISTS (SELECT * FROM M_DistributionRunLine rl"
-            + " WHERE l.M_DistributionList_ID=rl.M_DistributionList_ID"
-            + " AND rl.M_DistributionRun_ID=?)";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID});
+    /**
+     * Insert Details
+     *
+     * @return number of rows inserted
+     */
+    private int insertDetails() {
+        //	Handle NULL
+        String sql =
+                "UPDATE M_DistributionRunLine SET MinQty = 0 WHERE MinQty IS NULL AND M_DistributionRun_ID=?";
+        int no = executeUpdateEx(sql, new Object[]{p_M_DistributionRun_ID});
+        sql = "UPDATE M_DistributionListLine SET MinQty = 0 WHERE MinQty IS NULL";
+        no = executeUpdateEx(sql);
+        //	Total Ratio
+        sql =
+                "UPDATE M_DistributionList l "
+                        + "SET RatioTotal = (SELECT SUM(Ratio) FROM M_DistributionListLine ll "
+                        + " WHERE l.M_DistributionList_ID=ll.M_DistributionList_ID) "
+                        + "WHERE EXISTS (SELECT * FROM M_DistributionRunLine rl"
+                        + " WHERE l.M_DistributionList_ID=rl.M_DistributionList_ID"
+                        + " AND rl.M_DistributionRun_ID=?)";
+        no = executeUpdateEx(sql, new Object[]{p_M_DistributionRun_ID});
 
-    //	Delete Old
-    sql = "DELETE FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=?";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID});
-    if (log.isLoggable(Level.FINE)) log.fine("insertDetails - deleted #" + no);
-    //	Insert New
-    sql =
-        "INSERT INTO T_DistributionRunDetail "
-            + "(M_DistributionRun_ID, M_DistributionRunLine_ID, M_DistributionList_ID, M_DistributionListLine_ID,"
-            + "AD_Client_ID,AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,"
-            + "C_BPartner_ID, C_BPartner_Location_ID, M_Product_ID,"
-            + "Ratio, MinQty, Qty) "
-            //
-            + "SELECT rl.M_DistributionRun_ID, rl.M_DistributionRunLine_ID,"
-            + "ll.M_DistributionList_ID, ll.M_DistributionListLine_ID, "
-            + "rl.AD_Client_ID,rl.AD_Org_ID, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy,"
-            + "ll.C_BPartner_ID, ll.C_BPartner_Location_ID, rl.M_Product_ID, "
-            + "ll.Ratio, "
-            + "CASE WHEN rl.MinQty > ll.MinQty THEN rl.MinQty ELSE ll.MinQty END, "
-            + "(ll.Ratio/l.RatioTotal*rl.TotalQty)"
-            + "FROM M_DistributionRunLine rl"
-            + " INNER JOIN M_DistributionList l ON (rl.M_DistributionList_ID=l.M_DistributionList_ID)"
-            + " INNER JOIN M_DistributionListLine ll ON (rl.M_DistributionList_ID=ll.M_DistributionList_ID) "
-            + "WHERE rl.M_DistributionRun_ID=?"
-            + " AND l.RatioTotal<>0 AND rl.IsActive='Y' AND ll.IsActive='Y'";
-    no = executeUpdateEx(sql, new Object[] {p_M_DistributionRun_ID});
-    if (log.isLoggable(Level.FINE)) log.fine("inserted #" + no);
-    return no;
-  } //	insertDetails
+        //	Delete Old
+        sql = "DELETE FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=?";
+        no = executeUpdateEx(sql, new Object[]{p_M_DistributionRun_ID});
+        if (log.isLoggable(Level.FINE)) log.fine("insertDetails - deleted #" + no);
+        //	Insert New
+        sql =
+                "INSERT INTO T_DistributionRunDetail "
+                        + "(M_DistributionRun_ID, M_DistributionRunLine_ID, M_DistributionList_ID, M_DistributionListLine_ID,"
+                        + "AD_Client_ID,AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,"
+                        + "C_BPartner_ID, C_BPartner_Location_ID, M_Product_ID,"
+                        + "Ratio, MinQty, Qty) "
+                        //
+                        + "SELECT rl.M_DistributionRun_ID, rl.M_DistributionRunLine_ID,"
+                        + "ll.M_DistributionList_ID, ll.M_DistributionListLine_ID, "
+                        + "rl.AD_Client_ID,rl.AD_Org_ID, rl.IsActive, rl.Created,rl.CreatedBy, rl.Updated,rl.UpdatedBy,"
+                        + "ll.C_BPartner_ID, ll.C_BPartner_Location_ID, rl.M_Product_ID, "
+                        + "ll.Ratio, "
+                        + "CASE WHEN rl.MinQty > ll.MinQty THEN rl.MinQty ELSE ll.MinQty END, "
+                        + "(ll.Ratio/l.RatioTotal*rl.TotalQty)"
+                        + "FROM M_DistributionRunLine rl"
+                        + " INNER JOIN M_DistributionList l ON (rl.M_DistributionList_ID=l.M_DistributionList_ID)"
+                        + " INNER JOIN M_DistributionListLine ll ON (rl.M_DistributionList_ID=ll.M_DistributionList_ID) "
+                        + "WHERE rl.M_DistributionRun_ID=?"
+                        + " AND l.RatioTotal<>0 AND rl.IsActive='Y' AND ll.IsActive='Y'";
+        no = executeUpdateEx(sql, new Object[]{p_M_DistributionRun_ID});
+        if (log.isLoggable(Level.FINE)) log.fine("inserted #" + no);
+        return no;
+    } //	insertDetails
 
-  /** ************************************************************************ Add up Allocations */
-  private void addAllocations() throws NotImplementedException {
-    throw new NotImplementedException();
+    /**
+     * *********************************************************************** Add up Allocations
+     */
+    private void addAllocations() throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*
     //	Reset
@@ -287,16 +315,16 @@ public class DistributionRun extends SvrProcess {
     	MDistributionRunLine runLine = m_runLines[j];
     	if (log.isLoggable(Level.FINE)) log.fine("Run - " + runLine.getInfo());
     }*/
-  } //	addAllocations
+    } //	addAllocations
 
-  /**
-   * Is Allocation Equals Total
-   *
-   * @return true if allocation eq total
-   * @throws Exception
-   */
-  private boolean isAllocationEqTotal() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Is Allocation Equals Total
+     *
+     * @return true if allocation eq total
+     * @throws Exception
+     */
+    private boolean isAllocationEqTotal() throws Exception {
+        throw new NotImplementedException();
 
     /*
     boolean allocationEqTotal = true;
@@ -316,29 +344,29 @@ public class DistributionRun extends SvrProcess {
     if (log.isLoggable(Level.INFO)) log.info("=" + allocationEqTotal);
     return allocationEqTotal;
     */
-  } //	isAllocationEqTotal
+    } //	isAllocationEqTotal
 
-  /**
-   * Adjust Allocation
-   *
-   * @throws Exception
-   */
-  private void adjustAllocation() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Adjust Allocation
+     *
+     * @throws Exception
+     */
+    private void adjustAllocation() throws Exception {
+        throw new NotImplementedException();
 
     /*
     for (int j = 0; j < m_runLines.length; j++)
     	adjustAllocation(j);*/
-  } //	adjustAllocation
+    } //	adjustAllocation
 
-  /**
-   * Adjust Run Line Allocation
-   *
-   * @param index run line index
-   * @throws Exception
-   */
-  private void adjustAllocation(int index) throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Adjust Run Line Allocation
+     *
+     * @param index run line index
+     * @throws Exception
+     */
+    private void adjustAllocation(int index) throws Exception {
+        throw new NotImplementedException();
 
     /*
     MDistributionRunLine runLine = m_runLines[index];
@@ -413,15 +441,15 @@ public class DistributionRun extends SvrProcess {
     }
     runLine.setLastDifference(difference);
     */
-  } //	adjustAllocation
+    } //	adjustAllocation
 
-  /**
-   * ************************************************************************ Create Orders
-   *
-   * @return true if created
-   */
-  private boolean createOrders() throws NotImplementedException {
-    throw new NotImplementedException();
+    /**
+     * ************************************************************************ Create Orders
+     *
+     * @return true if created
+     */
+    private boolean createOrders() throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*
     //	Get Counter Org/BP
@@ -573,15 +601,15 @@ public class DistributionRun extends SvrProcess {
 
     return true;
     */
-  } //	createOrders
+    } //	createOrders
 
-  /**
-   * Insert Details
-   *
-   * @return number of rows inserted
-   */
-  private int insertDetailsDistributionDemand() throws NotImplementedException {
-    throw new NotImplementedException();
+    /**
+     * Insert Details
+     *
+     * @return number of rows inserted
+     */
+    private int insertDetailsDistributionDemand() throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*
     //	Handle NULL
@@ -647,51 +675,51 @@ public class DistributionRun extends SvrProcess {
     if (log.isLoggable(Level.FINE)) log.fine("inserted #" + no);
     return no;
     */
-  } //	insertDetails
+    } //	insertDetails
 
-  private BigDecimal getQtyDemand(int M_Product_ID) {
-    String sql =
-        "SELECT SUM (QtyOrdered-QtyDelivered-TargetQty) "
-            + "FROM DD_OrderLine ol "
-            + "INNER JOIN M_Locator l ON (l.M_Locator_ID=ol.M_Locator_ID) "
-            + "INNER JOIN DD_Order o ON (o.DD_Order_ID=ol.DD_Order_ID) "
-            + " WHERE o.DocStatus IN ('DR','IN') "
-            + "AND ol.DatePromised <= ? "
-            + "AND l.M_Warehouse_ID=? "
-            + "AND ol.M_Product_ID=? "
-            + "GROUP BY M_Product_ID, l.M_Warehouse_ID";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql);
-      pstmt.setTimestamp(1, p_DatePromised);
-      // pstmt.setTimestamp(2, p_DatePromised_To);
-      pstmt.setInt(2, p_M_Warehouse_ID);
-      pstmt.setInt(3, M_Product_ID);
+    private BigDecimal getQtyDemand(int M_Product_ID) {
+        String sql =
+                "SELECT SUM (QtyOrdered-QtyDelivered-TargetQty) "
+                        + "FROM DD_OrderLine ol "
+                        + "INNER JOIN M_Locator l ON (l.M_Locator_ID=ol.M_Locator_ID) "
+                        + "INNER JOIN DD_Order o ON (o.DD_Order_ID=ol.DD_Order_ID) "
+                        + " WHERE o.DocStatus IN ('DR','IN') "
+                        + "AND ol.DatePromised <= ? "
+                        + "AND l.M_Warehouse_ID=? "
+                        + "AND ol.M_Product_ID=? "
+                        + "GROUP BY M_Product_ID, l.M_Warehouse_ID";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = prepareStatement(sql);
+            pstmt.setTimestamp(1, p_DatePromised);
+            // pstmt.setTimestamp(2, p_DatePromised_To);
+            pstmt.setInt(2, p_M_Warehouse_ID);
+            pstmt.setInt(3, M_Product_ID);
 
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        return rs.getBigDecimal(1);
-      }
-    } catch (Exception e) {
-      log.log(Level.SEVERE, "doIt - " + sql, e);
-      return Env.ZERO;
-    } finally {
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                return rs.getBigDecimal(1);
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "doIt - " + sql, e);
+            return Env.ZERO;
+        } finally {
 
-      rs = null;
-      pstmt = null;
+            rs = null;
+            pstmt = null;
+        }
+
+        return Env.ZERO;
     }
 
-    return Env.ZERO;
-  }
-
-  /**
-   * Insert Details
-   *
-   * @return number of rows inserted
-   */
-  private int insertDetailsDistribution() throws NotImplementedException {
-    throw new NotImplementedException();
+    /**
+     * Insert Details
+     *
+     * @return number of rows inserted
+     */
+    private int insertDetailsDistribution() throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*
     //	Handle NULL
@@ -747,15 +775,15 @@ public class DistributionRun extends SvrProcess {
     if (log.isLoggable(Level.FINE)) log.fine("inserted #" + no);
     return no;
     */
-  } //	insertDetails
+    } //	insertDetails
 
-  /**
-   * ************************************************************************ Create Orders
-   *
-   * @return true if created
-   */
-  private boolean distributionOrders() throws NotImplementedException {
-    throw new NotImplementedException();
+    /**
+     * ************************************************************************ Create Orders
+     *
+     * @return true if created
+     */
+    private boolean distributionOrders() throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*
     //The Quantity Available is distribute with respect to Distribution Order Demand
@@ -1081,5 +1109,5 @@ public class DistributionRun extends SvrProcess {
     order = null;
     return true;
     */
-  }
+    }
 } //	DistributionRun

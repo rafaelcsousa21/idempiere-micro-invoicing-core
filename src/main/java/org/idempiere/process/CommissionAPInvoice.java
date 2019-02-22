@@ -14,9 +14,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Create AP Invoices for Commission
@@ -25,26 +26,28 @@ import org.compiere.process.SvrProcess;
  * @version $Id: CommissionAPInvoice.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class CommissionAPInvoice extends SvrProcess {
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (variables are parsed)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("doIt - C_CommissionRun_ID=" + getRecord_ID());
+    /**
+     * Perform process.
+     *
+     * @return Message (variables are parsed)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("doIt - C_CommissionRun_ID=" + getRecord_ID());
 
-    throw new NotImplementedException();
+        throw new NotImplementedException();
 
     /*
     	//	Load Data
@@ -87,5 +90,5 @@ public class CommissionAPInvoice extends SvrProcess {
     	//
     	return "@C_Invoice_ID@ = " + invoice.getDocumentNo();
     	*/
-  } //	doIt
+    } //	doIt
 } //	CommissionAPInvoice

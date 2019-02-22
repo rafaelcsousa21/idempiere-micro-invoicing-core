@@ -14,14 +14,15 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoicePaySchedule;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
 
 /**
  * Validate Invoice Payment Schedule
@@ -30,57 +31,59 @@ import org.idempiere.common.util.Env;
  * @version $Id: InvoicePayScheduleValidate.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class InvoicePayScheduleValidate extends SvrProcess {
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (clear text)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("C_InvoicePaySchedule_ID=" + getRecord_ID());
-    MInvoicePaySchedule[] schedule =
-        MInvoicePaySchedule.getInvoicePaySchedule(getCtx(), 0, getRecord_ID());
-    if (schedule.length == 0)
-      throw new IllegalArgumentException("InvoicePayScheduleValidate - No Schedule");
-    //	Get Invoice
-    MInvoice invoice = new MInvoice(getCtx(), schedule[0].getC_Invoice_ID());
-    if (invoice.getId() == 0)
-      throw new IllegalArgumentException("InvoicePayScheduleValidate - No Invoice");
-    //
-    BigDecimal total = Env.ZERO;
-    for (int i = 0; i < schedule.length; i++) {
-      BigDecimal due = schedule[i].getDueAmt();
-      if (due != null) total = total.add(due);
-    }
-    boolean valid = invoice.getGrandTotal().compareTo(total) == 0;
-    invoice.setIsPayScheduleValid(valid);
-    invoice.saveEx();
-    //	Schedule
-    for (int i = 0; i < schedule.length; i++) {
-      if (schedule[i].isValid() != valid) {
-        schedule[i].setIsValid(valid);
-        schedule[i].saveEx();
-      }
-    }
-    StringBuilder msg = new StringBuilder("@OK@");
-    if (!valid)
-      msg =
-          new StringBuilder("@GrandTotal@ = ")
-              .append(invoice.getGrandTotal())
-              .append(" <> @Total@ = ")
-              .append(total)
-              .append("  - @Difference@ = ")
-              .append(invoice.getGrandTotal().subtract(total));
-    return Msg.parseTranslation(getCtx(), msg.toString());
-  } //	doIt
+    /**
+     * Perform process.
+     *
+     * @return Message (clear text)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("C_InvoicePaySchedule_ID=" + getRecord_ID());
+        MInvoicePaySchedule[] schedule =
+                MInvoicePaySchedule.getInvoicePaySchedule(getCtx(), 0, getRecord_ID());
+        if (schedule.length == 0)
+            throw new IllegalArgumentException("InvoicePayScheduleValidate - No Schedule");
+        //	Get Invoice
+        MInvoice invoice = new MInvoice(getCtx(), schedule[0].getC_Invoice_ID());
+        if (invoice.getId() == 0)
+            throw new IllegalArgumentException("InvoicePayScheduleValidate - No Invoice");
+        //
+        BigDecimal total = Env.ZERO;
+        for (int i = 0; i < schedule.length; i++) {
+            BigDecimal due = schedule[i].getDueAmt();
+            if (due != null) total = total.add(due);
+        }
+        boolean valid = invoice.getGrandTotal().compareTo(total) == 0;
+        invoice.setIsPayScheduleValid(valid);
+        invoice.saveEx();
+        //	Schedule
+        for (int i = 0; i < schedule.length; i++) {
+            if (schedule[i].isValid() != valid) {
+                schedule[i].setIsValid(valid);
+                schedule[i].saveEx();
+            }
+        }
+        StringBuilder msg = new StringBuilder("@OK@");
+        if (!valid)
+            msg =
+                    new StringBuilder("@GrandTotal@ = ")
+                            .append(invoice.getGrandTotal())
+                            .append(" <> @Total@ = ")
+                            .append(total)
+                            .append("  - @Difference@ = ")
+                            .append(invoice.getGrandTotal().subtract(total));
+        return Msg.parseTranslation(getCtx(), msg.toString());
+    } //	doIt
 } //	InvoicePayScheduleValidate

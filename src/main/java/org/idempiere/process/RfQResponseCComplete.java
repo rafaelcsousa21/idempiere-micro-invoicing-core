@@ -14,9 +14,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Check if Response is Complete
@@ -25,28 +26,32 @@ import org.compiere.process.SvrProcess;
  * @version $Id: RfQResponseCComplete.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class RfQResponseCComplete extends SvrProcess {
-  /** RfQ Response */
-  private int p_C_RfQResponse_ID = 0;
+    /**
+     * RfQ Response
+     */
+    private int p_C_RfQResponse_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_C_RfQResponse_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_C_RfQResponse_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
 
     /*
     MRfQResponse response = new MRfQResponse (getCtx(), p_C_RfQResponse_ID, null);
@@ -59,5 +64,5 @@ public class RfQResponseCComplete extends SvrProcess {
     response.saveEx();
     return "OK";
     */
-  } //	doIt
+    } //	doIt
 } //	RfQResponseCComplete

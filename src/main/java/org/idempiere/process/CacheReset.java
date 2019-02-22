@@ -25,19 +25,22 @@ import org.idempiere.common.util.CacheMgt;
  * @version $Id: CacheReset.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class CacheReset extends SvrProcess implements ClientProcess {
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {} // 	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+    } // 	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message to be translated
-   * @throws Exception
-   */
-  protected String doIt() throws java.lang.Exception {
-    log.info("");
-    // Env.reset(false);	// not final
-    CacheMgt.get().reset();
-    return "Cache Reset";
-  } //	doIt
+    /**
+     * Perform process.
+     *
+     * @return Message to be translated
+     * @throws Exception
+     */
+    protected String doIt() throws java.lang.Exception {
+        log.info("");
+        // Env.reset(false);	// not final
+        CacheMgt.get().reset();
+        return "Cache Reset";
+    } //	doIt
 } //	CacheReset

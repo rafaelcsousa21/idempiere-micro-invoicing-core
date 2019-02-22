@@ -19,586 +19,634 @@ import java.util.Properties;
  */
 public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_AD_WF_Node(Properties ctx, int AD_WF_Node_ID) {
-    super(ctx, AD_WF_Node_ID);
     /**
-     * if (AD_WF_Node_ID == 0) { setAction (null); // Z setAD_WF_Node_ID (0); setAD_Workflow_ID (0);
-     * setCost (Env.ZERO); setDuration (0); setEntityType (null); // @SQL=select
-     * get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual setIsCentrallyMaintained (true); // Y
-     * setJoinElement (null); // X setLimit (0); setName (null); setSplitElement (null); // X
-     * setValue (null); setWaitingTime (0); setXPosition (0); setYPosition (0); }
+     * Wait (Sleep) = Z
      */
-  }
-
-  /** Load Constructor */
-  public X_AD_WF_Node(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 6 - System - Client
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_AD_WF_Node[").append(getId()).append("]");
-    return sb.toString();
-  }
-
-    /** Wait (Sleep) = Z */
-  public static final String ACTION_WaitSleep = "Z";
-  /** User Choice = C */
-  public static final String ACTION_UserChoice = "C";
-  /** Sub Workflow = F */
-  public static final String ACTION_SubWorkflow = "F";
-  /** Set Variable = V */
-  public static final String ACTION_SetVariable = "V";
-  /** User Window = W */
-  public static final String ACTION_UserWindow = "W";
-  /** User Form = X */
-  public static final String ACTION_UserForm = "X";
-  /** Apps Task = T */
-  public static final String ACTION_AppsTask = "T";
-  /** Apps Report = R */
-  public static final String ACTION_AppsReport = "R";
-  /** Apps Process = P */
-  public static final String ACTION_AppsProcess = "P";
-  /** Document Action = D */
-  public static final String ACTION_DocumentAction = "D";
-  /** EMail = M */
-  public static final String ACTION_EMail = "M";
-    /** User Info = I */
-  public static final String ACTION_UserInfo = "I";
-  /**
-   * Set Action.
-   *
-   * @param Action Indicates the Action to be performed
-   */
-  public void setAction(String Action) {
-
-    set_Value(COLUMNNAME_Action, Action);
-  }
-
-  /**
-   * Get Action.
-   *
-   * @return Indicates the Action to be performed
-   */
-  public String getAction() {
-    return (String) get_Value(COLUMNNAME_Action);
-  }
+    public static final String ACTION_WaitSleep = "Z";
+    /**
+     * User Choice = C
+     */
+    public static final String ACTION_UserChoice = "C";
+    /**
+     * Sub Workflow = F
+     */
+    public static final String ACTION_SubWorkflow = "F";
+    /**
+     * Set Variable = V
+     */
+    public static final String ACTION_SetVariable = "V";
+    /**
+     * User Window = W
+     */
+    public static final String ACTION_UserWindow = "W";
+    /**
+     * User Form = X
+     */
+    public static final String ACTION_UserForm = "X";
+    /**
+     * Apps Task = T
+     */
+    public static final String ACTION_AppsTask = "T";
+    /**
+     * Apps Report = R
+     */
+    public static final String ACTION_AppsReport = "R";
+    /**
+     * Apps Process = P
+     */
+    public static final String ACTION_AppsProcess = "P";
+    /**
+     * Document Action = D
+     */
+    public static final String ACTION_DocumentAction = "D";
+    /**
+     * EMail = M
+     */
+    public static final String ACTION_EMail = "M";
+    /**
+     * User Info = I
+     */
+    public static final String ACTION_UserInfo = "I";
+    /**
+     * Minute = M
+     */
+    public static final String DYNPRIORITYUNIT_Minute = "M";
+    /**
+     * Hour = H
+     */
+    public static final String DYNPRIORITYUNIT_Hour = "H";
+    /**
+     * Day = D
+     */
+    public static final String DYNPRIORITYUNIT_Day = "D";
+    /**
+     * Document Owner = D
+     */
+    public static final String EMAILRECIPIENT_DocumentOwner = "D";
+    /**
+     * Document Business Partner = B
+     */
+    public static final String EMAILRECIPIENT_DocumentBusinessPartner = "B";
+    /**
+     * WF Responsible = R
+     */
+    public static final String EMAILRECIPIENT_WFResponsible = "R";
+    /**
+     * AND = A
+     */
+    public static final String JOINELEMENT_AND = "A";
+    /**
+     * XOR = X
+     */
+    public static final String JOINELEMENT_XOR = "X";
+    /**
+     * AND = A
+     */
+    public static final String SPLITELEMENT_AND = "A";
+    /**
+     * XOR = X
+     */
+    public static final String SPLITELEMENT_XOR = "X";
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get Column.
-   *
-   * @return Column in the table
-   */
-  public int getAD_Column_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_Column_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Standard Constructor
+     */
+    public X_AD_WF_Node(Properties ctx, int AD_WF_Node_ID) {
+        super(ctx, AD_WF_Node_ID);
+        /**
+         * if (AD_WF_Node_ID == 0) { setAction (null); // Z setAD_WF_Node_ID (0); setAD_Workflow_ID (0);
+         * setCost (Env.ZERO); setDuration (0); setEntityType (null); // @SQL=select
+         * get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual setIsCentrallyMaintained (true); // Y
+         * setJoinElement (null); // X setLimit (0); setName (null); setSplitElement (null); // X
+         * setValue (null); setWaitingTime (0); setXPosition (0); setYPosition (0); }
+         */
+    }
 
     /**
-   * Get Context Help.
-   *
-   * @return Context Help
-   */
-  public int getAD_CtxHelp_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_CtxHelp_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Load Constructor
+     */
+    public X_AD_WF_Node(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Get Special Form.
-   *
-   * @return Special Form
-   */
-  public int getAD_Form_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_Form_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * AccessLevel
+     *
+     * @return 6 - System - Client
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_AD_WF_Node[").append(getId()).append("]");
+        return sb.toString();
+    }
 
     /**
-   * Get Image.
-   *
-   * @return Image or Icon
-   */
-  public int getAD_Image_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_Image_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Action.
+     *
+     * @return Indicates the Action to be performed
+     */
+    public String getAction() {
+        return (String) get_Value(COLUMNNAME_Action);
+    }
 
     /**
-   * Get Info Window.
-   *
-   * @return Info and search/select Window
-   */
-  public int getAD_InfoWindow_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_InfoWindow_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Set Action.
+     *
+     * @param Action Indicates the Action to be performed
+     */
+    public void setAction(String Action) {
+
+        set_Value(COLUMNNAME_Action, Action);
+    }
 
     /**
-   * Get Process.
-   *
-   * @return Process or Report
-   */
-  public int getAD_Process_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_Process_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Column.
+     *
+     * @return Column in the table
+     */
+    public int getAD_Column_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Column_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get OS Task.
-   *
-   * @return Operation System Task
-   */
-  public int getAD_Task_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_Task_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Context Help.
+     *
+     * @return Context Help
+     */
+    public int getAD_CtxHelp_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_CtxHelp_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Workflow Block.
-   *
-   * @return Workflow Transaction Execution Block
-   */
-  public int getAD_WF_Block_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Block_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Special Form.
+     *
+     * @return Special Form
+     */
+    public int getAD_Form_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Form_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Node.
-   *
-   * @return Workflow Node (activity), step or process
-   */
-  public int getAD_WF_Node_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Node_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Image.
+     *
+     * @return Image or Icon
+     */
+    public int getAD_Image_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Image_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Workflow Responsible.
-   *
-   * @return Responsible for Workflow Execution
-   */
-  public int getAD_WF_Responsible_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Responsible_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Info Window.
+     *
+     * @return Info and search/select Window
+     */
+    public int getAD_InfoWindow_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_InfoWindow_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Window.
-   *
-   * @return Data entry or display window
-   */
-  public int getAD_Window_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_Window_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
-    return (org.compiere.model.I_AD_Workflow)
-        MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-            .getPO(getAD_Workflow_ID());
-  }
-
-  /**
-   * Set Workflow.
-   *
-   * @param AD_Workflow_ID Workflow or combination of tasks
-   */
-  public void setAD_Workflow_ID(int AD_Workflow_ID) {
-    if (AD_Workflow_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, AD_Workflow_ID);
-  }
-
-  /**
-   * Get Workflow.
-   *
-   * @return Workflow or combination of tasks
-   */
-  public int getAD_Workflow_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_AD_Workflow_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Attribute Name.
-   *
-   * @param AttributeName Name of the Attribute
-   */
-  public void setAttributeName(String AttributeName) {
-    set_Value(COLUMNNAME_AttributeName, AttributeName);
-  }
-
-  /**
-   * Get Attribute Name.
-   *
-   * @return Name of the Attribute
-   */
-  public String getAttributeName() {
-    return (String) get_Value(COLUMNNAME_AttributeName);
-  }
+     * Get Process.
+     *
+     * @return Process or Report
+     */
+    public int getAD_Process_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Process_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Attribute Value.
-   *
-   * @return Value of the Attribute
-   */
-  public String getAttributeValue() {
-    return (String) get_Value(COLUMNNAME_AttributeValue);
-  }
+     * Get OS Task.
+     *
+     * @return Operation System Task
+     */
+    public int getAD_Task_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Task_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Business Partner .
-   *
-   * @return Identifies a Business Partner
-   */
-  public int getC_BPartner_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Cost.
-   *
-   * @param Cost Cost information
-   */
-  public void setCost(BigDecimal Cost) {
-    set_Value(COLUMNNAME_Cost, Cost);
-  }
+     * Get Workflow Block.
+     *
+     * @return Workflow Transaction Execution Block
+     */
+    public int getAD_WF_Block_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Block_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
+     * Get Node.
+     *
+     * @return Workflow Node (activity), step or process
+     */
+    public int getAD_WF_Node_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Node_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Document Action.
-   *
-   * @return The targeted status of the document
-   */
-  public String getDocAction() {
-    return (String) get_Value(COLUMNNAME_DocAction);
-  }
-
-  /**
-   * Set Duration.
-   *
-   * @param Duration Normal Duration in Duration Unit
-   */
-  public void setDuration(int Duration) {
-    set_Value(COLUMNNAME_Duration, Integer.valueOf(Duration));
-  }
-
-  /**
-   * Get Duration.
-   *
-   * @return Normal Duration in Duration Unit
-   */
-  public int getDuration() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Duration);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Workflow Responsible.
+     *
+     * @return Responsible for Workflow Execution
+     */
+    public int getAD_WF_Responsible_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Responsible_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Dynamic Priority Change.
-   *
-   * @return Change of priority when Activity is suspended waiting for user
-   */
-  public BigDecimal getDynPriorityChange() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DynPriorityChange);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+     * Get Window.
+     *
+     * @return Data entry or display window
+     */
+    public int getAD_Window_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Window_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-    /** Minute = M */
-  public static final String DYNPRIORITYUNIT_Minute = "M";
-  /** Hour = H */
-  public static final String DYNPRIORITYUNIT_Hour = "H";
-  /** Day = D */
-  public static final String DYNPRIORITYUNIT_Day = "D";
-
-    /**
-   * Get Dynamic Priority Unit.
-   *
-   * @return Change of priority when Activity is suspended waiting for user
-   */
-  public String getDynPriorityUnit() {
-    return (String) get_Value(COLUMNNAME_DynPriorityUnit);
-  }
+    public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
+        return (org.compiere.model.I_AD_Workflow)
+                MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
+                        .getPO(getAD_Workflow_ID());
+    }
 
     /**
-   * Get EMail Address.
-   *
-   * @return Electronic Mail Address
-   */
-  public String getEMail() {
-    return (String) get_Value(COLUMNNAME_EMail);
-  }
-
-    /** Document Owner = D */
-  public static final String EMAILRECIPIENT_DocumentOwner = "D";
-  /** Document Business Partner = B */
-  public static final String EMAILRECIPIENT_DocumentBusinessPartner = "B";
-  /** WF Responsible = R */
-  public static final String EMAILRECIPIENT_WFResponsible = "R";
+     * Get Workflow.
+     *
+     * @return Workflow or combination of tasks
+     */
+    public int getAD_Workflow_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Workflow_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get EMail Recipient.
-   *
-   * @return Recipient of the EMail
-   */
-  public String getEMailRecipient() {
-    return (String) get_Value(COLUMNNAME_EMailRecipient);
-  }
+     * Set Workflow.
+     *
+     * @param AD_Workflow_ID Workflow or combination of tasks
+     */
+    public void setAD_Workflow_ID(int AD_Workflow_ID) {
+        if (AD_Workflow_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, AD_Workflow_ID);
+    }
 
     /**
-   * Set Entity Type.
-   *
-   * @param EntityType Dictionary Entity Type; Determines ownership and synchronization
-   */
-  public void setEntityType(String EntityType) {
-
-    set_Value(COLUMNNAME_EntityType, EntityType);
-  }
-
-    /**
-   * Get Comment/Help.
-   *
-   * @return Comment or Hint
-   */
-  public String getHelp() {
-    return (String) get_Value(COLUMNNAME_Help);
-  }
-
-  /**
-   * Set Centrally maintained.
-   *
-   * @param IsCentrallyMaintained Information maintained in System Element table
-   */
-  public void setIsCentrallyMaintained(boolean IsCentrallyMaintained) {
-    set_Value(COLUMNNAME_IsCentrallyMaintained, Boolean.valueOf(IsCentrallyMaintained));
-  }
-
-    /** AND = A */
-  public static final String JOINELEMENT_AND = "A";
-  /** XOR = X */
-  public static final String JOINELEMENT_XOR = "X";
-  /**
-   * Set Join Element.
-   *
-   * @param JoinElement Semantics for multiple incoming Transitions
-   */
-  public void setJoinElement(String JoinElement) {
-
-    set_Value(COLUMNNAME_JoinElement, JoinElement);
-  }
-
-  /**
-   * Get Join Element.
-   *
-   * @return Semantics for multiple incoming Transitions
-   */
-  public String getJoinElement() {
-    return (String) get_Value(COLUMNNAME_JoinElement);
-  }
-
-  /**
-   * Set Duration Limit.
-   *
-   * @param Limit Maximum Duration in Duration Unit
-   */
-  public void setLimit(int Limit) {
-    set_Value(COLUMNNAME_Limit, Integer.valueOf(Limit));
-  }
-
-  /**
-   * Get Duration Limit.
-   *
-   * @return Maximum Duration in Duration Unit
-   */
-  public int getLimit() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Limit);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Attribute Name.
+     *
+     * @return Name of the Attribute
+     */
+    public String getAttributeName() {
+        return (String) get_Value(COLUMNNAME_AttributeName);
+    }
 
     /**
-   * Get Priority.
-   *
-   * @return Indicates if this request is of a high, medium or low priority.
-   */
-  public int getPriority() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Priority);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Set Attribute Name.
+     *
+     * @param AttributeName Name of the Attribute
+     */
+    public void setAttributeName(String AttributeName) {
+        set_Value(COLUMNNAME_AttributeName, AttributeName);
+    }
 
     /**
-   * Get Mail Template.
-   *
-   * @return Text templates for mailings
-   */
-  public int getR_MailText_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_R_MailText_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /** AND = A */
-  public static final String SPLITELEMENT_AND = "A";
-  /** XOR = X */
-  public static final String SPLITELEMENT_XOR = "X";
-  /**
-   * Set Split Element.
-   *
-   * @param SplitElement Semantics for multiple outgoing Transitions
-   */
-  public void setSplitElement(String SplitElement) {
-
-    set_Value(COLUMNNAME_SplitElement, SplitElement);
-  }
-
-  /**
-   * Get Split Element.
-   *
-   * @return Semantics for multiple outgoing Transitions
-   */
-  public String getSplitElement() {
-    return (String) get_Value(COLUMNNAME_SplitElement);
-  }
+     * Get Attribute Value.
+     *
+     * @return Value of the Attribute
+     */
+    public String getAttributeValue() {
+        return (String) get_Value(COLUMNNAME_AttributeValue);
+    }
 
     /**
-   * Get Resource.
-   *
-   * @return Resource
-   */
-  public int getS_Resource_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_S_Resource_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Business Partner .
+     *
+     * @return Identifies a Business Partner
+     */
+    public int getC_BPartner_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Valid from.
-   *
-   * @return Valid from including this date (first day)
-   */
-  public Timestamp getValidFrom() {
-    return (Timestamp) get_Value(COLUMNNAME_ValidFrom);
-  }
+     * Set Cost.
+     *
+     * @param Cost Cost information
+     */
+    public void setCost(BigDecimal Cost) {
+        set_Value(COLUMNNAME_Cost, Cost);
+    }
 
     /**
-   * Get Valid to.
-   *
-   * @return Valid to including this date (last day)
-   */
-  public Timestamp getValidTo() {
-    return (Timestamp) get_Value(COLUMNNAME_ValidTo);
-  }
-
-  /**
-   * Set Waiting Time.
-   *
-   * @param WaitingTime Workflow Simulation Waiting time
-   */
-  public void setWaitingTime(int WaitingTime) {
-    set_Value(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
-  }
+     * Get Description.
+     *
+     * @return Optional short description of the record
+     */
+    public String getDescription() {
+        return (String) get_Value(COLUMNNAME_Description);
+    }
 
     /**
-   * Get Wait Time.
-   *
-   * @return Time in minutes to wait (sleep)
-   */
-  public int getWaitTime() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_WaitTime);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Document Action.
+     *
+     * @return The targeted status of the document
+     */
+    public String getDocAction() {
+        return (String) get_Value(COLUMNNAME_DocAction);
+    }
 
     /**
-   * Get Workflow.
-   *
-   * @return Workflow or tasks
-   */
-  public int getWorkflow_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Workflow_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Duration.
+     *
+     * @return Normal Duration in Duration Unit
+     */
+    public int getDuration() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_Duration);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Set X Position.
-   *
-   * @param XPosition Absolute X (horizontal) position in 1/72 of an inch
-   */
-  public void setXPosition(int XPosition) {
-    set_Value(COLUMNNAME_XPosition, Integer.valueOf(XPosition));
-  }
-
-  /**
-   * Get X Position.
-   *
-   * @return Absolute X (horizontal) position in 1/72 of an inch
-   */
-  public int getXPosition() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_XPosition);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Set Duration.
+     *
+     * @param Duration Normal Duration in Duration Unit
+     */
+    public void setDuration(int Duration) {
+        set_Value(COLUMNNAME_Duration, Integer.valueOf(Duration));
+    }
 
     /**
-   * Set Y Position.
-   *
-   * @param YPosition Absolute Y (vertical) position in 1/72 of an inch
-   */
-  public void setYPosition(int YPosition) {
-    set_Value(COLUMNNAME_YPosition, Integer.valueOf(YPosition));
-  }
+     * Get Dynamic Priority Change.
+     *
+     * @return Change of priority when Activity is suspended waiting for user
+     */
+    public BigDecimal getDynPriorityChange() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DynPriorityChange);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
 
-  /**
-   * Get Y Position.
-   *
-   * @return Absolute Y (vertical) position in 1/72 of an inch
-   */
-  public int getYPosition() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_YPosition);
-    if (ii == null) return 0;
-    return ii;
-  }
+    /**
+     * Get Dynamic Priority Unit.
+     *
+     * @return Change of priority when Activity is suspended waiting for user
+     */
+    public String getDynPriorityUnit() {
+        return (String) get_Value(COLUMNNAME_DynPriorityUnit);
+    }
 
-  @Override
-  public int getTableId() {
-    return I_AD_WF_Node.Table_ID;
-  }
+    /**
+     * Get EMail Address.
+     *
+     * @return Electronic Mail Address
+     */
+    public String getEMail() {
+        return (String) get_Value(COLUMNNAME_EMail);
+    }
+
+    /**
+     * Get EMail Recipient.
+     *
+     * @return Recipient of the EMail
+     */
+    public String getEMailRecipient() {
+        return (String) get_Value(COLUMNNAME_EMailRecipient);
+    }
+
+    /**
+     * Set Entity Type.
+     *
+     * @param EntityType Dictionary Entity Type; Determines ownership and synchronization
+     */
+    public void setEntityType(String EntityType) {
+
+        set_Value(COLUMNNAME_EntityType, EntityType);
+    }
+
+    /**
+     * Get Comment/Help.
+     *
+     * @return Comment or Hint
+     */
+    public String getHelp() {
+        return (String) get_Value(COLUMNNAME_Help);
+    }
+
+    /**
+     * Set Centrally maintained.
+     *
+     * @param IsCentrallyMaintained Information maintained in System Element table
+     */
+    public void setIsCentrallyMaintained(boolean IsCentrallyMaintained) {
+        set_Value(COLUMNNAME_IsCentrallyMaintained, Boolean.valueOf(IsCentrallyMaintained));
+    }
+
+    /**
+     * Get Join Element.
+     *
+     * @return Semantics for multiple incoming Transitions
+     */
+    public String getJoinElement() {
+        return (String) get_Value(COLUMNNAME_JoinElement);
+    }
+
+    /**
+     * Set Join Element.
+     *
+     * @param JoinElement Semantics for multiple incoming Transitions
+     */
+    public void setJoinElement(String JoinElement) {
+
+        set_Value(COLUMNNAME_JoinElement, JoinElement);
+    }
+
+    /**
+     * Get Duration Limit.
+     *
+     * @return Maximum Duration in Duration Unit
+     */
+    public int getLimit() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_Limit);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Duration Limit.
+     *
+     * @param Limit Maximum Duration in Duration Unit
+     */
+    public void setLimit(int Limit) {
+        set_Value(COLUMNNAME_Limit, Integer.valueOf(Limit));
+    }
+
+    /**
+     * Get Priority.
+     *
+     * @return Indicates if this request is of a high, medium or low priority.
+     */
+    public int getPriority() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_Priority);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Mail Template.
+     *
+     * @return Text templates for mailings
+     */
+    public int getR_MailText_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_R_MailText_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Split Element.
+     *
+     * @return Semantics for multiple outgoing Transitions
+     */
+    public String getSplitElement() {
+        return (String) get_Value(COLUMNNAME_SplitElement);
+    }
+
+    /**
+     * Set Split Element.
+     *
+     * @param SplitElement Semantics for multiple outgoing Transitions
+     */
+    public void setSplitElement(String SplitElement) {
+
+        set_Value(COLUMNNAME_SplitElement, SplitElement);
+    }
+
+    /**
+     * Get Resource.
+     *
+     * @return Resource
+     */
+    public int getS_Resource_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_S_Resource_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Valid from.
+     *
+     * @return Valid from including this date (first day)
+     */
+    public Timestamp getValidFrom() {
+        return (Timestamp) get_Value(COLUMNNAME_ValidFrom);
+    }
+
+    /**
+     * Get Valid to.
+     *
+     * @return Valid to including this date (last day)
+     */
+    public Timestamp getValidTo() {
+        return (Timestamp) get_Value(COLUMNNAME_ValidTo);
+    }
+
+    /**
+     * Set Waiting Time.
+     *
+     * @param WaitingTime Workflow Simulation Waiting time
+     */
+    public void setWaitingTime(int WaitingTime) {
+        set_Value(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
+    }
+
+    /**
+     * Get Wait Time.
+     *
+     * @return Time in minutes to wait (sleep)
+     */
+    public int getWaitTime() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_WaitTime);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Workflow.
+     *
+     * @return Workflow or tasks
+     */
+    public int getWorkflow_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_Workflow_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get X Position.
+     *
+     * @return Absolute X (horizontal) position in 1/72 of an inch
+     */
+    public int getXPosition() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_XPosition);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set X Position.
+     *
+     * @param XPosition Absolute X (horizontal) position in 1/72 of an inch
+     */
+    public void setXPosition(int XPosition) {
+        set_Value(COLUMNNAME_XPosition, Integer.valueOf(XPosition));
+    }
+
+    /**
+     * Get Y Position.
+     *
+     * @return Absolute Y (vertical) position in 1/72 of an inch
+     */
+    public int getYPosition() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_YPosition);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Y Position.
+     *
+     * @param YPosition Absolute Y (vertical) position in 1/72 of an inch
+     */
+    public void setYPosition(int YPosition) {
+        set_Value(COLUMNNAME_YPosition, Integer.valueOf(YPosition));
+    }
+
+    @Override
+    public int getTableId() {
+        return I_AD_WF_Node.Table_ID;
+    }
 }

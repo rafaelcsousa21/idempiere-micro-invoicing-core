@@ -145,7 +145,8 @@ class ProductionCreate(
         if (bom == null || bom == "N") {
             throw AdempiereUserError("Attempt to create product line for Non Bill Of Materials")
         }
-        val materials = getSQLValue("SELECT count(M_Product_BOM_ID) FROM M_Product_BOM WHERE M_Product_ID = ?", M_Product_ID)
+        val materials =
+            getSQLValue("SELECT count(M_Product_BOM_ID) FROM M_Product_BOM WHERE M_Product_ID = ?", M_Product_ID)
         if (materials == 0) {
             throw AdempiereUserError("Attempt to create product line for Bill Of Materials with no BOM Products")
         }

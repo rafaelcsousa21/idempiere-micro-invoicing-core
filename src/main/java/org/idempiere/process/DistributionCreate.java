@@ -14,13 +14,14 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MProduct;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.Env;
+
+import java.math.BigDecimal;
+import java.util.logging.Level;
 
 /**
  * Create Distribution List Order
@@ -29,82 +30,104 @@ import org.idempiere.common.util.Env;
  * @version $Id: DistributionCreate.java,v 1.3 2006/07/30 00:51:01 jjanke Exp $
  */
 public class DistributionCreate extends SvrProcess {
-  /** Product */
-  private int p_M_Product_ID = 0;
-  /** Quantity */
-  private BigDecimal p_Qty;
-  /** Single Order */
-  private boolean p_IsCreateSingleOrder;
-  /** Single Order BP */
-  private int p_Bill_BPartner_ID;
-  /** SingleOrder Location */
-  private int p_Bill_Location_ID;
-  /** Test Mode */
-  private boolean p_IsTest;
-  /** Distribution List */
-  private int p_M_DistributionList_ID;
+    /**
+     * Product
+     */
+    private int p_M_Product_ID = 0;
+    /**
+     * Quantity
+     */
+    private BigDecimal p_Qty;
+    /**
+     * Single Order
+     */
+    private boolean p_IsCreateSingleOrder;
+    /**
+     * Single Order BP
+     */
+    private int p_Bill_BPartner_ID;
+    /**
+     * SingleOrder Location
+     */
+    private int p_Bill_Location_ID;
+    /**
+     * Test Mode
+     */
+    private boolean p_IsTest;
+    /**
+     * Distribution List
+     */
+    private int p_M_DistributionList_ID;
 
-  //	DatePromised
-  //	C_DocType_ID
+    //	DatePromised
+    //	C_DocType_ID
 
-  /** Distribution List */
+    /** Distribution List */
   /* throw new NotImplementedException();
   private MDistributionList m_dl;*/
-  /** Single Order */
-  private MOrder m_singleOrder = null;
-  /** Product */
-  private MProduct m_product = null;
-  /** Total Quantity */
-  private BigDecimal m_totalQty = Env.ZERO;
+    /**
+     * Single Order
+     */
+    private MOrder m_singleOrder = null;
+    /**
+     * Product
+     */
+    private MProduct m_product = null;
+    /**
+     * Total Quantity
+     */
+    private BigDecimal m_totalQty = Env.ZERO;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      //	log.fine("prepare - " + para[i]);
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("M_Product_ID")) p_M_Product_ID = para[i].getParameterAsInt();
-      else if (name.equals("Qty")) p_Qty = (BigDecimal) para[i].getParameter();
-      else if (name.equals("IsCreateSingleOrder"))
-        p_IsCreateSingleOrder = "Y".equals(para[i].getParameter());
-      else if (name.equals("Bill_BPartner_ID")) p_Bill_BPartner_ID = para[i].getParameterAsInt();
-      else if (name.equals("p_Bill_Location_ID")) p_Bill_Location_ID = para[i].getParameterAsInt();
-      else if (name.equals("IsTest")) p_IsTest = "Y".equals(para[i].getParameter());
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_M_DistributionList_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            //	log.fine("prepare - " + para[i]);
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("M_Product_ID")) p_M_Product_ID = para[i].getParameterAsInt();
+            else if (name.equals("Qty")) p_Qty = (BigDecimal) para[i].getParameter();
+            else if (name.equals("IsCreateSingleOrder"))
+                p_IsCreateSingleOrder = "Y".equals(para[i].getParameter());
+            else if (name.equals("Bill_BPartner_ID")) p_Bill_BPartner_ID = para[i].getParameterAsInt();
+            else if (name.equals("p_Bill_Location_ID")) p_Bill_Location_ID = para[i].getParameterAsInt();
+            else if (name.equals("IsTest")) p_IsTest = "Y".equals(para[i].getParameter());
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_M_DistributionList_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (text with variables)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO))
-      log.info(
-          "M_DistributionList_ID="
-              + p_M_DistributionList_ID
-              + ", M_Product_ID="
-              + p_M_Product_ID
-              + ", Qty="
-              + p_Qty
-              + ", Test="
-              + p_IsTest);
-    if (p_IsCreateSingleOrder)
-      if (log.isLoggable(Level.INFO))
-        log.info(
-            "SingleOrder="
-                + p_IsCreateSingleOrder
-                + ", BPartner_ID="
-                + p_Bill_BPartner_ID
-                + ", Location_ID="
-                + p_Bill_Location_ID);
-    //
-    if (p_M_DistributionList_ID == 0) throw new IllegalArgumentException("No Distribution List ID");
-    throw new NotImplementedException();
+    /**
+     * Perform process.
+     *
+     * @return Message (text with variables)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO))
+            log.info(
+                    "M_DistributionList_ID="
+                            + p_M_DistributionList_ID
+                            + ", M_Product_ID="
+                            + p_M_Product_ID
+                            + ", Qty="
+                            + p_Qty
+                            + ", Test="
+                            + p_IsTest);
+        if (p_IsCreateSingleOrder)
+            if (log.isLoggable(Level.INFO))
+                log.info(
+                        "SingleOrder="
+                                + p_IsCreateSingleOrder
+                                + ", BPartner_ID="
+                                + p_Bill_BPartner_ID
+                                + ", Location_ID="
+                                + p_Bill_Location_ID);
+        //
+        if (p_M_DistributionList_ID == 0) throw new IllegalArgumentException("No Distribution List ID");
+        throw new NotImplementedException();
 
     /*
     m_dl = new MDistributionList(getCtx(), p_M_DistributionList_ID, null);
@@ -157,14 +180,14 @@ public class DistributionCreate extends SvrProcess {
     StringBuilder msgreturn = new StringBuilder("@Created@ #").append(counter).append(" - @Qty@=").append(m_totalQty);
     return msgreturn.toString();
     */
-  } //	doIt
+    } //	doIt
 
-  /**
-   * Create Order for Distribution Line
-   *
-   * @param dll Distribution Line
-   * @return true if created
-   */
+    /**
+     * Create Order for Distribution Line
+     *
+     * @param dll Distribution Line
+     * @return true if created
+     */
   /*
   private boolean createOrder (MDistributionListLine dll)
   {

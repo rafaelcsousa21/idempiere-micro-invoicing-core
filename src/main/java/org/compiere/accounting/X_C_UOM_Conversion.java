@@ -17,154 +17,160 @@ import java.util.Properties;
  */
 public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_C_UOM_Conversion(Properties ctx, int C_UOM_Conversion_ID) {
-    super(ctx, C_UOM_Conversion_ID);
     /**
-     * if (C_UOM_Conversion_ID == 0) { setC_UOM_Conversion_ID (0); setC_UOM_ID (0); setC_UOM_To_ID
-     * (0); setDivideRate (Env.ZERO); setMultiplyRate (Env.ZERO); }
+     *
      */
-  }
-
-  /** Load Constructor */
-  public X_C_UOM_Conversion(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 6 - System - Client
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  @Override
-  public int getTableId() {
-    return Table_ID;
-  }
-
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_C_UOM_Conversion[").append(getId()).append("]");
-    return sb.toString();
-  }
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get UOM Conversion.
-   *
-   * @return Unit of Measure Conversion
-   */
-  public int getC_UOM_Conversion_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_Conversion_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Standard Constructor
+     */
+    public X_C_UOM_Conversion(Properties ctx, int C_UOM_Conversion_ID) {
+        super(ctx, C_UOM_Conversion_ID);
+        /**
+         * if (C_UOM_Conversion_ID == 0) { setC_UOM_Conversion_ID (0); setC_UOM_ID (0); setC_UOM_To_ID
+         * (0); setDivideRate (Env.ZERO); setMultiplyRate (Env.ZERO); }
+         */
+    }
 
     /**
-   * Set UOM.
-   *
-   * @param C_UOM_ID Unit of Measure
-   */
-  public void setC_UOM_ID(int C_UOM_ID) {
-    if (C_UOM_ID < 1) set_Value(COLUMNNAME_C_UOM_ID, null);
-    else set_Value(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
-  }
-
-  /**
-   * Get UOM.
-   *
-   * @return Unit of Measure
-   */
-  public int getC_UOM_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Load Constructor
+     */
+    public X_C_UOM_Conversion(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Set UoM To.
-   *
-   * @param C_UOM_To_ID Target or destination Unit of Measure
-   */
-  public void setC_UOM_To_ID(int C_UOM_To_ID) {
-    if (C_UOM_To_ID < 1) set_Value(COLUMNNAME_C_UOM_To_ID, null);
-    else set_Value(COLUMNNAME_C_UOM_To_ID, Integer.valueOf(C_UOM_To_ID));
-  }
+     * AccessLevel
+     *
+     * @return 6 - System - Client
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
 
-  /**
-   * Get UoM To.
-   *
-   * @return Target or destination Unit of Measure
-   */
-  public int getC_UOM_To_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_To_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    @Override
+    public int getTableId() {
+        return Table_ID;
+    }
 
-  /**
-   * Set Divide Rate.
-   *
-   * @param DivideRate To convert Source number to Target number, the Source is divided
-   */
-  public void setDivideRate(BigDecimal DivideRate) {
-    set_Value(COLUMNNAME_DivideRate, DivideRate);
-  }
 
-  /**
-   * Get Divide Rate.
-   *
-   * @return To convert Source number to Target number, the Source is divided
-   */
-  public BigDecimal getDivideRate() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DivideRate);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_C_UOM_Conversion[").append(getId()).append("]");
+        return sb.toString();
+    }
 
     /**
-   * Set Product.
-   *
-   * @param M_Product_ID Product, Service, Item
-   */
-  public void setM_Product_ID(int M_Product_ID) {
-    if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-  }
+     * Get UOM Conversion.
+     *
+     * @return Unit of Measure Conversion
+     */
+    public int getC_UOM_Conversion_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_Conversion_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-  /**
-   * Get Product.
-   *
-   * @return Product, Service, Item
-   */
-  public int getM_Product_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    /**
+     * Get UOM.
+     *
+     * @return Unit of Measure
+     */
+    public int getC_UOM_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
-  /**
-   * Set Multiply Rate.
-   *
-   * @param MultiplyRate Rate to multiple the source by to calculate the target.
-   */
-  public void setMultiplyRate(BigDecimal MultiplyRate) {
-    set_Value(COLUMNNAME_MultiplyRate, MultiplyRate);
-  }
+    /**
+     * Set UOM.
+     *
+     * @param C_UOM_ID Unit of Measure
+     */
+    public void setC_UOM_ID(int C_UOM_ID) {
+        if (C_UOM_ID < 1) set_Value(COLUMNNAME_C_UOM_ID, null);
+        else set_Value(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
+    }
 
-  /**
-   * Get Multiply Rate.
-   *
-   * @return Rate to multiple the source by to calculate the target.
-   */
-  public BigDecimal getMultiplyRate() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_MultiplyRate);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    /**
+     * Get UoM To.
+     *
+     * @return Target or destination Unit of Measure
+     */
+    public int getC_UOM_To_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_To_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set UoM To.
+     *
+     * @param C_UOM_To_ID Target or destination Unit of Measure
+     */
+    public void setC_UOM_To_ID(int C_UOM_To_ID) {
+        if (C_UOM_To_ID < 1) set_Value(COLUMNNAME_C_UOM_To_ID, null);
+        else set_Value(COLUMNNAME_C_UOM_To_ID, Integer.valueOf(C_UOM_To_ID));
+    }
+
+    /**
+     * Get Divide Rate.
+     *
+     * @return To convert Source number to Target number, the Source is divided
+     */
+    public BigDecimal getDivideRate() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DivideRate);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Divide Rate.
+     *
+     * @param DivideRate To convert Source number to Target number, the Source is divided
+     */
+    public void setDivideRate(BigDecimal DivideRate) {
+        set_Value(COLUMNNAME_DivideRate, DivideRate);
+    }
+
+    /**
+     * Get Product.
+     *
+     * @return Product, Service, Item
+     */
+    public int getM_Product_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Product.
+     *
+     * @param M_Product_ID Product, Service, Item
+     */
+    public void setM_Product_ID(int M_Product_ID) {
+        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
+        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+    }
+
+    /**
+     * Get Multiply Rate.
+     *
+     * @return Rate to multiple the source by to calculate the target.
+     */
+    public BigDecimal getMultiplyRate() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_MultiplyRate);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Multiply Rate.
+     *
+     * @param MultiplyRate Rate to multiple the source by to calculate the target.
+     */
+    public void setMultiplyRate(BigDecimal MultiplyRate) {
+        set_Value(COLUMNNAME_MultiplyRate, MultiplyRate);
+    }
 }

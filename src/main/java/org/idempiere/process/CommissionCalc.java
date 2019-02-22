@@ -14,13 +14,14 @@
  */
 package org.idempiere.process;
 
+import org.compiere.model.IProcessInfoParameter;
+import org.compiere.process.SvrProcess;
+import org.idempiere.common.util.Language;
+
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
-import org.compiere.model.IProcessInfoParameter;
-import org.compiere.process.SvrProcess;
-import org.idempiere.common.util.Language;
 
 /**
  * Commission Calculation
@@ -29,33 +30,35 @@ import org.idempiere.common.util.Language;
  * @version $Id: CommissionCalc.java,v 1.3 2006/09/25 00:59:41 jjanke Exp $
  */
 public class CommissionCalc extends SvrProcess {
-  private Timestamp p_StartDate;
-  //
-  private Timestamp m_EndDate;
+    private Timestamp p_StartDate;
+    //
+    private Timestamp m_EndDate;
 
   /* throw new NotImplementedException();
   private MCommission		m_com;*/
-  //
+    //
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("StartDate")) p_StartDate = (Timestamp) para[i].getParameter();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("StartDate")) p_StartDate = (Timestamp) para[i].getParameter();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message (text with variables)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Perform process.
+     *
+     * @return Message (text with variables)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
 
     /*
     	if (log.isLoggable(Level.INFO)) log.info("C_Commission_ID=" + getRecord_ID() + ", StartDate=" + p_StartDate);
@@ -247,18 +250,20 @@ public class CommissionCalc extends SvrProcess {
     			.append(" - ").append(comRun.getDescription());
     	return msgreturn.toString();
     	*/
-  } //	doIt
+    } //	doIt
 
-  /** Set Start and End Date */
-  private void setStartEndDate() throws NotImplementedException {
-    GregorianCalendar cal = new GregorianCalendar(Language.getLoginLanguage().getLocale());
-    cal.setTimeInMillis(p_StartDate.getTime());
-    cal.set(Calendar.HOUR_OF_DAY, 0);
-    cal.set(Calendar.MINUTE, 0);
-    cal.set(Calendar.SECOND, 0);
-    cal.set(Calendar.MILLISECOND, 0);
+    /**
+     * Set Start and End Date
+     */
+    private void setStartEndDate() throws NotImplementedException {
+        GregorianCalendar cal = new GregorianCalendar(Language.getLoginLanguage().getLocale());
+        cal.setTimeInMillis(p_StartDate.getTime());
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
 
-    throw new NotImplementedException();
+        throw new NotImplementedException();
 
     /*
     //	Yearly
@@ -313,15 +318,15 @@ public class CommissionCalc extends SvrProcess {
     if (log.isLoggable(Level.FINE)) log.fine("setStartEndDate = " + p_StartDate + " - " + m_EndDate);
     */
 
-  } //	setStartEndDate
+    } //	setStartEndDate
 
-  /**
-   * Create Commission Detail
-   *
-   * @param sql sql statement
-   * @param comAmt parent
-   * @throws Exception
-   */
+    /**
+     * Create Commission Detail
+     *
+     * @param sql sql statement
+     * @param comAmt parent
+     * @throws Exception
+     */
   /*
   private void createDetail (String sql, MCommissionAmt comAmt) throws Exception
   {

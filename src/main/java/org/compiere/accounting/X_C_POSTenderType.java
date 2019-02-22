@@ -15,51 +15,57 @@ import java.util.Properties;
  */
 public class X_C_POSTenderType extends BasePONameValue implements I_C_POSTenderType, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_C_POSTenderType(Properties ctx, int C_POSTenderType_ID) {
-    super(ctx, C_POSTenderType_ID);
-  }
-
-  /** Load Constructor */
-  public X_C_POSTenderType(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-
-  @Override
-  public int getTableId() {
-    return Table_ID;
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_C_POSTenderType[").append(getId()).append("]");
-    return sb.toString();
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get Guarantee.
-   *
-   * @return Guarantee for a Credit
-   */
-  public boolean isGuarantee() {
-    Object oo = get_Value(COLUMNNAME_IsGuarantee);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Standard Constructor
+     */
+    public X_C_POSTenderType(Properties ctx, int C_POSTenderType_ID) {
+        super(ctx, C_POSTenderType_ID);
     }
-    return false;
-  }
+
+    /**
+     * Load Constructor
+     */
+    public X_C_POSTenderType(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
+
+    /**
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+
+    @Override
+    public int getTableId() {
+        return Table_ID;
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_C_POSTenderType[").append(getId()).append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Get Guarantee.
+     *
+     * @return Guarantee for a Credit
+     */
+    public boolean isGuarantee() {
+        Object oo = get_Value(COLUMNNAME_IsGuarantee);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
 
 }

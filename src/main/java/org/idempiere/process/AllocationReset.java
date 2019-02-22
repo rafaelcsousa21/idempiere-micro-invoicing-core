@@ -36,137 +36,151 @@ import static software.hsharp.core.util.DBKt.prepareStatement;
  * @version $Id: AllocationReset.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class AllocationReset extends SvrProcess {
-  /** BP Group */
-  private int p_C_BP_Group_ID = 0;
-  /** BPartner */
-  private int p_C_BPartner_ID = 0;
-  /** Date Acct From */
-  private Timestamp p_DateAcct_From = null;
-  /** Date Acct To */
-  private Timestamp p_DateAcct_To = null;
-  /** Allocation directly */
-  private int p_C_AllocationHdr_ID = 0;
-  /** All Allocations */
-  private boolean p_AllAllocations = false;
+    /**
+     * BP Group
+     */
+    private int p_C_BP_Group_ID = 0;
+    /**
+     * BPartner
+     */
+    private int p_C_BPartner_ID = 0;
+    /**
+     * Date Acct From
+     */
+    private Timestamp p_DateAcct_From = null;
+    /**
+     * Date Acct To
+     */
+    private Timestamp p_DateAcct_To = null;
+    /**
+     * Allocation directly
+     */
+    private int p_C_AllocationHdr_ID = 0;
+    /**
+     * All Allocations
+     */
+    private boolean p_AllAllocations = false;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      if (log.isLoggable(Level.FINE)) log.fine("prepare - " + para[i]);
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
-      else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
-      else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-      else if (name.equals("C_AllocationHdr_ID"))
-        p_C_AllocationHdr_ID = para[i].getParameterAsInt();
-      else if (name.equals("DateAcct")) {
-        p_DateAcct_From = (Timestamp) para[i].getParameter();
-        p_DateAcct_To = (Timestamp) para[i].getParameter_To();
-      } else if (name.equals("AllAllocations"))
-        p_AllAllocations = "Y".equals(para[i].getParameter());
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            if (log.isLoggable(Level.FINE)) log.fine("prepare - " + para[i]);
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
+            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
+            else if (name.equals("C_AllocationHdr_ID"))
+                p_C_AllocationHdr_ID = para[i].getParameterAsInt();
+            else if (name.equals("DateAcct")) {
+                p_DateAcct_From = (Timestamp) para[i].getParameter();
+                p_DateAcct_To = (Timestamp) para[i].getParameter_To();
+            } else if (name.equals("AllAllocations"))
+                p_AllAllocations = "Y".equals(para[i].getParameter());
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
 
-    if (!p_AllAllocations && getTable_ID() == MAllocationHdr.Table_ID && getRecord_ID() > 0) {
-      p_C_AllocationHdr_ID = getRecord_ID();
-    }
-  } //	prepare
+        if (!p_AllAllocations && getTable_ID() == MAllocationHdr.Table_ID && getRecord_ID() > 0) {
+            p_C_AllocationHdr_ID = getRecord_ID();
+        }
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO))
-      log.info(
-          "C_BP_Group_ID="
-              + p_C_BP_Group_ID
-              + ", C_BPartner_ID="
-              + p_C_BPartner_ID
-              + ", DateAcct= "
-              + p_DateAcct_From
-              + " - "
-              + p_DateAcct_To
-              + ", C_AllocationHdr_ID="
-              + p_C_AllocationHdr_ID
-              + ", AllAllocations="
-              + p_AllAllocations);
+    /**
+     * Process
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO))
+            log.info(
+                    "C_BP_Group_ID="
+                            + p_C_BP_Group_ID
+                            + ", C_BPartner_ID="
+                            + p_C_BPartner_ID
+                            + ", DateAcct= "
+                            + p_DateAcct_From
+                            + " - "
+                            + p_DateAcct_To
+                            + ", C_AllocationHdr_ID="
+                            + p_C_AllocationHdr_ID
+                            + ", AllAllocations="
+                            + p_AllAllocations);
 
-    if (p_C_AllocationHdr_ID == 0 && !p_AllAllocations)
-      throw new AdempiereUserError(
-          Msg.parseTranslation(getCtx(), "@Mandatory@: @C_AllocationHdr_ID@"));
+        if (p_C_AllocationHdr_ID == 0 && !p_AllAllocations)
+            throw new AdempiereUserError(
+                    Msg.parseTranslation(getCtx(), "@Mandatory@: @C_AllocationHdr_ID@"));
 
-    int count = 0;
+        int count = 0;
 
-    if (p_C_AllocationHdr_ID != 0) {
-      MAllocationHdr hdr = new MAllocationHdr(getCtx(), p_C_AllocationHdr_ID);
-      if (delete(hdr)) count++;
-      else throw new AdempiereException("Cannot delete");
-      StringBuilder msgreturn = new StringBuilder("@Deleted@ #").append(count);
-      return msgreturn.toString();
-    }
+        if (p_C_AllocationHdr_ID != 0) {
+            MAllocationHdr hdr = new MAllocationHdr(getCtx(), p_C_AllocationHdr_ID);
+            if (delete(hdr)) count++;
+            else throw new AdempiereException("Cannot delete");
+            StringBuilder msgreturn = new StringBuilder("@Deleted@ #").append(count);
+            return msgreturn.toString();
+        }
 
-    //	Selection
-    StringBuilder sql =
-        new StringBuilder("SELECT * FROM C_AllocationHdr ah ")
-            .append("WHERE EXISTS (SELECT * FROM C_AllocationLine al ")
-            .append("WHERE ah.C_AllocationHdr_ID=al.C_AllocationHdr_ID");
-    if (p_C_BPartner_ID != 0) sql.append(" AND al.C_BPartner_ID=?");
-    else if (p_C_BP_Group_ID != 0)
-      sql.append(" AND EXISTS (SELECT * FROM C_BPartner bp ")
-          .append("WHERE bp.C_BPartner_ID=al.C_BPartner_ID AND bp.C_BP_Group_ID=?)");
-    else sql.append(" AND AD_Client_ID=?");
-    if (p_DateAcct_From != null) sql.append(" AND TRIM(ah.DateAcct) >= ?");
-    if (p_DateAcct_To != null) sql.append(" AND TRIM(ah.DateAcct) <= ?");
-    //	Do not delete Cash Trx
-    sql.append(" AND al.C_CashLine_ID IS NULL)");
-    //	Open Period
-    sql.append(" AND EXISTS (SELECT * FROM C_Period p")
-        .append(
-            " INNER JOIN C_PeriodControl pc ON (p.C_Period_ID=pc.C_Period_ID AND pc.DocBaseType='CMA') ")
-        .append("WHERE ah.DateAcct BETWEEN p.StartDate AND p.EndDate)");
-    //
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql.toString());
-      int index = 1;
-      if (p_C_BPartner_ID != 0) pstmt.setInt(index++, p_C_BPartner_ID);
-      else if (p_C_BP_Group_ID != 0) pstmt.setInt(index++, p_C_BP_Group_ID);
-      else pstmt.setInt(index++, Env.getClientId(getCtx()));
-      if (p_DateAcct_From != null) pstmt.setTimestamp(index++, p_DateAcct_From);
-      if (p_DateAcct_To != null) pstmt.setTimestamp(index++, p_DateAcct_To);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        MAllocationHdr hdr = new MAllocationHdr(getCtx(), rs);
-        if (delete(hdr)) count++;
-      }
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql.toString(), e);
-      throw new Error(sql.toString());
-    } finally {
+        //	Selection
+        StringBuilder sql =
+                new StringBuilder("SELECT * FROM C_AllocationHdr ah ")
+                        .append("WHERE EXISTS (SELECT * FROM C_AllocationLine al ")
+                        .append("WHERE ah.C_AllocationHdr_ID=al.C_AllocationHdr_ID");
+        if (p_C_BPartner_ID != 0) sql.append(" AND al.C_BPartner_ID=?");
+        else if (p_C_BP_Group_ID != 0)
+            sql.append(" AND EXISTS (SELECT * FROM C_BPartner bp ")
+                    .append("WHERE bp.C_BPartner_ID=al.C_BPartner_ID AND bp.C_BP_Group_ID=?)");
+        else sql.append(" AND AD_Client_ID=?");
+        if (p_DateAcct_From != null) sql.append(" AND TRIM(ah.DateAcct) >= ?");
+        if (p_DateAcct_To != null) sql.append(" AND TRIM(ah.DateAcct) <= ?");
+        //	Do not delete Cash Trx
+        sql.append(" AND al.C_CashLine_ID IS NULL)");
+        //	Open Period
+        sql.append(" AND EXISTS (SELECT * FROM C_Period p")
+                .append(
+                        " INNER JOIN C_PeriodControl pc ON (p.C_Period_ID=pc.C_Period_ID AND pc.DocBaseType='CMA') ")
+                .append("WHERE ah.DateAcct BETWEEN p.StartDate AND p.EndDate)");
+        //
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = prepareStatement(sql.toString());
+            int index = 1;
+            if (p_C_BPartner_ID != 0) pstmt.setInt(index++, p_C_BPartner_ID);
+            else if (p_C_BP_Group_ID != 0) pstmt.setInt(index++, p_C_BP_Group_ID);
+            else pstmt.setInt(index++, Env.getClientId(getCtx()));
+            if (p_DateAcct_From != null) pstmt.setTimestamp(index++, p_DateAcct_From);
+            if (p_DateAcct_To != null) pstmt.setTimestamp(index++, p_DateAcct_To);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                MAllocationHdr hdr = new MAllocationHdr(getCtx(), rs);
+                if (delete(hdr)) count++;
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, sql.toString(), e);
+            throw new Error(sql.toString());
+        } finally {
 
-      rs = null;
-      pstmt = null;
-    }
-    StringBuilder msgreturn = new StringBuilder("@Deleted@ #").append(count);
-    return msgreturn.toString();
-  } //	doIt
+            rs = null;
+            pstmt = null;
+        }
+        StringBuilder msgreturn = new StringBuilder("@Deleted@ #").append(count);
+        return msgreturn.toString();
+    } //	doIt
 
-  private boolean delete(MAllocationHdr hdr) {
-    //	m_trx.start();
-    boolean success = false;
-    if (hdr.delete(true)) {
-      if (log.isLoggable(Level.FINE)) log.fine(hdr.toString());
-      success = true;
-    }
-    return success;
-  } //	delete
+    private boolean delete(MAllocationHdr hdr) {
+        //	m_trx.start();
+        boolean success = false;
+        if (hdr.delete(true)) {
+            if (log.isLoggable(Level.FINE)) log.fine(hdr.toString());
+            success = true;
+        }
+        return success;
+    } //	delete
 
-  /** Set BPartner (may not be required */
+    /** Set BPartner (may not be required */
   /*private void setBPartner()
   {
 

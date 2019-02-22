@@ -14,11 +14,6 @@
  */
 package org.idempiere.process;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.accounting.MTimeExpense;
@@ -29,9 +24,15 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
-
 import org.idempiere.common.util.Env;
-import static software.hsharp.core.util.DBKt.*;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Create Sales Orders from Expense Reports
@@ -40,224 +41,238 @@ import static software.hsharp.core.util.DBKt.*;
  * @version $Id: ExpenseSOrder.java,v 1.3 2006/07/30 00:51:01 jjanke Exp $
  */
 public class ExpenseSOrder extends SvrProcess {
-  /** BPartner */
-  private int p_C_BPartner_ID = 0;
-  /** Date Drom */
-  private Timestamp p_DateFrom = null;
-  /** Date To */
-  private Timestamp m_DateTo = null;
+    /**
+     * BPartner
+     */
+    private int p_C_BPartner_ID = 0;
+    /**
+     * Date Drom
+     */
+    private Timestamp p_DateFrom = null;
+    /**
+     * Date To
+     */
+    private Timestamp m_DateTo = null;
 
-  /** No SO generated */
-  private int m_noOrders = 0;
-  /** Current Order */
-  private MOrder m_order = null;
+    /**
+     * No SO generated
+     */
+    private int m_noOrders = 0;
+    /**
+     * Current Order
+     */
+    private MOrder m_order = null;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
-      else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-      else if (name.equals("DateExpense")) {
-        p_DateFrom = (Timestamp) para[i].getParameter();
-        m_DateTo = (Timestamp) para[i].getParameter_To();
-      } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-  } //	prepare
-
-  /**
-   * Perform process.
-   *
-   * @return Message to be translated
-   * @throws Exception
-   */
-  protected String doIt() throws java.lang.Exception {
-    StringBuilder sql =
-        new StringBuilder("SELECT * FROM S_TimeExpenseLine el ")
-            .append("WHERE el.AD_Client_ID=?") // 	#1
-            .append(" AND el.C_BPartner_ID>0 AND el.IsInvoiced='Y'") // 	Business Partner && to be
-            // invoiced
-            .append(" AND el.C_OrderLine_ID IS NULL") // 	not invoiced yet
-            .append(" AND EXISTS (SELECT * FROM S_TimeExpense e ") // 	processed only
-            .append("WHERE el.S_TimeExpense_ID=e.S_TimeExpense_ID AND e.Processed='Y')");
-    if (p_C_BPartner_ID != 0) sql.append(" AND el.C_BPartner_ID=?"); // 	#2
-    if (p_DateFrom != null || m_DateTo != null) {
-      sql.append(" AND EXISTS (SELECT * FROM S_TimeExpense e ")
-          .append("WHERE el.S_TimeExpense_ID=e.S_TimeExpense_ID");
-      if (p_DateFrom != null) sql.append(" AND e.DateReport >= ?"); // 	#3
-      if (m_DateTo != null) sql.append(" AND e.DateReport <= ?"); // 	#4
-      sql.append(")");
-    }
-    sql.append(" ORDER BY el.C_BPartner_ID, el.C_Project_ID, el.S_TimeExpense_ID, el.Line");
-
-    //
-    MBPartner oldBPartner = null;
-    int old_Project_ID = -1;
-    MTimeExpense te = null;
-    //
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql.toString());
-      int par = 1;
-      pstmt.setInt(par++, getClientId());
-      if (p_C_BPartner_ID != 0) pstmt.setInt(par++, p_C_BPartner_ID);
-      if (p_DateFrom != null) pstmt.setTimestamp(par++, p_DateFrom);
-      if (m_DateTo != null) pstmt.setTimestamp(par++, m_DateTo);
-      rs = pstmt.executeQuery();
-      while (rs.next()) // 	********* Expense Line Loop
-      {
-        MTimeExpenseLine tel = new MTimeExpenseLine(getCtx(), rs);
-        if (!tel.isInvoiced()) continue;
-
-        //	New BPartner - New Order
-        if (oldBPartner == null || oldBPartner.getC_BPartner_ID() != tel.getC_BPartner_ID()) {
-          completeOrder();
-          oldBPartner = new MBPartner(getCtx(), tel.getC_BPartner_ID());
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
+            else if (name.equals("DateExpense")) {
+                p_DateFrom = (Timestamp) para[i].getParameter();
+                m_DateTo = (Timestamp) para[i].getParameter_To();
+            } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        //	New Project - New Order
-        if (old_Project_ID != tel.getC_Project_ID()) {
-          completeOrder();
-          old_Project_ID = tel.getC_Project_ID();
+    } //	prepare
+
+    /**
+     * Perform process.
+     *
+     * @return Message to be translated
+     * @throws Exception
+     */
+    protected String doIt() throws java.lang.Exception {
+        StringBuilder sql =
+                new StringBuilder("SELECT * FROM S_TimeExpenseLine el ")
+                        .append("WHERE el.AD_Client_ID=?") // 	#1
+                        .append(" AND el.C_BPartner_ID>0 AND el.IsInvoiced='Y'") // 	Business Partner && to be
+                        // invoiced
+                        .append(" AND el.C_OrderLine_ID IS NULL") // 	not invoiced yet
+                        .append(" AND EXISTS (SELECT * FROM S_TimeExpense e ") // 	processed only
+                        .append("WHERE el.S_TimeExpense_ID=e.S_TimeExpense_ID AND e.Processed='Y')");
+        if (p_C_BPartner_ID != 0) sql.append(" AND el.C_BPartner_ID=?"); // 	#2
+        if (p_DateFrom != null || m_DateTo != null) {
+            sql.append(" AND EXISTS (SELECT * FROM S_TimeExpense e ")
+                    .append("WHERE el.S_TimeExpense_ID=e.S_TimeExpense_ID");
+            if (p_DateFrom != null) sql.append(" AND e.DateReport >= ?"); // 	#3
+            if (m_DateTo != null) sql.append(" AND e.DateReport <= ?"); // 	#4
+            sql.append(")");
         }
-        if (te == null || te.getS_TimeExpense_ID() != tel.getS_TimeExpense_ID())
-          te = new MTimeExpense(getCtx(), tel.getS_TimeExpense_ID());
+        sql.append(" ORDER BY el.C_BPartner_ID, el.C_Project_ID, el.S_TimeExpense_ID, el.Line");
+
         //
-        processLine(te, tel, oldBPartner);
-      } //	********* Expense Line Loop
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql.toString(), e);
-    } finally {
-      rs = null;
-      pstmt = null;
-    }
-    completeOrder();
-    StringBuilder msgreturn = new StringBuilder("@Created@=").append(m_noOrders);
-    return msgreturn.toString();
-  } //	doIt
+        MBPartner oldBPartner = null;
+        int old_Project_ID = -1;
+        MTimeExpense te = null;
+        //
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = prepareStatement(sql.toString());
+            int par = 1;
+            pstmt.setInt(par++, getClientId());
+            if (p_C_BPartner_ID != 0) pstmt.setInt(par++, p_C_BPartner_ID);
+            if (p_DateFrom != null) pstmt.setTimestamp(par++, p_DateFrom);
+            if (m_DateTo != null) pstmt.setTimestamp(par++, m_DateTo);
+            rs = pstmt.executeQuery();
+            while (rs.next()) // 	********* Expense Line Loop
+            {
+                MTimeExpenseLine tel = new MTimeExpenseLine(getCtx(), rs);
+                if (!tel.isInvoiced()) continue;
 
-  /**
-   * Process Expense Line
-   *
-   * @param te header
-   * @param tel line
-   * @param bp bp
-   */
-  private void processLine(MTimeExpense te, MTimeExpenseLine tel, MBPartner bp) {
-    if (m_order == null) {
-      if (log.isLoggable(Level.INFO))
-        log.info("New Order for " + bp + ", Project=" + tel.getC_Project_ID());
-      m_order = new MOrder(getCtx(), 0);
-      m_order.setAD_Org_ID(tel.getOrgId());
-      m_order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_OnCredit);
-      //
-      m_order.setBPartner(bp);
-      if (m_order.getC_BPartner_Location_ID() == 0) {
-        StringBuilder msglog = new StringBuilder("No BP Location: ").append(bp);
-        log.log(Level.SEVERE, msglog.toString());
-        msglog =
-            new StringBuilder("No Location: ")
-                .append(te.getDocumentNo())
-                .append(" ")
-                .append(bp.getName());
-        addLog(0, te.getDateReport(), null, msglog.toString());
+                //	New BPartner - New Order
+                if (oldBPartner == null || oldBPartner.getC_BPartner_ID() != tel.getC_BPartner_ID()) {
+                    completeOrder();
+                    oldBPartner = new MBPartner(getCtx(), tel.getC_BPartner_ID());
+                }
+                //	New Project - New Order
+                if (old_Project_ID != tel.getC_Project_ID()) {
+                    completeOrder();
+                    old_Project_ID = tel.getC_Project_ID();
+                }
+                if (te == null || te.getS_TimeExpense_ID() != tel.getS_TimeExpense_ID())
+                    te = new MTimeExpense(getCtx(), tel.getS_TimeExpense_ID());
+                //
+                processLine(te, tel, oldBPartner);
+            } //	********* Expense Line Loop
+        } catch (Exception e) {
+            log.log(Level.SEVERE, sql.toString(), e);
+        } finally {
+            rs = null;
+            pstmt = null;
+        }
+        completeOrder();
+        StringBuilder msgreturn = new StringBuilder("@Created@=").append(m_noOrders);
+        return msgreturn.toString();
+    } //	doIt
+
+    /**
+     * Process Expense Line
+     *
+     * @param te  header
+     * @param tel line
+     * @param bp  bp
+     */
+    private void processLine(MTimeExpense te, MTimeExpenseLine tel, MBPartner bp) {
+        if (m_order == null) {
+            if (log.isLoggable(Level.INFO))
+                log.info("New Order for " + bp + ", Project=" + tel.getC_Project_ID());
+            m_order = new MOrder(getCtx(), 0);
+            m_order.setAD_Org_ID(tel.getOrgId());
+            m_order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_OnCredit);
+            //
+            m_order.setBPartner(bp);
+            if (m_order.getC_BPartner_Location_ID() == 0) {
+                StringBuilder msglog = new StringBuilder("No BP Location: ").append(bp);
+                log.log(Level.SEVERE, msglog.toString());
+                msglog =
+                        new StringBuilder("No Location: ")
+                                .append(te.getDocumentNo())
+                                .append(" ")
+                                .append(bp.getName());
+                addLog(0, te.getDateReport(), null, msglog.toString());
+                m_order = null;
+                return;
+            }
+            m_order.setM_Warehouse_ID(te.getM_Warehouse_ID());
+            if (tel.getC_Activity_ID() != 0) m_order.setC_Activity_ID(tel.getC_Activity_ID());
+            if (tel.getC_Campaign_ID() != 0) m_order.setC_Campaign_ID(tel.getC_Campaign_ID());
+            if (tel.getC_Project_ID() != 0) {
+                m_order.setC_Project_ID(tel.getC_Project_ID());
+                //	Optionally Overwrite BP Price list from Project
+                MProject project = new MProject(getCtx(), tel.getC_Project_ID());
+                if (project.getM_PriceList_ID() != 0)
+                    m_order.setM_PriceList_ID(project.getM_PriceList_ID());
+            }
+            m_order.setSalesRep_ID(te.getDoc_User_ID());
+            //
+            if (!m_order.save()) {
+                throw new IllegalStateException("Cannot save Order");
+            }
+        } else {
+            //	Update Header info
+            if (tel.getC_Activity_ID() != 0 && tel.getC_Activity_ID() != m_order.getC_Activity_ID())
+                m_order.setC_Activity_ID(tel.getC_Activity_ID());
+            if (tel.getC_Campaign_ID() != 0 && tel.getC_Campaign_ID() != m_order.getC_Campaign_ID())
+                m_order.setC_Campaign_ID(tel.getC_Campaign_ID());
+            if (!m_order.save()) throw new IllegalStateException("Cannot save Order");
+        }
+
+        //	OrderLine
+        MOrderLine ol = new MOrderLine(m_order);
+        //
+        if (tel.getM_Product_ID() != 0) ol.setM_Product_ID(tel.getM_Product_ID(), tel.getC_UOM_ID());
+        if (tel.getS_ResourceAssignment_ID() != 0)
+            ol.setS_ResourceAssignment_ID(tel.getS_ResourceAssignment_ID());
+        ol.setQty(tel.getQtyInvoiced()); //
+        ol.setDescription(tel.getDescription());
+        //
+        ol.setC_Project_ID(tel.getC_Project_ID());
+        ol.setC_ProjectPhase_ID(tel.getC_ProjectPhase_ID());
+        ol.setC_ProjectTask_ID(tel.getC_ProjectTask_ID());
+        ol.setC_Activity_ID(tel.getC_Activity_ID());
+        ol.setC_Campaign_ID(tel.getC_Campaign_ID());
+        //
+        BigDecimal price = tel.getPriceInvoiced(); //
+        if (price != null && price.compareTo(Env.ZERO) != 0) {
+            if (tel.getC_Currency_ID() != m_order.getC_Currency_ID())
+                price =
+                        MConversionRate.convert(
+                                getCtx(),
+                                price,
+                                tel.getC_Currency_ID(),
+                                m_order.getC_Currency_ID(),
+                                m_order.getClientId(),
+                                m_order.getOrgId());
+            ol.setPrice(price);
+        } else ol.setPrice();
+        if (tel.getC_UOM_ID() != 0 && ol.getC_UOM_ID() == 0) ol.setC_UOM_ID(tel.getC_UOM_ID());
+        ol.setTax();
+        if (!ol.save()) {
+            throw new IllegalStateException("Cannot save Order Line");
+        }
+        //	Update TimeExpense Line
+        tel.setC_OrderLine_ID(ol.getC_OrderLine_ID());
+        if (tel.save()) {
+            if (log.isLoggable(Level.FINE)) log.fine("Updated " + tel + " with C_OrderLine_ID");
+        } else {
+            log.log(Level.SEVERE, "Not Updated " + tel + " with C_OrderLine_ID");
+        }
+    } //	processLine
+
+    /**
+     * Complete Order
+     */
+    private void completeOrder() {
+        if (m_order == null) return;
+        m_order.setDocAction(DocAction.Companion.getACTION_Prepare());
+        if (!m_order.processIt(DocAction.Companion.getACTION_Prepare())) {
+            StringBuilder msglog =
+                    new StringBuilder("Order Process Failed: ")
+                            .append(m_order)
+                            .append(" - ")
+                            .append(m_order.getProcessMsg());
+            log.warning(msglog.toString());
+            msglog =
+                    new StringBuilder("Order Process Failed: ")
+                            .append(m_order)
+                            .append(" - ")
+                            .append(m_order.getProcessMsg());
+            throw new IllegalStateException(msglog.toString());
+        }
+        if (!m_order.save()) throw new IllegalStateException("Cannot save Order");
+        m_noOrders++;
+        addBufferLog(
+                m_order.getId(),
+                m_order.getDateOrdered(),
+                m_order.getGrandTotal(),
+                m_order.getDocumentNo(),
+                m_order.getTableId(),
+                m_order.getC_Order_ID());
         m_order = null;
-        return;
-      }
-      m_order.setM_Warehouse_ID(te.getM_Warehouse_ID());
-      if (tel.getC_Activity_ID() != 0) m_order.setC_Activity_ID(tel.getC_Activity_ID());
-      if (tel.getC_Campaign_ID() != 0) m_order.setC_Campaign_ID(tel.getC_Campaign_ID());
-      if (tel.getC_Project_ID() != 0) {
-        m_order.setC_Project_ID(tel.getC_Project_ID());
-        //	Optionally Overwrite BP Price list from Project
-        MProject project = new MProject(getCtx(), tel.getC_Project_ID());
-        if (project.getM_PriceList_ID() != 0)
-          m_order.setM_PriceList_ID(project.getM_PriceList_ID());
-      }
-      m_order.setSalesRep_ID(te.getDoc_User_ID());
-      //
-      if (!m_order.save()) {
-        throw new IllegalStateException("Cannot save Order");
-      }
-    } else {
-      //	Update Header info
-      if (tel.getC_Activity_ID() != 0 && tel.getC_Activity_ID() != m_order.getC_Activity_ID())
-        m_order.setC_Activity_ID(tel.getC_Activity_ID());
-      if (tel.getC_Campaign_ID() != 0 && tel.getC_Campaign_ID() != m_order.getC_Campaign_ID())
-        m_order.setC_Campaign_ID(tel.getC_Campaign_ID());
-      if (!m_order.save()) throw new IllegalStateException("Cannot save Order");
-    }
-
-    //	OrderLine
-    MOrderLine ol = new MOrderLine(m_order);
-    //
-    if (tel.getM_Product_ID() != 0) ol.setM_Product_ID(tel.getM_Product_ID(), tel.getC_UOM_ID());
-    if (tel.getS_ResourceAssignment_ID() != 0)
-      ol.setS_ResourceAssignment_ID(tel.getS_ResourceAssignment_ID());
-    ol.setQty(tel.getQtyInvoiced()); //
-    ol.setDescription(tel.getDescription());
-    //
-    ol.setC_Project_ID(tel.getC_Project_ID());
-    ol.setC_ProjectPhase_ID(tel.getC_ProjectPhase_ID());
-    ol.setC_ProjectTask_ID(tel.getC_ProjectTask_ID());
-    ol.setC_Activity_ID(tel.getC_Activity_ID());
-    ol.setC_Campaign_ID(tel.getC_Campaign_ID());
-    //
-    BigDecimal price = tel.getPriceInvoiced(); //
-    if (price != null && price.compareTo(Env.ZERO) != 0) {
-      if (tel.getC_Currency_ID() != m_order.getC_Currency_ID())
-        price =
-            MConversionRate.convert(
-                getCtx(),
-                price,
-                tel.getC_Currency_ID(),
-                m_order.getC_Currency_ID(),
-                m_order.getClientId(),
-                m_order.getOrgId());
-      ol.setPrice(price);
-    } else ol.setPrice();
-    if (tel.getC_UOM_ID() != 0 && ol.getC_UOM_ID() == 0) ol.setC_UOM_ID(tel.getC_UOM_ID());
-    ol.setTax();
-    if (!ol.save()) {
-      throw new IllegalStateException("Cannot save Order Line");
-    }
-    //	Update TimeExpense Line
-    tel.setC_OrderLine_ID(ol.getC_OrderLine_ID());
-    if (tel.save()) {
-      if (log.isLoggable(Level.FINE)) log.fine("Updated " + tel + " with C_OrderLine_ID");
-    } else {
-      log.log(Level.SEVERE, "Not Updated " + tel + " with C_OrderLine_ID");
-    }
-  } //	processLine
-
-  /** Complete Order */
-  private void completeOrder() {
-    if (m_order == null) return;
-    m_order.setDocAction(DocAction.Companion.getACTION_Prepare());
-    if (!m_order.processIt(DocAction.Companion.getACTION_Prepare())) {
-      StringBuilder msglog =
-          new StringBuilder("Order Process Failed: ")
-              .append(m_order)
-              .append(" - ")
-              .append(m_order.getProcessMsg());
-      log.warning(msglog.toString());
-      msglog =
-          new StringBuilder("Order Process Failed: ")
-              .append(m_order)
-              .append(" - ")
-              .append(m_order.getProcessMsg());
-      throw new IllegalStateException(msglog.toString());
-    }
-    if (!m_order.save()) throw new IllegalStateException("Cannot save Order");
-    m_noOrders++;
-    addBufferLog(
-        m_order.getId(),
-        m_order.getDateOrdered(),
-        m_order.getGrandTotal(),
-        m_order.getDocumentNo(),
-        m_order.getTableId(),
-        m_order.getC_Order_ID());
-    m_order = null;
-  } //	completeOrder
+    } //	completeOrder
 } //	ExpenseSOrder

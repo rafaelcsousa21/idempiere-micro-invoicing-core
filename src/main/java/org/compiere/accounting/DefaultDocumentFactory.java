@@ -14,44 +14,46 @@ import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
-/** @author hengsin */
+/**
+ * @author hengsin
+ */
 public class DefaultDocumentFactory implements IDocFactory {
 
-  private static final CLogger s_log = CLogger.getCLogger(DefaultDocumentFactory.class);
+    private static final CLogger s_log = CLogger.getCLogger(DefaultDocumentFactory.class);
 
-  @Override
-  public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, int Record_ID) {
-    String tableName = MTable.getTableName(Env.getCtx(), AD_Table_ID);
-    //
-    Doc doc = null;
-    StringBuffer sql =
-        new StringBuffer("SELECT * FROM ")
-            .append(tableName)
-            .append(" WHERE ")
-            .append(tableName)
-            .append("_ID=? AND Processed='Y'");
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql.toString());
-      pstmt.setInt(1, Record_ID);
-      rs = pstmt.executeQuery();
-      if (rs.next()) {
-        doc = getDocument(as, AD_Table_ID, rs);
-      } else s_log.severe("Not Found: " + tableName + "_ID=" + Record_ID);
-    } catch (Exception e) {
-      s_log.log(Level.SEVERE, sql.toString(), e);
-    } finally {
+    @Override
+    public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, int Record_ID) {
+        String tableName = MTable.getTableName(Env.getCtx(), AD_Table_ID);
+        //
+        Doc doc = null;
+        StringBuffer sql =
+                new StringBuffer("SELECT * FROM ")
+                        .append(tableName)
+                        .append(" WHERE ")
+                        .append(tableName)
+                        .append("_ID=? AND Processed='Y'");
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = prepareStatement(sql.toString());
+            pstmt.setInt(1, Record_ID);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                doc = getDocument(as, AD_Table_ID, rs);
+            } else s_log.severe("Not Found: " + tableName + "_ID=" + Record_ID);
+        } catch (Exception e) {
+            s_log.log(Level.SEVERE, sql.toString(), e);
+        } finally {
 
-      rs = null;
-      pstmt = null;
+            rs = null;
+            pstmt = null;
+        }
+        return doc;
     }
-    return doc;
-  }
 
-  @Override
-  public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, ResultSet rs) {
-    Doc doc = null;
+    @Override
+    public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, ResultSet rs) {
+        Doc doc = null;
 
     /* Classname of the Doc class follows this convention:
     * if the prefix (letters before the first underscore _) is 1 character, then the class is Doc_TableWithoutPrefixWithoutUnderscores
@@ -96,27 +98,27 @@ public class DefaultDocumentFactory implements IDocFactory {
     * 53092	HR_Process			Doc_HRProcess
     */
 
-    String tableName = MTable.getTableName(Env.getCtx(), AD_Table_ID);
-    String packageName = "org.compiere.accounting";
-    String className = null;
+        String tableName = MTable.getTableName(Env.getCtx(), AD_Table_ID);
+        String packageName = "org.compiere.accounting";
+        String className = null;
 
-    int firstUnderscore = tableName.indexOf("_");
-    if (firstUnderscore == 1)
-      className = packageName + ".Doc_" + tableName.substring(2).replaceAll("_", "");
-    else className = packageName + ".Doc_" + tableName.replaceAll("_", "");
+        int firstUnderscore = tableName.indexOf("_");
+        if (firstUnderscore == 1)
+            className = packageName + ".Doc_" + tableName.substring(2).replaceAll("_", "");
+        else className = packageName + ".Doc_" + tableName.replaceAll("_", "");
 
-    try {
-      Class<?> cClass = Class.forName(className);
-      Constructor<?> cnstr =
-          cClass.getConstructor(new Class[] {MAcctSchema.class, ResultSet.class});
-      doc = (Doc) cnstr.newInstance(as, rs);
-    } catch (Exception e) {
-      s_log.log(Level.SEVERE, "Doc Class invalid: " + className + " (" + e.toString() + ")");
-      throw new AdempiereUserError(
-          "Doc Class invalid: " + className + " (" + e.toString() + ")", e);
+        try {
+            Class<?> cClass = Class.forName(className);
+            Constructor<?> cnstr =
+                    cClass.getConstructor(new Class[]{MAcctSchema.class, ResultSet.class});
+            doc = (Doc) cnstr.newInstance(as, rs);
+        } catch (Exception e) {
+            s_log.log(Level.SEVERE, "Doc Class invalid: " + className + " (" + e.toString() + ")");
+            throw new AdempiereUserError(
+                    "Doc Class invalid: " + className + " (" + e.toString() + ")", e);
+        }
+
+        if (doc == null) s_log.log(Level.SEVERE, "Unknown AD_Table_ID=" + AD_Table_ID);
+        return doc;
     }
-
-    if (doc == null) s_log.log(Level.SEVERE, "Unknown AD_Table_ID=" + AD_Table_ID);
-    return doc;
-  }
 }

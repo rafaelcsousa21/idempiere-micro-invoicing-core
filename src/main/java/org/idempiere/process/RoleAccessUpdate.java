@@ -28,83 +28,93 @@ import java.util.logging.Level;
  * Update Role Access
  *
  * @author Jorg Janke
- * @version $Id: RoleAccessUpdate.java,v 1.3 2006/07/30 00:51:02 jjanke Exp $
  * @author Teo Sarca, teo.sarca@gmail.com
- *     <li>BF [ 3018005 ] Role Access Update: updates all roles if I log in as System
- *         https://sourceforge.net/tracker/?func=detail&aid=3018005&group_id=176962&atid=879332
+ * <li>BF [ 3018005 ] Role Access Update: updates all roles if I log in as System
+ * https://sourceforge.net/tracker/?func=detail&aid=3018005&group_id=176962&atid=879332
+ * @version $Id: RoleAccessUpdate.java,v 1.3 2006/07/30 00:51:02 jjanke Exp $
  */
 public class RoleAccessUpdate extends SvrProcess {
-  /** Static Logger */
-  private static CLogger s_log = CLogger.getCLogger(RoleAccessUpdate.class);
+    /**
+     * Static Logger
+     */
+    private static CLogger s_log = CLogger.getCLogger(RoleAccessUpdate.class);
 
-  /** Update Role */
-  private int p_AD_Role_ID = -1;
-  /** Update Roles of Client */
-  private int p_AD_Client_ID = -1;
-  /** Reset Existing Access */
-  private boolean p_IsReset = true;
+    /**
+     * Update Role
+     */
+    private int p_AD_Role_ID = -1;
+    /**
+     * Update Roles of Client
+     */
+    private int p_AD_Client_ID = -1;
+    /**
+     * Reset Existing Access
+     */
+    private boolean p_IsReset = true;
 
-  /** Prepare */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("AD_Role_ID")) p_AD_Role_ID = para[i].getParameterAsInt();
-      else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
-      else if (name.equals("ResetAccess")) p_IsReset = "Y".equals(para[i].getParameter());
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("AD_Role_ID")) p_AD_Role_ID = para[i].getParameterAsInt();
+            else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
+            else if (name.equals("ResetAccess")) p_IsReset = "Y".equals(para[i].getParameter());
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return info
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO))
-      log.info("AD_Client_ID=" + p_AD_Client_ID + ", AD_Role_ID=" + p_AD_Role_ID);
-    //
-    if (p_AD_Role_ID > 0) updateRole(new MRole(getCtx(), p_AD_Role_ID));
-    else {
-      List<Object> params = new ArrayList<Object>();
-      StringBuilder whereClause = new StringBuilder("1=1");
-      if (p_AD_Client_ID > 0) {
-        whereClause.append(" AND AD_Client_ID=? ");
-        params.add(p_AD_Client_ID);
-      }
-      if (p_AD_Role_ID == 0) // System Role
-      {
-        whereClause.append(" AND AD_Role_ID=?");
-        params.add(p_AD_Role_ID);
-      }
-      // sql += "ORDER BY AD_Client_ID, Name";
+    /**
+     * Process
+     *
+     * @return info
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO))
+            log.info("AD_Client_ID=" + p_AD_Client_ID + ", AD_Role_ID=" + p_AD_Role_ID);
+        //
+        if (p_AD_Role_ID > 0) updateRole(new MRole(getCtx(), p_AD_Role_ID));
+        else {
+            List<Object> params = new ArrayList<Object>();
+            StringBuilder whereClause = new StringBuilder("1=1");
+            if (p_AD_Client_ID > 0) {
+                whereClause.append(" AND AD_Client_ID=? ");
+                params.add(p_AD_Client_ID);
+            }
+            if (p_AD_Role_ID == 0) // System Role
+            {
+                whereClause.append(" AND AD_Role_ID=?");
+                params.add(p_AD_Role_ID);
+            }
+            // sql += "ORDER BY AD_Client_ID, Name";
 
-      List<MRole> roles =
-          new Query(getCtx(), MRole.Table_Name, whereClause.toString())
-              .setOnlyActiveRecords(true)
-              .setParameters(params)
-              .setOrderBy("AD_Client_ID, Name")
-              .list();
+            List<MRole> roles =
+                    new Query(getCtx(), MRole.Table_Name, whereClause.toString())
+                            .setOnlyActiveRecords(true)
+                            .setParameters(params)
+                            .setOrderBy("AD_Client_ID, Name")
+                            .list();
 
-      for (MRole role : roles) {
-        updateRole(role);
-      }
-    }
+            for (MRole role : roles) {
+                updateRole(role);
+            }
+        }
 
-    return "";
-  } //	doIt
+        return "";
+    } //	doIt
 
-  /**
-   * Update Role
-   *
-   * @param role role
-   */
-  private void updateRole(MRole role) {
-    StringBuilder msglog =
-        new StringBuilder(role.getName()).append(": ").append(role.updateAccessRecords(p_IsReset));
-    addLog(0, null, null, msglog.toString());
-  } //	updateRole
+    /**
+     * Update Role
+     *
+     * @param role role
+     */
+    private void updateRole(MRole role) {
+        StringBuilder msglog =
+                new StringBuilder(role.getName()).append(": ").append(role.updateAccessRecords(p_IsReset));
+        addLog(0, null, null, msglog.toString());
+    } //	updateRole
 } //	RoleAccessUpdate

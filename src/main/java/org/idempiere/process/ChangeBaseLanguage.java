@@ -29,49 +29,51 @@ import java.util.logging.Level;
  * @author Carlos Ruiz - globalqss
  */
 public class ChangeBaseLanguage extends SvrProcess {
-  /* The new language */
-  private String p_Language;
+    /* The new language */
+    private String p_Language;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    for (IProcessInfoParameter para : getParameter()) {
-      String name = para.getParameterName();
-      if (name.equals("AD_Language")) {
-        p_Language = (String) para.getParameter();
-      } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        for (IProcessInfoParameter para : getParameter()) {
+            String name = para.getParameterName();
+            if (name.equals("AD_Language")) {
+                p_Language = (String) para.getParameter();
+            } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("AD_Language=" + p_Language);
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("AD_Language=" + p_Language);
 
-    if (Util.isEmpty(p_Language)) throw new AdempiereUserError("Language required");
+        if (Util.isEmpty(p_Language)) throw new AdempiereUserError("Language required");
 
-    I_AD_Language lang = MLanguage.get(getCtx(), p_Language);
-    if (lang.isBaseLanguage()) throw new AdempiereUserError("Same base language");
-    if (lang.isSystemLanguage())
-      throw new AdempiereUserError("Base language cannot be a system language");
+        I_AD_Language lang = MLanguage.get(getCtx(), p_Language);
+        if (lang.isBaseLanguage()) throw new AdempiereUserError("Same base language");
+        if (lang.isSystemLanguage())
+            throw new AdempiereUserError("Base language cannot be a system language");
 
-    if (Language.getBaseAD_Language().equals(p_Language))
-      throw new AdempiereUserError("Same base language");
+        if (Language.getBaseAD_Language().equals(p_Language))
+            throw new AdempiereUserError("Same base language");
 
-    // Disable the base flag on the actual
-    I_AD_Language baselang = MLanguage.get(getCtx(), Language.getBaseAD_Language());
-    baselang.setIsBaseLanguage(false);
-    baselang.saveEx();
+        // Disable the base flag on the actual
+        I_AD_Language baselang = MLanguage.get(getCtx(), Language.getBaseAD_Language());
+        baselang.setIsBaseLanguage(false);
+        baselang.saveEx();
 
-    // Enable base flag on new language
-    lang.setIsBaseLanguage(true);
-    lang.saveEx();
+        // Enable base flag on new language
+        lang.setIsBaseLanguage(true);
+        lang.saveEx();
 
-    Language.setBaseLanguage(p_Language);
+        Language.setBaseLanguage(p_Language);
 
-    return "@OK@";
-  } //	doIt
+        return "@OK@";
+    } //	doIt
 } //	ChangeBaseLanguage

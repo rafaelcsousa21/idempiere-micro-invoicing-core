@@ -14,12 +14,13 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.accounting.MBankStatement;
 import org.compiere.accounting.MBankStatementLine;
 import org.compiere.accounting.X_I_BankStatement;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Bank Statement Matching
@@ -28,120 +29,124 @@ import org.compiere.process.SvrProcess;
  * @version $Id: BankStatementMatcher.java,v 1.3 2006/09/25 00:59:41 jjanke Exp $
  */
 public class BankStatementMatcher extends SvrProcess {
-  /** Matchers */
-  MBankStatementMatcher[] m_matchers = null;
+    /**
+     * Matchers
+     */
+    MBankStatementMatcher[] m_matchers = null;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    m_matchers = MBankStatementMatcher.getMatchers(getCtx());
-  } //	prepare
-
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    int Table_ID = getTable_ID();
-    int Record_ID = getRecord_ID();
-    if (m_matchers == null || m_matchers.length == 0)
-      throw new IllegalStateException("No Matchers found");
-    //
-    if (log.isLoggable(Level.INFO))
-      log.info(
-          "doIt - Table_ID="
-              + Table_ID
-              + ", Record_ID="
-              + Record_ID
-              + ", Matchers="
-              + m_matchers.length);
-
-    if (Table_ID == X_I_BankStatement.Table_ID)
-      return match(new X_I_BankStatement(getCtx(), Record_ID));
-    else if (Table_ID == MBankStatement.Table_ID)
-      return match(new MBankStatement(getCtx(), Record_ID));
-    else if (Table_ID == MBankStatementLine.Table_ID)
-      return match(new MBankStatementLine(getCtx(), Record_ID));
-
-    return "??";
-  } //	doIt
-
-  /**
-   * Perform Match
-   *
-   * @param ibs import bank statement line
-   * @return Message
-   */
-  private String match(X_I_BankStatement ibs) {
-    if (m_matchers == null || ibs == null || ibs.getC_Payment_ID() != 0) return "--";
-
-    if (log.isLoggable(Level.FINE)) log.fine("" + ibs);
-    BankStatementMatchInfo info = null;
-    for (int i = 0; i < m_matchers.length; i++) {
-      if (m_matchers[i].isMatcherValid()) {
-        info = m_matchers[i].getMatcher().findMatch(ibs);
-        if (info != null && info.isMatched()) {
-          if (info.getC_Payment_ID() > 0) ibs.setC_Payment_ID(info.getC_Payment_ID());
-          if (info.getC_Invoice_ID() > 0) ibs.setC_Invoice_ID(info.getC_Invoice_ID());
-          if (info.getC_BPartner_ID() > 0) ibs.setC_BPartner_ID(info.getC_BPartner_ID());
-          ibs.saveEx();
-          return "OK";
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-      }
-    } //	for all matchers
-    return "--";
-  } //	match
+        m_matchers = MBankStatementMatcher.getMatchers(getCtx());
+    } //	prepare
 
-  /**
-   * Perform Match
-   *
-   * @param bsl bank statement line
-   * @return Message
-   */
-  private String match(MBankStatementLine bsl) {
-    if (m_matchers == null || bsl == null || bsl.getC_Payment_ID() != 0) return "--";
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        int Table_ID = getTable_ID();
+        int Record_ID = getRecord_ID();
+        if (m_matchers == null || m_matchers.length == 0)
+            throw new IllegalStateException("No Matchers found");
+        //
+        if (log.isLoggable(Level.INFO))
+            log.info(
+                    "doIt - Table_ID="
+                            + Table_ID
+                            + ", Record_ID="
+                            + Record_ID
+                            + ", Matchers="
+                            + m_matchers.length);
 
-    if (log.isLoggable(Level.FINE)) log.fine("match - " + bsl);
-    BankStatementMatchInfo info = null;
-    for (int i = 0; i < m_matchers.length; i++) {
-      if (m_matchers[i].isMatcherValid()) {
-        info = m_matchers[i].getMatcher().findMatch(bsl);
-        if (info != null && info.isMatched()) {
-          if (info.getC_Payment_ID() > 0) bsl.setC_Payment_ID(info.getC_Payment_ID());
-          if (info.getC_Invoice_ID() > 0) bsl.setC_Invoice_ID(info.getC_Invoice_ID());
-          if (info.getC_BPartner_ID() > 0) bsl.setC_BPartner_ID(info.getC_BPartner_ID());
-          bsl.saveEx();
-          return "OK";
+        if (Table_ID == X_I_BankStatement.Table_ID)
+            return match(new X_I_BankStatement(getCtx(), Record_ID));
+        else if (Table_ID == MBankStatement.Table_ID)
+            return match(new MBankStatement(getCtx(), Record_ID));
+        else if (Table_ID == MBankStatementLine.Table_ID)
+            return match(new MBankStatementLine(getCtx(), Record_ID));
+
+        return "??";
+    } //	doIt
+
+    /**
+     * Perform Match
+     *
+     * @param ibs import bank statement line
+     * @return Message
+     */
+    private String match(X_I_BankStatement ibs) {
+        if (m_matchers == null || ibs == null || ibs.getC_Payment_ID() != 0) return "--";
+
+        if (log.isLoggable(Level.FINE)) log.fine("" + ibs);
+        BankStatementMatchInfo info = null;
+        for (int i = 0; i < m_matchers.length; i++) {
+            if (m_matchers[i].isMatcherValid()) {
+                info = m_matchers[i].getMatcher().findMatch(ibs);
+                if (info != null && info.isMatched()) {
+                    if (info.getC_Payment_ID() > 0) ibs.setC_Payment_ID(info.getC_Payment_ID());
+                    if (info.getC_Invoice_ID() > 0) ibs.setC_Invoice_ID(info.getC_Invoice_ID());
+                    if (info.getC_BPartner_ID() > 0) ibs.setC_BPartner_ID(info.getC_BPartner_ID());
+                    ibs.saveEx();
+                    return "OK";
+                }
+            }
+        } //	for all matchers
+        return "--";
+    } //	match
+
+    /**
+     * Perform Match
+     *
+     * @param bsl bank statement line
+     * @return Message
+     */
+    private String match(MBankStatementLine bsl) {
+        if (m_matchers == null || bsl == null || bsl.getC_Payment_ID() != 0) return "--";
+
+        if (log.isLoggable(Level.FINE)) log.fine("match - " + bsl);
+        BankStatementMatchInfo info = null;
+        for (int i = 0; i < m_matchers.length; i++) {
+            if (m_matchers[i].isMatcherValid()) {
+                info = m_matchers[i].getMatcher().findMatch(bsl);
+                if (info != null && info.isMatched()) {
+                    if (info.getC_Payment_ID() > 0) bsl.setC_Payment_ID(info.getC_Payment_ID());
+                    if (info.getC_Invoice_ID() > 0) bsl.setC_Invoice_ID(info.getC_Invoice_ID());
+                    if (info.getC_BPartner_ID() > 0) bsl.setC_BPartner_ID(info.getC_BPartner_ID());
+                    bsl.saveEx();
+                    return "OK";
+                }
+            }
+        } //	for all matchers
+        return "--";
+    } //	match
+
+    /**
+     * Perform Match
+     *
+     * @param bs bank statement
+     * @return Message
+     */
+    private String match(MBankStatement bs) {
+        if (m_matchers == null || bs == null) return "--";
+        if (log.isLoggable(Level.FINE)) log.fine("match - " + bs);
+        int count = 0;
+        MBankStatementLine[] lines = bs.getLines(false);
+        for (int i = 0; i < lines.length; i++) {
+            if (lines[i].getC_Payment_ID() == 0) {
+                match(lines[i]);
+                count++;
+            }
         }
-      }
-    } //	for all matchers
-    return "--";
-  } //	match
-
-  /**
-   * Perform Match
-   *
-   * @param bs bank statement
-   * @return Message
-   */
-  private String match(MBankStatement bs) {
-    if (m_matchers == null || bs == null) return "--";
-    if (log.isLoggable(Level.FINE)) log.fine("match - " + bs);
-    int count = 0;
-    MBankStatementLine[] lines = bs.getLines(false);
-    for (int i = 0; i < lines.length; i++) {
-      if (lines[i].getC_Payment_ID() == 0) {
-        match(lines[i]);
-        count++;
-      }
-    }
-    return String.valueOf(count);
-  } //	match
+        return String.valueOf(count);
+    } //	match
 } //	BankStatementMatcher

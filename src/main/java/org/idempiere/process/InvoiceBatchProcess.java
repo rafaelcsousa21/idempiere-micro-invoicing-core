@@ -32,128 +32,146 @@ import java.util.logging.Level;
  * @version $Id: InvoiceBatchProcess.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class InvoiceBatchProcess extends SvrProcess {
-  /** Batch to process */
-  private int p_C_InvoiceBatch_ID = 0;
-  /** Action */
-  private String p_DocAction = null;
+    /**
+     * Batch to process
+     */
+    private int p_C_InvoiceBatch_ID = 0;
+    /**
+     * Action
+     */
+    private String p_DocAction = null;
 
-  /** Invoice */
-  private MInvoice m_invoice = null;
-  /** Old DocumentNo */
-  private String m_oldDocumentNo = null;
-  /** Old BPartner */
-  private int m_oldC_BPartner_ID = 0;
-  /** Old BPartner Loc */
-  private int m_oldC_BPartner_Location_ID = 0;
+    /**
+     * Invoice
+     */
+    private MInvoice m_invoice = null;
+    /**
+     * Old DocumentNo
+     */
+    private String m_oldDocumentNo = null;
+    /**
+     * Old BPartner
+     */
+    private int m_oldC_BPartner_ID = 0;
+    /**
+     * Old BPartner Loc
+     */
+    private int m_oldC_BPartner_Location_ID = 0;
 
-  /** Counter */
-  private int m_count = 0;
+    /**
+     * Counter
+     */
+    private int m_count = 0;
 
-  /** Prepare - get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("DocAction")) p_DocAction = (String) para[i].getParameter();
-    }
-    p_C_InvoiceBatch_ID = getRecord_ID();
-  } //  prepare
+    /**
+     * Prepare - get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("DocAction")) p_DocAction = (String) para[i].getParameter();
+        }
+        p_C_InvoiceBatch_ID = getRecord_ID();
+    } //  prepare
 
-  /**
-   * Process Invoice Batch
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO))
-      log.info("C_InvoiceBatch_ID=" + p_C_InvoiceBatch_ID + ", DocAction=" + p_DocAction);
-    if (p_C_InvoiceBatch_ID == 0) throw new AdempiereUserError("C_InvoiceBatch_ID = 0");
-    MInvoiceBatch batch = new MInvoiceBatch(getCtx(), p_C_InvoiceBatch_ID);
-    if (batch.getId() == 0)
-      throw new AdempiereUserError("@NotFound@: @C_InvoiceBatch_ID@ - " + p_C_InvoiceBatch_ID);
-    if (batch.isProcessed()) throw new AdempiereUserError("@Processed@");
-    //
-    if (batch.getControlAmt().signum() != 0
-        && batch.getControlAmt().compareTo(batch.getDocumentAmt()) != 0)
-      throw new AdempiereUserError("@ControlAmt@ <> @DocumentAmt@");
-    //
-    MInvoiceBatchLine[] lines = batch.getLines(false);
-    for (int i = 0; i < lines.length; i++) {
-      MInvoiceBatchLine line = lines[i];
-      if (line.getC_Invoice_ID() != 0 || line.getC_InvoiceLine_ID() != 0) continue;
-
-      if ((m_oldDocumentNo != null && !m_oldDocumentNo.equals(line.getDocumentNo()))
-          || m_oldC_BPartner_ID != line.getC_BPartner_ID()
-          || m_oldC_BPartner_Location_ID != line.getC_BPartner_Location_ID()) completeInvoice();
-      //	New Invoice
-      if (m_invoice == null) {
-        m_invoice = new MInvoice(batch, line);
-        if (!m_invoice.save()) throw new AdempiereUserError("Cannot save Invoice");
+    /**
+     * Process Invoice Batch
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO))
+            log.info("C_InvoiceBatch_ID=" + p_C_InvoiceBatch_ID + ", DocAction=" + p_DocAction);
+        if (p_C_InvoiceBatch_ID == 0) throw new AdempiereUserError("C_InvoiceBatch_ID = 0");
+        MInvoiceBatch batch = new MInvoiceBatch(getCtx(), p_C_InvoiceBatch_ID);
+        if (batch.getId() == 0)
+            throw new AdempiereUserError("@NotFound@: @C_InvoiceBatch_ID@ - " + p_C_InvoiceBatch_ID);
+        if (batch.isProcessed()) throw new AdempiereUserError("@Processed@");
         //
-        m_oldDocumentNo = line.getDocumentNo();
-        m_oldC_BPartner_ID = line.getC_BPartner_ID();
-        m_oldC_BPartner_Location_ID = line.getC_BPartner_Location_ID();
-      }
+        if (batch.getControlAmt().signum() != 0
+                && batch.getControlAmt().compareTo(batch.getDocumentAmt()) != 0)
+            throw new AdempiereUserError("@ControlAmt@ <> @DocumentAmt@");
+        //
+        MInvoiceBatchLine[] lines = batch.getLines(false);
+        for (int i = 0; i < lines.length; i++) {
+            MInvoiceBatchLine line = lines[i];
+            if (line.getC_Invoice_ID() != 0 || line.getC_InvoiceLine_ID() != 0) continue;
 
-      if (line.isTaxIncluded() != m_invoice.isTaxIncluded()) {
-        //	rollback
-        throw new AdempiereUserError("Line " + line.getLine() + " TaxIncluded inconsistent");
-      }
+            if ((m_oldDocumentNo != null && !m_oldDocumentNo.equals(line.getDocumentNo()))
+                    || m_oldC_BPartner_ID != line.getC_BPartner_ID()
+                    || m_oldC_BPartner_Location_ID != line.getC_BPartner_Location_ID()) completeInvoice();
+            //	New Invoice
+            if (m_invoice == null) {
+                m_invoice = new MInvoice(batch, line);
+                if (!m_invoice.save()) throw new AdempiereUserError("Cannot save Invoice");
+                //
+                m_oldDocumentNo = line.getDocumentNo();
+                m_oldC_BPartner_ID = line.getC_BPartner_ID();
+                m_oldC_BPartner_Location_ID = line.getC_BPartner_Location_ID();
+            }
 
-      //	Add Line
-      MInvoiceLine invoiceLine = new MInvoiceLine(m_invoice);
-      invoiceLine.setDescription(line.getDescription());
-      invoiceLine.setC_Charge_ID(line.getC_Charge_ID());
-      invoiceLine.setQty(line.getQtyEntered()); // Entered/Invoiced
-      invoiceLine.setPrice(line.getPriceEntered());
-      invoiceLine.setC_Tax_ID(line.getC_Tax_ID());
-      invoiceLine.setTaxAmt(line.getTaxAmt());
-      invoiceLine.setLineNetAmt(line.getLineNetAmt());
-      invoiceLine.setLineTotalAmt(line.getLineTotalAmt());
-      if (!invoiceLine.save()) {
-        //	rollback
-        throw new AdempiereUserError("Cannot save Invoice Line");
-      }
+            if (line.isTaxIncluded() != m_invoice.isTaxIncluded()) {
+                //	rollback
+                throw new AdempiereUserError("Line " + line.getLine() + " TaxIncluded inconsistent");
+            }
 
-      //	Update Batch Line
-      line.setC_Invoice_ID(m_invoice.getC_Invoice_ID());
-      line.setC_InvoiceLine_ID(invoiceLine.getC_InvoiceLine_ID());
-      line.saveEx();
-    } //	for all lines
-    completeInvoice();
-    //
-    batch.setProcessed(true);
-    batch.saveEx();
+            //	Add Line
+            MInvoiceLine invoiceLine = new MInvoiceLine(m_invoice);
+            invoiceLine.setDescription(line.getDescription());
+            invoiceLine.setC_Charge_ID(line.getC_Charge_ID());
+            invoiceLine.setQty(line.getQtyEntered()); // Entered/Invoiced
+            invoiceLine.setPrice(line.getPriceEntered());
+            invoiceLine.setC_Tax_ID(line.getC_Tax_ID());
+            invoiceLine.setTaxAmt(line.getTaxAmt());
+            invoiceLine.setLineNetAmt(line.getLineNetAmt());
+            invoiceLine.setLineTotalAmt(line.getLineTotalAmt());
+            if (!invoiceLine.save()) {
+                //	rollback
+                throw new AdempiereUserError("Cannot save Invoice Line");
+            }
 
-    StringBuilder msgreturn = new StringBuilder("#").append(m_count);
-    return msgreturn.toString();
-  } //	doIt
+            //	Update Batch Line
+            line.setC_Invoice_ID(m_invoice.getC_Invoice_ID());
+            line.setC_InvoiceLine_ID(invoiceLine.getC_InvoiceLine_ID());
+            line.saveEx();
+        } //	for all lines
+        completeInvoice();
+        //
+        batch.setProcessed(true);
+        batch.saveEx();
 
-  /** Complete Invoice */
-  private void completeInvoice() {
-    if (m_invoice == null) return;
+        StringBuilder msgreturn = new StringBuilder("#").append(m_count);
+        return msgreturn.toString();
+    } //	doIt
 
-    m_invoice.setDocAction(p_DocAction);
-    if (!m_invoice.processIt(p_DocAction)) {
-      log.warning("Invoice Process Failed: " + m_invoice + " - " + m_invoice.getProcessMsg());
-      throw new IllegalStateException(
-          "Invoice Process Failed: " + m_invoice + " - " + m_invoice.getProcessMsg());
-    }
-    m_invoice.saveEx();
+    /**
+     * Complete Invoice
+     */
+    private void completeInvoice() {
+        if (m_invoice == null) return;
 
-    String message =
-        Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + m_invoice.getDocumentNo());
-    addBufferLog(
-        0,
-        m_invoice.getDateInvoiced(),
-        m_invoice.getGrandTotal(),
-        message,
-        m_invoice.getTableId(),
-        m_invoice.getC_Invoice_ID());
-    m_count++;
+        m_invoice.setDocAction(p_DocAction);
+        if (!m_invoice.processIt(p_DocAction)) {
+            log.warning("Invoice Process Failed: " + m_invoice + " - " + m_invoice.getProcessMsg());
+            throw new IllegalStateException(
+                    "Invoice Process Failed: " + m_invoice + " - " + m_invoice.getProcessMsg());
+        }
+        m_invoice.saveEx();
 
-    m_invoice = null;
-  } //	completeInvoice
+        String message =
+                Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + m_invoice.getDocumentNo());
+        addBufferLog(
+                0,
+                m_invoice.getDateInvoiced(),
+                m_invoice.getGrandTotal(),
+                message,
+                m_invoice.getTableId(),
+                m_invoice.getC_Invoice_ID());
+        m_count++;
+
+        m_invoice = null;
+    } //	completeInvoice
 } //	InvoiceBatchProcess

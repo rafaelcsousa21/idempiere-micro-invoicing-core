@@ -13,9 +13,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Verify Language Configuration
@@ -23,33 +24,35 @@ import org.compiere.process.SvrProcess;
  * @author Carlos Ruiz - globalqss
  */
 public class VerifyLanguageConfiguration extends SvrProcess {
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    for (IProcessInfoParameter para : getParameter()) {
-      String name = para.getParameterName();
-      log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        for (IProcessInfoParameter para : getParameter()) {
+            String name = para.getParameterName();
+            log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Perform process.
-   *
-   * @return Message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    log.info("");
+    /**
+     * Perform process.
+     *
+     * @return Message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        log.info("");
 
-    // TODO: Verify the flags on languages
+        // TODO: Verify the flags on languages
 
-    // TODO: Verify that system languages have complete translations loaded
+        // TODO: Verify that system languages have complete translations loaded
 
-    // TODO: Verify that translations correspond with system languages
+        // TODO: Verify that translations correspond with system languages
 
-    // TODO: Verify that locale languages have a similar translation loaded
+        // TODO: Verify that locale languages have a similar translation loaded
 
-    // TODO: Verify that tenant languages correspond with system languages
+        // TODO: Verify that tenant languages correspond with system languages
 
-    return "@OK@";
-  } //	doIt
+        return "@OK@";
+    } //	doIt
 } //	VerifyLanguageConfiguration

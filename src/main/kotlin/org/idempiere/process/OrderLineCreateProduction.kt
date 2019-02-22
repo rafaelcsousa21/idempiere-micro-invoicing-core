@@ -37,12 +37,12 @@ class OrderLineCreateProduction(
             val name = para[i].parameterName
             if (para[i].parameter == null)
 
-            if (name == "MovementDate")
-                p_MovementDate = para[i].parameter as Timestamp
-            else if (name == "IgnorePrevProduction")
-                ignorePrevProduction = "Y" == para[i].parameter
-            else
-                log.log(Level.SEVERE, "Unknown Parameter: $name")
+                if (name == "MovementDate")
+                    p_MovementDate = para[i].parameter as Timestamp
+                else if (name == "IgnorePrevProduction")
+                    ignorePrevProduction = "Y" == para[i].parameter
+                else
+                    log.log(Level.SEVERE, "Unknown Parameter: $name")
         }
 
         if (p_MovementDate == null)
@@ -85,8 +85,9 @@ class OrderLineCreateProduction(
         // throw an exception
         if (!ignorePrevProduction) {
             val docNo = getSQLValueString(
-                    "SELECT max(DocumentNo) " + "FROM M_Production WHERE C_OrderLine_ID = ?",
-                    p_C_OrderLine_ID)
+                "SELECT max(DocumentNo) " + "FROM M_Production WHERE C_OrderLine_ID = ?",
+                p_C_OrderLine_ID
+            )
             if (docNo != null) {
                 throw IllegalArgumentException("Production has already been created: $docNo")
             }

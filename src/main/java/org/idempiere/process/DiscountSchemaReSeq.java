@@ -14,10 +14,11 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.process.SvrProcess;
 import org.compiere.product.MDiscountSchema;
 import org.idempiere.common.util.AdempiereUserError;
+
+import java.util.logging.Level;
 
 /**
  * Renumber Discount Schema
@@ -26,32 +27,34 @@ import org.idempiere.common.util.AdempiereUserError;
  * @version $Id: DiscountSchemaReSeq.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class DiscountSchemaReSeq extends SvrProcess {
-  /** Discount Schema */
-  private int p_M_DiscountSchema_ID = 0;
+    /**
+     * Discount Schema
+     */
+    private int p_M_DiscountSchema_ID = 0;
 
-  /**
-   * Prepare
-   *
-   * @see org.compiere.process.SvrProcess#prepare()
-   */
-  protected void prepare() {
-    p_M_DiscountSchema_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare
+     *
+     * @see org.compiere.process.SvrProcess#prepare()
+     */
+    protected void prepare() {
+        p_M_DiscountSchema_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Execute
-   *
-   * @return info
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("M_DiscountSchema_ID=" + p_M_DiscountSchema_ID);
-    if (p_M_DiscountSchema_ID == 0) throw new AdempiereUserError("@M_DiscountSchema_ID@ = 0");
-    MDiscountSchema ds = new MDiscountSchema(getCtx(), p_M_DiscountSchema_ID);
-    if (ds.getId() == 0)
-      throw new AdempiereUserError("@NotFound@ M_DiscountSchema_ID=" + p_M_DiscountSchema_ID);
-    //
-    int updated = ds.reSeq();
+    /**
+     * Execute
+     *
+     * @return info
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("M_DiscountSchema_ID=" + p_M_DiscountSchema_ID);
+        if (p_M_DiscountSchema_ID == 0) throw new AdempiereUserError("@M_DiscountSchema_ID@ = 0");
+        MDiscountSchema ds = new MDiscountSchema(getCtx(), p_M_DiscountSchema_ID);
+        if (ds.getId() == 0)
+            throw new AdempiereUserError("@NotFound@ M_DiscountSchema_ID=" + p_M_DiscountSchema_ID);
+        //
+        int updated = ds.reSeq();
 
-    return "@Updated@ #" + updated;
-  } //	doIt
+        return "@Updated@ #" + updated;
+    } //	doIt
 } // DiscountSchemaRenumber

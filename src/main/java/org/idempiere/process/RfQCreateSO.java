@@ -14,9 +14,10 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
+
+import java.util.logging.Level;
 
 /**
  * Create SO for RfQ.
@@ -25,34 +26,38 @@ import org.compiere.process.SvrProcess;
  * @version $Id: RfQCreateSO.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class RfQCreateSO extends SvrProcess {
-  /** RfQ */
-  private int p_C_RfQ_ID = 0;
+    /**
+     * RfQ
+     */
+    private int p_C_RfQ_ID = 0;
 
-  private int p_C_DocType_ID = 0;
+    private int p_C_DocType_ID = 0;
 
-  /** Prepare */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
-      else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-    }
-    p_C_RfQ_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
+            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        }
+        p_C_RfQ_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process. A Sales Order is created for the entered Business Partner. A sales order line is
-   * created for each RfQ line quantity, where "Offer Quantity" is selected. If on the RfQ Line
-   * Quantity, an offer amount is entered (not 0), that price is used. If a magin is entered on RfQ
-   * Line Quantity, it overwrites the general margin. The margin is the percentage added to the Best
-   * Response Amount.
-   *
-   * @return message
-   */
-  protected String doIt() throws Exception {
-    throw new NotImplementedException();
+    /**
+     * Process. A Sales Order is created for the entered Business Partner. A sales order line is
+     * created for each RfQ line quantity, where "Offer Quantity" is selected. If on the RfQ Line
+     * Quantity, an offer amount is entered (not 0), that price is used. If a magin is entered on RfQ
+     * Line Quantity, it overwrites the general margin. The margin is the percentage added to the Best
+     * Response Amount.
+     *
+     * @return message
+     */
+    protected String doIt() throws Exception {
+        throw new NotImplementedException();
     /*
     MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
     if (rfq.getId() == 0)
@@ -125,5 +130,5 @@ public class RfQCreateSO extends SvrProcess {
     rfq.saveEx();
     return order.getDocumentNo();
     */
-  } //	doIt
+    } //	doIt
 }

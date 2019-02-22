@@ -12,497 +12,503 @@ import java.util.Properties;
 
 public class X_I_Payment extends PO implements I_I_Payment, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_I_Payment(Properties ctx, int I_Payment_ID) {
-    super(ctx, I_Payment_ID);
-    /** if (I_Payment_ID == 0) { setI_IsImported (false); setI_Payment_ID (0); } */
-  }
-
-  /** Load Constructor */
-  public X_I_Payment(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 2 - Client
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_I_Payment[").append(getId()).append("]");
-    return sb.toString();
-  }
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get Account No.
-   *
-   * @return Account Number
-   */
-  public String getAccountNo() {
-    return (String) get_Value(COLUMNNAME_AccountNo);
-  }
+     * Standard Constructor
+     */
+    public X_I_Payment(Properties ctx, int I_Payment_ID) {
+        super(ctx, I_Payment_ID);
+        /** if (I_Payment_ID == 0) { setI_IsImported (false); setI_Payment_ID (0); } */
+    }
 
     /**
-   * Get Account City.
-   *
-   * @return City or the Credit Card or Account Holder
-   */
-  public String getA_City() {
-    return (String) get_Value(COLUMNNAME_A_City);
-  }
+     * Load Constructor
+     */
+    public X_I_Payment(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Get Account Country.
-   *
-   * @return Country
-   */
-  public String getA_Country() {
-    return (String) get_Value(COLUMNNAME_A_Country);
-  }
+     * AccessLevel
+     *
+     * @return 2 - Client
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_I_Payment[").append(getId()).append("]");
+        return sb.toString();
+    }
 
     /**
-   * Get Account EMail.
-   *
-   * @return Email Address
-   */
-  public String getA_EMail() {
-    return (String) get_Value(COLUMNNAME_A_EMail);
-  }
+     * Get Account No.
+     *
+     * @return Account Number
+     */
+    public String getAccountNo() {
+        return (String) get_Value(COLUMNNAME_AccountNo);
+    }
 
     /**
-   * Get Driver License.
-   *
-   * @return Payment Identification - Driver License
-   */
-  public String getA_Ident_DL() {
-    return (String) get_Value(COLUMNNAME_A_Ident_DL);
-  }
+     * Get Account City.
+     *
+     * @return City or the Credit Card or Account Holder
+     */
+    public String getA_City() {
+        return (String) get_Value(COLUMNNAME_A_City);
+    }
 
     /**
-   * Get Social Security No.
-   *
-   * @return Payment Identification - Social Security No
-   */
-  public String getA_Ident_SSN() {
-    return (String) get_Value(COLUMNNAME_A_Ident_SSN);
-  }
+     * Get Account Country.
+     *
+     * @return Country
+     */
+    public String getA_Country() {
+        return (String) get_Value(COLUMNNAME_A_Country);
+    }
 
     /**
-   * Get Account Name.
-   *
-   * @return Name on Credit Card or Account holder
-   */
-  public String getA_Name() {
-    return (String) get_Value(COLUMNNAME_A_Name);
-  }
+     * Get Account EMail.
+     *
+     * @return Email Address
+     */
+    public String getA_EMail() {
+        return (String) get_Value(COLUMNNAME_A_EMail);
+    }
 
     /**
-   * Get Account State.
-   *
-   * @return State of the Credit Card or Account holder
-   */
-  public String getA_State() {
-    return (String) get_Value(COLUMNNAME_A_State);
-  }
+     * Get Driver License.
+     *
+     * @return Payment Identification - Driver License
+     */
+    public String getA_Ident_DL() {
+        return (String) get_Value(COLUMNNAME_A_Ident_DL);
+    }
 
     /**
-   * Get Account Street.
-   *
-   * @return Street address of the Credit Card or Account holder
-   */
-  public String getA_Street() {
-    return (String) get_Value(COLUMNNAME_A_Street);
-  }
+     * Get Social Security No.
+     *
+     * @return Payment Identification - Social Security No
+     */
+    public String getA_Ident_SSN() {
+        return (String) get_Value(COLUMNNAME_A_Ident_SSN);
+    }
 
     /**
-   * Get Account Zip/Postal.
-   *
-   * @return Zip Code of the Credit Card or Account Holder
-   */
-  public String getA_Zip() {
-    return (String) get_Value(COLUMNNAME_A_Zip);
-  }
+     * Get Account Name.
+     *
+     * @return Name on Credit Card or Account holder
+     */
+    public String getA_Name() {
+        return (String) get_Value(COLUMNNAME_A_Name);
+    }
 
     /**
-   * Get Bank Account.
-   *
-   * @return Account at the Bank
-   */
-  public int getC_BankAccount_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Account State.
+     *
+     * @return State of the Credit Card or Account holder
+     */
+    public String getA_State() {
+        return (String) get_Value(COLUMNNAME_A_State);
+    }
 
     /**
-   * Get Business Partner .
-   *
-   * @return Identifies a Business Partner
-   */
-  public int getC_BPartner_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Account Street.
+     *
+     * @return Street address of the Credit Card or Account holder
+     */
+    public String getA_Street() {
+        return (String) get_Value(COLUMNNAME_A_Street);
+    }
 
     /**
-   * Get Charge.
-   *
-   * @return Additional document charges
-   */
-  public int getC_Charge_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Account Zip/Postal.
+     *
+     * @return Zip Code of the Credit Card or Account Holder
+     */
+    public String getA_Zip() {
+        return (String) get_Value(COLUMNNAME_A_Zip);
+    }
 
     /**
-   * Get Currency.
-   *
-   * @return The Currency for this record
-   */
-  public int getC_Currency_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Bank Account.
+     *
+     * @return Account at the Bank
+     */
+    public int getC_BankAccount_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Document Type.
-   *
-   * @return Document type or rules
-   */
-  public int getC_DocType_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Business Partner .
+     *
+     * @return Identifies a Business Partner
+     */
+    public int getC_BPartner_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Charge amount.
-   *
-   * @return Charge Amount
-   */
-  public BigDecimal getChargeAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ChargeAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+     * Get Charge.
+     *
+     * @return Additional document charges
+     */
+    public int getC_Charge_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Check No.
-   *
-   * @return Check Number
-   */
-  public String getCheckNo() {
-    return (String) get_Value(COLUMNNAME_CheckNo);
-  }
+     * Get Currency.
+     *
+     * @return The Currency for this record
+     */
+    public int getC_Currency_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Invoice.
-   *
-   * @return Invoice Identifier
-   */
-  public int getC_Invoice_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Document Type.
+     *
+     * @return Document type or rules
+     */
+    public int getC_DocType_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Set Payment.
-   *
-   * @param C_Payment_ID Payment identifier
-   */
-  public void setC_Payment_ID(int C_Payment_ID) {
-    if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-    else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
-  }
-
-  /**
-   * Get Payment.
-   *
-   * @return Payment identifier
-   */
-  public int getC_Payment_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Charge amount.
+     *
+     * @return Charge Amount
+     */
+    public BigDecimal getChargeAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ChargeAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
 
     /**
-   * Get Exp. Month.
-   *
-   * @return Expiry Month
-   */
-  public int getCreditCardExpMM() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_CreditCardExpMM);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Check No.
+     *
+     * @return Check Number
+     */
+    public String getCheckNo() {
+        return (String) get_Value(COLUMNNAME_CheckNo);
+    }
 
     /**
-   * Get Exp. Year.
-   *
-   * @return Expiry Year
-   */
-  public int getCreditCardExpYY() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_CreditCardExpYY);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Invoice.
+     *
+     * @return Invoice Identifier
+     */
+    public int getC_Invoice_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Number.
-   *
-   * @return Credit Card Number
-   */
-  public String getCreditCardNumber() {
-    return (String) get_Value(COLUMNNAME_CreditCardNumber);
-  }
+     * Get Payment.
+     *
+     * @return Payment identifier
+     */
+    public int getC_Payment_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Credit Card.
-   *
-   * @return Credit Card (Visa, MC, AmEx)
-   */
-  public String getCreditCardType() {
-    return (String) get_Value(COLUMNNAME_CreditCardType);
-  }
+     * Set Payment.
+     *
+     * @param C_Payment_ID Payment identifier
+     */
+    public void setC_Payment_ID(int C_Payment_ID) {
+        if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
+        else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    }
 
     /**
-   * Get Verification Code.
-   *
-   * @return Credit Card Verification code on credit card
-   */
-  public String getCreditCardVV() {
-    return (String) get_Value(COLUMNNAME_CreditCardVV);
-  }
+     * Get Exp. Month.
+     *
+     * @return Expiry Month
+     */
+    public int getCreditCardExpMM() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_CreditCardExpMM);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Transaction Date.
-   *
-   * @return Transaction Date
-   */
-  public Timestamp getDateTrx() {
-    return (Timestamp) get_Value(COLUMNNAME_DateTrx);
-  }
+     * Get Exp. Year.
+     *
+     * @return Expiry Year
+     */
+    public int getCreditCardExpYY() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_CreditCardExpYY);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Get Discount Amount.
-   *
-   * @return Calculated amount of discount
-   */
-  public BigDecimal getDiscountAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DiscountAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+     * Get Number.
+     *
+     * @return Credit Card Number
+     */
+    public String getCreditCardNumber() {
+        return (String) get_Value(COLUMNNAME_CreditCardNumber);
+    }
 
     /**
-   * Get Document No.
-   *
-   * @return Document sequence number of the document
-   */
-  public String getDocumentNo() {
-    return (String) get_Value(COLUMNNAME_DocumentNo);
-  }
+     * Get Credit Card.
+     *
+     * @return Credit Card (Visa, MC, AmEx)
+     */
+    public String getCreditCardType() {
+        return (String) get_Value(COLUMNNAME_CreditCardType);
+    }
 
     /**
-   * Get IBAN.
-   *
-   * @return International Bank Account Number
-   */
-  public String getIBAN() {
-    return (String) get_Value(COLUMNNAME_IBAN);
-  }
+     * Get Verification Code.
+     *
+     * @return Credit Card Verification code on credit card
+     */
+    public String getCreditCardVV() {
+        return (String) get_Value(COLUMNNAME_CreditCardVV);
+    }
 
     /**
-   * Set Imported.
-   *
-   * @param I_IsImported Has this import been processed
-   */
-  public void setI_IsImported(boolean I_IsImported) {
-    set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
-  }
+     * Get Transaction Date.
+     *
+     * @return Transaction Date
+     */
+    public Timestamp getDateTrx() {
+        return (Timestamp) get_Value(COLUMNNAME_DateTrx);
+    }
 
     /**
-   * Get Micr.
-   *
-   * @return Combination of routing no, account and check no
-   */
-  public String getMicr() {
-    return (String) get_Value(COLUMNNAME_Micr);
-  }
+     * Get Discount Amount.
+     *
+     * @return Calculated amount of discount
+     */
+    public BigDecimal getDiscountAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DiscountAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
 
     /**
-   * Get Original Transaction ID.
-   *
-   * @return Original Transaction ID
-   */
-  public String getOrig_TrxID() {
-    return (String) get_Value(COLUMNNAME_Orig_TrxID);
-  }
+     * Get Document No.
+     *
+     * @return Document sequence number of the document
+     */
+    public String getDocumentNo() {
+        return (String) get_Value(COLUMNNAME_DocumentNo);
+    }
 
     /**
-   * Get Payment amount.
-   *
-   * @return Amount being paid
-   */
-  public BigDecimal getPayAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PayAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+     * Get IBAN.
+     *
+     * @return International Bank Account Number
+     */
+    public String getIBAN() {
+        return (String) get_Value(COLUMNNAME_IBAN);
+    }
 
     /**
-   * Get PO Number.
-   *
-   * @return Purchase Order Number
-   */
-  public String getPONum() {
-    return (String) get_Value(COLUMNNAME_PONum);
-  }
-
-  /**
-   * Set Processed.
-   *
-   * @param Processed The document has been processed
-   */
-  public void setProcessed(boolean Processed) {
-    set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
-  }
+     * Set Imported.
+     *
+     * @param I_IsImported Has this import been processed
+     */
+    public void setI_IsImported(boolean I_IsImported) {
+        set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
+    }
 
     /**
-   * Get Authorization Code.
-   *
-   * @return Authorization Code returned
-   */
-  public String getR_AuthCode() {
-    return (String) get_Value(COLUMNNAME_R_AuthCode);
-  }
+     * Get Micr.
+     *
+     * @return Combination of routing no, account and check no
+     */
+    public String getMicr() {
+        return (String) get_Value(COLUMNNAME_Micr);
+    }
 
     /**
-   * Get Info.
-   *
-   * @return Response info
-   */
-  public String getR_Info() {
-    return (String) get_Value(COLUMNNAME_R_Info);
-  }
+     * Get Original Transaction ID.
+     *
+     * @return Original Transaction ID
+     */
+    public String getOrig_TrxID() {
+        return (String) get_Value(COLUMNNAME_Orig_TrxID);
+    }
 
     /**
-   * Get Routing No.
-   *
-   * @return Bank Routing Number
-   */
-  public String getRoutingNo() {
-    return (String) get_Value(COLUMNNAME_RoutingNo);
-  }
+     * Get Payment amount.
+     *
+     * @return Amount being paid
+     */
+    public BigDecimal getPayAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PayAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
 
     /**
-   * Get Reference.
-   *
-   * @return Payment reference
-   */
-  public String getR_PnRef() {
-    return (String) get_Value(COLUMNNAME_R_PnRef);
-  }
+     * Get PO Number.
+     *
+     * @return Purchase Order Number
+     */
+    public String getPONum() {
+        return (String) get_Value(COLUMNNAME_PONum);
+    }
 
     /**
-   * Get Response Message.
-   *
-   * @return Response message
-   */
-  public String getR_RespMsg() {
-    return (String) get_Value(COLUMNNAME_R_RespMsg);
-  }
+     * Set Processed.
+     *
+     * @param Processed The document has been processed
+     */
+    public void setProcessed(boolean Processed) {
+        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+    }
 
     /**
-   * Get Result.
-   *
-   * @return Result of transmission
-   */
-  public String getR_Result() {
-    return (String) get_Value(COLUMNNAME_R_Result);
-  }
+     * Get Authorization Code.
+     *
+     * @return Authorization Code returned
+     */
+    public String getR_AuthCode() {
+        return (String) get_Value(COLUMNNAME_R_AuthCode);
+    }
 
     /**
-   * Get Swift code.
-   *
-   * @return Swift Code or BIC
-   */
-  public String getSwiftCode() {
-    return (String) get_Value(COLUMNNAME_SwiftCode);
-  }
+     * Get Info.
+     *
+     * @return Response info
+     */
+    public String getR_Info() {
+        return (String) get_Value(COLUMNNAME_R_Info);
+    }
 
     /**
-   * Get Swipe.
-   *
-   * @return Track 1 and 2 of the Credit Card
-   */
-  public String getSwipe() {
-    return (String) get_Value(COLUMNNAME_Swipe);
-  }
+     * Get Routing No.
+     *
+     * @return Bank Routing Number
+     */
+    public String getRoutingNo() {
+        return (String) get_Value(COLUMNNAME_RoutingNo);
+    }
 
     /**
-   * Get Tax Amount.
-   *
-   * @return Tax Amount for a document
-   */
-  public BigDecimal getTaxAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TaxAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+     * Get Reference.
+     *
+     * @return Payment reference
+     */
+    public String getR_PnRef() {
+        return (String) get_Value(COLUMNNAME_R_PnRef);
+    }
 
     /**
-   * Get Tender type.
-   *
-   * @return Method of Payment
-   */
-  public String getTenderType() {
-    return (String) get_Value(COLUMNNAME_TenderType);
-  }
+     * Get Response Message.
+     *
+     * @return Response message
+     */
+    public String getR_RespMsg() {
+        return (String) get_Value(COLUMNNAME_R_RespMsg);
+    }
 
     /**
-   * Get Transaction Type.
-   *
-   * @return Type of credit card transaction
-   */
-  public String getTrxType() {
-    return (String) get_Value(COLUMNNAME_TrxType);
-  }
+     * Get Result.
+     *
+     * @return Result of transmission
+     */
+    public String getR_Result() {
+        return (String) get_Value(COLUMNNAME_R_Result);
+    }
 
     /**
-   * Get Voice authorization code.
-   *
-   * @return Voice Authorization Code from credit card company
-   */
-  public String getVoiceAuthCode() {
-    return (String) get_Value(COLUMNNAME_VoiceAuthCode);
-  }
+     * Get Swift code.
+     *
+     * @return Swift Code or BIC
+     */
+    public String getSwiftCode() {
+        return (String) get_Value(COLUMNNAME_SwiftCode);
+    }
 
     /**
-   * Get Write-off Amount.
-   *
-   * @return Amount to write-off
-   */
-  public BigDecimal getWriteOffAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_WriteOffAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+     * Get Swipe.
+     *
+     * @return Track 1 and 2 of the Credit Card
+     */
+    public String getSwipe() {
+        return (String) get_Value(COLUMNNAME_Swipe);
+    }
 
-  @Override
-  public int getTableId() {
-    return I_I_Payment.Table_ID;
-  }
+    /**
+     * Get Tax Amount.
+     *
+     * @return Tax Amount for a document
+     */
+    public BigDecimal getTaxAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TaxAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Get Tender type.
+     *
+     * @return Method of Payment
+     */
+    public String getTenderType() {
+        return (String) get_Value(COLUMNNAME_TenderType);
+    }
+
+    /**
+     * Get Transaction Type.
+     *
+     * @return Type of credit card transaction
+     */
+    public String getTrxType() {
+        return (String) get_Value(COLUMNNAME_TrxType);
+    }
+
+    /**
+     * Get Voice authorization code.
+     *
+     * @return Voice Authorization Code from credit card company
+     */
+    public String getVoiceAuthCode() {
+        return (String) get_Value(COLUMNNAME_VoiceAuthCode);
+    }
+
+    /**
+     * Get Write-off Amount.
+     *
+     * @return Amount to write-off
+     */
+    public BigDecimal getWriteOffAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_WriteOffAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    @Override
+    public int getTableId() {
+        return I_I_Payment.Table_ID;
+    }
 }

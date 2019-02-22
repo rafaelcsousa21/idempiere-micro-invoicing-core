@@ -14,161 +14,164 @@
  */
 package org.idempiere.process;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.logging.Level;
 import org.compiere.accounting.MClient;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.wf.MMailText;
-import static software.hsharp.core.util.DBKt.*;
-import static software.hsharp.core.util.DBKt.*;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.logging.Level;
+
+import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Deliver Assets Electronically
  *
  * @author Jorg Janke
- * @version $Id: AssetDelivery.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  * @author Michael Judd BF [ 2736995 ] - toURL() in java.io.File has been deprecated
+ * @version $Id: AssetDelivery.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class AssetDelivery extends SvrProcess {
-  private MClient m_client = null;
+    private MClient m_client = null;
 
-  private int m_A_Asset_Group_ID = 0;
-  private int m_M_Product_ID = 0;
-  private int m_C_BPartner_ID = 0;
-  private int m_A_Asset_ID = 0;
-  private Timestamp m_GuaranteeDate = null;
-  private int m_NoGuarantee_MailText_ID = 0;
-  private boolean m_AttachAsset = false;
-  //
-  private MMailText m_MailText = null;
-
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("A_Asset_Group_ID")) m_A_Asset_Group_ID = para[i].getParameterAsInt();
-      else if (name.equals("M_Product_ID")) m_M_Product_ID = para[i].getParameterAsInt();
-      else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
-      else if (name.equals("A_Asset_ID")) m_A_Asset_ID = para[i].getParameterAsInt();
-      else if (name.equals("GuaranteeDate")) m_GuaranteeDate = (Timestamp) para[i].getParameter();
-      else if (name.equals("NoGuarantee_MailText_ID"))
-        m_NoGuarantee_MailText_ID = para[i].getParameterAsInt();
-      else if (name.equals("AttachAsset")) m_AttachAsset = "Y".equals(para[i].getParameter());
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    if (m_GuaranteeDate == null) m_GuaranteeDate = new Timestamp(System.currentTimeMillis());
+    private int m_A_Asset_Group_ID = 0;
+    private int m_M_Product_ID = 0;
+    private int m_C_BPartner_ID = 0;
+    private int m_A_Asset_ID = 0;
+    private Timestamp m_GuaranteeDate = null;
+    private int m_NoGuarantee_MailText_ID = 0;
+    private boolean m_AttachAsset = false;
     //
-    m_client = MClient.get(getCtx());
-  } //	prepare
+    private MMailText m_MailText = null;
 
-  /**
-   * Perform process.
-   *
-   * @return Message to be translated
-   * @throws Exception
-   */
-  protected String doIt() throws java.lang.Exception {
-    log.info("");
-    long start = System.currentTimeMillis();
-
-    //	Test
-    if (m_client.getSMTPHost() == null || m_client.getSMTPHost().length() == 0)
-      throw new Exception("No Client SMTP Info");
-    if (m_client.getRequestEMail() == null) throw new Exception("No Client Request User");
-
-    //	Asset selected
-    if (m_A_Asset_ID != 0) {
-      String msg = deliverIt(m_A_Asset_ID);
-      addLog(m_A_Asset_ID, null, null, msg);
-      return msg;
-    }
-    //
-    StringBuilder sql =
-        new StringBuilder("SELECT A_Asset_ID, GuaranteeDate ")
-            .append("FROM A_Asset a")
-            .append(" INNER JOIN M_Product p ON (a.M_Product_ID=p.M_Product_ID) ")
-            .append("WHERE ");
-    if (m_A_Asset_Group_ID != 0)
-      sql.append("a.A_Asset_Group_ID=").append(m_A_Asset_Group_ID).append(" AND ");
-    if (m_M_Product_ID != 0) sql.append("p.M_Product_ID=").append(m_M_Product_ID).append(" AND ");
-    if (m_C_BPartner_ID != 0)
-      sql.append("a.C_BPartner_ID=").append(m_C_BPartner_ID).append(" AND ");
-    String s = sql.toString();
-    if (s.endsWith(" WHERE ")) throw new Exception("@RestrictSelection@");
-    //	No mail to expired
-    if (m_NoGuarantee_MailText_ID == 0) {
-      sql.append("TRUNC(GuaranteeDate) >= ").append(TO_DATE(m_GuaranteeDate, true));
-      s = sql.toString();
-    }
-    //	Clean up
-    if (s.endsWith(" AND ")) s = sql.substring(0, sql.length() - 5);
-    //
-    PreparedStatement stmt = null;
-    int count = 0;
-    int errors = 0;
-    int reminders = 0;
-    ResultSet rs = null;
-    try {
-      stmt = prepareStatement(s);
-      rs = stmt.executeQuery();
-      while (rs.next()) {
-        int A_Asset_ID = rs.getInt(1);
-        Timestamp GuaranteeDate = rs.getTimestamp(2);
-
-        //	Guarantee Expired
-        if (GuaranteeDate != null && GuaranteeDate.before(m_GuaranteeDate)) {
-          if (m_NoGuarantee_MailText_ID != 0) {
-            sendNoGuaranteeMail(A_Asset_ID, m_NoGuarantee_MailText_ID);
-            reminders++;
-          }
-        } else //	Guarantee valid
-        {
-          String msg = deliverIt(A_Asset_ID);
-          addLog(A_Asset_ID, null, null, msg);
-          if (msg.startsWith("** ")) errors++;
-          else count++;
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("A_Asset_Group_ID")) m_A_Asset_Group_ID = para[i].getParameterAsInt();
+            else if (name.equals("M_Product_ID")) m_M_Product_ID = para[i].getParameterAsInt();
+            else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
+            else if (name.equals("A_Asset_ID")) m_A_Asset_ID = para[i].getParameterAsInt();
+            else if (name.equals("GuaranteeDate")) m_GuaranteeDate = (Timestamp) para[i].getParameter();
+            else if (name.equals("NoGuarantee_MailText_ID"))
+                m_NoGuarantee_MailText_ID = para[i].getParameterAsInt();
+            else if (name.equals("AttachAsset")) m_AttachAsset = "Y".equals(para[i].getParameter());
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-      }
-    } catch (Exception e) {
-      log.log(Level.SEVERE, s, e);
-    } finally {
+        if (m_GuaranteeDate == null) m_GuaranteeDate = new Timestamp(System.currentTimeMillis());
+        //
+        m_client = MClient.get(getCtx());
+    } //	prepare
 
-      rs = null;
-      stmt = null;
-    }
+    /**
+     * Perform process.
+     *
+     * @return Message to be translated
+     * @throws Exception
+     */
+    protected String doIt() throws java.lang.Exception {
+        log.info("");
+        long start = System.currentTimeMillis();
 
-    if (log.isLoggable(Level.INFO))
-      log.info(
-          "Count="
-              + count
-              + ", Errors="
-              + errors
-              + ", Reminder="
-              + reminders
-              + " - "
-              + (System.currentTimeMillis() - start)
-              + "ms");
-    StringBuilder msgreturn =
-        new StringBuilder("@Sent@=").append(count).append(" - @Errors@=").append(errors);
-    return msgreturn.toString();
-  } //	doIt
+        //	Test
+        if (m_client.getSMTPHost() == null || m_client.getSMTPHost().length() == 0)
+            throw new Exception("No Client SMTP Info");
+        if (m_client.getRequestEMail() == null) throw new Exception("No Client Request User");
 
-  /**
-   * Send No Guarantee EMail
-   *
-   * @param A_Asset_ID asset
-   * @param R_MailText_ID mail to send
-   * @return message - delivery errors start with **
-   */
-  private String sendNoGuaranteeMail(int A_Asset_ID, int R_MailText_ID)
-      throws NotImplementedException {
-    throw new NotImplementedException();
+        //	Asset selected
+        if (m_A_Asset_ID != 0) {
+            String msg = deliverIt(m_A_Asset_ID);
+            addLog(m_A_Asset_ID, null, null, msg);
+            return msg;
+        }
+        //
+        StringBuilder sql =
+                new StringBuilder("SELECT A_Asset_ID, GuaranteeDate ")
+                        .append("FROM A_Asset a")
+                        .append(" INNER JOIN M_Product p ON (a.M_Product_ID=p.M_Product_ID) ")
+                        .append("WHERE ");
+        if (m_A_Asset_Group_ID != 0)
+            sql.append("a.A_Asset_Group_ID=").append(m_A_Asset_Group_ID).append(" AND ");
+        if (m_M_Product_ID != 0) sql.append("p.M_Product_ID=").append(m_M_Product_ID).append(" AND ");
+        if (m_C_BPartner_ID != 0)
+            sql.append("a.C_BPartner_ID=").append(m_C_BPartner_ID).append(" AND ");
+        String s = sql.toString();
+        if (s.endsWith(" WHERE ")) throw new Exception("@RestrictSelection@");
+        //	No mail to expired
+        if (m_NoGuarantee_MailText_ID == 0) {
+            sql.append("TRUNC(GuaranteeDate) >= ").append(TO_DATE(m_GuaranteeDate, true));
+            s = sql.toString();
+        }
+        //	Clean up
+        if (s.endsWith(" AND ")) s = sql.substring(0, sql.length() - 5);
+        //
+        PreparedStatement stmt = null;
+        int count = 0;
+        int errors = 0;
+        int reminders = 0;
+        ResultSet rs = null;
+        try {
+            stmt = prepareStatement(s);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                int A_Asset_ID = rs.getInt(1);
+                Timestamp GuaranteeDate = rs.getTimestamp(2);
+
+                //	Guarantee Expired
+                if (GuaranteeDate != null && GuaranteeDate.before(m_GuaranteeDate)) {
+                    if (m_NoGuarantee_MailText_ID != 0) {
+                        sendNoGuaranteeMail(A_Asset_ID, m_NoGuarantee_MailText_ID);
+                        reminders++;
+                    }
+                } else //	Guarantee valid
+                {
+                    String msg = deliverIt(A_Asset_ID);
+                    addLog(A_Asset_ID, null, null, msg);
+                    if (msg.startsWith("** ")) errors++;
+                    else count++;
+                }
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, s, e);
+        } finally {
+
+            rs = null;
+            stmt = null;
+        }
+
+        if (log.isLoggable(Level.INFO))
+            log.info(
+                    "Count="
+                            + count
+                            + ", Errors="
+                            + errors
+                            + ", Reminder="
+                            + reminders
+                            + " - "
+                            + (System.currentTimeMillis() - start)
+                            + "ms");
+        StringBuilder msgreturn =
+                new StringBuilder("@Sent@=").append(count).append(" - @Errors@=").append(errors);
+        return msgreturn.toString();
+    } //	doIt
+
+    /**
+     * Send No Guarantee EMail
+     *
+     * @param A_Asset_ID    asset
+     * @param R_MailText_ID mail to send
+     * @return message - delivery errors start with **
+     */
+    private String sendNoGuaranteeMail(int A_Asset_ID, int R_MailText_ID)
+            throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*MAsset asset = new MAsset (getCtx(), A_Asset_ID);
     if (asset.getAD_User_ID() == 0)
@@ -202,16 +205,16 @@ public class AssetDelivery extends SvrProcess {
     //
     return user.getEMail();
     */
-  } //	sendNoGuaranteeMail
+    } //	sendNoGuaranteeMail
 
-  /**
-   * ************************************************************************ Deliver Asset
-   *
-   * @param A_Asset_ID asset
-   * @return message - delivery errors start with **
-   */
-  private String deliverIt(int A_Asset_ID) throws NotImplementedException {
-    throw new NotImplementedException();
+    /**
+     * ************************************************************************ Deliver Asset
+     *
+     * @param A_Asset_ID asset
+     * @return message - delivery errors start with **
+     */
+    private String deliverIt(int A_Asset_ID) throws NotImplementedException {
+        throw new NotImplementedException();
 
     /*if (log.isLoggable(Level.FINE)) log.fine("A_Asset_ID=" + A_Asset_ID);
     long start = System.currentTimeMillis();
@@ -280,5 +283,5 @@ public class AssetDelivery extends SvrProcess {
     StringBuilder msgreturn = new StringBuilder().append(user.getEMail()).append(" - ").append(asset.getVersionNo());
     return msgreturn.toString();
     */
-  } //	deliverIt
+    } //	deliverIt
 } //	AssetDelivery

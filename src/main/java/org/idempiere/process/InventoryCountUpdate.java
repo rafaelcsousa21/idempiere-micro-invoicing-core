@@ -31,92 +31,98 @@ import static software.hsharp.core.util.DBKt.executeUpdate;
  * @version $Id: InventoryCountUpdate.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class InventoryCountUpdate extends SvrProcess {
-  /** Physical Inventory */
-  private int p_M_Inventory_ID = 0;
-  /** Update to What */
-  private boolean p_InventoryCountSetZero = false;
+    /**
+     * Physical Inventory
+     */
+    private int p_M_Inventory_ID = 0;
+    /**
+     * Update to What
+     */
+    private boolean p_InventoryCountSetZero = false;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("InventoryCountSet"))
-        p_InventoryCountSetZero = "Z".equals(para[i].getParameter());
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_M_Inventory_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("InventoryCountSet"))
+                p_InventoryCountSetZero = "Z".equals(para[i].getParameter());
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_M_Inventory_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("M_Inventory_ID=" + p_M_Inventory_ID);
-    MInventory inventory = new MInventory(getCtx(), p_M_Inventory_ID);
-    if (inventory.getId() == 0)
-      throw new AdempiereSystemError("Not found: M_Inventory_ID=" + p_M_Inventory_ID);
+    /**
+     * Process
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("M_Inventory_ID=" + p_M_Inventory_ID);
+        MInventory inventory = new MInventory(getCtx(), p_M_Inventory_ID);
+        if (inventory.getId() == 0)
+            throw new AdempiereSystemError("Not found: M_Inventory_ID=" + p_M_Inventory_ID);
 
-    //	Multiple Lines for one item
-    StringBuilder sql =
-        new StringBuilder("UPDATE M_InventoryLine SET IsActive='N' ")
-            .append("WHERE M_Inventory_ID=")
-            .append(p_M_Inventory_ID)
-            .append(" AND (M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID) IN ")
-            .append("(SELECT M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID ")
-            .append("FROM M_InventoryLine ")
-            .append("WHERE M_Inventory_ID=")
-            .append(p_M_Inventory_ID)
-            .append(" GROUP BY M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID ")
-            .append("HAVING COUNT(*) > 1)");
-    int multiple = executeUpdate(sql.toString());
-    if (log.isLoggable(Level.INFO)) log.info("Multiple=" + multiple);
+        //	Multiple Lines for one item
+        StringBuilder sql =
+                new StringBuilder("UPDATE M_InventoryLine SET IsActive='N' ")
+                        .append("WHERE M_Inventory_ID=")
+                        .append(p_M_Inventory_ID)
+                        .append(" AND (M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID) IN ")
+                        .append("(SELECT M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID ")
+                        .append("FROM M_InventoryLine ")
+                        .append("WHERE M_Inventory_ID=")
+                        .append(p_M_Inventory_ID)
+                        .append(" GROUP BY M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID ")
+                        .append("HAVING COUNT(*) > 1)");
+        int multiple = executeUpdate(sql.toString());
+        if (log.isLoggable(Level.INFO)) log.info("Multiple=" + multiple);
 
-    int delMA = MInventoryLineMA.deleteInventoryMA(p_M_Inventory_ID);
-    if (log.isLoggable(Level.INFO)) log.info("DeletedMA=" + delMA);
+        int delMA = MInventoryLineMA.deleteInventoryMA(p_M_Inventory_ID);
+        if (log.isLoggable(Level.INFO)) log.info("DeletedMA=" + delMA);
 
-    //	ASI
-    sql =
-        new StringBuilder("UPDATE M_InventoryLine l ")
-            .append("SET (QtyBook,QtyCount) = ")
-            .append("(SELECT SUM(QtyOnHand),SUM(QtyOnHand) FROM M_StorageOnHand s ")
-            .append("WHERE s.M_Product_ID=l.M_Product_ID AND s.M_Locator_ID=l.M_Locator_ID")
-            .append(" AND s.M_AttributeSetInstance_ID=l.M_AttributeSetInstance_ID),")
-            .append(" Updated=SysDate,")
-            .append(" UpdatedBy=")
-            .append(getAD_User_ID())
-            //
-            .append(" WHERE M_Inventory_ID=")
-            .append(p_M_Inventory_ID)
-            .append(" AND EXISTS (SELECT * FROM M_StorageOnHand s ")
-            .append("WHERE s.M_Product_ID=l.M_Product_ID AND s.M_Locator_ID=l.M_Locator_ID")
-            .append(" AND s.M_AttributeSetInstance_ID=l.M_AttributeSetInstance_ID)");
-    int no = executeUpdate(sql.toString());
-    if (log.isLoggable(Level.INFO)) log.info("Update with ASI=" + no);
+        //	ASI
+        sql =
+                new StringBuilder("UPDATE M_InventoryLine l ")
+                        .append("SET (QtyBook,QtyCount) = ")
+                        .append("(SELECT SUM(QtyOnHand),SUM(QtyOnHand) FROM M_StorageOnHand s ")
+                        .append("WHERE s.M_Product_ID=l.M_Product_ID AND s.M_Locator_ID=l.M_Locator_ID")
+                        .append(" AND s.M_AttributeSetInstance_ID=l.M_AttributeSetInstance_ID),")
+                        .append(" Updated=SysDate,")
+                        .append(" UpdatedBy=")
+                        .append(getAD_User_ID())
+                        //
+                        .append(" WHERE M_Inventory_ID=")
+                        .append(p_M_Inventory_ID)
+                        .append(" AND EXISTS (SELECT * FROM M_StorageOnHand s ")
+                        .append("WHERE s.M_Product_ID=l.M_Product_ID AND s.M_Locator_ID=l.M_Locator_ID")
+                        .append(" AND s.M_AttributeSetInstance_ID=l.M_AttributeSetInstance_ID)");
+        int no = executeUpdate(sql.toString());
+        if (log.isLoggable(Level.INFO)) log.info("Update with ASI=" + no);
 
-    //	Set Count to Zero
-    if (p_InventoryCountSetZero) {
-      sql =
-          new StringBuilder("UPDATE M_InventoryLine l ")
-              .append("SET QtyCount=0 ")
-              .append("WHERE M_Inventory_ID=")
-              .append(p_M_Inventory_ID);
-      no = executeUpdate(sql.toString());
-      if (log.isLoggable(Level.INFO)) log.info("Set Count to Zero=" + no);
-    }
+        //	Set Count to Zero
+        if (p_InventoryCountSetZero) {
+            sql =
+                    new StringBuilder("UPDATE M_InventoryLine l ")
+                            .append("SET QtyCount=0 ")
+                            .append("WHERE M_Inventory_ID=")
+                            .append(p_M_Inventory_ID);
+            no = executeUpdate(sql.toString());
+            if (log.isLoggable(Level.INFO)) log.info("Set Count to Zero=" + no);
+        }
 
-    if (multiple > 0) {
-      StringBuilder msgreturn =
-          new StringBuilder("@M_InventoryLine_ID@ - #")
-              .append(no)
-              .append(" --> @InventoryProductMultiple@");
-      return msgreturn.toString();
-    }
-    StringBuilder msgreturn = new StringBuilder("@M_InventoryLine_ID@ - #").append(no);
-    return msgreturn.toString();
-  } //	doIt
+        if (multiple > 0) {
+            StringBuilder msgreturn =
+                    new StringBuilder("@M_InventoryLine_ID@ - #")
+                            .append(no)
+                            .append(" --> @InventoryProductMultiple@");
+            return msgreturn.toString();
+        }
+        StringBuilder msgreturn = new StringBuilder("@M_InventoryLine_ID@ - #").append(no);
+        return msgreturn.toString();
+    } //	doIt
 } //	InventoryCountUpdate

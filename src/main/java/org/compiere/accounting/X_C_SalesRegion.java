@@ -15,61 +15,67 @@ import java.util.Properties;
  */
 public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_C_SalesRegion(Properties ctx, int C_SalesRegion_ID) {
-    super(ctx, C_SalesRegion_ID);
     /**
-     * if (C_SalesRegion_ID == 0) { setC_SalesRegion_ID (0); setIsDefault (false); setIsSummary
-     * (false); setName (null); setValue (null); }
+     *
      */
-  }
-
-  /** Load Constructor */
-  public X_C_SalesRegion(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 3 - Client - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_C_SalesRegion[").append(getId()).append("]");
-    return sb.toString();
-  }
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Get Sales Region.
-   *
-   * @return Sales coverage region
-   */
-  public int getC_SalesRegion_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_SalesRegion_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Standard Constructor
+     */
+    public X_C_SalesRegion(Properties ctx, int C_SalesRegion_ID) {
+        super(ctx, C_SalesRegion_ID);
+        /**
+         * if (C_SalesRegion_ID == 0) { setC_SalesRegion_ID (0); setIsDefault (false); setIsSummary
+         * (false); setName (null); setValue (null); }
+         */
+    }
 
     /**
-   * Get Sales Representative.
-   *
-   * @return Sales Representative or Company Agent
-   */
-  public int getSalesRep_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_SalesRep_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Load Constructor
+     */
+    public X_C_SalesRegion(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
-  @Override
-  public int getTableId() {
-    return I_C_SalesRegion.Table_ID;
-  }
+    /**
+     * AccessLevel
+     *
+     * @return 3 - Client - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_C_SalesRegion[").append(getId()).append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Get Sales Region.
+     *
+     * @return Sales coverage region
+     */
+    public int getC_SalesRegion_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_SalesRegion_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Sales Representative.
+     *
+     * @return Sales Representative or Company Agent
+     */
+    public int getSalesRep_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_SalesRep_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    @Override
+    public int getTableId() {
+        return I_C_SalesRegion.Table_ID;
+    }
 }

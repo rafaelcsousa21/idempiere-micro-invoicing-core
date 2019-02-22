@@ -1,4 +1,6 @@
-/** */
+/**
+ *
+ */
 package org.compiere.invoicing;
 
 import org.idempiere.common.exceptions.AdempiereException;
@@ -10,11 +12,11 @@ import org.idempiere.common.exceptions.AdempiereException;
  */
 public class AssetException extends AdempiereException {
 
-  /** */
-  private static final long serialVersionUID = -2163958702697438015L;
+    /** */
+    private static final long serialVersionUID = -2163958702697438015L;
 
-  public AssetException(String message) {
-    super(message);
-  }
+    public AssetException(String message) {
+        super(message);
+    }
 
 }

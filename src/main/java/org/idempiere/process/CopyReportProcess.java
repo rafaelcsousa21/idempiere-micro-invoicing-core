@@ -13,47 +13,48 @@
  */
 package org.idempiere.process;
 
-import java.util.logging.Level;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.MProcess;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 
+import java.util.logging.Level;
+
 /**
  * @author Paul Bowden (phib) Adaxa Pty Ltd Copy settings and parameters from source "Report and
- *     Process" to target overwrites existing data (including translations)
+ * Process" to target overwrites existing data (including translations)
  */
 public class CopyReportProcess extends SvrProcess {
 
-  private int sourceId = 0;
-  private int targetId = 0;
+    private int sourceId = 0;
+    private int targetId = 0;
 
-  @Override
-  protected String doIt() throws Exception {
+    @Override
+    protected String doIt() throws Exception {
 
-    MProcess source = new MProcess(getCtx(), sourceId);
-    MProcess target = new MProcess(getCtx(), targetId);
+        MProcess source = new MProcess(getCtx(), sourceId);
+        MProcess target = new MProcess(getCtx(), targetId);
 
-    if (sourceId <= 0 || targetId <= 0 || source == null || target == null)
-      throw new AdempiereException(Msg.getMsg(getCtx(), "CopyProcessRequired"));
+        if (sourceId <= 0 || targetId <= 0 || source == null || target == null)
+            throw new AdempiereException(Msg.getMsg(getCtx(), "CopyProcessRequired"));
 
-    target.copyFrom(source); // saves automatically
+        target.copyFrom(source); // saves automatically
 
-    return "@OK@";
-  }
-
-  @Override
-  protected void prepare() {
-
-    IProcessInfoParameter[] params = getParameter();
-    for (IProcessInfoParameter parameter : params) {
-      String para = parameter.getParameterName();
-      if (para.equals("AD_Process_ID")) sourceId = parameter.getParameterAsInt();
-      else if (para.equals("AD_Process_To_ID")) targetId = parameter.getParameterAsInt();
-      else log.log(Level.WARNING, "Unknown paramter: " + para);
+        return "@OK@";
     }
 
-    if (targetId == 0) targetId = getRecord_ID();
-  }
+    @Override
+    protected void prepare() {
+
+        IProcessInfoParameter[] params = getParameter();
+        for (IProcessInfoParameter parameter : params) {
+            String para = parameter.getParameterName();
+            if (para.equals("AD_Process_ID")) sourceId = parameter.getParameterAsInt();
+            else if (para.equals("AD_Process_To_ID")) targetId = parameter.getParameterAsInt();
+            else log.log(Level.WARNING, "Unknown paramter: " + para);
+        }
+
+        if (targetId == 0) targetId = getRecord_ID();
+    }
 }

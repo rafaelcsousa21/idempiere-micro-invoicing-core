@@ -23,65 +23,65 @@ import java.util.logging.Level;
  */
 public class ProductionProcess extends SvrProcess {
 
-  private int p_M_Production_ID = 0;
-  private Timestamp p_MovementDate = null;
-  private MProduction m_production = null;
+    private int p_M_Production_ID = 0;
+    private Timestamp p_MovementDate = null;
+    private MProduction m_production = null;
 
-  protected void prepare() {
-
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      //	log.fine("prepare - " + para[i]);
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("MovementDate")) p_MovementDate = (Timestamp) para[i].getParameter();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-
-    p_M_Production_ID = getRecord_ID();
-    if (p_M_Production_ID > 0)
-      m_production = new MProduction(getCtx(), p_M_Production_ID);
-  } // prepare
-
-  @Override
-  protected String doIt() throws Exception {
-    if (m_production == null || m_production.getId() == 0)
-      throw new AdempiereUserError("Could not load production header");
-
-    try {
-      int processed = ProductionProcess.procesProduction(m_production, p_MovementDate, false);
-      StringBuilder msgreturn = new StringBuilder("@Processed@ #").append(processed);
-      return msgreturn.toString();
-    } catch (Exception e) {
-      log.log(Level.SEVERE, e.getLocalizedMessage(), e);
-      return e.getMessage();
-    }
-  }
-
-  public static int procesProduction(
-      MProduction production, Timestamp movementDate, boolean mustBeStocked) {
-    ProcessInfo pi = ServerProcessCtl.runDocumentActionWorkflow(production, "CO");
-    if (pi.isError()) {
-      throw new RuntimeException(pi.getSummary());
-    } else {
-      if (production.isUseProductionPlan()) {
-        Query planQuery =
-            new Query(
-                Env.getCtx(),
-                I_M_ProductionPlan.Table_Name,
-                "M_ProductionPlan.M_Production_ID=?"
-            );
-        List<MProductionPlan> plans =
-            planQuery.setParameters(production.getM_Production_ID()).list();
-        int linesCount = 0;
-        for (MProductionPlan plan : plans) {
-          MProductionLine[] lines = plan.getLines();
-          linesCount += lines.length;
+    public static int procesProduction(
+            MProduction production, Timestamp movementDate, boolean mustBeStocked) {
+        ProcessInfo pi = ServerProcessCtl.runDocumentActionWorkflow(production, "CO");
+        if (pi.isError()) {
+            throw new RuntimeException(pi.getSummary());
+        } else {
+            if (production.isUseProductionPlan()) {
+                Query planQuery =
+                        new Query(
+                                Env.getCtx(),
+                                I_M_ProductionPlan.Table_Name,
+                                "M_ProductionPlan.M_Production_ID=?"
+                        );
+                List<MProductionPlan> plans =
+                        planQuery.setParameters(production.getM_Production_ID()).list();
+                int linesCount = 0;
+                for (MProductionPlan plan : plans) {
+                    MProductionLine[] lines = plan.getLines();
+                    linesCount += lines.length;
+                }
+                return linesCount;
+            } else {
+                return production.getLines().length;
+            }
         }
-        return linesCount;
-      } else {
-        return production.getLines().length;
-      }
     }
-  }
+
+    protected void prepare() {
+
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            //	log.fine("prepare - " + para[i]);
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("MovementDate")) p_MovementDate = (Timestamp) para[i].getParameter();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+
+        p_M_Production_ID = getRecord_ID();
+        if (p_M_Production_ID > 0)
+            m_production = new MProduction(getCtx(), p_M_Production_ID);
+    } // prepare
+
+    @Override
+    protected String doIt() throws Exception {
+        if (m_production == null || m_production.getId() == 0)
+            throw new AdempiereUserError("Could not load production header");
+
+        try {
+            int processed = ProductionProcess.procesProduction(m_production, p_MovementDate, false);
+            StringBuilder msgreturn = new StringBuilder("@Processed@ #").append(processed);
+            return msgreturn.toString();
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            return e.getMessage();
+        }
+    }
 }

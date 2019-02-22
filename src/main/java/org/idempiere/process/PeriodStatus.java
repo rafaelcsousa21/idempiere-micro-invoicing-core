@@ -32,63 +32,69 @@ import static software.hsharp.core.util.DBKt.executeUpdate;
  * @version $Id: PeriodStatus.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class PeriodStatus extends SvrProcess {
-  /** Period */
-  private int p_C_Period_ID = 0;
-  /** Action */
-  private String p_PeriodAction = null;
+    /**
+     * Period
+     */
+    private int p_C_Period_ID = 0;
+    /**
+     * Action
+     */
+    private String p_PeriodAction = null;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("PeriodAction")) p_PeriodAction = (String) para[i].getParameter();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    p_C_Period_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("PeriodAction")) p_PeriodAction = (String) para[i].getParameter();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        p_C_Period_ID = getRecord_ID();
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO))
-      log.info("C_Period_ID=" + p_C_Period_ID + ", PeriodAction=" + p_PeriodAction);
-    MPeriod period = new MPeriod(getCtx(), p_C_Period_ID);
-    if (period.getId() == 0)
-      throw new AdempiereUserError("@NotFound@  @C_Period_ID@=" + p_C_Period_ID);
+    /**
+     * Process
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO))
+            log.info("C_Period_ID=" + p_C_Period_ID + ", PeriodAction=" + p_PeriodAction);
+        MPeriod period = new MPeriod(getCtx(), p_C_Period_ID);
+        if (period.getId() == 0)
+            throw new AdempiereUserError("@NotFound@  @C_Period_ID@=" + p_C_Period_ID);
 
-    StringBuilder sql = new StringBuilder("UPDATE C_PeriodControl ");
-    sql.append("SET PeriodStatus='");
-    //	Open
-    if (MPeriodControl.PERIODACTION_OpenPeriod.equals(p_PeriodAction))
-      sql.append(MPeriodControl.PERIODSTATUS_Open);
-    //	Close
-    else if (MPeriodControl.PERIODACTION_ClosePeriod.equals(p_PeriodAction))
-      sql.append(MPeriodControl.PERIODSTATUS_Closed);
-    //	Close Permanently
-    else if (MPeriodControl.PERIODACTION_PermanentlyClosePeriod.equals(p_PeriodAction))
-      sql.append(MPeriodControl.PERIODSTATUS_PermanentlyClosed);
-    else return "-";
-    //
-    sql.append("', PeriodAction='N', Updated=SysDate,UpdatedBy=").append(getAD_User_ID());
-    //	WHERE
-    sql.append(" WHERE C_Period_ID=")
-        .append(period.getC_Period_ID())
-        .append(" AND PeriodStatus<>'P'")
-        .append(" AND PeriodStatus<>'")
-        .append(p_PeriodAction)
-        .append("'");
+        StringBuilder sql = new StringBuilder("UPDATE C_PeriodControl ");
+        sql.append("SET PeriodStatus='");
+        //	Open
+        if (MPeriodControl.PERIODACTION_OpenPeriod.equals(p_PeriodAction))
+            sql.append(MPeriodControl.PERIODSTATUS_Open);
+            //	Close
+        else if (MPeriodControl.PERIODACTION_ClosePeriod.equals(p_PeriodAction))
+            sql.append(MPeriodControl.PERIODSTATUS_Closed);
+            //	Close Permanently
+        else if (MPeriodControl.PERIODACTION_PermanentlyClosePeriod.equals(p_PeriodAction))
+            sql.append(MPeriodControl.PERIODSTATUS_PermanentlyClosed);
+        else return "-";
+        //
+        sql.append("', PeriodAction='N', Updated=SysDate,UpdatedBy=").append(getAD_User_ID());
+        //	WHERE
+        sql.append(" WHERE C_Period_ID=")
+                .append(period.getC_Period_ID())
+                .append(" AND PeriodStatus<>'P'")
+                .append(" AND PeriodStatus<>'")
+                .append(p_PeriodAction)
+                .append("'");
 
-    int no = executeUpdate(sql.toString());
+        int no = executeUpdate(sql.toString());
 
-    CacheMgt.get().reset("C_PeriodControl", 0);
-    CacheMgt.get().reset("C_Period", p_C_Period_ID);
-    StringBuilder msgreturn = new StringBuilder("@Updated@ #").append(no);
-    return msgreturn.toString();
-  } //	doIt
+        CacheMgt.get().reset("C_PeriodControl", 0);
+        CacheMgt.get().reset("C_Period", p_C_Period_ID);
+        StringBuilder msgreturn = new StringBuilder("@Updated@ #").append(no);
+        return msgreturn.toString();
+    } //	doIt
 } //	PeriodStatus

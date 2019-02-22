@@ -19,1743 +19,1811 @@ import java.util.Properties;
  */
 public class X_C_Payment extends PO implements I_C_Payment, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_C_Payment(Properties ctx, int C_Payment_ID) {
-    super(ctx, C_Payment_ID);
     /**
-     * if (C_Payment_ID == 0) { setC_BPartner_ID (0); setC_Currency_ID (0); setC_DocType_ID (0);
-     * setC_Payment_ID (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); // @#Date@
-     * setDateTrx (new Timestamp( System.currentTimeMillis() )); // @#Date@ setDocAction (null); //
-     * CO setDocStatus (null); // DR setDocumentNo (null); setIsAllocated (false); setIsApproved
-     * (false); // N setIsDelayedCapture (false); setIsOnline (false); setIsOverUnderPayment (true);
-     * // Y setIsPrepayment (false); setIsReceipt (false); setIsReconciled (false); setIsSelfService
-     * (false); setIsVoided (false); // N setPayAmt (Env.ZERO); // 0 setPosted (false); // N
-     * setProcessed (false); setTenderType (null); // K setTrxType (null); // S }
+     * Amex = A
      */
-  }
-
-  /** Load Constructor */
-  public X_C_Payment(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 1 - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_C_Payment[").append(getId()).append("]");
-    return sb.toString();
-  }
-
-  /**
-   * Set Account No.
-   *
-   * @param AccountNo Account Number
-   */
-  public void setAccountNo(String AccountNo) {
-    set_Value(COLUMNNAME_AccountNo, AccountNo);
-  }
-
-  /**
-   * Get Account No.
-   *
-   * @return Account Number
-   */
-  public String getAccountNo() {
-    return (String) get_Value(COLUMNNAME_AccountNo);
-  }
-
-  /**
-   * Set Account City.
-   *
-   * @param A_City City or the Credit Card or Account Holder
-   */
-  public void setA_City(String A_City) {
-    set_Value(COLUMNNAME_A_City, A_City);
-  }
-
-  /**
-   * Get Account City.
-   *
-   * @return City or the Credit Card or Account Holder
-   */
-  public String getA_City() {
-    return (String) get_Value(COLUMNNAME_A_City);
-  }
-
-  /**
-   * Set Account Country.
-   *
-   * @param A_Country Country
-   */
-  public void setA_Country(String A_Country) {
-    set_Value(COLUMNNAME_A_Country, A_Country);
-  }
-
-  /**
-   * Get Account Country.
-   *
-   * @return Country
-   */
-  public String getA_Country() {
-    return (String) get_Value(COLUMNNAME_A_Country);
-  }
+    public static final String CREDITCARDTYPE_Amex = "A";
+    /**
+     * MasterCard = M
+     */
+    public static final String CREDITCARDTYPE_MasterCard = "M";
+    /**
+     * Visa = V
+     */
+    public static final String CREDITCARDTYPE_Visa = "V";
+    /**
+     * ATM = C
+     */
+    public static final String CREDITCARDTYPE_ATM = "C";
+    /**
+     * Diners = D
+     */
+    public static final String CREDITCARDTYPE_Diners = "D";
+    /**
+     * Discover = N
+     */
+    public static final String CREDITCARDTYPE_Discover = "N";
+    /**
+     * Purchase Card = P
+     */
+    public static final String CREDITCARDTYPE_PurchaseCard = "P";
+    /**
+     * Complete = CO
+     */
+    public static final String DOCACTION_Complete = "CO";
+    /**
+     * Close = CL
+     */
+    public static final String DOCACTION_Close = "CL";
+    /**
+     * <None> = --
+     */
+    public static final String DOCACTION_None = "--";
+    /**
+     * Prepare = PR
+     */
+    public static final String DOCACTION_Prepare = "PR";
+    /**
+     * Drafted = DR
+     */
+    public static final String DOCSTATUS_Drafted = "DR";
+    /**
+     * Completed = CO
+     */
+    public static final String DOCSTATUS_Completed = "CO";
+    /**
+     * Approved = AP
+     */
+    public static final String DOCSTATUS_Approved = "AP";
+    /**
+     * Not Approved = NA
+     */
+    public static final String DOCSTATUS_NotApproved = "NA";
+    /**
+     * Voided = VO
+     */
+    public static final String DOCSTATUS_Voided = "VO";
+    /**
+     * Invalid = IN
+     */
+    public static final String DOCSTATUS_Invalid = "IN";
+    /**
+     * Reversed = RE
+     */
+    public static final String DOCSTATUS_Reversed = "RE";
+    /**
+     * Closed = CL
+     */
+    public static final String DOCSTATUS_Closed = "CL";
+    /**
+     * In Progress = IP
+     */
+    public static final String DOCSTATUS_InProgress = "IP";
+    /**
+     * Waiting Payment = WP
+     */
+    public static final String DOCSTATUS_WaitingPayment = "WP";
+    /**
+     * Unavailable = X
+     */
+    public static final String R_AVSZIP_Unavailable = "X";
+    /**
+     * Credit Card = C
+     */
+    public static final String TENDERTYPE_CreditCard = "C";
+    /**
+     * Check = K
+     */
+    public static final String TENDERTYPE_Check = "K";
+    /**
+     * Direct Deposit = A
+     */
+    public static final String TENDERTYPE_DirectDeposit = "A";
+    /**
+     * Direct Debit = D
+     */
+    public static final String TENDERTYPE_DirectDebit = "D";
+    /**
+     * Account = T
+     */
+    public static final String TENDERTYPE_Account = "T";
+    /**
+     * Cash = X
+     */
+    public static final String TENDERTYPE_Cash = "X";
+    /**
+     * Sales = S
+     */
+    public static final String TRXTYPE_Sales = "S";
+    /**
+     * Delayed Capture = D
+     */
+    public static final String TRXTYPE_DelayedCapture = "D";
+    /**
+     * Credit (Payment) = C
+     */
+    public static final String TRXTYPE_CreditPayment = "C";
+    /**
+     * Void = V
+     */
+    public static final String TRXTYPE_Void = "V";
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Set Account EMail.
-   *
-   * @param A_EMail Email Address
-   */
-  public void setA_EMail(String A_EMail) {
-    set_Value(COLUMNNAME_A_EMail, A_EMail);
-  }
-
-  /**
-   * Get Account EMail.
-   *
-   * @return Email Address
-   */
-  public String getA_EMail() {
-    return (String) get_Value(COLUMNNAME_A_EMail);
-  }
-
-  /**
-   * Set Driver License.
-   *
-   * @param A_Ident_DL Payment Identification - Driver License
-   */
-  public void setA_Ident_DL(String A_Ident_DL) {
-    set_Value(COLUMNNAME_A_Ident_DL, A_Ident_DL);
-  }
-
-  /**
-   * Get Driver License.
-   *
-   * @return Payment Identification - Driver License
-   */
-  public String getA_Ident_DL() {
-    return (String) get_Value(COLUMNNAME_A_Ident_DL);
-  }
-
-  /**
-   * Set Social Security No.
-   *
-   * @param A_Ident_SSN Payment Identification - Social Security No
-   */
-  public void setA_Ident_SSN(String A_Ident_SSN) {
-    set_Value(COLUMNNAME_A_Ident_SSN, A_Ident_SSN);
-  }
-
-  /**
-   * Get Social Security No.
-   *
-   * @return Payment Identification - Social Security No
-   */
-  public String getA_Ident_SSN() {
-    return (String) get_Value(COLUMNNAME_A_Ident_SSN);
-  }
-
-  /**
-   * Set Account Name.
-   *
-   * @param A_Name Name on Credit Card or Account holder
-   */
-  public void setA_Name(String A_Name) {
-    set_Value(COLUMNNAME_A_Name, A_Name);
-  }
-
-  /**
-   * Get Account Name.
-   *
-   * @return Name on Credit Card or Account holder
-   */
-  public String getA_Name() {
-    return (String) get_Value(COLUMNNAME_A_Name);
-  }
-
-  /**
-   * Set Account State.
-   *
-   * @param A_State State of the Credit Card or Account holder
-   */
-  public void setA_State(String A_State) {
-    set_Value(COLUMNNAME_A_State, A_State);
-  }
-
-  /**
-   * Get Account State.
-   *
-   * @return State of the Credit Card or Account holder
-   */
-  public String getA_State() {
-    return (String) get_Value(COLUMNNAME_A_State);
-  }
-
-  /**
-   * Set Account Street.
-   *
-   * @param A_Street Street address of the Credit Card or Account holder
-   */
-  public void setA_Street(String A_Street) {
-    set_Value(COLUMNNAME_A_Street, A_Street);
-  }
-
-  /**
-   * Get Account Street.
-   *
-   * @return Street address of the Credit Card or Account holder
-   */
-  public String getA_Street() {
-    return (String) get_Value(COLUMNNAME_A_Street);
-  }
-
-  /**
-   * Set Account Zip/Postal.
-   *
-   * @param A_Zip Zip Code of the Credit Card or Account Holder
-   */
-  public void setA_Zip(String A_Zip) {
-    set_Value(COLUMNNAME_A_Zip, A_Zip);
-  }
-
-  /**
-   * Get Account Zip/Postal.
-   *
-   * @return Zip Code of the Credit Card or Account Holder
-   */
-  public String getA_Zip() {
-    return (String) get_Value(COLUMNNAME_A_Zip);
-  }
-
-    /**
-   * Set Activity.
-   *
-   * @param C_Activity_ID Business Activity
-   */
-  public void setC_Activity_ID(int C_Activity_ID) {
-    if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-    else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
-  }
-
-  /**
-   * Get Activity.
-   *
-   * @return Business Activity
-   */
-  public int getC_Activity_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Bank Account.
-   *
-   * @param C_BankAccount_ID Account at the Bank
-   */
-  public void setC_BankAccount_ID(int C_BankAccount_ID) {
-    if (C_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BankAccount_ID, null);
-    else set_Value(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
-  }
-
-  /**
-   * Get Bank Account.
-   *
-   * @return Account at the Bank
-   */
-  public int getC_BankAccount_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Business Partner .
-   *
-   * @param C_BPartner_ID Identifies a Business Partner
-   */
-  public void setC_BPartner_ID(int C_BPartner_ID) {
-    if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-    else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
-  }
-
-  /**
-   * Get Business Partner .
-   *
-   * @return Identifies a Business Partner
-   */
-  public int getC_BPartner_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Partner Bank Account.
-   *
-   * @param C_BP_BankAccount_ID Bank Account of the Business Partner
-   */
-  public void setC_BP_BankAccount_ID(int C_BP_BankAccount_ID) {
-    if (C_BP_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BP_BankAccount_ID, null);
-    else set_Value(COLUMNNAME_C_BP_BankAccount_ID, Integer.valueOf(C_BP_BankAccount_ID));
-  }
-
-  /**
-   * Get Partner Bank Account.
-   *
-   * @return Bank Account of the Business Partner
-   */
-  public int getC_BP_BankAccount_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_BP_BankAccount_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Campaign.
-   *
-   * @param C_Campaign_ID Marketing Campaign
-   */
-  public void setC_Campaign_ID(int C_Campaign_ID) {
-    if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-    else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
-  }
-
-  /**
-   * Get Campaign.
-   *
-   * @return Marketing Campaign
-   */
-  public int getC_Campaign_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Cash Book.
-   *
-   * @param C_CashBook_ID Cash Book for recording petty cash transactions
-   */
-  public void setC_CashBook_ID(int C_CashBook_ID) {
-    if (C_CashBook_ID < 1) set_Value(COLUMNNAME_C_CashBook_ID, null);
-    else set_Value(COLUMNNAME_C_CashBook_ID, Integer.valueOf(C_CashBook_ID));
-  }
-
-  /**
-   * Get Cash Book.
-   *
-   * @return Cash Book for recording petty cash transactions
-   */
-  public int getC_CashBook_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_CashBook_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Charge.
-   *
-   * @param C_Charge_ID Additional document charges
-   */
-  public void setC_Charge_ID(int C_Charge_ID) {
-    if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
-    else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
-  }
-
-  /**
-   * Get Charge.
-   *
-   * @return Additional document charges
-   */
-  public int getC_Charge_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Currency Type.
-   *
-   * @param C_ConversionType_ID Currency Conversion Rate Type
-   */
-  public void setC_ConversionType_ID(int C_ConversionType_ID) {
-    if (C_ConversionType_ID < 1) set_Value(COLUMNNAME_C_ConversionType_ID, null);
-    else set_Value(COLUMNNAME_C_ConversionType_ID, Integer.valueOf(C_ConversionType_ID));
-  }
-
-  /**
-   * Get Currency Type.
-   *
-   * @return Currency Conversion Rate Type
-   */
-  public int getC_ConversionType_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_ConversionType_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Currency.
-   *
-   * @param C_Currency_ID The Currency for this record
-   */
-  public void setC_Currency_ID(int C_Currency_ID) {
-    if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-    else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
-  }
-
-  /**
-   * Get Currency.
-   *
-   * @return The Currency for this record
-   */
-  public int getC_Currency_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Get Deposit Batch.
-   *
-   * @return Deposit Batch
-   */
-  public int getC_DepositBatch_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_DepositBatch_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Document Type.
-   *
-   * @param C_DocType_ID Document type or rules
-   */
-  public void setC_DocType_ID(int C_DocType_ID) {
-    if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-    else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
-  }
-
-  /**
-   * Get Document Type.
-   *
-   * @return Document type or rules
-   */
-  public int getC_DocType_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Charge amount.
-   *
-   * @param ChargeAmt Charge Amount
-   */
-  public void setChargeAmt(BigDecimal ChargeAmt) {
-    set_Value(COLUMNNAME_ChargeAmt, ChargeAmt);
-  }
-
-    /**
-   * Set Check No.
-   *
-   * @param CheckNo Check Number
-   */
-  public void setCheckNo(String CheckNo) {
-    set_Value(COLUMNNAME_CheckNo, CheckNo);
-  }
-
-  /**
-   * Get Check No.
-   *
-   * @return Check Number
-   */
-  public String getCheckNo() {
-    return (String) get_Value(COLUMNNAME_CheckNo);
-  }
-
-    /**
-   * Set Invoice.
-   *
-   * @param C_Invoice_ID Invoice Identifier
-   */
-  public void setC_Invoice_ID(int C_Invoice_ID) {
-    if (C_Invoice_ID < 1) set_Value(COLUMNNAME_C_Invoice_ID, null);
-    else set_Value(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
-  }
-
-  /**
-   * Get Invoice.
-   *
-   * @return Invoice Identifier
-   */
-  public int getC_Invoice_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Order.
-   *
-   * @param C_Order_ID Order
-   */
-  public void setC_Order_ID(int C_Order_ID) {
-    if (C_Order_ID < 1) set_Value(COLUMNNAME_C_Order_ID, null);
-    else set_Value(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
-  }
-
-  /**
-   * Get Order.
-   *
-   * @return Order
-   */
-  public int getC_Order_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Order_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Payment Batch.
-   *
-   * @param C_PaymentBatch_ID Payment batch for EFT
-   */
-  public void setC_PaymentBatch_ID(int C_PaymentBatch_ID) {
-    if (C_PaymentBatch_ID < 1) set_Value(COLUMNNAME_C_PaymentBatch_ID, null);
-    else set_Value(COLUMNNAME_C_PaymentBatch_ID, Integer.valueOf(C_PaymentBatch_ID));
-  }
-
-  /**
-   * Get Payment Batch.
-   *
-   * @return Payment batch for EFT
-   */
-  public int getC_PaymentBatch_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_PaymentBatch_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Payment.
-   *
-   * @param C_Payment_ID Payment identifier
-   */
-  public void setC_Payment_ID(int C_Payment_ID) {
-    if (C_Payment_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Payment_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
-  }
-
-  /**
-   * Get Payment.
-   *
-   * @return Payment identifier
-   */
-  public int getC_Payment_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Payment Processor.
-   *
-   * @param C_PaymentProcessor_ID Payment processor for electronic payments
-   */
-  public void setC_PaymentProcessor_ID(int C_PaymentProcessor_ID) {
-    if (C_PaymentProcessor_ID < 1) set_Value(COLUMNNAME_C_PaymentProcessor_ID, null);
-    else set_Value(COLUMNNAME_C_PaymentProcessor_ID, Integer.valueOf(C_PaymentProcessor_ID));
-  }
-
-  /**
-   * Get Payment Processor.
-   *
-   * @return Payment processor for electronic payments
-   */
-  public int getC_PaymentProcessor_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_PaymentProcessor_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set POS Tender Type.
-   *
-   * @param C_POSTenderType_ID POS Tender Type
-   */
-  public void setC_POSTenderType_ID(int C_POSTenderType_ID) {
-    if (C_POSTenderType_ID < 1) set_Value(COLUMNNAME_C_POSTenderType_ID, null);
-    else set_Value(COLUMNNAME_C_POSTenderType_ID, Integer.valueOf(C_POSTenderType_ID));
-  }
-
-  /**
-   * Get POS Tender Type.
-   *
-   * @return POS Tender Type
-   */
-  public int getC_POSTenderType_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_POSTenderType_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /**
-   * Set Project.
-   *
-   * @param C_Project_ID Financial Project
-   */
-  public void setC_Project_ID(int C_Project_ID) {
-    if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-    else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
-  }
-
-  /**
-   * Get Project.
-   *
-   * @return Financial Project
-   */
-  public int getC_Project_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Exp. Month.
-   *
-   * @param CreditCardExpMM Expiry Month
-   */
-  public void setCreditCardExpMM(int CreditCardExpMM) {
-    set_Value(COLUMNNAME_CreditCardExpMM, Integer.valueOf(CreditCardExpMM));
-  }
-
-  /**
-   * Get Exp. Month.
-   *
-   * @return Expiry Month
-   */
-  public int getCreditCardExpMM() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_CreditCardExpMM);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Exp. Year.
-   *
-   * @param CreditCardExpYY Expiry Year
-   */
-  public void setCreditCardExpYY(int CreditCardExpYY) {
-    set_Value(COLUMNNAME_CreditCardExpYY, Integer.valueOf(CreditCardExpYY));
-  }
-
-  /**
-   * Get Exp. Year.
-   *
-   * @return Expiry Year
-   */
-  public int getCreditCardExpYY() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_CreditCardExpYY);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Number.
-   *
-   * @param CreditCardNumber Credit Card Number
-   */
-  public void setCreditCardNumber(String CreditCardNumber) {
-    set_Value(COLUMNNAME_CreditCardNumber, CreditCardNumber);
-  }
-
-  /**
-   * Get Number.
-   *
-   * @return Credit Card Number
-   */
-  public String getCreditCardNumber() {
-    return (String) get_Value(COLUMNNAME_CreditCardNumber);
-  }
-
-    /** Amex = A */
-  public static final String CREDITCARDTYPE_Amex = "A";
-  /** MasterCard = M */
-  public static final String CREDITCARDTYPE_MasterCard = "M";
-  /** Visa = V */
-  public static final String CREDITCARDTYPE_Visa = "V";
-  /** ATM = C */
-  public static final String CREDITCARDTYPE_ATM = "C";
-  /** Diners = D */
-  public static final String CREDITCARDTYPE_Diners = "D";
-  /** Discover = N */
-  public static final String CREDITCARDTYPE_Discover = "N";
-  /** Purchase Card = P */
-  public static final String CREDITCARDTYPE_PurchaseCard = "P";
-  /**
-   * Set Credit Card.
-   *
-   * @param CreditCardType Credit Card (Visa, MC, AmEx)
-   */
-  public void setCreditCardType(String CreditCardType) {
-
-    set_Value(COLUMNNAME_CreditCardType, CreditCardType);
-  }
-
-  /**
-   * Get Credit Card.
-   *
-   * @return Credit Card (Visa, MC, AmEx)
-   */
-  public String getCreditCardType() {
-    return (String) get_Value(COLUMNNAME_CreditCardType);
-  }
-
-  /**
-   * Set Verification Code.
-   *
-   * @param CreditCardVV Credit Card Verification code on credit card
-   */
-  public void setCreditCardVV(String CreditCardVV) {
-    set_Value(COLUMNNAME_CreditCardVV, CreditCardVV);
-  }
-
-  /**
-   * Get Verification Code.
-   *
-   * @return Credit Card Verification code on credit card
-   */
-  public String getCreditCardVV() {
-    return (String) get_Value(COLUMNNAME_CreditCardVV);
-  }
-
-  /**
-   * Set Customer Address ID.
-   *
-   * @param CustomerAddressID Customer Address ID
-   */
-  public void setCustomerAddressID(String CustomerAddressID) {
-    set_Value(COLUMNNAME_CustomerAddressID, CustomerAddressID);
-  }
-
-  /**
-   * Get Customer Address ID.
-   *
-   * @return Customer Address ID
-   */
-  public String getCustomerAddressID() {
-    return (String) get_Value(COLUMNNAME_CustomerAddressID);
-  }
-
-  /**
-   * Set Customer Payment Profile ID.
-   *
-   * @param CustomerPaymentProfileID Customer Payment Profile ID
-   */
-  public void setCustomerPaymentProfileID(String CustomerPaymentProfileID) {
-    set_Value(COLUMNNAME_CustomerPaymentProfileID, CustomerPaymentProfileID);
-  }
-
-  /**
-   * Get Customer Payment Profile ID.
-   *
-   * @return Customer Payment Profile ID
-   */
-  public String getCustomerPaymentProfileID() {
-    return (String) get_Value(COLUMNNAME_CustomerPaymentProfileID);
-  }
-
-  /**
-   * Set Customer Profile ID.
-   *
-   * @param CustomerProfileID Customer Profile ID
-   */
-  public void setCustomerProfileID(String CustomerProfileID) {
-    set_Value(COLUMNNAME_CustomerProfileID, CustomerProfileID);
-  }
-
-  /**
-   * Get Customer Profile ID.
-   *
-   * @return Customer Profile ID
-   */
-  public String getCustomerProfileID() {
-    return (String) get_Value(COLUMNNAME_CustomerProfileID);
-  }
-
-  /**
-   * Set Account Date.
-   *
-   * @param DateAcct Accounting Date
-   */
-  public void setDateAcct(Timestamp DateAcct) {
-    set_Value(COLUMNNAME_DateAcct, DateAcct);
-  }
-
-  /**
-   * Get Account Date.
-   *
-   * @return Accounting Date
-   */
-  public Timestamp getDateAcct() {
-    return (Timestamp) get_Value(COLUMNNAME_DateAcct);
-  }
-
-  /**
-   * Set Transaction Date.
-   *
-   * @param DateTrx Transaction Date
-   */
-  public void setDateTrx(Timestamp DateTrx) {
-    set_Value(COLUMNNAME_DateTrx, DateTrx);
-  }
-
-  /**
-   * Get Transaction Date.
-   *
-   * @return Transaction Date
-   */
-  public Timestamp getDateTrx() {
-    return (Timestamp) get_Value(COLUMNNAME_DateTrx);
-  }
-
-  /**
-   * Set Description.
-   *
-   * @param Description Optional short description of the record
-   */
-  public void setDescription(String Description) {
-    set_Value(COLUMNNAME_Description, Description);
-  }
-
-  /**
-   * Get Description.
-   *
-   * @return Optional short description of the record
-   */
-  public String getDescription() {
-    return (String) get_Value(COLUMNNAME_Description);
-  }
-
-  /**
-   * Set Discount Amount.
-   *
-   * @param DiscountAmt Calculated amount of discount
-   */
-  public void setDiscountAmt(BigDecimal DiscountAmt) {
-    set_Value(COLUMNNAME_DiscountAmt, DiscountAmt);
-  }
-
-  /**
-   * Get Discount Amount.
-   *
-   * @return Calculated amount of discount
-   */
-  public BigDecimal getDiscountAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DiscountAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-    /** Complete = CO */
-  public static final String DOCACTION_Complete = "CO";
-    /** Close = CL */
-  public static final String DOCACTION_Close = "CL";
-    /** <None> = -- */
-  public static final String DOCACTION_None = "--";
-  /** Prepare = PR */
-  public static final String DOCACTION_Prepare = "PR";
-
-    /**
-   * Set Document Action.
-   *
-   * @param DocAction The targeted status of the document
-   */
-  public void setDocAction(String DocAction) {
-
-    set_Value(COLUMNNAME_DocAction, DocAction);
-  }
-
-  /**
-   * Get Document Action.
-   *
-   * @return The targeted status of the document
-   */
-  public String getDocAction() {
-    return (String) get_Value(COLUMNNAME_DocAction);
-  }
-
-    /** Drafted = DR */
-  public static final String DOCSTATUS_Drafted = "DR";
-  /** Completed = CO */
-  public static final String DOCSTATUS_Completed = "CO";
-  /** Approved = AP */
-  public static final String DOCSTATUS_Approved = "AP";
-  /** Not Approved = NA */
-  public static final String DOCSTATUS_NotApproved = "NA";
-  /** Voided = VO */
-  public static final String DOCSTATUS_Voided = "VO";
-  /** Invalid = IN */
-  public static final String DOCSTATUS_Invalid = "IN";
-  /** Reversed = RE */
-  public static final String DOCSTATUS_Reversed = "RE";
-  /** Closed = CL */
-  public static final String DOCSTATUS_Closed = "CL";
-    /** In Progress = IP */
-  public static final String DOCSTATUS_InProgress = "IP";
-  /** Waiting Payment = WP */
-  public static final String DOCSTATUS_WaitingPayment = "WP";
-
-    /**
-   * Set Document Status.
-   *
-   * @param DocStatus The current status of the document
-   */
-  public void setDocStatus(String DocStatus) {
-
-    set_Value(COLUMNNAME_DocStatus, DocStatus);
-  }
-
-  /**
-   * Get Document Status.
-   *
-   * @return The current status of the document
-   */
-  public String getDocStatus() {
-    return (String) get_Value(COLUMNNAME_DocStatus);
-  }
-
-  /**
-   * Set Document No.
-   *
-   * @param DocumentNo Document sequence number of the document
-   */
-  public void setDocumentNo(String DocumentNo) {
-    set_Value(COLUMNNAME_DocumentNo, DocumentNo);
-  }
-
-  /**
-   * Get Document No.
-   *
-   * @return Document sequence number of the document
-   */
-  public String getDocumentNo() {
-    return (String) get_Value(COLUMNNAME_DocumentNo);
-  }
-
-    /**
-   * Set IBAN.
-   *
-   * @param IBAN International Bank Account Number
-   */
-  public void setIBAN(String IBAN) {
-    set_Value(COLUMNNAME_IBAN, IBAN);
-  }
-
-  /**
-   * Get IBAN.
-   *
-   * @return International Bank Account Number
-   */
-  public String getIBAN() {
-    return (String) get_Value(COLUMNNAME_IBAN);
-  }
-
-  /**
-   * Set Allocated.
-   *
-   * @param IsAllocated Indicates if the payment has been allocated
-   */
-  public void setIsAllocated(boolean IsAllocated) {
-    set_Value(COLUMNNAME_IsAllocated, Boolean.valueOf(IsAllocated));
-  }
-
-  /**
-   * Get Allocated.
-   *
-   * @return Indicates if the payment has been allocated
-   */
-  public boolean isAllocated() {
-    Object oo = get_Value(COLUMNNAME_IsAllocated);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Standard Constructor
+     */
+    public X_C_Payment(Properties ctx, int C_Payment_ID) {
+        super(ctx, C_Payment_ID);
+        /**
+         * if (C_Payment_ID == 0) { setC_BPartner_ID (0); setC_Currency_ID (0); setC_DocType_ID (0);
+         * setC_Payment_ID (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); // @#Date@
+         * setDateTrx (new Timestamp( System.currentTimeMillis() )); // @#Date@ setDocAction (null); //
+         * CO setDocStatus (null); // DR setDocumentNo (null); setIsAllocated (false); setIsApproved
+         * (false); // N setIsDelayedCapture (false); setIsOnline (false); setIsOverUnderPayment (true);
+         * // Y setIsPrepayment (false); setIsReceipt (false); setIsReconciled (false); setIsSelfService
+         * (false); setIsVoided (false); // N setPayAmt (Env.ZERO); // 0 setPosted (false); // N
+         * setProcessed (false); setTenderType (null); // K setTrxType (null); // S }
+         */
     }
-    return false;
-  }
 
-  /**
-   * Set Approved.
-   *
-   * @param IsApproved Indicates if this document requires approval
-   */
-  public void setIsApproved(boolean IsApproved) {
-    set_ValueNoCheck(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
-  }
-
-  /**
-   * Get Approved.
-   *
-   * @return Indicates if this document requires approval
-   */
-  public boolean isApproved() {
-    Object oo = get_Value(COLUMNNAME_IsApproved);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+    /**
+     * Load Constructor
+     */
+    public X_C_Payment(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
     }
-    return false;
-  }
 
-  /**
-   * Set Delayed Capture.
-   *
-   * @param IsDelayedCapture Charge after Shipment
-   */
-  public void setIsDelayedCapture(boolean IsDelayedCapture) {
-    set_Value(COLUMNNAME_IsDelayedCapture, Boolean.valueOf(IsDelayedCapture));
-  }
-
-  /**
-   * Get Delayed Capture.
-   *
-   * @return Charge after Shipment
-   */
-  public boolean isDelayedCapture() {
-    Object oo = get_Value(COLUMNNAME_IsDelayedCapture);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+    /**
+     * AccessLevel
+     *
+     * @return 1 - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
     }
-    return false;
-  }
 
-  /**
-   * Set Online Access.
-   *
-   * @param IsOnline Can be accessed online
-   */
-  public void setIsOnline(boolean IsOnline) {
-    set_Value(COLUMNNAME_IsOnline, Boolean.valueOf(IsOnline));
-  }
-
-  /**
-   * Get Online Access.
-   *
-   * @return Can be accessed online
-   */
-  public boolean isOnline() {
-    Object oo = get_Value(COLUMNNAME_IsOnline);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_C_Payment[").append(getId()).append("]");
+        return sb.toString();
     }
-    return false;
-  }
 
-  /**
-   * Set Over/Under Payment.
-   *
-   * @param IsOverUnderPayment Over-Payment (unallocated) or Under-Payment (partial payment)
-   */
-  public void setIsOverUnderPayment(boolean IsOverUnderPayment) {
-    set_Value(COLUMNNAME_IsOverUnderPayment, Boolean.valueOf(IsOverUnderPayment));
-  }
-
-  /**
-   * Get Over/Under Payment.
-   *
-   * @return Over-Payment (unallocated) or Under-Payment (partial payment)
-   */
-  public boolean isOverUnderPayment() {
-    Object oo = get_Value(COLUMNNAME_IsOverUnderPayment);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+    /**
+     * Get Account No.
+     *
+     * @return Account Number
+     */
+    public String getAccountNo() {
+        return (String) get_Value(COLUMNNAME_AccountNo);
     }
-    return false;
-  }
 
-  /**
-   * Set Prepayment.
-   *
-   * @param IsPrepayment The Payment/Receipt is a Prepayment
-   */
-  public void setIsPrepayment(boolean IsPrepayment) {
-    set_Value(COLUMNNAME_IsPrepayment, Boolean.valueOf(IsPrepayment));
-  }
-
-  /**
-   * Get Prepayment.
-   *
-   * @return The Payment/Receipt is a Prepayment
-   */
-  public boolean isPrepayment() {
-    Object oo = get_Value(COLUMNNAME_IsPrepayment);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+    /**
+     * Set Account No.
+     *
+     * @param AccountNo Account Number
+     */
+    public void setAccountNo(String AccountNo) {
+        set_Value(COLUMNNAME_AccountNo, AccountNo);
     }
-    return false;
-  }
 
-  /**
-   * Set Receipt.
-   *
-   * @param IsReceipt This is a sales transaction (receipt)
-   */
-  public void setIsReceipt(boolean IsReceipt) {
-    set_Value(COLUMNNAME_IsReceipt, Boolean.valueOf(IsReceipt));
-  }
-
-  /**
-   * Get Receipt.
-   *
-   * @return This is a sales transaction (receipt)
-   */
-  public boolean isReceipt() {
-    Object oo = get_Value(COLUMNNAME_IsReceipt);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+    /**
+     * Get Account City.
+     *
+     * @return City or the Credit Card or Account Holder
+     */
+    public String getA_City() {
+        return (String) get_Value(COLUMNNAME_A_City);
     }
-    return false;
-  }
-
-  /**
-   * Set Reconciled.
-   *
-   * @param IsReconciled Payment is reconciled with bank statement
-   */
-  public void setIsReconciled(boolean IsReconciled) {
-    set_Value(COLUMNNAME_IsReconciled, Boolean.valueOf(IsReconciled));
-  }
 
     /**
-   * Set Self-Service.
-   *
-   * @param IsSelfService This is a Self-Service entry or this entry can be changed via Self-Service
-   */
-  public void setIsSelfService(boolean IsSelfService) {
-    set_Value(COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
-  }
-
-  /**
-   * Get Self-Service.
-   *
-   * @return This is a Self-Service entry or this entry can be changed via Self-Service
-   */
-  public boolean isSelfService() {
-    Object oo = get_Value(COLUMNNAME_IsSelfService);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Set Account City.
+     *
+     * @param A_City City or the Credit Card or Account Holder
+     */
+    public void setA_City(String A_City) {
+        set_Value(COLUMNNAME_A_City, A_City);
     }
-    return false;
-  }
 
-  /**
-   * Set Voided.
-   *
-   * @param IsVoided Voided
-   */
-  public void setIsVoided(boolean IsVoided) {
-    set_Value(COLUMNNAME_IsVoided, Boolean.valueOf(IsVoided));
-  }
-
-  /**
-   * Get Voided.
-   *
-   * @return Voided
-   */
-  public boolean isVoided() {
-    Object oo = get_Value(COLUMNNAME_IsVoided);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+    /**
+     * Get Account Country.
+     *
+     * @return Country
+     */
+    public String getA_Country() {
+        return (String) get_Value(COLUMNNAME_A_Country);
     }
-    return false;
-  }
-
-  /**
-   * Set Micr.
-   *
-   * @param Micr Combination of routing no, account and check no
-   */
-  public void setMicr(String Micr) {
-    set_Value(COLUMNNAME_Micr, Micr);
-  }
-
-  /**
-   * Get Micr.
-   *
-   * @return Combination of routing no, account and check no
-   */
-  public String getMicr() {
-    return (String) get_Value(COLUMNNAME_Micr);
-  }
-
-  /**
-   * Set Online Processing.
-   *
-   * @param OProcessing This payment can be processed online
-   */
-  public void setOProcessing(String OProcessing) {
-    set_Value(COLUMNNAME_OProcessing, OProcessing);
-  }
 
     /**
-   * Set Original Transaction ID.
-   *
-   * @param Orig_TrxID Original Transaction ID
-   */
-  public void setOrig_TrxID(String Orig_TrxID) {
-    set_Value(COLUMNNAME_Orig_TrxID, Orig_TrxID);
-  }
-
-  /**
-   * Get Original Transaction ID.
-   *
-   * @return Original Transaction ID
-   */
-  public String getOrig_TrxID() {
-    return (String) get_Value(COLUMNNAME_Orig_TrxID);
-  }
-
-  /**
-   * Set Over/Under Payment.
-   *
-   * @param OverUnderAmt Over-Payment (unallocated) or Under-Payment (partial payment) Amount
-   */
-  public void setOverUnderAmt(BigDecimal OverUnderAmt) {
-    set_Value(COLUMNNAME_OverUnderAmt, OverUnderAmt);
-  }
-
-  /**
-   * Get Over/Under Payment.
-   *
-   * @return Over-Payment (unallocated) or Under-Payment (partial payment) Amount
-   */
-  public BigDecimal getOverUnderAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OverUnderAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set Payment amount.
-   *
-   * @param PayAmt Amount being paid
-   */
-  public void setPayAmt(BigDecimal PayAmt) {
-    set_Value(COLUMNNAME_PayAmt, PayAmt);
-  }
-
-  /**
-   * Get Payment amount.
-   *
-   * @return Amount being paid
-   */
-  public BigDecimal getPayAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PayAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-  /**
-   * Set PO Number.
-   *
-   * @param PONum Purchase Order Number
-   */
-  public void setPONum(String PONum) {
-    set_Value(COLUMNNAME_PONum, PONum);
-  }
-
-  /**
-   * Get PO Number.
-   *
-   * @return Purchase Order Number
-   */
-  public String getPONum() {
-    return (String) get_Value(COLUMNNAME_PONum);
-  }
-
-  /**
-   * Set Posted.
-   *
-   * @param Posted Posting status
-   */
-  public void setPosted(boolean Posted) {
-    set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
-  }
-
-    /**
-   * Set Processed.
-   *
-   * @param Processed The document has been processed
-   */
-  public void setProcessed(boolean Processed) {
-    set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
-  }
-
-  /**
-   * Get Processed.
-   *
-   * @return The document has been processed
-   */
-  public boolean isProcessed() {
-    Object oo = get_Value(COLUMNNAME_Processed);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Set Account Country.
+     *
+     * @param A_Country Country
+     */
+    public void setA_Country(String A_Country) {
+        set_Value(COLUMNNAME_A_Country, A_Country);
     }
-    return false;
-  }
 
     /**
-   * Set Process Now.
-   *
-   * @param Processing Process Now
-   */
-  public void setProcessing(boolean Processing) {
-    set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-  }
-
-    /**
-   * Set Authorization Code.
-   *
-   * @param R_AuthCode Authorization Code returned
-   */
-  public void setR_AuthCode(String R_AuthCode) {
-    set_ValueNoCheck(COLUMNNAME_R_AuthCode, R_AuthCode);
-  }
-
-  /**
-   * Get Authorization Code.
-   *
-   * @return Authorization Code returned
-   */
-  public String getR_AuthCode() {
-    return (String) get_Value(COLUMNNAME_R_AuthCode);
-  }
-
-    /**
-   * Set Address verified.
-   *
-   * @param R_AvsAddr This address has been verified
-   */
-  public void setR_AvsAddr(String R_AvsAddr) {
-
-    set_ValueNoCheck(COLUMNNAME_R_AvsAddr, R_AvsAddr);
-  }
-
-  /**
-   * Get Address verified.
-   *
-   * @return This address has been verified
-   */
-  public String getR_AvsAddr() {
-    return (String) get_Value(COLUMNNAME_R_AvsAddr);
-  }
-
-    /** Unavailable = X */
-  public static final String R_AVSZIP_Unavailable = "X";
-  /**
-   * Set Zip verified.
-   *
-   * @param R_AvsZip The Zip Code has been verified
-   */
-  public void setR_AvsZip(String R_AvsZip) {
-
-    set_ValueNoCheck(COLUMNNAME_R_AvsZip, R_AvsZip);
-  }
-
-  /**
-   * Get Zip verified.
-   *
-   * @return The Zip Code has been verified
-   */
-  public String getR_AvsZip() {
-    return (String) get_Value(COLUMNNAME_R_AvsZip);
-  }
-
-  /**
-   * Set CVV Match.
-   *
-   * @param R_CVV2Match Credit Card Verification Code Match
-   */
-  public void setR_CVV2Match(boolean R_CVV2Match) {
-    set_ValueNoCheck(COLUMNNAME_R_CVV2Match, Boolean.valueOf(R_CVV2Match));
-  }
-
-  /**
-   * Get CVV Match.
-   *
-   * @return Credit Card Verification Code Match
-   */
-  public boolean isR_CVV2Match() {
-    Object oo = get_Value(COLUMNNAME_R_CVV2Match);
-    if (oo != null) {
-      if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-      return "Y".equals(oo);
+     * Get Account EMail.
+     *
+     * @return Email Address
+     */
+    public String getA_EMail() {
+        return (String) get_Value(COLUMNNAME_A_EMail);
     }
-    return false;
-  }
 
     /**
-   * Set Referenced Payment.
-   *
-   * @param Ref_Payment_ID Referenced Payment
-   */
-  public void setRef_Payment_ID(int Ref_Payment_ID) {
-    if (Ref_Payment_ID < 1) set_ValueNoCheck(COLUMNNAME_Ref_Payment_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_Ref_Payment_ID, Integer.valueOf(Ref_Payment_ID));
-  }
-
-  /**
-   * Get Referenced Payment.
-   *
-   * @return Referenced Payment
-   */
-  public int getRef_Payment_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Ref_Payment_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  public org.compiere.model.I_C_Payment getReversal() throws RuntimeException {
-    return (org.compiere.model.I_C_Payment)
-        MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-            .getPO(getReversal_ID());
-  }
-
-  /**
-   * Set Reversal ID.
-   *
-   * @param Reversal_ID ID of document reversal
-   */
-  public void setReversal_ID(int Reversal_ID) {
-    if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
-    else set_Value(COLUMNNAME_Reversal_ID, Reversal_ID);
-  }
-
-  /**
-   * Get Reversal ID.
-   *
-   * @return ID of document reversal
-   */
-  public int getReversal_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_Reversal_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-  /**
-   * Set Info.
-   *
-   * @param R_Info Response info
-   */
-  public void setR_Info(String R_Info) {
-    set_ValueNoCheck(COLUMNNAME_R_Info, R_Info);
-  }
-
-  /**
-   * Get Info.
-   *
-   * @return Response info
-   */
-  public String getR_Info() {
-    return (String) get_Value(COLUMNNAME_R_Info);
-  }
-
-  /**
-   * Set Routing No.
-   *
-   * @param RoutingNo Bank Routing Number
-   */
-  public void setRoutingNo(String RoutingNo) {
-    set_Value(COLUMNNAME_RoutingNo, RoutingNo);
-  }
-
-  /**
-   * Get Routing No.
-   *
-   * @return Bank Routing Number
-   */
-  public String getRoutingNo() {
-    return (String) get_Value(COLUMNNAME_RoutingNo);
-  }
-
-  /**
-   * Set Reference.
-   *
-   * @param R_PnRef Payment reference
-   */
-  public void setR_PnRef(String R_PnRef) {
-    set_ValueNoCheck(COLUMNNAME_R_PnRef, R_PnRef);
-  }
-
-  /**
-   * Get Reference.
-   *
-   * @return Payment reference
-   */
-  public String getR_PnRef() {
-    return (String) get_Value(COLUMNNAME_R_PnRef);
-  }
+     * Set Account EMail.
+     *
+     * @param A_EMail Email Address
+     */
+    public void setA_EMail(String A_EMail) {
+        set_Value(COLUMNNAME_A_EMail, A_EMail);
+    }
 
     /**
-   * Set Response Message.
-   *
-   * @param R_RespMsg Response message
-   */
-  public void setR_RespMsg(String R_RespMsg) {
-    set_ValueNoCheck(COLUMNNAME_R_RespMsg, R_RespMsg);
-  }
-
-  /**
-   * Get Response Message.
-   *
-   * @return Response message
-   */
-  public String getR_RespMsg() {
-    return (String) get_Value(COLUMNNAME_R_RespMsg);
-  }
-
-  /**
-   * Set Result.
-   *
-   * @param R_Result Result of transmission
-   */
-  public void setR_Result(String R_Result) {
-    set_ValueNoCheck(COLUMNNAME_R_Result, R_Result);
-  }
-
-  /**
-   * Get Result.
-   *
-   * @return Result of transmission
-   */
-  public String getR_Result() {
-    return (String) get_Value(COLUMNNAME_R_Result);
-  }
-
-  /**
-   * Set Void Message.
-   *
-   * @param R_VoidMsg Void Message
-   */
-  public void setR_VoidMsg(String R_VoidMsg) {
-    set_Value(COLUMNNAME_R_VoidMsg, R_VoidMsg);
-  }
-
-  /**
-   * Get Void Message.
-   *
-   * @return Void Message
-   */
-  public String getR_VoidMsg() {
-    return (String) get_Value(COLUMNNAME_R_VoidMsg);
-  }
-
-  /**
-   * Set Swift code.
-   *
-   * @param SwiftCode Swift Code or BIC
-   */
-  public void setSwiftCode(String SwiftCode) {
-    set_Value(COLUMNNAME_SwiftCode, SwiftCode);
-  }
-
-  /**
-   * Get Swift code.
-   *
-   * @return Swift Code or BIC
-   */
-  public String getSwiftCode() {
-    return (String) get_Value(COLUMNNAME_SwiftCode);
-  }
-
-  /**
-   * Set Swipe.
-   *
-   * @param Swipe Track 1 and 2 of the Credit Card
-   */
-  public void setSwipe(String Swipe) {
-    set_ValueNoCheck(COLUMNNAME_Swipe, Swipe);
-  }
+     * Get Driver License.
+     *
+     * @return Payment Identification - Driver License
+     */
+    public String getA_Ident_DL() {
+        return (String) get_Value(COLUMNNAME_A_Ident_DL);
+    }
 
     /**
-   * Set Tax Amount.
-   *
-   * @param TaxAmt Tax Amount for a document
-   */
-  public void setTaxAmt(BigDecimal TaxAmt) {
-    set_Value(COLUMNNAME_TaxAmt, TaxAmt);
-  }
-
-  /**
-   * Get Tax Amount.
-   *
-   * @return Tax Amount for a document
-   */
-  public BigDecimal getTaxAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TaxAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
-
-    /** Credit Card = C */
-  public static final String TENDERTYPE_CreditCard = "C";
-  /** Check = K */
-  public static final String TENDERTYPE_Check = "K";
-  /** Direct Deposit = A */
-  public static final String TENDERTYPE_DirectDeposit = "A";
-  /** Direct Debit = D */
-  public static final String TENDERTYPE_DirectDebit = "D";
-  /** Account = T */
-  public static final String TENDERTYPE_Account = "T";
-  /** Cash = X */
-  public static final String TENDERTYPE_Cash = "X";
-  /**
-   * Set Tender type.
-   *
-   * @param TenderType Method of Payment
-   */
-  public void setTenderType(String TenderType) {
-
-    set_Value(COLUMNNAME_TenderType, TenderType);
-  }
-
-  /**
-   * Get Tender type.
-   *
-   * @return Method of Payment
-   */
-  public String getTenderType() {
-    return (String) get_Value(COLUMNNAME_TenderType);
-  }
-
-    /** Sales = S */
-  public static final String TRXTYPE_Sales = "S";
-  /** Delayed Capture = D */
-  public static final String TRXTYPE_DelayedCapture = "D";
-  /** Credit (Payment) = C */
-  public static final String TRXTYPE_CreditPayment = "C";
-    /** Void = V */
-  public static final String TRXTYPE_Void = "V";
-  /**
-   * Set Transaction Type.
-   *
-   * @param TrxType Type of credit card transaction
-   */
-  public void setTrxType(String TrxType) {
-
-    set_Value(COLUMNNAME_TrxType, TrxType);
-  }
-
-  /**
-   * Get Transaction Type.
-   *
-   * @return Type of credit card transaction
-   */
-  public String getTrxType() {
-    return (String) get_Value(COLUMNNAME_TrxType);
-  }
+     * Set Driver License.
+     *
+     * @param A_Ident_DL Payment Identification - Driver License
+     */
+    public void setA_Ident_DL(String A_Ident_DL) {
+        set_Value(COLUMNNAME_A_Ident_DL, A_Ident_DL);
+    }
 
     /**
-   * Set User Element List 1.
-   *
-   * @param User1_ID User defined list element #1
-   */
-  public void setUser1_ID(int User1_ID) {
-    if (User1_ID < 1) set_Value(COLUMNNAME_User1_ID, null);
-    else set_Value(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
-  }
-
-  /**
-   * Get User Element List 1.
-   *
-   * @return User defined list element #1
-   */
-  public int getUser1_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Social Security No.
+     *
+     * @return Payment Identification - Social Security No
+     */
+    public String getA_Ident_SSN() {
+        return (String) get_Value(COLUMNNAME_A_Ident_SSN);
+    }
 
     /**
-   * Set User Element List 2.
-   *
-   * @param User2_ID User defined list element #2
-   */
-  public void setUser2_ID(int User2_ID) {
-    if (User2_ID < 1) set_Value(COLUMNNAME_User2_ID, null);
-    else set_Value(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
-  }
+     * Set Social Security No.
+     *
+     * @param A_Ident_SSN Payment Identification - Social Security No
+     */
+    public void setA_Ident_SSN(String A_Ident_SSN) {
+        set_Value(COLUMNNAME_A_Ident_SSN, A_Ident_SSN);
+    }
 
-  /**
-   * Get User Element List 2.
-   *
-   * @return User defined list element #2
-   */
-  public int getUser2_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    /**
+     * Get Account Name.
+     *
+     * @return Name on Credit Card or Account holder
+     */
+    public String getA_Name() {
+        return (String) get_Value(COLUMNNAME_A_Name);
+    }
 
-  /**
-   * Set Voice authorization code.
-   *
-   * @param VoiceAuthCode Voice Authorization Code from credit card company
-   */
-  public void setVoiceAuthCode(String VoiceAuthCode) {
-    set_Value(COLUMNNAME_VoiceAuthCode, VoiceAuthCode);
-  }
+    /**
+     * Set Account Name.
+     *
+     * @param A_Name Name on Credit Card or Account holder
+     */
+    public void setA_Name(String A_Name) {
+        set_Value(COLUMNNAME_A_Name, A_Name);
+    }
 
-  /**
-   * Get Voice authorization code.
-   *
-   * @return Voice Authorization Code from credit card company
-   */
-  public String getVoiceAuthCode() {
-    return (String) get_Value(COLUMNNAME_VoiceAuthCode);
-  }
+    /**
+     * Get Account State.
+     *
+     * @return State of the Credit Card or Account holder
+     */
+    public String getA_State() {
+        return (String) get_Value(COLUMNNAME_A_State);
+    }
 
-  /**
-   * Set Write-off Amount.
-   *
-   * @param WriteOffAmt Amount to write-off
-   */
-  public void setWriteOffAmt(BigDecimal WriteOffAmt) {
-    set_Value(COLUMNNAME_WriteOffAmt, WriteOffAmt);
-  }
+    /**
+     * Set Account State.
+     *
+     * @param A_State State of the Credit Card or Account holder
+     */
+    public void setA_State(String A_State) {
+        set_Value(COLUMNNAME_A_State, A_State);
+    }
 
-  /**
-   * Get Write-off Amount.
-   *
-   * @return Amount to write-off
-   */
-  public BigDecimal getWriteOffAmt() {
-    BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_WriteOffAmt);
-    if (bd == null) return Env.ZERO;
-    return bd;
-  }
+    /**
+     * Get Account Street.
+     *
+     * @return Street address of the Credit Card or Account holder
+     */
+    public String getA_Street() {
+        return (String) get_Value(COLUMNNAME_A_Street);
+    }
 
-  @Override
-  public int getTableId() {
-    return I_C_Payment.Table_ID;
-  }
+    /**
+     * Set Account Street.
+     *
+     * @param A_Street Street address of the Credit Card or Account holder
+     */
+    public void setA_Street(String A_Street) {
+        set_Value(COLUMNNAME_A_Street, A_Street);
+    }
+
+    /**
+     * Get Account Zip/Postal.
+     *
+     * @return Zip Code of the Credit Card or Account Holder
+     */
+    public String getA_Zip() {
+        return (String) get_Value(COLUMNNAME_A_Zip);
+    }
+
+    /**
+     * Set Account Zip/Postal.
+     *
+     * @param A_Zip Zip Code of the Credit Card or Account Holder
+     */
+    public void setA_Zip(String A_Zip) {
+        set_Value(COLUMNNAME_A_Zip, A_Zip);
+    }
+
+    /**
+     * Get Activity.
+     *
+     * @return Business Activity
+     */
+    public int getC_Activity_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Activity.
+     *
+     * @param C_Activity_ID Business Activity
+     */
+    public void setC_Activity_ID(int C_Activity_ID) {
+        if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
+        else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+    }
+
+    /**
+     * Get Bank Account.
+     *
+     * @return Account at the Bank
+     */
+    public int getC_BankAccount_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Bank Account.
+     *
+     * @param C_BankAccount_ID Account at the Bank
+     */
+    public void setC_BankAccount_ID(int C_BankAccount_ID) {
+        if (C_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BankAccount_ID, null);
+        else set_Value(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
+    }
+
+    /**
+     * Get Business Partner .
+     *
+     * @return Identifies a Business Partner
+     */
+    public int getC_BPartner_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Business Partner .
+     *
+     * @param C_BPartner_ID Identifies a Business Partner
+     */
+    public void setC_BPartner_ID(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
+        else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    }
+
+    /**
+     * Get Partner Bank Account.
+     *
+     * @return Bank Account of the Business Partner
+     */
+    public int getC_BP_BankAccount_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_BP_BankAccount_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Partner Bank Account.
+     *
+     * @param C_BP_BankAccount_ID Bank Account of the Business Partner
+     */
+    public void setC_BP_BankAccount_ID(int C_BP_BankAccount_ID) {
+        if (C_BP_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BP_BankAccount_ID, null);
+        else set_Value(COLUMNNAME_C_BP_BankAccount_ID, Integer.valueOf(C_BP_BankAccount_ID));
+    }
+
+    /**
+     * Get Campaign.
+     *
+     * @return Marketing Campaign
+     */
+    public int getC_Campaign_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Campaign.
+     *
+     * @param C_Campaign_ID Marketing Campaign
+     */
+    public void setC_Campaign_ID(int C_Campaign_ID) {
+        if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
+        else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
+    }
+
+    /**
+     * Get Cash Book.
+     *
+     * @return Cash Book for recording petty cash transactions
+     */
+    public int getC_CashBook_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_CashBook_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Cash Book.
+     *
+     * @param C_CashBook_ID Cash Book for recording petty cash transactions
+     */
+    public void setC_CashBook_ID(int C_CashBook_ID) {
+        if (C_CashBook_ID < 1) set_Value(COLUMNNAME_C_CashBook_ID, null);
+        else set_Value(COLUMNNAME_C_CashBook_ID, Integer.valueOf(C_CashBook_ID));
+    }
+
+    /**
+     * Get Charge.
+     *
+     * @return Additional document charges
+     */
+    public int getC_Charge_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Charge.
+     *
+     * @param C_Charge_ID Additional document charges
+     */
+    public void setC_Charge_ID(int C_Charge_ID) {
+        if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
+        else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
+    }
+
+    /**
+     * Get Currency Type.
+     *
+     * @return Currency Conversion Rate Type
+     */
+    public int getC_ConversionType_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_ConversionType_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Currency Type.
+     *
+     * @param C_ConversionType_ID Currency Conversion Rate Type
+     */
+    public void setC_ConversionType_ID(int C_ConversionType_ID) {
+        if (C_ConversionType_ID < 1) set_Value(COLUMNNAME_C_ConversionType_ID, null);
+        else set_Value(COLUMNNAME_C_ConversionType_ID, Integer.valueOf(C_ConversionType_ID));
+    }
+
+    /**
+     * Get Currency.
+     *
+     * @return The Currency for this record
+     */
+    public int getC_Currency_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Currency.
+     *
+     * @param C_Currency_ID The Currency for this record
+     */
+    public void setC_Currency_ID(int C_Currency_ID) {
+        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
+        else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    }
+
+    /**
+     * Get Deposit Batch.
+     *
+     * @return Deposit Batch
+     */
+    public int getC_DepositBatch_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_DepositBatch_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Document Type.
+     *
+     * @return Document type or rules
+     */
+    public int getC_DocType_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Document Type.
+     *
+     * @param C_DocType_ID Document type or rules
+     */
+    public void setC_DocType_ID(int C_DocType_ID) {
+        if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
+        else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+    }
+
+    /**
+     * Set Charge amount.
+     *
+     * @param ChargeAmt Charge Amount
+     */
+    public void setChargeAmt(BigDecimal ChargeAmt) {
+        set_Value(COLUMNNAME_ChargeAmt, ChargeAmt);
+    }
+
+    /**
+     * Get Check No.
+     *
+     * @return Check Number
+     */
+    public String getCheckNo() {
+        return (String) get_Value(COLUMNNAME_CheckNo);
+    }
+
+    /**
+     * Set Check No.
+     *
+     * @param CheckNo Check Number
+     */
+    public void setCheckNo(String CheckNo) {
+        set_Value(COLUMNNAME_CheckNo, CheckNo);
+    }
+
+    /**
+     * Get Invoice.
+     *
+     * @return Invoice Identifier
+     */
+    public int getC_Invoice_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Invoice.
+     *
+     * @param C_Invoice_ID Invoice Identifier
+     */
+    public void setC_Invoice_ID(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) set_Value(COLUMNNAME_C_Invoice_ID, null);
+        else set_Value(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    }
+
+    /**
+     * Get Order.
+     *
+     * @return Order
+     */
+    public int getC_Order_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Order_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Order.
+     *
+     * @param C_Order_ID Order
+     */
+    public void setC_Order_ID(int C_Order_ID) {
+        if (C_Order_ID < 1) set_Value(COLUMNNAME_C_Order_ID, null);
+        else set_Value(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
+    }
+
+    /**
+     * Get Payment Batch.
+     *
+     * @return Payment batch for EFT
+     */
+    public int getC_PaymentBatch_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaymentBatch_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Payment Batch.
+     *
+     * @param C_PaymentBatch_ID Payment batch for EFT
+     */
+    public void setC_PaymentBatch_ID(int C_PaymentBatch_ID) {
+        if (C_PaymentBatch_ID < 1) set_Value(COLUMNNAME_C_PaymentBatch_ID, null);
+        else set_Value(COLUMNNAME_C_PaymentBatch_ID, Integer.valueOf(C_PaymentBatch_ID));
+    }
+
+    /**
+     * Get Payment.
+     *
+     * @return Payment identifier
+     */
+    public int getC_Payment_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Payment.
+     *
+     * @param C_Payment_ID Payment identifier
+     */
+    public void setC_Payment_ID(int C_Payment_ID) {
+        if (C_Payment_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Payment_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    }
+
+    /**
+     * Get Payment Processor.
+     *
+     * @return Payment processor for electronic payments
+     */
+    public int getC_PaymentProcessor_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaymentProcessor_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Payment Processor.
+     *
+     * @param C_PaymentProcessor_ID Payment processor for electronic payments
+     */
+    public void setC_PaymentProcessor_ID(int C_PaymentProcessor_ID) {
+        if (C_PaymentProcessor_ID < 1) set_Value(COLUMNNAME_C_PaymentProcessor_ID, null);
+        else set_Value(COLUMNNAME_C_PaymentProcessor_ID, Integer.valueOf(C_PaymentProcessor_ID));
+    }
+
+    /**
+     * Get POS Tender Type.
+     *
+     * @return POS Tender Type
+     */
+    public int getC_POSTenderType_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_POSTenderType_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set POS Tender Type.
+     *
+     * @param C_POSTenderType_ID POS Tender Type
+     */
+    public void setC_POSTenderType_ID(int C_POSTenderType_ID) {
+        if (C_POSTenderType_ID < 1) set_Value(COLUMNNAME_C_POSTenderType_ID, null);
+        else set_Value(COLUMNNAME_C_POSTenderType_ID, Integer.valueOf(C_POSTenderType_ID));
+    }
+
+    /**
+     * Get Project.
+     *
+     * @return Financial Project
+     */
+    public int getC_Project_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Project.
+     *
+     * @param C_Project_ID Financial Project
+     */
+    public void setC_Project_ID(int C_Project_ID) {
+        if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
+        else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+    }
+
+    /**
+     * Get Exp. Month.
+     *
+     * @return Expiry Month
+     */
+    public int getCreditCardExpMM() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_CreditCardExpMM);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Exp. Month.
+     *
+     * @param CreditCardExpMM Expiry Month
+     */
+    public void setCreditCardExpMM(int CreditCardExpMM) {
+        set_Value(COLUMNNAME_CreditCardExpMM, Integer.valueOf(CreditCardExpMM));
+    }
+
+    /**
+     * Get Exp. Year.
+     *
+     * @return Expiry Year
+     */
+    public int getCreditCardExpYY() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_CreditCardExpYY);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Exp. Year.
+     *
+     * @param CreditCardExpYY Expiry Year
+     */
+    public void setCreditCardExpYY(int CreditCardExpYY) {
+        set_Value(COLUMNNAME_CreditCardExpYY, Integer.valueOf(CreditCardExpYY));
+    }
+
+    /**
+     * Get Number.
+     *
+     * @return Credit Card Number
+     */
+    public String getCreditCardNumber() {
+        return (String) get_Value(COLUMNNAME_CreditCardNumber);
+    }
+
+    /**
+     * Set Number.
+     *
+     * @param CreditCardNumber Credit Card Number
+     */
+    public void setCreditCardNumber(String CreditCardNumber) {
+        set_Value(COLUMNNAME_CreditCardNumber, CreditCardNumber);
+    }
+
+    /**
+     * Get Credit Card.
+     *
+     * @return Credit Card (Visa, MC, AmEx)
+     */
+    public String getCreditCardType() {
+        return (String) get_Value(COLUMNNAME_CreditCardType);
+    }
+
+    /**
+     * Set Credit Card.
+     *
+     * @param CreditCardType Credit Card (Visa, MC, AmEx)
+     */
+    public void setCreditCardType(String CreditCardType) {
+
+        set_Value(COLUMNNAME_CreditCardType, CreditCardType);
+    }
+
+    /**
+     * Get Verification Code.
+     *
+     * @return Credit Card Verification code on credit card
+     */
+    public String getCreditCardVV() {
+        return (String) get_Value(COLUMNNAME_CreditCardVV);
+    }
+
+    /**
+     * Set Verification Code.
+     *
+     * @param CreditCardVV Credit Card Verification code on credit card
+     */
+    public void setCreditCardVV(String CreditCardVV) {
+        set_Value(COLUMNNAME_CreditCardVV, CreditCardVV);
+    }
+
+    /**
+     * Get Customer Address ID.
+     *
+     * @return Customer Address ID
+     */
+    public String getCustomerAddressID() {
+        return (String) get_Value(COLUMNNAME_CustomerAddressID);
+    }
+
+    /**
+     * Set Customer Address ID.
+     *
+     * @param CustomerAddressID Customer Address ID
+     */
+    public void setCustomerAddressID(String CustomerAddressID) {
+        set_Value(COLUMNNAME_CustomerAddressID, CustomerAddressID);
+    }
+
+    /**
+     * Get Customer Payment Profile ID.
+     *
+     * @return Customer Payment Profile ID
+     */
+    public String getCustomerPaymentProfileID() {
+        return (String) get_Value(COLUMNNAME_CustomerPaymentProfileID);
+    }
+
+    /**
+     * Set Customer Payment Profile ID.
+     *
+     * @param CustomerPaymentProfileID Customer Payment Profile ID
+     */
+    public void setCustomerPaymentProfileID(String CustomerPaymentProfileID) {
+        set_Value(COLUMNNAME_CustomerPaymentProfileID, CustomerPaymentProfileID);
+    }
+
+    /**
+     * Get Customer Profile ID.
+     *
+     * @return Customer Profile ID
+     */
+    public String getCustomerProfileID() {
+        return (String) get_Value(COLUMNNAME_CustomerProfileID);
+    }
+
+    /**
+     * Set Customer Profile ID.
+     *
+     * @param CustomerProfileID Customer Profile ID
+     */
+    public void setCustomerProfileID(String CustomerProfileID) {
+        set_Value(COLUMNNAME_CustomerProfileID, CustomerProfileID);
+    }
+
+    /**
+     * Get Account Date.
+     *
+     * @return Accounting Date
+     */
+    public Timestamp getDateAcct() {
+        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+    }
+
+    /**
+     * Set Account Date.
+     *
+     * @param DateAcct Accounting Date
+     */
+    public void setDateAcct(Timestamp DateAcct) {
+        set_Value(COLUMNNAME_DateAcct, DateAcct);
+    }
+
+    /**
+     * Get Transaction Date.
+     *
+     * @return Transaction Date
+     */
+    public Timestamp getDateTrx() {
+        return (Timestamp) get_Value(COLUMNNAME_DateTrx);
+    }
+
+    /**
+     * Set Transaction Date.
+     *
+     * @param DateTrx Transaction Date
+     */
+    public void setDateTrx(Timestamp DateTrx) {
+        set_Value(COLUMNNAME_DateTrx, DateTrx);
+    }
+
+    /**
+     * Get Description.
+     *
+     * @return Optional short description of the record
+     */
+    public String getDescription() {
+        return (String) get_Value(COLUMNNAME_Description);
+    }
+
+    /**
+     * Set Description.
+     *
+     * @param Description Optional short description of the record
+     */
+    public void setDescription(String Description) {
+        set_Value(COLUMNNAME_Description, Description);
+    }
+
+    /**
+     * Get Discount Amount.
+     *
+     * @return Calculated amount of discount
+     */
+    public BigDecimal getDiscountAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DiscountAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Discount Amount.
+     *
+     * @param DiscountAmt Calculated amount of discount
+     */
+    public void setDiscountAmt(BigDecimal DiscountAmt) {
+        set_Value(COLUMNNAME_DiscountAmt, DiscountAmt);
+    }
+
+    /**
+     * Get Document Action.
+     *
+     * @return The targeted status of the document
+     */
+    public String getDocAction() {
+        return (String) get_Value(COLUMNNAME_DocAction);
+    }
+
+    /**
+     * Set Document Action.
+     *
+     * @param DocAction The targeted status of the document
+     */
+    public void setDocAction(String DocAction) {
+
+        set_Value(COLUMNNAME_DocAction, DocAction);
+    }
+
+    /**
+     * Get Document Status.
+     *
+     * @return The current status of the document
+     */
+    public String getDocStatus() {
+        return (String) get_Value(COLUMNNAME_DocStatus);
+    }
+
+    /**
+     * Set Document Status.
+     *
+     * @param DocStatus The current status of the document
+     */
+    public void setDocStatus(String DocStatus) {
+
+        set_Value(COLUMNNAME_DocStatus, DocStatus);
+    }
+
+    /**
+     * Get Document No.
+     *
+     * @return Document sequence number of the document
+     */
+    public String getDocumentNo() {
+        return (String) get_Value(COLUMNNAME_DocumentNo);
+    }
+
+    /**
+     * Set Document No.
+     *
+     * @param DocumentNo Document sequence number of the document
+     */
+    public void setDocumentNo(String DocumentNo) {
+        set_Value(COLUMNNAME_DocumentNo, DocumentNo);
+    }
+
+    /**
+     * Get IBAN.
+     *
+     * @return International Bank Account Number
+     */
+    public String getIBAN() {
+        return (String) get_Value(COLUMNNAME_IBAN);
+    }
+
+    /**
+     * Set IBAN.
+     *
+     * @param IBAN International Bank Account Number
+     */
+    public void setIBAN(String IBAN) {
+        set_Value(COLUMNNAME_IBAN, IBAN);
+    }
+
+    /**
+     * Set Allocated.
+     *
+     * @param IsAllocated Indicates if the payment has been allocated
+     */
+    public void setIsAllocated(boolean IsAllocated) {
+        set_Value(COLUMNNAME_IsAllocated, Boolean.valueOf(IsAllocated));
+    }
+
+    /**
+     * Get Allocated.
+     *
+     * @return Indicates if the payment has been allocated
+     */
+    public boolean isAllocated() {
+        Object oo = get_Value(COLUMNNAME_IsAllocated);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Approved.
+     *
+     * @param IsApproved Indicates if this document requires approval
+     */
+    public void setIsApproved(boolean IsApproved) {
+        set_ValueNoCheck(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+    }
+
+    /**
+     * Get Approved.
+     *
+     * @return Indicates if this document requires approval
+     */
+    public boolean isApproved() {
+        Object oo = get_Value(COLUMNNAME_IsApproved);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Delayed Capture.
+     *
+     * @param IsDelayedCapture Charge after Shipment
+     */
+    public void setIsDelayedCapture(boolean IsDelayedCapture) {
+        set_Value(COLUMNNAME_IsDelayedCapture, Boolean.valueOf(IsDelayedCapture));
+    }
+
+    /**
+     * Get Delayed Capture.
+     *
+     * @return Charge after Shipment
+     */
+    public boolean isDelayedCapture() {
+        Object oo = get_Value(COLUMNNAME_IsDelayedCapture);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Online Access.
+     *
+     * @param IsOnline Can be accessed online
+     */
+    public void setIsOnline(boolean IsOnline) {
+        set_Value(COLUMNNAME_IsOnline, Boolean.valueOf(IsOnline));
+    }
+
+    /**
+     * Get Online Access.
+     *
+     * @return Can be accessed online
+     */
+    public boolean isOnline() {
+        Object oo = get_Value(COLUMNNAME_IsOnline);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Over/Under Payment.
+     *
+     * @param IsOverUnderPayment Over-Payment (unallocated) or Under-Payment (partial payment)
+     */
+    public void setIsOverUnderPayment(boolean IsOverUnderPayment) {
+        set_Value(COLUMNNAME_IsOverUnderPayment, Boolean.valueOf(IsOverUnderPayment));
+    }
+
+    /**
+     * Get Over/Under Payment.
+     *
+     * @return Over-Payment (unallocated) or Under-Payment (partial payment)
+     */
+    public boolean isOverUnderPayment() {
+        Object oo = get_Value(COLUMNNAME_IsOverUnderPayment);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Prepayment.
+     *
+     * @param IsPrepayment The Payment/Receipt is a Prepayment
+     */
+    public void setIsPrepayment(boolean IsPrepayment) {
+        set_Value(COLUMNNAME_IsPrepayment, Boolean.valueOf(IsPrepayment));
+    }
+
+    /**
+     * Get Prepayment.
+     *
+     * @return The Payment/Receipt is a Prepayment
+     */
+    public boolean isPrepayment() {
+        Object oo = get_Value(COLUMNNAME_IsPrepayment);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Receipt.
+     *
+     * @param IsReceipt This is a sales transaction (receipt)
+     */
+    public void setIsReceipt(boolean IsReceipt) {
+        set_Value(COLUMNNAME_IsReceipt, Boolean.valueOf(IsReceipt));
+    }
+
+    /**
+     * Get Receipt.
+     *
+     * @return This is a sales transaction (receipt)
+     */
+    public boolean isReceipt() {
+        Object oo = get_Value(COLUMNNAME_IsReceipt);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Reconciled.
+     *
+     * @param IsReconciled Payment is reconciled with bank statement
+     */
+    public void setIsReconciled(boolean IsReconciled) {
+        set_Value(COLUMNNAME_IsReconciled, Boolean.valueOf(IsReconciled));
+    }
+
+    /**
+     * Set Self-Service.
+     *
+     * @param IsSelfService This is a Self-Service entry or this entry can be changed via Self-Service
+     */
+    public void setIsSelfService(boolean IsSelfService) {
+        set_Value(COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
+    }
+
+    /**
+     * Get Self-Service.
+     *
+     * @return This is a Self-Service entry or this entry can be changed via Self-Service
+     */
+    public boolean isSelfService() {
+        Object oo = get_Value(COLUMNNAME_IsSelfService);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Voided.
+     *
+     * @param IsVoided Voided
+     */
+    public void setIsVoided(boolean IsVoided) {
+        set_Value(COLUMNNAME_IsVoided, Boolean.valueOf(IsVoided));
+    }
+
+    /**
+     * Get Voided.
+     *
+     * @return Voided
+     */
+    public boolean isVoided() {
+        Object oo = get_Value(COLUMNNAME_IsVoided);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Get Micr.
+     *
+     * @return Combination of routing no, account and check no
+     */
+    public String getMicr() {
+        return (String) get_Value(COLUMNNAME_Micr);
+    }
+
+    /**
+     * Set Micr.
+     *
+     * @param Micr Combination of routing no, account and check no
+     */
+    public void setMicr(String Micr) {
+        set_Value(COLUMNNAME_Micr, Micr);
+    }
+
+    /**
+     * Set Online Processing.
+     *
+     * @param OProcessing This payment can be processed online
+     */
+    public void setOProcessing(String OProcessing) {
+        set_Value(COLUMNNAME_OProcessing, OProcessing);
+    }
+
+    /**
+     * Get Original Transaction ID.
+     *
+     * @return Original Transaction ID
+     */
+    public String getOrig_TrxID() {
+        return (String) get_Value(COLUMNNAME_Orig_TrxID);
+    }
+
+    /**
+     * Set Original Transaction ID.
+     *
+     * @param Orig_TrxID Original Transaction ID
+     */
+    public void setOrig_TrxID(String Orig_TrxID) {
+        set_Value(COLUMNNAME_Orig_TrxID, Orig_TrxID);
+    }
+
+    /**
+     * Get Over/Under Payment.
+     *
+     * @return Over-Payment (unallocated) or Under-Payment (partial payment) Amount
+     */
+    public BigDecimal getOverUnderAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OverUnderAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Over/Under Payment.
+     *
+     * @param OverUnderAmt Over-Payment (unallocated) or Under-Payment (partial payment) Amount
+     */
+    public void setOverUnderAmt(BigDecimal OverUnderAmt) {
+        set_Value(COLUMNNAME_OverUnderAmt, OverUnderAmt);
+    }
+
+    /**
+     * Get Payment amount.
+     *
+     * @return Amount being paid
+     */
+    public BigDecimal getPayAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PayAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Payment amount.
+     *
+     * @param PayAmt Amount being paid
+     */
+    public void setPayAmt(BigDecimal PayAmt) {
+        set_Value(COLUMNNAME_PayAmt, PayAmt);
+    }
+
+    /**
+     * Get PO Number.
+     *
+     * @return Purchase Order Number
+     */
+    public String getPONum() {
+        return (String) get_Value(COLUMNNAME_PONum);
+    }
+
+    /**
+     * Set PO Number.
+     *
+     * @param PONum Purchase Order Number
+     */
+    public void setPONum(String PONum) {
+        set_Value(COLUMNNAME_PONum, PONum);
+    }
+
+    /**
+     * Set Posted.
+     *
+     * @param Posted Posting status
+     */
+    public void setPosted(boolean Posted) {
+        set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+    }
+
+    /**
+     * Get Processed.
+     *
+     * @return The document has been processed
+     */
+    public boolean isProcessed() {
+        Object oo = get_Value(COLUMNNAME_Processed);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set Processed.
+     *
+     * @param Processed The document has been processed
+     */
+    public void setProcessed(boolean Processed) {
+        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+    }
+
+    /**
+     * Set Process Now.
+     *
+     * @param Processing Process Now
+     */
+    public void setProcessing(boolean Processing) {
+        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+    }
+
+    /**
+     * Get Authorization Code.
+     *
+     * @return Authorization Code returned
+     */
+    public String getR_AuthCode() {
+        return (String) get_Value(COLUMNNAME_R_AuthCode);
+    }
+
+    /**
+     * Set Authorization Code.
+     *
+     * @param R_AuthCode Authorization Code returned
+     */
+    public void setR_AuthCode(String R_AuthCode) {
+        set_ValueNoCheck(COLUMNNAME_R_AuthCode, R_AuthCode);
+    }
+
+    /**
+     * Get Address verified.
+     *
+     * @return This address has been verified
+     */
+    public String getR_AvsAddr() {
+        return (String) get_Value(COLUMNNAME_R_AvsAddr);
+    }
+
+    /**
+     * Set Address verified.
+     *
+     * @param R_AvsAddr This address has been verified
+     */
+    public void setR_AvsAddr(String R_AvsAddr) {
+
+        set_ValueNoCheck(COLUMNNAME_R_AvsAddr, R_AvsAddr);
+    }
+
+    /**
+     * Get Zip verified.
+     *
+     * @return The Zip Code has been verified
+     */
+    public String getR_AvsZip() {
+        return (String) get_Value(COLUMNNAME_R_AvsZip);
+    }
+
+    /**
+     * Set Zip verified.
+     *
+     * @param R_AvsZip The Zip Code has been verified
+     */
+    public void setR_AvsZip(String R_AvsZip) {
+
+        set_ValueNoCheck(COLUMNNAME_R_AvsZip, R_AvsZip);
+    }
+
+    /**
+     * Get CVV Match.
+     *
+     * @return Credit Card Verification Code Match
+     */
+    public boolean isR_CVV2Match() {
+        Object oo = get_Value(COLUMNNAME_R_CVV2Match);
+        if (oo != null) {
+            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            return "Y".equals(oo);
+        }
+        return false;
+    }
+
+    /**
+     * Set CVV Match.
+     *
+     * @param R_CVV2Match Credit Card Verification Code Match
+     */
+    public void setR_CVV2Match(boolean R_CVV2Match) {
+        set_ValueNoCheck(COLUMNNAME_R_CVV2Match, Boolean.valueOf(R_CVV2Match));
+    }
+
+    /**
+     * Get Referenced Payment.
+     *
+     * @return Referenced Payment
+     */
+    public int getRef_Payment_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_Ref_Payment_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Referenced Payment.
+     *
+     * @param Ref_Payment_ID Referenced Payment
+     */
+    public void setRef_Payment_ID(int Ref_Payment_ID) {
+        if (Ref_Payment_ID < 1) set_ValueNoCheck(COLUMNNAME_Ref_Payment_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_Ref_Payment_ID, Integer.valueOf(Ref_Payment_ID));
+    }
+
+    public org.compiere.model.I_C_Payment getReversal() throws RuntimeException {
+        return (org.compiere.model.I_C_Payment)
+                MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
+                        .getPO(getReversal_ID());
+    }
+
+    /**
+     * Get Reversal ID.
+     *
+     * @return ID of document reversal
+     */
+    public int getReversal_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_Reversal_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Reversal ID.
+     *
+     * @param Reversal_ID ID of document reversal
+     */
+    public void setReversal_ID(int Reversal_ID) {
+        if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
+        else set_Value(COLUMNNAME_Reversal_ID, Reversal_ID);
+    }
+
+    /**
+     * Get Info.
+     *
+     * @return Response info
+     */
+    public String getR_Info() {
+        return (String) get_Value(COLUMNNAME_R_Info);
+    }
+
+    /**
+     * Set Info.
+     *
+     * @param R_Info Response info
+     */
+    public void setR_Info(String R_Info) {
+        set_ValueNoCheck(COLUMNNAME_R_Info, R_Info);
+    }
+
+    /**
+     * Get Routing No.
+     *
+     * @return Bank Routing Number
+     */
+    public String getRoutingNo() {
+        return (String) get_Value(COLUMNNAME_RoutingNo);
+    }
+
+    /**
+     * Set Routing No.
+     *
+     * @param RoutingNo Bank Routing Number
+     */
+    public void setRoutingNo(String RoutingNo) {
+        set_Value(COLUMNNAME_RoutingNo, RoutingNo);
+    }
+
+    /**
+     * Get Reference.
+     *
+     * @return Payment reference
+     */
+    public String getR_PnRef() {
+        return (String) get_Value(COLUMNNAME_R_PnRef);
+    }
+
+    /**
+     * Set Reference.
+     *
+     * @param R_PnRef Payment reference
+     */
+    public void setR_PnRef(String R_PnRef) {
+        set_ValueNoCheck(COLUMNNAME_R_PnRef, R_PnRef);
+    }
+
+    /**
+     * Get Response Message.
+     *
+     * @return Response message
+     */
+    public String getR_RespMsg() {
+        return (String) get_Value(COLUMNNAME_R_RespMsg);
+    }
+
+    /**
+     * Set Response Message.
+     *
+     * @param R_RespMsg Response message
+     */
+    public void setR_RespMsg(String R_RespMsg) {
+        set_ValueNoCheck(COLUMNNAME_R_RespMsg, R_RespMsg);
+    }
+
+    /**
+     * Get Result.
+     *
+     * @return Result of transmission
+     */
+    public String getR_Result() {
+        return (String) get_Value(COLUMNNAME_R_Result);
+    }
+
+    /**
+     * Set Result.
+     *
+     * @param R_Result Result of transmission
+     */
+    public void setR_Result(String R_Result) {
+        set_ValueNoCheck(COLUMNNAME_R_Result, R_Result);
+    }
+
+    /**
+     * Get Void Message.
+     *
+     * @return Void Message
+     */
+    public String getR_VoidMsg() {
+        return (String) get_Value(COLUMNNAME_R_VoidMsg);
+    }
+
+    /**
+     * Set Void Message.
+     *
+     * @param R_VoidMsg Void Message
+     */
+    public void setR_VoidMsg(String R_VoidMsg) {
+        set_Value(COLUMNNAME_R_VoidMsg, R_VoidMsg);
+    }
+
+    /**
+     * Get Swift code.
+     *
+     * @return Swift Code or BIC
+     */
+    public String getSwiftCode() {
+        return (String) get_Value(COLUMNNAME_SwiftCode);
+    }
+
+    /**
+     * Set Swift code.
+     *
+     * @param SwiftCode Swift Code or BIC
+     */
+    public void setSwiftCode(String SwiftCode) {
+        set_Value(COLUMNNAME_SwiftCode, SwiftCode);
+    }
+
+    /**
+     * Set Swipe.
+     *
+     * @param Swipe Track 1 and 2 of the Credit Card
+     */
+    public void setSwipe(String Swipe) {
+        set_ValueNoCheck(COLUMNNAME_Swipe, Swipe);
+    }
+
+    /**
+     * Get Tax Amount.
+     *
+     * @return Tax Amount for a document
+     */
+    public BigDecimal getTaxAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TaxAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Tax Amount.
+     *
+     * @param TaxAmt Tax Amount for a document
+     */
+    public void setTaxAmt(BigDecimal TaxAmt) {
+        set_Value(COLUMNNAME_TaxAmt, TaxAmt);
+    }
+
+    /**
+     * Get Tender type.
+     *
+     * @return Method of Payment
+     */
+    public String getTenderType() {
+        return (String) get_Value(COLUMNNAME_TenderType);
+    }
+
+    /**
+     * Set Tender type.
+     *
+     * @param TenderType Method of Payment
+     */
+    public void setTenderType(String TenderType) {
+
+        set_Value(COLUMNNAME_TenderType, TenderType);
+    }
+
+    /**
+     * Get Transaction Type.
+     *
+     * @return Type of credit card transaction
+     */
+    public String getTrxType() {
+        return (String) get_Value(COLUMNNAME_TrxType);
+    }
+
+    /**
+     * Set Transaction Type.
+     *
+     * @param TrxType Type of credit card transaction
+     */
+    public void setTrxType(String TrxType) {
+
+        set_Value(COLUMNNAME_TrxType, TrxType);
+    }
+
+    /**
+     * Get User Element List 1.
+     *
+     * @return User defined list element #1
+     */
+    public int getUser1_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set User Element List 1.
+     *
+     * @param User1_ID User defined list element #1
+     */
+    public void setUser1_ID(int User1_ID) {
+        if (User1_ID < 1) set_Value(COLUMNNAME_User1_ID, null);
+        else set_Value(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
+    }
+
+    /**
+     * Get User Element List 2.
+     *
+     * @return User defined list element #2
+     */
+    public int getUser2_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set User Element List 2.
+     *
+     * @param User2_ID User defined list element #2
+     */
+    public void setUser2_ID(int User2_ID) {
+        if (User2_ID < 1) set_Value(COLUMNNAME_User2_ID, null);
+        else set_Value(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
+    }
+
+    /**
+     * Get Voice authorization code.
+     *
+     * @return Voice Authorization Code from credit card company
+     */
+    public String getVoiceAuthCode() {
+        return (String) get_Value(COLUMNNAME_VoiceAuthCode);
+    }
+
+    /**
+     * Set Voice authorization code.
+     *
+     * @param VoiceAuthCode Voice Authorization Code from credit card company
+     */
+    public void setVoiceAuthCode(String VoiceAuthCode) {
+        set_Value(COLUMNNAME_VoiceAuthCode, VoiceAuthCode);
+    }
+
+    /**
+     * Get Write-off Amount.
+     *
+     * @return Amount to write-off
+     */
+    public BigDecimal getWriteOffAmt() {
+        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_WriteOffAmt);
+        if (bd == null) return Env.ZERO;
+        return bd;
+    }
+
+    /**
+     * Set Write-off Amount.
+     *
+     * @param WriteOffAmt Amount to write-off
+     */
+    public void setWriteOffAmt(BigDecimal WriteOffAmt) {
+        set_Value(COLUMNNAME_WriteOffAmt, WriteOffAmt);
+    }
+
+    @Override
+    public int getTableId() {
+        return I_C_Payment.Table_ID;
+    }
 }

@@ -1,7 +1,5 @@
 package org.idempiere.process;
 
-import java.util.Properties;
-import java.util.logging.Level;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
 import org.compiere.model.IProcessInfoParameter;
@@ -10,6 +8,9 @@ import org.compiere.production.MProject;
 import org.compiere.production.MProjectLine;
 import org.idempiere.common.util.Env;
 
+import java.util.Properties;
+import java.util.logging.Level;
+
 /**
  * Generate Sales Order from Project.
  *
@@ -17,94 +18,98 @@ import org.idempiere.common.util.Env;
  * @version $Id: ProjectGenOrder.java,v 1.3 2006/07/30 00:51:01 jjanke Exp $
  */
 public class ProjectGenOrder extends SvrProcess {
-  /** Project ID from project directly */
-  private int m_C_Project_ID = 0;
+    /**
+     * Project ID from project directly
+     */
+    private int m_C_Project_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-    m_C_Project_ID = getRecord_ID();
-  } //	prepare
+    /**
+     * Get and validate Project
+     *
+     * @param ctx          context
+     * @param C_Project_ID id
+     * @param trxName      transaction
+     * @return valid project
+     */
+    protected static MProject getProject(Properties ctx, int C_Project_ID) {
+        MProject fromProject = new MProject(ctx, C_Project_ID);
+        if (fromProject.getC_Project_ID() == 0)
+            throw new IllegalArgumentException("Project not found C_Project_ID=" + C_Project_ID);
+        if (fromProject.getM_PriceList_Version_ID() == 0)
+            throw new IllegalArgumentException("Project has no Price List");
+        if (fromProject.getM_Warehouse_ID() == 0)
+            throw new IllegalArgumentException("Project has no Warehouse");
+        if (fromProject.getC_BPartner_ID() == 0 || fromProject.getC_BPartner_Location_ID() == 0)
+            throw new IllegalArgumentException("Project has no Business Partner/Location");
+        return fromProject;
+    } //	getProject
 
-  /**
-   * Perform process.
-   *
-   * @return Message (clear text)
-   * @throws Exception if not successful
-   */
-  protected String doIt() throws Exception {
-    if (log.isLoggable(Level.INFO)) log.info("C_Project_ID=" + m_C_Project_ID);
-    if (m_C_Project_ID == 0) throw new IllegalArgumentException("C_Project_ID == 0");
-    MProject fromProject = getProject(getCtx(), m_C_Project_ID);
-    Env.setSOTrx(getCtx(), true); // 	Set SO context
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+        m_C_Project_ID = getRecord_ID();
+    } //	prepare
 
-    /** @todo duplicate invoice prevention */
-    MOrder order = new MOrder(fromProject, true, MOrder.DocSubTypeSO_OnCredit);
-    if (!order.save()) throw new Exception("Could not create Order");
+    /**
+     * Perform process.
+     *
+     * @return Message (clear text)
+     * @throws Exception if not successful
+     */
+    protected String doIt() throws Exception {
+        if (log.isLoggable(Level.INFO)) log.info("C_Project_ID=" + m_C_Project_ID);
+        if (m_C_Project_ID == 0) throw new IllegalArgumentException("C_Project_ID == 0");
+        MProject fromProject = getProject(getCtx(), m_C_Project_ID);
+        Env.setSOTrx(getCtx(), true); // 	Set SO context
 
-    //	***	Lines ***
-    int count = 0;
+        /** @todo duplicate invoice prevention */
+        MOrder order = new MOrder(fromProject, true, MOrder.DocSubTypeSO_OnCredit);
+        if (!order.save()) throw new Exception("Could not create Order");
 
-    //	Service Project
-    if (MProject.PROJECTCATEGORY_ServiceChargeProject.equals(fromProject.getProjectCategory())) {
-      /** @todo service project invoicing */
-      throw new Exception("Service Charge Projects are on the TODO List");
-    } //	Service Lines
-    else //	Order Lines
-    {
-      MProjectLine[] lines = fromProject.getLines();
-      for (int i = 0; i < lines.length; i++) {
-        MOrderLine ol = new MOrderLine(order);
-        ol.setLine(lines[i].getLine());
-        ol.setDescription(lines[i].getDescription());
-        //
-        ol.setM_Product_ID(lines[i].getM_Product_ID(), true);
-        ol.setQty(lines[i].getPlannedQty().subtract(lines[i].getInvoicedQty()));
-        ol.setPrice();
-        if (lines[i].getPlannedPrice() != null
-            && lines[i].getPlannedPrice().compareTo(Env.ZERO) != 0)
-          ol.setPrice(lines[i].getPlannedPrice());
-        ol.setDiscount();
-        ol.setTax();
-        if (ol.save()) count++;
-      } //	for all lines
-      if (lines.length != count)
-        log.log(
-            Level.SEVERE, "Lines difference - ProjectLines=" + lines.length + " <> Saved=" + count);
-    } //	Order Lines
+        //	***	Lines ***
+        int count = 0;
 
-    StringBuilder msgreturn =
-        new StringBuilder("@C_Order_ID@ ")
-            .append(order.getDocumentNo())
-            .append(" (")
-            .append(count)
-            .append(")");
-    return msgreturn.toString();
-  } //	doIt
+        //	Service Project
+        if (MProject.PROJECTCATEGORY_ServiceChargeProject.equals(fromProject.getProjectCategory())) {
+            /** @todo service project invoicing */
+            throw new Exception("Service Charge Projects are on the TODO List");
+        } //	Service Lines
+        else //	Order Lines
+        {
+            MProjectLine[] lines = fromProject.getLines();
+            for (int i = 0; i < lines.length; i++) {
+                MOrderLine ol = new MOrderLine(order);
+                ol.setLine(lines[i].getLine());
+                ol.setDescription(lines[i].getDescription());
+                //
+                ol.setM_Product_ID(lines[i].getM_Product_ID(), true);
+                ol.setQty(lines[i].getPlannedQty().subtract(lines[i].getInvoicedQty()));
+                ol.setPrice();
+                if (lines[i].getPlannedPrice() != null
+                        && lines[i].getPlannedPrice().compareTo(Env.ZERO) != 0)
+                    ol.setPrice(lines[i].getPlannedPrice());
+                ol.setDiscount();
+                ol.setTax();
+                if (ol.save()) count++;
+            } //	for all lines
+            if (lines.length != count)
+                log.log(
+                        Level.SEVERE, "Lines difference - ProjectLines=" + lines.length + " <> Saved=" + count);
+        } //	Order Lines
 
-  /**
-   * Get and validate Project
-   *
-   * @param ctx context
-   * @param C_Project_ID id
-   * @return valid project
-   * @param trxName transaction
-   */
-  protected static MProject getProject(Properties ctx, int C_Project_ID) {
-    MProject fromProject = new MProject(ctx, C_Project_ID);
-    if (fromProject.getC_Project_ID() == 0)
-      throw new IllegalArgumentException("Project not found C_Project_ID=" + C_Project_ID);
-    if (fromProject.getM_PriceList_Version_ID() == 0)
-      throw new IllegalArgumentException("Project has no Price List");
-    if (fromProject.getM_Warehouse_ID() == 0)
-      throw new IllegalArgumentException("Project has no Warehouse");
-    if (fromProject.getC_BPartner_ID() == 0 || fromProject.getC_BPartner_Location_ID() == 0)
-      throw new IllegalArgumentException("Project has no Business Partner/Location");
-    return fromProject;
-  } //	getProject
+        StringBuilder msgreturn =
+                new StringBuilder("@C_Order_ID@ ")
+                        .append(order.getDocumentNo())
+                        .append(" (")
+                        .append(count)
+                        .append(")");
+        return msgreturn.toString();
+    } //	doIt
 } //	ProjectGenOrder

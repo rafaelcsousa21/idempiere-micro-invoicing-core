@@ -15,41 +15,47 @@ import java.util.Properties;
  */
 public class X_C_Activity extends BasePONameValue implements I_C_Activity, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_C_Activity(Properties ctx, int C_Activity_ID) {
-    super(ctx, C_Activity_ID);
     /**
-     * if (C_Activity_ID == 0) { setC_Activity_ID (0); setIsSummary (false); setName (null);
-     * setValue (null); }
+     *
      */
-  }
+    private static final long serialVersionUID = 20171031L;
 
-  /** Load Constructor */
-  public X_C_Activity(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
+    /**
+     * Standard Constructor
+     */
+    public X_C_Activity(Properties ctx, int C_Activity_ID) {
+        super(ctx, C_Activity_ID);
+        /**
+         * if (C_Activity_ID == 0) { setC_Activity_ID (0); setIsSummary (false); setName (null);
+         * setValue (null); }
+         */
+    }
 
-  /**
-   * AccessLevel
-   *
-   * @return 2 - Client
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
+    /**
+     * Load Constructor
+     */
+    public X_C_Activity(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
-  @Override
-  public int getTableId() {
-    return Table_ID;
-  }
+    /**
+     * AccessLevel
+     *
+     * @return 2 - Client
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    @Override
+    public int getTableId() {
+        return Table_ID;
+    }
 
 
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_C_Activity[").append(getId()).append("]");
-    return sb.toString();
-  }
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_C_Activity[").append(getId()).append("]");
+        return sb.toString();
+    }
 
 }

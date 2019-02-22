@@ -15,143 +15,159 @@ import java.util.Properties;
  */
 public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
 
-  /** */
-  private static final long serialVersionUID = 20171031L;
-
-  /** Standard Constructor */
-  public X_C_LandedCost(Properties ctx, int C_LandedCost_ID) {
-    super(ctx, C_LandedCost_ID);
     /**
-     * if (C_LandedCost_ID == 0) { setC_InvoiceLine_ID (0); setC_LandedCost_ID (0);
-     * setLandedCostDistribution (null); // Q setM_CostElement_ID (0); }
+     * Quantity = Q
      */
-  }
-
-  /** Load Constructor */
-  public X_C_LandedCost(Properties ctx, ResultSet rs) {
-    super(ctx, rs);
-  }
-
-  /**
-   * AccessLevel
-   *
-   * @return 1 - Org
-   */
-  protected int getAccessLevel() {
-    return accessLevel.intValue();
-  }
-
-  public String toString() {
-    StringBuffer sb = new StringBuffer("X_C_LandedCost[").append(getId()).append("]");
-    return sb.toString();
-  }
+    public static final String LANDEDCOSTDISTRIBUTION_Quantity = "Q";
+    /**
+     * Line = L
+     */
+    public static final String LANDEDCOSTDISTRIBUTION_Line = "L";
+    /**
+     * Volume = V
+     */
+    public static final String LANDEDCOSTDISTRIBUTION_Volume = "V";
+    /**
+     * Weight = W
+     */
+    public static final String LANDEDCOSTDISTRIBUTION_Weight = "W";
+    /**
+     * Costs = C
+     */
+    public static final String LANDEDCOSTDISTRIBUTION_Costs = "C";
+    /**
+     *
+     */
+    private static final long serialVersionUID = 20171031L;
 
     /**
-   * Set Invoice Line.
-   *
-   * @param C_InvoiceLine_ID Invoice Detail Line
-   */
-  public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
-    if (C_InvoiceLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
-    else set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
-  }
-
-  /**
-   * Get Invoice Line.
-   *
-   * @return Invoice Detail Line
-   */
-  public int getC_InvoiceLine_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceLine_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
-
-    /** Quantity = Q */
-  public static final String LANDEDCOSTDISTRIBUTION_Quantity = "Q";
-  /** Line = L */
-  public static final String LANDEDCOSTDISTRIBUTION_Line = "L";
-  /** Volume = V */
-  public static final String LANDEDCOSTDISTRIBUTION_Volume = "V";
-  /** Weight = W */
-  public static final String LANDEDCOSTDISTRIBUTION_Weight = "W";
-  /** Costs = C */
-  public static final String LANDEDCOSTDISTRIBUTION_Costs = "C";
-  /**
-   * Set Cost Distribution.
-   *
-   * @param LandedCostDistribution Landed Cost Distribution
-   */
-  public void setLandedCostDistribution(String LandedCostDistribution) {
-
-    set_Value(COLUMNNAME_LandedCostDistribution, LandedCostDistribution);
-  }
-
-  /**
-   * Get Cost Distribution.
-   *
-   * @return Landed Cost Distribution
-   */
-  public String getLandedCostDistribution() {
-    return (String) get_Value(COLUMNNAME_LandedCostDistribution);
-  }
+     * Standard Constructor
+     */
+    public X_C_LandedCost(Properties ctx, int C_LandedCost_ID) {
+        super(ctx, C_LandedCost_ID);
+        /**
+         * if (C_LandedCost_ID == 0) { setC_InvoiceLine_ID (0); setC_LandedCost_ID (0);
+         * setLandedCostDistribution (null); // Q setM_CostElement_ID (0); }
+         */
+    }
 
     /**
-   * Get Cost Element.
-   *
-   * @return Product Cost Element
-   */
-  public int getM_CostElement_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Load Constructor
+     */
+    public X_C_LandedCost(Properties ctx, ResultSet rs) {
+        super(ctx, rs);
+    }
 
     /**
-   * Get Shipment/Receipt.
-   *
-   * @return Material Shipment Document
-   */
-  public int getM_InOut_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_InOut_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * AccessLevel
+     *
+     * @return 1 - Org
+     */
+    protected int getAccessLevel() {
+        return accessLevel.intValue();
+    }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer("X_C_LandedCost[").append(getId()).append("]");
+        return sb.toString();
+    }
 
     /**
-   * Get Shipment/Receipt Line.
-   *
-   * @return Line on Shipment or Receipt document
-   */
-  public int getM_InOutLine_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_InOutLine_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+     * Get Invoice Line.
+     *
+     * @return Invoice Detail Line
+     */
+    public int getC_InvoiceLine_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceLine_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
 
     /**
-   * Set Product.
-   *
-   * @param M_Product_ID Product, Service, Item
-   */
-  public void setM_Product_ID(int M_Product_ID) {
-    if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-    else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
-  }
+     * Set Invoice Line.
+     *
+     * @param C_InvoiceLine_ID Invoice Detail Line
+     */
+    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+        if (C_InvoiceLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
+        else set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+    }
 
-  /**
-   * Get Product.
-   *
-   * @return Product, Service, Item
-   */
-  public int getM_Product_ID() {
-    Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
-    if (ii == null) return 0;
-    return ii;
-  }
+    /**
+     * Get Cost Distribution.
+     *
+     * @return Landed Cost Distribution
+     */
+    public String getLandedCostDistribution() {
+        return (String) get_Value(COLUMNNAME_LandedCostDistribution);
+    }
+
+    /**
+     * Set Cost Distribution.
+     *
+     * @param LandedCostDistribution Landed Cost Distribution
+     */
+    public void setLandedCostDistribution(String LandedCostDistribution) {
+
+        set_Value(COLUMNNAME_LandedCostDistribution, LandedCostDistribution);
+    }
+
+    /**
+     * Get Cost Element.
+     *
+     * @return Product Cost Element
+     */
+    public int getM_CostElement_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Shipment/Receipt.
+     *
+     * @return Material Shipment Document
+     */
+    public int getM_InOut_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_InOut_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Shipment/Receipt Line.
+     *
+     * @return Line on Shipment or Receipt document
+     */
+    public int getM_InOutLine_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_InOutLine_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Product.
+     *
+     * @return Product, Service, Item
+     */
+    public int getM_Product_ID() {
+        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Set Product.
+     *
+     * @param M_Product_ID Product, Service, Item
+     */
+    public void setM_Product_ID(int M_Product_ID) {
+        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
+        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+    }
 
     @Override
-  public int getTableId() {
-    return I_C_LandedCost.Table_ID;
-  }
+    public int getTableId() {
+        return I_C_LandedCost.Table_ID;
+    }
 }

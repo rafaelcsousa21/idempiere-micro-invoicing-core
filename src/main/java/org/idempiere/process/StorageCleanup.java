@@ -25,7 +25,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * StorageCleanup
@@ -34,93 +35,97 @@ import static software.hsharp.core.util.DBKt.*;
  * @version $Id: StorageCleanup.java,v 1.2 2006/07/30 00:51:02 jjanke Exp $
  */
 public class StorageCleanup extends SvrProcess {
-  /** Movement Document Type */
-  private int p_C_DocType_ID = 0;
+    /**
+     * Movement Document Type
+     */
+    private int p_C_DocType_ID = 0;
 
-  /** Prepare - e.g., get Parameters. */
-  protected void prepare() {
-    IProcessInfoParameter[] para = getParameter();
-    for (int i = 0; i < para.length; i++) {
-      String name = para[i].getParameterName();
-      if (para[i].getParameter() == null) ;
-      else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
-      else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-    }
-  } //	prepare
+    /**
+     * Prepare - e.g., get Parameters.
+     */
+    protected void prepare() {
+        IProcessInfoParameter[] para = getParameter();
+        for (int i = 0; i < para.length; i++) {
+            String name = para[i].getParameterName();
+            if (para[i].getParameter() == null) ;
+            else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
+            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        }
+    } //	prepare
 
-  /**
-   * Process
-   *
-   * @return message
-   * @throws Exception
-   */
-  protected String doIt() throws Exception {
-    log.info("");
-    //	Clean up empty Storage
-    String sql =
-        "DELETE FROM M_StorageOnHand " + "WHERE QtyOnHand = 0" + " AND Created < SysDate-3";
-    int no = executeUpdate(sql);
-    if (log.isLoggable(Level.INFO)) log.info("Delete Empty #" + no);
+    /**
+     * Process
+     *
+     * @return message
+     * @throws Exception
+     */
+    protected String doIt() throws Exception {
+        log.info("");
+        //	Clean up empty Storage
+        String sql =
+                "DELETE FROM M_StorageOnHand " + "WHERE QtyOnHand = 0" + " AND Created < SysDate-3";
+        int no = executeUpdate(sql);
+        if (log.isLoggable(Level.INFO)) log.info("Delete Empty #" + no);
 
-    //	Clean up empty Reservation Storage
-    sql = "DELETE FROM M_StorageReservation " + "WHERE Qty = 0" + " AND Created < SysDate-3";
-    no = executeUpdate(sql);
-    if (log.isLoggable(Level.INFO)) log.info("Delete Empty #" + no);
+        //	Clean up empty Reservation Storage
+        sql = "DELETE FROM M_StorageReservation " + "WHERE Qty = 0" + " AND Created < SysDate-3";
+        no = executeUpdate(sql);
+        if (log.isLoggable(Level.INFO)) log.info("Delete Empty #" + no);
 
-    //
-    sql =
-        "SELECT * "
-            + "FROM M_StorageOnHand s "
-            + "WHERE clientId = ?"
-            + " AND QtyOnHand < 0"
-            //	Instance Attribute
-            + " AND EXISTS (SELECT * FROM M_Product p"
-            + " INNER JOIN M_AttributeSet mas ON (p.M_AttributeSet_ID=mas.M_AttributeSet_ID) "
-            + "WHERE s.M_Product_ID=p.M_Product_ID AND mas.IsInstanceAttribute='Y')"
-            //	Stock in same location
-            //	+ " AND EXISTS (SELECT * FROM M_Storage sl "
-            //		+ "WHERE sl.QtyOnHand > 0"
-            //		+ " AND s.M_Product_ID=sl.M_Product_ID"
-            //		+ " AND s.M_Locator_ID=sl.M_Locator_ID)"
-            //	Stock in same Warehouse
-            + " AND EXISTS (SELECT * FROM M_StorageOnHand sw"
-            + " INNER JOIN M_Locator swl ON (sw.M_Locator_ID=swl.M_Locator_ID), M_Locator sl "
-            + "WHERE sw.QtyOnHand > 0"
-            + " AND s.M_Product_ID=sw.M_Product_ID"
-            + " AND s.M_Locator_ID=sl.M_Locator_ID"
-            + " AND sl.M_Warehouse_ID=swl.M_Warehouse_ID)";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    int lines = 0;
-    try {
-      pstmt = prepareStatement(sql);
-      pstmt.setInt(1, Env.getClientId(getCtx()));
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        lines += move(new MStorageOnHand(getCtx(), rs));
-      }
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql, e);
-    } finally {
+        //
+        sql =
+                "SELECT * "
+                        + "FROM M_StorageOnHand s "
+                        + "WHERE clientId = ?"
+                        + " AND QtyOnHand < 0"
+                        //	Instance Attribute
+                        + " AND EXISTS (SELECT * FROM M_Product p"
+                        + " INNER JOIN M_AttributeSet mas ON (p.M_AttributeSet_ID=mas.M_AttributeSet_ID) "
+                        + "WHERE s.M_Product_ID=p.M_Product_ID AND mas.IsInstanceAttribute='Y')"
+                        //	Stock in same location
+                        //	+ " AND EXISTS (SELECT * FROM M_Storage sl "
+                        //		+ "WHERE sl.QtyOnHand > 0"
+                        //		+ " AND s.M_Product_ID=sl.M_Product_ID"
+                        //		+ " AND s.M_Locator_ID=sl.M_Locator_ID)"
+                        //	Stock in same Warehouse
+                        + " AND EXISTS (SELECT * FROM M_StorageOnHand sw"
+                        + " INNER JOIN M_Locator swl ON (sw.M_Locator_ID=swl.M_Locator_ID), M_Locator sl "
+                        + "WHERE sw.QtyOnHand > 0"
+                        + " AND s.M_Product_ID=sw.M_Product_ID"
+                        + " AND s.M_Locator_ID=sl.M_Locator_ID"
+                        + " AND sl.M_Warehouse_ID=swl.M_Warehouse_ID)";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int lines = 0;
+        try {
+            pstmt = prepareStatement(sql);
+            pstmt.setInt(1, Env.getClientId(getCtx()));
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                lines += move(new MStorageOnHand(getCtx(), rs));
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, sql, e);
+        } finally {
 
-      rs = null;
-      pstmt = null;
-    }
-    StringBuilder msgreturn = new StringBuilder("#").append(lines);
-    return msgreturn.toString();
-  } //	doIt
+            rs = null;
+            pstmt = null;
+        }
+        StringBuilder msgreturn = new StringBuilder("#").append(lines);
+        return msgreturn.toString();
+    } //	doIt
 
-  /**
-   * Move stock to location
-   *
-   * @param target target storage
-   * @return no of movements
-   */
-  private int move(MStorageOnHand target) throws NotImplementedException {
-    if (log.isLoggable(Level.INFO)) log.info(target.toString());
-    BigDecimal qty = target.getQtyOnHand().negate();
+    /**
+     * Move stock to location
+     *
+     * @param target target storage
+     * @return no of movements
+     */
+    private int move(MStorageOnHand target) throws NotImplementedException {
+        if (log.isLoggable(Level.INFO)) log.info(target.toString());
+        BigDecimal qty = target.getQtyOnHand().negate();
 
-    throw new NotImplementedException();
+        throw new NotImplementedException();
 
     /*
     //	Create Movement
@@ -175,14 +180,14 @@ public class StorageCleanup extends SvrProcess {
 
     eliminateReservation(target);
     return lines;*/
-  } //	move
+    } //	move
 
-  /**
-   * Eliminate Reserved/Ordered
-   *
-   * @param target target Storage
-   */
-  private void eliminateReservation(MStorageOnHand target) {
+    /**
+     * Eliminate Reserved/Ordered
+     *
+     * @param target target Storage
+     */
+    private void eliminateReservation(MStorageOnHand target) {
     /*
     //	Negative Ordered / Reserved Qty
     if (target.getQtyReserved().signum() != 0 || target.getQtyOrdered().signum() != 0)
@@ -230,52 +235,52 @@ public class StorageCleanup extends SvrProcess {
     	}
     }
     */
-  } //	eliminateReservation
+    } //	eliminateReservation
 
-  /**
-   * Get Storage Sources
-   *
-   * @param M_Product_ID product
-   * @param M_Locator_ID locator
-   * @return sources
-   */
-  private MStorageOnHand[] getSources(int M_Product_ID, int M_Locator_ID) {
-    ArrayList<MStorageOnHand> list = new ArrayList<MStorageOnHand>();
-    String sql =
-        "SELECT * "
-            + "FROM M_StorageOnHand s "
-            + "WHERE QtyOnHand > 0"
-            + " AND M_Product_ID=?"
-            //	Empty ASI
-            + " AND (M_AttributeSetInstance_ID=0"
-            + " OR EXISTS (SELECT * FROM M_AttributeSetInstance asi "
-            + "WHERE s.M_AttributeSetInstance_ID=asi.M_AttributeSetInstance_ID"
-            + " AND asi.Description IS NULL) )"
-            //	Stock in same Warehouse
-            + " AND EXISTS (SELECT * FROM M_Locator sl, M_Locator x "
-            + "WHERE s.M_Locator_ID=sl.M_Locator_ID"
-            + " AND x.M_Locator_ID=?"
-            + " AND sl.M_Warehouse_ID=x.M_Warehouse_ID) "
-            + "ORDER BY M_AttributeSetInstance_ID";
-    PreparedStatement pstmt = null;
-    ResultSet rs = null;
-    try {
-      pstmt = prepareStatement(sql);
-      pstmt.setInt(1, M_Product_ID);
-      pstmt.setInt(2, M_Locator_ID);
-      rs = pstmt.executeQuery();
-      while (rs.next()) {
-        list.add(new MStorageOnHand(getCtx(), rs));
-      }
-    } catch (Exception e) {
-      log.log(Level.SEVERE, sql, e);
-    } finally {
+    /**
+     * Get Storage Sources
+     *
+     * @param M_Product_ID product
+     * @param M_Locator_ID locator
+     * @return sources
+     */
+    private MStorageOnHand[] getSources(int M_Product_ID, int M_Locator_ID) {
+        ArrayList<MStorageOnHand> list = new ArrayList<MStorageOnHand>();
+        String sql =
+                "SELECT * "
+                        + "FROM M_StorageOnHand s "
+                        + "WHERE QtyOnHand > 0"
+                        + " AND M_Product_ID=?"
+                        //	Empty ASI
+                        + " AND (M_AttributeSetInstance_ID=0"
+                        + " OR EXISTS (SELECT * FROM M_AttributeSetInstance asi "
+                        + "WHERE s.M_AttributeSetInstance_ID=asi.M_AttributeSetInstance_ID"
+                        + " AND asi.Description IS NULL) )"
+                        //	Stock in same Warehouse
+                        + " AND EXISTS (SELECT * FROM M_Locator sl, M_Locator x "
+                        + "WHERE s.M_Locator_ID=sl.M_Locator_ID"
+                        + " AND x.M_Locator_ID=?"
+                        + " AND sl.M_Warehouse_ID=x.M_Warehouse_ID) "
+                        + "ORDER BY M_AttributeSetInstance_ID";
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = prepareStatement(sql);
+            pstmt.setInt(1, M_Product_ID);
+            pstmt.setInt(2, M_Locator_ID);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(new MStorageOnHand(getCtx(), rs));
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, sql, e);
+        } finally {
 
-      rs = null;
-      pstmt = null;
-    }
-    MStorageOnHand[] retValue = new MStorageOnHand[list.size()];
-    list.toArray(retValue);
-    return retValue;
-  } //	getSources
+            rs = null;
+            pstmt = null;
+        }
+        MStorageOnHand[] retValue = new MStorageOnHand[list.size()];
+        list.toArray(retValue);
+        return retValue;
+    } //	getSources
 } //	StorageCleanup
