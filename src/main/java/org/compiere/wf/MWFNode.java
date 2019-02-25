@@ -99,7 +99,7 @@ public class MWFNode extends X_AD_WF_Node {
             setXPosition(0);
             setYPosition(0);
         }
-        if (getAD_WF_Node_ID() > 0) {
+        if (getWorkflowNodeId() > 0) {
             loadNext();
             loadTrl();
         }
@@ -114,8 +114,8 @@ public class MWFNode extends X_AD_WF_Node {
     public MWFNode(MWorkflow wf, String Value, String Name) {
         this(wf.getCtx(), 0);
         setClientOrg(wf);
-        setAD_Workflow_ID(wf.getAD_Workflow_ID());
-        setValue(Value);
+        setWorkflowId(wf.getWorkflowId());
+        setSearchKey(Value);
         setName(Name);
         m_durationBaseMS = wf.getDurationBaseSec() * 1000;
     } //	MWFNode
@@ -285,28 +285,28 @@ public class MWFNode extends X_AD_WF_Node {
     public String getActionInfo() {
         String action = getAction();
         if (X_AD_WF_Node.ACTION_AppsProcess.equals(action))
-            return "Process:AD_Process_ID=" + getAD_Process_ID();
+            return "Process:AD_Process_ID=" + getProcessId();
         else if (X_AD_WF_Node.ACTION_DocumentAction.equals(action))
             return "DocumentAction=" + getDocAction();
         else if (X_AD_WF_Node.ACTION_AppsReport.equals(action))
-            return "Report:AD_Process_ID=" + getAD_Process_ID();
+            return "Report:AD_Process_ID=" + getProcessId();
         else if (X_AD_WF_Node.ACTION_AppsTask.equals(action))
-            return "Task:AD_Task_ID=" + getAD_Task_ID();
+            return "Task:AD_Task_ID=" + getTaskId();
         else if (X_AD_WF_Node.ACTION_SetVariable.equals(action))
-            return "SetVariable:AD_Column_ID=" + getAD_Column_ID();
+            return "SetVariable:AD_Column_ID=" + getColumnId();
         else if (X_AD_WF_Node.ACTION_SubWorkflow.equals(action))
-            return "Workflow:AD_Workflow_ID=" + getAD_Workflow_ID();
+            return "Workflow:AD_Workflow_ID=" + getWorkflowId();
         else if (X_AD_WF_Node.ACTION_UserChoice.equals(action))
-            return "UserChoice:AD_Column_ID=" + getAD_Column_ID();
+            return "UserChoice:AD_Column_ID=" + getColumnId();
     /*
     else if (ACTION_UserWorkbench.equals(action))
     	return "Workbench:?";*/
         else if (X_AD_WF_Node.ACTION_UserForm.equals(action))
-            return "Form:AD_Form_ID=" + getAD_Form_ID();
+            return "Form:AD_Form_ID=" + getFormId();
         else if (X_AD_WF_Node.ACTION_UserWindow.equals(action))
-            return "Window:AD_Window_ID=" + getAD_Window_ID();
+            return "Window:AD_Window_ID=" + getWindowId();
         else if (X_AD_WF_Node.ACTION_UserInfo.equals(action))
-            return "Window:AD_InfoWindow_ID=" + getAD_InfoWindow_ID();
+            return "Window:AD_InfoWindow_ID=" + getInfoWindowId();
         else if (X_AD_WF_Node.ACTION_WaitSleep.equals(action)) return "Sleep:WaitTime=" + getWaitTime();
         return "??";
     } //	getActionInfo
@@ -318,7 +318,7 @@ public class MWFNode extends X_AD_WF_Node {
      * @see X_AD_WF_Node#getAttributeName()
      */
     public String getAttributeName() {
-        if (getAD_Column_ID() == 0) return super.getAttributeName();
+        if (getColumnId() == 0) return super.getAttributeName();
         //	We have a column
         String attribute = super.getAttributeName();
         if (attribute != null && attribute.length() > 0) return attribute;
@@ -332,8 +332,8 @@ public class MWFNode extends X_AD_WF_Node {
      * @return column if valid
      */
     public MColumn getColumn() {
-        if (getAD_Column_ID() == 0) return null;
-        if (m_column == null) m_column = MColumn.get(getCtx(), getAD_Column_ID());
+        if (getColumnId() == 0) return null;
+        if (m_column == null) m_column = MColumn.get(getCtx(), getColumnId());
         return m_column;
     } //	getColumn
 
@@ -377,7 +377,7 @@ public class MWFNode extends X_AD_WF_Node {
     public long getLimitMS() {
         long limit = super.getLimit();
         if (limit == 0) return 0;
-        if (m_durationBaseMS == -1) m_durationBaseMS = getAD_Workflow().getDurationBaseSec() * 1000;
+        if (m_durationBaseMS == -1) m_durationBaseMS = getWorkflow().getDurationBaseSec() * 1000;
         return limit * m_durationBaseMS;
     } //	getLimitMS
 
@@ -387,14 +387,14 @@ public class MWFNode extends X_AD_WF_Node {
      * @return array of parameters
      */
     public MWFNodePara[] getParameters() {
-        if (m_paras == null) m_paras = MWFNodePara.getParameters(getCtx(), getAD_WF_Node_ID());
+        if (m_paras == null) m_paras = MWFNodePara.getParameters(getCtx(), getWorkflowNodeId());
         return m_paras;
     } //	getParameters
 
     @Override
-    public MWorkflow getAD_Workflow() {
-        if (null == null) return MWorkflow.get(getCtx(), getAD_Workflow_ID());
-        else return (MWorkflow) super.getAD_Workflow();
+    public MWorkflow getWorkflow() {
+        if (null == null) return MWorkflow.get(getCtx(), getWorkflowId());
+        else return (MWorkflow) super.getWorkflow();
     }
 
     /**
@@ -436,12 +436,12 @@ public class MWFNode extends X_AD_WF_Node {
         if (action.equals(X_AD_WF_Node.ACTION_WaitSleep)) ;
         else if (action.equals(X_AD_WF_Node.ACTION_AppsProcess)
                 || action.equals(X_AD_WF_Node.ACTION_AppsReport)) {
-            if (getAD_Process_ID() == 0) {
+            if (getProcessId() == 0) {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "AD_Process_ID"));
                 return false;
             }
         } else if (action.equals(X_AD_WF_Node.ACTION_AppsTask)) {
-            if (getAD_Task_ID() == 0) {
+            if (getTaskId() == 0) {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "AD_Task_ID"));
                 return false;
             }
@@ -460,9 +460,9 @@ public class MWFNode extends X_AD_WF_Node {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "AttributeValue"));
                 return false;
             }
-            if (getAD_Column_ID() > 0) {
+            if (getColumnId() > 0) {
                 // validate that just advanced roles can manipulate secure content via workflows
-                MColumn column = MColumn.get(getCtx(), getAD_Column_ID());
+                MColumn column = MColumn.get(getCtx(), getColumnId());
                 if (column.isSecure() || column.isAdvanced()) {
                     if (!MRole.getDefault().isAccessAdvanced()) {
                         log.saveError("AccessTableNoUpdate", Msg.getElement(getCtx(), column.getColumnName()));
@@ -471,27 +471,27 @@ public class MWFNode extends X_AD_WF_Node {
                 }
             }
         } else if (action.equals(X_AD_WF_Node.ACTION_SubWorkflow)) {
-            if (getAD_Workflow_ID() == 0) {
+            if (getWorkflowId() == 0) {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "AD_Workflow_ID"));
                 return false;
             }
         } else if (action.equals(X_AD_WF_Node.ACTION_UserChoice)) {
-            if (getAD_Column_ID() == 0) {
+            if (getColumnId() == 0) {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "AD_Column_ID"));
                 return false;
             }
         } else if (action.equals(X_AD_WF_Node.ACTION_UserForm)) {
-            if (getAD_Form_ID() == 0) {
+            if (getFormId() == 0) {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "AD_Form_ID"));
                 return false;
             }
         } else if (action.equals(X_AD_WF_Node.ACTION_UserWindow)) {
-            if (getAD_Window_ID() == 0) {
+            if (getWindowId() == 0) {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "AD_Window_ID"));
                 return false;
             }
         } else if (action.equals(X_AD_WF_Node.ACTION_UserInfo)) {
-            if (getAD_InfoWindow_ID() == 0) {
+            if (getInfoWindowId() == 0) {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "AD_InfoWindow_ID"));
                 return false;
             }

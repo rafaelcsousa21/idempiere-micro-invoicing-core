@@ -440,7 +440,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 if (rs.getBigDecimal(11).signum() != 0) {
                     MStorageOnHand storage = new MStorageOnHand(ctx, rs);
                     if (!Util.isEmpty(trxName) && forUpdate) {
-                        forUpdate(storage, timeout);
+                        forUpdate(storage);
                     }
                     list.add(storage);
                 }
@@ -578,7 +578,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 if (rs.getBigDecimal(11).signum() != 0) {
                     MStorageOnHand storage = new MStorageOnHand(ctx, rs);
                     if (!Util.isEmpty(trxName) && forUpdate) {
-                        forUpdate(storage, timeout);
+                        forUpdate(storage);
                     }
                     list.add(storage);
                 }
@@ -674,7 +674,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         MStorageOnHand retValue =
                 get(ctx, M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID, dateMPolicy);
         if (retValue != null) {
-            if (forUpdate) forUpdate(retValue, timeout);
+            if (forUpdate) forUpdate(retValue);
             return retValue;
         }
 
@@ -1006,7 +1006,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
             m_M_Warehouse_ID = loc.getM_Warehouse_ID();
         }
         return m_M_Warehouse_ID;
-    } //	getM_Warehouse_ID
+    } //	getWarehouseId
 
     /**
      * Before Save

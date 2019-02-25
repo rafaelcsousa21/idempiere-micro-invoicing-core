@@ -161,7 +161,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
         if (getC_DocType_ID() == 0) {
             MDocType types[] = MDocType.getOfDocBaseType(getCtx(), MDocType.DOCBASETYPE_MaterialMovement);
             if (types.length > 0) // 	get first
-                setC_DocType_ID(types[0].getC_DocType_ID());
+                setC_DocType_ID(types[0].getDocTypeId());
             else {
                 log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @C_DocType_ID@"));
                 return false;
@@ -992,9 +992,9 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      */
     public int getC_Currency_ID() {
         //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
-        //	return pl.getC_Currency_ID();
+        //	return pl.getCurrencyId();
         return 0;
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     /**
      * Is Reversal

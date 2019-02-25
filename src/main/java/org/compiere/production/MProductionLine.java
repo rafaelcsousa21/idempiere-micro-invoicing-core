@@ -60,7 +60,7 @@ public class MProductionLine extends X_M_ProductionLine {
         super(header.getCtx(), 0);
         setM_Production_ID(header.getId());
         setADClientID(header.getClientId());
-        setAD_Org_ID(header.getOrgId());
+        setOrgId(header.getOrgId());
         productionParent = header;
     }
 
@@ -68,7 +68,7 @@ public class MProductionLine extends X_M_ProductionLine {
         super(header.getCtx(), 0);
         setM_ProductionPlan_ID(header.getId());
         setADClientID(header.getClientId());
-        setAD_Org_ID(header.getOrgId());
+        setOrgId(header.getOrgId());
     }
 
     /**
@@ -220,7 +220,7 @@ public class MProductionLine extends X_M_ProductionLine {
                             if (log.isLoggable(Level.FINE))
                                 log.log(Level.FINE, "Saved transaction for " + toString());
                         }
-                        forUpdate(storages[sl], 120);
+                        forUpdate(storages[sl]);
                         storages[sl].addQtyOnHand(lineQty.negate());
                         qtyToMove = qtyToMove.subtract(lineQty);
                         if (log.isLoggable(Level.FINE))
@@ -235,7 +235,7 @@ public class MProductionLine extends X_M_ProductionLine {
 
             MClientInfo m_clientInfo = MClientInfo.get(getCtx(), getClientId());
             MAcctSchema acctSchema =
-                    new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID());
+                    new MAcctSchema(getCtx(), m_clientInfo.getAcctSchema1Id());
             if (asi.getId() == 0
                     && MAcctSchema.COSTINGLEVEL_BatchLot.equals(prod.getCostingLevel(acctSchema))) {
                 // add quantity to last attributesetinstance

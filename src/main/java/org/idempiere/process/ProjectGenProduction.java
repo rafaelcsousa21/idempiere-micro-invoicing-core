@@ -130,7 +130,7 @@ public class ProjectGenProduction extends SvrProcess {
         if (AD_Org_ID == 0) {
             log.warning("createProductionfromProjectLine - orgId=0");
             AD_Org_ID = Env.getOrgId(getCtx());
-            if (AD_Org_ID != 0) projectLine.setAD_Org_ID(AD_Org_ID);
+            if (AD_Org_ID != 0) projectLine.setOrgId(AD_Org_ID);
         }
         production.setC_BPartner_ID(project.getC_BPartner_ID());
         production.saveEx();

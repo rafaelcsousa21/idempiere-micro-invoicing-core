@@ -5,7 +5,6 @@ import org.compiere.model.I_M_ProductionLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Persistent, IDocLine {
+public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLine {
 
     /**
      *
@@ -82,7 +81,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return End Product of production
      */
     public boolean isEndProduct() {
-        Object oo = get_Value(I_M_ProductionLine.COLUMNNAME_IsEndProduct);
+        Object oo = getValue(I_M_ProductionLine.COLUMNNAME_IsEndProduct);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -96,7 +95,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(I_M_ProductionLine.COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -130,7 +129,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(I_M_ProductionLine.COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -141,7 +140,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(I_M_ProductionLine.COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -162,7 +161,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Quantity of a product moved.
      */
     public BigDecimal getMovementQty() {
-        BigDecimal bd = (BigDecimal) get_Value(I_M_ProductionLine.COLUMNNAME_MovementQty);
+        BigDecimal bd = (BigDecimal) getValue(I_M_ProductionLine.COLUMNNAME_MovementQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -188,7 +187,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(I_M_ProductionLine.COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -215,7 +214,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Plan for producing a product
      */
     public int getM_Production_ID() {
-        Integer ii = (Integer) get_Value(I_M_ProductionLine.COLUMNNAME_M_Production_ID);
+        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_Production_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -238,7 +237,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Document Line representing a production
      */
     public int getM_ProductionLine_ID() {
-        Integer ii = (Integer) get_Value(I_M_ProductionLine.COLUMNNAME_M_ProductionLine_ID);
+        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_ProductionLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -268,7 +267,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Plan for how a product is produced
      */
     public int getM_ProductionPlan_ID() {
-        Integer ii = (Integer) get_Value(I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID);
+        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -292,7 +291,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Planned quantity for this project
      */
     public BigDecimal getPlannedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(I_M_ProductionLine.COLUMNNAME_PlannedQty);
+        BigDecimal bd = (BigDecimal) getValue(I_M_ProductionLine.COLUMNNAME_PlannedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -321,7 +320,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, I_Pers
      * @return Quantity Used
      */
     public BigDecimal getQtyUsed() {
-        BigDecimal bd = (BigDecimal) get_Value(I_M_ProductionLine.COLUMNNAME_QtyUsed);
+        BigDecimal bd = (BigDecimal) getValue(I_M_ProductionLine.COLUMNNAME_QtyUsed);
         if (bd == null) return Env.ZERO;
         return bd;
     }

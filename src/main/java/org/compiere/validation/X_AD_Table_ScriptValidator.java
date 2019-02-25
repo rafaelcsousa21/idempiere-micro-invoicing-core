@@ -2,7 +2,6 @@ package org.compiere.validation;
 
 import org.compiere.model.I_AD_Table_ScriptValidator;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @version Release 5.1 - $Id$
  */
 public class X_AD_Table_ScriptValidator extends PO
-        implements I_AD_Table_ScriptValidator, I_Persistent {
+        implements I_AD_Table_ScriptValidator {
 
     /**
      * Table Before New = TBN
@@ -127,7 +126,7 @@ public class X_AD_Table_ScriptValidator extends PO
             Properties ctx, int AD_Table_ScriptValidator_ID) {
         super(ctx, AD_Table_ScriptValidator_ID);
         /**
-         * if (AD_Table_ScriptValidator_ID == 0) { setAD_Rule_ID (0); setAD_Table_ID (0);
+         * if (AD_Table_ScriptValidator_ID == 0) { setAD_Rule_ID (0); setColumnTableId (0);
          * setAD_Table_ScriptValidator_ID (0); setEventModelValidator (null); setSeqNo (0); // 0 }
          */
     }
@@ -157,8 +156,8 @@ public class X_AD_Table_ScriptValidator extends PO
      *
      * @return Rule
      */
-    public int getAD_Rule_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Rule_ID);
+    public int getRuleId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Rule_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -168,8 +167,8 @@ public class X_AD_Table_ScriptValidator extends PO
      *
      * @return Database Table information
      */
-    public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
+    public int getDBTableId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Table_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -180,7 +179,7 @@ public class X_AD_Table_ScriptValidator extends PO
      * @return Event Model Validator
      */
     public String getEventModelValidator() {
-        return (String) get_Value(COLUMNNAME_EventModelValidator);
+        return (String) getValue(COLUMNNAME_EventModelValidator);
     }
 
     /**
@@ -189,7 +188,7 @@ public class X_AD_Table_ScriptValidator extends PO
      * @return Method of ordering records; lowest number comes first
      */
     public int getSeqNo() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
+        Integer ii = (Integer) getValue(COLUMNNAME_SeqNo);
         if (ii == null) return 0;
         return ii;
     }

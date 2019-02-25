@@ -162,12 +162,12 @@ public class FactAcctReset extends SvrProcess {
         MAcctSchema as = MClient.get(getCtx(), getClientId()).getAcctSchema();
         boolean autoPeriod = as != null && as.isAutoPeriodControl();
         if (autoPeriod) {
-            Timestamp temp = TimeUtil.addDays(today, -as.getPeriod_OpenHistory());
+            Timestamp temp = TimeUtil.addDays(today, -as.getPeriodOpenHistory());
             if (p_DateAcct_From == null || p_DateAcct_From.before(temp)) {
                 p_DateAcct_From = temp;
                 if (log.isLoggable(Level.INFO)) log.info("DateAcct From set to: " + p_DateAcct_From);
             }
-            temp = TimeUtil.addDays(today, as.getPeriod_OpenFuture());
+            temp = TimeUtil.addDays(today, as.getPeriodOpenFuture());
             if (p_DateAcct_To == null || p_DateAcct_To.after(temp)) {
                 p_DateAcct_To = temp;
                 if (log.isLoggable(Level.INFO)) log.info("DateAcct To set to: " + p_DateAcct_To);

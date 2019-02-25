@@ -91,7 +91,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             StringBuilder name =
                     new StringBuilder(DisplayType.getDateFormat(DisplayType.Date).format(today))
                             .append(" ")
-                            .append(MOrg.get(ctx, getOrgId()).getValue());
+                            .append(MOrg.get(ctx, getOrgId()).getSearchKey());
             setName(name.toString());
             setIsApproved(false);
             setPosted(false); // N
@@ -234,7 +234,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        setAD_Org_ID(getCashBook().getOrgId());
+        setOrgId(getCashBook().getOrgId());
         if (getOrgId() == 0) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@orgId@"));
             return false;
@@ -415,7 +415,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                                 line.getC_Currency_ID(),
                                 name.toString(),
                                 null);
-                hdr.setAD_Org_ID(getOrgId());
+                hdr.setOrgId(getOrgId());
                 if (!hdr.save()) {
                     m_processMsg = CLogger.retrieveErrorString("Could not create Allocation Hdr");
                     return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -442,7 +442,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             } else if (MCashLine.CASHTYPE_BankAccountTransfer.equals(line.getCashType())) {
                 //	Payment just as intermediate info
                 MPayment pay = new MPayment(getCtx(), 0);
-                pay.setAD_Org_ID(getOrgId());
+                pay.setOrgId(getOrgId());
                 String documentNo = getName();
                 pay.setDocumentNo(documentNo);
                 pay.setR_PnRef(documentNo);
@@ -791,7 +791,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      */
     public int getC_Currency_ID() {
         return getCashBook().getC_Currency_ID();
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     /**
      * Document Status is Complete or Closed

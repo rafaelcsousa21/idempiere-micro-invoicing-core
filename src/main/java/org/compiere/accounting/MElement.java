@@ -34,7 +34,7 @@ public class MElement extends X_C_Element {
         super(ctx, C_Element_ID);
         if (C_Element_ID == 0) {
             //	setName (null);
-            //	setAD_Tree_ID (0);
+            //	setTreeId (0);
             //	setElementType (null);	// A
             setIsBalancing(false);
             setIsNaturalAccount(false);
@@ -65,7 +65,7 @@ public class MElement extends X_C_Element {
         setClientOrg(client);
         setName(Name);
         setElementType(ElementType); // A
-        setAD_Tree_ID(AD_Tree_ID);
+        setTreeId(AD_Tree_ID);
         setIsNaturalAccount(X_C_Element.ELEMENTTYPE_Account.equals(ElementType));
     } //	MElement
 
@@ -75,7 +75,7 @@ public class MElement extends X_C_Element {
      * @return tree
      */
     public X_AD_Tree getTree() {
-        if (m_tree == null) m_tree = new X_AD_Tree(getCtx(), getAD_Tree_ID());
+        if (m_tree == null) m_tree = new X_AD_Tree(getCtx(), getTreeId());
         return m_tree;
     } //	getTree
 
@@ -86,7 +86,7 @@ public class MElement extends X_C_Element {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
         String elementType = getElementType();
         //	Natural Account
         if (X_C_Element.ELEMENTTYPE_UserDefined.equals(elementType) && isNaturalAccount())

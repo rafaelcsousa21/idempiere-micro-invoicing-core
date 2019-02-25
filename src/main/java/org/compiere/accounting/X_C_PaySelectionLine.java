@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_PaySelectionLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_Persistent {
+public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
 
     /**
      *
@@ -64,7 +63,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return Invoice Identifier
      */
     public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -77,17 +76,6 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     public void setC_Invoice_ID(int C_Invoice_ID) {
         if (C_Invoice_ID < 1) set_Value(COLUMNNAME_C_Invoice_ID, null);
         else set_Value(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
-    }
-
-    /**
-     * Get Pay Selection Check.
-     *
-     * @return Payment Selection Check
-     */
-    public int getC_PaySelectionCheck_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaySelectionCheck_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -106,7 +94,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return Payment Selection
      */
     public int getC_PaySelection_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaySelection_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_PaySelection_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -122,23 +110,12 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
     }
 
     /**
-     * Get Payment Selection Line.
-     *
-     * @return Payment Selection Line
-     */
-    public int getC_PaySelectionLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaySelectionLine_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Difference.
      *
      * @return Difference Amount
      */
     public BigDecimal getDifferenceAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DifferenceAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DifferenceAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -158,7 +135,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return Calculated amount of discount
      */
     public BigDecimal getDiscountAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DiscountAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DiscountAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -196,7 +173,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return This is a Sales Transaction
      */
     public boolean isSOTrx() {
-        Object oo = get_Value(COLUMNNAME_IsSOTrx);
+        Object oo = getValue(COLUMNNAME_IsSOTrx);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -219,7 +196,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return Open item amount
      */
     public BigDecimal getOpenAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OpenAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_OpenAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -239,7 +216,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return Amount being paid
      */
     public BigDecimal getPayAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PayAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PayAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -259,7 +236,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return How you pay the invoice
      */
     public String getPaymentRule() {
-        return (String) get_Value(COLUMNNAME_PaymentRule);
+        return (String) getValue(COLUMNNAME_PaymentRule);
     }
 
     /**
@@ -278,7 +255,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -301,7 +278,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine, I_
      * @return Amount to write-off
      */
     public BigDecimal getWriteOffAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_WriteOffAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_WriteOffAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }

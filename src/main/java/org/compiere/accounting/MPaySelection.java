@@ -95,7 +95,7 @@ public class MPaySelection extends X_C_PaySelection {
             m_C_Currency_ID = getSQLValue(sql, getC_BankAccount_ID());
         }
         return m_C_Currency_ID;
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     /**
      * String Representation

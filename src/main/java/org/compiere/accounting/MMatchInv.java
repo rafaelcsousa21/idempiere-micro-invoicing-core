@@ -337,7 +337,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
                             "M_MatchInv_ID=?",
                             getM_MatchInv_ID(),
                             getMAttributeSetInstance_ID(),
-                            as.getC_AcctSchema_ID());
+                            as.getAccountingSchemaId());
             if (cd != null) {
                 cd.deleteEx(true);
             }
@@ -358,7 +358,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
         if (this.isProcessed() && this.getReversal_ID() == 0) {
             MMatchInv reversal = new MMatchInv(getCtx(), 0);
             PO.copyValues(this, reversal);
-            reversal.setAD_Org_ID(this.getOrgId());
+            reversal.setOrgId(this.getOrgId());
             reversal.setDescription("(->" + this.getDocumentNo() + ")");
             reversal.setQty(this.getQty().negate());
             reversal.setDateAcct(reversalDate);

@@ -62,27 +62,27 @@ public class WFProcessManage extends SvrProcess {
         if (p_IsAbort) {
             String msg = user.getName() + ": Abort";
             process.setTextMsg(msg);
-            process.setAD_User_ID(getAD_User_ID());
-            process.setWFState(StateEngine.STATE_Aborted);
+            process.setUserId(getAD_User_ID());
+            process.setWorkflowState(StateEngine.STATE_Aborted);
             return msg;
         }
         String msg = null;
         //	Change User
-        if (p_AD_User_ID != 0 && process.getAD_User_ID() != p_AD_User_ID) {
-            MUser from = MUser.get(getCtx(), process.getAD_User_ID());
+        if (p_AD_User_ID != 0 && process.getUserId() != p_AD_User_ID) {
+            MUser from = MUser.get(getCtx(), process.getUserId());
             MUser to = MUser.get(getCtx(), p_AD_User_ID);
             msg = user.getName() + ": " + from.getName() + " -> " + to.getName();
             process.setTextMsg(msg);
-            process.setAD_User_ID(p_AD_User_ID);
+            process.setUserId(p_AD_User_ID);
         }
         //	Change Responsible
         if (p_AD_WF_Responsible_ID != 0
-                && process.getAD_WF_Responsible_ID() != p_AD_WF_Responsible_ID) {
-            MWFResponsible from = MWFResponsible.get(getCtx(), process.getAD_WF_Responsible_ID());
+                && process.getWorkFlowResponsibleId() != p_AD_WF_Responsible_ID) {
+            MWFResponsible from = MWFResponsible.get(getCtx(), process.getWorkFlowResponsibleId());
             MWFResponsible to = MWFResponsible.get(getCtx(), p_AD_WF_Responsible_ID);
             String msg1 = user.getName() + ": " + from.getName() + " -> " + to.getName();
             process.setTextMsg(msg1);
-            process.setAD_WF_Responsible_ID(p_AD_WF_Responsible_ID);
+            process.setWorkFlowResponsibleId(p_AD_WF_Responsible_ID);
             if (msg == null) msg = msg1;
             else msg += " - " + msg1;
         }

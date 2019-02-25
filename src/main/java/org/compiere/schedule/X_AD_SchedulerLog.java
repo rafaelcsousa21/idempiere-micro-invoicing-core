@@ -2,7 +2,6 @@ package org.compiere.schedule;
 
 import org.compiere.model.I_AD_SchedulerLog;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog, I_Persistent {
+public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
 
     /**
      *
@@ -53,22 +52,11 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog, I_Persis
     }
 
     /**
-     * Get Scheduler.
-     *
-     * @return Schedule Processes
-     */
-    public int getAD_Scheduler_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Scheduler_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Scheduler.
      *
      * @param AD_Scheduler_ID Schedule Processes
      */
-    public void setAD_Scheduler_ID(int AD_Scheduler_ID) {
+    public void setSchedulerId(int AD_Scheduler_ID) {
         if (AD_Scheduler_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Scheduler_ID, null);
         else set_ValueNoCheck(COLUMNNAME_AD_Scheduler_ID, Integer.valueOf(AD_Scheduler_ID));
     }

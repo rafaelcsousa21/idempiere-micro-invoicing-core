@@ -85,7 +85,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         super(ctx, AD_WF_Activity_ID);
         if (AD_WF_Activity_ID == 0)
             throw new IllegalArgumentException("Cannot create new WF Activity directly");
-        m_state = new StateEngine(getWFState());
+        m_state = new StateEngine(getWorkflowState());
     } //	MWFActivity
     /**
      * Load Constructor
@@ -96,7 +96,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      */
     public MWFActivity(Properties ctx, ResultSet rs) {
         super(ctx, rs);
-        m_state = new StateEngine(getWFState());
+        m_state = new StateEngine(getWorkflowState());
     } //	MWFActivity
     /**
      * Parent Contructor
@@ -106,21 +106,21 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      */
     public MWFActivity(MWFProcess process, int AD_WF_Node_ID) {
         super(process.getCtx(), 0);
-        setAD_WF_Process_ID(process.getAD_WF_Process_ID());
+        setWorkflowProcessId(process.getWorkFlowProcessId());
         setPriority(process.getPriority());
         //	Document Link
-        setAD_Table_ID(process.getAD_Table_ID());
-        setRecord_ID(process.getRecord_ID());
+        setDBTableId(process.getDBTableId());
+        setRecordId(process.getRecordId());
         // modified by Rob Klein
         setADClientID(process.getClientId());
-        setAD_Org_ID(process.getOrgId());
+        setOrgId(process.getOrgId());
         //	Status
-        super.setWFState(X_AD_WF_Activity.WFSTATE_NotStarted);
-        m_state = new StateEngine(getWFState());
+        super.setWorkflowState(X_AD_WF_Activity.WFSTATE_NotStarted);
+        m_state = new StateEngine(getWorkflowState());
         setProcessed(false);
         //	Set Workflow Node
-        setAD_Workflow_ID(process.getAD_Workflow_ID());
-        setAD_WF_Node_ID(AD_WF_Node_ID);
+        setWorkflowId(process.getWorkflowId());
+        setWorkflowNodeId(AD_WF_Node_ID);
         //	Node Priority & End Duration
         MWFNode node = MWFNode.get(getCtx(), AD_WF_Node_ID);
         int priority = node.getPriority();
@@ -147,7 +147,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         this(process, next_ID);
         if (lastPO != null) {
             // Compare if the last PO is the same type and record needed here, if yes, use it
-            if (lastPO.getTableId() == getAD_Table_ID() && lastPO.getId() == getRecord_ID()) {
+            if (lastPO.getTableId() == getDBTableId() && lastPO.getId() == getRecordId()) {
                 m_po = lastPO;
             }
         }
@@ -169,29 +169,29 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      * @param WFState
      */
     @Override
-    public void setWFState(String WFState) {
-        if (m_state == null) m_state = new StateEngine(getWFState());
+    public void setWorkflowState(String WFState) {
+        if (m_state == null) m_state = new StateEngine(getWorkflowState());
         if (m_state.isClosed()) return;
-        if (getWFState().equals(WFState)) return;
+        if (getWorkflowState().equals(WFState)) return;
         //
         if (m_state.isValidNewState(WFState)) {
-            String oldState = getWFState();
+            String oldState = getWorkflowState();
             if (log.isLoggable(Level.FINE)) log.fine(oldState + "->" + WFState + ", Msg=" + getTextMsg());
-            super.setWFState(WFState);
-            m_state = new StateEngine(getWFState());
+            super.setWorkflowState(WFState);
+            m_state = new StateEngine(getWorkflowState());
             saveEx(); //	closed in MWFProcess.checkActivities()
             updateEventAudit();
 
             //	Inform Process
             if (m_process == null)
-                m_process = new MWFProcess(getCtx(), getAD_WF_Process_ID());
+                m_process = new MWFProcess(getCtx(), getWorkflowProcessId());
             m_process.checkActivities(null, m_po);
         } else {
             String msg =
                     "Set WFState - Ignored Invalid Transformation - New="
                             + WFState
                             + ", Current="
-                            + getWFState();
+                            + getWorkflowState();
             log.log(Level.SEVERE, msg);
             Trace.printStack();
             setTextMsg(msg);
@@ -216,7 +216,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         //	log.fine("");
         getEventAudit();
         m_audit.setTextMsg(getTextMsg());
-        m_audit.setWFState(getWFState());
+        m_audit.setWFState(getWorkflowState());
         if (m_newValue != null) m_audit.setNewValue(m_newValue);
         if (m_state.isClosed()) {
             m_audit.setEventType(MWFEventAudit.EVENTTYPE_ProcessCompleted);
@@ -234,7 +234,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     public MWFEventAudit getEventAudit() {
         if (m_audit != null) return m_audit;
         MWFEventAudit[] events =
-                MWFEventAudit.get(getCtx(), getAD_WF_Process_ID(), getAD_WF_Node_ID());
+                MWFEventAudit.get(getCtx(), getWorkflowProcessId(), getWorkflowNodeId());
         if (events == null || events.length == 0) m_audit = new MWFEventAudit(this);
         else m_audit = events[events.length - 1]; // 	last event
         return m_audit;
@@ -252,8 +252,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             return m_po;
         }
 
-        MTable table = MTable.get(getCtx(), getAD_Table_ID());
-        m_po = (PO) table.getPO(getRecord_ID());
+        MTable table = MTable.get(getCtx(), getDBTableId());
+        m_po = (PO) table.getPO(getRecordId());
         return m_po;
     } //	getPO
 
@@ -277,11 +277,11 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     public Object getAttributeValue() {
         MWFNode node = getNode();
         if (node == null) return null;
-        int AD_Column_ID = node.getAD_Column_ID();
+        int AD_Column_ID = node.getColumnId();
         if (AD_Column_ID == 0) return null;
         PO po = getPO();
         if (po.getId() == 0) return null;
-        return po.get_ValueOfColumn(AD_Column_ID);
+        return po.getValueOfColumn(AD_Column_ID);
     } //	getAttributeValue
 
     /**
@@ -291,13 +291,13 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      * @param AD_WF_Node_ID now node
      */
     @Override
-    public void setAD_WF_Node_ID(int AD_WF_Node_ID) {
+    public void setWorkflowNodeId(int AD_WF_Node_ID) {
         if (AD_WF_Node_ID == 0) throw new IllegalArgumentException("Workflow Node is not defined");
-        super.setAD_WF_Node_ID(AD_WF_Node_ID);
+        super.setWorkflowNodeId(AD_WF_Node_ID);
         //
-        if (!X_AD_WF_Activity.WFSTATE_NotStarted.equals(getWFState())) {
-            super.setWFState(X_AD_WF_Activity.WFSTATE_NotStarted);
-            m_state = new StateEngine(getWFState());
+        if (!X_AD_WF_Activity.WFSTATE_NotStarted.equals(getWorkflowState())) {
+            super.setWorkflowState(X_AD_WF_Activity.WFSTATE_NotStarted);
+            m_state = new StateEngine(getWorkflowState());
         }
         if (isProcessed()) setProcessed(false);
     } //	setAD_WF_Node_ID
@@ -308,7 +308,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      * @return node
      */
     public MWFNode getNode() {
-        if (m_node == null) m_node = MWFNode.get(getCtx(), getAD_WF_Node_ID());
+        if (m_node == null) m_node = MWFNode.get(getCtx(), getWorkflowNodeId());
         return m_node;
     } //	getNode
 
@@ -379,7 +379,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      * @return state text
      */
     public String getWFStateText() {
-        return MRefList.getListName(getCtx(), X_AD_WF_Activity.WFSTATE_AD_Reference_ID, getWFState());
+        return MRefList.getListName(getCtx(), X_AD_WF_Activity.WFSTATE_AD_Reference_ID, getWorkflowState());
     } //	getWFStateText
 
     /**
@@ -388,7 +388,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      * @return responsible
      */
     public MWFResponsible getResponsible() {
-        MWFResponsible resp = MWFResponsible.get(getCtx(), getAD_WF_Responsible_ID());
+        MWFResponsible resp = MWFResponsible.get(getCtx(), getWorkflowResponsibleId());
         return resp;
     } //	isInvoker
 
@@ -401,16 +401,16 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         //	Responsible
         int AD_WF_Responsible_ID = getNode().getAD_WF_Responsible_ID();
         if (AD_WF_Responsible_ID == 0) // 	not defined on Node Level
-            AD_WF_Responsible_ID = process.getAD_WF_Responsible_ID();
-        setAD_WF_Responsible_ID(AD_WF_Responsible_ID);
+            AD_WF_Responsible_ID = process.getWorkFlowResponsibleId();
+        setWorkflowResponsibleId(AD_WF_Responsible_ID);
         MWFResponsible resp = getResponsible();
 
         //	User - Directly responsible
         int AD_User_ID = resp.getAD_User_ID();
         //	Invoker - get Sales Rep or last updater of document
-        if (AD_User_ID == 0 && resp.isInvoker()) AD_User_ID = process.getAD_User_ID();
+        if (AD_User_ID == 0 && resp.isInvoker()) AD_User_ID = process.getUserId();
         //
-        setAD_User_ID(AD_User_ID);
+        setUserId(AD_User_ID);
     } //	setResponsible
 
     /**
@@ -459,14 +459,14 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                     continue; //	find a role with allows them to approve own
                 BigDecimal roleAmt = role.getAmtApproval();
                 if (roleAmt == null || roleAmt.signum() == 0) continue;
-                if (C_Currency_ID != role.getC_Currency_ID()
-                        && role.getC_Currency_ID() != 0) // 	No currency = amt only
+                if (C_Currency_ID != role.getCurrencyId()
+                        && role.getCurrencyId() != 0) // 	No currency = amt only
                 {
                     roleAmt =
                             MConversionRate.convert(
                                     getCtx(), //	today & default rate
                                     roleAmt,
-                                    role.getC_Currency_ID(),
+                                    role.getCurrencyId(),
                                     C_Currency_ID,
                                     getClientId(),
                                     AD_Org_ID);
@@ -492,7 +492,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                             && daysAmtAcc != null
                             && daysAmtAcc.intValue() > 0) {
                         BigDecimal amtApprovedAccum =
-                                getAmtAccum(m_po, daysAmtAcc.intValue(), user.getAD_User_ID());
+                                getAmtAccum(m_po, daysAmtAcc.intValue(), user.getUserId());
                         amtApprovedAccum = amtApprovedAccum.add(amount); // include amount of current doc
                         approved = amtApprovedAccum.compareTo(roleAmtAcc) <= 0;
                         if (log.isLoggable(Level.INFO))
@@ -513,7 +513,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                     }
                 }
 
-                if (approved) return user.getAD_User_ID();
+                if (approved) return user.getUserId();
             }
 
             //	**** Find next User
@@ -526,18 +526,18 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 MOrg org = MOrg.get(getCtx(), AD_Org_ID);
                 MOrgInfo orgInfo = org.getInfo();
                 //	Get Org Supervisor
-                if (orgInfo.getSupervisor_ID() != 0) {
-                    user = MUser.get(getCtx(), orgInfo.getSupervisor_ID());
+                if (orgInfo.getSupervisorId() != 0) {
+                    user = MUser.get(getCtx(), orgInfo.getSupervisorId());
                     if (log.isLoggable(Level.FINE))
                         log.fine("Org=" + org.getName() + ",Supervisor: " + user.getName());
                 } else {
                     log.fine("No Org Supervisor");
                     //	Get Parent Org Supervisor
-                    if (orgInfo.getParent_Org_ID() != 0) {
-                        org = MOrg.get(getCtx(), orgInfo.getParent_Org_ID());
+                    if (orgInfo.getParentOrgId() != 0) {
+                        org = MOrg.get(getCtx(), orgInfo.getParentOrgId());
                         orgInfo = org.getInfo();
-                        if (orgInfo.getSupervisor_ID() != 0) {
-                            user = MUser.get(getCtx(), orgInfo.getSupervisor_ID());
+                        if (orgInfo.getSupervisorId() != 0) {
+                            user = MUser.get(getCtx(), orgInfo.getSupervisorId());
                             if (log.isLoggable(Level.FINE)) log.fine("Parent Org Supervisor: " + user.getName());
                         }
                     }
@@ -561,19 +561,19 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      */
     private BigDecimal getAmtAccum(PO po, int days, int userid) {
         BigDecimal amtaccum = Env.ZERO;
-        String tablename = po.get_TableName();
+        String tablename = po.getTableName();
         MTable tablepo = MTable.get(getCtx(), po.getTableId());
         String checkSameSO = "";
-        if (po.get_ColumnIndex("IsSOTrx") > 0) {
-            checkSameSO = " AND doc.IsSOTrx='" + ((Boolean) po.get_Value("IsSOTrx") ? "Y" : "N") + "'";
+        if (po.getColumnIndex("IsSOTrx") > 0) {
+            checkSameSO = " AND doc.IsSOTrx='" + ((Boolean) po.getValue("IsSOTrx") ? "Y" : "N") + "'";
         }
         String checkSameReceipt = "";
-        if (po.get_ColumnIndex("IsReceipt") > 0) {
+        if (po.getColumnIndex("IsReceipt") > 0) {
             checkSameReceipt =
-                    " AND doc.IsReceipt='" + ((Boolean) po.get_Value("IsReceipt") ? "Y" : "N") + "'";
+                    " AND doc.IsReceipt='" + ((Boolean) po.getValue("IsReceipt") ? "Y" : "N") + "'";
         }
         String checkDocAction = "";
-        if (po.get_ColumnIndex("DocStatus") > 0) {
+        if (po.getColumnIndex("DocStatus") > 0) {
             checkDocAction = " AND DocStatus IN ('CO','CL')";
         }
         String sql =
@@ -643,17 +643,17 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         try {
 
             if (!m_state.isValidAction(StateEngine.ACTION_Start)) {
-                setTextMsg("State=" + getWFState() + " - cannot start");
+                setTextMsg("State=" + getWorkflowState() + " - cannot start");
                 addTextMsg(new Exception(""));
-                setWFState(StateEngine.STATE_Terminated);
+                setWorkflowState(StateEngine.STATE_Terminated);
                 return;
             }
             //
-            setWFState(StateEngine.STATE_Running);
+            setWorkflowState(StateEngine.STATE_Running);
 
             if (getNode().getId() == 0) {
-                setTextMsg("Node not found - AD_WF_Node_ID=" + getAD_WF_Node_ID());
-                setWFState(StateEngine.STATE_Aborted);
+                setTextMsg("Node not found - AD_WF_Node_ID=" + getWorkflowNodeId());
+                setWorkflowState(StateEngine.STATE_Aborted);
                 return;
             }
             //	Do Work
@@ -664,7 +664,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             // teo_sarca [ 1708835 ]
             // Reason: if the commit fails the document should be put in Invalid state
 
-            setWFState(done ? StateEngine.STATE_Completed : StateEngine.STATE_Suspended);
+            setWorkflowState(done ? StateEngine.STATE_Completed : StateEngine.STATE_Suspended);
 
         } catch (Exception e) {
             log.log(Level.WARNING, "" + getNode(), e);
@@ -688,9 +688,9 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                                     "#clientId", (m_po != null ? Integer.toString(m_po.getClientId()) : "0"));
                     m_state = new StateEngine(X_AD_WF_Activity.WFSTATE_Running);
                     setProcessed(true);
-                    setWFState(StateEngine.STATE_Aborted);
+                    setWorkflowState(StateEngine.STATE_Aborted);
                 } else {
-                    setWFState(StateEngine.STATE_Terminated); // 	unlocks
+                    setWorkflowState(StateEngine.STATE_Terminated); // 	unlocks
                 }
 
                 //	Set Document Status
@@ -745,9 +745,9 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             if (m_po == null)
                 throw new Exception(
                         "Persistent Object not found - AD_Table_ID="
-                                + getAD_Table_ID()
+                                + getDBTableId()
                                 + ", Record_ID="
-                                + getRecord_ID());
+                                + getRecordId());
             boolean success = false;
             String processMsg = null;
             DocAction doc = null;
@@ -775,9 +775,9 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                         "Persistent Object not DocAction - "
                                 + m_po.getClass().getName()
                                 + " - AD_Table_ID="
-                                + getAD_Table_ID()
+                                + getDBTableId()
                                 + ", Record_ID="
-                                + getRecord_ID());
+                                + getRecordId());
             //
             if (!m_po.save()) {
                 success = false;
@@ -797,31 +797,31 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
         /** **** Report ***** */
         else if (MWFNode.ACTION_AppsReport.equals(action)) {
-            if (log.isLoggable(Level.FINE)) log.fine("Report:AD_Process_ID=" + m_node.getAD_Process_ID());
+            if (log.isLoggable(Level.FINE)) log.fine("Report:AD_Process_ID=" + m_node.getProcessId());
             //	Process
-            MProcess process = MProcess.get(getCtx(), m_node.getAD_Process_ID());
-            if (!process.isReport() || process.getAD_ReportView_ID() == 0)
-                throw new IllegalStateException("Not a Report AD_Process_ID=" + m_node.getAD_Process_ID());
+            MProcess process = MProcess.get(getCtx(), m_node.getProcessId());
+            if (!process.isReport() || process.getReportViewId() == 0)
+                throw new IllegalStateException("Not a Report AD_Process_ID=" + m_node.getProcessId());
             //
             ProcessInfo pi =
                     new ProcessInfo(
-                            m_node.getName(true), m_node.getAD_Process_ID(), getAD_Table_ID(), getRecord_ID());
-            pi.setAD_User_ID(getAD_User_ID());
+                            m_node.getName(true), m_node.getProcessId(), getDBTableId(), getRecordId());
+            pi.setAD_User_ID(getUserId());
             pi.setADClientID(getClientId());
-            MPInstance pInstance = new MPInstance(process, getRecord_ID());
+            MPInstance pInstance = new MPInstance(process, getRecordId());
             fillParameter(pInstance);
-            pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
+            pi.setAD_PInstance_ID(pInstance.getPInstanceId());
             File report = null;
             //	Notice
             int AD_Message_ID = SystemIDs.MESSAGE_WORKFLOWRESULT; // 	HARDCODED WorkflowResult
-            MNote note = new MNote(getCtx(), AD_Message_ID, getAD_User_ID());
+            MNote note = new MNote(getCtx(), AD_Message_ID, getUserId());
             note.setTextMsg(m_node.getName(true));
             note.setDescription(m_node.getDescription(true));
-            note.setRecord(getAD_Table_ID(), getRecord_ID());
+            note.setRecord(getDBTableId(), getRecordId());
             note.saveEx();
             //	Attachment
             MAttachment attachment =
-                    new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID());
+                    new MAttachment(getCtx(), MNote.Table_ID, note.getNoteId());
             attachment.addEntry(report);
             attachment.setTextMsg(m_node.getName(true));
             attachment.saveEx();
@@ -831,18 +831,18 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         /** **** Process ***** */
         else if (MWFNode.ACTION_AppsProcess.equals(action)) {
             if (log.isLoggable(Level.FINE))
-                log.fine("Process:AD_Process_ID=" + m_node.getAD_Process_ID());
+                log.fine("Process:AD_Process_ID=" + m_node.getProcessId());
             //	Process
-            MProcess process = MProcess.get(getCtx(), m_node.getAD_Process_ID());
-            MPInstance pInstance = new MPInstance(process, getRecord_ID());
+            MProcess process = MProcess.get(getCtx(), m_node.getProcessId());
+            MPInstance pInstance = new MPInstance(process, getRecordId());
             fillParameter(pInstance);
             //
             ProcessInfo pi =
                     new ProcessInfo(
-                            m_node.getName(true), m_node.getAD_Process_ID(), getAD_Table_ID(), getRecord_ID());
-            pi.setAD_User_ID(getAD_User_ID());
+                            m_node.getName(true), m_node.getProcessId(), getDBTableId(), getRecordId());
+            pi.setAD_User_ID(getUserId());
             pi.setADClientID(getClientId());
-            pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
+            pi.setAD_PInstance_ID(pInstance.getPInstanceId());
             return process.processItWithoutTrxClose(pi);
         }
 
@@ -866,9 +866,9 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             if (m_po == null)
                 throw new Exception(
                         "Persistent Object not found - AD_Table_ID="
-                                + getAD_Table_ID()
+                                + getDBTableId()
                                 + ", Record_ID="
-                                + getRecord_ID());
+                                + getRecordId());
             if (m_po instanceof DocAction) {
                 m_emails = new ArrayList<String>();
                 sendEMail();
@@ -892,7 +892,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         else if (MWFNode.ACTION_SetVariable.equals(action)) {
             String value = m_node.getAttributeValue();
             if (log.isLoggable(Level.FINE))
-                log.fine("SetVariable:AD_Column_ID=" + m_node.getAD_Column_ID() + " to " + value);
+                log.fine("SetVariable:AD_Column_ID=" + m_node.getColumnId() + " to " + value);
             MColumn column = m_node.getColumn();
             int dt = column.getReferenceId();
             return setVariable(value, dt, null);
@@ -900,14 +900,14 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
         /** **** TODO Start WF Instance ***** */
         else if (MWFNode.ACTION_SubWorkflow.equals(action)) {
-            log.warning("Workflow:AD_Workflow_ID=" + m_node.getAD_Workflow_ID());
+            log.warning("Workflow:AD_Workflow_ID=" + m_node.getWorkflowId());
             log.warning("Start WF Instance is not implemented yet");
         }
 
         /** **** User Choice ***** */
         else if (MWFNode.ACTION_UserChoice.equals(action)) {
             if (log.isLoggable(Level.FINE))
-                log.fine("UserChoice:AD_Column_ID=" + m_node.getAD_Column_ID());
+                log.fine("UserChoice:AD_Column_ID=" + m_node.getColumnId());
             //	Approval
             if (m_node.isUserApproval() && getPO() instanceof DocAction) {
                 DocAction doc = (DocAction) m_po;
@@ -930,7 +930,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                     }
                     //	same user = approved
                     autoApproval = startAD_User_ID == nextAD_User_ID;
-                    if (!autoApproval) setAD_User_ID(nextAD_User_ID);
+                    if (!autoApproval) setUserId(nextAD_User_ID);
                 } else //	fixed Approver
                 {
                     MWFResponsible resp = getResponsible();
@@ -938,20 +938,20 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                     // [ 1742751 ] Workflow: User Choice is not working
                     if (resp.isHuman()) {
                         autoApproval = resp.getAD_User_ID() == Env.getAD_User_ID(getCtx());
-                        if (!autoApproval && resp.getAD_User_ID() != 0) setAD_User_ID(resp.getAD_User_ID());
+                        if (!autoApproval && resp.getAD_User_ID() != 0) setUserId(resp.getAD_User_ID());
                     } else if (resp.isRole()) {
-                        MUserRoles[] urs = MUserRoles.getOfRole(getCtx(), resp.getAD_Role_ID());
+                        MUserRoles[] urs = MUserRoles.getOfRole(getCtx(), resp.getRoleId());
                         for (int i = 0; i < urs.length; i++) {
-                            if (urs[i].getAD_User_ID() == Env.getAD_User_ID(getCtx())) {
+                            if (urs[i].getUserId() == Env.getAD_User_ID(getCtx())) {
                                 autoApproval = true;
                                 break;
                             }
                         }
                     } else if (resp.isManual()) {
                         MWFActivityApprover[] approvers =
-                                MWFActivityApprover.getOfActivity(getCtx(), getAD_WF_Activity_ID());
+                                MWFActivityApprover.getOfActivity(getCtx(), getWorkflowActivityId());
                         for (int i = 0; i < approvers.length; i++) {
-                            if (approvers[i].getAD_User_ID() == Env.getAD_User_ID(getCtx())) {
+                            if (approvers[i].getUserId() == Env.getAD_User_ID(getCtx())) {
                                 autoApproval = true;
                                 break;
                             }
@@ -970,18 +970,18 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         }
         /** **** User Form ***** */
         else if (MWFNode.ACTION_UserForm.equals(action)) {
-            if (log.isLoggable(Level.FINE)) log.fine("Form:AD_Form_ID=" + m_node.getAD_Form_ID());
+            if (log.isLoggable(Level.FINE)) log.fine("Form:AD_Form_ID=" + m_node.getFormId());
             return false;
         }
         /** **** User Window ***** */
         else if (MWFNode.ACTION_UserWindow.equals(action)) {
-            if (log.isLoggable(Level.FINE)) log.fine("Window:AD_Window_ID=" + m_node.getAD_Window_ID());
+            if (log.isLoggable(Level.FINE)) log.fine("Window:AD_Window_ID=" + m_node.getWindowId());
             return false;
         }
         /** **** User Info ***** */
         else if (MWFNode.ACTION_UserInfo.equals(action)) {
             if (log.isLoggable(Level.FINE))
-                log.fine("InfoWindow:AD_InfoWindow_ID=" + m_node.getAD_InfoWindow_ID());
+                log.fine("InfoWindow:AD_InfoWindow_ID=" + m_node.getInfoWindowId());
             return false;
         }
         //
@@ -1004,16 +1004,16 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         if (m_po == null)
             throw new Exception(
                     "Persistent Object not found - AD_Table_ID="
-                            + getAD_Table_ID()
+                            + getDBTableId()
                             + ", Record_ID="
-                            + getRecord_ID());
+                            + getRecordId());
         //	Set Value
         Object dbValue = null;
         if (value == null) ;
         else if (displayType == DisplayType.YesNo) dbValue = new Boolean("Y".equals(value));
         else if (DisplayType.isNumeric(displayType)) dbValue = new BigDecimal(value);
         else if (DisplayType.isID(displayType)) {
-            MColumn column = MColumn.get(Env.getCtx(), getNode().getAD_Column_ID());
+            MColumn column = MColumn.get(Env.getCtx(), getNode().getColumnId());
             String referenceTableName = column.getReferenceTableName();
             if (referenceTableName != null) {
                 MTable refTable = MTable.get(Env.getCtx(), referenceTableName);
@@ -1038,37 +1038,37 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 if (!validValue) {
                     throw new Exception(
                             "Persistent Object not updated - AD_Table_ID="
-                                    + getAD_Table_ID()
+                                    + getDBTableId()
                                     + ", Record_ID="
-                                    + getRecord_ID()
+                                    + getRecordId()
                                     + " - Value="
                                     + value
                                     + " is not valid for a foreign key");
                 }
             }
         } else dbValue = value;
-        if (!m_po.set_ValueOfColumnReturningBoolean(getNode().getAD_Column_ID(), dbValue)) {
+        if (!m_po.set_ValueOfColumnReturningBoolean(getNode().getColumnId(), dbValue)) {
             throw new Exception(
                     "Persistent Object not updated - AD_Table_ID="
-                            + getAD_Table_ID()
+                            + getDBTableId()
                             + ", Record_ID="
-                            + getRecord_ID()
+                            + getRecordId()
                             + " - Value="
                             + value
                             + " error : "
                             + CLogger.retrieveErrorString("check logs"));
         }
         m_po.saveEx();
-        if (dbValue != null && !dbValue.equals(m_po.get_ValueOfColumn(getNode().getAD_Column_ID())))
+        if (dbValue != null && !dbValue.equals(m_po.getValueOfColumn(getNode().getColumnId())))
             throw new Exception(
                     "Persistent Object not updated - AD_Table_ID="
-                            + getAD_Table_ID()
+                            + getDBTableId()
                             + ", Record_ID="
-                            + getRecord_ID()
+                            + getRecordId()
                             + " - Should="
                             + value
                             + ", Is="
-                            + m_po.get_ValueOfColumn(m_node.getAD_Column_ID()));
+                            + m_po.getValueOfColumn(m_node.getColumnId()));
         //	Info
         String msg = getNode().getAttributeName() + "=" + value;
         if (textMsg != null && textMsg.length() > 0) msg += " - " + textMsg;
@@ -1110,9 +1110,9 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                             break;
                         }
                         columnName = columnName.substring(0, index);
-                        index = m_po.get_ColumnIndex(columnName);
+                        index = m_po.getColumnIndex(columnName);
                         if (index != -1) {
-                            value = m_po.get_Value(index);
+                            value = m_po.getValue(index);
                         } else //	not a column
                         {
                             //	try Env
@@ -1146,18 +1146,18 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                             if (value instanceof BigDecimal) bd = (BigDecimal) value;
                             else if (value instanceof Integer) bd = new BigDecimal(((Integer) value).intValue());
                             else bd = new BigDecimal(value.toString());
-                            iPara.setP_Number(bd);
+                            iPara.setProcessNumber(bd);
                             if (log.isLoggable(Level.FINE))
                                 log.fine(nPara.getAttributeName() + " = " + variableName + " (=" + bd + "=)");
                         } else if (DisplayType.isDate(nPara.getDisplayType())) {
                             Timestamp ts = null;
                             if (value instanceof Timestamp) ts = (Timestamp) value;
                             else ts = Timestamp.valueOf(value.toString());
-                            iPara.setP_Date(ts);
+                            iPara.setProcessDate(ts);
                             if (log.isLoggable(Level.FINE))
                                 log.fine(nPara.getAttributeName() + " = " + variableName + " (=" + ts + "=)");
                         } else {
-                            iPara.setP_String(value.toString());
+                            iPara.setProcessString(value.toString());
                             if (log.isLoggable(Level.FINE))
                                 log.fine(
                                         nPara.getAttributeName()
@@ -1210,9 +1210,9 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         if (recipient == null || recipient.length() == 0)
             sendEMail(client, doc.getDoc_User_ID(), null, subject, message, pdf, text.isHtml());
         else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentBusinessPartner)) {
-            int index = m_po.get_ColumnIndex("AD_User_ID");
+            int index = m_po.getColumnIndex("AD_User_ID");
             if (index > 0) {
-                Object oo = m_po.get_Value(index);
+                Object oo = m_po.getValue(index);
                 if (oo instanceof Integer) {
                     int AD_User_ID = ((Integer) oo).intValue();
                     if (AD_User_ID != 0)
@@ -1233,15 +1233,15 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 if (role != null) {
                     MUser[] users = getWithRole(role);
                     for (int i = 0; i < users.length; i++)
-                        sendEMail(client, users[i].getAD_User_ID(), null, subject, message, pdf, text.isHtml());
+                        sendEMail(client, users[i].getUserId(), null, subject, message, pdf, text.isHtml());
                 }
             } else if (resp.isOrganization()) {
                 MOrgInfo org = MOrgInfo.get(getCtx(), m_po.getOrgId());
-                if (org.getSupervisor_ID() == 0) {
+                if (org.getSupervisorId() == 0) {
                     if (log.isLoggable(Level.FINE))
                         log.fine("No Supervisor for AD_Org_ID=" + m_po.getOrgId());
                 } else {
-                    sendEMail(client, org.getSupervisor_ID(), null, subject, message, pdf, text.isHtml());
+                    sendEMail(client, org.getSupervisorId(), null, subject, message, pdf, text.isHtml());
                 }
             }
         }
@@ -1334,12 +1334,12 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     public String toString() {
         StringBuilder sb = new StringBuilder("MWFActivity[");
         sb.append(getId()).append(",Node=");
-        if (m_node == null) sb.append(getAD_WF_Node_ID());
+        if (m_node == null) sb.append(getWorkflowNodeId());
         else sb.append(m_node.getName());
         sb.append(",State=")
-                .append(getWFState())
+                .append(getWorkflowState())
                 .append(",AD_User_ID=")
-                .append(getAD_User_ID())
+                .append(getUserId())
                 .append(",")
                 .append(getCreated())
                 .append("]");

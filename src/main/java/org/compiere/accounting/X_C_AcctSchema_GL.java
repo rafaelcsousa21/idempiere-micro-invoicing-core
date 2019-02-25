@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persistent {
+public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
 
     /**
      *
@@ -27,7 +26,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     public X_C_AcctSchema_GL(Properties ctx, int C_AcctSchema_GL_ID) {
         super(ctx, C_AcctSchema_GL_ID);
         /**
-         * if (C_AcctSchema_GL_ID == 0) { setC_AcctSchema_ID (0); setCommitmentOffset_Acct (0);
+         * if (C_AcctSchema_GL_ID == 0) { setAccountingSchemaId (0); setCommitmentOffset_Acct (0);
          * setCommitmentOffsetSales_Acct (0); setIntercompanyDueFrom_Acct (0); setIntercompanyDueTo_Acct
          * (0); setPPVOffset_Acct (0); setUseCurrencyBalancing (false); setUseSuspenseBalancing (false);
          * setUseSuspenseError (false); }
@@ -60,17 +59,6 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     }
 
     /**
-     * Get Accounting Schema.
-     *
-     * @return Rules for accounting
-     */
-    public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Accounting Schema.
      *
      * @param C_AcctSchema_ID Rules for accounting
@@ -81,34 +69,12 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
     }
 
     /**
-     * Get Commitment Offset.
-     *
-     * @return Budgetary Commitment Offset Account
-     */
-    public int getCommitmentOffset_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_CommitmentOffset_Acct);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Commitment Offset Sales.
-     *
-     * @return Budgetary Commitment Offset Account for Sales
-     */
-    public int getCommitmentOffsetSales_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_CommitmentOffsetSales_Acct);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Currency Balancing Acct.
      *
      * @return Account used when a currency is out of balance
      */
     public int getCurrencyBalancing_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_CurrencyBalancing_Acct);
+        Integer ii = (Integer) getValue(COLUMNNAME_CurrencyBalancing_Acct);
         if (ii == null) return 0;
         return ii;
     }
@@ -119,7 +85,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
      * @return Intercompany Due From / Receivables Account
      */
     public int getIntercompanyDueFrom_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_IntercompanyDueFrom_Acct);
+        Integer ii = (Integer) getValue(COLUMNNAME_IntercompanyDueFrom_Acct);
         if (ii == null) return 0;
         return ii;
     }
@@ -130,18 +96,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
      * @return Intercompany Due To / Payable Account
      */
     public int getIntercompanyDueTo_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_IntercompanyDueTo_Acct);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get PPV Offset.
-     *
-     * @return Purchase Price Variance Offset Account
-     */
-    public int getPPVOffset_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PPVOffset_Acct);
+        Integer ii = (Integer) getValue(COLUMNNAME_IntercompanyDueTo_Acct);
         if (ii == null) return 0;
         return ii;
     }
@@ -152,7 +107,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
      * @return Suspense Balancing Acct
      */
     public int getSuspenseBalancing_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SuspenseBalancing_Acct);
+        Integer ii = (Integer) getValue(COLUMNNAME_SuspenseBalancing_Acct);
         if (ii == null) return 0;
         return ii;
     }
@@ -163,7 +118,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
      * @return Use Currency Balancing
      */
     public boolean isUseCurrencyBalancing() {
-        Object oo = get_Value(COLUMNNAME_UseCurrencyBalancing);
+        Object oo = getValue(COLUMNNAME_UseCurrencyBalancing);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -186,7 +141,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL, I_Persis
      * @return Use Suspense Balancing
      */
     public boolean isUseSuspenseBalancing() {
-        Object oo = get_Value(COLUMNNAME_UseSuspenseBalancing);
+        Object oo = getValue(COLUMNNAME_UseSuspenseBalancing);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);

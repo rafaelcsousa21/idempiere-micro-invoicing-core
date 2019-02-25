@@ -208,7 +208,7 @@ public class Doc_AllocationHdr extends Doc {
                                     getC_Currency_ID(),
                                     line.getAmtSource(),
                                     null);
-                    if (fl != null && payment != null) fl.setAD_Org_ID(payment.getOrgId());
+                    if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
                 } else {
                     p_Error = "Cannot determine SO/PO";
                     log.log(Level.SEVERE, p_Error);
@@ -251,7 +251,7 @@ public class Doc_AllocationHdr extends Doc {
                                         getC_Currency_ID(),
                                         line.getAmtSource(),
                                         null);
-                        if (fl != null && payment != null) fl.setAD_Org_ID(payment.getOrgId());
+                        if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
                     } else if (line.getC_CashLine_ID() != 0) {
                         fl =
                                 fact.createLine(
@@ -261,7 +261,7 @@ public class Doc_AllocationHdr extends Doc {
                                         line.getAmtSource(),
                                         null);
                         MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID());
-                        if (fl != null && cashLine.getId() != 0) fl.setAD_Org_ID(cashLine.getOrgId());
+                        if (fl != null && cashLine.getId() != 0) fl.setOrgId(cashLine.getOrgId());
                     }
                 }
                 // End Avoid usage of clearing accounts
@@ -275,7 +275,7 @@ public class Doc_AllocationHdr extends Doc {
                                     getC_Currency_ID(),
                                     line.getDiscountAmt(),
                                     null);
-                    if (fl != null && payment != null) fl.setAD_Org_ID(payment.getOrgId());
+                    if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
                 }
                 //	Write off		DR
                 if (Env.ZERO.compareTo(line.getWriteOffAmt()) != 0) {
@@ -286,7 +286,7 @@ public class Doc_AllocationHdr extends Doc {
                                     getC_Currency_ID(),
                                     line.getWriteOffAmt(),
                                     null);
-                    if (fl != null && payment != null) fl.setAD_Org_ID(payment.getOrgId());
+                    if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
                 }
 
                 //	AR Invoice Amount	CR
@@ -296,7 +296,7 @@ public class Doc_AllocationHdr extends Doc {
                             fact.createLine(
                                     line, bpAcct, getC_Currency_ID(), null, allocationSource); // 	payment currency
                     if (fl != null) allocationAccounted = fl.getAcctBalance().negate();
-                    if (fl != null && invoice != null) fl.setAD_Org_ID(invoice.getOrgId());
+                    if (fl != null && invoice != null) fl.setOrgId(invoice.getOrgId());
 
                     // for Realized Gain & Loss
                     flForRGL =
@@ -350,7 +350,7 @@ public class Doc_AllocationHdr extends Doc {
                             fact.createLine(
                                     line, bpAcct, getC_Currency_ID(), allocationSource, null); // 	payment currency
                     if (fl != null) allocationAccounted = fl.getAcctBalance();
-                    if (fl != null && invoice != null) fl.setAD_Org_ID(invoice.getOrgId());
+                    if (fl != null && invoice != null) fl.setOrgId(invoice.getOrgId());
 
                     // for Realized Gain & Loss
                     flForRGL =
@@ -376,7 +376,7 @@ public class Doc_AllocationHdr extends Doc {
                                     getC_Currency_ID(),
                                     null,
                                     line.getDiscountAmt().negate());
-                    if (fl != null && payment != null) fl.setAD_Org_ID(payment.getOrgId());
+                    if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
                 }
                 //	Write off		CR
                 if (Env.ZERO.compareTo(line.getWriteOffAmt()) != 0) {
@@ -387,7 +387,7 @@ public class Doc_AllocationHdr extends Doc {
                                     getC_Currency_ID(),
                                     null,
                                     line.getWriteOffAmt().negate());
-                    if (fl != null && payment != null) fl.setAD_Org_ID(payment.getOrgId());
+                    if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
                 }
                 //	Payment/Cash	CR
                 if (isUsingClearing && line.getC_Payment_ID() != 0) // Avoid usage of clearing accounts
@@ -399,7 +399,7 @@ public class Doc_AllocationHdr extends Doc {
                                     getC_Currency_ID(),
                                     null,
                                     line.getAmtSource().negate());
-                    if (fl != null && payment != null) fl.setAD_Org_ID(payment.getOrgId());
+                    if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
                 } else if (isUsingClearing
                         && line.getC_CashLine_ID() != 0) // Avoid usage of clearing accounts
                 {
@@ -411,7 +411,7 @@ public class Doc_AllocationHdr extends Doc {
                                     null,
                                     line.getAmtSource().negate());
                     MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID());
-                    if (fl != null && cashLine.getId() != 0) fl.setAD_Org_ID(cashLine.getOrgId());
+                    if (fl != null && cashLine.getId() != 0) fl.setOrgId(cashLine.getOrgId());
                 }
             }
 
@@ -439,7 +439,7 @@ public class Doc_AllocationHdr extends Doc {
 
             //	Realized Gain & Loss
             if (invoice != null
-                    && (getC_Currency_ID() != as.getC_Currency_ID() // 	payment allocation in foreign currency
+                    && (getC_Currency_ID() != as.getCurrencyId() // 	payment allocation in foreign currency
                     || getC_Currency_ID()
                     != line.getInvoiceC_Currency_ID())) // 	allocation <> invoice currency
             {
@@ -739,7 +739,7 @@ public class Doc_AllocationHdr extends Doc {
         try {
             pstmt = prepareStatement(sql.toString());
             pstmt.setInt(1, invoice.getC_Invoice_ID());
-            pstmt.setInt(2, as.getC_AcctSchema_ID());
+            pstmt.setInt(2, as.getAccountingSchemaId());
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 invoiceSource = rs.getBigDecimal(1);
@@ -836,15 +836,15 @@ public class Doc_AllocationHdr extends Doc {
         MAccount loss = MAccount.get(as.getCtx(), as.getAcctSchemaDefault().getRealizedLoss_Acct());
         //
         if (invoice.isSOTrx()) {
-            FactLine fl = fact.createLine(line, loss, gain, as.getC_Currency_ID(), acctDifference);
+            FactLine fl = fact.createLine(line, loss, gain, as.getCurrencyId(), acctDifference);
             fl.setDescription(description.toString());
-            fact.createLine(line, acct, as.getC_Currency_ID(), acctDifference.negate());
+            fact.createLine(line, acct, as.getCurrencyId(), acctDifference.negate());
             fl.setDescription(description.toString());
         } else {
-            fact.createLine(line, acct, as.getC_Currency_ID(), acctDifference);
+            fact.createLine(line, acct, as.getCurrencyId(), acctDifference);
             @SuppressWarnings("unused")
             FactLine fl =
-                    fact.createLine(line, loss, gain, as.getC_Currency_ID(), acctDifference.negate());
+                    fact.createLine(line, loss, gain, as.getCurrencyId(), acctDifference.negate());
         }
         return null;
     } //	createRealizedGainLoss
@@ -891,7 +891,7 @@ public class Doc_AllocationHdr extends Doc {
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, line.getC_Invoice_ID());
-            pstmt.setInt(2, as.getC_AcctSchema_ID());
+            pstmt.setInt(2, as.getAccountingSchemaId());
             rs = pstmt.executeQuery();
             while (rs.next()) tax.addInvoiceFact(new MFactAcct(getCtx(), rs));
         } catch (Exception e) {
@@ -1015,13 +1015,13 @@ class Doc_AllocationTax {
                     if (amount.signum() != 0) {
                         // for sales actions
                         if (m_IsSOTrx) {
-                            fact.createLine(line, m_DiscountAccount, as.getC_Currency_ID(), amount, null);
-                            fact.createLine(line, taxAcct, as.getC_Currency_ID(), null, amount);
+                            fact.createLine(line, m_DiscountAccount, as.getCurrencyId(), amount, null);
+                            fact.createLine(line, taxAcct, as.getCurrencyId(), null, amount);
                         } else {
                             // for purchase actions
                             fact.createLine(
-                                    line, m_DiscountAccount, as.getC_Currency_ID(), amount.negate(), null);
-                            fact.createLine(line, taxAcct, as.getC_Currency_ID(), null, amount.negate());
+                                    line, m_DiscountAccount, as.getCurrencyId(), amount.negate(), null);
+                            fact.createLine(line, taxAcct, as.getCurrencyId(), null, amount.negate());
                         }
                     }
                 }
@@ -1032,12 +1032,12 @@ class Doc_AllocationTax {
                     if (amount.signum() != 0) {
                         //						for sales actions
                         if (m_IsSOTrx) {
-                            fact.createLine(line, taxAcct, as.getC_Currency_ID(), amount, null);
-                            fact.createLine(line, m_DiscountAccount, as.getC_Currency_ID(), null, amount);
+                            fact.createLine(line, taxAcct, as.getCurrencyId(), amount, null);
+                            fact.createLine(line, m_DiscountAccount, as.getCurrencyId(), null, amount);
                         } else {
-                            fact.createLine(line, taxAcct, as.getC_Currency_ID(), amount.negate(), null);
+                            fact.createLine(line, taxAcct, as.getCurrencyId(), amount.negate(), null);
                             fact.createLine(
-                                    line, m_DiscountAccount, as.getC_Currency_ID(), null, amount.negate());
+                                    line, m_DiscountAccount, as.getCurrencyId(), null, amount.negate());
                         }
                     }
                 }
@@ -1051,12 +1051,12 @@ class Doc_AllocationTax {
                             calcAmount(factAcct.getAmtSourceDr(), total, m_WriteOffAmt, precision);
                     if (amount.signum() != 0) {
                         if (m_IsSOTrx) {
-                            fact.createLine(line, m_WriteOffAccount, as.getC_Currency_ID(), amount, null);
-                            fact.createLine(line, taxAcct, as.getC_Currency_ID(), null, amount);
+                            fact.createLine(line, m_WriteOffAccount, as.getCurrencyId(), amount, null);
+                            fact.createLine(line, taxAcct, as.getCurrencyId(), null, amount);
                         } else {
                             fact.createLine(
-                                    line, m_WriteOffAccount, as.getC_Currency_ID(), amount.negate(), null);
-                            fact.createLine(line, taxAcct, as.getC_Currency_ID(), null, amount.negate());
+                                    line, m_WriteOffAccount, as.getCurrencyId(), amount.negate(), null);
+                            fact.createLine(line, taxAcct, as.getCurrencyId(), null, amount.negate());
                         }
                     }
                 }
@@ -1066,12 +1066,12 @@ class Doc_AllocationTax {
                             calcAmount(factAcct.getAmtSourceCr(), total, m_WriteOffAmt, precision);
                     if (amount.signum() != 0) {
                         if (m_IsSOTrx) {
-                            fact.createLine(line, taxAcct, as.getC_Currency_ID(), amount, null);
-                            fact.createLine(line, m_WriteOffAccount, as.getC_Currency_ID(), null, amount);
+                            fact.createLine(line, taxAcct, as.getCurrencyId(), amount, null);
+                            fact.createLine(line, m_WriteOffAccount, as.getCurrencyId(), null, amount);
                         } else {
-                            fact.createLine(line, taxAcct, as.getC_Currency_ID(), amount.negate(), null);
+                            fact.createLine(line, taxAcct, as.getCurrencyId(), amount.negate(), null);
                             fact.createLine(
-                                    line, m_WriteOffAccount, as.getC_Currency_ID(), null, amount.negate());
+                                    line, m_WriteOffAccount, as.getCurrencyId(), null, amount.negate());
                         }
                     }
                 }

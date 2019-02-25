@@ -71,7 +71,7 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
      */
     public MProcessPara getProcessPara() {
         if (m_processPara == null)
-            m_processPara = new MProcessPara(getCtx(), getAD_Process_Para_ID());
+            m_processPara = new MProcessPara(getCtx(), getProcessParameterId());
         return m_processPara;
     } //	getProcessPara
 
@@ -82,7 +82,7 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
      */
     public String getAttributeName() {
         String an = super.getAttributeName();
-        if (an == null || an.length() == 0 && getAD_Process_Para_ID() != 0) {
+        if (an == null || an.length() == 0 && getProcessParameterId() != 0) {
             an = getProcessPara().getColumnName();
             setAttributeName(an);
             saveEx();
@@ -113,8 +113,8 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
      *
      * @param AD_Process_Para_ID id
      */
-    public void setAD_Process_Para_ID(int AD_Process_Para_ID) {
-        super.setAD_Process_Para_ID(AD_Process_Para_ID);
+    public void setProcessParameterId(int AD_Process_Para_ID) {
+        super.setProcessParameterId(AD_Process_Para_ID);
         setAttributeName(null);
     }
 } //	MWFNodePara

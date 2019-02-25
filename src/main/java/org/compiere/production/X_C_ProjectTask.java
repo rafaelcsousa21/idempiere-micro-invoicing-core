@@ -4,7 +4,6 @@ import org.compiere.model.I_C_ProjectTask;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Persistent {
+public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
 
     /**
      *
@@ -63,7 +62,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
      * @return Phase of a Project
      */
     public int getC_ProjectPhase_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectPhase_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -84,7 +83,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
      * @return Actual Project Task in a Phase
      */
     public int getC_ProjectTask_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectTask_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectTask_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -95,7 +94,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
      * @return Standard Project Type Task
      */
     public int getC_Task_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Task_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Task_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -116,7 +115,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -143,7 +142,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -164,7 +163,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -184,7 +183,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask, I_Pe
      * @return Method of ordering records; lowest number comes first
      */
     public int getSeqNo() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
+        Integer ii = (Integer) getValue(COLUMNNAME_SeqNo);
         if (ii == null) return 0;
         return ii;
     }

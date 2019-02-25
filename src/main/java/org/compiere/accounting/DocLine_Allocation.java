@@ -34,8 +34,8 @@ public class DocLine_Allocation extends DocLine {
         m_C_Invoice_ID = line.getC_Invoice_ID();
         m_C_Order_ID = line.getC_Order_ID();
         // adaxa-pb
-        Object obj = line.get_Value("C_Charge_ID");
-        if (obj != null) m_C_Charge_ID = (Integer) line.get_Value("C_Charge_ID");
+        Object obj = line.getValue("C_Charge_ID");
+        if (obj != null) m_C_Charge_ID = (Integer) line.getValue("C_Charge_ID");
         else m_C_Charge_ID = 0;
         // end adaxa-pb
         setAmount(line.getAmount());

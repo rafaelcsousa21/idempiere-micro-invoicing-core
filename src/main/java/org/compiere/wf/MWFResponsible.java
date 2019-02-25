@@ -69,7 +69,7 @@ public class MWFResponsible extends X_AD_WF_Responsible {
      * @return true if invoker
      */
     public boolean isInvoker() {
-        return getAD_User_ID() == 0 && getAD_Role_ID() == 0 && !isManual();
+        return getAD_User_ID() == 0 && getRoleId() == 0 && !isManual();
     } //	isInvoker
 
     /**
@@ -79,7 +79,7 @@ public class MWFResponsible extends X_AD_WF_Responsible {
      */
     public boolean isRole() {
         return X_AD_WF_Responsible.RESPONSIBLETYPE_Role.equals(getResponsibleType())
-                && getAD_Role_ID() != 0;
+                && getRoleId() != 0;
     } //	isRole
 
     /**
@@ -89,7 +89,7 @@ public class MWFResponsible extends X_AD_WF_Responsible {
      */
     public MRole getRole() {
         if (!isRole()) return null;
-        return MRole.get(getCtx(), getAD_Role_ID());
+        return MRole.get(getCtx(), getRoleId());
     } //	getRole
 
     /**
@@ -119,10 +119,10 @@ public class MWFResponsible extends X_AD_WF_Responsible {
      * @return tre if can be saved
      */
     protected boolean beforeSave(boolean newRecord) {
-        //	if (RESPONSIBLETYPE_Human.equals(getResponsibleType()) && getAD_User_ID() == 0)
+        //	if (RESPONSIBLETYPE_Human.equals(getResponsibleType()) && getUserId() == 0)
         //		return true;
         if (X_AD_WF_Responsible.RESPONSIBLETYPE_Role.equals(getResponsibleType())
-                && getAD_Role_ID() == 0
+                && getRoleId() == 0
                 && getClientId() > 0) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@RequiredEnter@ @AD_Role_ID@"));
             return false;
@@ -133,11 +133,11 @@ public class MWFResponsible extends X_AD_WF_Responsible {
 
         //	Role not used
         if (!X_AD_WF_Responsible.RESPONSIBLETYPE_Role.equals(getResponsibleType())
-                && getAD_Role_ID() > 0) setAD_Role_ID(0);
+                && getRoleId() > 0) setRoleId(0);
 
         if (X_AD_WF_Responsible.RESPONSIBLETYPE_Manual.equals(getResponsibleType())) {
             setAD_User_ID(0);
-            setAD_Role_ID(0);
+            setRoleId(0);
         }
         return true;
     } //	beforeSave
@@ -151,7 +151,7 @@ public class MWFResponsible extends X_AD_WF_Responsible {
         StringBuilder sb = new StringBuilder("MWFResponsible[");
         sb.append(getId()).append("-").append(getName()).append(",Type=").append(getResponsibleType());
         if (getAD_User_ID() != 0) sb.append(",AD_User_ID=").append(getAD_User_ID());
-        if (getAD_Role_ID() != 0) sb.append(",AD_Role_ID=").append(getAD_Role_ID());
+        if (getRoleId() != 0) sb.append(",AD_Role_ID=").append(getRoleId());
         sb.append("]");
         return sb.toString();
     } //	toString

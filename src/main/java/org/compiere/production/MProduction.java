@@ -72,7 +72,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     public MProduction(MOrderLine line) {
         super(line.getCtx(), 0);
         setADClientID(line.getClientId());
-        setAD_Org_ID(line.getOrgId());
+        setOrgId(line.getOrgId());
         setMovementDate(line.getDatePromised());
     }
 
@@ -86,12 +86,12 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
         M_Locator_ID = wh.getDefaultLocator().getM_Locator_ID();
         setADClientID(line.getClientId());
-        setAD_Org_ID(line.getOrgId());
+        setOrgId(line.getOrgId());
         setM_Product_ID(line.getM_Product_ID());
         setProductionQty(line.getPlannedQty());
         setM_Locator_ID(M_Locator_ID);
         setDescription(
-                project.getValue() + "_" + project.getName() + " Line: " + line.getLine() + " (project)");
+                project.getSearchKey() + "_" + project.getName() + " Line: " + line.getLine() + " (project)");
         setC_Project_ID(line.getC_Project_ID());
         setC_BPartner_ID(project.getC_BPartner_ID());
         setC_Campaign_ID(project.getC_Campaign_ID());

@@ -212,13 +212,13 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
 
             //	Set Organization
             if (X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType()))
-                setAD_Org_ID(getBankAccount().getOrgId());
+                setOrgId(getBankAccount().getOrgId());
                 //	Cash Book
             else if (X_C_CashLine.CASHTYPE_Invoice.equals(getCashType()))
-                setAD_Org_ID(getCashBook().getOrgId());
+                setOrgId(getCashBook().getOrgId());
             //	otherwise (charge) - leave it
             //	Enforce Org
-            if (getOrgId() == 0) setAD_Org_ID(getParent().getOrgId());
+            if (getOrgId() == 0) setOrgId(getParent().getOrgId());
         }
 
         // If CashType is not Bank Account Transfer, set C_BankAccount_ID to null - teo_sarca BF [

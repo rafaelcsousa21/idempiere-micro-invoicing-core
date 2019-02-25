@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_C_ProjectType;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ProjectType extends BasePOName implements I_C_ProjectType, I_Persistent {
+public class X_C_ProjectType extends BasePOName implements I_C_ProjectType {
 
     /**
      *
@@ -58,7 +57,7 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType, I_Pe
      * @return Type of the project
      */
     public int getC_ProjectType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -69,7 +68,7 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType, I_Pe
      * @return Project Category
      */
     public String getProjectCategory() {
-        return (String) get_Value(COLUMNNAME_ProjectCategory);
+        return (String) getValue(COLUMNNAME_ProjectCategory);
     }
 
     @Override

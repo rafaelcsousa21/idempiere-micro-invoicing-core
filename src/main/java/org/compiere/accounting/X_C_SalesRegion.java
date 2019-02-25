@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_SalesRegion;
 import org.compiere.orm.BasePONameValue;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion, I_Persistent {
+public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion {
 
     /**
      *
@@ -58,18 +57,7 @@ public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion,
      * @return Sales coverage region
      */
     public int getC_SalesRegion_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_SalesRegion_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Sales Representative.
-     *
-     * @return Sales Representative or Company Agent
-     */
-    public int getSalesRep_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SalesRep_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }

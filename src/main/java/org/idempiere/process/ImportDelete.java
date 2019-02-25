@@ -50,7 +50,7 @@ public class ImportDelete extends SvrProcess {
             StringBuilder msgexc = new StringBuilder("No AD_Table_ID=").append(p_AD_Table_ID);
             throw new IllegalArgumentException(msgexc.toString());
         }
-        String tableName = table.getTableName();
+        String tableName = table.getDbTableName();
         if (!tableName.startsWith("I")) {
             StringBuilder msgexc = new StringBuilder("Not an import table = ").append(tableName);
             throw new IllegalArgumentException(msgexc.toString());

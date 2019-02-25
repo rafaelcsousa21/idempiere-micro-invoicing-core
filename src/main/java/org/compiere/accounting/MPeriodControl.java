@@ -25,7 +25,7 @@ public class MPeriodControl extends X_C_PeriodControl {
     public MPeriodControl(Properties ctx, int C_PeriodControl_ID) {
         super(ctx, C_PeriodControl_ID);
         if (C_PeriodControl_ID == 0) {
-            //	setC_Period_ID (0);
+            //	setPeriodId (0);
             //	setDocBaseType (null);
             setPeriodAction(X_C_PeriodControl.PERIODACTION_NoAction);
             setPeriodStatus(X_C_PeriodControl.PERIODSTATUS_NeverOpened);

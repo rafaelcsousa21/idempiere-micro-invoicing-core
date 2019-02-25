@@ -62,7 +62,7 @@ public class MAssetType extends X_A_Asset_Type {
     }
 
     public static boolean isFixedAsset(MAsset asset) {
-        return asset != null && A_ASSET_TYPE_MFX.equals(asset.getA_Asset_Type().getValue());
+        return asset != null && A_ASSET_TYPE_MFX.equals(asset.getAssetType().getSearchKey());
     }
 
     /**
@@ -81,7 +81,7 @@ public class MAssetType extends X_A_Asset_Type {
      * Is Fixed Asset
      */
     public boolean isFixedAsset() {
-        return A_ASSET_TYPE_MFX.equals(getValue());
+        return A_ASSET_TYPE_MFX.equals(getSearchKey());
     }
 
     public static interface Model {

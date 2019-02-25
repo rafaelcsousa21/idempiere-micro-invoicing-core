@@ -38,42 +38,42 @@ open class MBaseClient : org.compiere.orm.MClient {
                 if (value == X_AD_Tree.TREETYPE_Organization) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
-                    AD_Tree_Org_ID = tree.aD_Tree_ID
+                    AD_Tree_Org_ID = tree.treeId
                     result
                 } else if (value == X_AD_Tree.TREETYPE_BPartner) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
-                    AD_Tree_BPartner_ID = tree.aD_Tree_ID
+                    AD_Tree_BPartner_ID = tree.treeId
                     result
                 } else if (value == X_AD_Tree.TREETYPE_Project) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
-                    AD_Tree_Project_ID = tree.aD_Tree_ID
+                    AD_Tree_Project_ID = tree.treeId
                     result
                 } else if (value == X_AD_Tree.TREETYPE_SalesRegion) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
-                    AD_Tree_SalesRegion_ID = tree.aD_Tree_ID
+                    AD_Tree_SalesRegion_ID = tree.treeId
                     result
                 } else if (value == X_AD_Tree.TREETYPE_Product) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
-                    AD_Tree_Product_ID = tree.aD_Tree_ID
+                    AD_Tree_Product_ID = tree.treeId
                     result
                 } else if (value == X_AD_Tree.TREETYPE_ElementValue) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
-                    m_AD_Tree_Account_ID = tree.aD_Tree_ID
+                    m_AD_Tree_Account_ID = tree.treeId
                     result
                 } else if (value == X_AD_Tree.TREETYPE_Campaign) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
-                    AD_Tree_Campaign_ID = tree.aD_Tree_ID
+                    AD_Tree_Campaign_ID = tree.treeId
                     result
                 } else if (value == X_AD_Tree.TREETYPE_Activity) {
                     val tree = MTree_Base(this, name.toString(), value)
                     val result = tree.save()
-                    AD_Tree_Activity_ID = tree.aD_Tree_ID
+                    AD_Tree_Activity_ID = tree.treeId
                     result
                 } else if (value == X_AD_Tree.TREETYPE_Menu // 	No Menu
 

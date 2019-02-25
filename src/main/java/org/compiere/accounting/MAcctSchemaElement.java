@@ -59,8 +59,8 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         super(ctx, C_AcctSchema_Element_ID);
         if (C_AcctSchema_Element_ID == 0) {
             //	setC_AcctSchema_Element_ID (0);
-            //	setC_AcctSchema_ID (0);
-            //	setC_Element_ID (0);
+            //	setAccountingSchemaId (0);
+            //	setElementId (0);
             //	setElementType (null);
             setIsBalanced(false);
             setIsMandatory(false);
@@ -93,9 +93,9 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     public MAcctSchemaElement(MAcctSchema as) {
         this(as.getCtx(), 0);
         setClientOrg(as);
-        setC_AcctSchema_ID(as.getC_AcctSchema_ID());
+        setC_AcctSchema_ID(as.getAccountingSchemaId());
 
-        //	setC_Element_ID (0);
+        //	setElementId (0);
         //	setElementType (null);
         //	setName (null);
         //	setSeqNo (0);
@@ -109,17 +109,17 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
      * @return ArrayList with Elements
      */
     public static MAcctSchemaElement[] getAcctSchemaElements(MAcctSchema as) {
-        Integer key = new Integer(as.getC_AcctSchema_ID());
+        Integer key = new Integer(as.getAccountingSchemaId());
         MAcctSchemaElement[] retValue = (MAcctSchemaElement[]) s_cache.get(key);
         if (retValue != null) return retValue;
 
-        if (s_log.isLoggable(Level.FINE)) s_log.fine("C_AcctSchema_ID=" + as.getC_AcctSchema_ID());
+        if (s_log.isLoggable(Level.FINE)) s_log.fine("C_AcctSchema_ID=" + as.getAccountingSchemaId());
         ArrayList<MAcctSchemaElement> list = new ArrayList<MAcctSchemaElement>();
 
         final String whereClause = "C_AcctSchema_ID=? AND IsActive=?";
         List<MAcctSchemaElement> elements =
                 new Query(as.getCtx(), I_C_AcctSchema_Element.Table_Name, whereClause)
-                        .setParameters(as.getC_AcctSchema_ID(), "Y")
+                        .setParameters(as.getAccountingSchemaId(), "Y")
                         .setOrderBy("SeqNo")
                         .list();
 
@@ -259,7 +259,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
      */
     @Override
     protected boolean beforeSave(boolean newRecord) {
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
         String et = getElementType();
         if (isMandatory()
                 && (X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList1.equals(et)

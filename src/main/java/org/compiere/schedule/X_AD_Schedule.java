@@ -2,7 +2,6 @@ package org.compiere.schedule;
 
 import org.compiere.model.I_AD_Schedule;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persistent {
+public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
 
     /**
      * Minute = M
@@ -74,7 +73,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
      * @return Cron pattern to define when the process should be invoked.
      */
     public String getCronPattern() {
-        return (String) get_Value(I_AD_Schedule.COLUMNNAME_CronPattern);
+        return (String) getValue(I_AD_Schedule.COLUMNNAME_CronPattern);
     }
 
     /**
@@ -92,7 +91,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
      * @return Frequency of events
      */
     public int getFrequency() {
-        Integer ii = (Integer) get_Value(I_AD_Schedule.COLUMNNAME_Frequency);
+        Integer ii = (Integer) getValue(I_AD_Schedule.COLUMNNAME_Frequency);
         if (ii == null) return 0;
         return ii;
     }
@@ -112,7 +111,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
      * @return Frequency of event
      */
     public String getFrequencyType() {
-        return (String) get_Value(I_AD_Schedule.COLUMNNAME_FrequencyType);
+        return (String) getValue(I_AD_Schedule.COLUMNNAME_FrequencyType);
     }
 
     /**
@@ -131,7 +130,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
      * @return Do not include processing time for the DateNextRun calculation
      */
     public boolean isIgnoreProcessingTime() {
-        Object oo = get_Value(I_AD_Schedule.COLUMNNAME_IsIgnoreProcessingTime);
+        Object oo = getValue(I_AD_Schedule.COLUMNNAME_IsIgnoreProcessingTime);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -145,7 +144,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
      * @return Run only on IP
      */
     public String getRunOnlyOnIP() {
-        return (String) get_Value(I_AD_Schedule.COLUMNNAME_RunOnlyOnIP);
+        return (String) getValue(I_AD_Schedule.COLUMNNAME_RunOnlyOnIP);
     }
 
     /**
@@ -154,7 +153,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule, I_Persis
      * @return Type of schedule
      */
     public String getScheduleType() {
-        return (String) get_Value(I_AD_Schedule.COLUMNNAME_ScheduleType);
+        return (String) getValue(I_AD_Schedule.COLUMNNAME_ScheduleType);
     }
 
     @Override

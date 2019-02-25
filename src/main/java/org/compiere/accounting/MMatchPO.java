@@ -412,7 +412,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
                             matchInv.setM_Product_ID(mpo.getM_Product_ID());
                             matchInv.setM_InOutLine_ID(M_InOutLine_ID);
                             matchInv.setADClientID(mpo.getClientId());
-                            matchInv.setAD_Org_ID(mpo.getOrgId());
+                            matchInv.setOrgId(mpo.getOrgId());
                             matchInv.setM_AttributeSetInstance_ID(mpo.getMAttributeSetInstance_ID());
                             matchInv.setQty(mpo.getQty());
                             matchInv.setDateTrx(dateTrx);
@@ -959,7 +959,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
             reversal.setC_InvoiceLine_ID(getC_InvoiceLine_ID());
             reversal.setM_InOutLine_ID(getM_InOutLine_ID());
             PO.copyValues(this, reversal);
-            reversal.setAD_Org_ID(this.getOrgId());
+            reversal.setOrgId(this.getOrgId());
             reversal.setDescription("(->" + this.getDocumentNo() + ")");
             reversal.setQty(this.getQty().negate());
             reversal.setDateAcct(reversalDate);

@@ -3,7 +3,6 @@ package org.compiere.invoicing;
 import org.compiere.model.I_C_InvoicePaySchedule;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule, I_Persistent {
+public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule {
 
     /**
      *
@@ -63,7 +62,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @return Invoice Identifier
      */
     public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -76,17 +75,6 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
     public void setC_Invoice_ID(int C_Invoice_ID) {
         if (C_Invoice_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Invoice_ID, null);
         else set_ValueNoCheck(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
-    }
-
-    /**
-     * Get Payment Schedule.
-     *
-     * @return Payment Schedule Template
-     */
-    public int getC_PaySchedule_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaySchedule_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -105,7 +93,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @return Calculated amount of discount
      */
     public BigDecimal getDiscountAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DiscountAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DiscountAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -125,7 +113,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @return Last Date for payments with discount
      */
     public Timestamp getDiscountDate() {
-        return (Timestamp) get_Value(COLUMNNAME_DiscountDate);
+        return (Timestamp) getValue(COLUMNNAME_DiscountDate);
     }
 
     /**
@@ -143,7 +131,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @return Amount of the payment due
      */
     public BigDecimal getDueAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DueAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DueAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -163,7 +151,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @return Date when the payment is due
      */
     public Timestamp getDueDate() {
-        return (Timestamp) get_Value(COLUMNNAME_DueDate);
+        return (Timestamp) getValue(COLUMNNAME_DueDate);
     }
 
     /**
@@ -190,7 +178,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @return Element is valid
      */
     public boolean isValid() {
-        Object oo = get_Value(COLUMNNAME_IsValid);
+        Object oo = getValue(COLUMNNAME_IsValid);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);

@@ -52,7 +52,7 @@ public class MAsset extends org.compiere.product.MAsset {
 
         setIsOwned(true);
         setIsInPosession(true);
-        setA_Asset_CreateDate(inoutLine.getM_InOut().getMovementDate());
+        setAssetCreateDate(inoutLine.getM_InOut().getMovementDate());
 
         // Asset Group:
         int A_Asset_Group_ID = invoiceLine.getA_Asset_Group_ID();
@@ -61,7 +61,7 @@ public class MAsset extends org.compiere.product.MAsset {
         if (A_Asset_Group_ID <= 0) {
             A_Asset_Group_ID = product.getA_Asset_Group_ID();
         }
-        setA_Asset_Group_ID(A_Asset_Group_ID);
+        setAssetGroupId(A_Asset_Group_ID);
         setHelp(
                 Msg.getMsg(
                         MClient.get(getCtx()).getADLanguage(),
@@ -71,8 +71,8 @@ public class MAsset extends org.compiere.product.MAsset {
         String name = "";
         if (inoutLine.getM_Product_ID() > 0) {
             name += product.getName() + "-";
-            setM_Product_ID(inoutLine.getM_Product_ID());
-            setM_AttributeSetInstance_ID(inoutLine.getMAttributeSetInstance_ID());
+            setProductId(inoutLine.getM_Product_ID());
+            setAttributeSetInstanceId(inoutLine.getMAttributeSetInstance_ID());
         }
         MBPartner bp = new MBPartner(getCtx(), invoiceLine.getC_Invoice().getC_BPartner_ID());
         name += bp.getName() + "-" + invoiceLine.getC_Invoice().getDocumentNo();
@@ -90,7 +90,7 @@ public class MAsset extends org.compiere.product.MAsset {
     public MAsset(MIFixedAsset ifa) {
         this(ifa.getCtx(), 0);
 
-        setAD_Org_ID(ifa.getOrgId()); // added by @win
+        setOrgId(ifa.getOrgId()); // added by @win
         setIsOwned(true);
         setIsInPosession(true);
 
@@ -100,7 +100,7 @@ public class MAsset extends org.compiere.product.MAsset {
             setInventoryNo(inventoryNo);
             setValue(inventoryNo);
         }
-        setA_Asset_CreateDate(ifa.getAssetServiceDate());
+        setAssetCreateDate(ifa.getAssetServiceDate());
         // setAssetServiceDate(ifa.getAssetServiceDate()); //commented by @win
     /* commented by @win
     setA_Asset_Class_ID(ifa.getA_Asset_Class_ID());
@@ -108,10 +108,10 @@ public class MAsset extends org.compiere.product.MAsset {
         // commented by @win
         org.compiere.accounting.MProduct product = ifa.getProduct();
         if (product != null) {
-            setM_Product_ID(product.getM_Product_ID());
-            setA_Asset_Group_ID(ifa.getA_Asset_Group_ID());
+            setProductId(product.getM_Product_ID());
+            setAssetGroupId(ifa.getA_Asset_Group_ID());
             MAttributeSetInstance asi = MAttributeSetInstance.create(getCtx(), product);
-            setM_AttributeSetInstance_ID(asi.getMAttributeSetInstance_ID());
+            setAttributeSetInstanceId(asi.getMAttributeSetInstance_ID());
         }
 
         setDateAcct(ifa.getDateAcct());
@@ -127,7 +127,7 @@ public class MAsset extends org.compiere.product.MAsset {
         this(project.getCtx(), 0);
         setIsOwned(true);
         setIsInPosession(true);
-        setA_Asset_CreateDate(new Timestamp(System.currentTimeMillis()));
+        setAssetCreateDate(new Timestamp(System.currentTimeMillis()));
         setHelp(
                 Msg.getMsg(
                         MClient.get(getCtx()).getADLanguage(),
@@ -141,7 +141,7 @@ public class MAsset extends org.compiere.product.MAsset {
         this(mInOut.getCtx(), 0);
         setIsOwned(false);
         setIsInPosession(false);
-        setA_Asset_CreateDate(new Timestamp(System.currentTimeMillis()));
+        setAssetCreateDate(new Timestamp(System.currentTimeMillis()));
         setHelp(
                 Msg.getMsg(
                         MClient.get(getCtx()).getADLanguage(),
@@ -181,7 +181,7 @@ public class MAsset extends org.compiere.product.MAsset {
         setIsInPosession(true);
 
         //	Product
-        setM_Product_ID(product.getM_Product_ID());
+        setProductId(product.getM_Product_ID());
         //	Guarantee & Version
         // setGuaranteeDate(TimeUtil.addDays(shipment.getMovementDate(), product.getGuaranteeDays()));
         setVersionNo(product.getVersionNo());
@@ -202,19 +202,19 @@ public class MAsset extends org.compiere.product.MAsset {
     if (invLine.getC_Activity_ID() > 0)
     	setC_Activity_ID(invLine.getC_Activity_ID());
     */
-        if (inventory.getC_Activity_ID() > 0) setC_Activity_ID(inventory.getC_Activity_ID());
+        if (inventory.getC_Activity_ID() > 0) setActivityId(inventory.getC_Activity_ID());
 
         //
 
         if (MAssetType.isFixedAsset(this)) {
-            setA_Asset_Status(X_A_Asset.A_ASSET_STATUS_New);
+            setAssetStatus(X_A_Asset.A_ASSET_STATUS_New);
         } else {
-            setA_Asset_Status(X_A_Asset.A_ASSET_STATUS_Activated);
+            setAssetStatus(X_A_Asset.A_ASSET_STATUS_Activated);
             setProcessed(true);
         }
 
         // added by @win;
-        setA_Asset_Status(X_A_Asset.A_ASSET_STATUS_New);
+        setAssetStatus(X_A_Asset.A_ASSET_STATUS_New);
         // end added by @win
 
     }
@@ -236,12 +236,12 @@ public class MAsset extends org.compiere.product.MAsset {
 
         //
         // Set parent
-        if (getA_Parent_Asset_ID() <= 0) {
-            int A_Asset_ID = getA_Asset_ID();
-            setA_Parent_Asset_ID(A_Asset_ID);
+        if (getParentAssetId() <= 0) {
+            int A_Asset_ID = getAssetId();
+            setParentAssetId(A_Asset_ID);
             executeUpdateEx(
                     "UPDATE A_Asset SET A_Parent_Asset_ID=A_Asset_ID WHERE A_Asset_ID=" + A_Asset_ID);
-            if (log.isLoggable(Level.FINE)) log.fine("A_Parent_Asset_ID=" + getA_Parent_Asset_ID());
+            if (log.isLoggable(Level.FINE)) log.fine("A_Parent_Asset_ID=" + getParentAssetId());
         }
 
         //
@@ -254,14 +254,14 @@ public class MAsset extends org.compiere.product.MAsset {
                     "UPDATE A_Asset SET InventoryNo="
                             + TO_STRING(invNo)
                             + " WHERE A_Asset_ID="
-                            + getA_Asset_ID());
+                            + getAssetId());
             if (log.isLoggable(Level.FINE)) log.fine("InventoryNo=" + getInventoryNo());
         }
 
         // If new record, create accounting and workfile
         if (newRecord) {
             // @win: set value at asset group as default value for asset
-            MAssetGroup assetgroup = new MAssetGroup(getCtx(), getA_Asset_Group_ID());
+            MAssetGroup assetgroup = new MAssetGroup(getCtx(), getAssetGroupId());
             String isDepreciated = (assetgroup.isDepreciated()) ? "Y" : "N";
             String isOwned = (assetgroup.isOwned()) ? "Y" : "N";
             setIsDepreciated(assetgroup.isDepreciated());
@@ -272,24 +272,24 @@ public class MAsset extends org.compiere.product.MAsset {
                             + "', isOwned ='"
                             + isOwned
                             + "' WHERE A_Asset_ID="
-                            + getA_Asset_ID());
+                            + getAssetId());
             // end @win
 
             // for each asset group acounting create an asset accounting and a workfile too
             for (MAssetGroupAcct assetgrpacct :
-                    MAssetGroupAcct.forA_Asset_Group_ID(getCtx(), getA_Asset_Group_ID())) {
+                    MAssetGroupAcct.forA_Asset_Group_ID(getCtx(), getAssetGroupId())) {
                 // Asset Accounting
                 MAssetAcct assetacct = new MAssetAcct(this, assetgrpacct);
-                assetacct.setAD_Org_ID(getOrgId()); // added by @win
+                assetacct.setOrgId(getOrgId()); // added by @win
                 assetacct.saveEx();
 
                 // Asset Depreciation Workfile
                 MDepreciationWorkfile assetwk =
                         new MDepreciationWorkfile(this, assetacct.getPostingType(), assetgrpacct);
-                assetwk.setAD_Org_ID(getOrgId()); // added by @win
+                assetwk.setOrgId(getOrgId()); // added by @win
                 assetwk.setUseLifeYears(0);
                 assetwk.setUseLifeMonths(0);
-                assetwk.setUseLifeYears_F(0);
+                assetwk.setUseLifeYearsFiscal(0);
                 assetwk.setUseLifeMonths_F(0);
                 assetwk.saveEx();
 
@@ -313,7 +313,7 @@ public class MAsset extends org.compiere.product.MAsset {
                             + " WHERE "
                             + MDepreciationWorkfile.COLUMNNAME_A_Asset_ID
                             + "=?";
-            executeUpdateEx(sql, new Object[]{isDepreciated(), getA_Asset_ID()});
+            executeUpdateEx(sql, new Object[]{isDepreciated(), getAssetId()});
         }
 
         return true;
@@ -331,7 +331,7 @@ public class MAsset extends org.compiere.product.MAsset {
                             + "=? AND "
                             + I_A_Asset_Addition.COLUMNNAME_A_Asset_ID
                             + "=?";
-            int no = executeUpdateEx(sql, new Object[]{false, getA_Asset_ID()});
+            int no = executeUpdateEx(sql, new Object[]{false, getAssetId()});
             if (log.isLoggable(Level.INFO)) log.info("@A_Asset_Addition@ @Deleted@ #" + no);
         }
         //
@@ -350,7 +350,7 @@ public class MAsset extends org.compiere.product.MAsset {
                             + " WHERE "
                             + MInvoiceLine.COLUMNNAME_A_Asset_ID
                             + "=?";
-            int no = executeUpdateEx(sql, new Object[]{null, false, getA_Asset_ID()});
+            int no = executeUpdateEx(sql, new Object[]{null, false, getAssetId()});
             if (log.isLoggable(Level.INFO)) log.info("@C_InvoiceLine@ @Updated@ #" + no);
         }
         return true;
@@ -364,7 +364,7 @@ public class MAsset extends org.compiere.product.MAsset {
      */
     @Override
     public void changeStatus(String newStatus, Timestamp date) {
-        String status = getA_Asset_Status();
+        String status = getAssetStatus();
         if (log.isLoggable(Level.FINEST))
             log.finest("Entering: " + status + "->" + newStatus + ", date=" + date);
 
@@ -385,7 +385,7 @@ public class MAsset extends org.compiere.product.MAsset {
             setAssetDisposalDate(date);
             // TODO: move to MAsetDisposal
             Collection<MDepreciationWorkfile> workFiles =
-                    MDepreciationWorkfile.forA_Asset_ID(getCtx(), getA_Asset_ID());
+                    MDepreciationWorkfile.forA_Asset_ID(getCtx(), getAssetId());
             for (MDepreciationWorkfile assetwk : workFiles) {
                 assetwk.truncDepreciation();
                 assetwk.saveEx();
@@ -397,6 +397,6 @@ public class MAsset extends org.compiere.product.MAsset {
         }
 
         // Set new status
-        setA_Asset_Status(newStatus);
+        setAssetStatus(newStatus);
     } //	changeStatus
 }

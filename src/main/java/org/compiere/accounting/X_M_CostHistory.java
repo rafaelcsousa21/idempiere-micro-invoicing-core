@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_M_CostHistory;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent {
+public class X_M_CostHistory extends PO implements I_M_CostHistory {
 
     /**
      *
@@ -30,7 +29,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
         /**
          * if (M_CostHistory_ID == 0) { setM_AttributeSetInstance_ID (0); setM_CostDetail_ID (0);
          * setM_CostElement_ID (0); setM_CostHistory_ID (0); setM_CostHistory_UU (null);
-         * setM_CostType_ID (0); setNewCostPrice (Env.ZERO); setNewQty (Env.ZERO); setOldCostPrice
+         * setCostTypeId (0); setNewCostPrice (Env.ZERO); setNewQty (Env.ZERO); setOldCostPrice
          * (Env.ZERO); setOldQty (Env.ZERO); }
          */
     }
@@ -69,28 +68,6 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     }
 
     /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Cost Detail.
-     *
-     * @return Cost Detail Information
-     */
-    public int getM_CostDetail_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostDetail_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Cost Detail.
      *
      * @param M_CostDetail_ID Cost Detail Information
@@ -101,17 +78,6 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     }
 
     /**
-     * Get Cost Element.
-     *
-     * @return Product Cost Element
-     */
-    public int getM_CostElement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Cost Element.
      *
      * @param M_CostElement_ID Product Cost Element
@@ -119,17 +85,6 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
     public void setM_CostElement_ID(int M_CostElement_ID) {
         if (M_CostElement_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
         else set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
-    }
-
-    /**
-     * Get Cost Type.
-     *
-     * @return Type of Cost (e.g. Current, Plan, Future)
-     */
-    public int getM_CostType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostType_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -157,7 +112,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
      * @return New current cost price after processing of M_CostDetail
      */
     public BigDecimal getNewCostPrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewCostPrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_NewCostPrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -186,7 +141,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
      * @return New current quantity after processing of M_CostDetail
      */
     public BigDecimal getNewQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_NewQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -206,7 +161,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
      * @return Old accumulated amt before the processing of M_CostDetail
      */
     public BigDecimal getOldCAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_OldCAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -226,7 +181,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
      * @return Old current cost price before the processing of M_CostDetail
      */
     public BigDecimal getOldCostPrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCostPrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_OldCostPrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -246,7 +201,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
      * @return Old accumulated qty before the processing of M_CostDetail
      */
     public BigDecimal getOldCQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldCQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_OldCQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -266,7 +221,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory, I_Persistent
      * @return Old current quantity before the processing of M_CostDetail
      */
     public BigDecimal getOldQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OldQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_OldQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

@@ -563,7 +563,7 @@ public class MPayment extends X_C_Payment
                 && getC_Charge_ID() == 0) // 	allow different org for charge
         {
             MBankAccount ba = MBankAccount.get(getCtx(), getC_BankAccount_ID());
-            if (ba.getOrgId() != 0) setAD_Org_ID(ba.getOrgId());
+            if (ba.getOrgId() != 0) setOrgId(ba.getOrgId());
         }
 
         // [ adempiere-Bugs-1885417 ] Validate BP on Payment Prepare or BeforeSave
@@ -1041,7 +1041,7 @@ public class MPayment extends X_C_Payment
      * @param C_DocType_ID doc type
      */
     public void setC_DocType_ID(int C_DocType_ID) {
-        //	if (getDocumentNo() != null && getC_DocType_ID() != C_DocType_ID)
+        //	if (getDocumentNo() != null && getDocTypeId() != C_DocType_ID)
         //		setDocumentNo(null);
         super.setC_DocType_ID(C_DocType_ID);
     } //	setC_DocType_ID
@@ -1462,7 +1462,7 @@ public class MPayment extends X_C_Payment
                 && MPaymentAllocate.get(this).length == 0
                 && !createdAllocationRecords) {
             MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID());
-            forUpdate(bp, 0);
+            forUpdate(bp);
             //	Update total balance to include this payment
             BigDecimal payAmt =
                     MConversionRate.convertBase(
@@ -1526,7 +1526,7 @@ public class MPayment extends X_C_Payment
             //	Amount
             BigDecimal amt = this.getPayAmt();
       /*
-      			MDocType dt = MDocType.get(getCtx(), invoice.getC_DocType_ID());
+      			MDocType dt = MDocType.get(getCtx(), invoice.getDocTypeId());
       			if (MDocType.DOCBASETYPE_APInvoice.equals( dt.getDocBaseType() )
       				|| MDocType.DOCBASETYPE_ARCreditMemo.equals( dt.getDocBaseType() )
       			) {
@@ -1632,7 +1632,7 @@ public class MPayment extends X_C_Payment
 
         //	Deep Copy
         MPayment counter = new MPayment(getCtx(), 0);
-        counter.setAD_Org_ID(counterAD_Org_ID);
+        counter.setOrgId(counterAD_Org_ID);
         counter.setC_BPartner_ID(counterBP.getC_BPartner_ID());
         counter.setIsReceipt(!isReceipt());
         counter.setC_DocType_ID(C_DocTypeTarget_ID);
@@ -1712,7 +1712,7 @@ public class MPayment extends X_C_Payment
                         getC_Currency_ID(),
                         Msg.translate(getCtx(), "C_Payment_ID") + ": " + getDocumentNo(),
                         null);
-        alloc.setAD_Org_ID(getOrgId());
+        alloc.setOrgId(getOrgId());
         alloc.setDateAcct(
                 getDateAcct()); // in case date acct is different from datetrx in payment; IDEMPIERE-1532
         // tbayen
@@ -1775,7 +1775,7 @@ public class MPayment extends X_C_Payment
                         getC_Currency_ID(),
                         Msg.translate(getCtx(), "C_Payment_ID") + ": " + getDocumentNo() + " [1]",
                         null);
-        alloc.setAD_Org_ID(getOrgId());
+        alloc.setOrgId(getOrgId());
         alloc.setDateAcct(getDateAcct()); // in case date acct is different from datetrx in payment
         alloc.saveEx();
         MAllocationLine aLine = null;
@@ -1828,7 +1828,7 @@ public class MPayment extends X_C_Payment
                         getC_Currency_ID(),
                         Msg.translate(getCtx(), "C_Payment_ID") + ": " + getDocumentNo() + " [n]",
                         null);
-        alloc.setAD_Org_ID(getOrgId());
+        alloc.setOrgId(getOrgId());
         alloc.setDateAcct(getDateAcct()); // in case date acct is different from datetrx in payment
 
         String sql =
@@ -2148,7 +2148,7 @@ public class MPayment extends X_C_Payment
                         getC_Currency_ID(),
                         Msg.translate(getCtx(), "C_Payment_ID") + ": " + reversal.getDocumentNo(),
                         null);
-        alloc.setAD_Org_ID(getOrgId());
+        alloc.setOrgId(getOrgId());
         alloc.setDateAcct(
                 dateAcct); // dateAcct variable already take into account the accrual parameter
         alloc.saveEx();
@@ -2348,7 +2348,7 @@ public class MPayment extends X_C_Payment
         paymentTransaction.setA_Zip(getA_Zip());
         paymentTransaction.setAccountNo(getAccountNo());
         paymentTransaction.setIBAN(getIBAN());
-        paymentTransaction.setAD_Org_ID(getOrgId());
+        paymentTransaction.setOrgId(getOrgId());
         paymentTransaction.setC_BankAccount_ID(getC_BankAccount_ID());
         paymentTransaction.setC_BP_BankAccount_ID(getC_BP_BankAccount_ID());
         paymentTransaction.setC_BPartner_ID(getC_BPartner_ID());

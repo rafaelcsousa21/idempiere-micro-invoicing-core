@@ -2,13 +2,12 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_T_BOM_Indented;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persistent {
+public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
 
     /**
      *
@@ -45,17 +44,6 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
     }
 
     /**
-     * Get Process Instance.
-     *
-     * @return Instance of the process
-     */
-    public int getAD_PInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_PInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Process Instance.
      *
      * @param AD_PInstance_ID Instance of the process
@@ -63,17 +51,6 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
     public void setAD_PInstance_ID(int AD_PInstance_ID) {
         if (AD_PInstance_ID < 1) set_Value(COLUMNNAME_AD_PInstance_ID, null);
         else set_Value(COLUMNNAME_AD_PInstance_ID, Integer.valueOf(AD_PInstance_ID));
-    }
-
-    /**
-     * Get Accounting Schema.
-     *
-     * @return Rules for accounting
-     */
-    public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -160,17 +137,6 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
     }
 
     /**
-     * Get Cost Element.
-     *
-     * @return Product Cost Element
-     */
-    public int getM_CostElement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Cost Element.
      *
      * @param M_CostElement_ID Product Cost Element
@@ -178,17 +144,6 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
     public void setM_CostElement_ID(int M_CostElement_ID) {
         if (M_CostElement_ID < 1) set_Value(COLUMNNAME_M_CostElement_ID, null);
         else set_Value(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
-    }
-
-    /**
-     * Get Product.
-     *
-     * @return Product, Service, Item
-     */
-    public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -217,17 +172,6 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented, I_Persiste
      */
     public void setQtyBOM(BigDecimal QtyBOM) {
         set_Value(COLUMNNAME_QtyBOM, QtyBOM);
-    }
-
-    /**
-     * Get Selected Product.
-     *
-     * @return Selected Product
-     */
-    public int getSel_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Sel_Product_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

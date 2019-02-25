@@ -88,7 +88,7 @@ public class ServerProcessCtl implements Runnable {
                 pi.setError(true);
                 return null;
             }
-            pi.setAD_PInstance_ID(instance.getAD_PInstance_ID());
+            pi.setAD_PInstance_ID(instance.getPInstanceId());
         } else {
             instance = new MPInstance(Env.getCtx(), pi.getAD_PInstance_ID(), null);
         }
@@ -126,14 +126,14 @@ public class ServerProcessCtl implements Runnable {
         MTable table = MTable.get(Env.getCtx(), AD_Table_ID);
         MColumn column = table.getColumn("DocAction");
         if (column == null) return null;
-        if (!docAction.equals(po.get_Value(column.getColumnName()))) {
+        if (!docAction.equals(po.getValue(column.getColumnName()))) {
             po.set_ValueOfColumn(column.getColumnName(), docAction);
             po.saveEx();
         }
         ProcessInfo processInfo =
                 new ProcessInfo(
                         ((DocAction) po).getDocumentInfo(),
-                        column.getAD_Process_ID(),
+                        column.getProcessId(),
                         po.getTableId(),
                         po.getId());
         processInfo.setTransactionName(null);

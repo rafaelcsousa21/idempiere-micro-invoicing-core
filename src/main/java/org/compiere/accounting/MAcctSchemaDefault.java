@@ -108,7 +108,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
         for (int i = 0; i < get_ColumnCount(); i++) {
             String columnName = get_ColumnName(i);
             if (columnName.endsWith("Acct")) {
-                int id = ((Integer) get_Value(i));
+                int id = ((Integer) getValue(i));
                 list.add(new KeyNamePair(id, columnName));
             }
         }
@@ -133,7 +133,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
         return true;
     } //	beforeSave
 } //	MAcctSchemaDefault

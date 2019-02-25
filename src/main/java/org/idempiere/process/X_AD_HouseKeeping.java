@@ -2,13 +2,12 @@ package org.idempiere.process;
 
 import org.compiere.model.I_AD_HouseKeeping;
 import org.compiere.orm.BasePONameValue;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeeping, I_Persistent {
+public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeeping {
 
     /**
      *
@@ -21,7 +20,7 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
     public X_AD_HouseKeeping(Properties ctx, int AD_HouseKeeping_ID) {
         super(ctx, AD_HouseKeeping_ID);
         /**
-         * if (AD_HouseKeeping_ID == 0) { setAD_HouseKeeping_ID (0); setAD_Table_ID (0); setName (null);
+         * if (AD_HouseKeeping_ID == 0) { setAD_HouseKeeping_ID (0); setColumnTableId (0); setName (null);
          * setValue (null); }
          */
     }
@@ -58,8 +57,8 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
      *
      * @return Database Table information
      */
-    public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
+    public int getTableID() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Table_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -70,7 +69,7 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
      * @return Backup Folder
      */
     public String getBackupFolder() {
-        return (String) get_Value(COLUMNNAME_BackupFolder);
+        return (String) getValue(COLUMNNAME_BackupFolder);
     }
 
     /**
@@ -79,7 +78,7 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
      * @return Export XML Backup
      */
     public boolean isExportXMLBackup() {
-        Object oo = get_Value(COLUMNNAME_IsExportXMLBackup);
+        Object oo = getValue(COLUMNNAME_IsExportXMLBackup);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -93,7 +92,7 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
      * @return Save In Historic
      */
     public boolean isSaveInHistoric() {
-        Object oo = get_Value(COLUMNNAME_IsSaveInHistoric);
+        Object oo = getValue(COLUMNNAME_IsSaveInHistoric);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -125,6 +124,6 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
      * @return Fully qualified SQL WHERE clause
      */
     public String getWhereClause() {
-        return (String) get_Value(COLUMNNAME_WhereClause);
+        return (String) getValue(COLUMNNAME_WhereClause);
     }
 }

@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_Element;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent {
+public class X_C_Element extends BasePOName implements I_C_Element {
 
     /**
      * Account = A
@@ -67,8 +66,8 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
      *
      * @return Identifies a Tree
      */
-    public int getAD_Tree_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_ID);
+    public int getTreeId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -78,7 +77,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
      *
      * @param AD_Tree_ID Identifies a Tree
      */
-    public void setAD_Tree_ID(int AD_Tree_ID) {
+    public void setTreeId(int AD_Tree_ID) {
         if (AD_Tree_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Tree_ID, null);
         else set_ValueNoCheck(COLUMNNAME_AD_Tree_ID, Integer.valueOf(AD_Tree_ID));
     }
@@ -88,8 +87,8 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
      *
      * @return Accounting Element
      */
-    public int getC_Element_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Element_ID);
+    public int getElementId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Element_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -100,7 +99,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
      * @return Element Type (account or user defined)
      */
     public String getElementType() {
-        return (String) get_Value(COLUMNNAME_ElementType);
+        return (String) getValue(COLUMNNAME_ElementType);
     }
 
     /**
@@ -137,7 +136,7 @@ public class X_C_Element extends BasePOName implements I_C_Element, I_Persistent
      * @return The primary natural account
      */
     public boolean isNaturalAccount() {
-        Object oo = get_Value(COLUMNNAME_IsNaturalAccount);
+        Object oo = getValue(COLUMNNAME_IsNaturalAccount);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);

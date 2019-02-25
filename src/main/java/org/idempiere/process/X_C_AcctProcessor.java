@@ -2,13 +2,12 @@ package org.idempiere.process;
 
 import org.compiere.model.I_C_AcctProcessor;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, I_Persistent {
+public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
 
     /**
      *
@@ -54,8 +53,8 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
      *
      * @return Schedule
      */
-    public int getAD_Schedule_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Schedule_ID);
+    public int getScheduleId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Schedule_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -65,20 +64,9 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
      *
      * @param AD_Schedule_ID Schedule
      */
-    public void setAD_Schedule_ID(int AD_Schedule_ID) {
+    public void setScheduleId(int AD_Schedule_ID) {
         if (AD_Schedule_ID < 1) set_Value(COLUMNNAME_AD_Schedule_ID, null);
         else set_Value(COLUMNNAME_AD_Schedule_ID, Integer.valueOf(AD_Schedule_ID));
-    }
-
-    /**
-     * Get Table.
-     *
-     * @return Database Table information
-     */
-    public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -86,19 +74,8 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
      *
      * @return Accounting Processor/Server Parameters
      */
-    public int getC_AcctProcessor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctProcessor_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Accounting Schema.
-     *
-     * @return Rules for accounting
-     */
-    public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
+    public int getAccountingProcessorId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AcctProcessor_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -109,7 +86,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
      * @return Date the process will run next
      */
     public Timestamp getDateNextRun() {
-        return (Timestamp) get_Value(COLUMNNAME_DateNextRun);
+        return (Timestamp) getValue(COLUMNNAME_DateNextRun);
     }
 
     /**
@@ -122,17 +99,6 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     }
 
     /**
-     * Get Days to keep Log.
-     *
-     * @return Number of days to keep the log entries
-     */
-    public int getKeepLogDays() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_KeepLogDays);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Days to keep Log.
      *
      * @param KeepLogDays Number of days to keep the log entries
@@ -142,22 +108,11 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor, 
     }
 
     /**
-     * Get Supervisor.
-     *
-     * @return Supervisor for this user/organization - used for escalation and approval
-     */
-    public int getSupervisor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Supervisor_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Supervisor.
      *
      * @param Supervisor_ID Supervisor for this user/organization - used for escalation and approval
      */
-    public void setSupervisor_ID(int Supervisor_ID) {
+    public void setSupervisorId(int Supervisor_ID) {
         if (Supervisor_ID < 1) set_Value(COLUMNNAME_Supervisor_ID, null);
         else set_Value(COLUMNNAME_Supervisor_ID, Integer.valueOf(Supervisor_ID));
     }

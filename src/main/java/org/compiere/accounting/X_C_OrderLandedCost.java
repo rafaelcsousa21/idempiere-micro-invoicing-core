@@ -4,7 +4,6 @@ import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Persistent {
+public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost {
 
     /**
      *
@@ -68,7 +67,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
      * @return Amount
      */
     public BigDecimal getAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Amt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Amt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -85,7 +84,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
      * @return Order
      */
     public int getC_Order_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Order_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Order_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -96,7 +95,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
      * @return Estimated Landed Cost
      */
     public int getC_OrderLandedCost_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_OrderLandedCost_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLandedCost_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -107,7 +106,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
      * @return Landed Cost Distribution
      */
     public String getLandedCostDistribution() {
-        return (String) get_Value(COLUMNNAME_LandedCostDistribution);
+        return (String) getValue(COLUMNNAME_LandedCostDistribution);
     }
 
     /**
@@ -116,7 +115,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost, I_Pe
      * @return Product Cost Element
      */
     public int getM_CostElement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
     }

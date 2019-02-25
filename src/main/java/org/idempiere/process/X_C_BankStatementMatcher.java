@@ -2,13 +2,12 @@ package org.idempiere.process;
 
 import org.compiere.model.I_C_BankStatementMatcher;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_C_BankStatementMatcher extends BasePOName
-        implements I_C_BankStatementMatcher, I_Persistent {
+        implements I_C_BankStatementMatcher {
 
     /**
      *
@@ -59,7 +58,7 @@ public class X_C_BankStatementMatcher extends BasePOName
      * @return Java Classname
      */
     public String getClassname() {
-        return (String) get_Value(COLUMNNAME_Classname);
+        return (String) getValue(COLUMNNAME_Classname);
     }
 
 }

@@ -2,12 +2,11 @@ package org.idempiere.process;
 
 import org.compiere.model.I_GL_Category;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_GL_Category extends BasePOName implements I_GL_Category, I_Persistent {
+public class X_GL_Category extends BasePOName implements I_GL_Category {
 
     /**
      * Manual = M
@@ -66,7 +65,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category, I_Persis
      * @return Source of the Journal with this category
      */
     public String getCategoryType() {
-        return (String) get_Value(COLUMNNAME_CategoryType);
+        return (String) getValue(COLUMNNAME_CategoryType);
     }
 
     /**
@@ -85,7 +84,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category, I_Persis
      * @return General Ledger Category
      */
     public int getGL_Category_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_Category_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_Category_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -105,7 +104,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category, I_Persis
      * @return Default value
      */
     public boolean isDefault() {
-        Object oo = get_Value(COLUMNNAME_IsDefault);
+        Object oo = getValue(COLUMNNAME_IsDefault);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);

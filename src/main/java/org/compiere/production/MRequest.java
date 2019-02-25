@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.crm.MBPGroup;
 import org.compiere.crm.MBPartner;
-import org.compiere.crm.MUser;
 import org.compiere.crm.X_C_BP_Group;
 import org.compiere.model.I_R_Request;
 import org.compiere.model.I_R_RequestUpdate;
@@ -211,16 +210,6 @@ public class MRequest extends X_R_Request {
     } //	getRequestType
 
     /**
-     * Get Sales Rep
-     *
-     * @return Sales Rep User
-     */
-    public MUser getSalesRep() {
-        if (getSalesRep_ID() == 0) return null;
-        return MUser.get(getCtx(), getSalesRep_ID());
-    } //	getSalesRep
-
-    /**
      * Get BPartner (may be not defined)
      *
      * @return Sales Rep User
@@ -374,14 +363,14 @@ public class MRequest extends X_R_Request {
   			return "RequestActionEMailNoSMTP";
 
   		//  Mail To
-  		MUser to = new MUser (getCtx(), getAD_User_ID(), null);
+  		MUser to = new MUser (getCtx(), getUserId(), null);
   		if (to == null
   			|| to.getEMail() == null
   			|| to.getEMail().length() == 0)
   			return "RequestActionEMailNoTo";
 
   		//  Mail From real user
-  		MUser from = MUser.get(getCtx(), Env.getAD_User_ID(getCtx()));
+  		MUser from = MUser.get(getCtx(), Env.getUserId(getCtx()));
   		if (from == null
   			|| from.getEMail() == null
   			|| from.getEMail().length() == 0)

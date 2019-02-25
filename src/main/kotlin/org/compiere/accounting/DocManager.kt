@@ -208,7 +208,7 @@ object DocManager {
         }
 
         val table = MTable.get(Env.getCtx(), AD_Table_ID)
-        val Record_ID = rs.getInt(table.keyColumns[0])
+        val Record_ID = rs.getInt(table.tableKeyColumns[0])
         //  Commit Doc
         if (!save(null, AD_Table_ID, Record_ID, status)) {
             val dbError = CLogger.retrieveError()
@@ -229,10 +229,10 @@ object DocManager {
     private fun save(trxName: String?, AD_Table_ID: Int, Record_ID: Int, status: String): Boolean {
         val table = MTable.get(Env.getCtx(), AD_Table_ID)
         val sql = StringBuilder("UPDATE ")
-        sql.append(table.tableName).append(" SET Posted='").append(status)
+        sql.append(table.dbTableName).append(" SET Posted='").append(status)
             .append("',Processing='N' ")
             .append("WHERE ")
-            .append(table.tableName).append("_ID=").append(Record_ID)
+            .append(table.dbTableName).append("_ID=").append(Record_ID)
         CLogger.resetLast()
         val no = executeUpdate(sql.toString())
         return no == 1

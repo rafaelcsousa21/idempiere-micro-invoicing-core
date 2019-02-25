@@ -38,10 +38,10 @@ public class MCostQueue extends X_M_CostQueue {
     public MCostQueue(Properties ctx, int ignored) {
         super(ctx, ignored);
         if (ignored == 0) {
-            //	setC_AcctSchema_ID (0);
+            //	setAccountingSchemaId (0);
             //	setM_AttributeSetInstance_ID (0);
             //	setM_CostElement_ID (0);
-            //	setM_CostType_ID (0);
+            //	setCostTypeId (0);
             //	setM_Product_ID (0);
             setCurrentCostPrice(Env.ZERO);
             setCurrentQty(Env.ZERO);
@@ -77,8 +77,8 @@ public class MCostQueue extends X_M_CostQueue {
             int M_CostElement_ID) {
         this(product.getCtx(), 0);
         setClientOrg(product.getClientId(), AD_Org_ID);
-        setC_AcctSchema_ID(as.getC_AcctSchema_ID());
-        setM_CostType_ID(as.getM_CostType_ID());
+        setC_AcctSchema_ID(as.getAccountingSchemaId());
+        setM_CostType_ID(as.getCostTypeId());
         setM_Product_ID(product.getM_Product_ID());
         setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
         setM_CostElement_ID(M_CostElement_ID);
@@ -118,8 +118,8 @@ public class MCostQueue extends X_M_CostQueue {
             pstmt.setInt(2, AD_Org_ID);
             pstmt.setInt(3, product.getM_Product_ID());
             pstmt.setInt(4, M_AttributeSetInstance_ID);
-            pstmt.setInt(5, as.getM_CostType_ID());
-            pstmt.setInt(6, as.getC_AcctSchema_ID());
+            pstmt.setInt(5, as.getCostTypeId());
+            pstmt.setInt(6, as.getAccountingSchemaId());
             pstmt.setInt(7, M_CostElement_ID);
             rs = pstmt.executeQuery();
             if (rs.next()) costQ = new MCostQueue(product.getCtx(), rs);
@@ -168,8 +168,8 @@ public class MCostQueue extends X_M_CostQueue {
             pstmt.setInt(1, product.getClientId());
             pstmt.setInt(2, Org_ID);
             pstmt.setInt(3, product.getM_Product_ID());
-            pstmt.setInt(4, as.getM_CostType_ID());
-            pstmt.setInt(5, as.getC_AcctSchema_ID());
+            pstmt.setInt(4, as.getCostTypeId());
+            pstmt.setInt(5, as.getAccountingSchemaId());
             pstmt.setInt(6, ce.getM_CostElement_ID());
             if (M_ASI_ID != 0) pstmt.setInt(7, M_ASI_ID);
             rs = pstmt.executeQuery();

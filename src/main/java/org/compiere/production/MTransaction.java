@@ -73,7 +73,7 @@ public class MTransaction extends X_M_Transaction {
             Timestamp MovementDate,
             String trxName) {
         super(ctx, 0);
-        setAD_Org_ID(AD_Org_ID);
+        setOrgId(AD_Org_ID);
         setMovementType(MovementType);
         if (M_Locator_ID == 0) throw new IllegalArgumentException("No Locator");
         setM_Locator_ID(M_Locator_ID);

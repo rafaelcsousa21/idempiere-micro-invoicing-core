@@ -50,10 +50,10 @@ public class MDDOrderLine extends X_DD_OrderLine {
         if (C_OrderLine_ID == 0) {
             //	setC_Order_ID (0);
             //	setLine (0);
-            //	setM_Warehouse_ID (0);	// @M_Warehouse_ID@
+            //	setWarehouseId (0);	// @M_Warehouse_ID@
             //	setC_BPartner_ID(0);
             //	setC_BPartner_Location_ID (0);	// @C_BPartner_Location_ID@
-            //	setC_Currency_ID (0);	// @C_Currency_ID@
+            //	setCurrencyId (0);	// @C_Currency_ID@
             //	setDateOrdered (new Timestamp(System.currentTimeMillis()));	// @DateOrdered@
             //
             //	setC_Tax_ID (0);
@@ -114,7 +114,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
         setClientOrg(order);
     /*setC_BPartner_ID(order.getC_BPartner_ID());
     setC_BPartner_Location_ID(order.getC_BPartner_Location_ID());*/
-        // setM_Warehouse_ID(order.getM_Warehouse_ID());
+        // setWarehouseId(order.getWarehouseId());
         setDateOrdered(order.getDateOrdered());
         setDatePromised(order.getDatePromised());
         //
@@ -169,15 +169,15 @@ public class MDDOrderLine extends X_DD_OrderLine {
      *
      * @param M_Warehouse_ID warehouse
      */
-  /*public void setM_Warehouse_ID (int M_Warehouse_ID)
+  /*public void setWarehouseId (int M_Warehouse_ID)
   {
-  	if (getM_Warehouse_ID() > 0
-  		&& getM_Warehouse_ID() != M_Warehouse_ID
+  	if (getWarehouseId() > 0
+  		&& getWarehouseId() != M_Warehouse_ID
   		&& !canChangeWarehouse())
   		log.severe("Ignored - Already Delivered/Invoiced/Reserved");
   	else
-  		super.setM_Warehouse_ID (M_Warehouse_ID);
-  }	//	setM_Warehouse_ID
+  		super.setWarehouseId (M_Warehouse_ID);
+  }	//	setWarehouseId
   */
 
     /**
@@ -357,7 +357,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
         }
         //	Get Defaults from Parent
     /*if (getC_BPartner_ID() == 0 || getC_BPartner_Location_ID() == 0
-    || getM_Warehouse_ID() == 0)
+    || getWarehouseId() == 0)
     setOrder (getParent());*/
         if (m_M_PriceList_ID == 0) setHeaderInfo(getParent());
 

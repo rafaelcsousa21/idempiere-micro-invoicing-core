@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_R_RequestType;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Persistent {
+public class X_R_RequestType extends BasePOName implements I_R_RequestType {
 
     /**
      * Public Information = A
@@ -65,7 +64,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
      * @return Automatic Due Date Days
      */
     public int getAutoDueDateDays() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AutoDueDateDays);
+        Integer ii = (Integer) getValue(COLUMNNAME_AutoDueDateDays);
         if (ii == null) return 0;
         return ii;
     }
@@ -85,7 +84,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
      * @return Type of Confidentiality
      */
     public String getConfidentialType() {
-        return (String) get_Value(COLUMNNAME_ConfidentialType);
+        return (String) getValue(COLUMNNAME_ConfidentialType);
     }
 
     /**
@@ -105,7 +104,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
      * overdue
      */
     public int getDueDateTolerance() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_DueDateTolerance);
+        Integer ii = (Integer) getValue(COLUMNNAME_DueDateTolerance);
         if (ii == null) return 0;
         return ii;
     }
@@ -153,7 +152,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
      * @return Default value
      */
     public boolean isDefault() {
-        Object oo = get_Value(COLUMNNAME_IsDefault);
+        Object oo = getValue(COLUMNNAME_IsDefault);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -203,7 +202,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
      * @return Is this invoiced?
      */
     public boolean isInvoiced() {
-        Object oo = get_Value(COLUMNNAME_IsInvoiced);
+        Object oo = getValue(COLUMNNAME_IsInvoiced);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -226,7 +225,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
      * @return Type of request (e.g. Inquiry, Complaint, ..)
      */
     public int getR_RequestType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_RequestType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_RequestType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -237,7 +236,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType, I_Pe
      * @return Request Status Category
      */
     public int getR_StatusCategory_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_StatusCategory_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_StatusCategory_ID);
         if (ii == null) return 0;
         return ii;
     }

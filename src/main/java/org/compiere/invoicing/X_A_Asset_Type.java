@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_A_Asset_Type;
 import org.compiere.orm.BasePONameValue;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type, I_Persistent {
+public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type {
 
     /**
      *
@@ -46,33 +45,6 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type, I
     public String toString() {
         StringBuffer sb = new StringBuffer("X_A_Asset_Type[").append(getId()).append("]");
         return sb.toString();
-    }
-
-    /**
-     * Get Is Depreciable.
-     *
-     * @return This asset CAN be depreciated
-     */
-    public String getIsDepreciable() {
-        return (String) get_Value(COLUMNNAME_IsDepreciable);
-    }
-
-    /**
-     * Get In Possession.
-     *
-     * @return The asset is in the possession of the organization
-     */
-    public String getIsInPosession() {
-        return (String) get_Value(COLUMNNAME_IsInPosession);
-    }
-
-    /**
-     * Get Owned.
-     *
-     * @return The asset is owned by the organization
-     */
-    public String getIsOwned() {
-        return (String) get_Value(COLUMNNAME_IsOwned);
     }
 
     @Override

@@ -56,7 +56,7 @@ public class MWarehouse extends X_M_Warehouse {
         if (M_Warehouse_ID == 0) {
             //	setValue (null);
             //	setName (null);
-            //	setC_Location_ID (0);
+            //	setLocationId (0);
             setSeparator("*"); // *
         }
     } //	MWarehouse
@@ -84,9 +84,9 @@ public class MWarehouse extends X_M_Warehouse {
     public MWarehouse(MOrg org) {
         this(org.getCtx(), 0);
         setClientOrg(org);
-        setValue(org.getValue());
+        setSearchKey(org.getSearchKey());
         setName(org.getName());
-        if (org.getInfo() != null) setC_Location_ID(org.getInfo().getC_Location_ID());
+        if (org.getInfo() != null) setC_Location_ID(org.getInfo().getLocationId());
     } //	MWarehouse
 
     /**
@@ -210,7 +210,7 @@ public class MWarehouse extends X_M_Warehouse {
         if (getOrgId() == 0) {
             int context_AD_Org_ID = Env.getOrgId(getCtx());
             if (context_AD_Org_ID != 0) {
-                setAD_Org_ID(context_AD_Org_ID);
+                setOrgId(context_AD_Org_ID);
                 log.warning("Changed Org to Context=" + context_AD_Org_ID);
             } else {
                 log.saveError("Error", Msg.translate(getCtx(), "Org0NotAllowed"));

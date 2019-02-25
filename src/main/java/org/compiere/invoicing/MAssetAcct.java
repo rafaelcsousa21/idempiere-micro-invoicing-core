@@ -1,6 +1,5 @@
 package org.compiere.invoicing;
 
-import org.compiere.accounting.MAcctSchema;
 import org.compiere.model.I_A_Asset_Acct;
 import org.compiere.orm.Query;
 import org.compiere.orm.SetGetUtil;
@@ -36,7 +35,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
     public MAssetAcct(Properties ctx, int X_A_Asset_Acct_ID) {
         super(ctx, X_A_Asset_Acct_ID);
         if (X_A_Asset_Acct_ID == 0) {
-            setA_Salvage_Value(Env.ZERO);
+            setSalvageValue(Env.ZERO);
         }
     }
 
@@ -54,15 +53,15 @@ public class MAssetAcct extends X_A_Asset_Acct {
         this(assetgrpacct.getCtx(), 0);
 
         SetGetUtil.copyValues(this, assetgrpacct, null, null);
-        setA_Asset_ID(asset.getA_Asset_ID());
+        setAssetId(asset.getAssetId());
         if (asset.getA_Depreciation_ID() > 0) {
-            setA_Depreciation_ID(asset.getA_Depreciation_ID());
+            setDepreciationId(asset.getA_Depreciation_ID());
         }
         if (asset.getA_Depreciation_F_ID() > 0) {
-            setA_Depreciation_F_ID(asset.getA_Depreciation_F_ID());
+            setDepreciationFiscalId(asset.getA_Depreciation_F_ID());
         }
-        setA_Period_Start(1);
-        setA_Period_End(asset.getUseLifeMonths());
+        setPeriodStart(1);
+        setPeriodEnd(asset.getUseLifeMonths());
         // ~ setProcessing(false);
         dump();
     }
@@ -112,11 +111,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
      *
      */
     public BigDecimal getA_Depreciation_Variable_Perc(boolean fiscal) {
-        return fiscal ? getA_Depreciation_Variable_Perc_F() : getA_Depreciation_Variable_Perc();
-    }
-
-    public MAcctSchema getC_AcctSchema() {
-        return MAcctSchema.get(getCtx(), getC_AcctSchema_ID());
+        return fiscal ? getDepreciationVariablePercentFiscal() : getDepreciationVariablePercent();
     }
 
     @Override

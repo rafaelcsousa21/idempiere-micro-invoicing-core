@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_PA_GoalRestriction;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestriction, I_Persistent {
+public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestriction {
 
     /**
      * Organization = O
@@ -74,7 +73,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -85,7 +84,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      * @return Business Partner Group
      */
     public int getC_BP_Group_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BP_Group_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BP_Group_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -96,7 +95,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      * @return Goal Restriction Type
      */
     public String getGoalRestrictionType() {
-        return (String) get_Value(COLUMNNAME_GoalRestrictionType);
+        return (String) getValue(COLUMNNAME_GoalRestrictionType);
     }
 
     /**
@@ -105,7 +104,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      * @return Category of a Product
      */
     public int getM_Product_Category_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_Category_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_Category_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -116,7 +115,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -127,18 +126,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      * @return Organizational entity within client
      */
     public int getOrg_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Org_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Goal.
-     *
-     * @return Performance Goal
-     */
-    public int getPA_Goal_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PA_Goal_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Org_ID);
         if (ii == null) return 0;
         return ii;
     }

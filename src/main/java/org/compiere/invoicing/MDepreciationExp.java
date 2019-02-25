@@ -65,15 +65,15 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             String description,
             MDepreciationWorkfile assetwk) {
         MDepreciationExp depexp = new MDepreciationExp(ctx, 0);
-        depexp.setA_Entry_Type(entryType);
-        depexp.setA_Asset_ID(A_Asset_ID);
-        depexp.setDR_Account_ID(drAcct);
-        depexp.setCR_Account_ID(crAcct);
-        depexp.setA_Account_Number_Acct(drAcct); // TODO: DELETEME
+        depexp.setEntryType(entryType);
+        depexp.setAssetId(A_Asset_ID);
+        depexp.setDRAccountId(drAcct);
+        depexp.setCRAccountId(crAcct);
+        depexp.setAccountNumberAcct(drAcct); // TODO: DELETEME
         depexp.setPostingType(postingType);
         depexp.setExpense(expense);
         depexp.setDescription(Msg.parseTranslation(ctx, description));
-        depexp.setA_Period(A_Period);
+        depexp.setPeriod(A_Period);
         depexp.setIsDepreciated(true);
         depexp.setDateAcct(DateAcct);
         //
@@ -109,23 +109,23 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
                 createEntry(
                         ctx,
                         X_A_Depreciation_Exp.A_ENTRY_TYPE_Depreciation,
-                        assetwk.getA_Asset_ID(),
+                        assetwk.getAssetId(),
                         PeriodNo,
                         dateAcct,
                         assetwk.getPostingType(),
-                        assetAcct.getA_Depreciation_Acct(),
-                        assetAcct.getA_Accumdepreciation_Acct(),
+                        assetAcct.getDepreciationAcct(),
+                        assetAcct.getAccumdepreciationAcct(),
                         amt,
                         "@AssetDepreciationAmt@",
                         assetwk);
         if (depexp != null) {
-            depexp.setAD_Org_ID(assetwk.getA_Asset().getOrgId()); // added by zuhri
-            if (accumAmt != null) depexp.setA_Accumulated_Depr(accumAmt);
-            if (accumAmt_F != null) depexp.setA_Accumulated_Depr_F(accumAmt_F);
+            depexp.setOrgId(assetwk.getAAsset().getOrgId()); // added by zuhri
+            if (accumAmt != null) depexp.setAccumulatedDepreciation(accumAmt);
+            if (accumAmt_F != null) depexp.setAccumulatedDepreciationFiscal(accumAmt_F);
             if (help != null && help.length() > 0) depexp.setHelp(help);
             depexp.setExpense_F(amt_F);
-            depexp.setA_Accumulated_Depr_Delta(amt);
-            depexp.setA_Accumulated_Depr_F_Delta(amt_F);
+            depexp.setAccumulatedDepreciationDelta(amt);
+            depexp.setAccumulatedDepreciationFiscalDelta(amt_F);
             depexp.saveEx();
             list.add(depexp);
         }
@@ -162,17 +162,17 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
      * @param wk asset workfile
      */
     public void updateFrom(MDepreciationWorkfile wk) {
-        setA_Asset_Cost(wk.getA_Asset_Cost());
-        setA_Accumulated_Depr(wk.getA_Accumulated_Depr());
-        setA_Accumulated_Depr_F(wk.getA_Accumulated_Depr_F());
+        setAssetCost(wk.getAssetCost());
+        setAccumulatedDepreciation(wk.getAccumulatedDepreciation());
+        setAccumulatedDepreciationFiscal(wk.getAccumulatedDepreciationFiscal());
         setUseLifeMonths(wk.getUseLifeMonths());
         setUseLifeMonths_F(wk.getUseLifeMonths_F());
-        setA_Asset_Remaining(wk.getA_Asset_Remaining());
-        setA_Asset_Remaining_F(wk.getA_Asset_Remaining_F());
+        setAssetRemaining(wk.getAssetRemaining());
+        setAssetRemainingFiscal(wk.getAssetRemainingFiscal());
     }
 
     private MDepreciationWorkfile getA_Depreciation_Workfile() {
-        return MDepreciationWorkfile.get(getCtx(), getA_Asset_ID(), getPostingType());
+        return MDepreciationWorkfile.get(getCtx(), getAssetId(), getPostingType());
     }
 
     /**
@@ -190,13 +190,13 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             throw new AssetException("@NotFound@ @A_Depreciation_Workfile_ID@");
         }
         //
-        String entryType = getA_Entry_Type();
+        String entryType = getEntryType();
         if (MDepreciationExp.A_ENTRY_TYPE_Depreciation.equals(entryType)) {
             checkExistsNotProcessedEntries(
-                    getCtx(), getA_Asset_ID(), getDateAcct(), getPostingType());
+                    getCtx(), getAssetId(), getDateAcct(), getPostingType());
             //
             // Check if the asset is Active:
-            if (!assetwk.getAsset().getA_Asset_Status().equals(MAsset.A_ASSET_STATUS_Activated)) {
+            if (!assetwk.getAsset().getAssetStatus().equals(MAsset.A_ASSET_STATUS_Activated)) {
                 throw new AssetNotActiveException(assetwk.getAsset().getId());
             }
             //
@@ -221,7 +221,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             // TODO : check if we can reverse it (check period, check dateacct etc)
             MDepreciationWorkfile assetwk = getA_Depreciation_Workfile();
             assetwk.adjustAccumulatedDepr(
-                    getA_Accumulated_Depr().negate(), getA_Accumulated_Depr_F().negate(), false);
+                    getAccumulatedDepreciation().negate(), getAccumulatedDepreciationFiscal().negate(), false);
             assetwk.saveEx();
         }
         // Try to delete postings
@@ -249,7 +249,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
     }
 
     protected boolean isPosted() {
-        return isProcessed() && getA_Depreciation_Entry_ID() > 0;
+        return isProcessed() && getDepreciationEntryId() > 0;
     }
 
     public void setProcessed(boolean Processed) {
@@ -271,15 +271,15 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
                 + "["
                 + getId()
                 + ",A_Asset_ID="
-                + getA_Asset_ID()
+                + getAssetId()
                 + ",A_Period="
-                + getA_Period()
+                + getPeriod()
                 + ",DateAcct="
                 + getDateAcct()
                 + ",Expense="
                 + getExpense()
                 + ",Entry_ID="
-                + getA_Depreciation_Entry_ID()
+                + getDepreciationEntryId()
                 + "]";
     }
 }

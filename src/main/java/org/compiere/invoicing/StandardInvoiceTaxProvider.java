@@ -52,7 +52,7 @@ public class StandardInvoiceTaxProvider extends StandardTaxProvider implements I
                     //
                     MInvoiceTax newITax = new MInvoiceTax(invoice.getCtx(), 0);
                     newITax.setClientOrg(invoice);
-                    newITax.setAD_Org_ID(invoice.getOrgId());
+                    newITax.setOrgId(invoice.getOrgId());
                     newITax.setC_Invoice_ID(invoice.getC_Invoice_ID());
                     newITax.setC_Tax_ID(cTax.getC_Tax_ID());
                     newITax.setPrecision(invoice.getPrecision());

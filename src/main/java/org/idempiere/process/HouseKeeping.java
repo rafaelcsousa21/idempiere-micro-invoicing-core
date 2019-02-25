@@ -58,9 +58,9 @@ public class HouseKeeping extends SvrProcess {
 
         X_AD_HouseKeeping houseKeeping =
                 new X_AD_HouseKeeping(getCtx(), p_AD_HouseKeeping_ID);
-        int tableID = houseKeeping.getAD_Table_ID();
+        int tableID = houseKeeping.getTableID();
         MTable table = new MTable(getCtx(), tableID);
-        String tableName = table.getTableName();
+        String tableName = table.getDbTableName();
         String whereClause = houseKeeping.getWhereClause();
         int noins = 0;
         int noexp = 0;

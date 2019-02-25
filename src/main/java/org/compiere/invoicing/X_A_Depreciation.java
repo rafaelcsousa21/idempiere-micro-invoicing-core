@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_A_Depreciation;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_A_Depreciation extends BasePOName implements I_A_Depreciation, I_Persistent {
+public class X_A_Depreciation extends BasePOName implements I_A_Depreciation {
 
     /**
      *
@@ -54,7 +53,7 @@ public class X_A_Depreciation extends BasePOName implements I_A_Depreciation, I_
      * @return DepreciationType
      */
     public String getDepreciationType() {
-        return (String) get_Value(COLUMNNAME_DepreciationType);
+        return (String) getValue(COLUMNNAME_DepreciationType);
     }
 
     @Override

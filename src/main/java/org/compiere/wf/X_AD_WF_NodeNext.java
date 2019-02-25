@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_NodeNext;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persistent {
+public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext {
 
     /**
      *
@@ -59,8 +58,8 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
      *
      * @return Next Node in workflow
      */
-    public int getAD_WF_Next_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Next_ID);
+    public int getWorkflowNextId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Next_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -70,7 +69,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
      *
      * @param AD_WF_Next_ID Next Node in workflow
      */
-    public void setAD_WF_Next_ID(int AD_WF_Next_ID) {
+    public void setWorkflowNextId(int AD_WF_Next_ID) {
         if (AD_WF_Next_ID < 1) set_Value(COLUMNNAME_AD_WF_Next_ID, null);
         else set_Value(COLUMNNAME_AD_WF_Next_ID, Integer.valueOf(AD_WF_Next_ID));
     }
@@ -80,8 +79,8 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
      *
      * @return Workflow Node (activity), step or process
      */
-    public int getAD_WF_Node_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Node_ID);
+    public int getWorkflowNodeId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Node_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -91,7 +90,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
      *
      * @param AD_WF_Node_ID Workflow Node (activity), step or process
      */
-    public void setAD_WF_Node_ID(int AD_WF_Node_ID) {
+    public void setWorkflowNodeId(int AD_WF_Node_ID) {
         if (AD_WF_Node_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_Node_ID, null);
         else set_ValueNoCheck(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
     }
@@ -101,8 +100,8 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
      *
      * @return Workflow Node Transition
      */
-    public int getAD_WF_NodeNext_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_NodeNext_ID);
+    public int getWorkflowNodeNextId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_NodeNext_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -113,7 +112,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -141,7 +140,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
      * @return Standard Manual User Approval Workflow
      */
     public boolean isStdUserWorkflow() {
-        Object oo = get_Value(COLUMNNAME_IsStdUserWorkflow);
+        Object oo = getValue(COLUMNNAME_IsStdUserWorkflow);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -155,7 +154,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext, I_Persiste
      * @return Method of ordering records; lowest number comes first
      */
     public int getSeqNo() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
+        Integer ii = (Integer) getValue(COLUMNNAME_SeqNo);
         if (ii == null) return 0;
         return ii;
     }

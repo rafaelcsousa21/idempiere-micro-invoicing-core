@@ -2,9 +2,7 @@ package org.compiere.bank;
 
 import org.compiere.model.I_C_BankAccount;
 import org.compiere.orm.BasePONameValue;
-import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount, I_Persistent {
+public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount {
 
     /**
      * Checking = C
@@ -61,7 +59,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
      * @return Account Number
      */
     public String getAccountNo() {
-        return (String) get_Value(COLUMNNAME_AccountNo);
+        return (String) getValue(COLUMNNAME_AccountNo);
     }
 
     /**
@@ -89,15 +87,9 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
      * @return Account at the Bank
      */
     public int getC_BankAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    public org.compiere.model.I_C_Bank getC_Bank() throws RuntimeException {
-        return (org.compiere.model.I_C_Bank)
-                MTable.get(getCtx(), org.compiere.model.I_C_Bank.Table_Name)
-                        .getPO(getC_Bank_ID());
     }
 
     /**
@@ -106,7 +98,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
      * @return Bank
      */
     public int getC_Bank_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Bank_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Bank_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -127,7 +119,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -157,7 +149,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
      * @return Current Balance
      */
     public BigDecimal getCurrentBalance() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrentBalance);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CurrentBalance);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -177,7 +169,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount,
      * @return International Bank Account Number
      */
     public String getIBAN() {
-        return (String) get_Value(COLUMNNAME_IBAN);
+        return (String) getValue(COLUMNNAME_IBAN);
     }
 
     /**

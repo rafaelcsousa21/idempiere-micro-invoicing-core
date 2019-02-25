@@ -4,7 +4,6 @@ import org.compiere.model.I_A_Depreciation_Workfile;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ import java.util.Properties;
  * @version Release 5.1 - $Id$
  */
 public class X_A_Depreciation_Workfile extends PO
-        implements I_A_Depreciation_Workfile, I_Persistent {
+        implements I_A_Depreciation_Workfile {
 
     /**
      * Cofinantare = C
@@ -84,8 +83,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Accumulated Depreciation
      */
-    public BigDecimal getA_Accumulated_Depr() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Accumulated_Depr);
+    public BigDecimal getAccumulatedDepreciation() {
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_A_Accumulated_Depr);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -95,7 +94,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Accumulated_Depr Accumulated Depreciation
      */
-    public void setA_Accumulated_Depr(BigDecimal A_Accumulated_Depr) {
+    public void setAccumulatedDepreciation(BigDecimal A_Accumulated_Depr) {
         set_Value(COLUMNNAME_A_Accumulated_Depr, A_Accumulated_Depr);
     }
 
@@ -104,8 +103,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Accumulated Depreciation (fiscal)
      */
-    public BigDecimal getA_Accumulated_Depr_F() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Accumulated_Depr_F);
+    public BigDecimal getAccumulatedDepreciationFiscal() {
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_A_Accumulated_Depr_F);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -115,7 +114,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Accumulated_Depr_F Accumulated Depreciation (fiscal)
      */
-    public void setA_Accumulated_Depr_F(BigDecimal A_Accumulated_Depr_F) {
+    public void setAccumulatedDepreciationFiscal(BigDecimal A_Accumulated_Depr_F) {
         set_Value(COLUMNNAME_A_Accumulated_Depr_F, A_Accumulated_Depr_F);
     }
 
@@ -124,8 +123,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Asset Cost
      */
-    public BigDecimal getA_Asset_Cost() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Asset_Cost);
+    public BigDecimal getAssetCost() {
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_A_Asset_Cost);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -135,14 +134,14 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Asset_Cost Asset Cost
      */
-    public void setA_Asset_Cost(BigDecimal A_Asset_Cost) {
+    public void setAssetCost(BigDecimal A_Asset_Cost) {
         set_Value(COLUMNNAME_A_Asset_Cost, A_Asset_Cost);
     }
 
-    public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException {
+    public org.compiere.model.I_A_Asset getAAsset() throws RuntimeException {
         return (org.compiere.model.I_A_Asset)
                 MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-                        .getPO(getA_Asset_ID());
+                        .getPO(getAssetId());
     }
 
     /**
@@ -150,8 +149,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Asset used internally or by customers
      */
-    public int getA_Asset_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Asset_ID);
+    public int getAssetId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_A_Asset_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -161,7 +160,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Asset_ID Asset used internally or by customers
      */
-    public void setA_Asset_ID(int A_Asset_ID) {
+    public void setAssetId(int A_Asset_ID) {
         if (A_Asset_ID < 1) set_ValueNoCheck(COLUMNNAME_A_Asset_ID, null);
         else set_ValueNoCheck(COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
     }
@@ -171,7 +170,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Asset_Life_Years Life Years
      */
-    public void setA_Asset_Life_Years(int A_Asset_Life_Years) {
+    public void setAssetLifeYears(int A_Asset_Life_Years) {
         set_Value(COLUMNNAME_A_Asset_Life_Years, Integer.valueOf(A_Asset_Life_Years));
     }
 
@@ -180,7 +179,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Asset_Life_Years_F Life Years (fiscal)
      */
-    public void setA_Asset_Life_Years_F(int A_Asset_Life_Years_F) {
+    public void setAssetLifeYearsFiscal(int A_Asset_Life_Years_F) {
         set_Value(COLUMNNAME_A_Asset_Life_Years_F, Integer.valueOf(A_Asset_Life_Years_F));
     }
 
@@ -189,8 +188,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Remaining Amt
      */
-    public BigDecimal getA_Asset_Remaining() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Asset_Remaining);
+    public BigDecimal getAssetRemaining() {
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_A_Asset_Remaining);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -200,7 +199,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Asset_Remaining Remaining Amt
      */
-    public void setA_Asset_Remaining(BigDecimal A_Asset_Remaining) {
+    public void setAssetRemaining(BigDecimal A_Asset_Remaining) {
         set_ValueNoCheck(COLUMNNAME_A_Asset_Remaining, A_Asset_Remaining);
     }
 
@@ -209,8 +208,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Remaining Amt (fiscal)
      */
-    public BigDecimal getA_Asset_Remaining_F() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Asset_Remaining_F);
+    public BigDecimal getAssetRemainingFiscal() {
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_A_Asset_Remaining_F);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -220,7 +219,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Asset_Remaining_F Remaining Amt (fiscal)
      */
-    public void setA_Asset_Remaining_F(BigDecimal A_Asset_Remaining_F) {
+    public void setAssetRemainingFiscal(BigDecimal A_Asset_Remaining_F) {
         set_ValueNoCheck(COLUMNNAME_A_Asset_Remaining_F, A_Asset_Remaining_F);
     }
 
@@ -229,8 +228,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Current Period
      */
-    public int getA_Current_Period() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Current_Period);
+    public int getCurrentPeriod() {
+        Integer ii = (Integer) getValue(COLUMNNAME_A_Current_Period);
         if (ii == null) return 0;
         return ii;
     }
@@ -240,30 +239,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Current_Period Current Period
      */
-    public void setA_Current_Period(int A_Current_Period) {
+    public void setCurrentPeriod(int A_Current_Period) {
         set_Value(COLUMNNAME_A_Current_Period, Integer.valueOf(A_Current_Period));
-    }
-
-    /**
-     * Get A_Depreciation_Workfile_ID.
-     *
-     * @return A_Depreciation_Workfile_ID
-     */
-    public int getA_Depreciation_Workfile_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Depreciation_Workfile_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Asset Funding Mode.
-     *
-     * @return Asset Funding Mode
-     */
-    public int getA_FundingMode_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_FundingMode_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -271,8 +248,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Life Periods
      */
-    public int getA_Life_Period() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Life_Period);
+    public int getLifePeriod() {
+        Integer ii = (Integer) getValue(COLUMNNAME_A_Life_Period);
         if (ii == null) return 0;
         return ii;
     }
@@ -282,7 +259,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Life_Period Life Periods
      */
-    public void setA_Life_Period(int A_Life_Period) {
+    public void setLifePeriod(int A_Life_Period) {
         set_Value(COLUMNNAME_A_Life_Period, Integer.valueOf(A_Life_Period));
     }
 
@@ -291,7 +268,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Life_Period_F Life Period (fiscal)
      */
-    public void setA_Life_Period_F(int A_Life_Period_F) {
+    public void setLifePeriodFiscal(int A_Life_Period_F) {
         set_Value(COLUMNNAME_A_Life_Period_F, Integer.valueOf(A_Life_Period_F));
     }
 
@@ -300,19 +277,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_Period_Posted A_Period_Posted
      */
-    public void setA_Period_Posted(int A_Period_Posted) {
+    public void setPeriodPosted(int A_Period_Posted) {
         set_Value(COLUMNNAME_A_Period_Posted, Integer.valueOf(A_Period_Posted));
-    }
-
-    /**
-     * Get Current Qty.
-     *
-     * @return Current Qty
-     */
-    public BigDecimal getA_QTY_Current() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_QTY_Current);
-        if (bd == null) return Env.ZERO;
-        return bd;
     }
 
     /**
@@ -320,7 +286,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param A_QTY_Current Current Qty
      */
-    public void setA_QTY_Current(BigDecimal A_QTY_Current) {
+    public void setQtyCurrent(BigDecimal A_QTY_Current) {
         set_Value(COLUMNNAME_A_QTY_Current, A_QTY_Current);
     }
 
@@ -329,19 +295,10 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Asset Salvage Value
      */
-    public BigDecimal getA_Salvage_Value() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Salvage_Value);
+    public BigDecimal getSalvageValue() {
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_A_Salvage_Value);
         if (bd == null) return Env.ZERO;
         return bd;
-    }
-
-    /**
-     * Get Asset Depreciation Date.
-     *
-     * @return Date of last depreciation
-     */
-    public Timestamp getAssetDepreciationDate() {
-        return (Timestamp) get_Value(COLUMNNAME_AssetDepreciationDate);
     }
 
     /**
@@ -350,7 +307,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -372,26 +329,12 @@ public class X_A_Depreciation_Workfile extends PO
     }
 
     /**
-     * Get Depreciate.
-     *
-     * @return The asset will be depreciated
-     */
-    public boolean isDepreciated() {
-        Object oo = get_Value(COLUMNNAME_IsDepreciated);
-        if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-            return "Y".equals(oo);
-        }
-        return false;
-    }
-
-    /**
      * Get PostingType.
      *
      * @return The type of posted amount for the transaction
      */
     public String getPostingType() {
-        return (String) get_Value(COLUMNNAME_PostingType);
+        return (String) getValue(COLUMNNAME_PostingType);
     }
 
     /**
@@ -410,7 +353,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @return Months of the usable life of the asset
      */
     public int getUseLifeMonths() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UseLifeMonths);
+        Integer ii = (Integer) getValue(COLUMNNAME_UseLifeMonths);
         if (ii == null) return 0;
         return ii;
     }
@@ -430,7 +373,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @return Use Life - Months (fiscal)
      */
     public int getUseLifeMonths_F() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UseLifeMonths_F);
+        Integer ii = (Integer) getValue(COLUMNNAME_UseLifeMonths_F);
         if (ii == null) return 0;
         return ii;
     }
@@ -450,7 +393,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @return Years of the usable life of the asset
      */
     public int getUseLifeYears() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UseLifeYears);
+        Integer ii = (Integer) getValue(COLUMNNAME_UseLifeYears);
         if (ii == null) return 0;
         return ii;
     }
@@ -469,8 +412,8 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Use Life - Years (fiscal)
      */
-    public int getUseLifeYears_F() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UseLifeYears_F);
+    public int getUseLifeYearsFiscal() {
+        Integer ii = (Integer) getValue(COLUMNNAME_UseLifeYears_F);
         if (ii == null) return 0;
         return ii;
     }
@@ -480,7 +423,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param UseLifeYears_F Use Life - Years (fiscal)
      */
-    public void setUseLifeYears_F(int UseLifeYears_F) {
+    public void setUseLifeYearsFiscal(int UseLifeYears_F) {
         set_Value(COLUMNNAME_UseLifeYears_F, Integer.valueOf(UseLifeYears_F));
     }
 

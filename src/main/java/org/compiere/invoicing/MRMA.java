@@ -266,7 +266,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         MRMA counter = copyFrom(this, C_DocTypeTarget_ID, !isSOTrx(), true);
 
         //
-        counter.setAD_Org_ID(counterAD_Org_ID);
+        counter.setOrgId(counterAD_Org_ID);
         counter.setC_BPartner_ID(counterC_BPartner_ID);
         counter.saveEx();
 

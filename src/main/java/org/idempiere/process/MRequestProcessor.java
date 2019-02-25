@@ -3,19 +3,13 @@ package org.idempiere.process;
 import org.compiere.accounting.MClient;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
-import org.compiere.model.AdempiereProcessorLog;
 import org.compiere.schedule.MSchedule;
 import org.compiere.util.Msg;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 public class MRequestProcessor extends X_R_RequestProcessor
@@ -41,7 +35,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
             setOverdueAlertDays(0);
             setOverdueAssignDays(0);
             setRemindDays(0);
-            //	setSupervisor_ID (0);
+            //	setSupervisorId (0);
         }
     } //	MRequestProcessor
 
@@ -69,37 +63,6 @@ public class MRequestProcessor extends X_R_RequestProcessor
     } //	MRequestProcessor
 
     /**
-     * Get Logs
-     *
-     * @return Array of Logs
-     */
-    public AdempiereProcessorLog[] getLogs() {
-        ArrayList<MRequestProcessorLog> list = new ArrayList<MRequestProcessorLog>();
-        String sql =
-                "SELECT * "
-                        + "FROM R_RequestProcessorLog "
-                        + "WHERE R_RequestProcessor_ID=? "
-                        + "ORDER BY Created DESC";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getR_RequestProcessor_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MRequestProcessorLog(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        MRequestProcessorLog[] retValue = new MRequestProcessorLog[list.size()];
-        list.toArray(retValue);
-        return retValue;
-    } //	getLogs
-
-    /**
      * Get the date Next run
      *
      * @param requery requery database
@@ -109,15 +72,6 @@ public class MRequestProcessor extends X_R_RequestProcessor
         if (requery) load((HashMap) null);
         return getDateNextRun();
     } //	getDateNextRun
-
-    /**
-     * Get Unique ID
-     *
-     * @return Unique ID
-     */
-    public String getServerID() {
-        return "RequestProcessor" + getId();
-    } //	getServerID
 
     /**
      * Before Save
@@ -167,21 +121,12 @@ public class MRequestProcessor extends X_R_RequestProcessor
     }
 
     /**
-     * Get Description.
-     *
-     * @return Optional short description of the record
-     */
-    public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
-    }
-
-    /**
      * Get Date last run.
      *
      * @return Date the process was last run.
      */
     public Timestamp getDateLastRun() {
-        return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
+        return (Timestamp) getValue(COLUMNNAME_DateLastRun);
     }
 
     /**

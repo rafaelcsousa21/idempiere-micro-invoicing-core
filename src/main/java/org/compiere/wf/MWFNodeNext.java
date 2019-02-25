@@ -70,8 +70,8 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
     public MWFNodeNext(MWFNode parent, int AD_WF_Next_ID) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setAD_WF_Node_ID(parent.getAD_WF_Node_ID());
-        setAD_WF_Next_ID(AD_WF_Next_ID);
+        setWorkflowNodeId(parent.getWorkflowNodeId());
+        setWorkflowNextId(AD_WF_Next_ID);
     } //	MWFNodeNext
 
     /**
@@ -93,9 +93,9 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
         StringBuilder sb = new StringBuilder("MWFNodeNext[");
         sb.append(getSeqNo())
                 .append(":Node=")
-                .append(getAD_WF_Node_ID())
+                .append(getWorkflowNodeId())
                 .append("->Next=")
-                .append(getAD_WF_Next_ID());
+                .append(getWorkflowNextId());
         if (m_conditions != null) sb.append(",#").append(m_conditions.length);
         if (getDescription() != null && getDescription().length() > 0)
             sb.append(",").append(getDescription());
@@ -115,7 +115,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
         final String whereClause = "AD_WF_NodeNext_ID=? AND clientId IN (0,?)";
         List<MWFNextCondition> list =
                 new Query(getCtx(), MWFNextCondition.Table_Name, whereClause)
-                        .setParameters(new Object[]{getAD_WF_NodeNext_ID(), Env.getClientId(Env.getCtx())})
+                        .setParameters(new Object[]{getWorkflowNodeNextId(), Env.getClientId(Env.getCtx())})
                         .setOnlyActiveRecords(true)
                         .setOrderBy(MWFNextCondition.COLUMNNAME_SeqNo)
                         .list();

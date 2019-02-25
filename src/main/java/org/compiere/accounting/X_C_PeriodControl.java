@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_PeriodControl;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persistent {
+public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
 
     /**
      * GL Journal = GLJ
@@ -170,7 +169,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     public X_C_PeriodControl(Properties ctx, int C_PeriodControl_ID) {
         super(ctx, C_PeriodControl_ID);
         /**
-         * if (C_PeriodControl_ID == 0) { setC_PeriodControl_ID (0); setC_Period_ID (0); setDocBaseType
+         * if (C_PeriodControl_ID == 0) { setC_PeriodControl_ID (0); setPeriodId (0); setDocBaseType
          * (null); setPeriodAction (null); // N }
          */
     }
@@ -197,23 +196,12 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
     }
 
     /**
-     * Get Period Control.
-     *
-     * @return Period Control
-     */
-    public int getC_PeriodControl_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_PeriodControl_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Period.
      *
      * @return Period of the Calendar
      */
     public int getC_Period_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Period_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -234,7 +222,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
      * @return Logical type of document
      */
     public String getDocBaseType() {
-        return (String) get_Value(COLUMNNAME_DocBaseType);
+        return (String) getValue(COLUMNNAME_DocBaseType);
     }
 
     /**
@@ -253,7 +241,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
      * @return Action taken for this period
      */
     public String getPeriodAction() {
-        return (String) get_Value(COLUMNNAME_PeriodAction);
+        return (String) getValue(COLUMNNAME_PeriodAction);
     }
 
     /**
@@ -272,7 +260,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl, I_Persis
      * @return Current state of this period
      */
     public String getPeriodStatus() {
-        return (String) get_Value(COLUMNNAME_PeriodStatus);
+        return (String) getValue(COLUMNNAME_PeriodStatus);
     }
 
     /**

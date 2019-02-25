@@ -104,7 +104,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     public MDDOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
         this(project.getCtx(), 0);
         setADClientID(project.getClientId());
-        setAD_Org_ID(project.getOrgId());
+        setOrgId(project.getOrgId());
         setC_Campaign_ID(project.getC_Campaign_ID());
         setSalesRep_ID(project.getSalesRep_ID());
         //
@@ -196,7 +196,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         //	Set Contact
         I_AD_User[] contacts = bp.getContacts();
         if (contacts != null && contacts.length == 1) {
-            setAD_User_ID(contacts[0].getAD_User_ID());
+            setAD_User_ID(contacts[0].getUserId());
         }
     } //	setBPartner
 
@@ -313,7 +313,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         if (getOrgId() == 0) {
             int context_AD_Org_ID = Env.getOrgId(getCtx());
             if (context_AD_Org_ID != 0) {
-                setAD_Org_ID(context_AD_Org_ID);
+                setOrgId(context_AD_Org_ID);
                 log.warning("Changed Org to Context=" + context_AD_Org_ID);
             }
         }
@@ -399,10 +399,10 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                             .list();
 
             for (MDDOrderLine line : lines) {
-                line.set_ValueOfColumn(columnName, get_Value(columnName));
+                line.set_ValueOfColumn(columnName, getValue(columnName));
                 line.saveEx();
                 if (log.isLoggable(Level.FINE))
-                    log.fine(columnName + " Lines -> #" + get_Value(columnName));
+                    log.fine(columnName + " Lines -> #" + getValue(columnName));
             }
         }
     } //	afterSaveSync

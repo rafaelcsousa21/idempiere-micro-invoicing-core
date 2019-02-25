@@ -3,16 +3,12 @@ package org.idempiere.process;
 import org.compiere.accounting.MClient;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
-import org.compiere.model.AdempiereProcessorLog;
-import org.compiere.model.I_C_AcctProcessorLog;
-import org.compiere.orm.Query;
 import org.compiere.schedule.MSchedule;
 import org.compiere.util.Msg;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Properties;
 
 
@@ -34,7 +30,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
         super(ctx, C_AcctProcessor_ID);
         if (C_AcctProcessor_ID == 0) {
             //	setName (null);
-            //	setSupervisor_ID (0);
+            //	setSupervisorId (0);
             //	setFrequencyType (FREQUENCYTYPE_Hour);
             //	setFrequency (1);
             setKeepLogDays(7); // 7
@@ -67,7 +63,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
                         .append(" - ")
                         .append(Msg.translate(getCtx(), "C_AcctProcessor_ID"));
         setName(msgset.toString());
-        setSupervisor_ID(Supervisor_ID);
+        setSupervisorId(Supervisor_ID);
     } //	MAcctProcessor
 
     /**
@@ -93,16 +89,6 @@ public class MAcctProcessor extends X_C_AcctProcessor
     } //	beforeSave
 
     /**
-     * Get Server ID
-     *
-     * @return id
-     */
-    public String getServerID() {
-        StringBuilder msgreturn = new StringBuilder("AcctProcessor").append(getId());
-        return msgreturn.toString();
-    } //	getServerID
-
-    /**
      * Get Date Next Run
      *
      * @param requery requery
@@ -113,53 +99,29 @@ public class MAcctProcessor extends X_C_AcctProcessor
         return getDateNextRun();
     } //	getDateNextRun
 
-    /**
-     * Get Logs
-     *
-     * @return logs
-     */
-    public AdempiereProcessorLog[] getLogs() {
-        String whereClause = "C_AcctProcessor_ID=? ";
-        List<MAcctProcessor> list =
-                new Query(getCtx(), I_C_AcctProcessorLog.Table_Name, whereClause)
-                        .setParameters(getC_AcctProcessor_ID())
-                        .setOrderBy("Created DESC")
-                        .list();
-        return list.toArray(new MAcctProcessorLog[list.size()]);
-    } //	getLogs
-
     @Override
     public String getFrequencyType() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequencyType();
+        return MSchedule.get(getCtx(), getScheduleId()).getFrequencyType();
     }
 
     @Override
     public int getFrequency() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequency();
+        return MSchedule.get(getCtx(), getScheduleId()).getFrequency();
     }
 
     @Override
     public boolean isIgnoreProcessingTime() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).isIgnoreProcessingTime();
+        return MSchedule.get(getCtx(), getScheduleId()).isIgnoreProcessingTime();
     }
 
     @Override
     public String getScheduleType() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getScheduleType();
+        return MSchedule.get(getCtx(), getScheduleId()).getScheduleType();
     }
 
     @Override
     public String getCronPattern() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getCronPattern();
-    }
-
-    /**
-     * Get Description.
-     *
-     * @return Optional short description of the record
-     */
-    public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return MSchedule.get(getCtx(), getScheduleId()).getCronPattern();
     }
 
     /**
@@ -168,7 +130,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
      * @return Date the process was last run.
      */
     public Timestamp getDateLastRun() {
-        return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
+        return (Timestamp) getValue(COLUMNNAME_DateLastRun);
     }
 
     /**

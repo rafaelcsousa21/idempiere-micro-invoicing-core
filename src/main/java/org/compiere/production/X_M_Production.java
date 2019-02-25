@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_M_Production;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Production extends BasePOName implements I_Persistent {
+public class X_M_Production extends BasePOName {
 
     /**
      * Complete = CO
@@ -202,7 +201,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(I_M_Production.COLUMNNAME_Description);
+        return (String) getValue(I_M_Production.COLUMNNAME_Description);
     }
 
     /**
@@ -220,7 +219,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(I_M_Production.COLUMNNAME_DocAction);
+        return (String) getValue(I_M_Production.COLUMNNAME_DocAction);
     }
 
     /**
@@ -239,7 +238,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(I_M_Production.COLUMNNAME_DocStatus);
+        return (String) getValue(I_M_Production.COLUMNNAME_DocStatus);
     }
 
     /**
@@ -258,7 +257,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(I_M_Production.COLUMNNAME_DocumentNo);
+        return (String) getValue(I_M_Production.COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -276,7 +275,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Records created
      */
     public String getIsCreated() {
-        return (String) get_Value(I_M_Production.COLUMNNAME_IsCreated);
+        return (String) getValue(I_M_Production.COLUMNNAME_IsCreated);
     }
 
     /**
@@ -304,7 +303,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Use Production Plan
      */
     public boolean isUseProductionPlan() {
-        Object oo = get_Value(I_M_Production.COLUMNNAME_IsUseProductionPlan);
+        Object oo = getValue(I_M_Production.COLUMNNAME_IsUseProductionPlan);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -318,7 +317,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(I_M_Production.COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -339,7 +338,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Date a product was moved in or out of inventory
      */
     public Timestamp getMovementDate() {
-        return (Timestamp) get_Value(I_M_Production.COLUMNNAME_MovementDate);
+        return (Timestamp) getValue(I_M_Production.COLUMNNAME_MovementDate);
     }
 
     /**
@@ -357,7 +356,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(I_M_Production.COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -378,7 +377,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Plan for producing a product
      */
     public int getM_Production_ID() {
-        Integer ii = (Integer) get_Value(I_M_Production.COLUMNNAME_M_Production_ID);
+        Integer ii = (Integer) getValue(I_M_Production.COLUMNNAME_M_Production_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -389,7 +388,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(I_M_Production.COLUMNNAME_Processed);
+        Object oo = getValue(I_M_Production.COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -421,7 +420,7 @@ public class X_M_Production extends BasePOName implements I_Persistent {
      * @return Quantity of products to produce
      */
     public BigDecimal getProductionQty() {
-        BigDecimal bd = (BigDecimal) get_Value(I_M_Production.COLUMNNAME_ProductionQty);
+        BigDecimal bd = (BigDecimal) getValue(I_M_Production.COLUMNNAME_ProductionQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

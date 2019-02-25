@@ -4,7 +4,6 @@ import org.compiere.model.I_M_Requisition;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent {
+public class X_M_Requisition extends PO implements I_M_Requisition {
 
     /**
      * Completed = CO
@@ -46,11 +45,11 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
     public X_M_Requisition(Properties ctx, int M_Requisition_ID) {
         super(ctx, M_Requisition_ID);
         /**
-         * if (M_Requisition_ID == 0) { setAD_User_ID (0); setC_DocType_ID (0); setDateDoc (new
+         * if (M_Requisition_ID == 0) { setUserId (0); setC_DocType_ID (0); setDateDoc (new
          * Timestamp( System.currentTimeMillis() )); // @#Date@ setDateRequired (new Timestamp(
          * System.currentTimeMillis() )); setDocAction (null); // CO setDocStatus (null); // DR
          * setDocumentNo (null); setIsApproved (false); setM_PriceList_ID (0); setM_Requisition_ID (0);
-         * setM_Warehouse_ID (0); setPosted (false); setPriorityRule (null); // 5 setProcessed (false);
+         * setWarehouseId (0); setPosted (false); setPriorityRule (null); // 5 setProcessed (false);
          * setTotalLines (Env.ZERO); }
          */
     }
@@ -82,7 +81,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return User within the system - Internal or Business Partner Contact
      */
     public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -109,7 +108,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -130,7 +129,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Date of the Document
      */
     public Timestamp getDateDoc() {
-        return (Timestamp) get_Value(COLUMNNAME_DateDoc);
+        return (Timestamp) getValue(COLUMNNAME_DateDoc);
     }
 
     /**
@@ -148,7 +147,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Date when required
      */
     public Timestamp getDateRequired() {
-        return (Timestamp) get_Value(COLUMNNAME_DateRequired);
+        return (Timestamp) getValue(COLUMNNAME_DateRequired);
     }
 
     /**
@@ -166,7 +165,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -184,7 +183,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -203,7 +202,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(COLUMNNAME_DocStatus);
+        return (String) getValue(COLUMNNAME_DocStatus);
     }
 
     /**
@@ -222,7 +221,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -249,7 +248,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(COLUMNNAME_IsApproved);
+        Object oo = getValue(COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -263,7 +262,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Unique identifier of a Price List
      */
     public int getM_PriceList_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_PriceList_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_PriceList_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -284,7 +283,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Material Requisition
      */
     public int getM_Requisition_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Requisition_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Requisition_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -295,7 +294,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Storage Warehouse and Service Point
      */
     public int getM_Warehouse_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -353,7 +352,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition, I_Persistent
      * @return Total of all document lines
      */
     public BigDecimal getTotalLines() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TotalLines);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_TotalLines);
         if (bd == null) return Env.ZERO;
         return bd;
     }

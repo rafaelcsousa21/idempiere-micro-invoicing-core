@@ -29,7 +29,7 @@ public class MWorkflowAccess extends X_AD_Workflow_Access {
         super(ctx, 0);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
         else {
-            //	setAD_Role_ID (0);
+            //	setRoleId (0);
             //	setAD_Workflow_ID (0);
             setIsReadWrite(true);
         }
@@ -56,7 +56,7 @@ public class MWorkflowAccess extends X_AD_Workflow_Access {
         super(parent.getCtx(), 0);
         MRole role = MRole.get(parent.getCtx(), AD_Role_ID);
         setClientOrg(role);
-        setAD_Workflow_ID(parent.getAD_Workflow_ID());
-        setAD_Role_ID(AD_Role_ID);
+        setWorkflowId(parent.getWorkflowId());
+        setRoleId(AD_Role_ID);
     } //	MWorkflowAccess
 } //	MWorkflowAccess

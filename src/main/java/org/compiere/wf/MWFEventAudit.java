@@ -54,15 +54,15 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
      */
     public MWFEventAudit(MWFActivity activity) {
         super(activity.getCtx(), 0);
-        setAD_WF_Process_ID(activity.getAD_WF_Process_ID());
-        setAD_WF_Node_ID(activity.getAD_WF_Node_ID());
-        setAD_Table_ID(activity.getAD_Table_ID());
-        setRecord_ID(activity.getRecord_ID());
+        setWorkflowProcessId(activity.getWorkflowProcessId());
+        setWorkflowNodeId(activity.getWorkflowNodeId());
+        setTableId(activity.getDBTableId());
+        setRecordId(activity.getRecordId());
         //
-        setAD_WF_Responsible_ID(activity.getAD_WF_Responsible_ID());
-        setAD_User_ID(activity.getAD_User_ID());
+        setWorkflowResponsibleId(activity.getWorkflowResponsibleId());
+        setUserId(activity.getUserId());
         //
-        setWFState(activity.getWFState());
+        setWFState(activity.getWorkflowState());
         setEventType(X_AD_WF_EventAudit.EVENTTYPE_ProcessCreated);
         setElapsedTimeMS(Env.ZERO);
         //
@@ -124,7 +124,7 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
      * @return node name
      */
     public String getNodeName() {
-        MWFNode node = MWFNode.get(getCtx(), getAD_WF_Node_ID());
+        MWFNode node = MWFNode.get(getCtx(), getWorkflowNodeId());
         if (node.getId() == 0) return "?";
         return node.get_Translation(HasName.Companion.getCOLUMNNAME_Name());
     } //	getNodeName

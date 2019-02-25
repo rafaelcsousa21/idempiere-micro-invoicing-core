@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_M_ChangeRequest;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, I_Persistent {
+public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
 
     /**
      *
@@ -72,7 +71,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, 
      * @return Bill of Materials (Engineering) Change Notice (Version)
      */
     public int getM_ChangeNotice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_ChangeNotice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_ChangeNotice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -93,7 +92,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, 
      * @return Fixed in Change Notice
      */
     public int getM_FixChangeNotice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_FixChangeNotice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_FixChangeNotice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -104,7 +103,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, 
      * @return BOM & Formula
      */
     public int getPP_Product_BOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PP_Product_BOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -125,7 +124,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest, 
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);

@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_I_ElementValue;
 import org.compiere.orm.BasePONameValue;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValue, I_Persistent {
+public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValue {
 
     /**
      *
@@ -55,7 +54,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Indicates the Natural Sign of the Account as a Debit or Credit
      */
     public String getAccountSign() {
-        return (String) get_Value(COLUMNNAME_AccountSign);
+        return (String) getValue(COLUMNNAME_AccountSign);
     }
 
     /**
@@ -64,18 +63,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Indicates the type of account
      */
     public String getAccountType() {
-        return (String) get_Value(COLUMNNAME_AccountType);
-    }
-
-    /**
-     * Get Column.
-     *
-     * @return Column in the table
-     */
-    public int getAD_Column_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Column_ID);
-        if (ii == null) return 0;
-        return ii;
+        return (String) getValue(COLUMNNAME_AccountType);
     }
 
     /**
@@ -84,7 +72,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Accounting Element
      */
     public int getC_Element_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Element_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Element_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -95,7 +83,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Account Element
      */
     public int getC_ElementValue_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ElementValue_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ElementValue_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -116,7 +104,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -125,7 +113,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Import Account Value
      */
     public int getI_ElementValue_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_I_ElementValue_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_I_ElementValue_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -146,7 +134,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * to it
      */
     public boolean isDocControlled() {
-        Object oo = get_Value(COLUMNNAME_IsDocControlled);
+        Object oo = getValue(COLUMNNAME_IsDocControlled);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -160,7 +148,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return This is a summary entity
      */
     public boolean isSummary() {
-        Object oo = get_Value(COLUMNNAME_IsSummary);
+        Object oo = getValue(COLUMNNAME_IsSummary);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -169,23 +157,12 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
     }
 
     /**
-     * Get Parent Account.
-     *
-     * @return The parent (summary) account
-     */
-    public int getParentElementValue_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_ParentElementValue_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Post Actual.
      *
      * @return Actual Values can be posted
      */
     public boolean isPostActual() {
-        Object oo = get_Value(COLUMNNAME_PostActual);
+        Object oo = getValue(COLUMNNAME_PostActual);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -199,7 +176,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Budget values can be posted
      */
     public boolean isPostBudget() {
-        Object oo = get_Value(COLUMNNAME_PostBudget);
+        Object oo = getValue(COLUMNNAME_PostBudget);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -213,7 +190,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Post commitments to this account
      */
     public boolean isPostEncumbrance() {
-        Object oo = get_Value(COLUMNNAME_PostEncumbrance);
+        Object oo = getValue(COLUMNNAME_PostEncumbrance);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -227,7 +204,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @return Post statistical quantities to this account?
      */
     public boolean isPostStatistical() {
-        Object oo = get_Value(COLUMNNAME_PostStatistical);
+        Object oo = getValue(COLUMNNAME_PostStatistical);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);

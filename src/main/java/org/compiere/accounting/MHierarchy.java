@@ -79,5 +79,5 @@ public class MHierarchy extends X_PA_Hierarchy {
         //
         log.warning("Not supported: " + TreeType);
         return 0;
-    } //	getAD_Tree_ID
+    } //	getTreeId
 } //	MHierarchy

@@ -86,11 +86,11 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
         for (int i = 0; i < counters.length; i++) {
             MDocType counter = counters[i];
             if (counter.isDefaultCounterDoc()) {
-                Counter_C_DocType_ID = counter.getC_DocType_ID();
+                Counter_C_DocType_ID = counter.getDocTypeId();
                 break;
             }
-            if (counter.isDefault()) Counter_C_DocType_ID = counter.getC_DocType_ID();
-            else if (i == 0) Counter_C_DocType_ID = counter.getC_DocType_ID();
+            if (counter.isDefault()) Counter_C_DocType_ID = counter.getDocTypeId();
+            else if (i == 0) Counter_C_DocType_ID = counter.getDocTypeId();
         }
         return Counter_C_DocType_ID;
     } // getCounterDocType_ID
@@ -311,7 +311,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
 
         if (!newRecord && (is_ValueChanged("C_DocType_ID") || is_ValueChanged("Counter_C_DocType_ID")))
             setIsValid(false);

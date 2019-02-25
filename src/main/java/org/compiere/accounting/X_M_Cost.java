@@ -5,7 +5,6 @@ import org.compiere.model.I_M_Cost;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
+public class X_M_Cost extends PO implements I_M_Cost {
 
     /**
      * Average PO = A
@@ -38,9 +37,9 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
     public X_M_Cost(Properties ctx, int M_Cost_ID) {
         super(ctx, M_Cost_ID);
         /**
-         * if (M_Cost_ID == 0) { setC_AcctSchema_ID (0); setCurrentCostPrice (Env.ZERO);
+         * if (M_Cost_ID == 0) { setAccountingSchemaId (0); setCurrentCostPrice (Env.ZERO);
          * setCurrentCostPriceLL (Env.ZERO); setCurrentQty (Env.ZERO); setFutureCostPrice (Env.ZERO);
-         * setM_AttributeSetInstance_ID (0); setM_CostElement_ID (0); setM_CostType_ID (0);
+         * setM_AttributeSetInstance_ID (0); setM_CostElement_ID (0); setCostTypeId (0);
          * setM_Product_ID (0); }
          */
     }
@@ -83,7 +82,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Rules for accounting
      */
     public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -104,7 +103,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Total Amount
      */
     public BigDecimal getCumulatedAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CumulatedAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CumulatedAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -124,7 +123,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Total Quantity
      */
     public BigDecimal getCumulatedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CumulatedQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CumulatedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -144,7 +143,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return The currently used cost price
      */
     public BigDecimal getCurrentCostPrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrentCostPrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CurrentCostPrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -165,7 +164,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * manufactured for this level.
      */
     public BigDecimal getCurrentCostPriceLL() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrentCostPriceLL);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CurrentCostPriceLL);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -176,7 +175,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Current Quantity
      */
     public BigDecimal getCurrentQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrentQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CurrentQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -196,7 +195,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Future Cost Price
      */
     public BigDecimal getFutureCostPrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_FutureCostPrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_FutureCostPrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -228,7 +227,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -245,7 +244,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Product Cost Element
      */
     public int getM_CostElement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -266,7 +265,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Type of Cost (e.g. Current, Plan, Future)
      */
     public int getM_CostType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_CostType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -293,7 +292,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -314,7 +313,7 @@ public class X_M_Cost extends PO implements I_M_Cost, I_Persistent {
      * @return Percentage
      */
     public int getPercent() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Percent);
+        Integer ii = (Integer) getValue(COLUMNNAME_Percent);
         if (ii == null) return 0;
         return ii;
     }

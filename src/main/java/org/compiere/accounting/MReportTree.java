@@ -105,7 +105,7 @@ public class MReportTree {
         String key =
                 Env.getClientId(ctx)
                         + "_"
-                        + role.getAD_Role_ID()
+                        + role.getRoleId()
                         + "_"
                         + PA_Hierarchy_ID
                         + "_"
@@ -116,7 +116,7 @@ public class MReportTree {
                             + "_"
                             + Env.getAD_User_ID(ctx)
                             + "_"
-                            + role.getAD_Role_ID()
+                            + role.getRoleId()
                             + "_"
                             + PA_Hierarchy_ID
                             + "_"
@@ -145,7 +145,7 @@ public class MReportTree {
         if (AD_Tree_ID == 0) return getDefaultAD_Tree_ID();
 
         return AD_Tree_ID;
-    } //	getAD_Tree_ID
+    } //	getTreeId
 
     /**
      * Get Default AD_Tree_ID see MTree.getDefaultAD_Tree_ID

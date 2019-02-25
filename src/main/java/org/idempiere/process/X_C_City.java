@@ -2,12 +2,11 @@ package org.idempiere.process;
 
 import org.compiere.model.I_C_City;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_C_City extends BasePOName implements I_C_City, I_Persistent {
+public class X_C_City extends BasePOName implements I_C_City {
 
     /**
      *
@@ -55,29 +54,7 @@ public class X_C_City extends BasePOName implements I_C_City, I_Persistent {
      * @return City
      */
     public int getC_City_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_City_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Country.
-     *
-     * @return Country
-     */
-    public int getC_Country_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Country_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Region.
-     *
-     * @return Identifies a geographical Region
-     */
-    public int getC_Region_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Region_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_City_ID);
         if (ii == null) return 0;
         return ii;
     }

@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_C_Task;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
+public class X_C_Task extends BasePOName implements I_C_Task {
 
     /**
      *
@@ -51,23 +50,12 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
     }
 
     /**
-     * Get Standard Phase.
-     *
-     * @return Standard Phase of the Project Type
-     */
-    public int getC_Phase_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Phase_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Standard Task.
      *
      * @return Standard Project Type Task
      */
     public int getC_Task_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Task_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Task_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -78,7 +66,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -87,7 +75,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
      * @return Comment or Hint
      */
     public String getHelp() {
-        return (String) get_Value(COLUMNNAME_Help);
+        return (String) getValue(COLUMNNAME_Help);
     }
 
     /**
@@ -96,7 +84,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -107,7 +95,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
      * @return Method of ordering records; lowest number comes first
      */
     public int getSeqNo() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
+        Integer ii = (Integer) getValue(COLUMNNAME_SeqNo);
         if (ii == null) return 0;
         return ii;
     }
@@ -127,7 +115,7 @@ public class X_C_Task extends BasePOName implements I_C_Task, I_Persistent {
      * @return Standard Quantity
      */
     public BigDecimal getStandardQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_StandardQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_StandardQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

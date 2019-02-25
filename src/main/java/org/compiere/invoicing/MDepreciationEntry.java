@@ -53,9 +53,9 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         super(ctx, A_Depreciation_Entry_ID);
         if (A_Depreciation_Entry_ID == 0) {
             MAcctSchema acctSchema = MClient.get(getCtx()).getAcctSchema();
-            setC_AcctSchema_ID(acctSchema.getId());
-            setC_Currency_ID(acctSchema.getC_Currency_ID());
-            setA_Entry_Type(X_A_Depreciation_Entry.A_ENTRY_TYPE_Depreciation); // TODO: workaround
+            setAcctSchemaId(acctSchema.getId());
+            setCurrencyId(acctSchema.getCurrencyId());
+            setEntryType(X_A_Depreciation_Entry.A_ENTRY_TYPE_Depreciation); // TODO: workaround
             setPostingType(X_A_Depreciation_Entry.POSTINGTYPE_Actual); // A
             setProcessed(false);
             setProcessing(false);
@@ -74,7 +74,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         final String sql = "DELETE FROM Fact_Acct WHERE AD_Table_ID=? AND Record_ID=? AND Line_ID=?";
         Object[] params =
                 new Object[]{
-                        I_A_Depreciation_Entry.Table_ID, depexp.getA_Depreciation_Entry_ID(), depexp.getId()
+                        I_A_Depreciation_Entry.Table_ID, depexp.getDepreciationEntryId(), depexp.getId()
                 };
         executeUpdateEx(sql, params);
     }
@@ -109,7 +109,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         if (period == null) {
             throw new AdempiereException("@NotFound@ @C_Period_ID@");
         }
-        setC_Period_ID(period.getId());
+        setPeriodId(period.getId());
     }
 
     private void unselectLines() {
@@ -211,7 +211,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             return DocAction.Companion.getSTATUS_Invalid();
         }
 
-        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getOrgId());
+        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocTypeId(), getOrgId());
 
         m_justPrepared = true;
 
@@ -250,7 +250,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             approveIt();
         }
 
-        final MPeriod period = MPeriod.get(getCtx(), getC_Period_ID());
+        final MPeriod period = MPeriod.get(getCtx(), getPeriodId());
 
         final ArrayList<Exception> errors = new ArrayList<Exception>();
         final Iterator<MDepreciationExp> it = getLinesIterator(true);
@@ -351,5 +351,16 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     public void setDocStatus(String DocStatus) {
 
         set_Value(COLUMNNAME_DocStatus, DocStatus);
+    }
+
+    /**
+     * Get Currency.
+     *
+     * @return The Currency for this record
+     */
+    public int getC_Currency_ID() {
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
+        if (ii == null) return 0;
+        return ii;
     }
 }

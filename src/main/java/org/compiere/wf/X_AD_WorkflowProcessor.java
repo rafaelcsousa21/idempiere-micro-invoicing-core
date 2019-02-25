@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WorkflowProcessor;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @version Release 5.1 - $Id$
  */
 public class X_AD_WorkflowProcessor extends BasePOName
-        implements I_AD_WorkflowProcessor, I_Persistent {
+        implements I_AD_WorkflowProcessor {
 
     /**
      *
@@ -28,8 +27,8 @@ public class X_AD_WorkflowProcessor extends BasePOName
     public X_AD_WorkflowProcessor(Properties ctx, int AD_WorkflowProcessor_ID) {
         super(ctx, AD_WorkflowProcessor_ID);
         /**
-         * if (AD_WorkflowProcessor_ID == 0) { setAD_Schedule_ID (0); setAD_WorkflowProcessor_ID (0);
-         * setKeepLogDays (0); // 7 setName (null); setSupervisor_ID (0); }
+         * if (AD_WorkflowProcessor_ID == 0) { setScheduleId (0); setAD_WorkflowProcessor_ID (0);
+         * setKeepLogDays (0); // 7 setName (null); setSupervisorId (0); }
          */
     }
 
@@ -59,8 +58,8 @@ public class X_AD_WorkflowProcessor extends BasePOName
      *
      * @return Schedule
      */
-    public int getAD_Schedule_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Schedule_ID);
+    public int getScheduleId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Schedule_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -70,8 +69,8 @@ public class X_AD_WorkflowProcessor extends BasePOName
      *
      * @return Workflow Processor Server
      */
-    public int getAD_WorkflowProcessor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WorkflowProcessor_ID);
+    public int getWorkflowProcessorId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WorkflowProcessor_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -82,7 +81,7 @@ public class X_AD_WorkflowProcessor extends BasePOName
      * @return Date the process will run next
      */
     public Timestamp getDateNextRun() {
-        return (Timestamp) get_Value(COLUMNNAME_DateNextRun);
+        return (Timestamp) getValue(COLUMNNAME_DateNextRun);
     }
 
     /**
@@ -92,28 +91,6 @@ public class X_AD_WorkflowProcessor extends BasePOName
      */
     public void setDateNextRun(Timestamp DateNextRun) {
         set_Value(COLUMNNAME_DateNextRun, DateNextRun);
-    }
-
-    /**
-     * Get Days to keep Log.
-     *
-     * @return Number of days to keep the log entries
-     */
-    public int getKeepLogDays() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_KeepLogDays);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Supervisor.
-     *
-     * @return Supervisor for this user/organization - used for escalation and approval
-     */
-    public int getSupervisor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Supervisor_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     @Override

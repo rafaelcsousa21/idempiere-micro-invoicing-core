@@ -170,7 +170,7 @@ public class BankStatementPayment extends SvrProcess {
         if (PayAmt == null) PayAmt = Env.ZERO;
         //
         MPayment payment = new MPayment(getCtx(), 0);
-        payment.setAD_Org_ID(AD_Org_ID);
+        payment.setOrgId(AD_Org_ID);
         payment.setC_BankAccount_ID(C_BankAccount_ID);
         payment.setTenderType(MPayment.TENDERTYPE_Check);
         if (DateTrx != null) payment.setDateTrx(DateTrx);

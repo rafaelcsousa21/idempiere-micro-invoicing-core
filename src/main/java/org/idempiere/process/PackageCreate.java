@@ -45,7 +45,7 @@ public class PackageCreate extends SvrProcess {
         // Bug [ 1754889 ] Create Package error
         // Commenting these lines because this process is called also from window "Ship/Receipt Confirm"
         // if (p_M_InOut_ID == 0)
-        // p_M_InOut_ID = getRecord_ID();
+        // p_M_InOut_ID = getRecordId();
 
     } //	prepare
 

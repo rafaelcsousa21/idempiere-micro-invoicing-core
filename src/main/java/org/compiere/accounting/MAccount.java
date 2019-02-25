@@ -50,7 +50,7 @@ public class MAccount extends X_C_ValidCombination {
         super(ctx, C_ValidCombination_ID);
         if (C_ValidCombination_ID == 0) {
             //	setAccount_ID (0);
-            //	setC_AcctSchema_ID (0);
+            //	setAccountingSchemaId (0);
             setIsFullyQualified(false);
         }
     } //  MAccount
@@ -74,7 +74,7 @@ public class MAccount extends X_C_ValidCombination {
     public MAccount(MAcctSchema as) {
         this(as.getCtx(), 0);
         setClientOrg(as);
-        setC_AcctSchema_ID(as.getC_AcctSchema_ID());
+        setC_AcctSchema_ID(as.getAccountingSchemaId());
     } //	Account
 
     /*
@@ -348,7 +348,7 @@ public class MAccount extends X_C_ValidCombination {
             boolean setValue = ase.isMandatory() || (!ase.isMandatory() && !optionalNull);
             //
             if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Organization))
-                vc.setAD_Org_ID(defaultValue);
+                vc.setOrgId(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Account))
                 vc.setAccount_ID(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SubAccount) && setValue)
@@ -542,7 +542,7 @@ public class MAccount extends X_C_ValidCombination {
             if (MAcctSchemaElement.ELEMENTTYPE_Organization.equals(element.getElementType())) {
                 if (getOrgId() != 0) {
                     MOrg org = new MOrg(getCtx(), getOrgId()); // 	in Trx!
-                    combiStr = org.getValue();
+                    combiStr = org.getSearchKey();
                     descrStr = org.getName();
                 } else {
                     combiStr = "*";
@@ -553,7 +553,7 @@ public class MAccount extends X_C_ValidCombination {
                 if (getAccount_ID() != 0) {
                     if (m_accountEV == null)
                         m_accountEV = new MElementValue(getCtx(), getAccount_ID());
-                    combiStr = m_accountEV.getValue();
+                    combiStr = m_accountEV.getSearchKey();
                     descrStr = m_accountEV.getName();
                 } else if (element.isMandatory()) {
                     log.warning("Mandatory Element missing: Account");
@@ -562,7 +562,7 @@ public class MAccount extends X_C_ValidCombination {
             } else if (MAcctSchemaElement.ELEMENTTYPE_SubAccount.equals(element.getElementType())) {
                 if (getC_SubAcct_ID() != 0) {
                     X_C_SubAcct sa = new X_C_SubAcct(getCtx(), getC_SubAcct_ID());
-                    combiStr = sa.getValue();
+                    combiStr = sa.getSearchKey();
                     descrStr = sa.getName();
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_Product.equals(element.getElementType())) {
@@ -577,7 +577,7 @@ public class MAccount extends X_C_ValidCombination {
             } else if (MAcctSchemaElement.ELEMENTTYPE_BPartner.equals(element.getElementType())) {
                 if (getC_BPartner_ID() != 0) {
                     X_C_BPartner partner = new X_C_BPartner(getCtx(), getC_BPartner_ID());
-                    combiStr = partner.getValue();
+                    combiStr = partner.getSearchKey();
                     descrStr = partner.getName();
                 } else if (element.isMandatory()) {
                     log.warning("Mandatory Element missing: Business Partner");
@@ -586,7 +586,7 @@ public class MAccount extends X_C_ValidCombination {
             } else if (MAcctSchemaElement.ELEMENTTYPE_OrgTrx.equals(element.getElementType())) {
                 if (getAD_OrgTrx_ID() != 0) {
                     MOrg org = new MOrg(getCtx(), getAD_OrgTrx_ID()); // in Trx!
-                    combiStr = org.getValue();
+                    combiStr = org.getSearchKey();
                     descrStr = org.getName();
                 } else if (element.isMandatory()) {
                     log.warning("Mandatory Element missing: Trx Org");
@@ -613,7 +613,7 @@ public class MAccount extends X_C_ValidCombination {
             } else if (MAcctSchemaElement.ELEMENTTYPE_SalesRegion.equals(element.getElementType())) {
                 if (getC_SalesRegion_ID() != 0) {
                     MSalesRegion loc = new MSalesRegion(getCtx(), getC_SalesRegion_ID());
-                    combiStr = loc.getValue();
+                    combiStr = loc.getSearchKey();
                     descrStr = loc.getName();
                 } else if (element.isMandatory()) {
                     log.warning("Mandatory Element missing: SalesRegion");
@@ -622,7 +622,7 @@ public class MAccount extends X_C_ValidCombination {
             } else if (MAcctSchemaElement.ELEMENTTYPE_Project.equals(element.getElementType())) {
                 if (getC_Project_ID() != 0) {
                     X_C_Project project = new X_C_Project(getCtx(), getC_Project_ID());
-                    combiStr = project.getValue();
+                    combiStr = project.getSearchKey();
                     descrStr = project.getName();
                 } else if (element.isMandatory()) {
                     log.warning("Mandatory Element missing: Project");
@@ -631,7 +631,7 @@ public class MAccount extends X_C_ValidCombination {
             } else if (MAcctSchemaElement.ELEMENTTYPE_Campaign.equals(element.getElementType())) {
                 if (getC_Campaign_ID() != 0) {
                     X_C_Campaign campaign = new X_C_Campaign(getCtx(), getC_Campaign_ID());
-                    combiStr = campaign.getValue();
+                    combiStr = campaign.getSearchKey();
                     descrStr = campaign.getName();
                 } else if (element.isMandatory()) {
                     log.warning("Mandatory Element missing: Campaign");
@@ -640,7 +640,7 @@ public class MAccount extends X_C_ValidCombination {
             } else if (MAcctSchemaElement.ELEMENTTYPE_Activity.equals(element.getElementType())) {
                 if (getC_Activity_ID() != 0) {
                     X_C_Activity act = new X_C_Activity(getCtx(), getC_Activity_ID());
-                    combiStr = act.getValue();
+                    combiStr = act.getSearchKey();
                     descrStr = act.getName();
                 } else if (element.isMandatory()) {
                     log.warning("Mandatory Element missing: Campaign");
@@ -649,13 +649,13 @@ public class MAccount extends X_C_ValidCombination {
             } else if (MAcctSchemaElement.ELEMENTTYPE_UserElementList1.equals(element.getElementType())) {
                 if (getUser1_ID() != 0) {
                     MElementValue ev = new MElementValue(getCtx(), getUser1_ID());
-                    combiStr = ev.getValue();
+                    combiStr = ev.getSearchKey();
                     descrStr = ev.getName();
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_UserElementList2.equals(element.getElementType())) {
                 if (getUser2_ID() != 0) {
                     MElementValue ev = new MElementValue(getCtx(), getUser2_ID());
-                    combiStr = ev.getValue();
+                    combiStr = ev.getSearchKey();
                     descrStr = ev.getName();
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_UserColumn1.equals(element.getElementType())) {

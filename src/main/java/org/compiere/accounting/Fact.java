@@ -420,7 +420,7 @@ public final class Fact implements IFact {
                         }
                     }
                     line.convert();
-                    line.setAD_Org_ID(key.intValue());
+                    line.setOrgId(key.intValue());
                     //
                     m_lines.add(line);
                     if (log.isLoggable(Level.FINE)) log.fine("(" + elementType + ") - " + line);
@@ -666,7 +666,7 @@ public final class Fact implements IFact {
                 factLine.setAccount(m_acctSchema, dl.getAccount());
                 factLine.setPostingType(m_postingType);
                 if (dl.isOverwriteOrg()) // 	set Org explicitly
-                    factLine.setAD_Org_ID(dl.getOrg_ID());
+                    factLine.setOrgId(dl.getOrg_ID());
                 // Silvano - freepath - F3P - Bug#2904994 Fact distribtution only overwriting Org
                 if (dl.isOverwriteAcct()) factLine.setAccount_ID(dl.getAccount_ID());
                 if (dl.isOverwriteActivity()) factLine.setC_Activity_ID(dl.getC_Activity_ID());

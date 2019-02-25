@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_PaymentProcessor;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProcessor, I_Persistent {
+public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProcessor {
 
     /**
      *
@@ -56,7 +55,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept American Express Card
      */
     public boolean isAcceptAMEX() {
-        Object oo = get_Value(COLUMNNAME_AcceptAMEX);
+        Object oo = getValue(COLUMNNAME_AcceptAMEX);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -79,7 +78,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept Bank ATM Card
      */
     public boolean isAcceptATM() {
-        Object oo = get_Value(COLUMNNAME_AcceptATM);
+        Object oo = getValue(COLUMNNAME_AcceptATM);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -102,7 +101,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept ECheck (Electronic Checks)
      */
     public boolean isAcceptCheck() {
-        Object oo = get_Value(COLUMNNAME_AcceptCheck);
+        Object oo = getValue(COLUMNNAME_AcceptCheck);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -125,7 +124,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept Corporate Purchase Cards
      */
     public boolean isAcceptCorporate() {
-        Object oo = get_Value(COLUMNNAME_AcceptCorporate);
+        Object oo = getValue(COLUMNNAME_AcceptCorporate);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -148,7 +147,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept Diner's Club
      */
     public boolean isAcceptDiners() {
-        Object oo = get_Value(COLUMNNAME_AcceptDiners);
+        Object oo = getValue(COLUMNNAME_AcceptDiners);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -171,7 +170,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept Direct Debits (vendor initiated)
      */
     public boolean isAcceptDirectDebit() {
-        Object oo = get_Value(COLUMNNAME_AcceptDirectDebit);
+        Object oo = getValue(COLUMNNAME_AcceptDirectDebit);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -194,7 +193,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept Direct Deposit (payee initiated)
      */
     public boolean isAcceptDirectDeposit() {
-        Object oo = get_Value(COLUMNNAME_AcceptDirectDeposit);
+        Object oo = getValue(COLUMNNAME_AcceptDirectDeposit);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -217,7 +216,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept Discover Card
      */
     public boolean isAcceptDiscover() {
-        Object oo = get_Value(COLUMNNAME_AcceptDiscover);
+        Object oo = getValue(COLUMNNAME_AcceptDiscover);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -240,7 +239,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept Master Card
      */
     public boolean isAcceptMC() {
-        Object oo = get_Value(COLUMNNAME_AcceptMC);
+        Object oo = getValue(COLUMNNAME_AcceptMC);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -263,7 +262,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Accept Visa Cards
      */
     public boolean isAcceptVisa() {
-        Object oo = get_Value(COLUMNNAME_AcceptVisa);
+        Object oo = getValue(COLUMNNAME_AcceptVisa);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -280,17 +279,6 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
         set_Value(COLUMNNAME_AcceptVisa, Boolean.valueOf(AcceptVisa));
     }
 
-    /**
-     * Get Sequence.
-     *
-     * @return Document Sequence
-     */
-    public int getAD_Sequence_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Sequence_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
     public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
         return (org.compiere.model.I_C_BankAccount)
                 MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
@@ -303,7 +291,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @return Account at the Bank
      */
     public int getC_BankAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -316,17 +304,6 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
     public void setC_BankAccount_ID(int C_BankAccount_ID) {
         if (C_BankAccount_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BankAccount_ID, null);
         else set_ValueNoCheck(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
-    }
-
-    /**
-     * Get Currency.
-     *
-     * @return The Currency for this record
-     */
-    public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -348,70 +325,12 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
     }
 
     /**
-     * Get Host Address.
-     *
-     * @return Host Address URL or DNS
-     */
-    public String getHostAddress() {
-        return (String) get_Value(COLUMNNAME_HostAddress);
-    }
-
-    /**
-     * Get Host port.
-     *
-     * @return Host Communication Port
-     */
-    public int getHostPort() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_HostPort);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Payment Processor Class.
      *
      * @return Payment Processor Java Class
      */
     public String getPayProcessorClass() {
-        return (String) get_Value(COLUMNNAME_PayProcessorClass);
-    }
-
-    /**
-     * Get Proxy address.
-     *
-     * @return Address of your proxy server
-     */
-    public String getProxyAddress() {
-        return (String) get_Value(COLUMNNAME_ProxyAddress);
-    }
-
-    /**
-     * Get Proxy logon.
-     *
-     * @return Logon of your proxy server
-     */
-    public String getProxyLogon() {
-        return (String) get_Value(COLUMNNAME_ProxyLogon);
-    }
-
-    /**
-     * Get Proxy password.
-     *
-     * @return Password of your proxy server
-     */
-    public String getProxyPassword() {
-        return (String) get_Value(COLUMNNAME_ProxyPassword);
-    }
-
-    /**
-     * Get Proxy port.
-     *
-     * @return Port of your proxy server
-     */
-    public int getProxyPort() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_ProxyPort);
-        if (ii == null) return 0;
-        return ii;
+        return (String) getValue(COLUMNNAME_PayProcessorClass);
     }
 
     /**

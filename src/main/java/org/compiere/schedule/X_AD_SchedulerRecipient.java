@@ -2,7 +2,6 @@ package org.compiere.schedule;
 
 import org.compiere.model.I_AD_SchedulerRecipient;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipient, I_Persistent {
+public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipient {
 
     /**
      *
@@ -57,19 +56,8 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
      *
      * @return Responsibility Role
      */
-    public int getAD_Role_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Role_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Scheduler.
-     *
-     * @return Schedule Processes
-     */
-    public int getAD_Scheduler_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Scheduler_ID);
+    public int getRoleId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Role_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -79,8 +67,8 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
      *
      * @return User within the system - Internal or Business Partner Contact
      */
-    public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
+    public int getUserId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
     }

@@ -75,7 +75,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
         super(ctx, M_Inventory_ID);
         if (M_Inventory_ID == 0) {
             //	setName (null);
-            //  setM_Warehouse_ID (0);		//	FK
+            //  setWarehouseId (0);		//	FK
             setMovementDate(new Timestamp(System.currentTimeMillis()));
             setDocAction(X_M_Inventory.DOCACTION_Complete); // CO
             setDocStatus(X_M_Inventory.DOCSTATUS_Drafted); // DR
@@ -390,10 +390,10 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                         MAcctSchema as = client.getAcctSchema();
                         MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getCtx(), client.getId());
 
-                        if (as.getC_Currency_ID() != getC_Currency_ID()) {
+                        if (as.getCurrencyId() != getC_Currency_ID()) {
                             for (int i = 0; i < ass.length; i++) {
                                 MAcctSchema a = ass[i];
-                                if (a.getC_Currency_ID() == getC_Currency_ID()) as = a;
+                                if (a.getCurrencyId() == getC_Currency_ID()) as = a;
                             }
                         }
 
@@ -704,7 +704,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                     if (qtyDiff.compareTo(Env.ZERO) > 0) {
                         MClientInfo m_clientInfo = MClientInfo.get(getCtx(), getClientId());
                         MAcctSchema acctSchema =
-                                new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID());
+                                new MAcctSchema(getCtx(), m_clientInfo.getAcctSchema1Id());
                         if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(product.getCostingLevel(acctSchema))) {
                             String sqlWhere =
                                     "M_Product_ID=? AND M_Locator_ID=? AND QtyOnHand = 0 AND M_AttributeSetInstance_ID > 0 ";

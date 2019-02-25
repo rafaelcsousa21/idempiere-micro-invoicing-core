@@ -3,13 +3,12 @@ package org.idempiere.process;
 import org.compiere.model.I_T_InvoiceGL;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
+public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL {
 
     /**
      *
@@ -53,23 +52,12 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
     }
 
     /**
-     * Get Process Instance.
-     *
-     * @return Instance of the process
-     */
-    public int getAD_PInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_PInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Revaluated Difference Cr.
      *
      * @return Revaluated Cr Amount Difference
      */
     public BigDecimal getAmtRevalCrDiff() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_AmtRevalCrDiff);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_AmtRevalCrDiff);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -80,31 +68,9 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
      * @return Revaluated Dr Amount Difference
      */
     public BigDecimal getAmtRevalDrDiff() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_AmtRevalDrDiff);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_AmtRevalDrDiff);
         if (bd == null) return Env.ZERO;
         return bd;
-    }
-
-    /**
-     * Get Revaluation Conversion Type.
-     *
-     * @return Revaluation Currency Conversion Type
-     */
-    public int getC_ConversionTypeReval_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ConversionTypeReval_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Revaluation Document Type.
-     *
-     * @return Document Type for Revaluation Journal
-     */
-    public int getC_DocTypeReval_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocTypeReval_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -113,7 +79,7 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
      * @return Invoice Identifier
      */
     public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -124,7 +90,7 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL, I_Persistent {
      * @return Accounting Fact
      */
     public int getFact_Acct_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Fact_Acct_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Fact_Acct_ID);
         if (ii == null) return 0;
         return ii;
     }

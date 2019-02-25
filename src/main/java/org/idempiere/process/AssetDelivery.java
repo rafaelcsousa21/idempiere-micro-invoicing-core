@@ -174,9 +174,9 @@ public class AssetDelivery extends SvrProcess {
         throw new NotImplementedException();
 
     /*MAsset asset = new MAsset (getCtx(), A_Asset_ID);
-    if (asset.getAD_User_ID() == 0)
+    if (asset.getUserId() == 0)
     	return "** No Asset User";
-    MUser user = new MUser (getCtx(), asset.getAD_User_ID(), null);
+    MUser user = new MUser (getCtx(), asset.getUserId(), null);
     if (user.getEMail() == null || user.getEMail().length() == 0)
     	return "** No Asset User Email";
     if (m_MailText == null || m_MailText.getR_MailText_ID() != R_MailText_ID)
@@ -197,7 +197,7 @@ public class AssetDelivery extends SvrProcess {
     	email.setMessageText (message);
     }
     String msg = email.send();
-    new MUserMail(m_MailText, asset.getAD_User_ID(), email).saveEx();
+    new MUserMail(m_MailText, asset.getUserId(), email).saveEx();
     if (!EMail.SENT_OK.equals(msg)){
     	StringBuilder msgreturn = new StringBuilder("** Not delivered: ").append(user.getEMail()).append(" - ").append(msg);
     	return msgreturn.toString();
@@ -220,9 +220,9 @@ public class AssetDelivery extends SvrProcess {
     long start = System.currentTimeMillis();
     //
     MAsset asset = new MAsset (getCtx(), A_Asset_ID, null);
-    if (asset.getAD_User_ID() == 0)
+    if (asset.getUserId() == 0)
     	return "** No Asset User";
-    MUser user = new MUser (getCtx(), asset.getAD_User_ID(), null);
+    MUser user = new MUser (getCtx(), asset.getUserId(), null);
     if (user.getEMail() == null || user.getEMail().length() == 0)
     	return "** No Asset User Email";
     if (asset.getProductR_MailText_ID() == 0)
@@ -268,13 +268,13 @@ public class AssetDelivery extends SvrProcess {
     		log.warning("No DowloadURL for A_Asset_ID=" + A_Asset_ID);
     }
     String msg = email.send();
-    new MUserMail(m_MailText, asset.getAD_User_ID(), email).saveEx();
+    new MUserMail(m_MailText, asset.getUserId(), email).saveEx();
     if (!EMail.SENT_OK.equals(msg)){
     	StringBuilder msgreturn = new StringBuilder("** Not delivered: ").append(user.getEMail()).append(" - ").append(msg);
     	return msgreturn.toString();
     }
 
-    MAssetDelivery ad = asset.confirmDelivery(email, user.getAD_User_ID());
+    MAssetDelivery ad = asset.confirmDelivery(email, user.getUserId());
     ad.saveEx();
     asset.saveEx();
     //

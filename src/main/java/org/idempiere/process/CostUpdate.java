@@ -215,8 +215,8 @@ public class CostUpdate extends SvrProcess {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, as.getM_CostType_ID());
-            pstmt.setInt(2, as.getC_AcctSchema_ID());
+            pstmt.setInt(1, as.getCostTypeId());
+            pstmt.setInt(2, as.getAccountingSchemaId());
             pstmt.setInt(3, m_ce.getM_CostElement_ID());
             pstmt.setInt(4, as.getClientId());
             if (p_M_Product_Category_ID != 0) pstmt.setInt(5, p_M_Product_Category_ID);
@@ -244,7 +244,7 @@ public class CostUpdate extends SvrProcess {
      */
     private boolean createNew(MProduct product, MAcctSchema as) {
         MCost cost = MCost.get(product, 0, as, 0, m_ce.getM_CostElement_ID(), null);
-        if (cost.is_new()) return cost.save();
+        if (cost.isNew()) return cost.save();
         return false;
     } //	createNew
 
@@ -275,9 +275,9 @@ public class CostUpdate extends SvrProcess {
                 MCost cost = new MCost(getCtx(), rs);
                 for (int i = 0; i < m_ass.length; i++) {
                     //	Update Costs only for default Cost Type
-                    if (m_ass[i].getC_AcctSchema_ID() == cost.getC_AcctSchema_ID()
-                            && m_ass[i].getM_CostType_ID() == cost.getM_CostType_ID()) {
-                        if (m_ass[i].getC_AcctSchema_ID() == primarySchema.getC_AcctSchema_ID()) {
+                    if (m_ass[i].getAccountingSchemaId() == cost.getC_AcctSchema_ID()
+                            && m_ass[i].getCostTypeId() == cost.getM_CostType_ID()) {
+                        if (m_ass[i].getAccountingSchemaId() == primarySchema.getAccountingSchemaId()) {
                             if (update(cost, lines)) counter++;
                         } else {
                             if (update(cost, null)) counter++;
@@ -522,7 +522,7 @@ public class CostUpdate extends SvrProcess {
                                 product,
                                 cost.getMAttributeSetInstance_ID(),
                                 cost.getOrgId(),
-                                as.getC_Currency_ID());
+                                as.getCurrencyId());
             }
         }
 
@@ -551,7 +551,7 @@ public class CostUpdate extends SvrProcess {
                                 product,
                                 cost.getMAttributeSetInstance_ID(),
                                 cost.getOrgId(),
-                                as.getC_Currency_ID());
+                                as.getCurrencyId());
             }
         }
 

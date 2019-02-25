@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_Workflow_Access;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access, I_Persistent {
+public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access {
 
     /**
      *
@@ -26,7 +25,7 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access, I_
     public X_AD_Workflow_Access(Properties ctx, int AD_Workflow_Access_ID) {
         super(ctx, AD_Workflow_Access_ID);
         /**
-         * if (AD_Workflow_Access_ID == 0) { setAD_Role_ID (0); setAD_Workflow_ID (0); setIsReadWrite
+         * if (AD_Workflow_Access_ID == 0) { setRoleId (0); setAD_Workflow_ID (0); setIsReadWrite
          * (false); }
          */
     }
@@ -59,35 +58,13 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access, I_
     }
 
     /**
-     * Get Role.
-     *
-     * @return Responsibility Role
-     */
-    public int getAD_Role_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Role_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Role.
      *
      * @param AD_Role_ID Responsibility Role
      */
-    public void setAD_Role_ID(int AD_Role_ID) {
+    public void setRoleId(int AD_Role_ID) {
         if (AD_Role_ID < 0) set_ValueNoCheck(COLUMNNAME_AD_Role_ID, null);
         else set_ValueNoCheck(COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
-    }
-
-    /**
-     * Get Workflow.
-     *
-     * @return Workflow or combination of tasks
-     */
-    public int getAD_Workflow_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Workflow_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -95,7 +72,7 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access, I_
      *
      * @param AD_Workflow_ID Workflow or combination of tasks
      */
-    public void setAD_Workflow_ID(int AD_Workflow_ID) {
+    public void setWorkflowId(int AD_Workflow_ID) {
         if (AD_Workflow_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
         else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
     }

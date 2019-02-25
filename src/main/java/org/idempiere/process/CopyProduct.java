@@ -118,7 +118,7 @@ public class CopyProduct extends SvrProcess {
     	replenishSrc = it.next();
     	replenishDst = new X_M_Replenish(getCtx(), 0, null);
     	replenishDst.setM_Product_ID(toMProductID);
-    	replenishDst.setM_Warehouse_ID(replenishSrc.getM_Warehouse_ID());
+    	replenishDst.setWarehouseId(replenishSrc.getWarehouseId());
     	replenishDst.setM_WarehouseSource_ID(replenishSrc.getM_WarehouseSource_ID());
     	replenishDst.setReplenishType(replenishSrc.getReplenishType());
     	replenishDst.setM_Locator_ID(replenishSrc.getM_Locator_ID());

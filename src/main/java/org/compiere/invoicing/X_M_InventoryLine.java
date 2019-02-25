@@ -5,7 +5,6 @@ import org.compiere.model.I_M_InventoryLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persistent {
+public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
 
     /**
      * Inventory Difference = D
@@ -75,7 +74,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Additional document charges
      */
     public int getC_Charge_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -96,7 +95,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return The currently used cost price
      */
     public BigDecimal getCurrentCostPrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrentCostPrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CurrentCostPrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -116,7 +115,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -134,7 +133,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Type of inventory difference
      */
     public String getInventoryType() {
-        return (String) get_Value(COLUMNNAME_InventoryType);
+        return (String) getValue(COLUMNNAME_InventoryType);
     }
 
     /**
@@ -153,7 +152,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -184,7 +183,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -201,7 +200,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Parameters for a Physical Inventory
      */
     public int getM_Inventory_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Inventory_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Inventory_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -222,7 +221,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Unique line in an Inventory document
      */
     public int getM_InventoryLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InventoryLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_InventoryLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -233,7 +232,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -260,7 +259,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -281,7 +280,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return New current cost price after processing of M_CostDetail
      */
     public BigDecimal getNewCostPrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_NewCostPrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_NewCostPrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -310,7 +309,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Book Quantity
      */
     public BigDecimal getQtyBook() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyBook);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyBook);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -330,7 +329,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Counted Quantity
      */
     public BigDecimal getQtyCount() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyCount);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyCount);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -350,7 +349,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      * @return Internal Use Quantity removed from Inventory
      */
     public BigDecimal getQtyInternalUse() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyInternalUse);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyInternalUse);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -362,17 +361,6 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine, I_Persis
      */
     public void setQtyInternalUse(BigDecimal QtyInternalUse) {
         set_Value(COLUMNNAME_QtyInternalUse, QtyInternalUse);
-    }
-
-    /**
-     * Get Reversal Line.
-     *
-     * @return Use to keep the reversal line ID for reversing costing purpose
-     */
-    public int getReversalLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_ReversalLine_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

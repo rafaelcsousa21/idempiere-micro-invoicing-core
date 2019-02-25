@@ -4,13 +4,12 @@ import org.compiere.model.I_M_MovementLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persistent {
+public class X_M_MovementLine extends PO implements I_M_MovementLine {
 
     /**
      *
@@ -68,33 +67,12 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
     }
 
     /**
-     * Get Distribution Order Line.
-     *
-     * @return Distribution Order Line
-     */
-    public int getDD_OrderLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_DD_OrderLine_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Set Distribution Order Line.
-     *
-     * @param DD_OrderLine_ID Distribution Order Line
-     */
-    public void setDD_OrderLine_ID(int DD_OrderLine_ID) {
-        if (DD_OrderLine_ID < 1) set_Value(COLUMNNAME_DD_OrderLine_ID, null);
-        else set_Value(COLUMNNAME_DD_OrderLine_ID, Integer.valueOf(DD_OrderLine_ID));
-    }
-
-    /**
      * Get Description.
      *
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -112,7 +90,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -143,7 +121,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -167,7 +145,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Target Product Attribute Set Instance
      */
     public int getMAttributeSetInstanceTo_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstanceTo_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstanceTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -178,7 +156,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -199,7 +177,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Location inventory is moved to
      */
     public int getM_LocatorTo_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_LocatorTo_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_LocatorTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -226,7 +204,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Movement of Inventory
      */
     public int getM_Movement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Movement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Movement_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -247,7 +225,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Inventory Move document Line
      */
     public int getM_MovementLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_MovementLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_MovementLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -258,7 +236,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Quantity of a product moved.
      */
     public BigDecimal getMovementQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_MovementQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_MovementQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -278,7 +256,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -300,17 +278,6 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine, I_Persiste
      */
     public void setProcessed(boolean Processed) {
         set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
-    }
-
-    /**
-     * Get Reversal Line.
-     *
-     * @return Use to keep the reversal line ID for reversing costing purpose
-     */
-    public int getReversalLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_ReversalLine_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

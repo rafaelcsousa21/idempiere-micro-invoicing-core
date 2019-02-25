@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_C_LandedCost;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
+public class X_C_LandedCost extends PO implements I_C_LandedCost {
 
     /**
      * Quantity = Q
@@ -78,7 +77,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
      * @return Invoice Detail Line
      */
     public int getC_InvoiceLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -99,7 +98,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
      * @return Landed Cost Distribution
      */
     public String getLandedCostDistribution() {
-        return (String) get_Value(COLUMNNAME_LandedCostDistribution);
+        return (String) getValue(COLUMNNAME_LandedCostDistribution);
     }
 
     /**
@@ -118,7 +117,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
      * @return Product Cost Element
      */
     public int getM_CostElement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -129,7 +128,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
      * @return Material Shipment Document
      */
     public int getM_InOut_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InOut_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_InOut_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -140,7 +139,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
      * @return Line on Shipment or Receipt document
      */
     public int getM_InOutLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InOutLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -151,7 +150,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost, I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }

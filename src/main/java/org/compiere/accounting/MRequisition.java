@@ -65,9 +65,9 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         super(ctx, M_Requisition_ID);
         if (M_Requisition_ID == 0) {
             //	setDocumentNo (null);
-            //	setAD_User_ID (0);
+            //	setUserId (0);
             //	setM_PriceList_ID (0);
-            //	setM_Warehouse_ID(0);
+            //	setWarehouseId(0);
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             setDateRequired(new Timestamp(System.currentTimeMillis()));
             setDocAction(DocAction.Companion.getACTION_Complete()); // CO

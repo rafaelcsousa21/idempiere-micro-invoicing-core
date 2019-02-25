@@ -485,8 +485,8 @@ public class DistributionRun extends SvrProcess {
     	if (!p_IsTest)
     	{
     		singleOrder = new MOrder (getCtx(), 0, null);
-    		singleOrder.setC_DocTypeTarget_ID(m_docType.getC_DocType_ID());
-    		singleOrder.setC_DocType_ID(m_docType.getC_DocType_ID());
+    		singleOrder.setC_DocTypeTarget_ID(m_docType.getDocTypeId());
+    		singleOrder.setC_DocType_ID(m_docType.getDocTypeId());
     		singleOrder.setIsSOTrx(m_docType.isSOTrx());
     		singleOrder.setBPartner(bp);
     		if (m_run.getC_BPartner_Location_ID() != 0)
@@ -530,8 +530,8 @@ public class DistributionRun extends SvrProcess {
     		if (!p_IsTest)
     		{
     			order = new MOrder (getCtx(), 0, null);
-    			order.setC_DocTypeTarget_ID(m_docType.getC_DocType_ID());
-    			order.setC_DocType_ID(m_docType.getC_DocType_ID());
+    			order.setC_DocTypeTarget_ID(m_docType.getDocTypeId());
+    			order.setC_DocType_ID(m_docType.getDocTypeId());
     			order.setIsSOTrx(m_docType.isSOTrx());
     			//	Counter Doc
     			if (counter && bp.getAD_OrgBP_ID_Int() > 0)
@@ -540,8 +540,8 @@ public class DistributionRun extends SvrProcess {
     					+ "-" + bp + ", To_BP=" + runBPartner);
     				order.setOrgId(bp.getAD_OrgBP_ID_Int());
     				MOrgInfo oi = MOrgInfo.get(getCtx(), bp.getAD_OrgBP_ID_Int(), null);
-    				if (oi.getM_Warehouse_ID() > 0)
-    					order.setM_Warehouse_ID(oi.getM_Warehouse_ID());
+    				if (oi.getWarehouseId() > 0)
+    					order.setWarehouseId(oi.getWarehouseId());
     				order.setBPartner(runBPartner);
     			}
     			else	//	normal
@@ -793,10 +793,10 @@ public class DistributionRun extends SvrProcess {
     	if (p_M_Warehouse_ID <= 0)
     	{
     		MOrgInfo oi_source = MOrgInfo.get(getCtx(), m_run.getOrgId(), null);
-    		MWarehouse m_source = MWarehouse.get(getCtx(), oi_source.getM_Warehouse_ID());
+    		MWarehouse m_source = MWarehouse.get(getCtx(), oi_source.getWarehouseId());
     		if(m_source == null)
     			throw new AdempiereException("Do not exist Defautl Warehouse Source");
-    		M_Warehouse_ID = m_source.getM_Warehouse_ID();
+    		M_Warehouse_ID = m_source.getWarehouseId();
     	}
     	else
     		M_Warehouse_ID = p_M_Warehouse_ID;
@@ -885,7 +885,7 @@ public class DistributionRun extends SvrProcess {
     MWarehouse[] ws = null;
 
     MOrgInfo oi_source = MOrgInfo.get(getCtx(), m_run.getOrgId(), null);
-    m_source = MWarehouse.get(getCtx(), oi_source.getM_Warehouse_ID());
+    m_source = MWarehouse.get(getCtx(), oi_source.getWarehouseId());
     if(m_source == null)
     	throw new AdempiereException("Do not exist Defautl Warehouse Source");
 
@@ -908,14 +908,14 @@ public class DistributionRun extends SvrProcess {
     	if (!p_IsTest)
     	{
     		singleOrder = new MDDOrder (getCtx(), 0, null);
-    		singleOrder.setC_DocType_ID(m_docType.getC_DocType_ID());
+    		singleOrder.setC_DocType_ID(m_docType.getDocTypeId());
     		singleOrder.setIsSOTrx(m_docType.isSOTrx());
     		singleOrder.setBPartner(bp);
     		if (m_run.getC_BPartner_Location_ID() != 0)
     			singleOrder.setC_BPartner_Location_ID(m_run.getC_BPartner_Location_ID());
     		singleOrder.setDateOrdered(m_DateOrdered);
     		singleOrder.setDatePromised(p_DatePromised);
-    		singleOrder.setM_Warehouse_ID(ws[0].getM_Warehouse_ID());
+    		singleOrder.setWarehouseId(ws[0].getWarehouseId());
     		if (!singleOrder.save())
     		{
     			log.log(Level.SEVERE, "Order not saved");
@@ -950,7 +950,7 @@ public class DistributionRun extends SvrProcess {
 
     	bp = new MBPartner (getCtx(), detail.getC_BPartner_ID(), null);
     	MOrgInfo oi_target = MOrgInfo.get(getCtx(), bp.getAD_OrgBP_ID_Int(), null);
-    	m_target = MWarehouse.get(getCtx(), oi_target.getM_Warehouse_ID());
+    	m_target = MWarehouse.get(getCtx(), oi_target.getWarehouseId());
     	if(m_target==null)
     		throw new AdempiereException("Do not exist Default Warehouse Target");
 
@@ -970,7 +970,7 @@ public class DistributionRun extends SvrProcess {
     							    .append(MDDOrder.COLUMNNAME_DatePromised).append("<=? ");
 
     		order = new Query(getCtx(), MDDOrder.Table_Name, whereClause.toString(), null)
-    					.setParameters(new Object[]{lastC_BPartner_ID, ws[0].getM_Warehouse_ID(), p_DatePromised})
+    					.setParameters(new Object[]{lastC_BPartner_ID, ws[0].getWarehouseId(), p_DatePromised})
     					.setOrderBy(MDDOrder.COLUMNNAME_DatePromised +" DESC")
     					.first();
     }
@@ -982,7 +982,7 @@ public class DistributionRun extends SvrProcess {
     		{
     			order = new MDDOrder (getCtx(), 0, null);
     			order.setOrgId(bp.getAD_OrgBP_ID_Int());
-    			order.setC_DocType_ID(m_docType.getC_DocType_ID());
+    			order.setC_DocType_ID(m_docType.getDocTypeId());
     			order.setIsSOTrx(m_docType.isSOTrx());
 
     			//	Counter Doc
@@ -991,8 +991,8 @@ public class DistributionRun extends SvrProcess {
     				if (log.isLoggable(Level.FINE)) log.fine("Counter - From_BPOrg=" + bp.getAD_OrgBP_ID_Int()
     					+ "-" + bp + ", To_BP=" + runBPartner);
     				order.setOrgId(bp.getAD_OrgBP_ID_Int());
-    				if (ws[0].getM_Warehouse_ID() > 0)
-    				order.setM_Warehouse_ID(ws[0].getM_Warehouse_ID());
+    				if (ws[0].getWarehouseId() > 0)
+    				order.setWarehouseId(ws[0].getWarehouseId());
     				order.setBPartner(runBPartner);
     			}
     			else	//	normal
@@ -1004,7 +1004,7 @@ public class DistributionRun extends SvrProcess {
     				if (detail.getC_BPartner_Location_ID() != 0)
     					order.setC_BPartner_Location_ID(detail.getC_BPartner_Location_ID());
     			}
-    			order.setM_Warehouse_ID(ws[0].getM_Warehouse_ID());
+    			order.setWarehouseId(ws[0].getWarehouseId());
     			order.setDateOrdered(m_DateOrdered);
     			order.setDatePromised(p_DatePromised);
     			order.setIsInDispute(false);

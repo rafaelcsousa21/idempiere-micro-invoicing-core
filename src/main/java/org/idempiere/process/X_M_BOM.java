@@ -2,12 +2,11 @@ package org.idempiere.process;
 
 import org.compiere.model.I_M_BOM;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
+public class X_M_BOM extends BasePOName implements I_M_BOM {
 
     /**
      * Current Active = A
@@ -70,7 +69,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
      * @return Type of BOM
      */
     public String getBOMType() {
-        return (String) get_Value(COLUMNNAME_BOMType);
+        return (String) getValue(COLUMNNAME_BOMType);
     }
 
     /**
@@ -89,7 +88,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
      * @return The use of the Bill of Material
      */
     public String getBOMUse() {
-        return (String) get_Value(COLUMNNAME_BOMUse);
+        return (String) getValue(COLUMNNAME_BOMUse);
     }
 
     /**
@@ -108,18 +107,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
      * @return Bill of Material
      */
     public int getM_BOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_BOM_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Change Notice.
-     *
-     * @return Bill of Materials (Engineering) Change Notice (Version)
-     */
-    public int getM_ChangeNotice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_ChangeNotice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_BOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -130,7 +118,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM, I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }

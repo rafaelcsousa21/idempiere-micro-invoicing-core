@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_POSPayment;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
+public class X_C_POSPayment extends PO implements I_C_POSPayment {
 
     /**
      *
@@ -66,7 +65,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Account Number
      */
     public String getAccountNo() {
-        return (String) get_Value(COLUMNNAME_AccountNo);
+        return (String) getValue(COLUMNNAME_AccountNo);
     }
 
     /**
@@ -75,7 +74,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Name on Credit Card or Account holder
      */
     public String getA_Name() {
-        return (String) get_Value(COLUMNNAME_A_Name);
+        return (String) getValue(COLUMNNAME_A_Name);
     }
 
     /**
@@ -84,29 +83,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Check Number
      */
     public String getCheckNo() {
-        return (String) get_Value(COLUMNNAME_CheckNo);
-    }
-
-    /**
-     * Get Order.
-     *
-     * @return Order
-     */
-    public int getC_Order_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Order_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Payment.
-     *
-     * @return Payment identifier
-     */
-    public int getC_Payment_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
-        if (ii == null) return 0;
-        return ii;
+        return (String) getValue(COLUMNNAME_CheckNo);
     }
 
     /**
@@ -125,7 +102,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return POS Tender Type
      */
     public int getC_POSTenderType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_POSTenderType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_POSTenderType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -136,7 +113,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Credit Card Number
      */
     public String getCreditCardNumber() {
-        return (String) get_Value(COLUMNNAME_CreditCardNumber);
+        return (String) getValue(COLUMNNAME_CreditCardNumber);
     }
 
     /**
@@ -145,7 +122,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Credit Card (Visa, MC, AmEx)
      */
     public String getCreditCardType() {
-        return (String) get_Value(COLUMNNAME_CreditCardType);
+        return (String) getValue(COLUMNNAME_CreditCardType);
     }
 
     /**
@@ -154,7 +131,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return International Bank Account Number
      */
     public String getIBAN() {
-        return (String) get_Value(COLUMNNAME_IBAN);
+        return (String) getValue(COLUMNNAME_IBAN);
     }
 
     /**
@@ -163,7 +140,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Post Dated
      */
     public boolean isPostDated() {
-        Object oo = get_Value(COLUMNNAME_IsPostDated);
+        Object oo = getValue(COLUMNNAME_IsPostDated);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -177,7 +154,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Combination of routing no, account and check no
      */
     public String getMicr() {
-        return (String) get_Value(COLUMNNAME_Micr);
+        return (String) getValue(COLUMNNAME_Micr);
     }
 
     /**
@@ -186,7 +163,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Amount being paid
      */
     public BigDecimal getPayAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PayAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PayAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -206,7 +183,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Bank Routing Number
      */
     public String getRoutingNo() {
-        return (String) get_Value(COLUMNNAME_RoutingNo);
+        return (String) getValue(COLUMNNAME_RoutingNo);
     }
 
     /**
@@ -215,7 +192,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Swift Code or BIC
      */
     public String getSwiftCode() {
-        return (String) get_Value(COLUMNNAME_SwiftCode);
+        return (String) getValue(COLUMNNAME_SwiftCode);
     }
 
     /**
@@ -224,7 +201,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Method of Payment
      */
     public String getTenderType() {
-        return (String) get_Value(COLUMNNAME_TenderType);
+        return (String) getValue(COLUMNNAME_TenderType);
     }
 
     /**
@@ -233,6 +210,6 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment, I_Persistent {
      * @return Voice Authorization Code from credit card company
      */
     public String getVoiceAuthCode() {
-        return (String) get_Value(COLUMNNAME_VoiceAuthCode);
+        return (String) getValue(COLUMNNAME_VoiceAuthCode);
     }
 }

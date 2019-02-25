@@ -198,7 +198,7 @@ class InitialClientSetup(
                 throw AdempiereException("NormalUserEmail $p_NormalUserEmail is incorrect")
         }
         if (Util.isEmpty(p_CoAFile, true))
-            p_CoAFile = MSysConfig.getValue(
+            p_CoAFile = MSysConfig.getConfigValue(
                 MSysConfig.DEFAULT_COA_PATH,
                 File.separator + "data" +
                         File.separator + "import" +

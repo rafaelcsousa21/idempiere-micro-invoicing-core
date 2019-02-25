@@ -631,7 +631,7 @@ public class ImportInvoice extends SvrProcess {
                 if (bp == null) {
                     bp = new MBPartner(getCtx(), -1);
                     bp.setClientOrg(imp.getClientId(), imp.getOrgId());
-                    bp.setValue(imp.getBPartnerValue());
+                    bp.setSearchKey(imp.getBPartnerValue());
                     bp.setName(imp.getName());
                     if (!bp.save()) continue;
                 }
@@ -684,7 +684,7 @@ public class ImportInvoice extends SvrProcess {
                         String name = users[i].getName();
                         if (name.equals(imp.getContactName()) || name.equals(imp.getName())) {
                             user = users[i];
-                            imp.setAD_User_ID(user.getAD_User_ID());
+                            imp.setAD_User_ID(user.getUserId());
                         }
                     }
                     if (user == null) {
@@ -693,7 +693,7 @@ public class ImportInvoice extends SvrProcess {
                         else user2.setName(imp.getContactName());
                         user2.setEMail(imp.getEMail());
                         user2.setPhone(imp.getPhone());
-                        if (user2.save()) imp.setAD_User_ID(user2.getAD_User_ID());
+                        if (user2.save()) imp.setAD_User_ID(user2.getUserId());
                     }
                 }
                 imp.saveEx();

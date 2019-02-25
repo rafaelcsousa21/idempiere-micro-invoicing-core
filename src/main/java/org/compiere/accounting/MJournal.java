@@ -66,10 +66,10 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         super(ctx, GL_Journal_ID);
         if (GL_Journal_ID == 0) {
             //	setGL_Journal_ID (0);		//	PK
-            //	setC_AcctSchema_ID (0);
-            //	setC_Currency_ID (0);
+            //	setAccountingSchemaId (0);
+            //	setCurrencyId (0);
             //	setC_DocType_ID (0);
-            //	setC_Period_ID (0);
+            //	setPeriodId (0);
             //
             setCurrencyRate(Env.ONE);
             //	setC_ConversionType_ID(0);
@@ -79,7 +79,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
             setDocAction(X_GL_Journal.DOCACTION_Complete);
             setDocStatus(X_GL_Journal.DOCSTATUS_Drafted);
             //	setDocumentNo (null);
-            //	setGL_Category_ID (0);
+            //	setGLCategoryId (0);
             setPostingType(X_GL_Journal.POSTINGTYPE_Actual);
             setTotalCr(Env.ZERO);
             setTotalDr(Env.ZERO);
@@ -143,7 +143,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
 
         //	setDateDoc(original.getDateDoc());
         //	setDateAcct(original.getDateAcct());
-        //	setC_Period_ID(original.getC_Period_ID());
+        //	setPeriodId(original.getC_Period_ID());
     } //	MJournal
 
     /**

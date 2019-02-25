@@ -44,7 +44,7 @@ public class MProject extends X_C_Project {
         if (C_Project_ID == 0) {
             //	setC_Project_ID(0);
             //	setValue (null);
-            //	setC_Currency_ID (0);
+            //	setCurrencyId (0);
             setCommittedAmt(Env.ZERO);
             setCommittedQty(Env.ZERO);
             setInvoicedAmt(Env.ZERO);
@@ -111,7 +111,7 @@ public class MProject extends X_C_Project {
                 new StringBuffer("MProject[")
                         .append(getId())
                         .append("-")
-                        .append(getValue())
+                        .append(getSearchKey())
                         .append(",ProjectCategory=")
                         .append(getProjectCategory())
                         .append("]");

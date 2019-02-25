@@ -3,14 +3,13 @@ package org.idempiere.process;
 import org.compiere.model.I_M_Movement;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
+public class X_M_Movement extends PO implements I_M_Movement {
 
     /**
      * Complete = CO
@@ -113,80 +112,14 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
     }
 
     /**
-     * Get User/Contact.
-     *
-     * @return User within the system - Internal or Business Partner Contact
-     */
-    public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Approval Amount.
      *
      * @return Document Approval Amount
      */
     public BigDecimal getApprovalAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ApprovalAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ApprovalAmt);
         if (bd == null) return Env.ZERO;
         return bd;
-    }
-
-    /**
-     * Get Activity.
-     *
-     * @return Business Activity
-     */
-    public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Business Partner .
-     *
-     * @return Identifies a Business Partner
-     */
-    public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Partner Location.
-     *
-     * @return Identifies the (ship to) address for this Business Partner
-     */
-    public int getC_BPartner_Location_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_Location_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Campaign.
-     *
-     * @return Marketing Campaign
-     */
-    public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Charge.
-     *
-     * @return Additional document charges
-     */
-    public int getC_Charge_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -195,7 +128,7 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -211,34 +144,12 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
     }
 
     /**
-     * Get Project.
-     *
-     * @return Financial Project
-     */
-    public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Distribution Order.
-     *
-     * @return Distribution Order
-     */
-    public int getDD_Order_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_DD_Order_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Description.
      *
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -256,7 +167,7 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -275,7 +186,7 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(COLUMNNAME_DocStatus);
+        return (String) getValue(COLUMNNAME_DocStatus);
     }
 
     /**
@@ -294,7 +205,7 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -321,7 +232,7 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(COLUMNNAME_IsApproved);
+        Object oo = getValue(COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -344,7 +255,7 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
      * @return Movement of Inventory
      */
     public int getM_Movement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Movement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Movement_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -355,7 +266,7 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
      * @return Date a product was moved in or out of inventory
      */
     public Timestamp getMovementDate() {
-        return (Timestamp) get_Value(COLUMNNAME_MovementDate);
+        return (Timestamp) getValue(COLUMNNAME_MovementDate);
     }
 
     /**
@@ -365,17 +276,6 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
      */
     public void setMovementDate(Timestamp MovementDate) {
         set_Value(COLUMNNAME_MovementDate, MovementDate);
-    }
-
-    /**
-     * Get Shipper.
-     *
-     * @return Method or manner of product delivery
-     */
-    public int getM_Shipper_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Shipper_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -406,17 +306,6 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
     }
 
     /**
-     * Get Reversal ID.
-     *
-     * @return ID of document reversal
-     */
-    public int getReversal_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Reversal_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Reversal ID.
      *
      * @param Reversal_ID ID of document reversal
@@ -426,36 +315,4 @@ public class X_M_Movement extends PO implements I_M_Movement, I_Persistent {
         else set_Value(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }
 
-    /**
-     * Get Sales Representative.
-     *
-     * @return Sales Representative or Company Agent
-     */
-    public int getSalesRep_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SalesRep_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get User Element List 1.
-     *
-     * @return User defined list element #1
-     */
-    public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get User Element List 2.
-     *
-     * @return User defined list element #2
-     */
-    public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
 }

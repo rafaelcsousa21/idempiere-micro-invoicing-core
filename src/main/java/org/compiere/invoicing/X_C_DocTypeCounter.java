@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter, I_Persistent {
+public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter {
 
     /**
      *
@@ -53,7 +52,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -74,7 +73,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      * @return Generated Counter Document Type (To)
      */
     public int getCounter_C_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Counter_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Counter_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -95,7 +94,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -113,7 +112,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      * @return Create Counter Document
      */
     public boolean isCreateCounter() {
-        Object oo = get_Value(COLUMNNAME_IsCreateCounter);
+        Object oo = getValue(COLUMNNAME_IsCreateCounter);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -136,7 +135,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      * @return Element is valid
      */
     public boolean isValid() {
-        Object oo = get_Value(COLUMNNAME_IsValid);
+        Object oo = getValue(COLUMNNAME_IsValid);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);

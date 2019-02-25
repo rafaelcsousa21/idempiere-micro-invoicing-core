@@ -215,13 +215,13 @@ public class MMailText extends X_R_MailText {
         }
         // special default formatting cases for dates/times/boolean in mail text not covered by
         // MSequence.parseVariable
-        int index = po.get_ColumnIndex(variable);
+        int index = po.getColumnIndex(variable);
         if (index == -1) {
             StringBuilder msgreturn = new StringBuilder("@").append(variable).append("@");
             return msgreturn.toString(); // 	keep for next
         }
         //
-        MColumn col = MColumn.get(Env.getCtx(), po.get_TableName(), variable);
+        MColumn col = MColumn.get(Env.getCtx(), po.getTableName(), variable);
         Object value = null;
         if (col != null && col.isSecure()) {
             value = "********";
@@ -229,12 +229,12 @@ public class MMailText extends X_R_MailText {
                 || col.getReferenceId() == DisplayType.DateTime
                 || col.getReferenceId() == DisplayType.Time) {
             SimpleDateFormat sdf = DisplayType.getDateFormat(col.getReferenceId());
-            value = sdf.format(po.get_Value(index));
+            value = sdf.format(po.getValue(index));
         } else if (col.getReferenceId() == DisplayType.YesNo) {
             if (po.get_ValueAsBoolean(variable)) value = Msg.getMsg(Env.getCtx(), "Yes");
             else value = Msg.getMsg(Env.getCtx(), "No");
         } else {
-            value = po.get_Value(index);
+            value = po.getValue(index);
         }
         if (value == null) return "";
         return value.toString();
@@ -291,17 +291,17 @@ public class MMailText extends X_R_MailText {
     public void setPO(PO po, boolean analyse) {
         m_po = po;
         if (analyse) {
-            int index = po.get_ColumnIndex("C_BPartner_ID");
+            int index = po.getColumnIndex("C_BPartner_ID");
             if (index > 0) {
-                Object oo = po.get_Value(index);
+                Object oo = po.getValue(index);
                 if (oo instanceof Integer) {
                     int C_BPartner_ID = ((Integer) oo).intValue();
                     setBPartner(C_BPartner_ID);
                 }
             }
-            index = po.get_ColumnIndex("AD_User_ID");
+            index = po.getColumnIndex("AD_User_ID");
             if (index > 0) {
-                Object oo = po.get_Value(index);
+                Object oo = po.getValue(index);
                 if (oo instanceof Integer) {
                     int AD_User_ID = ((Integer) oo).intValue();
                     setUser(AD_User_ID);

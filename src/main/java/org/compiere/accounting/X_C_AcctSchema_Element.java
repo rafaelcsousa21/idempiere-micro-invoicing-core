@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @version Release 5.1 - $Id$
  */
 public class X_C_AcctSchema_Element extends BasePOName
-        implements I_C_AcctSchema_Element, I_Persistent {
+        implements I_C_AcctSchema_Element {
 
     /**
      * Organization = OO
@@ -123,7 +122,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Column in the table
      */
     public int getAD_Column_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Column_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Column_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -134,7 +133,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Rules for accounting
      */
     public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -155,7 +154,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -166,19 +165,9 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Business Partner .
-     *
-     * @param C_BPartner_ID Identifies a Business Partner
-     */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_ID, C_BPartner_ID);
     }
 
     /**
@@ -187,7 +176,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -198,19 +187,9 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Accounting Element
      */
     public int getC_Element_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Element_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Element_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Element.
-     *
-     * @param C_Element_ID Accounting Element
-     */
-    public void setC_Element_ID(int C_Element_ID) {
-        if (C_Element_ID < 1) set_Value(COLUMNNAME_C_Element_ID, null);
-        else set_Value(COLUMNNAME_C_Element_ID, C_Element_ID);
     }
 
     /**
@@ -219,19 +198,9 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Account Element
      */
     public int getC_ElementValue_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ElementValue_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ElementValue_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Account Element.
-     *
-     * @param C_ElementValue_ID Account Element
-     */
-    public void setC_ElementValue_ID(int C_ElementValue_ID) {
-        if (C_ElementValue_ID < 1) set_Value(COLUMNNAME_C_ElementValue_ID, null);
-        else set_Value(COLUMNNAME_C_ElementValue_ID, C_ElementValue_ID);
     }
 
     /**
@@ -240,7 +209,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Location or Address
      */
     public int getC_Location_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Location_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Location_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -251,19 +220,9 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Project.
-     *
-     * @param C_Project_ID Financial Project
-     */
-    public void setC_Project_ID(int C_Project_ID) {
-        if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-        else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
     }
 
     /**
@@ -272,7 +231,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Sales coverage region
      */
     public int getC_SalesRegion_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_SalesRegion_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -283,17 +242,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Element Type (account or user defined)
      */
     public String getElementType() {
-        return (String) get_Value(COLUMNNAME_ElementType);
-    }
-
-    /**
-     * Set Type.
-     *
-     * @param ElementType Element Type (account or user defined)
-     */
-    public void setElementType(String ElementType) {
-
-        set_Value(COLUMNNAME_ElementType, ElementType);
+        return (String) getValue(COLUMNNAME_ElementType);
     }
 
     /**
@@ -311,7 +260,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Balanced
      */
     public boolean isBalanced() {
-        Object oo = get_Value(COLUMNNAME_IsBalanced);
+        Object oo = getValue(COLUMNNAME_IsBalanced);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -334,7 +283,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Data entry is required in this column
      */
     public boolean isMandatory() {
-        Object oo = get_Value(COLUMNNAME_IsMandatory);
+        Object oo = getValue(COLUMNNAME_IsMandatory);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -348,19 +297,9 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Product.
-     *
-     * @param M_Product_ID Product, Service, Item
-     */
-    public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -369,19 +308,9 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Organizational entity within client
      */
     public int getOrg_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Org_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Org_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Organization.
-     *
-     * @param Org_ID Organizational entity within client
-     */
-    public void setOrg_ID(int Org_ID) {
-        if (Org_ID < 1) set_Value(COLUMNNAME_Org_ID, null);
-        else set_Value(COLUMNNAME_Org_ID, Org_ID);
     }
 
     /**
@@ -390,18 +319,9 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @return Method of ordering records; lowest number comes first
      */
     public int getSeqNo() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
+        Integer ii = (Integer) getValue(COLUMNNAME_SeqNo);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Sequence.
-     *
-     * @param SeqNo Method of ordering records; lowest number comes first
-     */
-    public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, SeqNo);
     }
 
     @Override

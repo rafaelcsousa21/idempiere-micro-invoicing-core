@@ -62,8 +62,8 @@ public class Scheduler extends AdempiereServer {
         Env.setContext(getCtx(), "#orgId", m_model.getOrgId());
         if (m_model.getOrgId() != 0) {
             MOrgInfo schedorg = MOrgInfo.get(getCtx(), m_model.getOrgId());
-            if (schedorg.getM_Warehouse_ID() > 0)
-                Env.setContext(getCtx(), "#M_Warehouse_ID", schedorg.getM_Warehouse_ID());
+            if (schedorg.getWarehouseId() > 0)
+                Env.setContext(getCtx(), "#M_Warehouse_ID", schedorg.getWarehouseId());
         }
         Env.setContext(getCtx(), "#AD_User_ID", getAD_User_ID());
         Env.setContext(getCtx(), "#SalesRep_ID", getAD_User_ID());
@@ -74,13 +74,13 @@ public class Scheduler extends AdempiereServer {
             Env.setContext(
                     getCtx(),
                     "#AD_Role_ID",
-                    schedroles[0].getAD_Role_ID()); // first role, ordered by AD_Role_ID
+                    schedroles[0].getRoleId()); // first role, ordered by AD_Role_ID
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat dateFormat4Timestamp = new SimpleDateFormat("yyyy-MM-dd");
         Env.setContext(
                 getCtx(), "#Date", dateFormat4Timestamp.format(ts) + " 00:00:00"); //  JDBC format
 
-        MProcess process = new MProcess(getCtx(), m_model.getAD_Process_ID());
+        MProcess process = new MProcess(getCtx(), m_model.getProcessId());
         try {
             m_summary.append(runProcess(process));
         } catch (Throwable e) {
@@ -114,23 +114,23 @@ public class Scheduler extends AdempiereServer {
 
         boolean isReport =
                 (process.isReport()
-                        || process.getAD_ReportView_ID() > 0
+                        || process.getReportViewId() > 0
                         || process.getJasperReport() != null
-                        || process.getAD_PrintFormat_ID() > 0);
+                        || process.getPrintFormatId() > 0);
         String schedulerName = Env.parseContext(getCtx(), -1, m_model.getName(), false, true);
 
         //	Process (see also MWFActivity.performWork
-        int AD_Table_ID = m_model.getAD_Table_ID();
-        int Record_ID = m_model.getRecord_ID();
+        int AD_Table_ID = m_model.getDBTableId();
+        int Record_ID = m_model.getRecordId();
         //
         MPInstance pInstance = new MPInstance(process, Record_ID);
         fillParameter(pInstance);
         //
         ProcessInfo pi =
-                new ProcessInfo(process.getName(), process.getAD_Process_ID(), AD_Table_ID, Record_ID);
+                new ProcessInfo(process.getName(), process.getProcessId(), AD_Table_ID, Record_ID);
         pi.setAD_User_ID(getAD_User_ID());
         pi.setADClientID(m_model.getClientId());
-        pi.setAD_PInstance_ID(pInstance.getAD_PInstance_ID());
+        pi.setAD_PInstance_ID(pInstance.getPInstanceId());
         pi.setIsBatch(true);
         pi.setPrintPreview(true);
         MUser from = new MUser(getCtx(), pi.getAD_User_ID());
@@ -140,7 +140,7 @@ public class Scheduler extends AdempiereServer {
         if (pi.isError()) // note, this call close the transaction, don't use m_trx below
         {
             // notify supervisor if error
-            int supervisor = m_model.getSupervisor_ID();
+            int supervisor = m_model.getSupervisorId();
             if (supervisor > 0) {
                 MUser user = new MUser(getCtx(), supervisor);
                 boolean email = user.isNotificationEMail();
@@ -163,7 +163,7 @@ public class Scheduler extends AdempiereServer {
                     String log = pi.getLogInfo(true);
                     if (log != null && log.trim().length() > 0) {
                         MAttachment attachment =
-                                new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID());
+                                new MAttachment(getCtx(), MNote.Table_ID, note.getNoteId());
                         attachment.setClientOrg(m_model.getClientId(), m_model.getOrgId());
                         attachment.setTextMsg(schedulerName);
                         attachment.addEntry("ProcessLog.html", log.getBytes("UTF-8"));
@@ -207,7 +207,7 @@ public class Scheduler extends AdempiereServer {
                         MAttachment attachment = null;
                         if (fileList != null && !fileList.isEmpty()) {
                             //	Attachment
-                            attachment = new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID());
+                            attachment = new MAttachment(getCtx(), MNote.Table_ID, note.getNoteId());
                             attachment.setClientOrg(m_model.getClientId(), m_model.getOrgId());
                             attachment.setTextMsg(schedulerName);
                             for (File entry : fileList) attachment.addEntry(entry);
@@ -215,7 +215,7 @@ public class Scheduler extends AdempiereServer {
                         String log = pi.getLogInfo(true);
                         if (log != null && log.trim().length() > 0) {
                             if (attachment == null) {
-                                attachment = new MAttachment(getCtx(), MNote.Table_ID, note.getAD_Note_ID());
+                                attachment = new MAttachment(getCtx(), MNote.Table_ID, note.getNoteId());
                                 attachment.setClientOrg(m_model.getClientId(), m_model.getOrgId());
                                 attachment.setTextMsg(schedulerName);
                             }
@@ -227,10 +227,10 @@ public class Scheduler extends AdempiereServer {
                 }
 
                 if (email) {
-                    MMailText mailTemplate = new MMailText(getCtx(), m_model.getR_MailText_ID());
+                    MMailText mailTemplate = new MMailText(getCtx(), m_model.getMailTextId());
                     String mailContent = "";
 
-                    if (mailTemplate.is_new()) {
+                    if (mailTemplate.isNew()) {
                         mailContent = m_model.getDescription();
                     } else {
                         mailTemplate.setUser(user);
@@ -265,7 +265,7 @@ public class Scheduler extends AdempiereServer {
 
     protected int getAD_User_ID() {
         int AD_User_ID;
-        if (m_model.getSupervisor_ID() > 0) AD_User_ID = m_model.getSupervisor_ID();
+        if (m_model.getSupervisorId() > 0) AD_User_ID = m_model.getSupervisorId();
         else if (m_model.getCreatedBy() > 0) AD_User_ID = m_model.getCreatedBy();
         else if (m_model.getUpdatedBy() > 0) AD_User_ID = m_model.getUpdatedBy();
         else AD_User_ID = 100; // fall back to SuperUser
@@ -307,15 +307,15 @@ public class Scheduler extends AdempiereServer {
                                 || DisplayType.isID(sPara.getDisplayType())) {
                             DecimalFormat decimalFormat = DisplayType.getNumberFormat(sPara.getDisplayType());
                             BigDecimal bd = toBigDecimal(value);
-                            iPara.setP_Number(bd);
+                            iPara.setProcessNumber(bd);
                             if (toValue != null) {
                                 bd = toBigDecimal(toValue);
-                                iPara.setP_Number_To(bd);
+                                iPara.setProcessNumberTo(bd);
                             }
                             if (Util.isEmpty(paraDesc)) {
-                                String info = decimalFormat.format(iPara.getP_Number());
-                                if (iPara.getP_Number_To() != null)
-                                    info = info + " - " + decimalFormat.format(iPara.getP_Number_To());
+                                String info = decimalFormat.format(iPara.getProcessNumber());
+                                if (iPara.getProcessNumberTo() != null)
+                                    info = info + " - " + decimalFormat.format(iPara.getProcessNumberTo());
                                 iPara.setInfo(info);
                             }
                             if (log.isLoggable(Level.FINE))
@@ -323,29 +323,29 @@ public class Scheduler extends AdempiereServer {
                         } else if (DisplayType.isDate(sPara.getDisplayType())) {
                             SimpleDateFormat dateFormat = DisplayType.getDateFormat(sPara.getDisplayType());
                             Timestamp ts = toTimestamp(value);
-                            iPara.setP_Date(ts);
+                            iPara.setProcessDate(ts);
                             if (toValue != null) {
                                 ts = toTimestamp(toValue);
-                                iPara.setP_Date_To(ts);
+                                iPara.setProcessDateTo(ts);
                             }
                             if (Util.isEmpty(paraDesc)) {
-                                String info = dateFormat.format(iPara.getP_Date());
-                                if (iPara.getP_Date_To() != null) {
-                                    info = info + " - " + dateFormat.format(iPara.getP_Date_To());
+                                String info = dateFormat.format(iPara.getProcessDate());
+                                if (iPara.getProcessDateTo() != null) {
+                                    info = info + " - " + dateFormat.format(iPara.getProcessDateTo());
                                 }
                                 iPara.setInfo(info);
                             }
                             if (log.isLoggable(Level.FINE))
                                 log.fine(sPara.getColumnName() + " = " + variable + " (=" + ts + "=)");
                         } else {
-                            iPara.setP_String(value.toString());
+                            iPara.setProcessString(value.toString());
                             if (toValue != null) {
-                                iPara.setP_String_To(toValue.toString());
+                                iPara.setProcessStringTo(toValue.toString());
                             }
                             if (Util.isEmpty(paraDesc)) {
-                                String info = iPara.getP_String();
-                                if (iPara.getP_String_To() != null) {
-                                    info = info + " - " + iPara.getP_String_To();
+                                String info = iPara.getProcessString();
+                                if (iPara.getProcessStringTo() != null) {
+                                    info = info + " - " + iPara.getProcessStringTo();
                                 }
                                 iPara.setInfo(info);
                             }

@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_EventAudit;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Persistent {
+public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
 
     /**
      * Process Created = PC
@@ -39,9 +38,9 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     public X_AD_WF_EventAudit(Properties ctx, int AD_WF_EventAudit_ID) {
         super(ctx, AD_WF_EventAudit_ID);
         /**
-         * if (AD_WF_EventAudit_ID == 0) { setAD_Table_ID (0); setAD_WF_EventAudit_ID (0);
+         * if (AD_WF_EventAudit_ID == 0) { setColumnTableId (0); setAD_WF_EventAudit_ID (0);
          * setAD_WF_Node_ID (0); setAD_WF_Process_ID (0); setAD_WF_Responsible_ID (0); setElapsedTimeMS
-         * (Env.ZERO); setEventType (null); setRecord_ID (0); setWFState (null); }
+         * (Env.ZERO); setEventType (null); setRecordId (0); setWFState (null); }
          */
     }
 
@@ -67,35 +66,13 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
     }
 
     /**
-     * Get Table.
-     *
-     * @return Database Table information
-     */
-    public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Table.
      *
      * @param AD_Table_ID Database Table information
      */
-    public void setAD_Table_ID(int AD_Table_ID) {
+    public void setTableId(int AD_Table_ID) {
         if (AD_Table_ID < 1) set_Value(COLUMNNAME_AD_Table_ID, null);
         else set_Value(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
-    }
-
-    /**
-     * Get User/Contact.
-     *
-     * @return User within the system - Internal or Business Partner Contact
-     */
-    public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -103,20 +80,9 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
      *
      * @param AD_User_ID User within the system - Internal or Business Partner Contact
      */
-    public void setAD_User_ID(int AD_User_ID) {
+    public void setUserId(int AD_User_ID) {
         if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
         else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
-    }
-
-    /**
-     * Get Workflow Event Audit.
-     *
-     * @return Workflow Process Activity Event Audit Information
-     */
-    public int getAD_WF_EventAudit_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_EventAudit_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -124,8 +90,8 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
      *
      * @return Workflow Node (activity), step or process
      */
-    public int getAD_WF_Node_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Node_ID);
+    public int getWorkflowNodeId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Node_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -135,20 +101,9 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
      *
      * @param AD_WF_Node_ID Workflow Node (activity), step or process
      */
-    public void setAD_WF_Node_ID(int AD_WF_Node_ID) {
+    public void setWorkflowNodeId(int AD_WF_Node_ID) {
         if (AD_WF_Node_ID < 1) set_Value(COLUMNNAME_AD_WF_Node_ID, null);
         else set_Value(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
-    }
-
-    /**
-     * Get Workflow Process.
-     *
-     * @return Actual Workflow Process Instance
-     */
-    public int getAD_WF_Process_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Process_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -156,20 +111,9 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
      *
      * @param AD_WF_Process_ID Actual Workflow Process Instance
      */
-    public void setAD_WF_Process_ID(int AD_WF_Process_ID) {
+    public void setWorkflowProcessId(int AD_WF_Process_ID) {
         if (AD_WF_Process_ID < 1) set_Value(COLUMNNAME_AD_WF_Process_ID, null);
         else set_Value(COLUMNNAME_AD_WF_Process_ID, Integer.valueOf(AD_WF_Process_ID));
-    }
-
-    /**
-     * Get Workflow Responsible.
-     *
-     * @return Responsible for Workflow Execution
-     */
-    public int getAD_WF_Responsible_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Responsible_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -177,7 +121,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
      *
      * @param AD_WF_Responsible_ID Responsible for Workflow Execution
      */
-    public void setAD_WF_Responsible_ID(int AD_WF_Responsible_ID) {
+    public void setWorkflowResponsibleId(int AD_WF_Responsible_ID) {
         if (AD_WF_Responsible_ID < 1) set_Value(COLUMNNAME_AD_WF_Responsible_ID, null);
         else set_Value(COLUMNNAME_AD_WF_Responsible_ID, Integer.valueOf(AD_WF_Responsible_ID));
     }
@@ -189,15 +133,6 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
      */
     public void setAttributeName(String AttributeName) {
         set_Value(COLUMNNAME_AttributeName, AttributeName);
-    }
-
-    /**
-     * Get Description.
-     *
-     * @return Optional short description of the record
-     */
-    public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
     }
 
     /**
@@ -242,18 +177,9 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit, I_Pers
      *
      * @param Record_ID Direct internal record ID
      */
-    public void setRecord_ID(int Record_ID) {
+    public void setRecordId(int Record_ID) {
         if (Record_ID < 0) set_Value(COLUMNNAME_Record_ID, null);
         else set_Value(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
-    }
-
-    /**
-     * Get Text Message.
-     *
-     * @return Text Message
-     */
-    public String getTextMsg() {
-        return (String) get_Value(COLUMNNAME_TextMsg);
     }
 
     /**

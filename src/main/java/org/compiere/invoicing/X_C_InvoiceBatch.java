@@ -3,7 +3,6 @@ package org.compiere.invoicing;
 import org.compiere.model.I_C_InvoiceBatch;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persistent {
+public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
 
     /**
      *
@@ -29,7 +28,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
     public X_C_InvoiceBatch(Properties ctx, int C_InvoiceBatch_ID) {
         super(ctx, C_InvoiceBatch_ID);
         /**
-         * if (C_InvoiceBatch_ID == 0) { setC_Currency_ID (0); // @$C_Currency_ID@ setC_InvoiceBatch_ID
+         * if (C_InvoiceBatch_ID == 0) { setCurrencyId (0); // @$C_Currency_ID@ setC_InvoiceBatch_ID
          * (0); setControlAmt (Env.ZERO); // 0 setDateDoc (new Timestamp( System.currentTimeMillis() ));
          * // @#Date@ setDocumentAmt (Env.ZERO); setDocumentNo (null); setIsSOTrx (false); // N
          * setProcessed (false); setSalesRep_ID (0); }
@@ -63,7 +62,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return Currency Conversion Rate Type
      */
     public int getC_ConversionType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ConversionType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ConversionType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -74,7 +73,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -85,7 +84,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return Expense Invoice Batch Header
      */
     public int getC_InvoiceBatch_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceBatch_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceBatch_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -96,7 +95,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return If not zero, the Debit amount of the document must be equal this amount
      */
     public BigDecimal getControlAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ControlAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ControlAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -125,7 +124,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -134,7 +133,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return Document Amount
      */
     public BigDecimal getDocumentAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DocumentAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DocumentAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -146,15 +145,6 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      */
     public void setDocumentAmt(BigDecimal DocumentAmt) {
         set_ValueNoCheck(COLUMNNAME_DocumentAmt, DocumentAmt);
-    }
-
-    /**
-     * Get Document No.
-     *
-     * @return Document sequence number of the document
-     */
-    public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -172,7 +162,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return This is a Sales Transaction
      */
     public boolean isSOTrx() {
-        Object oo = get_Value(COLUMNNAME_IsSOTrx);
+        Object oo = getValue(COLUMNNAME_IsSOTrx);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -186,7 +176,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -209,7 +199,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch, I_Persiste
      * @return Sales Representative or Company Agent
      */
     public int getSalesRep_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SalesRep_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_SalesRep_ID);
         if (ii == null) return 0;
         return ii;
     }

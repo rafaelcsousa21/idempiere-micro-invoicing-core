@@ -3,13 +3,12 @@ package org.idempiere.process;
 import org.compiere.model.I_M_MovementConfirm;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Persistent {
+public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
 
     /**
      * Complete = CO
@@ -80,7 +79,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return Document Approval Amount
      */
     public BigDecimal getApprovalAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ApprovalAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ApprovalAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -91,7 +90,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -109,7 +108,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -128,7 +127,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(COLUMNNAME_DocStatus);
+        return (String) getValue(COLUMNNAME_DocStatus);
     }
 
     /**
@@ -147,7 +146,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -165,7 +164,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(COLUMNNAME_IsApproved);
+        Object oo = getValue(COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -179,7 +178,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return Parameters for a Physical Inventory
      */
     public int getM_Inventory_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Inventory_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Inventory_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -200,7 +199,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return Inventory Move Confirmation
      */
     public int getM_MovementConfirm_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_MovementConfirm_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_MovementConfirm_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -211,7 +210,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return Movement of Inventory
      */
     public int getM_Movement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Movement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Movement_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -232,7 +231,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm, I_Pe
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);

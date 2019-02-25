@@ -66,7 +66,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             //	setDocumentNo (null);
             setIsApproved(false);
             //	setM_PriceList_ID (0);
-            //	setM_Warehouse_ID (0);
+            //	setWarehouseId (0);
             super.setProcessed(false);
             setProcessing(false);
         }
@@ -469,7 +469,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
         if (getC_BPartner_ID() != 0) {
             MUser[] users = MUser.getOfBPartner(getCtx(), getC_BPartner_ID());
             if (users.length > 0) {
-                m_AD_User_ID = users[0].getAD_User_ID();
+                m_AD_User_ID = users[0].getUserId();
                 return m_AD_User_ID;
             }
         }
@@ -484,7 +484,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     public int getC_Currency_ID() {
         MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
         return pl.getC_Currency_ID();
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     /**
      * Document Status is Complete or Closed

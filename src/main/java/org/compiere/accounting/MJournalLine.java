@@ -58,7 +58,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         if (GL_JournalLine_ID == 0) {
             //	setGL_JournalLine_ID (0);		//	PK
             //	setGL_Journal_ID (0);			//	Parent
-            //	setC_Currency_ID (0);
+            //	setCurrencyId (0);
             //	setC_ValidCombination_ID (0);
             setLine(0);
             setAmtAcctCr(Env.ZERO);
@@ -128,7 +128,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         if (C_Currency_ID == 0) return;
         super.setC_Currency_ID(C_Currency_ID);
         m_precision = MCurrency.getStdPrecision(getCtx(), C_Currency_ID);
-    } //	setC_Currency_ID
+    } //	setCurrencyId
 
     /**
      * Get Currency Precision
@@ -283,7 +283,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         setAmtAcctCr(amt);
         //	Set Line Org to Doc Org if still not set
         if (getOrgId() <= 0) {
-            setAD_Org_ID(getParent().getOrgId());
+            setOrgId(getParent().getOrgId());
         }
         return true;
     } //	beforeSave
@@ -355,7 +355,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      */
     private boolean getOrCreateCombination() {
         if (getC_ValidCombination_ID() == 0
-                || (!is_new()
+                || (!isNew()
                 && (is_ValueChanged("Account_ID")
                 || is_ValueChanged("C_SubAcct_ID")
                 || is_ValueChanged("M_Product_ID")
@@ -454,7 +454,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
             setM_Product_ID(combi.getM_Product_ID() > 0 ? combi.getM_Product_ID() : 0);
             setC_BPartner_ID(combi.getC_BPartner_ID() > 0 ? combi.getC_BPartner_ID() : 0);
             setAD_OrgTrx_ID(combi.getAD_OrgTrx_ID() > 0 ? combi.getAD_OrgTrx_ID() : 0);
-            setAD_Org_ID(combi.getOrgId() > 0 ? combi.getOrgId() : 0);
+            setOrgId(combi.getOrgId() > 0 ? combi.getOrgId() : 0);
             setC_LocFrom_ID(combi.getC_LocFrom_ID() > 0 ? combi.getC_LocFrom_ID() : 0);
             setC_LocTo_ID(combi.getC_LocTo_ID() > 0 ? combi.getC_LocTo_ID() : 0);
             setC_SalesRegion_ID(combi.getC_SalesRegion_ID() > 0 ? combi.getC_SalesRegion_ID() : 0);

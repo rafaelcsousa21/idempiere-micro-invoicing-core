@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_PA_Achievement;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_Persistent {
+public class X_PA_Achievement extends BasePOName implements I_PA_Achievement {
 
     /**
      *
@@ -63,7 +62,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_
      * @return Date of the Document
      */
     public Timestamp getDateDoc() {
-        return (Timestamp) get_Value(COLUMNNAME_DateDoc);
+        return (Timestamp) getValue(COLUMNNAME_DateDoc);
     }
 
     /**
@@ -81,7 +80,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_
      * @return The goal is achieved
      */
     public boolean isAchieved() {
-        Object oo = get_Value(COLUMNNAME_IsAchieved);
+        Object oo = getValue(COLUMNNAME_IsAchieved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -95,7 +94,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_
      * @return Manually entered actual value
      */
     public BigDecimal getManualActual() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ManualActual);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ManualActual);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -115,7 +114,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement, I_
      * @return Concrete Performance Measurement
      */
     public int getPA_Measure_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PA_Measure_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_PA_Measure_ID);
         if (ii == null) return 0;
         return ii;
     }

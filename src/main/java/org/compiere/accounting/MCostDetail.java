@@ -58,7 +58,7 @@ public class MCostDetail extends X_M_CostDetail {
     public MCostDetail(Properties ctx, int M_CostDetail_ID) {
         super(ctx, M_CostDetail_ID);
         if (M_CostDetail_ID == 0) {
-            //	setC_AcctSchema_ID (0);
+            //	setAccountingSchemaId (0);
             //	setM_Product_ID (0);
             setM_AttributeSetInstance_ID(0);
             //	setC_OrderLine_ID (0);
@@ -112,7 +112,7 @@ public class MCostDetail extends X_M_CostDetail {
             String Description) {
         this(as.getCtx(), 0);
         setClientOrg(as.getClientId(), AD_Org_ID);
-        setC_AcctSchema_ID(as.getC_AcctSchema_ID());
+        setC_AcctSchema_ID(as.getAccountingSchemaId());
         setM_Product_ID(M_Product_ID);
         setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
         //
@@ -158,7 +158,7 @@ public class MCostDetail extends X_M_CostDetail {
                                 + M_Product_ID,
                         C_InvoiceLine_ID,
                         M_AttributeSetInstance_ID,
-                        as.getC_AcctSchema_ID());
+                        as.getAccountingSchemaId());
         //
         if (cd == null) // 	createNew
         {
@@ -234,7 +234,7 @@ public class MCostDetail extends X_M_CostDetail {
                         "M_InOutLine_ID=? AND Coalesce(M_CostElement_ID,0)=" + M_CostElement_ID,
                         M_InOutLine_ID,
                         M_AttributeSetInstance_ID,
-                        as.getC_AcctSchema_ID());
+                        as.getAccountingSchemaId());
         //
         if (cd == null) // 	createNew
         {
@@ -310,7 +310,7 @@ public class MCostDetail extends X_M_CostDetail {
                         "M_InventoryLine_ID=? AND Coalesce(M_CostElement_ID,0)=" + M_CostElement_ID,
                         M_InventoryLine_ID,
                         M_AttributeSetInstance_ID,
-                        as.getC_AcctSchema_ID());
+                        as.getAccountingSchemaId());
         //
         if (cd == null) // 	createNew
         {
@@ -370,7 +370,7 @@ public class MCostDetail extends X_M_CostDetail {
 
         MClientInfo clientInfo = MClientInfo.get(ctx);
         MAcctSchema primary = clientInfo.getMAcctSchema1();
-        int C_AcctSchema_ID = primary != null ? primary.getC_AcctSchema_ID() : 0;
+        int C_AcctSchema_ID = primary != null ? primary.getAccountingSchemaId() : 0;
         if (C_AcctSchema_ID > 0) {
             sql.append(" AND C_AcctSchema_ID=?");
         }
@@ -634,7 +634,7 @@ public class MCostDetail extends X_M_CostDetail {
 
         MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID(), null);
 
-        forUpdate(cost, 120);
+        forUpdate(cost);
 
         //	if (cost == null)
         //		cost = new MCost(product, M_ASI_ID,
@@ -912,7 +912,7 @@ public class MCostDetail extends X_M_CostDetail {
                     //	Initial
                     if (cost.getCurrentCostPrice().signum() == 0
                             && cost.getCurrentCostPriceLL().signum() == 0
-                            && cost.is_new()) {
+                            && cost.isNew()) {
                         cost.setCurrentCostPrice(price);
                         if (log.isLoggable(Level.FINEST))
                             log.finest("QtyAdjust - Standard - CurrentCostPrice=" + price);

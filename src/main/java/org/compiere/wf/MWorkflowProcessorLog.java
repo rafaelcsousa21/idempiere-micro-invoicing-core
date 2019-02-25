@@ -52,7 +52,7 @@ public class MWorkflowProcessorLog extends X_AD_WorkflowProcessorLog
     public MWorkflowProcessorLog(MWorkflowProcessor parent, String Summary) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setAD_WorkflowProcessor_ID(parent.getAD_WorkflowProcessor_ID());
+        setWorkflowProcessorId(parent.getWorkflowProcessorId());
         setSummary(Summary);
     } //	MWorkflowProcessorLog
 } //	MWorkflowProcessorLog

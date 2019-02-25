@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_M_LocatorType;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Persistent {
+public class X_M_LocatorType extends BasePOName implements I_M_LocatorType {
 
     /**
      *
@@ -68,7 +67,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
      * @return Available for Replenishment
      */
     public boolean isAvailableForReplenishment() {
-        Object oo = get_Value(COLUMNNAME_IsAvailableForReplenishment);
+        Object oo = getValue(COLUMNNAME_IsAvailableForReplenishment);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -100,7 +99,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType, I_Pe
      * @return Available for Shipping
      */
     public boolean isAvailableForShipping() {
-        Object oo = get_Value(COLUMNNAME_IsAvailableForShipping);
+        Object oo = getValue(COLUMNNAME_IsAvailableForShipping);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);

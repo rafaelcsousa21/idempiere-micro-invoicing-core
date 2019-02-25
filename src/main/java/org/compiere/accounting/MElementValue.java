@@ -37,7 +37,7 @@ public class MElementValue extends X_C_ElementValue {
     public MElementValue(Properties ctx, int C_ElementValue_ID) {
         super(ctx, C_ElementValue_ID);
         if (C_ElementValue_ID == 0) {
-            //	setC_Element_ID (0);	//	Parent
+            //	setElementId (0);	//	Parent
             //	setName (null);
             //	setValue (null);
             setIsSummary(false);
@@ -88,7 +88,7 @@ public class MElementValue extends X_C_ElementValue {
             boolean IsDocControlled,
             boolean IsSummary) {
         this(ctx, 0);
-        setValue(Value);
+        setSearchKey(Value);
         setName(Name);
         setDescription(Description);
         setAccountType(AccountType);
@@ -114,14 +114,14 @@ public class MElementValue extends X_C_ElementValue {
      * @param imp import
      */
     public void set(X_I_ElementValue imp) {
-        setValue(imp.getValue());
+        setSearchKey(imp.getSearchKey());
         setName(imp.getName());
         setDescription(imp.getDescription());
         setAccountType(imp.getAccountType());
         setAccountSign(imp.getAccountSign());
         setIsSummary(imp.isSummary());
         setIsDocControlled(imp.isDocControlled());
-        setC_Element_ID(imp.getC_Element_ID());
+        setElementId(imp.getC_Element_ID());
         //
         setPostActual(imp.isPostActual());
         setPostBudget(imp.isPostBudget());
@@ -130,7 +130,7 @@ public class MElementValue extends X_C_ElementValue {
         //
         //	setC_BankAccount_ID(imp.getC_BankAccount_ID());
         //	setIsForeignCurrency(imp.isForeignCurrency());
-        //	setC_Currency_ID(imp.getC_Currency_ID());
+        //	setCurrencyId(imp.getCurrencyId());
         //	setIsBankAccount(imp.isIsBankAccount());
         //	setValidFrom(null);
         //	setValidTo(null);
@@ -143,13 +143,13 @@ public class MElementValue extends X_C_ElementValue {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(getValue()).append(" - ").append(getName());
+        sb.append(getSearchKey()).append(" - ").append(getName());
         return sb.toString();
     } //	toString
 
     @Override
     protected boolean beforeSave(boolean newRecord) {
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
         //
         // Transform to summary level account
         if (!newRecord && isSummary() && is_ValueChanged(I_C_ElementValue.COLUMNNAME_IsSummary)) {
@@ -161,7 +161,7 @@ public class MElementValue extends X_C_ElementValue {
                             I_Fact_Acct.Table_Name,
                             I_Fact_Acct.COLUMNNAME_Account_ID + "=?"
                     )
-                            .setParameters(getC_ElementValue_ID())
+                            .setParameters(getElementValueId())
                             .match();
             if (match) {
                 throw new AdempiereException("@AlreadyPostedTo@");
@@ -191,10 +191,10 @@ public class MElementValue extends X_C_ElementValue {
         if (!success) return success;
         if (newRecord || is_ValueChanged(I_C_ElementValue.COLUMNNAME_Value)) {
             // afalcone [Bugs #1837219]
-            int ad_Tree_ID = (new MElement(getCtx(), getC_Element_ID())).getAD_Tree_ID();
+            int ad_Tree_ID = (new MElement(getCtx(), getElementId())).getTreeId();
             String treeType = (new MTree(getCtx(), ad_Tree_ID)).getTreeType();
 
-            if (newRecord) insert_Tree(treeType, getC_Element_ID());
+            if (newRecord) insert_Tree(treeType, getElementId());
 
             update_Tree(treeType);
         }
@@ -204,13 +204,13 @@ public class MElementValue extends X_C_ElementValue {
                 && (is_ValueChanged(I_C_ElementValue.COLUMNNAME_Value)
                 || is_ValueChanged(HasName.Companion.getCOLUMNNAME_Name()))) {
             MAccount.updateValueDescription(
-                    getCtx(), "Account_ID=" + getC_ElementValue_ID());
+                    getCtx(), "Account_ID=" + getElementValueId());
             if ("Y".equals(Env.getContext(getCtx(), "$Element_U1")))
                 MAccount.updateValueDescription(
-                        getCtx(), "User1_ID=" + getC_ElementValue_ID());
+                        getCtx(), "User1_ID=" + getElementValueId());
             if ("Y".equals(Env.getContext(getCtx(), "$Element_U2")))
                 MAccount.updateValueDescription(
-                        getCtx(), "User2_ID=" + getC_ElementValue_ID());
+                        getCtx(), "User2_ID=" + getElementValueId());
         }
 
         return success;

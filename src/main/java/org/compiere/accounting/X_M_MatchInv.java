@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_M_MatchInv;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
+public class X_M_MatchInv extends PO implements I_M_MatchInv {
 
     /**
      *
@@ -63,7 +62,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Invoice Detail Line
      */
     public int getC_InvoiceLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -84,7 +83,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -102,7 +101,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Transaction Date
      */
     public Timestamp getDateTrx() {
-        return (Timestamp) get_Value(COLUMNNAME_DateTrx);
+        return (Timestamp) getValue(COLUMNNAME_DateTrx);
     }
 
     /**
@@ -120,7 +119,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -138,7 +137,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -159,7 +158,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -170,7 +169,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Line on Shipment or Receipt document
      */
     public int getM_InOutLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InOutLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -191,18 +190,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Match Shipment/Receipt to Invoice
      */
     public int getM_MatchInv_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_MatchInv_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Product.
-     *
-     * @return Product, Service, Item
-     */
-    public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_MatchInv_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -223,7 +211,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Posting status
      */
     public boolean isPosted() {
-        Object oo = get_Value(COLUMNNAME_Posted);
+        Object oo = getValue(COLUMNNAME_Posted);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -246,7 +234,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -278,7 +266,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -298,7 +286,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv, I_Persistent {
      * @return ID of document reversal
      */
     public int getReversal_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Reversal_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Reversal_ID);
         if (ii == null) return 0;
         return ii;
     }

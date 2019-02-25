@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_GL_Distribution;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, I_Persistent {
+public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
 
     /**
      *
@@ -56,7 +55,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Account used
      */
     public int getAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Account_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Account_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -77,7 +76,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Performing or initiating organization
      */
     public int getAD_OrgTrx_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_OrgTrx_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -98,7 +97,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Account segment
      */
     public boolean isAnyAcct() {
-        Object oo = get_Value(COLUMNNAME_AnyAcct);
+        Object oo = getValue(COLUMNNAME_AnyAcct);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -121,7 +120,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Activity segment
      */
     public boolean isAnyActivity() {
-        Object oo = get_Value(COLUMNNAME_AnyActivity);
+        Object oo = getValue(COLUMNNAME_AnyActivity);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -144,7 +143,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Business Partner segment
      */
     public boolean isAnyBPartner() {
-        Object oo = get_Value(COLUMNNAME_AnyBPartner);
+        Object oo = getValue(COLUMNNAME_AnyBPartner);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -167,7 +166,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Campaign segment
      */
     public boolean isAnyCampaign() {
-        Object oo = get_Value(COLUMNNAME_AnyCampaign);
+        Object oo = getValue(COLUMNNAME_AnyCampaign);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -190,7 +189,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Location From segment
      */
     public boolean isAnyLocFrom() {
-        Object oo = get_Value(COLUMNNAME_AnyLocFrom);
+        Object oo = getValue(COLUMNNAME_AnyLocFrom);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -213,7 +212,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Location To segment
      */
     public boolean isAnyLocTo() {
-        Object oo = get_Value(COLUMNNAME_AnyLocTo);
+        Object oo = getValue(COLUMNNAME_AnyLocTo);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -236,7 +235,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Organization segment
      */
     public boolean isAnyOrg() {
-        Object oo = get_Value(COLUMNNAME_AnyOrg);
+        Object oo = getValue(COLUMNNAME_AnyOrg);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -259,7 +258,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Transaction Organization segment
      */
     public boolean isAnyOrgTrx() {
-        Object oo = get_Value(COLUMNNAME_AnyOrgTrx);
+        Object oo = getValue(COLUMNNAME_AnyOrgTrx);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -282,7 +281,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Product segment
      */
     public boolean isAnyProduct() {
-        Object oo = get_Value(COLUMNNAME_AnyProduct);
+        Object oo = getValue(COLUMNNAME_AnyProduct);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -305,7 +304,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Project segment
      */
     public boolean isAnyProject() {
-        Object oo = get_Value(COLUMNNAME_AnyProject);
+        Object oo = getValue(COLUMNNAME_AnyProject);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -328,7 +327,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the Sales Region segment
      */
     public boolean isAnySalesRegion() {
-        Object oo = get_Value(COLUMNNAME_AnySalesRegion);
+        Object oo = getValue(COLUMNNAME_AnySalesRegion);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -351,7 +350,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the User 1 segment
      */
     public boolean isAnyUser1() {
-        Object oo = get_Value(COLUMNNAME_AnyUser1);
+        Object oo = getValue(COLUMNNAME_AnyUser1);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -374,7 +373,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Match any value of the User 2 segment
      */
     public boolean isAnyUser2() {
-        Object oo = get_Value(COLUMNNAME_AnyUser2);
+        Object oo = getValue(COLUMNNAME_AnyUser2);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -397,7 +396,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Rules for accounting
      */
     public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -408,7 +407,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -429,7 +428,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -450,7 +449,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -471,7 +470,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -482,7 +481,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Location that inventory was moved from
      */
     public int getC_LocFrom_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LocFrom_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LocFrom_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -503,7 +502,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Location that inventory was moved to
      */
     public int getC_LocTo_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LocTo_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LocTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -524,7 +523,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -545,7 +544,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Sales coverage region
      */
     public int getC_SalesRegion_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_SalesRegion_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -566,7 +565,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return General Ledger Distribution
      */
     public int getGL_Distribution_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_Distribution_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_Distribution_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -578,7 +577,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * will be deleted.
      */
     public boolean isCreateReversal() {
-        Object oo = get_Value(COLUMNNAME_IsCreateReversal);
+        Object oo = getValue(COLUMNNAME_IsCreateReversal);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -601,7 +600,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Element is valid
      */
     public boolean isValid() {
-        Object oo = get_Value(COLUMNNAME_IsValid);
+        Object oo = getValue(COLUMNNAME_IsValid);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -615,7 +614,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -636,7 +635,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Organizational entity within client
      */
     public int getOrg_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Org_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Org_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -657,7 +656,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return Sum of the Percent details
      */
     public BigDecimal getPercentTotal() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PercentTotal);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PercentTotal);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -677,7 +676,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return The type of posted amount for the transaction
      */
     public String getPostingType() {
-        return (String) get_Value(COLUMNNAME_PostingType);
+        return (String) getValue(COLUMNNAME_PostingType);
     }
 
     /**
@@ -686,7 +685,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return User defined list element #1
      */
     public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -707,7 +706,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution, 
      * @return User defined list element #2
      */
     public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
     }

@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_Cash;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
+public class X_C_Cash extends BasePOName implements I_C_Cash {
 
     /**
      * Complete = CO
@@ -93,7 +92,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return Balance prior to any transactions
      */
     public BigDecimal getBeginningBalance() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_BeginningBalance);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_BeginningBalance);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -108,34 +107,12 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
     }
 
     /**
-     * Get Activity.
-     *
-     * @return Business Activity
-     */
-    public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Campaign.
-     *
-     * @return Marketing Campaign
-     */
-    public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Cash Book.
      *
      * @return Cash Book for recording petty cash transactions
      */
     public int getC_CashBook_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_CashBook_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_CashBook_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -156,18 +133,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return Cash Journal
      */
     public int getC_Cash_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Cash_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Project.
-     *
-     * @return Financial Project
-     */
-    public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Cash_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -178,7 +144,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -196,7 +162,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -214,7 +180,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -233,7 +199,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(COLUMNNAME_DocStatus);
+        return (String) getValue(COLUMNNAME_DocStatus);
     }
 
     /**
@@ -252,7 +218,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return Ending or closing balance
      */
     public BigDecimal getEndingBalance() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_EndingBalance);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_EndingBalance);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -281,7 +247,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(COLUMNNAME_IsApproved);
+        Object oo = getValue(COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -296,20 +262,6 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      */
     public void setPosted(boolean Posted) {
         set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
-    }
-
-    /**
-     * Get Processed.
-     *
-     * @return The document has been processed
-     */
-    public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
-        if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
-            return "Y".equals(oo);
-        }
-        return false;
     }
 
     /**
@@ -336,7 +288,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return Date of the statement
      */
     public Timestamp getStatementDate() {
-        return (Timestamp) get_Value(COLUMNNAME_StatementDate);
+        return (Timestamp) getValue(COLUMNNAME_StatementDate);
     }
 
     /**
@@ -354,7 +306,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      * @return Difference between statement ending balance and actual ending balance
      */
     public BigDecimal getStatementDifference() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_StatementDifference);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_StatementDifference);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -367,28 +319,6 @@ public class X_C_Cash extends BasePOName implements I_C_Cash, I_Persistent {
      */
     public void setStatementDifference(BigDecimal StatementDifference) {
         set_Value(COLUMNNAME_StatementDifference, StatementDifference);
-    }
-
-    /**
-     * Get User Element List 1.
-     *
-     * @return User defined list element #1
-     */
-    public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get User Element List 2.
-     *
-     * @return User defined list element #2
-     */
-    public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     @Override

@@ -291,8 +291,8 @@ public class OrderPOCreate extends SvrProcess {
             }
             // get default drop ship warehouse
             MOrgInfo orginfo = MOrgInfo.get(getCtx(), po.getOrgId());
-            if (orginfo.getDropShip_Warehouse_ID() != 0)
-                po.setM_Warehouse_ID(orginfo.getDropShip_Warehouse_ID());
+            if (orginfo.getDropShipWarehouseId() != 0)
+                po.setM_Warehouse_ID(orginfo.getDropShipWarehouseId());
             else log.log(Level.SEVERE, "Must specify drop ship warehouse in org info.");
         }
         //	References

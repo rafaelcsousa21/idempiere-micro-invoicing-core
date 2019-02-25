@@ -5,14 +5,13 @@ import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_DD_OrderLine;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
+public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
     /**
      *
@@ -66,7 +65,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Performing or initiating organization
      */
     public int getAD_OrgTrx_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_OrgTrx_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -93,7 +92,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -120,7 +119,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -147,7 +146,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Additional document charges
      */
     public int getC_Charge_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -168,7 +167,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Confirmation of a received quantity
      */
     public BigDecimal getConfirmedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ConfirmedQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ConfirmedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -194,7 +193,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -221,7 +220,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Unit of Measure
      */
     public int getC_UOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -242,7 +241,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Date when the product was delivered
      */
     public Timestamp getDateDelivered() {
-        return (Timestamp) get_Value(COLUMNNAME_DateDelivered);
+        return (Timestamp) getValue(COLUMNNAME_DateDelivered);
     }
 
     /**
@@ -260,7 +259,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Date of Order
      */
     public Timestamp getDateOrdered() {
-        return (Timestamp) get_Value(COLUMNNAME_DateOrdered);
+        return (Timestamp) getValue(COLUMNNAME_DateOrdered);
     }
 
     /**
@@ -278,7 +277,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Date Order was promised
      */
     public Timestamp getDatePromised() {
-        return (Timestamp) get_Value(COLUMNNAME_DatePromised);
+        return (Timestamp) getValue(COLUMNNAME_DatePromised);
     }
 
     /**
@@ -302,7 +301,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Distribution Order
      */
     public int getDD_Order_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_DD_Order_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_DD_Order_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -323,7 +322,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Distribution Order Line
      */
     public int getDD_OrderLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_DD_OrderLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_DD_OrderLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -344,7 +343,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return DD_OrderLine_UU
      */
     public String getDD_OrderLine_UU() {
-        return (String) get_Value(COLUMNNAME_DD_OrderLine_UU);
+        return (String) getValue(COLUMNNAME_DD_OrderLine_UU);
     }
 
     /**
@@ -362,7 +361,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -371,7 +370,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Freight Amount
      */
     public BigDecimal getFreightAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_FreightAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_FreightAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -400,7 +399,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return if true, the line is just description and no transaction
      */
     public boolean isDescription() {
-        Object oo = get_Value(COLUMNNAME_IsDescription);
+        Object oo = getValue(COLUMNNAME_IsDescription);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -432,7 +431,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Is this invoiced?
      */
     public boolean isInvoiced() {
-        Object oo = get_Value(COLUMNNAME_IsInvoiced);
+        Object oo = getValue(COLUMNNAME_IsInvoiced);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -446,7 +445,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -466,7 +465,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Line Extended Amount (Quantity * Actual Price) without Freight and Charges
      */
     public BigDecimal getLineNetAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_LineNetAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_LineNetAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -503,7 +502,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -532,7 +531,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Target Product Attribute Set Instance
      */
     public int getMAttributeSetInstanceTo_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstanceTo_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstanceTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -549,7 +548,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -576,7 +575,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Location inventory is moved to
      */
     public int getM_LocatorTo_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_LocatorTo_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_LocatorTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -603,7 +602,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -630,7 +629,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Method or manner of product delivery
      */
     public int getM_Shipper_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Shipper_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Shipper_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -651,7 +650,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Picked Quantity
      */
     public BigDecimal getPickedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PickedQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PickedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -671,7 +670,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -694,7 +693,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Delivered Quantity
      */
     public BigDecimal getQtyDelivered() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyDelivered);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyDelivered);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -714,7 +713,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return The Quantity Entered is based on the selected UoM
      */
     public BigDecimal getQtyEntered() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyEntered);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyEntered);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -734,7 +733,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Qty In Transit
      */
     public BigDecimal getQtyInTransit() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyInTransit);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyInTransit);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -754,7 +753,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Ordered Quantity
      */
     public BigDecimal getQtyOrdered() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyOrdered);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyOrdered);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -774,7 +773,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Reserved Quantity
      */
     public BigDecimal getQtyReserved() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyReserved);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyReserved);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -794,7 +793,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return The Quantity scrapped due to QA issues
      */
     public BigDecimal getScrappedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ScrappedQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ScrappedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -814,7 +813,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return Target Movement Quantity
      */
     public BigDecimal getTargetQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TargetQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_TargetQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -840,7 +839,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return User defined list element #1
      */
     public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -867,7 +866,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine, I_Persistent {
      * @return User defined list element #2
      */
     public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
     }

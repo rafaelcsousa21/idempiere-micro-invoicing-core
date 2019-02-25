@@ -3,7 +3,6 @@ package org.compiere.conversionrate;
 import org.compiere.model.I_C_Conversion_Rate;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Persistent {
+public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
 
     /**
      *
@@ -30,7 +29,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
         super(ctx, C_Conversion_Rate_ID);
         /**
          * if (C_Conversion_Rate_ID == 0) { setC_Conversion_Rate_ID (0); setC_ConversionType_ID (0);
-         * setC_Currency_ID (0); setC_Currency_ID_To (0); setDivideRate (Env.ZERO); setMultiplyRate
+         * setCurrencyId (0); setC_Currency_ID_To (0); setDivideRate (Env.ZERO); setMultiplyRate
          * (Env.ZERO); setValidFrom (new Timestamp( System.currentTimeMillis() )); }
          */
     }
@@ -62,18 +61,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
      * @return Rate used for converting currencies
      */
     public int getC_Conversion_Rate_ID() {
-        Integer ii = (Integer) get_Value(I_C_Conversion_Rate.COLUMNNAME_C_Conversion_Rate_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Currency Type.
-     *
-     * @return Currency Conversion Rate Type
-     */
-    public int getC_ConversionType_ID() {
-        Integer ii = (Integer) get_Value(I_C_Conversion_Rate.COLUMNNAME_C_ConversionType_ID);
+        Integer ii = (Integer) getValue(I_C_Conversion_Rate.COLUMNNAME_C_Conversion_Rate_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -97,7 +85,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -118,7 +106,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
      * @return Target currency
      */
     public int getC_Currency_ID_To() {
-        Integer ii = (Integer) get_Value(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID_To);
+        Integer ii = (Integer) getValue(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID_To);
         if (ii == null) return 0;
         return ii;
     }
@@ -138,7 +126,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
      * @return To convert Source number to Target number, the Source is divided
      */
     public BigDecimal getDivideRate() {
-        BigDecimal bd = (BigDecimal) get_Value(I_C_Conversion_Rate.COLUMNNAME_DivideRate);
+        BigDecimal bd = (BigDecimal) getValue(I_C_Conversion_Rate.COLUMNNAME_DivideRate);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -158,7 +146,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
      * @return Rate to multiple the source by to calculate the target.
      */
     public BigDecimal getMultiplyRate() {
-        BigDecimal bd = (BigDecimal) get_Value(I_C_Conversion_Rate.COLUMNNAME_MultiplyRate);
+        BigDecimal bd = (BigDecimal) getValue(I_C_Conversion_Rate.COLUMNNAME_MultiplyRate);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -178,7 +166,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
      * @return Valid from including this date (first day)
      */
     public Timestamp getValidFrom() {
-        return (Timestamp) get_Value(I_C_Conversion_Rate.COLUMNNAME_ValidFrom);
+        return (Timestamp) getValue(I_C_Conversion_Rate.COLUMNNAME_ValidFrom);
     }
 
     /**
@@ -196,7 +184,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate, I_Pe
      * @return Valid to including this date (last day)
      */
     public Timestamp getValidTo() {
-        return (Timestamp) get_Value(I_C_Conversion_Rate.COLUMNNAME_ValidTo);
+        return (Timestamp) getValue(I_C_Conversion_Rate.COLUMNNAME_ValidTo);
     }
 
     /**

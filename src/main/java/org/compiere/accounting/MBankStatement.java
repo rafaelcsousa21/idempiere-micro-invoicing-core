@@ -613,9 +613,9 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      */
     public int getC_Currency_ID() {
         //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
-        //	return pl.getC_Currency_ID();
+        //	return pl.getCurrencyId();
         return 0;
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     /**
      * Document Status is Complete or Closed

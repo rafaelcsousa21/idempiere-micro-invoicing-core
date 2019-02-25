@@ -89,7 +89,7 @@ public class TranslationDocSync extends SvrProcess {
         MColumn[] columns = table.getColumns(false);
         for (int i = 0; i < columns.length; i++) {
             MColumn column = columns[i];
-            if ((!column.getColumnName().equals(PO.getUUIDColumnName(table.getTableName())))
+            if ((!column.getColumnName().equals(PO.getUUIDColumnName(table.getDbTableName())))
                     && (column.getReferenceId() == DisplayType.String
                     || column.getReferenceId() == DisplayType.Text)) {
                 String columnName = column.getColumnName();
@@ -97,7 +97,7 @@ public class TranslationDocSync extends SvrProcess {
                 columnNames.append(columnName);
             }
         }
-        String trlTable = table.getTableName();
+        String trlTable = table.getDbTableName();
         String baseTable = trlTable.substring(0, trlTable.length() - 4);
 
         if (log.isLoggable(Level.CONFIG)) log.config(baseTable + ": " + columnNames);

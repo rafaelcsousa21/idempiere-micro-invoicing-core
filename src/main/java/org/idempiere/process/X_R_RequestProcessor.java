@@ -2,13 +2,12 @@ package org.idempiere.process;
 
 import org.compiere.model.I_R_RequestProcessor;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProcessor, I_Persistent {
+public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProcessor {
 
     /**
      *
@@ -55,7 +54,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @return Schedule
      */
     public int getAD_Schedule_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Schedule_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Schedule_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -76,7 +75,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @return Date the process will run next
      */
     public Timestamp getDateNextRun() {
-        return (Timestamp) get_Value(COLUMNNAME_DateNextRun);
+        return (Timestamp) getValue(COLUMNNAME_DateNextRun);
     }
 
     /**
@@ -86,17 +85,6 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      */
     public void setDateNextRun(Timestamp DateNextRun) {
         set_Value(COLUMNNAME_DateNextRun, DateNextRun);
-    }
-
-    /**
-     * Get Days to keep Log.
-     *
-     * @return Number of days to keep the log entries
-     */
-    public int getKeepLogDays() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_KeepLogDays);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -141,29 +129,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @return Processor for Requests
      */
     public int getR_RequestProcessor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_RequestProcessor_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Request Type.
-     *
-     * @return Type of request (e.g. Inquiry, Complaint, ..)
-     */
-    public int getR_RequestType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_RequestType_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Supervisor.
-     *
-     * @return Supervisor for this user/organization - used for escalation and approval
-     */
-    public int getSupervisor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Supervisor_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_RequestProcessor_ID);
         if (ii == null) return 0;
         return ii;
     }

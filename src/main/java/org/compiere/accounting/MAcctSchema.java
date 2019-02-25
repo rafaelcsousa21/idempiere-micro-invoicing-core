@@ -80,11 +80,11 @@ public class MAcctSchema extends X_C_AcctSchema {
     public MAcctSchema(Properties ctx, int C_AcctSchema_ID) {
         super(ctx, C_AcctSchema_ID);
         if (C_AcctSchema_ID == 0) {
-            //	setC_Currency_ID (0);
+            //	setCurrencyId (0);
             //	setName (null);
             setAutoPeriodControl(true);
-            setPeriod_OpenFuture(2);
-            setPeriod_OpenHistory(2);
+            setPeriodOpenFuture(2);
+            setPeriodOpenHistory(2);
             setCostingMethod(X_C_AcctSchema.COSTINGMETHOD_StandardCosting);
             setCostingLevel(X_C_AcctSchema.COSTINGLEVEL_Client);
             setIsAdjustCOGS(false);
@@ -123,7 +123,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     public MAcctSchema(MClient client, KeyNamePair currency) {
         this(client.getCtx(), 0);
         setClientOrg(client);
-        setC_Currency_ID(currency.getKey());
+        setCurrencyId(currency.getKey());
         StringBuilder msgset =
                 new StringBuilder()
                         .append(client.getName())
@@ -171,7 +171,7 @@ public class MAcctSchema extends X_C_AcctSchema {
         //  Create New
         ArrayList<MAcctSchema> list = new ArrayList<MAcctSchema>();
         MClientInfo info = MClientInfo.get(ctx, AD_Client_ID);
-        MAcctSchema as = MAcctSchema.get(ctx, info.getC_AcctSchema1_ID());
+        MAcctSchema as = MAcctSchema.get(ctx, info.getAcctSchema1Id());
         if (as.getId() != 0) list.add(as);
 
         ArrayList<Object> params = new ArrayList<Object>();
@@ -194,7 +194,7 @@ public class MAcctSchema extends X_C_AcctSchema {
                         .list();
 
         for (MAcctSchema acctschema : ass) {
-            if (acctschema.getId() != info.getC_AcctSchema1_ID()) // 	already in list
+            if (acctschema.getId() != info.getAcctSchema1Id()) // 	already in list
             {
                 if (acctschema.getId() != 0) list.add(acctschema);
             }
@@ -235,10 +235,10 @@ public class MAcctSchema extends X_C_AcctSchema {
      * @return GL info
      */
     public MAcctSchemaGL getAcctSchemaGL() {
-        if (m_gl == null) m_gl = MAcctSchemaGL.get(getCtx(), getC_AcctSchema_ID());
+        if (m_gl == null) m_gl = MAcctSchemaGL.get(getCtx(), getAccountingSchemaId());
         if (m_gl == null)
             throw new IllegalStateException(
-                    "No GL Definition for C_AcctSchema_ID=" + getC_AcctSchema_ID());
+                    "No GL Definition for C_AcctSchema_ID=" + getAccountingSchemaId());
         return m_gl;
     } //	getAcctSchemaGL
 
@@ -248,10 +248,10 @@ public class MAcctSchema extends X_C_AcctSchema {
      * @return defaults
      */
     public MAcctSchemaDefault getAcctSchemaDefault() {
-        if (m_default == null) m_default = MAcctSchemaDefault.get(getCtx(), getC_AcctSchema_ID());
+        if (m_default == null) m_default = MAcctSchemaDefault.get(getCtx(), getAccountingSchemaId());
         if (m_default == null)
             throw new IllegalStateException(
-                    "No Default Definition for C_AcctSchema_ID=" + getC_AcctSchema_ID());
+                    "No Default Definition for C_AcctSchema_ID=" + getAccountingSchemaId());
         return m_default;
     } //	getAcctSchemaDefault
 
@@ -347,7 +347,7 @@ public class MAcctSchema extends X_C_AcctSchema {
      */
     public int getStdPrecision() {
         if (m_stdPrecision < 0) {
-            MCurrency cur = MCurrency.get(getCtx(), getC_Currency_ID());
+            MCurrency cur = MCurrency.get(getCtx(), getCurrencyId());
             m_stdPrecision = cur.getStdPrecision();
             m_costPrecision = cur.getCostingPrecision();
         }
@@ -370,12 +370,12 @@ public class MAcctSchema extends X_C_AcctSchema {
     public void checkCosting() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         //	Create Cost Type
-        if (getM_CostType_ID() == 0) {
+        if (getCostTypeId() == 0) {
             MCostType ct = new MCostType(getCtx(), 0);
             ct.setClientOrg(getClientId(), 0);
             ct.setName(getName());
             ct.saveEx();
-            setM_CostType_ID(ct.getM_CostType_ID());
+            setCostTypeId(ct.getM_CostType_ID());
         }
 
         //	Create Cost Elements
@@ -476,7 +476,7 @@ public class MAcctSchema extends X_C_AcctSchema {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
         if (super.getTaxCorrectionType() == null)
             setTaxCorrectionType(
                     isDiscountCorrectsTax()
@@ -484,9 +484,9 @@ public class MAcctSchema extends X_C_AcctSchema {
                             : X_C_AcctSchema.TAXCORRECTIONTYPE_None);
         checkCosting();
         //	Check Primary
-        if (getAD_OrgOnly_ID() != 0) {
+        if (getOrganizationOnlyId() != 0) {
             MClientInfo info = MClientInfo.get(getCtx(), getClientId());
-            if (info.getC_AcctSchema1_ID() == getC_AcctSchema_ID()) setAD_OrgOnly_ID(0);
+            if (info.getAcctSchema1Id() == getAccountingSchemaId()) setOrganizationOnlyId(0);
         }
         return true;
     } //	beforeSave
@@ -500,7 +500,7 @@ public class MAcctSchema extends X_C_AcctSchema {
         if (m_onlyOrgs == null) {
             MReportTree tree =
                     new MReportTree(getCtx(), 0, true, MAcctSchemaElement.ELEMENTTYPE_Organization);
-            m_onlyOrgs = tree.getChildIDs(getAD_OrgOnly_ID());
+            m_onlyOrgs = tree.getChildIDs(getOrganizationOnlyId());
         }
         return m_onlyOrgs;
     } //	getOnlyOrgs
@@ -524,10 +524,10 @@ public class MAcctSchema extends X_C_AcctSchema {
      * @return true if to skip
      */
     public synchronized boolean isSkipOrg(int AD_Org_ID) {
-        if (getAD_OrgOnly_ID() == 0) return false;
+        if (getOrganizationOnlyId() == 0) return false;
         //	Only Organization
-        if (getAD_OrgOnly_ID() == AD_Org_ID) return false;
-        if (m_onlyOrg == null) m_onlyOrg = MOrg.get(getCtx(), getAD_OrgOnly_ID());
+        if (getOrganizationOnlyId() == AD_Org_ID) return false;
+        if (m_onlyOrg == null) m_onlyOrg = MOrg.get(getCtx(), getOrganizationOnlyId());
         //	Not Summary Only - i.e. skip it
         if (!m_onlyOrg.isSummary()) return true;
         final Integer[] onlyOrgs = getOnlyOrgs();

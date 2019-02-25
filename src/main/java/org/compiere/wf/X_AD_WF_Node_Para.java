@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_Node_Para;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persistent {
+public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para {
 
     /**
      *
@@ -58,8 +57,8 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
      *
      * @return Process Parameter
      */
-    public int getAD_Process_Para_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Process_Para_ID);
+    public int getProcessParameterId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Process_Para_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -69,20 +68,9 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
      *
      * @param AD_Process_Para_ID Process Parameter
      */
-    public void setAD_Process_Para_ID(int AD_Process_Para_ID) {
+    public void setProcessParameterId(int AD_Process_Para_ID) {
         if (AD_Process_Para_ID < 1) set_Value(COLUMNNAME_AD_Process_Para_ID, null);
         else set_Value(COLUMNNAME_AD_Process_Para_ID, Integer.valueOf(AD_Process_Para_ID));
-    }
-
-    /**
-     * Get Node.
-     *
-     * @return Workflow Node (activity), step or process
-     */
-    public int getAD_WF_Node_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Node_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -91,7 +79,7 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
      * @return Name of the Attribute
      */
     public String getAttributeName() {
-        return (String) get_Value(COLUMNNAME_AttributeName);
+        return (String) getValue(COLUMNNAME_AttributeName);
     }
 
     /**
@@ -109,7 +97,7 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para, I_Persis
      * @return Value of the Attribute
      */
     public String getAttributeValue() {
-        return (String) get_Value(COLUMNNAME_AttributeValue);
+        return (String) getValue(COLUMNNAME_AttributeValue);
     }
 
     @Override

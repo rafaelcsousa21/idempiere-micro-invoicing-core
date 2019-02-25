@@ -4,7 +4,6 @@ import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Persistent {
+public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
 
     /**
      *
@@ -63,7 +62,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -84,7 +83,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Additional document charges
      */
     public int getC_Charge_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -105,7 +104,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Sales Order Line
      */
     public int getC_OrderLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_OrderLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -126,7 +125,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Unit of Measure
      */
     public int getC_UOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -147,7 +146,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -165,7 +164,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -185,7 +184,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Line Extended Amount (Quantity * Actual Price) without Freight and Charges
      */
     public BigDecimal getLineNetAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_LineNetAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_LineNetAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -216,7 +215,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -233,7 +232,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -254,7 +253,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Material Requisition
      */
     public int getM_Requisition_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Requisition_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Requisition_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -275,7 +274,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Actual Price
      */
     public BigDecimal getPriceActual() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PriceActual);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PriceActual);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -295,7 +294,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine, I_Pe
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_GL_DistributionLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, I_Persistent {
+public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
 
     /**
      *
@@ -65,7 +64,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Account used
      */
     public int getAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Account_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Account_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -86,7 +85,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Performing or initiating organization
      */
     public int getAD_OrgTrx_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_OrgTrx_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -107,7 +106,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -128,7 +127,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -149,7 +148,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -170,7 +169,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Location that inventory was moved from
      */
     public int getC_LocFrom_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LocFrom_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LocFrom_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -191,7 +190,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Location that inventory was moved to
      */
     public int getC_LocTo_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LocTo_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LocTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -212,7 +211,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -233,7 +232,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Sales coverage region
      */
     public int getC_SalesRegion_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_SalesRegion_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -254,7 +253,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -263,7 +262,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return General Ledger Distribution
      */
     public int getGL_Distribution_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_Distribution_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_Distribution_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -274,7 +273,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -294,7 +293,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -315,7 +314,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Organizational entity within client
      */
     public int getOrg_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Org_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Org_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -336,7 +335,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Account with the value specified
      */
     public boolean isOverwriteAcct() {
-        Object oo = get_Value(COLUMNNAME_OverwriteAcct);
+        Object oo = getValue(COLUMNNAME_OverwriteAcct);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -359,7 +358,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Activity with the value specified
      */
     public boolean isOverwriteActivity() {
-        Object oo = get_Value(COLUMNNAME_OverwriteActivity);
+        Object oo = getValue(COLUMNNAME_OverwriteActivity);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -382,7 +381,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Business Partner with the value specified
      */
     public boolean isOverwriteBPartner() {
-        Object oo = get_Value(COLUMNNAME_OverwriteBPartner);
+        Object oo = getValue(COLUMNNAME_OverwriteBPartner);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -406,7 +405,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Campaign with the value specified
      */
     public boolean isOverwriteCampaign() {
-        Object oo = get_Value(COLUMNNAME_OverwriteCampaign);
+        Object oo = getValue(COLUMNNAME_OverwriteCampaign);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -429,7 +428,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Location From with the value specified
      */
     public boolean isOverwriteLocFrom() {
-        Object oo = get_Value(COLUMNNAME_OverwriteLocFrom);
+        Object oo = getValue(COLUMNNAME_OverwriteLocFrom);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -452,7 +451,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Location From with the value specified
      */
     public boolean isOverwriteLocTo() {
-        Object oo = get_Value(COLUMNNAME_OverwriteLocTo);
+        Object oo = getValue(COLUMNNAME_OverwriteLocTo);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -475,7 +474,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Organization with the value specified
      */
     public boolean isOverwriteOrg() {
-        Object oo = get_Value(COLUMNNAME_OverwriteOrg);
+        Object oo = getValue(COLUMNNAME_OverwriteOrg);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -498,7 +497,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Transaction Organization with the value specified
      */
     public boolean isOverwriteOrgTrx() {
-        Object oo = get_Value(COLUMNNAME_OverwriteOrgTrx);
+        Object oo = getValue(COLUMNNAME_OverwriteOrgTrx);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -522,7 +521,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Product with the value specified
      */
     public boolean isOverwriteProduct() {
-        Object oo = get_Value(COLUMNNAME_OverwriteProduct);
+        Object oo = getValue(COLUMNNAME_OverwriteProduct);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -545,7 +544,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Project with the value specified
      */
     public boolean isOverwriteProject() {
-        Object oo = get_Value(COLUMNNAME_OverwriteProject);
+        Object oo = getValue(COLUMNNAME_OverwriteProject);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -568,7 +567,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment Sales Region with the value specified
      */
     public boolean isOverwriteSalesRegion() {
-        Object oo = get_Value(COLUMNNAME_OverwriteSalesRegion);
+        Object oo = getValue(COLUMNNAME_OverwriteSalesRegion);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -591,7 +590,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment User 1 with the value specified
      */
     public boolean isOverwriteUser1() {
-        Object oo = get_Value(COLUMNNAME_OverwriteUser1);
+        Object oo = getValue(COLUMNNAME_OverwriteUser1);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -614,7 +613,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Overwrite the account segment User 2 with the value specified
      */
     public boolean isOverwriteUser2() {
-        Object oo = get_Value(COLUMNNAME_OverwriteUser2);
+        Object oo = getValue(COLUMNNAME_OverwriteUser2);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -637,7 +636,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return Percentage
      */
     public BigDecimal getPercent() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Percent);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Percent);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -657,7 +656,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return User defined list element #1
      */
     public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -678,7 +677,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine, 
      * @return User defined list element #2
      */
     public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
     }

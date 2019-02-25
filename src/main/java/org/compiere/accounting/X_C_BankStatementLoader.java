@@ -2,13 +2,12 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_BankStatementLoader;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_C_BankStatementLoader extends BasePOName
-        implements I_C_BankStatementLoader, I_Persistent {
+        implements I_C_BankStatementLoader {
 
     /**
      *
@@ -54,23 +53,12 @@ public class X_C_BankStatementLoader extends BasePOName
     }
 
     /**
-     * Get Bank Account.
-     *
-     * @return Account at the Bank
-     */
-    public int getC_BankAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Statement Loader Class.
      *
      * @return Class name of the bank statement loader
      */
     public String getStmtLoaderClass() {
-        return (String) get_Value(COLUMNNAME_StmtLoaderClass);
+        return (String) getValue(COLUMNNAME_StmtLoaderClass);
     }
 
 }

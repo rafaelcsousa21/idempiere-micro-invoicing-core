@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_M_Locator;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
+public class X_M_Locator extends PO implements I_M_Locator {
 
     /**
      *
@@ -27,7 +26,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
     public X_M_Locator(Properties ctx, int M_Locator_ID) {
         super(ctx, M_Locator_ID);
         /**
-         * if (M_Locator_ID == 0) { setIsDefault (false); setM_Locator_ID (0); setM_Warehouse_ID (0);
+         * if (M_Locator_ID == 0) { setIsDefault (false); setM_Locator_ID (0); setWarehouseId (0);
          * setPriorityNo (0); // 50 setValue (null); setX (null); setY (null); setZ (null); }
          */
     }
@@ -77,7 +76,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
      * @return Default value
      */
     public boolean isDefault() {
-        Object oo = get_Value(COLUMNNAME_IsDefault);
+        Object oo = getValue(COLUMNNAME_IsDefault);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -91,7 +90,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -102,19 +101,9 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
      * @return Locator Type
      */
     public int getM_LocatorType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_LocatorType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_LocatorType_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Locator Type.
-     *
-     * @param M_LocatorType_ID Locator Type
-     */
-    public void setM_LocatorType_ID(int M_LocatorType_ID) {
-        if (M_LocatorType_ID < 1) set_Value(COLUMNNAME_M_LocatorType_ID, null);
-        else set_Value(COLUMNNAME_M_LocatorType_ID, Integer.valueOf(M_LocatorType_ID));
     }
 
     /**
@@ -123,7 +112,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
      * @return Storage Warehouse and Service Point
      */
     public int getM_Warehouse_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -153,7 +142,7 @@ public class X_M_Locator extends PO implements I_M_Locator, I_Persistent {
      * @return Search key for the record in the format required - must be unique
      */
     public String getValue() {
-        return (String) get_Value(COLUMNNAME_Value);
+        return (String) getValue(COLUMNNAME_Value);
     }
 
     /**

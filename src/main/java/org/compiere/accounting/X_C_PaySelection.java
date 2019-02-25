@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_PaySelection;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_Persistent {
+public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
 
     /**
      *
@@ -62,19 +61,9 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
      * @return Account at the Bank
      */
     public int getC_BankAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Bank Account.
-     *
-     * @param C_BankAccount_ID Account at the Bank
-     */
-    public void setC_BankAccount_ID(int C_BankAccount_ID) {
-        if (C_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BankAccount_ID, null);
-        else set_Value(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }
 
     /**
@@ -83,18 +72,9 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
      * @return Payment Selection
      */
     public int getC_PaySelection_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaySelection_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_PaySelection_ID);
         if (ii == null) return 0;
         return ii;
-    }
-
-    /**
-     * Set Description.
-     *
-     * @param Description Optional short description of the record
-     */
-    public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -112,16 +92,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
      * @return Date Payment made
      */
     public Timestamp getPayDate() {
-        return (Timestamp) get_Value(COLUMNNAME_PayDate);
-    }
-
-    /**
-     * Set Payment date.
-     *
-     * @param PayDate Date Payment made
-     */
-    public void setPayDate(Timestamp PayDate) {
-        set_Value(COLUMNNAME_PayDate, PayDate);
+        return (Timestamp) getValue(COLUMNNAME_PayDate);
     }
 
     /**
@@ -130,7 +101,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection, I_
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);

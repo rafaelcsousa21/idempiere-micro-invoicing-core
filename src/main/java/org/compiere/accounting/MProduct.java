@@ -319,7 +319,7 @@ public class MProduct extends org.compiere.product.MProduct {
             return null;
         }
         MCost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getM_CostElement_ID(), null);
-        return cost.is_new() ? null : cost;
+        return cost.isNew() ? null : cost;
     }
 
     @Override

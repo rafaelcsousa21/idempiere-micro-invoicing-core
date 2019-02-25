@@ -2,7 +2,6 @@ package org.compiere.invoicing;
 
 import org.compiere.model.I_A_Depreciation_Entry;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry, I_Persistent {
+public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry {
 
     /**
      * Depreciation = DEP
@@ -74,35 +73,13 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     }
 
     /**
-     * Get Depreciation Entry.
-     *
-     * @return Depreciation Entry
-     */
-    public int getA_Depreciation_Entry_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Depreciation_Entry_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Entry Type.
      *
      * @param A_Entry_Type Entry Type
      */
-    public void setA_Entry_Type(String A_Entry_Type) {
+    public void setEntryType(String A_Entry_Type) {
 
         set_Value(COLUMNNAME_A_Entry_Type, A_Entry_Type);
-    }
-
-    /**
-     * Get Accounting Schema.
-     *
-     * @return Rules for accounting
-     */
-    public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -110,20 +87,9 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      *
      * @param C_AcctSchema_ID Rules for accounting
      */
-    public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
+    public void setAcctSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) set_Value(COLUMNNAME_C_AcctSchema_ID, null);
         else set_Value(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
-    }
-
-    /**
-     * Get Currency.
-     *
-     * @return The Currency for this record
-     */
-    public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -131,7 +97,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
+    public void setCurrencyId(int C_Currency_ID) {
         if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
         else set_Value(COLUMNNAME_C_Currency_ID, C_Currency_ID);
     }
@@ -141,8 +107,8 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+    public int getDocTypeId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -152,8 +118,8 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      *
      * @return Period of the Calendar
      */
-    public int getC_Period_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Period_ID);
+    public int getPeriodId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -163,7 +129,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      *
      * @param C_Period_ID Period of the Calendar
      */
-    public void setC_Period_ID(int C_Period_ID) {
+    public void setPeriodId(int C_Period_ID) {
         if (C_Period_ID < 1) set_Value(COLUMNNAME_C_Period_ID, null);
         else set_Value(COLUMNNAME_C_Period_ID, C_Period_ID);
     }
@@ -174,7 +140,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -183,7 +149,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -202,7 +168,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(COLUMNNAME_DocStatus);
+        return (String) getValue(COLUMNNAME_DocStatus);
     }
 
     /**
@@ -211,7 +177,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -229,7 +195,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(COLUMNNAME_IsApproved);
+        Object oo = getValue(COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -262,7 +228,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);

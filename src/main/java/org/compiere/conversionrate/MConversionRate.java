@@ -46,7 +46,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
         super(ctx, C_Conversion_Rate_ID);
         if (C_Conversion_Rate_ID == 0) {
             //	setC_Conversion_Rate_ID (0);
-            //	setC_Currency_ID (0);
+            //	setCurrencyId (0);
             //	setC_Currency_ID_To (null);
             super.setDivideRate(Env.ZERO);
             super.setMultiplyRate(Env.ZERO);

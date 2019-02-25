@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_M_StorageReservation;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_StorageReservation extends PO implements I_M_StorageReservation, I_Persistent {
+public class X_M_StorageReservation extends PO implements I_M_StorageReservation {
 
     /**
      *
@@ -29,7 +28,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
         super(ctx, M_StorageReservation_ID);
         /**
          * if (M_StorageReservation_ID == 0) { setIsSOTrx (true); // Y setM_AttributeSetInstance_ID (0);
-         * setM_Product_ID (0); setM_Warehouse_ID (0); setQty (Env.ZERO); }
+         * setM_Product_ID (0); setWarehouseId (0); setQty (Env.ZERO); }
          */
     }
 
@@ -69,7 +68,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @return This is a Sales Transaction
      */
     public boolean isSOTrx() {
-        Object oo = get_Value(COLUMNNAME_IsSOTrx);
+        Object oo = getValue(COLUMNNAME_IsSOTrx);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -95,7 +94,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -106,7 +105,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -127,7 +126,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @return Storage Warehouse and Service Point
      */
     public int getM_Warehouse_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -148,7 +147,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

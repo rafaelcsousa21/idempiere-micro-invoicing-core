@@ -202,7 +202,7 @@ public class ModelValidationEngine {
     public String fireDocValidate(IPODoc po, int docTiming) {
         if (po == null) return null;
 
-        String propertyName = po.get_TableName() + "*";
+        String propertyName = po.getTableName() + "*";
         ArrayList<ModelValidator> list = m_docValidateListeners.get(propertyName);
         if (list != null) {
             // ad_entitytype.modelvalidationclasses
@@ -210,7 +210,7 @@ public class ModelValidationEngine {
             if (error != null && error.length() > 0) return error;
         }
 
-        propertyName = po.get_TableName() + po.getClientId();
+        propertyName = po.getTableName() + po.getClientId();
         list = m_docValidateListeners.get(propertyName);
         if (list != null) {
             // ad_client.modelvalidationclasses
@@ -224,7 +224,7 @@ public class ModelValidationEngine {
                         po.getCtx(), po.getTableId(), ModelValidator.documentEventValidators[docTiming]);
         if (scriptValidators != null) {
             for (MTableScriptValidator scriptValidator : scriptValidators) {
-                MRule rule = MRule.get(po.getCtx(), scriptValidator.getAD_Rule_ID());
+                MRule rule = MRule.get(po.getCtx(), scriptValidator.getRuleId());
                 // currently just JSR 223 supported
                 if (rule != null
                         && rule.isActive()
@@ -257,7 +257,7 @@ public class ModelValidationEngine {
     /*
     //now process osgi event handlers
     IEvent event = EventManager.newEvent(ModelValidator.documentEventTopics[docTiming],
-    		new EventProperty(EventManager.EVENT_DATA, po), new EventProperty("tableName", po.get_TableName()));
+    		new EventProperty(EventManager.EVENT_DATA, po), new EventProperty("tableName", po.getTableName()));
     EventManager.getInstance().sendEvent(event);
     @SuppressWarnings("unchecked")
     List<String> errors = (List<String>) event.getProperty(IEventManager.EVENT_ERROR_MESSAGES);
@@ -306,7 +306,7 @@ public class ModelValidationEngine {
     public String fireFactsValidate(I_C_AcctSchema schema, List<IFact> facts, IPODoc po) {
         if (schema == null || facts == null || po == null) return null;
 
-        String propertyName = po.get_TableName() + "*";
+        String propertyName = po.getTableName() + "*";
         ArrayList<FactsValidator> list = m_factsValidateListeners.get(propertyName);
         if (list != null) {
             // ad_entitytype.modelvalidationclasses
@@ -314,7 +314,7 @@ public class ModelValidationEngine {
             if (error != null && error.length() > 0) return error;
         }
 
-        propertyName = po.get_TableName() + po.getClientId();
+        propertyName = po.getTableName() + po.getClientId();
         list = m_factsValidateListeners.get(propertyName);
         if (list != null) {
             // ad_client.modelvalidationclasses
@@ -326,7 +326,7 @@ public class ModelValidationEngine {
     //process osgi event handlers
     FactsEventData eventData = new FactsEventData(schema, facts, po);
     IEvent event = EventManager.newEvent(IEventTopics.ACCT_FACTS_VALIDATE,
-    		new EventProperty(EventManager.EVENT_DATA, eventData), new EventProperty("tableName", po.get_TableName()));
+    		new EventProperty(EventManager.EVENT_DATA, eventData), new EventProperty("tableName", po.getTableName()));
     EventManager.getInstance().sendEvent(event);
     @SuppressWarnings("unchecked")
     List<String> errors = (List<String>) event.getProperty(IEventManager.EVENT_ERROR_MESSAGES);

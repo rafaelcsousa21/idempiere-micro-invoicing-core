@@ -57,7 +57,7 @@ public class MCostType extends X_M_CostType {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
         return true;
     } //	beforeSave
 
@@ -69,7 +69,7 @@ public class MCostType extends X_M_CostType {
     protected boolean beforeDelete() {
         MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getCtx(), getClientId());
         for (int i = 0; i < ass.length; i++) {
-            if (ass[i].getM_CostType_ID() == getM_CostType_ID()) {
+            if (ass[i].getCostTypeId() == getM_CostType_ID()) {
                 log.saveError(
                         "CannotDelete", Msg.getElement(getCtx(), "C_AcctSchema_ID") + " - " + ass[i].getName());
                 return false;

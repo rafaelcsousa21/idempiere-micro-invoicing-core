@@ -116,8 +116,8 @@ public class DocWorkflowManager implements DocWorkflowMgr {
         String logic = wf.getDocValueLogic();
         logic = logic.substring(4); // 	"SQL="
         //
-        String tableName = document.get_TableName();
-        String[] keyColumns = document.get_KeyColumns();
+        String tableName = document.getTableName();
+        String[] keyColumns = document.getKeyColumns();
         if (keyColumns.length != 1) {
             log.severe(
                     "Tables with more then one key column not supported - "
@@ -151,7 +151,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
             pstmt.setInt(1, wf.getClientId());
             pstmt.setInt(2, document.getId());
             pstmt.setInt(3, document.getTableId());
-            pstmt.setInt(4, wf.getAD_Workflow_ID());
+            pstmt.setInt(4, wf.getWorkflowId());
             rs = pstmt.executeQuery();
             if (rs.next()) retValue = true;
         } catch (Exception e) {

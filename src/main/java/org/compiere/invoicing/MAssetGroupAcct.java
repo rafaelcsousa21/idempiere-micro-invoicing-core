@@ -87,20 +87,20 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
         return true;
     }
 
-    public boolean set_AttrValue(String ColumnName, Object value) {
-        int index = get_ColumnIndex(ColumnName);
+    public boolean setAttrValue(String ColumnName, Object value) {
+        int index = getColumnIndex(ColumnName);
         if (index < 0) return false;
         return set_ValueNoCheck(ColumnName, value);
     }
 
-    public Object get_AttrValue(String ColumnName) {
-        int index = get_ColumnIndex(ColumnName);
+    public Object getAttrValue(String ColumnName) {
+        int index = getColumnIndex(ColumnName);
         if (index < 0) return null;
-        return get_Value(index);
+        return getValue(index);
     }
 
-    public boolean is_AttrValueChanged(String ColumnName) {
-        int index = get_ColumnIndex(ColumnName);
+    public boolean isAttrValueChanged(String ColumnName) {
+        int index = getColumnIndex(ColumnName);
         if (index < 0) return false;
         return is_ValueChanged(index);
     }

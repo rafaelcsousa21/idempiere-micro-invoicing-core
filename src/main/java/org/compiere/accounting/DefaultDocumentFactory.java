@@ -23,7 +23,7 @@ public class DefaultDocumentFactory implements IDocFactory {
 
     @Override
     public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, int Record_ID) {
-        String tableName = MTable.getTableName(Env.getCtx(), AD_Table_ID);
+        String tableName = MTable.getDbTableName(Env.getCtx(), AD_Table_ID);
         //
         Doc doc = null;
         StringBuffer sql =
@@ -98,7 +98,7 @@ public class DefaultDocumentFactory implements IDocFactory {
     * 53092	HR_Process			Doc_HRProcess
     */
 
-        String tableName = MTable.getTableName(Env.getCtx(), AD_Table_ID);
+        String tableName = MTable.getDbTableName(Env.getCtx(), AD_Table_ID);
         String packageName = "org.compiere.accounting";
         String className = null;
 

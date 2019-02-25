@@ -184,7 +184,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
             } else //	New Payment
             {
                 payment = new MPayment(check.getCtx(), 0);
-                payment.setAD_Org_ID(check.getOrgId());
+                payment.setOrgId(check.getOrgId());
                 //
                 if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_Check))
                     payment.setBankCheck(

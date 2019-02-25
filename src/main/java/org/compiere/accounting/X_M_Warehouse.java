@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.BasePONameValue;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_Persistent {
+public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse {
 
     /**
      *
@@ -54,17 +53,6 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     }
 
     /**
-     * Get Address.
-     *
-     * @return Location or Address
-     */
-    public int getC_Location_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Location_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Address.
      *
      * @param C_Location_ID Location or Address
@@ -80,7 +68,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
      * @return Negative Inventory is not allowed in this warehouse
      */
     public boolean isDisallowNegativeInv() {
-        Object oo = get_Value(COLUMNNAME_IsDisallowNegativeInv);
+        Object oo = getValue(COLUMNNAME_IsDisallowNegativeInv);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -94,7 +82,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
      * @return Movement is in transit
      */
     public boolean isInTransit() {
-        Object oo = get_Value(COLUMNNAME_IsInTransit);
+        Object oo = getValue(COLUMNNAME_IsInTransit);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -103,23 +91,12 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
     }
 
     /**
-     * Get Reservation Locator.
-     *
-     * @return Reservation Locator (just for reporting purposes)
-     */
-    public int getM_ReserveLocator_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_ReserveLocator_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Warehouse.
      *
      * @return Storage Warehouse and Service Point
      */
     public int getM_Warehouse_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -130,7 +107,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
      * @return Optional Warehouse to replenish from
      */
     public int getM_WarehouseSource_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_WarehouseSource_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_WarehouseSource_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -141,7 +118,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse, I_P
      * @return Custom class to calculate Quantity to Order
      */
     public String getReplenishmentClass() {
-        return (String) get_Value(COLUMNNAME_ReplenishmentClass);
+        return (String) getValue(COLUMNNAME_ReplenishmentClass);
     }
 
     /**

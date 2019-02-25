@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_PaymentAllocate;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Persistent {
+public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
 
     /**
      *
@@ -61,7 +60,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
      * @return Amount in a defined currency
      */
     public BigDecimal getAmount() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Amount);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Amount);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -73,17 +72,6 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
      */
     public void setAmount(BigDecimal Amount) {
         set_Value(COLUMNNAME_Amount, Amount);
-    }
-
-    /**
-     * Get Allocation Line.
-     *
-     * @return Allocation Line
-     */
-    public int getC_AllocationLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AllocationLine_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -102,7 +90,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
      * @return Invoice Identifier
      */
     public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -123,7 +111,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
      * @return Payment identifier
      */
     public int getC_Payment_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -134,7 +122,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
      * @return Calculated amount of discount
      */
     public BigDecimal getDiscountAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DiscountAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DiscountAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -154,7 +142,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
      * @return Invoice Amt
      */
     public BigDecimal getInvoiceAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_InvoiceAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_InvoiceAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -174,7 +162,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
      * @return Over-Payment (unallocated) or Under-Payment (partial payment) Amount
      */
     public BigDecimal getOverUnderAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OverUnderAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_OverUnderAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -194,7 +182,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate, I_Pe
      * @return Amount to write-off
      */
     public BigDecimal getWriteOffAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_WriteOffAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_WriteOffAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }

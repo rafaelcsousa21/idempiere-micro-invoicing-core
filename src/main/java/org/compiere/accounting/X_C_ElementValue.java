@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_ElementValue;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValue, I_Persistent {
+public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValue {
 
     /**
      * Natural = N
@@ -84,7 +83,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @return Indicates the type of account
      */
     public String getAccountType() {
-        return (String) get_Value(COLUMNNAME_AccountType);
+        return (String) getValue(COLUMNNAME_AccountType);
     }
 
     /**
@@ -97,32 +96,10 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
         set_Value(COLUMNNAME_AccountType, AccountType);
     }
 
-    /**
-     * Get Bank Account.
-     *
-     * @return Account at the Bank
-     */
-    public int getC_BankAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Currency.
-     *
-     * @return The Currency for this record
-     */
-    public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    public org.compiere.model.I_C_Element getC_Element() throws RuntimeException {
+    public org.compiere.model.I_C_Element getElement() throws RuntimeException {
         return (org.compiere.model.I_C_Element)
                 MTable.get(getCtx(), org.compiere.model.I_C_Element.Table_Name)
-                        .getPO(getC_Element_ID());
+                        .getPO(getElementId());
     }
 
     /**
@@ -130,8 +107,8 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      *
      * @return Accounting Element
      */
-    public int getC_Element_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Element_ID);
+    public int getElementId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Element_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -141,7 +118,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      *
      * @param C_Element_ID Accounting Element
      */
-    public void setC_Element_ID(int C_Element_ID) {
+    public void setElementId(int C_Element_ID) {
         if (C_Element_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Element_ID, null);
         else set_ValueNoCheck(COLUMNNAME_C_Element_ID, C_Element_ID);
     }
@@ -151,8 +128,8 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      *
      * @return Account Element
      */
-    public int getC_ElementValue_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ElementValue_ID);
+    public int getElementValueId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ElementValue_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -163,7 +140,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -201,7 +178,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * to it
      */
     public boolean isDocControlled() {
-        Object oo = get_Value(COLUMNNAME_IsDocControlled);
+        Object oo = getValue(COLUMNNAME_IsDocControlled);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -234,7 +211,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @return This is a summary entity
      */
     public boolean isSummary() {
-        Object oo = get_Value(COLUMNNAME_IsSummary);
+        Object oo = getValue(COLUMNNAME_IsSummary);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -248,7 +225,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @return Actual Values can be posted
      */
     public boolean isPostActual() {
-        Object oo = get_Value(COLUMNNAME_PostActual);
+        Object oo = getValue(COLUMNNAME_PostActual);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -271,7 +248,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @return Budget values can be posted
      */
     public boolean isPostBudget() {
-        Object oo = get_Value(COLUMNNAME_PostBudget);
+        Object oo = getValue(COLUMNNAME_PostBudget);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -303,7 +280,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @return Post statistical quantities to this account?
      */
     public boolean isPostStatistical() {
-        Object oo = get_Value(COLUMNNAME_PostStatistical);
+        Object oo = getValue(COLUMNNAME_PostStatistical);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);

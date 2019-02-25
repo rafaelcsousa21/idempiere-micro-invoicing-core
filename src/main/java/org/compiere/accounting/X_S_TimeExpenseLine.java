@@ -3,14 +3,13 @@ package org.compiere.accounting;
 import org.compiere.model.I_S_TimeExpenseLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Persistent {
+public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
 
     /**
      *
@@ -63,7 +62,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -74,7 +73,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -85,7 +84,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -96,7 +95,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -107,7 +106,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Invoice Detail Line
      */
     public int getC_InvoiceLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -128,7 +127,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Converted Amount
      */
     public BigDecimal getConvertedAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ConvertedAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ConvertedAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -140,17 +139,6 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      */
     public void setConvertedAmt(BigDecimal ConvertedAmt) {
         set_Value(COLUMNNAME_ConvertedAmt, ConvertedAmt);
-    }
-
-    /**
-     * Get Sales Order Line.
-     *
-     * @return Sales Order Line
-     */
-    public int getC_OrderLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_OrderLine_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -169,7 +157,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -180,7 +168,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Phase of a Project
      */
     public int getC_ProjectPhase_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectPhase_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -191,7 +179,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Actual Project Task in a Phase
      */
     public int getC_ProjectTask_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectTask_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectTask_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -202,7 +190,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Unit of Measure
      */
     public int getC_UOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -213,7 +201,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Date of expense
      */
     public Timestamp getDateExpense() {
-        return (Timestamp) get_Value(COLUMNNAME_DateExpense);
+        return (Timestamp) getValue(COLUMNNAME_DateExpense);
     }
 
     /**
@@ -231,7 +219,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -240,7 +228,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Amount for this expense
      */
     public BigDecimal getExpenseAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ExpenseAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ExpenseAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -260,7 +248,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Unit price to be invoiced or 0 for default price
      */
     public BigDecimal getInvoicePrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_InvoicePrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_InvoicePrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -289,7 +277,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Is this invoiced?
      */
     public boolean isInvoiced() {
-        Object oo = get_Value(COLUMNNAME_IsInvoiced);
+        Object oo = getValue(COLUMNNAME_IsInvoiced);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -312,7 +300,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Line is a time report only (no expense)
      */
     public boolean isTimeReport() {
-        Object oo = get_Value(COLUMNNAME_IsTimeReport);
+        Object oo = getValue(COLUMNNAME_IsTimeReport);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -326,7 +314,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -346,7 +334,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -358,7 +346,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * 0 for default price
      */
     public BigDecimal getPriceInvoiced() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PriceInvoiced);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PriceInvoiced);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -379,7 +367,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return The reimbursed price (in currency of the employee's AP price list)
      */
     public BigDecimal getPriceReimbursed() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PriceReimbursed);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PriceReimbursed);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -408,7 +396,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -428,7 +416,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Invoiced Quantity
      */
     public BigDecimal getQtyInvoiced() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyInvoiced);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyInvoiced);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -448,7 +436,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return The reimbursed quantity
      */
     public BigDecimal getQtyReimbursed() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyReimbursed);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyReimbursed);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -468,7 +456,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Resource Assignment
      */
     public int getS_ResourceAssignment_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_S_ResourceAssignment_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_S_ResourceAssignment_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -479,7 +467,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Time and Expense Report
      */
     public int getS_TimeExpense_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_S_TimeExpense_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_S_TimeExpense_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -490,19 +478,9 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine, I_Pe
      * @return Time and Expense Report Line
      */
     public int getS_TimeExpenseLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_S_TimeExpenseLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_S_TimeExpenseLine_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    /**
-     * Get Time Type.
-     *
-     * @return Type of time recorded
-     */
-    public int getS_TimeType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_S_TimeType_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
 }

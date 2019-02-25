@@ -141,7 +141,7 @@ public class InOutGenerateRMA extends SvrProcess {
 
         MInOut shipment = new MInOut(getCtx(), 0);
         shipment.setM_RMA_ID(rma.getId());
-        shipment.setAD_Org_ID(rma.getOrgId());
+        shipment.setOrgId(rma.getOrgId());
         shipment.setAD_OrgTrx_ID(originalReceipt.getAD_OrgTrx_ID());
         shipment.setDescription(rma.getDescription());
         shipment.setC_BPartner_ID(rma.getC_BPartner_ID());

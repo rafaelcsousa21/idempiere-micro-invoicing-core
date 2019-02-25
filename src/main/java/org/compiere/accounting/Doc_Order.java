@@ -652,7 +652,7 @@ public class Doc_Order extends Doc {
      */
     private void updateProductPO(MAcctSchema as) {
         MClientInfo ci = MClientInfo.get(getCtx(), as.getClientId());
-        if (ci.getC_AcctSchema1_ID() != as.getC_AcctSchema_ID()) return;
+        if (ci.getAcctSchema1Id() != as.getAccountingSchemaId()) return;
 
         StringBuilder sql =
                 new StringBuilder("UPDATE M_Product_PO po ")

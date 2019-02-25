@@ -263,7 +263,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
                 false,
                 restrictions,
                 role,
-                getTableName(),
+                getDbTableName(),
                 getOrgColumn(),
                 getBPartnerColumn(),
                 getProductColumn());
@@ -274,8 +274,8 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      *
      * @return Table Name
      */
-    public String getTableName() {
-        return MTable.getTableName(Env.getCtx(), getAD_Table_ID());
+    public String getDbTableName() {
+        return MTable.getDbTableName(Env.getCtx(), getAD_Table_ID());
     } //	getTavleName
 
     /**

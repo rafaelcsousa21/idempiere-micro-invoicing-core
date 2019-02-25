@@ -61,10 +61,10 @@ public class CommissionCalc extends SvrProcess {
         throw new NotImplementedException();
 
     /*
-    	if (log.isLoggable(Level.INFO)) log.info("C_Commission_ID=" + getRecord_ID() + ", StartDate=" + p_StartDate);
+    	if (log.isLoggable(Level.INFO)) log.info("C_Commission_ID=" + getRecordId() + ", StartDate=" + p_StartDate);
     	if (p_StartDate == null)
     		p_StartDate = new Timestamp (System.currentTimeMillis());
-    	m_com = new MCommission (getCtx(), getRecord_ID(), null);
+    	m_com = new MCommission (getCtx(), getRecordId(), null);
     	if (m_com.getId() == 0)
     		throw new AdempiereUserError("No Commission");
 
@@ -76,7 +76,7 @@ public class CommissionCalc extends SvrProcess {
     	SimpleDateFormat format = DisplayType.getDateFormat(DisplayType.Date);
     	StringBuilder description = new StringBuilder().append(format.format(p_StartDate))
     		.append(" - ").append(format.format(m_EndDate))
-    		.append(" - ").append(MCurrency.getISO_Code(getCtx(), m_com.getC_Currency_ID()));
+    		.append(" - ").append(MCurrency.getISO_Code(getCtx(), m_com.getCurrencyId()));
     	comRun.setDescription(description.toString());
     	if (!comRun.save())
     		throw new AdempiereSystemError("Could not save Commission Run");
@@ -194,7 +194,7 @@ public class CommissionCalc extends SvrProcess {
     				throw new AdempiereUserError ("Commission Business Partner has no Users/Contact");
     			if (users.length == 1)
     			{
-    				int SalesRep_ID = users[0].getAD_User_ID();
+    				int SalesRep_ID = users[0].getUserId();
     				sql.append(" AND h.SalesRep_ID=").append(SalesRep_ID);
     			}
     			else

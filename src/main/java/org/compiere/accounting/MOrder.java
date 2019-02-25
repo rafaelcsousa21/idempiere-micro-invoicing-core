@@ -73,7 +73,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
     public MOrder(MProject project, boolean IsSOTrx, String DocSubTypeSO) {
         this(project.getCtx(), 0);
         setADClientID(project.getClientId());
-        setAD_Org_ID(project.getOrgId());
+        setOrgId(project.getOrgId());
         setC_Campaign_ID(project.getC_Campaign_ID());
         setSalesRep_ID(project.getSalesRep_ID());
         //
@@ -135,7 +135,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      */
     protected I_C_Invoice createInvoice(MDocType dt, MInOut shipment, Timestamp invoiceDate) {
         if (log.isLoggable(Level.INFO)) log.info(dt.toString());
-        MInvoice invoice = new MInvoice(this, dt.getC_DocTypeInvoice_ID(), invoiceDate);
+        MInvoice invoice = new MInvoice(this, dt.getDocTypeInvoiceId(), invoiceDate);
         if (!invoice.save()) {
             m_processMsg = "Could not create Invoice";
             return null;
@@ -199,7 +199,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0);
             copyValues(ops, ips);
             ips.setC_Invoice_ID(invoice.getC_Invoice_ID());
-            ips.setAD_Org_ID(ops.getOrgId());
+            ips.setOrgId(ops.getOrgId());
             ips.setProcessing(ops.isProcessing());
             ips.setIsActive(ops.isActive());
             if (!ips.save()) {
@@ -233,7 +233,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         if (getOrgId() == 0) {
             int context_AD_Org_ID = Env.getOrgId(getCtx());
             if (context_AD_Org_ID != 0) {
-                setAD_Org_ID(context_AD_Org_ID);
+                setOrgId(context_AD_Org_ID);
                 log.warning("Changed Org to Context=" + context_AD_Org_ID);
             }
         }
@@ -368,7 +368,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                     MPriceListVersion plOld =
                             pList.getPriceListVersion((Timestamp) get_ValueOld(COLUMNNAME_DateOrdered));
                     MPriceListVersion plNew =
-                            pList.getPriceListVersion((Timestamp) get_Value(COLUMNNAME_DateOrdered));
+                            pList.getPriceListVersion((Timestamp) getValue(COLUMNNAME_DateOrdered));
                     if (plNew == null || !plNew.equals(plOld)) {
                         log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeDateOrdered"));
                         return false;
@@ -696,7 +696,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             {
                 if (header_M_Warehouse_ID != line.getM_Warehouse_ID())
                     line.setM_Warehouse_ID(header_M_Warehouse_ID);
-                if (getOrgId() != line.getOrgId()) line.setAD_Org_ID(getOrgId());
+                if (getOrgId() != line.getOrgId()) line.setOrgId(getOrgId());
             }
             //	Binding
             BigDecimal target = binding ? line.getQtyOrdered() : Env.ZERO;
@@ -958,7 +958,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             if (pp.isPostDated()) continue;
 
             MPayment payment = new MPayment(this.getCtx(), 0);
-            payment.setAD_Org_ID(this.getOrgId());
+            payment.setOrgId(this.getOrgId());
 
             payment.setTenderType(pp.getTenderType());
             if (MPayment.TENDERTYPE_CreditCard.equals(pp.getTenderType())) {
@@ -984,7 +984,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             payment.setC_Invoice_ID(lastInvoice.getC_Invoice_ID());
             // payment.setC_Order_ID(this.getC_Order_ID()); / do not set order to avoid the prepayment
             // flag
-            payment.setC_DocType_ID(doctype.getC_DocType_ID());
+            payment.setC_DocType_ID(doctype.getDocTypeId());
             payment.setC_Currency_ID(this.getC_Currency_ID());
 
             payment.setPayAmt(pp.getPayAmt());
@@ -1044,7 +1044,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      */
     protected MInOut createShipment(MDocType dt, Timestamp movementDate) {
         if (log.isLoggable(Level.INFO)) log.info("For " + dt);
-        MInOut shipment = new MInOut(this, dt.getC_DocTypeShipment_ID(), movementDate);
+        MInOut shipment = new MInOut(this, dt.getDocTypeShipmentId(), movementDate);
         //	shipment.setDateAcct(getDateAcct());
         if (!shipment.save()) {
             m_processMsg = "Could not create Shipment";
@@ -1135,8 +1135,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                 copyFrom(
                         this, getDateOrdered(), C_DocTypeTarget_ID, !isSOTrx(), true, false, null);
         //
-        counter.setAD_Org_ID(counterAD_Org_ID);
-        counter.setM_Warehouse_ID(counterOrgInfo.getM_Warehouse_ID());
+        counter.setOrgId(counterAD_Org_ID);
+        counter.setM_Warehouse_ID(counterOrgInfo.getWarehouseId());
         //
         //		counter.setBPartner(counterBP); // was set on copyFrom
         counter.setDatePromised(getDatePromised()); // default is date ordered
@@ -1482,7 +1482,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                 }
             }
             if (newDT == null) return false;
-            else setC_DocType_ID(newDT.getC_DocType_ID());
+            else setC_DocType_ID(newDT.getDocTypeId());
         }
 
         //	PO - just re-open
@@ -1534,7 +1534,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                                 "C_OrderLine_ID=?",
                                 line.getC_OrderLine_ID(),
                                 line.getMAttributeSetInstance_ID(),
-                                as.getC_AcctSchema_ID());
+                                as.getAccountingSchemaId());
                 if (cd != null) {
                     cd.setProcessed(false);
                     cd.delete(true);

@@ -116,7 +116,7 @@ public class InOutCreateInvoice extends SvrProcess {
                         ips.setDueAmt(propDueAmt);
                     }
                     ips.setC_Invoice_ID(invoice.getC_Invoice_ID());
-                    ips.setAD_Org_ID(ops.getOrgId());
+                    ips.setOrgId(ops.getOrgId());
                     ips.setProcessing(ops.isProcessing());
                     ips.setIsActive(ops.isActive());
                     ips.saveEx();

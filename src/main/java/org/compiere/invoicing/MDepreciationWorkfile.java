@@ -65,11 +65,11 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         super(ctx, A_Depreciation_Workfile_ID);
         if (A_Depreciation_Workfile_ID == 0) {
             setPostingType(X_A_Depreciation_Workfile.POSTINGTYPE_Actual);
-            setA_QTY_Current(Env.ZERO);
-            setA_Asset_Cost(Env.ZERO);
-            setA_Accumulated_Depr(Env.ZERO);
-            setA_Period_Posted(0);
-            setA_Current_Period(0);
+            setQtyCurrent(Env.ZERO);
+            setAssetCost(Env.ZERO);
+            setAccumulatedDepreciation(Env.ZERO);
+            setPeriodPosted(0);
+            setCurrentPeriod(0);
         }
     } //	MDepreciationWorkfile
 
@@ -88,12 +88,12 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      */
     public MDepreciationWorkfile(MAsset asset, String postingType, MAssetGroupAcct assetgrpacct) {
         this(asset.getCtx(), 0);
-        setA_Asset_ID(asset.getA_Asset_ID());
-        setAD_Org_ID(asset.getOrgId()); // @win added
-        setA_Asset_Cost(asset.getA_Asset_Cost());
-        setA_Accumulated_Depr(asset.getA_Accumulated_Depr());
-        setA_Accumulated_Depr_F(asset.getA_Accumulated_Depr_F());
-        setA_Current_Period(asset.getA_Current_Period());
+        setAssetId(asset.getAssetId());
+        setOrgId(asset.getOrgId()); // @win added
+        setAssetCost(asset.getA_Asset_Cost());
+        setAccumulatedDepreciation(asset.getA_Accumulated_Depr());
+        setAccumulatedDepreciationFiscal(asset.getA_Accumulated_Depr_F());
+        setCurrentPeriod(asset.getA_Current_Period());
 
         setIsDepreciated(asset.isDepreciated());
         setPostingType(postingType);
@@ -102,7 +102,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         if (assetgrpacct == null) {
             assetgrpacct =
                     MAssetGroupAcct.forA_Asset_Group_ID(
-                            asset.getCtx(), asset.getA_Asset_Group_ID(), postingType);
+                            asset.getCtx(), asset.getAssetGroupId(), postingType);
         }
         UseLifeImpl.copyValues(this, assetgrpacct);
 
@@ -222,14 +222,14 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         }
         //
         // Set values
-        m.set_AttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Tip_Finantare, tipFinantare);
-        m.set_AttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare, valCofinantare);
-        m.set_AttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert, valTert);
+        m.setAttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Tip_Finantare, tipFinantare);
+        m.setAttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare, valCofinantare);
+        m.setAttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert, valTert);
         //
         // If the method is invoked for a persistent object when reset mode of financing
         if (X_A_Depreciation_Workfile.A_TIP_FINANTARE_Proprie.equals(tipFinantare)
                 && SetGetUtil.isPersistent(m)) {
-            m.set_AttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_FundingMode_ID, null);
+            m.setAttrValue(I_A_Depreciation_Workfile.COLUMNNAME_A_FundingMode_ID, null);
         }
     }
 
@@ -248,7 +248,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      */
     public MAsset getAsset(boolean requery) {
         if (m_asset == null || requery) {
-            m_asset = MAsset.get(getCtx(), getA_Asset_ID());
+            m_asset = MAsset.get(getCtx(), getAssetId());
         }
         if (m_asset.getId() <= 0) {
             m_asset = null;
@@ -290,15 +290,15 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
 
         // copy UseLife to A_Life
         if (newRecord) { // @win: should only update only if newrecord
-            setA_Life_Period(getUseLifeMonths());
-            setA_Asset_Life_Years(getUseLifeYears());
-            setA_Life_Period_F(getUseLifeMonths_F());
-            setA_Asset_Life_Years_F(getUseLifeYears_F());
+            setLifePeriod(getUseLifeMonths());
+            setAssetLifeYears(getUseLifeYears());
+            setLifePeriodFiscal(getUseLifeMonths_F());
+            setAssetLifeYearsFiscal(getUseLifeYearsFiscal());
         }
 
         // If it is fully amortized, change the state's FA
         MAsset asset = getAsset(true);
-        if (MAsset.A_ASSET_STATUS_Activated.equals(asset.getA_Asset_Status()) && isFullyDepreciated()) {
+        if (MAsset.A_ASSET_STATUS_Activated.equals(asset.getAssetStatus()) && isFullyDepreciated()) {
             asset.changeStatus(MAsset.A_ASSET_STATUS_Depreciated, null);
             asset.saveEx();
         }
@@ -309,11 +309,11 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         }
 
         //
-        BigDecimal cost = getA_Asset_Cost();
-        BigDecimal accumDep_C = getA_Accumulated_Depr();
-        setA_Asset_Remaining(cost.subtract(accumDep_C));
-        BigDecimal accumDep_F = getA_Accumulated_Depr_F();
-        setA_Asset_Remaining_F(cost.subtract(accumDep_F));
+        BigDecimal cost = getAssetCost();
+        BigDecimal accumDep_C = getAccumulatedDepreciation();
+        setAssetRemaining(cost.subtract(accumDep_C));
+        BigDecimal accumDep_F = getAccumulatedDepreciationFiscal();
+        setAssetRemainingFiscal(cost.subtract(accumDep_F));
 
         // Financing
         {
@@ -353,7 +353,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         BigDecimal remainingAmt_F = getRemainingCost(null, true);
         if (remainingAmt_C.signum() == 0 && remainingAmt_F.signum() == 0) {
             // if A_Asset_Cost is 0 have a voided addition, in this case asset is not full depreciated
-            if (getA_Asset_Cost().signum() == 0) {
+            if (getAssetCost().signum() == 0) {
                 return false;
             }
             //
@@ -369,7 +369,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * @return asset accounting model
      */
     public MAssetAcct getA_AssetAcct(Timestamp dateAcct) {
-        return MAssetAcct.forA_Asset_ID(getCtx(), getA_Asset_ID(), getPostingType(), dateAcct);
+        return MAssetAcct.forA_Asset_ID(getCtx(), getAssetId(), getPostingType(), dateAcct);
     }
 
     /**
@@ -379,14 +379,14 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * @return the current cost of FAs
      */
     public BigDecimal getActualCost() {
-        return getActualCost(getA_Asset_Cost());
+        return getActualCost(getAssetCost());
     }
 
     /**
      *
      */
     public BigDecimal getActualCost(BigDecimal assetCost) {
-        return assetCost.subtract(getA_Salvage_Value());
+        return assetCost.subtract(getSalvageValue());
     }
 
     /**
@@ -404,8 +404,8 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         if (amt_F == null) {
             amt_F = Env.ZERO;
         }
-        setA_Accumulated_Depr(amt.add(reset ? Env.ZERO : getA_Accumulated_Depr()));
-        setA_Accumulated_Depr_F(amt_F.add(reset ? Env.ZERO : getA_Accumulated_Depr_F()));
+        setAccumulatedDepreciation(amt.add(reset ? Env.ZERO : getAccumulatedDepreciation()));
+        setAccumulatedDepreciationFiscal(amt_F.add(reset ? Env.ZERO : getAccumulatedDepreciationFiscal()));
         return true;
     }
 
@@ -420,7 +420,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      *
      */
     public BigDecimal getA_Accumulated_Depr(boolean fiscal) {
-        return fiscal ? getA_Accumulated_Depr_F() : getA_Accumulated_Depr();
+        return fiscal ? getAccumulatedDepreciationFiscal() : getAccumulatedDepreciation();
     }
 
     /**
@@ -449,7 +449,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         if (method != null) {
             useLifePeriods += method.getFixMonthOffset();
         }
-        int currentPeriod = (A_Current_Period >= 0 ? A_Current_Period : getA_Current_Period());
+        int currentPeriod = (A_Current_Period >= 0 ? A_Current_Period : getCurrentPeriod());
         return useLifePeriods - currentPeriod;
     }
 
@@ -480,11 +480,11 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * Increment the current period (A_Current_Period) 1, and a month DateAcct
      */
     public void incA_Current_Period() {
-        int old_period = getA_Current_Period();
+        int old_period = getCurrentPeriod();
         Timestamp old_date = getDateAcct();
         int new_period = old_period + 1;
         Timestamp new_date = TimeUtil.addMonths(getDateAcct(), 1);
-        setA_Current_Period(new_period);
+        setCurrentPeriod(new_period);
         setDateAcct(new_date);
         //
         if (log.isLoggable(Level.FINE))
@@ -516,7 +516,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         //
         MDepreciationExp depexp =
                 new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
-                        .setParameters(new Object[]{getA_Asset_ID(), getPostingType(), true, true})
+                        .setParameters(new Object[]{getAssetId(), getPostingType(), true, true})
                         .setOrderBy(
                                 MDepreciationExp.COLUMNNAME_A_Period
                                         + " DESC"
@@ -525,7 +525,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
                                         + " DESC")
                         .first();
         if (depexp != null) {
-            setA_Current_Period(depexp.getA_Period());
+            setCurrentPeriod(depexp.getPeriod());
             setDateAcct(depexp.getDateAcct());
             incA_Current_Period();
         } else {
@@ -539,7 +539,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     public void truncDepreciation() {
         String trxName = null;
 
-        int A_Current_Period = getA_Current_Period();
+        int A_Current_Period = getCurrentPeriod();
         final String sql =
                 "DELETE FROM "
                         + MDepreciationExp.Table_Name
@@ -555,25 +555,25 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
                         + " AND "
                         + MDepreciationExp.COLUMNNAME_PostingType
                         + "=?";
-        Object[] params = new Object[]{false, A_Current_Period, getA_Asset_ID(), getPostingType()};
+        Object[] params = new Object[]{false, A_Current_Period, getAssetId(), getPostingType()};
         int no = executeUpdateEx(sql, params);
         if (log.isLoggable(Level.FINE)) log.fine("sql=" + sql + "\nDeleted #" + no);
     } //	truncDepreciation
 
-    public boolean set_AttrValue(String ColumnName, Object value) {
-        int index = get_ColumnIndex(ColumnName);
+    public boolean setAttrValue(String ColumnName, Object value) {
+        int index = getColumnIndex(ColumnName);
         if (index < 0) return false;
         return set_ValueNoCheck(ColumnName, value);
     }
 
-    public Object get_AttrValue(String ColumnName) {
-        int index = get_ColumnIndex(ColumnName);
+    public Object getAttrValue(String ColumnName) {
+        int index = getColumnIndex(ColumnName);
         if (index < 0) return null;
-        return get_Value(index);
+        return getValue(index);
     }
 
-    public boolean is_AttrValueChanged(String ColumnName) {
-        int index = get_ColumnIndex(ColumnName);
+    public boolean isAttrValueChanged(String ColumnName) {
+        int index = getColumnIndex(ColumnName);
         if (index < 0) return false;
         return is_ValueChanged(index);
     }

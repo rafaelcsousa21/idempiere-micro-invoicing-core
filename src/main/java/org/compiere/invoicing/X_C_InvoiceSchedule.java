@@ -1,16 +1,14 @@
 package org.compiere.invoicing;
 
-import org.compiere.model.HasName;
 import org.compiere.model.I_C_InvoiceSchedule;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Persistent {
+public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
 
     /**
      * Daily = D
@@ -95,7 +93,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
      * @return Amount
      */
     public BigDecimal getAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Amt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Amt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -106,7 +104,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
      * @return Day of Invoice Generation
      */
     public int getInvoiceDay() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_InvoiceDay);
+        Integer ii = (Integer) getValue(COLUMNNAME_InvoiceDay);
         if (ii == null) return 0;
         return ii;
     }
@@ -117,7 +115,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
      * @return Last day for including shipments
      */
     public int getInvoiceDayCutoff() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_InvoiceDayCutoff);
+        Integer ii = (Integer) getValue(COLUMNNAME_InvoiceDayCutoff);
         if (ii == null) return 0;
         return ii;
     }
@@ -128,7 +126,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
      * @return How often invoices will be generated
      */
     public String getInvoiceFrequency() {
-        return (String) get_Value(COLUMNNAME_InvoiceFrequency);
+        return (String) getValue(COLUMNNAME_InvoiceFrequency);
     }
 
     /**
@@ -137,7 +135,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
      * @return Day to generate invoices
      */
     public String getInvoiceWeekDay() {
-        return (String) get_Value(COLUMNNAME_InvoiceWeekDay);
+        return (String) getValue(COLUMNNAME_InvoiceWeekDay);
     }
 
     /**
@@ -146,7 +144,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
      * @return Last day in the week for shipments to be included
      */
     public String getInvoiceWeekDayCutoff() {
-        return (String) get_Value(COLUMNNAME_InvoiceWeekDayCutoff);
+        return (String) getValue(COLUMNNAME_InvoiceWeekDayCutoff);
     }
 
     /**
@@ -155,21 +153,12 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule, I_Pe
      * @return Send invoices only if the amount exceeds the limit
      */
     public boolean isAmount() {
-        Object oo = get_Value(COLUMNNAME_IsAmount);
+        Object oo = getValue(COLUMNNAME_IsAmount);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
         }
         return false;
-    }
-
-    /**
-     * Get Name.
-     *
-     * @return Alphanumeric identifier of the entity
-     */
-    public String getName() {
-        return (String) get_Value(HasName.Companion.getCOLUMNNAME_Name());
     }
 
     @Override

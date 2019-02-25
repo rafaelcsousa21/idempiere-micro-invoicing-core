@@ -165,7 +165,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         if (C_DocTypeTarget_ID <= 0) {
             MDocType odt = MDocType.get(order.getCtx(), order.getC_DocType_ID());
             if (odt != null) {
-                C_DocTypeTarget_ID = odt.getC_DocTypeInvoice_ID();
+                C_DocTypeTarget_ID = odt.getDocTypeInvoiceId();
                 if (C_DocTypeTarget_ID <= 0)
                     throw new AdempiereException(
                             "@NotFound@ @C_DocTypeInvoice_ID@ - @C_DocType_ID@:"
@@ -465,7 +465,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         //	Set Contact
         I_AD_User[] contacts = bp.getContacts();
         if (contacts != null && contacts.length > 0) // 	get first User
-            setAD_User_ID(contacts[0].getAD_User_ID());
+            setAD_User_ID(contacts[0].getUserId());
     } //	setBPartner
 
     /**
@@ -541,7 +541,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
             //
             MDocType dt = MDocType.get(getCtx(), order.getC_DocType_ID());
-            if (dt.getC_DocTypeInvoice_ID() != 0) setC_DocTypeTarget_ID(dt.getC_DocTypeInvoice_ID());
+            if (dt.getDocTypeInvoiceId() != 0) setC_DocTypeTarget_ID(dt.getDocTypeInvoiceId());
             // Overwrite Invoice BPartner
             setC_BPartner_ID(order.getBill_BPartner_ID());
             // Overwrite Invoice Address
@@ -557,8 +557,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             MRMA rma = new MRMA(getCtx(), ship.getM_RMA_ID());
             // Retrieves the invoice DocType
             MDocType dt = MDocType.get(getCtx(), rma.getC_DocType_ID());
-            if (dt.getC_DocTypeInvoice_ID() != 0) {
-                setC_DocTypeTarget_ID(dt.getC_DocTypeInvoice_ID());
+            if (dt.getDocTypeInvoiceId() != 0) {
+                setC_DocTypeTarget_ID(dt.getDocTypeInvoiceId());
             }
             setIsSOTrx(rma.isSOTrx());
 
@@ -946,7 +946,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
                             pList.getPriceListVersion(
                                     (Timestamp) get_ValueOld(I_C_Invoice.COLUMNNAME_DateInvoiced));
                     MPriceListVersion plNew =
-                            pList.getPriceListVersion((Timestamp) get_Value(I_C_Invoice.COLUMNNAME_DateInvoiced));
+                            pList.getPriceListVersion((Timestamp) getValue(I_C_Invoice.COLUMNNAME_DateInvoiced));
                     if (plNew == null || !plNew.equals(plOld)) {
                         log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeDateInvoiced"));
                         return false;
@@ -1242,7 +1242,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         }
         //	No Cash Book // deprecated with IDEMPIERE-170 Complete Cash as Payment functionality
         //		if (PAYMENTRULE_Cash.equals(getPaymentRule())
-        //			&& MCashBook.get(getCtx(),  getOrgId(), getC_Currency_ID()) == null)
+        //			&& MCashBook.get(getCtx(),  getOrgId(), getCurrencyId()) == null)
         //		{
         //			m_processMsg = "@NoCashBook@";
         //			return DocAction.STATUS_Invalid;
@@ -1537,13 +1537,13 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             if (doctype == null) doctype = doctypes[0];
 
             MPayment payment = new MPayment(getCtx(), 0);
-            payment.setAD_Org_ID(getOrgId());
+            payment.setOrgId(getOrgId());
             payment.setTenderType(MPayment.TENDERTYPE_Cash);
             payment.setC_BankAccount_ID(ba.getC_BankAccount_ID());
             payment.setC_BPartner_ID(getC_BPartner_ID());
             payment.setC_Invoice_ID(getC_Invoice_ID());
             payment.setC_Currency_ID(getC_Currency_ID());
-            payment.setC_DocType_ID(doctype.getC_DocType_ID());
+            payment.setC_DocType_ID(doctype.getDocTypeId());
             if (isCreditMemo()) payment.setPayAmt(getGrandTotal().negate());
             else payment.setPayAmt(getGrandTotal());
             payment.setIsPrepayment(false);
@@ -1655,7 +1655,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
 
         //	Update BP Statistics
         MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID());
-        forUpdate(bp, 0);
+        forUpdate(bp);
         //	Update total revenue and balance / credit limit (reversed on AllocationLine.processIt)
         BigDecimal invAmt =
                 MConversionRate.convertBase(
@@ -2008,8 +2008,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
                         null,
                         true);
         //
-        counter.setAD_Org_ID(counterAD_Org_ID);
-        //	counter.setM_Warehouse_ID(counterOrgInfo.getM_Warehouse_ID());
+        counter.setOrgId(counterAD_Org_ID);
+        //	counter.setWarehouseId(counterOrgInfo.getWarehouseId());
         //
         //		counter.setBPartner(counterBP);// was set on copyFrom
         //	References (Should not be required)
@@ -2329,7 +2329,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         MAllocationHdr alloc =
                 new MAllocationHdr(
                         getCtx(), false, reversalDate, getC_Currency_ID(), msgall.toString(), null);
-        alloc.setAD_Org_ID(getOrgId());
+        alloc.setOrgId(getOrgId());
         alloc.saveEx();
         //	Amount
         BigDecimal gt = getGrandTotal(true);
@@ -2466,7 +2466,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      */
     public void setRMA(MRMA rma) {
         setM_RMA_ID(rma.getM_RMA_ID());
-        setAD_Org_ID(rma.getOrgId());
+        setOrgId(rma.getOrgId());
         setDescription(rma.getDescription());
         setC_BPartner_ID(rma.getC_BPartner_ID());
         setSalesRep_ID(rma.getSalesRep_ID());

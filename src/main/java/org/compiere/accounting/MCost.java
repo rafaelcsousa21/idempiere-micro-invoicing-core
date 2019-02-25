@@ -59,9 +59,9 @@ public class MCost extends X_M_Cost {
     public MCost(Properties ctx, int ignored) {
         super(ctx, ignored);
         if (ignored == 0) {
-            //	setC_AcctSchema_ID (0);
+            //	setAccountingSchemaId (0);
             //	setM_CostElement_ID (0);
-            //	setM_CostType_ID (0);
+            //	setCostTypeId (0);
             //	setM_Product_ID (0);
             setM_AttributeSetInstance_ID(0);
             //
@@ -107,8 +107,8 @@ public class MCost extends X_M_Cost {
             int M_CostElement_ID) {
         this(product.getCtx(), 0);
         setClientOrg(product.getClientId(), AD_Org_ID);
-        setC_AcctSchema_ID(as.getC_AcctSchema_ID());
-        setM_CostType_ID(as.getM_CostType_ID());
+        setC_AcctSchema_ID(as.getAccountingSchemaId());
+        setM_CostType_ID(as.getCostTypeId());
         setM_Product_ID(product.getM_Product_ID());
         setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
         setM_CostElement_ID(M_CostElement_ID);
@@ -162,7 +162,7 @@ public class MCost extends X_M_Cost {
                 M_AttributeSetInstance_ID,
                 as,
                 AD_Org_ID,
-                as.getM_CostType_ID(),
+                as.getCostTypeId(),
                 costingMethod,
                 qty,
                 C_OrderLine_ID,
@@ -225,7 +225,7 @@ public class MCost extends X_M_Cost {
             pstmt.setInt(3, product.getM_Product_ID());
             pstmt.setInt(4, M_ASI_ID);
             pstmt.setInt(5, M_CostType_ID);
-            pstmt.setInt(6, as.getC_AcctSchema_ID());
+            pstmt.setInt(6, as.getAccountingSchemaId());
             pstmt.setString(7, costingMethod);
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -343,12 +343,12 @@ public class MCost extends X_M_Cost {
         else if (MCostElement.COSTINGMETHOD_Fifo.equals(costingMethod)) return null;
         else if (MCostElement.COSTINGMETHOD_Lifo.equals(costingMethod)) return null;
         else if (MCostElement.COSTINGMETHOD_LastInvoice.equals(costingMethod))
-            retValue = getLastInvoicePrice(product, M_ASI_ID, Org_ID, as.getC_Currency_ID());
+            retValue = getLastInvoicePrice(product, M_ASI_ID, Org_ID, as.getCurrencyId());
         else if (MCostElement.COSTINGMETHOD_LastPOPrice.equals(costingMethod)) {
             if (C_OrderLine_ID != 0)
-                retValue = getPOPrice(product, C_OrderLine_ID, as.getC_Currency_ID());
+                retValue = getPOPrice(product, C_OrderLine_ID, as.getCurrencyId());
             if (retValue == null || retValue.signum() == 0)
-                retValue = getLastPOPrice(product, M_ASI_ID, Org_ID, as.getC_Currency_ID());
+                retValue = getLastPOPrice(product, M_ASI_ID, Org_ID, as.getCurrencyId());
         } else if (MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod)) ;
         else if (MCostElement.COSTINGMETHOD_UserDefined.equals(costingMethod)) ;
         else throw new IllegalArgumentException("Unknown Costing Method = " + costingMethod);
@@ -360,7 +360,7 @@ public class MCost extends X_M_Cost {
 
         //	Look for exact Order Line
         if (C_OrderLine_ID != 0) {
-            retValue = getPOPrice(product, C_OrderLine_ID, as.getC_Currency_ID());
+            retValue = getPOPrice(product, C_OrderLine_ID, as.getCurrencyId());
             if (retValue != null && retValue.signum() > 0) {
                 if (s_log.isLoggable(Level.FINE)) s_log.fine(product.getName() + ", PO - " + retValue);
                 return retValue;
@@ -384,9 +384,9 @@ public class MCost extends X_M_Cost {
         if (MCostElement.COSTINGMETHOD_LastPOPrice.equals(costingMethod)
                 || MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod)) {
             //	try Last PO
-            retValue = getLastPOPrice(product, M_ASI_ID, Org_ID, as.getC_Currency_ID());
+            retValue = getLastPOPrice(product, M_ASI_ID, Org_ID, as.getCurrencyId());
             if (Org_ID != 0 && (retValue == null || retValue.signum() == 0))
-                retValue = getLastPOPrice(product, M_ASI_ID, 0, as.getC_Currency_ID());
+                retValue = getLastPOPrice(product, M_ASI_ID, 0, as.getCurrencyId());
             if (retValue != null && retValue.signum() > 0) {
                 if (s_log.isLoggable(Level.FINE)) s_log.fine(product.getName() + ", LastPO = " + retValue);
                 return retValue;
@@ -394,9 +394,9 @@ public class MCost extends X_M_Cost {
         } else //	Inv first
         {
             //	try last Inv
-            retValue = getLastInvoicePrice(product, M_ASI_ID, Org_ID, as.getC_Currency_ID());
+            retValue = getLastInvoicePrice(product, M_ASI_ID, Org_ID, as.getCurrencyId());
             if (Org_ID != 0 && (retValue == null || retValue.signum() == 0))
-                retValue = getLastInvoicePrice(product, M_ASI_ID, 0, as.getC_Currency_ID());
+                retValue = getLastInvoicePrice(product, M_ASI_ID, 0, as.getCurrencyId());
             if (retValue != null && retValue.signum() != 0) {
                 if (s_log.isLoggable(Level.FINE)) s_log.fine(product.getName() + ", LastInv = " + retValue);
                 return retValue;
@@ -408,9 +408,9 @@ public class MCost extends X_M_Cost {
         if (MCostElement.COSTINGMETHOD_LastPOPrice.equals(costingMethod)
                 || MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod)) {
             //	try last Inv
-            retValue = getLastInvoicePrice(product, M_ASI_ID, Org_ID, as.getC_Currency_ID());
+            retValue = getLastInvoicePrice(product, M_ASI_ID, Org_ID, as.getCurrencyId());
             if (Org_ID != 0 && (retValue == null || retValue.signum() == 0))
-                retValue = getLastInvoicePrice(product, M_ASI_ID, 0, as.getC_Currency_ID());
+                retValue = getLastInvoicePrice(product, M_ASI_ID, 0, as.getCurrencyId());
             if (retValue != null && retValue.signum() > 0) {
                 if (s_log.isLoggable(Level.FINE)) s_log.fine(product.getName() + ", LastInv = " + retValue);
                 return retValue;
@@ -418,9 +418,9 @@ public class MCost extends X_M_Cost {
         } else //	PO second
         {
             //	try Last PO
-            retValue = getLastPOPrice(product, M_ASI_ID, Org_ID, as.getC_Currency_ID());
+            retValue = getLastPOPrice(product, M_ASI_ID, Org_ID, as.getCurrencyId());
             if (Org_ID != 0 && (retValue == null || retValue.signum() == 0))
-                retValue = getLastPOPrice(product, M_ASI_ID, 0, as.getC_Currency_ID());
+                retValue = getLastPOPrice(product, M_ASI_ID, 0, as.getCurrencyId());
             if (retValue != null && retValue.signum() > 0) {
                 if (s_log.isLoggable(Level.FINE)) s_log.fine(product.getName() + ", LastPO = " + retValue);
                 return retValue;
@@ -439,7 +439,7 @@ public class MCost extends X_M_Cost {
                                 product.getCtx(),
                                 price,
                                 pos[i].getC_Currency_ID(),
-                                as.getC_Currency_ID(),
+                                as.getCurrencyId(),
                                 as.getClientId(),
                                 Org_ID);
                 if (price != null && price.signum() != 0) {
@@ -726,14 +726,14 @@ public class MCost extends X_M_Cost {
             if (MAcctSchema.COSTINGLEVEL_Client.equals(cl)) {
                 createCostingRecord(product, M_ASI_ID, as, 0, ce.getM_CostElement_ID());
             } else if (MAcctSchema.COSTINGLEVEL_Organization.equals(cl)) {
-                if (as.getAD_OrgOnly_ID() > 0
-                        && MOrg.get(product.getCtx(), as.getAD_OrgOnly_ID()).isSummary()) {
+                if (as.getOrganizationOnlyId() > 0
+                        && MOrg.get(product.getCtx(), as.getOrganizationOnlyId()).isSummary()) {
                     MClient client = MClient.get(product.getCtx(), product.getClientId());
                     MClientInfo ci = client.getInfo();
                     MTree vTree =
                             new MTree(
                                     product.getCtx(),
-                                    ci.getAD_Tree_Org_ID(),
+                                    ci.getTreeOrgId(),
                                     false,
                                     true,
                                     true);
@@ -745,7 +745,7 @@ public class MCost extends X_M_Cost {
 
                     for (MOrg o : orgs) {
                         if (o.isSummary()) continue;
-                        if (as.getAD_OrgOnly_ID() == o.getOrgId() || as.getAD_OrgOnly_ID() == 0) {
+                        if (as.getOrganizationOnlyId() == o.getOrgId() || as.getOrganizationOnlyId() == 0) {
                             createCostingRecord(
                                     product, M_ASI_ID, as, o.getOrgId(), ce.getM_CostElement_ID());
                         }
@@ -767,7 +767,7 @@ public class MCost extends X_M_Cost {
             MCostElement ce,
             boolean found) {
         int parentId = root.getNode_ID();
-        if (!found) found = (parentId == as.getAD_OrgOnly_ID());
+        if (!found) found = (parentId == as.getOrganizationOnlyId());
         Enumeration<?> nodeEnum = root.children();
         MTreeNode child = null;
         while (nodeEnum.hasMoreElements()) {
@@ -787,7 +787,7 @@ public class MCost extends X_M_Cost {
             MProduct product, int M_ASI_ID, MAcctSchema as, int AD_Org_ID, int M_CostElement_ID) {
         MCost cost =
                 MCost.get(product, M_ASI_ID, as, AD_Org_ID, M_CostElement_ID, null);
-        if (cost.is_new()) {
+        if (cost.isNew()) {
             if (cost.save()) {
                 if (s_log.isLoggable(Level.CONFIG))
                     s_log.config("Std.Cost for " + product.getName() + " - " + as.getName());
@@ -876,8 +876,8 @@ public class MCost extends X_M_Cost {
                                 AD_Org_ID,
                                 product.getM_Product_ID(),
                                 M_AttributeSetInstance_ID,
-                                as.getM_CostType_ID(),
-                                as.getC_AcctSchema_ID(),
+                                as.getCostTypeId(),
+                                as.getAccountingSchemaId(),
                                 M_CostElement_ID)
                         .firstOnly();
         // FR: [ 2214883 ] - end -
@@ -1120,8 +1120,8 @@ public class MCost extends X_M_Cost {
         sb.append(",M_Product_ID=").append(getM_Product_ID());
         if (getMAttributeSetInstance_ID() != 0)
             sb.append(",AD_ASI_ID=").append(getMAttributeSetInstance_ID());
-        //	sb.append (",C_AcctSchema_ID=").append (getC_AcctSchema_ID());
-        //	sb.append (",M_CostType_ID=").append (getM_CostType_ID());
+        //	sb.append (",C_AcctSchema_ID=").append (getAccountingSchemaId());
+        //	sb.append (",M_CostType_ID=").append (getCostTypeId());
         sb.append(",M_CostElement_ID=").append(getM_CostElement_ID());
         //
         sb.append(", CurrentCost=")
@@ -1159,7 +1159,7 @@ public class MCost extends X_M_Cost {
                     log.saveError("FillMandatory", Msg.getElement(getCtx(), "M_AttributeSetInstance_ID"));
                     return false;
                 }
-                if (getOrgId() != 0) setAD_Org_ID(0);
+                if (getOrgId() != 0) setOrgId(0);
             }
         }
 

@@ -487,8 +487,8 @@ public abstract class Doc implements IDoc {
         // the rs (IDEMPIERE-775)
 
         //	DocStatus
-        int index = p_po.get_ColumnIndex("DocStatus");
-        if (index != -1) m_DocStatus = (String) p_po.get_Value(index);
+        int index = p_po.getColumnIndex("DocStatus");
+        if (index != -1) m_DocStatus = (String) p_po.getValue(index);
 
         //	Document Type
         setDocumentType(defaultDocumentType);
@@ -560,8 +560,8 @@ public abstract class Doc implements IDoc {
      * @return table name
      */
     public String get_TableName() {
-        return p_po.get_TableName();
-    } //	get_TableName
+        return p_po.getTableName();
+    } //	getTableName
 
     /**
      * Get Table ID
@@ -694,7 +694,7 @@ public abstract class Doc implements IDoc {
         try {
             //	if acct schema has "only" org, skip
             boolean skip = false;
-            if (m_as.getAD_OrgOnly_ID() != 0) {
+            if (m_as.getOrganizationOnlyId() != 0) {
                 //	Header Level Org
                 skip = m_as.isSkipOrg(getOrgId());
                 //	Line Level Org
@@ -800,7 +800,7 @@ public abstract class Doc implements IDoc {
                         .append(" AND Record_ID=")
                         .append(p_po.getId())
                         .append(" AND C_AcctSchema_ID=")
-                        .append(m_as.getC_AcctSchema_ID());
+                        .append(m_as.getAccountingSchemaId());
         int no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.INFO)) log.info("deleted=" + no);
         return no;
@@ -941,7 +941,7 @@ public abstract class Doc implements IDoc {
         if (DocumentType != null) m_DocumentType = DocumentType;
         //  IDEMPIERE-3342 - prefer the category defined for the doctype if there is such column in the
         // table
-        if (p_po.get_ColumnIndex("C_DocType_ID") >= 0 && getC_DocType_ID() != 0) {
+        if (p_po.getColumnIndex("C_DocType_ID") >= 0 && getC_DocType_ID() != 0) {
             String sql = "SELECT DocBaseType, GL_Category_ID FROM C_DocType WHERE C_DocType_ID=?";
             PreparedStatement pstmt = null;
             ResultSet rsDT = null;
@@ -1048,8 +1048,8 @@ public abstract class Doc implements IDoc {
         }
         // Journal from a different acct schema
         if (this instanceof Doc_GLJournal) {
-            int glj_as = ((Integer) p_po.get_Value("C_AcctSchema_ID")).intValue();
-            if (acctSchema.getC_AcctSchema_ID() != glj_as) return true;
+            int glj_as = ((Integer) p_po.getValue("C_AcctSchema_ID")).intValue();
+            if (acctSchema.getAccountingSchemaId() != glj_as) return true;
         }
         //  Get All Currencies
         HashSet<Integer> set = new HashSet<Integer>();
@@ -1060,7 +1060,7 @@ public abstract class Doc implements IDoc {
         }
 
         //  just one and the same
-        if (set.size() == 1 && acctSchema.getC_Currency_ID() == getC_Currency_ID()) {
+        if (set.size() == 1 && acctSchema.getCurrencyId() == getC_Currency_ID()) {
             if (log.isLoggable(Level.FINE))
                 log.fine("(same) Cur=" + getC_Currency_ID() + " - " + toString());
             return true;
@@ -1070,11 +1070,11 @@ public abstract class Doc implements IDoc {
         Iterator<Integer> it = set.iterator();
         while (it.hasNext() && convertible) {
             int C_Currency_ID = it.next().intValue();
-            if (C_Currency_ID != acctSchema.getC_Currency_ID()) {
+            if (C_Currency_ID != acctSchema.getCurrencyId()) {
                 BigDecimal amt =
                         MConversionRate.getRate(
                                 C_Currency_ID,
-                                acctSchema.getC_Currency_ID(),
+                                acctSchema.getCurrencyId(),
                                 getDateAcct(),
                                 getC_ConversionType_ID(),
                                 getClientId(),
@@ -1085,7 +1085,7 @@ public abstract class Doc implements IDoc {
                             "NOT from C_Currency_ID="
                                     + C_Currency_ID
                                     + " to "
-                                    + acctSchema.getC_Currency_ID()
+                                    + acctSchema.getCurrencyId()
                                     + " - "
                                     + toString());
                 } else if (log.isLoggable(Level.FINE)) log.fine("From C_Currency_ID=" + C_Currency_ID);
@@ -1097,7 +1097,7 @@ public abstract class Doc implements IDoc {
                     "Convertible="
                             + convertible
                             + ", AcctSchema C_Currency_ID="
-                            + acctSchema.getC_Currency_ID()
+                            + acctSchema.getCurrencyId()
                             + " - "
                             + toString());
         return convertible;
@@ -1110,9 +1110,9 @@ public abstract class Doc implements IDoc {
         if (m_period != null) return;
 
         //	Period defined in GL Journal (e.g. adjustment period)
-        int index = p_po.get_ColumnIndex("C_Period_ID");
+        int index = p_po.getColumnIndex("C_Period_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) m_period = MPeriod.get(getCtx(), ii.intValue());
         }
         if (m_period == null)
@@ -1125,7 +1125,7 @@ public abstract class Doc implements IDoc {
         if (log.isLoggable(Level.FINE))
             log.fine( // + clientId + " - "
                     getDateAcct() + " - " + getDocumentType() + " => " + m_C_Period_ID);
-    } //  setC_Period_ID
+    } //  setPeriodId
 
     /**
      * Get C_Period_ID
@@ -1192,8 +1192,8 @@ public abstract class Doc implements IDoc {
      */
     public BigDecimal getQty() {
         if (m_qty == null) {
-            int index = p_po.get_ColumnIndex("Qty");
-            if (index != -1) m_qty = (BigDecimal) p_po.get_Value(index);
+            int index = p_po.getColumnIndex("Qty");
+            if (index != -1) m_qty = (BigDecimal) p_po.getValue(index);
             else m_qty = Env.ZERO;
         }
         return m_qty;
@@ -1365,10 +1365,10 @@ public abstract class Doc implements IDoc {
         try {
             pstmt = prepareStatement(sql);
             if (para_1 == -1) //  GL Accounts
-                pstmt.setInt(1, as.getC_AcctSchema_ID());
+                pstmt.setInt(1, as.getAccountingSchemaId());
             else {
                 pstmt.setInt(1, para_1);
-                pstmt.setInt(2, as.getC_AcctSchema_ID());
+                pstmt.setInt(2, as.getAccountingSchemaId());
             }
             rs = pstmt.executeQuery();
             if (rs.next()) Account_ID = rs.getInt(1);
@@ -1437,10 +1437,10 @@ public abstract class Doc implements IDoc {
      */
     public String getDocumentNo() {
         if (m_DocumentNo != null) return m_DocumentNo;
-        int index = p_po.get_ColumnIndex("DocumentNo");
-        if (index == -1) index = p_po.get_ColumnIndex("Name");
+        int index = p_po.getColumnIndex("DocumentNo");
+        if (index == -1) index = p_po.getColumnIndex("Name");
         if (index == -1) throw new UnsupportedOperationException("No DocumentNo");
-        m_DocumentNo = (String) p_po.get_Value(index);
+        m_DocumentNo = (String) p_po.getValue(index);
         return m_DocumentNo;
     } //	getDocumentNo
 
@@ -1451,8 +1451,8 @@ public abstract class Doc implements IDoc {
      */
     public String getDescription() {
         if (m_Description == null) {
-            int index = p_po.get_ColumnIndex("Description");
-            if (index != -1) m_Description = (String) p_po.get_Value(index);
+            int index = p_po.getColumnIndex("Description");
+            if (index != -1) m_Description = (String) p_po.getValue(index);
             else m_Description = "";
         }
         return m_Description;
@@ -1465,15 +1465,15 @@ public abstract class Doc implements IDoc {
      */
     public int getC_Currency_ID() {
         if (m_C_Currency_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_Currency_ID");
+            int index = p_po.getColumnIndex("C_Currency_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_Currency_ID = ii.intValue();
             }
             if (m_C_Currency_ID == -1) m_C_Currency_ID = NO_CURRENCY;
         }
         return m_C_Currency_ID;
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     /**
      * Set C_Currency_ID
@@ -1482,7 +1482,7 @@ public abstract class Doc implements IDoc {
      */
     public void setC_Currency_ID(int C_Currency_ID) {
         m_C_Currency_ID = C_Currency_ID;
-    } //	setC_Currency_ID
+    } //	setCurrencyId
 
     /**
      * Is Multi Currency
@@ -1517,9 +1517,9 @@ public abstract class Doc implements IDoc {
      * @return ConversionType
      */
     public int getC_ConversionType_ID() {
-        int index = p_po.get_ColumnIndex("C_ConversionType_ID");
+        int index = p_po.getColumnIndex("C_ConversionType_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1531,13 +1531,13 @@ public abstract class Doc implements IDoc {
      * @return category
      */
     public int getGL_Category_ID() {
-        int index = p_po.get_ColumnIndex("GL_Category_ID");
+        int index = p_po.getColumnIndex("GL_Category_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return m_GL_Category_ID;
-    } //	getGL_Category_ID
+    } //	getGLCategoryId
 
     /**
      * Get GL_Category_ID
@@ -1545,9 +1545,9 @@ public abstract class Doc implements IDoc {
      * @return category
      */
     public int getGL_Budget_ID() {
-        int index = p_po.get_ColumnIndex("GL_Budget_ID");
+        int index = p_po.getColumnIndex("GL_Budget_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1560,9 +1560,9 @@ public abstract class Doc implements IDoc {
      */
     public Timestamp getDateAcct() {
         if (m_DateAcct != null) return m_DateAcct;
-        int index = p_po.get_ColumnIndex("DateAcct");
+        int index = p_po.getColumnIndex("DateAcct");
         if (index != -1) {
-            m_DateAcct = (Timestamp) p_po.get_Value(index);
+            m_DateAcct = (Timestamp) p_po.getValue(index);
             if (m_DateAcct != null) return m_DateAcct;
         }
         throw new IllegalStateException("No DateAcct");
@@ -1584,10 +1584,10 @@ public abstract class Doc implements IDoc {
      */
     public Timestamp getDateDoc() {
         if (m_DateDoc != null) return m_DateDoc;
-        int index = p_po.get_ColumnIndex("DateDoc");
-        if (index == -1) index = p_po.get_ColumnIndex("MovementDate");
+        int index = p_po.getColumnIndex("DateDoc");
+        if (index == -1) index = p_po.getColumnIndex("MovementDate");
         if (index != -1) {
-            m_DateDoc = (Timestamp) p_po.get_Value(index);
+            m_DateDoc = (Timestamp) p_po.getValue(index);
             if (m_DateDoc != null) return m_DateDoc;
         }
         throw new IllegalStateException("No DateDoc");
@@ -1608,9 +1608,9 @@ public abstract class Doc implements IDoc {
      * @return true if posted
      */
     public boolean isPosted() {
-        int index = p_po.get_ColumnIndex("Posted");
+        int index = p_po.getColumnIndex("Posted");
         if (index != -1) {
-            Object posted = p_po.get_Value(index);
+            Object posted = p_po.getValue(index);
             if (posted instanceof Boolean) return ((Boolean) posted).booleanValue();
             if (posted instanceof String) return "Y".equals(posted);
         }
@@ -1623,10 +1623,10 @@ public abstract class Doc implements IDoc {
      * @return true if posted
      */
     public boolean isSOTrx() {
-        int index = p_po.get_ColumnIndex("IsSOTrx");
-        if (index == -1) index = p_po.get_ColumnIndex("IsReceipt");
+        int index = p_po.getColumnIndex("IsSOTrx");
+        if (index == -1) index = p_po.getColumnIndex("IsReceipt");
         if (index != -1) {
-            Object posted = p_po.get_Value(index);
+            Object posted = p_po.getValue(index);
             if (posted instanceof Boolean) return ((Boolean) posted).booleanValue();
             if (posted instanceof String) return "Y".equals(posted);
         }
@@ -1639,59 +1639,59 @@ public abstract class Doc implements IDoc {
      * @return DocType
      */
     public int getC_DocType_ID() {
-        int index = p_po.get_ColumnIndex("C_DocType_ID");
+        int index = p_po.getColumnIndex("C_DocType_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             //	DocType does not exist - get DocTypeTarget
             if (ii != null && ii.intValue() == 0) {
-                index = p_po.get_ColumnIndex("C_DocTypeTarget_ID");
-                if (index != -1) ii = (Integer) p_po.get_Value(index);
+                index = p_po.getColumnIndex("C_DocTypeTarget_ID");
+                if (index != -1) ii = (Integer) p_po.getValue(index);
             }
             if (ii != null) return ii;
         } else {
-            if (p_po.get_TableName().equals(I_M_MatchPO.Table_Name)) {
+            if (p_po.getTableName().equals(I_M_MatchPO.Table_Name)) {
                 int docTypeId =
                         getSQLValue(
                                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                                 p_po.getClientId(),
                                 Doc.DOCTYPE_MatMatchPO);
                 if (docTypeId > 0) return docTypeId;
-            } else if (p_po.get_TableName().equals(I_M_MatchInv.Table_Name)) {
+            } else if (p_po.getTableName().equals(I_M_MatchInv.Table_Name)) {
                 int docTypeId =
                         getSQLValue(
                                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                                 p_po.getClientId(),
                                 Doc.DOCTYPE_MatMatchInv);
                 if (docTypeId > 0) return docTypeId;
-            } else if (p_po.get_TableName().equals(I_C_AllocationHdr.Table_Name)) {
+            } else if (p_po.getTableName().equals(I_C_AllocationHdr.Table_Name)) {
                 int docTypeId =
                         getSQLValue(
                                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                                 p_po.getClientId(),
                                 Doc.DOCTYPE_Allocation);
                 if (docTypeId > 0) return docTypeId;
-            } else if (p_po.get_TableName().equals(I_C_BankStatement.Table_Name)) {
+            } else if (p_po.getTableName().equals(I_C_BankStatement.Table_Name)) {
                 int docTypeId =
                         getSQLValue(
                                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                                 p_po.getClientId(),
                                 Doc.DOCTYPE_BankStatement);
                 if (docTypeId > 0) return docTypeId;
-            } else if (p_po.get_TableName().equals(I_C_Cash.Table_Name)) {
+            } else if (p_po.getTableName().equals(I_C_Cash.Table_Name)) {
                 int docTypeId =
                         getSQLValue(
                                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                                 p_po.getClientId(),
                                 Doc.DOCTYPE_CashJournal);
                 if (docTypeId > 0) return docTypeId;
-            } else if (p_po.get_TableName().equals(I_C_ProjectIssue.Table_Name)) {
+            } else if (p_po.getTableName().equals(I_C_ProjectIssue.Table_Name)) {
                 int docTypeId =
                         getSQLValue(
                                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
                                 p_po.getClientId(),
                                 Doc.DOCTYPE_ProjectIssue);
                 if (docTypeId > 0) return docTypeId;
-            } else if (p_po.get_TableName().equals(I_M_Production.Table_Name)) {
+            } else if (p_po.getTableName().equals(I_M_Production.Table_Name)) {
                 int docTypeId =
                         getSQLValue(
                                 DOC_TYPE_BY_DOC_BASE_TYPE_SQL,
@@ -1701,7 +1701,7 @@ public abstract class Doc implements IDoc {
             }
         }
         return 0;
-    } //	getC_DocType_ID
+    } //	getDocTypeId
 
     /**
      * Get header level C_Charge_ID
@@ -1709,9 +1709,9 @@ public abstract class Doc implements IDoc {
      * @return Charge
      */
     public int getC_Charge_ID() {
-        int index = p_po.get_ColumnIndex("C_Charge_ID");
+        int index = p_po.getColumnIndex("C_Charge_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1723,9 +1723,9 @@ public abstract class Doc implements IDoc {
      * @return SalesRep
      */
     public int getSalesRep_ID() {
-        int index = p_po.get_ColumnIndex("SalesRep_ID");
+        int index = p_po.getColumnIndex("SalesRep_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1738,9 +1738,9 @@ public abstract class Doc implements IDoc {
      */
     public int getC_BankAccount_ID() {
         if (m_C_BankAccount_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_BankAccount_ID");
+            int index = p_po.getColumnIndex("C_BankAccount_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_BankAccount_ID = ii.intValue();
             }
             if (m_C_BankAccount_ID == -1) m_C_BankAccount_ID = 0;
@@ -1764,9 +1764,9 @@ public abstract class Doc implements IDoc {
      */
     public int getC_CashBook_ID() {
         if (m_C_CashBook_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_CashBook_ID");
+            int index = p_po.getColumnIndex("C_CashBook_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_CashBook_ID = ii.intValue();
             }
             if (m_C_CashBook_ID == -1) m_C_CashBook_ID = 0;
@@ -1789,13 +1789,13 @@ public abstract class Doc implements IDoc {
      * @return Warehouse
      */
     public int getM_Warehouse_ID() {
-        int index = p_po.get_ColumnIndex("M_Warehouse_ID");
+        int index = p_po.getColumnIndex("M_Warehouse_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getM_Warehouse_ID
+    } //	getWarehouseId
 
     /**
      * Get C_BPartner_ID
@@ -1804,9 +1804,9 @@ public abstract class Doc implements IDoc {
      */
     public int getC_BPartner_ID() {
         if (m_C_BPartner_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_BPartner_ID");
+            int index = p_po.getColumnIndex("C_BPartner_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_BPartner_ID = ii.intValue();
             }
             if (m_C_BPartner_ID == -1) m_C_BPartner_ID = 0;
@@ -1829,9 +1829,9 @@ public abstract class Doc implements IDoc {
      * @return BPartner Location
      */
     public int getC_BPartner_Location_ID() {
-        int index = p_po.get_ColumnIndex("C_BPartner_Location_ID");
+        int index = p_po.getColumnIndex("C_BPartner_Location_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1843,9 +1843,9 @@ public abstract class Doc implements IDoc {
      * @return Project
      */
     public int getC_Project_ID() {
-        int index = p_po.get_ColumnIndex("C_Project_ID");
+        int index = p_po.getColumnIndex("C_Project_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1857,9 +1857,9 @@ public abstract class Doc implements IDoc {
      * @return Project Phase
      */
     public int getC_ProjectPhase_ID() {
-        int index = p_po.get_ColumnIndex("C_ProjectPhase_ID");
+        int index = p_po.getColumnIndex("C_ProjectPhase_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1871,9 +1871,9 @@ public abstract class Doc implements IDoc {
      * @return Project Task
      */
     public int getC_ProjectTask_ID() {
-        int index = p_po.get_ColumnIndex("C_ProjectTask_ID");
+        int index = p_po.getColumnIndex("C_ProjectTask_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1885,9 +1885,9 @@ public abstract class Doc implements IDoc {
      * @return Sales Region
      */
     public int getC_SalesRegion_ID() {
-        int index = p_po.get_ColumnIndex("C_SalesRegion_ID");
+        int index = p_po.getColumnIndex("C_SalesRegion_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1900,9 +1900,9 @@ public abstract class Doc implements IDoc {
      */
     public int getBP_C_SalesRegion_ID() {
         if (m_BP_C_SalesRegion_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_SalesRegion_ID");
+            int index = p_po.getColumnIndex("C_SalesRegion_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_BP_C_SalesRegion_ID = ii.intValue();
             }
             if (m_BP_C_SalesRegion_ID == -1) m_BP_C_SalesRegion_ID = 0;
@@ -1925,9 +1925,9 @@ public abstract class Doc implements IDoc {
      * @return Activity
      */
     public int getC_Activity_ID() {
-        int index = p_po.get_ColumnIndex("C_Activity_ID");
+        int index = p_po.getColumnIndex("C_Activity_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1939,9 +1939,9 @@ public abstract class Doc implements IDoc {
      * @return Campaign
      */
     public int getC_Campaign_ID() {
-        int index = p_po.get_ColumnIndex("C_Campaign_ID");
+        int index = p_po.getColumnIndex("C_Campaign_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1953,9 +1953,9 @@ public abstract class Doc implements IDoc {
      * @return Product
      */
     public int getM_Product_ID() {
-        int index = p_po.get_ColumnIndex("M_Product_ID");
+        int index = p_po.getColumnIndex("M_Product_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1967,9 +1967,9 @@ public abstract class Doc implements IDoc {
      * @return Trx Org
      */
     public int getAD_OrgTrx_ID() {
-        int index = p_po.get_ColumnIndex("AD_OrgTrx_ID");
+        int index = p_po.getColumnIndex("AD_OrgTrx_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -1999,9 +1999,9 @@ public abstract class Doc implements IDoc {
      * @return Campaign
      */
     public int getUser1_ID() {
-        int index = p_po.get_ColumnIndex("User1_ID");
+        int index = p_po.getColumnIndex("User1_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -2013,9 +2013,9 @@ public abstract class Doc implements IDoc {
      * @return Campaign
      */
     public int getUser2_ID() {
-        int index = p_po.get_ColumnIndex("User2_ID");
+        int index = p_po.getColumnIndex("User2_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -2027,9 +2027,9 @@ public abstract class Doc implements IDoc {
      * @return User defined
      */
     public int getValue(String ColumnName) {
-        int index = p_po.get_ColumnIndex(ColumnName);
+        int index = p_po.getColumnIndex(ColumnName);
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;

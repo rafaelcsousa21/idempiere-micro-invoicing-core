@@ -77,7 +77,7 @@ public class CopyOrder extends SvrProcess {
                 MOrder.copyFrom(
                         from,
                         p_DateDoc,
-                        dt.getC_DocType_ID(),
+                        dt.getDocTypeId(),
                         dt.isSOTrx(),
                         false,
                         true,

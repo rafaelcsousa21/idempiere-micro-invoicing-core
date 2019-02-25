@@ -1,9 +1,7 @@
 package org.compiere.production;
 
 import org.compiere.model.I_R_Request;
-import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_R_Request extends PO implements I_R_Request, I_Persistent {
+public class X_R_Request extends PO implements I_R_Request {
 
     /**
      * ConfidentialType AD_Reference_ID=340
@@ -161,100 +159,12 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     }
 
     /**
-     * Get Asset.
-     *
-     * @return Asset used internally or by customers
-     */
-    public int getA_Asset_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Asset_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Role.
-     *
-     * @return Responsibility Role
-     */
-    public int getAD_Role_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Role_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Table.
-     *
-     * @return Database Table information
-     */
-    public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get User/Contact.
-     *
-     * @return User within the system - Internal or Business Partner Contact
-     */
-    public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Activity.
-     *
-     * @return Business Activity
-     */
-    public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Business Partner .
      *
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Campaign.
-     *
-     * @return Marketing Campaign
-     */
-    public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Invoice.
-     *
-     * @return Invoice Identifier
-     */
-    public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Request Invoice.
-     *
-     * @return The generated invoice for this request
-     */
-    public int getC_InvoiceRequest_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceRequest_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -265,7 +175,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Close Date
      */
     public Timestamp getCloseDate() {
-        return (Timestamp) get_Value(COLUMNNAME_CloseDate);
+        return (Timestamp) getValue(COLUMNNAME_CloseDate);
     }
 
     /**
@@ -283,7 +193,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Type of Confidentiality
      */
     public String getConfidentialType() {
-        return (String) get_Value(COLUMNNAME_ConfidentialType);
+        return (String) getValue(COLUMNNAME_ConfidentialType);
     }
 
     /**
@@ -302,7 +212,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Confidentiality of the individual entry
      */
     public String getConfidentialTypeEntry() {
-        return (String) get_Value(COLUMNNAME_ConfidentialTypeEntry);
+        return (String) getValue(COLUMNNAME_ConfidentialTypeEntry);
     }
 
     /**
@@ -316,54 +226,12 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     }
 
     /**
-     * Get Order.
-     *
-     * @return Order
-     */
-    public int getC_Order_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Order_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Payment.
-     *
-     * @return Payment identifier
-     */
-    public int getC_Payment_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Project.
-     *
-     * @return Financial Project
-     */
-    public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Set Last Alert.
-     *
-     * @param DateLastAlert Date when last alert were sent
-     */
-    public void setDateLastAlert(Timestamp DateLastAlert) {
-        set_Value(COLUMNNAME_DateLastAlert, DateLastAlert);
-    }
-
-    /**
      * Get Date next action.
      *
      * @return Date that this request should be acted on
      */
     public Timestamp getDateNextAction() {
-        return (Timestamp) get_Value(COLUMNNAME_DateNextAction);
+        return (Timestamp) getValue(COLUMNNAME_DateNextAction);
     }
 
     /**
@@ -381,16 +249,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
-    }
-
-    /**
-     * Get Due type.
-     *
-     * @return Status of the next action for this Request
-     */
-    public String getDueType() {
-        return (String) get_Value(COLUMNNAME_DueType);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -427,7 +286,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Is this invoiced?
      */
     public boolean isInvoiced() {
-        Object oo = get_Value(COLUMNNAME_IsInvoiced);
+        Object oo = getValue(COLUMNNAME_IsInvoiced);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -450,7 +309,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return BOM (Engineering) Change Request
      */
     public int getM_ChangeRequest_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_ChangeRequest_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_ChangeRequest_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -466,67 +325,12 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     }
 
     /**
-     * Get Fixed in.
-     *
-     * @return Fixed in Change Notice
-     */
-    public int getM_FixChangeNotice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_FixChangeNotice_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Shipment/Receipt.
-     *
-     * @return Material Shipment Document
-     */
-    public int getM_InOut_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InOut_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Product.
-     *
-     * @return Product, Service, Item
-     */
-    public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Product Used.
-     *
-     * @return Product/Resource/Service used in Request
-     */
-    public int getM_ProductSpent_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_ProductSpent_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get RMA.
-     *
-     * @return Return Material Authorization
-     */
-    public int getM_RMA_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_RMA_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Priority.
      *
      * @return Indicates if this request is of a high, medium or low priority.
      */
     public String getPriority() {
-        return (String) get_Value(COLUMNNAME_Priority);
+        return (String) getValue(COLUMNNAME_Priority);
     }
 
     /**
@@ -545,7 +349,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Priority of the issue for the User
      */
     public String getPriorityUser() {
-        return (String) get_Value(COLUMNNAME_PriorityUser);
+        return (String) getValue(COLUMNNAME_PriorityUser);
     }
 
     /**
@@ -564,7 +368,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -582,17 +386,6 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     }
 
     /**
-     * Get Category.
-     *
-     * @return Request Category
-     */
-    public int getR_Category_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_Category_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Request Amount.
      *
      * @param RequestAmt Amount associated with this request
@@ -607,16 +400,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Result of the action taken
      */
     public String getResult() {
-        return (String) get_Value(COLUMNNAME_Result);
-    }
-
-    /**
-     * Set Result.
-     *
-     * @param Result Result of the action taken
-     */
-    public void setResult(String Result) {
-        set_Value(COLUMNNAME_Result, Result);
+        return (String) getValue(COLUMNNAME_Result);
     }
 
     /**
@@ -625,18 +409,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Request Group
      */
     public int getR_Group_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_Group_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Mail Template.
-     *
-     * @return Text templates for mailings
-     */
-    public int getR_MailText_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_MailText_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_Group_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -647,18 +420,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Request from a Business Partner or Prospect
      */
     public int getR_Request_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_Request_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Related Request.
-     *
-     * @return Related Request (Master Issue, ..)
-     */
-    public int getR_RequestRelated_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_RequestRelated_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_Request_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -669,7 +431,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Type of request (e.g. Inquiry, Complaint, ..)
      */
     public int getR_RequestType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_RequestType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_RequestType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -685,34 +447,12 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
     }
 
     /**
-     * Get Resolution.
-     *
-     * @return Request Resolution
-     */
-    public int getR_Resolution_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_Resolution_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Standard Response.
-     *
-     * @return Request Standard Response
-     */
-    public int getR_StandardResponse_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_StandardResponse_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Status.
      *
      * @return Request Status
      */
     public int getR_Status_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_Status_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_Status_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -727,19 +467,13 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
         else set_Value(COLUMNNAME_R_Status_ID, Integer.valueOf(R_Status_ID));
     }
 
-    public org.compiere.model.I_AD_User getSalesRep() throws RuntimeException {
-        return (org.compiere.model.I_AD_User)
-                MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-                        .getPO(getSalesRep_ID());
-    }
-
     /**
      * Get Sales Representative.
      *
      * @return Sales Representative or Company Agent
      */
     public int getSalesRep_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SalesRep_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_SalesRep_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -760,7 +494,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return First effective day (inclusive)
      */
     public Timestamp getStartDate() {
-        return (Timestamp) get_Value(COLUMNNAME_StartDate);
+        return (Timestamp) getValue(COLUMNNAME_StartDate);
     }
 
     /**
@@ -778,7 +512,7 @@ public class X_R_Request extends PO implements I_R_Request, I_Persistent {
      * @return Textual summary of this request
      */
     public String getSummary() {
-        return (String) get_Value(COLUMNNAME_Summary);
+        return (String) getValue(COLUMNNAME_Summary);
     }
 
     /**

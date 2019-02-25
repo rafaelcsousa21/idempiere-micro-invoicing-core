@@ -39,7 +39,7 @@ public class MBankAccount extends X_C_BankAccount {
             setIsDefault(false);
             setBankAccountType(X_C_BankAccount.BANKACCOUNTTYPE_Checking);
             setCurrentBalance(Env.ZERO);
-            //	setC_Currency_ID (0);
+            //	setCurrencyId (0);
             setCreditLimit(Env.ZERO);
             //	setC_BankAccount_ID (0);
         }

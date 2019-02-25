@@ -83,8 +83,8 @@ public class UseLifeImpl implements UseLife {
         return m_obj.getTableId();
     }
 
-    public String get_TableName() {
-        return m_obj.get_TableName();
+    public String getTableName() {
+        return m_obj.getTableName();
     }
 
     /**
@@ -97,29 +97,29 @@ public class UseLifeImpl implements UseLife {
     /**
      *
      */
-    public boolean set_AttrValue(String name, Object value) {
-        return m_obj.set_AttrValue(name, value);
+    public boolean setAttrValue(String name, Object value) {
+        return m_obj.setAttrValue(name, value);
     }
 
     /**
      *
      */
-    public Object get_AttrValue(String name) {
-        return m_obj.get_AttrValue(name);
+    public Object getAttrValue(String name) {
+        return m_obj.getAttrValue(name);
     }
 
     /**
      *
      */
-    public boolean is_AttrValueChanged(String name) {
-        return m_obj.is_AttrValueChanged(name);
+    public boolean isAttrValueChanged(String name) {
+        return m_obj.isAttrValueChanged(name);
     }
 
     /**
      * @return use life months
      */
     public int getUseLifeMonths() {
-        Object obj = m_obj.get_AttrValue(getFieldName(FIELD_UseLifeMonths, fiscal));
+        Object obj = m_obj.getAttrValue(getFieldName(FIELD_UseLifeMonths, fiscal));
         if (obj instanceof Number) {
             return ((Number) obj).intValue();
         }
@@ -133,8 +133,8 @@ public class UseLifeImpl implements UseLife {
      */
     public void setUseLifeMonths(int value) {
         if (log.isLoggable(Level.FINE)) log.fine("Entering: value=" + value + ", " + this);
-        m_obj.set_AttrValue(getFieldName(FIELD_UseLifeMonths, fiscal), value);
-        m_obj.set_AttrValue(getFieldName(FIELD_UseLifeYears, fiscal), value / 12);
+        m_obj.setAttrValue(getFieldName(FIELD_UseLifeMonths, fiscal), value);
+        m_obj.setAttrValue(getFieldName(FIELD_UseLifeYears, fiscal), value / 12);
         if (log.isLoggable(Level.FINE)) log.fine("Leaving: value=" + value + ", " + this);
     }
 
@@ -142,7 +142,7 @@ public class UseLifeImpl implements UseLife {
      * @return use life years
      */
     public int getUseLifeYears() {
-        Object obj = m_obj.get_AttrValue(getFieldName(FIELD_UseLifeYears, fiscal));
+        Object obj = m_obj.getAttrValue(getFieldName(FIELD_UseLifeYears, fiscal));
         if (obj instanceof Number) {
             return ((Number) obj).intValue();
         }
@@ -156,8 +156,8 @@ public class UseLifeImpl implements UseLife {
      */
     public void setUseLifeYears(int value) {
         if (log.isLoggable(Level.FINE)) log.fine("Entering: value=" + value + ", " + this);
-        m_obj.set_AttrValue(getFieldName(FIELD_UseLifeYears, fiscal), value);
-        m_obj.set_AttrValue(getFieldName(FIELD_UseLifeMonths, fiscal), value * 12);
+        m_obj.setAttrValue(getFieldName(FIELD_UseLifeYears, fiscal), value);
+        m_obj.setAttrValue(getFieldName(FIELD_UseLifeMonths, fiscal), value * 12);
         if (log.isLoggable(Level.FINE)) log.fine("Leaving: value=" + value + ", " + this);
     }
 
@@ -194,7 +194,7 @@ public class UseLifeImpl implements UseLife {
   	}
   	else
   	{
-  		Object obj = m_obj.get_AttrValue("A_Asset_Class_ID");
+  		Object obj = m_obj.getAttrValue("A_Asset_Class_ID");
   		if (obj != null && obj instanceof Number)
   		{
   			return ((Number)obj).intValue();
@@ -212,7 +212,7 @@ public class UseLifeImpl implements UseLife {
         if (m_obj instanceof UseLife) {
             return ((UseLife) m_obj).getAssetServiceDate();
         } else {
-            Object obj = m_obj.get_AttrValue("AssetServiceDate");
+            Object obj = m_obj.getAttrValue("AssetServiceDate");
             if (obj instanceof Timestamp) {
                 return (Timestamp) obj;
             }

@@ -2,7 +2,6 @@ package org.compiere.schedule;
 
 import org.compiere.model.I_AD_Scheduler_Para;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Persistent {
+public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para {
 
     /**
      *
@@ -54,19 +53,8 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
      *
      * @return Process Parameter
      */
-    public int getAD_Process_Para_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Process_Para_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Scheduler.
-     *
-     * @return Schedule Processes
-     */
-    public int getAD_Scheduler_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Scheduler_ID);
+    public int getProcessParameterId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Process_Para_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -77,7 +65,7 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -86,7 +74,7 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
      * @return Default value of the parameter
      */
     public String getParameterDefault() {
-        return (String) get_Value(COLUMNNAME_ParameterDefault);
+        return (String) getValue(COLUMNNAME_ParameterDefault);
     }
 
     /**
@@ -95,7 +83,7 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para, I_Pe
      * @return Default value of the to parameter
      */
     public String getParameterToDefault() {
-        return (String) get_Value(COLUMNNAME_ParameterToDefault);
+        return (String) getValue(COLUMNNAME_ParameterToDefault);
     }
 
     @Override

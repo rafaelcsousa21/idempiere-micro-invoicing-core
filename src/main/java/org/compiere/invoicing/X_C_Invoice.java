@@ -5,7 +5,6 @@ import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Invoice extends PO implements I_Persistent {
+public class X_C_Invoice extends PO {
 
     /**
      * Complete = CO
@@ -96,7 +95,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
         super(ctx, C_Invoice_ID);
         /**
          * if (C_Invoice_ID == 0) { setC_BPartner_ID (0); setC_BPartner_Location_ID (0);
-         * setC_Currency_ID (0); // @C_Currency_ID@ setC_DocType_ID (0); // 0 setC_DocTypeTarget_ID (0);
+         * setCurrencyId (0); // @C_Currency_ID@ setC_DocType_ID (0); // 0 setC_DocTypeTarget_ID (0);
          * setC_Invoice_ID (0); setC_PaymentTerm_ID (0); setDateAcct (new Timestamp(
          * System.currentTimeMillis() )); // @#Date@ setDateInvoiced (new Timestamp(
          * System.currentTimeMillis() )); // @#Date@ setDocAction (null); // CO setDocStatus (null); //
@@ -140,7 +139,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Performing or initiating organization
      */
     public int getAD_OrgTrx_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_AD_OrgTrx_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -161,7 +160,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return User within the system - Internal or Business Partner Contact
      */
     public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_AD_User_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -182,7 +181,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -209,7 +208,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -230,7 +229,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Identifies the (ship to) address for this Business Partner
      */
     public int getC_BPartner_Location_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_BPartner_Location_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_BPartner_Location_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -253,7 +252,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -274,7 +273,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Cash Journal Line
      */
     public int getC_CashLine_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_CashLine_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_CashLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -295,7 +294,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Cash Plan Line
      */
     public int getC_CashPlanLine_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_CashPlanLine_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_CashPlanLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -316,7 +315,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Additional document charges
      */
     public int getC_Charge_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_Charge_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -327,7 +326,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Currency Conversion Rate Type
      */
     public int getC_ConversionType_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_ConversionType_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_ConversionType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -355,7 +354,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -376,7 +375,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -403,7 +402,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Target document type for conversing documents
      */
     public int getC_DocTypeTarget_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_DocTypeTarget_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_DocTypeTarget_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -424,7 +423,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Charge Amount
      */
     public BigDecimal getChargeAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(I_C_Invoice.COLUMNNAME_ChargeAmt);
+        BigDecimal bd = (BigDecimal) getValue(I_C_Invoice.COLUMNNAME_ChargeAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -444,7 +443,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Invoice Identifier
      */
     public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_Invoice_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -461,7 +460,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Order
      */
     public int getC_Order_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_Order_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_Order_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -482,7 +481,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Payment identifier
      */
     public int getC_Payment_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_Payment_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -503,7 +502,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return The terms of Payment (timing, discount)
      */
     public int getC_PaymentTerm_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_PaymentTerm_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_PaymentTerm_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -524,7 +523,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -545,7 +544,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(I_C_Invoice.COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(I_C_Invoice.COLUMNNAME_DateAcct);
     }
 
     /**
@@ -563,7 +562,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Date printed on Invoice
      */
     public Timestamp getDateInvoiced() {
-        return (Timestamp) get_Value(I_C_Invoice.COLUMNNAME_DateInvoiced);
+        return (Timestamp) getValue(I_C_Invoice.COLUMNNAME_DateInvoiced);
     }
 
     /**
@@ -581,7 +580,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Date of Order
      */
     public Timestamp getDateOrdered() {
-        return (Timestamp) get_Value(I_C_Invoice.COLUMNNAME_DateOrdered);
+        return (Timestamp) getValue(I_C_Invoice.COLUMNNAME_DateOrdered);
     }
 
     /**
@@ -608,7 +607,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(I_C_Invoice.COLUMNNAME_Description);
+        return (String) getValue(I_C_Invoice.COLUMNNAME_Description);
     }
 
     /**
@@ -626,7 +625,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(I_C_Invoice.COLUMNNAME_DocAction);
+        return (String) getValue(I_C_Invoice.COLUMNNAME_DocAction);
     }
 
     /**
@@ -645,7 +644,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(I_C_Invoice.COLUMNNAME_DocStatus);
+        return (String) getValue(I_C_Invoice.COLUMNNAME_DocStatus);
     }
 
     /**
@@ -664,7 +663,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(I_C_Invoice.COLUMNNAME_DocumentNo);
+        return (String) getValue(I_C_Invoice.COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -682,7 +681,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Total amount of document
      */
     public BigDecimal getGrandTotal() {
-        BigDecimal bd = (BigDecimal) get_Value(I_C_Invoice.COLUMNNAME_GrandTotal);
+        BigDecimal bd = (BigDecimal) getValue(I_C_Invoice.COLUMNNAME_GrandTotal);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -711,7 +710,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsApproved);
+        Object oo = getValue(I_C_Invoice.COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -752,7 +751,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return The document is paid
      */
     public boolean isPaid() {
-        Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsPaid);
+        Object oo = getValue(I_C_Invoice.COLUMNNAME_IsPaid);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -776,7 +775,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Is the Payment Schedule is valid
      */
     public boolean isPayScheduleValid() {
-        Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsPayScheduleValid);
+        Object oo = getValue(I_C_Invoice.COLUMNNAME_IsPayScheduleValid);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -817,7 +816,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return This is a Sales Transaction
      */
     public boolean isSOTrx() {
-        Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsSOTrx);
+        Object oo = getValue(I_C_Invoice.COLUMNNAME_IsSOTrx);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -840,7 +839,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Tax is included in the price
      */
     public boolean isTaxIncluded() {
-        Object oo = get_Value(I_C_Invoice.COLUMNNAME_IsTaxIncluded);
+        Object oo = getValue(I_C_Invoice.COLUMNNAME_IsTaxIncluded);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -869,7 +868,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Unique identifier of a Price List
      */
     public int getM_PriceList_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_M_PriceList_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_M_PriceList_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -890,7 +889,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Return Material Authorization
      */
     public int getM_RMA_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_M_RMA_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_M_RMA_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -911,7 +910,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return How you pay the invoice
      */
     public String getPaymentRule() {
-        return (String) get_Value(I_C_Invoice.COLUMNNAME_PaymentRule);
+        return (String) getValue(I_C_Invoice.COLUMNNAME_PaymentRule);
     }
 
     /**
@@ -930,7 +929,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Transaction Reference Number (Sales Order, Purchase Order) of your Business Partner
      */
     public String getPOReference() {
-        return (String) get_Value(I_C_Invoice.COLUMNNAME_POReference);
+        return (String) getValue(I_C_Invoice.COLUMNNAME_POReference);
     }
 
     /**
@@ -949,7 +948,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Posting status
      */
     public boolean isPosted() {
-        Object oo = get_Value(I_C_Invoice.COLUMNNAME_Posted);
+        Object oo = getValue(I_C_Invoice.COLUMNNAME_Posted);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -972,7 +971,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(I_C_Invoice.COLUMNNAME_Processed);
+        Object oo = getValue(I_C_Invoice.COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -1004,7 +1003,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Referenced Invoice
      */
     public int getRef_Invoice_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_Ref_Invoice_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_Ref_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -1035,7 +1034,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Sales Representative or Company Agent
      */
     public int getSalesRep_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_SalesRep_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_SalesRep_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -1065,7 +1064,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return Total of all document lines
      */
     public BigDecimal getTotalLines() {
-        BigDecimal bd = (BigDecimal) get_Value(I_C_Invoice.COLUMNNAME_TotalLines);
+        BigDecimal bd = (BigDecimal) getValue(I_C_Invoice.COLUMNNAME_TotalLines);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -1085,7 +1084,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return User defined list element #1
      */
     public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_User1_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -1106,7 +1105,7 @@ public class X_C_Invoice extends PO implements I_Persistent {
      * @return User defined list element #2
      */
     public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(I_C_Invoice.COLUMNNAME_User2_ID);
+        Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
     }

@@ -103,7 +103,7 @@ public class BPartnerOrgLink extends SvrProcess {
         boolean newOrg = p_AD_Org_ID == 0;
         MOrg org = new MOrg(getCtx(), p_AD_Org_ID);
         if (newOrg) {
-            org.setValue(bp.getValue());
+            org.setSearchKey(bp.getSearchKey());
             org.setName(bp.getName());
             org.setDescription(bp.getDescription());
             if (!org.save()) throw new Exception("Organization not saved");
@@ -122,8 +122,8 @@ public class BPartnerOrgLink extends SvrProcess {
 
         //	Update Org Info
         MOrgInfo oInfo = org.getInfo();
-        oInfo.setAD_OrgType_ID(p_AD_OrgType_ID);
-        if (newOrg) oInfo.setC_Location_ID(C_Location_ID);
+        oInfo.setOrgTypeId(p_AD_OrgType_ID);
+        if (newOrg) oInfo.setLocationId(C_Location_ID);
 
         //	Create Warehouse
         MWarehouse wh = null;
@@ -145,7 +145,7 @@ public class BPartnerOrgLink extends SvrProcess {
         }
 
         //	Update/Save Org Info
-        oInfo.setM_Warehouse_ID(wh.getM_Warehouse_ID());
+        oInfo.setWarehouseId(wh.getM_Warehouse_ID());
         if (!oInfo.save()) throw new Exception("Organization Info not saved");
 
         //	Update BPartner
@@ -161,7 +161,7 @@ public class BPartnerOrgLink extends SvrProcess {
             MRoleOrgAccess[] orgAccesses = MRoleOrgAccess.getOfOrg(getCtx(), p_AD_Org_ID);
             //	delete all accesses except the specific
             for (int i = 0; i < orgAccesses.length; i++) {
-                if (orgAccesses[i].getAD_Role_ID() == p_AD_Role_ID) found = true;
+                if (orgAccesses[i].getRoleId() == p_AD_Role_ID) found = true;
                 else orgAccesses[i].delete(true);
             }
             //	create access

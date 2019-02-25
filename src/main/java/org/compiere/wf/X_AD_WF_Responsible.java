@@ -3,7 +3,6 @@ package org.compiere.wf;
 import org.compiere.model.HasName;
 import org.compiere.model.I_AD_WF_Responsible;
 import org.compiere.orm.BasePOUser;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsible, I_Persistent {
+public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsible {
 
     /**
      * Organization = O
@@ -70,8 +69,8 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
      *
      * @return Responsibility Role
      */
-    public int getAD_Role_ID() {
-        Integer ii = (Integer) get_Value(I_AD_WF_Responsible.COLUMNNAME_AD_Role_ID);
+    public int getRoleId() {
+        Integer ii = (Integer) getValue(I_AD_WF_Responsible.COLUMNNAME_AD_Role_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -81,7 +80,7 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
      *
      * @param AD_Role_ID Responsibility Role
      */
-    public void setAD_Role_ID(int AD_Role_ID) {
+    public void setRoleId(int AD_Role_ID) {
         if (AD_Role_ID < 0) set_Value(I_AD_WF_Responsible.COLUMNNAME_AD_Role_ID, null);
         else set_Value(I_AD_WF_Responsible.COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
     }
@@ -92,7 +91,7 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
      * @return Alphanumeric identifier of the entity
      */
     public String getName() {
-        return (String) get_Value(HasName.Companion.getCOLUMNNAME_Name());
+        return (String) getValue(HasName.Companion.getCOLUMNNAME_Name());
     }
 
     /**
@@ -101,7 +100,7 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
      * @return Type of the Responsibility for a workflow
      */
     public String getResponsibleType() {
-        return (String) get_Value(I_AD_WF_Responsible.COLUMNNAME_ResponsibleType);
+        return (String) getValue(I_AD_WF_Responsible.COLUMNNAME_ResponsibleType);
     }
 
     @Override

@@ -166,7 +166,7 @@ public class Doc_BankStatement extends Doc {
                                     getAccount(Doc.ACCTTYPE_BankAsset, as),
                                     line.getC_Currency_ID(),
                                     amt_stmt_minus_trx);
-                    if (fl != null && AD_Org_ID != 0) fl.setAD_Org_ID(AD_Org_ID);
+                    if (fl != null && AD_Org_ID != 0) fl.setOrgId(AD_Org_ID);
                     if (fl != null && C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
                 }
 
@@ -181,7 +181,7 @@ public class Doc_BankStatement extends Doc {
                                 getAccount(Doc.ACCTTYPE_BankAsset, as),
                                 line.getC_Currency_ID(),
                                 line.getStmtAmt());
-                if (fl != null && AD_Org_ID != 0) fl.setAD_Org_ID(AD_Org_ID);
+                if (fl != null && AD_Org_ID != 0) fl.setOrgId(AD_Org_ID);
                 if (fl != null && C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
 
                 //  BankInTransit   DR      CR              (Payment)
@@ -193,8 +193,8 @@ public class Doc_BankStatement extends Doc {
                                 line.getTrxAmt().negate());
                 if (fl != null) {
                     if (C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
-                    if (AD_Org_ID != 0) fl.setAD_Org_ID(AD_Org_ID);
-                    else fl.setAD_Org_ID(line.getOrgId(true)); // from payment
+                    if (AD_Org_ID != 0) fl.setOrgId(AD_Org_ID);
+                    else fl.setOrgId(line.getOrgId(true)); // from payment
                 }
             }
             // End Avoid usage of clearing accounts

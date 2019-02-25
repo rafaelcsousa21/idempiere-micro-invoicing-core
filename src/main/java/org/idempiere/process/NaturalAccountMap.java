@@ -224,8 +224,8 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
         while (iterator.hasNext()) {
             MElementValue na = (MElementValue) iterator.next();
             na.setADClientID(AD_Client_ID);
-            na.setAD_Org_ID(AD_Org_ID);
-            na.setC_Element_ID(C_Element_ID);
+            na.setOrgId(AD_Org_ID);
+            na.setElementId(C_Element_ID);
             na.setIsActive(isActive);
             if (!na.save()) return false;
         }
@@ -241,6 +241,6 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
     public int getC_ElementValue_ID(String key) {
         MElementValue na = (MElementValue) this.get(key);
         if (na == null) return 0;
-        return na.getC_ElementValue_ID();
-    } //  getC_ElementValue_ID
+        return na.getElementValueId();
+    } //  getElementValueId
 } //  NaturalAccountMap

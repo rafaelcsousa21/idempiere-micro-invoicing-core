@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_M_Product_PO;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
+public class X_M_Product_PO extends PO implements I_M_Product_PO {
 
     /**
      *
@@ -60,7 +59,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -71,7 +70,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -82,7 +81,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
      * @return Unit of Measure
      */
     public int getC_UOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -102,7 +101,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
      * @return Use this Vendor for pricing and stock replenishment
      */
     public boolean isCurrentVendor() {
-        Object oo = get_Value(COLUMNNAME_IsCurrentVendor);
+        Object oo = getValue(COLUMNNAME_IsCurrentVendor);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -116,7 +115,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -127,7 +126,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
      * @return Price of the last purchase order for the product
      */
     public BigDecimal getPriceLastPO() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PriceLastPO);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PriceLastPO);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -138,7 +137,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
      * @return List Price
      */
     public BigDecimal getPriceList() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PriceList);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PriceList);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -149,7 +148,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO, I_Persistent {
      * @return Price based on a purchase order
      */
     public BigDecimal getPricePO() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PricePO);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PricePO);
         if (bd == null) return Env.ZERO;
         return bd;
     }

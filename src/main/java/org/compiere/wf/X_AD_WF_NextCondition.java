@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_NextCondition;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, I_Persistent {
+public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition {
 
     /**
      * Or = O
@@ -65,7 +64,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
     public X_AD_WF_NextCondition(Properties ctx, int AD_WF_NextCondition_ID) {
         super(ctx, AD_WF_NextCondition_ID);
         /**
-         * if (AD_WF_NextCondition_ID == 0) { setAD_Column_ID (0); setAD_WF_NextCondition_ID (0);
+         * if (AD_WF_NextCondition_ID == 0) { setColumnId (0); setAD_WF_NextCondition_ID (0);
          * setAD_WF_NodeNext_ID (0); // @4|AD_WF_NodeNext_ID@ setAndOr (null); // O setEntityType
          * (null); // @SQL=select get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual setOperation
          * (null); setSeqNo (0); // @SQL=SELECT COALESCE(MAX(SeqNo),0)+10 AS DefaultValue FROM
@@ -98,19 +97,8 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
      *
      * @return Column in the table
      */
-    public int getAD_Column_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Column_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Node Transition.
-     *
-     * @return Workflow Node Transition
-     */
-    public int getAD_WF_NodeNext_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_NodeNext_ID);
+    public int getColumnId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Column_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -121,7 +109,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
      * @return Logical operation: AND or OR
      */
     public String getAndOr() {
-        return (String) get_Value(COLUMNNAME_AndOr);
+        return (String) getValue(COLUMNNAME_AndOr);
     }
 
     /**
@@ -130,7 +118,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
      * @return Compare Operation
      */
     public String getOperation() {
-        return (String) get_Value(COLUMNNAME_Operation);
+        return (String) getValue(COLUMNNAME_Operation);
     }
 
     /**
@@ -139,7 +127,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
      * @return Method of ordering records; lowest number comes first
      */
     public int getSeqNo() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SeqNo);
+        Integer ii = (Integer) getValue(COLUMNNAME_SeqNo);
         if (ii == null) return 0;
         return ii;
     }
@@ -150,7 +138,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
      * @return Search key for the record in the format required - must be unique
      */
     public String getValue() {
-        return (String) get_Value(COLUMNNAME_Value);
+        return (String) getValue(COLUMNNAME_Value);
     }
 
     /**
@@ -159,7 +147,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition, 
      * @return Value To
      */
     public String getValue2() {
-        return (String) get_Value(COLUMNNAME_Value2);
+        return (String) getValue(COLUMNNAME_Value2);
     }
 
     @Override

@@ -53,7 +53,7 @@ public class MDistribution extends X_GL_Distribution {
     public MDistribution(Properties ctx, int GL_Distribution_ID) {
         super(ctx, GL_Distribution_ID);
         if (GL_Distribution_ID == 0) {
-            //	setC_AcctSchema_ID (0);
+            //	setAccountingSchemaId (0);
             //	setName (null);
             //
             setAnyAcct(true); // Y

@@ -144,7 +144,7 @@ public class ProjectGenPO extends SvrProcess {
             if (AD_Org_ID == 0) {
                 log.warning("createPOfromProjectLine - orgId=0");
                 AD_Org_ID = Env.getOrgId(getCtx());
-                if (AD_Org_ID != 0) projectLine.setAD_Org_ID(AD_Org_ID);
+                if (AD_Org_ID != 0) projectLine.setOrgId(AD_Org_ID);
             }
             order.setClientOrg(projectLine.getClientId(), AD_Org_ID);
             order.setBPartner(bp);

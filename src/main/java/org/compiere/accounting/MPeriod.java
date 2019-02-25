@@ -65,7 +65,7 @@ public class MPeriod extends X_C_Period {
     public MPeriod(Properties ctx, int C_Period_ID) {
         super(ctx, C_Period_ID);
         if (C_Period_ID == 0) {
-            //	setC_Period_ID (0);		//	PK
+            //	setPeriodId (0);		//	PK
             //  setC_Year_ID (0);		//	Parent
             //  setName (null);
             //  setPeriodNo (0);
@@ -421,16 +421,16 @@ public class MPeriod extends X_C_Period {
         int C_Calendar_ID = 0;
         if (AD_Org_ID != 0) {
             MOrgInfo info = MOrgInfo.get(ctx, AD_Org_ID);
-            C_Calendar_ID = info.getC_Calendar_ID();
+            C_Calendar_ID = info.getCalendarId();
         }
 
         if (C_Calendar_ID == 0) {
             MClientInfo cInfo = MClientInfo.get(ctx);
-            C_Calendar_ID = cInfo.getC_Calendar_ID();
+            C_Calendar_ID = cInfo.getCalendarId();
         }
 
         return C_Calendar_ID;
-    } //  getC_Calendar_ID
+    } //  getCalendarId
 
     /**
      * Get Period Control
@@ -527,8 +527,8 @@ public class MPeriod extends X_C_Period {
         if (as != null && as.isAutoPeriodControl()) {
             Timestamp today =
                     TimeUtil.trunc(new Timestamp(System.currentTimeMillis()), TimeUtil.TRUNC_DAY);
-            Timestamp first = TimeUtil.addDays(today, -as.getPeriod_OpenHistory());
-            Timestamp last = TimeUtil.addDays(today, as.getPeriod_OpenFuture());
+            Timestamp first = TimeUtil.addDays(today, -as.getPeriodOpenHistory());
+            Timestamp last = TimeUtil.addDays(today, as.getPeriodOpenFuture());
             Timestamp date1, date2;
             if (dateAcct != null) {
                 date1 = TimeUtil.trunc(dateAcct, TimeUtil.TRUNC_DAY);
@@ -548,7 +548,7 @@ public class MPeriod extends X_C_Period {
             }
             //	We are OK
             if (isInPeriod(today)) {
-                as.setC_Period_ID(getC_Period_ID());
+                as.setPeriodId(getC_Period_ID());
                 as.saveEx();
             }
             return true;
@@ -681,5 +681,5 @@ public class MPeriod extends X_C_Period {
             else log.severe("@NotFound@ C_Year_ID=" + getC_Year_ID());
         }
         return m_C_Calendar_ID;
-    } //  getC_Calendar_ID
+    } //  getCalendarId
 } //	MPeriod

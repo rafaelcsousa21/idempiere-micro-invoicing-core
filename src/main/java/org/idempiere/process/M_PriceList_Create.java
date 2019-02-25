@@ -694,7 +694,7 @@ public class M_PriceList_Create extends SvrProcess {
                         MClientInfo m_clientInfo =
                                 MClientInfo.get(getCtx(), rsCurgen.getInt("AD_Client_ID"));
                         MAcctSchema as =
-                                new MAcctSchema(getCtx(), m_clientInfo.getC_AcctSchema1_ID());
+                                new MAcctSchema(getCtx(), m_clientInfo.getAcctSchema1Id());
 
                         StringBuilder sqlpc = new StringBuilder("SELECT p.M_Product_ID ");
                         sqlpc.append(" FROM M_ProductPrice p");

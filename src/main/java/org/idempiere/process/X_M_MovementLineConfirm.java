@@ -3,13 +3,12 @@ package org.idempiere.process;
 import org.compiere.model.I_M_MovementLineConfirm;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfirm, I_Persistent {
+public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfirm {
 
     /**
      *
@@ -61,7 +60,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      * @return Confirmation of a received quantity
      */
     public BigDecimal getConfirmedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ConfirmedQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ConfirmedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -81,7 +80,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      * @return Difference Quantity
      */
     public BigDecimal getDifferenceQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DifferenceQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DifferenceQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -96,17 +95,6 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     }
 
     /**
-     * Get Phys.Inventory Line.
-     *
-     * @return Unique line in an Inventory document
-     */
-    public int getM_InventoryLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InventoryLine_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Phys.Inventory Line.
      *
      * @param M_InventoryLine_ID Unique line in an Inventory document
@@ -114,17 +102,6 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
         if (M_InventoryLine_ID < 1) set_Value(COLUMNNAME_M_InventoryLine_ID, null);
         else set_Value(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
-    }
-
-    /**
-     * Get Move Confirm.
-     *
-     * @return Inventory Move Confirmation
-     */
-    public int getM_MovementConfirm_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_MovementConfirm_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -143,7 +120,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      * @return Inventory Move document Line
      */
     public int getM_MovementLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_MovementLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_MovementLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -173,7 +150,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      * @return The Quantity scrapped due to QA issues
      */
     public BigDecimal getScrappedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ScrappedQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ScrappedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -193,7 +170,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      * @return Target Movement Quantity
      */
     public BigDecimal getTargetQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TargetQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_TargetQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

@@ -5,7 +5,6 @@ import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_BOM;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persistent {
+public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
 
     /**
      *
@@ -62,7 +61,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Type of BOM
      */
     public String getBOMType() {
-        return (String) get_Value(COLUMNNAME_BOMType);
+        return (String) getValue(COLUMNNAME_BOMType);
     }
 
     /**
@@ -81,7 +80,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return The use of the Bill of Material
      */
     public String getBOMUse() {
-        return (String) get_Value(COLUMNNAME_BOMUse);
+        return (String) getValue(COLUMNNAME_BOMUse);
     }
 
     /**
@@ -100,7 +99,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Copy From Record
      */
     public String getCopyFrom() {
-        return (String) get_Value(COLUMNNAME_CopyFrom);
+        return (String) getValue(COLUMNNAME_CopyFrom);
     }
 
     /**
@@ -124,7 +123,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Unit of Measure
      */
     public int getC_UOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -145,7 +144,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -163,7 +162,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -181,7 +180,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Comment or Hint
      */
     public String getHelp() {
-        return (String) get_Value(COLUMNNAME_Help);
+        return (String) getValue(COLUMNNAME_Help);
     }
 
     /**
@@ -216,7 +215,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -233,7 +232,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Bill of Materials (Engineering) Change Notice (Version)
      */
     public int getM_ChangeNotice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_ChangeNotice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_ChangeNotice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -260,7 +259,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -281,7 +280,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Alphanumeric identifier of the entity
      */
     public String getName() {
-        return (String) get_Value(HasName.Companion.getCOLUMNNAME_Name());
+        return (String) getValue(HasName.Companion.getCOLUMNNAME_Name());
     }
 
     /**
@@ -299,7 +298,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return BOM & Formula
      */
     public int getPP_Product_BOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PP_Product_BOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -320,7 +319,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return PP_Product_BOM_UU
      */
     public String getPP_Product_BOM_UU() {
-        return (String) get_Value(COLUMNNAME_PP_Product_BOM_UU);
+        return (String) getValue(COLUMNNAME_PP_Product_BOM_UU);
     }
 
     /**
@@ -338,7 +337,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Process Now
      */
     public boolean isProcessing() {
-        Object oo = get_Value(COLUMNNAME_Processing);
+        Object oo = getValue(COLUMNNAME_Processing);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -361,7 +360,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Revision
      */
     public String getRevision() {
-        return (String) get_Value(COLUMNNAME_Revision);
+        return (String) getValue(COLUMNNAME_Revision);
     }
 
     /**
@@ -379,7 +378,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Valid from including this date (first day)
      */
     public Timestamp getValidFrom() {
-        return (Timestamp) get_Value(COLUMNNAME_ValidFrom);
+        return (Timestamp) getValue(COLUMNNAME_ValidFrom);
     }
 
     /**
@@ -397,7 +396,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Valid to including this date (last day)
      */
     public Timestamp getValidTo() {
-        return (Timestamp) get_Value(COLUMNNAME_ValidTo);
+        return (Timestamp) getValue(COLUMNNAME_ValidTo);
     }
 
     /**
@@ -415,7 +414,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM, I_Persiste
      * @return Search key for the record in the format required - must be unique
      */
     public String getValue() {
-        return (String) get_Value(COLUMNNAME_Value);
+        return (String) getValue(COLUMNNAME_Value);
     }
 
     /**

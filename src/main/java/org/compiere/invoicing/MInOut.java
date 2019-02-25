@@ -1288,7 +1288,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         //	Need to have Location
         if (product != null && line.getM_Locator_ID() == 0) {
-            // MWarehouse w = MWarehouse.get(getCtx(), getM_Warehouse_ID());
+            // MWarehouse w = MWarehouse.get(getCtx(), getWarehouseId());
             line.setM_Warehouse_ID(getM_Warehouse_ID());
             line.setM_Locator_ID(inTrx ? Env.ZERO : line.getMovementQty()); // 	default Locator
             needSave = true;
@@ -1457,8 +1457,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         true);
 
         //
-        counter.setAD_Org_ID(counterAD_Org_ID);
-        counter.setM_Warehouse_ID(counterOrgInfo.getM_Warehouse_ID());
+        counter.setOrgId(counterAD_Org_ID);
+        counter.setM_Warehouse_ID(counterOrgInfo.getWarehouseId());
         //
         counter.setBPartner(counterBP);
 
@@ -1525,7 +1525,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         for (int i = 0; i < shipmentTypes.length; i++) {
             if (shipmentTypes[i].isSOTrx() && (C_DocTypeTarget_ID == 0 || shipmentTypes[i].isDefault()))
-                C_DocTypeTarget_ID = shipmentTypes[i].getC_DocType_ID();
+                C_DocTypeTarget_ID = shipmentTypes[i].getDocTypeId();
         }
 
         //	Deep Copy
@@ -1675,5 +1675,5 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      */
     public int getC_Currency_ID() {
         return Env.getContextAsInt(getCtx(), "$C_Currency_ID");
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 }

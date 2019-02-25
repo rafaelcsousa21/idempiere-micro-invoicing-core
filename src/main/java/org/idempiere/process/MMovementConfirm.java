@@ -512,7 +512,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                 MDocType.getOfDocBaseType(Env.getCtx(), X_C_DocType.DOCBASETYPE_MaterialPhysicalInventory);
         for (MDocType doctype : doctypes) {
             if (X_C_DocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
-                inventory.setC_DocType_ID(doctype.getC_DocType_ID());
+                inventory.setC_DocType_ID(doctype.getDocTypeId());
                 break;
             }
         }
@@ -670,9 +670,9 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      */
     public int getC_Currency_ID() {
         //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
-        //	return pl.getC_Currency_ID();
+        //	return pl.getCurrencyId();
         return 0;
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     @Override
     public void setDoc(IDoc doc) {

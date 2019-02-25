@@ -252,7 +252,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * @return Tax Provider
      */
     public int getC_TaxProvider_ID() {
-        Integer ii = (Integer) get_Value(I_C_InvoiceTax.COLUMNNAME_C_TaxProvider_ID);
+        Integer ii = (Integer) getValue(I_C_InvoiceTax.COLUMNNAME_C_TaxProvider_ID);
         if (ii == null) return 0;
         return ii;
     }

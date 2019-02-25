@@ -2,7 +2,6 @@ package org.compiere.schedule;
 
 import org.compiere.model.I_AD_Scheduler;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Persistent {
+public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
 
     /**
      *
@@ -54,8 +53,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      *
      * @return Process or Report
      */
-    public int getAD_Process_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Process_ID);
+    public int getProcessId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Process_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -65,8 +64,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      *
      * @return Schedule
      */
-    public int getAD_Schedule_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Schedule_ID);
+    public int getScheduleId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Schedule_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -76,8 +75,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      *
      * @return Schedule Processes
      */
-    public int getAD_Scheduler_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Scheduler_ID);
+    public int getSchedulerId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Scheduler_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -87,8 +86,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      *
      * @return Database Table information
      */
-    public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
+    public int getDBTableId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Table_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -99,7 +98,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      * @return Date the process will run next
      */
     public Timestamp getDateNextRun() {
-        return (Timestamp) get_Value(COLUMNNAME_DateNextRun);
+        return (Timestamp) getValue(COLUMNNAME_DateNextRun);
     }
 
     /**
@@ -117,7 +116,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -126,7 +125,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      * @return Number of days to keep the log entries
      */
     public int getKeepLogDays() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_KeepLogDays);
+        Integer ii = (Integer) getValue(COLUMNNAME_KeepLogDays);
         if (ii == null) return 0;
         return ii;
     }
@@ -145,8 +144,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      *
      * @return Direct internal record ID
      */
-    public int getRecord_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Record_ID);
+    public int getRecordId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_Record_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -156,7 +155,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      *
      * @param Record_ID Direct internal record ID
      */
-    public void setRecord_ID(int Record_ID) {
+    public void setRecordId(int Record_ID) {
         if (Record_ID < 0) set_Value(COLUMNNAME_Record_ID, null);
         else set_Value(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
     }
@@ -166,8 +165,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      *
      * @return Text templates for mailings
      */
-    public int getR_MailText_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_MailText_ID);
+    public int getMailTextId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_R_MailText_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -177,8 +176,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler, I_Pers
      *
      * @return Supervisor for this user/organization - used for escalation and approval
      */
-    public int getSupervisor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Supervisor_ID);
+    public int getSupervisorId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_Supervisor_ID);
         if (ii == null) return 0;
         return ii;
     }

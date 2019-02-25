@@ -328,7 +328,7 @@ public class ImportAccount extends SvrProcess {
                     MElementValue ev = new MElementValue(impEV);
                     if (ev.save()) {
                         noInsert++;
-                        impEV.setC_ElementValue_ID(ev.getC_ElementValue_ID());
+                        impEV.setC_ElementValue_ID(ev.getElementValueId());
                         impEV.setI_IsImported(true);
                         impEV.saveEx();
                     } else {

@@ -216,12 +216,12 @@ public class StorageCleanup extends SvrProcess {
     		//	Eliminate Reservation
     		if (reserved.signum() != 0 || ordered.signum() != 0)
     		{
-    			if (MStorageOnHand.add(getCtx(), target.getM_Warehouse_ID(), target.getM_Locator_ID(),
+    			if (MStorageOnHand.add(getCtx(), target.getWarehouseId(), target.getM_Locator_ID(),
     				target.getM_Product_ID(),
     				target.getMAttributeSetInstance_ID(), target.getMAttributeSetInstance_ID(),
     				Env.ZERO,  null))
     			{
-    				if (MStorageOnHand.add(getCtx(), storage0.getM_Warehouse_ID(), storage0.getM_Locator_ID(),
+    				if (MStorageOnHand.add(getCtx(), storage0.getWarehouseId(), storage0.getM_Locator_ID(),
     					storage0.getM_Product_ID(),
     					storage0.getMAttributeSetInstance_ID(), storage0.getMAttributeSetInstance_ID(),
     					Env.ZERO, null))

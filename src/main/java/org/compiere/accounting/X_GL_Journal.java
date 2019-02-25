@@ -4,7 +4,6 @@ import org.compiere.model.I_GL_Journal;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
+public class X_GL_Journal extends PO implements I_GL_Journal {
 
     /**
      * Complete = CO
@@ -82,12 +81,12 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
     public X_GL_Journal(Properties ctx, int GL_Journal_ID) {
         super(ctx, GL_Journal_ID);
         /**
-         * if (GL_Journal_ID == 0) { setC_AcctSchema_ID (0); // @$C_AcctSchema_ID@
-         * setC_ConversionType_ID (0); setC_Currency_ID (0); // @C_Currency_ID@ setC_DocType_ID (0);
-         * // @C_DocType_ID@ setC_Period_ID (0); // @C_Period_ID@ setCurrencyRate (Env.ZERO); // 1
+         * if (GL_Journal_ID == 0) { setAccountingSchemaId (0); // @$C_AcctSchema_ID@
+         * setC_ConversionType_ID (0); setCurrencyId (0); // @C_Currency_ID@ setC_DocType_ID (0);
+         * // @C_DocType_ID@ setPeriodId (0); // @C_Period_ID@ setCurrencyRate (Env.ZERO); // 1
          * setDateAcct (new Timestamp( System.currentTimeMillis() )); // @DateAcct@ setDateDoc (new
          * Timestamp( System.currentTimeMillis() )); // @DateDoc@ setDescription (null); setDocAction
-         * (null); // CO setDocStatus (null); // DR setDocumentNo (null); setGL_Category_ID (0);
+         * (null); // CO setDocStatus (null); // DR setDocumentNo (null); setGLCategoryId (0);
          * // @GL_Category_ID@ setGL_Journal_ID (0); setIsApproved (true); // Y setIsPrinted (false); //
          * N setPosted (false); // N setPostingType (null); // @PostingType@ setTotalCr (Env.ZERO); // 0
          * setTotalDr (Env.ZERO); // 0 }
@@ -127,7 +126,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Rules for accounting
      */
     public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -148,7 +147,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Currency Conversion Rate Type
      */
     public int getC_ConversionType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ConversionType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ConversionType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -169,7 +168,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -190,7 +189,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -211,7 +210,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return If not zero, the Debit amount of the document must be equal this amount
      */
     public BigDecimal getControlAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ControlAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ControlAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -237,7 +236,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Period of the Calendar
      */
     public int getC_Period_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Period_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -258,7 +257,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Currency Conversion Rate
      */
     public BigDecimal getCurrencyRate() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrencyRate);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CurrencyRate);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -278,7 +277,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -296,7 +295,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Date of the Document
      */
     public Timestamp getDateDoc() {
-        return (Timestamp) get_Value(COLUMNNAME_DateDoc);
+        return (Timestamp) getValue(COLUMNNAME_DateDoc);
     }
 
     /**
@@ -314,7 +313,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -332,7 +331,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -351,7 +350,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(COLUMNNAME_DocStatus);
+        return (String) getValue(COLUMNNAME_DocStatus);
     }
 
     /**
@@ -370,7 +369,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -388,7 +387,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return General Ledger Budget
      */
     public int getGL_Budget_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_Budget_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_Budget_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -409,7 +408,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return General Ledger Category
      */
     public int getGL_Category_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_Category_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_Category_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -430,7 +429,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return General Ledger Journal Batch
      */
     public int getGL_JournalBatch_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_JournalBatch_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_JournalBatch_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -451,7 +450,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return General Ledger Journal
      */
     public int getGL_Journal_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_Journal_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_Journal_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -471,7 +470,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(COLUMNNAME_IsApproved);
+        Object oo = getValue(COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -503,7 +502,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return The type of posted amount for the transaction
      */
     public String getPostingType() {
-        return (String) get_Value(COLUMNNAME_PostingType);
+        return (String) getValue(COLUMNNAME_PostingType);
     }
 
     /**
@@ -522,7 +521,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -545,7 +544,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return The date+time (expressed in decimal format) when the document has been processed
      */
     public BigDecimal getProcessedOn() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ProcessedOn);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ProcessedOn);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -557,17 +556,6 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      */
     public void setProcessing(boolean Processing) {
         set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-    }
-
-    /**
-     * Get Reversal ID.
-     *
-     * @return ID of document reversal
-     */
-    public int getReversal_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Reversal_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -586,7 +574,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Total Credit in document currency
      */
     public BigDecimal getTotalCr() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TotalCr);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_TotalCr);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -606,7 +594,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal, I_Persistent {
      * @return Total debit in document currency
      */
     public BigDecimal getTotalDr() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TotalDr);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_TotalDr);
         if (bd == null) return Env.ZERO;
         return bd;
     }

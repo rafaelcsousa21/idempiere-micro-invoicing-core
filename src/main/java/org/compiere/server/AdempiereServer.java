@@ -97,9 +97,9 @@ public abstract class AdempiereServer implements Runnable {
         Env.setContext(context, "#clientId", p_model.getClientId());
         if (p_model instanceof PO) {
             PO po = (PO) p_model;
-            if (po.get_ColumnIndex("AD_Org_ID") >= 0)
+            if (po.getColumnIndex("AD_Org_ID") >= 0)
                 Env.setContext(context, "#orgId", po.get_ValueAsInt("AD_Org_ID"));
-            if (po.get_ColumnIndex("AD_User_ID") >= 0)
+            if (po.getColumnIndex("AD_User_ID") >= 0)
                 Env.setContext(context, "#AD_User_ID", po.get_ValueAsInt("AD_User_ID"));
         }
 

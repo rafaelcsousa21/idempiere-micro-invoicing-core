@@ -62,7 +62,7 @@ public final class FactLine extends X_Fact_Acct {
     public FactLine(Properties ctx, int AD_Table_ID, int Record_ID, int Line_ID) {
         super(ctx, 0);
         setADClientID(0); // 	do not derive
-        setAD_Org_ID(0); // 	do not derive
+        setOrgId(0); // 	do not derive
         //
         setAmtAcctCr(Env.ZERO);
         setAmtAcctDr(Env.ZERO);
@@ -118,7 +118,7 @@ public final class FactLine extends X_Fact_Acct {
      */
     public void setAccount(MAcctSchema acctSchema, MAccount acct) {
         m_acctSchema = acctSchema;
-        setC_AcctSchema_ID(acctSchema.getC_AcctSchema_ID());
+        setC_AcctSchema_ID(acctSchema.getAccountingSchemaId());
         //
         m_acct = acct;
         if (getClientId() == 0) setADClientID(m_acct.getClientId());
@@ -281,7 +281,7 @@ public final class FactLine extends X_Fact_Acct {
         m_doc = doc;
         m_docLine = docLine;
         //	reset
-        setAD_Org_ID(0);
+        setOrgId(0);
         setC_SalesRegion_ID(0);
         //	Client
         if (getClientId() == 0) setADClientID(m_doc.getClientId());
@@ -317,7 +317,7 @@ public final class FactLine extends X_Fact_Acct {
         //	UOM
         if (m_docLine != null) setC_UOM_ID(m_docLine.getC_UOM_ID());
         //	Qty
-        if (get_Value("Qty") == null) // not previously set
+        if (getValue("Qty") == null) // not previously set
         {
             setQty(m_doc.getQty()); // 	neg = outgoing
             if (m_docLine != null) setQty(m_docLine.getQty());
@@ -388,7 +388,7 @@ public final class FactLine extends X_Fact_Acct {
      */
     public void setM_Locator_ID(int M_Locator_ID) {
         super.setM_Locator_ID(M_Locator_ID);
-        setAD_Org_ID(0); // 	reset
+        setOrgId(0); // 	reset
     } //  setM_Locator_ID
 
     /**
@@ -574,9 +574,9 @@ public final class FactLine extends X_Fact_Acct {
      */
     public boolean convert() {
         //  Document has no currency
-        if (getC_Currency_ID() == Doc.NO_CURRENCY) setC_Currency_ID(m_acctSchema.getC_Currency_ID());
+        if (getC_Currency_ID() == Doc.NO_CURRENCY) setC_Currency_ID(m_acctSchema.getCurrencyId());
 
-        if (m_acctSchema.getC_Currency_ID() == getC_Currency_ID()) {
+        if (m_acctSchema.getCurrencyId() == getC_Currency_ID()) {
             setAmtAcctDr(getAmtSourceDr());
             setAmtAcctCr(getAmtSourceCr());
             return true;
@@ -610,7 +610,7 @@ public final class FactLine extends X_Fact_Acct {
                         getCtx(),
                         getAmtSourceDr(),
                         getC_Currency_ID(),
-                        m_acctSchema.getC_Currency_ID(),
+                        m_acctSchema.getCurrencyId(),
                         convDate,
                         C_ConversionType_ID,
                         m_doc.getClientId(),
@@ -621,7 +621,7 @@ public final class FactLine extends X_Fact_Acct {
                         getCtx(),
                         getAmtSourceCr(),
                         getC_Currency_ID(),
-                        m_acctSchema.getC_Currency_ID(),
+                        m_acctSchema.getCurrencyId(),
                         convDate,
                         C_ConversionType_ID,
                         m_doc.getClientId(),
@@ -687,7 +687,7 @@ public final class FactLine extends X_Fact_Acct {
                 pstmt.setInt(2, getClientId());
                 rs = pstmt.executeQuery();
                 if (rs.next()) {
-                    setAD_Org_ID(rs.getInt(1));
+                    setOrgId(rs.getInt(1));
                     if (log.isLoggable(Level.FINER))
                         log.finer(
                                 "AD_Org_ID="
@@ -707,18 +707,18 @@ public final class FactLine extends X_Fact_Acct {
 
         //	Prio 2 - get from doc line - if exists (document context overwrites)
         if (m_docLine != null && super.getOrgId() == 0) {
-            setAD_Org_ID(m_docLine.getOrgId());
+            setOrgId(m_docLine.getOrgId());
             if (log.isLoggable(Level.FINER))
                 log.finer("AD_Org_ID=" + super.getOrgId() + " (2 from DocumentLine)");
         }
         //	Prio 3 - get from doc - if not GL
         if (m_doc != null && super.getOrgId() == 0) {
             if (Doc.DOCTYPE_GLJournal.equals(m_doc.getDocumentType())) {
-                setAD_Org_ID(m_acct.getOrgId()); // 	inter-company GL
+                setOrgId(m_acct.getOrgId()); // 	inter-company GL
                 if (log.isLoggable(Level.FINER))
                     log.finer("AD_Org_ID=" + super.getOrgId() + " (3 from Acct)");
             } else {
-                setAD_Org_ID(m_doc.getOrgId());
+                setOrgId(m_doc.getOrgId());
                 if (log.isLoggable(Level.FINER))
                     log.finer("AD_Org_ID=" + super.getOrgId() + " (3 from Document)");
             }
@@ -726,11 +726,11 @@ public final class FactLine extends X_Fact_Acct {
         //	Prio 4 - get from account - if not GL
         if (m_doc != null && super.getOrgId() == 0) {
             if (Doc.DOCTYPE_GLJournal.equals(m_doc.getDocumentType())) {
-                setAD_Org_ID(m_doc.getOrgId());
+                setOrgId(m_doc.getOrgId());
                 if (log.isLoggable(Level.FINER))
                     log.finer("AD_Org_ID=" + super.getOrgId() + " (4 from Document)");
             } else {
-                setAD_Org_ID(m_acct.getOrgId());
+                setOrgId(m_acct.getOrgId());
                 if (log.isLoggable(Level.FINER))
                     log.finer("AD_Org_ID=" + super.getOrgId() + " (4 from Acct)");
             }
@@ -1088,7 +1088,7 @@ public final class FactLine extends X_Fact_Acct {
                 setC_UOM_ID(fact.getC_UOM_ID());
                 setC_Tax_ID(fact.getC_Tax_ID());
                 //	Org for cross charge
-                setAD_Org_ID(fact.getOrgId());
+                setOrgId(fact.getOrgId());
                 if (fact.getQty() != null) setQty(fact.getQty().negate());
             } else
                 log.warning(

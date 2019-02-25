@@ -203,7 +203,7 @@ public class Aging extends SvrProcess {
     		if (aging == null 		//	Key
     			|| AD_PInstance_ID != aging.getAD_PInstance_ID()
     			|| C_BPartner_ID != aging.getC_BPartner_ID()
-    			|| C_Currency_ID != aging.getC_Currency_ID()
+    			|| C_Currency_ID != aging.getCurrencyId()
     			|| C_Invoice_ID != aging.getC_Invoice_ID()
     			|| C_InvoicePaySchedule_ID != aging.getC_InvoicePaySchedule_ID())
     		{

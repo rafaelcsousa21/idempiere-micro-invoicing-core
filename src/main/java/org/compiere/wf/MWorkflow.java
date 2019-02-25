@@ -156,7 +156,7 @@ public class MWorkflow extends X_AD_Workflow {
             String oldKey = "";
             String newKey = null;
             for (MWorkflow wf : workflows) {
-                newKey = "C" + wf.getClientId() + "T" + wf.getAD_Table_ID();
+                newKey = "C" + wf.getClientId() + "T" + wf.getDBTableId();
                 if (!newKey.equals(oldKey) && list.size() > 0) {
                     MWorkflow[] wfs = new MWorkflow[list.size()];
                     list.toArray(wfs);
@@ -242,7 +242,7 @@ public class MWorkflow extends X_AD_Workflow {
     protected MWFNode getNode(int AD_WF_Node_ID) {
         for (int i = 0; i < m_nodes.size(); i++) {
             MWFNode node = (MWFNode) m_nodes.get(i);
-            if (node.getAD_WF_Node_ID() == AD_WF_Node_ID) return node;
+            if (node.getWorkflowNodeId() == AD_WF_Node_ID) return node;
         }
         return null;
     } //	getNode
@@ -255,7 +255,7 @@ public class MWorkflow extends X_AD_Workflow {
      */
     private MWFNode[] getNodesInOrder(int AD_Client_ID) {
         ArrayList<MWFNode> list = new ArrayList<MWFNode>();
-        addNodesSF(list, getAD_WF_Node_ID(), AD_Client_ID); // 	start with first
+        addNodesSF(list, getWorkflowNodeId(), AD_Client_ID); // 	start with first
         //	Remaining Nodes
         if (m_nodes.size() != list.size()) {
             //	Add Stand alone
@@ -266,7 +266,7 @@ public class MWorkflow extends X_AD_Workflow {
                     boolean found = false;
                     for (int i = 0; i < list.size(); i++) {
                         MWFNode existing = (MWFNode) list.get(i);
-                        if (existing.getAD_WF_Node_ID() == node.getAD_WF_Node_ID()) {
+                        if (existing.getWorkflowNodeId() == node.getWorkflowNodeId()) {
                             found = true;
                             break;
                         }
@@ -321,7 +321,7 @@ public class MWorkflow extends X_AD_Workflow {
             if (!list.contains(node)) list.add(node);
             MWFNodeNext[] nexts = node.getTransitions(AD_Client_ID);
             for (int i = 0; i < nexts.length; i++) {
-                MWFNode child = getNode(nexts[i].getAD_WF_Next_ID());
+                MWFNode child = getNode(nexts[i].getWorkflowNextId());
                 if (!child.isActive()) continue;
                 if (child.getClientId() == 0 || child.getClientId() == AD_Client_ID) {
                     if (!list.contains(child)) {
@@ -346,7 +346,7 @@ public class MWorkflow extends X_AD_Workflow {
     public MWFNodeNext[] getNodeNexts(int AD_WF_Node_ID, int AD_Client_ID) {
         MWFNode[] nodes = getNodesInOrder(AD_Client_ID);
         for (int i = 0; i < nodes.length; i++) {
-            if (nodes[i].getAD_WF_Node_ID() == AD_WF_Node_ID) {
+            if (nodes[i].getWorkflowNodeId() == AD_WF_Node_ID) {
                 return nodes[i].getTransitions(AD_Client_ID);
             }
         }
@@ -489,7 +489,7 @@ public class MWorkflow extends X_AD_Workflow {
     public String validate() {
         StringBuffer errors = new StringBuffer();
         //
-        if (getAD_WF_Node_ID() == 0) errors.append(" - No Start Node");
+        if (getWorkflowNodeId() == 0) errors.append(" - No Start Node");
         //
         if (X_AD_Workflow.WORKFLOWTYPE_DocumentValue.equals(getWorkflowType())
                 && (getDocValueLogic() == null || getDocValueLogic().length() == 0))
@@ -498,7 +498,7 @@ public class MWorkflow extends X_AD_Workflow {
 
         //
         if (getWorkflowType().equals(MWorkflow.WORKFLOWTYPE_Manufacturing)) {
-            this.setAD_Table_ID(0);
+            this.setDBTableId(0);
         }
 
         //	final

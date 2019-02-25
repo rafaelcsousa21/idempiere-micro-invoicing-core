@@ -51,7 +51,7 @@ public class CommissionAPInvoice extends SvrProcess {
 
     /*
     	//	Load Data
-    	MCommissionRun comRun = new MCommissionRun (getCtx(), getRecord_ID(), null);
+    	MCommissionRun comRun = new MCommissionRun (getCtx(), getRecordId(), null);
     	if (comRun.getId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No Commission Run");
     	if (Env.ZERO.compareTo(comRun.getGrandTotal()) == 0)
@@ -71,9 +71,9 @@ public class CommissionAPInvoice extends SvrProcess {
     	invoice.setC_DocTypeTarget_ID(MDocType.DOCBASETYPE_APInvoice);	//	API
     	invoice.setBPartner(bp);
     //	invoice.setDocumentNo (comRun.getDocumentNo());		//	may cause unique constraint
-    	invoice.setSalesRep_ID(getAD_User_ID());	//	caller
+    	invoice.setSalesRep_ID(getUserId());	//	caller
     	//
-    	if (com.getC_Currency_ID() != invoice.getC_Currency_ID())
+    	if (com.getCurrencyId() != invoice.getCurrencyId())
     		throw new IllegalArgumentException("CommissionAPInvoice - Currency of PO Price List not Commission Currency");
     	//
     	if (!invoice.save())

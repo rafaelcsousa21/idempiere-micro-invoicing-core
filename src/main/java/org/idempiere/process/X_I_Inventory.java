@@ -3,14 +3,13 @@ package org.idempiere.process;
 import org.compiere.model.I_I_Inventory;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
+public class X_I_Inventory extends PO implements I_I_Inventory {
 
     /**
      *
@@ -58,7 +57,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Additional document charges
      */
     public int getC_Charge_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -69,7 +68,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -80,7 +79,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return The currently used cost price
      */
     public BigDecimal getCurrentCostPrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_CurrentCostPrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_CurrentCostPrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -91,7 +90,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -101,17 +100,6 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      */
     public void setI_ErrorMsg(String I_ErrorMsg) {
         set_Value(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
-    }
-
-    /**
-     * Get Import Inventory.
-     *
-     * @return Import Inventory Transactions
-     */
-    public int getI_Inventory_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_I_Inventory_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -129,18 +117,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Lot number (alphanumeric)
      */
     public String getLot() {
-        return (String) get_Value(COLUMNNAME_Lot);
-    }
-
-    /**
-     * Get Cost Adjustment Line.
-     *
-     * @return Unique line in an Inventory cost adjustment document
-     */
-    public int getM_CostingLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostingLine_ID);
-        if (ii == null) return 0;
-        return ii;
+        return (String) getValue(COLUMNNAME_Lot);
     }
 
     /**
@@ -154,17 +131,6 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
     }
 
     /**
-     * Get Phys.Inventory.
-     *
-     * @return Parameters for a Physical Inventory
-     */
-    public int getM_Inventory_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Inventory_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Phys.Inventory.
      *
      * @param M_Inventory_ID Parameters for a Physical Inventory
@@ -172,17 +138,6 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
     public void setM_Inventory_ID(int M_Inventory_ID) {
         if (M_Inventory_ID < 1) set_Value(COLUMNNAME_M_Inventory_ID, null);
         else set_Value(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
-    }
-
-    /**
-     * Get Phys.Inventory Line.
-     *
-     * @return Unique line in an Inventory document
-     */
-    public int getM_InventoryLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InventoryLine_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -201,7 +156,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -212,7 +167,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Date a product was moved in or out of inventory
      */
     public Timestamp getMovementDate() {
-        return (Timestamp) get_Value(COLUMNNAME_MovementDate);
+        return (Timestamp) getValue(COLUMNNAME_MovementDate);
     }
 
     /**
@@ -221,7 +176,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -232,7 +187,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Storage Warehouse and Service Point
      */
     public int getM_Warehouse_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -252,7 +207,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Book Quantity
      */
     public BigDecimal getQtyBook() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyBook);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyBook);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -263,7 +218,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Counted Quantity
      */
     public BigDecimal getQtyCount() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyCount);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyCount);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -274,7 +229,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Internal Use Quantity removed from Inventory
      */
     public BigDecimal getQtyInternalUse() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_QtyInternalUse);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_QtyInternalUse);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -285,7 +240,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory, I_Persistent {
      * @return Product Serial Number
      */
     public String getSerNo() {
-        return (String) get_Value(COLUMNNAME_SerNo);
+        return (String) getValue(COLUMNNAME_SerNo);
     }
 
 }

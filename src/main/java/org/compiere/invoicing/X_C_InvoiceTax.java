@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_InvoiceTax;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_InvoiceTax extends PO implements I_Persistent {
+public class X_C_InvoiceTax extends PO {
 
     /**
      *
@@ -65,7 +64,7 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
      * @return Invoice Identifier
      */
     public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(I_C_InvoiceTax.COLUMNNAME_C_Invoice_ID);
+        Integer ii = (Integer) getValue(I_C_InvoiceTax.COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -86,7 +85,7 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
      * @return Tax identifier
      */
     public int getC_Tax_ID() {
-        Integer ii = (Integer) get_Value(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID);
+        Integer ii = (Integer) getValue(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -116,7 +115,7 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
      * @return Tax is included in the price
      */
     public boolean isTaxIncluded() {
-        Object oo = get_Value(I_C_InvoiceTax.COLUMNNAME_IsTaxIncluded);
+        Object oo = getValue(I_C_InvoiceTax.COLUMNNAME_IsTaxIncluded);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -130,7 +129,7 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
      * @return Tax Amount for a document
      */
     public BigDecimal getTaxAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(I_C_InvoiceTax.COLUMNNAME_TaxAmt);
+        BigDecimal bd = (BigDecimal) getValue(I_C_InvoiceTax.COLUMNNAME_TaxAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -150,7 +149,7 @@ public class X_C_InvoiceTax extends PO implements I_Persistent {
      * @return Base for calculating the tax amount
      */
     public BigDecimal getTaxBaseAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(I_C_InvoiceTax.COLUMNNAME_TaxBaseAmt);
+        BigDecimal bd = (BigDecimal) getValue(I_C_InvoiceTax.COLUMNNAME_TaxBaseAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }

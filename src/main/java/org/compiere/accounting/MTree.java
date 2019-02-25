@@ -142,7 +142,7 @@ public class MTree extends MTree_Base {
         {
             String sourceTableName = getSourceTableName(getTreeType());
             if (sourceTableName == null) {
-                if (getAD_Table_ID() > 0) sourceTableName = MTable.getTableName(getCtx(), getAD_Table_ID());
+                if (getTreeTableId() > 0) sourceTableName = MTable.getDbTableName(getCtx(), getTreeTableId());
             }
             sql =
                     new StringBuffer("SELECT " + "tn.Node_ID,tn.Parent_ID,tn.SeqNo,st.IsActive " + "FROM ")
@@ -179,7 +179,7 @@ public class MTree extends MTree_Base {
             int idx = 1;
             if (AD_User_ID != -1 && getTreeType().equals(TREETYPE_Menu)) // IDEMPIERE 329 - nmicoud
                 pstmt.setInt(idx++, AD_User_ID);
-            pstmt.setInt(idx++, getAD_Tree_ID());
+            pstmt.setInt(idx++, getTreeId());
             //	Get Tree & Bar
             rs = pstmt.executeQuery();
             m_root = new MTreeNode(0, 0, getName(), getDescription(), 0, true, null, false, null);
@@ -350,8 +350,8 @@ public class MTree extends MTree_Base {
                 else sqlNode.append("f.JSPURL");
                 sqlNode.append(" IS NOT NULL))");
             }
-        } else if (getAD_Table_ID() != 0) {
-            String tableName = MTable.getTableName(getCtx(), getAD_Table_ID());
+        } else if (getTreeTableId() != 0) {
+            String tableName = MTable.getDbTableName(getCtx(), getTreeTableId());
             sqlNode.append("SELECT t.").append(tableName).append("_ID,");
             if (isTreeDrivenByValue()) sqlNode.append("t.Value || ' - ' || t.Name,");
             else sqlNode.append("t.Name,");
@@ -547,7 +547,7 @@ public class MTree extends MTree_Base {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder("MTree[");
-        sb.append("AD_Tree_ID=").append(getAD_Tree_ID()).append(", Name=").append(getName());
+        sb.append("AD_Tree_ID=").append(getTreeId()).append(", Name=").append(getName());
         sb.append("]");
         return sb.toString();
     }

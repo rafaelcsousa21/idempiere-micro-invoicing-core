@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_M_QualityTest;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_QualityTest extends BasePOName implements I_M_QualityTest, I_Persistent {
+public class X_M_QualityTest extends BasePOName implements I_M_QualityTest {
 
     /**
      *
@@ -54,7 +53,7 @@ public class X_M_QualityTest extends BasePOName implements I_M_QualityTest, I_Pe
      * @return Quality Test
      */
     public int getM_QualityTest_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_QualityTest_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_QualityTest_ID);
         if (ii == null) return 0;
         return ii;
     }

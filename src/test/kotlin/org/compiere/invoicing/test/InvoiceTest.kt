@@ -86,7 +86,7 @@ class InvoiceTest : BaseComponentTest() {
                 val priceListVersion = MPriceListVersion(salesPriceList)
                 priceListVersion.name = salesPriceList.name
                 priceListVersion.validFrom = always
-                priceListVersion.m_DiscountSchema_ID = MDiscountSchema(ctx, 1000000).id
+                priceListVersion.setM_DiscountSchema_ID(MDiscountSchema(ctx, 1000000).id)
                 priceListVersion.save()
 
                 val check2: MPriceListVersion = getById(priceListVersion.id, I_M_PriceList_Version.Table_Name)
@@ -108,7 +108,7 @@ class InvoiceTest : BaseComponentTest() {
             val vendor = createBPartner()
 
             val vendorShipment = MInOut(ctx, 0)
-            vendorShipment.setAD_Org_ID(org.orgId)
+            vendorShipment.setOrgId(org.orgId)
             vendorShipment.setIsSOTrx(false)
             vendorShipment.movementType = X_M_InOut.MOVEMENTTYPE_VendorReceipts
             vendorShipment.setC_DocType_ID()
@@ -119,7 +119,7 @@ class InvoiceTest : BaseComponentTest() {
             val receipt = getById<MInOut>(vendorShipment.id, I_M_InOut.Table_Name)
             assertNotNull(receipt)
             val receiptLine = MInOutLine(receipt)
-            receiptLine.setAD_Org_ID(org.orgId)
+            receiptLine.setOrgId(org.orgId)
             receiptLine.product = product
             receiptLine.movementQty = 1000000.toBigDecimal()
             receiptLine.m_Locator_ID = MLocator(ctx, MLocator(ctx, 1000000).id).id
@@ -140,7 +140,7 @@ class InvoiceTest : BaseComponentTest() {
         val name = "Test " + randomString(10)
         newPartner.setName(name)
         val value = "t-" + randomString(5)
-        newPartner.setValue(value)
+        newPartner.setSearchKey(value)
         newPartner.save()
 
         val defaultCountry = MCountry.getDefault(ctx)
@@ -171,7 +171,7 @@ class InvoiceTest : BaseComponentTest() {
 
     private fun createOrder(c_DocType_ID: Int, product_id: Int): Triple<MOrder, Int, Int> {
         val order = MOrder(Env.getCtx(), 0)
-        order.setAD_Org_ID(1000000)
+        order.setOrgId(1000000)
         order.m_Warehouse_ID = 1000000
         order.setIsSOTrx(true)
         order.c_DocType_ID =
@@ -205,7 +205,7 @@ class InvoiceTest : BaseComponentTest() {
             createInvoiceFromOrder(1000030, testProduct.id, BigDecimal("1.10")) {
                 val payment = MPayment(ctx, 0)
                 payment.c_BPartner_ID = it.c_BPartner_ID
-                payment.setAD_Org_ID(org.orgId)
+                payment.setOrgId(org.orgId)
                 payment.c_BankAccount_ID = bankAccount.id
                 payment.setC_Currency_ID(EUR) // EUR
                 payment.payAmt = 1.10.toBigDecimal()
@@ -313,7 +313,7 @@ class InvoiceTest : BaseComponentTest() {
             createInvoiceFromOrder(1000033, bomProduct.m_Product_ID, BigDecimal("12.10")) {
                 val orderLine = it.lines.first()
                 val production = MProduction(orderLine)
-                production.setAD_Org_ID(1000000)
+                production.setOrgId(1000000)
                 production.m_Product_ID =
                     orderLine.m_Product_ID // TODO: Why? Should not this be done automatically in the constructor?
                 production.productionQty =

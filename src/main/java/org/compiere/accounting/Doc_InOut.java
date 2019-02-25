@@ -142,7 +142,7 @@ public class Doc_InOut extends Doc {
         ArrayList<IFact> facts = new ArrayList<IFact>();
         //  create Fact Header
         Fact fact = new Fact(this, as, Fact.POST_Actual);
-        setC_Currency_ID(as.getC_Currency_ID());
+        setC_Currency_ID(as.getCurrencyId());
 
         //  Line pointers
         FactLine dr = null;
@@ -211,7 +211,7 @@ public class Doc_InOut extends Doc {
                         fact.createLine(
                                 line,
                                 line.getAccount(ProductCost.ACCTTYPE_P_Cogs, as),
-                                as.getC_Currency_ID(),
+                                as.getCurrencyId(),
                                 costs,
                                 null);
                 if (dr == null) {
@@ -222,7 +222,7 @@ public class Doc_InOut extends Doc {
                 dr.setM_Locator_ID(line.getM_Locator_ID());
                 dr.setLocationFromLocator(line.getM_Locator_ID(), true); //  from Loc
                 dr.setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
-                dr.setAD_Org_ID(line.getOrder_Org_ID()); // 	Revenue X-Org
+                dr.setOrgId(line.getOrder_Org_ID()); // 	Revenue X-Org
                 dr.setQty(line.getQty().negate());
 
                 if (isReversal(line)) {
@@ -243,7 +243,7 @@ public class Doc_InOut extends Doc {
                         fact.createLine(
                                 line,
                                 line.getAccount(ProductCost.ACCTTYPE_P_Asset, as),
-                                as.getC_Currency_ID(),
+                                as.getCurrencyId(),
                                 null,
                                 costs);
                 if (cr == null) {
@@ -391,7 +391,7 @@ public class Doc_InOut extends Doc {
                         fact.createLine(
                                 line,
                                 line.getAccount(ProductCost.ACCTTYPE_P_Asset, as),
-                                as.getC_Currency_ID(),
+                                as.getCurrencyId(),
                                 costs,
                                 null);
                 if (dr == null) {
@@ -482,7 +482,7 @@ public class Doc_InOut extends Doc {
                         fact.createLine(
                                 line,
                                 line.getAccount(ProductCost.ACCTTYPE_P_Cogs, as),
-                                as.getC_Currency_ID(),
+                                as.getCurrencyId(),
                                 null,
                                 costs);
                 if (cr == null) {
@@ -493,7 +493,7 @@ public class Doc_InOut extends Doc {
                 cr.setM_Locator_ID(line.getM_Locator_ID());
                 cr.setLocationFromLocator(line.getM_Locator_ID(), true); //  from Loc
                 cr.setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
-                cr.setAD_Org_ID(line.getOrder_Org_ID()); // 	Revenue X-Org
+                cr.setOrgId(line.getOrder_Org_ID()); // 	Revenue X-Org
                 cr.setQty(line.getQty().negate());
                 if (isReversal(line)) {
                     //	Set AmtAcctCr from Original Shipment/Receipt
@@ -510,7 +510,7 @@ public class Doc_InOut extends Doc {
         else if (getDocumentType().equals(DOCTYPE_MatReceipt) && !isSOTrx()) {
             for (int i = 0; i < p_lines.length; i++) {
                 // Elaine 2008/06/26
-                int C_Currency_ID = as.getC_Currency_ID();
+                int C_Currency_ID = as.getCurrencyId();
                 //
                 DocLine line = p_lines[i];
                 BigDecimal costs = null;
@@ -685,7 +685,7 @@ public class Doc_InOut extends Doc {
         else if (getDocumentType().equals(DOCTYPE_MatShipment) && !isSOTrx()) {
             for (int i = 0; i < p_lines.length; i++) {
                 // Elaine 2008/06/26
-                int C_Currency_ID = as.getC_Currency_ID();
+                int C_Currency_ID = as.getCurrencyId();
                 //
                 DocLine line = p_lines[i];
                 BigDecimal costs = null;
@@ -766,7 +766,7 @@ public class Doc_InOut extends Doc {
                 // Elaine 2008/06/26
         /*dr = fact.createLine(line,
         getAccount(Doc.ACCTTYPE_NotInvoicedReceipts, as),
-        as.getC_Currency_ID(), costs , null);*/
+        as.getCurrencyId(), costs , null);*/
                 dr =
                         fact.createLine(
                                 line, getAccount(Doc.ACCTTYPE_NotInvoicedReceipts, as), C_Currency_ID, costs, null);
@@ -798,7 +798,7 @@ public class Doc_InOut extends Doc {
                 if (product.isService()) assets = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                 // Elaine 2008/06/26
         /*cr = fact.createLine(line, assets,
-        as.getC_Currency_ID(), null, costs);*/
+        as.getCurrencyId(), null, costs);*/
                 cr = fact.createLine(line, assets, C_Currency_ID, null, costs);
                 //
                 if (cr == null) {

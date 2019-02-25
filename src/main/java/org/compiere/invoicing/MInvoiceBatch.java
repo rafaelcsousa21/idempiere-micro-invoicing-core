@@ -40,7 +40,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
         super(ctx, C_InvoiceBatch_ID);
         if (C_InvoiceBatch_ID == 0) {
             //	setDocumentNo (null);
-            //	setC_Currency_ID (0);	// @$C_Currency_ID@
+            //	setCurrencyId (0);	// @$C_Currency_ID@
             setControlAmt(Env.ZERO); // 0
             setDateDoc(new Timestamp(System.currentTimeMillis())); // @#Date@
             setDocumentAmt(Env.ZERO);

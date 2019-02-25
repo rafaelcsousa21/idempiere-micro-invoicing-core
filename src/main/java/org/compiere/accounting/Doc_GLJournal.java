@@ -117,7 +117,7 @@ public class Doc_GLJournal extends Doc {
     public ArrayList<IFact> createFacts(MAcctSchema as) {
         ArrayList<IFact> facts = new ArrayList<IFact>();
         //	Other Acct Schema
-        if (as.getC_AcctSchema_ID() != m_C_AcctSchema_ID) return facts;
+        if (as.getAccountingSchemaId() != m_C_AcctSchema_ID) return facts;
 
         //  create Fact Header
         Fact fact = new Fact(this, as, m_PostingType);
@@ -126,7 +126,7 @@ public class Doc_GLJournal extends Doc {
         if (getDocumentType().equals(DOCTYPE_GLJournal)) {
             //  account     DR      CR
             for (int i = 0; i < p_lines.length; i++) {
-                if (p_lines[i].getC_AcctSchema_ID() == as.getC_AcctSchema_ID()) {
+                if (p_lines[i].getC_AcctSchema_ID() == as.getAccountingSchemaId()) {
                     @SuppressWarnings("unused")
                     FactLine line =
                             fact.createLine(

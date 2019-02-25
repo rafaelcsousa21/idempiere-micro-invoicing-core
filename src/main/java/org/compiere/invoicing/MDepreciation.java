@@ -342,7 +342,7 @@ public class MDepreciation extends X_A_Depreciation {
         /** FAs' value = acquisition value - the amount recovered */
         BigDecimal assetAmt = wk.getActualCost();
         /** Life in months */
-        int A_Life_Period = wk.getA_Life_Period();
+        int A_Life_Period = wk.getLifePeriod();
         /** Year = integer part of (current period / 12) => first year will be 0 */
         int A_Current_Year = (int) (A_Current_Period / 12);
         /** Life in years = integer part of (the life in months / 12) => first year will be 0 */

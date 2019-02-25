@@ -90,7 +90,7 @@ public class CopyComponentsFromView extends SvrProcess {
         for (int i = 0; i < sourceViewComponents.length; i++) {
             MViewComponent viewComponentTarget = new MViewComponent(targetTable);
             PO.copyValues(sourceViewComponents[i], viewComponentTarget);
-            viewComponentTarget.setAD_Table_ID(targetTable.getAD_Table_ID());
+            viewComponentTarget.setViewTableId(targetTable.getTableTableId());
             viewComponentTarget.setEntityType(targetTable.getEntityType());
 
             viewComponentTarget.setIsActive(sourceViewComponents[i].isActive());
@@ -115,7 +115,7 @@ public class CopyComponentsFromView extends SvrProcess {
         for (int i = 0; i < sourceColumns.length; i++) {
             MViewColumn columnTarget = new MViewColumn(targetComponent);
             PO.copyValues(sourceColumns[i], columnTarget);
-            columnTarget.setAD_ViewComponent_ID(targetComponent.getAD_ViewComponent_ID());
+            columnTarget.setViewComponentId(targetComponent.getViewComponentId());
             columnTarget.setEntityType(targetComponent.getEntityType());
 
             columnTarget.setIsActive(sourceColumns[i].isActive());

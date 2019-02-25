@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_Campaign;
 import org.compiere.orm.BasePONameValue;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Campaign extends BasePONameValue implements I_C_Campaign, I_Persistent {
+public class X_C_Campaign extends BasePONameValue implements I_C_Campaign {
 
     /**
      *
@@ -52,17 +51,6 @@ public class X_C_Campaign extends BasePONameValue implements I_C_Campaign, I_Per
     public String toString() {
         StringBuffer sb = new StringBuffer("X_C_Campaign[").append(getId()).append("]");
         return sb.toString();
-    }
-
-    /**
-     * Get Channel.
-     *
-     * @return Sales Channel
-     */
-    public int getC_Channel_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Channel_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
 }

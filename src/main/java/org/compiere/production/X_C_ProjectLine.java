@@ -4,7 +4,6 @@ import org.compiere.model.I_C_ProjectLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent {
+public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
 
     /**
      *
@@ -68,17 +67,6 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
     }
 
     /**
-     * Get Order.
-     *
-     * @return Order
-     */
-    public int getC_Order_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Order_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Order.
      *
      * @param C_Order_ID Order
@@ -94,7 +82,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Purchase Order
      */
     public int getC_OrderPO_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_OrderPO_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_OrderPO_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -121,7 +109,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -142,7 +130,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Project Issues (Material, Labor)
      */
     public int getC_ProjectIssue_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectIssue_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectIssue_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -163,7 +151,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Task or step in a project
      */
     public int getC_ProjectLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -174,7 +162,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Phase of a Project
      */
     public int getC_ProjectPhase_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectPhase_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -195,7 +183,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Actual Project Task in a Phase
      */
     public int getC_ProjectTask_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectTask_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectTask_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -216,7 +204,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -243,7 +231,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return The quantity invoiced
      */
     public BigDecimal getInvoicedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_InvoicedQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_InvoicedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -272,7 +260,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -292,7 +280,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Category of a Product
      */
     public int getM_Product_Category_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_Category_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_Category_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -303,7 +291,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -324,7 +312,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Plan for producing a product
      */
     public int getM_Production_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Production_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Production_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -363,7 +351,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Planned price for this project line
      */
     public BigDecimal getPlannedPrice() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PlannedPrice);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PlannedPrice);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -383,7 +371,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine, I_Persistent
      * @return Planned quantity for this project
      */
     public BigDecimal getPlannedQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_PlannedQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_PlannedQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

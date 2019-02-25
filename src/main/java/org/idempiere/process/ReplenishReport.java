@@ -389,7 +389,7 @@ public class ReplenishReport extends SvrProcess {
                 order.setSalesRep_ID(getAD_User_ID());
                 order.setDescription(Msg.getMsg(getCtx(), "Replenishment"));
                 //	Set Org/WH
-                order.setAD_Org_ID(wh.getOrgId());
+                order.setOrgId(wh.getOrgId());
                 order.setM_Warehouse_ID(wh.getM_Warehouse_ID());
                 if (!order.save()) return;
                 addBufferLog(
@@ -435,7 +435,7 @@ public class ReplenishReport extends SvrProcess {
                 requisition.setC_DocType_ID(p_C_DocType_ID);
                 requisition.setDescription(Msg.getMsg(getCtx(), "Replenishment"));
                 //	Set Org/WH
-                requisition.setAD_Org_ID(wh.getOrgId());
+                requisition.setOrgId(wh.getOrgId());
                 requisition.setM_Warehouse_ID(wh.getM_Warehouse_ID());
                 if (!requisition.save()) return;
                 addBufferLog(
@@ -501,7 +501,7 @@ public class ReplenishReport extends SvrProcess {
                                 + "->"
                                 + wh.getName());
                 //	Set Org
-                move.setAD_Org_ID(whSource.getOrgId());
+                move.setOrgId(whSource.getOrgId());
                 if (!move.save()) return;
                 addBufferLog(
                         move.getM_Movement_ID(),
@@ -609,7 +609,7 @@ public class ReplenishReport extends SvrProcess {
                                 .append(wh.getName());
                 order.setDescription(msgsd.toString());
                 //	Set Org
-                order.setAD_Org_ID(whSource.getOrgId());
+                order.setOrgId(whSource.getOrgId());
                 // Set Org Trx
                 MOrg orgTrx = MOrg.get(getCtx(), wh.getOrgId());
                 order.setAD_OrgTrx_ID(orgTrx.getOrgId());
@@ -668,7 +668,7 @@ public class ReplenishReport extends SvrProcess {
       	MMPolicy = client.getMMPolicy();
       //
       MStorage[] storages = MStorage.getWarehouse(getCtx(),
-      	whSource.getM_Warehouse_ID(), replenish.getM_Product_ID(), 0, 0,
+      	whSource.getWarehouseId(), replenish.getM_Product_ID(), 0, 0,
       	true, null,
       	MClient.MMPOLICY_FiFo.equals(MMPolicy), null);
 

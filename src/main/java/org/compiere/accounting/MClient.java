@@ -92,7 +92,7 @@ public class MClient extends MBaseClient {
 
     public static boolean isClientAccounting() {
         String ca =
-                MSysConfig.getValue(
+                MSysConfig.getConfigValue(
                         MSysConfig.CLIENT_ACCOUNTING,
                         CLIENT_ACCOUNTING_QUEUE, // default
                         Env.getClientId(Env.getCtx()));
@@ -102,7 +102,7 @@ public class MClient extends MBaseClient {
 
     public static boolean isSendCredentialsSystem() {
         String msc =
-                MSysConfig.getValue(
+                MSysConfig.getConfigValue(
                         MSysConfig.MAIL_SEND_CREDENTIALS,
                         MAIL_SEND_CREDENTIALS_USER, // default
                         Env.getClientId(Env.getCtx()));
@@ -142,7 +142,7 @@ public class MClient extends MBaseClient {
      */
     public String toString() {
         StringBuilder sb =
-                new StringBuilder("MClient[").append(getId()).append("-").append(getValue()).append("]");
+                new StringBuilder("MClient[").append(getId()).append("-").append(getSearchKey()).append("]");
         return sb.toString();
     } //	toString
 
@@ -151,7 +151,6 @@ public class MClient extends MBaseClient {
      *
      * @return Client Info
      */
-    @Override
     public MClientInfo getInfo() {
         if (m_info == null)
             m_info = org.compiere.orm.MClientInfo.get(getCtx(), getClientId());
@@ -213,7 +212,7 @@ public class MClient extends MBaseClient {
     public MAcctSchema getAcctSchema() {
         if (m_info == null) m_info = MClientInfo.get(getCtx(), getClientId());
         if (m_info != null) {
-            int C_AcctSchema_ID = m_info.getC_AcctSchema1_ID();
+            int C_AcctSchema_ID = m_info.getAcctSchema1Id();
             if (C_AcctSchema_ID != 0) return MAcctSchema.get(getCtx(), C_AcctSchema_ID);
         }
         return null;
@@ -306,7 +305,7 @@ public class MClient extends MBaseClient {
         if (m_info == null) getInfo();
         if (m_info != null) return getInfo().getC_Currency_ID();
         return 0;
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     public boolean sendEMail(
             I_AD_User from,

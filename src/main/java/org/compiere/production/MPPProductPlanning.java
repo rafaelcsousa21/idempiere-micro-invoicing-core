@@ -70,7 +70,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
      */
     public static MPPProductPlanning get(
             Properties ctx, int ad_client_id, int ad_org_id, int m_product_id) {
-        int M_Warehouse_ID = MOrgInfo.get(ctx, ad_org_id).getM_Warehouse_ID();
+        int M_Warehouse_ID = MOrgInfo.get(ctx, ad_org_id).getWarehouseId();
         if (M_Warehouse_ID <= 0) {
             return null;
         }

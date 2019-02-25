@@ -64,13 +64,13 @@ public class MWFNextCondition extends X_AD_WF_NextCondition {
      * @return true if true
      */
     public boolean evaluate(MWFActivity activity) {
-        if (getAD_Column_ID() == 0) throw new IllegalStateException("No Column defined - " + this);
+        if (getColumnId() == 0) throw new IllegalStateException("No Column defined - " + this);
 
         IPO po = activity.getPO();
         if (po == null || po.getId() == 0)
             throw new IllegalStateException("Could not evaluate " + po + " - " + this);
         //
-        Object valueObj = po.get_ValueOfColumn(getAD_Column_ID());
+        Object valueObj = po.getValueOfColumn(getColumnId());
         if (valueObj == null) valueObj = "";
         String value1 = getDecodedValue(getValue(), po); // F3P: added value decoding
         if (value1 == null) value1 = "";
@@ -105,7 +105,7 @@ public class MWFNextCondition extends X_AD_WF_NextCondition {
 
         if (sValue == null) ;
         else if (sValue.startsWith("@COL=")) {
-            Object o = po.get_Value(sValue.substring(5));
+            Object o = po.getValue(sValue.substring(5));
             //
             if (o != null) sRet = o.toString();
         } else if (sValue.startsWith("@") && sValue.endsWith("@") && sValue.length() > 1) {

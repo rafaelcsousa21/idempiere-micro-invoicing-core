@@ -933,7 +933,7 @@ public class Doc_Invoice extends Doc {
                                         getCtx(),
                                         estimatedAmt,
                                         oCurrencyId,
-                                        as.getC_Currency_ID(),
+                                        as.getCurrencyId(),
                                         oDateAcct,
                                         getC_ConversionType_ID(),
                                         getClientId(),
@@ -944,12 +944,12 @@ public class Doc_Invoice extends Doc {
                                         getCtx(),
                                         allocationAmt,
                                         getC_Currency_ID(),
-                                        as.getC_Currency_ID(),
+                                        as.getCurrencyId(),
                                         getDateAcct(),
                                         getC_ConversionType_ID(),
                                         getClientId(),
                                         getOrgId());
-                        setC_Currency_ID(as.getC_Currency_ID());
+                        setC_Currency_ID(as.getCurrencyId());
                         usesSchemaCurrency = true;
                     }
 
@@ -968,13 +968,13 @@ public class Doc_Invoice extends Doc {
                     try {
                         BigDecimal costDetailAmt = costAdjustmentAmt;
                         // convert to accounting schema currency
-                        if (getC_Currency_ID() != as.getC_Currency_ID())
+                        if (getC_Currency_ID() != as.getCurrencyId())
                             costDetailAmt =
                                     MConversionRate.convert(
                                             getCtx(),
                                             costDetailAmt,
                                             getC_Currency_ID(),
-                                            as.getC_Currency_ID(),
+                                            as.getCurrencyId(),
                                             getDateAcct(),
                                             getC_ConversionType_ID(),
                                             getClientId(),
@@ -1094,7 +1094,7 @@ public class Doc_Invoice extends Doc {
      */
     protected void updateProductPO(MAcctSchema as) {
         MClientInfo ci = MClientInfo.get(getCtx(), as.getClientId());
-        if (ci.getC_AcctSchema1_ID() != as.getC_AcctSchema_ID()) return;
+        if (ci.getAcctSchema1Id() != as.getAccountingSchemaId()) return;
 
         StringBuilder sql =
                 new StringBuilder("UPDATE M_Product_PO po ")

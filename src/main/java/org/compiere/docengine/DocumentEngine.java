@@ -100,7 +100,7 @@ public class DocumentEngine implements DocAction {
             boolean force,
             String trxName) {
         // Ensure the table has Posted column / i.e. GL_JournalBatch can be completed but not posted
-        if (getColumnId(MTable.getTableName(ctx, AD_Table_ID), "Posted") <= 0) return null;
+        if (getColumnId(MTable.getDbTableName(ctx, AD_Table_ID), "Posted") <= 0) return null;
 
         String error = null;
         if (log.isLoggable(Level.INFO)) log.info("Table=" + AD_Table_ID + ", Record=" + Record_ID);
@@ -248,13 +248,13 @@ public class DocumentEngine implements DocAction {
             PO docPO = (PO) m_document;
             if (docPO.getId() > 0
                     && docPO.get_ValueOld("DocStatus") != null) {
-                forUpdate(docPO, 30);
+                forUpdate(docPO);
                 String docStatusOriginal = (String) docPO.get_ValueOld("DocStatus");
                 String statusSql =
                         "SELECT DocStatus FROM "
-                                + docPO.get_TableName()
+                                + docPO.getTableName()
                                 + " WHERE "
-                                + docPO.get_KeyColumns()[0]
+                                + docPO.getKeyColumns()[0]
                                 + " = ? ";
                 String currentStatus = getSQLValueString(statusSql, docPO.getId());
                 if (!docStatusOriginal.equals(currentStatus) && currentStatus != null) {
@@ -279,9 +279,7 @@ public class DocumentEngine implements DocAction {
             //	Nothing to do
         else if (processAction.equals(DocAction.Companion.getACTION_None())
                 || docAction.equals(DocAction.Companion.getACTION_None())) {
-            if (m_document != null)
-                m_document.get_Logger()
-                        .info("**** No Action (Prc=" + processAction + "/Doc=" + docAction + ") " + m_document);
+            log.info("**** No Action (Prc=" + processAction + "/Doc=" + docAction + ") " + m_document);
             return true;
         } else {
             throw new IllegalStateException(
@@ -292,20 +290,18 @@ public class DocumentEngine implements DocAction {
                             + ", Doc="
                             + docAction);
         }
-        if (m_document != null)
-            m_document.get_Logger()
-                    .info(
-                            "**** Action="
-                                    + m_action
-                                    + " (Prc="
-                                    + processAction
-                                    + "/Doc="
-                                    + docAction
-                                    + ") "
-                                    + m_document);
+        log
+                .info(
+                        "**** Action="
+                                + m_action
+                                + " (Prc="
+                                + processAction
+                                + "/Doc="
+                                + docAction
+                                + ") "
+                                + m_document);
         boolean success = processIt(m_action);
-        if (m_document != null)
-            m_document.get_Logger().fine("**** Action=" + m_action + " - Success=" + success);
+        log.fine("**** Action=" + m_action + " - Success=" + success);
         return success;
     } //	process
 
@@ -855,14 +851,4 @@ public class DocumentEngine implements DocAction {
         if (m_document != null) return m_document.getTableId();
         throw new IllegalStateException(EXCEPTION_MSG);
     } //	getTableId
-
-    /**
-     * Get Logger
-     *
-     * @return logger
-     */
-    public CLogger get_Logger() {
-        if (m_document != null) return m_document.get_Logger();
-        throw new IllegalStateException(EXCEPTION_MSG);
-    } //	get_Logger
 } //	DocumentEnine

@@ -598,12 +598,12 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
         }
         MCost cost =
                 MCost.get(product, costASI, acctSchema, costOrgID, p_M_CostElement_ID, null);
-        if (cost.is_new()) cost.saveEx();
+        if (cost.isNew()) cost.saveEx();
         if (costingDoc == null) {
             costingDoc = new MInventory(getCtx(), 0);
             costingDoc.setC_DocType_ID(p_C_DocType_ID);
             costingDoc.setCostingMethod(cost.getM_CostElement().getCostingMethod());
-            costingDoc.setAD_Org_ID(imp.getOrgId());
+            costingDoc.setOrgId(imp.getOrgId());
             costingDoc.setDocAction(DocAction.Companion.getACTION_Complete());
             costingDoc.saveEx();
         }
@@ -614,7 +614,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
         costingLine.setCurrentCostPrice(cost.getCurrentCostPrice());
         costingLine.setNewCostPrice(imp.getCurrentCostPrice());
         costingLine.setM_Locator_ID(0);
-        costingLine.setAD_Org_ID(imp.getOrgId());
+        costingLine.setOrgId(imp.getOrgId());
         costingLine.setM_AttributeSetInstance_ID(costASI);
         costingLine.saveEx();
 

@@ -106,7 +106,7 @@ public final class DocTax {
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, m_C_Tax_ID);
-            pstmt.setInt(2, as.getC_AcctSchema_ID());
+            pstmt.setInt(2, as.getAccountingSchemaId());
             rs = pstmt.executeQuery();
             if (rs.next()) validCombination_ID = rs.getInt(AcctType + 1); //  1..3
         } catch (SQLException e) {

@@ -2,7 +2,6 @@ package org.compiere.production;
 
 import org.compiere.model.I_M_QualityTestResult;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult, I_Persistent {
+public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
 
     /**
      *
@@ -71,28 +70,6 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult, 
         else
             set_ValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-    }
-
-    /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Quality Test.
-     *
-     * @return Quality Test
-     */
-    public int getM_QualityTest_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_QualityTest_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

@@ -97,7 +97,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         this(original.getCtx(), 0);
         setClientOrg(original);
         //
-        //	setC_AcctSchema_ID(original.getC_AcctSchema_ID());
+        //	setAccountingSchemaId(original.getAccountingSchemaId());
         //	setGL_Budget_ID(original.getGL_Budget_ID());
         setGL_Category_ID(original.getGL_Category_ID());
         setPostingType(original.getPostingType());
@@ -111,7 +111,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
 
         //	setDateDoc(original.getDateDoc());
         //	setDateAcct(original.getDateAcct());
-        //	setC_Period_ID(original.getC_Period_ID());
+        //	setPeriodId(original.getC_Period_ID());
     } //	MJournal
 
     /**

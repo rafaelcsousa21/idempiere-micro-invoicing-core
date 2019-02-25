@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_PA_Goal;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
+public class X_PA_Goal extends BasePOName implements I_PA_Goal {
 
     /**
      * MeasureDisplay AD_Reference_ID=367
@@ -109,7 +108,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return Responsibility Role
      */
     public int getAD_Role_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Role_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Role_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -130,7 +129,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return User within the system - Internal or Business Partner Contact
      */
     public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -141,7 +140,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return Date the process was last run.
      */
     public Timestamp getDateLastRun() {
-        return (Timestamp) get_Value(COLUMNNAME_DateLastRun);
+        return (Timestamp) getValue(COLUMNNAME_DateLastRun);
     }
 
     /**
@@ -168,7 +167,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return Target achievement from 0..1
      */
     public BigDecimal getGoalPerformance() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_GoalPerformance);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_GoalPerformance);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -197,7 +196,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return This is a summary entity
      */
     public boolean isSummary() {
-        Object oo = get_Value(COLUMNNAME_IsSummary);
+        Object oo = getValue(COLUMNNAME_IsSummary);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -211,7 +210,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return Actual value that has been measured.
      */
     public BigDecimal getMeasureActual() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_MeasureActual);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_MeasureActual);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -231,7 +230,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return Measure Scope initially displayed
      */
     public String getMeasureDisplay() {
-        return (String) get_Value(COLUMNNAME_MeasureDisplay);
+        return (String) getValue(COLUMNNAME_MeasureDisplay);
     }
 
     /**
@@ -240,7 +239,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return Performance Measure Scope
      */
     public String getMeasureScope() {
-        return (String) get_Value(COLUMNNAME_MeasureScope);
+        return (String) getValue(COLUMNNAME_MeasureScope);
     }
 
     /**
@@ -259,7 +258,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return Target value for measure
      */
     public BigDecimal getMeasureTarget() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_MeasureTarget);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_MeasureTarget);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -274,34 +273,12 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
     }
 
     /**
-     * Get Color Schema.
-     *
-     * @return Performance Color Schema
-     */
-    public int getPA_ColorSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PA_ColorSchema_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Goal.
      *
      * @return Performance Goal
      */
     public int getPA_Goal_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PA_Goal_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Parent Goal.
-     *
-     * @return Parent Goal
-     */
-    public int getPA_GoalParent_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PA_GoalParent_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_PA_Goal_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -312,7 +289,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal, I_Persistent {
      * @return Concrete Performance Measurement
      */
     public int getPA_Measure_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_PA_Measure_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_PA_Measure_ID);
         if (ii == null) return 0;
         return ii;
     }

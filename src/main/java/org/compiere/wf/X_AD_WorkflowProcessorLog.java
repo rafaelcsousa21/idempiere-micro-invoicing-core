@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WorkflowProcessorLog;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @version Release 5.1 - $Id$
  */
 public class X_AD_WorkflowProcessorLog extends PO
-        implements I_AD_WorkflowProcessorLog, I_Persistent {
+        implements I_AD_WorkflowProcessorLog {
 
     /**
      *
@@ -59,22 +58,11 @@ public class X_AD_WorkflowProcessorLog extends PO
     }
 
     /**
-     * Get Workflow Processor.
-     *
-     * @return Workflow Processor Server
-     */
-    public int getAD_WorkflowProcessor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WorkflowProcessor_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Workflow Processor.
      *
      * @param AD_WorkflowProcessor_ID Workflow Processor Server
      */
-    public void setAD_WorkflowProcessor_ID(int AD_WorkflowProcessor_ID) {
+    public void setWorkflowProcessorId(int AD_WorkflowProcessor_ID) {
         if (AD_WorkflowProcessor_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WorkflowProcessor_ID, null);
         else
             set_ValueNoCheck(

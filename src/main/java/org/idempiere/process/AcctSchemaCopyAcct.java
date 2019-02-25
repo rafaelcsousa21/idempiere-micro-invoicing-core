@@ -129,8 +129,8 @@ public class AcctSchemaCopyAcct extends SvrProcess {
     private void copyDefault(MAcctSchema targetAS) throws Exception {
         MAcctSchemaDefault source = MAcctSchemaDefault.get(getCtx(), p_SourceAcctSchema_ID);
         MAcctSchemaDefault target = new MAcctSchemaDefault(getCtx(), 0);
-        target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
-        target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
+        target.setAccountingSchemaId(p_TargetAcctSchema_ID);
+        target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         ArrayList<KeyNamePair> list = source.getAcctInfo();
         for (int i = 0; i < list.size(); i++) {
             KeyNamePair pp = list.get(i);
@@ -152,7 +152,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
      */
     private MAccount createAccount(MAcctSchema targetAS, MAccount sourceAcct) {
         int AD_Client_ID = targetAS.getClientId();
-        int C_AcctSchema_ID = targetAS.getC_AcctSchema_ID();
+        int C_AcctSchema_ID = targetAS.getAccountingSchemaId();
         //
         int AD_Org_ID = 0;
         int Account_ID = 0;

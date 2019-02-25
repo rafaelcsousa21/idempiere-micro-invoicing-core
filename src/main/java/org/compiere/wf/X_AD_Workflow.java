@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_Workflow;
 import org.compiere.orm.BasePONameValue;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_Persistent {
+public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
 
     /**
      * Organization = 1
@@ -101,23 +100,12 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     }
 
     /**
-     * Get Context Help.
-     *
-     * @return Context Help
-     */
-    public int getAD_CtxHelp_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_CtxHelp_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Table.
      *
      * @return Database Table information
      */
-    public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
+    public int getDBTableId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Table_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -127,7 +115,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      *
      * @param AD_Table_ID Database Table information
      */
-    public void setAD_Table_ID(int AD_Table_ID) {
+    public void setDBTableId(int AD_Table_ID) {
         if (AD_Table_ID < 1) set_Value(COLUMNNAME_AD_Table_ID, null);
         else set_Value(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
     }
@@ -137,8 +125,8 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      *
      * @return Workflow Node (activity), step or process
      */
-    public int getAD_WF_Node_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Node_ID);
+    public int getWorkflowNodeId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Node_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -148,8 +136,8 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      *
      * @return Responsible for Workflow Execution
      */
-    public int getAD_WF_Responsible_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Responsible_ID);
+    public int getWorkflowResponsibleId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Responsible_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -159,19 +147,8 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      *
      * @return Workflow or combination of tasks
      */
-    public int getAD_Workflow_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Workflow_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Workflow Processor.
-     *
-     * @return Workflow Processor Server
-     */
-    public int getAD_WorkflowProcessor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WorkflowProcessor_ID);
+    public int getWorkflowId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Workflow_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -195,22 +172,13 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     }
 
     /**
-     * Get Description.
-     *
-     * @return Optional short description of the record
-     */
-    public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
-    }
-
-    /**
      * Get Document Value Logic.
      *
      * @return Logic to determine Workflow Start - If true, a workflow process is started for the
      * document
      */
     public String getDocValueLogic() {
-        return (String) get_Value(COLUMNNAME_DocValueLogic);
+        return (String) getValue(COLUMNNAME_DocValueLogic);
     }
 
     /**
@@ -228,7 +196,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      * @return Unit of Duration
      */
     public String getDurationUnit() {
-        return (String) get_Value(COLUMNNAME_DurationUnit);
+        return (String) getValue(COLUMNNAME_DurationUnit);
     }
 
     /**
@@ -249,15 +217,6 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     public void setEntityType(String EntityType) {
 
         set_Value(COLUMNNAME_EntityType, EntityType);
-    }
-
-    /**
-     * Get Comment/Help.
-     *
-     * @return Comment or Hint
-     */
-    public String getHelp() {
-        return (String) get_Value(COLUMNNAME_Help);
     }
 
     /**
@@ -293,7 +252,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      * @return Element is valid
      */
     public boolean isValid() {
-        Object oo = get_Value(COLUMNNAME_IsValid);
+        Object oo = getValue(COLUMNNAME_IsValid);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -307,7 +266,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      * @return Indicates if this request is of a high, medium or low priority.
      */
     public int getPriority() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Priority);
+        Integer ii = (Integer) getValue(COLUMNNAME_Priority);
         if (ii == null) return 0;
         return ii;
     }
@@ -323,23 +282,12 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
     }
 
     /**
-     * Get Resource.
-     *
-     * @return Resource
-     */
-    public int getS_Resource_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_S_Resource_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Valid from.
      *
      * @return Valid from including this date (first day)
      */
     public Timestamp getValidFrom() {
-        return (Timestamp) get_Value(COLUMNNAME_ValidFrom);
+        return (Timestamp) getValue(COLUMNNAME_ValidFrom);
     }
 
     /**
@@ -348,7 +296,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      * @return Valid to including this date (last day)
      */
     public Timestamp getValidTo() {
-        return (Timestamp) get_Value(COLUMNNAME_ValidTo);
+        return (Timestamp) getValue(COLUMNNAME_ValidTo);
     }
 
     /**
@@ -375,7 +323,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow, I_P
      * @return Type of Workflow
      */
     public String getWorkflowType() {
-        return (String) get_Value(COLUMNNAME_WorkflowType);
+        return (String) getValue(COLUMNNAME_WorkflowType);
     }
 
     /**

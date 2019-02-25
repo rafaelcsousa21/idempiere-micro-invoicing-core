@@ -287,7 +287,7 @@ public class InvoicePrint extends SvrProcess {
     			email.addAttachment(attachment);
     			//
     			String msg = email.send();
-    			MUserMail um = new MUserMail(mText, getAD_User_ID(), email);
+    			MUserMail um = new MUserMail(mText, getUserId(), email);
     			um.saveEx();
     			if (msg.equals(EMail.SENT_OK))
     			{

@@ -308,20 +308,20 @@ public class InventoryValue extends SvrProcess {
         if (no == 0) msg = "No Prices";
 
         //	Convert if different Currency
-        if (as.getC_Currency_ID() != p_C_Currency_ID) {
+        if (as.getCurrencyId() != p_C_Currency_ID) {
             sql =
                     new StringBuilder("UPDATE T_InventoryValue iv ")
                             .append("SET CostStandard= ")
                             .append(
                                     "(SELECT currencyConvert(iv.CostStandard,acs.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, iv.AD_Client_ID,iv.orgId) ")
                             .append("FROM C_AcctSchema acs WHERE acs.C_AcctSchema_ID=")
-                            .append(as.getC_AcctSchema_ID())
+                            .append(as.getAccountingSchemaId())
                             .append("),")
                             .append("	Cost= ")
                             .append(
                                     "(SELECT currencyConvert(iv.Cost,acs.C_Currency_ID,iv.C_Currency_ID,iv.DateValue,null, iv.AD_Client_ID,iv.orgId) ")
                             .append("FROM C_AcctSchema acs WHERE acs.C_AcctSchema_ID=")
-                            .append(as.getC_AcctSchema_ID())
+                            .append(as.getAccountingSchemaId())
                             .append(") ")
                             .append("WHERE iv.AD_PInstance_ID=")
                             .append(getAD_PInstance_ID());

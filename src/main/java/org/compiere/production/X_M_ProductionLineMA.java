@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_M_ProductionLineMA;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_Persistent {
+public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
 
     /**
      *
@@ -61,7 +60,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
      * @return Time used for LIFO and FIFO Material Policy
      */
     public Timestamp getDateMaterialPolicy() {
-        return (Timestamp) get_Value(COLUMNNAME_DateMaterialPolicy);
+        return (Timestamp) getValue(COLUMNNAME_DateMaterialPolicy);
     }
 
     /**
@@ -91,7 +90,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -102,7 +101,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
      * @return Quantity of a product moved.
      */
     public BigDecimal getMovementQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_MovementQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_MovementQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -114,17 +113,6 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA, I_
      */
     public void setMovementQty(BigDecimal MovementQty) {
         set_Value(COLUMNNAME_MovementQty, MovementQty);
-    }
-
-    /**
-     * Get Production Line.
-     *
-     * @return Document Line representing a production
-     */
-    public int getM_ProductionLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_ProductionLine_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

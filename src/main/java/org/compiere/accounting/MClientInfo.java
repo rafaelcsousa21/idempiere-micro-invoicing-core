@@ -119,8 +119,8 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
      * @return acct schema
      */
     public MAcctSchema getMAcctSchema1() {
-        if (m_acctSchema == null && getC_AcctSchema1_ID() != 0)
-            m_acctSchema = new MAcctSchema(getCtx(), getC_AcctSchema1_ID());
+        if (m_acctSchema == null && getAcctSchema1Id() != 0)
+            m_acctSchema = new MAcctSchema(getCtx(), getAcctSchema1Id());
         return m_acctSchema;
     } //	getMAcctSchema1
 
@@ -131,9 +131,9 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
      */
     public int getC_Currency_ID() {
         if (m_acctSchema == null) getMAcctSchema1();
-        if (m_acctSchema != null) return m_acctSchema.getC_Currency_ID();
+        if (m_acctSchema != null) return m_acctSchema.getCurrencyId();
         return 0;
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     /**
      * Overwrite Save
@@ -142,7 +142,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
      * @overwrite
      */
     public boolean save() {
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
         if (getCreateNew()) return super.save();
         return saveUpdate();
     } //	save

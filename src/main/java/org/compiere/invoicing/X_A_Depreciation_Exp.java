@@ -3,7 +3,6 @@ package org.compiere.invoicing;
 import org.compiere.model.I_A_Depreciation_Exp;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_Persistent {
+public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp {
 
     /**
      * Depreciation = DEP
@@ -60,22 +59,11 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     }
 
     /**
-     * Get A_Account_Number_Acct.
-     *
-     * @return A_Account_Number_Acct
-     */
-    public int getA_Account_Number_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Account_Number_Acct);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set A_Account_Number_Acct.
      *
      * @param A_Account_Number_Acct A_Account_Number_Acct
      */
-    public void setA_Account_Number_Acct(int A_Account_Number_Acct) {
+    public void setAccountNumberAcct(int A_Account_Number_Acct) {
         set_Value(COLUMNNAME_A_Account_Number_Acct, A_Account_Number_Acct);
     }
 
@@ -84,8 +72,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @return Accumulated Depreciation
      */
-    public BigDecimal getA_Accumulated_Depr() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Accumulated_Depr);
+    public BigDecimal getAccumulatedDepreciation() {
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_A_Accumulated_Depr);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -95,7 +83,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Accumulated_Depr Accumulated Depreciation
      */
-    public void setA_Accumulated_Depr(BigDecimal A_Accumulated_Depr) {
+    public void setAccumulatedDepreciation(BigDecimal A_Accumulated_Depr) {
         set_Value(COLUMNNAME_A_Accumulated_Depr, A_Accumulated_Depr);
     }
 
@@ -104,7 +92,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Accumulated_Depr_Delta Accumulated Depreciation (delta)
      */
-    public void setA_Accumulated_Depr_Delta(BigDecimal A_Accumulated_Depr_Delta) {
+    public void setAccumulatedDepreciationDelta(BigDecimal A_Accumulated_Depr_Delta) {
         set_Value(COLUMNNAME_A_Accumulated_Depr_Delta, A_Accumulated_Depr_Delta);
     }
 
@@ -113,8 +101,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @return Accumulated Depreciation (fiscal)
      */
-    public BigDecimal getA_Accumulated_Depr_F() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_A_Accumulated_Depr_F);
+    public BigDecimal getAccumulatedDepreciationFiscal() {
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_A_Accumulated_Depr_F);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -124,7 +112,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Accumulated_Depr_F Accumulated Depreciation (fiscal)
      */
-    public void setA_Accumulated_Depr_F(BigDecimal A_Accumulated_Depr_F) {
+    public void setAccumulatedDepreciationFiscal(BigDecimal A_Accumulated_Depr_F) {
         set_Value(COLUMNNAME_A_Accumulated_Depr_F, A_Accumulated_Depr_F);
     }
 
@@ -133,19 +121,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Accumulated_Depr_F_Delta Accumulated Depreciation - fiscal (delta)
      */
-    public void setA_Accumulated_Depr_F_Delta(BigDecimal A_Accumulated_Depr_F_Delta) {
+    public void setAccumulatedDepreciationFiscalDelta(BigDecimal A_Accumulated_Depr_F_Delta) {
         set_Value(COLUMNNAME_A_Accumulated_Depr_F_Delta, A_Accumulated_Depr_F_Delta);
-    }
-
-    /**
-     * Get Asset Addition.
-     *
-     * @return Asset Addition
-     */
-    public int getA_Asset_Addition_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Asset_Addition_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -153,19 +130,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Asset_Cost Asset Cost
      */
-    public void setA_Asset_Cost(BigDecimal A_Asset_Cost) {
+    public void setAssetCost(BigDecimal A_Asset_Cost) {
         set_Value(COLUMNNAME_A_Asset_Cost, A_Asset_Cost);
-    }
-
-    /**
-     * Get Asset Disposed.
-     *
-     * @return Asset Disposed
-     */
-    public int getA_Asset_Disposed_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Asset_Disposed_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -173,8 +139,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @return Asset used internally or by customers
      */
-    public int getA_Asset_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Asset_ID);
+    public int getAssetId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_A_Asset_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -184,7 +150,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Asset_ID Asset used internally or by customers
      */
-    public void setA_Asset_ID(int A_Asset_ID) {
+    public void setAssetId(int A_Asset_ID) {
         if (A_Asset_ID < 1) set_Value(COLUMNNAME_A_Asset_ID, null);
         else set_Value(COLUMNNAME_A_Asset_ID, A_Asset_ID);
     }
@@ -194,7 +160,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Asset_Remaining Remaining Amt
      */
-    public void setA_Asset_Remaining(BigDecimal A_Asset_Remaining) {
+    public void setAssetRemaining(BigDecimal A_Asset_Remaining) {
         set_Value(COLUMNNAME_A_Asset_Remaining, A_Asset_Remaining);
     }
 
@@ -203,7 +169,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Asset_Remaining_F Remaining Amt (fiscal)
      */
-    public void setA_Asset_Remaining_F(BigDecimal A_Asset_Remaining_F) {
+    public void setAssetRemainingFiscal(BigDecimal A_Asset_Remaining_F) {
         set_Value(COLUMNNAME_A_Asset_Remaining_F, A_Asset_Remaining_F);
     }
 
@@ -212,19 +178,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @return Depreciation Entry
      */
-    public int getA_Depreciation_Entry_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Depreciation_Entry_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get A_Depreciation_Exp_ID.
-     *
-     * @return A_Depreciation_Exp_ID
-     */
-    public int getA_Depreciation_Exp_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Depreciation_Exp_ID);
+    public int getDepreciationEntryId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_A_Depreciation_Entry_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -234,8 +189,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @return Entry Type
      */
-    public String getA_Entry_Type() {
-        return (String) get_Value(COLUMNNAME_A_Entry_Type);
+    public String getEntryType() {
+        return (String) getValue(COLUMNNAME_A_Entry_Type);
     }
 
     /**
@@ -243,7 +198,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Entry_Type Entry Type
      */
-    public void setA_Entry_Type(String A_Entry_Type) {
+    public void setEntryType(String A_Entry_Type) {
 
         set_Value(COLUMNNAME_A_Entry_Type, A_Entry_Type);
     }
@@ -253,8 +208,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @return Asset Period
      */
-    public int getA_Period() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Period);
+    public int getPeriod() {
+        Integer ii = (Integer) getValue(COLUMNNAME_A_Period);
         if (ii == null) return 0;
         return ii;
     }
@@ -264,19 +219,8 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param A_Period Asset Period
      */
-    public void setA_Period(int A_Period) {
+    public void setPeriod(int A_Period) {
         set_Value(COLUMNNAME_A_Period, A_Period);
-    }
-
-    /**
-     * Get Account (credit).
-     *
-     * @return Account used
-     */
-    public int getCR_Account_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_CR_Account_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -284,7 +228,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      *
      * @param CR_Account_ID Account used
      */
-    public void setCR_Account_ID(int CR_Account_ID) {
+    public void setCRAccountId(int CR_Account_ID) {
         if (CR_Account_ID < 1) set_Value(COLUMNNAME_CR_Account_ID, null);
         else set_Value(COLUMNNAME_CR_Account_ID, CR_Account_ID);
     }
@@ -295,7 +239,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -317,22 +261,11 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
     }
 
     /**
-     * Get Account (debit).
-     *
-     * @return Account used
-     */
-    public int getDR_Account_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_DR_Account_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Account (debit).
      *
      * @param DR_Account_ID Account used
      */
-    public void setDR_Account_ID(int DR_Account_ID) {
+    public void setDRAccountId(int DR_Account_ID) {
         if (DR_Account_ID < 1) set_Value(COLUMNNAME_DR_Account_ID, null);
         else set_Value(COLUMNNAME_DR_Account_ID, DR_Account_ID);
     }
@@ -343,7 +276,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      * @return Expense
      */
     public BigDecimal getExpense() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Expense);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Expense);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -363,7 +296,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      * @return Expense (fiscal)
      */
     public BigDecimal getExpense_F() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Expense_F);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Expense_F);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -401,7 +334,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      * @return The type of posted amount for the transaction
      */
     public String getPostingType() {
-        return (String) get_Value(COLUMNNAME_PostingType);
+        return (String) getValue(COLUMNNAME_PostingType);
     }
 
     /**
@@ -420,7 +353,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp, I_
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);

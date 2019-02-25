@@ -49,7 +49,7 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
     public MSchedulerLog(MScheduler parent, String summary) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setAD_Scheduler_ID(parent.getAD_Scheduler_ID());
+        setSchedulerId(parent.getSchedulerId());
         setSummary(summary);
     } //	MSchedulerLog
 } //	MSchedulerLog

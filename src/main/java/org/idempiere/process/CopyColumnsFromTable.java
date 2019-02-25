@@ -76,46 +76,46 @@ public class CopyColumnsFromTable extends SvrProcess {
         for (int i = 0; i < sourceColumns.length; i++) {
             MColumn colTarget = new MColumn(targetTable);
             PO.copyValues(sourceColumns[i], colTarget);
-            colTarget.setAD_Table_ID(targetTable.getAD_Table_ID());
+            colTarget.setColumnTableId(targetTable.getTableTableId());
             colTarget.setEntityType(targetTable.getEntityType());
             // special case the key -> sourceTable_ID
-            if (sourceColumns[i].getColumnName().equals(sourceTable.getTableName() + "_ID")) {
-                String targetColumnName = new String(targetTable.getTableName() + "_ID");
+            if (sourceColumns[i].getColumnName().equals(sourceTable.getDbTableName() + "_ID")) {
+                String targetColumnName = new String(targetTable.getDbTableName() + "_ID");
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
                 M_Element element = M_Element.get(getCtx(), targetColumnName);
                 if (element == null) {
                     element =
                             new M_Element(getCtx(), targetColumnName, targetTable.getEntityType());
-                    if (targetColumnName.equalsIgnoreCase(targetTable.getTableName() + "_ID")) {
-                        element.setColumnName(targetTable.getTableName() + "_ID");
+                    if (targetColumnName.equalsIgnoreCase(targetTable.getDbTableName() + "_ID")) {
+                        element.setColumnName(targetTable.getDbTableName() + "_ID");
                         element.setName(targetTable.getName());
                         element.setPrintName(targetTable.getName());
                     }
                     element.saveEx();
                 }
-                colTarget.setAD_Element_ID(element.getAD_Element_ID());
+                colTarget.setElementId(element.getElementId());
                 colTarget.setName(targetTable.getName());
                 colTarget.setDescription(targetTable.getDescription());
                 colTarget.setHelp(targetTable.getHelp());
             }
             // special case the UUID column -> sourceTable_UU
-            if (sourceColumns[i].getColumnName().equals(sourceTable.getTableName() + "_UU")) {
-                String targetColumnName = new String(targetTable.getTableName() + "_UU");
+            if (sourceColumns[i].getColumnName().equals(sourceTable.getDbTableName() + "_UU")) {
+                String targetColumnName = new String(targetTable.getDbTableName() + "_UU");
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
                 M_Element element = M_Element.get(getCtx(), targetColumnName);
                 if (element == null) {
                     element =
                             new M_Element(getCtx(), targetColumnName, targetTable.getEntityType());
-                    if (targetColumnName.equalsIgnoreCase(targetTable.getTableName() + "_UU")) {
-                        element.setColumnName(targetTable.getTableName() + "_UU");
-                        element.setName(targetTable.getTableName() + "_UU");
-                        element.setPrintName(targetTable.getTableName() + "_UU");
+                    if (targetColumnName.equalsIgnoreCase(targetTable.getDbTableName() + "_UU")) {
+                        element.setColumnName(targetTable.getDbTableName() + "_UU");
+                        element.setName(targetTable.getDbTableName() + "_UU");
+                        element.setPrintName(targetTable.getDbTableName() + "_UU");
                     }
                     element.saveEx();
                 }
-                colTarget.setAD_Element_ID(element.getAD_Element_ID());
+                colTarget.setElementId(element.getElementId());
                 colTarget.setName(targetTable.getName());
                 colTarget.setDescription(targetTable.getDescription());
                 colTarget.setHelp(targetTable.getHelp());

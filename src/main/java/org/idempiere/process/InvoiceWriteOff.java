@@ -251,7 +251,7 @@ public class InvoiceWriteOff extends SvrProcess {
                             C_Currency_ID,
                             getProcessInfo().getTitle() + " #" + getAD_PInstance_ID(),
                             null);
-            m_alloc.setAD_Org_ID(invoice.getOrgId());
+            m_alloc.setOrgId(invoice.getOrgId());
             if (!m_alloc.save()) {
                 log.log(Level.SEVERE, "Cannot create allocation header");
                 return false;
@@ -264,7 +264,7 @@ public class InvoiceWriteOff extends SvrProcess {
                 || C_Currency_ID != m_payment.getC_Currency_ID())) {
             processPayment();
             m_payment = new MPayment(getCtx(), 0);
-            m_payment.setAD_Org_ID(invoice.getOrgId());
+            m_payment.setOrgId(invoice.getOrgId());
             m_payment.setC_BankAccount_ID(p_C_BankAccount_ID);
             m_payment.setTenderType(MPayment.TENDERTYPE_Check);
             m_payment.setDateTrx(p_DateAcct);

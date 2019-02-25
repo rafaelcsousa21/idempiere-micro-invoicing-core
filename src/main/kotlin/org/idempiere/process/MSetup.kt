@@ -133,7 +133,7 @@ class MSetup
             name = "newClient"
         m_clientName = name
         m_client = MClient(m_ctx, 0, true)
-        m_client!!.setValue(m_clientName!!)
+        m_client!!.setSearchKey(m_clientName!!)
         m_client!!.name = m_clientName!!
         if (!m_client!!.save()) {
             val err = "Client NOT created"
@@ -214,7 +214,7 @@ class MSetup
         admin.setClientOrg(m_client)
         admin.name = name
         admin.userLevel = MRole.USERLEVEL_ClientPlusOrganization
-        admin.preferenceType = MRole.PREFERENCETYPE_Client
+        admin.setPreferenceType(MRole.PREFERENCETYPE_Client)
         admin.setIsShowAcct(true)
         admin.setIsAccessAdvanced(true)
         if (!admin.save()) {
@@ -270,9 +270,9 @@ class MSetup
             clientAdminUser.password = name
         clientAdminUser.description = name
         clientAdminUser.name = name
-        clientAdminUser.setValue(name)
+        clientAdminUser.setSearchKey(name)
         clientAdminUser.setADClientID(AD_Client_ID)
-        clientAdminUser.setAD_Org_ID(0)
+        clientAdminUser.setOrgId(0)
         clientAdminUser.eMail = adminEmail
 
         try {
@@ -284,7 +284,7 @@ class MSetup
             throw Error(err)
         }
 
-        aD_User_ID = clientAdminUser.aD_User_ID
+        aD_User_ID = clientAdminUser.userId
         AD_User_Name = name
 
         //  Info
@@ -301,9 +301,9 @@ class MSetup
             clientUser.password = name
         clientUser.description = name
         clientUser.name = name
-        clientUser.setValue(name)
+        clientUser.setSearchKey(name)
         clientUser.setADClientID(AD_Client_ID)
-        clientUser.setAD_Org_ID(0)
+        clientUser.setOrgId(0)
         clientUser.eMail = userEmail
 
         try {
@@ -315,7 +315,7 @@ class MSetup
             throw Error(err)
         }
 
-        AD_User_U_ID = clientUser.aD_User_ID
+        AD_User_U_ID = clientUser.userId
         AD_User_U_Name = name
         //  Info
         m_info!!.append(Msg.translate(m_lang, "AD_User_ID")).append("=").append(AD_User_U_Name).append("/")
@@ -326,25 +326,25 @@ class MSetup
          */
         //  ClientUser          - Admin & User
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
-                + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + admin.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
+                + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + admin.roleId + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
         no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole ClientUser+Admin NOT inserted")
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
-                + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + user.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
+                + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + user.roleId + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
         no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole ClientUser+User NOT inserted")
         //  OrgUser             - User
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
-                + " VALUES (" + m_stdValues + "," + AD_User_U_ID + "," + user.aD_Role_ID + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
+                + " VALUES (" + m_stdValues + "," + AD_User_U_ID + "," + user.roleId + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
         no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole OrgUser+Org NOT inserted")
 
         //	Processors
         val ap = MAcctProcessor(m_client!!, aD_User_ID)
-        ap.aD_Schedule_ID = SystemIDs.SCHEDULE_10_MINUTES
+        ap.scheduleId = SystemIDs.SCHEDULE_10_MINUTES
         ap.saveEx()
 
         val rp = MRequestProcessor(m_client!!, aD_User_ID)
@@ -422,7 +422,7 @@ class MSetup
             m_info!!.append(err)
             throw Error(err)
         }
-        val C_Element_ID = element.c_Element_ID
+        val C_Element_ID = element.elementId
         m_info!!.append(Msg.translate(m_lang, "C_Element_ID")).append("=").append(name).append("\n")
 
         //	Create Account Values
@@ -534,7 +534,7 @@ class MSetup
                     sqlCmd.append(m_stdColumns).append(",C_AcctSchema_Element_ID,C_AcctSchema_ID,")
                         .append("ElementType,Name,SeqNo,IsMandatory,IsBalanced,C_AcctSchema_Element_UU) VALUES (")
                     sqlCmd.append(m_stdValues).append(",").append(C_AcctSchema_Element_ID).append(",")
-                        .append(m_as!!.c_AcctSchema_ID).append(",")
+                        .append(m_as!!.accountingSchemaId).append(",")
                         .append("'").append(ElementType).append("','").append(name).append("',").append(SeqNo)
                         .append(",'")
                         .append(IsMandatory).append("','").append(IsBalanced).append("',")
@@ -833,7 +833,7 @@ class MSetup
 
         //  Update ClientInfo
         sqlCmd = StringBuffer("UPDATE AD_ClientInfo SET ")
-        sqlCmd.append("C_AcctSchema1_ID=").append(m_as!!.c_AcctSchema_ID)
+        sqlCmd.append("C_AcctSchema1_ID=").append(m_as!!.accountingSchemaId)
             .append(", C_Calendar_ID=").append(m_calendar!!.c_Calendar_ID)
             .append(" WHERE AD_Client_ID=").append(m_client!!.clientId)
         no = executeUpdateEx(sqlCmd.toString())
@@ -849,7 +849,7 @@ class MSetup
         processInfo.setADClientID(aD_Client_ID)
         processInfo.aD_User_ID = aD_User_ID
         processInfo.parameter = arrayOfNulls<ProcessInfoParameter>(0)
-        if (!ProcessUtil.startJavaProcess(m_ctx, processInfo, false, null, DocumentTypeVerify())) {
+        if (!ProcessUtil.startJavaProcess(m_ctx, processInfo, null, DocumentTypeVerify())) {
             val err = "Document type verification failed. Message=" + processInfo.summary!!
             log.log(Level.SEVERE, err)
             m_info!!.append(err)
@@ -880,7 +880,7 @@ class MSetup
             }
         }
         acct.setADClientID(m_client!!.clientId)
-        acct.set_Value(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID, m_as!!.c_AcctSchema_ID)
+        acct.set_Value(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID, m_as!!.accountingSchemaId)
         //
         if (!acct.save()) {
             throw AdempiereUserError(CLogger.retrieveErrorString(table.name + " not created"))
@@ -904,7 +904,7 @@ class MSetup
         }
 
         val vc = MAccount.getDefault(m_as, true)    //	optional null
-        vc.setAD_Org_ID(0)
+        vc.setOrgId(0)
         vc.account_ID = C_ElementValue_ID
         if (!vc.save()) {
             throw AdempiereUserError("Not Saved - Key=$key, C_ElementValue_ID=$C_ElementValue_ID")
@@ -975,16 +975,16 @@ class MSetup
             }
         }
         if (C_DocTypeShipment_ID != 0)
-            dt.c_DocTypeShipment_ID = C_DocTypeShipment_ID
+            dt.docTypeShipmentId = C_DocTypeShipment_ID
         if (C_DocTypeInvoice_ID != 0)
-            dt.c_DocTypeInvoice_ID = C_DocTypeInvoice_ID
+            dt.docTypeInvoiceId = C_DocTypeInvoice_ID
         if (GL_Category_ID != 0)
-            dt.gL_Category_ID = GL_Category_ID
+            dt.glCategoryId = GL_Category_ID
         if (sequence == null)
             dt.setIsDocNoControlled(false)
         else {
             dt.setIsDocNoControlled(true)
-            dt.docNoSequence_ID = sequence.aD_Sequence_ID
+            dt.docNoSequenceId = sequence.sequenceId
         }
         dt.setIsSOTrx()
         if (isReturnTrx)
@@ -994,7 +994,7 @@ class MSetup
             return 0
         }
         //
-        return dt.c_DocType_ID
+        return dt.docTypeId
     }   //  createDocType
 
 
@@ -1061,7 +1061,7 @@ class MSetup
             //  Default
             sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET ")
             sqlCmd.append("C_Campaign_ID=").append(C_Campaign_ID)
-            sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
+            sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.accountingSchemaId)
             sqlCmd.append(" AND ElementType='MC'")
             no = executeUpdateEx(sqlCmd.toString())
             if (no != 1)
@@ -1095,7 +1095,7 @@ class MSetup
             //  Default
             sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET ")
             sqlCmd.append("C_SalesRegion_ID=").append(C_SalesRegion_ID)
-            sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
+            sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.accountingSchemaId)
             sqlCmd.append(" AND ElementType='SR'")
             no = executeUpdateEx(sqlCmd.toString())
             if (no != 1)
@@ -1129,7 +1129,7 @@ class MSetup
             //  Default
             sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET ")
             sqlCmd.append("C_Activity_ID=").append(C_Activity_ID)
-            sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
+            sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.accountingSchemaId)
             sqlCmd.append(" AND ElementType='AY'")
             no = executeUpdateEx(sqlCmd.toString())
             if (no != 1)
@@ -1161,7 +1161,7 @@ class MSetup
 
         //	Create BPartner
         val bp = MBPartner(m_ctx, 0)
-        bp.setValue(defaultName)
+        bp.setSearchKey(defaultName)
         bp.setName(defaultName)
         bp.setBPGroup(bpg)
         if (bp.save())
@@ -1178,7 +1178,7 @@ class MSetup
         //  Default
         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET ")
         sqlCmd.append("C_BPartner_ID=").append(bp.c_BPartner_ID)
-        sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
+        sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.accountingSchemaId)
         sqlCmd.append(" AND ElementType='BP'")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
@@ -1190,7 +1190,7 @@ class MSetup
          */
         //  Create Product Category
         val pc = MProductCategory(m_ctx, 0)
-        pc.setValue(defaultName)
+        pc.setSearchKey(defaultName)
         pc.name = defaultName
         pc.setIsDefault(true)
         if (pc.save())
@@ -1251,7 +1251,7 @@ class MSetup
         //  Default
         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET ")
         sqlCmd.append("M_Product_ID=").append(product.m_Product_ID)
-        sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
+        sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.accountingSchemaId)
         sqlCmd.append(" AND ElementType='PR'")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
@@ -1278,9 +1278,9 @@ class MSetup
         locwh.postal = postal
         locwh.saveEx()
         val wh = MWarehouse(m_ctx, 0)
-        wh.setValue(defaultName)
+        wh.setSearchKey(defaultName)
         wh.name = defaultName
-        wh.c_Location_ID = locwh.c_Location_ID
+        wh.setC_Location_ID(locwh.c_Location_ID)
         if (!wh.save())
             log.log(Level.SEVERE, "Warehouse NOT inserted")
 
@@ -1326,7 +1326,7 @@ class MSetup
         //  PriceList Version
         val plv = MPriceListVersion(pl)
         plv.setName()
-        plv.m_DiscountSchema_ID = ds.m_DiscountSchema_ID
+        plv.setM_DiscountSchema_ID(ds.m_DiscountSchema_ID)
         if (!plv.save())
             log.log(Level.SEVERE, "PriceList_Version NOT inserted")
         //  ProductPrice
@@ -1340,7 +1340,7 @@ class MSetup
 
         //	Create Sales Rep for Client-User
         val bpCU = MBPartner(m_ctx, 0)
-        bpCU.setValue(AD_User_U_Name!!)
+        bpCU.setSearchKey(AD_User_U_Name!!)
         bpCU.setName(AD_User_U_Name!!)
         bpCU.setBPGroup(bpg)
         bpCU.setIsEmployee(true)
@@ -1366,7 +1366,7 @@ class MSetup
 
         //	Create Sales Rep for Client-Admin
         val bpCA = MBPartner(m_ctx, 0)
-        bpCA.setValue(AD_User_Name!!)
+        bpCA.setSearchKey(AD_User_Name!!)
         bpCA.setName(AD_User_Name!!)
         bpCA.setBPGroup(bpg)
         bpCA.setIsEmployee(true)
@@ -1445,7 +1445,7 @@ class MSetup
         if (m_hasProject) {
             sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET ")
             sqlCmd.append("C_Project_ID=").append(C_Project_ID)
-            sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.c_AcctSchema_ID)
+            sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.accountingSchemaId)
             sqlCmd.append(" AND ElementType='PJ'")
             no = executeUpdateEx(sqlCmd.toString())
             if (no != 1)

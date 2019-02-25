@@ -2,12 +2,11 @@ package org.idempiere.process;
 
 import org.compiere.model.I_R_RequestProcessorLog;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
 
-public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorLog, I_Persistent {
+public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorLog {
 
     /**
      *
@@ -59,17 +58,6 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
      */
     public void setIsError(boolean IsError) {
         set_Value(COLUMNNAME_IsError, Boolean.valueOf(IsError));
-    }
-
-    /**
-     * Get Request Processor.
-     *
-     * @return Processor for Requests
-     */
-    public int getR_RequestProcessor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_RequestProcessor_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

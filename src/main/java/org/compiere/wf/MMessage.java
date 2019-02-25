@@ -114,6 +114,6 @@ public class MMessage extends X_AD_Message {
     public static int getAD_Message_ID(Properties ctx, String Value) {
         MMessage msg = get(ctx, Value);
         if (msg == null) return 0;
-        return msg.getAD_Message_ID();
+        return msg.getMessageId();
     } //	getAD_Message_ID
 } //	MMessage

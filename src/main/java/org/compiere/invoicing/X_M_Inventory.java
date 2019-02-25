@@ -4,7 +4,6 @@ import org.compiere.model.I_M_Inventory;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
+public class X_M_Inventory extends PO implements I_M_Inventory {
 
     /**
      * Complete = CO
@@ -116,7 +115,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return Document Approval Amount
      */
     public BigDecimal getApprovalAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ApprovalAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ApprovalAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -127,29 +126,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Campaign.
-     *
-     * @return Marketing Campaign
-     */
-    public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Currency Type.
-     *
-     * @return Currency Conversion Rate Type
-     */
-    public int getC_ConversionType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ConversionType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -160,7 +137,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -177,7 +154,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -198,7 +175,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return Indicates how Costs will be calculated
      */
     public String getCostingMethod() {
-        return (String) get_Value(COLUMNNAME_CostingMethod);
+        return (String) getValue(COLUMNNAME_CostingMethod);
     }
 
     /**
@@ -212,23 +189,12 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     }
 
     /**
-     * Get Project.
-     *
-     * @return Financial Project
-     */
-    public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Description.
      *
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -246,7 +212,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -265,7 +231,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(COLUMNNAME_DocStatus);
+        return (String) getValue(COLUMNNAME_DocStatus);
     }
 
     /**
@@ -284,7 +250,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -311,7 +277,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(COLUMNNAME_IsApproved);
+        Object oo = getValue(COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -325,7 +291,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return Parameters for a Physical Inventory
      */
     public int getM_Inventory_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Inventory_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Inventory_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -336,7 +302,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return Date a product was moved in or out of inventory
      */
     public Timestamp getMovementDate() {
-        return (Timestamp) get_Value(COLUMNNAME_MovementDate);
+        return (Timestamp) getValue(COLUMNNAME_MovementDate);
     }
 
     /**
@@ -349,23 +315,12 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     }
 
     /**
-     * Get Perpetual Inventory.
-     *
-     * @return Rules for generating physical inventory
-     */
-    public int getM_PerpetualInv_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_PerpetualInv_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Warehouse.
      *
      * @return Storage Warehouse and Service Point
      */
     public int getM_Warehouse_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -395,7 +350,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -422,17 +377,6 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     }
 
     /**
-     * Get Reversal ID.
-     *
-     * @return ID of document reversal
-     */
-    public int getReversal_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Reversal_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Reversal ID.
      *
      * @param Reversal_ID ID of document reversal
@@ -440,28 +384,6 @@ public class X_M_Inventory extends PO implements I_M_Inventory, I_Persistent {
     public void setReversal_ID(int Reversal_ID) {
         if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
         else set_Value(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
-    }
-
-    /**
-     * Get User Element List 1.
-     *
-     * @return User defined list element #1
-     */
-    public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get User Element List 2.
-     *
-     * @return User defined list element #2
-     */
-    public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     @Override

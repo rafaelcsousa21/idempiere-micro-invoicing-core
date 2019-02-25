@@ -146,7 +146,7 @@ public class ProductCost {
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, m_M_Product_ID);
-            pstmt.setInt(2, as.getC_AcctSchema_ID());
+            pstmt.setInt(2, as.getAccountingSchemaId());
             rs = pstmt.executeQuery();
             if (rs.next()) validCombination_ID = rs.getInt(AcctType);
         } catch (SQLException e) {
@@ -191,7 +191,7 @@ public class ProductCost {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, as.getC_AcctSchema_ID());
+            pstmt.setInt(1, as.getAccountingSchemaId());
             rs = pstmt.executeQuery();
             if (rs.next()) validCombination_ID = rs.getInt(AcctType);
         } catch (SQLException e) {
@@ -307,7 +307,7 @@ public class ProductCost {
   	//  Convert
   	if (price != null && price.compareTo(Env.ZERO)!=0)
   		price = MConversionRate.convert (as.getCtx(),
-  			price, C_Currency_ID, as.getC_Currency_ID(),
+  			price, C_Currency_ID, as.getCurrencyId(),
   			as. getClientId(), 0);
   	return price;
   }   //  getPOPrice*/
@@ -363,7 +363,7 @@ public class ProductCost {
   	//  Convert - standard precision!! - should be costing precision
   	if (cost != null && cost.compareTo(Env.ZERO)!=0)
   		cost = MConversionRate.convert (as.getCtx(),
-  			cost, C_Currency_ID, as.getC_Currency_ID(), as. getClientId(), as. getOrgId());
+  			cost, C_Currency_ID, as.getCurrencyId(), as. getClientId(), as. getOrgId());
   	return cost;
   }   //  getPOCost*/
 

@@ -356,7 +356,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         }
 
         //	Set AD_Org to parent if not charge
-        if (getC_Charge_ID() == 0) setAD_Org_ID(getParent().getOrgId());
+        if (getC_Charge_ID() == 0) setOrgId(getParent().getOrgId());
 
         return true;
     } //	beforeSave

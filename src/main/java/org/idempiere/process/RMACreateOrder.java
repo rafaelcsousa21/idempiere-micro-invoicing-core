@@ -54,7 +54,7 @@ public class RMACreateOrder extends SvrProcess {
 
         // Create new order and set the different values based on original order/RMA doc
         MOrder order = new MOrder(getCtx(), 0);
-        order.setAD_Org_ID(rma.getOrgId());
+        order.setOrgId(rma.getOrgId());
         order.setC_BPartner_ID(originalOrder.getC_BPartner_ID());
         order.setC_BPartner_Location_ID(originalOrder.getC_BPartner_Location_ID());
         order.setAD_User_ID(originalOrder.getAD_User_ID());
@@ -85,7 +85,7 @@ public class RMACreateOrder extends SvrProcess {
                 MOrderLine orderLine = new MOrderLine(order);
                 MOrderLine originalOLine =
                         new MOrderLine(getCtx(), line.getShipLine().getC_OrderLine_ID());
-                orderLine.setAD_Org_ID(line.getOrgId());
+                orderLine.setOrgId(line.getOrgId());
                 orderLine.setM_Product_ID(originalOLine.getM_Product_ID());
                 orderLine.setM_AttributeSetInstance_ID(originalOLine.getMAttributeSetInstance_ID());
                 orderLine.setC_UOM_ID(originalOLine.getC_UOM_ID());
@@ -105,7 +105,7 @@ public class RMACreateOrder extends SvrProcess {
             } else if (line.getM_Product_ID() != 0) {
                 if (originalInvoice != null) {
                     MOrderLine orderLine = new MOrderLine(order);
-                    orderLine.setAD_Org_ID(line.getOrgId());
+                    orderLine.setOrgId(line.getOrgId());
                     orderLine.setM_Product_ID(line.getM_Product_ID());
                     orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
                     orderLine.setC_UOM_ID(line.getC_UOM_ID());
@@ -124,7 +124,7 @@ public class RMACreateOrder extends SvrProcess {
                     }
                 } else if (originalOrder != null) {
                     MOrderLine orderLine = new MOrderLine(order);
-                    orderLine.setAD_Org_ID(line.getOrgId());
+                    orderLine.setOrgId(line.getOrgId());
                     orderLine.setM_Product_ID(line.getM_Product_ID());
                     orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
                     orderLine.setC_UOM_ID(line.getC_UOM_ID());

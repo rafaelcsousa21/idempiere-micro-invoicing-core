@@ -26,8 +26,8 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan {
     public MRevenueRecognitionPlan(Properties ctx, int C_RevenueRecognition_Plan_ID) {
         super(ctx, C_RevenueRecognition_Plan_ID);
         if (C_RevenueRecognition_Plan_ID == 0) {
-            //	setC_AcctSchema_ID (0);
-            //	setC_Currency_ID (0);
+            //	setAccountingSchemaId (0);
+            //	setCurrencyId (0);
             //	setC_InvoiceLine_ID (0);
             //	setC_RevenueRecognition_ID (0);
             //	setC_RevenueRecognition_Plan_ID (0);

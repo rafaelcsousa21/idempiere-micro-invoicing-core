@@ -5,7 +5,6 @@ import org.compiere.model.I_M_Locator;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persistent {
+public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue {
 
     /**
      *
@@ -72,7 +71,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -93,7 +92,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Project Issues (Material, Labor)
      */
     public int getC_ProjectIssue_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectIssue_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectIssue_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -104,7 +103,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -122,7 +121,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -142,7 +141,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -153,7 +152,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Line on Shipment or Receipt document
      */
     public int getM_InOutLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InOutLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -179,7 +178,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -200,7 +199,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Date a product was moved in or out of inventory
      */
     public Timestamp getMovementDate() {
-        return (Timestamp) get_Value(COLUMNNAME_MovementDate);
+        return (Timestamp) getValue(COLUMNNAME_MovementDate);
     }
 
     /**
@@ -218,7 +217,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Quantity of a product moved.
      */
     public BigDecimal getMovementQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_MovementQty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_MovementQty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -238,7 +237,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -277,7 +276,7 @@ public class X_C_ProjectIssue extends PO implements I_C_ProjectIssue, I_Persiste
      * @return Time and Expense Report Line
      */
     public int getS_TimeExpenseLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_S_TimeExpenseLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_S_TimeExpenseLine_ID);
         if (ii == null) return 0;
         return ii;
     }

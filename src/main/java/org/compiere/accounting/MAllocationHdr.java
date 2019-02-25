@@ -91,7 +91,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
             setDateAcct(getDateTrx());
             setDocAction(X_C_AllocationHdr.DOCACTION_Complete); // CO
             setDocStatus(X_C_AllocationHdr.DOCSTATUS_Drafted); // DR
-            //	setC_Currency_ID (0);
+            //	setCurrencyId (0);
             setApprovalAmt(Env.ZERO);
             setIsApproved(false);
             setIsManual(false);
@@ -916,7 +916,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
             if (M_Invoice_ID > 0) isSOTrxInvoice = invoice.isSOTrx();
 
             MBPartner bpartner = new MBPartner(getCtx(), line.getC_BPartner_ID());
-            forUpdate(bpartner, 0);
+            forUpdate(bpartner);
 
             BigDecimal allocAmt = line.getAmount().add(line.getDiscountAmt()).add(line.getWriteOffAmt());
             BigDecimal openBalanceDiff = Env.ZERO;

@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_R_MailText;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_R_MailText extends BasePOName implements I_R_MailText, I_Persistent {
+public class X_R_MailText extends BasePOName implements I_R_MailText {
 
     /**
      *
@@ -54,7 +53,7 @@ public class X_R_MailText extends BasePOName implements I_R_MailText, I_Persiste
      * @return Text has HTML tags
      */
     public boolean isHtml() {
-        Object oo = get_Value(COLUMNNAME_IsHtml);
+        Object oo = getValue(COLUMNNAME_IsHtml);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -68,7 +67,7 @@ public class X_R_MailText extends BasePOName implements I_R_MailText, I_Persiste
      * @return Mail Header (Subject)
      */
     public String getMailHeader() {
-        return (String) get_Value(COLUMNNAME_MailHeader);
+        return (String) getValue(COLUMNNAME_MailHeader);
     }
 
     /**
@@ -77,7 +76,7 @@ public class X_R_MailText extends BasePOName implements I_R_MailText, I_Persiste
      * @return Text used for Mail message
      */
     public String getMailText() {
-        return (String) get_Value(COLUMNNAME_MailText);
+        return (String) getValue(COLUMNNAME_MailText);
     }
 
     /**
@@ -86,7 +85,7 @@ public class X_R_MailText extends BasePOName implements I_R_MailText, I_Persiste
      * @return Optional second text part used for Mail message
      */
     public String getMailText2() {
-        return (String) get_Value(COLUMNNAME_MailText2);
+        return (String) getValue(COLUMNNAME_MailText2);
     }
 
     /**
@@ -95,7 +94,7 @@ public class X_R_MailText extends BasePOName implements I_R_MailText, I_Persiste
      * @return Optional third text part used for Mail message
      */
     public String getMailText3() {
-        return (String) get_Value(COLUMNNAME_MailText3);
+        return (String) getValue(COLUMNNAME_MailText3);
     }
 
     /**
@@ -104,7 +103,7 @@ public class X_R_MailText extends BasePOName implements I_R_MailText, I_Persiste
      * @return Text templates for mailings
      */
     public int getR_MailText_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_MailText_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_MailText_ID);
         if (ii == null) return 0;
         return ii;
     }

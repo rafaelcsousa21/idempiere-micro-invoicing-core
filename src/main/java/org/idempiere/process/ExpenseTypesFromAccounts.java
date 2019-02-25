@@ -151,7 +151,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
 
         for (Iterator<MElementValue> it = result.iterator(); it.hasNext(); ) {
             elem = it.next();
-            expenseItemValue = m_productValuePrefix + elem.getValue() + m_productValueSuffix;
+            expenseItemValue = m_productValuePrefix + elem.getSearchKey() + m_productValueSuffix;
             // See if a product with this key already exists
             product = productMap.get(expenseItemValue);
             if (product == null) {
@@ -180,13 +180,13 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
 
                 // Set the revenue and expense accounting of the product to the given account element
                 // Get the valid combination
-                validComb = validCombMap.get(elem.getC_ElementValue_ID());
+                validComb = validCombMap.get(elem.getElementValueId());
                 if (validComb == null) {
                     // Create new valid combination
                     validComb = new MAccount(getCtx(), 0);
                     validComb.set_ValueOfColumn("AD_Client_ID", m_clientId);
-                    validComb.setAD_Org_ID(0);
-                    validComb.setAlias(elem.getValue());
+                    validComb.setOrgId(0);
+                    validComb.setAlias(elem.getSearchKey());
                     validComb.setAccount_ID(elem.getId());
                     validComb.setC_AcctSchema_ID(m_acctSchemaId);
                     validComb.saveEx();

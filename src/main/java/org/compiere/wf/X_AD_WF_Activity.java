@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_Activity;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persistent {
+public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
 
     /**
      * WFState AD_Reference_ID=305
@@ -39,8 +38,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     public X_AD_WF_Activity(Properties ctx, int AD_WF_Activity_ID) {
         super(ctx, AD_WF_Activity_ID);
         /**
-         * if (AD_WF_Activity_ID == 0) { setAD_Table_ID (0); setAD_WF_Activity_ID (0); setAD_WF_Node_ID
-         * (0); setAD_WF_Process_ID (0); setAD_Workflow_ID (0); setProcessed (false); setRecord_ID (0);
+         * if (AD_WF_Activity_ID == 0) { setColumnTableId (0); setAD_WF_Activity_ID (0); setAD_WF_Node_ID
+         * (0); setAD_WF_Process_ID (0); setAD_Workflow_ID (0); setProcessed (false); setRecordId (0);
          * setWFState (null); }
          */
     }
@@ -67,23 +66,12 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
     }
 
     /**
-     * Get Message.
-     *
-     * @return System Message
-     */
-    public int getAD_Message_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Message_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Table.
      *
      * @return Database Table information
      */
-    public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
+    public int getDBTableId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Table_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -93,7 +81,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @param AD_Table_ID Database Table information
      */
-    public void setAD_Table_ID(int AD_Table_ID) {
+    public void setDBTableId(int AD_Table_ID) {
         if (AD_Table_ID < 1) set_Value(COLUMNNAME_AD_Table_ID, null);
         else set_Value(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
     }
@@ -103,8 +91,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @return User within the system - Internal or Business Partner Contact
      */
-    public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
+    public int getUserId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -114,7 +102,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @param AD_User_ID User within the system - Internal or Business Partner Contact
      */
-    public void setAD_User_ID(int AD_User_ID) {
+    public void setUserId(int AD_User_ID) {
         if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
         else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
     }
@@ -124,8 +112,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @return Workflow Activity
      */
-    public int getAD_WF_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Activity_ID);
+    public int getWorkflowActivityId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -135,8 +123,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @return Workflow Node (activity), step or process
      */
-    public int getAD_WF_Node_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Node_ID);
+    public int getWorkflowNodeId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Node_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -146,7 +134,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @param AD_WF_Node_ID Workflow Node (activity), step or process
      */
-    public void setAD_WF_Node_ID(int AD_WF_Node_ID) {
+    public void setWorkflowNodeId(int AD_WF_Node_ID) {
         if (AD_WF_Node_ID < 1) set_Value(COLUMNNAME_AD_WF_Node_ID, null);
         else set_Value(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
     }
@@ -156,8 +144,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @return Actual Workflow Process Instance
      */
-    public int getAD_WF_Process_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Process_ID);
+    public int getWorkflowProcessId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Process_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -167,7 +155,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @param AD_WF_Process_ID Actual Workflow Process Instance
      */
-    public void setAD_WF_Process_ID(int AD_WF_Process_ID) {
+    public void setWorkflowProcessId(int AD_WF_Process_ID) {
         if (AD_WF_Process_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_Process_ID, null);
         else set_ValueNoCheck(COLUMNNAME_AD_WF_Process_ID, Integer.valueOf(AD_WF_Process_ID));
     }
@@ -177,8 +165,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @return Responsible for Workflow Execution
      */
-    public int getAD_WF_Responsible_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Responsible_ID);
+    public int getWorkflowResponsibleId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Responsible_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -188,20 +176,9 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @param AD_WF_Responsible_ID Responsible for Workflow Execution
      */
-    public void setAD_WF_Responsible_ID(int AD_WF_Responsible_ID) {
+    public void setWorkflowResponsibleId(int AD_WF_Responsible_ID) {
         if (AD_WF_Responsible_ID < 1) set_Value(COLUMNNAME_AD_WF_Responsible_ID, null);
         else set_Value(COLUMNNAME_AD_WF_Responsible_ID, Integer.valueOf(AD_WF_Responsible_ID));
-    }
-
-    /**
-     * Get Workflow.
-     *
-     * @return Workflow or combination of tasks
-     */
-    public int getAD_Workflow_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Workflow_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -209,7 +186,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @param AD_Workflow_ID Workflow or combination of tasks
      */
-    public void setAD_Workflow_ID(int AD_Workflow_ID) {
+    public void setWorkflowId(int AD_Workflow_ID) {
         if (AD_Workflow_ID < 1) set_Value(COLUMNNAME_AD_Workflow_ID, null);
         else set_Value(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
     }
@@ -229,7 +206,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      * @return Indicates if this request is of a high, medium or low priority.
      */
     public int getPriority() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Priority);
+        Integer ii = (Integer) getValue(COLUMNNAME_Priority);
         if (ii == null) return 0;
         return ii;
     }
@@ -249,7 +226,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -271,8 +248,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @return Direct internal record ID
      */
-    public int getRecord_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Record_ID);
+    public int getRecordId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_Record_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -282,7 +259,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @param Record_ID Direct internal record ID
      */
-    public void setRecord_ID(int Record_ID) {
+    public void setRecordId(int Record_ID) {
         if (Record_ID < 0) set_Value(COLUMNNAME_Record_ID, null);
         else set_Value(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
     }
@@ -293,7 +270,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      * @return Text Message
      */
     public String getTextMsg() {
-        return (String) get_Value(COLUMNNAME_TextMsg);
+        return (String) getValue(COLUMNNAME_TextMsg);
     }
 
     /**
@@ -310,8 +287,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @return State of the execution of the workflow
      */
-    public String getWFState() {
-        return (String) get_Value(COLUMNNAME_WFState);
+    public String getWorkflowState() {
+        return (String) getValue(COLUMNNAME_WFState);
     }
 
     /**
@@ -319,7 +296,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity, I_Persiste
      *
      * @param WFState State of the execution of the workflow
      */
-    public void setWFState(String WFState) {
+    public void setWorkflowState(String WFState) {
 
         set_Value(COLUMNNAME_WFState, WFState);
     }

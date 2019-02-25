@@ -34,7 +34,7 @@ public class HashPasswords extends SvrProcess {
 
         // update the sysconfig key to Y out of trx and reset the cache
         MSysConfig conf = new MSysConfig(getCtx(), SystemIDs.SYSCONFIG_USER_HASH_PASSWORD);
-        conf.setValue("Y");
+        conf.setSearchKey("Y");
         conf.saveEx();
         CacheMgt.get().reset(MSysConfig.Table_Name);
 
@@ -49,7 +49,7 @@ public class HashPasswords extends SvrProcess {
             }
         } catch (Exception e) {
             // reset to N on exception
-            conf.setValue("N");
+            conf.setSearchKey("N");
             conf.saveEx();
             throw e;
         }

@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_BankAccount_Processor;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @version Release 5.1 - $Id$
  */
 public class X_C_BankAccount_Processor extends PO
-        implements I_C_BankAccount_Processor, I_Persistent {
+        implements I_C_BankAccount_Processor {
 
     /**
      *
@@ -63,7 +62,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept American Express Card
      */
     public boolean isAcceptAMEX() {
-        Object oo = get_Value(COLUMNNAME_AcceptAMEX);
+        Object oo = getValue(COLUMNNAME_AcceptAMEX);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -77,7 +76,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept Bank ATM Card
      */
     public boolean isAcceptATM() {
-        Object oo = get_Value(COLUMNNAME_AcceptATM);
+        Object oo = getValue(COLUMNNAME_AcceptATM);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -91,7 +90,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept ECheck (Electronic Checks)
      */
     public boolean isAcceptCheck() {
-        Object oo = get_Value(COLUMNNAME_AcceptCheck);
+        Object oo = getValue(COLUMNNAME_AcceptCheck);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -105,7 +104,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept Corporate Purchase Cards
      */
     public boolean isAcceptCorporate() {
-        Object oo = get_Value(COLUMNNAME_AcceptCorporate);
+        Object oo = getValue(COLUMNNAME_AcceptCorporate);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -119,7 +118,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept Diner's Club
      */
     public boolean isAcceptDiners() {
-        Object oo = get_Value(COLUMNNAME_AcceptDiners);
+        Object oo = getValue(COLUMNNAME_AcceptDiners);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -133,7 +132,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept Direct Debits (vendor initiated)
      */
     public boolean isAcceptDirectDebit() {
-        Object oo = get_Value(COLUMNNAME_AcceptDirectDebit);
+        Object oo = getValue(COLUMNNAME_AcceptDirectDebit);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -147,7 +146,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept Direct Deposit (payee initiated)
      */
     public boolean isAcceptDirectDeposit() {
-        Object oo = get_Value(COLUMNNAME_AcceptDirectDeposit);
+        Object oo = getValue(COLUMNNAME_AcceptDirectDeposit);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -161,7 +160,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept Discover Card
      */
     public boolean isAcceptDiscover() {
-        Object oo = get_Value(COLUMNNAME_AcceptDiscover);
+        Object oo = getValue(COLUMNNAME_AcceptDiscover);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -175,7 +174,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept Master Card
      */
     public boolean isAcceptMC() {
-        Object oo = get_Value(COLUMNNAME_AcceptMC);
+        Object oo = getValue(COLUMNNAME_AcceptMC);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -189,7 +188,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Accept Visa Cards
      */
     public boolean isAcceptVisa() {
-        Object oo = get_Value(COLUMNNAME_AcceptVisa);
+        Object oo = getValue(COLUMNNAME_AcceptVisa);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -203,7 +202,7 @@ public class X_C_BankAccount_Processor extends PO
      * @return Account at the Bank
      */
     public int getC_BankAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -219,23 +218,12 @@ public class X_C_BankAccount_Processor extends PO
     }
 
     /**
-     * Get Currency.
-     *
-     * @return The Currency for this record
-     */
-    public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Payment Processor.
      *
      * @return Payment processor for electronic payments
      */
     public int getC_PaymentProcessor_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaymentProcessor_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_PaymentProcessor_ID);
         if (ii == null) return 0;
         return ii;
     }

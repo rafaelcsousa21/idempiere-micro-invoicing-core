@@ -4,7 +4,6 @@ import org.compiere.model.I_C_LandedCostAllocation;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAllocation, I_Persistent {
+public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAllocation {
 
     /**
      *
@@ -62,7 +61,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      * @return Amount
      */
     public BigDecimal getAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Amt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Amt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -82,7 +81,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      * @return Calculation Base
      */
     public BigDecimal getBase() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Base);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Base);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -94,17 +93,6 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      */
     public void setBase(BigDecimal Base) {
         set_Value(COLUMNNAME_Base, Base);
-    }
-
-    /**
-     * Get Invoice Line.
-     *
-     * @return Invoice Detail Line
-     */
-    public int getC_InvoiceLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceLine_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -123,7 +111,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      * @return Allocation for Land Costs
      */
     public int getC_LandedCostAllocation_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LandedCostAllocation_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LandedCostAllocation_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -146,7 +134,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      * @return Product Attribute Set Instance
      */
     public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_AttributeSetInstance_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -157,7 +145,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      * @return Product Cost Element
      */
     public int getM_CostElement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -184,7 +172,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      * @return Line on Shipment or Receipt document
      */
     public int getM_InOutLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_InOutLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -205,7 +193,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -226,7 +214,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }

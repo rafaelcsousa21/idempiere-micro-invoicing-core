@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_Year;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Year extends PO implements I_C_Year, I_Persistent {
+public class X_C_Year extends PO implements I_C_Year {
 
     /**
      *
@@ -55,7 +54,7 @@ public class X_C_Year extends PO implements I_C_Year, I_Persistent {
      * @return Accounting Calendar Name
      */
     public int getC_Calendar_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Calendar_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Calendar_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -76,7 +75,7 @@ public class X_C_Year extends PO implements I_C_Year, I_Persistent {
      * @return Calendar Year
      */
     public int getC_Year_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Year_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Year_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -87,7 +86,7 @@ public class X_C_Year extends PO implements I_C_Year, I_Persistent {
      * @return The Fiscal Year
      */
     public String getFiscalYear() {
-        return (String) get_Value(COLUMNNAME_FiscalYear);
+        return (String) getValue(COLUMNNAME_FiscalYear);
     }
 
     /**

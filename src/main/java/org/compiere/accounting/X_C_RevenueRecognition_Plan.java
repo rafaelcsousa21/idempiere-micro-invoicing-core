@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_RevenueRecognition_Plan;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @version Release 5.1 - $Id$
  */
 public class X_C_RevenueRecognition_Plan extends PO
-        implements I_C_RevenueRecognition_Plan, I_Persistent {
+        implements I_C_RevenueRecognition_Plan {
 
     /**
      *
@@ -29,7 +28,7 @@ public class X_C_RevenueRecognition_Plan extends PO
             Properties ctx, int C_RevenueRecognition_Plan_ID) {
         super(ctx, C_RevenueRecognition_Plan_ID);
         /**
-         * if (C_RevenueRecognition_Plan_ID == 0) { setC_AcctSchema_ID (0); setC_Currency_ID (0);
+         * if (C_RevenueRecognition_Plan_ID == 0) { setAccountingSchemaId (0); setCurrencyId (0);
          * setC_InvoiceLine_ID (0); setC_RevenueRecognition_ID (0); setC_RevenueRecognition_Plan_ID (0);
          * setP_Revenue_Acct (0); setRecognizedAmt (Env.ZERO); setTotalAmt (Env.ZERO);
          * setUnEarnedRevenue_Acct (0); }
@@ -63,17 +62,6 @@ public class X_C_RevenueRecognition_Plan extends PO
     }
 
     /**
-     * Get Accounting Schema.
-     *
-     * @return Rules for accounting
-     */
-    public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Accounting Schema.
      *
      * @param C_AcctSchema_ID Rules for accounting
@@ -81,17 +69,6 @@ public class X_C_RevenueRecognition_Plan extends PO
     public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
         else set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
-    }
-
-    /**
-     * Get Currency.
-     *
-     * @return The Currency for this record
-     */
-    public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -105,17 +82,6 @@ public class X_C_RevenueRecognition_Plan extends PO
     }
 
     /**
-     * Get Invoice Line.
-     *
-     * @return Invoice Detail Line
-     */
-    public int getC_InvoiceLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_InvoiceLine_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Set Invoice Line.
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
@@ -123,17 +89,6 @@ public class X_C_RevenueRecognition_Plan extends PO
     public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
         else set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
-    }
-
-    /**
-     * Get Revenue Recognition.
-     *
-     * @return Method for recording revenue
-     */
-    public int getC_RevenueRecognition_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_RevenueRecognition_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -146,17 +101,6 @@ public class X_C_RevenueRecognition_Plan extends PO
         else
             set_ValueNoCheck(
                     COLUMNNAME_C_RevenueRecognition_ID, Integer.valueOf(C_RevenueRecognition_ID));
-    }
-
-    /**
-     * Get Product Revenue.
-     *
-     * @return Account for Product Revenue (Sales Account)
-     */
-    public int getP_Revenue_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_P_Revenue_Acct);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -184,17 +128,6 @@ public class X_C_RevenueRecognition_Plan extends PO
      */
     public void setTotalAmt(BigDecimal TotalAmt) {
         set_ValueNoCheck(COLUMNNAME_TotalAmt, TotalAmt);
-    }
-
-    /**
-     * Get Unearned Revenue.
-     *
-     * @return Account for unearned revenue
-     */
-    public int getUnEarnedRevenue_Acct() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UnEarnedRevenue_Acct);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

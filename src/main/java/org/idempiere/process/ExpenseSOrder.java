@@ -162,7 +162,7 @@ public class ExpenseSOrder extends SvrProcess {
             if (log.isLoggable(Level.INFO))
                 log.info("New Order for " + bp + ", Project=" + tel.getC_Project_ID());
             m_order = new MOrder(getCtx(), 0);
-            m_order.setAD_Org_ID(tel.getOrgId());
+            m_order.setOrgId(tel.getOrgId());
             m_order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_OnCredit);
             //
             m_order.setBPartner(bp);

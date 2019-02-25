@@ -62,31 +62,31 @@ public class WFActivityManage extends SvrProcess {
         if (p_IsAbort) {
             String msg = user.getName() + ": Abort";
             activity.setTextMsg(msg);
-            activity.setAD_User_ID(getAD_User_ID());
+            activity.setUserId(getAD_User_ID());
             // 2007-06-14, matthiasO.
             // Set the 'processed'-flag when an activity is aborted; not setting this flag
             // will leave the activity in an "unmanagable" state
             activity.setProcessed(true);
-            activity.setWFState(StateEngine.STATE_Aborted);
+            activity.setWorkflowState(StateEngine.STATE_Aborted);
             return msg;
         }
         String msg = null;
         //	Change User
-        if (p_AD_User_ID != 0 && activity.getAD_User_ID() != p_AD_User_ID) {
-            MUser from = MUser.get(getCtx(), activity.getAD_User_ID());
+        if (p_AD_User_ID != 0 && activity.getUserId() != p_AD_User_ID) {
+            MUser from = MUser.get(getCtx(), activity.getUserId());
             MUser to = MUser.get(getCtx(), p_AD_User_ID);
             msg = user.getName() + ": " + from.getName() + " -> " + to.getName();
             activity.setTextMsg(msg);
-            activity.setAD_User_ID(p_AD_User_ID);
+            activity.setUserId(p_AD_User_ID);
         }
         //	Change Responsible
         if (p_AD_WF_Responsible_ID != 0
-                && activity.getAD_WF_Responsible_ID() != p_AD_WF_Responsible_ID) {
-            MWFResponsible from = MWFResponsible.get(getCtx(), activity.getAD_WF_Responsible_ID());
+                && activity.getWorkflowResponsibleId() != p_AD_WF_Responsible_ID) {
+            MWFResponsible from = MWFResponsible.get(getCtx(), activity.getWorkflowResponsibleId());
             MWFResponsible to = MWFResponsible.get(getCtx(), p_AD_WF_Responsible_ID);
             String msg1 = user.getName() + ": " + from.getName() + " -> " + to.getName();
             activity.setTextMsg(msg1);
-            activity.setAD_WF_Responsible_ID(p_AD_WF_Responsible_ID);
+            activity.setWorkflowResponsibleId(p_AD_WF_Responsible_ID);
             if (msg == null) msg = msg1;
             else msg += " - " + msg1;
         }

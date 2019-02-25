@@ -828,7 +828,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             if (tax.getTaxAmt().signum() != 0) {
                 if (!tax.save()) return false;
             } else {
-                if (!tax.is_new() && !tax.delete(false)) return false;
+                if (!tax.isNew() && !tax.delete(false)) return false;
             }
         }
         return true;
@@ -1185,7 +1185,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         if (!getParent().isCreditMemo()) {
             throw new AdempiereException("InvoiceNotCreditMemo");
         }
-        setAD_Org_ID(rmaLine.getOrgId());
+        setOrgId(rmaLine.getOrgId());
         setM_RMALine_ID(rmaLine.getM_RMALine_ID());
         setDescription(rmaLine.getDescription());
         setLine(rmaLine.getLine());

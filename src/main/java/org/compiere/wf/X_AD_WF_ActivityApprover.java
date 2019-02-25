@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_ActivityApprover;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityApprover, I_Persistent {
+public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityApprover {
 
     /**
      *
@@ -26,7 +25,7 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
     public X_AD_WF_ActivityApprover(Properties ctx, int AD_WF_ActivityApprover_ID) {
         super(ctx, AD_WF_ActivityApprover_ID);
         /**
-         * if (AD_WF_ActivityApprover_ID == 0) { setAD_User_ID (0); setAD_WF_ActivityApprover_ID (0);
+         * if (AD_WF_ActivityApprover_ID == 0) { setUserId (0); setAD_WF_ActivityApprover_ID (0);
          * setAD_WF_Activity_ID (0); }
          */
     }
@@ -57,19 +56,8 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
      *
      * @return User within the system - Internal or Business Partner Contact
      */
-    public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Workflow Activity.
-     *
-     * @return Workflow Activity
-     */
-    public int getAD_WF_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Activity_ID);
+    public int getUserId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
     }

@@ -137,7 +137,7 @@ public class DocLine {
         m_doc = doc;
         //
         //  Document Consistency
-        if (p_po.getOrgId() == 0) p_po.setAD_Org_ID(m_doc.getOrgId());
+        if (p_po.getOrgId() == 0) p_po.setOrgId(m_doc.getOrgId());
     } //	DocLine
 
     /**
@@ -147,15 +147,15 @@ public class DocLine {
      */
     public int getC_Currency_ID() {
         if (m_C_Currency_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_Currency_ID");
+            int index = p_po.getColumnIndex("C_Currency_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_Currency_ID = ii.intValue();
             }
             if (m_C_Currency_ID <= 0) m_C_Currency_ID = m_doc.getC_Currency_ID();
         }
         return m_C_Currency_ID;
-    } //  getC_Currency_ID
+    } //  getCurrencyId
 
     /**
      * Get Conversion Type
@@ -164,9 +164,9 @@ public class DocLine {
      */
     public int getC_ConversionType_ID() {
         if (m_C_ConversionType_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_ConversionType_ID");
+            int index = p_po.getColumnIndex("C_ConversionType_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_ConversionType_ID = ii.intValue();
             }
             if (m_C_ConversionType_ID <= 0) m_C_ConversionType_ID = m_doc.getC_ConversionType_ID();
@@ -268,9 +268,9 @@ public class DocLine {
      * @return charge amount
      */
     public BigDecimal getChargeAmt() {
-        int index = p_po.get_ColumnIndex("ChargeAmt");
+        int index = p_po.getColumnIndex("ChargeAmt");
         if (index != -1) {
-            BigDecimal bd = (BigDecimal) p_po.get_Value(index);
+            BigDecimal bd = (BigDecimal) p_po.getValue(index);
             if (bd != null) return bd;
         }
         return Env.ZERO;
@@ -326,9 +326,9 @@ public class DocLine {
      */
     public Timestamp getDateAcct() {
         if (m_DateAcct != null) return m_DateAcct;
-        int index = p_po.get_ColumnIndex("DateAcct");
+        int index = p_po.getColumnIndex("DateAcct");
         if (index != -1) {
-            m_DateAcct = (Timestamp) p_po.get_Value(index);
+            m_DateAcct = (Timestamp) p_po.getValue(index);
             if (m_DateAcct != null) return m_DateAcct;
         }
         m_DateAcct = m_doc.getDateAcct();
@@ -354,9 +354,9 @@ public class DocLine {
      */
     public Timestamp getDateConv() {
         Timestamp dateConv = null;
-        int index = p_po.get_ColumnIndex("DateAcct");
+        int index = p_po.getColumnIndex("DateAcct");
         if (index != -1) {
-            dateConv = (Timestamp) p_po.get_Value(index);
+            dateConv = (Timestamp) p_po.getValue(index);
         }
 
         if (dateConv == null) dateConv = getDateAcct();
@@ -371,9 +371,9 @@ public class DocLine {
      */
     public Timestamp getDateDoc() {
         if (m_DateDoc != null) return m_DateDoc;
-        int index = p_po.get_ColumnIndex("DateDoc");
+        int index = p_po.getColumnIndex("DateDoc");
         if (index != -1) {
-            m_DateDoc = (Timestamp) p_po.get_Value(index);
+            m_DateDoc = (Timestamp) p_po.getValue(index);
             if (m_DateDoc != null) return m_DateDoc;
         }
         m_DateDoc = m_doc.getDateDoc();
@@ -432,9 +432,9 @@ public class DocLine {
      * @return C_Charge_ID
      */
     public int getC_Charge_ID() {
-        int index = p_po.get_ColumnIndex("C_Charge_ID");
+        int index = p_po.getColumnIndex("C_Charge_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -460,9 +460,9 @@ public class DocLine {
      */
     protected int getC_Period_ID() {
         if (m_C_Period_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_Period_ID");
+            int index = p_po.getColumnIndex("C_Period_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_Period_ID = ii.intValue();
             }
             if (m_C_Period_ID == -1) m_C_Period_ID = 0;
@@ -478,7 +478,7 @@ public class DocLine {
      */
     public int getC_AcctSchema_ID() {
         return m_C_AcctSchema_ID;
-    } //  getC_AcctSchema_ID
+    } //  getAccountingSchemaId
 
     /**
      * Get Line ID
@@ -519,9 +519,9 @@ public class DocLine {
      * @return M_Product_ID
      */
     public int getM_Product_ID() {
-        int index = p_po.get_ColumnIndex("M_Product_ID");
+        int index = p_po.getColumnIndex("M_Product_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -549,9 +549,9 @@ public class DocLine {
      * @return M_AttributeSetInstance_ID
      */
     public int getMAttributeSetInstance_ID() {
-        int index = p_po.get_ColumnIndex("M_AttributeSetInstance_ID");
+        int index = p_po.getColumnIndex("M_AttributeSetInstance_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -563,9 +563,9 @@ public class DocLine {
      * @return M_Locator_ID
      */
     public int getM_Locator_ID() {
-        int index = p_po.get_ColumnIndex("M_Locator_ID");
+        int index = p_po.getColumnIndex("M_Locator_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -577,9 +577,9 @@ public class DocLine {
      * @return C_OrderLine_ID
      */
     public int getC_OrderLine_ID() {
-        int index = p_po.get_ColumnIndex("C_OrderLine_ID");
+        int index = p_po.getColumnIndex("C_OrderLine_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -656,7 +656,7 @@ public class DocLine {
                             whereClause,
                             get_ID(),
                             getMAttributeSetInstance_ID(),
-                            as.getC_AcctSchema_ID());
+                            as.getAccountingSchemaId());
             if (cd != null) return cd.getAmt();
         }
         return getProductCosts(as, AD_Org_ID, zeroCostsOK);
@@ -711,9 +711,9 @@ public class DocLine {
      */
     public int getC_UOM_ID() {
         //	Trx UOM
-        int index = p_po.get_ColumnIndex("C_UOM_ID");
+        int index = p_po.getColumnIndex("C_UOM_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         //  Storage UOM
@@ -751,8 +751,8 @@ public class DocLine {
      * @return doc line description
      */
     public String getDescription() {
-        int index = p_po.get_ColumnIndex("Description");
-        if (index != -1) return (String) p_po.get_Value(index);
+        int index = p_po.getColumnIndex("Description");
+        if (index != -1) return (String) p_po.getValue(index);
         return null;
     } //	getDescription
 
@@ -762,9 +762,9 @@ public class DocLine {
      * @return C_Tax_ID
      */
     public int getC_Tax_ID() {
-        int index = p_po.get_ColumnIndex("C_Tax_ID");
+        int index = p_po.getColumnIndex("C_Tax_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -776,9 +776,9 @@ public class DocLine {
      * @return line no
      */
     public int getLine() {
-        int index = p_po.get_ColumnIndex("Line");
+        int index = p_po.getColumnIndex("Line");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -791,9 +791,9 @@ public class DocLine {
      */
     public int getC_BPartner_ID() {
         if (m_C_BPartner_ID == -1) {
-            int index = p_po.get_ColumnIndex("C_BPartner_ID");
+            int index = p_po.getColumnIndex("C_BPartner_ID");
             if (index != -1) {
-                Integer ii = (Integer) p_po.get_Value(index);
+                Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_BPartner_ID = ii.intValue();
             }
             if (m_C_BPartner_ID <= 0) m_C_BPartner_ID = m_doc.getC_BPartner_ID();
@@ -816,9 +816,9 @@ public class DocLine {
      * @return BPartner Location
      */
     public int getC_BPartner_Location_ID() {
-        int index = p_po.get_ColumnIndex("C_BPartner_Location_ID");
+        int index = p_po.getColumnIndex("C_BPartner_Location_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return m_doc.getC_BPartner_Location_ID();
@@ -830,9 +830,9 @@ public class DocLine {
      * @return AD_OrgTrx_ID
      */
     public int getAD_OrgTrx_ID() {
-        int index = p_po.get_ColumnIndex("AD_OrgTrx_ID");
+        int index = p_po.getColumnIndex("AD_OrgTrx_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -868,9 +868,9 @@ public class DocLine {
      * @return C_Project_ID
      */
     public int getC_Project_ID() {
-        int index = p_po.get_ColumnIndex("C_Project_ID");
+        int index = p_po.getColumnIndex("C_Project_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -882,9 +882,9 @@ public class DocLine {
      * @return C_ProjectPhase_ID
      */
     public int getC_ProjectPhase_ID() {
-        int index = p_po.get_ColumnIndex("C_ProjectPhase_ID");
+        int index = p_po.getColumnIndex("C_ProjectPhase_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -896,9 +896,9 @@ public class DocLine {
      * @return C_ProjectTask_ID
      */
     public int getC_ProjectTask_ID() {
-        int index = p_po.get_ColumnIndex("C_ProjectTask_ID");
+        int index = p_po.getColumnIndex("C_ProjectTask_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -910,9 +910,9 @@ public class DocLine {
      * @return C_Campaign_ID
      */
     public int getC_Campaign_ID() {
-        int index = p_po.get_ColumnIndex("C_Campaign_ID");
+        int index = p_po.getColumnIndex("C_Campaign_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -924,9 +924,9 @@ public class DocLine {
      * @return C_Activity_ID
      */
     public int getC_Activity_ID() {
-        int index = p_po.get_ColumnIndex("C_Activity_ID");
+        int index = p_po.getColumnIndex("C_Activity_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -938,9 +938,9 @@ public class DocLine {
      * @return user defined 1
      */
     public int getUser1_ID() {
-        int index = p_po.get_ColumnIndex("User1_ID");
+        int index = p_po.getColumnIndex("User1_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -952,9 +952,9 @@ public class DocLine {
      * @return user defined 2
      */
     public int getUser2_ID() {
-        int index = p_po.get_ColumnIndex("User2_ID");
+        int index = p_po.getColumnIndex("User2_ID");
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
@@ -967,9 +967,9 @@ public class DocLine {
      * @return user defined column value
      */
     public int getValue(String ColumnName) {
-        int index = p_po.get_ColumnIndex(ColumnName);
+        int index = p_po.getColumnIndex(ColumnName);
         if (index != -1) {
-            Integer ii = (Integer) p_po.get_Value(index);
+            Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;

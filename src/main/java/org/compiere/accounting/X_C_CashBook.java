@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_CashBook;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persistent {
+public class X_C_CashBook extends BasePOName implements I_C_CashBook {
 
     /**
      *
@@ -26,7 +25,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
     public X_C_CashBook(Properties ctx, int C_CashBook_ID) {
         super(ctx, C_CashBook_ID);
         /**
-         * if (C_CashBook_ID == 0) { setC_CashBook_ID (0); setC_Currency_ID (0); setIsDefault (false);
+         * if (C_CashBook_ID == 0) { setC_CashBook_ID (0); setCurrencyId (0); setIsDefault (false);
          * setName (null); }
          */
     }
@@ -58,7 +57,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
      * @return Cash Book for recording petty cash transactions
      */
     public int getC_CashBook_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_CashBook_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_CashBook_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -69,7 +68,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook, I_Persiste
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }

@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_DepositBatchLine;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_Persistent {
+public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
 
     /**
      *
@@ -61,7 +60,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
      * @return Deposit Batch
      */
     public int getC_DepositBatch_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DepositBatch_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DepositBatch_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -82,7 +81,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
      * @return Payment identifier
      */
     public int getC_Payment_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -103,7 +102,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -124,15 +123,6 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine, I_
      */
     public void setPayAmt(BigDecimal PayAmt) {
         set_Value(COLUMNNAME_PayAmt, PayAmt);
-    }
-
-    /**
-     * Set Processed.
-     *
-     * @param Processed The document has been processed
-     */
-    public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     @Override

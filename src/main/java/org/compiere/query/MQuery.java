@@ -136,7 +136,7 @@ public class MQuery implements Serializable {
      * @param AD_Table_ID Table_ID
      */
     public MQuery(int AD_Table_ID) { // 	Use Client Context as r/o
-        m_TableName = MTable.getTableName(Env.getCtx(), AD_Table_ID);
+        m_TableName = MTable.getDbTableName(Env.getCtx(), AD_Table_ID);
     } //	MQuery
 
     /**

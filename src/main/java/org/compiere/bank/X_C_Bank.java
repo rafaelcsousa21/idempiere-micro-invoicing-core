@@ -2,7 +2,6 @@ package org.compiere.bank;
 
 import org.compiere.model.I_C_Bank;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Bank extends BasePOName implements I_C_Bank, I_Persistent {
+public class X_C_Bank extends BasePOName implements I_C_Bank {
 
     /**
      *
@@ -49,23 +48,12 @@ public class X_C_Bank extends BasePOName implements I_C_Bank, I_Persistent {
     }
 
     /**
-     * Get Address.
-     *
-     * @return Location or Address
-     */
-    public int getC_Location_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Location_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Routing No.
      *
      * @return Bank Routing Number
      */
     public String getRoutingNo() {
-        return (String) get_Value(COLUMNNAME_RoutingNo);
+        return (String) getValue(COLUMNNAME_RoutingNo);
     }
 
     /**
@@ -83,7 +71,7 @@ public class X_C_Bank extends BasePOName implements I_C_Bank, I_Persistent {
      * @return Swift Code or BIC
      */
     public String getSwiftCode() {
-        return (String) get_Value(COLUMNNAME_SwiftCode);
+        return (String) getValue(COLUMNNAME_SwiftCode);
     }
 
     @Override

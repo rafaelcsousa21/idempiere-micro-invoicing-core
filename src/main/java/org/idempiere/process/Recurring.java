@@ -47,7 +47,7 @@ public class Recurring extends SvrProcess {
     protected String doIt() throws Exception {
         throw new NotImplementedException();
     /*
-    MRecurring rec = new MRecurring (getCtx(), getRecord_ID(), null);
+    MRecurring rec = new MRecurring (getCtx(), getRecordId(), null);
     if (log.isLoggable(Level.INFO)) log.info(rec.toString());
     return rec.executeRun();
     */

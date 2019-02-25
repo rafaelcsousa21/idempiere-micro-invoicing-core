@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Persistent {
+public class X_M_CostElement extends BasePOName implements I_M_CostElement {
 
     /**
      * Material = M
@@ -99,7 +98,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
      * @return Type of Cost Element
      */
     public String getCostElementType() {
-        return (String) get_Value(COLUMNNAME_CostElementType);
+        return (String) getValue(COLUMNNAME_CostElementType);
     }
 
     /**
@@ -118,7 +117,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
      * @return Indicates how Costs will be calculated
      */
     public String getCostingMethod() {
-        return (String) get_Value(COLUMNNAME_CostingMethod);
+        return (String) getValue(COLUMNNAME_CostingMethod);
     }
 
     /**
@@ -146,7 +145,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
      * @return The value is calculated by the system
      */
     public boolean isCalculated() {
-        Object oo = get_Value(COLUMNNAME_IsCalculated);
+        Object oo = getValue(COLUMNNAME_IsCalculated);
         if (oo != null) {
             if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
@@ -160,7 +159,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement, I_Pe
      * @return Product Cost Element
      */
     public int getM_CostElement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_CostElement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
     }

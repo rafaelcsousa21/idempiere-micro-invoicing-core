@@ -155,7 +155,7 @@ public class RecurringRun extends SvrProcess {
         if (_po instanceof org.compiere.orm.PO) {
             org.compiere.orm.PO po = (org.compiere.orm.PO) _po;
             /* Parse context and prm tags on description */
-            if (po.get_ColumnIndex("Description") >= 0) {
+            if (po.getColumnIndex("Description") >= 0) {
                 String description = po.get_ValueAsString("Description");
                 String description_org = description;
                 description = MSequence.parseVariable(description, po, null, true);

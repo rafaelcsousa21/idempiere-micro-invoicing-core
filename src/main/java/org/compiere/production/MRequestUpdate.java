@@ -61,9 +61,9 @@ public class MRequestUpdate extends X_R_RequestUpdate {
                     || col.isUUIDColumn()
                     || col.isVirtualColumn()) continue;
             final String columnName = col.getColumnName();
-            final int i = parent.get_ColumnIndex(columnName);
+            final int i = parent.getColumnIndex(columnName);
             if (i >= 0) {
-                set_ValueOfColumn(columnName, parent.get_Value(i));
+                set_ValueOfColumn(columnName, parent.getValue(i));
             }
         }
     } //	MRequestUpdate

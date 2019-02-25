@@ -52,8 +52,8 @@ public class MNote extends X_AD_Note {
      */
     public MNote(Properties ctx, int AD_Message_ID, int AD_User_ID) {
         this(ctx, 0);
-        setAD_Message_ID(AD_Message_ID);
-        setAD_User_ID(AD_User_ID);
+        setMessageId(AD_Message_ID);
+        setUserId(AD_User_ID);
     } //	MNote
 
     /**
@@ -121,10 +121,10 @@ public class MNote extends X_AD_Note {
      *
      * @param AD_Message_ID id
      */
-    public void setAD_Message_ID(int AD_Message_ID) {
+    public void setMessageId(int AD_Message_ID) {
         if (AD_Message_ID == 0)
-            super.setAD_Message_ID(MMessage.getAD_Message_ID(getCtx(), "NoMessageFound"));
-        else super.setAD_Message_ID(AD_Message_ID);
+            super.setMessageId(MMessage.getAD_Message_ID(getCtx(), "NoMessageFound"));
+        else super.setMessageId(AD_Message_ID);
     } //	setAD_Message_ID
 
     /**
@@ -144,8 +144,8 @@ public class MNote extends X_AD_Note {
      * @param Record_ID   record
      */
     public void setRecord(int AD_Table_ID, int Record_ID) {
-        setAD_Table_ID(AD_Table_ID);
-        setRecord_ID(Record_ID);
+        setTableId(AD_Table_ID);
+        setRecordId(Record_ID);
     } //	setRecord
 
     /**
@@ -158,7 +158,7 @@ public class MNote extends X_AD_Note {
                 new StringBuffer("MNote[")
                         .append(getId())
                         .append(",AD_Message_ID=")
-                        .append(getAD_Message_ID())
+                        .append(getMessageId())
                         .append(",")
                         .append(getReference())
                         .append(",Processed=")

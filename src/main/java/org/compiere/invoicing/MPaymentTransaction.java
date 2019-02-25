@@ -125,7 +125,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         to.setA_Zip(from.getA_Zip());
         to.setAccountNo(from.getAccountNo());
         to.setIBAN(from.getIBAN());
-        to.setAD_Org_ID(from.getOrgId());
+        to.setOrgId(from.getOrgId());
         to.setC_BankAccount_ID(from.getC_BankAccount_ID());
         to.setC_BP_BankAccount_ID(from.getC_BP_BankAccount_ID());
         to.setC_BPartner_ID(from.getC_BPartner_ID());
@@ -537,7 +537,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         payment.setA_Zip(getA_Zip());
         payment.setAccountNo(getAccountNo());
         payment.setIBAN(getIBAN());
-        payment.setAD_Org_ID(getOrgId());
+        payment.setOrgId(getOrgId());
         payment.setC_BankAccount_ID(getC_BankAccount_ID());
         payment.setC_BP_BankAccount_ID(getC_BP_BankAccount_ID());
         payment.setC_BPartner_ID(getC_BPartner_ID());

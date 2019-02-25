@@ -4,7 +4,6 @@ import org.compiere.model.I_C_AllocationLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Persistent {
+public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
 
     /**
      *
@@ -61,7 +60,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Amount in a defined currency
      */
     public BigDecimal getAmount() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Amount);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Amount);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -81,7 +80,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Payment allocation
      */
     public int getC_AllocationHdr_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AllocationHdr_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AllocationHdr_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -102,7 +101,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Allocation Line
      */
     public int getC_AllocationLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AllocationLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AllocationLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -113,7 +112,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -134,7 +133,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Cash Journal Line
      */
     public int getC_CashLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_CashLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_CashLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -149,17 +148,6 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
         else set_ValueNoCheck(COLUMNNAME_C_CashLine_ID, Integer.valueOf(C_CashLine_ID));
     }
 
-    /**
-     * Get Charge.
-     *
-     * @return Additional document charges
-     */
-    public int getC_Charge_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
     public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
         return (org.compiere.model.I_C_Invoice)
                 MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
@@ -172,7 +160,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Invoice Identifier
      */
     public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -193,7 +181,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Order
      */
     public int getC_Order_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Order_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Order_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -220,7 +208,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Payment identifier
      */
     public int getC_Payment_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -241,7 +229,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Calculated amount of discount
      */
     public BigDecimal getDiscountAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DiscountAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DiscountAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -261,7 +249,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Over-Payment (unallocated) or Under-Payment (partial payment) Amount
      */
     public BigDecimal getOverUnderAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_OverUnderAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_OverUnderAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -281,7 +269,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine, I_Pers
      * @return Amount to write-off
      */
     public BigDecimal getWriteOffAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_WriteOffAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_WriteOffAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }

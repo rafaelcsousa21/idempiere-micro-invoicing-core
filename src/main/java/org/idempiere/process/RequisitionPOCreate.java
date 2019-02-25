@@ -338,7 +338,7 @@ public class RequisitionPOCreate extends SvrProcess {
         m_order = m_cacheOrders.get(key);
         if (m_order == null) {
             m_order = new MOrder(getCtx(), 0);
-            m_order.setAD_Org_ID(rLine.getOrgId());
+            m_order.setOrgId(rLine.getOrgId());
             m_order.setM_Warehouse_ID(rLine.getParent().getM_Warehouse_ID());
             m_order.setDatePromised(DateRequired);
             m_order.setIsSOTrx(false);
@@ -450,7 +450,7 @@ public class RequisitionPOCreate extends SvrProcess {
             m_orderLine.setC_Charge_ID(rLine.getC_Charge_ID());
             m_orderLine.setPriceActual(rLine.getPriceActual());
         }
-        m_orderLine.setAD_Org_ID(rLine.getOrgId());
+        m_orderLine.setOrgId(rLine.getOrgId());
 
         //	Prepare Save
         m_M_Product_ID = rLine.getM_Product_ID();

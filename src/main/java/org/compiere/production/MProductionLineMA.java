@@ -42,7 +42,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
         setM_AttributeSetInstance_ID(asi);
         setM_ProductionLine_ID(parent.getId());
         setMovementQty(qty);
-        setAD_Org_ID(parent.getOrgId());
+        setOrgId(parent.getOrgId());
         if (dateMaterialPolicy == null) {
             if (asi > 0) {
                 dateMaterialPolicy =

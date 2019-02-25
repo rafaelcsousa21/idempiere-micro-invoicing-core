@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_S_ResourceAssignment;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -17,7 +16,7 @@ import java.util.Properties;
  * @version Release 5.1 - $Id$
  */
 public class X_S_ResourceAssignment extends BasePOName
-        implements I_S_ResourceAssignment, I_Persistent {
+        implements I_S_ResourceAssignment {
 
     /**
      *
@@ -58,7 +57,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @return Assign resource from
      */
     public Timestamp getAssignDateFrom() {
-        return (Timestamp) get_Value(COLUMNNAME_AssignDateFrom);
+        return (Timestamp) getValue(COLUMNNAME_AssignDateFrom);
     }
 
     /**
@@ -76,7 +75,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @return Assign resource until
      */
     public Timestamp getAssignDateTo() {
-        return (Timestamp) get_Value(COLUMNNAME_AssignDateTo);
+        return (Timestamp) getValue(COLUMNNAME_AssignDateTo);
     }
 
     /**
@@ -103,7 +102,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @return Assignment is confirmed
      */
     public boolean isConfirmed() {
-        Object oo = get_Value(COLUMNNAME_IsConfirmed);
+        Object oo = getValue(COLUMNNAME_IsConfirmed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -117,7 +116,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -137,7 +136,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @return Resource
      */
     public int getS_Resource_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_S_Resource_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_S_Resource_ID);
         if (ii == null) return 0;
         return ii;
     }

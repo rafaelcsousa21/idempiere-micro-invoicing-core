@@ -827,7 +827,7 @@ public class AllocationAuto extends SvrProcess {
                             C_Currency_ID,
                             "Auto " + description,
                             null);
-            m_allocation.setAD_Org_ID(AD_Org_ID);
+            m_allocation.setOrgId(AD_Org_ID);
             if (!m_allocation.save()) return false;
         }
 

@@ -50,7 +50,7 @@ public class MLocator extends X_M_Locator {
         super(ctx, M_Locator_ID);
         if (M_Locator_ID == 0) {
             //	setM_Locator_ID (0);		//	PK
-            //	setM_Warehouse_ID (0);		//	Parent
+            //	setWarehouseId (0);		//	Parent
             setIsDefault(false);
             setPriorityNo(50);
             //	setValue (null);

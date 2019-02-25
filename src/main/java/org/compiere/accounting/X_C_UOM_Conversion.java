@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_UOM_Conversion;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Persistent {
+public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
 
     /**
      *
@@ -61,23 +60,12 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
     }
 
     /**
-     * Get UOM Conversion.
-     *
-     * @return Unit of Measure Conversion
-     */
-    public int getC_UOM_Conversion_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_Conversion_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get UOM.
      *
      * @return Unit of Measure
      */
     public int getC_UOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -98,7 +86,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
      * @return Target or destination Unit of Measure
      */
     public int getC_UOM_To_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_To_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_To_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -119,7 +107,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
      * @return To convert Source number to Target number, the Source is divided
      */
     public BigDecimal getDivideRate() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DivideRate);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DivideRate);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -139,7 +127,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -160,7 +148,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion, I_Pers
      * @return Rate to multiple the source by to calculate the target.
      */
     public BigDecimal getMultiplyRate() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_MultiplyRate);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_MultiplyRate);
         if (bd == null) return Env.ZERO;
         return bd;
     }

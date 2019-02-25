@@ -282,7 +282,7 @@ public class MCostElement extends X_M_CostElement {
     		setCostingMethod(null);
     }*/
 
-        if (getOrgId() != 0) setAD_Org_ID(0);
+        if (getOrgId() != 0) setOrgId(0);
         return true;
     } //	beforeSave
 

@@ -3,12 +3,9 @@ package org.compiere.wf;
 import org.compiere.model.I_AD_WF_Node;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
-import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Properties;
 
 /**
@@ -17,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Persistent {
+public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
 
     /**
      * Wait (Sleep) = Z
@@ -153,7 +150,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Indicates the Action to be performed
      */
     public String getAction() {
-        return (String) get_Value(COLUMNNAME_Action);
+        return (String) getValue(COLUMNNAME_Action);
     }
 
     /**
@@ -171,19 +168,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @return Column in the table
      */
-    public int getAD_Column_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Column_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Context Help.
-     *
-     * @return Context Help
-     */
-    public int getAD_CtxHelp_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_CtxHelp_ID);
+    public int getColumnId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Column_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -193,19 +179,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @return Special Form
      */
-    public int getAD_Form_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Form_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Image.
-     *
-     * @return Image or Icon
-     */
-    public int getAD_Image_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Image_ID);
+    public int getFormId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Form_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -215,8 +190,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @return Info and search/select Window
      */
-    public int getAD_InfoWindow_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_InfoWindow_ID);
+    public int getInfoWindowId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_InfoWindow_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -226,8 +201,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @return Process or Report
      */
-    public int getAD_Process_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Process_ID);
+    public int getProcessId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Process_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -237,19 +212,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @return Operation System Task
      */
-    public int getAD_Task_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Task_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Workflow Block.
-     *
-     * @return Workflow Transaction Execution Block
-     */
-    public int getAD_WF_Block_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Block_ID);
+    public int getTaskId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Task_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -259,8 +223,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @return Workflow Node (activity), step or process
      */
-    public int getAD_WF_Node_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Node_ID);
+    public int getWorkflowNodeId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Node_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -271,7 +235,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Responsible for Workflow Execution
      */
     public int getAD_WF_Responsible_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_WF_Responsible_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Responsible_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -281,16 +245,16 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @return Data entry or display window
      */
-    public int getAD_Window_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Window_ID);
+    public int getWindowId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Window_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
+    public org.compiere.model.I_AD_Workflow getWorkflow() throws RuntimeException {
         return (org.compiere.model.I_AD_Workflow)
                 MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-                        .getPO(getAD_Workflow_ID());
+                        .getPO(getWorkflowId());
     }
 
     /**
@@ -298,8 +262,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @return Workflow or combination of tasks
      */
-    public int getAD_Workflow_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Workflow_ID);
+    public int getWorkflowId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Workflow_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -309,7 +273,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      *
      * @param AD_Workflow_ID Workflow or combination of tasks
      */
-    public void setAD_Workflow_ID(int AD_Workflow_ID) {
+    public void setWorkflowId(int AD_Workflow_ID) {
         if (AD_Workflow_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
         else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, AD_Workflow_ID);
     }
@@ -320,7 +284,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Name of the Attribute
      */
     public String getAttributeName() {
-        return (String) get_Value(COLUMNNAME_AttributeName);
+        return (String) getValue(COLUMNNAME_AttributeName);
     }
 
     /**
@@ -338,18 +302,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Value of the Attribute
      */
     public String getAttributeValue() {
-        return (String) get_Value(COLUMNNAME_AttributeValue);
-    }
-
-    /**
-     * Get Business Partner .
-     *
-     * @return Identifies a Business Partner
-     */
-    public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
-        if (ii == null) return 0;
-        return ii;
+        return (String) getValue(COLUMNNAME_AttributeValue);
     }
 
     /**
@@ -367,7 +320,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -376,18 +329,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
-    }
-
-    /**
-     * Get Duration.
-     *
-     * @return Normal Duration in Duration Unit
-     */
-    public int getDuration() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Duration);
-        if (ii == null) return 0;
-        return ii;
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -400,32 +342,12 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     }
 
     /**
-     * Get Dynamic Priority Change.
-     *
-     * @return Change of priority when Activity is suspended waiting for user
-     */
-    public BigDecimal getDynPriorityChange() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DynPriorityChange);
-        if (bd == null) return Env.ZERO;
-        return bd;
-    }
-
-    /**
-     * Get Dynamic Priority Unit.
-     *
-     * @return Change of priority when Activity is suspended waiting for user
-     */
-    public String getDynPriorityUnit() {
-        return (String) get_Value(COLUMNNAME_DynPriorityUnit);
-    }
-
-    /**
      * Get EMail Address.
      *
      * @return Electronic Mail Address
      */
     public String getEMail() {
-        return (String) get_Value(COLUMNNAME_EMail);
+        return (String) getValue(COLUMNNAME_EMail);
     }
 
     /**
@@ -434,7 +356,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Recipient of the EMail
      */
     public String getEMailRecipient() {
-        return (String) get_Value(COLUMNNAME_EMailRecipient);
+        return (String) getValue(COLUMNNAME_EMailRecipient);
     }
 
     /**
@@ -453,7 +375,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Comment or Hint
      */
     public String getHelp() {
-        return (String) get_Value(COLUMNNAME_Help);
+        return (String) getValue(COLUMNNAME_Help);
     }
 
     /**
@@ -471,7 +393,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Semantics for multiple incoming Transitions
      */
     public String getJoinElement() {
-        return (String) get_Value(COLUMNNAME_JoinElement);
+        return (String) getValue(COLUMNNAME_JoinElement);
     }
 
     /**
@@ -490,7 +412,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Maximum Duration in Duration Unit
      */
     public int getLimit() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Limit);
+        Integer ii = (Integer) getValue(COLUMNNAME_Limit);
         if (ii == null) return 0;
         return ii;
     }
@@ -510,7 +432,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Indicates if this request is of a high, medium or low priority.
      */
     public int getPriority() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Priority);
+        Integer ii = (Integer) getValue(COLUMNNAME_Priority);
         if (ii == null) return 0;
         return ii;
     }
@@ -521,7 +443,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Text templates for mailings
      */
     public int getR_MailText_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_R_MailText_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_R_MailText_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -532,7 +454,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Semantics for multiple outgoing Transitions
      */
     public String getSplitElement() {
-        return (String) get_Value(COLUMNNAME_SplitElement);
+        return (String) getValue(COLUMNNAME_SplitElement);
     }
 
     /**
@@ -543,35 +465,6 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
     public void setSplitElement(String SplitElement) {
 
         set_Value(COLUMNNAME_SplitElement, SplitElement);
-    }
-
-    /**
-     * Get Resource.
-     *
-     * @return Resource
-     */
-    public int getS_Resource_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_S_Resource_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Valid from.
-     *
-     * @return Valid from including this date (first day)
-     */
-    public Timestamp getValidFrom() {
-        return (Timestamp) get_Value(COLUMNNAME_ValidFrom);
-    }
-
-    /**
-     * Get Valid to.
-     *
-     * @return Valid to including this date (last day)
-     */
-    public Timestamp getValidTo() {
-        return (Timestamp) get_Value(COLUMNNAME_ValidTo);
     }
 
     /**
@@ -589,29 +482,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      * @return Time in minutes to wait (sleep)
      */
     public int getWaitTime() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_WaitTime);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Workflow.
-     *
-     * @return Workflow or tasks
-     */
-    public int getWorkflow_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Workflow_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get X Position.
-     *
-     * @return Absolute X (horizontal) position in 1/72 of an inch
-     */
-    public int getXPosition() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_XPosition);
+        Integer ii = (Integer) getValue(COLUMNNAME_WaitTime);
         if (ii == null) return 0;
         return ii;
     }
@@ -623,17 +494,6 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node, I_Per
      */
     public void setXPosition(int XPosition) {
         set_Value(COLUMNNAME_XPosition, Integer.valueOf(XPosition));
-    }
-
-    /**
-     * Get Y Position.
-     *
-     * @return Absolute Y (vertical) position in 1/72 of an inch
-     */
-    public int getYPosition() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_YPosition);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

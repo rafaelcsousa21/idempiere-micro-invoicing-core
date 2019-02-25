@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_PA_Hierarchy;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Persistent {
+public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy {
 
     /**
      *
@@ -60,7 +59,7 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
      * @return Tree for Natural Account Tree
      */
     public int getAD_Tree_Account_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_Account_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_Account_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -71,7 +70,7 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
      * @return Trees are used for (financial) reporting
      */
     public int getAD_Tree_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -82,7 +81,7 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
      * @return Trees are used for (financial) reporting
      */
     public int getAD_Tree_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -93,7 +92,7 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
      * @return Trees are used for (financial) reporting
      */
     public int getAD_Tree_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -104,7 +103,7 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
      * @return Trees are used for (financial) reporting and security access (via role)
      */
     public int getAD_Tree_Org_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_Org_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_Org_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -115,7 +114,7 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
      * @return Trees are used for (financial) reporting
      */
     public int getAD_Tree_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -126,7 +125,7 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
      * @return Trees are used for (financial) reporting
      */
     public int getAD_Tree_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -137,7 +136,7 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy, I_Pers
      * @return Trees are used for (financial) reporting
      */
     public int getAD_Tree_SalesRegion_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Tree_SalesRegion_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Tree_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }

@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_Fact_Acct;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
+public class X_Fact_Acct extends PO implements I_Fact_Acct {
 
     /**
      * Actual = A
@@ -45,11 +44,11 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
     public X_Fact_Acct(Properties ctx, int Fact_Acct_ID) {
         super(ctx, Fact_Acct_ID);
         /**
-         * if (Fact_Acct_ID == 0) { setAccount_ID (0); setAD_Table_ID (0); setAmtAcctCr (Env.ZERO);
+         * if (Fact_Acct_ID == 0) { setAccount_ID (0); setColumnTableId (0); setAmtAcctCr (Env.ZERO);
          * setAmtAcctDr (Env.ZERO); setAmtSourceCr (Env.ZERO); setAmtSourceDr (Env.ZERO);
-         * setC_AcctSchema_ID (0); setC_Currency_ID (0); setC_Period_ID (0); setDateAcct (new Timestamp(
+         * setAccountingSchemaId (0); setCurrencyId (0); setPeriodId (0); setDateAcct (new Timestamp(
          * System.currentTimeMillis() )); setDateTrx (new Timestamp( System.currentTimeMillis() ));
-         * setFact_Acct_ID (0); setGL_Category_ID (0); setPostingType (null); setRecord_ID (0); }
+         * setFact_Acct_ID (0); setGLCategoryId (0); setPostingType (null); setRecordId (0); }
          */
     }
 
@@ -80,7 +79,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Asset used internally or by customers
      */
     public int getA_Asset_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_A_Asset_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_A_Asset_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -91,7 +90,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Account used
      */
     public int getAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Account_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Account_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -112,7 +111,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Performing or initiating organization
      */
     public int getAD_OrgTrx_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_OrgTrx_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -133,7 +132,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Database Table information
      */
     public int getAD_Table_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Table_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_Table_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -154,7 +153,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Accounted Credit Amount
      */
     public BigDecimal getAmtAcctCr() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_AmtAcctCr);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_AmtAcctCr);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -174,7 +173,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Accounted Debit Amount
      */
     public BigDecimal getAmtAcctDr() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_AmtAcctDr);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_AmtAcctDr);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -194,7 +193,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Source Credit Amount
      */
     public BigDecimal getAmtSourceCr() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_AmtSourceCr);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_AmtSourceCr);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -214,7 +213,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Source Debit Amount
      */
     public BigDecimal getAmtSourceDr() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_AmtSourceDr);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_AmtSourceDr);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -234,7 +233,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Rules for accounting
      */
     public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -255,7 +254,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -276,7 +275,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -297,7 +296,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -318,7 +317,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -339,7 +338,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Location that inventory was moved from
      */
     public int getC_LocFrom_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LocFrom_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LocFrom_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -360,7 +359,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Location that inventory was moved to
      */
     public int getC_LocTo_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LocTo_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LocTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -381,7 +380,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Period of the Calendar
      */
     public int getC_Period_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Period_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -402,7 +401,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -423,7 +422,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Phase of a Project
      */
     public int getC_ProjectPhase_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectPhase_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -444,7 +443,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Actual Project Task in a Phase
      */
     public int getC_ProjectTask_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ProjectTask_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectTask_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -465,7 +464,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Sales coverage region
      */
     public int getC_SalesRegion_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_SalesRegion_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -486,7 +485,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Sub account for Element Value
      */
     public int getC_SubAcct_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_SubAcct_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_SubAcct_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -507,7 +506,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Tax identifier
      */
     public int getC_Tax_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Tax_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Tax_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -528,7 +527,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Unit of Measure
      */
     public int getC_UOM_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_UOM_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -549,7 +548,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -576,7 +575,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -589,23 +588,12 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
     }
 
     /**
-     * Get Accounting Fact.
-     *
-     * @return Accounting Fact
-     */
-    public int getFact_Acct_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Fact_Acct_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Budget.
      *
      * @return General Ledger Budget
      */
     public int getGL_Budget_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_Budget_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_Budget_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -626,7 +614,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return General Ledger Category
      */
     public int getGL_Category_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_GL_Category_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_GL_Category_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -647,7 +635,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Transaction line ID (internal)
      */
     public int getLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -668,7 +656,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Warehouse Locator
      */
     public int getM_Locator_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Locator_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -689,7 +677,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -710,7 +698,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return The type of posted amount for the transaction
      */
     public String getPostingType() {
-        return (String) get_Value(COLUMNNAME_PostingType);
+        return (String) getValue(COLUMNNAME_PostingType);
     }
 
     /**
@@ -729,7 +717,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Quantity
      */
     public BigDecimal getQty() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_Qty);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -749,7 +737,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return Direct internal record ID
      */
     public int getRecord_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Record_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Record_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -770,7 +758,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return User defined list element #1
      */
     public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -791,7 +779,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return User defined list element #2
      */
     public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -812,7 +800,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return User defined accounting Element
      */
     public int getUserElement1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UserElement1_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_UserElement1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -833,7 +821,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct, I_Persistent {
      * @return User defined accounting Element
      */
     public int getUserElement2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UserElement2_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_UserElement2_ID);
         if (ii == null) return 0;
         return ii;
     }

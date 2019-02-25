@@ -49,7 +49,7 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
      * @return column name
      */
     public String getColumnName() {
-        if (m_parameter == null) m_parameter = MProcessPara.get(getCtx(), getAD_Process_Para_ID());
+        if (m_parameter == null) m_parameter = MProcessPara.get(getCtx(), getProcessParameterId());
         return m_parameter.getColumnName();
     } //	getColumnName
 
@@ -59,7 +59,7 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
      * @return display type
      */
     public int getDisplayType() {
-        if (m_parameter == null) m_parameter = MProcessPara.get(getCtx(), getAD_Process_Para_ID());
+        if (m_parameter == null) m_parameter = MProcessPara.get(getCtx(), getProcessParameterId());
         return m_parameter.getReferenceId();
     } //	getDisplayType
 

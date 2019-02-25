@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persistent {
+public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
 
     /**
      * Complete = CO
@@ -82,7 +81,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
         super(ctx, C_AllocationHdr_ID);
         /**
          * if (C_AllocationHdr_ID == 0) { setApprovalAmt (Env.ZERO); setC_AllocationHdr_ID (0);
-         * setC_Currency_ID (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); setDateTrx
+         * setCurrencyId (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); setDateTrx
          * (new Timestamp( System.currentTimeMillis() )); setDocAction (null); // CO setDocStatus
          * (null); // DR setDocumentNo (null); setIsApproved (false); setIsManual (false); setPosted
          * (false); setProcessed (false); }
@@ -116,7 +115,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return Document Approval Amount
      */
     public BigDecimal getApprovalAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ApprovalAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ApprovalAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -136,7 +135,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return Payment allocation
      */
     public int getC_AllocationHdr_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AllocationHdr_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AllocationHdr_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -147,7 +146,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -160,17 +159,6 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
     public void setC_Currency_ID(int C_Currency_ID) {
         if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
         else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
-    }
-
-    /**
-     * Get Document Type.
-     *
-     * @return Document type or rules
-     */
-    public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**
@@ -189,7 +177,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -207,7 +195,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return Transaction Date
      */
     public Timestamp getDateTrx() {
-        return (Timestamp) get_Value(COLUMNNAME_DateTrx);
+        return (Timestamp) getValue(COLUMNNAME_DateTrx);
     }
 
     /**
@@ -225,7 +213,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -243,7 +231,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return The targeted status of the document
      */
     public String getDocAction() {
-        return (String) get_Value(COLUMNNAME_DocAction);
+        return (String) getValue(COLUMNNAME_DocAction);
     }
 
     /**
@@ -262,7 +250,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return The current status of the document
      */
     public String getDocStatus() {
-        return (String) get_Value(COLUMNNAME_DocStatus);
+        return (String) getValue(COLUMNNAME_DocStatus);
     }
 
     /**
@@ -281,7 +269,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return Document sequence number of the document
      */
     public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
+        return (String) getValue(COLUMNNAME_DocumentNo);
     }
 
     /**
@@ -308,7 +296,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return Indicates if this document requires approval
      */
     public boolean isApproved() {
-        Object oo = get_Value(COLUMNNAME_IsApproved);
+        Object oo = getValue(COLUMNNAME_IsApproved);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -331,7 +319,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return Posting status
      */
     public boolean isPosted() {
-        Object oo = get_Value(COLUMNNAME_Posted);
+        Object oo = getValue(COLUMNNAME_Posted);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -354,7 +342,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -378,17 +366,6 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr, I_Persis
      */
     public void setProcessing(boolean Processing) {
         set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
-    }
-
-    /**
-     * Get Reversal ID.
-     *
-     * @return ID of document reversal
-     */
-    public int getReversal_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Reversal_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     /**

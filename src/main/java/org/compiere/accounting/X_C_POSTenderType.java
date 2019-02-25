@@ -2,7 +2,6 @@ package org.compiere.accounting;
 
 import org.compiere.model.I_C_POSTenderType;
 import org.compiere.orm.BasePONameValue;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_POSTenderType extends BasePONameValue implements I_C_POSTenderType, I_Persistent {
+public class X_C_POSTenderType extends BasePONameValue implements I_C_POSTenderType {
 
     /**
      *
@@ -60,7 +59,7 @@ public class X_C_POSTenderType extends BasePONameValue implements I_C_POSTenderT
      * @return Guarantee for a Credit
      */
     public boolean isGuarantee() {
-        Object oo = get_Value(COLUMNNAME_IsGuarantee);
+        Object oo = getValue(COLUMNNAME_IsGuarantee);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);

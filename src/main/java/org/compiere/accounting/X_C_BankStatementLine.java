@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_BankStatementLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, I_Persistent {
+public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
 
     /**
      *
@@ -30,7 +29,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
         super(ctx, C_BankStatementLine_ID);
         /**
          * if (C_BankStatementLine_ID == 0) { setC_BankStatement_ID (0); setC_BankStatementLine_ID (0);
-         * setC_Currency_ID (0); // @SQL=SELECT C_Currency_ID FROM C_BankAccount WHERE
+         * setCurrencyId (0); // @SQL=SELECT C_Currency_ID FROM C_BankAccount WHERE
          * C_BankAccount_ID=@C_BankAccount_ID@ setChargeAmt (Env.ZERO); setDateAcct (new Timestamp(
          * System.currentTimeMillis() )); // @DateAcct@ setInterestAmt (Env.ZERO); setIsManual (true);
          * // Y setIsReversal (false); setLine (0); // @SQL=SELECT COALESCE(MAX(Line),0)+10 FROM
@@ -68,7 +67,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Bank Statement of account
      */
     public int getC_BankStatement_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankStatement_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BankStatement_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -89,7 +88,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Line on a statement from this Bank
      */
     public int getC_BankStatementLine_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankStatementLine_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BankStatementLine_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -100,7 +99,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -121,7 +120,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Additional document charges
      */
     public int getC_Charge_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Charge_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -142,7 +141,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -163,7 +162,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Charge Amount
      */
     public BigDecimal getChargeAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_ChargeAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_ChargeAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -183,7 +182,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Invoice Identifier
      */
     public int getC_Invoice_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Invoice_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -204,7 +203,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Payment identifier
      */
     public int getC_Payment_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Payment_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -225,7 +224,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Accounting Date
      */
     public Timestamp getDateAcct() {
-        return (Timestamp) get_Value(COLUMNNAME_DateAcct);
+        return (Timestamp) getValue(COLUMNNAME_DateAcct);
     }
 
     /**
@@ -243,7 +242,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -360,7 +359,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Interest Amount
      */
     public BigDecimal getInterestAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_InterestAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_InterestAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -389,7 +388,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return This is a reversing transaction
      */
     public boolean isReversal() {
-        Object oo = get_Value(COLUMNNAME_IsReversal);
+        Object oo = getValue(COLUMNNAME_IsReversal);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -403,7 +402,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Unique line for this document
      */
     public int getLine() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Line);
+        Integer ii = (Integer) getValue(COLUMNNAME_Line);
         if (ii == null) return 0;
         return ii;
     }
@@ -441,7 +440,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Date of the Statement Line
      */
     public Timestamp getStatementLineDate() {
-        return (Timestamp) get_Value(COLUMNNAME_StatementLineDate);
+        return (Timestamp) getValue(COLUMNNAME_StatementLineDate);
     }
 
     /**
@@ -459,7 +458,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Statement Amount
      */
     public BigDecimal getStmtAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_StmtAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_StmtAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -479,7 +478,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Amount of a transaction
      */
     public BigDecimal getTrxAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_TrxAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_TrxAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -499,7 +498,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine, 
      * @return Date when money is available
      */
     public Timestamp getValutaDate() {
-        return (Timestamp) get_Value(COLUMNNAME_ValutaDate);
+        return (Timestamp) getValue(COLUMNNAME_ValutaDate);
     }
 
     /**

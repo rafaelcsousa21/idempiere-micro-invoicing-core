@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_Persistent {
+public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
 
     /**
      *
@@ -27,7 +26,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
     public X_C_ValidCombination(Properties ctx, int C_ValidCombination_ID) {
         super(ctx, C_ValidCombination_ID);
         /**
-         * if (C_ValidCombination_ID == 0) { setAccount_ID (0); setC_AcctSchema_ID (0);
+         * if (C_ValidCombination_ID == 0) { setAccount_ID (0); setAccountingSchemaId (0);
          * setC_ValidCombination_ID (0); setIsFullyQualified (false); }
          */
     }
@@ -65,7 +64,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Account used
      */
     public int getAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_Account_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_Account_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -86,7 +85,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Performing or initiating organization
      */
     public int getAD_OrgTrx_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_OrgTrx_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -107,7 +106,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Defines an alternate method of indicating an account combination.
      */
     public String getAlias() {
-        return (String) get_Value(COLUMNNAME_Alias);
+        return (String) getValue(COLUMNNAME_Alias);
     }
 
     /**
@@ -125,7 +124,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Rules for accounting
      */
     public int getC_AcctSchema_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -146,7 +145,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -167,7 +166,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -188,7 +187,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -209,7 +208,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Location that inventory was moved from
      */
     public int getC_LocFrom_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LocFrom_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LocFrom_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -230,7 +229,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Location that inventory was moved to
      */
     public int getC_LocTo_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_LocTo_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_LocTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -251,7 +250,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Unique combination of account elements
      */
     public String getCombination() {
-        return (String) get_Value(COLUMNNAME_Combination);
+        return (String) getValue(COLUMNNAME_Combination);
     }
 
     /**
@@ -269,7 +268,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -290,7 +289,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Sales coverage region
      */
     public int getC_SalesRegion_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_SalesRegion_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -311,7 +310,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Sub account for Element Value
      */
     public int getC_SubAcct_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_SubAcct_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_SubAcct_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -332,7 +331,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Valid Account Combination
      */
     public int getC_ValidCombination_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_ValidCombination_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_ValidCombination_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -343,7 +342,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -370,7 +369,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return This account is fully qualified
      */
     public boolean isFullyQualified() {
-        Object oo = get_Value(COLUMNNAME_IsFullyQualified);
+        Object oo = getValue(COLUMNNAME_IsFullyQualified);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -384,7 +383,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return Product, Service, Item
      */
     public int getM_Product_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -405,7 +404,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return User defined list element #1
      */
     public int getUser1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User1_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -426,7 +425,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return User defined list element #2
      */
     public int getUser2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_User2_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -447,7 +446,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return User defined accounting Element
      */
     public int getUserElement1_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UserElement1_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_UserElement1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -468,7 +467,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination, I_
      * @return User defined accounting Element
      */
     public int getUserElement2_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_UserElement2_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_UserElement2_ID);
         if (ii == null) return 0;
         return ii;
     }

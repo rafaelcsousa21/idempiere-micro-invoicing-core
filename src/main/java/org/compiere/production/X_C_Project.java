@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.compiere.model.I_C_Project;
 import org.compiere.orm.BasePONameValue;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persistent {
+public class X_C_Project extends BasePONameValue implements I_C_Project {
 
     /**
      * Asset Project = A
@@ -49,7 +48,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
     public X_C_Project(Properties ctx, int C_Project_ID) {
         super(ctx, C_Project_ID);
         /**
-         * if (C_Project_ID == 0) { setC_Currency_ID (0); setCommittedAmt (Env.ZERO); setCommittedQty
+         * if (C_Project_ID == 0) { setCurrencyId (0); setCommittedAmt (Env.ZERO); setCommittedQty
          * (Env.ZERO); setC_Project_ID (0); setInvoicedAmt (Env.ZERO); setInvoicedQty (Env.ZERO);
          * setIsCommitCeiling (false); setIsCommitment (false); setIsSummary (false); setName (null);
          * setPlannedAmt (Env.ZERO); setPlannedMarginAmt (Env.ZERO); setPlannedQty (Env.ZERO);
@@ -85,7 +84,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Performing or initiating organization
      */
     public int getAD_OrgTrx_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_OrgTrx_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -96,7 +95,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return User within the system - Internal or Business Partner Contact
      */
     public int getAD_User_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_User_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -117,7 +116,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Business Activity
      */
     public int getC_Activity_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -128,7 +127,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Identifies a Business Partner
      */
     public int getC_BPartner_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -139,18 +138,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Identifies the (ship to) address for this Business Partner
      */
     public int getC_BPartner_Location_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartner_Location_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get BPartner (Agent).
-     *
-     * @return Business Partner (Agent or Sales Rep)
-     */
-    public int getC_BPartnerSR_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BPartnerSR_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_Location_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -161,7 +149,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Marketing Campaign
      */
     public int getC_Campaign_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -172,7 +160,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return The Currency for this record
      */
     public int getC_Currency_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Currency_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -211,18 +199,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return The terms of Payment (timing, discount)
      */
     public int getC_PaymentTerm_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_PaymentTerm_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Get Standard Phase.
-     *
-     * @return Standard Phase of the Project Type
-     */
-    public int getC_Phase_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Phase_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_PaymentTerm_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -233,7 +210,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Financial Project
      */
     public int getC_Project_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -244,7 +221,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Type of the project
      */
     public String getC_ProjectType_ID() {
-        return (String) get_Value(COLUMNNAME_C_ProjectType_ID);
+        return (String) getValue(COLUMNNAME_C_ProjectType_ID);
     }
 
     /**
@@ -262,7 +239,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return The (planned) effective date of this document.
      */
     public Timestamp getDateContract() {
-        return (Timestamp) get_Value(COLUMNNAME_DateContract);
+        return (Timestamp) getValue(COLUMNNAME_DateContract);
     }
 
     /**
@@ -271,7 +248,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Finish or (planned) completion date
      */
     public Timestamp getDateFinish() {
-        return (Timestamp) get_Value(COLUMNNAME_DateFinish);
+        return (Timestamp) getValue(COLUMNNAME_DateFinish);
     }
 
     /**
@@ -280,7 +257,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -289,7 +266,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return The amount invoiced
      */
     public BigDecimal getInvoicedAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_InvoicedAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_InvoicedAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -345,7 +322,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Identifies a unique instance of a Price List
      */
     public int getM_PriceList_Version_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_PriceList_Version_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_PriceList_Version_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -366,7 +343,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Storage Warehouse and Service Point
      */
     public int getM_Warehouse_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_M_Warehouse_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -404,7 +381,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return The document has been processed
      */
     public boolean isProcessed() {
-        Object oo = get_Value(COLUMNNAME_Processed);
+        Object oo = getValue(COLUMNNAME_Processed);
         if (oo != null) {
             if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
             return "Y".equals(oo);
@@ -436,7 +413,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Project Category
      */
     public String getProjectCategory() {
-        return (String) get_Value(COLUMNNAME_ProjectCategory);
+        return (String) getValue(COLUMNNAME_ProjectCategory);
     }
 
     /**
@@ -475,7 +452,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project, I_Persi
      * @return Sales Representative or Company Agent
      */
     public int getSalesRep_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_SalesRep_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_SalesRep_ID);
         if (ii == null) return 0;
         return ii;
     }

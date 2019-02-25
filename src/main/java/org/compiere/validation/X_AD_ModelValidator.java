@@ -3,7 +3,6 @@ package org.compiere.validation;
 import kotliquery.Row;
 import org.compiere.model.I_AD_ModelValidator;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -14,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_ModelValidator extends BasePOName implements I_AD_ModelValidator, I_Persistent {
+public class X_AD_ModelValidator extends BasePOName implements I_AD_ModelValidator {
 
     /**
      *
@@ -65,7 +64,7 @@ public class X_AD_ModelValidator extends BasePOName implements I_AD_ModelValidat
      * @return Model Validation Class
      */
     public String getModelValidationClass() {
-        return (String) get_Value(COLUMNNAME_ModelValidationClass);
+        return (String) getValue(COLUMNNAME_ModelValidationClass);
     }
 
 }

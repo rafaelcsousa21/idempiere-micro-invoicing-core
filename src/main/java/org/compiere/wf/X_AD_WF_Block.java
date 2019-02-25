@@ -2,7 +2,6 @@ package org.compiere.wf;
 
 import org.compiere.model.I_AD_WF_Block;
 import org.compiere.orm.BasePOName;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.util.Properties;
@@ -13,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_AD_WF_Block extends BasePOName implements I_AD_WF_Block, I_Persistent {
+public class X_AD_WF_Block extends BasePOName implements I_AD_WF_Block {
 
     /**
      *
@@ -46,17 +45,6 @@ public class X_AD_WF_Block extends BasePOName implements I_AD_WF_Block, I_Persis
     public String toString() {
         StringBuffer sb = new StringBuffer("X_AD_WF_Block[").append(getId()).append("]");
         return sb.toString();
-    }
-
-    /**
-     * Get Workflow.
-     *
-     * @return Workflow or combination of tasks
-     */
-    public int getAD_Workflow_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_AD_Workflow_ID);
-        if (ii == null) return 0;
-        return ii;
     }
 
     @Override

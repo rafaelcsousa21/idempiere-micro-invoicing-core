@@ -62,7 +62,7 @@ public class TreeMaintenance extends SvrProcess {
         if (log.isLoggable(Level.INFO)) log.info("AD_Tree_ID=" + m_AD_Tree_ID);
         if (m_AD_Tree_ID == 0) throw new IllegalArgumentException("Tree_ID = 0");
         MTree tree = new MTree(getCtx(), m_AD_Tree_ID);
-        if (tree == null || tree.getAD_Tree_ID() == 0)
+        if (tree == null || tree.getTreeId() == 0)
             throw new IllegalArgumentException("No Tree -" + tree);
         //
         if (MTree.TREETYPE_BoM.equals(tree.getTreeType())) return "BOM Trees not implemented";
@@ -84,7 +84,7 @@ public class TreeMaintenance extends SvrProcess {
             StringBuilder sql =
                     new StringBuilder("SELECT C_Element_ID FROM C_Element ")
                             .append("WHERE AD_Tree_ID=")
-                            .append(tree.getAD_Tree_ID());
+                            .append(tree.getTreeId());
             C_Element_ID = getSQLValue(sql.toString());
             if (C_Element_ID <= 0) throw new IllegalStateException("No Account Element found");
         }
@@ -94,7 +94,7 @@ public class TreeMaintenance extends SvrProcess {
         sql.append("DELETE ")
                 .append(nodeTableName)
                 .append(" WHERE AD_Tree_ID=")
-                .append(tree.getAD_Tree_ID())
+                .append(tree.getTreeId())
                 .append(" AND Node_ID NOT IN (SELECT ")
                 .append(sourceTableKey)
                 .append(" FROM ")
@@ -126,7 +126,7 @@ public class TreeMaintenance extends SvrProcess {
                 .append("  NOT IN (SELECT Node_ID FROM ")
                 .append(nodeTableName)
                 .append(" WHERE AD_Tree_ID=")
-                .append(tree.getAD_Tree_ID())
+                .append(tree.getTreeId())
                 .append(")");
         if (log.isLoggable(Level.FINER)) log.finer(sql.toString());
         //

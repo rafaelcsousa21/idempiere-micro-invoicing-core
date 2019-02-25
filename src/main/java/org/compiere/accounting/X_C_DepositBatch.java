@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_DepositBatch;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.idempiere.orm.I_Persistent;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persistent {
+public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
 
     /**
      * Drafted = DR
@@ -62,33 +61,12 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
     }
 
     /**
-     * Get Bank Account.
-     *
-     * @return Account at the Bank
-     */
-    public int getC_BankAccount_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_BankAccount_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
-     * Set Bank Account.
-     *
-     * @param C_BankAccount_ID Account at the Bank
-     */
-    public void setC_BankAccount_ID(int C_BankAccount_ID) {
-        if (C_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BankAccount_ID, null);
-        else set_Value(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
-    }
-
-    /**
      * Get Deposit Batch.
      *
      * @return Deposit Batch
      */
     public int getC_DepositBatch_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DepositBatch_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DepositBatch_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -109,7 +87,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
      * @return Document type or rules
      */
     public int getC_DocType_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_DocType_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -130,7 +108,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
      * @return Deposit Date
      */
     public Timestamp getDateDeposit() {
-        return (Timestamp) get_Value(COLUMNNAME_DateDeposit);
+        return (Timestamp) getValue(COLUMNNAME_DateDeposit);
     }
 
     /**
@@ -148,7 +126,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
      * @return Date of the Document
      */
     public Timestamp getDateDoc() {
-        return (Timestamp) get_Value(COLUMNNAME_DateDoc);
+        return (Timestamp) getValue(COLUMNNAME_DateDoc);
     }
 
     /**
@@ -166,7 +144,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
      * @return Deposit Amount
      */
     public BigDecimal getDepositAmt() {
-        BigDecimal bd = (BigDecimal) get_Value(COLUMNNAME_DepositAmt);
+        BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DepositAmt);
         if (bd == null) return Env.ZERO;
         return bd;
     }
@@ -186,7 +164,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) get_Value(COLUMNNAME_Description);
+        return (String) getValue(COLUMNNAME_Description);
     }
 
     /**
@@ -206,15 +184,6 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch, I_Persiste
     public void setDocStatus(String DocStatus) {
 
         set_Value(COLUMNNAME_DocStatus, DocStatus);
-    }
-
-    /**
-     * Get Document No.
-     *
-     * @return Document sequence number of the document
-     */
-    public String getDocumentNo() {
-        return (String) get_Value(COLUMNNAME_DocumentNo);
     }
 
     /**

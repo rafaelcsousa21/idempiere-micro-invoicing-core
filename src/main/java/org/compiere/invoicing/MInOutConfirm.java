@@ -197,11 +197,11 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         if (isInDispute()) {
             MDocType dt = MDocType.get(getCtx(), inout.getC_DocType_ID());
             if (dt.isSplitWhenDifference()) {
-                if (dt.getC_DocTypeDifference_ID() == 0) {
+                if (dt.getDocTypeDifferenceId() == 0) {
                     m_processMsg = "No Split Document Type defined for: " + dt.getName();
                     return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
                 }
-                splitInOut(inout, dt.getC_DocTypeDifference_ID(), lines);
+                splitInOut(inout, dt.getDocTypeDifferenceId(), lines);
                 m_lines = null;
             }
         }
@@ -437,7 +437,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
                 MDocType.getOfDocBaseType(Env.getCtx(), X_C_DocType.DOCBASETYPE_MaterialPhysicalInventory);
         for (MDocType doctype : doctypes) {
             if (X_C_DocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
-                inventory.setC_DocType_ID(doctype.getC_DocType_ID());
+                inventory.setC_DocType_ID(doctype.getDocTypeId());
                 break;
             }
         }
@@ -674,9 +674,9 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      */
     public int getC_Currency_ID() {
         //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
-        //	return pl.getC_Currency_ID();
+        //	return pl.getCurrencyId();
         return 0;
-    } //	getC_Currency_ID
+    } //	getCurrencyId
 
     /**
      * Unlock Document.

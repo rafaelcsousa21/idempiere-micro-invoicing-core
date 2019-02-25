@@ -57,7 +57,7 @@ public class MGoal extends X_PA_Goal {
         super(ctx, PA_Goal_ID);
         if (PA_Goal_ID == 0) {
             //	setName (null);
-            //	setAD_User_ID (0);
+            //	setUserId (0);
             //	setPA_ColorSchema_ID (0);
             setSeqNo(0);
             setIsSummary(false);
@@ -274,14 +274,14 @@ public class MGoal extends X_PA_Goal {
             if (roles.length == 0) // 	No Role
                 setAD_Role_ID(0);
             else if (roles.length == 1) // 	One
-                setAD_Role_ID(roles[0].getAD_Role_ID());
+                setAD_Role_ID(roles[0].getRoleId());
             else {
                 int AD_Role_ID = getAD_Role_ID();
                 if (AD_Role_ID != 0) // 	validate
                 {
                     boolean found = false;
                     for (int i = 0; i < roles.length; i++) {
-                        if (AD_Role_ID == roles[i].getAD_Role_ID()) {
+                        if (AD_Role_ID == roles[i].getRoleId()) {
                             found = true;
                             break;
                         }
@@ -289,7 +289,7 @@ public class MGoal extends X_PA_Goal {
                     if (!found) AD_Role_ID = 0;
                 }
                 if (AD_Role_ID == 0) // 	set to first one
-                    setAD_Role_ID(roles[0].getAD_Role_ID());
+                    setAD_Role_ID(roles[0].getRoleId());
             } //	multiple roles
         } //	user check
 

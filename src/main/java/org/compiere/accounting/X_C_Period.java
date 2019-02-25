@@ -3,7 +3,6 @@ package org.compiere.accounting;
 import org.compiere.model.I_C_Period;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
-import org.idempiere.orm.I_Persistent;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
@@ -15,7 +14,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
+public class X_C_Period extends BasePOName implements I_C_Period {
 
     /**
      * Standard Calendar Period = S
@@ -32,7 +31,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
     public X_C_Period(Properties ctx, int C_Period_ID) {
         super(ctx, C_Period_ID);
         /**
-         * if (C_Period_ID == 0) { setC_Period_ID (0); setC_Year_ID (0); setName (null); setPeriodNo
+         * if (C_Period_ID == 0) { setPeriodId (0); setC_Year_ID (0); setName (null); setPeriodNo
          * (0); setPeriodType (null); // S setStartDate (new Timestamp( System.currentTimeMillis() )); }
          */
     }
@@ -64,7 +63,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
      * @return Period of the Calendar
      */
     public int getC_Period_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Period_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -81,7 +80,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
      * @return Calendar Year
      */
     public int getC_Year_ID() {
-        Integer ii = (Integer) get_Value(COLUMNNAME_C_Year_ID);
+        Integer ii = (Integer) getValue(COLUMNNAME_C_Year_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -102,7 +101,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
      * @return Last effective date (inclusive)
      */
     public Timestamp getEndDate() {
-        return (Timestamp) get_Value(COLUMNNAME_EndDate);
+        return (Timestamp) getValue(COLUMNNAME_EndDate);
     }
 
     /**
@@ -129,7 +128,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
      * @return Period Type
      */
     public String getPeriodType() {
-        return (String) get_Value(COLUMNNAME_PeriodType);
+        return (String) getValue(COLUMNNAME_PeriodType);
     }
 
     /**
@@ -148,7 +147,7 @@ public class X_C_Period extends BasePOName implements I_C_Period, I_Persistent {
      * @return First effective day (inclusive)
      */
     public Timestamp getStartDate() {
-        return (Timestamp) get_Value(COLUMNNAME_StartDate);
+        return (Timestamp) getValue(COLUMNNAME_StartDate);
     }
 
     /**

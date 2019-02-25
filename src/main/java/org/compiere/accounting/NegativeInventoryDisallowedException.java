@@ -42,7 +42,7 @@ public class NegativeInventoryDisallowedException extends AdempiereException {
                         new Object[]{
                                 MWarehouse.get(ctx, M_Warehouse_ID).getName(),
                                 MProduct.get(ctx, M_Product_ID).getValue()
-                                        + MSysConfig.getValue(
+                                        + MSysConfig.getConfigValue(
                                         MSysConfig.IDENTIFIER_SEPARATOR, "_", Env.getClientId(ctx))
                                         + MProduct.get(ctx, M_Product_ID).getName(),
                                 M_AttributeSetInstance_ID > 0

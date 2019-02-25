@@ -244,7 +244,7 @@ public class InvoiceNGL extends SvrProcess {
         MGLCategory cat = MGLCategory.getDefaultSystem(getCtx());
         if (cat == null) {
             MDocType docType = MDocType.get(getCtx(), p_C_DocTypeReval_ID);
-            cat = MGLCategory.get(getCtx(), docType.getGL_Category_ID());
+            cat = MGLCategory.get(getCtx(), docType.getGLCategoryId());
         }
         //
         MJournal journal = new MJournal(getCtx(), 0);
@@ -252,8 +252,8 @@ public class InvoiceNGL extends SvrProcess {
         journal.setPostingType(MJournal.POSTINGTYPE_Actual);
         journal.setDateDoc(p_DateReval);
         journal.setDateAcct(p_DateReval); // sets the period too
-        journal.setC_Currency_ID(as.getC_Currency_ID());
-        journal.setC_AcctSchema_ID(as.getC_AcctSchema_ID());
+        journal.setC_Currency_ID(as.getCurrencyId());
+        journal.setC_AcctSchema_ID(as.getAccountingSchemaId());
         journal.setC_ConversionType_ID(p_C_ConversionTypeReval_ID);
         journal.setGL_Category_ID(cat.getGL_Category_ID());
         journal.setDescription(getName()); // updated below
@@ -267,7 +267,7 @@ public class InvoiceNGL extends SvrProcess {
             X_T_InvoiceGL gl = list.get(i);
             if (gl.getAmtRevalDrDiff().signum() == 0 && gl.getAmtRevalCrDiff().signum() == 0) continue;
             MInvoice invoice = new MInvoice(getCtx(), gl.getC_Invoice_ID());
-            if (invoice.getC_Currency_ID() == as.getC_Currency_ID()) continue;
+            if (invoice.getC_Currency_ID() == as.getCurrencyId()) continue;
             //
             if (AD_Org_ID == 0) // 	invoice org id
                 AD_Org_ID = gl.getOrgId();
@@ -374,7 +374,7 @@ public class InvoiceNGL extends SvrProcess {
                             getCtx(),
                             asDefaultAccts.getClientId(),
                             AD_Org_ID,
-                            asDefaultAccts.getC_AcctSchema_ID(),
+                            asDefaultAccts.getAccountingSchemaId(),
                             base.getAccount_ID(),
                             base.getC_SubAcct_ID(),
                             base.getM_Product_ID(),
@@ -407,7 +407,7 @@ public class InvoiceNGL extends SvrProcess {
                             getCtx(),
                             asDefaultAccts.getClientId(),
                             AD_Org_ID,
-                            asDefaultAccts.getC_AcctSchema_ID(),
+                            asDefaultAccts.getAccountingSchemaId(),
                             base.getAccount_ID(),
                             base.getC_SubAcct_ID(),
                             base.getM_Product_ID(),
