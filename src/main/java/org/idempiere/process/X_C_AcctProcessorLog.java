@@ -57,8 +57,8 @@ public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog {
      * @param C_AcctProcessor_ID Accounting Processor/Server Parameters
      */
     public void setAccountingProcessorId(int C_AcctProcessor_ID) {
-        if (C_AcctProcessor_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctProcessor_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_AcctProcessor_ID, Integer.valueOf(C_AcctProcessor_ID));
+        if (C_AcctProcessor_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctProcessor_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_AcctProcessor_ID, Integer.valueOf(C_AcctProcessor_ID));
     }
 
     /**
@@ -67,7 +67,7 @@ public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog {
      * @param Summary Textual summary of this request
      */
     public void setSummary(String Summary) {
-        set_Value(COLUMNNAME_Summary, Summary);
+        setValue(COLUMNNAME_Summary, Summary);
     }
 
 }

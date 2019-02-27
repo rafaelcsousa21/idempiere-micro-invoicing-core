@@ -89,7 +89,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
      * @param payment payment
      */
     public void setPayment(MPayment payment) {
-        setC_Payment_ID(payment.getC_Payment_ID());
+        setPaymentId(payment.getPaymentId());
         //
         BigDecimal amt = payment.getPayAmt(true);
         setPayAmt(amt);
@@ -112,12 +112,12 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
         }
 
         //	Set DepositBatch_ID into C_Payment table
-        if (getC_Payment_ID() != 0) {
+        if (getPaymentId() != 0) {
             String sql = "UPDATE C_Payment p SET C_DepositBatch_ID=? WHERE p.C_Payment_ID=?";
             executeUpdateEx(
-                    sql, new Object[]{getC_DepositBatch_ID(), getC_Payment_ID()});
+                    sql, new Object[]{getC_DepositBatch_ID(), getPaymentId()});
 
-            MPayment payment = new MPayment(getCtx(), getC_Payment_ID());
+            MPayment payment = new MPayment(getCtx(), getPaymentId());
             setPayment(payment); // set payment amount
         }
 
@@ -146,9 +146,9 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
     protected boolean afterDelete(boolean success) {
         if (!success) return success;
         updateHeader();
-        if (getC_Payment_ID() != 0) {
+        if (getPaymentId() != 0) {
             String sql = "UPDATE C_Payment p SET C_DepositBatch_ID= Null WHERE p.C_Payment_ID=?";
-            executeUpdateEx(sql, new Object[]{getC_Payment_ID()});
+            executeUpdateEx(sql, new Object[]{getPaymentId()});
         }
 
         return success;

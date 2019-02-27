@@ -106,7 +106,7 @@ public class X_C_Task extends BasePOName implements I_C_Task {
      * @param SeqNo Method of ordering records; lowest number comes first
      */
     public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+        setValue(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
     }
 
     /**
@@ -126,7 +126,7 @@ public class X_C_Task extends BasePOName implements I_C_Task {
      * @param StandardQty Standard Quantity
      */
     public void setStandardQty(BigDecimal StandardQty) {
-        set_Value(COLUMNNAME_StandardQty, StandardQty);
+        setValue(COLUMNNAME_StandardQty, StandardQty);
     }
 
     @Override

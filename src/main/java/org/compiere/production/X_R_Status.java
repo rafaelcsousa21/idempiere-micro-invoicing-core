@@ -53,7 +53,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param IsClosed The status is closed
      */
     public void setIsClosed(boolean IsClosed) {
-        set_Value(COLUMNNAME_IsClosed, Boolean.valueOf(IsClosed));
+        setValue(COLUMNNAME_IsClosed, Boolean.valueOf(IsClosed));
     }
 
     /**
@@ -76,7 +76,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
     }
 
     /**
@@ -99,7 +99,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param IsFinalClose Entries with Final Close cannot be re-opened
      */
     public void setIsFinalClose(boolean IsFinalClose) {
-        set_Value(COLUMNNAME_IsFinalClose, Boolean.valueOf(IsFinalClose));
+        setValue(COLUMNNAME_IsFinalClose, Boolean.valueOf(IsFinalClose));
     }
 
     /**
@@ -122,7 +122,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param IsOpen The status is closed
      */
     public void setIsOpen(boolean IsOpen) {
-        set_Value(COLUMNNAME_IsOpen, Boolean.valueOf(IsOpen));
+        setValue(COLUMNNAME_IsOpen, Boolean.valueOf(IsOpen));
     }
 
     /**
@@ -145,7 +145,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param IsWebCanUpdate Entry can be updated from the Web
      */
     public void setIsWebCanUpdate(boolean IsWebCanUpdate) {
-        set_Value(COLUMNNAME_IsWebCanUpdate, Boolean.valueOf(IsWebCanUpdate));
+        setValue(COLUMNNAME_IsWebCanUpdate, Boolean.valueOf(IsWebCanUpdate));
     }
 
     /**
@@ -179,8 +179,8 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param Next_Status_ID Move to next status automatically after timeout
      */
     public void setNext_Status_ID(int Next_Status_ID) {
-        if (Next_Status_ID < 1) set_Value(COLUMNNAME_Next_Status_ID, null);
-        else set_Value(COLUMNNAME_Next_Status_ID, Integer.valueOf(Next_Status_ID));
+        if (Next_Status_ID < 1) setValue(COLUMNNAME_Next_Status_ID, null);
+        else setValue(COLUMNNAME_Next_Status_ID, Integer.valueOf(Next_Status_ID));
     }
 
     /**
@@ -233,8 +233,8 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param Update_Status_ID Automatically change the status after entry from web
      */
     public void setUpdate_Status_ID(int Update_Status_ID) {
-        if (Update_Status_ID < 1) set_Value(COLUMNNAME_Update_Status_ID, null);
-        else set_Value(COLUMNNAME_Update_Status_ID, Integer.valueOf(Update_Status_ID));
+        if (Update_Status_ID < 1) setValue(COLUMNNAME_Update_Status_ID, null);
+        else setValue(COLUMNNAME_Update_Status_ID, Integer.valueOf(Update_Status_ID));
     }
 
     @Override

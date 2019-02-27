@@ -56,7 +56,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -67,7 +67,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -99,7 +99,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      * @param I_ErrorMsg Messages generated from import process
      */
     public void setI_ErrorMsg(String I_ErrorMsg) {
-        set_Value(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
+        setValue(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
     }
 
     /**
@@ -108,7 +108,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      * @param I_IsImported Has this import been processed
      */
     public void setI_IsImported(boolean I_IsImported) {
-        set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
+        setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
     /**
@@ -126,8 +126,8 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      * @param M_CostingLine_ID Unique line in an Inventory cost adjustment document
      */
     public void setM_CostingLine_ID(int M_CostingLine_ID) {
-        if (M_CostingLine_ID < 1) set_Value(COLUMNNAME_M_CostingLine_ID, null);
-        else set_Value(COLUMNNAME_M_CostingLine_ID, Integer.valueOf(M_CostingLine_ID));
+        if (M_CostingLine_ID < 1) setValue(COLUMNNAME_M_CostingLine_ID, null);
+        else setValue(COLUMNNAME_M_CostingLine_ID, Integer.valueOf(M_CostingLine_ID));
     }
 
     /**
@@ -136,8 +136,8 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      * @param M_Inventory_ID Parameters for a Physical Inventory
      */
     public void setM_Inventory_ID(int M_Inventory_ID) {
-        if (M_Inventory_ID < 1) set_Value(COLUMNNAME_M_Inventory_ID, null);
-        else set_Value(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
+        if (M_Inventory_ID < 1) setValue(COLUMNNAME_M_Inventory_ID, null);
+        else setValue(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
     }
 
     /**
@@ -146,8 +146,8 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
     public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
-        if (M_InventoryLine_ID < 1) set_Value(COLUMNNAME_M_InventoryLine_ID, null);
-        else set_Value(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
+        if (M_InventoryLine_ID < 1) setValue(COLUMNNAME_M_InventoryLine_ID, null);
+        else setValue(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
     }
 
     /**
@@ -186,7 +186,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -198,7 +198,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**

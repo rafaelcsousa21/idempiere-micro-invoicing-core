@@ -58,7 +58,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType {
      * @param IsAvailableForReplenishment Available for Replenishment
      */
     public void setIsAvailableForReplenishment(boolean IsAvailableForReplenishment) {
-        set_Value(COLUMNNAME_IsAvailableForReplenishment, Boolean.valueOf(IsAvailableForReplenishment));
+        setValue(COLUMNNAME_IsAvailableForReplenishment, Boolean.valueOf(IsAvailableForReplenishment));
     }
 
     /**
@@ -81,7 +81,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType {
      * @param IsAvailableForReservation Available for Reservation
      */
     public void setIsAvailableForReservation(boolean IsAvailableForReservation) {
-        set_Value(COLUMNNAME_IsAvailableForReservation, Boolean.valueOf(IsAvailableForReservation));
+        setValue(COLUMNNAME_IsAvailableForReservation, Boolean.valueOf(IsAvailableForReservation));
     }
 
     /**
@@ -90,7 +90,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType {
      * @param IsAvailableForShipping Available for Shipping
      */
     public void setIsAvailableForShipping(boolean IsAvailableForShipping) {
-        set_Value(COLUMNNAME_IsAvailableForShipping, Boolean.valueOf(IsAvailableForShipping));
+        setValue(COLUMNNAME_IsAvailableForShipping, Boolean.valueOf(IsAvailableForShipping));
     }
 
     /**

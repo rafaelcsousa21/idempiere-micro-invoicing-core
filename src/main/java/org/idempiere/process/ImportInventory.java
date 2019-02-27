@@ -418,8 +418,8 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
                 int isInternalUse = (imp.getQtyInternalUse().signum() != 0) ? 1 : 0;
 
                 if (inventory == null
-                        || imp.getM_Warehouse_ID() != x_M_Warehouse_ID
-                        || imp.getC_DocType_ID() != x_C_DocType_ID
+                        || imp.getWarehouseId() != x_M_Warehouse_ID
+                        || imp.getDocumentTypeId() != x_C_DocType_ID
                         || !MovementDate.equals(x_MovementDate)
                         || isInternalUse != x_isInternalUse) {
                     if (inventory != null) {
@@ -438,10 +438,10 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
                         }
                     }
                     inventory = new MInventory(getCtx(), 0);
-                    if (imp.getC_DocType_ID() > 0) inventory.setC_DocType_ID(imp.getC_DocType_ID());
+                    if (imp.getDocumentTypeId() > 0) inventory.setDocumentTypeId(imp.getDocumentTypeId());
                     inventory.setClientOrg(imp.getClientId(), imp.getOrgId());
-                    inventory.setDescription("I " + imp.getM_Warehouse_ID() + " " + MovementDate);
-                    inventory.setM_Warehouse_ID(imp.getM_Warehouse_ID());
+                    inventory.setDescription("I " + imp.getWarehouseId() + " " + MovementDate);
+                    inventory.setWarehouseId(imp.getWarehouseId());
                     inventory.setMovementDate(MovementDate);
 
                     ModelValidationEngine.get()
@@ -456,8 +456,8 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
                         log.log(Level.SEVERE, "Inventory not saved");
                         break;
                     }
-                    x_M_Warehouse_ID = imp.getM_Warehouse_ID();
-                    x_C_DocType_ID = imp.getC_DocType_ID();
+                    x_M_Warehouse_ID = imp.getWarehouseId();
+                    x_C_DocType_ID = imp.getDocumentTypeId();
                     x_MovementDate = MovementDate;
                     x_isInternalUse = isInternalUse;
                     noInsert++;
@@ -476,10 +476,10 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
                                 imp.getQtyCount(),
                                 imp.getQtyInternalUse());
                 line.setDescription(imp.getDescription());
-                if (imp.getC_Charge_ID() > 0)
+                if (imp.getChargeId() > 0)
                     line.setInventoryType(MInventoryLine.INVENTORYTYPE_ChargeAccount);
                 else line.setInventoryType(MInventoryLine.INVENTORYTYPE_InventoryDifference);
-                line.setC_Charge_ID(imp.getC_Charge_ID());
+                line.setChargeId(imp.getChargeId());
 
                 ModelValidationEngine.get()
                         .fireImportValidate(this, imp, line, ImportValidator.TIMING_BEFORE_IMPORT);
@@ -525,7 +525,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
             if (costingDoc != null) {
                 if (!DocumentEngine.processIt(costingDoc, DocAction.Companion.getACTION_Complete())) {
                     StringBuilder msg = new StringBuilder();
-                    I_C_DocType docType = costingDoc.getC_DocType();
+                    I_C_DocType docType = costingDoc.getDocumentType();
                     msg.append(Msg.getMsg(getCtx(), "ProcessFailed")).append(": ");
                     if (Env.isBaseLanguage(getCtx(), I_C_DocType.Table_Name)) msg.append(docType.getName());
                     else msg.append(((PO) docType).get_Translation(HasName.Companion.getCOLUMNNAME_Name()));
@@ -601,7 +601,7 @@ public class ImportInventory extends SvrProcess implements ImportProcess {
         if (cost.isNew()) cost.saveEx();
         if (costingDoc == null) {
             costingDoc = new MInventory(getCtx(), 0);
-            costingDoc.setC_DocType_ID(p_C_DocType_ID);
+            costingDoc.setDocumentTypeId(p_C_DocType_ID);
             costingDoc.setCostingMethod(cost.getM_CostElement().getCostingMethod());
             costingDoc.setOrgId(imp.getOrgId());
             costingDoc.setDocAction(DocAction.Companion.getACTION_Complete());

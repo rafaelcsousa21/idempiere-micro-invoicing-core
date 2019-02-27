@@ -84,8 +84,8 @@ public class MConversionRate extends X_C_Conversion_Rate {
             Timestamp ValidFrom) {
         this(po.getCtx(), 0);
         setClientOrg(po);
-        setC_ConversionType_ID(C_ConversionType_ID);
-        setC_Currency_ID(C_Currency_ID);
+        setConversionTypeId(C_ConversionType_ID);
+        setCurrencyId(C_Currency_ID);
         setC_Currency_ID_To(C_Currency_ID_To);
         //
         setMultiplyRate(MultiplyRate);
@@ -313,7 +313,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
         StringBuilder sb = new StringBuilder("MConversionRate[");
         sb.append(getId())
                 .append(",Currency=")
-                .append(getC_Currency_ID())
+                .append(getCurrencyId())
                 .append(",To=")
                 .append(getC_Currency_ID_To())
                 .append(", Multiply=")
@@ -334,7 +334,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
      */
     protected boolean beforeSave(boolean newRecord) {
         //	From - To is the same
-        if (getC_Currency_ID() == getC_Currency_ID_To()) {
+        if (getCurrencyId() == getC_Currency_ID_To()) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@C_Currency_ID@ = @C_Currency_ID@"));
             return false;
         }

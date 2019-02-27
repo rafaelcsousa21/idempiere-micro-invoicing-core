@@ -53,7 +53,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      * @param Help Comment or Hint
      */
     public void setHelp(String Help) {
-        set_Value(COLUMNNAME_Help, Help);
+        setValue(COLUMNNAME_Help, Help);
     }
 
     /**
@@ -62,7 +62,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -82,8 +82,8 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      * @param M_ChangeNotice_ID Bill of Materials (Engineering) Change Notice (Version)
      */
     public void setM_ChangeNotice_ID(int M_ChangeNotice_ID) {
-        if (M_ChangeNotice_ID < 1) set_ValueNoCheck(COLUMNNAME_M_ChangeNotice_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_ChangeNotice_ID, Integer.valueOf(M_ChangeNotice_ID));
+        if (M_ChangeNotice_ID < 1) setValueNoCheck(COLUMNNAME_M_ChangeNotice_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_ChangeNotice_ID, Integer.valueOf(M_ChangeNotice_ID));
     }
 
     /**
@@ -114,8 +114,8 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      * @param PP_Product_BOM_ID BOM & Formula
      */
     public void setPP_Product_BOM_ID(int PP_Product_BOM_ID) {
-        if (PP_Product_BOM_ID < 1) set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, Integer.valueOf(PP_Product_BOM_ID));
+        if (PP_Product_BOM_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
+        else setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, Integer.valueOf(PP_Product_BOM_ID));
     }
 
     /**
@@ -138,7 +138,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     @Override

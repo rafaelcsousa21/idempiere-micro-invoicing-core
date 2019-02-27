@@ -49,8 +49,8 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param AD_PInstance_ID Instance of the process
      */
     public void setAD_PInstance_ID(int AD_PInstance_ID) {
-        if (AD_PInstance_ID < 1) set_Value(COLUMNNAME_AD_PInstance_ID, null);
-        else set_Value(COLUMNNAME_AD_PInstance_ID, Integer.valueOf(AD_PInstance_ID));
+        if (AD_PInstance_ID < 1) setValue(COLUMNNAME_AD_PInstance_ID, null);
+        else setValue(COLUMNNAME_AD_PInstance_ID, Integer.valueOf(AD_PInstance_ID));
     }
 
     /**
@@ -59,8 +59,8 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param C_AcctSchema_ID Rules for accounting
      */
     public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
-        if (C_AcctSchema_ID < 1) set_Value(COLUMNNAME_C_AcctSchema_ID, null);
-        else set_Value(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
+        if (C_AcctSchema_ID < 1) setValue(COLUMNNAME_C_AcctSchema_ID, null);
+        else setValue(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
     }
 
     /**
@@ -69,7 +69,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param Cost Cost information
      */
     public void setCost(BigDecimal Cost) {
-        set_Value(COLUMNNAME_Cost, Cost);
+        setValue(COLUMNNAME_Cost, Cost);
     }
 
     /**
@@ -78,7 +78,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param CostFuture Cost information
      */
     public void setCostFuture(BigDecimal CostFuture) {
-        set_Value(COLUMNNAME_CostFuture, CostFuture);
+        setValue(COLUMNNAME_CostFuture, CostFuture);
     }
 
     /**
@@ -87,7 +87,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param CurrentCostPrice The currently used cost price
      */
     public void setCurrentCostPrice(BigDecimal CurrentCostPrice) {
-        set_Value(COLUMNNAME_CurrentCostPrice, CurrentCostPrice);
+        setValue(COLUMNNAME_CurrentCostPrice, CurrentCostPrice);
     }
 
     /**
@@ -97,7 +97,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      *                           of this product manufactured for this level.
      */
     public void setCurrentCostPriceLL(BigDecimal CurrentCostPriceLL) {
-        set_Value(COLUMNNAME_CurrentCostPriceLL, CurrentCostPriceLL);
+        setValue(COLUMNNAME_CurrentCostPriceLL, CurrentCostPriceLL);
     }
 
     /**
@@ -106,7 +106,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param FutureCostPrice Future Cost Price
      */
     public void setFutureCostPrice(BigDecimal FutureCostPrice) {
-        set_Value(COLUMNNAME_FutureCostPrice, FutureCostPrice);
+        setValue(COLUMNNAME_FutureCostPrice, FutureCostPrice);
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param FutureCostPriceLL Future Cost Price Lower Level
      */
     public void setFutureCostPriceLL(BigDecimal FutureCostPriceLL) {
-        set_Value(COLUMNNAME_FutureCostPriceLL, FutureCostPriceLL);
+        setValue(COLUMNNAME_FutureCostPriceLL, FutureCostPriceLL);
     }
 
     /**
@@ -124,7 +124,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param LevelNo Level no
      */
     public void setLevelNo(int LevelNo) {
-        set_Value(COLUMNNAME_LevelNo, Integer.valueOf(LevelNo));
+        setValue(COLUMNNAME_LevelNo, Integer.valueOf(LevelNo));
     }
 
     /**
@@ -133,7 +133,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param Levels Levels
      */
     public void setLevels(String Levels) {
-        set_Value(COLUMNNAME_Levels, Levels);
+        setValue(COLUMNNAME_Levels, Levels);
     }
 
     /**
@@ -142,8 +142,8 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param M_CostElement_ID Product Cost Element
      */
     public void setM_CostElement_ID(int M_CostElement_ID) {
-        if (M_CostElement_ID < 1) set_Value(COLUMNNAME_M_CostElement_ID, null);
-        else set_Value(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
+        if (M_CostElement_ID < 1) setValue(COLUMNNAME_M_CostElement_ID, null);
+        else setValue(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
     }
 
     /**
@@ -152,8 +152,8 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -162,7 +162,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_Value(COLUMNNAME_Qty, Qty);
+        setValue(COLUMNNAME_Qty, Qty);
     }
 
     /**
@@ -171,7 +171,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param QtyBOM Indicate the Quantity use in this BOM
      */
     public void setQtyBOM(BigDecimal QtyBOM) {
-        set_Value(COLUMNNAME_QtyBOM, QtyBOM);
+        setValue(COLUMNNAME_QtyBOM, QtyBOM);
     }
 
     /**
@@ -180,8 +180,8 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param Sel_Product_ID Selected Product
      */
     public void setSel_Product_ID(int Sel_Product_ID) {
-        if (Sel_Product_ID < 1) set_Value(COLUMNNAME_Sel_Product_ID, null);
-        else set_Value(COLUMNNAME_Sel_Product_ID, Integer.valueOf(Sel_Product_ID));
+        if (Sel_Product_ID < 1) setValue(COLUMNNAME_Sel_Product_ID, null);
+        else setValue(COLUMNNAME_Sel_Product_ID, Integer.valueOf(Sel_Product_ID));
     }
 
     /**
@@ -190,7 +190,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      * @param SeqNo Method of ordering records; lowest number comes first
      */
     public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+        setValue(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
     }
 
     @Override

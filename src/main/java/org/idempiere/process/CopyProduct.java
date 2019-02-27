@@ -143,7 +143,7 @@ public class CopyProduct extends SvrProcess {
     for (Iterator<MBPartnerProduct> it = bpList.iterator(); it.hasNext();) {
     	bpSrc = it.next();
     	bpDst = new MBPartnerProduct(getCtx(), 0, null);
-    	bpDst.setC_BPartner_ID(bpSrc.getC_BPartner_ID());
+    	bpDst.setBusinessPartnerId(bpSrc.getBusinessPartnerId());
     	bpDst.setDescription(bpSrc.getDescription());
     	bpDst.setIsManufacturer(bpSrc.isManufacturer());
     	bpDst.setM_Product_ID(toMProductID);

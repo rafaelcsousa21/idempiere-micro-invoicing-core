@@ -69,7 +69,7 @@ public class MLocator extends X_M_Locator {
     public MLocator(MWarehouse warehouse, String Value) {
         this(warehouse.getCtx(), 0);
         setClientOrg(warehouse);
-        setM_Warehouse_ID(warehouse.getM_Warehouse_ID()); // 	Parent
+        setWarehouseId(warehouse.getWarehouseId()); // 	Parent
         setValue(Value);
         setXYZ("0", "0", "0");
     } //	MLocator
@@ -103,7 +103,7 @@ public class MLocator extends X_M_Locator {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, warehouse.getM_Warehouse_ID());
+            pstmt.setInt(1, warehouse.getWarehouseId());
             rs = pstmt.executeQuery();
             while (rs.next()) retValue = new MLocator(warehouse.getCtx(), rs);
         } catch (Exception e) {

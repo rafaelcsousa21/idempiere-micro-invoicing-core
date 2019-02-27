@@ -51,7 +51,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -62,9 +62,9 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      *
      * @param C_DocType_ID Document type or rules
      */
-    public void setC_DocType_ID(int C_DocType_ID) {
-        if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-        else set_Value(COLUMNNAME_C_DocType_ID, C_DocType_ID);
+    public void setDocumentTypeId(int C_DocType_ID) {
+        if (C_DocType_ID < 0) setValue(COLUMNNAME_C_DocType_ID, null);
+        else setValue(COLUMNNAME_C_DocType_ID, C_DocType_ID);
     }
 
     /**
@@ -84,8 +84,8 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      * @param Counter_C_DocType_ID Generated Counter Document Type (To)
      */
     public void setCounter_C_DocType_ID(int Counter_C_DocType_ID) {
-        if (Counter_C_DocType_ID < 1) set_Value(COLUMNNAME_Counter_C_DocType_ID, null);
-        else set_Value(COLUMNNAME_Counter_C_DocType_ID, Counter_C_DocType_ID);
+        if (Counter_C_DocType_ID < 1) setValue(COLUMNNAME_Counter_C_DocType_ID, null);
+        else setValue(COLUMNNAME_Counter_C_DocType_ID, Counter_C_DocType_ID);
     }
 
     /**
@@ -103,7 +103,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      * @param IsCreateCounter Create Counter Document
      */
     public void setIsCreateCounter(boolean IsCreateCounter) {
-        set_Value(COLUMNNAME_IsCreateCounter, IsCreateCounter);
+        setValue(COLUMNNAME_IsCreateCounter, IsCreateCounter);
     }
 
     /**
@@ -126,7 +126,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      * @param IsValid Element is valid
      */
     public void setIsValid(boolean IsValid) {
-        set_Value(COLUMNNAME_IsValid, IsValid);
+        setValue(COLUMNNAME_IsValid, IsValid);
     }
 
     /**

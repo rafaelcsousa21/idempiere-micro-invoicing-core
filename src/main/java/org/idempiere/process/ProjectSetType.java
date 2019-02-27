@@ -51,7 +51,7 @@ public class ProjectSetType extends SvrProcess {
                     "doIt - C_Project_ID=" + m_C_Project_ID + ", C_ProjectType_ID=" + m_C_ProjectType_ID);
         //
         MProject project = new MProject(getCtx(), m_C_Project_ID);
-        if (project.getC_Project_ID() == 0 || project.getC_Project_ID() != m_C_Project_ID)
+        if (project.getProjectId() == 0 || project.getProjectId() != m_C_Project_ID)
             throw new IllegalArgumentException("Project not found C_Project_ID=" + m_C_Project_ID);
         if (project.getC_ProjectType_ID_Int() > 0)
             throw new IllegalArgumentException(

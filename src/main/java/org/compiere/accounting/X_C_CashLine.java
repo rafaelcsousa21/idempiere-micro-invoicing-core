@@ -91,7 +91,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      * @param Amount Amount in a defined currency
      */
     public void setAmount(BigDecimal Amount) {
-        set_Value(COLUMNNAME_Amount, Amount);
+        setValue(COLUMNNAME_Amount, Amount);
     }
 
     /**
@@ -110,7 +110,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      */
     public void setCashType(String CashType) {
 
-        set_ValueNoCheck(COLUMNNAME_CashType, CashType);
+        setValueNoCheck(COLUMNNAME_CashType, CashType);
     }
 
     /**
@@ -130,8 +130,8 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      * @param C_BankAccount_ID Account at the Bank
      */
     public void setC_BankAccount_ID(int C_BankAccount_ID) {
-        if (C_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BankAccount_ID, null);
-        else set_Value(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
+        if (C_BankAccount_ID < 1) setValue(COLUMNNAME_C_BankAccount_ID, null);
+        else setValue(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }
 
     /**
@@ -151,8 +151,8 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      * @param C_Cash_ID Cash Journal
      */
     public void setC_Cash_ID(int C_Cash_ID) {
-        if (C_Cash_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Cash_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Cash_ID, Integer.valueOf(C_Cash_ID));
+        if (C_Cash_ID < 1) setValueNoCheck(COLUMNNAME_C_Cash_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Cash_ID, Integer.valueOf(C_Cash_ID));
     }
 
     /**
@@ -171,7 +171,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -182,7 +182,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -193,9 +193,9 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Currency_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValueNoCheck(COLUMNNAME_C_Currency_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     /**
@@ -203,7 +203,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @return Invoice Identifier
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -214,7 +214,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @return Payment identifier
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
@@ -225,9 +225,9 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @param C_Payment_ID Payment identifier
      */
-    public void setC_Payment_ID(int C_Payment_ID) {
-        if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-        else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    public void setPaymentId(int C_Payment_ID) {
+        if (C_Payment_ID < 1) setValue(COLUMNNAME_C_Payment_ID, null);
+        else setValue(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
     }
 
     /**
@@ -245,7 +245,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -265,7 +265,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      * @param DiscountAmt Calculated amount of discount
      */
     public void setDiscountAmt(BigDecimal DiscountAmt) {
-        set_Value(COLUMNNAME_DiscountAmt, DiscountAmt);
+        setValue(COLUMNNAME_DiscountAmt, DiscountAmt);
     }
 
     /**
@@ -274,7 +274,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      * @param IsGenerated This Line is generated
      */
     public void setIsGenerated(boolean IsGenerated) {
-        set_ValueNoCheck(COLUMNNAME_IsGenerated, Boolean.valueOf(IsGenerated));
+        setValueNoCheck(COLUMNNAME_IsGenerated, Boolean.valueOf(IsGenerated));
     }
 
     /**
@@ -294,7 +294,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -314,7 +314,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      * @param WriteOffAmt Amount to write-off
      */
     public void setWriteOffAmt(BigDecimal WriteOffAmt) {
-        set_Value(COLUMNNAME_WriteOffAmt, WriteOffAmt);
+        setValue(COLUMNNAME_WriteOffAmt, WriteOffAmt);
     }
 
     @Override

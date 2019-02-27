@@ -116,12 +116,14 @@ public class MQuery implements Serializable {
     private String m_zoomTable;
     private String m_zoomColumn;
     private Object m_zoomValue;
+
     /**
      * ************************************************************************ Constructor w/o table
      * name
      */
     public MQuery() {
     } // 	MQuery
+
     /**
      * Constructor
      *
@@ -130,6 +132,7 @@ public class MQuery implements Serializable {
     public MQuery(String TableName) {
         m_TableName = TableName;
     } //	MQuery
+
     /**
      * Constructor get TableNAme from Table
      *
@@ -326,6 +329,7 @@ class Restriction implements Serializable {
      * And/Or condition nesting depth ( = number of open brackets at and/or)
      */
     protected int joinDepth = 0;
+
     /**
      * Restriction
      *
@@ -367,6 +371,7 @@ class Restriction implements Serializable {
         if (infoDisplay != null) InfoDisplay = infoDisplay.trim();
         else if (code != null) InfoDisplay = code.toString();
     } //	Restriction
+
     /**
      * Range Restriction (BETWEEN)
      *
@@ -399,6 +404,7 @@ class Restriction implements Serializable {
         if (infoDisplay_to != null) InfoDisplay_to = infoDisplay_to.trim();
         else if (Code_to != null) InfoDisplay_to = Code_to.toString();
     } //	Restriction
+
     /**
      * Create Restriction with direct WHERE clause
      *

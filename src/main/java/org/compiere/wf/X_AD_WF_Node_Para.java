@@ -69,8 +69,8 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para {
      * @param AD_Process_Para_ID Process Parameter
      */
     public void setProcessParameterId(int AD_Process_Para_ID) {
-        if (AD_Process_Para_ID < 1) set_Value(COLUMNNAME_AD_Process_Para_ID, null);
-        else set_Value(COLUMNNAME_AD_Process_Para_ID, Integer.valueOf(AD_Process_Para_ID));
+        if (AD_Process_Para_ID < 1) setValue(COLUMNNAME_AD_Process_Para_ID, null);
+        else setValue(COLUMNNAME_AD_Process_Para_ID, Integer.valueOf(AD_Process_Para_ID));
     }
 
     /**
@@ -88,7 +88,7 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para {
      * @param AttributeName Name of the Attribute
      */
     public void setAttributeName(String AttributeName) {
-        set_Value(COLUMNNAME_AttributeName, AttributeName);
+        setValue(COLUMNNAME_AttributeName, AttributeName);
     }
 
     /**

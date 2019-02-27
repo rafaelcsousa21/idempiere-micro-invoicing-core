@@ -69,7 +69,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
      * @param DateMaterialPolicy Time used for LIFO and FIFO Material Policy
      */
     public void setDateMaterialPolicy(Timestamp DateMaterialPolicy) {
-        set_ValueNoCheck(COLUMNNAME_DateMaterialPolicy, DateMaterialPolicy);
+        setValueNoCheck(COLUMNNAME_DateMaterialPolicy, DateMaterialPolicy);
     }
 
     /**
@@ -78,9 +78,9 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
@@ -112,7 +112,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
      * @param MovementQty Quantity of a product moved.
      */
     public void setMovementQty(BigDecimal MovementQty) {
-        set_Value(COLUMNNAME_MovementQty, MovementQty);
+        setValue(COLUMNNAME_MovementQty, MovementQty);
     }
 
     /**
@@ -121,8 +121,8 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
      * @param M_ProductionLine_ID Document Line representing a production
      */
     public void setM_ProductionLine_ID(int M_ProductionLine_ID) {
-        if (M_ProductionLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_ProductionLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_ProductionLine_ID, Integer.valueOf(M_ProductionLine_ID));
+        if (M_ProductionLine_ID < 1) setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, Integer.valueOf(M_ProductionLine_ID));
     }
 
     @Override

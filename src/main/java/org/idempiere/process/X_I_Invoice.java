@@ -73,7 +73,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Performing or initiating organization
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
@@ -84,7 +84,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return User within the system - Internal or Business Partner Contact
      */
-    public int getAD_User_ID() {
+    public int getUserId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
@@ -95,9 +95,9 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @param AD_User_ID User within the system - Internal or Business Partner Contact
      */
-    public void setAD_User_ID(int AD_User_ID) {
-        if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-        else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+    public void setUserId(int AD_User_ID) {
+        if (AD_User_ID < 1) setValue(COLUMNNAME_AD_User_ID, null);
+        else setValue(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      * @param BPartnerValue Key of the Business Partner
      */
     public void setBPartnerValue(String BPartnerValue) {
-        set_Value(COLUMNNAME_BPartnerValue, BPartnerValue);
+        setValue(COLUMNNAME_BPartnerValue, BPartnerValue);
     }
 
     /**
@@ -134,7 +134,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -145,7 +145,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -156,9 +156,9 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValue(COLUMNNAME_C_BPartner_ID, null);
+        else setValue(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -166,7 +166,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Identifies the (ship to) address for this Business Partner
      */
-    public int getC_BPartner_Location_ID() {
+    public int getBusinessPartnerLocationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_Location_ID);
         if (ii == null) return 0;
         return ii;
@@ -177,9 +177,9 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @param C_BPartner_Location_ID Identifies the (ship to) address for this Business Partner
      */
-    public void setC_BPartner_Location_ID(int C_BPartner_Location_ID) {
-        if (C_BPartner_Location_ID < 1) set_Value(COLUMNNAME_C_BPartner_Location_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_Location_ID, Integer.valueOf(C_BPartner_Location_ID));
+    public void setBusinessPartnerLocationId(int C_BPartner_Location_ID) {
+        if (C_BPartner_Location_ID < 1) setValue(COLUMNNAME_C_BPartner_Location_ID, null);
+        else setValue(COLUMNNAME_C_BPartner_Location_ID, Integer.valueOf(C_BPartner_Location_ID));
     }
 
     /**
@@ -187,7 +187,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Marketing Campaign
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
@@ -198,7 +198,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -220,7 +220,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -231,9 +231,9 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @param C_Invoice_ID Invoice Identifier
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        if (C_Invoice_ID < 1) set_Value(COLUMNNAME_C_Invoice_ID, null);
-        else set_Value(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    public void setInvoiceId(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) setValue(COLUMNNAME_C_Invoice_ID, null);
+        else setValue(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
     /**
@@ -242,8 +242,8 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
     public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
-        if (C_InvoiceLine_ID < 1) set_Value(COLUMNNAME_C_InvoiceLine_ID, null);
-        else set_Value(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+        if (C_InvoiceLine_ID < 1) setValue(COLUMNNAME_C_InvoiceLine_ID, null);
+        else setValue(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
 
     /**
@@ -272,8 +272,8 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      * @param C_Location_ID Location or Address
      */
     public void setC_Location_ID(int C_Location_ID) {
-        if (C_Location_ID < 1) set_Value(COLUMNNAME_C_Location_ID, null);
-        else set_Value(COLUMNNAME_C_Location_ID, Integer.valueOf(C_Location_ID));
+        if (C_Location_ID < 1) setValue(COLUMNNAME_C_Location_ID, null);
+        else setValue(COLUMNNAME_C_Location_ID, Integer.valueOf(C_Location_ID));
     }
 
     /**
@@ -290,7 +290,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return The terms of Payment (timing, discount)
      */
-    public int getC_PaymentTerm_ID() {
+    public int getPaymentTermId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_PaymentTerm_ID);
         if (ii == null) return 0;
         return ii;
@@ -301,7 +301,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -335,8 +335,8 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      * @param C_Tax_ID Tax identifier
      */
     public void setC_Tax_ID(int C_Tax_ID) {
-        if (C_Tax_ID < 1) set_Value(COLUMNNAME_C_Tax_ID, null);
-        else set_Value(COLUMNNAME_C_Tax_ID, Integer.valueOf(C_Tax_ID));
+        if (C_Tax_ID < 1) setValue(COLUMNNAME_C_Tax_ID, null);
+        else setValue(COLUMNNAME_C_Tax_ID, Integer.valueOf(C_Tax_ID));
     }
 
     /**
@@ -390,7 +390,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      * @param I_IsImported Has this import been processed
      */
     public void setI_IsImported(boolean I_IsImported) {
-        set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
+        setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
     /**
@@ -421,7 +421,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Unique identifier of a Price List
      */
-    public int getM_PriceList_ID() {
+    public int getPriceListId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_PriceList_ID);
         if (ii == null) return 0;
         return ii;
@@ -473,7 +473,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -492,7 +492,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Sales Representative or Company Agent
      */
-    public int getSalesRep_ID() {
+    public int getSalesRepresentativeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_SalesRep_ID);
         if (ii == null) return 0;
         return ii;

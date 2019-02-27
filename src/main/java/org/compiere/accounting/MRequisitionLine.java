@@ -86,7 +86,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
         this(req.getCtx(), 0);
         setClientOrg(req);
         setM_Requisition_ID(req.getM_Requisition_ID());
-        m_M_PriceList_ID = req.getM_PriceList_ID();
+        m_M_PriceList_ID = req.getPriceListId();
         m_parent = req;
     } //	MRequisitionLine
 
@@ -179,12 +179,12 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * Set Price
      */
     public void setPrice() {
-        if (getC_Charge_ID() != 0) {
-            MCharge charge = MCharge.get(getCtx(), getC_Charge_ID());
+        if (getChargeId() != 0) {
+            MCharge charge = MCharge.get(getCtx(), getChargeId());
             setPriceActual(charge.getChargeAmt());
         }
         if (getM_Product_ID() == 0) return;
-        if (m_M_PriceList_ID == 0) m_M_PriceList_ID = getParent().getM_PriceList_ID();
+        if (m_M_PriceList_ID == 0) m_M_PriceList_ID = getParent().getPriceListId();
         if (m_M_PriceList_ID == 0) {
             throw new AdempiereException("PriceList unknown!");
         }
@@ -202,7 +202,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
         if (log.isLoggable(Level.FINE)) log.fine("M_PriceList_ID=" + M_PriceList_ID);
         IProductPricing pp = MProduct.getProductPricing();
         pp.setRequisitionLine(this);
-        pp.setM_PriceList_ID(M_PriceList_ID);
+        pp.setPriceListId(M_PriceList_ID);
         //	pp.setPriceDate(getDateOrdered());
         //
         setPriceActual(pp.getPriceStd());
@@ -234,8 +234,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
             setLine(ii);
         }
         //	Product & ASI - Charge
-        if (getM_Product_ID() != 0 && getC_Charge_ID() != 0) setC_Charge_ID(0);
-        if (getMAttributeSetInstance_ID() != 0 && getC_Charge_ID() != 0)
+        if (getM_Product_ID() != 0 && getChargeId() != 0) setChargeId(0);
+        if (getMAttributeSetInstance_ID() != 0 && getChargeId() != 0)
             setM_AttributeSetInstance_ID(0);
         // Product UOM
         if (getM_Product_ID() > 0 && getC_UOM_ID() <= 0) {
@@ -248,8 +248,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
         /* Carlos Ruiz - globalqss
          * IDEMPIERE-178 Orders and Invoices must disallow amount lines without product/charge
          */
-        if (getParent().getC_DocType().isChargeOrProductMandatory()) {
-            if (getC_Charge_ID() == 0 && getM_Product_ID() == 0 && getPriceActual().signum() != 0) {
+        if (getParent().getDocumentType().isChargeOrProductMandatory()) {
+            if (getChargeId() == 0 && getM_Product_ID() == 0 && getPriceActual().signum() != 0) {
                 log.saveError("FillMandatory", Msg.translate(getCtx(), "ChargeOrProductMandatory"));
                 return false;
             }

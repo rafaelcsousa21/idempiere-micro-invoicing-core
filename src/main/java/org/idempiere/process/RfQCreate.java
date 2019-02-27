@@ -82,8 +82,8 @@ public class RfQCreate extends SvrProcess {
     	//	existing response
     	for (int r = 0; r < responses.length; r++)
     	{
-    		if (subscriber.getC_BPartner_ID() == responses[r].getC_BPartner_ID()
-    			&& subscriber.getC_BPartner_Location_ID() == responses[r].getC_BPartner_Location_ID())
+    		if (subscriber.getBusinessPartnerId() == responses[r].getBusinessPartnerId()
+    			&& subscriber.getBusinessPartnerLocationId() == responses[r].getBusinessPartnerLocationId())
     		{
     			skip = true;
     			break;

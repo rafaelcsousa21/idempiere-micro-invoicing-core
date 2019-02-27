@@ -1,6 +1,9 @@
 package org.compiere.schedule;
 
-import org.compiere.model.*;
+import org.compiere.model.AdempiereProcessor;
+import org.compiere.model.AdempiereProcessor2;
+import org.compiere.model.I_AD_SchedulerRecipient;
+import org.compiere.model.I_AD_Scheduler_Para;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
 import org.compiere.orm.MUserRoles;
@@ -52,6 +55,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
             setKeepLogDays(7);
         }
     } //	MScheduler
+
     /**
      * Load Constructor
      *
@@ -268,7 +272,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
      * @param DateLastRun Date the process was last run.
      */
     public void setDateLastRun(Timestamp DateLastRun) {
-        set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+        setValue(COLUMNNAME_DateLastRun, DateLastRun);
     }
 
 } //	MScheduler

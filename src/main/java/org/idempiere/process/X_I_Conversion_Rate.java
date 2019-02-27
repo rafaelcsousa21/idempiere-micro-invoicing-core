@@ -56,8 +56,8 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate {
      * @param C_Conversion_Rate_ID Rate used for converting currencies
      */
     public void setC_Conversion_Rate_ID(int C_Conversion_Rate_ID) {
-        if (C_Conversion_Rate_ID < 1) set_Value(COLUMNNAME_C_Conversion_Rate_ID, null);
-        else set_Value(COLUMNNAME_C_Conversion_Rate_ID, Integer.valueOf(C_Conversion_Rate_ID));
+        if (C_Conversion_Rate_ID < 1) setValue(COLUMNNAME_C_Conversion_Rate_ID, null);
+        else setValue(COLUMNNAME_C_Conversion_Rate_ID, Integer.valueOf(C_Conversion_Rate_ID));
     }
 
     /**
@@ -65,7 +65,7 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate {
      *
      * @return Currency Conversion Rate Type
      */
-    public int getC_ConversionType_ID() {
+    public int getConversionTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ConversionType_ID);
         if (ii == null) return 0;
         return ii;
@@ -76,7 +76,7 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -124,7 +124,7 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate {
      * @param I_IsImported Has this import been processed
      */
     public void setI_IsImported(boolean I_IsImported) {
-        set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
+        setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
     /**
@@ -144,7 +144,7 @@ public class X_I_Conversion_Rate extends PO implements I_I_Conversion_Rate {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**

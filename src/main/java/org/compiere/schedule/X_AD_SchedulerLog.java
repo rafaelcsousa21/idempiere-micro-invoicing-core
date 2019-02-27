@@ -57,8 +57,8 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
      * @param AD_Scheduler_ID Schedule Processes
      */
     public void setSchedulerId(int AD_Scheduler_ID) {
-        if (AD_Scheduler_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Scheduler_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_Scheduler_ID, Integer.valueOf(AD_Scheduler_ID));
+        if (AD_Scheduler_ID < 1) setValueNoCheck(COLUMNNAME_AD_Scheduler_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_Scheduler_ID, Integer.valueOf(AD_Scheduler_ID));
     }
 
     /**
@@ -67,7 +67,7 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
      * @param IsError An Error occurred in the execution
      */
     public void setIsError(boolean IsError) {
-        set_Value(COLUMNNAME_IsError, Boolean.valueOf(IsError));
+        setValue(COLUMNNAME_IsError, Boolean.valueOf(IsError));
     }
 
     /**
@@ -76,7 +76,7 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
      * @param Reference Reference for this record
      */
     public void setReference(String Reference) {
-        set_Value(COLUMNNAME_Reference, Reference);
+        setValue(COLUMNNAME_Reference, Reference);
     }
 
     /**
@@ -85,7 +85,7 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
      * @param Summary Textual summary of this request
      */
     public void setSummary(String Summary) {
-        set_Value(COLUMNNAME_Summary, Summary);
+        setValue(COLUMNNAME_Summary, Summary);
     }
 
     @Override

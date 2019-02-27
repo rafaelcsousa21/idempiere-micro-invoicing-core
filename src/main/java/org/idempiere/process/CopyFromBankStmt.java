@@ -60,7 +60,7 @@ public class CopyFromBankStmt extends SvrProcess {
 
         for (MBankStatementLine fromLine : from.getLines(false)) {
             if (!fromLine.isActive()) continue;
-            if (fromLine.getC_Payment_ID() > 0) {
+            if (fromLine.getPaymentId() > 0) {
                 // check if payment is used on another statement
                 String sql =
                         "SELECT C_BankStatementLine_ID"
@@ -68,9 +68,9 @@ public class CopyFromBankStmt extends SvrProcess {
                                 + " WHERE bs.C_BankStatement_ID=bsl.C_BankStatement_ID"
                                 + " AND bs.DocStatus IN ('DR', 'CO', 'CL')"
                                 + " AND bsl.C_Payment_ID=?";
-                if (getSQLValueEx(sql, fromLine.getC_Payment_ID()) < 0) {
+                if (getSQLValueEx(sql, fromLine.getPaymentId()) < 0) {
                     MBankStatementLine toLine = new MBankStatementLine(to);
-                    toLine.setPayment(new MPayment(getCtx(), fromLine.getC_Payment_ID()));
+                    toLine.setPayment(new MPayment(getCtx(), fromLine.getPaymentId()));
                     toLine.saveEx();
                     no++;
                 } else {
@@ -79,8 +79,8 @@ public class CopyFromBankStmt extends SvrProcess {
                 }
             } else {
                 MBankStatementLine toLine = new MBankStatementLine(to);
-                toLine.setC_Currency_ID(fromLine.getC_Currency_ID());
-                toLine.setC_Charge_ID(fromLine.getC_Charge_ID());
+                toLine.setCurrencyId(fromLine.getCurrencyId());
+                toLine.setChargeId(fromLine.getChargeId());
                 toLine.setStmtAmt(fromLine.getStmtAmt());
                 toLine.setTrxAmt(fromLine.getTrxAmt());
                 toLine.setChargeAmt(fromLine.getChargeAmt());

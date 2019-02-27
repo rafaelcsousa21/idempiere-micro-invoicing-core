@@ -54,6 +54,7 @@ public class MStatusCategory extends X_R_StatusCategory {
             setIsDefault(false);
         }
     } //	RStatusCategory
+
     /**
      * Load Constructor
      *

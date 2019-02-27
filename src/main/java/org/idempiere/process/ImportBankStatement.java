@@ -426,7 +426,7 @@ public class ImportBankStatement extends SvrProcess {
                     if (log.isLoggable(Level.INFO)) log.info(msglog.toString());
                 }
                 //	Create a new Bank Statement for every account
-                else if (account.getC_BankAccount_ID() != imp.getC_BankAccount_ID()) {
+                else if (account.getBankAccountId() != imp.getC_BankAccount_ID()) {
                     account = MBankAccount.get(m_ctx, imp.getC_BankAccount_ID());
                     statement = null;
                     msglog = new StringBuilder("New Statement, Account=").append(account.getAccountNo());
@@ -491,25 +491,25 @@ public class ImportBankStatement extends SvrProcess {
                 MBankStatementLine line = new MBankStatementLine(statement, lineNo);
 
                 //	Copy statement line data
-                // line.setC_BPartner_ID(imp.getC_BPartner_ID());
-                // line.setC_Invoice_ID(imp.getC_Invoice_ID());
+                // line.setBusinessPartnerId(imp.getBusinessPartnerId());
+                // line.setInvoiceId(imp.getInvoiceId());
                 line.setReferenceNo(imp.getReferenceNo());
                 line.setDescription(imp.getLineDescription());
                 line.setStatementLineDate(imp.getStatementLineDate());
                 // line.setDateAcct(imp.getStatementLineDate()); // set on beforeSave
                 line.setValutaDate(imp.getValutaDate());
                 line.setIsReversal(imp.isReversal());
-                line.setC_Currency_ID(imp.getC_Currency_ID());
+                line.setCurrencyId(imp.getCurrencyId());
                 line.setTrxAmt(imp.getTrxAmt());
                 line.setStmtAmt(imp.getStmtAmt());
-                if (imp.getC_Charge_ID() != 0) {
-                    line.setC_Charge_ID(imp.getC_Charge_ID());
+                if (imp.getChargeId() != 0) {
+                    line.setChargeId(imp.getChargeId());
                 }
                 line.setInterestAmt(imp.getInterestAmt());
                 line.setChargeAmt(imp.getChargeAmt());
                 line.setMemo(imp.getMemo());
-                if (imp.getC_Payment_ID() != 0) {
-                    line.setC_Payment_ID(imp.getC_Payment_ID());
+                if (imp.getPaymentId() != 0) {
+                    line.setPaymentId(imp.getPaymentId());
                 }
 
                 //	Copy statement line reference data

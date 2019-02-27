@@ -25,7 +25,7 @@ public class X_C_Activity extends BasePONameValue implements I_C_Activity {
     public X_C_Activity(Properties ctx, int C_Activity_ID) {
         super(ctx, C_Activity_ID);
         /**
-         * if (C_Activity_ID == 0) { setC_Activity_ID (0); setIsSummary (false); setName (null);
+         * if (C_Activity_ID == 0) { setBusinessActivityId (0); setIsSummary (false); setName (null);
          * setValue (null); }
          */
     }

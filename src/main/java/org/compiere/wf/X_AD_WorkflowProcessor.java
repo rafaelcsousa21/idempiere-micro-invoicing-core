@@ -90,7 +90,7 @@ public class X_AD_WorkflowProcessor extends BasePOName
      * @param DateNextRun Date the process will run next
      */
     public void setDateNextRun(Timestamp DateNextRun) {
-        set_Value(COLUMNNAME_DateNextRun, DateNextRun);
+        setValue(COLUMNNAME_DateNextRun, DateNextRun);
     }
 
     @Override

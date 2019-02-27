@@ -232,7 +232,7 @@ public class InvoiceGenerate extends SvrProcess {
                 //	New Invoice Location
                 if (!p_ConsolidateDocument
                         || (m_invoice != null
-                        && m_invoice.getC_BPartner_Location_ID() != order.getBill_Location_ID()))
+                        && m_invoice.getBusinessPartnerLocationId() != order.getBusinessPartnerInvoicingLocationId()))
                     completeInvoice();
                 boolean completeOrder =
                         MOrder.INVOICERULE_AfterOrderDelivered.equals(order.getInvoiceRule());
@@ -401,9 +401,9 @@ public class InvoiceGenerate extends SvrProcess {
         }
         //	Create Shipment Comment Line
         if (m_ship == null || m_ship.getM_InOut_ID() != ship.getM_InOut_ID()) {
-            MDocType dt = MDocType.get(getCtx(), ship.getC_DocType_ID());
-            if (m_bp == null || m_bp.getC_BPartner_ID() != ship.getC_BPartner_ID())
-                m_bp = new MBPartner(getCtx(), ship.getC_BPartner_ID());
+            MDocType dt = MDocType.get(getCtx(), ship.getDocumentTypeId());
+            if (m_bp == null || m_bp.getBusinessPartnerId() != ship.getBusinessPartnerId())
+                m_bp = new MBPartner(getCtx(), ship.getBusinessPartnerId());
 
             //	Reference: Delivery: 12345 - 12.12.12
             MClient client = MClient.get(getCtx(), order.getClientId());
@@ -429,8 +429,8 @@ public class InvoiceGenerate extends SvrProcess {
             if (!line.save())
                 throw new IllegalStateException("Could not create Invoice Comment Line (sh)");
             //	Optional Ship Address if not Bill Address
-            if (order.getBill_Location_ID() != ship.getC_BPartner_Location_ID()) {
-                MLocation addr = getBPLocation(getCtx(), ship.getC_BPartner_Location_ID());
+            if (order.getBusinessPartnerInvoicingLocationId() != ship.getBusinessPartnerLocationId()) {
+                MLocation addr = getBPLocation(getCtx(), ship.getBusinessPartnerLocationId());
                 line = new MInvoiceLine(m_invoice);
                 line.setIsDescription(true);
                 line.setDescription(addr.toString());
@@ -459,25 +459,25 @@ public class InvoiceGenerate extends SvrProcess {
      */
     private void completeInvoice() {
         if (m_invoice != null) {
-            MOrder order = new MOrder(getCtx(), m_invoice.getC_Order_ID());
+            MOrder order = new MOrder(getCtx(), m_invoice.getOrderId());
             if (order != null) {
                 m_invoice.setPaymentRule(order.getPaymentRule());
-                m_invoice.setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
+                m_invoice.setPaymentTermId(order.getPaymentTermId());
                 m_invoice.saveEx();
                 m_invoice.load(); // refresh from DB
                 // copy payment schedule from order if invoice doesn't have a current payment schedule
                 MOrderPaySchedule[] opss =
                         MOrderPaySchedule.getOrderPaySchedule(
-                                getCtx(), order.getC_Order_ID(), 0);
+                                getCtx(), order.getOrderId(), 0);
                 MInvoicePaySchedule[] ipss =
                         MInvoicePaySchedule.getInvoicePaySchedule(
-                                getCtx(), m_invoice.getC_Invoice_ID(), 0);
+                                getCtx(), m_invoice.getInvoiceId(), 0);
                 if (ipss.length == 0 && opss.length > 0) {
                     BigDecimal ogt = order.getGrandTotal();
                     BigDecimal igt = m_invoice.getGrandTotal();
                     BigDecimal percent = Env.ONE;
                     if (ogt.compareTo(igt) != 0) percent = igt.divide(ogt, 10, BigDecimal.ROUND_HALF_UP);
-                    MCurrency cur = MCurrency.get(order.getCtx(), order.getC_Currency_ID());
+                    MCurrency cur = MCurrency.get(order.getCtx(), order.getCurrencyId());
                     int scale = cur.getStdPrecision();
 
                     for (MOrderPaySchedule ops : opss) {
@@ -489,7 +489,7 @@ public class InvoiceGenerate extends SvrProcess {
                                 propDueAmt = propDueAmt.setScale(scale, BigDecimal.ROUND_HALF_UP);
                             ips.setDueAmt(propDueAmt);
                         }
-                        ips.setC_Invoice_ID(m_invoice.getC_Invoice_ID());
+                        ips.setInvoiceId(m_invoice.getInvoiceId());
                         ips.setOrgId(ops.getOrgId());
                         ips.setProcessing(ops.isProcessing());
                         ips.setIsActive(ops.isActive());
@@ -525,7 +525,7 @@ public class InvoiceGenerate extends SvrProcess {
                             null,
                             "completeInvoice - failed: " + m_invoice,
                             m_invoice.getTableId(),
-                            m_invoice.getC_Invoice_ID()); // Elaine 2008/11/25
+                            m_invoice.getInvoiceId()); // Elaine 2008/11/25
                     throw new IllegalStateException(
                             "Invoice Process Failed: " + m_invoice + " - " + m_invoice.getProcessMsg());
                 }
@@ -534,12 +534,12 @@ public class InvoiceGenerate extends SvrProcess {
                 String message =
                         Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + m_invoice.getDocumentNo());
                 addBufferLog(
-                        m_invoice.getC_Invoice_ID(),
+                        m_invoice.getInvoiceId(),
                         m_invoice.getDateInvoiced(),
                         null,
                         message,
                         m_invoice.getTableId(),
-                        m_invoice.getC_Invoice_ID());
+                        m_invoice.getInvoiceId());
                 m_created++;
             }
         }

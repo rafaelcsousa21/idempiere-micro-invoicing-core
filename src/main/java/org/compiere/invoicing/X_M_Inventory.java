@@ -81,7 +81,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
     public X_M_Inventory(Properties ctx, int M_Inventory_ID) {
         super(ctx, M_Inventory_ID);
         /**
-         * if (M_Inventory_ID == 0) { setC_DocType_ID (0); setDocAction (null); // CO setDocStatus
+         * if (M_Inventory_ID == 0) { setDocumentTypeId (0); setDocAction (null); // CO setDocStatus
          * (null); // DR setDocumentNo (null); setIsApproved (false); setM_Inventory_ID (0);
          * setMovementDate (new Timestamp( System.currentTimeMillis() )); // @#Date@ setPosted (false);
          * setProcessed (false); }
@@ -125,7 +125,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -136,16 +136,16 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
+    public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
         return (org.compiere.model.I_C_DocType)
                 MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-                        .getPO(getC_DocType_ID());
+                        .getPO(getDocumentTypeId());
     }
 
     /**
@@ -153,7 +153,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -164,9 +164,9 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      *
      * @param C_DocType_ID Document type or rules
      */
-    public void setC_DocType_ID(int C_DocType_ID) {
-        if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-        else set_Value(COLUMNNAME_C_DocType_ID, C_DocType_ID);
+    public void setDocumentTypeId(int C_DocType_ID) {
+        if (C_DocType_ID < 0) setValue(COLUMNNAME_C_DocType_ID, null);
+        else setValue(COLUMNNAME_C_DocType_ID, C_DocType_ID);
     }
 
     /**
@@ -185,7 +185,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      */
     public void setCostingMethod(String CostingMethod) {
 
-        set_Value(COLUMNNAME_CostingMethod, CostingMethod);
+        setValue(COLUMNNAME_CostingMethod, CostingMethod);
     }
 
     /**
@@ -203,7 +203,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -222,7 +222,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -241,7 +241,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -259,7 +259,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      * @param DocumentNo Document sequence number of the document
      */
     public void setDocumentNo(String DocumentNo) {
-        set_Value(COLUMNNAME_DocumentNo, DocumentNo);
+        setValue(COLUMNNAME_DocumentNo, DocumentNo);
     }
 
     /**
@@ -268,7 +268,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -311,7 +311,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      * @param MovementDate Date a product was moved in or out of inventory
      */
     public void setMovementDate(Timestamp MovementDate) {
-        set_Value(COLUMNNAME_MovementDate, MovementDate);
+        setValue(COLUMNNAME_MovementDate, MovementDate);
     }
 
     /**
@@ -319,7 +319,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -330,9 +330,9 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      *
      * @param M_Warehouse_ID Storage Warehouse and Service Point
      */
-    public void setM_Warehouse_ID(int M_Warehouse_ID) {
-        if (M_Warehouse_ID < 1) set_Value(COLUMNNAME_M_Warehouse_ID, null);
-        else set_Value(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
+    public void setWarehouseId(int M_Warehouse_ID) {
+        if (M_Warehouse_ID < 1) setValue(COLUMNNAME_M_Warehouse_ID, null);
+        else setValue(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
     }
 
     /**
@@ -341,7 +341,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+        setValue(COLUMNNAME_Posted, Boolean.valueOf(Posted));
     }
 
     /**
@@ -364,7 +364,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -373,7 +373,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -382,8 +382,8 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      * @param Reversal_ID ID of document reversal
      */
     public void setReversal_ID(int Reversal_ID) {
-        if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
-        else set_Value(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+        if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
+        else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }
 
     @Override

@@ -47,7 +47,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
     public MBPBankAccount(Properties ctx, int C_BP_BankAccount_ID) {
         super(ctx, C_BP_BankAccount_ID);
         if (C_BP_BankAccount_ID == 0) {
-            //	setC_BPartner_ID (0);
+            //	setBusinessPartnerId (0);
             setIsACH(false);
             setBPBankAcctUse(X_C_BP_BankAccount.BPBANKACCTUSE_Both);
         }
@@ -76,7 +76,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
         this(ctx, 0);
         setIsACH(false);
         //
-        setC_BPartner_ID(bp.getC_BPartner_ID());
+        setBusinessPartnerId(bp.getBusinessPartnerId());
         //
         setA_Name(bpc.getName());
         setA_EMail(bpc.getEMail());

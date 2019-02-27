@@ -99,27 +99,27 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
         setC_UOM_ID(iLine.getC_UOM_ID());
         int M_Product_ID = iLine.getM_Product_ID();
         if (M_Product_ID == 0) {
-            set_ValueNoCheck("M_Product_ID", null);
-            set_ValueNoCheck("M_Locator_ID", null);
-            set_ValueNoCheck("M_AttributeSetInstance_ID", null);
+            setValueNoCheck("M_Product_ID", null);
+            setValueNoCheck("M_Locator_ID", null);
+            setValueNoCheck("M_AttributeSetInstance_ID", null);
         } else {
             setM_Product_ID(M_Product_ID);
             setM_AttributeSetInstance_ID(iLine.getMAttributeSetInstance_ID());
             if (M_Locator_ID == 0) setM_Locator_ID(Qty); // 	requires warehouse, product, asi
             else setM_Locator_ID(M_Locator_ID);
         }
-        setC_Charge_ID(iLine.getC_Charge_ID());
+        setChargeId(iLine.getChargeId());
         setDescription(iLine.getDescription());
         setIsDescription(iLine.isDescription());
         //
-        setC_Project_ID(iLine.getC_Project_ID());
+        setProjectId(iLine.getProjectId());
         setC_ProjectPhase_ID(iLine.getC_ProjectPhase_ID());
         setC_ProjectTask_ID(iLine.getC_ProjectTask_ID());
-        setC_Activity_ID(iLine.getC_Activity_ID());
-        setC_Campaign_ID(iLine.getC_Campaign_ID());
-        setAD_OrgTrx_ID(iLine.getAD_OrgTrx_ID());
-        setUser1_ID(iLine.getUser1_ID());
-        setUser2_ID(iLine.getUser2_ID());
+        setBusinessActivityId(iLine.getBusinessActivityId());
+        setCampaignId(iLine.getCampaignId());
+        setTransactionOrganizationId(iLine.getTransactionOrganizationId());
+        setUser1Id(iLine.getUser1Id());
+        setUser2Id(iLine.getUser2Id());
     } //	setInvoiceLine
 
     /**
@@ -133,21 +133,21 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
         if (getM_Locator_ID() != 0) return;
         //	No Product
         if (getM_Product_ID() == 0) {
-            set_ValueNoCheck(I_M_InOutLine.COLUMNNAME_M_Locator_ID, null);
+            setValueNoCheck(I_M_InOutLine.COLUMNNAME_M_Locator_ID, null);
             return;
         }
 
         //	Get existing Location
         int M_Locator_ID =
                 MStorageOnHand.getM_Locator_ID(
-                        getM_Warehouse_ID(),
+                        getWarehouseId(),
                         getM_Product_ID(),
                         getMAttributeSetInstance_ID(),
                         Qty,
                         null);
         //	Get default Location
         if (M_Locator_ID == 0) {
-            MWarehouse wh = MWarehouse.get(getCtx(), getM_Warehouse_ID());
+            MWarehouse wh = MWarehouse.get(getCtx(), getWarehouseId());
             M_Locator_ID = wh.getDefaultLocator().getM_Locator_ID();
         }
         setM_Locator_ID(M_Locator_ID);
@@ -168,7 +168,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
         }
         // Locator is mandatory if no charge is defined - teo_sarca BF [ 2757978 ]
         if (getProduct() != null && MProduct.PRODUCTTYPE_Item.equals(getProduct().getProductType())) {
-            if (getM_Locator_ID() <= 0 && getC_Charge_ID() <= 0) {
+            if (getM_Locator_ID() <= 0 && getChargeId() <= 0) {
                 throw new FillMandatoryException(I_M_InOutLine.COLUMNNAME_M_Locator_ID);
             }
         }
@@ -200,9 +200,9 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
         // Validate Locator/Warehouse - teo_sarca, BF [ 2784194 ]
         if (getM_Locator_ID() > 0) {
             MLocator locator = MLocator.get(getCtx(), getM_Locator_ID());
-            if (getM_Warehouse_ID() != locator.getM_Warehouse_ID()) {
+            if (getWarehouseId() != locator.getWarehouseId()) {
                 throw new WarehouseLocatorConflictException(
-                        MWarehouse.get(getCtx(), getM_Warehouse_ID()), locator, getLine());
+                        MWarehouse.get(getCtx(), getWarehouseId()), locator, getLine());
             }
 
             // IDEMPIERE-2668
@@ -229,7 +229,7 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
                     MAttributeSetInstance.generateLot(getCtx(), (MProduct) getM_Product());
             setM_AttributeSetInstance_ID(asi.getMAttributeSetInstance_ID());
         }
-        //	if (getC_Charge_ID() == 0 && getM_Product_ID() == 0)
+        //	if (getChargeId() == 0 && getM_Product_ID() == 0)
         //		;
 
         /**
@@ -247,8 +247,8 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
         /* Carlos Ruiz - globalqss
          * IDEMPIERE-178 Orders and Invoices must disallow amount lines without product/charge
          */
-        if (getParent().getC_DocType().isChargeOrProductMandatory()) {
-            if (getC_Charge_ID() == 0 && getM_Product_ID() == 0) {
+        if (getParent().getDocumentType().isChargeOrProductMandatory()) {
+            if (getChargeId() == 0 && getM_Product_ID() == 0) {
                 log.saveError("FillMandatory", Msg.translate(getCtx(), "ChargeOrProductMandatory"));
                 return false;
             }

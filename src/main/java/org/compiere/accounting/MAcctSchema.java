@@ -70,6 +70,7 @@ public class MAcctSchema extends X_C_AcctSchema {
      * Only Post Org Childs
      */
     private Integer[] m_onlyOrgs = null;
+
     /**
      * ************************************************************************ Standard Constructor
      *
@@ -101,6 +102,7 @@ public class MAcctSchema extends X_C_AcctSchema {
             setSeparator("-"); // -
         }
     } //	MAcctSchema
+
     /**
      * Load Constructor
      *
@@ -111,9 +113,11 @@ public class MAcctSchema extends X_C_AcctSchema {
     public MAcctSchema(Properties ctx, ResultSet rs) {
         super(ctx, rs);
     } //	MAcctSchema
+
     public MAcctSchema(Properties ctx, Row row) {
         super(ctx, row);
     } //	MAcctSchema
+
     /**
      * Parent Constructor
      *

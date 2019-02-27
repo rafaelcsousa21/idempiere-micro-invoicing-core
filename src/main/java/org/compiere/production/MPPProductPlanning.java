@@ -211,7 +211,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     /**
      * @return Supplier
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         return this.m_C_BPartner_ID;
     }
 
@@ -231,8 +231,8 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
         log.info("          Safety Stock: " + getSafetyStock());
         log.info("          Order Period: " + getOrder_Period());
         log.info("          Order Policy: " + getOrder_Policy());
-        log.info("             Warehouse: " + getM_Warehouse_ID());
+        log.info("             Warehouse: " + getWarehouseId());
         log.info("               Planner: " + getPlanner_ID());
-        log.info("              Supplier: " + getC_BPartner_ID());
+        log.info("              Supplier: " + getBusinessPartnerId());
     }
 } //	Product Data Planning

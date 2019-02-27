@@ -53,6 +53,7 @@ public class Doc_Invoice extends Doc {
      * All lines are product item
      */
     protected boolean m_allLinesItem = true;
+
     /**
      * Constructor
      *
@@ -252,7 +253,7 @@ public class Doc_Invoice extends Doc {
      * @return precision
      */
     private int getStdPrecision() {
-        if (m_precision == -1) m_precision = MCurrency.getStdPrecision(getCtx(), getC_Currency_ID());
+        if (m_precision == -1) m_precision = MCurrency.getStdPrecision(getCtx(), getCurrencyId());
         return m_precision;
     } //	getPrecision
 
@@ -337,7 +338,7 @@ public class Doc_Invoice extends Doc {
             //  Header Charge           CR
             BigDecimal amt = getAmount(Doc.AMTTYPE_Charge);
             if (amt != null && amt.signum() != 0)
-                fact.createLine(null, getAccount(Doc.ACCTTYPE_Charge, as), getC_Currency_ID(), null, amt);
+                fact.createLine(null, getAccount(Doc.ACCTTYPE_Charge, as), getCurrencyId(), null, amt);
             //  TaxDue                  CR
             for (int i = 0; i < m_taxes.length; i++) {
                 amt = m_taxes[i].getAmount();
@@ -346,7 +347,7 @@ public class Doc_Invoice extends Doc {
                             fact.createLine(
                                     null,
                                     m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxDue, as),
-                                    getC_Currency_ID(),
+                                    getCurrencyId(),
                                     null,
                                     amt);
                     if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
@@ -364,7 +365,7 @@ public class Doc_Invoice extends Doc {
                         fact.createLine(
                                 p_lines[i],
                                 p_lines[i].getAccount(ProductCost.ACCTTYPE_P_TDiscountGrant, as),
-                                getC_Currency_ID(),
+                                getCurrencyId(),
                                 dAmt,
                                 null);
                     }
@@ -372,7 +373,7 @@ public class Doc_Invoice extends Doc {
                 fact.createLine(
                         p_lines[i],
                         p_lines[i].getAccount(ProductCost.ACCTTYPE_P_Revenue, as),
-                        getC_Currency_ID(),
+                        getCurrencyId(),
                         null,
                         amt);
                 if (!p_lines[i].isItem()) {
@@ -385,7 +386,7 @@ public class Doc_Invoice extends Doc {
             for (int i = 0; i < fLines.length; i++) {
                 if (fLines[i] != null) {
                     fLines[i].setLocationFromOrg(fLines[i].getOrgId(), true); //  from Loc
-                    fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
+                    fLines[i].setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
                 }
             }
 
@@ -401,12 +402,12 @@ public class Doc_Invoice extends Doc {
             }
             if (grossAmt.signum() != 0)
                 fact.createLine(
-                        null, MAccount.get(getCtx(), receivables_ID), getC_Currency_ID(), grossAmt, null);
+                        null, MAccount.get(getCtx(), receivables_ID), getCurrencyId(), grossAmt, null);
             if (serviceAmt.signum() != 0)
                 fact.createLine(
                         null,
                         MAccount.get(getCtx(), receivablesServices_ID),
-                        getC_Currency_ID(),
+                        getCurrencyId(),
                         serviceAmt,
                         null);
         }
@@ -418,7 +419,7 @@ public class Doc_Invoice extends Doc {
             //  Header Charge   DR
             BigDecimal amt = getAmount(Doc.AMTTYPE_Charge);
             if (amt != null && amt.signum() != 0)
-                fact.createLine(null, getAccount(Doc.ACCTTYPE_Charge, as), getC_Currency_ID(), amt, null);
+                fact.createLine(null, getAccount(Doc.ACCTTYPE_Charge, as), getCurrencyId(), amt, null);
             //  TaxDue          DR
             for (int i = 0; i < m_taxes.length; i++) {
                 amt = m_taxes[i].getAmount();
@@ -427,7 +428,7 @@ public class Doc_Invoice extends Doc {
                             fact.createLine(
                                     null,
                                     m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxDue, as),
-                                    getC_Currency_ID(),
+                                    getCurrencyId(),
                                     amt,
                                     null);
                     if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
@@ -445,7 +446,7 @@ public class Doc_Invoice extends Doc {
                         fact.createLine(
                                 p_lines[i],
                                 p_lines[i].getAccount(ProductCost.ACCTTYPE_P_TDiscountGrant, as),
-                                getC_Currency_ID(),
+                                getCurrencyId(),
                                 null,
                                 dAmt);
                     }
@@ -453,7 +454,7 @@ public class Doc_Invoice extends Doc {
                 fact.createLine(
                         p_lines[i],
                         p_lines[i].getAccount(ProductCost.ACCTTYPE_P_Revenue, as),
-                        getC_Currency_ID(),
+                        getCurrencyId(),
                         amt,
                         null);
                 if (!p_lines[i].isItem()) {
@@ -466,7 +467,7 @@ public class Doc_Invoice extends Doc {
             for (int i = 0; i < fLines.length; i++) {
                 if (fLines[i] != null) {
                     fLines[i].setLocationFromOrg(fLines[i].getOrgId(), true); //  from Loc
-                    fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
+                    fLines[i].setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
                 }
             }
             //  Receivables             CR
@@ -481,12 +482,12 @@ public class Doc_Invoice extends Doc {
             }
             if (grossAmt.signum() != 0)
                 fact.createLine(
-                        null, MAccount.get(getCtx(), receivables_ID), getC_Currency_ID(), null, grossAmt);
+                        null, MAccount.get(getCtx(), receivables_ID), getCurrencyId(), null, grossAmt);
             if (serviceAmt.signum() != 0)
                 fact.createLine(
                         null,
                         MAccount.get(getCtx(), receivablesServices_ID),
-                        getC_Currency_ID(),
+                        getCurrencyId(),
                         null,
                         serviceAmt);
         }
@@ -500,7 +501,7 @@ public class Doc_Invoice extends Doc {
             fact.createLine(
                     null,
                     getAccount(Doc.ACCTTYPE_Charge, as),
-                    getC_Currency_ID(),
+                    getCurrencyId(),
                     getAmount(Doc.AMTTYPE_Charge),
                     null);
             //  TaxCredit       DR
@@ -509,7 +510,7 @@ public class Doc_Invoice extends Doc {
                         fact.createLine(
                                 null,
                                 m_taxes[i].getAccount(m_taxes[i].getAPTaxType(), as),
-                                getC_Currency_ID(),
+                                getCurrencyId(),
                                 m_taxes[i].getAmount(),
                                 null);
                 if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
@@ -522,7 +523,7 @@ public class Doc_Invoice extends Doc {
                     fact.createLine(
                             line,
                             line.getAccount(ProductCost.ACCTTYPE_P_Expense, as),
-                            getC_Currency_ID(),
+                            getCurrencyId(),
                             line.getAmtSource(),
                             null);
                     //
@@ -530,7 +531,7 @@ public class Doc_Invoice extends Doc {
                             fact.createLine(
                                     line,
                                     line.getAccount(ProductCost.ACCTTYPE_P_Expense, as),
-                                    getC_Currency_ID(),
+                                    getCurrencyId(),
                                     null,
                                     line.getAmtSource());
                     String desc = line.getDescription();
@@ -551,10 +552,10 @@ public class Doc_Invoice extends Doc {
                             dAmt = discount;
                             MAccount tradeDiscountReceived =
                                     line.getAccount(ProductCost.ACCTTYPE_P_TDiscountRec, as);
-                            fact.createLine(line, tradeDiscountReceived, getC_Currency_ID(), null, dAmt);
+                            fact.createLine(line, tradeDiscountReceived, getCurrencyId(), null, dAmt);
                         }
                     }
-                    fact.createLine(line, expense, getC_Currency_ID(), amt, null);
+                    fact.createLine(line, expense, getCurrencyId(), amt, null);
                     if (!line.isItem()) {
                         grossAmt = grossAmt.subtract(amt);
                         serviceAmt = serviceAmt.add(amt);
@@ -578,7 +579,7 @@ public class Doc_Invoice extends Doc {
             FactLine[] fLines = fact.getLines();
             for (int i = 0; i < fLines.length; i++) {
                 if (fLines[i] != null) {
-                    fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
+                    fLines[i].setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
                     fLines[i].setLocationFromOrg(fLines[i].getOrgId(), false); //  to Loc
                 }
             }
@@ -595,12 +596,12 @@ public class Doc_Invoice extends Doc {
             }
             if (grossAmt.signum() != 0)
                 fact.createLine(
-                        null, MAccount.get(getCtx(), payables_ID), getC_Currency_ID(), null, grossAmt);
+                        null, MAccount.get(getCtx(), payables_ID), getCurrencyId(), null, grossAmt);
             if (serviceAmt.signum() != 0)
                 fact.createLine(
                         null,
                         MAccount.get(getCtx(), payablesServices_ID),
-                        getC_Currency_ID(),
+                        getCurrencyId(),
                         null,
                         serviceAmt);
             //
@@ -614,7 +615,7 @@ public class Doc_Invoice extends Doc {
             fact.createLine(
                     null,
                     getAccount(Doc.ACCTTYPE_Charge, as),
-                    getC_Currency_ID(),
+                    getCurrencyId(),
                     null,
                     getAmount(Doc.AMTTYPE_Charge));
             //  TaxCredit               CR
@@ -623,7 +624,7 @@ public class Doc_Invoice extends Doc {
                         fact.createLine(
                                 null,
                                 m_taxes[i].getAccount(m_taxes[i].getAPTaxType(), as),
-                                getC_Currency_ID(),
+                                getCurrencyId(),
                                 null,
                                 m_taxes[i].getAmount());
                 if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
@@ -636,7 +637,7 @@ public class Doc_Invoice extends Doc {
                     fact.createLine(
                             line,
                             line.getAccount(ProductCost.ACCTTYPE_P_Expense, as),
-                            getC_Currency_ID(),
+                            getCurrencyId(),
                             null,
                             line.getAmtSource());
                     //
@@ -644,7 +645,7 @@ public class Doc_Invoice extends Doc {
                             fact.createLine(
                                     line,
                                     line.getAccount(ProductCost.ACCTTYPE_P_Expense, as),
-                                    getC_Currency_ID(),
+                                    getCurrencyId(),
                                     line.getAmtSource(),
                                     null);
                     String desc = line.getDescription();
@@ -665,10 +666,10 @@ public class Doc_Invoice extends Doc {
                             dAmt = discount;
                             MAccount tradeDiscountReceived =
                                     line.getAccount(ProductCost.ACCTTYPE_P_TDiscountRec, as);
-                            fact.createLine(line, tradeDiscountReceived, getC_Currency_ID(), dAmt, null);
+                            fact.createLine(line, tradeDiscountReceived, getCurrencyId(), dAmt, null);
                         }
                     }
-                    fact.createLine(line, expense, getC_Currency_ID(), null, amt);
+                    fact.createLine(line, expense, getCurrencyId(), null, amt);
                     if (!line.isItem()) {
                         grossAmt = grossAmt.subtract(amt);
                         serviceAmt = serviceAmt.add(amt);
@@ -692,7 +693,7 @@ public class Doc_Invoice extends Doc {
             FactLine[] fLines = fact.getLines();
             for (int i = 0; i < fLines.length; i++) {
                 if (fLines[i] != null) {
-                    fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
+                    fLines[i].setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
                     fLines[i].setLocationFromOrg(fLines[i].getOrgId(), false); //  to Loc
                 }
             }
@@ -708,12 +709,12 @@ public class Doc_Invoice extends Doc {
             }
             if (grossAmt.signum() != 0)
                 fact.createLine(
-                        null, MAccount.get(getCtx(), payables_ID), getC_Currency_ID(), grossAmt, null);
+                        null, MAccount.get(getCtx(), payables_ID), getCurrencyId(), grossAmt, null);
             if (serviceAmt.signum() != 0)
                 fact.createLine(
                         null,
                         MAccount.get(getCtx(), payablesServices_ID),
-                        getC_Currency_ID(),
+                        getCurrencyId(),
                         serviceAmt,
                         null);
         } else {
@@ -750,7 +751,7 @@ public class Doc_Invoice extends Doc {
                 fact.createLine(
                         line,
                         line.getAccount(ProductCost.ACCTTYPE_P_Expense, as),
-                        getC_Currency_ID(),
+                        getCurrencyId(),
                         null,
                         line.getAmtSource());
                 //
@@ -758,7 +759,7 @@ public class Doc_Invoice extends Doc {
                         fact.createLine(
                                 line,
                                 line.getAccount(ProductCost.ACCTTYPE_P_Expense, as),
-                                getC_Currency_ID(),
+                                getCurrencyId(),
                                 line.getAmtSource(),
                                 null);
                 String desc = line.getDescription();
@@ -781,9 +782,9 @@ public class Doc_Invoice extends Doc {
                     amt = null;
                 }
                 if (payables) //	Vendor = DR
-                    fl = fact.createLine(line, acct, getC_Currency_ID(), amt, amt2);
+                    fl = fact.createLine(line, acct, getCurrencyId(), amt, amt2);
                 else //	Customer = CR
-                    fl = fact.createLine(line, acct, getC_Currency_ID(), amt2, amt);
+                    fl = fact.createLine(line, acct, getCurrencyId(), amt2, amt);
                 if (fl != null) acctAmt = acctAmt.add(fl.getAcctBalance());
             }
         }
@@ -801,7 +802,7 @@ public class Doc_Invoice extends Doc {
                         fact.createLine(
                                 null,
                                 m_taxes[i].getAccount(m_taxes[i].getAPTaxType(), as),
-                                getC_Currency_ID(),
+                                getCurrencyId(),
                                 amt,
                                 amt2);
             else
@@ -809,7 +810,7 @@ public class Doc_Invoice extends Doc {
                         fact.createLine(
                                 null,
                                 m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxDue, as),
-                                getC_Currency_ID(),
+                                getCurrencyId(),
                                 amt2,
                                 amt);
             if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
@@ -819,11 +820,11 @@ public class Doc_Invoice extends Doc {
         for (int i = 0; i < fLines.length; i++) {
             if (fLines[i] != null) {
                 if (payables) {
-                    fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
+                    fLines[i].setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
                     fLines[i].setLocationFromOrg(fLines[i].getOrgId(), false); //  to Loc
                 } else {
                     fLines[i].setLocationFromOrg(fLines[i].getOrgId(), true); //  from Loc
-                    fLines[i].setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
+                    fLines[i].setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
                 }
             }
         }
@@ -881,7 +882,7 @@ public class Doc_Invoice extends Doc {
                 if (lca.getM_InOutLine_ID() > 0) {
                     I_M_InOutLine iol = lca.getM_InOutLine();
                     if (iol.getC_OrderLine_ID() > 0) {
-                        oCurrencyId = iol.getC_OrderLine().getC_Currency_ID();
+                        oCurrencyId = iol.getC_OrderLine().getCurrencyId();
                         oDateAcct = iol.getC_OrderLine().getC_Order().getDateAcct();
                         MOrderLandedCostAllocation[] allocations =
                                 MOrderLandedCostAllocation.getOfOrderLine(iol.getC_OrderLine_ID());
@@ -927,7 +928,7 @@ public class Doc_Invoice extends Doc {
                     }
                     // added for IDEMPIERE-3014
                     // convert to accounting schema currency
-                    if (estimatedAmt.signum() > 0 && oCurrencyId != getC_Currency_ID()) {
+                    if (estimatedAmt.signum() > 0 && oCurrencyId != getCurrencyId()) {
                         estimatedAmt =
                                 MConversionRate.convert(
                                         getCtx(),
@@ -935,7 +936,7 @@ public class Doc_Invoice extends Doc {
                                         oCurrencyId,
                                         as.getCurrencyId(),
                                         oDateAcct,
-                                        getC_ConversionType_ID(),
+                                        getConversionTypeId(),
                                         getClientId(),
                                         getOrgId());
 
@@ -943,13 +944,13 @@ public class Doc_Invoice extends Doc {
                                 MConversionRate.convert(
                                         getCtx(),
                                         allocationAmt,
-                                        getC_Currency_ID(),
+                                        getCurrencyId(),
                                         as.getCurrencyId(),
                                         getDateAcct(),
-                                        getC_ConversionType_ID(),
+                                        getConversionTypeId(),
                                         getClientId(),
                                         getOrgId());
-                        setC_Currency_ID(as.getCurrencyId());
+                        setCurrencyId(as.getCurrencyId());
                         usesSchemaCurrency = true;
                     }
 
@@ -968,15 +969,15 @@ public class Doc_Invoice extends Doc {
                     try {
                         BigDecimal costDetailAmt = costAdjustmentAmt;
                         // convert to accounting schema currency
-                        if (getC_Currency_ID() != as.getCurrencyId())
+                        if (getCurrencyId() != as.getCurrencyId())
                             costDetailAmt =
                                     MConversionRate.convert(
                                             getCtx(),
                                             costDetailAmt,
-                                            getC_Currency_ID(),
+                                            getCurrencyId(),
                                             as.getCurrencyId(),
                                             getDateAcct(),
-                                            getC_ConversionType_ID(),
+                                            getConversionTypeId(),
                                             getClientId(),
                                             getOrgId());
                         if (costDetailAmt.scale() > as.getCostingPrecision())
@@ -1025,7 +1026,7 @@ public class Doc_Invoice extends Doc {
                         drAmt = dr ? (reversal ? null : estimatedAmt) : (reversal ? estimatedAmt : null);
                         crAmt = dr ? (reversal ? estimatedAmt : null) : (reversal ? null : estimatedAmt);
                         account = pc.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as);
-                        FactLine fl = fact.createLine(line, account, getC_Currency_ID(), drAmt, crAmt);
+                        FactLine fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
                         fl.setM_Product_ID(lca.getM_Product_ID());
                         fl.setQty(line.getQty());
@@ -1037,7 +1038,7 @@ public class Doc_Invoice extends Doc {
                                 zeroQty
                                         ? pc.getAccount(ProductCost.ACCTTYPE_P_AverageCostVariance, as)
                                         : pc.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
-                        fl = fact.createLine(line, account, getC_Currency_ID(), drAmt, crAmt);
+                        fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
                         fl.setM_Product_ID(lca.getM_Product_ID());
                         fl.setQty(line.getQty());
@@ -1045,7 +1046,7 @@ public class Doc_Invoice extends Doc {
                         drAmt = dr ? (reversal ? null : estimatedAmt) : (reversal ? estimatedAmt : null);
                         crAmt = dr ? (reversal ? estimatedAmt : null) : (reversal ? null : estimatedAmt);
                         account = pc.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as);
-                        FactLine fl = fact.createLine(line, account, getC_Currency_ID(), drAmt, crAmt);
+                        FactLine fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
                         fl.setM_Product_ID(lca.getM_Product_ID());
                         fl.setQty(line.getQty());
@@ -1057,7 +1058,7 @@ public class Doc_Invoice extends Doc {
                                 zeroQty
                                         ? pc.getAccount(ProductCost.ACCTTYPE_P_AverageCostVariance, as)
                                         : pc.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
-                        fl = fact.createLine(line, account, getC_Currency_ID(), drAmt, crAmt);
+                        fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
                         fl.setM_Product_ID(lca.getM_Product_ID());
                         fl.setQty(line.getQty());
@@ -1065,18 +1066,18 @@ public class Doc_Invoice extends Doc {
                         drAmt = dr ? (reversal ? null : allocationAmt) : (reversal ? allocationAmt : null);
                         crAmt = dr ? (reversal ? allocationAmt : null) : (reversal ? null : allocationAmt);
                         account = pc.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as);
-                        FactLine fl = fact.createLine(line, account, getC_Currency_ID(), drAmt, crAmt);
+                        FactLine fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
                         fl.setM_Product_ID(lca.getM_Product_ID());
                         fl.setQty(line.getQty());
                     }
                 }
-                if (usesSchemaCurrency) setC_Currency_ID(line.getC_Currency_ID());
+                if (usesSchemaCurrency) setCurrencyId(line.getCurrencyId());
             } else {
                 if (dr) drAmt = lca.getAmt();
                 else crAmt = lca.getAmt();
                 account = pc.getAccount(ProductCost.ACCTTYPE_P_CostAdjustment, as);
-                FactLine fl = fact.createLine(line, account, getC_Currency_ID(), drAmt, crAmt);
+                FactLine fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                 fl.setDescription(desc);
                 fl.setM_Product_ID(lca.getM_Product_ID());
                 fl.setQty(line.getQty());

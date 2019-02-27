@@ -69,8 +69,8 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      * @param AD_PrintColor1_ID First color used
      */
     public void setAD_PrintColor1_ID(int AD_PrintColor1_ID) {
-        if (AD_PrintColor1_ID < 1) set_Value(COLUMNNAME_AD_PrintColor1_ID, null);
-        else set_Value(COLUMNNAME_AD_PrintColor1_ID, Integer.valueOf(AD_PrintColor1_ID));
+        if (AD_PrintColor1_ID < 1) setValue(COLUMNNAME_AD_PrintColor1_ID, null);
+        else setValue(COLUMNNAME_AD_PrintColor1_ID, Integer.valueOf(AD_PrintColor1_ID));
     }
 
     /**
@@ -90,8 +90,8 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      * @param AD_PrintColor2_ID Second color used
      */
     public void setAD_PrintColor2_ID(int AD_PrintColor2_ID) {
-        if (AD_PrintColor2_ID < 1) set_Value(COLUMNNAME_AD_PrintColor2_ID, null);
-        else set_Value(COLUMNNAME_AD_PrintColor2_ID, Integer.valueOf(AD_PrintColor2_ID));
+        if (AD_PrintColor2_ID < 1) setValue(COLUMNNAME_AD_PrintColor2_ID, null);
+        else setValue(COLUMNNAME_AD_PrintColor2_ID, Integer.valueOf(AD_PrintColor2_ID));
     }
 
     /**
@@ -111,8 +111,8 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      * @param AD_PrintColor3_ID Third color used
      */
     public void setAD_PrintColor3_ID(int AD_PrintColor3_ID) {
-        if (AD_PrintColor3_ID < 1) set_Value(COLUMNNAME_AD_PrintColor3_ID, null);
-        else set_Value(COLUMNNAME_AD_PrintColor3_ID, Integer.valueOf(AD_PrintColor3_ID));
+        if (AD_PrintColor3_ID < 1) setValue(COLUMNNAME_AD_PrintColor3_ID, null);
+        else setValue(COLUMNNAME_AD_PrintColor3_ID, Integer.valueOf(AD_PrintColor3_ID));
     }
 
     /**
@@ -143,7 +143,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      * @param Mark1Percent Percentage up to this color is used
      */
     public void setMark1Percent(int Mark1Percent) {
-        set_Value(COLUMNNAME_Mark1Percent, Integer.valueOf(Mark1Percent));
+        setValue(COLUMNNAME_Mark1Percent, Integer.valueOf(Mark1Percent));
     }
 
     /**
@@ -163,7 +163,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      * @param Mark2Percent Percentage up to this color is used
      */
     public void setMark2Percent(int Mark2Percent) {
-        set_Value(COLUMNNAME_Mark2Percent, Integer.valueOf(Mark2Percent));
+        setValue(COLUMNNAME_Mark2Percent, Integer.valueOf(Mark2Percent));
     }
 
     /**
@@ -183,7 +183,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      * @param Mark3Percent Percentage up to this color is used
      */
     public void setMark3Percent(int Mark3Percent) {
-        set_Value(COLUMNNAME_Mark3Percent, Integer.valueOf(Mark3Percent));
+        setValue(COLUMNNAME_Mark3Percent, Integer.valueOf(Mark3Percent));
     }
 
     /**
@@ -203,7 +203,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      * @param Mark4Percent Percentage up to this color is used
      */
     public void setMark4Percent(int Mark4Percent) {
-        set_Value(COLUMNNAME_Mark4Percent, Integer.valueOf(Mark4Percent));
+        setValue(COLUMNNAME_Mark4Percent, Integer.valueOf(Mark4Percent));
     }
 
     @Override

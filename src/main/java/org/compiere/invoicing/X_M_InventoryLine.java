@@ -73,7 +73,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -84,9 +84,9 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @param C_Charge_ID Additional document charges
      */
-    public void setC_Charge_ID(int C_Charge_ID) {
-        if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
-        else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
+    public void setChargeId(int C_Charge_ID) {
+        if (C_Charge_ID < 1) setValue(COLUMNNAME_C_Charge_ID, null);
+        else setValue(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
     }
 
     /**
@@ -106,7 +106,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param CurrentCostPrice The currently used cost price
      */
     public void setCurrentCostPrice(BigDecimal CurrentCostPrice) {
-        set_ValueNoCheck(COLUMNNAME_CurrentCostPrice, CurrentCostPrice);
+        setValueNoCheck(COLUMNNAME_CurrentCostPrice, CurrentCostPrice);
     }
 
     /**
@@ -124,7 +124,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -143,7 +143,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      */
     public void setInventoryType(String InventoryType) {
 
-        set_Value(COLUMNNAME_InventoryType, InventoryType);
+        setValue(COLUMNNAME_InventoryType, InventoryType);
     }
 
     /**
@@ -163,7 +163,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -172,9 +172,9 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
     /**
@@ -211,8 +211,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param M_Inventory_ID Parameters for a Physical Inventory
      */
     public void setM_Inventory_ID(int M_Inventory_ID) {
-        if (M_Inventory_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Inventory_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
+        if (M_Inventory_ID < 1) setValueNoCheck(COLUMNNAME_M_Inventory_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
     }
 
     /**
@@ -243,8 +243,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param M_Locator_ID Warehouse Locator
      */
     public void setM_Locator_ID(int M_Locator_ID) {
-        if (M_Locator_ID < 1) set_Value(COLUMNNAME_M_Locator_ID, null);
-        else set_Value(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        if (M_Locator_ID < 1) setValue(COLUMNNAME_M_Locator_ID, null);
+        else setValue(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
     public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
@@ -270,8 +270,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, M_Product_ID);
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -291,7 +291,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param NewCostPrice New current cost price after processing of M_CostDetail
      */
     public void setNewCostPrice(BigDecimal NewCostPrice) {
-        set_Value(COLUMNNAME_NewCostPrice, NewCostPrice);
+        setValue(COLUMNNAME_NewCostPrice, NewCostPrice);
     }
 
     /**
@@ -300,7 +300,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -320,7 +320,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param QtyBook Book Quantity
      */
     public void setQtyBook(BigDecimal QtyBook) {
-        set_ValueNoCheck(COLUMNNAME_QtyBook, QtyBook);
+        setValueNoCheck(COLUMNNAME_QtyBook, QtyBook);
     }
 
     /**
@@ -340,7 +340,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param QtyCount Counted Quantity
      */
     public void setQtyCount(BigDecimal QtyCount) {
-        set_Value(COLUMNNAME_QtyCount, QtyCount);
+        setValue(COLUMNNAME_QtyCount, QtyCount);
     }
 
     /**
@@ -360,7 +360,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param QtyInternalUse Internal Use Quantity removed from Inventory
      */
     public void setQtyInternalUse(BigDecimal QtyInternalUse) {
-        set_Value(COLUMNNAME_QtyInternalUse, QtyInternalUse);
+        setValue(COLUMNNAME_QtyInternalUse, QtyInternalUse);
     }
 
     /**
@@ -369,8 +369,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      * @param ReversalLine_ID Use to keep the reversal line ID for reversing costing purpose
      */
     public void setReversalLine_ID(int ReversalLine_ID) {
-        if (ReversalLine_ID < 1) set_Value(COLUMNNAME_ReversalLine_ID, null);
-        else set_Value(COLUMNNAME_ReversalLine_ID, Integer.valueOf(ReversalLine_ID));
+        if (ReversalLine_ID < 1) setValue(COLUMNNAME_ReversalLine_ID, null);
+        else setValue(COLUMNNAME_ReversalLine_ID, Integer.valueOf(ReversalLine_ID));
     }
 
     @Override

@@ -99,6 +99,7 @@ public class MWorkflow extends X_AD_Workflow {
         loadTrl();
         loadNodes();
     } //	MWorkflow
+
     /**
      * Load Constructor
      *

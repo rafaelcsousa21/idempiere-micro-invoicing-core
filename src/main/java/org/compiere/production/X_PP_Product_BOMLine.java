@@ -84,7 +84,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param Assay Indicated the Quantity Assay to use into Quality Order
      */
     public void setAssay(BigDecimal Assay) {
-        set_Value(COLUMNNAME_Assay, Assay);
+        setValue(COLUMNNAME_Assay, Assay);
     }
 
     /**
@@ -102,7 +102,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param BackflushGroup The Grouping Components to the Backflush
      */
     public void setBackflushGroup(String BackflushGroup) {
-        set_Value(COLUMNNAME_BackflushGroup, BackflushGroup);
+        setValue(COLUMNNAME_BackflushGroup, BackflushGroup);
     }
 
     /**
@@ -121,7 +121,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      */
     public void setComponentType(String ComponentType) {
 
-        set_Value(COLUMNNAME_ComponentType, ComponentType);
+        setValue(COLUMNNAME_ComponentType, ComponentType);
     }
 
     /**
@@ -141,7 +141,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param CostAllocationPerc Cost allocation percent in case of a co-product.
      */
     public void setCostAllocationPerc(BigDecimal CostAllocationPerc) {
-        set_Value(COLUMNNAME_CostAllocationPerc, CostAllocationPerc);
+        setValue(COLUMNNAME_CostAllocationPerc, CostAllocationPerc);
     }
 
     public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
@@ -167,8 +167,8 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param C_UOM_ID Unit of Measure
      */
     public void setC_UOM_ID(int C_UOM_ID) {
-        if (C_UOM_ID < 1) set_Value(COLUMNNAME_C_UOM_ID, null);
-        else set_Value(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
+        if (C_UOM_ID < 1) setValue(COLUMNNAME_C_UOM_ID, null);
+        else setValue(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
     }
 
     /**
@@ -186,7 +186,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -204,7 +204,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param Feature Indicated the Feature for Product Configure
      */
     public void setFeature(String Feature) {
-        set_Value(COLUMNNAME_Feature, Feature);
+        setValue(COLUMNNAME_Feature, Feature);
     }
 
     /**
@@ -224,7 +224,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param Forecast Indicated the % of participation this component into a of the BOM Planning
      */
     public void setForecast(BigDecimal Forecast) {
-        set_Value(COLUMNNAME_Forecast, Forecast);
+        setValue(COLUMNNAME_Forecast, Forecast);
     }
 
     /**
@@ -242,7 +242,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param Help Comment or Hint
      */
     public void setHelp(String Help) {
-        set_Value(COLUMNNAME_Help, Help);
+        setValue(COLUMNNAME_Help, Help);
     }
 
     /**
@@ -251,7 +251,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param IsCritical Indicate that a Manufacturing Order can not begin without have this component
      */
     public void setIsCritical(boolean IsCritical) {
-        set_Value(COLUMNNAME_IsCritical, Boolean.valueOf(IsCritical));
+        setValue(COLUMNNAME_IsCritical, Boolean.valueOf(IsCritical));
     }
 
     /**
@@ -274,7 +274,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param IsQtyPercentage Indicate that this component is based in % Quantity
      */
     public void setIsQtyPercentage(boolean IsQtyPercentage) {
-        set_Value(COLUMNNAME_IsQtyPercentage, Boolean.valueOf(IsQtyPercentage));
+        setValue(COLUMNNAME_IsQtyPercentage, Boolean.valueOf(IsQtyPercentage));
     }
 
     /**
@@ -307,7 +307,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      */
     public void setIssueMethod(String IssueMethod) {
 
-        set_Value(COLUMNNAME_IssueMethod, IssueMethod);
+        setValue(COLUMNNAME_IssueMethod, IssueMethod);
     }
 
     /**
@@ -327,7 +327,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param LeadTimeOffset Optional Lead Time offset before starting production
      */
     public void setLeadTimeOffset(int LeadTimeOffset) {
-        set_Value(COLUMNNAME_LeadTimeOffset, Integer.valueOf(LeadTimeOffset));
+        setValue(COLUMNNAME_LeadTimeOffset, Integer.valueOf(LeadTimeOffset));
     }
 
     /**
@@ -347,7 +347,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
@@ -362,9 +362,9 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
     /**
@@ -401,8 +401,8 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param M_ChangeNotice_ID Bill of Materials (Engineering) Change Notice (Version)
      */
     public void setM_ChangeNotice_ID(int M_ChangeNotice_ID) {
-        if (M_ChangeNotice_ID < 1) set_Value(COLUMNNAME_M_ChangeNotice_ID, null);
-        else set_Value(COLUMNNAME_M_ChangeNotice_ID, Integer.valueOf(M_ChangeNotice_ID));
+        if (M_ChangeNotice_ID < 1) setValue(COLUMNNAME_M_ChangeNotice_ID, null);
+        else setValue(COLUMNNAME_M_ChangeNotice_ID, Integer.valueOf(M_ChangeNotice_ID));
     }
 
     public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
@@ -428,8 +428,8 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
@@ -455,8 +455,8 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param PP_Product_BOM_ID BOM & Formula
      */
     public void setPP_Product_BOM_ID(int PP_Product_BOM_ID) {
-        if (PP_Product_BOM_ID < 1) set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
+        if (PP_Product_BOM_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
+        else setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
     }
 
     /**
@@ -476,8 +476,8 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param PP_Product_BOMLine_ID BOM Line
      */
     public void setPP_Product_BOMLine_ID(int PP_Product_BOMLine_ID) {
-        if (PP_Product_BOMLine_ID < 1) set_ValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, PP_Product_BOMLine_ID);
+        if (PP_Product_BOMLine_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, PP_Product_BOMLine_ID);
     }
 
     /**
@@ -495,7 +495,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param PP_Product_BOMLine_UU PP_Product_BOMLine_UU
      */
     public void setPP_Product_BOMLine_UU(String PP_Product_BOMLine_UU) {
-        set_Value(COLUMNNAME_PP_Product_BOMLine_UU, PP_Product_BOMLine_UU);
+        setValue(COLUMNNAME_PP_Product_BOMLine_UU, PP_Product_BOMLine_UU);
     }
 
     /**
@@ -515,7 +515,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param QtyBatch Indicate the Quantity % use in this Formula
      */
     public void setQtyBatch(BigDecimal QtyBatch) {
-        set_Value(COLUMNNAME_QtyBatch, QtyBatch);
+        setValue(COLUMNNAME_QtyBatch, QtyBatch);
     }
 
     /**
@@ -535,7 +535,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param QtyBOM Indicate the Quantity use in this BOM
      */
     public void setQtyBOM(BigDecimal QtyBOM) {
-        set_Value(COLUMNNAME_QtyBOM, QtyBOM);
+        setValue(COLUMNNAME_QtyBOM, QtyBOM);
     }
 
     /**
@@ -555,7 +555,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param Scrap Indicate the Scrap % for calculate the Scrap Quantity
      */
     public void setScrap(BigDecimal Scrap) {
-        set_Value(COLUMNNAME_Scrap, Scrap);
+        setValue(COLUMNNAME_Scrap, Scrap);
     }
 
     /**
@@ -573,7 +573,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param ValidFrom Valid from including this date (first day)
      */
     public void setValidFrom(Timestamp ValidFrom) {
-        set_Value(COLUMNNAME_ValidFrom, ValidFrom);
+        setValue(COLUMNNAME_ValidFrom, ValidFrom);
     }
 
     /**
@@ -591,7 +591,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      * @param ValidTo Valid to including this date (last day)
      */
     public void setValidTo(Timestamp ValidTo) {
-        set_Value(COLUMNNAME_ValidTo, ValidTo);
+        setValue(COLUMNNAME_ValidTo, ValidTo);
     }
 
     @Override

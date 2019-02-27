@@ -39,6 +39,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      * Process Message
      */
     private String m_processMsg = null;
+
     /**
      * ************************************************************************ Standard Constructor
      *
@@ -137,7 +138,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
 
         /**
-         * MDocType dt = MDocType.get(getCtx(), getC_DocTypeTarget_ID());
+         * MDocType dt = MDocType.get(getCtx(), getTargetDocumentTypeId());
          *
          * <p>// Std Period open? if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType())) {
          * m_processMsg = "@PeriodClosed@"; return DocAction.STATUS_Invalid; }
@@ -195,7 +196,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
 
         //	Check if we need to split Shipment
         if (isInDispute()) {
-            MDocType dt = MDocType.get(getCtx(), inout.getC_DocType_ID());
+            MDocType dt = MDocType.get(getCtx(), inout.getDocumentTypeId());
             if (dt.isSplitWhenDifference()) {
                 if (dt.getDocTypeDifferenceId() == 0) {
                     m_processMsg = "No Split Document Type defined for: " + dt.getName();
@@ -291,7 +292,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             splitLine.setM_AttributeSetInstance_ID(oldLine.getMAttributeSetInstance_ID());
             splitLine.setM_Locator_ID(oldLine.getM_Locator_ID());
             splitLine.setM_Product_ID(oldLine.getM_Product_ID());
-            splitLine.setM_Warehouse_ID(oldLine.getM_Warehouse_ID());
+            splitLine.setWarehouseId(oldLine.getWarehouseId());
             splitLine.setRef_InOutLine_ID(oldLine.getRef_InOutLine_ID());
             StringBuilder msgd = new StringBuilder("Split: from ").append(oldLine.getMovementQty());
             splitLine.addDescription(msgd.toString());
@@ -316,7 +317,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
 
         m_processMsg = "Split @M_InOut_ID@=" + split.getDocumentNo() + " - @M_InOutConfirm_ID@=";
 
-        MDocType dt = MDocType.get(getCtx(), original.getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), original.getDocumentTypeId());
         if (!dt.isPrepareSplitDocument()) {
             return;
         }
@@ -373,9 +374,9 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
                                 .append(" ")
                                 .append(getDocumentNo());
                 m_creditMemo.setDescription(msgd.toString());
-                m_creditMemo.setC_DocTypeTarget_ID(MDocType.DOCBASETYPE_APCreditMemo);
+                m_creditMemo.setTargetDocumentTypeId(MDocType.DOCBASETYPE_APCreditMemo);
                 m_creditMemo.saveEx();
-                setC_Invoice_ID(m_creditMemo.getC_Invoice_ID());
+                setInvoiceId(m_creditMemo.getInvoiceId());
             }
             MInvoiceLine line = new MInvoiceLine(m_creditMemo);
             line.setShipLine(confirm.getLine());
@@ -393,7 +394,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         if (confirm.getScrappedQty().signum() != 0) {
             if (log.isLoggable(Level.INFO)) log.info("Scrapped=" + confirm.getScrappedQty());
             if (m_inventory == null) {
-                MWarehouse wh = MWarehouse.get(getCtx(), inout.getM_Warehouse_ID());
+                MWarehouse wh = MWarehouse.get(getCtx(), inout.getWarehouseId());
                 m_inventory = new MInventory(wh);
                 StringBuilder msgd =
                         new StringBuilder()
@@ -437,7 +438,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
                 MDocType.getOfDocBaseType(Env.getCtx(), X_C_DocType.DOCBASETYPE_MaterialPhysicalInventory);
         for (MDocType doctype : doctypes) {
             if (X_C_DocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
-                inventory.setC_DocType_ID(doctype.getDocTypeId());
+                inventory.setDocumentTypeId(doctype.getDocTypeId());
                 break;
             }
         }
@@ -672,8 +673,8 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      *
      * @return C_Currency_ID
      */
-    public int getC_Currency_ID() {
-        //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
+    public int getCurrencyId() {
+        //	MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
         //	return pl.getCurrencyId();
         return 0;
     } //	getCurrencyId

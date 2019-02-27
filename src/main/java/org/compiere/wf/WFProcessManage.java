@@ -57,12 +57,12 @@ public class WFProcessManage extends SvrProcess {
         MWFProcess process = new MWFProcess(getCtx(), p_AD_WF_Process_ID);
         if (log.isLoggable(Level.INFO)) log.info("doIt - " + process);
 
-        MUser user = MUser.get(getCtx(), getAD_User_ID());
+        MUser user = MUser.get(getCtx(), getUserId());
         //	Abort
         if (p_IsAbort) {
             String msg = user.getName() + ": Abort";
             process.setTextMsg(msg);
-            process.setUserId(getAD_User_ID());
+            process.setUserId(getUserId());
             process.setWorkflowState(StateEngine.STATE_Aborted);
             return msg;
         }

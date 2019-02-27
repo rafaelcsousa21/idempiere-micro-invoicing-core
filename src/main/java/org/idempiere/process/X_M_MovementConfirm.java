@@ -99,7 +99,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -118,7 +118,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -137,7 +137,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -155,7 +155,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -189,8 +189,8 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      * @param M_Inventory_ID Parameters for a Physical Inventory
      */
     public void setM_Inventory_ID(int M_Inventory_ID) {
-        if (M_Inventory_ID < 1) set_Value(COLUMNNAME_M_Inventory_ID, null);
-        else set_Value(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
+        if (M_Inventory_ID < 1) setValue(COLUMNNAME_M_Inventory_ID, null);
+        else setValue(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
     }
 
     /**
@@ -221,8 +221,8 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      * @param M_Movement_ID Movement of Inventory
      */
     public void setM_Movement_ID(int M_Movement_ID) {
-        if (M_Movement_ID < 1) set_Value(COLUMNNAME_M_Movement_ID, null);
-        else set_Value(COLUMNNAME_M_Movement_ID, Integer.valueOf(M_Movement_ID));
+        if (M_Movement_ID < 1) setValue(COLUMNNAME_M_Movement_ID, null);
+        else setValue(COLUMNNAME_M_Movement_ID, Integer.valueOf(M_Movement_ID));
     }
 
     /**
@@ -245,7 +245,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -254,7 +254,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
 }

@@ -98,6 +98,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             setProcessed(false);
         }
     } //	MCash
+
     /**
      * Load Constructor
      *
@@ -302,17 +303,17 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         }
         //	Add up Amounts
         BigDecimal difference = Env.ZERO;
-        int C_Currency_ID = getC_Currency_ID();
+        int C_Currency_ID = getCurrencyId();
         for (int i = 0; i < lines.length; i++) {
             MCashLine line = lines[i];
             if (!line.isActive()) continue;
-            if (C_Currency_ID == line.getC_Currency_ID()) difference = difference.add(line.getAmount());
+            if (C_Currency_ID == line.getCurrencyId()) difference = difference.add(line.getAmount());
             else {
                 BigDecimal amt =
                         MConversionRate.convert(
                                 getCtx(),
                                 line.getAmount(),
-                                line.getC_Currency_ID(),
+                                line.getCurrencyId(),
                                 C_Currency_ID,
                                 getDateAcct(),
                                 0,
@@ -412,7 +413,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                                 getCtx(),
                                 false,
                                 getDateAcct(),
-                                line.getC_Currency_ID(),
+                                line.getCurrencyId(),
                                 name.toString(),
                                 null);
                 hdr.setOrgId(getOrgId());
@@ -424,7 +425,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 MAllocationLine aLine =
                         new MAllocationLine(
                                 hdr, line.getAmount(), line.getDiscountAmt(), line.getWriteOffAmt(), Env.ZERO);
-                aLine.setC_Invoice_ID(line.getC_Invoice_ID());
+                aLine.setInvoiceId(line.getInvoiceId());
                 aLine.setC_CashLine_ID(line.getC_CashLine_ID());
                 if (!aLine.save()) {
                     m_processMsg = CLogger.retrieveErrorString("Could not create Allocation Line");
@@ -446,18 +447,18 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 String documentNo = getName();
                 pay.setDocumentNo(documentNo);
                 pay.setR_PnRef(documentNo);
-                pay.set_ValueNoCheck("TrxType", "X"); // 	Transfer
-                pay.set_ValueNoCheck("TenderType", "X");
+                pay.setValueNoCheck("TrxType", "X"); // 	Transfer
+                pay.setValueNoCheck("TenderType", "X");
                 //
                 // Modification for cash payment - Posterita
                 pay.setC_CashBook_ID(getC_CashBook_ID());
                 // End of modification - Posterita
 
                 pay.setC_BankAccount_ID(line.getC_BankAccount_ID());
-                pay.setC_DocType_ID(true); // 	Receipt
+                pay.setDocumentTypeId(true); // 	Receipt
                 pay.setDateTrx(getStatementDate());
                 pay.setDateAcct(getDateAcct());
-                pay.setAmount(line.getC_Currency_ID(), line.getAmount().negate()); // 	Transfer
+                pay.setAmount(line.getCurrencyId(), line.getAmount().negate()); // 	Transfer
                 pay.setDescription(line.getDescription());
                 pay.setDocStatus(MPayment.DOCSTATUS_Closed);
                 pay.setDocAction(MPayment.DOCACTION_None);
@@ -469,7 +470,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                     return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
                 }
 
-                line.setC_Payment_ID(pay.getC_Payment_ID());
+                line.setPaymentId(pay.getPaymentId());
                 if (!line.save()) {
                     m_processMsg = "Could not update Cash Line";
                     return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -566,10 +567,10 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                             .append(", )");
             cashline.addDescription(msgadd.toString());
             if (MCashLine.CASHTYPE_BankAccountTransfer.equals(cashline.getCashType())) {
-                if (cashline.getC_Payment_ID() == 0)
+                if (cashline.getPaymentId() == 0)
                     throw new IllegalStateException("Cannot reverse payment");
 
-                MPayment payment = new MPayment(getCtx(), cashline.getC_Payment_ID());
+                MPayment payment = new MPayment(getCtx(), cashline.getPaymentId());
                 payment.reverseCorrectIt();
                 payment.saveEx();
             }
@@ -789,8 +790,8 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return Currency
      */
-    public int getC_Currency_ID() {
-        return getCashBook().getC_Currency_ID();
+    public int getCurrencyId() {
+        return getCashBook().getCurrencyId();
     } //	getCurrencyId
 
     /**

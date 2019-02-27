@@ -27,7 +27,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment {
     public X_C_POSPayment(Properties ctx, int C_POSPayment_ID) {
         super(ctx, C_POSPayment_ID);
         /**
-         * if (C_POSPayment_ID == 0) { setC_Order_ID (0); setC_POSPayment_ID (0); setC_POSTenderType_ID
+         * if (C_POSPayment_ID == 0) { setOrderId (0); setC_POSPayment_ID (0); setC_POSTenderType_ID
          * (0); setIsPostDated (false); // N setPayAmt (Env.ZERO); setProcessed (false); }
          */
     }
@@ -91,9 +91,9 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment {
      *
      * @param C_Payment_ID Payment identifier
      */
-    public void setC_Payment_ID(int C_Payment_ID) {
-        if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-        else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    public void setPaymentId(int C_Payment_ID) {
+        if (C_Payment_ID < 1) setValue(COLUMNNAME_C_Payment_ID, null);
+        else setValue(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
     }
 
     /**
@@ -174,7 +174,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**

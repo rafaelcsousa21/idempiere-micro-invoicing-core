@@ -60,7 +60,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct {
      * @param P_Expense_Acct Account for Product Expense
      */
     public void setP_Expense_Acct(int P_Expense_Acct) {
-        set_Value(COLUMNNAME_P_Expense_Acct, Integer.valueOf(P_Expense_Acct));
+        setValue(COLUMNNAME_P_Expense_Acct, Integer.valueOf(P_Expense_Acct));
     }
 
     /**
@@ -69,7 +69,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct {
      * @param P_Revenue_Acct Account for Product Revenue (Sales Account)
      */
     public void setP_Revenue_Acct(int P_Revenue_Acct) {
-        set_Value(COLUMNNAME_P_Revenue_Acct, Integer.valueOf(P_Revenue_Acct));
+        setValue(COLUMNNAME_P_Revenue_Acct, Integer.valueOf(P_Revenue_Acct));
     }
 
 }

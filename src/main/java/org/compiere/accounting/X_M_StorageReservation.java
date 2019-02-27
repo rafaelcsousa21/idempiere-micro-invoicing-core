@@ -59,7 +59,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @param IsSOTrx This is a Sales Transaction
      */
     public void setIsSOTrx(boolean IsSOTrx) {
-        set_ValueNoCheck(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
+        setValueNoCheck(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
     }
 
     /**
@@ -82,9 +82,9 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
@@ -116,8 +116,8 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -125,7 +125,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -136,9 +136,9 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      *
      * @param M_Warehouse_ID Storage Warehouse and Service Point
      */
-    public void setM_Warehouse_ID(int M_Warehouse_ID) {
-        if (M_Warehouse_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
+    public void setWarehouseId(int M_Warehouse_ID) {
+        if (M_Warehouse_ID < 1) setValueNoCheck(COLUMNNAME_M_Warehouse_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
     }
 
     /**
@@ -158,7 +158,7 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_ValueNoCheck(COLUMNNAME_Qty, Qty);
+        setValueNoCheck(COLUMNNAME_Qty, Qty);
     }
 
     @Override

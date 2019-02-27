@@ -478,8 +478,8 @@ class MSetup
             sql2 = ("SELECT l.Value, t.Name FROM AD_Ref_List l, AD_Ref_List_Trl t "
                     + "WHERE l.AD_Reference_ID=181 AND l.AD_Ref_List_ID=t.AD_Ref_List_ID"
                     + " AND t.AD_Language=" + TO_STRING(m_lang)) //bug [ 1638421 ]
-        var stmt: PreparedStatement? = null
-        var rs: ResultSet? = null
+        var stmt: PreparedStatement?
+        var rs: ResultSet?
         try {
             val AD_Client_ID = m_client!!.clientId
             stmt = prepareStatement(sql2)
@@ -847,7 +847,7 @@ class MSetup
         //	Validate Completeness
         val processInfo = ProcessInfo("Document Type Verify", 0)
         processInfo.setADClientID(aD_Client_ID)
-        processInfo.aD_User_ID = aD_User_ID
+        processInfo.userId = aD_User_ID
         processInfo.parameter = arrayOfNulls<ProcessInfoParameter>(0)
         if (!ProcessUtil.startJavaProcess(m_ctx, processInfo, null, DocumentTypeVerify())) {
             val err = "Document type verification failed. Message=" + processInfo.summary!!
@@ -872,15 +872,15 @@ class MSetup
             val columnName = c.columnName
             if (c.isStandardColumn) {
             } else if (DisplayType.Account == c.referenceId) {
-                acct.set_Value(columnName, getAcct(columnName))
+                acct.setValue(columnName, getAcct(columnName))
                 if (log.isLoggable(Level.INFO)) log.info("Account: $columnName")
             } else if (DisplayType.YesNo == c.referenceId) {
-                acct.set_Value(columnName, java.lang.Boolean.TRUE)
+                acct.setValue(columnName, java.lang.Boolean.TRUE)
                 if (log.isLoggable(Level.INFO)) log.info("YesNo: " + c.columnName)
             }
         }
         acct.setADClientID(m_client!!.clientId)
-        acct.set_Value(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID, m_as!!.accountingSchemaId)
+        acct.setValue(I_C_AcctSchema.COLUMNNAME_C_AcctSchema_ID, m_as!!.accountingSchemaId)
         //
         if (!acct.save()) {
             throw AdempiereUserError(CLogger.retrieveErrorString(table.name + " not created"))
@@ -1177,13 +1177,13 @@ class MSetup
             log.log(Level.SEVERE, "BP_Location (Standard) NOT inserted")
         //  Default
         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET ")
-        sqlCmd.append("C_BPartner_ID=").append(bp.c_BPartner_ID)
+        sqlCmd.append("C_BPartner_ID=").append(bp.businessPartnerId)
         sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.accountingSchemaId)
         sqlCmd.append(" AND ElementType='BP'")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "AcctSchema Element BPartner NOT updated")
-        createPreference("C_BPartner_ID", bp.c_BPartner_ID.toString(), 143)
+        createPreference("C_BPartner_ID", bp.businessPartnerId.toString(), 143)
 
         /**
          * Product
@@ -1292,7 +1292,7 @@ class MSetup
 
         //  Update ClientInfo
         sqlCmd = StringBuffer("UPDATE AD_ClientInfo SET ")
-        sqlCmd.append("C_BPartnerCashTrx_ID=").append(bp.c_BPartner_ID)
+        sqlCmd.append("C_BPartnerCashTrx_ID=").append(bp.businessPartnerId)
         sqlCmd.append(",M_ProductFreight_ID=").append(product.m_Product_ID)
         //		sqlCmd.append("C_UOM_Volume_ID=");
         //		sqlCmd.append(",C_UOM_Weight_ID=");
@@ -1313,7 +1313,7 @@ class MSetup
         //  PriceList
         val pl = MPriceList(m_ctx, 0)
         pl.name = defaultName
-        pl.c_Currency_ID = C_Currency_ID
+        pl.currencyId = C_Currency_ID
         pl.setIsDefault(true)
         if (!pl.save())
             log.log(Level.SEVERE, "PriceList NOT inserted")
@@ -1358,7 +1358,7 @@ class MSetup
             log.log(Level.SEVERE, "BP_Location (User) NOT inserted")
         //  Update User
         sqlCmd = StringBuffer("UPDATE AD_User SET C_BPartner_ID=")
-        sqlCmd.append(bpCU.c_BPartner_ID).append(" WHERE AD_User_ID=").append(AD_User_U_ID)
+        sqlCmd.append(bpCU.businessPartnerId).append(" WHERE AD_User_ID=").append(AD_User_U_ID)
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "User of SalesRep (User) NOT updated")
@@ -1384,7 +1384,7 @@ class MSetup
             log.log(Level.SEVERE, "BP_Location (Admin) NOT inserted")
         //  Update User
         sqlCmd = StringBuffer("UPDATE AD_User SET C_BPartner_ID=")
-        sqlCmd.append(bpCA.c_BPartner_ID).append(" WHERE AD_User_ID=").append(aD_User_ID)
+        sqlCmd.append(bpCA.businessPartnerId).append(" WHERE AD_User_ID=").append(aD_User_ID)
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "User of SalesRep (Admin) NOT updated")
@@ -1455,7 +1455,7 @@ class MSetup
         //  CashBook
         val cb = MCashBook(m_ctx, 0)
         cb.name = defaultName
-        cb.c_Currency_ID = C_Currency_ID
+        cb.currencyId = C_Currency_ID
         if (cb.save())
             m_info!!.append(Msg.translate(m_lang, "C_CashBook_ID")).append("=").append(defaultName).append("\n")
         else

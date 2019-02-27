@@ -27,7 +27,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
     public X_M_Product_PO(Properties ctx, int M_Product_PO_ID) {
         super(ctx, M_Product_PO_ID);
         /**
-         * if (M_Product_PO_ID == 0) { setC_BPartner_ID (0); setIsCurrentVendor (true); // Y
+         * if (M_Product_PO_ID == 0) { setBusinessPartnerId (0); setIsCurrentVendor (true); // Y
          * setM_Product_ID (0); // @M_Product_ID@ setVendorProductNo (null); // @Value@ }
          */
     }
@@ -58,7 +58,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -69,7 +69,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -92,7 +92,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
      * @param IsCurrentVendor Use this Vendor for pricing and stock replenishment
      */
     public void setIsCurrentVendor(boolean IsCurrentVendor) {
-        set_Value(COLUMNNAME_IsCurrentVendor, Boolean.valueOf(IsCurrentVendor));
+        setValue(COLUMNNAME_IsCurrentVendor, Boolean.valueOf(IsCurrentVendor));
     }
 
     /**

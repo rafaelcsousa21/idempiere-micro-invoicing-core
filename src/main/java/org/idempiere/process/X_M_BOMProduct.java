@@ -86,7 +86,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      */
     public void setBOMProductType(String BOMProductType) {
 
-        set_Value(COLUMNNAME_BOMProductType, BOMProductType);
+        setValue(COLUMNNAME_BOMProductType, BOMProductType);
     }
 
     /**
@@ -95,7 +95,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      * @param BOMQty Bill of Materials Quantity
      */
     public void setBOMQty(BigDecimal BOMQty) {
-        set_Value(COLUMNNAME_BOMQty, BOMQty);
+        setValue(COLUMNNAME_BOMQty, BOMQty);
     }
 
     /**
@@ -104,7 +104,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      * @param IsPhantom Phantom Component
      */
     public void setIsPhantom(boolean IsPhantom) {
-        set_Value(COLUMNNAME_IsPhantom, Boolean.valueOf(IsPhantom));
+        setValue(COLUMNNAME_IsPhantom, Boolean.valueOf(IsPhantom));
     }
 
     /**
@@ -124,7 +124,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      * @param LeadTimeOffset Optional Lead Time offset before starting production
      */
     public void setLeadTimeOffset(int LeadTimeOffset) {
-        set_Value(COLUMNNAME_LeadTimeOffset, Integer.valueOf(LeadTimeOffset));
+        setValue(COLUMNNAME_LeadTimeOffset, Integer.valueOf(LeadTimeOffset));
     }
 
     /**
@@ -144,7 +144,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -153,9 +153,9 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
     /**
@@ -219,8 +219,8 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      * @param M_ProductBOM_ID Bill of Material Component Product
      */
     public void setM_ProductBOM_ID(int M_ProductBOM_ID) {
-        if (M_ProductBOM_ID < 1) set_Value(COLUMNNAME_M_ProductBOM_ID, null);
-        else set_Value(COLUMNNAME_M_ProductBOM_ID, Integer.valueOf(M_ProductBOM_ID));
+        if (M_ProductBOM_ID < 1) setValue(COLUMNNAME_M_ProductBOM_ID, null);
+        else setValue(COLUMNNAME_M_ProductBOM_ID, Integer.valueOf(M_ProductBOM_ID));
     }
 
     /**
@@ -251,6 +251,6 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      * @param SeqNo Method of ordering records; lowest number comes first
      */
     public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+        setValue(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
     }
 }

@@ -69,7 +69,7 @@ public class MWFResponsible extends X_AD_WF_Responsible {
      * @return true if invoker
      */
     public boolean isInvoker() {
-        return getAD_User_ID() == 0 && getRoleId() == 0 && !isManual();
+        return getUserId() == 0 && getRoleId() == 0 && !isManual();
     } //	isInvoker
 
     /**
@@ -99,7 +99,7 @@ public class MWFResponsible extends X_AD_WF_Responsible {
      */
     public boolean isHuman() {
         return X_AD_WF_Responsible.RESPONSIBLETYPE_Human.equals(getResponsibleType())
-                && getAD_User_ID() != 0;
+                && getUserId() != 0;
     } //	isHuman
 
     /**
@@ -129,14 +129,14 @@ public class MWFResponsible extends X_AD_WF_Responsible {
         }
         //	User not used
         if (!X_AD_WF_Responsible.RESPONSIBLETYPE_Human.equals(getResponsibleType())
-                && getAD_User_ID() > 0) setAD_User_ID(0);
+                && getUserId() > 0) setUserId(0);
 
         //	Role not used
         if (!X_AD_WF_Responsible.RESPONSIBLETYPE_Role.equals(getResponsibleType())
                 && getRoleId() > 0) setRoleId(0);
 
         if (X_AD_WF_Responsible.RESPONSIBLETYPE_Manual.equals(getResponsibleType())) {
-            setAD_User_ID(0);
+            setUserId(0);
             setRoleId(0);
         }
         return true;
@@ -150,7 +150,7 @@ public class MWFResponsible extends X_AD_WF_Responsible {
     public String toString() {
         StringBuilder sb = new StringBuilder("MWFResponsible[");
         sb.append(getId()).append("-").append(getName()).append(",Type=").append(getResponsibleType());
-        if (getAD_User_ID() != 0) sb.append(",AD_User_ID=").append(getAD_User_ID());
+        if (getUserId() != 0) sb.append(",AD_User_ID=").append(getUserId());
         if (getRoleId() != 0) sb.append(",AD_Role_ID=").append(getRoleId());
         sb.append("]");
         return sb.toString();

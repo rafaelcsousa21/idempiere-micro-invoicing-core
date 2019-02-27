@@ -146,10 +146,10 @@ public class ImmediateBankTransfer extends SvrProcess {
         MBankAccount mBankFrom = new MBankAccount(getCtx(), p_From_C_BankAccount_ID);
         MBankAccount mBankTo = new MBankAccount(getCtx(), p_To_C_BankAccount_ID);
 
-        if ((mcash.getC_Currency_ID() != mBankFrom.getC_Currency_ID())
-                || (mcash.getC_Currency_ID() != mBankTo.getC_Currency_ID())) return false;
+        if ((mcash.getCurrencyId() != mBankFrom.getCurrencyId())
+                || (mcash.getCurrencyId() != mBankTo.getCurrencyId())) return false;
 
-        m_C_Currency_ID = mcash.getC_Currency_ID();
+        m_C_Currency_ID = mcash.getCurrencyId();
 
         return true;
     } // isSameCurrency
@@ -177,7 +177,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         MCashLine cashLine = new MCashLine(cash);
         cashLine.setAmount(p_Amount);
         cashLine.setC_BankAccount_ID(p_From_C_BankAccount_ID);
-        cashLine.setC_Currency_ID(m_C_Currency_ID);
+        cashLine.setCurrencyId(m_C_Currency_ID);
 
         if (p_Description != null) cashLine.setDescription(p_Description);
         else cashLine.setDescription(p_Name);
@@ -193,7 +193,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         cashLine = new MCashLine(cash);
         cashLine.setAmount(p_Amount.negate());
         cashLine.setC_BankAccount_ID(p_To_C_BankAccount_ID);
-        cashLine.setC_Currency_ID(m_C_Currency_ID);
+        cashLine.setCurrencyId(m_C_Currency_ID);
         if (p_Description != null) cashLine.setDescription(p_Description);
         else cashLine.setDescription(p_Name);
 

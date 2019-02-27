@@ -89,8 +89,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param C_ProjectIssue_ID Project Issues (Material, Labor)
      */
     public void setC_ProjectIssue_ID(int C_ProjectIssue_ID) {
-        if (C_ProjectIssue_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, Integer.valueOf(C_ProjectIssue_ID));
+        if (C_ProjectIssue_ID < 1) setValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, Integer.valueOf(C_ProjectIssue_ID));
     }
 
     /**
@@ -99,9 +99,9 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
@@ -122,8 +122,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
     public void setM_InOutLine_ID(int M_InOutLine_ID) {
-        if (M_InOutLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
+        if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
     }
 
     /**
@@ -132,8 +132,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
     public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
-        if (M_InventoryLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InventoryLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
+        if (M_InventoryLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InventoryLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
     }
 
     /**
@@ -142,8 +142,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param M_Locator_ID Warehouse Locator
      */
     public void setM_Locator_ID(int M_Locator_ID) {
-        if (M_Locator_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Locator_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        if (M_Locator_ID < 1) setValueNoCheck(COLUMNNAME_M_Locator_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
     /**
@@ -152,8 +152,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param M_MovementLine_ID Inventory Move document Line
      */
     public void setM_MovementLine_ID(int M_MovementLine_ID) {
-        if (M_MovementLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_MovementLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_MovementLine_ID, Integer.valueOf(M_MovementLine_ID));
+        if (M_MovementLine_ID < 1) setValueNoCheck(COLUMNNAME_M_MovementLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_MovementLine_ID, Integer.valueOf(M_MovementLine_ID));
     }
 
     /**
@@ -162,7 +162,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param MovementDate Date a product was moved in or out of inventory
      */
     public void setMovementDate(Timestamp MovementDate) {
-        set_ValueNoCheck(COLUMNNAME_MovementDate, MovementDate);
+        setValueNoCheck(COLUMNNAME_MovementDate, MovementDate);
     }
 
     /**
@@ -182,7 +182,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param MovementQty Quantity of a product moved.
      */
     public void setMovementQty(BigDecimal MovementQty) {
-        set_ValueNoCheck(COLUMNNAME_MovementQty, MovementQty);
+        setValueNoCheck(COLUMNNAME_MovementQty, MovementQty);
     }
 
     /**
@@ -201,7 +201,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public void setMovementType(String MovementType) {
 
-        set_ValueNoCheck(COLUMNNAME_MovementType, MovementType);
+        setValueNoCheck(COLUMNNAME_MovementType, MovementType);
     }
 
     /**
@@ -221,8 +221,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -231,8 +231,8 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      * @param M_ProductionLine_ID Document Line representing a production
      */
     public void setM_ProductionLine_ID(int M_ProductionLine_ID) {
-        if (M_ProductionLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_ProductionLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_ProductionLine_ID, Integer.valueOf(M_ProductionLine_ID));
+        if (M_ProductionLine_ID < 1) setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, Integer.valueOf(M_ProductionLine_ID));
     }
 
     @Override

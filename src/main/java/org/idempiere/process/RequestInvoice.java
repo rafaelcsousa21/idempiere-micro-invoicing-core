@@ -139,10 +139,10 @@ public class RequestInvoice extends SvrProcess {
             while (rs.next()) {
                 MRequest request = new MRequest(getCtx(), rs);
                 if (!request.isInvoiced()) continue;
-                if (oldC_BPartner_ID != request.getC_BPartner_ID()) invoiceDone();
+                if (oldC_BPartner_ID != request.getBusinessPartnerId()) invoiceDone();
                 if (m_invoice == null) {
                     invoiceNew(request);
-                    oldC_BPartner_ID = request.getC_BPartner_ID();
+                    oldC_BPartner_ID = request.getBusinessPartnerId();
                 }
                 invoiceLine(request);
             }
@@ -182,7 +182,7 @@ public class RequestInvoice extends SvrProcess {
                         m_invoice.getGrandTotal(),
                         message,
                         m_invoice.getTableId(),
-                        m_invoice.getC_Invoice_ID());
+                        m_invoice.getInvoiceId());
             }
         }
         m_invoice = null;
@@ -197,7 +197,7 @@ public class RequestInvoice extends SvrProcess {
         m_invoice = new MInvoice(getCtx(), 0);
         m_invoice.setIsSOTrx(true);
 
-        MBPartner partner = new MBPartner(getCtx(), request.getC_BPartner_ID());
+        MBPartner partner = new MBPartner(getCtx(), request.getBusinessPartnerId());
         m_invoice.setBPartner(partner);
 
         m_invoice.saveEx();

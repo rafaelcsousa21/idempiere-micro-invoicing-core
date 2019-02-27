@@ -67,7 +67,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
     }
 
     /**
@@ -111,7 +111,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -122,9 +122,9 @@ public class X_M_Locator extends PO implements I_M_Locator {
      *
      * @param M_Warehouse_ID Storage Warehouse and Service Point
      */
-    public void setM_Warehouse_ID(int M_Warehouse_ID) {
-        if (M_Warehouse_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
+    public void setWarehouseId(int M_Warehouse_ID) {
+        if (M_Warehouse_ID < 1) setValueNoCheck(COLUMNNAME_M_Warehouse_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
     }
 
     /**
@@ -133,7 +133,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
      * @param PriorityNo Where inventory should be picked from first
      */
     public void setPriorityNo(int PriorityNo) {
-        set_Value(COLUMNNAME_PriorityNo, Integer.valueOf(PriorityNo));
+        setValue(COLUMNNAME_PriorityNo, Integer.valueOf(PriorityNo));
     }
 
     /**
@@ -151,7 +151,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
      * @param Value Search key for the record in the format required - must be unique
      */
     public void setValue(String Value) {
-        set_Value(COLUMNNAME_Value, Value);
+        setValue(COLUMNNAME_Value, Value);
     }
 
     /**
@@ -160,7 +160,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
      * @param X X dimension, e.g., Aisle
      */
     public void setX(String X) {
-        set_Value(COLUMNNAME_X, X);
+        setValue(COLUMNNAME_X, X);
     }
 
     /**
@@ -169,7 +169,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
      * @param Y Y dimension, e.g., Bin
      */
     public void setY(String Y) {
-        set_Value(COLUMNNAME_Y, Y);
+        setValue(COLUMNNAME_Y, Y);
     }
 
     /**
@@ -178,7 +178,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
      * @param Z Z dimension, e.g., Level
      */
     public void setZ(String Z) {
-        set_Value(COLUMNNAME_Z, Z);
+        setValue(COLUMNNAME_Z, Z);
     }
 
 }

@@ -38,6 +38,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
     private static CLogger log = CLogger.getCLogger(DocWorkflowManager.class);
     private int m_noCalled = 0;
     private int m_noStarted = 0;
+
     /**
      * Doc Workflow Manager
      */
@@ -92,7 +93,7 @@ public class DocWorkflowManager implements DocWorkflowMgr {
             log.fine(logic);
             int AD_Process_ID = SystemIDs.PROCESS_AD_WORKFLOW_DOCVALUE; // 	HARDCODED
             ProcessInfo pi = new ProcessInfo(wf.getName(), AD_Process_ID, AD_Table_ID, document.getId());
-            pi.setAD_User_ID(Env.getAD_User_ID(document.getCtx()));
+            pi.setUserId(Env.getUserId(document.getCtx()));
             pi.setADClientID(document.getClientId());
             //
             if (wf.start(pi) != null) {

@@ -119,8 +119,8 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param AD_Role_ID Responsibility Role
      */
     public void setAD_Role_ID(int AD_Role_ID) {
-        if (AD_Role_ID < 0) set_Value(COLUMNNAME_AD_Role_ID, null);
-        else set_Value(COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
+        if (AD_Role_ID < 0) setValue(COLUMNNAME_AD_Role_ID, null);
+        else setValue(COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
     }
 
     /**
@@ -128,7 +128,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      *
      * @return User within the system - Internal or Business Partner Contact
      */
-    public int getAD_User_ID() {
+    public int getUserId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
@@ -149,7 +149,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param DateLastRun Date the process was last run.
      */
     public void setDateLastRun(Timestamp DateLastRun) {
-        set_ValueNoCheck(COLUMNNAME_DateLastRun, DateLastRun);
+        setValueNoCheck(COLUMNNAME_DateLastRun, DateLastRun);
     }
 
     /**
@@ -158,7 +158,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -178,7 +178,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param GoalPerformance Target achievement from 0..1
      */
     public void setGoalPerformance(BigDecimal GoalPerformance) {
-        set_ValueNoCheck(COLUMNNAME_GoalPerformance, GoalPerformance);
+        setValueNoCheck(COLUMNNAME_GoalPerformance, GoalPerformance);
     }
 
     /**
@@ -187,7 +187,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param IsSummary This is a summary entity
      */
     public void setIsSummary(boolean IsSummary) {
-        set_Value(COLUMNNAME_IsSummary, Boolean.valueOf(IsSummary));
+        setValue(COLUMNNAME_IsSummary, Boolean.valueOf(IsSummary));
     }
 
     /**
@@ -221,7 +221,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param MeasureActual Actual value that has been measured.
      */
     public void setMeasureActual(BigDecimal MeasureActual) {
-        set_ValueNoCheck(COLUMNNAME_MeasureActual, MeasureActual);
+        setValueNoCheck(COLUMNNAME_MeasureActual, MeasureActual);
     }
 
     /**
@@ -249,7 +249,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      */
     public void setMeasureScope(String MeasureScope) {
 
-        set_Value(COLUMNNAME_MeasureScope, MeasureScope);
+        setValue(COLUMNNAME_MeasureScope, MeasureScope);
     }
 
     /**
@@ -269,7 +269,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param MeasureTarget Target value for measure
      */
     public void setMeasureTarget(BigDecimal MeasureTarget) {
-        set_Value(COLUMNNAME_MeasureTarget, MeasureTarget);
+        setValue(COLUMNNAME_MeasureTarget, MeasureTarget);
     }
 
     /**
@@ -300,8 +300,8 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param PA_Measure_ID Concrete Performance Measurement
      */
     public void setPA_Measure_ID(int PA_Measure_ID) {
-        if (PA_Measure_ID < 1) set_Value(COLUMNNAME_PA_Measure_ID, null);
-        else set_Value(COLUMNNAME_PA_Measure_ID, Integer.valueOf(PA_Measure_ID));
+        if (PA_Measure_ID < 1) setValue(COLUMNNAME_PA_Measure_ID, null);
+        else setValue(COLUMNNAME_PA_Measure_ID, Integer.valueOf(PA_Measure_ID));
     }
 
     /**
@@ -310,7 +310,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param RelativeWeight Relative weight of this step (0 = ignored)
      */
     public void setRelativeWeight(BigDecimal RelativeWeight) {
-        set_Value(COLUMNNAME_RelativeWeight, RelativeWeight);
+        setValue(COLUMNNAME_RelativeWeight, RelativeWeight);
     }
 
     /**
@@ -319,7 +319,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      * @param SeqNo Method of ordering records; lowest number comes first
      */
     public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+        setValue(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
     }
 
     @Override

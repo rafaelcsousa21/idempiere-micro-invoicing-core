@@ -85,7 +85,7 @@ public class BankStatementMatcher extends SvrProcess {
      * @return Message
      */
     private String match(X_I_BankStatement ibs) {
-        if (m_matchers == null || ibs == null || ibs.getC_Payment_ID() != 0) return "--";
+        if (m_matchers == null || ibs == null || ibs.getPaymentId() != 0) return "--";
 
         if (log.isLoggable(Level.FINE)) log.fine("" + ibs);
         BankStatementMatchInfo info = null;
@@ -93,9 +93,9 @@ public class BankStatementMatcher extends SvrProcess {
             if (m_matchers[i].isMatcherValid()) {
                 info = m_matchers[i].getMatcher().findMatch(ibs);
                 if (info != null && info.isMatched()) {
-                    if (info.getC_Payment_ID() > 0) ibs.setC_Payment_ID(info.getC_Payment_ID());
-                    if (info.getC_Invoice_ID() > 0) ibs.setC_Invoice_ID(info.getC_Invoice_ID());
-                    if (info.getC_BPartner_ID() > 0) ibs.setC_BPartner_ID(info.getC_BPartner_ID());
+                    if (info.getPaymentId() > 0) ibs.setPaymentId(info.getPaymentId());
+                    if (info.getInvoiceId() > 0) ibs.setInvoiceId(info.getInvoiceId());
+                    if (info.getBusinessPartnerId() > 0) ibs.setBusinessPartnerId(info.getBusinessPartnerId());
                     ibs.saveEx();
                     return "OK";
                 }
@@ -111,7 +111,7 @@ public class BankStatementMatcher extends SvrProcess {
      * @return Message
      */
     private String match(MBankStatementLine bsl) {
-        if (m_matchers == null || bsl == null || bsl.getC_Payment_ID() != 0) return "--";
+        if (m_matchers == null || bsl == null || bsl.getPaymentId() != 0) return "--";
 
         if (log.isLoggable(Level.FINE)) log.fine("match - " + bsl);
         BankStatementMatchInfo info = null;
@@ -119,9 +119,9 @@ public class BankStatementMatcher extends SvrProcess {
             if (m_matchers[i].isMatcherValid()) {
                 info = m_matchers[i].getMatcher().findMatch(bsl);
                 if (info != null && info.isMatched()) {
-                    if (info.getC_Payment_ID() > 0) bsl.setC_Payment_ID(info.getC_Payment_ID());
-                    if (info.getC_Invoice_ID() > 0) bsl.setC_Invoice_ID(info.getC_Invoice_ID());
-                    if (info.getC_BPartner_ID() > 0) bsl.setC_BPartner_ID(info.getC_BPartner_ID());
+                    if (info.getPaymentId() > 0) bsl.setPaymentId(info.getPaymentId());
+                    if (info.getInvoiceId() > 0) bsl.setInvoiceId(info.getInvoiceId());
+                    if (info.getBusinessPartnerId() > 0) bsl.setBusinessPartnerId(info.getBusinessPartnerId());
                     bsl.saveEx();
                     return "OK";
                 }
@@ -142,7 +142,7 @@ public class BankStatementMatcher extends SvrProcess {
         int count = 0;
         MBankStatementLine[] lines = bs.getLines(false);
         for (int i = 0; i < lines.length; i++) {
-            if (lines[i].getC_Payment_ID() == 0) {
+            if (lines[i].getPaymentId() == 0) {
                 match(lines[i]);
                 count++;
             }

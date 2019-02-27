@@ -184,27 +184,27 @@ public class AcctSchemaCopyAcct extends SvrProcess {
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SubAccount))
                 C_SubAcct_ID = sourceAcct.getC_SubAcct_ID();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_BPartner))
-                C_BPartner_ID = sourceAcct.getC_BPartner_ID();
+                C_BPartner_ID = sourceAcct.getBusinessPartnerId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Product))
                 M_Product_ID = sourceAcct.getM_Product_ID();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Activity))
-                C_Activity_ID = sourceAcct.getC_Activity_ID();
+                C_Activity_ID = sourceAcct.getBusinessActivityId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_LocationFrom))
                 C_LocFrom_ID = sourceAcct.getC_LocFrom_ID();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_LocationTo))
                 C_LocTo_ID = sourceAcct.getC_LocTo_ID();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Campaign))
-                C_Campaign_ID = sourceAcct.getC_Campaign_ID();
+                C_Campaign_ID = sourceAcct.getCampaignId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_OrgTrx))
-                AD_OrgTrx_ID = sourceAcct.getAD_OrgTrx_ID();
+                AD_OrgTrx_ID = sourceAcct.getTransactionOrganizationId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Project))
-                C_Project_ID = sourceAcct.getC_Project_ID();
+                C_Project_ID = sourceAcct.getProjectId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SalesRegion))
                 C_SalesRegion_ID = sourceAcct.getC_SalesRegion_ID();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserElementList1))
-                User1_ID = sourceAcct.getUser1_ID();
+                User1_ID = sourceAcct.getUser1Id();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserElementList2))
-                User2_ID = sourceAcct.getUser2_ID();
+                User2_ID = sourceAcct.getUser2Id();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserColumn1))
                 UserElement1_ID = sourceAcct.getUserElement1_ID();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserColumn2))

@@ -644,13 +644,13 @@ public class ImportOrder extends SvrProcess {
                     bp.setName(imp.getName());
                     if (!bp.save()) continue;
                 }
-                imp.setC_BPartner_ID(bp.getC_BPartner_ID());
+                imp.setBusinessPartnerId(bp.getBusinessPartnerId());
 
                 //	BP Location
                 I_C_BPartner_Location bpl = null;
                 I_C_BPartner_Location[] bpls = bp.getLocations(true);
                 for (int i = 0; bpl == null && i < bpls.length; i++) {
-                    if (imp.getC_BPartner_Location_ID() == bpls[i].getC_BPartner_Location_ID()) bpl = bpls[i];
+                    if (imp.getBusinessPartnerLocationId() == bpls[i].getBusinessPartnerLocationId()) bpl = bpls[i];
                         //	Same Location ID
                     else if (imp.getC_Location_ID() == bpls[i].getC_Location_ID()) bpl = bpls[i];
                         //	Same Location Info
@@ -682,8 +682,8 @@ public class ImportOrder extends SvrProcess {
                     if (!bpl.save()) continue;
                 }
                 imp.setC_Location_ID(bpl.getC_Location_ID());
-                imp.setBillTo_ID(bpl.getC_BPartner_Location_ID());
-                imp.setC_BPartner_Location_ID(bpl.getC_BPartner_Location_ID());
+                imp.setBillTo_ID(bpl.getBusinessPartnerLocationId());
+                imp.setBusinessPartnerLocationId(bpl.getBusinessPartnerLocationId());
 
                 //	User/Contact
                 if (imp.getContactName() != null || imp.getEMail() != null || imp.getPhone() != null) {
@@ -693,7 +693,7 @@ public class ImportOrder extends SvrProcess {
                         String name = users[i].getName();
                         if (name.equals(imp.getContactName()) || name.equals(imp.getName())) {
                             user = users[i];
-                            imp.setAD_User_ID(user.getUserId());
+                            imp.setUserId(user.getUserId());
                         }
                     }
                     if (user == null) {
@@ -702,7 +702,7 @@ public class ImportOrder extends SvrProcess {
                         else user2.setName(imp.getContactName());
                         user2.setEMail(imp.getEMail());
                         user2.setPhone(imp.getPhone());
-                        if (user2.save()) imp.setAD_User_ID(user2.getUserId());
+                        if (user2.save()) imp.setUserId(user2.getUserId());
                     }
                 }
                 imp.saveEx();
@@ -751,8 +751,8 @@ public class ImportOrder extends SvrProcess {
                 String cmpDocumentNo = imp.getDocumentNo();
                 if (cmpDocumentNo == null) cmpDocumentNo = "";
                 //	New Order
-                if (oldC_BPartner_ID != imp.getC_BPartner_ID()
-                        || oldC_BPartner_Location_ID != imp.getC_BPartner_Location_ID()
+                if (oldC_BPartner_ID != imp.getBusinessPartnerId()
+                        || oldC_BPartner_Location_ID != imp.getBusinessPartnerLocationId()
                         || oldBillTo_ID != imp.getBillTo_ID()
                         || !oldDocumentNo.equals(cmpDocumentNo)) {
                     if (order != null) {
@@ -766,41 +766,41 @@ public class ImportOrder extends SvrProcess {
                         }
                         order.saveEx();
                     }
-                    oldC_BPartner_ID = imp.getC_BPartner_ID();
-                    oldC_BPartner_Location_ID = imp.getC_BPartner_Location_ID();
+                    oldC_BPartner_ID = imp.getBusinessPartnerId();
+                    oldC_BPartner_Location_ID = imp.getBusinessPartnerLocationId();
                     oldBillTo_ID = imp.getBillTo_ID();
                     oldDocumentNo = imp.getDocumentNo();
                     if (oldDocumentNo == null) oldDocumentNo = "";
                     //
                     order = new MOrder(getCtx(), 0);
                     order.setClientOrg(imp.getClientId(), imp.getOrgId());
-                    order.setC_DocTypeTarget_ID(imp.getC_DocType_ID());
+                    order.setTargetDocumentTypeId(imp.getDocumentTypeId());
                     order.setIsSOTrx(imp.isSOTrx());
                     if (imp.getDeliveryRule() != null) {
                         order.setDeliveryRule(imp.getDeliveryRule());
                     }
                     if (imp.getDocumentNo() != null) order.setDocumentNo(imp.getDocumentNo());
                     //	Ship Partner
-                    order.setC_BPartner_ID(imp.getC_BPartner_ID());
-                    order.setC_BPartner_Location_ID(imp.getC_BPartner_Location_ID());
-                    if (imp.getAD_User_ID() != 0) order.setAD_User_ID(imp.getAD_User_ID());
+                    order.setBusinessPartnerId(imp.getBusinessPartnerId());
+                    order.setBusinessPartnerLocationId(imp.getBusinessPartnerLocationId());
+                    if (imp.getUserId() != 0) order.setUserId(imp.getUserId());
                     //	Bill Partner
-                    order.setBill_BPartner_ID(imp.getC_BPartner_ID());
-                    order.setBill_Location_ID(imp.getBillTo_ID());
+                    order.setBill_BPartner_ID(imp.getBusinessPartnerId());
+                    order.setBusinessPartnerInvoicingLocationId(imp.getBillTo_ID());
                     //
                     if (imp.getDescription() != null) order.setDescription(imp.getDescription());
-                    order.setC_PaymentTerm_ID(imp.getC_PaymentTerm_ID());
-                    order.setM_PriceList_ID(imp.getM_PriceList_ID());
-                    order.setM_Warehouse_ID(imp.getM_Warehouse_ID());
-                    if (imp.getM_Shipper_ID() != 0) order.setM_Shipper_ID(imp.getM_Shipper_ID());
+                    order.setPaymentTermId(imp.getPaymentTermId());
+                    order.setPriceListId(imp.getPriceListId());
+                    order.setWarehouseId(imp.getWarehouseId());
+                    if (imp.getShipperId() != 0) order.setShipperId(imp.getShipperId());
                     //	SalesRep from Import or the person running the import
-                    if (imp.getSalesRep_ID() != 0) order.setSalesRep_ID(imp.getSalesRep_ID());
-                    if (order.getSalesRep_ID() == 0) order.setSalesRep_ID(getAD_User_ID());
+                    if (imp.getSalesRepresentativeId() != 0) order.setSalesRepresentativeId(imp.getSalesRepresentativeId());
+                    if (order.getSalesRepresentativeId() == 0) order.setSalesRepresentativeId(getUserId());
                     //
-                    if (imp.getAD_OrgTrx_ID() != 0) order.setAD_OrgTrx_ID(imp.getAD_OrgTrx_ID());
-                    if (imp.getC_Activity_ID() != 0) order.setC_Activity_ID(imp.getC_Activity_ID());
-                    if (imp.getC_Campaign_ID() != 0) order.setC_Campaign_ID(imp.getC_Campaign_ID());
-                    if (imp.getC_Project_ID() != 0) order.setC_Project_ID(imp.getC_Project_ID());
+                    if (imp.getTransactionOrganizationId() != 0) order.setTransactionOrganizationId(imp.getTransactionOrganizationId());
+                    if (imp.getBusinessActivityId() != 0) order.setBusinessActivityId(imp.getBusinessActivityId());
+                    if (imp.getCampaignId() != 0) order.setCampaignId(imp.getCampaignId());
+                    if (imp.getProjectId() != 0) order.setProjectId(imp.getProjectId());
                     //
                     if (imp.getDateOrdered() != null) order.setDateOrdered(imp.getDateOrdered());
                     if (imp.getDateAcct() != null) order.setDateAcct(imp.getDateAcct());
@@ -812,13 +812,13 @@ public class ImportOrder extends SvrProcess {
                     noInsert++;
                     lineNo = 10;
                 }
-                imp.setC_Order_ID(order.getC_Order_ID());
+                imp.setOrderId(order.getOrderId());
                 //	New OrderLine
                 MOrderLine line = new MOrderLine(order);
                 line.setLine(lineNo);
                 lineNo += 10;
                 if (imp.getM_Product_ID() != 0) line.setM_Product_ID(imp.getM_Product_ID(), true);
-                if (imp.getC_Charge_ID() != 0) line.setC_Charge_ID(imp.getC_Charge_ID());
+                if (imp.getChargeId() != 0) line.setChargeId(imp.getChargeId());
                 line.setQty(imp.getQtyOrdered());
                 line.setPrice();
                 if (imp.getPriceActual().compareTo(Env.ZERO) != 0) line.setPrice(imp.getPriceActual());

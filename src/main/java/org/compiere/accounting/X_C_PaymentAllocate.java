@@ -27,8 +27,8 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
     public X_C_PaymentAllocate(Properties ctx, int C_PaymentAllocate_ID) {
         super(ctx, C_PaymentAllocate_ID);
         /**
-         * if (C_PaymentAllocate_ID == 0) { setAmount (Env.ZERO); setC_Invoice_ID (0);
-         * setC_PaymentAllocate_ID (0); setC_Payment_ID (0); setDiscountAmt (Env.ZERO); setOverUnderAmt
+         * if (C_PaymentAllocate_ID == 0) { setAmount (Env.ZERO); setInvoiceId (0);
+         * setC_PaymentAllocate_ID (0); setPaymentId (0); setDiscountAmt (Env.ZERO); setOverUnderAmt
          * (Env.ZERO); setWriteOffAmt (Env.ZERO); }
          */
     }
@@ -71,7 +71,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      * @param Amount Amount in a defined currency
      */
     public void setAmount(BigDecimal Amount) {
-        set_Value(COLUMNNAME_Amount, Amount);
+        setValue(COLUMNNAME_Amount, Amount);
     }
 
     /**
@@ -80,8 +80,8 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      * @param C_AllocationLine_ID Allocation Line
      */
     public void setC_AllocationLine_ID(int C_AllocationLine_ID) {
-        if (C_AllocationLine_ID < 1) set_Value(COLUMNNAME_C_AllocationLine_ID, null);
-        else set_Value(COLUMNNAME_C_AllocationLine_ID, Integer.valueOf(C_AllocationLine_ID));
+        if (C_AllocationLine_ID < 1) setValue(COLUMNNAME_C_AllocationLine_ID, null);
+        else setValue(COLUMNNAME_C_AllocationLine_ID, Integer.valueOf(C_AllocationLine_ID));
     }
 
     /**
@@ -89,7 +89,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      *
      * @return Invoice Identifier
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -100,9 +100,9 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      *
      * @param C_Invoice_ID Invoice Identifier
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        if (C_Invoice_ID < 1) set_Value(COLUMNNAME_C_Invoice_ID, null);
-        else set_Value(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    public void setInvoiceId(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) setValue(COLUMNNAME_C_Invoice_ID, null);
+        else setValue(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
     /**
@@ -110,7 +110,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      *
      * @return Payment identifier
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
@@ -133,7 +133,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      * @param DiscountAmt Calculated amount of discount
      */
     public void setDiscountAmt(BigDecimal DiscountAmt) {
-        set_Value(COLUMNNAME_DiscountAmt, DiscountAmt);
+        setValue(COLUMNNAME_DiscountAmt, DiscountAmt);
     }
 
     /**
@@ -153,7 +153,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      * @param InvoiceAmt Invoice Amt
      */
     public void setInvoiceAmt(BigDecimal InvoiceAmt) {
-        set_Value(COLUMNNAME_InvoiceAmt, InvoiceAmt);
+        setValue(COLUMNNAME_InvoiceAmt, InvoiceAmt);
     }
 
     /**
@@ -173,7 +173,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      * @param OverUnderAmt Over-Payment (unallocated) or Under-Payment (partial payment) Amount
      */
     public void setOverUnderAmt(BigDecimal OverUnderAmt) {
-        set_Value(COLUMNNAME_OverUnderAmt, OverUnderAmt);
+        setValue(COLUMNNAME_OverUnderAmt, OverUnderAmt);
     }
 
     /**
@@ -193,7 +193,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      * @param WriteOffAmt Amount to write-off
      */
     public void setWriteOffAmt(BigDecimal WriteOffAmt) {
-        set_Value(COLUMNNAME_WriteOffAmt, WriteOffAmt);
+        setValue(COLUMNNAME_WriteOffAmt, WriteOffAmt);
     }
 
     @Override

@@ -241,7 +241,7 @@ public class InvoiceWriteOff extends SvrProcess {
         if (!invoice.isSOTrx()) OpenAmt = OpenAmt.negate();
 
         //	Allocation
-        if (m_alloc == null || C_Currency_ID != m_alloc.getC_Currency_ID()) {
+        if (m_alloc == null || C_Currency_ID != m_alloc.getCurrencyId()) {
             processAllocation();
             m_alloc =
                     new MAllocationHdr(
@@ -260,8 +260,8 @@ public class InvoiceWriteOff extends SvrProcess {
         //	Payment
         if (p_CreatePayment
                 && (m_payment == null
-                || invoice.getC_BPartner_ID() != m_payment.getC_BPartner_ID()
-                || C_Currency_ID != m_payment.getC_Currency_ID())) {
+                || invoice.getBusinessPartnerId() != m_payment.getBusinessPartnerId()
+                || C_Currency_ID != m_payment.getCurrencyId())) {
             processPayment();
             m_payment = new MPayment(getCtx(), 0);
             m_payment.setOrgId(invoice.getOrgId());
@@ -270,9 +270,9 @@ public class InvoiceWriteOff extends SvrProcess {
             m_payment.setDateTrx(p_DateAcct);
             m_payment.setDateAcct(p_DateAcct);
             m_payment.setDescription(getProcessInfo().getTitle() + " #" + getAD_PInstance_ID());
-            m_payment.setC_BPartner_ID(invoice.getC_BPartner_ID());
+            m_payment.setBusinessPartnerId(invoice.getBusinessPartnerId());
             m_payment.setIsReceipt(true); // 	payments are negative
-            m_payment.setC_Currency_ID(C_Currency_ID);
+            m_payment.setCurrencyId(C_Currency_ID);
             if (!m_payment.save()) {
                 log.log(Level.SEVERE, "Cannot create payment");
                 return false;
@@ -284,9 +284,9 @@ public class InvoiceWriteOff extends SvrProcess {
         if (p_CreatePayment) {
             aLine = new MAllocationLine(m_alloc, OpenAmt, Env.ZERO, Env.ZERO, Env.ZERO);
             m_payment.setPayAmt(m_payment.getPayAmt().add(OpenAmt));
-            aLine.setC_Payment_ID(m_payment.getC_Payment_ID());
+            aLine.setPaymentId(m_payment.getPaymentId());
         } else aLine = new MAllocationLine(m_alloc, Env.ZERO, Env.ZERO, OpenAmt, Env.ZERO);
-        aLine.setC_Invoice_ID(C_Invoice_ID);
+        aLine.setInvoiceId(C_Invoice_ID);
         if (aLine.save()) {
             addLog(C_Invoice_ID, DateInvoiced, OpenAmt, DocumentNo);
             return true;

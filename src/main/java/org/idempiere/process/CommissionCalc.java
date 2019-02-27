@@ -189,7 +189,7 @@ public class CommissionCalc extends SvrProcess {
     		//	CommissionOrders/Invoices
     		if (lines[i].isCommissionOrders())
     		{
-    			MUser[] users = MUser.getOfBPartner(getCtx(), m_com.getC_BPartner_ID(), null);
+    			MUser[] users = MUser.getOfBPartner(getCtx(), m_com.getBusinessPartnerId(), null);
     			if (users == null || users.length == 0)
     				throw new AdempiereUserError ("Commission Business Partner has no Users/Contact");
     			if (users.length == 1)
@@ -200,17 +200,17 @@ public class CommissionCalc extends SvrProcess {
     			else
     			{
     				log.warning("Not 1 User/Contact for C_BPartner_ID="
-    					+ m_com.getC_BPartner_ID() + " but " + users.length);
+    					+ m_com.getBusinessPartnerId() + " but " + users.length);
     				sql.append(" AND h.SalesRep_ID IN (SELECT AD_User_ID FROM AD_User WHERE C_BPartner_ID=")
-    					.append(m_com.getC_BPartner_ID()).append(")");
+    					.append(m_com.getBusinessPartnerId()).append(")");
     			}
     		}
     		//	Organization
     		if (lines[i].getOrg_ID() != 0)
     			sql.append(" AND h.AD_Org_ID=").append(lines[i].getOrg_ID());
     		//	BPartner
-    		if (lines[i].getC_BPartner_ID() != 0)
-    			sql.append(" AND h.C_BPartner_ID=").append(lines[i].getC_BPartner_ID());
+    		if (lines[i].getBusinessPartnerId() != 0)
+    			sql.append(" AND h.C_BPartner_ID=").append(lines[i].getBusinessPartnerId());
     		//	BPartner Group
     		if (lines[i].getC_BP_Group_ID() != 0)
     			sql.append(" AND h.C_BPartner_ID IN ")

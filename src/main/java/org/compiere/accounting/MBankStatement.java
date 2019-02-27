@@ -102,7 +102,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     public MBankStatement(MBankAccount account, boolean isManual) {
         this(account.getCtx(), 0);
         setClientOrg(account);
-        setC_BankAccount_ID(account.getC_BankAccount_ID());
+        setC_BankAccount_ID(account.getBankAccountId());
         setStatementDate(new Timestamp(System.currentTimeMillis()));
         setDateAcct(new Timestamp(System.currentTimeMillis()));
         setBeginningBalance(account.getCurrentBalance());
@@ -346,8 +346,8 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         MBankStatementLine[] lines = getLines(false);
         for (int i = 0; i < lines.length; i++) {
             MBankStatementLine line = lines[i];
-            if (line.getC_Payment_ID() != 0) {
-                MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID());
+            if (line.getPaymentId() != 0) {
+                MPayment payment = new MPayment(getCtx(), line.getPaymentId());
                 payment.setIsReconciled(true);
                 payment.saveEx();
             }
@@ -451,11 +451,11 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
                 line.setTrxAmt(Env.ZERO);
                 line.setChargeAmt(Env.ZERO);
                 line.setInterestAmt(Env.ZERO);
-                if (line.getC_Payment_ID() != 0) {
-                    MPayment payment = new MPayment(getCtx(), line.getC_Payment_ID());
+                if (line.getPaymentId() != 0) {
+                    MPayment payment = new MPayment(getCtx(), line.getPaymentId());
                     payment.setIsReconciled(false);
                     payment.saveEx();
-                    line.setC_Payment_ID(0);
+                    line.setPaymentId(0);
                 }
                 line.saveEx();
             }
@@ -611,8 +611,8 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return C_Currency_ID
      */
-    public int getC_Currency_ID() {
-        //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
+    public int getCurrencyId() {
+        //	MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
         //	return pl.getCurrencyId();
         return 0;
     } //	getCurrencyId

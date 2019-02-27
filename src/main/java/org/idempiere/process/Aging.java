@@ -202,9 +202,9 @@ public class Aging extends SvrProcess {
     		//	New Aging Row
     		if (aging == null 		//	Key
     			|| AD_PInstance_ID != aging.getAD_PInstance_ID()
-    			|| C_BPartner_ID != aging.getC_BPartner_ID()
+    			|| C_BPartner_ID != aging.getBusinessPartnerId()
     			|| C_Currency_ID != aging.getCurrencyId()
-    			|| C_Invoice_ID != aging.getC_Invoice_ID()
+    			|| C_Invoice_ID != aging.getInvoiceId()
     			|| C_InvoicePaySchedule_ID != aging.getC_InvoicePaySchedule_ID())
     		{
     			if (aging != null)
@@ -216,9 +216,9 @@ public class Aging extends SvrProcess {
     				C_BPartner_ID, C_Currency_ID,
     				C_Invoice_ID, C_InvoicePaySchedule_ID,
     				C_BP_Group_ID, AD_Org_ID, DueDate, IsSOTrx, null);
-    			aging.setC_Activity_ID(C_Activity_ID);
-    			aging.setC_Campaign_ID(C_Campaign_ID);
-    			aging.setC_Project_ID(C_Project_ID);
+    			aging.setBusinessActivityId(C_Activity_ID);
+    			aging.setCampaignId(C_Campaign_ID);
+    			aging.setProjectId(C_Project_ID);
     			aging.setDateAcct(p_DateAcct);
     		}
     		//	Fill Buckets

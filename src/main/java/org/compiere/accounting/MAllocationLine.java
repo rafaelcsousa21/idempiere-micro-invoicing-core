@@ -66,6 +66,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
     public MAllocationLine(Properties ctx, ResultSet rs) {
         super(ctx, rs);
     } //	MAllocationLine
+
     /**
      * Parent Constructor
      *
@@ -77,6 +78,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
         setC_AllocationHdr_ID(parent.getC_AllocationHdr_ID());
         m_parent = parent;
     } //	MAllocationLine
+
     /**
      * Parent Constructor
      *
@@ -127,9 +129,9 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      * @param C_Invoice_ID  invoice
      */
     public void setDocInfo(int C_BPartner_ID, int C_Order_ID, int C_Invoice_ID) {
-        setC_BPartner_ID(C_BPartner_ID);
-        setC_Order_ID(C_Order_ID);
-        setC_Invoice_ID(C_Invoice_ID);
+        setBusinessPartnerId(C_BPartner_ID);
+        setOrderId(C_Order_ID);
+        setInvoiceId(C_Invoice_ID);
     } //	setDocInfo
 
     /**
@@ -139,7 +141,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      * @param C_CashLine_ID cash line
      */
     public void setPaymentInfo(int C_Payment_ID, int C_CashLine_ID) {
-        if (C_Payment_ID != 0) setC_Payment_ID(C_Payment_ID);
+        if (C_Payment_ID != 0) setPaymentId(C_Payment_ID);
         if (C_CashLine_ID != 0) setC_CashLine_ID(C_CashLine_ID);
     } //	setPaymentInfo
 
@@ -149,8 +151,8 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      * @return invoice or null
      */
     public MInvoice getInvoice() {
-        if (m_invoice == null && getC_Invoice_ID() != 0)
-            m_invoice = new MInvoice(getCtx(), getC_Invoice_ID());
+        if (m_invoice == null && getInvoiceId() != 0)
+            m_invoice = new MInvoice(getCtx(), getInvoiceId());
         return m_invoice;
     } //	getInvoice
 
@@ -171,9 +173,9 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
         }
 
         //	Set BPartner/Order from Invoice
-        if (getC_BPartner_ID() == 0 && getInvoice() != null)
-            setC_BPartner_ID(getInvoice().getC_BPartner_ID());
-        if (getC_Order_ID() == 0 && getInvoice() != null) setC_Order_ID(getInvoice().getC_Order_ID());
+        if (getBusinessPartnerId() == 0 && getInvoice() != null)
+            setBusinessPartnerId(getInvoice().getBusinessPartnerId());
+        if (getOrderId() == 0 && getInvoice() != null) setOrderId(getInvoice().getOrderId());
         //
         return true;
     } //	beforeSave
@@ -197,10 +199,10 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
     public String toString() {
         StringBuilder sb = new StringBuilder("MAllocationLine[");
         sb.append(getId());
-        if (getC_Payment_ID() != 0) sb.append(",C_Payment_ID=").append(getC_Payment_ID());
+        if (getPaymentId() != 0) sb.append(",C_Payment_ID=").append(getPaymentId());
         if (getC_CashLine_ID() != 0) sb.append(",C_CashLine_ID=").append(getC_CashLine_ID());
-        if (getC_Invoice_ID() != 0) sb.append(",C_Invoice_ID=").append(getC_Invoice_ID());
-        if (getC_BPartner_ID() != 0) sb.append(",C_BPartner_ID=").append(getC_BPartner_ID());
+        if (getInvoiceId() != 0) sb.append(",C_Invoice_ID=").append(getInvoiceId());
+        if (getBusinessPartnerId() != 0) sb.append(",C_BPartner_ID=").append(getBusinessPartnerId());
         sb.append(", Amount=")
                 .append(getAmount())
                 .append(",Discount=")
@@ -222,23 +224,23 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      */
     protected int processIt(boolean reverse) {
         if (log.isLoggable(Level.FINE)) log.fine("Reverse=" + reverse + " - " + toString());
-        int C_Invoice_ID = getC_Invoice_ID();
+        int C_Invoice_ID = getInvoiceId();
         MInvoice invoice = getInvoice();
-        if (invoice != null && getC_BPartner_ID() != invoice.getC_BPartner_ID())
-            setC_BPartner_ID(invoice.getC_BPartner_ID());
+        if (invoice != null && getBusinessPartnerId() != invoice.getBusinessPartnerId())
+            setBusinessPartnerId(invoice.getBusinessPartnerId());
         //
-        int C_Payment_ID = getC_Payment_ID();
+        int C_Payment_ID = getPaymentId();
         int C_CashLine_ID = getC_CashLine_ID();
 
         //	Update Payment
         if (C_Payment_ID != 0) {
             MPayment payment = new MPayment(getCtx(), C_Payment_ID);
-            if (getC_BPartner_ID() != payment.getC_BPartner_ID())
+            if (getBusinessPartnerId() != payment.getBusinessPartnerId())
                 log.warning(
                         "C_BPartner_ID different - Invoice="
-                                + getC_BPartner_ID()
+                                + getBusinessPartnerId()
                                 + " - Payment="
-                                + payment.getC_BPartner_ID());
+                                + payment.getBusinessPartnerId());
             if (reverse) {
                 if (!payment.isCashbookTrx()) {
                     payment.setIsAllocated(false);
@@ -253,11 +255,11 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
         if (C_Payment_ID != 0 && invoice != null) {
             //	Link to Invoice
             if (reverse) {
-                invoice.setC_Payment_ID(0);
+                invoice.setPaymentId(0);
                 if (log.isLoggable(Level.FINE))
                     log.fine("C_Payment_ID=" + C_Payment_ID + " Unlinked from C_Invoice_ID=" + C_Invoice_ID);
             } else if (invoice.isPaid()) {
-                invoice.setC_Payment_ID(C_Payment_ID);
+                invoice.setPaymentId(C_Payment_ID);
                 if (log.isLoggable(Level.FINE))
                     log.fine("C_Payment_ID=" + C_Payment_ID + " Linked to C_Invoice_ID=" + C_Invoice_ID);
             }
@@ -326,6 +328,6 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
                 log.log(Level.SEVERE, "Invoice not updated - " + invoice);
         }
 
-        return getC_BPartner_ID();
+        return getBusinessPartnerId();
     } //	processIt
 } //	MAllocationLine

@@ -20,7 +20,7 @@ public class BankStatementMatchInfo {
      *
      * @return BPartner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         return m_C_BPartner_ID;
     }
 
@@ -29,7 +29,7 @@ public class BankStatementMatchInfo {
      *
      * @return Payment
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         return m_C_Payment_ID;
     }
 
@@ -38,7 +38,7 @@ public class BankStatementMatchInfo {
      *
      * @return invoice
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         return m_C_Invoice_ID;
     }
 } //	BankStatementMatchInfo

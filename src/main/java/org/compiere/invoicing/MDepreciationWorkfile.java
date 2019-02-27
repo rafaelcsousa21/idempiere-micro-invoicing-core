@@ -563,7 +563,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     public boolean setAttrValue(String ColumnName, Object value) {
         int index = getColumnIndex(ColumnName);
         if (index < 0) return false;
-        return set_ValueNoCheck(ColumnName, value);
+        return setValueNoCheck(ColumnName, value);
     }
 
     public Object getAttrValue(String ColumnName) {

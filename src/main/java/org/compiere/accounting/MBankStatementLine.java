@@ -47,7 +47,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
         super(ctx, C_BankStatementLine_ID);
         if (C_BankStatementLine_ID == 0) {
             //	setC_BankStatement_ID (0);		//	Parent
-            //	setC_Charge_ID (0);
+            //	setChargeId (0);
             //	setCurrencyId (0);	//	Bank Acct Currency
             //	setLine (0);	// @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM C_BankStatementLine
             // WHERE C_BankStatement_ID=@C_BankStatement_ID@
@@ -112,8 +112,8 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
      * @param payment payment
      */
     public void setPayment(MPayment payment) {
-        setC_Payment_ID(payment.getC_Payment_ID());
-        setC_Currency_ID(payment.getC_Currency_ID());
+        setPaymentId(payment.getPaymentId());
+        setCurrencyId(payment.getCurrencyId());
         //
         BigDecimal amt = payment.getPayAmt(true);
         BigDecimal chargeAmt = getChargeAmt();
@@ -157,14 +157,14 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
         amt = amt.subtract(getInterestAmt());
         if (amt.compareTo(getChargeAmt()) != 0) setChargeAmt(amt);
         //
-        if (getChargeAmt().signum() != 0 && getC_Charge_ID() == 0) {
+        if (getChargeAmt().signum() != 0 && getChargeId() == 0) {
             log.saveError("FillMandatory", Msg.getElement(getCtx(), "C_Charge_ID"));
             return false;
         }
         // Un-link Payment if TrxAmt is zero - teo_sarca BF [ 1896880 ]
-        if (getTrxAmt().signum() == 0 && getC_Payment_ID() > 0) {
-            setC_Payment_ID(I_ZERO);
-            setC_Invoice_ID(I_ZERO);
+        if (getTrxAmt().signum() == 0 && getPaymentId() > 0) {
+            setPaymentId(I_ZERO);
+            setInvoiceId(I_ZERO);
         }
         //	Set Line No
         if (getLine() == 0) {
@@ -175,14 +175,14 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
         }
 
         //	Set References
-        if (getC_Payment_ID() != 0 && getC_BPartner_ID() == 0) {
-            MPayment payment = new MPayment(getCtx(), getC_Payment_ID());
-            setC_BPartner_ID(payment.getC_BPartner_ID());
-            if (payment.getC_Invoice_ID() != 0) setC_Invoice_ID(payment.getC_Invoice_ID());
+        if (getPaymentId() != 0 && getBusinessPartnerId() == 0) {
+            MPayment payment = new MPayment(getCtx(), getPaymentId());
+            setBusinessPartnerId(payment.getBusinessPartnerId());
+            if (payment.getInvoiceId() != 0) setInvoiceId(payment.getInvoiceId());
         }
-        if (getC_Invoice_ID() != 0 && getC_BPartner_ID() == 0) {
-            MInvoice invoice = new MInvoice(getCtx(), getC_Invoice_ID());
-            setC_BPartner_ID(invoice.getC_BPartner_ID());
+        if (getInvoiceId() != 0 && getBusinessPartnerId() == 0) {
+            MInvoice invoice = new MInvoice(getCtx(), getInvoiceId());
+            setBusinessPartnerId(invoice.getBusinessPartnerId());
         }
 
         return true;

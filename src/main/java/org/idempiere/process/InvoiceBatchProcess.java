@@ -98,19 +98,19 @@ public class InvoiceBatchProcess extends SvrProcess {
         MInvoiceBatchLine[] lines = batch.getLines(false);
         for (int i = 0; i < lines.length; i++) {
             MInvoiceBatchLine line = lines[i];
-            if (line.getC_Invoice_ID() != 0 || line.getC_InvoiceLine_ID() != 0) continue;
+            if (line.getInvoiceId() != 0 || line.getC_InvoiceLine_ID() != 0) continue;
 
             if ((m_oldDocumentNo != null && !m_oldDocumentNo.equals(line.getDocumentNo()))
-                    || m_oldC_BPartner_ID != line.getC_BPartner_ID()
-                    || m_oldC_BPartner_Location_ID != line.getC_BPartner_Location_ID()) completeInvoice();
+                    || m_oldC_BPartner_ID != line.getBusinessPartnerId()
+                    || m_oldC_BPartner_Location_ID != line.getBusinessPartnerLocationId()) completeInvoice();
             //	New Invoice
             if (m_invoice == null) {
                 m_invoice = new MInvoice(batch, line);
                 if (!m_invoice.save()) throw new AdempiereUserError("Cannot save Invoice");
                 //
                 m_oldDocumentNo = line.getDocumentNo();
-                m_oldC_BPartner_ID = line.getC_BPartner_ID();
-                m_oldC_BPartner_Location_ID = line.getC_BPartner_Location_ID();
+                m_oldC_BPartner_ID = line.getBusinessPartnerId();
+                m_oldC_BPartner_Location_ID = line.getBusinessPartnerLocationId();
             }
 
             if (line.isTaxIncluded() != m_invoice.isTaxIncluded()) {
@@ -121,7 +121,7 @@ public class InvoiceBatchProcess extends SvrProcess {
             //	Add Line
             MInvoiceLine invoiceLine = new MInvoiceLine(m_invoice);
             invoiceLine.setDescription(line.getDescription());
-            invoiceLine.setC_Charge_ID(line.getC_Charge_ID());
+            invoiceLine.setChargeId(line.getChargeId());
             invoiceLine.setQty(line.getQtyEntered()); // Entered/Invoiced
             invoiceLine.setPrice(line.getPriceEntered());
             invoiceLine.setC_Tax_ID(line.getC_Tax_ID());
@@ -134,7 +134,7 @@ public class InvoiceBatchProcess extends SvrProcess {
             }
 
             //	Update Batch Line
-            line.setC_Invoice_ID(m_invoice.getC_Invoice_ID());
+            line.setInvoiceId(m_invoice.getInvoiceId());
             line.setC_InvoiceLine_ID(invoiceLine.getC_InvoiceLine_ID());
             line.saveEx();
         } //	for all lines
@@ -169,7 +169,7 @@ public class InvoiceBatchProcess extends SvrProcess {
                 m_invoice.getGrandTotal(),
                 message,
                 m_invoice.getTableId(),
-                m_invoice.getC_Invoice_ID());
+                m_invoice.getInvoiceId());
         m_count++;
 
         m_invoice = null;

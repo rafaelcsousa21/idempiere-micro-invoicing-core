@@ -67,7 +67,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -78,9 +78,9 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook {
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-        else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValue(COLUMNNAME_C_Currency_ID, null);
+        else setValue(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     @Override

@@ -129,7 +129,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
      *
      * @return currency or 0
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         if (m_acctSchema == null) getMAcctSchema1();
         if (m_acctSchema != null) return m_acctSchema.getCurrencyId();
         return 0;

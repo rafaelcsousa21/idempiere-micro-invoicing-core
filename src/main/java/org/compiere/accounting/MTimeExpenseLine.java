@@ -139,7 +139,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
         if (m_C_Currency_Report_ID != 0) return m_C_Currency_Report_ID;
         //	Get it from header
         MTimeExpense te = new MTimeExpense(getCtx(), getS_TimeExpense_ID());
-        m_C_Currency_Report_ID = te.getC_Currency_ID();
+        m_C_Currency_Report_ID = te.getCurrencyId();
         return m_C_Currency_Report_ID;
     } //	getC_Currency_Report_ID
 
@@ -165,13 +165,13 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
         }
         //	Calculate Converted Amount
         if (newRecord || is_ValueChanged("ExpenseAmt") || is_ValueChanged("C_Currency_ID")) {
-            if (getC_Currency_ID() == getC_Currency_Report_ID()) setConvertedAmt(getExpenseAmt());
+            if (getCurrencyId() == getC_Currency_Report_ID()) setConvertedAmt(getExpenseAmt());
             else {
                 setConvertedAmt(
                         MConversionRate.convert(
                                 getCtx(),
                                 getExpenseAmt(),
-                                getC_Currency_ID(),
+                                getCurrencyId(),
                                 getC_Currency_Report_ID(),
                                 getDateExpense(),
                                 0,

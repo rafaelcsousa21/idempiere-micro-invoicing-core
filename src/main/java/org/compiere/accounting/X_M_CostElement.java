@@ -63,18 +63,21 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement {
      *
      */
     private static final long serialVersionUID = 20171031L;
+
     /**
      * Standard Constructor
      */
     public X_M_CostElement(Properties ctx, int M_CostElement_ID) {
         super(ctx, M_CostElement_ID);
     }
+
     /**
      * Load Constructor
      */
     public X_M_CostElement(Properties ctx, ResultSet rs) {
         super(ctx, rs);
     }
+
     public X_M_CostElement(Properties ctx, Row row) {
         super(ctx, row);
     }
@@ -108,7 +111,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement {
      */
     public void setCostElementType(String CostElementType) {
 
-        set_Value(COLUMNNAME_CostElementType, CostElementType);
+        setValue(COLUMNNAME_CostElementType, CostElementType);
     }
 
     /**
@@ -127,7 +130,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement {
      */
     public void setCostingMethod(String CostingMethod) {
 
-        set_Value(COLUMNNAME_CostingMethod, CostingMethod);
+        setValue(COLUMNNAME_CostingMethod, CostingMethod);
     }
 
     /**
@@ -136,7 +139,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement {
      * @param IsCalculated The value is calculated by the system
      */
     public void setIsCalculated(boolean IsCalculated) {
-        set_Value(COLUMNNAME_IsCalculated, IsCalculated);
+        setValue(COLUMNNAME_IsCalculated, IsCalculated);
     }
 
     /**

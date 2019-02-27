@@ -214,8 +214,8 @@ public final class Fact implements IFact {
         ArrayList<Integer> list = new ArrayList<Integer>();
         for (int i = 0; i < m_lines.size(); i++) {
             FactLine line = (FactLine) m_lines.get(i);
-            if (line.getC_Currency_ID() > 0 && !list.contains(line.getC_Currency_ID()))
-                list.add(line.getC_Currency_ID());
+            if (line.getCurrencyId() > 0 && !list.contains(line.getCurrencyId()))
+                list.add(line.getCurrencyId());
         }
         if (list.size() > 1) return true;
 
@@ -267,9 +267,9 @@ public final class Fact implements IFact {
 
         //  Amount
         if (diff.signum() < 0) //  negative balance => DR
-            line.setAmtSource(m_doc.getC_Currency_ID(), diff.abs(), Env.ZERO);
+            line.setAmtSource(m_doc.getCurrencyId(), diff.abs(), Env.ZERO);
         else //  positive balance => CR
-            line.setAmtSource(m_doc.getC_Currency_ID(), Env.ZERO, diff);
+            line.setAmtSource(m_doc.getCurrencyId(), Env.ZERO, diff);
 
         //  Convert
         line.convert();
@@ -295,8 +295,8 @@ public final class Fact implements IFact {
         ArrayList<Integer> list = new ArrayList<Integer>();
         for (int i = 0; i < m_lines.size(); i++) {
             FactLine line = (FactLine) m_lines.get(i);
-            if (line.getC_Currency_ID() > 0 && !list.contains(line.getC_Currency_ID()))
-                list.add(line.getC_Currency_ID());
+            if (line.getCurrencyId() > 0 && !list.contains(line.getCurrencyId()))
+                list.add(line.getCurrencyId());
         }
         if (list.size() > 1) return true;
 
@@ -405,18 +405,18 @@ public final class Fact implements IFact {
                     if (difference.getBalance().signum() < 0) {
                         if (difference.isReversal()) {
                             line.setAccount(m_acctSchema, m_acctSchema.getDueTo_Acct(elementType));
-                            line.setAmtSource(m_doc.getC_Currency_ID(), Env.ZERO, difference.getPostBalance());
+                            line.setAmtSource(m_doc.getCurrencyId(), Env.ZERO, difference.getPostBalance());
                         } else {
                             line.setAccount(m_acctSchema, m_acctSchema.getDueFrom_Acct(elementType));
-                            line.setAmtSource(m_doc.getC_Currency_ID(), difference.getPostBalance(), Env.ZERO);
+                            line.setAmtSource(m_doc.getCurrencyId(), difference.getPostBalance(), Env.ZERO);
                         }
                     } else {
                         if (difference.isReversal()) {
                             line.setAccount(m_acctSchema, m_acctSchema.getDueFrom_Acct(elementType));
-                            line.setAmtSource(m_doc.getC_Currency_ID(), difference.getPostBalance(), Env.ZERO);
+                            line.setAmtSource(m_doc.getCurrencyId(), difference.getPostBalance(), Env.ZERO);
                         } else {
                             line.setAccount(m_acctSchema, m_acctSchema.getDueTo_Acct(elementType));
-                            line.setAmtSource(m_doc.getC_Currency_ID(), Env.ZERO, difference.getPostBalance());
+                            line.setAmtSource(m_doc.getCurrencyId(), Env.ZERO, difference.getPostBalance());
                         }
                     }
                     line.convert();
@@ -510,7 +510,7 @@ public final class Fact implements IFact {
             line.setAccount(m_acctSchema, m_acctSchema.getCurrencyBalancing_Acct());
 
             //  Amount
-            line.setAmtSource(m_doc.getC_Currency_ID(), Env.ZERO, Env.ZERO);
+            line.setAmtSource(m_doc.getCurrencyId(), Env.ZERO, Env.ZERO);
             line.convert();
             //	Accounted
             BigDecimal drAmt = Env.ZERO;
@@ -599,7 +599,7 @@ public final class Fact implements IFact {
         for (int i = 0; i < m_lines.size(); i++) {
             FactLine dLine = (FactLine) m_lines.get(i);
             MDistribution[] distributions =
-                    MDistribution.get(dLine.getAccount(), m_postingType, m_doc.getC_DocType_ID());
+                    MDistribution.get(dLine.getAccount(), m_postingType, m_doc.getDocumentTypeId());
             //	No Distribution for this line
             // AZ Goodwill
             // The above "get" only work in GL Journal because it's using ValidCombination Account
@@ -614,20 +614,20 @@ public final class Fact implements IFact {
                                 dLine.getCtx(),
                                 dLine.getC_AcctSchema_ID(),
                                 m_postingType,
-                                m_doc.getC_DocType_ID(),
+                                m_doc.getDocumentTypeId(),
                                 dLine.getOrgId(),
                                 dLine.getAccount_ID(),
                                 dLine.getM_Product_ID(),
-                                dLine.getC_BPartner_ID(),
-                                dLine.getC_Project_ID(),
-                                dLine.getC_Campaign_ID(),
-                                dLine.getC_Activity_ID(),
-                                dLine.getAD_OrgTrx_ID(),
+                                dLine.getBusinessPartnerId(),
+                                dLine.getProjectId(),
+                                dLine.getCampaignId(),
+                                dLine.getBusinessActivityId(),
+                                dLine.getTransactionOrganizationId(),
                                 dLine.getC_SalesRegion_ID(),
                                 dLine.getC_LocTo_ID(),
                                 dLine.getC_LocFrom_ID(),
-                                dLine.getUser1_ID(),
-                                dLine.getUser2_ID());
+                                dLine.getUser1Id(),
+                                dLine.getUser2Id());
                 if (distributions == null || distributions.length == 0) continue;
             }
             // end AZ
@@ -650,7 +650,7 @@ public final class Fact implements IFact {
 
             //	Prepare
             distribution.distribute(
-                    dLine.getAccount(), dLine.getSourceBalance(), dLine.getQty(), dLine.getC_Currency_ID());
+                    dLine.getAccount(), dLine.getSourceBalance(), dLine.getQty(), dLine.getCurrencyId());
             MDistributionLine[] lines = distribution.getLines(false);
             for (int j = 0; j < lines.length; j++) {
                 MDistributionLine dl = lines[j];
@@ -669,22 +669,22 @@ public final class Fact implements IFact {
                     factLine.setOrgId(dl.getOrg_ID());
                 // Silvano - freepath - F3P - Bug#2904994 Fact distribtution only overwriting Org
                 if (dl.isOverwriteAcct()) factLine.setAccount_ID(dl.getAccount_ID());
-                if (dl.isOverwriteActivity()) factLine.setC_Activity_ID(dl.getC_Activity_ID());
-                if (dl.isOverwriteBPartner()) factLine.setC_BPartner_ID(dl.getC_BPartner_ID());
-                if (dl.isOverwriteCampaign()) factLine.setC_Campaign_ID(dl.getC_Campaign_ID());
+                if (dl.isOverwriteActivity()) factLine.setBusinessActivityId(dl.getBusinessActivityId());
+                if (dl.isOverwriteBPartner()) factLine.setBusinessPartnerId(dl.getBusinessPartnerId());
+                if (dl.isOverwriteCampaign()) factLine.setCampaignId(dl.getCampaignId());
                 if (dl.isOverwriteLocFrom()) factLine.setC_LocFrom_ID(dl.getC_LocFrom_ID());
                 if (dl.isOverwriteLocTo()) factLine.setC_LocTo_ID(dl.getC_LocTo_ID());
-                if (dl.isOverwriteOrgTrx()) factLine.setAD_OrgTrx_ID(dl.getAD_OrgTrx_ID());
+                if (dl.isOverwriteOrgTrx()) factLine.setTransactionOrganizationId(dl.getTransactionOrganizationId());
                 if (dl.isOverwriteProduct()) factLine.setM_Product_ID(dl.getM_Product_ID());
-                if (dl.isOverwriteProject()) factLine.setC_Project_ID(dl.getC_Project_ID());
+                if (dl.isOverwriteProject()) factLine.setProjectId(dl.getProjectId());
                 if (dl.isOverwriteSalesRegion()) factLine.setC_SalesRegion_ID(dl.getC_SalesRegion_ID());
-                if (dl.isOverwriteUser1()) factLine.setUser1_ID(dl.getUser1_ID());
-                if (dl.isOverwriteUser2()) factLine.setUser2_ID(dl.getUser2_ID());
+                if (dl.isOverwriteUser1()) factLine.setUser1Id(dl.getUser1Id());
+                if (dl.isOverwriteUser2()) factLine.setUser2Id(dl.getUser2Id());
                 // F3P end
                 //
                 if (dLine.getAmtAcctCr().signum() != 0) // isCredit
-                    factLine.setAmtSource(dLine.getC_Currency_ID(), null, dl.getAmt().negate());
-                else factLine.setAmtSource(dLine.getC_Currency_ID(), dl.getAmt(), null);
+                    factLine.setAmtSource(dLine.getCurrencyId(), null, dl.getAmt().negate());
+                else factLine.setAmtSource(dLine.getCurrencyId(), dl.getAmt(), null);
                 factLine.setQty(dl.getQty());
                 //  Convert
                 factLine.convert();
@@ -761,6 +761,7 @@ public final class Fact implements IFact {
          * CR Amount
          */
         public BigDecimal CR = Env.ZERO;
+
         /**
          * New Balance
          *

@@ -46,6 +46,7 @@ public class MDepreciation extends X_A_Depreciation {
      * Static logger
      */
     private static Logger s_log = CLogger.getCLogger(MDepreciation.class);
+
     /**
      * Standard Constructor
      */

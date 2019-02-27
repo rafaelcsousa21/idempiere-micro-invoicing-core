@@ -302,7 +302,7 @@ public class ImportPriceList extends SvrProcess {
             while (rs.next()) {
                 X_I_PriceList imp = new X_I_PriceList(getCtx(), rs);
                 int I_PriceList_ID = imp.getI_PriceList_ID();
-                int M_PriceList_ID = imp.getM_PriceList_ID();
+                int M_PriceList_ID = imp.getPriceListId();
                 if (M_PriceList_ID == 0) {
                     // try to obtain the ID directly from DB
                     M_PriceList_ID =
@@ -326,7 +326,7 @@ public class ImportPriceList extends SvrProcess {
                 {
                     pricelist = new MPriceList(imp);
                     if (pricelist.save()) {
-                        M_PriceList_ID = pricelist.getM_PriceList_ID();
+                        M_PriceList_ID = pricelist.getPriceListId();
                         log.finer("Insert Price List");
                         noInsertpl++;
                     } else {
@@ -392,7 +392,7 @@ public class ImportPriceList extends SvrProcess {
 
                 // If bpartner then insert/update into M_ProductPriceVendorBreak, otherwise insert/update
                 // M_ProductPrice
-                if (imp.getC_BPartner_ID() > 0) {
+                if (imp.getBusinessPartnerId() > 0) {
                     // M_ProductPriceVendorBreak
                     int M_ProductPriceVendorBreak_ID =
                             getSQLValue(
@@ -405,7 +405,7 @@ public class ImportPriceList extends SvrProcess {
                                             + "BreakValue=?",
                                     new Object[]{
                                             pricelistversion.getM_PriceList_Version_ID(),
-                                            imp.getC_BPartner_ID(),
+                                            imp.getBusinessPartnerId(),
                                             imp.getM_Product_ID(),
                                             imp.getBreakValue()
                                     });
@@ -416,7 +416,7 @@ public class ImportPriceList extends SvrProcess {
                     boolean isInsert = false;
                     if (M_ProductPriceVendorBreak_ID == 0) {
                         ppvb.setM_PriceList_Version_ID(pricelistversion.getM_PriceList_Version_ID());
-                        ppvb.setC_BPartner_ID(imp.getC_BPartner_ID());
+                        ppvb.setBusinessPartnerId(imp.getBusinessPartnerId());
                         ppvb.setM_Product_ID(imp.getM_Product_ID());
                         ppvb.setBreakValue(imp.getBreakValue());
                         isInsert = true;

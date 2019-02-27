@@ -38,7 +38,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
         super(ctx, C_ProjectPhase_ID);
         if (C_ProjectPhase_ID == 0) {
             //	setC_ProjectPhase_ID (0);	//	PK
-            //	setC_Project_ID (0);		//	Parent
+            //	setProjectId (0);		//	Parent
             //	setC_Phase_ID (0);			//	FK
             setCommittedAmt(Env.ZERO);
             setIsCommitCeiling(false);
@@ -68,7 +68,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
     public MProjectPhase(MProject project) {
         this(project.getCtx(), 0);
         setClientOrg(project);
-        setC_Project_ID(project.getC_Project_ID());
+        setProjectId(project.getProjectId());
     } //	MProjectPhase
 
     /**
@@ -132,7 +132,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
             if (fromLines[i].getC_ProjectTask_ID() != 0) continue;
             MProjectLine toLine = new MProjectLine(getCtx(), 0);
             PO.copyValues(fromLines[i], toLine, getClientId(), getOrgId());
-            toLine.setC_Project_ID(getC_Project_ID());
+            toLine.setProjectId(getProjectId());
             toLine.setC_ProjectPhase_ID(getC_ProjectPhase_ID());
             toLine.saveEx();
             count++;
@@ -222,7 +222,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
         final String whereClause = "C_Project_ID=? and C_ProjectPhase_ID=?";
         List<MProjectLine> list =
                 new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause)
-                        .setParameters(getC_Project_ID(), getC_ProjectPhase_ID())
+                        .setParameters(getProjectId(), getC_ProjectPhase_ID())
                         .setOrderBy("Line")
                         .list();
         //

@@ -145,7 +145,7 @@ public class BPartnerOrgLink extends SvrProcess {
         }
 
         //	Update/Save Org Info
-        oInfo.setWarehouseId(wh.getM_Warehouse_ID());
+        oInfo.setWarehouseId(wh.getWarehouseId());
         if (!oInfo.save()) throw new Exception("Organization Info not saved");
 
         //	Update BPartner

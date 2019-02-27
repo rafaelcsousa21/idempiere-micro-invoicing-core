@@ -106,7 +106,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
     public MInventory(MWarehouse wh) {
         this(wh.getCtx(), 0);
         setClientOrg(wh);
-        setM_Warehouse_ID(wh.getM_Warehouse_ID());
+        setWarehouseId(wh.getWarehouseId());
     }
 
     /**
@@ -164,7 +164,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                 .append("-")
                 .append(getDocumentNo())
                 .append(",M_Warehouse_ID=")
-                .append(getM_Warehouse_ID())
+                .append(getWarehouseId())
                 .append("]");
         return sb.toString();
     } //	toString
@@ -175,7 +175,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      * @return document info (untranslated)
      */
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
         return msgreturn.toString();
@@ -188,7 +188,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getC_DocType_ID() == 0) {
+        if (getDocumentTypeId() == 0) {
             log.saveError(
                     "FillMandatory", Msg.getElement(getCtx(), I_M_Inventory.COLUMNNAME_C_DocType_ID));
             return false;
@@ -279,7 +279,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                     if (!product
                             .getAttributeSet()
                             .excludeTableEntry(MInventoryLine.Table_ID, line.isSOTrx())) {
-                        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+                        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
                         String docSubTypeInv = dt.getDocSubTypeInv();
                         BigDecimal qtyDiff = line.getQtyInternalUse();
                         if (MDocType.DOCSUBTYPEINV_PhysicalInventory.equals(docSubTypeInv))
@@ -344,7 +344,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
     public CompleteActionResult completeIt() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         String docSubTypeInv = dt.getDocSubTypeInv();
         if (Util.isEmpty(docSubTypeInv)) {
             m_processMsg = "Document inventory subtype not configured, cannot complete";
@@ -390,10 +390,10 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                         MAcctSchema as = client.getAcctSchema();
                         MAcctSchema[] ass = MAcctSchema.getClientAcctSchema(getCtx(), client.getId());
 
-                        if (as.getCurrencyId() != getC_Currency_ID()) {
+                        if (as.getCurrencyId() != getCurrencyId()) {
                             for (int i = 0; i < ass.length; i++) {
                                 MAcctSchema a = ass[i];
-                                if (a.getCurrencyId() == getC_Currency_ID()) as = a;
+                                if (a.getCurrencyId() == getCurrencyId()) as = a;
                             }
                         }
 
@@ -448,7 +448,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
 
                             if (!MStorageOnHand.add(
                                     getCtx(),
-                                    getM_Warehouse_ID(),
+                                    getWarehouseId(),
                                     line.getM_Locator_ID(),
                                     line.getM_Product_ID(),
                                     ma.getMAttributeSetInstance_ID(),
@@ -519,7 +519,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                         // Fallback: Update Storage - see also VMatch.createMatchRecord
                         if (!MStorageOnHand.add(
                                 getCtx(),
-                                getM_Warehouse_ID(),
+                                getWarehouseId(),
                                 line.getM_Locator_ID(),
                                 line.getM_Product_ID(),
                                 line.getMAttributeSetInstance_ID(),
@@ -605,7 +605,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setMovementDate(new Timestamp(System.currentTimeMillis()));
             MPeriod.testPeriodOpen(
@@ -615,7 +615,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                     getOrgId());
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getC_DocType_ID(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
             if (value != null) setDocumentNo(value);
         }
     }
@@ -639,7 +639,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                 MStorageOnHand[] storages =
                         MStorageOnHand.getWarehouseNegative(
                                 getCtx(),
-                                getM_Warehouse_ID(),
+                                getWarehouseId(),
                                 line.getM_Product_ID(),
                                 0,
                                 null,
@@ -677,7 +677,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                         storages =
                                 MStorageOnHand.getWarehouse(
                                         getCtx(),
-                                        getM_Warehouse_ID(),
+                                        getWarehouseId(),
                                         line.getM_Product_ID(),
                                         0,
                                         null,
@@ -771,7 +771,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                 MStorageOnHand[] storages =
                         MStorageOnHand.getWarehouse(
                                 getCtx(),
-                                getM_Warehouse_ID(),
+                                getWarehouseId(),
                                 line.getM_Product_ID(),
                                 0,
                                 null,
@@ -868,7 +868,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
         } else {
             boolean accrual = false;
             try {
-                MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getC_DocType_ID(), getOrgId());
+                MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getDocumentTypeId(), getOrgId());
             } catch (PeriodClosedException e) {
                 accrual = true;
             }
@@ -939,7 +939,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
 
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         MPeriod.testPeriodOpen(getCtx(), reversalDate, dt.getDocBaseType(), getOrgId());
 
         //	Deep Copy

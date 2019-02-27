@@ -36,7 +36,7 @@ public class MProductPO extends X_M_Product_PO {
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
         else {
             //	setM_Product_ID (0);	// @M_Product_ID@
-            //	setC_BPartner_ID (0);	// 0
+            //	setBusinessPartnerId (0);	// 0
             //	setVendorProductNo (null);	// @Value@
             setIsCurrentVendor(true); // Y
         }
@@ -89,7 +89,7 @@ public class MProductPO extends X_M_Product_PO {
             int cnt =
                     getSQLValue(
                             "SELECT COUNT(*) FROM M_Product_PO WHERE IsActive='Y' AND IsCurrentVendor='Y' AND C_BPartner_ID!=? AND M_Product_ID=?",
-                            getC_BPartner_ID(),
+                            getBusinessPartnerId(),
                             getM_Product_ID());
             if (cnt > 0) {
                 log.saveError(

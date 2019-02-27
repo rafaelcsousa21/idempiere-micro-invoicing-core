@@ -58,6 +58,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition {
      *
      */
     private static final long serialVersionUID = 20171031L;
+
     /**
      * Standard Constructor
      */
@@ -71,6 +72,7 @@ public class X_AD_WF_NextCondition extends PO implements I_AD_WF_NextCondition {
          * AD_WF_NextCondition WHERE AD_WF_NodeNext_ID=@AD_WF_NodeNext_ID@ setValue (null); }
          */
     }
+
     /**
      * Load Constructor
      */

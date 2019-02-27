@@ -50,6 +50,7 @@ public class MPaySelection extends X_C_PaySelection {
             setProcessing(false);
         }
     } //	MPaySelection
+
     /**
      * Load Constructor
      *
@@ -89,7 +90,7 @@ public class MPaySelection extends X_C_PaySelection {
      *
      * @return C_Currency_ID
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         if (m_C_Currency_ID == 0) {
             String sql = "SELECT C_Currency_ID FROM C_BankAccount " + "WHERE C_BankAccount_ID=?";
             m_C_Currency_ID = getSQLValue(sql, getC_BankAccount_ID());

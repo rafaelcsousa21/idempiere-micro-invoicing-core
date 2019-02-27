@@ -27,6 +27,7 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
     @SuppressWarnings("unused")
     private static CLogger s_log = CLogger.getCLogger(MCity.class);
     ;
+
     /**
      * ************************************************************************ Create empty City
      *

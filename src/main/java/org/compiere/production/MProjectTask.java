@@ -115,7 +115,7 @@ public class MProjectTask extends X_C_ProjectTask {
         for (int i = 0; i < fromLines.length; i++) {
             MProjectLine toLine = new MProjectLine(getCtx(), 0);
             PO.copyValues(fromLines[i], toLine, getClientId(), getOrgId());
-            toLine.setC_Project_ID(getC_Project_ID(false));
+            toLine.setProjectId(getProjectId(false));
             toLine.setC_ProjectPhase_ID(getC_ProjectPhase_ID());
             toLine.setC_ProjectTask_ID(getC_ProjectTask_ID());
             toLine.saveEx();
@@ -127,8 +127,8 @@ public class MProjectTask extends X_C_ProjectTask {
         return count;
     }
 
-    private int getC_Project_ID(boolean reQuery) {
-        if (C_Project_ID == 0 || reQuery) C_Project_ID = getC_ProjectPhase().getC_Project_ID();
+    private int getProjectId(boolean reQuery) {
+        if (C_Project_ID == 0 || reQuery) C_Project_ID = getC_ProjectPhase().getProjectId();
         return C_Project_ID;
     }
 

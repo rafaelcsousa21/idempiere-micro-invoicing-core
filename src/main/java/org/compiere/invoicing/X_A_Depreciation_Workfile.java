@@ -95,7 +95,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Accumulated_Depr Accumulated Depreciation
      */
     public void setAccumulatedDepreciation(BigDecimal A_Accumulated_Depr) {
-        set_Value(COLUMNNAME_A_Accumulated_Depr, A_Accumulated_Depr);
+        setValue(COLUMNNAME_A_Accumulated_Depr, A_Accumulated_Depr);
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Accumulated_Depr_F Accumulated Depreciation (fiscal)
      */
     public void setAccumulatedDepreciationFiscal(BigDecimal A_Accumulated_Depr_F) {
-        set_Value(COLUMNNAME_A_Accumulated_Depr_F, A_Accumulated_Depr_F);
+        setValue(COLUMNNAME_A_Accumulated_Depr_F, A_Accumulated_Depr_F);
     }
 
     /**
@@ -135,7 +135,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Asset_Cost Asset Cost
      */
     public void setAssetCost(BigDecimal A_Asset_Cost) {
-        set_Value(COLUMNNAME_A_Asset_Cost, A_Asset_Cost);
+        setValue(COLUMNNAME_A_Asset_Cost, A_Asset_Cost);
     }
 
     public org.compiere.model.I_A_Asset getAAsset() throws RuntimeException {
@@ -161,8 +161,8 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Asset_ID Asset used internally or by customers
      */
     public void setAssetId(int A_Asset_ID) {
-        if (A_Asset_ID < 1) set_ValueNoCheck(COLUMNNAME_A_Asset_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
+        if (A_Asset_ID < 1) setValueNoCheck(COLUMNNAME_A_Asset_ID, null);
+        else setValueNoCheck(COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
     }
 
     /**
@@ -171,7 +171,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Asset_Life_Years Life Years
      */
     public void setAssetLifeYears(int A_Asset_Life_Years) {
-        set_Value(COLUMNNAME_A_Asset_Life_Years, Integer.valueOf(A_Asset_Life_Years));
+        setValue(COLUMNNAME_A_Asset_Life_Years, Integer.valueOf(A_Asset_Life_Years));
     }
 
     /**
@@ -180,7 +180,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Asset_Life_Years_F Life Years (fiscal)
      */
     public void setAssetLifeYearsFiscal(int A_Asset_Life_Years_F) {
-        set_Value(COLUMNNAME_A_Asset_Life_Years_F, Integer.valueOf(A_Asset_Life_Years_F));
+        setValue(COLUMNNAME_A_Asset_Life_Years_F, Integer.valueOf(A_Asset_Life_Years_F));
     }
 
     /**
@@ -200,7 +200,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Asset_Remaining Remaining Amt
      */
     public void setAssetRemaining(BigDecimal A_Asset_Remaining) {
-        set_ValueNoCheck(COLUMNNAME_A_Asset_Remaining, A_Asset_Remaining);
+        setValueNoCheck(COLUMNNAME_A_Asset_Remaining, A_Asset_Remaining);
     }
 
     /**
@@ -220,7 +220,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Asset_Remaining_F Remaining Amt (fiscal)
      */
     public void setAssetRemainingFiscal(BigDecimal A_Asset_Remaining_F) {
-        set_ValueNoCheck(COLUMNNAME_A_Asset_Remaining_F, A_Asset_Remaining_F);
+        setValueNoCheck(COLUMNNAME_A_Asset_Remaining_F, A_Asset_Remaining_F);
     }
 
     /**
@@ -240,7 +240,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Current_Period Current Period
      */
     public void setCurrentPeriod(int A_Current_Period) {
-        set_Value(COLUMNNAME_A_Current_Period, Integer.valueOf(A_Current_Period));
+        setValue(COLUMNNAME_A_Current_Period, Integer.valueOf(A_Current_Period));
     }
 
     /**
@@ -260,7 +260,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Life_Period Life Periods
      */
     public void setLifePeriod(int A_Life_Period) {
-        set_Value(COLUMNNAME_A_Life_Period, Integer.valueOf(A_Life_Period));
+        setValue(COLUMNNAME_A_Life_Period, Integer.valueOf(A_Life_Period));
     }
 
     /**
@@ -269,7 +269,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Life_Period_F Life Period (fiscal)
      */
     public void setLifePeriodFiscal(int A_Life_Period_F) {
-        set_Value(COLUMNNAME_A_Life_Period_F, Integer.valueOf(A_Life_Period_F));
+        setValue(COLUMNNAME_A_Life_Period_F, Integer.valueOf(A_Life_Period_F));
     }
 
     /**
@@ -278,7 +278,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_Period_Posted A_Period_Posted
      */
     public void setPeriodPosted(int A_Period_Posted) {
-        set_Value(COLUMNNAME_A_Period_Posted, Integer.valueOf(A_Period_Posted));
+        setValue(COLUMNNAME_A_Period_Posted, Integer.valueOf(A_Period_Posted));
     }
 
     /**
@@ -287,7 +287,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param A_QTY_Current Current Qty
      */
     public void setQtyCurrent(BigDecimal A_QTY_Current) {
-        set_Value(COLUMNNAME_A_QTY_Current, A_QTY_Current);
+        setValue(COLUMNNAME_A_QTY_Current, A_QTY_Current);
     }
 
     /**
@@ -316,7 +316,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param DateAcct Accounting Date
      */
     public void setDateAcct(Timestamp DateAcct) {
-        set_Value(COLUMNNAME_DateAcct, DateAcct);
+        setValue(COLUMNNAME_DateAcct, DateAcct);
     }
 
     /**
@@ -325,7 +325,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param IsDepreciated The asset will be depreciated
      */
     public void setIsDepreciated(boolean IsDepreciated) {
-        set_Value(COLUMNNAME_IsDepreciated, Boolean.valueOf(IsDepreciated));
+        setValue(COLUMNNAME_IsDepreciated, Boolean.valueOf(IsDepreciated));
     }
 
     /**
@@ -344,7 +344,7 @@ public class X_A_Depreciation_Workfile extends PO
      */
     public void setPostingType(String PostingType) {
 
-        set_Value(COLUMNNAME_PostingType, PostingType);
+        setValue(COLUMNNAME_PostingType, PostingType);
     }
 
     /**
@@ -364,7 +364,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param UseLifeMonths Months of the usable life of the asset
      */
     public void setUseLifeMonths(int UseLifeMonths) {
-        set_Value(COLUMNNAME_UseLifeMonths, Integer.valueOf(UseLifeMonths));
+        setValue(COLUMNNAME_UseLifeMonths, Integer.valueOf(UseLifeMonths));
     }
 
     /**
@@ -384,7 +384,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param UseLifeMonths_F Use Life - Months (fiscal)
      */
     public void setUseLifeMonths_F(int UseLifeMonths_F) {
-        set_Value(COLUMNNAME_UseLifeMonths_F, Integer.valueOf(UseLifeMonths_F));
+        setValue(COLUMNNAME_UseLifeMonths_F, Integer.valueOf(UseLifeMonths_F));
     }
 
     /**
@@ -404,7 +404,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param UseLifeYears Years of the usable life of the asset
      */
     public void setUseLifeYears(int UseLifeYears) {
-        set_Value(COLUMNNAME_UseLifeYears, Integer.valueOf(UseLifeYears));
+        setValue(COLUMNNAME_UseLifeYears, Integer.valueOf(UseLifeYears));
     }
 
     /**
@@ -424,7 +424,7 @@ public class X_A_Depreciation_Workfile extends PO
      * @param UseLifeYears_F Use Life - Years (fiscal)
      */
     public void setUseLifeYearsFiscal(int UseLifeYears_F) {
-        set_Value(COLUMNNAME_UseLifeYears_F, Integer.valueOf(UseLifeYears_F));
+        setValue(COLUMNNAME_UseLifeYears_F, Integer.valueOf(UseLifeYears_F));
     }
 
     @Override

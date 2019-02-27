@@ -89,7 +89,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     public static MInvoiceTax get(
             I_C_InvoiceLine line, int precision, boolean oldTax) {
         MInvoiceTax retValue = null;
-        if (line == null || line.getC_Invoice_ID() == 0) return null;
+        if (line == null || line.getInvoiceId() == 0) return null;
         int C_Tax_ID = line.getC_Tax_ID();
         boolean isOldTax =
                 oldTax
@@ -107,7 +107,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
 
         retValue =
                 new Query(line.getCtx(), Table_Name, "C_Invoice_ID=? AND C_Tax_ID=?")
-                        .setParameters(line.getC_Invoice_ID(), C_Tax_ID)
+                        .setParameters(line.getInvoiceId(), C_Tax_ID)
                         .firstOnly();
         if (retValue != null) {
             retValue.setPrecision(precision);
@@ -123,7 +123,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         //	Create New
         retValue = new MInvoiceTax(line.getCtx(), 0);
         retValue.setClientOrg(line);
-        retValue.setC_Invoice_ID(line.getC_Invoice_ID());
+        retValue.setInvoiceId(line.getInvoiceId());
         retValue.setC_Tax_ID(line.getC_Tax_ID());
         retValue.setPrecision(precision);
         retValue.setIsTaxIncluded(line.isTaxIncluded());
@@ -182,7 +182,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_Invoice_ID());
+            pstmt.setInt(1, getInvoiceId());
             pstmt.setInt(2, getC_Tax_ID());
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -231,7 +231,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
     public String toString() {
         StringBuilder sb = new StringBuilder("MInvoiceTax[");
         sb.append("C_Invoice_ID=")
-                .append(getC_Invoice_ID())
+                .append(getInvoiceId())
                 .append(",C_Tax_ID=")
                 .append(getC_Tax_ID())
                 .append(", Base=")

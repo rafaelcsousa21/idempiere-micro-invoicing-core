@@ -78,7 +78,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return Performing or initiating organization
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
@@ -162,7 +162,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -173,7 +173,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -184,7 +184,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return Marketing Campaign
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
@@ -195,7 +195,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return Currency Conversion Rate Type
      */
-    public int getC_ConversionType_ID() {
+    public int getConversionTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ConversionType_ID);
         if (ii == null) return 0;
         return ii;
@@ -206,7 +206,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -217,7 +217,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -261,7 +261,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -317,8 +317,8 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      * @param C_ValidCombination_ID Valid Account Combination
      */
     public void setC_ValidCombination_ID(int C_ValidCombination_ID) {
-        if (C_ValidCombination_ID < 1) set_Value(COLUMNNAME_C_ValidCombination_ID, null);
-        else set_Value(COLUMNNAME_C_ValidCombination_ID, Integer.valueOf(C_ValidCombination_ID));
+        if (C_ValidCombination_ID < 1) setValue(COLUMNNAME_C_ValidCombination_ID, null);
+        else setValue(COLUMNNAME_C_ValidCombination_ID, Integer.valueOf(C_ValidCombination_ID));
     }
 
     /**
@@ -367,8 +367,8 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      * @param GL_JournalBatch_ID General Ledger Journal Batch
      */
     public void setGL_JournalBatch_ID(int GL_JournalBatch_ID) {
-        if (GL_JournalBatch_ID < 1) set_Value(COLUMNNAME_GL_JournalBatch_ID, null);
-        else set_Value(COLUMNNAME_GL_JournalBatch_ID, Integer.valueOf(GL_JournalBatch_ID));
+        if (GL_JournalBatch_ID < 1) setValue(COLUMNNAME_GL_JournalBatch_ID, null);
+        else setValue(COLUMNNAME_GL_JournalBatch_ID, Integer.valueOf(GL_JournalBatch_ID));
     }
 
     /**
@@ -377,8 +377,8 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      * @param GL_Journal_ID General Ledger Journal
      */
     public void setGL_Journal_ID(int GL_Journal_ID) {
-        if (GL_Journal_ID < 1) set_Value(COLUMNNAME_GL_Journal_ID, null);
-        else set_Value(COLUMNNAME_GL_Journal_ID, Integer.valueOf(GL_Journal_ID));
+        if (GL_Journal_ID < 1) setValue(COLUMNNAME_GL_Journal_ID, null);
+        else setValue(COLUMNNAME_GL_Journal_ID, Integer.valueOf(GL_Journal_ID));
     }
 
     /**
@@ -387,8 +387,8 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      * @param GL_JournalLine_ID General Ledger Journal Line
      */
     public void setGL_JournalLine_ID(int GL_JournalLine_ID) {
-        if (GL_JournalLine_ID < 1) set_Value(COLUMNNAME_GL_JournalLine_ID, null);
-        else set_Value(COLUMNNAME_GL_JournalLine_ID, Integer.valueOf(GL_JournalLine_ID));
+        if (GL_JournalLine_ID < 1) setValue(COLUMNNAME_GL_JournalLine_ID, null);
+        else setValue(COLUMNNAME_GL_JournalLine_ID, Integer.valueOf(GL_JournalLine_ID));
     }
 
     /**
@@ -397,7 +397,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      * @param I_ErrorMsg Messages generated from import process
      */
     public void setI_ErrorMsg(String I_ErrorMsg) {
-        set_Value(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
+        setValue(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
     }
 
     /**
@@ -406,7 +406,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      * @param I_IsImported Has this import been processed
      */
     public void setI_IsImported(boolean I_IsImported) {
-        set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
+        setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
     /**
@@ -483,7 +483,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -502,7 +502,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return User defined list element #1
      */
-    public int getUser1_ID() {
+    public int getUser1Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
@@ -513,7 +513,7 @@ public class X_I_GLJournal extends PO implements I_I_GLJournal {
      *
      * @return User defined list element #2
      */
-    public int getUser2_ID() {
+    public int getUser2Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;

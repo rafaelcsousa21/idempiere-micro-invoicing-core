@@ -79,7 +79,7 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
         setC_DepositBatch_ID(original.getC_DepositBatch_ID());
 
         setDescription(original.getDescription());
-        setC_DocType_ID(original.getC_DocType_ID());
+        setDocumentTypeId(original.getDocumentTypeId());
 
         setDateDoc(original.getDateDoc());
         setDateDeposit(original.getDateDeposit());

@@ -39,7 +39,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
             //	setPaymentRule (null);	// S
             //	setLine (0);	// @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM C_PaySelectionLine
             // WHERE C_PaySelection_ID=@C_PaySelection_ID@
-            //	setC_Invoice_ID (0);
+            //	setInvoiceId (0);
             setIsSOTrx(false);
             setOpenAmt(Env.ZERO);
             setPayAmt(Env.ZERO);
@@ -93,7 +93,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
             BigDecimal PayAmt,
             BigDecimal DiscountAmt,
             BigDecimal WriteOffAmt) {
-        setC_Invoice_ID(C_Invoice_ID);
+        setInvoiceId(C_Invoice_ID);
         setIsSOTrx(isSOTrx);
         setOpenAmt(OpenAmt);
         setPayAmt(PayAmt);
@@ -108,7 +108,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
      * @return invoice
      */
     public MInvoice getInvoice() {
-        if (m_invoice == null) m_invoice = new MInvoice(getCtx(), getC_Invoice_ID());
+        if (m_invoice == null) m_invoice = new MInvoice(getCtx(), getInvoiceId());
         return m_invoice;
     } //	getInvoice
 
@@ -173,7 +173,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
         StringBuilder sb = new StringBuilder("MPaySelectionLine[");
         sb.append(getId())
                 .append(",C_Invoice_ID=")
-                .append(getC_Invoice_ID())
+                .append(getInvoiceId())
                 .append(",PayAmt=")
                 .append(getPayAmt())
                 .append(",DifferenceAmt=")

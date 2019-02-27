@@ -144,8 +144,8 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @param C_AcctSchema_ID Rules for accounting
      */
     public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
-        if (C_AcctSchema_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
+        if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
 
     /**
@@ -153,7 +153,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -164,7 +164,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -175,7 +175,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Marketing Campaign
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
@@ -219,7 +219,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -251,7 +251,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @param IsBalanced Balanced
      */
     public void setIsBalanced(boolean IsBalanced) {
-        set_Value(COLUMNNAME_IsBalanced, IsBalanced);
+        setValue(COLUMNNAME_IsBalanced, IsBalanced);
     }
 
     /**
@@ -274,7 +274,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      * @param IsMandatory Data entry is required in this column
      */
     public void setIsMandatory(boolean IsMandatory) {
-        set_Value(COLUMNNAME_IsMandatory, IsMandatory);
+        setValue(COLUMNNAME_IsMandatory, IsMandatory);
     }
 
     /**

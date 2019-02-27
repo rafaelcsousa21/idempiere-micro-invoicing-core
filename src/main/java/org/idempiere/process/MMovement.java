@@ -69,7 +69,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
     public MMovement(Properties ctx, int M_Movement_ID) {
         super(ctx, M_Movement_ID);
         if (M_Movement_ID == 0) {
-            //	setC_DocType_ID (0);
+            //	setDocumentTypeId (0);
             setDocAction(DOCACTION_Complete); // CO
             setDocStatus(DOCSTATUS_Drafted); // DR
             setIsApproved(false);
@@ -147,7 +147,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      * @return document info (untranslated)
      */
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 
@@ -158,10 +158,10 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getC_DocType_ID() == 0) {
+        if (getDocumentTypeId() == 0) {
             MDocType types[] = MDocType.getOfDocBaseType(getCtx(), MDocType.DOCBASETYPE_MaterialMovement);
             if (types.length > 0) // 	get first
-                setC_DocType_ID(types[0].getDocTypeId());
+                setDocumentTypeId(types[0].getDocTypeId());
             else {
                 log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @C_DocType_ID@"));
                 return false;
@@ -229,7 +229,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
 
         //	Std Period open?
         if (!MPeriod.isOpen(getCtx(), getMovementDate(), dt.getDocBaseType(), getOrgId())) {
@@ -402,7 +402,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                             // Update Storage
                             if (!MStorageOnHand.add(
                                     getCtx(),
-                                    locator.getM_Warehouse_ID(),
+                                    locator.getWarehouseId(),
                                     line.getM_Locator_ID(),
                                     line.getM_Product_ID(),
                                     ma.getMAttributeSetInstance_ID(),
@@ -424,7 +424,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                             MLocator locatorTo = new MLocator(getCtx(), line.getM_LocatorTo_ID());
                             if (!MStorageOnHand.add(
                                     getCtx(),
-                                    locatorTo.getM_Warehouse_ID(),
+                                    locatorTo.getWarehouseId(),
                                     line.getM_LocatorTo_ID(),
                                     line.getM_Product_ID(),
                                     M_AttributeSetInstanceTo_ID,
@@ -520,7 +520,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                             effDateMPolicy = getMovementDate();
                         if (!MStorageOnHand.add(
                                 getCtx(),
-                                locator.getM_Warehouse_ID(),
+                                locator.getWarehouseId(),
                                 line.getM_Locator_ID(),
                                 line.getM_Product_ID(),
                                 line.getMAttributeSetInstance_ID(),
@@ -539,7 +539,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                         MLocator locatorTo = new MLocator(getCtx(), line.getM_LocatorTo_ID());
                         if (!MStorageOnHand.add(
                                 getCtx(),
-                                locatorTo.getM_Warehouse_ID(),
+                                locatorTo.getWarehouseId(),
                                 line.getM_LocatorTo_ID(),
                                 line.getM_Product_ID(),
                                 line.getMAttributeSetInstanceTo_ID(),
@@ -621,13 +621,13 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setMovementDate(new Timestamp(System.currentTimeMillis()));
-            MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getC_DocType_ID(), getOrgId());
+            MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getDocumentTypeId(), getOrgId());
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getC_DocType_ID(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
             if (value != null) setDocumentNo(value);
         }
     }
@@ -742,7 +742,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
         } else {
             boolean accrual = false;
             try {
-                MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getC_DocType_ID(), getOrgId());
+                MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getDocumentTypeId(), getOrgId());
             } catch (PeriodClosedException e) {
                 accrual = true;
             }
@@ -815,7 +815,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
 
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         if (!MPeriod.isOpen(getCtx(), reversalDate, dt.getDocBaseType(), getOrgId())) {
             m_processMsg = "@PeriodClosed@";
             return null;
@@ -990,8 +990,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      *
      * @return C_Currency_ID
      */
-    public int getC_Currency_ID() {
-        //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
+    public int getCurrencyId() {
+        //	MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
         //	return pl.getCurrencyId();
         return 0;
     } //	getCurrencyId

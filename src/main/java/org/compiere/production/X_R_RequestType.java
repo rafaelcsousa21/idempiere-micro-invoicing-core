@@ -75,7 +75,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param AutoDueDateDays Automatic Due Date Days
      */
     public void setAutoDueDateDays(int AutoDueDateDays) {
-        set_Value(COLUMNNAME_AutoDueDateDays, Integer.valueOf(AutoDueDateDays));
+        setValue(COLUMNNAME_AutoDueDateDays, Integer.valueOf(AutoDueDateDays));
     }
 
     /**
@@ -94,7 +94,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      */
     public void setConfidentialType(String ConfidentialType) {
 
-        set_Value(COLUMNNAME_ConfidentialType, ConfidentialType);
+        setValue(COLUMNNAME_ConfidentialType, ConfidentialType);
     }
 
     /**
@@ -116,7 +116,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      *                         is regarded as overdue
      */
     public void setDueDateTolerance(int DueDateTolerance) {
-        set_Value(COLUMNNAME_DueDateTolerance, Integer.valueOf(DueDateTolerance));
+        setValue(COLUMNNAME_DueDateTolerance, Integer.valueOf(DueDateTolerance));
     }
 
     /**
@@ -125,7 +125,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param IsAutoChangeRequest Automatically create BOM (Engineering) Change Request
      */
     public void setIsAutoChangeRequest(boolean IsAutoChangeRequest) {
-        set_Value(COLUMNNAME_IsAutoChangeRequest, Boolean.valueOf(IsAutoChangeRequest));
+        setValue(COLUMNNAME_IsAutoChangeRequest, Boolean.valueOf(IsAutoChangeRequest));
     }
 
     /**
@@ -134,7 +134,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param IsConfidentialInfo Can enter confidential information
      */
     public void setIsConfidentialInfo(boolean IsConfidentialInfo) {
-        set_Value(COLUMNNAME_IsConfidentialInfo, Boolean.valueOf(IsConfidentialInfo));
+        setValue(COLUMNNAME_IsConfidentialInfo, Boolean.valueOf(IsConfidentialInfo));
     }
 
     /**
@@ -143,7 +143,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
     }
 
     /**
@@ -166,7 +166,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param IsEMailWhenDue Send EMail when Request becomes due
      */
     public void setIsEMailWhenDue(boolean IsEMailWhenDue) {
-        set_Value(COLUMNNAME_IsEMailWhenDue, Boolean.valueOf(IsEMailWhenDue));
+        setValue(COLUMNNAME_IsEMailWhenDue, Boolean.valueOf(IsEMailWhenDue));
     }
 
     /**
@@ -175,7 +175,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param IsEMailWhenOverdue Send EMail when Request becomes overdue
      */
     public void setIsEMailWhenOverdue(boolean IsEMailWhenOverdue) {
-        set_Value(COLUMNNAME_IsEMailWhenOverdue, Boolean.valueOf(IsEMailWhenOverdue));
+        setValue(COLUMNNAME_IsEMailWhenOverdue, Boolean.valueOf(IsEMailWhenOverdue));
     }
 
     /**
@@ -184,7 +184,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param IsIndexed Index the document for the internal search engine
      */
     public void setIsIndexed(boolean IsIndexed) {
-        set_Value(COLUMNNAME_IsIndexed, Boolean.valueOf(IsIndexed));
+        setValue(COLUMNNAME_IsIndexed, Boolean.valueOf(IsIndexed));
     }
 
     /**
@@ -193,7 +193,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param IsInvoiced Is this invoiced?
      */
     public void setIsInvoiced(boolean IsInvoiced) {
-        set_Value(COLUMNNAME_IsInvoiced, Boolean.valueOf(IsInvoiced));
+        setValue(COLUMNNAME_IsInvoiced, Boolean.valueOf(IsInvoiced));
     }
 
     /**
@@ -216,7 +216,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param IsSelfService This is a Self-Service entry or this entry can be changed via Self-Service
      */
     public void setIsSelfService(boolean IsSelfService) {
-        set_Value(COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
+        setValue(COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
     }
 
     /**
@@ -247,8 +247,8 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      * @param R_StatusCategory_ID Request Status Category
      */
     public void setR_StatusCategory_ID(int R_StatusCategory_ID) {
-        if (R_StatusCategory_ID < 1) set_Value(COLUMNNAME_R_StatusCategory_ID, null);
-        else set_Value(COLUMNNAME_R_StatusCategory_ID, Integer.valueOf(R_StatusCategory_ID));
+        if (R_StatusCategory_ID < 1) setValue(COLUMNNAME_R_StatusCategory_ID, null);
+        else setValue(COLUMNNAME_R_StatusCategory_ID, Integer.valueOf(R_StatusCategory_ID));
     }
 
     @Override

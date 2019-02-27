@@ -93,7 +93,7 @@ public class MBankAccount extends X_C_BankAccount {
      * @return bank parent
      */
     public MBank getBank() {
-        return MBank.get(getCtx(), getC_Bank_ID());
+        return MBank.get(getCtx(), getBankId());
     } //	getBank
 
     /**

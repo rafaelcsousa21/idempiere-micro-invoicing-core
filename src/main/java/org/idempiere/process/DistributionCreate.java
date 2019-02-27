@@ -153,10 +153,10 @@ public class DistributionCreate extends SvrProcess {
     	//
     	m_singleOrder = new MOrder (getCtx(), 0, null);
     	m_singleOrder.setIsSOTrx(true);
-    	m_singleOrder.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_Standard);
+    	m_singleOrder.setTargetDocumentTypeId(MOrder.DocSubTypeSO_Standard);
     	m_singleOrder.setBPartner(bp);
     	if (p_Bill_Location_ID != 0)
-    		m_singleOrder.setC_BPartner_Location_ID(p_Bill_Location_ID);
+    		m_singleOrder.setBusinessPartnerLocationId(p_Bill_Location_ID);
     	if (!m_singleOrder.save())
     		throw new IllegalStateException("Single Order not created");
     }
@@ -191,9 +191,9 @@ public class DistributionCreate extends SvrProcess {
   /*
   private boolean createOrder (MDistributionListLine dll)
   {
-  	MBPartner bp = new MBPartner (getCtx(), dll.getC_BPartner_ID(), null);
+  	MBPartner bp = new MBPartner (getCtx(), dll.getBusinessPartnerId(), null);
   	if (bp.getId() == 0)
-  		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + dll.getC_BPartner_ID());
+  		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + dll.getBusinessPartnerId());
 
   	//	Create Order
   	MOrder order = m_singleOrder;
@@ -201,10 +201,10 @@ public class DistributionCreate extends SvrProcess {
   	{
   		order = new MOrder (getCtx(), 0, null);
   		order.setIsSOTrx(true);
-  		order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_Standard);
+  		order.setTargetDocumentTypeId(MOrder.DocSubTypeSO_Standard);
   		order.setBPartner(bp);
-  		if (dll.getC_BPartner_Location_ID() != 0)
-  			order.setC_BPartner_Location_ID(dll.getC_BPartner_Location_ID());
+  		if (dll.getBusinessPartnerLocationId() != 0)
+  			order.setBusinessPartnerLocationId(dll.getBusinessPartnerLocationId());
   		if (!order.save())
   		{
   			log.log(Level.SEVERE, "Order not saved");
@@ -229,9 +229,9 @@ public class DistributionCreate extends SvrProcess {
 
   	//	Create Order Line
   	MOrderLine line = new MOrderLine(order);
-  	line.setC_BPartner_ID(dll.getC_BPartner_ID());
-  	if (dll.getC_BPartner_Location_ID() != 0)
-  		line.setC_BPartner_Location_ID(dll.getC_BPartner_Location_ID());
+  	line.setBusinessPartnerId(dll.getBusinessPartnerId());
+  	if (dll.getBusinessPartnerLocationId() != 0)
+  		line.setBusinessPartnerLocationId(dll.getBusinessPartnerLocationId());
   	//
   	line.setM_Product_ID(p_M_Product_ID, true);
   	line.setQty(qty);

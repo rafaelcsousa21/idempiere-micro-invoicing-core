@@ -91,8 +91,8 @@ public class X_C_Period extends BasePOName implements I_C_Period {
      * @param C_Year_ID Calendar Year
      */
     public void setC_Year_ID(int C_Year_ID) {
-        if (C_Year_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Year_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Year_ID, C_Year_ID);
+        if (C_Year_ID < 1) setValueNoCheck(COLUMNNAME_C_Year_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Year_ID, C_Year_ID);
     }
 
     /**
@@ -110,7 +110,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
      * @param EndDate Last effective date (inclusive)
      */
     public void setEndDate(Timestamp EndDate) {
-        set_Value(COLUMNNAME_EndDate, EndDate);
+        setValue(COLUMNNAME_EndDate, EndDate);
     }
 
     /**
@@ -119,7 +119,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
      * @param PeriodNo Unique Period Number
      */
     public void setPeriodNo(int PeriodNo) {
-        set_Value(COLUMNNAME_PeriodNo, Integer.valueOf(PeriodNo));
+        setValue(COLUMNNAME_PeriodNo, Integer.valueOf(PeriodNo));
     }
 
     /**
@@ -138,7 +138,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
      */
     public void setPeriodType(String PeriodType) {
 
-        set_ValueNoCheck(COLUMNNAME_PeriodType, PeriodType);
+        setValueNoCheck(COLUMNNAME_PeriodType, PeriodType);
     }
 
     /**
@@ -156,7 +156,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
      * @param StartDate First effective day (inclusive)
      */
     public void setStartDate(Timestamp StartDate) {
-        set_Value(COLUMNNAME_StartDate, StartDate);
+        setValue(COLUMNNAME_StartDate, StartDate);
     }
 
     @Override

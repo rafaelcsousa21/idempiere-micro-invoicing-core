@@ -248,13 +248,13 @@ public class InvoiceNGL extends SvrProcess {
         }
         //
         MJournal journal = new MJournal(getCtx(), 0);
-        journal.setC_DocType_ID(p_C_DocTypeReval_ID);
+        journal.setDocumentTypeId(p_C_DocTypeReval_ID);
         journal.setPostingType(MJournal.POSTINGTYPE_Actual);
         journal.setDateDoc(p_DateReval);
         journal.setDateAcct(p_DateReval); // sets the period too
-        journal.setC_Currency_ID(as.getCurrencyId());
+        journal.setCurrencyId(as.getCurrencyId());
         journal.setC_AcctSchema_ID(as.getAccountingSchemaId());
-        journal.setC_ConversionType_ID(p_C_ConversionTypeReval_ID);
+        journal.setConversionTypeId(p_C_ConversionTypeReval_ID);
         journal.setGL_Category_ID(cat.getGL_Category_ID());
         journal.setDescription(getName()); // updated below
         if (!journal.save()) return " - Could not create Journal";
@@ -266,8 +266,8 @@ public class InvoiceNGL extends SvrProcess {
         for (int i = 0; i < list.size(); i++) {
             X_T_InvoiceGL gl = list.get(i);
             if (gl.getAmtRevalDrDiff().signum() == 0 && gl.getAmtRevalCrDiff().signum() == 0) continue;
-            MInvoice invoice = new MInvoice(getCtx(), gl.getC_Invoice_ID());
-            if (invoice.getC_Currency_ID() == as.getCurrencyId()) continue;
+            MInvoice invoice = new MInvoice(getCtx(), gl.getInvoiceId());
+            if (invoice.getCurrencyId() == as.getCurrencyId()) continue;
             //
             if (AD_Org_ID == 0) // 	invoice org id
                 AD_Org_ID = gl.getOrgId();
@@ -378,16 +378,16 @@ public class InvoiceNGL extends SvrProcess {
                             base.getAccount_ID(),
                             base.getC_SubAcct_ID(),
                             base.getM_Product_ID(),
-                            base.getC_BPartner_ID(),
-                            base.getAD_OrgTrx_ID(),
+                            base.getBusinessPartnerId(),
+                            base.getTransactionOrganizationId(),
                             base.getC_LocFrom_ID(),
                             base.getC_LocTo_ID(),
                             base.getC_SalesRegion_ID(),
-                            base.getC_Project_ID(),
-                            base.getC_Campaign_ID(),
-                            base.getC_Activity_ID(),
-                            base.getUser1_ID(),
-                            base.getUser2_ID(),
+                            base.getProjectId(),
+                            base.getCampaignId(),
+                            base.getBusinessActivityId(),
+                            base.getUser1Id(),
+                            base.getUser2Id(),
                             base.getUserElement1_ID(),
                             base.getUserElement2_ID(),
                             null);
@@ -411,16 +411,16 @@ public class InvoiceNGL extends SvrProcess {
                             base.getAccount_ID(),
                             base.getC_SubAcct_ID(),
                             base.getM_Product_ID(),
-                            base.getC_BPartner_ID(),
-                            base.getAD_OrgTrx_ID(),
+                            base.getBusinessPartnerId(),
+                            base.getTransactionOrganizationId(),
                             base.getC_LocFrom_ID(),
                             base.getC_LocTo_ID(),
                             base.getC_SalesRegion_ID(),
-                            base.getC_Project_ID(),
-                            base.getC_Campaign_ID(),
-                            base.getC_Activity_ID(),
-                            base.getUser1_ID(),
-                            base.getUser2_ID(),
+                            base.getProjectId(),
+                            base.getCampaignId(),
+                            base.getBusinessActivityId(),
+                            base.getUser1Id(),
+                            base.getUser2Id(),
                             base.getUserElement1_ID(),
                             base.getUserElement2_ID(),
                             null);

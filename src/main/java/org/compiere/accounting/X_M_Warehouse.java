@@ -58,8 +58,8 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse {
      * @param C_Location_ID Location or Address
      */
     public void setC_Location_ID(int C_Location_ID) {
-        if (C_Location_ID < 1) set_Value(COLUMNNAME_C_Location_ID, null);
-        else set_Value(COLUMNNAME_C_Location_ID, Integer.valueOf(C_Location_ID));
+        if (C_Location_ID < 1) setValue(COLUMNNAME_C_Location_ID, null);
+        else setValue(COLUMNNAME_C_Location_ID, Integer.valueOf(C_Location_ID));
     }
 
     /**
@@ -95,7 +95,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse {
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -127,7 +127,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse {
      * @param Separator Element Separator
      */
     public void setSeparator(String Separator) {
-        set_Value(COLUMNNAME_Separator, Separator);
+        setValue(COLUMNNAME_Separator, Separator);
     }
 
     @Override

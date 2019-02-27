@@ -51,7 +51,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         super(ctx, C_PaySelectionCheck_ID);
         if (C_PaySelectionCheck_ID == 0) {
             //	setC_PaySelection_ID (0);
-            //	setC_BPartner_ID (0);
+            //	setBusinessPartnerId (0);
             //	setPaymentRule (null);
             setPayAmt(Env.ZERO);
             setDiscountAmt(Env.ZERO);
@@ -83,8 +83,8 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         this(line.getCtx(), 0);
         setClientOrg(line);
         setC_PaySelection_ID(line.getC_PaySelection_ID());
-        int C_BPartner_ID = line.getInvoice().getC_BPartner_ID();
-        setC_BPartner_ID(C_BPartner_ID);
+        int C_BPartner_ID = line.getInvoice().getBusinessPartnerId();
+        setBusinessPartnerId(C_BPartner_ID);
         //
         if (X_C_Order.PAYMENTRULE_DirectDebit.equals(PaymentRule)) {
             MBPBankAccount[] bas = MBPBankAccount.getOfBPartner(line.getCtx(), C_BPartner_ID);
@@ -173,9 +173,9 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         boolean localTrx = false;
         String trxName = null;
         try {
-            MPayment payment = new MPayment(check.getCtx(), check.getC_Payment_ID());
+            MPayment payment = new MPayment(check.getCtx(), check.getPaymentId());
             //	Existing Payment
-            if (check.getC_Payment_ID() != 0) {
+            if (check.getPaymentId() != 0) {
                 //	Update check number
                 if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_Check)) {
                     payment.setCheckNo(check.getDocumentNo());
@@ -199,12 +199,12 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
                     return;
                 }
                 payment.setTrxType(X_C_Payment.TRXTYPE_CreditPayment);
-                payment.setAmount(check.getParent().getC_Currency_ID(), check.getPayAmt());
+                payment.setAmount(check.getParent().getCurrencyId(), check.getPayAmt());
                 payment.setDiscountAmt(check.getDiscountAmt());
                 payment.setWriteOffAmt(check.getWriteOffAmt());
                 payment.setDateTrx(check.getParent().getPayDate());
                 payment.setDateAcct(payment.getDateTrx()); // globalqss [ 2030685 ]
-                payment.setC_BPartner_ID(check.getC_BPartner_ID());
+                payment.setBusinessPartnerId(check.getBusinessPartnerId());
                 //	Link to Batch
                 if (batch != null) {
                     if (batch.getC_PaymentBatch_ID() == 0) batch.saveEx(); // 	new
@@ -218,7 +218,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
                     MPaySelectionLine psl = psls[0];
                     if (s_log.isLoggable(Level.FINE)) s_log.fine("Map to Invoice " + psl);
                     //
-                    payment.setC_Invoice_ID(psl.getC_Invoice_ID());
+                    payment.setInvoiceId(psl.getInvoiceId());
                     payment.setDiscountAmt(psl.getDiscountAmt());
                     payment.setWriteOffAmt(psl.getWriteOffAmt());
                     BigDecimal overUnder =
@@ -237,7 +237,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
                 int C_Payment_ID = payment.getId();
                 if (C_Payment_ID < 1) s_log.log(Level.SEVERE, "Payment not created=" + check);
                 else {
-                    check.setC_Payment_ID(C_Payment_ID);
+                    check.setPaymentId(C_Payment_ID);
                     check.saveEx(); // 	Payment process needs it
                     // added AdempiereException by zuhri
                     if (!payment.processIt(DocAction.Companion.getACTION_Complete()))
@@ -291,7 +291,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      * @param line line
      */
     public void addLine(MPaySelectionLine line) {
-        if (getC_BPartner_ID() != line.getInvoice().getC_BPartner_ID())
+        if (getBusinessPartnerId() != line.getInvoice().getBusinessPartnerId())
             throw new IllegalArgumentException("Line for different BPartner");
         //
         if (isReceipt() == line.isSOTrx()) {

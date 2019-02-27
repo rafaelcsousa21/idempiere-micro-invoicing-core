@@ -466,7 +466,7 @@ public class ImportPayment extends SvrProcess {
             while (rs.next()) {
                 X_I_Payment imp = new X_I_Payment(m_ctx, rs);
                 //	Get the bank account
-                if (account == null || account.getC_BankAccount_ID() != imp.getC_BankAccount_ID()) {
+                if (account == null || account.getBankAccountId() != imp.getC_BankAccount_ID()) {
                     account = MBankAccount.get(m_ctx, imp.getC_BankAccount_ID());
                     if (log.isLoggable(Level.INFO)) log.info("New Account=" + account.getAccountNo());
                 }
@@ -499,12 +499,12 @@ public class ImportPayment extends SvrProcess {
                 payment.setDateTrx(imp.getDateTrx());
                 //	payment.setDescription(imp.getDescription());
                 //
-                payment.setC_BPartner_ID(imp.getC_BPartner_ID());
-                payment.setC_Invoice_ID(imp.getC_Invoice_ID());
-                payment.setC_DocType_ID(imp.getC_DocType_ID());
-                payment.setC_Currency_ID(imp.getC_Currency_ID());
-                //	payment.setC_ConversionType_ID(imp.getC_ConversionType_ID());
-                payment.setC_Charge_ID(imp.getC_Charge_ID());
+                payment.setBusinessPartnerId(imp.getBusinessPartnerId());
+                payment.setInvoiceId(imp.getInvoiceId());
+                payment.setDocumentTypeId(imp.getDocumentTypeId());
+                payment.setCurrencyId(imp.getCurrencyId());
+                //	payment.setConversionTypeId(imp.getConversionTypeId());
+                payment.setChargeId(imp.getChargeId());
                 payment.setChargeAmt(imp.getChargeAmt());
                 payment.setTaxAmt(imp.getTaxAmt());
 
@@ -533,7 +533,7 @@ public class ImportPayment extends SvrProcess {
 
                 //	Save payment
                 if (payment.save()) {
-                    imp.setC_Payment_ID(payment.getC_Payment_ID());
+                    imp.setPaymentId(payment.getPaymentId());
                     imp.setI_IsImported(true);
                     imp.setProcessed(true);
                     imp.saveEx();

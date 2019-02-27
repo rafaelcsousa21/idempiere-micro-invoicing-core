@@ -44,7 +44,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     public MProjectIssue(Properties ctx, int C_ProjectIssue_ID) {
         super(ctx, C_ProjectIssue_ID);
         if (C_ProjectIssue_ID == 0) {
-            //	setC_Project_ID (0);
+            //	setProjectId (0);
             //	setLine (0);
             //	setM_Locator_ID (0);
             //	setM_Product_ID (0);
@@ -74,7 +74,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     public MProjectIssue(MProject project) {
         this(project.getCtx(), 0);
         setClientOrg(project.getClientId(), project.getOrgId());
-        setC_Project_ID(project.getC_Project_ID()); // 	Parent
+        setProjectId(project.getProjectId()); // 	Parent
         setLine(getNextLine());
         m_parent = project;
         //
@@ -95,7 +95,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
     private int getNextLine() {
         return getSQLValue(
                 "SELECT COALESCE(MAX(Line),0)+10 FROM C_ProjectIssue WHERE C_Project_ID=?",
-                getC_Project_ID());
+                getProjectId());
     } //	getLineFromProject
 
     /**
@@ -165,8 +165,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                 Timestamp minGuaranteeDate = getMovementDate();
                 int M_Warehouse_ID =
                         getM_Locator_ID() > 0
-                                ? getM_Locator().getM_Warehouse_ID()
-                                : getC_Project().getM_Warehouse_ID();
+                                ? getM_Locator().getWarehouseId()
+                                : getC_Project().getWarehouseId();
                 MStorageOnHand[] storages =
                         MStorageOnHand.getWarehouse(
                                 getCtx(),
@@ -195,7 +195,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                     ok =
                             MStorageOnHand.add(
                                     getCtx(),
-                                    loc.getM_Warehouse_ID(),
+                                    loc.getWarehouseId(),
                                     getM_Locator_ID(),
                                     getM_Product_ID(),
                                     getMAttributeSetInstance_ID(),
@@ -207,7 +207,7 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                 ok =
                         MStorageOnHand.add(
                                 getCtx(),
-                                loc.getM_Warehouse_ID(),
+                                loc.getWarehouseId(),
                                 getM_Locator_ID(),
                                 getM_Product_ID(),
                                 getMAttributeSetInstance_ID(),

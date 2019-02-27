@@ -66,8 +66,8 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param Account_ID Account used
      */
     public void setAccount_ID(int Account_ID) {
-        if (Account_ID < 1) set_Value(COLUMNNAME_Account_ID, null);
-        else set_Value(COLUMNNAME_Account_ID, Integer.valueOf(Account_ID));
+        if (Account_ID < 1) setValue(COLUMNNAME_Account_ID, null);
+        else setValue(COLUMNNAME_Account_ID, Integer.valueOf(Account_ID));
     }
 
     /**
@@ -75,7 +75,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @return Performing or initiating organization
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
@@ -86,9 +86,9 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @param AD_OrgTrx_ID Performing or initiating organization
      */
-    public void setAD_OrgTrx_ID(int AD_OrgTrx_ID) {
-        if (AD_OrgTrx_ID < 1) set_Value(COLUMNNAME_AD_OrgTrx_ID, null);
-        else set_Value(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+    public void setTransactionOrganizationId(int AD_OrgTrx_ID) {
+        if (AD_OrgTrx_ID < 1) setValue(COLUMNNAME_AD_OrgTrx_ID, null);
+        else setValue(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
     /**
@@ -111,7 +111,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyAcct Match any value of the Account segment
      */
     public void setAnyAcct(boolean AnyAcct) {
-        set_Value(COLUMNNAME_AnyAcct, Boolean.valueOf(AnyAcct));
+        setValue(COLUMNNAME_AnyAcct, Boolean.valueOf(AnyAcct));
     }
 
     /**
@@ -134,7 +134,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyActivity Match any value of the Activity segment
      */
     public void setAnyActivity(boolean AnyActivity) {
-        set_Value(COLUMNNAME_AnyActivity, Boolean.valueOf(AnyActivity));
+        setValue(COLUMNNAME_AnyActivity, Boolean.valueOf(AnyActivity));
     }
 
     /**
@@ -157,7 +157,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyBPartner Match any value of the Business Partner segment
      */
     public void setAnyBPartner(boolean AnyBPartner) {
-        set_Value(COLUMNNAME_AnyBPartner, Boolean.valueOf(AnyBPartner));
+        setValue(COLUMNNAME_AnyBPartner, Boolean.valueOf(AnyBPartner));
     }
 
     /**
@@ -180,7 +180,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyCampaign Match any value of the Campaign segment
      */
     public void setAnyCampaign(boolean AnyCampaign) {
-        set_Value(COLUMNNAME_AnyCampaign, Boolean.valueOf(AnyCampaign));
+        setValue(COLUMNNAME_AnyCampaign, Boolean.valueOf(AnyCampaign));
     }
 
     /**
@@ -203,7 +203,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyLocFrom Match any value of the Location From segment
      */
     public void setAnyLocFrom(boolean AnyLocFrom) {
-        set_Value(COLUMNNAME_AnyLocFrom, Boolean.valueOf(AnyLocFrom));
+        setValue(COLUMNNAME_AnyLocFrom, Boolean.valueOf(AnyLocFrom));
     }
 
     /**
@@ -226,7 +226,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyLocTo Match any value of the Location To segment
      */
     public void setAnyLocTo(boolean AnyLocTo) {
-        set_Value(COLUMNNAME_AnyLocTo, Boolean.valueOf(AnyLocTo));
+        setValue(COLUMNNAME_AnyLocTo, Boolean.valueOf(AnyLocTo));
     }
 
     /**
@@ -249,7 +249,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyOrg Match any value of the Organization segment
      */
     public void setAnyOrg(boolean AnyOrg) {
-        set_Value(COLUMNNAME_AnyOrg, Boolean.valueOf(AnyOrg));
+        setValue(COLUMNNAME_AnyOrg, Boolean.valueOf(AnyOrg));
     }
 
     /**
@@ -272,7 +272,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyOrgTrx Match any value of the Transaction Organization segment
      */
     public void setAnyOrgTrx(boolean AnyOrgTrx) {
-        set_Value(COLUMNNAME_AnyOrgTrx, Boolean.valueOf(AnyOrgTrx));
+        setValue(COLUMNNAME_AnyOrgTrx, Boolean.valueOf(AnyOrgTrx));
     }
 
     /**
@@ -295,7 +295,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyProduct Match any value of the Product segment
      */
     public void setAnyProduct(boolean AnyProduct) {
-        set_Value(COLUMNNAME_AnyProduct, Boolean.valueOf(AnyProduct));
+        setValue(COLUMNNAME_AnyProduct, Boolean.valueOf(AnyProduct));
     }
 
     /**
@@ -318,7 +318,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyProject Match any value of the Project segment
      */
     public void setAnyProject(boolean AnyProject) {
-        set_Value(COLUMNNAME_AnyProject, Boolean.valueOf(AnyProject));
+        setValue(COLUMNNAME_AnyProject, Boolean.valueOf(AnyProject));
     }
 
     /**
@@ -341,7 +341,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnySalesRegion Match any value of the Sales Region segment
      */
     public void setAnySalesRegion(boolean AnySalesRegion) {
-        set_Value(COLUMNNAME_AnySalesRegion, Boolean.valueOf(AnySalesRegion));
+        setValue(COLUMNNAME_AnySalesRegion, Boolean.valueOf(AnySalesRegion));
     }
 
     /**
@@ -364,7 +364,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyUser1 Match any value of the User 1 segment
      */
     public void setAnyUser1(boolean AnyUser1) {
-        set_Value(COLUMNNAME_AnyUser1, Boolean.valueOf(AnyUser1));
+        setValue(COLUMNNAME_AnyUser1, Boolean.valueOf(AnyUser1));
     }
 
     /**
@@ -387,7 +387,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param AnyUser2 Match any value of the User 2 segment
      */
     public void setAnyUser2(boolean AnyUser2) {
-        set_Value(COLUMNNAME_AnyUser2, Boolean.valueOf(AnyUser2));
+        setValue(COLUMNNAME_AnyUser2, Boolean.valueOf(AnyUser2));
     }
 
     /**
@@ -406,7 +406,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -417,9 +417,9 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @param C_Activity_ID Business Activity
      */
-    public void setC_Activity_ID(int C_Activity_ID) {
-        if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-        else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+    public void setBusinessActivityId(int C_Activity_ID) {
+        if (C_Activity_ID < 1) setValue(COLUMNNAME_C_Activity_ID, null);
+        else setValue(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
     }
 
     /**
@@ -427,7 +427,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -438,9 +438,9 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValue(COLUMNNAME_C_BPartner_ID, null);
+        else setValue(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -448,7 +448,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @return Marketing Campaign
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
@@ -459,9 +459,9 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @param C_Campaign_ID Marketing Campaign
      */
-    public void setC_Campaign_ID(int C_Campaign_ID) {
-        if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-        else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
+    public void setCampaignId(int C_Campaign_ID) {
+        if (C_Campaign_ID < 1) setValue(COLUMNNAME_C_Campaign_ID, null);
+        else setValue(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
     }
 
     /**
@@ -469,7 +469,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -492,8 +492,8 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param C_LocFrom_ID Location that inventory was moved from
      */
     public void setC_LocFrom_ID(int C_LocFrom_ID) {
-        if (C_LocFrom_ID < 1) set_Value(COLUMNNAME_C_LocFrom_ID, null);
-        else set_Value(COLUMNNAME_C_LocFrom_ID, Integer.valueOf(C_LocFrom_ID));
+        if (C_LocFrom_ID < 1) setValue(COLUMNNAME_C_LocFrom_ID, null);
+        else setValue(COLUMNNAME_C_LocFrom_ID, Integer.valueOf(C_LocFrom_ID));
     }
 
     /**
@@ -513,8 +513,8 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param C_LocTo_ID Location that inventory was moved to
      */
     public void setC_LocTo_ID(int C_LocTo_ID) {
-        if (C_LocTo_ID < 1) set_Value(COLUMNNAME_C_LocTo_ID, null);
-        else set_Value(COLUMNNAME_C_LocTo_ID, Integer.valueOf(C_LocTo_ID));
+        if (C_LocTo_ID < 1) setValue(COLUMNNAME_C_LocTo_ID, null);
+        else setValue(COLUMNNAME_C_LocTo_ID, Integer.valueOf(C_LocTo_ID));
     }
 
     /**
@@ -522,7 +522,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -533,9 +533,9 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @param C_Project_ID Financial Project
      */
-    public void setC_Project_ID(int C_Project_ID) {
-        if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-        else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+    public void setProjectId(int C_Project_ID) {
+        if (C_Project_ID < 1) setValue(COLUMNNAME_C_Project_ID, null);
+        else setValue(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
     }
 
     /**
@@ -555,8 +555,8 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param C_SalesRegion_ID Sales coverage region
      */
     public void setC_SalesRegion_ID(int C_SalesRegion_ID) {
-        if (C_SalesRegion_ID < 1) set_Value(COLUMNNAME_C_SalesRegion_ID, null);
-        else set_Value(COLUMNNAME_C_SalesRegion_ID, Integer.valueOf(C_SalesRegion_ID));
+        if (C_SalesRegion_ID < 1) setValue(COLUMNNAME_C_SalesRegion_ID, null);
+        else setValue(COLUMNNAME_C_SalesRegion_ID, Integer.valueOf(C_SalesRegion_ID));
     }
 
     /**
@@ -591,7 +591,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param IsValid Element is valid
      */
     public void setIsValid(boolean IsValid) {
-        set_Value(COLUMNNAME_IsValid, Boolean.valueOf(IsValid));
+        setValue(COLUMNNAME_IsValid, Boolean.valueOf(IsValid));
     }
 
     /**
@@ -625,8 +625,8 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -646,8 +646,8 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param Org_ID Organizational entity within client
      */
     public void setOrg_ID(int Org_ID) {
-        if (Org_ID < 1) set_Value(COLUMNNAME_Org_ID, null);
-        else set_Value(COLUMNNAME_Org_ID, Integer.valueOf(Org_ID));
+        if (Org_ID < 1) setValue(COLUMNNAME_Org_ID, null);
+        else setValue(COLUMNNAME_Org_ID, Integer.valueOf(Org_ID));
     }
 
     /**
@@ -667,7 +667,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      * @param PercentTotal Sum of the Percent details
      */
     public void setPercentTotal(BigDecimal PercentTotal) {
-        set_Value(COLUMNNAME_PercentTotal, PercentTotal);
+        setValue(COLUMNNAME_PercentTotal, PercentTotal);
     }
 
     /**
@@ -684,7 +684,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @return User defined list element #1
      */
-    public int getUser1_ID() {
+    public int getUser1Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
@@ -695,9 +695,9 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @param User1_ID User defined list element #1
      */
-    public void setUser1_ID(int User1_ID) {
-        if (User1_ID < 1) set_Value(COLUMNNAME_User1_ID, null);
-        else set_Value(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
+    public void setUser1Id(int User1_ID) {
+        if (User1_ID < 1) setValue(COLUMNNAME_User1_ID, null);
+        else setValue(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
     }
 
     /**
@@ -705,7 +705,7 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @return User defined list element #2
      */
-    public int getUser2_ID() {
+    public int getUser2Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
@@ -716,9 +716,9 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
      *
      * @param User2_ID User defined list element #2
      */
-    public void setUser2_ID(int User2_ID) {
-        if (User2_ID < 1) set_Value(COLUMNNAME_User2_ID, null);
-        else set_Value(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
+    public void setUser2Id(int User2_ID) {
+        if (User2_ID < 1) setValue(COLUMNNAME_User2_ID, null);
+        else setValue(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
     }
 
     @Override

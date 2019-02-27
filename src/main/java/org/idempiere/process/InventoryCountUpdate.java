@@ -94,7 +94,7 @@ public class InventoryCountUpdate extends SvrProcess {
                         .append(" AND s.M_AttributeSetInstance_ID=l.M_AttributeSetInstance_ID),")
                         .append(" Updated=SysDate,")
                         .append(" UpdatedBy=")
-                        .append(getAD_User_ID())
+                        .append(getUserId())
                         //
                         .append(" WHERE M_Inventory_ID=")
                         .append(p_M_Inventory_ID)

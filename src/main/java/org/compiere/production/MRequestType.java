@@ -73,6 +73,7 @@ public class MRequestType extends X_R_RequestType {
             setIsInvoiced(false);
         }
     } //	MRequestType
+
     /**
      * Load Constructor
      *

@@ -141,10 +141,10 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
                     result =
                             result.divide(
                                     total,
-                                    orderLine.getParent().getC_Currency().getCostingPrecision(),
+                                    orderLine.getParent().getCurrency().getCostingPrecision(),
                                     BigDecimal.ROUND_HALF_UP);
                     allocation.setAmt(
-                            result.doubleValue(), orderLine.getParent().getC_Currency().getCostingPrecision());
+                            result.doubleValue(), orderLine.getParent().getCurrency().getCostingPrecision());
                 }
                 allocation.saveEx();
             }

@@ -37,7 +37,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
     public X_C_BP_BankAccount(Properties ctx, int C_BP_BankAccount_ID) {
         super(ctx, C_BP_BankAccount_ID);
         /**
-         * if (C_BP_BankAccount_ID == 0) { setA_Name (null); setC_BPartner_ID (0);
+         * if (C_BP_BankAccount_ID == 0) { setA_Name (null); setBusinessPartnerId (0);
          * setC_BP_BankAccount_ID (0); setIsACH (false); }
          */
     }
@@ -78,7 +78,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param A_City City or the Credit Card or Account Holder
      */
     public void setA_City(String A_City) {
-        set_Value(COLUMNNAME_A_City, A_City);
+        setValue(COLUMNNAME_A_City, A_City);
     }
 
     /**
@@ -87,7 +87,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param A_Country Country
      */
     public void setA_Country(String A_Country) {
-        set_Value(COLUMNNAME_A_Country, A_Country);
+        setValue(COLUMNNAME_A_Country, A_Country);
     }
 
     /**
@@ -96,7 +96,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param A_EMail Email Address
      */
     public void setA_EMail(String A_EMail) {
-        set_Value(COLUMNNAME_A_EMail, A_EMail);
+        setValue(COLUMNNAME_A_EMail, A_EMail);
     }
 
     /**
@@ -114,7 +114,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param A_Name Name on Credit Card or Account holder
      */
     public void setA_Name(String A_Name) {
-        set_Value(COLUMNNAME_A_Name, A_Name);
+        setValue(COLUMNNAME_A_Name, A_Name);
     }
 
     /**
@@ -123,7 +123,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param A_State State of the Credit Card or Account holder
      */
     public void setA_State(String A_State) {
-        set_Value(COLUMNNAME_A_State, A_State);
+        setValue(COLUMNNAME_A_State, A_State);
     }
 
     /**
@@ -132,7 +132,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param A_Street Street address of the Credit Card or Account holder
      */
     public void setA_Street(String A_Street) {
-        set_Value(COLUMNNAME_A_Street, A_Street);
+        setValue(COLUMNNAME_A_Street, A_Street);
     }
 
     /**
@@ -141,7 +141,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param A_Zip Zip Code of the Credit Card or Account Holder
      */
     public void setA_Zip(String A_Zip) {
-        set_Value(COLUMNNAME_A_Zip, A_Zip);
+        setValue(COLUMNNAME_A_Zip, A_Zip);
     }
 
     /**
@@ -160,7 +160,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      */
     public void setBPBankAcctUse(String BPBankAcctUse) {
 
-        set_Value(COLUMNNAME_BPBankAcctUse, BPBankAcctUse);
+        setValue(COLUMNNAME_BPBankAcctUse, BPBankAcctUse);
     }
 
     /**
@@ -179,9 +179,9 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BPartner_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValueNoCheck(COLUMNNAME_C_BPartner_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -210,7 +210,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param CreditCardNumber Credit Card Number
      */
     public void setCreditCardNumber(String CreditCardNumber) {
-        set_Value(COLUMNNAME_CreditCardNumber, CreditCardNumber);
+        setValue(COLUMNNAME_CreditCardNumber, CreditCardNumber);
     }
 
     /**
@@ -228,7 +228,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param CreditCardVV Credit Card Verification code on credit card
      */
     public void setCreditCardVV(String CreditCardVV) {
-        set_Value(COLUMNNAME_CreditCardVV, CreditCardVV);
+        setValue(COLUMNNAME_CreditCardVV, CreditCardVV);
     }
 
     /**
@@ -246,7 +246,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param IBAN International Bank Account Number
      */
     public void setIBAN(String IBAN) {
-        set_Value(COLUMNNAME_IBAN, IBAN);
+        setValue(COLUMNNAME_IBAN, IBAN);
     }
 
     /**
@@ -255,7 +255,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param IsACH Automatic Clearing House
      */
     public void setIsACH(boolean IsACH) {
-        set_Value(COLUMNNAME_IsACH, Boolean.valueOf(IsACH));
+        setValue(COLUMNNAME_IsACH, Boolean.valueOf(IsACH));
     }
 
     /**
@@ -287,7 +287,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      * @param RoutingNo Bank Routing Number
      */
     public void setRoutingNo(String RoutingNo) {
-        set_Value(COLUMNNAME_RoutingNo, RoutingNo);
+        setValue(COLUMNNAME_RoutingNo, RoutingNo);
     }
 
     @Override

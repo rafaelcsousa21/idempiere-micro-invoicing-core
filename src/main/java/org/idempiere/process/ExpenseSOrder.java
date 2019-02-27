@@ -125,14 +125,14 @@ public class ExpenseSOrder extends SvrProcess {
                 if (!tel.isInvoiced()) continue;
 
                 //	New BPartner - New Order
-                if (oldBPartner == null || oldBPartner.getC_BPartner_ID() != tel.getC_BPartner_ID()) {
+                if (oldBPartner == null || oldBPartner.getBusinessPartnerId() != tel.getBusinessPartnerId()) {
                     completeOrder();
-                    oldBPartner = new MBPartner(getCtx(), tel.getC_BPartner_ID());
+                    oldBPartner = new MBPartner(getCtx(), tel.getBusinessPartnerId());
                 }
                 //	New Project - New Order
-                if (old_Project_ID != tel.getC_Project_ID()) {
+                if (old_Project_ID != tel.getProjectId()) {
                     completeOrder();
-                    old_Project_ID = tel.getC_Project_ID();
+                    old_Project_ID = tel.getProjectId();
                 }
                 if (te == null || te.getS_TimeExpense_ID() != tel.getS_TimeExpense_ID())
                     te = new MTimeExpense(getCtx(), tel.getS_TimeExpense_ID());
@@ -160,13 +160,13 @@ public class ExpenseSOrder extends SvrProcess {
     private void processLine(MTimeExpense te, MTimeExpenseLine tel, MBPartner bp) {
         if (m_order == null) {
             if (log.isLoggable(Level.INFO))
-                log.info("New Order for " + bp + ", Project=" + tel.getC_Project_ID());
+                log.info("New Order for " + bp + ", Project=" + tel.getProjectId());
             m_order = new MOrder(getCtx(), 0);
             m_order.setOrgId(tel.getOrgId());
-            m_order.setC_DocTypeTarget_ID(MOrder.DocSubTypeSO_OnCredit);
+            m_order.setTargetDocumentTypeId(MOrder.DocSubTypeSO_OnCredit);
             //
             m_order.setBPartner(bp);
-            if (m_order.getC_BPartner_Location_ID() == 0) {
+            if (m_order.getBusinessPartnerLocationId() == 0) {
                 StringBuilder msglog = new StringBuilder("No BP Location: ").append(bp);
                 log.log(Level.SEVERE, msglog.toString());
                 msglog =
@@ -178,27 +178,27 @@ public class ExpenseSOrder extends SvrProcess {
                 m_order = null;
                 return;
             }
-            m_order.setM_Warehouse_ID(te.getM_Warehouse_ID());
-            if (tel.getC_Activity_ID() != 0) m_order.setC_Activity_ID(tel.getC_Activity_ID());
-            if (tel.getC_Campaign_ID() != 0) m_order.setC_Campaign_ID(tel.getC_Campaign_ID());
-            if (tel.getC_Project_ID() != 0) {
-                m_order.setC_Project_ID(tel.getC_Project_ID());
+            m_order.setWarehouseId(te.getWarehouseId());
+            if (tel.getBusinessActivityId() != 0) m_order.setBusinessActivityId(tel.getBusinessActivityId());
+            if (tel.getCampaignId() != 0) m_order.setCampaignId(tel.getCampaignId());
+            if (tel.getProjectId() != 0) {
+                m_order.setProjectId(tel.getProjectId());
                 //	Optionally Overwrite BP Price list from Project
-                MProject project = new MProject(getCtx(), tel.getC_Project_ID());
-                if (project.getM_PriceList_ID() != 0)
-                    m_order.setM_PriceList_ID(project.getM_PriceList_ID());
+                MProject project = new MProject(getCtx(), tel.getProjectId());
+                if (project.getPriceListId() != 0)
+                    m_order.setPriceListId(project.getPriceListId());
             }
-            m_order.setSalesRep_ID(te.getDoc_User_ID());
+            m_order.setSalesRepresentativeId(te.getDoc_User_ID());
             //
             if (!m_order.save()) {
                 throw new IllegalStateException("Cannot save Order");
             }
         } else {
             //	Update Header info
-            if (tel.getC_Activity_ID() != 0 && tel.getC_Activity_ID() != m_order.getC_Activity_ID())
-                m_order.setC_Activity_ID(tel.getC_Activity_ID());
-            if (tel.getC_Campaign_ID() != 0 && tel.getC_Campaign_ID() != m_order.getC_Campaign_ID())
-                m_order.setC_Campaign_ID(tel.getC_Campaign_ID());
+            if (tel.getBusinessActivityId() != 0 && tel.getBusinessActivityId() != m_order.getBusinessActivityId())
+                m_order.setBusinessActivityId(tel.getBusinessActivityId());
+            if (tel.getCampaignId() != 0 && tel.getCampaignId() != m_order.getCampaignId())
+                m_order.setCampaignId(tel.getCampaignId());
             if (!m_order.save()) throw new IllegalStateException("Cannot save Order");
         }
 
@@ -211,21 +211,21 @@ public class ExpenseSOrder extends SvrProcess {
         ol.setQty(tel.getQtyInvoiced()); //
         ol.setDescription(tel.getDescription());
         //
-        ol.setC_Project_ID(tel.getC_Project_ID());
+        ol.setProjectId(tel.getProjectId());
         ol.setC_ProjectPhase_ID(tel.getC_ProjectPhase_ID());
         ol.setC_ProjectTask_ID(tel.getC_ProjectTask_ID());
-        ol.setC_Activity_ID(tel.getC_Activity_ID());
-        ol.setC_Campaign_ID(tel.getC_Campaign_ID());
+        ol.setBusinessActivityId(tel.getBusinessActivityId());
+        ol.setCampaignId(tel.getCampaignId());
         //
         BigDecimal price = tel.getPriceInvoiced(); //
         if (price != null && price.compareTo(Env.ZERO) != 0) {
-            if (tel.getC_Currency_ID() != m_order.getC_Currency_ID())
+            if (tel.getCurrencyId() != m_order.getCurrencyId())
                 price =
                         MConversionRate.convert(
                                 getCtx(),
                                 price,
-                                tel.getC_Currency_ID(),
-                                m_order.getC_Currency_ID(),
+                                tel.getCurrencyId(),
+                                m_order.getCurrencyId(),
                                 m_order.getClientId(),
                                 m_order.getOrgId());
             ol.setPrice(price);
@@ -272,7 +272,7 @@ public class ExpenseSOrder extends SvrProcess {
                 m_order.getGrandTotal(),
                 m_order.getDocumentNo(),
                 m_order.getTableId(),
-                m_order.getC_Order_ID());
+                m_order.getOrderId());
         m_order = null;
     } //	completeOrder
 } //	ExpenseSOrder

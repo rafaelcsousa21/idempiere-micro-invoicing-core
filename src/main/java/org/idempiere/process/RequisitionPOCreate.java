@@ -282,7 +282,7 @@ public class RequisitionPOCreate extends SvrProcess {
      * @throws Exception
      */
     private void process(MRequisitionLine rLine) throws Exception {
-        if (rLine.getM_Product_ID() == 0 && rLine.getC_Charge_ID() == 0) {
+        if (rLine.getM_Product_ID() == 0 && rLine.getChargeId() == 0) {
             log.warning(
                     "Ignored Line"
                             + rLine.getLine()
@@ -299,7 +299,7 @@ public class RequisitionPOCreate extends SvrProcess {
         if (m_orderLine == null
                 || rLine.getM_Product_ID() != m_M_Product_ID
                 || rLine.getMAttributeSetInstance_ID() != m_M_AttributeSetInstance_ID
-                || rLine.getC_Charge_ID() != 0 // 	single line per charge
+                || rLine.getChargeId() != 0 // 	single line per charge
                 || m_order == null
                 || m_order.getDatePromised().compareTo(rLine.getDateRequired()) != 0) {
             newLine(rLine);
@@ -333,18 +333,18 @@ public class RequisitionPOCreate extends SvrProcess {
 
         //	Order
         Timestamp DateRequired = rLine.getDateRequired();
-        int M_PriceList_ID = rLine.getParent().getM_PriceList_ID();
+        int M_PriceList_ID = rLine.getParent().getPriceListId();
         MultiKey key = new MultiKey(C_BPartner_ID, DateRequired, M_PriceList_ID);
         m_order = m_cacheOrders.get(key);
         if (m_order == null) {
             m_order = new MOrder(getCtx(), 0);
             m_order.setOrgId(rLine.getOrgId());
-            m_order.setM_Warehouse_ID(rLine.getParent().getM_Warehouse_ID());
+            m_order.setWarehouseId(rLine.getParent().getWarehouseId());
             m_order.setDatePromised(DateRequired);
             m_order.setIsSOTrx(false);
-            m_order.setC_DocTypeTarget_ID();
+            m_order.setTargetDocumentTypeId();
             m_order.setBPartner(m_bpartner);
-            m_order.setM_PriceList_ID(M_PriceList_ID);
+            m_order.setPriceListId(M_PriceList_ID);
             //	default po document type
             if (!p_ConsolidateDocument) {
                 StringBuilder msgsd =
@@ -381,7 +381,7 @@ public class RequisitionPOCreate extends SvrProcess {
                     m_order.getGrandTotal(),
                     message,
                     m_order.getTableId(),
-                    m_order.getC_Order_ID());
+                    m_order.getOrderId());
         }
         m_order = null;
         m_orderLine = null;
@@ -401,12 +401,12 @@ public class RequisitionPOCreate extends SvrProcess {
         MProduct product = MProduct.get(getCtx(), rLine.getM_Product_ID());
 
         //	Get Business Partner
-        int C_BPartner_ID = rLine.getC_BPartner_ID();
+        int C_BPartner_ID = rLine.getBusinessPartnerId();
         if (C_BPartner_ID != 0) {
             ;
-        } else if (rLine.getC_Charge_ID() != 0) {
-            MCharge charge = MCharge.get(getCtx(), rLine.getC_Charge_ID());
-            C_BPartner_ID = charge.getC_BPartner_ID();
+        } else if (rLine.getChargeId() != 0) {
+            MCharge charge = MCharge.get(getCtx(), rLine.getChargeId());
+            C_BPartner_ID = charge.getBusinessPartnerId();
             if (C_BPartner_ID == 0) {
                 throw new AdempiereUserError("No Vendor for Charge " + charge.getName());
             }
@@ -415,13 +415,13 @@ public class RequisitionPOCreate extends SvrProcess {
             // TODO: refactor
             MProductPO[] ppos = MProductPO.getOfProduct(getCtx(), product.getM_Product_ID());
             for (int i = 0; i < ppos.length; i++) {
-                if (ppos[i].isCurrentVendor() && ppos[i].getC_BPartner_ID() != 0) {
-                    C_BPartner_ID = ppos[i].getC_BPartner_ID();
+                if (ppos[i].isCurrentVendor() && ppos[i].getBusinessPartnerId() != 0) {
+                    C_BPartner_ID = ppos[i].getBusinessPartnerId();
                     break;
                 }
             }
             if (C_BPartner_ID == 0 && ppos.length > 0) {
-                C_BPartner_ID = ppos[0].getC_BPartner_ID();
+                C_BPartner_ID = ppos[0].getBusinessPartnerId();
             }
             if (C_BPartner_ID == 0) {
                 throw new NoVendorForProductException(product.getName());
@@ -435,7 +435,7 @@ public class RequisitionPOCreate extends SvrProcess {
 
         //	New Order - Different Vendor
         if (m_order == null
-                || m_order.getC_BPartner_ID() != C_BPartner_ID
+                || m_order.getBusinessPartnerId() != C_BPartner_ID
                 || m_order.getDatePromised().compareTo(rLine.getDateRequired()) != 0) {
             newOrder(rLine, C_BPartner_ID);
         }
@@ -447,7 +447,7 @@ public class RequisitionPOCreate extends SvrProcess {
             m_orderLine.setProduct(product);
             m_orderLine.setM_AttributeSetInstance_ID(rLine.getMAttributeSetInstance_ID());
         } else {
-            m_orderLine.setC_Charge_ID(rLine.getC_Charge_ID());
+            m_orderLine.setChargeId(rLine.getChargeId());
             m_orderLine.setPriceActual(rLine.getPriceActual());
         }
         m_orderLine.setOrgId(rLine.getOrgId());

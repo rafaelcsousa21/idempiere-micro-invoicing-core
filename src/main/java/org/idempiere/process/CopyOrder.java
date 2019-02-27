@@ -82,8 +82,8 @@ public class CopyOrder extends SvrProcess {
                         false,
                         true,
                         null); //	copy ASI
-        newOrder.setC_DocTypeTarget_ID(p_C_DocType_ID);
-        newOrder.setQuotationOrder_ID(from.getC_Order_ID()); // IDEMPIERE-475
+        newOrder.setTargetDocumentTypeId(p_C_DocType_ID);
+        newOrder.setQuotationOrder_ID(from.getOrderId()); // IDEMPIERE-475
         boolean OK = newOrder.save();
         if (!OK) throw new IllegalStateException("Could not create new Order");
         //
@@ -112,7 +112,7 @@ public class CopyOrder extends SvrProcess {
         //	return "@C_Order_ID@ " + newOrder.getDocumentNo();
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getName()).append(": ").append(newOrder.getDocumentNo());
-        addLog(0, null, null, msgreturn.toString(), newOrder.getTableId(), newOrder.getC_Order_ID());
+        addLog(0, null, null, msgreturn.toString(), newOrder.getTableId(), newOrder.getOrderId());
         return "@C_Order_ID@ @Created@";
     } //	doIt
 } //	CopyOrder

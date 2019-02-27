@@ -59,19 +59,19 @@ public class CommissionAPInvoice extends SvrProcess {
     	MCommission com = new MCommission (getCtx(), comRun.getC_Commission_ID(), null);
     	if (com.getId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No Commission");
-    	if (com.getC_Charge_ID() == 0)
+    	if (com.getChargeId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No Charge on Commission");
-    	MBPartner bp = new MBPartner (getCtx(), com.getC_BPartner_ID(), null);
+    	MBPartner bp = new MBPartner (getCtx(), com.getBusinessPartnerId(), null);
     	if (bp.getId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No BPartner");
 
     	//	Create Invoice
     	MInvoice invoice = new MInvoice (getCtx(), 0, null);
     	invoice.setClientOrg(com.getClientId(), com.getOrgId());
-    	invoice.setC_DocTypeTarget_ID(MDocType.DOCBASETYPE_APInvoice);	//	API
+    	invoice.setTargetDocumentTypeId(MDocType.DOCBASETYPE_APInvoice);	//	API
     	invoice.setBPartner(bp);
     //	invoice.setDocumentNo (comRun.getDocumentNo());		//	may cause unique constraint
-    	invoice.setSalesRep_ID(getUserId());	//	caller
+    	invoice.setSalesRepresentativeId(getUserId());	//	caller
     	//
     	if (com.getCurrencyId() != invoice.getCurrencyId())
     		throw new IllegalArgumentException("CommissionAPInvoice - Currency of PO Price List not Commission Currency");
@@ -81,7 +81,7 @@ public class CommissionAPInvoice extends SvrProcess {
 
     		//	Create Invoice Line
     		MInvoiceLine iLine = new MInvoiceLine(invoice);
-    	iLine.setC_Charge_ID(com.getC_Charge_ID());
+    	iLine.setChargeId(com.getChargeId());
     		iLine.setQty(1);
     		iLine.setPrice(comRun.getGrandTotal());
     	iLine.setTax();

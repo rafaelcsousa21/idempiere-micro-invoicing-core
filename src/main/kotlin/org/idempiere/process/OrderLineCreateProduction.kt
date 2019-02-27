@@ -67,11 +67,11 @@ class OrderLineCreateProduction(
         val line = MOrderLine(ctx, p_C_OrderLine_ID)
         if (line.id == 0)
             throw IllegalArgumentException("Order line not found")
-        val order: I_C_Order = MOrder(ctx, line.c_Order_ID)
+        val order: I_C_Order = MOrder(ctx, line.orderId)
         if (MOrder.DOCSTATUS_Completed != order.docStatus)
             throw IllegalArgumentException("Order not completed")
 
-        val doc = MDocType(ctx, order.c_DocType_ID)
+        val doc = MDocType(ctx, order.documentTypeId)
 
         if (line.qtyOrdered.subtract(line.qtyDelivered).compareTo(Env.ZERO) <= 0) {
             if (doc.docSubTypeSO != "ON")
@@ -105,47 +105,47 @@ class OrderLineCreateProduction(
 
         var locator = product.m_Locator_ID
         if (locator == 0)
-            locator = MWarehouse.get(ctx, line.m_Warehouse_ID).defaultLocator!!.id
+            locator = MWarehouse.get(ctx, line.warehouseId).defaultLocator!!.id
         production.setM_Locator_ID(locator)
 
-        if (line.c_BPartner_ID > 0) {
-            production.setC_BPartner_ID(order.c_BPartner_ID)
+        if (line.businessPartnerId > 0) {
+            production.setBusinessPartnerId(order.businessPartnerId)
         }
 
-        if (line.c_Project_ID > 0) {
-            production.setC_Project_ID(line.c_Project_ID)
+        if (line.projectId > 0) {
+            production.setProjectId(line.projectId)
         } else {
-            production.setC_Project_ID(order.c_Project_ID)
+            production.setProjectId(order.projectId)
         }
 
-        if (line.c_Campaign_ID > 0) {
-            production.setC_Campaign_ID(line.c_Campaign_ID)
+        if (line.campaignId > 0) {
+            production.setCampaignId(line.campaignId)
         } else {
-            production.setC_Campaign_ID(order.c_Campaign_ID)
+            production.setCampaignId(order.campaignId)
         }
 
-        if (line.c_Activity_ID > 0) {
-            production.setC_Activity_ID(line.c_Activity_ID)
+        if (line.businessActivityId > 0) {
+            production.setBusinessActivityId(line.businessActivityId)
         } else {
-            production.setC_Activity_ID(order.c_Activity_ID)
+            production.setBusinessActivityId(order.businessActivityId)
         }
 
-        if (line.user1_ID > 0) {
-            production.setUser1_ID(line.user1_ID)
+        if (line.user1Id > 0) {
+            production.setUser1Id(line.user1Id)
         } else {
-            production.setUser1_ID(order.user1_ID)
+            production.setUser1Id(order.user1Id)
         }
 
-        if (line.user2_ID > 0) {
-            production.setUser2_ID(line.user2_ID)
+        if (line.user2Id > 0) {
+            production.setUser2Id(line.user2Id)
         } else {
-            production.setUser2_ID(order.user2_ID)
+            production.setUser2Id(order.user2Id)
         }
 
-        if (line.aD_OrgTrx_ID > 0) {
-            production.setAD_OrgTrx_ID(line.aD_OrgTrx_ID)
+        if (line.transactionOrganizationId > 0) {
+            production.setTransactionOrganizationId(line.transactionOrganizationId)
         } else {
-            production.setAD_OrgTrx_ID(order.aD_OrgTrx_ID)
+            production.setTransactionOrganizationId(order.transactionOrganizationId)
         }
 
         production.saveEx()

@@ -61,7 +61,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -72,9 +72,9 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValue(COLUMNNAME_C_BPartner_ID, null);
+        else setValue(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -82,7 +82,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -93,9 +93,9 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @param C_Charge_ID Additional document charges
      */
-    public void setC_Charge_ID(int C_Charge_ID) {
-        if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
-        else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
+    public void setChargeId(int C_Charge_ID) {
+        if (C_Charge_ID < 1) setValue(COLUMNNAME_C_Charge_ID, null);
+        else setValue(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
     }
 
     /**
@@ -115,8 +115,8 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param C_OrderLine_ID Sales Order Line
      */
     public void setC_OrderLine_ID(int C_OrderLine_ID) {
-        if (C_OrderLine_ID < 1) set_Value(COLUMNNAME_C_OrderLine_ID, null);
-        else set_Value(COLUMNNAME_C_OrderLine_ID, Integer.valueOf(C_OrderLine_ID));
+        if (C_OrderLine_ID < 1) setValue(COLUMNNAME_C_OrderLine_ID, null);
+        else setValue(COLUMNNAME_C_OrderLine_ID, Integer.valueOf(C_OrderLine_ID));
     }
 
     /**
@@ -136,8 +136,8 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param C_UOM_ID Unit of Measure
      */
     public void setC_UOM_ID(int C_UOM_ID) {
-        if (C_UOM_ID < 1) set_ValueNoCheck(COLUMNNAME_C_UOM_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
+        if (C_UOM_ID < 1) setValueNoCheck(COLUMNNAME_C_UOM_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
     }
 
     /**
@@ -155,7 +155,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -175,7 +175,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -195,7 +195,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param LineNetAmt Line Extended Amount (Quantity * Actual Price) without Freight and Charges
      */
     public void setLineNetAmt(BigDecimal LineNetAmt) {
-        set_Value(COLUMNNAME_LineNetAmt, LineNetAmt);
+        setValue(COLUMNNAME_LineNetAmt, LineNetAmt);
     }
 
     /**
@@ -204,9 +204,9 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
     /**
@@ -243,8 +243,8 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, M_Product_ID);
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -264,8 +264,8 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param M_Requisition_ID Material Requisition
      */
     public void setM_Requisition_ID(int M_Requisition_ID) {
-        if (M_Requisition_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Requisition_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Requisition_ID, M_Requisition_ID);
+        if (M_Requisition_ID < 1) setValueNoCheck(COLUMNNAME_M_Requisition_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Requisition_ID, M_Requisition_ID);
     }
 
     /**
@@ -285,7 +285,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param PriceActual Actual Price
      */
     public void setPriceActual(BigDecimal PriceActual) {
-        set_Value(COLUMNNAME_PriceActual, PriceActual);
+        setValue(COLUMNNAME_PriceActual, PriceActual);
     }
 
     /**
@@ -305,7 +305,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_Value(COLUMNNAME_Qty, Qty);
+        setValue(COLUMNNAME_Qty, Qty);
     }
 
     @Override

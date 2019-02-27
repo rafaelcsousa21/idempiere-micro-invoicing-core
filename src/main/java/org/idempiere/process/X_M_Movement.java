@@ -78,7 +78,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
     public X_M_Movement(Properties ctx, int M_Movement_ID) {
         super(ctx, M_Movement_ID);
         /**
-         * if (M_Movement_ID == 0) { setC_DocType_ID (0); setDocAction (null); // CO setDocStatus
+         * if (M_Movement_ID == 0) { setDocumentTypeId (0); setDocAction (null); // CO setDocStatus
          * (null); // DR setDocumentNo (null); setIsApproved (false); setIsInTransit (false);
          * setM_Movement_ID (0); setMovementDate (new Timestamp( System.currentTimeMillis() ));
          * // @#Date@ setPosted (false); setProcessed (false); }
@@ -127,7 +127,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -138,9 +138,9 @@ public class X_M_Movement extends PO implements I_M_Movement {
      *
      * @param C_DocType_ID Document type or rules
      */
-    public void setC_DocType_ID(int C_DocType_ID) {
-        if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-        else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+    public void setDocumentTypeId(int C_DocType_ID) {
+        if (C_DocType_ID < 0) setValue(COLUMNNAME_C_DocType_ID, null);
+        else setValue(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
     }
 
     /**
@@ -158,7 +158,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -177,7 +177,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -196,7 +196,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -214,7 +214,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param DocumentNo Document sequence number of the document
      */
     public void setDocumentNo(String DocumentNo) {
-        set_Value(COLUMNNAME_DocumentNo, DocumentNo);
+        setValue(COLUMNNAME_DocumentNo, DocumentNo);
     }
 
     /**
@@ -223,7 +223,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -246,7 +246,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param IsInTransit Movement is in transit
      */
     public void setIsInTransit(boolean IsInTransit) {
-        set_Value(COLUMNNAME_IsInTransit, Boolean.valueOf(IsInTransit));
+        setValue(COLUMNNAME_IsInTransit, Boolean.valueOf(IsInTransit));
     }
 
     /**
@@ -275,7 +275,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param MovementDate Date a product was moved in or out of inventory
      */
     public void setMovementDate(Timestamp MovementDate) {
-        set_Value(COLUMNNAME_MovementDate, MovementDate);
+        setValue(COLUMNNAME_MovementDate, MovementDate);
     }
 
     /**
@@ -284,7 +284,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+        setValue(COLUMNNAME_Posted, Boolean.valueOf(Posted));
     }
 
     /**
@@ -293,7 +293,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -302,7 +302,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -311,8 +311,8 @@ public class X_M_Movement extends PO implements I_M_Movement {
      * @param Reversal_ID ID of document reversal
      */
     public void setReversal_ID(int Reversal_ID) {
-        if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
-        else set_Value(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+        if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
+        else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }
 
 }

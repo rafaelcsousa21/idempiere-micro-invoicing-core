@@ -107,7 +107,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
      * @param DateNextRun Date the process will run next
      */
     public void setDateNextRun(Timestamp DateNextRun) {
-        set_Value(COLUMNNAME_DateNextRun, DateNextRun);
+        setValue(COLUMNNAME_DateNextRun, DateNextRun);
     }
 
     /**
@@ -136,7 +136,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
      * @param KeepLogDays Number of days to keep the log entries
      */
     public void setKeepLogDays(int KeepLogDays) {
-        set_Value(COLUMNNAME_KeepLogDays, Integer.valueOf(KeepLogDays));
+        setValue(COLUMNNAME_KeepLogDays, Integer.valueOf(KeepLogDays));
     }
 
     /**
@@ -156,8 +156,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
      * @param Record_ID Direct internal record ID
      */
     public void setRecordId(int Record_ID) {
-        if (Record_ID < 0) set_Value(COLUMNNAME_Record_ID, null);
-        else set_Value(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
+        if (Record_ID < 0) setValue(COLUMNNAME_Record_ID, null);
+        else setValue(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
     }
 
     /**

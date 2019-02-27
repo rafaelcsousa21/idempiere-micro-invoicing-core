@@ -75,7 +75,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @param Amt Amount
      */
     public void setAmt(BigDecimal Amt) {
-        set_Value(COLUMNNAME_Amt, Amt);
+        setValue(COLUMNNAME_Amt, Amt);
     }
 
     /**
@@ -84,7 +84,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @param Base Calculation Base
      */
     public void setBase(BigDecimal Base) {
-        set_Value(COLUMNNAME_Base, Base);
+        setValue(COLUMNNAME_Base, Base);
     }
 
     /**
@@ -121,8 +121,8 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @param C_OrderLandedCost_ID Estimated Landed Cost
      */
     public void setC_OrderLandedCost_ID(int C_OrderLandedCost_ID) {
-        if (C_OrderLandedCost_ID < 1) set_ValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, C_OrderLandedCost_ID);
+        if (C_OrderLandedCost_ID < 1) setValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, C_OrderLandedCost_ID);
     }
 
     public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
@@ -148,8 +148,8 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @param C_OrderLine_ID Sales Order Line
      */
     public void setC_OrderLine_ID(int C_OrderLine_ID) {
-        if (C_OrderLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_OrderLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_OrderLine_ID, C_OrderLine_ID);
+        if (C_OrderLine_ID < 1) setValueNoCheck(COLUMNNAME_C_OrderLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_OrderLine_ID, C_OrderLine_ID);
     }
 
     /**
@@ -169,7 +169,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_Value(COLUMNNAME_Qty, Qty);
+        setValue(COLUMNNAME_Qty, Qty);
     }
 
     @Override

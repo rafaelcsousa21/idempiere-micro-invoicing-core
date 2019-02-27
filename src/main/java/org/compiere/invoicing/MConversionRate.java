@@ -36,7 +36,7 @@ public class MConversionRate extends org.compiere.conversionrate.MConversionRate
                 ctx,
                 Amt,
                 CurFrom_ID,
-                MClient.get(ctx).getC_Currency_ID(),
+                MClient.get(ctx).getCurrencyId(),
                 ConvDate,
                 C_ConversionType_ID,
                 AD_Client_ID,

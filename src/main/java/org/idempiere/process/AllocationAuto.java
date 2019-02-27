@@ -362,13 +362,13 @@ public class AllocationAuto extends SvrProcess {
             if (!payment.isReceipt()) availableAmt = availableAmt.negate();
             if (log.isLoggable(Level.FINE)) log.fine("Available=" + availableAmt);
             //
-            if (payment.getC_Invoice_ID() != 0) {
+            if (payment.getInvoiceId() != 0) {
                 for (int i = 0; i < m_invoices.length; i++) {
                     MInvoice invoice = m_invoices[i];
                     if (invoice.isPaid()) continue;
                     //	log.fine("allocateIndividualPayments - " + invoice);
-                    if (payment.getC_Invoice_ID() == invoice.getC_Invoice_ID()) {
-                        if (payment.getC_Currency_ID() == invoice.getC_Currency_ID()) {
+                    if (payment.getInvoiceId() == invoice.getInvoiceId()) {
+                        if (payment.getCurrencyId() == invoice.getCurrencyId()) {
                             BigDecimal openAmt = invoice.getOpenAmt(true, null);
                             if (!invoice.isSOTrx()) openAmt = openAmt.negate();
                             if (log.isLoggable(Level.FINE)) log.fine(invoice + ", Open=" + openAmt);
@@ -384,7 +384,7 @@ public class AllocationAuto extends SvrProcess {
                                             openAmt,
                                             message,
                                             payment.getTableId(),
-                                            payment.getC_Payment_ID());
+                                            payment.getPaymentId());
                                     count++;
                                 }
                                 break;
@@ -398,7 +398,7 @@ public class AllocationAuto extends SvrProcess {
             else //	No direct invoice
             {
                 MPaySelectionCheck psCheck =
-                        MPaySelectionCheck.getOfPayment(getCtx(), payment.getC_Payment_ID());
+                        MPaySelectionCheck.getOfPayment(getCtx(), payment.getPaymentId());
                 if (psCheck == null) continue;
                 //
                 BigDecimal totalInvoice = Env.ZERO;
@@ -406,7 +406,7 @@ public class AllocationAuto extends SvrProcess {
                 for (int i = 0; i < psLines.length; i++) {
                     MPaySelectionLine line = psLines[i];
                     MInvoice invoice = line.getInvoice();
-                    if (payment.getC_Currency_ID() == invoice.getC_Currency_ID()) {
+                    if (payment.getCurrencyId() == invoice.getCurrencyId()) {
                         BigDecimal invoiceAmt = invoice.getOpenAmt(true, null);
                         BigDecimal overUnder =
                                 line.getOpenAmt()
@@ -438,7 +438,7 @@ public class AllocationAuto extends SvrProcess {
                                 availableAmt,
                                 message,
                                 payment.getTableId(),
-                                payment.getC_Payment_ID());
+                                payment.getPaymentId());
                         count++;
                     }
                 }
@@ -473,7 +473,7 @@ public class AllocationAuto extends SvrProcess {
             for (int i = 0; i < m_invoices.length; i++) {
                 MInvoice invoice = m_invoices[i];
                 if (invoice == null || invoice.isPaid()) continue;
-                if (payment.getC_Currency_ID() == invoice.getC_Currency_ID()) {
+                if (payment.getCurrencyId() == invoice.getCurrencyId()) {
                     //	log.fine("allocateBPartnerAll - " + invoice);
                     BigDecimal openAmt = invoice.getOpenAmt(true, null);
                     if (!invoice.isSOTrx()) openAmt = openAmt.negate();
@@ -484,16 +484,16 @@ public class AllocationAuto extends SvrProcess {
                         Timestamp dateAcct = payment.getDateAcct();
                         if (invoice.getDateAcct().after(dateAcct)) dateAcct = invoice.getDateAcct();
                         if (!createAllocation(
-                                payment.getC_Currency_ID(),
+                                payment.getCurrencyId(),
                                 "1:1 (" + availableAmt + ")",
                                 dateAcct,
                                 availableAmt,
                                 null,
                                 null,
                                 null,
-                                invoice.getC_BPartner_ID(),
-                                payment.getC_Payment_ID(),
-                                invoice.getC_Invoice_ID(),
+                                invoice.getBusinessPartnerId(),
+                                payment.getPaymentId(),
+                                invoice.getInvoiceId(),
                                 invoice.getOrgId())) {
                             throw new AdempiereSystemError("Cannot create Allocation");
                         }
@@ -518,7 +518,7 @@ public class AllocationAuto extends SvrProcess {
      * @return allocations
      */
     private int allocateBPartnerAll() throws Exception {
-        int C_Currency_ID = MClient.get(getCtx()).getC_Currency_ID();
+        int C_Currency_ID = MClient.get(getCtx()).getCurrencyId();
         Timestamp dateAcct = null;
         //	Payments
         BigDecimal totalPayments = Env.ZERO;
@@ -536,7 +536,7 @@ public class AllocationAuto extends SvrProcess {
                             .add(payment.getOverUnderAmt());
             if (!payment.isReceipt()) availableAmt = availableAmt.negate();
             //	Foreign currency
-            if (payment.getC_Currency_ID() != C_Currency_ID) continue;
+            if (payment.getCurrencyId() != C_Currency_ID) continue;
             //	log.fine("allocateBPartnerAll - Available=" + availableAmt);
             if (dateAcct == null || payment.getDateAcct().after(dateAcct))
                 dateAcct = payment.getDateAcct();
@@ -551,7 +551,7 @@ public class AllocationAuto extends SvrProcess {
             BigDecimal openAmt = invoice.getOpenAmt(true, null);
             if (!invoice.isSOTrx()) openAmt = openAmt.negate();
             //	Foreign currency
-            if (invoice.getC_Currency_ID() != C_Currency_ID) continue;
+            if (invoice.getCurrencyId() != C_Currency_ID) continue;
             //	log.fine("allocateBPartnerAll - Open=" + openAmt);
             if (dateAcct == null || invoice.getDateAcct().after(dateAcct))
                 dateAcct = invoice.getDateAcct();
@@ -582,7 +582,7 @@ public class AllocationAuto extends SvrProcess {
                                 .add(payment.getOverUnderAmt());
                 if (!payment.isReceipt()) availableAmt = availableAmt.negate();
                 //	Foreign currency
-                if (payment.getC_Currency_ID() != C_Currency_ID) continue;
+                if (payment.getCurrencyId() != C_Currency_ID) continue;
                 if (!createAllocation(
                         C_Currency_ID,
                         "BP All",
@@ -591,8 +591,8 @@ public class AllocationAuto extends SvrProcess {
                         null,
                         null,
                         null,
-                        payment.getC_BPartner_ID(),
-                        payment.getC_Payment_ID(),
+                        payment.getBusinessPartnerId(),
+                        payment.getPaymentId(),
                         0,
                         payment.getOrgId())) {
                     throw new AdempiereSystemError("Cannot create Allocation");
@@ -605,7 +605,7 @@ public class AllocationAuto extends SvrProcess {
                 BigDecimal openAmt = invoice.getOpenAmt(true, null);
                 if (!invoice.isSOTrx()) openAmt = openAmt.negate();
                 //	Foreign currency
-                if (invoice.getC_Currency_ID() != C_Currency_ID) continue;
+                if (invoice.getCurrencyId() != C_Currency_ID) continue;
                 if (!createAllocation(
                         C_Currency_ID,
                         "BP All",
@@ -614,9 +614,9 @@ public class AllocationAuto extends SvrProcess {
                         null,
                         null,
                         null,
-                        invoice.getC_BPartner_ID(),
+                        invoice.getBusinessPartnerId(),
                         0,
-                        invoice.getC_Invoice_ID(),
+                        invoice.getInvoiceId(),
                         invoice.getOrgId())) {
                     throw new AdempiereSystemError("Cannot create Allocation");
                 }
@@ -634,14 +634,14 @@ public class AllocationAuto extends SvrProcess {
      * @return allocations
      */
     private int allocateBPOldestFirst() throws Exception {
-        int C_Currency_ID = MClient.get(getCtx()).getC_Currency_ID();
+        int C_Currency_ID = MClient.get(getCtx()).getCurrencyId();
         Timestamp dateAcct = null;
         //	Payments
         BigDecimal totalPayments = Env.ZERO;
         for (int p = 0; p < m_payments.length; p++) {
             MPayment payment = m_payments[p];
             if (payment.isAllocated()) continue;
-            if (payment.getC_Currency_ID() != C_Currency_ID) continue;
+            if (payment.getCurrencyId() != C_Currency_ID) continue;
             BigDecimal allocatedAmt = payment.getAllocatedAmt();
             if (log.isLoggable(Level.INFO)) log.info(payment + ", Allocated=" + allocatedAmt);
             BigDecimal availableAmt =
@@ -662,7 +662,7 @@ public class AllocationAuto extends SvrProcess {
         for (int i = 0; i < m_invoices.length; i++) {
             MInvoice invoice = m_invoices[i];
             if (invoice.isPaid()) continue;
-            if (invoice.getC_Currency_ID() != C_Currency_ID) continue;
+            if (invoice.getCurrencyId() != C_Currency_ID) continue;
             BigDecimal openAmt = invoice.getOpenAmt(true, null);
             if (log.isLoggable(Level.FINE)) log.fine("" + invoice);
             if (!invoice.isSOTrx()) openAmt = openAmt.negate();
@@ -703,7 +703,7 @@ public class AllocationAuto extends SvrProcess {
         for (int p = 0; p < m_payments.length; p++) {
             MPayment payment = m_payments[p];
             if (payment.isAllocated()) continue;
-            if (payment.getC_Currency_ID() != C_Currency_ID) continue;
+            if (payment.getCurrencyId() != C_Currency_ID) continue;
             BigDecimal allocatedAmt = payment.getAllocatedAmt();
             // comment following lines to allow partial allocation
             // if (allocatedAmt != null && allocatedAmt.signum() != 0)
@@ -732,8 +732,8 @@ public class AllocationAuto extends SvrProcess {
                     null,
                     null,
                     null,
-                    payment.getC_BPartner_ID(),
-                    payment.getC_Payment_ID(),
+                    payment.getBusinessPartnerId(),
+                    payment.getPaymentId(),
                     0,
                     payment.getOrgId())) {
                 throw new AdempiereSystemError("Cannot create Allocation");
@@ -745,7 +745,7 @@ public class AllocationAuto extends SvrProcess {
         for (int i = 0; i < m_invoices.length; i++) {
             MInvoice invoice = m_invoices[i];
             if (invoice.isPaid()) continue;
-            if (invoice.getC_Currency_ID() != C_Currency_ID) continue;
+            if (invoice.getCurrencyId() != C_Currency_ID) continue;
             BigDecimal openAmt = invoice.getOpenAmt(true, null);
             if (!invoice.isSOTrx()) openAmt = openAmt.negate();
             allocatedInvoices = allocatedInvoices.add(openAmt);
@@ -765,9 +765,9 @@ public class AllocationAuto extends SvrProcess {
                     null,
                     null,
                     null,
-                    invoice.getC_BPartner_ID(),
+                    invoice.getBusinessPartnerId(),
                     0,
-                    invoice.getC_Invoice_ID(),
+                    invoice.getInvoiceId(),
                     invoice.getOrgId())) {
                 throw new AdempiereSystemError("Cannot create Allocation");
             }
@@ -814,7 +814,7 @@ public class AllocationAuto extends SvrProcess {
             int C_Invoice_ID,
             int AD_Org_ID) {
         //	Process old Allocation
-        if (m_allocation != null && m_allocation.getC_Currency_ID() != C_Currency_ID)
+        if (m_allocation != null && m_allocation.getCurrencyId() != C_Currency_ID)
             processAllocation();
 
         //	New Allocation
@@ -834,9 +834,9 @@ public class AllocationAuto extends SvrProcess {
         //	New Allocation Line
         MAllocationLine aLine =
                 new MAllocationLine(m_allocation, Amount, DiscountAmt, WriteOffAmt, OverUnderAmt);
-        aLine.setC_BPartner_ID(C_BPartner_ID);
-        aLine.setC_Payment_ID(C_Payment_ID);
-        aLine.setC_Invoice_ID(C_Invoice_ID);
+        aLine.setBusinessPartnerId(C_BPartner_ID);
+        aLine.setPaymentId(C_Payment_ID);
+        aLine.setInvoiceId(C_Invoice_ID);
         return aLine.save();
     } //	createAllocation
 

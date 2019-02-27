@@ -62,18 +62,18 @@ public class BankStatementPayment extends SvrProcess {
      * @throws Exception if not successful
      */
     private String createPayment(X_I_BankStatement ibs) throws Exception {
-        if (ibs == null || ibs.getC_Payment_ID() != 0) return "--";
+        if (ibs == null || ibs.getPaymentId() != 0) return "--";
         if (log.isLoggable(Level.FINE)) log.fine(ibs.toString());
-        if (ibs.getC_Invoice_ID() == 0 && ibs.getC_BPartner_ID() == 0)
+        if (ibs.getInvoiceId() == 0 && ibs.getBusinessPartnerId() == 0)
             throw new AdempiereUserError("@NotFound@ @C_Invoice_ID@ / @C_BPartner_ID@");
         if (ibs.getC_BankAccount_ID() == 0)
             throw new AdempiereUserError("@NotFound@ @C_BankAccount_ID@");
         //
         MPayment payment =
                 createPayment(
-                        ibs.getC_Invoice_ID(),
-                        ibs.getC_BPartner_ID(),
-                        ibs.getC_Currency_ID(),
+                        ibs.getInvoiceId(),
+                        ibs.getBusinessPartnerId(),
+                        ibs.getCurrencyId(),
                         ibs.getStmtAmt(),
                         ibs.getTrxAmt(),
                         ibs.getC_BankAccount_ID(),
@@ -85,8 +85,8 @@ public class BankStatementPayment extends SvrProcess {
                         ibs.getOrgId());
         if (payment == null) throw new AdempiereSystemError("Could not create Payment");
 
-        ibs.setC_Payment_ID(payment.getC_Payment_ID());
-        ibs.setC_Currency_ID(payment.getC_Currency_ID());
+        ibs.setPaymentId(payment.getPaymentId());
+        ibs.setCurrencyId(payment.getCurrencyId());
         ibs.setTrxAmt(payment.getPayAmt(true));
         ibs.saveEx();
         //
@@ -105,18 +105,18 @@ public class BankStatementPayment extends SvrProcess {
      * @throws Exception if not successful
      */
     private String createPayment(MBankStatementLine bsl) throws Exception {
-        if (bsl == null || bsl.getC_Payment_ID() != 0) return "--";
+        if (bsl == null || bsl.getPaymentId() != 0) return "--";
         if (log.isLoggable(Level.FINE)) log.fine(bsl.toString());
-        if (bsl.getC_Invoice_ID() == 0 && bsl.getC_BPartner_ID() == 0)
+        if (bsl.getInvoiceId() == 0 && bsl.getBusinessPartnerId() == 0)
             throw new AdempiereUserError("@NotFound@ @C_Invoice_ID@ / @C_BPartner_ID@");
         //
         MBankStatement bs = new MBankStatement(getCtx(), bsl.getC_BankStatement_ID());
         //
         MPayment payment =
                 createPayment(
-                        bsl.getC_Invoice_ID(),
-                        bsl.getC_BPartner_ID(),
-                        bsl.getC_Currency_ID(),
+                        bsl.getInvoiceId(),
+                        bsl.getBusinessPartnerId(),
+                        bsl.getCurrencyId(),
                         bsl.getStmtAmt(),
                         bsl.getTrxAmt(),
                         bs.getC_BankAccount_ID(),
@@ -181,32 +181,32 @@ public class BankStatementPayment extends SvrProcess {
         //
         if (C_Invoice_ID != 0) {
             MInvoice invoice = new MInvoice(getCtx(), C_Invoice_ID);
-            payment.setC_DocType_ID(invoice.isSOTrx()); // 	Receipt
-            payment.setC_Invoice_ID(invoice.getC_Invoice_ID());
-            payment.setC_BPartner_ID(invoice.getC_BPartner_ID());
+            payment.setDocumentTypeId(invoice.isSOTrx()); // 	Receipt
+            payment.setInvoiceId(invoice.getInvoiceId());
+            payment.setBusinessPartnerId(invoice.getBusinessPartnerId());
             if (PayAmt.signum() != 0) // 	explicit Amount
             {
-                payment.setC_Currency_ID(C_Currency_ID);
+                payment.setCurrencyId(C_Currency_ID);
                 if (invoice.isSOTrx()) payment.setPayAmt(PayAmt);
                 else //	payment is likely to be negative
                     payment.setPayAmt(PayAmt.negate());
                 payment.setOverUnderAmt(invoice.getOpenAmt().subtract(payment.getPayAmt()));
             } else // set Pay Amout from Invoice
             {
-                payment.setC_Currency_ID(invoice.getC_Currency_ID());
+                payment.setCurrencyId(invoice.getCurrencyId());
                 payment.setPayAmt(invoice.getOpenAmt());
             }
         } else if (C_BPartner_ID != 0) {
-            payment.setC_BPartner_ID(C_BPartner_ID);
-            payment.setC_Currency_ID(C_Currency_ID);
+            payment.setBusinessPartnerId(C_BPartner_ID);
+            payment.setCurrencyId(C_Currency_ID);
             if (PayAmt.signum() < 0) // 	Payment
             {
                 payment.setPayAmt(PayAmt.abs());
-                payment.setC_DocType_ID(false);
+                payment.setDocumentTypeId(false);
             } else //	Receipt
             {
                 payment.setPayAmt(PayAmt);
-                payment.setC_DocType_ID(true);
+                payment.setDocumentTypeId(true);
             }
         } else return null;
         payment.saveEx();

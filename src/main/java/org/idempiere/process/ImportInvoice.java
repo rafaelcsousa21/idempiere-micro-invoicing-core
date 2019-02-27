@@ -635,13 +635,13 @@ public class ImportInvoice extends SvrProcess {
                     bp.setName(imp.getName());
                     if (!bp.save()) continue;
                 }
-                imp.setC_BPartner_ID(bp.getC_BPartner_ID());
+                imp.setBusinessPartnerId(bp.getBusinessPartnerId());
 
                 //	BP Location
                 I_C_BPartner_Location bpl = null;
                 I_C_BPartner_Location[] bpls = bp.getLocations(true);
                 for (int i = 0; bpl == null && i < bpls.length; i++) {
-                    if (imp.getC_BPartner_Location_ID() == bpls[i].getC_BPartner_Location_ID()) bpl = bpls[i];
+                    if (imp.getBusinessPartnerLocationId() == bpls[i].getBusinessPartnerLocationId()) bpl = bpls[i];
                         //	Same Location ID
                     else if (imp.getC_Location_ID() == bpls[i].getC_Location_ID()) bpl = bpls[i];
                         //	Same Location Info
@@ -674,7 +674,7 @@ public class ImportInvoice extends SvrProcess {
                     if (!bpl.save()) continue;
                 }
                 imp.setC_Location_ID(bpl.getC_Location_ID());
-                imp.setC_BPartner_Location_ID(bpl.getC_BPartner_Location_ID());
+                imp.setBusinessPartnerLocationId(bpl.getBusinessPartnerLocationId());
 
                 //	User/Contact
                 if (imp.getContactName() != null || imp.getEMail() != null || imp.getPhone() != null) {
@@ -684,7 +684,7 @@ public class ImportInvoice extends SvrProcess {
                         String name = users[i].getName();
                         if (name.equals(imp.getContactName()) || name.equals(imp.getName())) {
                             user = users[i];
-                            imp.setAD_User_ID(user.getUserId());
+                            imp.setUserId(user.getUserId());
                         }
                     }
                     if (user == null) {
@@ -693,7 +693,7 @@ public class ImportInvoice extends SvrProcess {
                         else user2.setName(imp.getContactName());
                         user2.setEMail(imp.getEMail());
                         user2.setPhone(imp.getPhone());
-                        if (user2.save()) imp.setAD_User_ID(user2.getUserId());
+                        if (user2.save()) imp.setUserId(user2.getUserId());
                     }
                 }
                 imp.saveEx();
@@ -741,8 +741,8 @@ public class ImportInvoice extends SvrProcess {
                 String cmpDocumentNo = imp.getDocumentNo();
                 if (cmpDocumentNo == null) cmpDocumentNo = "";
                 //	New Invoice
-                if (oldC_BPartner_ID != imp.getC_BPartner_ID()
-                        || oldC_BPartner_Location_ID != imp.getC_BPartner_Location_ID()
+                if (oldC_BPartner_ID != imp.getBusinessPartnerId()
+                        || oldC_BPartner_Location_ID != imp.getBusinessPartnerLocationId()
                         || !oldDocumentNo.equals(cmpDocumentNo)) {
                     if (invoice != null) {
                         if (!invoice.processIt(m_docAction)) {
@@ -753,32 +753,32 @@ public class ImportInvoice extends SvrProcess {
                         invoice.saveEx();
                     }
                     //	Group Change
-                    oldC_BPartner_ID = imp.getC_BPartner_ID();
-                    oldC_BPartner_Location_ID = imp.getC_BPartner_Location_ID();
+                    oldC_BPartner_ID = imp.getBusinessPartnerId();
+                    oldC_BPartner_Location_ID = imp.getBusinessPartnerLocationId();
                     oldDocumentNo = imp.getDocumentNo();
                     if (oldDocumentNo == null) oldDocumentNo = "";
                     //
                     invoice = new MInvoice(getCtx(), 0);
                     invoice.setClientOrg(imp.getClientId(), imp.getOrgId());
-                    invoice.setC_DocTypeTarget_ID(imp.getC_DocType_ID());
+                    invoice.setTargetDocumentTypeId(imp.getDocumentTypeId());
                     invoice.setIsSOTrx(imp.isSOTrx());
                     if (imp.getDocumentNo() != null) invoice.setDocumentNo(imp.getDocumentNo());
                     //
-                    invoice.setC_BPartner_ID(imp.getC_BPartner_ID());
-                    invoice.setC_BPartner_Location_ID(imp.getC_BPartner_Location_ID());
-                    if (imp.getAD_User_ID() != 0) invoice.setAD_User_ID(imp.getAD_User_ID());
+                    invoice.setBusinessPartnerId(imp.getBusinessPartnerId());
+                    invoice.setBusinessPartnerLocationId(imp.getBusinessPartnerLocationId());
+                    if (imp.getUserId() != 0) invoice.setUserId(imp.getUserId());
                     //
                     if (imp.getDescription() != null) invoice.setDescription(imp.getDescription());
-                    invoice.setC_PaymentTerm_ID(imp.getC_PaymentTerm_ID());
-                    invoice.setM_PriceList_ID(imp.getM_PriceList_ID());
+                    invoice.setPaymentTermId(imp.getPaymentTermId());
+                    invoice.setPriceListId(imp.getPriceListId());
                     //	SalesRep from Import or the person running the import
-                    if (imp.getSalesRep_ID() != 0) invoice.setSalesRep_ID(imp.getSalesRep_ID());
-                    if (invoice.getSalesRep_ID() == 0) invoice.setSalesRep_ID(getAD_User_ID());
+                    if (imp.getSalesRepresentativeId() != 0) invoice.setSalesRepresentativeId(imp.getSalesRepresentativeId());
+                    if (invoice.getSalesRepresentativeId() == 0) invoice.setSalesRepresentativeId(getUserId());
                     //
-                    if (imp.getAD_OrgTrx_ID() != 0) invoice.setAD_OrgTrx_ID(imp.getAD_OrgTrx_ID());
-                    if (imp.getC_Activity_ID() != 0) invoice.setC_Activity_ID(imp.getC_Activity_ID());
-                    if (imp.getC_Campaign_ID() != 0) invoice.setC_Campaign_ID(imp.getC_Campaign_ID());
-                    if (imp.getC_Project_ID() != 0) invoice.setC_Project_ID(imp.getC_Project_ID());
+                    if (imp.getTransactionOrganizationId() != 0) invoice.setTransactionOrganizationId(imp.getTransactionOrganizationId());
+                    if (imp.getBusinessActivityId() != 0) invoice.setBusinessActivityId(imp.getBusinessActivityId());
+                    if (imp.getCampaignId() != 0) invoice.setCampaignId(imp.getCampaignId());
+                    if (imp.getProjectId() != 0) invoice.setProjectId(imp.getProjectId());
                     //
                     if (imp.getDateInvoiced() != null) invoice.setDateInvoiced(imp.getDateInvoiced());
                     if (imp.getDateAcct() != null) invoice.setDateAcct(imp.getDateAcct());
@@ -787,7 +787,7 @@ public class ImportInvoice extends SvrProcess {
                     noInsert++;
                     lineNo = 10;
                 }
-                imp.setC_Invoice_ID(invoice.getC_Invoice_ID());
+                imp.setInvoiceId(invoice.getInvoiceId());
                 //	New InvoiceLine
                 MInvoiceLine line = new MInvoiceLine(invoice);
                 if (imp.getLineDescription() != null) line.setDescription(imp.getLineDescription());
@@ -795,11 +795,11 @@ public class ImportInvoice extends SvrProcess {
                 lineNo += 10;
                 if (imp.getM_Product_ID() != 0) line.setM_Product_ID(imp.getM_Product_ID(), true);
                 // globalqss - import invoice with charges
-                if (imp.getC_Charge_ID() != 0) line.setC_Charge_ID(imp.getC_Charge_ID());
+                if (imp.getChargeId() != 0) line.setChargeId(imp.getChargeId());
                 // globalqss - [2855673] - assign dimensions to lines also in case they're different
-                if (imp.getC_Activity_ID() != 0) line.setC_Activity_ID(imp.getC_Activity_ID());
-                if (imp.getC_Campaign_ID() != 0) line.setC_Campaign_ID(imp.getC_Campaign_ID());
-                if (imp.getC_Project_ID() != 0) line.setC_Project_ID(imp.getC_Project_ID());
+                if (imp.getBusinessActivityId() != 0) line.setBusinessActivityId(imp.getBusinessActivityId());
+                if (imp.getCampaignId() != 0) line.setCampaignId(imp.getCampaignId());
+                if (imp.getProjectId() != 0) line.setProjectId(imp.getProjectId());
                 //
                 line.setQty(imp.getQtyOrdered());
                 line.setPrice();

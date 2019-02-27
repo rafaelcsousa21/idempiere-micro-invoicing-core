@@ -66,7 +66,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @param AssignDateFrom Assign resource from
      */
     public void setAssignDateFrom(Timestamp AssignDateFrom) {
-        set_ValueNoCheck(COLUMNNAME_AssignDateFrom, AssignDateFrom);
+        setValueNoCheck(COLUMNNAME_AssignDateFrom, AssignDateFrom);
     }
 
     /**
@@ -84,7 +84,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -93,7 +93,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @param IsConfirmed Assignment is confirmed
      */
     public void setIsConfirmed(boolean IsConfirmed) {
-        set_ValueNoCheck(COLUMNNAME_IsConfirmed, Boolean.valueOf(IsConfirmed));
+        setValueNoCheck(COLUMNNAME_IsConfirmed, Boolean.valueOf(IsConfirmed));
     }
 
     /**
@@ -127,7 +127,7 @@ public class X_S_ResourceAssignment extends BasePOName
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_ValueNoCheck(COLUMNNAME_Qty, Qty);
+        setValueNoCheck(COLUMNNAME_Qty, Qty);
     }
 
     /**

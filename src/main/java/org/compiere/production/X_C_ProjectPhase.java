@@ -27,7 +27,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
     public X_C_ProjectPhase(Properties ctx, int C_ProjectPhase_ID) {
         super(ctx, C_ProjectPhase_ID);
         /**
-         * if (C_ProjectPhase_ID == 0) { setCommittedAmt (Env.ZERO); setC_Project_ID (0);
+         * if (C_ProjectPhase_ID == 0) { setCommittedAmt (Env.ZERO); setProjectId (0);
          * setC_ProjectPhase_ID (0); setIsCommitCeiling (false); setIsComplete (false); setName (null);
          * setPlannedAmt (Env.ZERO); setProjInvoiceRule (null); // @ProjInvoiceRule@ setSeqNo (0);
          * // @SQL=SELECT NVL(MAX(SeqNo),0)+10 AS DefaultValue FROM C_ProjectPhase WHERE
@@ -62,7 +62,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param CommittedAmt The (legal) commitment amount
      */
     public void setCommittedAmt(BigDecimal CommittedAmt) {
-        set_Value(COLUMNNAME_CommittedAmt, CommittedAmt);
+        setValue(COLUMNNAME_CommittedAmt, CommittedAmt);
     }
 
     /**
@@ -70,9 +70,9 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      *
      * @param C_Order_ID Order
      */
-    public void setC_Order_ID(int C_Order_ID) {
-        if (C_Order_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Order_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
+    public void setOrderId(int C_Order_ID) {
+        if (C_Order_ID < 1) setValueNoCheck(COLUMNNAME_C_Order_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
     }
 
     /**
@@ -92,8 +92,8 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param C_Phase_ID Standard Phase of the Project Type
      */
     public void setC_Phase_ID(int C_Phase_ID) {
-        if (C_Phase_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Phase_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Phase_ID, Integer.valueOf(C_Phase_ID));
+        if (C_Phase_ID < 1) setValueNoCheck(COLUMNNAME_C_Phase_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Phase_ID, Integer.valueOf(C_Phase_ID));
     }
 
     /**
@@ -101,7 +101,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -112,9 +112,9 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      *
      * @param C_Project_ID Financial Project
      */
-    public void setC_Project_ID(int C_Project_ID) {
-        if (C_Project_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Project_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+    public void setProjectId(int C_Project_ID) {
+        if (C_Project_ID < 1) setValueNoCheck(COLUMNNAME_C_Project_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
     }
 
     /**
@@ -143,7 +143,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -152,7 +152,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param Help Comment or Hint
      */
     public void setHelp(String Help) {
-        set_Value(COLUMNNAME_Help, Help);
+        setValue(COLUMNNAME_Help, Help);
     }
 
     /**
@@ -161,7 +161,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param IsCommitCeiling The commitment amount/quantity is the chargeable ceiling
      */
     public void setIsCommitCeiling(boolean IsCommitCeiling) {
-        set_Value(COLUMNNAME_IsCommitCeiling, Boolean.valueOf(IsCommitCeiling));
+        setValue(COLUMNNAME_IsCommitCeiling, Boolean.valueOf(IsCommitCeiling));
     }
 
     /**
@@ -170,7 +170,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param IsComplete It is complete
      */
     public void setIsComplete(boolean IsComplete) {
-        set_Value(COLUMNNAME_IsComplete, Boolean.valueOf(IsComplete));
+        setValue(COLUMNNAME_IsComplete, Boolean.valueOf(IsComplete));
     }
 
     /**
@@ -190,8 +190,8 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -222,7 +222,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_Value(COLUMNNAME_Qty, Qty);
+        setValue(COLUMNNAME_Qty, Qty);
     }
 
     /**
@@ -242,7 +242,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      * @param SeqNo Method of ordering records; lowest number comes first
      */
     public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+        setValue(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
     }
 
     @Override

@@ -169,7 +169,7 @@ public class InventoryCountCreate extends SvrProcess {
             sql.append("FROM M_Locator l");
             sql.append(" INNER JOIN M_Product p ON (l.AD_Client_ID=p.AD_Client_ID) ");
             sql.append("WHERE l.M_Warehouse_ID=");
-            sql.append(m_inventory.getM_Warehouse_ID());
+            sql.append(m_inventory.getWarehouseId());
 
             if (p_M_Locator_ID != 0) sql.append(" AND l.M_Locator_ID=").append(p_M_Locator_ID);
             sql.append(" AND l.IsDefault='Y'")
@@ -227,7 +227,7 @@ public class InventoryCountCreate extends SvrProcess {
         try {
             pstmt = prepareStatement(sql.toString());
             int index = 1;
-            pstmt.setInt(index++, m_inventory.getM_Warehouse_ID());
+            pstmt.setInt(index++, m_inventory.getWarehouseId());
             if (p_M_Locator_ID != 0) pstmt.setInt(index++, p_M_Locator_ID);
             if (p_LocatorValue != null) pstmt.setString(index++, p_LocatorValue.toUpperCase());
             if (p_ProductValue != null) pstmt.setString(index++, p_ProductValue.toUpperCase());

@@ -81,7 +81,7 @@ public class ProjectGenPO extends SvrProcess {
                             + m_ConsolidateDocument);
         if (m_C_ProjectLine_ID != 0) {
             MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
-            MProject project = new MProject(getCtx(), projectLine.getC_Project_ID());
+            MProject project = new MProject(getCtx(), projectLine.getProjectId());
             createPO(project, projectLine);
         } else if (m_C_ProjectPhase_ID != 0) {
             MProject project = new MProject(getCtx(), m_C_Project_ID);
@@ -129,7 +129,7 @@ public class ProjectGenPO extends SvrProcess {
         //	try to find PO to C_BPartner
         for (int i = 0; i < m_pos.size(); i++) {
             MOrder test = (MOrder) m_pos.get(i);
-            if (test.getC_BPartner_ID() == pos[0].getC_BPartner_ID()) {
+            if (test.getBusinessPartnerId() == pos[0].getBusinessPartnerId()) {
                 order = test;
                 break;
             }
@@ -137,7 +137,7 @@ public class ProjectGenPO extends SvrProcess {
         if (order == null) // 	create new Order
         {
             //	Vendor
-            MBPartner bp = new MBPartner(getCtx(), pos[0].getC_BPartner_ID());
+            MBPartner bp = new MBPartner(getCtx(), pos[0].getBusinessPartnerId());
             //	New Order
             order = new MOrder(project, false, null);
             int AD_Org_ID = projectLine.getOrgId();
@@ -164,21 +164,21 @@ public class ProjectGenPO extends SvrProcess {
         if (orderLine.getPriceActual().signum() == 0) {
             //	Try to find purchase price
             BigDecimal poPrice = pos[0].getPricePO();
-            int C_Currency_ID = pos[0].getC_Currency_ID();
+            int C_Currency_ID = pos[0].getCurrencyId();
             //
             if (poPrice == null || poPrice.signum() == 0) poPrice = pos[0].getPriceLastPO();
             if (poPrice == null || poPrice.signum() == 0) poPrice = pos[0].getPriceList();
             //	We have a price
             if (poPrice != null && poPrice.signum() != 0) {
-                if (order.getC_Currency_ID() != C_Currency_ID)
+                if (order.getCurrencyId() != C_Currency_ID)
                     poPrice =
                             MConversionRate.convert(
                                     getCtx(),
                                     poPrice,
                                     C_Currency_ID,
-                                    order.getC_Currency_ID(),
+                                    order.getCurrencyId(),
                                     order.getDateAcct(),
-                                    order.getC_ConversionType_ID(),
+                                    order.getConversionTypeId(),
                                     order.getClientId(),
                                     order.getOrgId());
                 orderLine.setPrice(poPrice);
@@ -189,16 +189,16 @@ public class ProjectGenPO extends SvrProcess {
         orderLine.saveEx();
 
         //	update ProjectLine
-        projectLine.setC_OrderPO_ID(order.getC_Order_ID());
+        projectLine.setC_OrderPO_ID(order.getOrderId());
         projectLine.saveEx();
         addBufferLog(
-                order.getC_Order_ID(),
+                order.getOrderId(),
                 order.getDateOrdered(),
                 new BigDecimal(orderLine.getLine()),
                 Msg.getElement(Env.getADLanguage(Env.getCtx()), "C_Order_ID", false)
                         + ":"
                         + order.getDocumentNo(),
                 order.getTableId(),
-                order.getC_Order_ID());
+                order.getOrderId());
     } //	createPOfromProjectLine
 } //	ProjectGenPO

@@ -33,7 +33,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
         super(ctx, C_DepositBatch_ID);
         /**
          * if (C_DepositBatch_ID == 0) { setC_BankAccount_ID (0); setC_DepositBatch_ID (0);
-         * setC_DocType_ID (0); setDateDeposit (new Timestamp( System.currentTimeMillis() )); // @#Date@
+         * setDocumentTypeId (0); setDateDeposit (new Timestamp( System.currentTimeMillis() )); // @#Date@
          * setDateDoc (new Timestamp( System.currentTimeMillis() )); // @#Date@ setDepositAmt
          * (Env.ZERO); setDocStatus (null); // DR setDocumentNo (null); setProcessed (false); }
          */
@@ -77,8 +77,8 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      * @param C_DepositBatch_ID Deposit Batch
      */
     public void setC_DepositBatch_ID(int C_DepositBatch_ID) {
-        if (C_DepositBatch_ID < 1) set_ValueNoCheck(COLUMNNAME_C_DepositBatch_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_DepositBatch_ID, Integer.valueOf(C_DepositBatch_ID));
+        if (C_DepositBatch_ID < 1) setValueNoCheck(COLUMNNAME_C_DepositBatch_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_DepositBatch_ID, Integer.valueOf(C_DepositBatch_ID));
     }
 
     /**
@@ -86,7 +86,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -97,9 +97,9 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      *
      * @param C_DocType_ID Document type or rules
      */
-    public void setC_DocType_ID(int C_DocType_ID) {
-        if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-        else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+    public void setDocumentTypeId(int C_DocType_ID) {
+        if (C_DocType_ID < 0) setValue(COLUMNNAME_C_DocType_ID, null);
+        else setValue(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
     }
 
     /**
@@ -117,7 +117,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      * @param DateDeposit Deposit Date
      */
     public void setDateDeposit(Timestamp DateDeposit) {
-        set_Value(COLUMNNAME_DateDeposit, DateDeposit);
+        setValue(COLUMNNAME_DateDeposit, DateDeposit);
     }
 
     /**
@@ -135,7 +135,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      * @param DateDoc Date of the Document
      */
     public void setDateDoc(Timestamp DateDoc) {
-        set_Value(COLUMNNAME_DateDoc, DateDoc);
+        setValue(COLUMNNAME_DateDoc, DateDoc);
     }
 
     /**
@@ -155,7 +155,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      * @param DepositAmt Deposit Amount
      */
     public void setDepositAmt(BigDecimal DepositAmt) {
-        set_Value(COLUMNNAME_DepositAmt, DepositAmt);
+        setValue(COLUMNNAME_DepositAmt, DepositAmt);
     }
 
     /**
@@ -173,7 +173,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -183,7 +183,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -192,7 +192,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -201,7 +201,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     @Override

@@ -46,6 +46,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * Invoice
      */
     private I_C_Invoice m_invoice = null;
+
     /**
      * Standard Constructor
      *
@@ -64,6 +65,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
             setIsGenerated(false);
         }
     } //	MCashLine
+
     /**
      * Load Cosntructor
      *
@@ -74,6 +76,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     public MCashLine(Properties ctx, ResultSet rs) {
         super(ctx, rs);
     } //	MCashLine
+
     /**
      * Parent Cosntructor
      *
@@ -135,8 +138,8 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * @return invoice
      */
     public I_C_Invoice getInvoice() {
-        if (m_invoice == null && getC_Invoice_ID() != 0)
-            m_invoice = MInvoice.get(getCtx(), getC_Invoice_ID());
+        if (m_invoice == null && getInvoiceId() != 0)
+            m_invoice = MInvoice.get(getCtx(), getInvoiceId());
         return m_invoice;
     } //	getInvoice
 
@@ -189,11 +192,11 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         }
 
         //	Verify CashType
-        if (X_C_CashLine.CASHTYPE_Invoice.equals(getCashType()) && getC_Invoice_ID() == 0)
+        if (X_C_CashLine.CASHTYPE_Invoice.equals(getCashType()) && getInvoiceId() == 0)
             setCashType(X_C_CashLine.CASHTYPE_GeneralExpense);
         if (X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType())
                 && getC_BankAccount_ID() == 0) setCashType(X_C_CashLine.CASHTYPE_GeneralExpense);
-        if (X_C_CashLine.CASHTYPE_Charge.equals(getCashType()) && getC_Charge_ID() == 0)
+        if (X_C_CashLine.CASHTYPE_Charge.equals(getCashType()) && getChargeId() == 0)
             setCashType(X_C_CashLine.CASHTYPE_GeneralExpense);
 
         boolean verify =
@@ -204,11 +207,11 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         if (verify) {
             //	Verify Currency
             if (X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType()))
-                setC_Currency_ID(getBankAccount().getC_Currency_ID());
+                setCurrencyId(getBankAccount().getCurrencyId());
             else if (X_C_CashLine.CASHTYPE_Invoice.equals(getCashType()))
-                setC_Currency_ID(getInvoice().getC_Currency_ID());
+                setCurrencyId(getInvoice().getCurrencyId());
             else //	Cash
-                setC_Currency_ID(getCashBook().getC_Currency_ID());
+                setCurrencyId(getCashBook().getCurrencyId());
 
             //	Set Organization
             if (X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType()))

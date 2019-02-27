@@ -75,8 +75,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param Account_ID Account used
      */
     public void setAccount_ID(int Account_ID) {
-        if (Account_ID < 1) set_Value(COLUMNNAME_Account_ID, null);
-        else set_Value(COLUMNNAME_Account_ID, Integer.valueOf(Account_ID));
+        if (Account_ID < 1) setValue(COLUMNNAME_Account_ID, null);
+        else setValue(COLUMNNAME_Account_ID, Integer.valueOf(Account_ID));
     }
 
     /**
@@ -84,7 +84,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Performing or initiating organization
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
@@ -95,9 +95,9 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param AD_OrgTrx_ID Performing or initiating organization
      */
-    public void setAD_OrgTrx_ID(int AD_OrgTrx_ID) {
-        if (AD_OrgTrx_ID < 1) set_Value(COLUMNNAME_AD_OrgTrx_ID, null);
-        else set_Value(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+    public void setTransactionOrganizationId(int AD_OrgTrx_ID) {
+        if (AD_OrgTrx_ID < 1) setValue(COLUMNNAME_AD_OrgTrx_ID, null);
+        else setValue(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
     /**
@@ -105,7 +105,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -116,9 +116,9 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param C_Activity_ID Business Activity
      */
-    public void setC_Activity_ID(int C_Activity_ID) {
-        if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-        else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+    public void setBusinessActivityId(int C_Activity_ID) {
+        if (C_Activity_ID < 1) setValue(COLUMNNAME_C_Activity_ID, null);
+        else setValue(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
     }
 
     /**
@@ -126,7 +126,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -137,9 +137,9 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValue(COLUMNNAME_C_BPartner_ID, null);
+        else setValue(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -147,7 +147,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Marketing Campaign
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
@@ -158,9 +158,9 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param C_Campaign_ID Marketing Campaign
      */
-    public void setC_Campaign_ID(int C_Campaign_ID) {
-        if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-        else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
+    public void setCampaignId(int C_Campaign_ID) {
+        if (C_Campaign_ID < 1) setValue(COLUMNNAME_C_Campaign_ID, null);
+        else setValue(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
     }
 
     /**
@@ -180,8 +180,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param C_LocFrom_ID Location that inventory was moved from
      */
     public void setC_LocFrom_ID(int C_LocFrom_ID) {
-        if (C_LocFrom_ID < 1) set_Value(COLUMNNAME_C_LocFrom_ID, null);
-        else set_Value(COLUMNNAME_C_LocFrom_ID, Integer.valueOf(C_LocFrom_ID));
+        if (C_LocFrom_ID < 1) setValue(COLUMNNAME_C_LocFrom_ID, null);
+        else setValue(COLUMNNAME_C_LocFrom_ID, Integer.valueOf(C_LocFrom_ID));
     }
 
     /**
@@ -201,8 +201,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param C_LocTo_ID Location that inventory was moved to
      */
     public void setC_LocTo_ID(int C_LocTo_ID) {
-        if (C_LocTo_ID < 1) set_Value(COLUMNNAME_C_LocTo_ID, null);
-        else set_Value(COLUMNNAME_C_LocTo_ID, Integer.valueOf(C_LocTo_ID));
+        if (C_LocTo_ID < 1) setValue(COLUMNNAME_C_LocTo_ID, null);
+        else setValue(COLUMNNAME_C_LocTo_ID, Integer.valueOf(C_LocTo_ID));
     }
 
     /**
@@ -210,7 +210,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -221,9 +221,9 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param C_Project_ID Financial Project
      */
-    public void setC_Project_ID(int C_Project_ID) {
-        if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-        else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+    public void setProjectId(int C_Project_ID) {
+        if (C_Project_ID < 1) setValue(COLUMNNAME_C_Project_ID, null);
+        else setValue(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
     }
 
     /**
@@ -243,8 +243,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param C_SalesRegion_ID Sales coverage region
      */
     public void setC_SalesRegion_ID(int C_SalesRegion_ID) {
-        if (C_SalesRegion_ID < 1) set_Value(COLUMNNAME_C_SalesRegion_ID, null);
-        else set_Value(COLUMNNAME_C_SalesRegion_ID, Integer.valueOf(C_SalesRegion_ID));
+        if (C_SalesRegion_ID < 1) setValue(COLUMNNAME_C_SalesRegion_ID, null);
+        else setValue(COLUMNNAME_C_SalesRegion_ID, Integer.valueOf(C_SalesRegion_ID));
     }
 
     /**
@@ -284,7 +284,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -304,8 +304,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -325,8 +325,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param Org_ID Organizational entity within client
      */
     public void setOrg_ID(int Org_ID) {
-        if (Org_ID < 1) set_Value(COLUMNNAME_Org_ID, null);
-        else set_Value(COLUMNNAME_Org_ID, Integer.valueOf(Org_ID));
+        if (Org_ID < 1) setValue(COLUMNNAME_Org_ID, null);
+        else setValue(COLUMNNAME_Org_ID, Integer.valueOf(Org_ID));
     }
 
     /**
@@ -349,7 +349,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteAcct Overwrite the account segment Account with the value specified
      */
     public void setOverwriteAcct(boolean OverwriteAcct) {
-        set_Value(COLUMNNAME_OverwriteAcct, Boolean.valueOf(OverwriteAcct));
+        setValue(COLUMNNAME_OverwriteAcct, Boolean.valueOf(OverwriteAcct));
     }
 
     /**
@@ -372,7 +372,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteActivity Overwrite the account segment Activity with the value specified
      */
     public void setOverwriteActivity(boolean OverwriteActivity) {
-        set_Value(COLUMNNAME_OverwriteActivity, Boolean.valueOf(OverwriteActivity));
+        setValue(COLUMNNAME_OverwriteActivity, Boolean.valueOf(OverwriteActivity));
     }
 
     /**
@@ -396,7 +396,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *                          specified
      */
     public void setOverwriteBPartner(boolean OverwriteBPartner) {
-        set_Value(COLUMNNAME_OverwriteBPartner, Boolean.valueOf(OverwriteBPartner));
+        setValue(COLUMNNAME_OverwriteBPartner, Boolean.valueOf(OverwriteBPartner));
     }
 
     /**
@@ -419,7 +419,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteCampaign Overwrite the account segment Campaign with the value specified
      */
     public void setOverwriteCampaign(boolean OverwriteCampaign) {
-        set_Value(COLUMNNAME_OverwriteCampaign, Boolean.valueOf(OverwriteCampaign));
+        setValue(COLUMNNAME_OverwriteCampaign, Boolean.valueOf(OverwriteCampaign));
     }
 
     /**
@@ -442,7 +442,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteLocFrom Overwrite the account segment Location From with the value specified
      */
     public void setOverwriteLocFrom(boolean OverwriteLocFrom) {
-        set_Value(COLUMNNAME_OverwriteLocFrom, Boolean.valueOf(OverwriteLocFrom));
+        setValue(COLUMNNAME_OverwriteLocFrom, Boolean.valueOf(OverwriteLocFrom));
     }
 
     /**
@@ -465,7 +465,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteLocTo Overwrite the account segment Location From with the value specified
      */
     public void setOverwriteLocTo(boolean OverwriteLocTo) {
-        set_Value(COLUMNNAME_OverwriteLocTo, Boolean.valueOf(OverwriteLocTo));
+        setValue(COLUMNNAME_OverwriteLocTo, Boolean.valueOf(OverwriteLocTo));
     }
 
     /**
@@ -488,7 +488,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteOrg Overwrite the account segment Organization with the value specified
      */
     public void setOverwriteOrg(boolean OverwriteOrg) {
-        set_Value(COLUMNNAME_OverwriteOrg, Boolean.valueOf(OverwriteOrg));
+        setValue(COLUMNNAME_OverwriteOrg, Boolean.valueOf(OverwriteOrg));
     }
 
     /**
@@ -512,7 +512,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *                        specified
      */
     public void setOverwriteOrgTrx(boolean OverwriteOrgTrx) {
-        set_Value(COLUMNNAME_OverwriteOrgTrx, Boolean.valueOf(OverwriteOrgTrx));
+        setValue(COLUMNNAME_OverwriteOrgTrx, Boolean.valueOf(OverwriteOrgTrx));
     }
 
     /**
@@ -535,7 +535,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteProduct Overwrite the account segment Product with the value specified
      */
     public void setOverwriteProduct(boolean OverwriteProduct) {
-        set_Value(COLUMNNAME_OverwriteProduct, Boolean.valueOf(OverwriteProduct));
+        setValue(COLUMNNAME_OverwriteProduct, Boolean.valueOf(OverwriteProduct));
     }
 
     /**
@@ -558,7 +558,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteProject Overwrite the account segment Project with the value specified
      */
     public void setOverwriteProject(boolean OverwriteProject) {
-        set_Value(COLUMNNAME_OverwriteProject, Boolean.valueOf(OverwriteProject));
+        setValue(COLUMNNAME_OverwriteProject, Boolean.valueOf(OverwriteProject));
     }
 
     /**
@@ -581,7 +581,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteSalesRegion Overwrite the account segment Sales Region with the value specified
      */
     public void setOverwriteSalesRegion(boolean OverwriteSalesRegion) {
-        set_Value(COLUMNNAME_OverwriteSalesRegion, Boolean.valueOf(OverwriteSalesRegion));
+        setValue(COLUMNNAME_OverwriteSalesRegion, Boolean.valueOf(OverwriteSalesRegion));
     }
 
     /**
@@ -604,7 +604,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteUser1 Overwrite the account segment User 1 with the value specified
      */
     public void setOverwriteUser1(boolean OverwriteUser1) {
-        set_Value(COLUMNNAME_OverwriteUser1, Boolean.valueOf(OverwriteUser1));
+        setValue(COLUMNNAME_OverwriteUser1, Boolean.valueOf(OverwriteUser1));
     }
 
     /**
@@ -627,7 +627,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param OverwriteUser2 Overwrite the account segment User 2 with the value specified
      */
     public void setOverwriteUser2(boolean OverwriteUser2) {
-        set_Value(COLUMNNAME_OverwriteUser2, Boolean.valueOf(OverwriteUser2));
+        setValue(COLUMNNAME_OverwriteUser2, Boolean.valueOf(OverwriteUser2));
     }
 
     /**
@@ -647,7 +647,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      * @param Percent Percentage
      */
     public void setPercent(BigDecimal Percent) {
-        set_Value(COLUMNNAME_Percent, Percent);
+        setValue(COLUMNNAME_Percent, Percent);
     }
 
     /**
@@ -655,7 +655,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return User defined list element #1
      */
-    public int getUser1_ID() {
+    public int getUser1Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
@@ -666,9 +666,9 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param User1_ID User defined list element #1
      */
-    public void setUser1_ID(int User1_ID) {
-        if (User1_ID < 1) set_Value(COLUMNNAME_User1_ID, null);
-        else set_Value(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
+    public void setUser1Id(int User1_ID) {
+        if (User1_ID < 1) setValue(COLUMNNAME_User1_ID, null);
+        else setValue(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
     }
 
     /**
@@ -676,7 +676,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return User defined list element #2
      */
-    public int getUser2_ID() {
+    public int getUser2Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
@@ -687,9 +687,9 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param User2_ID User defined list element #2
      */
-    public void setUser2_ID(int User2_ID) {
-        if (User2_ID < 1) set_Value(COLUMNNAME_User2_ID, null);
-        else set_Value(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
+    public void setUser2Id(int User2_ID) {
+        if (User2_ID < 1) setValue(COLUMNNAME_User2_ID, null);
+        else setValue(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
     }
 
     @Override

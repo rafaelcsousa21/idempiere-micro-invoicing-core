@@ -210,7 +210,7 @@ object DocManager {
         val table = MTable.get(Env.getCtx(), AD_Table_ID)
         val Record_ID = rs.getInt(table.tableKeyColumns[0])
         //  Commit Doc
-        if (!save(null, AD_Table_ID, Record_ID, status)) {
+        if (!save(AD_Table_ID, Record_ID, status)) {
             val dbError = CLogger.retrieveError()
             // log.log(Level.SEVERE, "(doc not saved) ... rolling back");
             if (dbError != null)
@@ -226,7 +226,7 @@ object DocManager {
      * @param trxName transaction name
      * @return true if saved
      */
-    private fun save(trxName: String?, AD_Table_ID: Int, Record_ID: Int, status: String): Boolean {
+    private fun save(AD_Table_ID: Int, Record_ID: Int, status: String): Boolean {
         val table = MTable.get(Env.getCtx(), AD_Table_ID)
         val sql = StringBuilder("UPDATE ")
         sql.append(table.dbTableName).append(" SET Posted='").append(status)

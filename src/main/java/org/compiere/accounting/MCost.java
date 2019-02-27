@@ -438,7 +438,7 @@ public class MCost extends X_M_Cost {
                         MConversionRate.convert(
                                 product.getCtx(),
                                 price,
-                                pos[i].getC_Currency_ID(),
+                                pos[i].getCurrencyId(),
                                 as.getCurrencyId(),
                                 as.getClientId(),
                                 Org_ID);

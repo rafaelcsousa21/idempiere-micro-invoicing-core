@@ -82,8 +82,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param AD_Table_ID Database Table information
      */
     public void setDBTableId(int AD_Table_ID) {
-        if (AD_Table_ID < 1) set_Value(COLUMNNAME_AD_Table_ID, null);
-        else set_Value(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
+        if (AD_Table_ID < 1) setValue(COLUMNNAME_AD_Table_ID, null);
+        else setValue(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
     }
 
     /**
@@ -103,8 +103,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param AD_User_ID User within the system - Internal or Business Partner Contact
      */
     public void setUserId(int AD_User_ID) {
-        if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-        else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+        if (AD_User_ID < 1) setValue(COLUMNNAME_AD_User_ID, null);
+        else setValue(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
     }
 
     /**
@@ -135,8 +135,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param AD_WF_Node_ID Workflow Node (activity), step or process
      */
     public void setWorkflowNodeId(int AD_WF_Node_ID) {
-        if (AD_WF_Node_ID < 1) set_Value(COLUMNNAME_AD_WF_Node_ID, null);
-        else set_Value(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
+        if (AD_WF_Node_ID < 1) setValue(COLUMNNAME_AD_WF_Node_ID, null);
+        else setValue(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
     }
 
     /**
@@ -156,8 +156,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param AD_WF_Process_ID Actual Workflow Process Instance
      */
     public void setWorkflowProcessId(int AD_WF_Process_ID) {
-        if (AD_WF_Process_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_Process_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_WF_Process_ID, Integer.valueOf(AD_WF_Process_ID));
+        if (AD_WF_Process_ID < 1) setValueNoCheck(COLUMNNAME_AD_WF_Process_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_WF_Process_ID, Integer.valueOf(AD_WF_Process_ID));
     }
 
     /**
@@ -177,8 +177,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param AD_WF_Responsible_ID Responsible for Workflow Execution
      */
     public void setWorkflowResponsibleId(int AD_WF_Responsible_ID) {
-        if (AD_WF_Responsible_ID < 1) set_Value(COLUMNNAME_AD_WF_Responsible_ID, null);
-        else set_Value(COLUMNNAME_AD_WF_Responsible_ID, Integer.valueOf(AD_WF_Responsible_ID));
+        if (AD_WF_Responsible_ID < 1) setValue(COLUMNNAME_AD_WF_Responsible_ID, null);
+        else setValue(COLUMNNAME_AD_WF_Responsible_ID, Integer.valueOf(AD_WF_Responsible_ID));
     }
 
     /**
@@ -187,8 +187,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param AD_Workflow_ID Workflow or combination of tasks
      */
     public void setWorkflowId(int AD_Workflow_ID) {
-        if (AD_Workflow_ID < 1) set_Value(COLUMNNAME_AD_Workflow_ID, null);
-        else set_Value(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
+        if (AD_Workflow_ID < 1) setValue(COLUMNNAME_AD_Workflow_ID, null);
+        else setValue(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
     }
 
     /**
@@ -197,7 +197,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param EndWaitTime End of sleep time
      */
     public void setEndWaitTime(Timestamp EndWaitTime) {
-        set_Value(COLUMNNAME_EndWaitTime, EndWaitTime);
+        setValue(COLUMNNAME_EndWaitTime, EndWaitTime);
     }
 
     /**
@@ -217,7 +217,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param Priority Indicates if this request is of a high, medium or low priority.
      */
     public void setPriority(int Priority) {
-        set_Value(COLUMNNAME_Priority, Integer.valueOf(Priority));
+        setValue(COLUMNNAME_Priority, Integer.valueOf(Priority));
     }
 
     /**
@@ -240,7 +240,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -260,8 +260,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param Record_ID Direct internal record ID
      */
     public void setRecordId(int Record_ID) {
-        if (Record_ID < 0) set_Value(COLUMNNAME_Record_ID, null);
-        else set_Value(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
+        if (Record_ID < 0) setValue(COLUMNNAME_Record_ID, null);
+        else setValue(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
     }
 
     /**
@@ -279,7 +279,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      * @param TextMsg Text Message
      */
     public void setTextMsg(String TextMsg) {
-        set_Value(COLUMNNAME_TextMsg, TextMsg);
+        setValue(COLUMNNAME_TextMsg, TextMsg);
     }
 
     /**
@@ -298,7 +298,7 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
      */
     public void setWorkflowState(String WFState) {
 
-        set_Value(COLUMNNAME_WFState, WFState);
+        setValue(COLUMNNAME_WFState, WFState);
     }
 
     @Override

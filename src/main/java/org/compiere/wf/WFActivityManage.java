@@ -57,12 +57,12 @@ public class WFActivityManage extends SvrProcess {
         MWFActivity activity = new MWFActivity(getCtx(), p_AD_WF_Activity_ID);
         if (log.isLoggable(Level.INFO)) log.info("doIt - " + activity);
 
-        MUser user = MUser.get(getCtx(), getAD_User_ID());
+        MUser user = MUser.get(getCtx(), getUserId());
         //	Abort
         if (p_IsAbort) {
             String msg = user.getName() + ": Abort";
             activity.setTextMsg(msg);
-            activity.setUserId(getAD_User_ID());
+            activity.setUserId(getUserId());
             // 2007-06-14, matthiasO.
             // Set the 'processed'-flag when an activity is aborted; not setting this flag
             // will leave the activity in an "unmanagable" state

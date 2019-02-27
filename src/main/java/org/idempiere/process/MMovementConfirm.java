@@ -62,6 +62,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      * Just Prepared Flag
      */
     private boolean m_justPrepared = false;
+
     /**
      * ************************************************************************ Standard Constructor
      *
@@ -179,7 +180,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      */
     public void setIsApproved(boolean IsApproved) {
         if (IsApproved && !isApproved()) {
-            int AD_User_ID = Env.getAD_User_ID(getCtx());
+            int AD_User_ID = Env.getUserId(getCtx());
             MUser user = MUser.get(getCtx(), AD_User_ID);
             String info =
                     user.getName()
@@ -407,11 +408,11 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         if (Env.ZERO.compareTo(confirm.getDifferenceQty()) != 0) {
             //	Get Warehouse for Source
             MLocator loc = MLocator.get(getCtx(), mLine.getM_Locator_ID());
-            if (m_inventoryFrom != null && m_inventoryFrom.getM_Warehouse_ID() != loc.getM_Warehouse_ID())
+            if (m_inventoryFrom != null && m_inventoryFrom.getWarehouseId() != loc.getWarehouseId())
                 m_inventoryFrom = null;
 
             if (m_inventoryFrom == null) {
-                MWarehouse wh = MWarehouse.get(getCtx(), loc.getM_Warehouse_ID());
+                MWarehouse wh = MWarehouse.get(getCtx(), loc.getWarehouseId());
                 m_inventoryFrom = new MInventory(wh);
                 m_inventoryFrom.setDescription(
                         Msg.translate(getCtx(), "M_MovementConfirm_ID") + " " + getDocumentNo());
@@ -450,11 +451,11 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         if (Env.ZERO.compareTo(confirm.getScrappedQty()) != 0) {
             //	Get Warehouse for Target
             MLocator loc = MLocator.get(getCtx(), mLine.getM_LocatorTo_ID());
-            if (m_inventoryTo != null && m_inventoryTo.getM_Warehouse_ID() != loc.getM_Warehouse_ID())
+            if (m_inventoryTo != null && m_inventoryTo.getWarehouseId() != loc.getWarehouseId())
                 m_inventoryTo = null;
 
             if (m_inventoryTo == null) {
-                MWarehouse wh = MWarehouse.get(getCtx(), loc.getM_Warehouse_ID());
+                MWarehouse wh = MWarehouse.get(getCtx(), loc.getWarehouseId());
                 m_inventoryTo = new MInventory(wh);
                 m_inventoryTo.setDescription(
                         Msg.translate(getCtx(), "M_MovementConfirm_ID") + " " + getDocumentNo());
@@ -512,7 +513,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                 MDocType.getOfDocBaseType(Env.getCtx(), X_C_DocType.DOCBASETYPE_MaterialPhysicalInventory);
         for (MDocType doctype : doctypes) {
             if (X_C_DocType.DOCSUBTYPEINV_PhysicalInventory.equals(doctype.getDocSubTypeInv())) {
-                inventory.setC_DocType_ID(doctype.getDocTypeId());
+                inventory.setDocumentTypeId(doctype.getDocTypeId());
                 break;
             }
         }
@@ -668,8 +669,8 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @return C_Currency_ID
      */
-    public int getC_Currency_ID() {
-        //	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
+    public int getCurrencyId() {
+        //	MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
         //	return pl.getCurrencyId();
         return 0;
     } //	getCurrencyId

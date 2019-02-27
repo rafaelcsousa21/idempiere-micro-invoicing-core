@@ -28,9 +28,9 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
     public X_C_InvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID) {
         super(ctx, C_InvoiceBatchLine_ID);
         /**
-         * if (C_InvoiceBatchLine_ID == 0) { setC_BPartner_ID (0); // @C_BPartner_ID@
-         * setC_BPartner_Location_ID (0); // @C_BPartner_Location_ID@ setC_Charge_ID (0);
-         * setC_DocType_ID (0); // @C_DocType_ID@ setC_InvoiceBatch_ID (0); setC_InvoiceBatchLine_ID
+         * if (C_InvoiceBatchLine_ID == 0) { setBusinessPartnerId (0); // @C_BPartner_ID@
+         * setBusinessPartnerLocationId (0); // @C_BPartner_Location_ID@ setChargeId (0);
+         * setDocumentTypeId (0); // @C_DocType_ID@ setC_InvoiceBatch_ID (0); setC_InvoiceBatchLine_ID
          * (0); setC_Tax_ID (0); setDateAcct (new Timestamp( System.currentTimeMillis() ));
          * // @DateAcct@;@DateDoc@ setDateInvoiced (new Timestamp( System.currentTimeMillis() ));
          * // @DateInvoiced@;@DateDoc@ setDocumentNo (null); // @DocumentNo@ setIsTaxIncluded (false);
@@ -67,7 +67,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Performing or initiating organization
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
@@ -78,7 +78,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return User within the system - Internal or Business Partner Contact
      */
-    public int getAD_User_ID() {
+    public int getUserId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
@@ -89,7 +89,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -100,7 +100,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -111,7 +111,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Identifies the (ship to) address for this Business Partner
      */
-    public int getC_BPartner_Location_ID() {
+    public int getBusinessPartnerLocationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_Location_ID);
         if (ii == null) return 0;
         return ii;
@@ -122,7 +122,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -133,7 +133,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -155,7 +155,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Invoice Identifier
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -166,9 +166,9 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @param C_Invoice_ID Invoice Identifier
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        if (C_Invoice_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Invoice_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    public void setInvoiceId(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) setValueNoCheck(COLUMNNAME_C_Invoice_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
     /**
@@ -188,8 +188,8 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
     public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
-        if (C_InvoiceLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+        if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
 
     /**
@@ -197,7 +197,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -229,7 +229,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param DateAcct Accounting Date
      */
     public void setDateAcct(Timestamp DateAcct) {
-        set_Value(COLUMNNAME_DateAcct, DateAcct);
+        setValue(COLUMNNAME_DateAcct, DateAcct);
     }
 
     /**
@@ -247,7 +247,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param DateInvoiced Date printed on Invoice
      */
     public void setDateInvoiced(Timestamp DateInvoiced) {
-        set_Value(COLUMNNAME_DateInvoiced, DateInvoiced);
+        setValue(COLUMNNAME_DateInvoiced, DateInvoiced);
     }
 
     /**
@@ -274,7 +274,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param IsTaxIncluded Tax is included in the price
      */
     public void setIsTaxIncluded(boolean IsTaxIncluded) {
-        set_Value(COLUMNNAME_IsTaxIncluded, Boolean.valueOf(IsTaxIncluded));
+        setValue(COLUMNNAME_IsTaxIncluded, Boolean.valueOf(IsTaxIncluded));
     }
 
     /**
@@ -319,7 +319,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param LineNetAmt Line Extended Amount (Quantity * Actual Price) without Freight and Charges
      */
     public void setLineNetAmt(BigDecimal LineNetAmt) {
-        set_ValueNoCheck(COLUMNNAME_LineNetAmt, LineNetAmt);
+        setValueNoCheck(COLUMNNAME_LineNetAmt, LineNetAmt);
     }
 
     /**
@@ -339,7 +339,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param LineTotalAmt Total line amount incl. Tax
      */
     public void setLineTotalAmt(BigDecimal LineTotalAmt) {
-        set_ValueNoCheck(COLUMNNAME_LineTotalAmt, LineTotalAmt);
+        setValueNoCheck(COLUMNNAME_LineTotalAmt, LineTotalAmt);
     }
 
     /**
@@ -359,7 +359,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param PriceEntered Price Entered - the price based on the selected/base UoM
      */
     public void setPriceEntered(BigDecimal PriceEntered) {
-        set_Value(COLUMNNAME_PriceEntered, PriceEntered);
+        setValue(COLUMNNAME_PriceEntered, PriceEntered);
     }
 
     /**
@@ -368,7 +368,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_ValueNoCheck(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValueNoCheck(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -388,7 +388,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param QtyEntered The Quantity Entered is based on the selected UoM
      */
     public void setQtyEntered(BigDecimal QtyEntered) {
-        set_Value(COLUMNNAME_QtyEntered, QtyEntered);
+        setValue(COLUMNNAME_QtyEntered, QtyEntered);
     }
 
     /**
@@ -408,7 +408,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      * @param TaxAmt Tax Amount for a document
      */
     public void setTaxAmt(BigDecimal TaxAmt) {
-        set_Value(COLUMNNAME_TaxAmt, TaxAmt);
+        setValue(COLUMNNAME_TaxAmt, TaxAmt);
     }
 
     /**
@@ -416,7 +416,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return User defined list element #1
      */
-    public int getUser1_ID() {
+    public int getUser1Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
@@ -427,7 +427,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return User defined list element #2
      */
-    public int getUser2_ID() {
+    public int getUser2Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;

@@ -49,7 +49,7 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
      * @return true if payment schedule is valid
      */
     private boolean applySchedule(MInvoice invoice) {
-        deleteInvoicePaySchedule(invoice.getC_Invoice_ID());
+        deleteInvoicePaySchedule(invoice.getInvoiceId());
         //	Create Schedule
         MInvoicePaySchedule ips = null;
         BigDecimal remainder = invoice.getGrandTotal();
@@ -68,8 +68,8 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
         }
 
         //	updateInvoice
-        if (invoice.getC_PaymentTerm_ID() != getC_PaymentTerm_ID())
-            invoice.setC_PaymentTerm_ID(getC_PaymentTerm_ID());
+        if (invoice.getPaymentTermId() != getPaymentTermId())
+            invoice.setPaymentTermId(getPaymentTermId());
         return invoice.validatePaySchedule();
     } //	applySchedule
 
@@ -80,10 +80,10 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
      * @return false as no payment schedule
      */
     private boolean applyNoSchedule(I_C_Invoice invoice) {
-        deleteInvoicePaySchedule(invoice.getC_Invoice_ID());
+        deleteInvoicePaySchedule(invoice.getInvoiceId());
         //	updateInvoice
-        if (invoice.getC_PaymentTerm_ID() != getC_PaymentTerm_ID())
-            invoice.setC_PaymentTerm_ID(getC_PaymentTerm_ID());
+        if (invoice.getPaymentTermId() != getPaymentTermId())
+            invoice.setPaymentTermId(getPaymentTermId());
         if (invoice.isPayScheduleValid()) invoice.setIsPayScheduleValid(false);
         return false;
     } //	applyNoSchedule

@@ -75,7 +75,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category {
      */
     public void setCategoryType(String CategoryType) {
 
-        set_Value(COLUMNNAME_CategoryType, CategoryType);
+        setValue(COLUMNNAME_CategoryType, CategoryType);
     }
 
     /**
@@ -95,7 +95,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category {
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
     }
 
     /**

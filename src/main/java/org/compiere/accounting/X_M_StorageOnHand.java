@@ -71,7 +71,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      * @param DateLastInventory Date of Last Inventory Count
      */
     public void setDateLastInventory(Timestamp DateLastInventory) {
-        set_Value(COLUMNNAME_DateLastInventory, DateLastInventory);
+        setValue(COLUMNNAME_DateLastInventory, DateLastInventory);
     }
 
     /**
@@ -89,7 +89,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      * @param DateMaterialPolicy Time used for LIFO and FIFO Material Policy
      */
     public void setDateMaterialPolicy(Timestamp DateMaterialPolicy) {
-        set_ValueNoCheck(COLUMNNAME_DateMaterialPolicy, DateMaterialPolicy);
+        setValueNoCheck(COLUMNNAME_DateMaterialPolicy, DateMaterialPolicy);
     }
 
     /**
@@ -98,9 +98,9 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
@@ -132,8 +132,8 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      * @param M_Locator_ID Warehouse Locator
      */
     public void setM_Locator_ID(int M_Locator_ID) {
-        if (M_Locator_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Locator_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        if (M_Locator_ID < 1) setValueNoCheck(COLUMNNAME_M_Locator_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
     /**
@@ -153,8 +153,8 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -174,6 +174,6 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      * @param QtyOnHand On Hand Quantity
      */
     public void setQtyOnHand(BigDecimal QtyOnHand) {
-        set_ValueNoCheck(COLUMNNAME_QtyOnHand, QtyOnHand);
+        setValueNoCheck(COLUMNNAME_QtyOnHand, QtyOnHand);
     }
 }

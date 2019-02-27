@@ -65,8 +65,8 @@ public class X_AD_Note extends PO implements I_AD_Note {
      * @param AD_Message_ID System Message
      */
     public void setMessageId(int AD_Message_ID) {
-        if (AD_Message_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Message_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_Message_ID, Integer.valueOf(AD_Message_ID));
+        if (AD_Message_ID < 1) setValueNoCheck(COLUMNNAME_AD_Message_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_Message_ID, Integer.valueOf(AD_Message_ID));
     }
 
     /**
@@ -81,23 +81,13 @@ public class X_AD_Note extends PO implements I_AD_Note {
     }
 
     /**
-     * Set Table.
-     *
-     * @param AD_Table_ID Database Table information
-     */
-    public void setTableId(int AD_Table_ID) {
-        if (AD_Table_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Table_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
-    }
-
-    /**
      * Set User/Contact.
      *
      * @param AD_User_ID User within the system - Internal or Business Partner Contact
      */
     public void setUserId(int AD_User_ID) {
-        if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-        else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+        if (AD_User_ID < 1) setValue(COLUMNNAME_AD_User_ID, null);
+        else setValue(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
     }
 
     /**
@@ -106,7 +96,7 @@ public class X_AD_Note extends PO implements I_AD_Note {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -129,7 +119,7 @@ public class X_AD_Note extends PO implements I_AD_Note {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -138,7 +128,7 @@ public class X_AD_Note extends PO implements I_AD_Note {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -147,8 +137,8 @@ public class X_AD_Note extends PO implements I_AD_Note {
      * @param Record_ID Direct internal record ID
      */
     public void setRecordId(int Record_ID) {
-        if (Record_ID < 0) set_ValueNoCheck(COLUMNNAME_Record_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
+        if (Record_ID < 0) setValueNoCheck(COLUMNNAME_Record_ID, null);
+        else setValueNoCheck(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
     }
 
     /**
@@ -166,7 +156,7 @@ public class X_AD_Note extends PO implements I_AD_Note {
      * @param Reference Reference for this record
      */
     public void setReference(String Reference) {
-        set_Value(COLUMNNAME_Reference, Reference);
+        setValue(COLUMNNAME_Reference, Reference);
     }
 
     /**
@@ -175,11 +165,21 @@ public class X_AD_Note extends PO implements I_AD_Note {
      * @param TextMsg Text Message
      */
     public void setTextMsg(String TextMsg) {
-        set_Value(COLUMNNAME_TextMsg, TextMsg);
+        setValue(COLUMNNAME_TextMsg, TextMsg);
     }
 
     @Override
     public int getTableId() {
         return I_AD_Note.Table_ID;
+    }
+
+    /**
+     * Set Table.
+     *
+     * @param AD_Table_ID Database Table information
+     */
+    public void setTableId(int AD_Table_ID) {
+        if (AD_Table_ID < 1) setValueNoCheck(COLUMNNAME_AD_Table_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
     }
 }

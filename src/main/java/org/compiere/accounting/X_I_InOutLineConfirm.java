@@ -99,7 +99,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
      * @param I_ErrorMsg Messages generated from import process
      */
     public void setI_ErrorMsg(String I_ErrorMsg) {
-        set_Value(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
+        setValue(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
     }
 
     /**
@@ -108,7 +108,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
      * @param I_IsImported Has this import been processed
      */
     public void setI_IsImported(boolean I_IsImported) {
-        set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
+        setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
     /**
@@ -128,7 +128,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**

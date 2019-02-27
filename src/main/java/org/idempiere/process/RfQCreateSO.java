@@ -64,19 +64,19 @@ public class RfQCreateSO extends SvrProcess {
     	throw new IllegalArgumentException("No RfQ found");
     if (log.isLoggable(Level.INFO)) log.info("doIt - " + rfq);
 
-    if (rfq.getC_BPartner_ID() == 0 || rfq.getC_BPartner_Location_ID() == 0)
+    if (rfq.getBusinessPartnerId() == 0 || rfq.getBusinessPartnerLocationId() == 0)
     	throw new Exception ("No Business Partner/Location");
-    MBPartner bp = new MBPartner (getCtx(), rfq.getC_BPartner_ID(), null);
+    MBPartner bp = new MBPartner (getCtx(), rfq.getBusinessPartnerId(), null);
 
     MOrder order = new MOrder (getCtx(), 0, null);
     order.setIsSOTrx(true);
     if (p_C_DocType_ID != 0)
-    	order.setC_DocTypeTarget_ID(p_C_DocType_ID);
+    	order.setTargetDocumentTypeId(p_C_DocType_ID);
     else
-    	order.setC_DocTypeTarget_ID();
+    	order.setTargetDocumentTypeId();
     order.setBPartner(bp);
-    order.setC_BPartner_Location_ID(rfq.getC_BPartner_Location_ID());
-    order.setSalesRep_ID(rfq.getSalesRep_ID());
+    order.setBusinessPartnerLocationId(rfq.getBusinessPartnerLocationId());
+    order.setSalesRepresentativeId(rfq.getSalesRepresentativeId());
     if (rfq.getDateWorkComplete() != null)
     	order.setDatePromised(rfq.getDateWorkComplete());
     order.saveEx();
@@ -126,7 +126,7 @@ public class RfQCreateSO extends SvrProcess {
     }	//	All Lines
 
     //
-    rfq.setC_Order_ID(order.getC_Order_ID());
+    rfq.setOrderId(order.getOrderId());
     rfq.saveEx();
     return order.getDocumentNo();
     */

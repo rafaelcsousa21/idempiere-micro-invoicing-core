@@ -90,10 +90,10 @@ abstract class BaseComponentTest {
         newBank.routingNo = newBank.name
         newBank.save()
         val newBankAccount = MBankAccount(ctx, 0)
-        newBankAccount.c_Bank_ID = newBank.id
+        newBankAccount.bankId = newBank.id
         newBankAccount.name = newBank.name
         newBankAccount.setSearchKey(newBankAccount.name)
-        newBankAccount.c_Currency_ID = EUR
+        newBankAccount.currencyId = EUR
         newBankAccount.accountNo = newBank.name
         newBankAccount.save()
         _bankAccount = getById(newBankAccount.id, I_C_BankAccount.Table_Name)
@@ -116,7 +116,7 @@ abstract class BaseComponentTest {
         _paymentTerm = getById(newPaymentTerm.id, I_C_PaymentTerm.Table_Name)
         assertNotNull(_paymentTerm)
         val paySchedule = MPaySchedule(ctx, 0)
-        paySchedule.c_PaymentTerm_ID = paymentTerm.id
+        paySchedule.paymentTermId = paymentTerm.id
         paySchedule.percentage = 100.toBigDecimal()
         paySchedule.save()
     }
@@ -126,6 +126,7 @@ abstract class BaseComponentTest {
         val result = modelFactory.getPO(tableName, id)
         println(result)
         assertNotNull(result)
+        @Suppress("UNCHECKED_CAST")
         val obj = result as T
         assertNotNull(obj)
         assertEquals(id, obj.id)
@@ -177,7 +178,7 @@ abstract class BaseComponentTest {
         val attributeSetInstance = MAttributeSetInstance.get(ctx, 0, product.id)
 
         val inventory = MInventory(warehouse)
-        inventory.c_DocType_ID = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "PI" }.id
+        inventory.documentTypeId = MDocType.getOfClient(ctx).first { it.docSubTypeInv == "PI" }.id
         inventory.save()
 
         val inventoryLine = MInventoryLine(
@@ -188,7 +189,7 @@ abstract class BaseComponentTest {
             0.toBigDecimal(),
             0.toBigDecimal()
         )
-        inventoryLine.c_Charge_ID = charge.id
+        inventoryLine.chargeId = charge.id
         inventoryLine.qtyInternalUse = 0.toBigDecimal()
         inventoryLine.save()
 

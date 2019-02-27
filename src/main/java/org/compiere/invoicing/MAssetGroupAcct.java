@@ -90,7 +90,7 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     public boolean setAttrValue(String ColumnName, Object value) {
         int index = getColumnIndex(ColumnName);
         if (index < 0) return false;
-        return set_ValueNoCheck(ColumnName, value);
+        return setValueNoCheck(ColumnName, value);
     }
 
     public Object getAttrValue(String ColumnName) {

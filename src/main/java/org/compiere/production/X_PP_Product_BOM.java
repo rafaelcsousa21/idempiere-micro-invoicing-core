@@ -71,7 +71,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      */
     public void setBOMType(String BOMType) {
 
-        set_Value(COLUMNNAME_BOMType, BOMType);
+        setValue(COLUMNNAME_BOMType, BOMType);
     }
 
     /**
@@ -90,7 +90,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      */
     public void setBOMUse(String BOMUse) {
 
-        set_Value(COLUMNNAME_BOMUse, BOMUse);
+        setValue(COLUMNNAME_BOMUse, BOMUse);
     }
 
     /**
@@ -108,7 +108,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param CopyFrom Copy From Record
      */
     public void setCopyFrom(String CopyFrom) {
-        set_Value(COLUMNNAME_CopyFrom, CopyFrom);
+        setValue(COLUMNNAME_CopyFrom, CopyFrom);
     }
 
     public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
@@ -134,8 +134,8 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param C_UOM_ID Unit of Measure
      */
     public void setC_UOM_ID(int C_UOM_ID) {
-        if (C_UOM_ID < 1) set_Value(COLUMNNAME_C_UOM_ID, null);
-        else set_Value(COLUMNNAME_C_UOM_ID, C_UOM_ID);
+        if (C_UOM_ID < 1) setValue(COLUMNNAME_C_UOM_ID, null);
+        else setValue(COLUMNNAME_C_UOM_ID, C_UOM_ID);
     }
 
     /**
@@ -153,7 +153,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -171,7 +171,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param DocumentNo Document sequence number of the document
      */
     public void setDocumentNo(String DocumentNo) {
-        set_Value(COLUMNNAME_DocumentNo, DocumentNo);
+        setValue(COLUMNNAME_DocumentNo, DocumentNo);
     }
 
     /**
@@ -189,7 +189,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param Help Comment or Hint
      */
     public void setHelp(String Help) {
-        set_Value(COLUMNNAME_Help, Help);
+        setValue(COLUMNNAME_Help, Help);
     }
 
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
@@ -204,9 +204,9 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_Value(COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
     }
 
     /**
@@ -243,8 +243,8 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param M_ChangeNotice_ID Bill of Materials (Engineering) Change Notice (Version)
      */
     public void setM_ChangeNotice_ID(int M_ChangeNotice_ID) {
-        if (M_ChangeNotice_ID < 1) set_Value(COLUMNNAME_M_ChangeNotice_ID, null);
-        else set_Value(COLUMNNAME_M_ChangeNotice_ID, M_ChangeNotice_ID);
+        if (M_ChangeNotice_ID < 1) setValue(COLUMNNAME_M_ChangeNotice_ID, null);
+        else setValue(COLUMNNAME_M_ChangeNotice_ID, M_ChangeNotice_ID);
     }
 
     public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
@@ -270,8 +270,8 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, M_Product_ID);
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -289,7 +289,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param Name Alphanumeric identifier of the entity
      */
     public void setName(String Name) {
-        set_Value(HasName.Companion.getCOLUMNNAME_Name(), Name);
+        setValue(HasName.Companion.getCOLUMNNAME_Name(), Name);
     }
 
     /**
@@ -309,8 +309,8 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param PP_Product_BOM_ID BOM & Formula
      */
     public void setPP_Product_BOM_ID(int PP_Product_BOM_ID) {
-        if (PP_Product_BOM_ID < 1) set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
+        if (PP_Product_BOM_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
+        else setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
     }
 
     /**
@@ -328,7 +328,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param PP_Product_BOM_UU PP_Product_BOM_UU
      */
     public void setPP_Product_BOM_UU(String PP_Product_BOM_UU) {
-        set_Value(COLUMNNAME_PP_Product_BOM_UU, PP_Product_BOM_UU);
+        setValue(COLUMNNAME_PP_Product_BOM_UU, PP_Product_BOM_UU);
     }
 
     /**
@@ -351,7 +351,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -369,7 +369,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param Revision Revision
      */
     public void setRevision(String Revision) {
-        set_Value(COLUMNNAME_Revision, Revision);
+        setValue(COLUMNNAME_Revision, Revision);
     }
 
     /**
@@ -387,7 +387,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param ValidFrom Valid from including this date (first day)
      */
     public void setValidFrom(Timestamp ValidFrom) {
-        set_Value(COLUMNNAME_ValidFrom, ValidFrom);
+        setValue(COLUMNNAME_ValidFrom, ValidFrom);
     }
 
     /**
@@ -405,7 +405,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param ValidTo Valid to including this date (last day)
      */
     public void setValidTo(Timestamp ValidTo) {
-        set_Value(COLUMNNAME_ValidTo, ValidTo);
+        setValue(COLUMNNAME_ValidTo, ValidTo);
     }
 
     /**
@@ -423,7 +423,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      * @param Value Search key for the record in the format required - must be unique
      */
     public void setValue(String Value) {
-        set_Value(COLUMNNAME_Value, Value);
+        setValue(COLUMNNAME_Value, Value);
     }
 
     @Override

@@ -81,17 +81,17 @@ public class RfQCreatePO extends SvrProcess {
     	if (!response.isSelectedWinner())
     		continue;
     	//
-    	MBPartner bp = new MBPartner(getCtx(), response.getC_BPartner_ID(), null);
+    	MBPartner bp = new MBPartner(getCtx(), response.getBusinessPartnerId(), null);
     	if (log.isLoggable(Level.CONFIG)) log.config("Winner=" + bp);
     	MOrder order = new MOrder (getCtx(), 0, null);
     	order.setIsSOTrx(false);
     	if (p_C_DocType_ID != 0)
-    		order.setC_DocTypeTarget_ID(p_C_DocType_ID);
+    		order.setTargetDocumentTypeId(p_C_DocType_ID);
     	else
-    		order.setC_DocTypeTarget_ID();
+    		order.setTargetDocumentTypeId();
     	order.setBPartner(bp);
-    	order.setC_BPartner_Location_ID(response.getC_BPartner_Location_ID());
-    	order.setSalesRep_ID(rfq.getSalesRep_ID());
+    	order.setBusinessPartnerLocationId(response.getBusinessPartnerLocationId());
+    	order.setSalesRepresentativeId(rfq.getSalesRepresentativeId());
     	if (response.getDateWorkComplete() != null)
     		order.setDatePromised(response.getDateWorkComplete());
     	else if (rfq.getDateWorkComplete() != null)
@@ -125,7 +125,7 @@ public class RfQCreatePO extends SvrProcess {
     			}
     		}
     	}
-    	response.setC_Order_ID(order.getC_Order_ID());
+    	response.setOrderId(order.getOrderId());
     	response.saveEx();
     	return order.getDocumentNo();
     }
@@ -146,9 +146,9 @@ public class RfQCreatePO extends SvrProcess {
     		if (!line.isActive() || !line.isSelectedWinner())
     			continue;
     		//	New/different BP
-    		if (bp == null || bp.getC_BPartner_ID() != response.getC_BPartner_ID())
+    		if (bp == null || bp.getBusinessPartnerId() != response.getBusinessPartnerId())
     		{
-    			bp = new MBPartner(getCtx(), response.getC_BPartner_ID(), null);
+    			bp = new MBPartner(getCtx(), response.getBusinessPartnerId(), null);
     			order = null;
     		}
     		if (log.isLoggable(Level.CONFIG)) log.config("Line=" + line + ", Winner=" + bp);
@@ -157,13 +157,13 @@ public class RfQCreatePO extends SvrProcess {
     		{
     			order = new MOrder (getCtx(), 0, null);
     			order.setIsSOTrx(false);
-    			order.setC_DocTypeTarget_ID();
+    			order.setTargetDocumentTypeId();
     			order.setBPartner(bp);
-    			order.setC_BPartner_Location_ID(response.getC_BPartner_Location_ID());
-    			order.setSalesRep_ID(rfq.getSalesRep_ID());
+    			order.setBusinessPartnerLocationId(response.getBusinessPartnerLocationId());
+    			order.setSalesRepresentativeId(rfq.getSalesRepresentativeId());
     			order.saveEx();
     			noOrders++;
-    			addBufferLog(0, null, null, order.getDocumentNo(), order.getTableId(), order.getC_Order_ID());
+    			addBufferLog(0, null, null, order.getDocumentNo(), order.getTableId(), order.getOrderId());
     		}
     		//	For all Qtys
     		MRfQResponseLineQty[] qtys = line.getQtys(false);
@@ -186,7 +186,7 @@ public class RfQCreatePO extends SvrProcess {
     	}	//	for all Response Lines
     	if (order != null)
     	{
-    		response.setC_Order_ID(order.getC_Order_ID());
+    		response.setOrderId(order.getOrderId());
     		response.saveEx();
     	}
     }

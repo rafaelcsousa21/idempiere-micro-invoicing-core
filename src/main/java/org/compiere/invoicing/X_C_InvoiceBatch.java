@@ -31,7 +31,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
          * if (C_InvoiceBatch_ID == 0) { setCurrencyId (0); // @$C_Currency_ID@ setC_InvoiceBatch_ID
          * (0); setControlAmt (Env.ZERO); // 0 setDateDoc (new Timestamp( System.currentTimeMillis() ));
          * // @#Date@ setDocumentAmt (Env.ZERO); setDocumentNo (null); setIsSOTrx (false); // N
-         * setProcessed (false); setSalesRep_ID (0); }
+         * setProcessed (false); setSalesRepresentativeId (0); }
          */
     }
 
@@ -61,7 +61,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      *
      * @return Currency Conversion Rate Type
      */
-    public int getC_ConversionType_ID() {
+    public int getConversionTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ConversionType_ID);
         if (ii == null) return 0;
         return ii;
@@ -72,7 +72,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -106,7 +106,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      * @param ControlAmt If not zero, the Debit amount of the document must be equal this amount
      */
     public void setControlAmt(BigDecimal ControlAmt) {
-        set_Value(COLUMNNAME_ControlAmt, ControlAmt);
+        setValue(COLUMNNAME_ControlAmt, ControlAmt);
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      * @param DateDoc Date of the Document
      */
     public void setDateDoc(Timestamp DateDoc) {
-        set_Value(COLUMNNAME_DateDoc, DateDoc);
+        setValue(COLUMNNAME_DateDoc, DateDoc);
     }
 
     /**
@@ -144,7 +144,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      * @param DocumentAmt Document Amount
      */
     public void setDocumentAmt(BigDecimal DocumentAmt) {
-        set_ValueNoCheck(COLUMNNAME_DocumentAmt, DocumentAmt);
+        setValueNoCheck(COLUMNNAME_DocumentAmt, DocumentAmt);
     }
 
     /**
@@ -153,7 +153,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      * @param IsSOTrx This is a Sales Transaction
      */
     public void setIsSOTrx(boolean IsSOTrx) {
-        set_Value(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
+        setValue(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
     }
 
     /**
@@ -190,7 +190,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -198,7 +198,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      *
      * @return Sales Representative or Company Agent
      */
-    public int getSalesRep_ID() {
+    public int getSalesRepresentativeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_SalesRep_ID);
         if (ii == null) return 0;
         return ii;

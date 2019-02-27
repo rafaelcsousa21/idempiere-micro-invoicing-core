@@ -71,7 +71,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement {
      * @param DateDoc Date of the Document
      */
     public void setDateDoc(Timestamp DateDoc) {
-        set_Value(COLUMNNAME_DateDoc, DateDoc);
+        setValue(COLUMNNAME_DateDoc, DateDoc);
     }
 
     /**
@@ -105,7 +105,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement {
      * @param ManualActual Manually entered actual value
      */
     public void setManualActual(BigDecimal ManualActual) {
-        set_Value(COLUMNNAME_ManualActual, ManualActual);
+        setValue(COLUMNNAME_ManualActual, ManualActual);
     }
 
     /**

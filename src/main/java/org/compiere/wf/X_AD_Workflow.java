@@ -96,7 +96,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      */
     public void setWFAccessLevel(String AccessLevel) {
 
-        set_Value(COLUMNNAME_AccessLevel, AccessLevel);
+        setValue(COLUMNNAME_AccessLevel, AccessLevel);
     }
 
     /**
@@ -116,8 +116,8 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param AD_Table_ID Database Table information
      */
     public void setDBTableId(int AD_Table_ID) {
-        if (AD_Table_ID < 1) set_Value(COLUMNNAME_AD_Table_ID, null);
-        else set_Value(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
+        if (AD_Table_ID < 1) setValue(COLUMNNAME_AD_Table_ID, null);
+        else setValue(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
     }
 
     /**
@@ -159,7 +159,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param Author Author/Creator of the Entity
      */
     public void setAuthor(String Author) {
-        set_Value(COLUMNNAME_Author, Author);
+        setValue(COLUMNNAME_Author, Author);
     }
 
     /**
@@ -168,7 +168,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param Cost Cost information
      */
     public void setCost(BigDecimal Cost) {
-        set_Value(COLUMNNAME_Cost, Cost);
+        setValue(COLUMNNAME_Cost, Cost);
     }
 
     /**
@@ -187,7 +187,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param Duration Normal Duration in Duration Unit
      */
     public void setDuration(int Duration) {
-        set_Value(COLUMNNAME_Duration, Integer.valueOf(Duration));
+        setValue(COLUMNNAME_Duration, Integer.valueOf(Duration));
     }
 
     /**
@@ -206,7 +206,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      */
     public void setDurationUnit(String DurationUnit) {
 
-        set_Value(COLUMNNAME_DurationUnit, DurationUnit);
+        setValue(COLUMNNAME_DurationUnit, DurationUnit);
     }
 
     /**
@@ -216,7 +216,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      */
     public void setEntityType(String EntityType) {
 
-        set_Value(COLUMNNAME_EntityType, EntityType);
+        setValue(COLUMNNAME_EntityType, EntityType);
     }
 
     /**
@@ -225,7 +225,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param IsBetaFunctionality This functionality is considered Beta
      */
     public void setIsBetaFunctionality(boolean IsBetaFunctionality) {
-        set_Value(COLUMNNAME_IsBetaFunctionality, Boolean.valueOf(IsBetaFunctionality));
+        setValue(COLUMNNAME_IsBetaFunctionality, Boolean.valueOf(IsBetaFunctionality));
     }
 
     /**
@@ -234,7 +234,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
     }
 
     /**
@@ -243,7 +243,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param IsValid Element is valid
      */
     public void setIsValid(boolean IsValid) {
-        set_Value(COLUMNNAME_IsValid, Boolean.valueOf(IsValid));
+        setValue(COLUMNNAME_IsValid, Boolean.valueOf(IsValid));
     }
 
     /**
@@ -278,7 +278,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      */
     public void setPublishStatus(String PublishStatus) {
 
-        set_Value(COLUMNNAME_PublishStatus, PublishStatus);
+        setValue(COLUMNNAME_PublishStatus, PublishStatus);
     }
 
     /**
@@ -305,7 +305,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param Version Version of the table definition
      */
     public void setVersion(int Version) {
-        set_Value(COLUMNNAME_Version, Integer.valueOf(Version));
+        setValue(COLUMNNAME_Version, Integer.valueOf(Version));
     }
 
     /**
@@ -314,7 +314,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param WaitingTime Workflow Simulation Waiting time
      */
     public void setWaitingTime(int WaitingTime) {
-        set_Value(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
+        setValue(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
     }
 
     /**
@@ -332,7 +332,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
      * @param WorkingTime Workflow Simulation Execution Time
      */
     public void setWorkingTime(int WorkingTime) {
-        set_Value(COLUMNNAME_WorkingTime, Integer.valueOf(WorkingTime));
+        setValue(COLUMNNAME_WorkingTime, Integer.valueOf(WorkingTime));
     }
 
     @Override

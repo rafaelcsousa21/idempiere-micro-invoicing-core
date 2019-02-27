@@ -71,7 +71,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      * @param Amount Amount in a defined currency
      */
     public void setAmount(BigDecimal Amount) {
-        set_ValueNoCheck(COLUMNNAME_Amount, Amount);
+        setValueNoCheck(COLUMNNAME_Amount, Amount);
     }
 
     /**
@@ -91,8 +91,8 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      * @param C_AllocationHdr_ID Payment allocation
      */
     public void setC_AllocationHdr_ID(int C_AllocationHdr_ID) {
-        if (C_AllocationHdr_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AllocationHdr_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_AllocationHdr_ID, Integer.valueOf(C_AllocationHdr_ID));
+        if (C_AllocationHdr_ID < 1) setValueNoCheck(COLUMNNAME_C_AllocationHdr_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_AllocationHdr_ID, Integer.valueOf(C_AllocationHdr_ID));
     }
 
     /**
@@ -111,7 +111,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -122,9 +122,9 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BPartner_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValueNoCheck(COLUMNNAME_C_BPartner_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -144,14 +144,14 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      * @param C_CashLine_ID Cash Journal Line
      */
     public void setC_CashLine_ID(int C_CashLine_ID) {
-        if (C_CashLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_CashLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_CashLine_ID, Integer.valueOf(C_CashLine_ID));
+        if (C_CashLine_ID < 1) setValueNoCheck(COLUMNNAME_C_CashLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_CashLine_ID, Integer.valueOf(C_CashLine_ID));
     }
 
     public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
         return (org.compiere.model.I_C_Invoice)
                 MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
-                        .getPO(getC_Invoice_ID());
+                        .getPO(getInvoiceId());
     }
 
     /**
@@ -159,7 +159,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @return Invoice Identifier
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -170,9 +170,9 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @param C_Invoice_ID Invoice Identifier
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        if (C_Invoice_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Invoice_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    public void setInvoiceId(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) setValueNoCheck(COLUMNNAME_C_Invoice_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
     /**
@@ -180,7 +180,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @return Order
      */
-    public int getC_Order_ID() {
+    public int getOrderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Order_ID);
         if (ii == null) return 0;
         return ii;
@@ -191,15 +191,15 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @param C_Order_ID Order
      */
-    public void setC_Order_ID(int C_Order_ID) {
-        if (C_Order_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Order_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
+    public void setOrderId(int C_Order_ID) {
+        if (C_Order_ID < 1) setValueNoCheck(COLUMNNAME_C_Order_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
     }
 
     public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
         return (org.compiere.model.I_C_Payment)
                 MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
-                        .getPO(getC_Payment_ID());
+                        .getPO(getPaymentId());
     }
 
     /**
@@ -207,7 +207,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @return Payment identifier
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
@@ -218,9 +218,9 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @param C_Payment_ID Payment identifier
      */
-    public void setC_Payment_ID(int C_Payment_ID) {
-        if (C_Payment_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Payment_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Payment_ID, C_Payment_ID);
+    public void setPaymentId(int C_Payment_ID) {
+        if (C_Payment_ID < 1) setValueNoCheck(COLUMNNAME_C_Payment_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Payment_ID, C_Payment_ID);
     }
 
     /**
@@ -240,7 +240,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      * @param DiscountAmt Calculated amount of discount
      */
     public void setDiscountAmt(BigDecimal DiscountAmt) {
-        set_ValueNoCheck(COLUMNNAME_DiscountAmt, DiscountAmt);
+        setValueNoCheck(COLUMNNAME_DiscountAmt, DiscountAmt);
     }
 
     /**
@@ -260,7 +260,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      * @param OverUnderAmt Over-Payment (unallocated) or Under-Payment (partial payment) Amount
      */
     public void setOverUnderAmt(BigDecimal OverUnderAmt) {
-        set_Value(COLUMNNAME_OverUnderAmt, OverUnderAmt);
+        setValue(COLUMNNAME_OverUnderAmt, OverUnderAmt);
     }
 
     /**
@@ -280,7 +280,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      * @param WriteOffAmt Amount to write-off
      */
     public void setWriteOffAmt(BigDecimal WriteOffAmt) {
-        set_ValueNoCheck(COLUMNNAME_WriteOffAmt, WriteOffAmt);
+        setValueNoCheck(COLUMNNAME_WriteOffAmt, WriteOffAmt);
     }
 
     @Override

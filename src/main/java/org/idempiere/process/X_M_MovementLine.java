@@ -63,7 +63,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param ConfirmedQty Confirmation of a received quantity
      */
     public void setConfirmedQty(BigDecimal ConfirmedQty) {
-        set_Value(COLUMNNAME_ConfirmedQty, ConfirmedQty);
+        setValue(COLUMNNAME_ConfirmedQty, ConfirmedQty);
     }
 
     /**
@@ -81,7 +81,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -101,7 +101,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -110,9 +110,9 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
     /**
@@ -133,9 +133,9 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      */
     public void setM_AttributeSetInstanceTo_ID(int M_AttributeSetInstanceTo_ID) {
         if (M_AttributeSetInstanceTo_ID < 1)
-            set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstanceTo_ID, null);
+            setValueNoCheck(COLUMNNAME_M_AttributeSetInstanceTo_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstanceTo_ID, Integer.valueOf(M_AttributeSetInstanceTo_ID));
     }
 
@@ -167,8 +167,8 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param M_Locator_ID Warehouse Locator
      */
     public void setM_Locator_ID(int M_Locator_ID) {
-        if (M_Locator_ID < 1) set_Value(COLUMNNAME_M_Locator_ID, null);
-        else set_Value(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        if (M_Locator_ID < 1) setValue(COLUMNNAME_M_Locator_ID, null);
+        else setValue(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
     /**
@@ -188,8 +188,8 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param M_LocatorTo_ID Location inventory is moved to
      */
     public void setM_LocatorTo_ID(int M_LocatorTo_ID) {
-        if (M_LocatorTo_ID < 1) set_Value(COLUMNNAME_M_LocatorTo_ID, null);
-        else set_Value(COLUMNNAME_M_LocatorTo_ID, Integer.valueOf(M_LocatorTo_ID));
+        if (M_LocatorTo_ID < 1) setValue(COLUMNNAME_M_LocatorTo_ID, null);
+        else setValue(COLUMNNAME_M_LocatorTo_ID, Integer.valueOf(M_LocatorTo_ID));
     }
 
     public org.compiere.model.I_M_Movement getM_Movement() throws RuntimeException {
@@ -215,8 +215,8 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param M_Movement_ID Movement of Inventory
      */
     public void setM_Movement_ID(int M_Movement_ID) {
-        if (M_Movement_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Movement_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Movement_ID, Integer.valueOf(M_Movement_ID));
+        if (M_Movement_ID < 1) setValueNoCheck(COLUMNNAME_M_Movement_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Movement_ID, Integer.valueOf(M_Movement_ID));
     }
 
     /**
@@ -247,7 +247,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param MovementQty Quantity of a product moved.
      */
     public void setMovementQty(BigDecimal MovementQty) {
-        set_Value(COLUMNNAME_MovementQty, MovementQty);
+        setValue(COLUMNNAME_MovementQty, MovementQty);
     }
 
     /**
@@ -267,8 +267,8 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -277,7 +277,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -286,8 +286,8 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param ReversalLine_ID Use to keep the reversal line ID for reversing costing purpose
      */
     public void setReversalLine_ID(int ReversalLine_ID) {
-        if (ReversalLine_ID < 1) set_Value(COLUMNNAME_ReversalLine_ID, null);
-        else set_Value(COLUMNNAME_ReversalLine_ID, Integer.valueOf(ReversalLine_ID));
+        if (ReversalLine_ID < 1) setValue(COLUMNNAME_ReversalLine_ID, null);
+        else setValue(COLUMNNAME_ReversalLine_ID, Integer.valueOf(ReversalLine_ID));
     }
 
     /**
@@ -296,7 +296,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param ScrappedQty The Quantity scrapped due to QA issues
      */
     public void setScrappedQty(BigDecimal ScrappedQty) {
-        set_Value(COLUMNNAME_ScrappedQty, ScrappedQty);
+        setValue(COLUMNNAME_ScrappedQty, ScrappedQty);
     }
 
     /**
@@ -305,7 +305,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      * @param TargetQty Target Movement Quantity
      */
     public void setTargetQty(BigDecimal TargetQty) {
-        set_Value(COLUMNNAME_TargetQty, TargetQty);
+        setValue(COLUMNNAME_TargetQty, TargetQty);
     }
 
 }

@@ -203,7 +203,7 @@ public class PaySelectionCreateFrom extends SvrProcess {
 
         //
         int lines = 0;
-        int C_CurrencyTo_ID = psel.getC_Currency_ID();
+        int C_CurrencyTo_ID = psel.getCurrencyId();
         PreparedStatement pstmt;
         ResultSet rs;
         try {

@@ -181,10 +181,10 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      *
      * @param C_DocType_ID id
      */
-    public void setC_DocType_ID(int C_DocType_ID) {
-        super.setC_DocType_ID(C_DocType_ID);
+    public void setDocumentTypeId(int C_DocType_ID) {
+        super.setDocumentTypeId(C_DocType_ID);
         if (isValid()) setIsValid(false);
-    } //	setC_DocType_ID
+    } //	setDocumentTypeId
 
     /**
      * Set Counter C_DocType_ID
@@ -203,8 +203,8 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      */
     public MDocType getDocType() {
         MDocType dt = null;
-        if (getC_DocType_ID() > 0) {
-            dt = MDocType.get(getCtx(), getC_DocType_ID());
+        if (getDocumentTypeId() > 0) {
+            dt = MDocType.get(getCtx(), getDocumentTypeId());
             if (dt.getId() == 0) dt = null;
         }
         return dt;
@@ -233,7 +233,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     public String validate() {
         MDocType dt = getDocType();
         if (dt == null) {
-            log.log(Level.SEVERE, "No DocType=" + getC_DocType_ID());
+            log.log(Level.SEVERE, "No DocType=" + getDocumentTypeId());
             setIsValid(false);
             return "No Document Type";
         }
@@ -295,7 +295,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
                 .append(",")
                 .append(getName())
                 .append(",C_DocType_ID=")
-                .append(getC_DocType_ID())
+                .append(getDocumentTypeId())
                 .append(",Counter=")
                 .append(getCounter_C_DocType_ID())
                 .append(",DocAction=")

@@ -65,8 +65,8 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @param AD_Schedule_ID Schedule
      */
     public void setAD_Schedule_ID(int AD_Schedule_ID) {
-        if (AD_Schedule_ID < 1) set_Value(COLUMNNAME_AD_Schedule_ID, null);
-        else set_Value(COLUMNNAME_AD_Schedule_ID, Integer.valueOf(AD_Schedule_ID));
+        if (AD_Schedule_ID < 1) setValue(COLUMNNAME_AD_Schedule_ID, null);
+        else setValue(COLUMNNAME_AD_Schedule_ID, Integer.valueOf(AD_Schedule_ID));
     }
 
     /**
@@ -84,7 +84,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @param DateNextRun Date the process will run next
      */
     public void setDateNextRun(Timestamp DateNextRun) {
-        set_Value(COLUMNNAME_DateNextRun, DateNextRun);
+        setValue(COLUMNNAME_DateNextRun, DateNextRun);
     }
 
     /**
@@ -93,7 +93,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @param KeepLogDays Number of days to keep the log entries
      */
     public void setKeepLogDays(int KeepLogDays) {
-        set_Value(COLUMNNAME_KeepLogDays, Integer.valueOf(KeepLogDays));
+        setValue(COLUMNNAME_KeepLogDays, Integer.valueOf(KeepLogDays));
     }
 
     /**
@@ -102,7 +102,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @param OverdueAlertDays Send email alert after number of days due (0=no alerts)
      */
     public void setOverdueAlertDays(int OverdueAlertDays) {
-        set_Value(COLUMNNAME_OverdueAlertDays, Integer.valueOf(OverdueAlertDays));
+        setValue(COLUMNNAME_OverdueAlertDays, Integer.valueOf(OverdueAlertDays));
     }
 
     /**
@@ -111,7 +111,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @param OverdueAssignDays Escalation to superior after number of due days (0 = no)
      */
     public void setOverdueAssignDays(int OverdueAssignDays) {
-        set_Value(COLUMNNAME_OverdueAssignDays, Integer.valueOf(OverdueAssignDays));
+        setValue(COLUMNNAME_OverdueAssignDays, Integer.valueOf(OverdueAssignDays));
     }
 
     /**
@@ -120,7 +120,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @param RemindDays Days between sending Reminder Emails for a due or inactive Document
      */
     public void setRemindDays(int RemindDays) {
-        set_Value(COLUMNNAME_RemindDays, Integer.valueOf(RemindDays));
+        setValue(COLUMNNAME_RemindDays, Integer.valueOf(RemindDays));
     }
 
     /**
@@ -140,7 +140,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      * @param Supervisor_ID Supervisor for this user/organization - used for escalation and approval
      */
     public void setSupervisor_ID(int Supervisor_ID) {
-        if (Supervisor_ID < 1) set_Value(COLUMNNAME_Supervisor_ID, null);
-        else set_Value(COLUMNNAME_Supervisor_ID, Integer.valueOf(Supervisor_ID));
+        if (Supervisor_ID < 1) setValue(COLUMNNAME_Supervisor_ID, null);
+        else setValue(COLUMNNAME_Supervisor_ID, Integer.valueOf(Supervisor_ID));
     }
 }

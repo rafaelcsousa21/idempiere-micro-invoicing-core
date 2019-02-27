@@ -76,7 +76,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
     public X_GL_JournalBatch(Properties ctx, int GL_JournalBatch_ID) {
         super(ctx, GL_JournalBatch_ID);
         /**
-         * if (GL_JournalBatch_ID == 0) { setC_DocType_ID (0); setDescription (null); setDocAction
+         * if (GL_JournalBatch_ID == 0) { setDocumentTypeId (0); setDescription (null); setDocAction
          * (null); // CO setDocStatus (null); // DR setDocumentNo (null); setGL_JournalBatch_ID (0);
          * setPostingType (null); // A setProcessed (false); setProcessing (false); setTotalCr
          * (Env.ZERO); setTotalDr (Env.ZERO); }
@@ -109,7 +109,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -120,9 +120,9 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-        else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValue(COLUMNNAME_C_Currency_ID, null);
+        else setValue(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     /**
@@ -130,7 +130,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -141,9 +141,9 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @param C_DocType_ID Document type or rules
      */
-    public void setC_DocType_ID(int C_DocType_ID) {
-        if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-        else set_Value(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+    public void setDocumentTypeId(int C_DocType_ID) {
+        if (C_DocType_ID < 0) setValue(COLUMNNAME_C_DocType_ID, null);
+        else setValue(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
     }
 
     /**
@@ -163,7 +163,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param ControlAmt If not zero, the Debit amount of the document must be equal this amount
      */
     public void setControlAmt(BigDecimal ControlAmt) {
-        set_Value(COLUMNNAME_ControlAmt, ControlAmt);
+        setValue(COLUMNNAME_ControlAmt, ControlAmt);
     }
 
     /**
@@ -183,8 +183,8 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param C_Period_ID Period of the Calendar
      */
     public void setC_Period_ID(int C_Period_ID) {
-        if (C_Period_ID < 1) set_Value(COLUMNNAME_C_Period_ID, null);
-        else set_Value(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
+        if (C_Period_ID < 1) setValue(COLUMNNAME_C_Period_ID, null);
+        else setValue(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
     }
 
     /**
@@ -202,7 +202,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param DateAcct Accounting Date
      */
     public void setDateAcct(Timestamp DateAcct) {
-        set_Value(COLUMNNAME_DateAcct, DateAcct);
+        setValue(COLUMNNAME_DateAcct, DateAcct);
     }
 
     /**
@@ -220,7 +220,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param DateDoc Date of the Document
      */
     public void setDateDoc(Timestamp DateDoc) {
-        set_Value(COLUMNNAME_DateDoc, DateDoc);
+        setValue(COLUMNNAME_DateDoc, DateDoc);
     }
 
     /**
@@ -238,7 +238,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -257,7 +257,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -276,7 +276,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -294,7 +294,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param DocumentNo Document sequence number of the document
      */
     public void setDocumentNo(String DocumentNo) {
-        set_ValueNoCheck(COLUMNNAME_DocumentNo, DocumentNo);
+        setValueNoCheck(COLUMNNAME_DocumentNo, DocumentNo);
     }
 
     /**
@@ -314,8 +314,8 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param GL_Category_ID General Ledger Category
      */
     public void setGL_Category_ID(int GL_Category_ID) {
-        if (GL_Category_ID < 1) set_Value(COLUMNNAME_GL_Category_ID, null);
-        else set_Value(COLUMNNAME_GL_Category_ID, Integer.valueOf(GL_Category_ID));
+        if (GL_Category_ID < 1) setValue(COLUMNNAME_GL_Category_ID, null);
+        else setValue(COLUMNNAME_GL_Category_ID, Integer.valueOf(GL_Category_ID));
     }
 
     /**
@@ -335,7 +335,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -354,7 +354,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      */
     public void setPostingType(String PostingType) {
 
-        set_Value(COLUMNNAME_PostingType, PostingType);
+        setValue(COLUMNNAME_PostingType, PostingType);
     }
 
     /**
@@ -377,7 +377,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -386,7 +386,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -395,8 +395,8 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param Reversal_ID ID of document reversal
      */
     public void setReversal_ID(int Reversal_ID) {
-        if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
-        else set_Value(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+        if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
+        else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }
 
     /**
@@ -416,7 +416,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param TotalCr Total Credit in document currency
      */
     public void setTotalCr(BigDecimal TotalCr) {
-        set_ValueNoCheck(COLUMNNAME_TotalCr, TotalCr);
+        setValueNoCheck(COLUMNNAME_TotalCr, TotalCr);
     }
 
     /**
@@ -436,7 +436,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      * @param TotalDr Total debit in document currency
      */
     public void setTotalDr(BigDecimal TotalDr) {
-        set_ValueNoCheck(COLUMNNAME_TotalDr, TotalDr);
+        setValueNoCheck(COLUMNNAME_TotalDr, TotalDr);
     }
 
     @Override

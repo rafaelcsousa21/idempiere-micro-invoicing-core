@@ -78,6 +78,7 @@ public class ModelValidationEngine {
     //	/** Change Support			*/
     //	private VetoableChangeSupport m_changeSupport = new VetoableChangeSupport(this);
     private ArrayList<ModelValidator> m_globalValidators = new ArrayList<ModelValidator>();
+
     /**
      * ************************************************************************ Constructor. Creates
      * Model Validators

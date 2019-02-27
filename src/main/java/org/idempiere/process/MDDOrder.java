@@ -105,21 +105,21 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         this(project.getCtx(), 0);
         setADClientID(project.getClientId());
         setOrgId(project.getOrgId());
-        setC_Campaign_ID(project.getC_Campaign_ID());
-        setSalesRep_ID(project.getSalesRep_ID());
+        setCampaignId(project.getCampaignId());
+        setSalesRepresentativeId(project.getSalesRepresentativeId());
         //
-        setC_Project_ID(project.getC_Project_ID());
+        setProjectId(project.getProjectId());
         setDescription(project.getName());
         Timestamp ts = project.getDateContract();
         if (ts != null) setDateOrdered(ts);
         ts = project.getDateFinish();
         if (ts != null) setDatePromised(ts);
         //
-        setC_BPartner_ID(project.getC_BPartner_ID());
-        setC_BPartner_Location_ID(project.getC_BPartner_Location_ID());
-        setAD_User_ID(project.getAD_User_ID());
+        setBusinessPartnerId(project.getBusinessPartnerId());
+        setBusinessPartnerLocationId(project.getBusinessPartnerLocationId());
+        setUserId(project.getUserId());
         //
-        setM_Warehouse_ID(project.getM_Warehouse_ID());
+        setWarehouseId(project.getWarehouseId());
         //
         setIsSOTrx(IsSOTrx);
     } //	MDDOrder
@@ -154,15 +154,15 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     public void setBPartner(I_C_BPartner bp) {
         if (bp == null) return;
 
-        setC_BPartner_ID(bp.getC_BPartner_ID());
+        setBusinessPartnerId(bp.getBusinessPartnerId());
         //	Defaults Payment Term
         int ii = 0;
-        if (isSOTrx()) ii = bp.getC_PaymentTerm_ID();
-        else ii = bp.getPO_PaymentTerm_ID();
+        if (isSOTrx()) ii = bp.getPaymentTermId();
+        else ii = bp.getPurchaseOrderPaymentTermId();
 
         //	Default Price List
-        if (isSOTrx()) ii = bp.getM_PriceList_ID();
-        else ii = bp.getPO_PriceList_ID();
+        if (isSOTrx()) ii = bp.getPriceListId();
+        else ii = bp.getPurchaseOrderPriceListId();
         //	Default Delivery/Via Rule
         String ss = bp.getDeliveryRule();
         if (ss != null) setDeliveryRule(ss);
@@ -171,9 +171,9 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         //	Default Invoice/Payment Rule
         ss = bp.getInvoiceRule();
 
-        if (getSalesRep_ID() == 0) {
-            ii = Env.getAD_User_ID(getCtx());
-            if (ii != 0) setSalesRep_ID(ii);
+        if (getSalesRepresentativeId() == 0) {
+            ii = Env.getUserId(getCtx());
+            if (ii != 0) setSalesRepresentativeId(ii);
         }
 
         //	Set Locations
@@ -181,22 +181,22 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         if (locs != null) {
             for (int i = 0; i < locs.length; i++) {
                 if (locs[i].isShipTo()) {
-                    super.setC_BPartner_Location_ID(locs[i].getC_BPartner_Location_ID());
+                    super.setBusinessPartnerLocationId(locs[i].getBusinessPartnerLocationId());
                 }
             }
             //	set to first
-            if (getC_BPartner_Location_ID() == 0 && locs.length > 0) {
-                super.setC_BPartner_Location_ID(locs[0].getC_BPartner_Location_ID());
+            if (getBusinessPartnerLocationId() == 0 && locs.length > 0) {
+                super.setBusinessPartnerLocationId(locs[0].getBusinessPartnerLocationId());
             }
         }
-        if (getC_BPartner_Location_ID() == 0) {
+        if (getBusinessPartnerLocationId() == 0) {
             log.log(Level.SEVERE, "MDDOrder.setBPartner - Has no Ship To Address: " + bp);
         }
 
         //	Set Contact
         I_AD_User[] contacts = bp.getContacts();
         if (contacts != null && contacts.length == 1) {
-            setAD_User_ID(contacts[0].getUserId());
+            setUserId(contacts[0].getUserId());
         }
     } //	setBPartner
 
@@ -214,7 +214,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                         .append(",IsSOTrx=")
                         .append(isSOTrx())
                         .append(",C_DocType_ID=")
-                        .append(getC_DocType_ID())
+                        .append(getDocumentTypeId())
                         .append("]");
         return sb.toString();
     } //	toString
@@ -225,7 +225,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * @return document info (untranslated)
      */
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         return dt.getNameTrl() + " " + getDocumentNo();
     } //	getDocumentInfo
 
@@ -323,12 +323,12 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         }
 
         //	New Record Doc Type - make sure DocType set to 0
-        if (newRecord && getC_DocType_ID() == 0) setC_DocType_ID(0);
+        if (newRecord && getDocumentTypeId() == 0) setDocumentTypeId(0);
 
         //	Default Warehouse
-        if (getM_Warehouse_ID() == 0) {
+        if (getWarehouseId() == 0) {
             int ii = Env.getContextAsInt(getCtx(), "#M_Warehouse_ID");
-            if (ii != 0) setM_Warehouse_ID(ii);
+            if (ii != 0) setWarehouseId(ii);
             else {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "M_Warehouse_ID"));
                 return false;
@@ -343,14 +343,14 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         }
 
         //	No Partner Info - set Template
-        if (getC_BPartner_ID() == 0) setBPartner(MBPartner.getTemplate(getCtx(), getClientId()));
-        if (getC_BPartner_Location_ID() == 0)
-            setBPartner(new MBPartner(getCtx(), getC_BPartner_ID()));
+        if (getBusinessPartnerId() == 0) setBPartner(MBPartner.getTemplate(getCtx(), getClientId()));
+        if (getBusinessPartnerLocationId() == 0)
+            setBPartner(new MBPartner(getCtx(), getBusinessPartnerId()));
 
         //	Default Sales Rep
-        if (getSalesRep_ID() == 0) {
+        if (getSalesRepresentativeId() == 0) {
             int ii = Env.getContextAsInt(getCtx(), "#AD_User_ID");
-            if (ii != 0) setSalesRep_ID(ii);
+            if (ii != 0) setSalesRepresentativeId(ii);
         }
 
         return true;
@@ -477,7 +477,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
 
         //	Std Period open?
         if (!MPeriod.isOpen(getCtx(), getDateOrdered(), dt.getDocBaseType(), getOrgId())) {
@@ -576,7 +576,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                         //	Update Storage
                         if (!MStorageOnHand.add(
                                 getCtx(),
-                                locator_to.getM_Warehouse_ID(),
+                                locator_to.getWarehouseId(),
                                 locator_to.getM_Locator_ID(),
                                 line.getM_Product_ID(),
                                 line.getMAttributeSetInstance_ID(),
@@ -588,7 +588,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
 
                         if (!MStorageOnHand.add(
                                 getCtx(),
-                                locator_from.getM_Warehouse_ID(),
+                                locator_from.getWarehouseId(),
                                 locator_from.getM_Locator_ID(),
                                 line.getM_Product_ID(),
                                 line.getMAttributeSetInstanceTo_ID(),
@@ -651,7 +651,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      */
     public CompleteActionResult completeIt() {
         @SuppressWarnings("unused")
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
 
         //	Just prepare
         if (DOCACTION_Prepare.equals(getDocAction())) {
@@ -945,7 +945,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * @return AD_User_ID
      */
     public int getDoc_User_ID() {
-        return getSalesRep_ID();
+        return getSalesRepresentativeId();
     } //	getDoc_User_ID
 
     public BigDecimal getApprovalAmt() {
@@ -953,7 +953,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         return null;
     }
 
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         // TODO Auto-generated method stub
         return 0;
     }

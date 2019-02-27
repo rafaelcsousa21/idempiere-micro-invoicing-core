@@ -139,6 +139,6 @@ public class MAcctProcessor extends X_C_AcctProcessor
      * @param DateLastRun Date the process was last run.
      */
     public void setDateLastRun(Timestamp DateLastRun) {
-        set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+        setValue(COLUMNNAME_DateLastRun, DateLastRun);
     }
 } //	MAcctProcessor

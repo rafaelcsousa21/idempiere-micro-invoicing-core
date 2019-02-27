@@ -135,7 +135,7 @@ public class M_Production_Run extends SvrProcess {
                     else if (MovementQty.signum() < 0) {
                         BigDecimal QtyAvailable =
                                 MStorageReservation.getQtyAvailable(
-                                        locator.getM_Warehouse_ID(),
+                                        locator.getWarehouseId(),
                                         pline.getM_Product_ID(),
                                         pline.getMAttributeSetInstance_ID());
 
@@ -156,7 +156,7 @@ public class M_Production_Run extends SvrProcess {
 
                     if (!MStorageOnHand.add(
                             getCtx(),
-                            locator.getM_Warehouse_ID(),
+                            locator.getWarehouseId(),
                             locator.getM_Locator_ID(),
                             pline.getM_Product_ID(),
                             pline.getMAttributeSetInstance_ID(),

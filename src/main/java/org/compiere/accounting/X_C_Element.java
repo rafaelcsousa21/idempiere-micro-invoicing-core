@@ -78,8 +78,8 @@ public class X_C_Element extends BasePOName implements I_C_Element {
      * @param AD_Tree_ID Identifies a Tree
      */
     public void setTreeId(int AD_Tree_ID) {
-        if (AD_Tree_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Tree_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_Tree_ID, Integer.valueOf(AD_Tree_ID));
+        if (AD_Tree_ID < 1) setValueNoCheck(COLUMNNAME_AD_Tree_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_Tree_ID, Integer.valueOf(AD_Tree_ID));
     }
 
     /**
@@ -109,7 +109,7 @@ public class X_C_Element extends BasePOName implements I_C_Element {
      */
     public void setElementType(String ElementType) {
 
-        set_ValueNoCheck(COLUMNNAME_ElementType, ElementType);
+        setValueNoCheck(COLUMNNAME_ElementType, ElementType);
     }
 
     /**
@@ -118,7 +118,7 @@ public class X_C_Element extends BasePOName implements I_C_Element {
      * @param IsBalancing All transactions within an element value must balance (e.g. cost centers)
      */
     public void setIsBalancing(boolean IsBalancing) {
-        set_Value(COLUMNNAME_IsBalancing, Boolean.valueOf(IsBalancing));
+        setValue(COLUMNNAME_IsBalancing, Boolean.valueOf(IsBalancing));
     }
 
     /**
@@ -127,7 +127,7 @@ public class X_C_Element extends BasePOName implements I_C_Element {
      * @param IsNaturalAccount The primary natural account
      */
     public void setIsNaturalAccount(boolean IsNaturalAccount) {
-        set_Value(COLUMNNAME_IsNaturalAccount, Boolean.valueOf(IsNaturalAccount));
+        setValue(COLUMNNAME_IsNaturalAccount, Boolean.valueOf(IsNaturalAccount));
     }
 
     /**

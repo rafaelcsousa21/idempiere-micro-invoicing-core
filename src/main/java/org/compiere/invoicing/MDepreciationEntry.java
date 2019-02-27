@@ -350,7 +350,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -358,7 +358,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;

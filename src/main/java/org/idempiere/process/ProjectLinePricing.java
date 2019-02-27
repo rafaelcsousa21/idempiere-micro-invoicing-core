@@ -61,17 +61,17 @@ public class ProjectLinePricing extends SvrProcess {
         if (log.isLoggable(Level.INFO)) log.info("doIt - " + projectLine);
         if (projectLine.getM_Product_ID() == 0) throw new IllegalArgumentException("No Product");
         //
-        MProject project = new MProject(getCtx(), projectLine.getC_Project_ID());
-        if (project.getM_PriceList_ID() == 0) throw new IllegalArgumentException("No PriceList");
+        MProject project = new MProject(getCtx(), projectLine.getProjectId());
+        if (project.getPriceListId() == 0) throw new IllegalArgumentException("No PriceList");
         //
         boolean isSOTrx = true;
         IProductPricing pp = MProduct.getProductPricing();
         pp.setInitialValues(
                 projectLine.getM_Product_ID(),
-                project.getC_BPartner_ID(),
+                project.getBusinessPartnerId(),
                 projectLine.getPlannedQty(),
                 isSOTrx);
-        pp.setM_PriceList_ID(project.getM_PriceList_ID());
+        pp.setPriceListId(project.getPriceListId());
         pp.setPriceDate(project.getDateContract());
         //
         projectLine.setPlannedPrice(pp.getPriceStd());

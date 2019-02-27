@@ -55,7 +55,7 @@ public class OrderPayScheduleValidate extends SvrProcess {
         if (schedule.length == 0)
             throw new IllegalArgumentException("OrderPayScheduleValidate - No Schedule");
         //	Get Order
-        MOrder order = new MOrder(getCtx(), schedule[0].getC_Order_ID());
+        MOrder order = new MOrder(getCtx(), schedule[0].getOrderId());
         if (order.getId() == 0)
             throw new IllegalArgumentException("OrderPayScheduleValidate - No Order");
         //

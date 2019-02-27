@@ -83,7 +83,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param Amt Amount
      */
     public void setAmt(BigDecimal Amt) {
-        set_Value(COLUMNNAME_Amt, Amt);
+        setValue(COLUMNNAME_Amt, Amt);
     }
 
     /**
@@ -103,8 +103,8 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param C_AcctSchema_ID Rules for accounting
      */
     public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
-        if (C_AcctSchema_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
+        if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
     }
 
     /**
@@ -124,8 +124,8 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
     public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
-        if (C_InvoiceLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+        if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
 
     /**
@@ -156,7 +156,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param CumulatedAmt Total Amount
      */
     public void setCumulatedAmt(BigDecimal CumulatedAmt) {
-        set_Value(COLUMNNAME_CumulatedAmt, CumulatedAmt);
+        setValue(COLUMNNAME_CumulatedAmt, CumulatedAmt);
     }
 
     /**
@@ -165,7 +165,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param CumulatedQty Total Quantity
      */
     public void setCumulatedQty(BigDecimal CumulatedQty) {
-        set_Value(COLUMNNAME_CumulatedQty, CumulatedQty);
+        setValue(COLUMNNAME_CumulatedQty, CumulatedQty);
     }
 
     /**
@@ -174,7 +174,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param CurrentCostPrice The currently used cost price
      */
     public void setCurrentCostPrice(BigDecimal CurrentCostPrice) {
-        set_Value(COLUMNNAME_CurrentCostPrice, CurrentCostPrice);
+        setValue(COLUMNNAME_CurrentCostPrice, CurrentCostPrice);
     }
 
     /**
@@ -183,7 +183,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param CurrentQty Current Quantity
      */
     public void setCurrentQty(BigDecimal CurrentQty) {
-        set_Value(COLUMNNAME_CurrentQty, CurrentQty);
+        setValue(COLUMNNAME_CurrentQty, CurrentQty);
     }
 
     /**
@@ -203,7 +203,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param DeltaAmt Difference Amount
      */
     public void setDeltaAmt(BigDecimal DeltaAmt) {
-        set_Value(COLUMNNAME_DeltaAmt, DeltaAmt);
+        setValue(COLUMNNAME_DeltaAmt, DeltaAmt);
     }
 
     /**
@@ -223,7 +223,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param DeltaQty Quantity Difference
      */
     public void setDeltaQty(BigDecimal DeltaQty) {
-        set_Value(COLUMNNAME_DeltaQty, DeltaQty);
+        setValue(COLUMNNAME_DeltaQty, DeltaQty);
     }
 
     /**
@@ -232,7 +232,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -241,7 +241,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param IsSOTrx This is a Sales Transaction
      */
     public void setIsSOTrx(boolean IsSOTrx) {
-        set_Value(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
+        setValue(COLUMNNAME_IsSOTrx, Boolean.valueOf(IsSOTrx));
     }
 
     /**
@@ -264,9 +264,9 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
@@ -309,8 +309,8 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param M_CostElement_ID Product Cost Element
      */
     public void setM_CostElement_ID(int M_CostElement_ID) {
-        if (M_CostElement_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
+        if (M_CostElement_ID < 1) setValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
     }
 
     /**
@@ -330,8 +330,8 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
     public void setM_InOutLine_ID(int M_InOutLine_ID) {
-        if (M_InOutLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
+        if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
     }
 
     public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
@@ -357,8 +357,8 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
     public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
-        if (M_InventoryLine_ID < 1) set_Value(COLUMNNAME_M_InventoryLine_ID, null);
-        else set_Value(COLUMNNAME_M_InventoryLine_ID, M_InventoryLine_ID);
+        if (M_InventoryLine_ID < 1) setValue(COLUMNNAME_M_InventoryLine_ID, null);
+        else setValue(COLUMNNAME_M_InventoryLine_ID, M_InventoryLine_ID);
     }
 
     /**
@@ -400,8 +400,8 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -446,7 +446,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -466,6 +466,6 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_Value(COLUMNNAME_Qty, Qty);
+        setValue(COLUMNNAME_Qty, Qty);
     }
 }

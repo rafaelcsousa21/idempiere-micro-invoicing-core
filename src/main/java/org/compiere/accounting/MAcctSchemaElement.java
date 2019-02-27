@@ -189,21 +189,21 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Account))
             defaultValue = getC_ElementValue_ID();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_BPartner))
-            defaultValue = getC_BPartner_ID();
+            defaultValue = getBusinessPartnerId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Product))
             defaultValue = getM_Product_ID();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Activity))
-            defaultValue = getC_Activity_ID();
+            defaultValue = getBusinessActivityId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_LocationFrom))
             defaultValue = getC_Location_ID();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_LocationTo))
             defaultValue = getC_Location_ID();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Campaign))
-            defaultValue = getC_Campaign_ID();
+            defaultValue = getCampaignId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx))
             defaultValue = getOrg_ID();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Project))
-            defaultValue = getC_Project_ID();
+            defaultValue = getProjectId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_SalesRegion))
             defaultValue = getC_SalesRegion_ID();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList1))
@@ -277,11 +277,11 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             String errorField = null;
             if (X_C_AcctSchema_Element.ELEMENTTYPE_Account.equals(et) && getC_ElementValue_ID() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_ElementValue_ID;
-            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Activity.equals(et) && getC_Activity_ID() == 0)
+            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Activity.equals(et) && getBusinessActivityId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Activity_ID;
-            else if (X_C_AcctSchema_Element.ELEMENTTYPE_BPartner.equals(et) && getC_BPartner_ID() == 0)
+            else if (X_C_AcctSchema_Element.ELEMENTTYPE_BPartner.equals(et) && getBusinessPartnerId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_BPartner_ID;
-            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Campaign.equals(et) && getC_Campaign_ID() == 0)
+            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Campaign.equals(et) && getCampaignId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Campaign_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_LocationFrom.equals(et)
                     && getC_Location_ID() == 0) errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Location_ID;
@@ -293,7 +293,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_Org_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Product.equals(et) && getM_Product_ID() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_M_Product_ID;
-            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Project.equals(et) && getC_Project_ID() == 0)
+            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Project.equals(et) && getProjectId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Project_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_SalesRegion.equals(et)
                     && getC_SalesRegion_ID() == 0)
@@ -327,13 +327,13 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         //	Default Value
         if (isMandatory() && is_ValueChanged(I_C_AcctSchema_Element.COLUMNNAME_IsMandatory)) {
             if (X_C_AcctSchema_Element.ELEMENTTYPE_Activity.equals(getElementType()))
-                updateData(I_C_AcctSchema_Element.COLUMNNAME_C_Activity_ID, getC_Activity_ID());
+                updateData(I_C_AcctSchema_Element.COLUMNNAME_C_Activity_ID, getBusinessActivityId());
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_BPartner.equals(getElementType()))
-                updateData(I_C_AcctSchema_Element.COLUMNNAME_C_BPartner_ID, getC_BPartner_ID());
+                updateData(I_C_AcctSchema_Element.COLUMNNAME_C_BPartner_ID, getBusinessPartnerId());
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Product.equals(getElementType()))
                 updateData(I_C_AcctSchema_Element.COLUMNNAME_M_Product_ID, getM_Product_ID());
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Project.equals(getElementType()))
-                updateData(I_C_AcctSchema_Element.COLUMNNAME_C_Project_ID, getC_Project_ID());
+                updateData(I_C_AcctSchema_Element.COLUMNNAME_C_Project_ID, getProjectId());
         }
 
         //	Clear Cache

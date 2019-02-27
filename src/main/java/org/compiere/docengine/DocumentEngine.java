@@ -764,7 +764,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return throw exception
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         throw new IllegalStateException(EXCEPTION_MSG);
     }
 

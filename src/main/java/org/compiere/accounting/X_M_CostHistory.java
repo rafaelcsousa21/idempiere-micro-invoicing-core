@@ -61,9 +61,9 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
@@ -73,8 +73,8 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param M_CostDetail_ID Cost Detail Information
      */
     public void setM_CostDetail_ID(int M_CostDetail_ID) {
-        if (M_CostDetail_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostDetail_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_CostDetail_ID, Integer.valueOf(M_CostDetail_ID));
+        if (M_CostDetail_ID < 1) setValueNoCheck(COLUMNNAME_M_CostDetail_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_CostDetail_ID, Integer.valueOf(M_CostDetail_ID));
     }
 
     /**
@@ -83,8 +83,8 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param M_CostElement_ID Product Cost Element
      */
     public void setM_CostElement_ID(int M_CostElement_ID) {
-        if (M_CostElement_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
+        if (M_CostElement_ID < 1) setValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
     }
 
     /**
@@ -93,8 +93,8 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
      */
     public void setM_CostType_ID(int M_CostType_ID) {
-        if (M_CostType_ID < 1) set_ValueNoCheck(COLUMNNAME_M_CostType_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_CostType_ID, Integer.valueOf(M_CostType_ID));
+        if (M_CostType_ID < 1) setValueNoCheck(COLUMNNAME_M_CostType_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_CostType_ID, Integer.valueOf(M_CostType_ID));
     }
 
     /**
@@ -103,7 +103,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param NewCAmt Accumulated Amt after processing of M_CostDetail
      */
     public void setNewCAmt(BigDecimal NewCAmt) {
-        set_ValueNoCheck(COLUMNNAME_NewCAmt, NewCAmt);
+        setValueNoCheck(COLUMNNAME_NewCAmt, NewCAmt);
     }
 
     /**
@@ -123,7 +123,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param NewCostPrice New current cost price after processing of M_CostDetail
      */
     public void setNewCostPrice(BigDecimal NewCostPrice) {
-        set_ValueNoCheck(COLUMNNAME_NewCostPrice, NewCostPrice);
+        setValueNoCheck(COLUMNNAME_NewCostPrice, NewCostPrice);
     }
 
     /**
@@ -132,7 +132,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param NewCQty New Accumulated Qty after processing of M_CostDetail
      */
     public void setNewCQty(BigDecimal NewCQty) {
-        set_ValueNoCheck(COLUMNNAME_NewCQty, NewCQty);
+        setValueNoCheck(COLUMNNAME_NewCQty, NewCQty);
     }
 
     /**
@@ -152,7 +152,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param NewQty New current quantity after processing of M_CostDetail
      */
     public void setNewQty(BigDecimal NewQty) {
-        set_ValueNoCheck(COLUMNNAME_NewQty, NewQty);
+        setValueNoCheck(COLUMNNAME_NewQty, NewQty);
     }
 
     /**
@@ -172,7 +172,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param OldCAmt Old accumulated amt before the processing of M_CostDetail
      */
     public void setOldCAmt(BigDecimal OldCAmt) {
-        set_ValueNoCheck(COLUMNNAME_OldCAmt, OldCAmt);
+        setValueNoCheck(COLUMNNAME_OldCAmt, OldCAmt);
     }
 
     /**
@@ -192,7 +192,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param OldCostPrice Old current cost price before the processing of M_CostDetail
      */
     public void setOldCostPrice(BigDecimal OldCostPrice) {
-        set_ValueNoCheck(COLUMNNAME_OldCostPrice, OldCostPrice);
+        setValueNoCheck(COLUMNNAME_OldCostPrice, OldCostPrice);
     }
 
     /**
@@ -212,7 +212,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param OldCQty Old accumulated qty before the processing of M_CostDetail
      */
     public void setOldCQty(BigDecimal OldCQty) {
-        set_ValueNoCheck(COLUMNNAME_OldCQty, OldCQty);
+        setValueNoCheck(COLUMNNAME_OldCQty, OldCQty);
     }
 
     /**
@@ -232,7 +232,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      * @param OldQty Old current quantity before the processing of M_CostDetail
      */
     public void setOldQty(BigDecimal OldQty) {
-        set_ValueNoCheck(COLUMNNAME_OldQty, OldQty);
+        setValueNoCheck(COLUMNNAME_OldQty, OldQty);
     }
 
     public void setClientOrg(int a, int b) {

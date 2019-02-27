@@ -61,11 +61,11 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     public MTimeExpense(Properties ctx, int S_TimeExpense_ID) {
         super(ctx, S_TimeExpense_ID);
         if (S_TimeExpense_ID == 0) {
-            //	setC_BPartner_ID (0);
+            //	setBusinessPartnerId (0);
             setDateReport(new Timestamp(System.currentTimeMillis()));
             //	setDocumentNo (null);
             setIsApproved(false);
-            //	setM_PriceList_ID (0);
+            //	setPriceListId (0);
             //	setWarehouseId (0);
             super.setProcessed(false);
             setProcessing(false);
@@ -94,7 +94,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             return m_lines;
         }
         //
-        int C_Currency_ID = getC_Currency_ID();
+        int C_Currency_ID = getCurrencyId();
         ArrayList<MTimeExpenseLine> list = new ArrayList<MTimeExpenseLine>();
         //
         String sql = "SELECT * FROM S_TimeExpenseLine WHERE S_TimeExpense_ID=? ORDER BY Line";
@@ -136,7 +136,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getM_Warehouse_ID());
+            pstmt.setInt(1, getWarehouseId());
             rs = pstmt.executeQuery();
             if (rs.next()) m_M_Locator_ID = rs.getInt(1);
         } catch (SQLException ex) {
@@ -245,7 +245,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
         //	Invoiced but no BP
         for (int i = 0; i < lines.length; i++) {
             MTimeExpenseLine line = lines[i];
-            if (line.isInvoiced() && line.getC_BPartner_ID() == 0) {
+            if (line.isInvoiced() && line.getBusinessPartnerId() == 0) {
                 m_processMsg = "@Line@ " + line.getLine() + ": Invoiced, but no Business Partner";
                 return DocAction.Companion.getSTATUS_Invalid();
             }
@@ -466,8 +466,8 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      */
     public int getDoc_User_ID() {
         if (m_AD_User_ID != 0) return m_AD_User_ID;
-        if (getC_BPartner_ID() != 0) {
-            MUser[] users = MUser.getOfBPartner(getCtx(), getC_BPartner_ID());
+        if (getBusinessPartnerId() != 0) {
+            MUser[] users = MUser.getOfBPartner(getCtx(), getBusinessPartnerId());
             if (users.length > 0) {
                 m_AD_User_ID = users[0].getUserId();
                 return m_AD_User_ID;
@@ -481,9 +481,9 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return C_Currency_ID
      */
-    public int getC_Currency_ID() {
-        MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
-        return pl.getC_Currency_ID();
+    public int getCurrencyId() {
+        MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
+        return pl.getCurrencyId();
     } //	getCurrencyId
 
     /**
@@ -513,6 +513,6 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 } //	MTimeExpense

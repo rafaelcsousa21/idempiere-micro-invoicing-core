@@ -59,7 +59,7 @@ public class ProjectPhaseGenOrder extends SvrProcess {
         if (m_C_ProjectPhase_ID == 0) throw new IllegalArgumentException("C_ProjectPhase_ID == 0");
         MProjectPhase fromPhase = new MProjectPhase(getCtx(), m_C_ProjectPhase_ID);
         MProject fromProject =
-                ProjectGenOrder.getProject(getCtx(), fromPhase.getC_Project_ID());
+                ProjectGenOrder.getProject(getCtx(), fromPhase.getProjectId());
         MOrder order = new MOrder(fromProject, true, MOrder.DocSubTypeSO_OnCredit);
         order.setDescription(order.getDescription() + " - " + fromPhase.getName());
         if (!order.save()) throw new Exception("Could not create Order");

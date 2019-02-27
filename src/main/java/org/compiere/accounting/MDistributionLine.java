@@ -36,6 +36,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
      * The Base Account
      */
     private MAccount m_account = null;
+
     /**
      * Standard Constructor
      *
@@ -66,6 +67,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
             setPercent(Env.ZERO);
         }
     } //	MDistributionLine
+
     /**
      * Load Constructor
      *
@@ -113,16 +115,16 @@ public class MDistributionLine extends X_GL_DistributionLine {
                         m_account.getC_SubAcct_ID(),
                         //
                         isOverwriteProduct() ? getM_Product_ID() : m_account.getM_Product_ID(),
-                        isOverwriteBPartner() ? getC_BPartner_ID() : m_account.getC_BPartner_ID(),
-                        isOverwriteOrgTrx() ? getAD_OrgTrx_ID() : m_account.getAD_OrgTrx_ID(),
+                        isOverwriteBPartner() ? getBusinessPartnerId() : m_account.getBusinessPartnerId(),
+                        isOverwriteOrgTrx() ? getTransactionOrganizationId() : m_account.getTransactionOrganizationId(),
                         isOverwriteLocFrom() ? getC_LocFrom_ID() : m_account.getC_LocFrom_ID(),
                         isOverwriteLocTo() ? getC_LocTo_ID() : m_account.getC_LocTo_ID(),
                         isOverwriteSalesRegion() ? getC_SalesRegion_ID() : m_account.getC_SalesRegion_ID(),
-                        isOverwriteProject() ? getC_Project_ID() : m_account.getC_Project_ID(),
-                        isOverwriteCampaign() ? getC_Campaign_ID() : m_account.getC_Campaign_ID(),
-                        isOverwriteActivity() ? getC_Activity_ID() : m_account.getC_Activity_ID(),
-                        isOverwriteUser1() ? getUser1_ID() : m_account.getUser1_ID(),
-                        isOverwriteUser2() ? getUser2_ID() : m_account.getUser2_ID(),
+                        isOverwriteProject() ? getProjectId() : m_account.getProjectId(),
+                        isOverwriteCampaign() ? getCampaignId() : m_account.getCampaignId(),
+                        isOverwriteActivity() ? getBusinessActivityId() : m_account.getBusinessActivityId(),
+                        isOverwriteUser1() ? getUser1Id() : m_account.getUser1Id(),
+                        isOverwriteUser2() ? getUser2Id() : m_account.getUser2Id(),
                         m_account.getUserElement1_ID(),
                         m_account.getUserElement2_ID(),
                         null);
@@ -212,18 +214,18 @@ public class MDistributionLine extends X_GL_DistributionLine {
         }
         //	Reset not selected Overwrite
         if (!isOverwriteAcct() && getAccount_ID() != 0) setAccount_ID(0);
-        if (!isOverwriteActivity() && getC_Activity_ID() != 0) setC_Activity_ID(0);
-        if (!isOverwriteBPartner() && getC_BPartner_ID() != 0) setC_BPartner_ID(0);
-        if (!isOverwriteCampaign() && getC_Campaign_ID() != 0) setC_Campaign_ID(0);
+        if (!isOverwriteActivity() && getBusinessActivityId() != 0) setBusinessActivityId(0);
+        if (!isOverwriteBPartner() && getBusinessPartnerId() != 0) setBusinessPartnerId(0);
+        if (!isOverwriteCampaign() && getCampaignId() != 0) setCampaignId(0);
         if (!isOverwriteLocFrom() && getC_LocFrom_ID() != 0) setC_LocFrom_ID(0);
         if (!isOverwriteLocTo() && getC_LocTo_ID() != 0) setC_LocTo_ID(0);
         if (!isOverwriteOrg() && getOrg_ID() != 0) setOrg_ID(0);
-        if (!isOverwriteOrgTrx() && getAD_OrgTrx_ID() != 0) setAD_OrgTrx_ID(0);
+        if (!isOverwriteOrgTrx() && getTransactionOrganizationId() != 0) setTransactionOrganizationId(0);
         if (!isOverwriteProduct() && getM_Product_ID() != 0) setM_Product_ID(0);
-        if (!isOverwriteProject() && getC_Project_ID() != 0) setC_Project_ID(0);
+        if (!isOverwriteProject() && getProjectId() != 0) setProjectId(0);
         if (!isOverwriteSalesRegion() && getC_SalesRegion_ID() != 0) setC_SalesRegion_ID(0);
-        if (!isOverwriteUser1() && getUser1_ID() != 0) setUser1_ID(0);
-        if (!isOverwriteUser2() && getUser2_ID() != 0) setUser2_ID(0);
+        if (!isOverwriteUser1() && getUser1Id() != 0) setUser1Id(0);
+        if (!isOverwriteUser2() && getUser2Id() != 0) setUser2Id(0);
 
         //	Account Overwrite cannot be 0
         if (isOverwriteAcct() && getAccount_ID() == 0) {

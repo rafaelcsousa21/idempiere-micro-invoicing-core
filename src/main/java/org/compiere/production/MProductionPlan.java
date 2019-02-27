@@ -112,7 +112,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
 
         MLocator finishedLocator = MLocator.get(getCtx(), getM_Locator_ID());
 
-        int M_Warehouse_ID = finishedLocator.getM_Warehouse_ID();
+        int M_Warehouse_ID = finishedLocator.getWarehouseId();
 
         int asi = 0;
 

@@ -363,7 +363,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
             reversal.setQty(this.getQty().negate());
             reversal.setDateAcct(reversalDate);
             reversal.setDateTrx(reversalDate);
-            reversal.set_ValueNoCheck("DocumentNo", null);
+            reversal.setValueNoCheck("DocumentNo", null);
             reversal.setPosted(false);
             reversal.setReversal_ID(getM_MatchInv_ID());
             reversal.saveEx();

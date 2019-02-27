@@ -64,7 +64,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Performing or initiating organization
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
@@ -75,15 +75,15 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param AD_OrgTrx_ID Performing or initiating organization
      */
-    public void setAD_OrgTrx_ID(int AD_OrgTrx_ID) {
-        if (AD_OrgTrx_ID < 1) set_Value(COLUMNNAME_AD_OrgTrx_ID, null);
-        else set_Value(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+    public void setTransactionOrganizationId(int AD_OrgTrx_ID) {
+        if (AD_OrgTrx_ID < 1) setValue(COLUMNNAME_AD_OrgTrx_ID, null);
+        else setValue(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
     public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
         return (org.compiere.model.I_C_Activity)
                 MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-                        .getPO(getC_Activity_ID());
+                        .getPO(getBusinessActivityId());
     }
 
     /**
@@ -91,7 +91,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -102,15 +102,15 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param C_Activity_ID Business Activity
      */
-    public void setC_Activity_ID(int C_Activity_ID) {
-        if (C_Activity_ID < 1) set_Value(COLUMNNAME_C_Activity_ID, null);
-        else set_Value(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+    public void setBusinessActivityId(int C_Activity_ID) {
+        if (C_Activity_ID < 1) setValue(COLUMNNAME_C_Activity_ID, null);
+        else setValue(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
     }
 
     public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
         return (org.compiere.model.I_C_Campaign)
                 MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
-                        .getPO(getC_Campaign_ID());
+                        .getPO(getCampaignId());
     }
 
     /**
@@ -118,7 +118,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Marketing Campaign
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
@@ -129,15 +129,15 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param C_Campaign_ID Marketing Campaign
      */
-    public void setC_Campaign_ID(int C_Campaign_ID) {
-        if (C_Campaign_ID < 1) set_Value(COLUMNNAME_C_Campaign_ID, null);
-        else set_Value(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
+    public void setCampaignId(int C_Campaign_ID) {
+        if (C_Campaign_ID < 1) setValue(COLUMNNAME_C_Campaign_ID, null);
+        else setValue(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
     }
 
     public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
         return (org.compiere.model.I_C_Charge)
                 MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
-                        .getPO(getC_Charge_ID());
+                        .getPO(getChargeId());
     }
 
     /**
@@ -145,7 +145,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -156,9 +156,9 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param C_Charge_ID Additional document charges
      */
-    public void setC_Charge_ID(int C_Charge_ID) {
-        if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
-        else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
+    public void setChargeId(int C_Charge_ID) {
+        if (C_Charge_ID < 1) setValue(COLUMNNAME_C_Charge_ID, null);
+        else setValue(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
     }
 
     /**
@@ -178,13 +178,13 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param ConfirmedQty Confirmation of a received quantity
      */
     public void setConfirmedQty(BigDecimal ConfirmedQty) {
-        set_Value(COLUMNNAME_ConfirmedQty, ConfirmedQty);
+        setValue(COLUMNNAME_ConfirmedQty, ConfirmedQty);
     }
 
     public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
                 MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
-                        .getPO(getC_Project_ID());
+                        .getPO(getProjectId());
     }
 
     /**
@@ -192,7 +192,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -203,9 +203,9 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param C_Project_ID Financial Project
      */
-    public void setC_Project_ID(int C_Project_ID) {
-        if (C_Project_ID < 1) set_Value(COLUMNNAME_C_Project_ID, null);
-        else set_Value(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+    public void setProjectId(int C_Project_ID) {
+        if (C_Project_ID < 1) setValue(COLUMNNAME_C_Project_ID, null);
+        else setValue(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
     }
 
     public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
@@ -231,8 +231,8 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param C_UOM_ID Unit of Measure
      */
     public void setC_UOM_ID(int C_UOM_ID) {
-        if (C_UOM_ID < 1) set_ValueNoCheck(COLUMNNAME_C_UOM_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
+        if (C_UOM_ID < 1) setValueNoCheck(COLUMNNAME_C_UOM_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
     }
 
     /**
@@ -250,7 +250,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param DateDelivered Date when the product was delivered
      */
     public void setDateDelivered(Timestamp DateDelivered) {
-        set_Value(COLUMNNAME_DateDelivered, DateDelivered);
+        setValue(COLUMNNAME_DateDelivered, DateDelivered);
     }
 
     /**
@@ -268,7 +268,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param DateOrdered Date of Order
      */
     public void setDateOrdered(Timestamp DateOrdered) {
-        set_Value(COLUMNNAME_DateOrdered, DateOrdered);
+        setValue(COLUMNNAME_DateOrdered, DateOrdered);
     }
 
     /**
@@ -286,7 +286,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param DatePromised Date Order was promised
      */
     public void setDatePromised(Timestamp DatePromised) {
-        set_Value(COLUMNNAME_DatePromised, DatePromised);
+        setValue(COLUMNNAME_DatePromised, DatePromised);
     }
 
     public org.eevolution.model.I_DD_Order getDD_Order() throws RuntimeException {
@@ -312,8 +312,8 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param DD_Order_ID Distribution Order
      */
     public void setDD_Order_ID(int DD_Order_ID) {
-        if (DD_Order_ID < 1) set_ValueNoCheck(COLUMNNAME_DD_Order_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_DD_Order_ID, Integer.valueOf(DD_Order_ID));
+        if (DD_Order_ID < 1) setValueNoCheck(COLUMNNAME_DD_Order_ID, null);
+        else setValueNoCheck(COLUMNNAME_DD_Order_ID, Integer.valueOf(DD_Order_ID));
     }
 
     /**
@@ -333,8 +333,8 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param DD_OrderLine_ID Distribution Order Line
      */
     public void setDD_OrderLine_ID(int DD_OrderLine_ID) {
-        if (DD_OrderLine_ID < 1) set_ValueNoCheck(COLUMNNAME_DD_OrderLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_DD_OrderLine_ID, Integer.valueOf(DD_OrderLine_ID));
+        if (DD_OrderLine_ID < 1) setValueNoCheck(COLUMNNAME_DD_OrderLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_DD_OrderLine_ID, Integer.valueOf(DD_OrderLine_ID));
     }
 
     /**
@@ -352,7 +352,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param DD_OrderLine_UU DD_OrderLine_UU
      */
     public void setDD_OrderLine_UU(String DD_OrderLine_UU) {
-        set_Value(COLUMNNAME_DD_OrderLine_UU, DD_OrderLine_UU);
+        setValue(COLUMNNAME_DD_OrderLine_UU, DD_OrderLine_UU);
     }
 
     /**
@@ -381,7 +381,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param FreightAmt Freight Amount
      */
     public void setFreightAmt(BigDecimal FreightAmt) {
-        set_Value(COLUMNNAME_FreightAmt, FreightAmt);
+        setValue(COLUMNNAME_FreightAmt, FreightAmt);
     }
 
     /**
@@ -390,7 +390,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param IsDescription if true, the line is just description and no transaction
      */
     public void setIsDescription(boolean IsDescription) {
-        set_Value(COLUMNNAME_IsDescription, Boolean.valueOf(IsDescription));
+        setValue(COLUMNNAME_IsDescription, Boolean.valueOf(IsDescription));
     }
 
     /**
@@ -413,7 +413,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -422,7 +422,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param IsInvoiced Is this invoiced?
      */
     public void setIsInvoiced(boolean IsInvoiced) {
-        set_Value(COLUMNNAME_IsInvoiced, Boolean.valueOf(IsInvoiced));
+        setValue(COLUMNNAME_IsInvoiced, Boolean.valueOf(IsInvoiced));
     }
 
     /**
@@ -456,7 +456,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -476,7 +476,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param LineNetAmt Line Extended Amount (Quantity * Actual Price) without Freight and Charges
      */
     public void setLineNetAmt(BigDecimal LineNetAmt) {
-        set_Value(COLUMNNAME_LineNetAmt, LineNetAmt);
+        setValue(COLUMNNAME_LineNetAmt, LineNetAmt);
     }
 
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
@@ -491,9 +491,9 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_Value(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_Value(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
     /**
@@ -519,9 +519,9 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param M_AttributeSetInstanceTo_ID Target Product Attribute Set Instance
      */
     public void setM_AttributeSetInstanceTo_ID(int M_AttributeSetInstanceTo_ID) {
-        if (M_AttributeSetInstanceTo_ID < 1) set_Value(COLUMNNAME_M_AttributeSetInstanceTo_ID, null);
+        if (M_AttributeSetInstanceTo_ID < 1) setValue(COLUMNNAME_M_AttributeSetInstanceTo_ID, null);
         else
-            set_Value(
+            setValue(
                     COLUMNNAME_M_AttributeSetInstanceTo_ID, Integer.valueOf(M_AttributeSetInstanceTo_ID));
     }
 
@@ -559,8 +559,8 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param M_Locator_ID Warehouse Locator
      */
     public void setM_Locator_ID(int M_Locator_ID) {
-        if (M_Locator_ID < 1) set_Value(COLUMNNAME_M_Locator_ID, null);
-        else set_Value(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        if (M_Locator_ID < 1) setValue(COLUMNNAME_M_Locator_ID, null);
+        else setValue(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
     public org.compiere.model.I_M_Locator getM_LocatorTo() throws RuntimeException {
@@ -586,8 +586,8 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param M_LocatorTo_ID Location inventory is moved to
      */
     public void setM_LocatorTo_ID(int M_LocatorTo_ID) {
-        if (M_LocatorTo_ID < 1) set_Value(COLUMNNAME_M_LocatorTo_ID, null);
-        else set_Value(COLUMNNAME_M_LocatorTo_ID, Integer.valueOf(M_LocatorTo_ID));
+        if (M_LocatorTo_ID < 1) setValue(COLUMNNAME_M_LocatorTo_ID, null);
+        else setValue(COLUMNNAME_M_LocatorTo_ID, Integer.valueOf(M_LocatorTo_ID));
     }
 
     public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
@@ -613,14 +613,14 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     public org.compiere.model.I_M_Shipper getM_Shipper() throws RuntimeException {
         return (org.compiere.model.I_M_Shipper)
                 MTable.get(getCtx(), org.compiere.model.I_M_Shipper.Table_Name)
-                        .getPO(getM_Shipper_ID());
+                        .getPO(getShipperId());
     }
 
     /**
@@ -628,7 +628,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Method or manner of product delivery
      */
-    public int getM_Shipper_ID() {
+    public int getShipperId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Shipper_ID);
         if (ii == null) return 0;
         return ii;
@@ -639,9 +639,9 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param M_Shipper_ID Method or manner of product delivery
      */
-    public void setM_Shipper_ID(int M_Shipper_ID) {
-        if (M_Shipper_ID < 1) set_Value(COLUMNNAME_M_Shipper_ID, null);
-        else set_Value(COLUMNNAME_M_Shipper_ID, Integer.valueOf(M_Shipper_ID));
+    public void setShipperId(int M_Shipper_ID) {
+        if (M_Shipper_ID < 1) setValue(COLUMNNAME_M_Shipper_ID, null);
+        else setValue(COLUMNNAME_M_Shipper_ID, Integer.valueOf(M_Shipper_ID));
     }
 
     /**
@@ -661,7 +661,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param PickedQty Picked Quantity
      */
     public void setPickedQty(BigDecimal PickedQty) {
-        set_Value(COLUMNNAME_PickedQty, PickedQty);
+        setValue(COLUMNNAME_PickedQty, PickedQty);
     }
 
     /**
@@ -684,7 +684,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -704,7 +704,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param QtyDelivered Delivered Quantity
      */
     public void setQtyDelivered(BigDecimal QtyDelivered) {
-        set_Value(COLUMNNAME_QtyDelivered, QtyDelivered);
+        setValue(COLUMNNAME_QtyDelivered, QtyDelivered);
     }
 
     /**
@@ -724,7 +724,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param QtyEntered The Quantity Entered is based on the selected UoM
      */
     public void setQtyEntered(BigDecimal QtyEntered) {
-        set_Value(COLUMNNAME_QtyEntered, QtyEntered);
+        setValue(COLUMNNAME_QtyEntered, QtyEntered);
     }
 
     /**
@@ -744,7 +744,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param QtyInTransit Qty In Transit
      */
     public void setQtyInTransit(BigDecimal QtyInTransit) {
-        set_Value(COLUMNNAME_QtyInTransit, QtyInTransit);
+        setValue(COLUMNNAME_QtyInTransit, QtyInTransit);
     }
 
     /**
@@ -764,7 +764,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param QtyOrdered Ordered Quantity
      */
     public void setQtyOrdered(BigDecimal QtyOrdered) {
-        set_Value(COLUMNNAME_QtyOrdered, QtyOrdered);
+        setValue(COLUMNNAME_QtyOrdered, QtyOrdered);
     }
 
     /**
@@ -784,7 +784,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param QtyReserved Reserved Quantity
      */
     public void setQtyReserved(BigDecimal QtyReserved) {
-        set_Value(COLUMNNAME_QtyReserved, QtyReserved);
+        setValue(COLUMNNAME_QtyReserved, QtyReserved);
     }
 
     /**
@@ -804,7 +804,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param ScrappedQty The Quantity scrapped due to QA issues
      */
     public void setScrappedQty(BigDecimal ScrappedQty) {
-        set_Value(COLUMNNAME_ScrappedQty, ScrappedQty);
+        setValue(COLUMNNAME_ScrappedQty, ScrappedQty);
     }
 
     /**
@@ -824,13 +824,13 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      * @param TargetQty Target Movement Quantity
      */
     public void setTargetQty(BigDecimal TargetQty) {
-        set_Value(COLUMNNAME_TargetQty, TargetQty);
+        setValue(COLUMNNAME_TargetQty, TargetQty);
     }
 
     public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException {
         return (org.compiere.model.I_C_ElementValue)
                 MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-                        .getPO(getUser1_ID());
+                        .getPO(getUser1Id());
     }
 
     /**
@@ -838,7 +838,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return User defined list element #1
      */
-    public int getUser1_ID() {
+    public int getUser1Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
@@ -849,15 +849,15 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param User1_ID User defined list element #1
      */
-    public void setUser1_ID(int User1_ID) {
-        if (User1_ID < 1) set_Value(COLUMNNAME_User1_ID, null);
-        else set_Value(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
+    public void setUser1Id(int User1_ID) {
+        if (User1_ID < 1) setValue(COLUMNNAME_User1_ID, null);
+        else setValue(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
     }
 
     public org.compiere.model.I_C_ElementValue getUser2() throws RuntimeException {
         return (org.compiere.model.I_C_ElementValue)
                 MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-                        .getPO(getUser2_ID());
+                        .getPO(getUser2Id());
     }
 
     /**
@@ -865,7 +865,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return User defined list element #2
      */
-    public int getUser2_ID() {
+    public int getUser2Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
@@ -876,8 +876,8 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param User2_ID User defined list element #2
      */
-    public void setUser2_ID(int User2_ID) {
-        if (User2_ID < 1) set_Value(COLUMNNAME_User2_ID, null);
-        else set_Value(COLUMNNAME_User2_ID, User2_ID);
+    public void setUser2Id(int User2_ID) {
+        if (User2_ID < 1) setValue(COLUMNNAME_User2_ID, null);
+        else setValue(COLUMNNAME_User2_ID, User2_ID);
     }
 }

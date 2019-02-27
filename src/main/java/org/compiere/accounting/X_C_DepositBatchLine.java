@@ -27,7 +27,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
         super(ctx, C_DepositBatchLine_ID);
         /**
          * if (C_DepositBatchLine_ID == 0) { setC_DepositBatch_ID (0); setC_DepositBatchLine_ID (0);
-         * setC_Payment_ID (0); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM
+         * setPaymentId (0); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM
          * C_DepositBatchLine WHERE C_DepositBatch_ID=@C_DepositBatch_ID@ setPayAmt (Env.ZERO);
          * setProcessed (false); setProcessing (false); }
          */
@@ -71,8 +71,8 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
      * @param C_DepositBatch_ID Deposit Batch
      */
     public void setC_DepositBatch_ID(int C_DepositBatch_ID) {
-        if (C_DepositBatch_ID < 1) set_ValueNoCheck(COLUMNNAME_C_DepositBatch_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_DepositBatch_ID, Integer.valueOf(C_DepositBatch_ID));
+        if (C_DepositBatch_ID < 1) setValueNoCheck(COLUMNNAME_C_DepositBatch_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_DepositBatch_ID, Integer.valueOf(C_DepositBatch_ID));
     }
 
     /**
@@ -80,7 +80,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
      *
      * @return Payment identifier
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
@@ -91,9 +91,9 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
      *
      * @param C_Payment_ID Payment identifier
      */
-    public void setC_Payment_ID(int C_Payment_ID) {
-        if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-        else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    public void setPaymentId(int C_Payment_ID) {
+        if (C_Payment_ID < 1) setValue(COLUMNNAME_C_Payment_ID, null);
+        else setValue(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
     }
 
     /**
@@ -113,7 +113,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -122,7 +122,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
      * @param PayAmt Amount being paid
      */
     public void setPayAmt(BigDecimal PayAmt) {
-        set_Value(COLUMNNAME_PayAmt, PayAmt);
+        setValue(COLUMNNAME_PayAmt, PayAmt);
     }
 
     @Override

@@ -49,6 +49,7 @@ public class Obscure extends Object {
     public Obscure(String clearValue) {
         setClearValue(clearValue);
     } //	Obscure
+
     /**
      * Obscure
      *

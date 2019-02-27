@@ -81,7 +81,7 @@ public class PeriodStatus extends SvrProcess {
             sql.append(MPeriodControl.PERIODSTATUS_PermanentlyClosed);
         else return "-";
         //
-        sql.append("', PeriodAction='N', Updated=SysDate,UpdatedBy=").append(getAD_User_ID());
+        sql.append("', PeriodAction='N', Updated=SysDate,UpdatedBy=").append(getUserId());
         //	WHERE
         sql.append(" WHERE C_Period_ID=")
                 .append(period.getC_Period_ID())

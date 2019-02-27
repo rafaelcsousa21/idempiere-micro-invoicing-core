@@ -28,7 +28,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
     public X_C_InvoicePaySchedule(Properties ctx, int C_InvoicePaySchedule_ID) {
         super(ctx, C_InvoicePaySchedule_ID);
         /**
-         * if (C_InvoicePaySchedule_ID == 0) { setC_Invoice_ID (0); setC_InvoicePaySchedule_ID (0);
+         * if (C_InvoicePaySchedule_ID == 0) { setInvoiceId (0); setC_InvoicePaySchedule_ID (0);
          * setDiscountAmt (Env.ZERO); setDiscountDate (new Timestamp( System.currentTimeMillis() ));
          * setDueAmt (Env.ZERO); setDueDate (new Timestamp( System.currentTimeMillis() )); setIsValid
          * (false); setProcessed (false); }
@@ -61,7 +61,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      *
      * @return Invoice Identifier
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -72,9 +72,9 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      *
      * @param C_Invoice_ID Invoice Identifier
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        if (C_Invoice_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Invoice_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    public void setInvoiceId(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) setValueNoCheck(COLUMNNAME_C_Invoice_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
     /**
@@ -83,8 +83,8 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @param C_PaySchedule_ID Payment Schedule Template
      */
     public void setC_PaySchedule_ID(int C_PaySchedule_ID) {
-        if (C_PaySchedule_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PaySchedule_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_PaySchedule_ID, Integer.valueOf(C_PaySchedule_ID));
+        if (C_PaySchedule_ID < 1) setValueNoCheck(COLUMNNAME_C_PaySchedule_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_PaySchedule_ID, Integer.valueOf(C_PaySchedule_ID));
     }
 
     /**
@@ -104,7 +104,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @param DiscountAmt Calculated amount of discount
      */
     public void setDiscountAmt(BigDecimal DiscountAmt) {
-        set_Value(COLUMNNAME_DiscountAmt, DiscountAmt);
+        setValue(COLUMNNAME_DiscountAmt, DiscountAmt);
     }
 
     /**
@@ -122,7 +122,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @param DiscountDate Last Date for payments with discount
      */
     public void setDiscountDate(Timestamp DiscountDate) {
-        set_Value(COLUMNNAME_DiscountDate, DiscountDate);
+        setValue(COLUMNNAME_DiscountDate, DiscountDate);
     }
 
     /**
@@ -142,7 +142,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @param DueAmt Amount of the payment due
      */
     public void setDueAmt(BigDecimal DueAmt) {
-        set_Value(COLUMNNAME_DueAmt, DueAmt);
+        setValue(COLUMNNAME_DueAmt, DueAmt);
     }
 
     /**
@@ -160,7 +160,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @param DueDate Date when the payment is due
      */
     public void setDueDate(Timestamp DueDate) {
-        set_Value(COLUMNNAME_DueDate, DueDate);
+        setValue(COLUMNNAME_DueDate, DueDate);
     }
 
     /**
@@ -169,7 +169,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @param IsValid Element is valid
      */
     public void setIsValid(boolean IsValid) {
-        set_Value(COLUMNNAME_IsValid, Boolean.valueOf(IsValid));
+        setValue(COLUMNNAME_IsValid, Boolean.valueOf(IsValid));
     }
 
     /**
@@ -192,7 +192,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     @Override

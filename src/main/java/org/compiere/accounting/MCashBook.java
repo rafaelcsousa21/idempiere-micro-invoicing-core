@@ -42,6 +42,7 @@ public class MCashBook extends X_C_CashBook {
     public MCashBook(Properties ctx, int C_CashBook_ID) {
         super(ctx, C_CashBook_ID);
     } //	MCashBook
+
     /**
      * Load Constructor
      *
@@ -83,7 +84,7 @@ public class MCashBook extends X_C_CashBook {
         Iterator<MCashBook> it = s_cache.values().iterator();
         while (it.hasNext()) {
             MCashBook cb = (MCashBook) it.next();
-            if (cb.getOrgId() == AD_Org_ID && cb.getC_Currency_ID() == C_Currency_ID) return cb;
+            if (cb.getOrgId() == AD_Org_ID && cb.getCurrencyId() == C_Currency_ID) return cb;
         }
 
         //	Get from DB

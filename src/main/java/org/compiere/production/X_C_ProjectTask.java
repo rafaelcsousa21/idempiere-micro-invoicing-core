@@ -73,8 +73,8 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      * @param C_ProjectPhase_ID Phase of a Project
      */
     public void setC_ProjectPhase_ID(int C_ProjectPhase_ID) {
-        if (C_ProjectPhase_ID < 1) set_ValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, C_ProjectPhase_ID);
+        if (C_ProjectPhase_ID < 1) setValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, C_ProjectPhase_ID);
     }
 
     /**
@@ -105,8 +105,8 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      * @param C_Task_ID Standard Project Type Task
      */
     public void setC_Task_ID(int C_Task_ID) {
-        if (C_Task_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Task_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Task_ID, Integer.valueOf(C_Task_ID));
+        if (C_Task_ID < 1) setValueNoCheck(COLUMNNAME_C_Task_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Task_ID, Integer.valueOf(C_Task_ID));
     }
 
     /**
@@ -124,7 +124,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -133,7 +133,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      * @param Help Comment or Hint
      */
     public void setHelp(String Help) {
-        set_Value(COLUMNNAME_Help, Help);
+        setValue(COLUMNNAME_Help, Help);
     }
 
     /**
@@ -153,8 +153,8 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -174,7 +174,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_Value(COLUMNNAME_Qty, Qty);
+        setValue(COLUMNNAME_Qty, Qty);
     }
 
     /**
@@ -194,7 +194,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      * @param SeqNo Method of ordering records; lowest number comes first
      */
     public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+        setValue(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
     }
 
     @Override

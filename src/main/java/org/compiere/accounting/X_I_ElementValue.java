@@ -94,8 +94,8 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @param C_ElementValue_ID Account Element
      */
     public void setC_ElementValue_ID(int C_ElementValue_ID) {
-        if (C_ElementValue_ID < 1) set_Value(COLUMNNAME_C_ElementValue_ID, null);
-        else set_Value(COLUMNNAME_C_ElementValue_ID, Integer.valueOf(C_ElementValue_ID));
+        if (C_ElementValue_ID < 1) setValue(COLUMNNAME_C_ElementValue_ID, null);
+        else setValue(COLUMNNAME_C_ElementValue_ID, Integer.valueOf(C_ElementValue_ID));
     }
 
     /**
@@ -124,7 +124,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      * @param I_IsImported Has this import been processed
      */
     public void setI_IsImported(boolean I_IsImported) {
-        set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
+        setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
     /**

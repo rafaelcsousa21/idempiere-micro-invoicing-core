@@ -74,6 +74,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      * List of email recipients
      */
     private ArrayList<String> m_emails = new ArrayList<String>();
+
     /**
      * ************************************************************************ Standard Constructor
      *
@@ -87,6 +88,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             throw new IllegalArgumentException("Cannot create new WF Activity directly");
         m_state = new StateEngine(getWorkflowState());
     } //	MWFActivity
+
     /**
      * Load Constructor
      *
@@ -98,6 +100,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         super(ctx, rs);
         m_state = new StateEngine(getWorkflowState());
     } //	MWFActivity
+
     /**
      * Parent Contructor
      *
@@ -136,6 +139,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         //
         m_process = process;
     } //	MWFActivity
+
     /**
      * Parent Contructor
      *
@@ -406,7 +410,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         MWFResponsible resp = getResponsible();
 
         //	User - Directly responsible
-        int AD_User_ID = resp.getAD_User_ID();
+        int AD_User_ID = resp.getUserId();
         //	Invoker - get Sales Rep or last updater of document
         if (AD_User_ID == 0 && resp.isInvoker()) AD_User_ID = process.getUserId();
         //
@@ -806,7 +810,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             ProcessInfo pi =
                     new ProcessInfo(
                             m_node.getName(true), m_node.getProcessId(), getDBTableId(), getRecordId());
-            pi.setAD_User_ID(getUserId());
+            pi.setUserId(getUserId());
             pi.setADClientID(getClientId());
             MPInstance pInstance = new MPInstance(process, getRecordId());
             fillParameter(pInstance);
@@ -840,7 +844,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             ProcessInfo pi =
                     new ProcessInfo(
                             m_node.getName(true), m_node.getProcessId(), getDBTableId(), getRecordId());
-            pi.setAD_User_ID(getUserId());
+            pi.setUserId(getUserId());
             pi.setADClientID(getClientId());
             pi.setAD_PInstance_ID(pInstance.getPInstanceId());
             return process.processItWithoutTrxClose(pi);
@@ -915,12 +919,12 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 //	Approval Hierarchy
                 if (isInvoker()) {
                     //	Set Approver
-                    int startAD_User_ID = Env.getAD_User_ID(getCtx());
+                    int startAD_User_ID = Env.getUserId(getCtx());
                     if (startAD_User_ID == 0) startAD_User_ID = doc.getDoc_User_ID();
                     int nextAD_User_ID =
                             getApprovalUser(
                                     startAD_User_ID,
-                                    doc.getC_Currency_ID(),
+                                    doc.getCurrencyId(),
                                     doc.getApprovalAmt(),
                                     doc.getOrgId(),
                                     startAD_User_ID == doc.getDoc_User_ID()); // 	own doc
@@ -937,12 +941,12 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                     // MZ Goodwill
                     // [ 1742751 ] Workflow: User Choice is not working
                     if (resp.isHuman()) {
-                        autoApproval = resp.getAD_User_ID() == Env.getAD_User_ID(getCtx());
-                        if (!autoApproval && resp.getAD_User_ID() != 0) setUserId(resp.getAD_User_ID());
+                        autoApproval = resp.getUserId() == Env.getUserId(getCtx());
+                        if (!autoApproval && resp.getUserId() != 0) setUserId(resp.getUserId());
                     } else if (resp.isRole()) {
                         MUserRoles[] urs = MUserRoles.getOfRole(getCtx(), resp.getRoleId());
                         for (int i = 0; i < urs.length; i++) {
-                            if (urs[i].getUserId() == Env.getAD_User_ID(getCtx())) {
+                            if (urs[i].getUserId() == Env.getUserId(getCtx())) {
                                 autoApproval = true;
                                 break;
                             }
@@ -951,7 +955,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                         MWFActivityApprover[] approvers =
                                 MWFActivityApprover.getOfActivity(getCtx(), getWorkflowActivityId());
                         for (int i = 0; i < approvers.length; i++) {
-                            if (approvers[i].getUserId() == Env.getAD_User_ID(getCtx())) {
+                            if (approvers[i].getUserId() == Env.getUserId(getCtx())) {
                                 autoApproval = true;
                                 break;
                             }
@@ -1227,7 +1231,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             if (resp.isInvoker())
                 sendEMail(client, doc.getDoc_User_ID(), null, subject, message, pdf, text.isHtml());
             else if (resp.isHuman())
-                sendEMail(client, resp.getAD_User_ID(), null, subject, message, pdf, text.isHtml());
+                sendEMail(client, resp.getUserId(), null, subject, message, pdf, text.isHtml());
             else if (resp.isRole()) {
                 MRole role = resp.getRole();
                 if (role != null) {

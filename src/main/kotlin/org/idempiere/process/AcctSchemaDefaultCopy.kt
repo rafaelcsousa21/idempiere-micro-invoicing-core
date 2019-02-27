@@ -57,9 +57,9 @@ class AcctSchemaDefaultCopy(
         if (acct == null || acct.id == 0)
             throw AdempiereSystemError("Default Not Found - C_AcctSchema_ID=$p_C_AcctSchema_ID")
 
-        var sql: StringBuilder? = null
-        var updated = 0
-        var created = 0
+        var sql: StringBuilder?
+        var updated: Int
+        var created: Int
         var updatedTotal = 0
         var createdTotal = 0
 

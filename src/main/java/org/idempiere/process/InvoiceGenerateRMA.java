@@ -133,7 +133,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
         MInvoice invoice = new MInvoice(getCtx(), 0);
         invoice.setRMA(rma);
 
-        invoice.setC_DocTypeTarget_ID(docTypeId);
+        invoice.setTargetDocumentTypeId(docTypeId);
         if (!invoice.save()) {
             throw new IllegalStateException("Could not create invoice");
         }
@@ -147,7 +147,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
         MRMALine rmaLines[] = rma.getLines(true);
 
         for (MRMALine rmaLine : rmaLines) {
-            if (rmaLine.getM_InOutLine_ID() == 0 && rmaLine.getC_Charge_ID() == 0) {
+            if (rmaLine.getM_InOutLine_ID() == 0 && rmaLine.getChargeId() == 0) {
                 StringBuilder msgiste =
                         new StringBuilder("No customer return line - RMA = ")
                                 .append(rma.getDocumentNo())
@@ -208,12 +208,12 @@ public class InvoiceGenerateRMA extends SvrProcess {
         // Add processing information to process log
         String message = Msg.parseTranslation(getCtx(), "@InvoiceProcessed@ " + processMsg.toString());
         addBufferLog(
-                invoice.getC_Invoice_ID(),
+                invoice.getInvoiceId(),
                 invoice.getDateInvoiced(),
                 null,
                 message,
                 invoice.getTableId(),
-                invoice.getC_Invoice_ID());
+                invoice.getInvoiceId());
         m_created++;
     }
 }

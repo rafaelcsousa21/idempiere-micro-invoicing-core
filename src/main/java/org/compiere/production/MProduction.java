@@ -78,8 +78,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
     public MProduction(MProjectLine line) {
         super(line.getCtx(), 0);
-        MProject project = new MProject(line.getCtx(), line.getC_Project_ID());
-        MWarehouse wh = new MWarehouse(line.getCtx(), project.getM_Warehouse_ID());
+        MProject project = new MProject(line.getCtx(), line.getProjectId());
+        MWarehouse wh = new MWarehouse(line.getCtx(), project.getWarehouseId());
 
         MLocator M_Locator = null;
         int M_Locator_ID = 0;
@@ -92,11 +92,11 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         setM_Locator_ID(M_Locator_ID);
         setDescription(
                 project.getSearchKey() + "_" + project.getName() + " Line: " + line.getLine() + " (project)");
-        setC_Project_ID(line.getC_Project_ID());
-        setC_BPartner_ID(project.getC_BPartner_ID());
-        setC_Campaign_ID(project.getC_Campaign_ID());
-        setAD_OrgTrx_ID(project.getAD_OrgTrx_ID());
-        setC_Activity_ID(project.getC_Activity_ID());
+        setProjectId(line.getProjectId());
+        setBusinessPartnerId(project.getBusinessPartnerId());
+        setCampaignId(project.getCampaignId());
+        setTransactionOrganizationId(project.getTransactionOrganizationId());
+        setBusinessActivityId(project.getBusinessActivityId());
         setC_ProjectPhase_ID(line.getC_ProjectPhase_ID());
         setC_ProjectTask_ID(line.getC_ProjectTask_ID());
         setMovementDate(Env.getContextAsDate(getCtx(), "#Date"));
@@ -267,7 +267,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
         MLocator finishedLocator = MLocator.get(getCtx(), getM_Locator_ID());
 
-        int M_Warehouse_ID = finishedLocator.getM_Warehouse_ID();
+        int M_Warehouse_ID = finishedLocator.getWarehouseId();
 
         int asi = 0;
 
@@ -764,7 +764,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         MProduction to = new MProduction(getCtx(), 0);
         PO.copyValues(this, to, getClientId(), getOrgId());
 
-        to.set_ValueNoCheck("DocumentNo", null);
+        to.setValueNoCheck("DocumentNo", null);
         //
         to.setDocStatus(X_M_Production.DOCSTATUS_Drafted); // 	Draft
         to.setDocAction(X_M_Production.DOCACTION_Complete);
@@ -893,8 +893,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     }
 
     @Override
-    public int getC_Currency_ID() {
-        return MClient.get(getCtx()).getC_Currency_ID();
+    public int getCurrencyId() {
+        return MClient.get(getCtx()).getCurrencyId();
     }
 
     @Override

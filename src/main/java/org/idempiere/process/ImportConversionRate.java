@@ -141,7 +141,7 @@ public class ImportConversionRate extends SvrProcess {
                 .append(" CreatedBy = COALESCE (CreatedBy, 0),")
                 .append(" Updated = COALESCE (Updated, SysDate),")
                 .append(" UpdatedBy = ")
-                .append(getAD_User_ID())
+                .append(getUserId())
                 .append(",")
                 .append(" I_ErrorMsg = ' ',")
                 .append(" Processed = 'N',")
@@ -285,8 +285,8 @@ public class ImportConversionRate extends SvrProcess {
                 MConversionRate rate =
                         new MConversionRate(
                                 imp,
-                                imp.getC_ConversionType_ID(),
-                                imp.getC_Currency_ID(),
+                                imp.getConversionTypeId(),
+                                imp.getCurrencyId(),
                                 imp.getC_Currency_ID_To(),
                                 imp.getMultiplyRate(),
                                 imp.getValidFrom());
@@ -302,9 +302,9 @@ public class ImportConversionRate extends SvrProcess {
                         rate =
                                 new MConversionRate(
                                         imp,
-                                        imp.getC_ConversionType_ID(),
+                                        imp.getConversionTypeId(),
                                         imp.getC_Currency_ID_To(),
-                                        imp.getC_Currency_ID(),
+                                        imp.getCurrencyId(),
                                         imp.getDivideRate(),
                                         imp.getValidFrom());
                         if (imp.getValidTo() != null) rate.setValidTo(imp.getValidTo());

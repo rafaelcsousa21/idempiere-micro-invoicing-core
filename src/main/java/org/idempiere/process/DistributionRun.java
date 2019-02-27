@@ -300,7 +300,7 @@ public class DistributionRun extends SvrProcess {
     			runLine.setMaxAllocation(detail.getActualAllocation(), false);
     			//
     			if (log.isLoggable(Level.FINE)) log.fine("RunLine=" + runLine.getLine()
-    				+ ": BP_ID=" + detail.getC_BPartner_ID()
+    				+ ": BP_ID=" + detail.getBusinessPartnerId()
     				+ ", Min=" + detail.getMinQty()
     				+ ", Qty=" + detail.getQty()
     				+ ", Allocation=" + detail.getActualAllocation());
@@ -478,19 +478,19 @@ public class DistributionRun extends SvrProcess {
     //	Consolidated Order
     if (m_run.isCreateSingleOrder())
     {
-    	bp = new MBPartner (getCtx(), m_run.getC_BPartner_ID(), null);
+    	bp = new MBPartner (getCtx(), m_run.getBusinessPartnerId(), null);
     	if (bp.getId() == 0)
-    		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + m_run.getC_BPartner_ID());
+    		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + m_run.getBusinessPartnerId());
     	//
     	if (!p_IsTest)
     	{
     		singleOrder = new MOrder (getCtx(), 0, null);
-    		singleOrder.setC_DocTypeTarget_ID(m_docType.getDocTypeId());
-    		singleOrder.setC_DocType_ID(m_docType.getDocTypeId());
+    		singleOrder.setTargetDocumentTypeId(m_docType.getDocTypeId());
+    		singleOrder.setDocumentTypeId(m_docType.getDocTypeId());
     		singleOrder.setIsSOTrx(m_docType.isSOTrx());
     		singleOrder.setBPartner(bp);
-    		if (m_run.getC_BPartner_Location_ID() != 0)
-    			singleOrder.setC_BPartner_Location_ID(m_run.getC_BPartner_Location_ID());
+    		if (m_run.getBusinessPartnerLocationId() != 0)
+    			singleOrder.setBusinessPartnerLocationId(m_run.getBusinessPartnerLocationId());
     		singleOrder.setDateOrdered(m_DateOrdered);
     		singleOrder.setDatePromised(p_DatePromised);
     		if (!singleOrder.save())
@@ -514,24 +514,24 @@ public class DistributionRun extends SvrProcess {
     	if (m_run.isCreateSingleOrder())
     		order = singleOrder;
     	//	New Business Partner
-    	else if (lastC_BPartner_ID != detail.getC_BPartner_ID()
-    		|| lastC_BPartner_Location_ID != detail.getC_BPartner_Location_ID())
+    	else if (lastC_BPartner_ID != detail.getBusinessPartnerId()
+    		|| lastC_BPartner_Location_ID != detail.getBusinessPartnerLocationId())
     	{
     		//	finish order
     		order = null;
     	}
-    	lastC_BPartner_ID = detail.getC_BPartner_ID();
-    	lastC_BPartner_Location_ID = detail.getC_BPartner_Location_ID();
+    	lastC_BPartner_ID = detail.getBusinessPartnerId();
+    	lastC_BPartner_Location_ID = detail.getBusinessPartnerLocationId();
 
     	//	New Order
     	if (order == null)
     	{
-    		bp = new MBPartner (getCtx(), detail.getC_BPartner_ID(), null);
+    		bp = new MBPartner (getCtx(), detail.getBusinessPartnerId(), null);
     		if (!p_IsTest)
     		{
     			order = new MOrder (getCtx(), 0, null);
-    			order.setC_DocTypeTarget_ID(m_docType.getDocTypeId());
-    			order.setC_DocType_ID(m_docType.getDocTypeId());
+    			order.setTargetDocumentTypeId(m_docType.getDocTypeId());
+    			order.setDocumentTypeId(m_docType.getDocTypeId());
     			order.setIsSOTrx(m_docType.isSOTrx());
     			//	Counter Doc
     			if (counter && bp.getAD_OrgBP_ID_Int() > 0)
@@ -550,8 +550,8 @@ public class DistributionRun extends SvrProcess {
     					+ ", To_BP=" + bp);
     				order.setOrgId(runAD_Org_ID);
     				order.setBPartner(bp);
-    				if (detail.getC_BPartner_Location_ID() != 0)
-    					order.setC_BPartner_Location_ID(detail.getC_BPartner_Location_ID());
+    				if (detail.getBusinessPartnerLocationId() != 0)
+    					order.setBusinessPartnerLocationId(detail.getBusinessPartnerLocationId());
     			}
     			order.setDateOrdered(m_DateOrdered);
     			order.setDatePromised(p_DatePromised);
@@ -579,9 +579,9 @@ public class DistributionRun extends SvrProcess {
     		;	//	don't overwrite counter doc
     	else	//	normal - optionally overwrite
     	{
-    		line.setC_BPartner_ID(detail.getC_BPartner_ID());
-    		if (detail.getC_BPartner_Location_ID() != 0)
-    			line.setC_BPartner_Location_ID(detail.getC_BPartner_Location_ID());
+    		line.setBusinessPartnerId(detail.getBusinessPartnerId());
+    		if (detail.getBusinessPartnerLocationId() != 0)
+    			line.setBusinessPartnerLocationId(detail.getBusinessPartnerLocationId());
     	}
     	//
     	line.setProduct(product);
@@ -815,7 +815,7 @@ public class DistributionRun extends SvrProcess {
      	    try
      	    {
      	    		pstmt = prepareStatement (sql.toString(),null);
-     	    		pstmt.setInt(1, detail.getC_BPartner_ID());
+     	    		pstmt.setInt(1, detail.getBusinessPartnerId());
      	    		pstmt.setInt(2, detail.getM_Product_ID());
      	    		pstmt.setInt(3, M_Warehouse_ID);
      	    		pstmt.setTimestamp(4, p_DatePromised);
@@ -901,18 +901,18 @@ public class DistributionRun extends SvrProcess {
     //	Consolidated Single Order
     if (m_run.isCreateSingleOrder())
     {
-    	bp = new MBPartner (getCtx(), m_run.getC_BPartner_ID(), null);
+    	bp = new MBPartner (getCtx(), m_run.getBusinessPartnerId(), null);
     	if (bp.getId() == 0)
-    		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + m_run.getC_BPartner_ID());
+    		throw new IllegalArgumentException("Business Partner not found - C_BPartner_ID=" + m_run.getBusinessPartnerId());
     	//
     	if (!p_IsTest)
     	{
     		singleOrder = new MDDOrder (getCtx(), 0, null);
-    		singleOrder.setC_DocType_ID(m_docType.getDocTypeId());
+    		singleOrder.setDocumentTypeId(m_docType.getDocTypeId());
     		singleOrder.setIsSOTrx(m_docType.isSOTrx());
     		singleOrder.setBPartner(bp);
-    		if (m_run.getC_BPartner_Location_ID() != 0)
-    			singleOrder.setC_BPartner_Location_ID(m_run.getC_BPartner_Location_ID());
+    		if (m_run.getBusinessPartnerLocationId() != 0)
+    			singleOrder.setBusinessPartnerLocationId(m_run.getBusinessPartnerLocationId());
     		singleOrder.setDateOrdered(m_DateOrdered);
     		singleOrder.setDatePromised(p_DatePromised);
     		singleOrder.setWarehouseId(ws[0].getWarehouseId());
@@ -939,16 +939,16 @@ public class DistributionRun extends SvrProcess {
     	if (m_run.isCreateSingleOrder())
     		order = singleOrder;
     	//	New Business Partner
-    	else if (lastC_BPartner_ID != detail.getC_BPartner_ID()
-    		|| lastC_BPartner_Location_ID != detail.getC_BPartner_Location_ID())
+    	else if (lastC_BPartner_ID != detail.getBusinessPartnerId()
+    		|| lastC_BPartner_Location_ID != detail.getBusinessPartnerLocationId())
     	{
     		//	finish order
     		order = null;
     	}
-    	lastC_BPartner_ID = detail.getC_BPartner_ID();
-    	lastC_BPartner_Location_ID = detail.getC_BPartner_Location_ID();
+    	lastC_BPartner_ID = detail.getBusinessPartnerId();
+    	lastC_BPartner_Location_ID = detail.getBusinessPartnerLocationId();
 
-    	bp = new MBPartner (getCtx(), detail.getC_BPartner_ID(), null);
+    	bp = new MBPartner (getCtx(), detail.getBusinessPartnerId(), null);
     	MOrgInfo oi_target = MOrgInfo.get(getCtx(), bp.getAD_OrgBP_ID_Int(), null);
     	m_target = MWarehouse.get(getCtx(), oi_target.getWarehouseId());
     	if(m_target==null)
@@ -982,7 +982,7 @@ public class DistributionRun extends SvrProcess {
     		{
     			order = new MDDOrder (getCtx(), 0, null);
     			order.setOrgId(bp.getAD_OrgBP_ID_Int());
-    			order.setC_DocType_ID(m_docType.getDocTypeId());
+    			order.setDocumentTypeId(m_docType.getDocTypeId());
     			order.setIsSOTrx(m_docType.isSOTrx());
 
     			//	Counter Doc
@@ -1001,8 +1001,8 @@ public class DistributionRun extends SvrProcess {
     					+ ", To_BP=" + bp);
     				order.setOrgId(bp.getAD_OrgBP_ID_Int());
     				order.setBPartner(bp);
-    				if (detail.getC_BPartner_Location_ID() != 0)
-    					order.setC_BPartner_Location_ID(detail.getC_BPartner_Location_ID());
+    				if (detail.getBusinessPartnerLocationId() != 0)
+    					order.setBusinessPartnerLocationId(detail.getBusinessPartnerLocationId());
     			}
     			order.setWarehouseId(ws[0].getWarehouseId());
     			order.setDateOrdered(m_DateOrdered);
@@ -1031,7 +1031,7 @@ public class DistributionRun extends SvrProcess {
     	{
 
     		String sql = "SELECT DD_OrderLine_ID FROM DD_OrderLine ol INNER JOIN DD_Order o ON (o.DD_Order_ID=ol.DD_Order_ID) WHERE o.DocStatus IN ('DR','IN') AND o.C_BPartner_ID = ? AND M_Product_ID=? AND  ol.M_Locator_ID=?  AND ol.DatePromised <= ?";
-    		int DD_OrderLine_ID = getSQLValueEx(null, sql, new Object[]{detail.getC_BPartner_ID(),product.getM_Product_ID(), m_locator.getM_Locator_ID(), p_DatePromised});
+    		int DD_OrderLine_ID = getSQLValueEx(null, sql, new Object[]{detail.getBusinessPartnerId(),product.getM_Product_ID(), m_locator.getM_Locator_ID(), p_DatePromised});
     		if (DD_OrderLine_ID  <= 0)
     		{
     			MDDOrderLine line = new MDDOrderLine(order);

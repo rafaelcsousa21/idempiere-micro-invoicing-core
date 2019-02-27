@@ -33,13 +33,13 @@ public class ProjectGenOrder extends SvrProcess {
      */
     protected static MProject getProject(Properties ctx, int C_Project_ID) {
         MProject fromProject = new MProject(ctx, C_Project_ID);
-        if (fromProject.getC_Project_ID() == 0)
+        if (fromProject.getProjectId() == 0)
             throw new IllegalArgumentException("Project not found C_Project_ID=" + C_Project_ID);
         if (fromProject.getM_PriceList_Version_ID() == 0)
             throw new IllegalArgumentException("Project has no Price List");
-        if (fromProject.getM_Warehouse_ID() == 0)
+        if (fromProject.getWarehouseId() == 0)
             throw new IllegalArgumentException("Project has no Warehouse");
-        if (fromProject.getC_BPartner_ID() == 0 || fromProject.getC_BPartner_Location_ID() == 0)
+        if (fromProject.getBusinessPartnerId() == 0 || fromProject.getBusinessPartnerLocationId() == 0)
             throw new IllegalArgumentException("Project has no Business Partner/Location");
         return fromProject;
     } //	getProject

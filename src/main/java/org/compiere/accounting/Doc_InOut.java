@@ -57,7 +57,7 @@ public class Doc_InOut extends Doc {
      * @return error message or null
      */
     protected String loadDocumentDetails() {
-        setC_Currency_ID(NO_CURRENCY);
+        setCurrencyId(NO_CURRENCY);
         MInOut inout = (MInOut) getPO();
         setDateDoc(inout.getMovementDate());
         m_Reversal_ID = inout.getReversal_ID(); // store original (voided/reversed) document
@@ -142,7 +142,7 @@ public class Doc_InOut extends Doc {
         ArrayList<IFact> facts = new ArrayList<IFact>();
         //  create Fact Header
         Fact fact = new Fact(this, as, Fact.POST_Actual);
-        setC_Currency_ID(as.getCurrencyId());
+        setCurrencyId(as.getCurrencyId());
 
         //  Line pointers
         FactLine dr = null;
@@ -221,7 +221,7 @@ public class Doc_InOut extends Doc {
                 }
                 dr.setM_Locator_ID(line.getM_Locator_ID());
                 dr.setLocationFromLocator(line.getM_Locator_ID(), true); //  from Loc
-                dr.setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
+                dr.setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
                 dr.setOrgId(line.getOrder_Org_ID()); // 	Revenue X-Org
                 dr.setQty(line.getQty().negate());
 
@@ -253,7 +253,7 @@ public class Doc_InOut extends Doc {
                 }
                 cr.setM_Locator_ID(line.getM_Locator_ID());
                 cr.setLocationFromLocator(line.getM_Locator_ID(), true); // from Loc
-                cr.setLocationFromBPartner(getC_BPartner_Location_ID(), false); // to Loc
+                cr.setLocationFromBPartner(getBusinessPartnerLocationId(), false); // to Loc
 
                 if (isReversal(line)) {
                     //	Set AmtAcctCr from Original Shipment/Receipt
@@ -401,7 +401,7 @@ public class Doc_InOut extends Doc {
                 }
                 dr.setM_Locator_ID(line.getM_Locator_ID());
                 dr.setLocationFromLocator(line.getM_Locator_ID(), true); // from Loc
-                dr.setLocationFromBPartner(getC_BPartner_Location_ID(), false); // to Loc
+                dr.setLocationFromBPartner(getBusinessPartnerLocationId(), false); // to Loc
                 if (isReversal(line)) {
                     //	Set AmtAcctDr from Original Shipment/Receipt
                     if (!dr.updateReverseLine(
@@ -492,7 +492,7 @@ public class Doc_InOut extends Doc {
                 }
                 cr.setM_Locator_ID(line.getM_Locator_ID());
                 cr.setLocationFromLocator(line.getM_Locator_ID(), true); //  from Loc
-                cr.setLocationFromBPartner(getC_BPartner_Location_ID(), false); //  to Loc
+                cr.setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
                 cr.setOrgId(line.getOrder_Org_ID()); // 	Revenue X-Org
                 cr.setQty(line.getQty().negate());
                 if (isReversal(line)) {
@@ -542,7 +542,7 @@ public class Doc_InOut extends Doc {
                         // Low - check if c_orderline_id is valid
                         if (orderLine != null) {
                             // Elaine 2008/06/26
-                            C_Currency_ID = orderLine.getC_Currency_ID();
+                            C_Currency_ID = orderLine.getCurrencyId();
                             //
                             costs = orderLine.getPriceCost();
                             if (costs == null || costs.signum() == 0) {
@@ -608,7 +608,7 @@ public class Doc_InOut extends Doc {
                     return null;
                 }
                 dr.setM_Locator_ID(line.getM_Locator_ID());
-                dr.setLocationFromBPartner(getC_BPartner_Location_ID(), true); // from Loc
+                dr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); // from Loc
                 dr.setLocationFromLocator(line.getM_Locator_ID(), false); // to Loc
                 if (isReversal(line)) {
                     //	Set AmtAcctDr from Original Shipment/Receipt
@@ -634,7 +634,7 @@ public class Doc_InOut extends Doc {
                     return null;
                 }
                 cr.setM_Locator_ID(line.getM_Locator_ID());
-                cr.setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
+                cr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
                 cr.setLocationFromLocator(line.getM_Locator_ID(), false); //  to Loc
                 cr.setQty(line.getQty().negate());
                 if (isReversal(line)) {
@@ -674,7 +674,7 @@ public class Doc_InOut extends Doc {
                             return null;
                         }
                         cr.setM_Locator_ID(line.getM_Locator_ID());
-                        cr.setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
+                        cr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
                         cr.setLocationFromLocator(line.getM_Locator_ID(), false); //  to Loc
                         cr.setQty(line.getQty().negate());
                     }
@@ -703,7 +703,7 @@ public class Doc_InOut extends Doc {
                             MTax tax = MTax.get(getCtx(), C_Tax_ID);
                             if (!tax.isZeroTax()) {
                                 int stdPrecision =
-                                        MCurrency.getStdPrecision(getCtx(), originalOrderLine.getC_Currency_ID());
+                                        MCurrency.getStdPrecision(getCtx(), originalOrderLine.getCurrencyId());
                                 BigDecimal costTax = tax.calculateTax(costs, true, stdPrecision);
                                 if (log.isLoggable(Level.FINE)) log.fine("Costs=" + costs + " - Tax=" + costTax);
                                 costs = costs.subtract(costTax);
@@ -711,12 +711,12 @@ public class Doc_InOut extends Doc {
                         } //	correct included Tax
 
                         // different currency
-                        if (C_Currency_ID != originalOrderLine.getC_Currency_ID()) {
+                        if (C_Currency_ID != originalOrderLine.getCurrencyId()) {
                             costs =
                                     MConversionRate.convert(
                                             getCtx(),
                                             costs,
-                                            originalOrderLine.getC_Currency_ID(),
+                                            originalOrderLine.getCurrencyId(),
                                             C_Currency_ID,
                                             getDateAcct(),
                                             0,
@@ -777,7 +777,7 @@ public class Doc_InOut extends Doc {
                     return null;
                 }
                 dr.setM_Locator_ID(line.getM_Locator_ID());
-                dr.setLocationFromBPartner(getC_BPartner_Location_ID(), true); //  from Loc
+                dr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); //  from Loc
                 dr.setLocationFromLocator(line.getM_Locator_ID(), false); //  to Loc
                 dr.setQty(line.getQty().negate());
                 if (isReversal(line)) {
@@ -807,7 +807,7 @@ public class Doc_InOut extends Doc {
                     return null;
                 }
                 cr.setM_Locator_ID(line.getM_Locator_ID());
-                cr.setLocationFromBPartner(getC_BPartner_Location_ID(), true); // from Loc
+                cr.setLocationFromBPartner(getBusinessPartnerLocationId(), true); // from Loc
                 cr.setLocationFromLocator(line.getM_Locator_ID(), false); // to Loc
                 if (isReversal(line)) {
                     //	Set AmtAcctCr from Original Shipment/Receipt

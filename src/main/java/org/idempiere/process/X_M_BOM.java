@@ -79,7 +79,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM {
      */
     public void setBOMType(String BOMType) {
 
-        set_Value(COLUMNNAME_BOMType, BOMType);
+        setValue(COLUMNNAME_BOMType, BOMType);
     }
 
     /**
@@ -98,7 +98,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM {
      */
     public void setBOMUse(String BOMUse) {
 
-        set_Value(COLUMNNAME_BOMUse, BOMUse);
+        setValue(COLUMNNAME_BOMUse, BOMUse);
     }
 
     /**

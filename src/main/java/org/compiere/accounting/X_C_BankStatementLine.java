@@ -78,8 +78,8 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param C_BankStatement_ID Bank Statement of account
      */
     public void setC_BankStatement_ID(int C_BankStatement_ID) {
-        if (C_BankStatement_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BankStatement_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_BankStatement_ID, Integer.valueOf(C_BankStatement_ID));
+        if (C_BankStatement_ID < 1) setValueNoCheck(COLUMNNAME_C_BankStatement_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_BankStatement_ID, Integer.valueOf(C_BankStatement_ID));
     }
 
     /**
@@ -98,7 +98,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -109,9 +109,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValue(COLUMNNAME_C_BPartner_ID, null);
+        else setValue(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -119,7 +119,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -130,9 +130,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @param C_Charge_ID Additional document charges
      */
-    public void setC_Charge_ID(int C_Charge_ID) {
-        if (C_Charge_ID < 1) set_Value(COLUMNNAME_C_Charge_ID, null);
-        else set_Value(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
+    public void setChargeId(int C_Charge_ID) {
+        if (C_Charge_ID < 1) setValue(COLUMNNAME_C_Charge_ID, null);
+        else setValue(COLUMNNAME_C_Charge_ID, Integer.valueOf(C_Charge_ID));
     }
 
     /**
@@ -140,7 +140,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -151,9 +151,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-        else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValue(COLUMNNAME_C_Currency_ID, null);
+        else setValue(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     /**
@@ -173,7 +173,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param ChargeAmt Charge Amount
      */
     public void setChargeAmt(BigDecimal ChargeAmt) {
-        set_Value(COLUMNNAME_ChargeAmt, ChargeAmt);
+        setValue(COLUMNNAME_ChargeAmt, ChargeAmt);
     }
 
     /**
@@ -181,7 +181,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @return Invoice Identifier
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -192,9 +192,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @param C_Invoice_ID Invoice Identifier
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        if (C_Invoice_ID < 1) set_Value(COLUMNNAME_C_Invoice_ID, null);
-        else set_Value(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    public void setInvoiceId(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) setValue(COLUMNNAME_C_Invoice_ID, null);
+        else setValue(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
     /**
@@ -202,7 +202,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @return Payment identifier
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
@@ -213,9 +213,9 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @param C_Payment_ID Payment identifier
      */
-    public void setC_Payment_ID(int C_Payment_ID) {
-        if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-        else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    public void setPaymentId(int C_Payment_ID) {
+        if (C_Payment_ID < 1) setValue(COLUMNNAME_C_Payment_ID, null);
+        else setValue(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
     }
 
     /**
@@ -233,7 +233,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param DateAcct Accounting Date
      */
     public void setDateAcct(Timestamp DateAcct) {
-        set_Value(COLUMNNAME_DateAcct, DateAcct);
+        setValue(COLUMNNAME_DateAcct, DateAcct);
     }
 
     /**
@@ -251,7 +251,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -260,7 +260,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftAmt Electronic Funds Transfer Amount
      */
     public void setEftAmt(BigDecimal EftAmt) {
-        set_Value(COLUMNNAME_EftAmt, EftAmt);
+        setValue(COLUMNNAME_EftAmt, EftAmt);
     }
 
     /**
@@ -269,7 +269,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftCheckNo Electronic Funds Transfer Check No
      */
     public void setEftCheckNo(String EftCheckNo) {
-        set_Value(COLUMNNAME_EftCheckNo, EftCheckNo);
+        setValue(COLUMNNAME_EftCheckNo, EftCheckNo);
     }
 
     /**
@@ -278,7 +278,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftCurrency Electronic Funds Transfer Currency
      */
     public void setEftCurrency(String EftCurrency) {
-        set_Value(COLUMNNAME_EftCurrency, EftCurrency);
+        setValue(COLUMNNAME_EftCurrency, EftCurrency);
     }
 
     /**
@@ -287,7 +287,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftMemo Electronic Funds Transfer Memo
      */
     public void setEftMemo(String EftMemo) {
-        set_Value(COLUMNNAME_EftMemo, EftMemo);
+        setValue(COLUMNNAME_EftMemo, EftMemo);
     }
 
     /**
@@ -296,7 +296,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftPayee Electronic Funds Transfer Payee information
      */
     public void setEftPayee(String EftPayee) {
-        set_Value(COLUMNNAME_EftPayee, EftPayee);
+        setValue(COLUMNNAME_EftPayee, EftPayee);
     }
 
     /**
@@ -305,7 +305,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftPayeeAccount Electronic Funds Transfer Payee Account Information
      */
     public void setEftPayeeAccount(String EftPayeeAccount) {
-        set_Value(COLUMNNAME_EftPayeeAccount, EftPayeeAccount);
+        setValue(COLUMNNAME_EftPayeeAccount, EftPayeeAccount);
     }
 
     /**
@@ -314,7 +314,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftReference Electronic Funds Transfer Reference
      */
     public void setEftReference(String EftReference) {
-        set_Value(COLUMNNAME_EftReference, EftReference);
+        setValue(COLUMNNAME_EftReference, EftReference);
     }
 
     /**
@@ -323,7 +323,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftStatementLineDate Electronic Funds Transfer Statement Line Date
      */
     public void setEftStatementLineDate(Timestamp EftStatementLineDate) {
-        set_Value(COLUMNNAME_EftStatementLineDate, EftStatementLineDate);
+        setValue(COLUMNNAME_EftStatementLineDate, EftStatementLineDate);
     }
 
     /**
@@ -332,7 +332,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftTrxID Electronic Funds Transfer Transaction ID
      */
     public void setEftTrxID(String EftTrxID) {
-        set_Value(COLUMNNAME_EftTrxID, EftTrxID);
+        setValue(COLUMNNAME_EftTrxID, EftTrxID);
     }
 
     /**
@@ -341,7 +341,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftTrxType Electronic Funds Transfer Transaction Type
      */
     public void setEftTrxType(String EftTrxType) {
-        set_Value(COLUMNNAME_EftTrxType, EftTrxType);
+        setValue(COLUMNNAME_EftTrxType, EftTrxType);
     }
 
     /**
@@ -350,7 +350,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param EftValutaDate Electronic Funds Transfer Valuta (effective) Date
      */
     public void setEftValutaDate(Timestamp EftValutaDate) {
-        set_Value(COLUMNNAME_EftValutaDate, EftValutaDate);
+        setValue(COLUMNNAME_EftValutaDate, EftValutaDate);
     }
 
     /**
@@ -370,7 +370,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param InterestAmt Interest Amount
      */
     public void setInterestAmt(BigDecimal InterestAmt) {
-        set_Value(COLUMNNAME_InterestAmt, InterestAmt);
+        setValue(COLUMNNAME_InterestAmt, InterestAmt);
     }
 
     /**
@@ -379,7 +379,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param IsReversal This is a reversing transaction
      */
     public void setIsReversal(boolean IsReversal) {
-        set_Value(COLUMNNAME_IsReversal, Boolean.valueOf(IsReversal));
+        setValue(COLUMNNAME_IsReversal, Boolean.valueOf(IsReversal));
     }
 
     /**
@@ -413,7 +413,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -422,7 +422,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param Memo Memo Text
      */
     public void setMemo(String Memo) {
-        set_Value(COLUMNNAME_Memo, Memo);
+        setValue(COLUMNNAME_Memo, Memo);
     }
 
     /**
@@ -431,7 +431,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param ReferenceNo Your customer or vendor number at the Business Partner's site
      */
     public void setReferenceNo(String ReferenceNo) {
-        set_Value(COLUMNNAME_ReferenceNo, ReferenceNo);
+        setValue(COLUMNNAME_ReferenceNo, ReferenceNo);
     }
 
     /**
@@ -449,7 +449,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param StatementLineDate Date of the Statement Line
      */
     public void setStatementLineDate(Timestamp StatementLineDate) {
-        set_Value(COLUMNNAME_StatementLineDate, StatementLineDate);
+        setValue(COLUMNNAME_StatementLineDate, StatementLineDate);
     }
 
     /**
@@ -469,7 +469,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param StmtAmt Statement Amount
      */
     public void setStmtAmt(BigDecimal StmtAmt) {
-        set_Value(COLUMNNAME_StmtAmt, StmtAmt);
+        setValue(COLUMNNAME_StmtAmt, StmtAmt);
     }
 
     /**
@@ -489,7 +489,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param TrxAmt Amount of a transaction
      */
     public void setTrxAmt(BigDecimal TrxAmt) {
-        set_Value(COLUMNNAME_TrxAmt, TrxAmt);
+        setValue(COLUMNNAME_TrxAmt, TrxAmt);
     }
 
     /**
@@ -507,7 +507,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      * @param ValutaDate Date when money is available
      */
     public void setValutaDate(Timestamp ValutaDate) {
-        set_Value(COLUMNNAME_ValutaDate, ValutaDate);
+        setValue(COLUMNNAME_ValutaDate, ValutaDate);
     }
 
     @Override

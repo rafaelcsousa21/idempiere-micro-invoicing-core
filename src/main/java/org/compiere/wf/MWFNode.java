@@ -72,6 +72,7 @@ public class MWFNode extends X_AD_WF_Node {
      * Duration Base MS
      */
     private long m_durationBaseMS = -1;
+
     /**
      * ************************************************************************ Standard Constructor -
      * save to cache
@@ -104,6 +105,7 @@ public class MWFNode extends X_AD_WF_Node {
             loadTrl();
         }
     } //	MWFNode
+
     /**
      * Parent Constructor
      *
@@ -119,6 +121,7 @@ public class MWFNode extends X_AD_WF_Node {
         setName(Name);
         m_durationBaseMS = wf.getDurationBaseSec() * 1000;
     } //	MWFNode
+
     /**
      * Load Constructor - save to cache
      *

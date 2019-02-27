@@ -301,9 +301,9 @@ public class MClient extends MBaseClient {
      *
      * @return currency or 0
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         if (m_info == null) getInfo();
-        if (m_info != null) return getInfo().getC_Currency_ID();
+        if (m_info != null) return getInfo().getCurrencyId();
         return 0;
     } //	getCurrencyId
 

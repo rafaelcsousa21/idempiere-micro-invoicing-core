@@ -64,8 +64,8 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
      * @param C_AcctSchema_ID Rules for accounting
      */
     public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
-        if (C_AcctSchema_ID < 1) set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
+        if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
     }
 
     /**
@@ -132,7 +132,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
      * @param UseCurrencyBalancing Use Currency Balancing
      */
     public void setUseCurrencyBalancing(boolean UseCurrencyBalancing) {
-        set_Value(COLUMNNAME_UseCurrencyBalancing, Boolean.valueOf(UseCurrencyBalancing));
+        setValue(COLUMNNAME_UseCurrencyBalancing, Boolean.valueOf(UseCurrencyBalancing));
     }
 
     /**
@@ -155,7 +155,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
      * @param UseSuspenseBalancing Use Suspense Balancing
      */
     public void setUseSuspenseBalancing(boolean UseSuspenseBalancing) {
-        set_Value(COLUMNNAME_UseSuspenseBalancing, Boolean.valueOf(UseSuspenseBalancing));
+        setValue(COLUMNNAME_UseSuspenseBalancing, Boolean.valueOf(UseSuspenseBalancing));
     }
 
     /**
@@ -164,7 +164,7 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
      * @param UseSuspenseError Use Suspense Error
      */
     public void setUseSuspenseError(boolean UseSuspenseError) {
-        set_Value(COLUMNNAME_UseSuspenseError, Boolean.valueOf(UseSuspenseError));
+        setValue(COLUMNNAME_UseSuspenseError, Boolean.valueOf(UseSuspenseError));
     }
 
     @Override

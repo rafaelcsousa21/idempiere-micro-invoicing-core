@@ -61,7 +61,7 @@ public class ProjectGenProduction extends SvrProcess {
                     "doIt - C_Project_ID=" + m_C_Project_ID + " - C_ProjectLine_ID=" + m_C_ProjectLine_ID);
         if (m_C_ProjectLine_ID != 0) {
             MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
-            MProject project = new MProject(getCtx(), projectLine.getC_Project_ID());
+            MProject project = new MProject(getCtx(), projectLine.getProjectId());
             createProduction(project, projectLine);
         } else if (m_C_ProjectPhase_ID != 0) {
             MProject project = new MProject(getCtx(), m_C_Project_ID);
@@ -89,7 +89,7 @@ public class ProjectGenProduction extends SvrProcess {
     private void createProduction(MProject project, MProjectLine projectLine) {
         if (projectLine.getM_Product_ID() == 0) {
             addLog(
-                    project.getC_Project_ID(),
+                    project.getProjectId(),
                     project.getCreated(),
                     new BigDecimal(0),
                     "ISSUE: Line has no Product - ProjectLine:"
@@ -104,7 +104,7 @@ public class ProjectGenProduction extends SvrProcess {
         MProduct M_Product = new MProduct(getCtx(), projectLine.getM_Product_ID());
         if (!M_Product.isManufactured()) {
             addLog(
-                    project.getC_Project_ID(),
+                    project.getProjectId(),
                     project.getCreated(),
                     new BigDecimal(0),
                     "ISSUE: Product is not manufactured - ProjectLine:"
@@ -132,7 +132,7 @@ public class ProjectGenProduction extends SvrProcess {
             AD_Org_ID = Env.getOrgId(getCtx());
             if (AD_Org_ID != 0) projectLine.setOrgId(AD_Org_ID);
         }
-        production.setC_BPartner_ID(project.getC_BPartner_ID());
+        production.setBusinessPartnerId(project.getBusinessPartnerId());
         production.saveEx();
 
         //	update ProjectLine

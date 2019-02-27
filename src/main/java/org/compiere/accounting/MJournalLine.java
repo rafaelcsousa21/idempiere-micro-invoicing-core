@@ -66,7 +66,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
             setAmtSourceCr(Env.ZERO);
             setAmtSourceDr(Env.ZERO);
             setCurrencyRate(Env.ONE);
-            //	setC_ConversionType_ID (0);
+            //	setConversionTypeId (0);
             setDateAcct(new Timestamp(System.currentTimeMillis()));
             setIsGenerated(true);
         }
@@ -82,6 +82,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     public MJournalLine(Properties ctx, ResultSet rs) {
         super(ctx, rs);
     } //	MJournalLine
+
     /**
      * Parent Constructor
      *
@@ -91,8 +92,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
         setGL_Journal_ID(parent.getGL_Journal_ID());
-        setC_Currency_ID(parent.getC_Currency_ID());
-        setC_ConversionType_ID(parent.getC_ConversionType_ID());
+        setCurrencyId(parent.getCurrencyId());
+        setConversionTypeId(parent.getConversionTypeId());
         setDateAcct(parent.getDateAcct());
     } //	MJournalLine
 
@@ -114,8 +115,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      * @param CurrencyRate        rate
      */
     public void setCurrency(int C_Currency_ID, int C_ConversionType_ID, BigDecimal CurrencyRate) {
-        setC_Currency_ID(C_Currency_ID);
-        if (C_ConversionType_ID != 0) setC_ConversionType_ID(C_ConversionType_ID);
+        setCurrencyId(C_Currency_ID);
+        if (C_ConversionType_ID != 0) setConversionTypeId(C_ConversionType_ID);
         if (CurrencyRate != null && CurrencyRate.signum() == 0) setCurrencyRate(CurrencyRate);
     } //	setCurrency
 
@@ -124,9 +125,9 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      *
      * @param C_Currency_ID currency
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
+    public void setCurrencyId(int C_Currency_ID) {
         if (C_Currency_ID == 0) return;
-        super.setC_Currency_ID(C_Currency_ID);
+        super.setCurrencyId(C_Currency_ID);
         m_precision = MCurrency.getStdPrecision(getCtx(), C_Currency_ID);
     } //	setCurrencyId
 
@@ -380,25 +381,25 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                 String et = elem.getElementType();
                 if (MAcctSchemaElement.ELEMENTTYPE_Account.equals(et) && getAccount_ID() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_Account_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_Activity.equals(et) && getC_Activity_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_Activity.equals(et) && getBusinessActivityId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_Activity_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_BPartner.equals(et) && getC_BPartner_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_BPartner.equals(et) && getBusinessPartnerId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_BPartner_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_Campaign.equals(et) && getC_Campaign_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_Campaign.equals(et) && getCampaignId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_Campaign_ID + "@, ";
                 if (MAcctSchemaElement.ELEMENTTYPE_Organization.equals(et) && getOrgId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_AD_Org_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_OrgTrx.equals(et) && getAD_OrgTrx_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_OrgTrx.equals(et) && getTransactionOrganizationId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_AD_OrgTrx_ID + "@, ";
                 if (MAcctSchemaElement.ELEMENTTYPE_Product.equals(et) && getM_Product_ID() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_M_Product_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_Project.equals(et) && getC_Project_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_Project.equals(et) && getProjectId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_Project_ID + "@, ";
                 if (MAcctSchemaElement.ELEMENTTYPE_SalesRegion.equals(et) && getC_SalesRegion_ID() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_SalesRegion_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_UserElementList1.equals(et) && getUser1_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_UserElementList1.equals(et) && getUser1Id() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_User1_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_UserElementList2.equals(et) && getUser2_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_UserElementList2.equals(et) && getUser2Id() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_User2_ID + "@, ";
             }
             if (errorFields.length() > 0) {
@@ -418,16 +419,16 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                             getAccount_ID(),
                             getC_SubAcct_ID(),
                             getM_Product_ID(),
-                            getC_BPartner_ID(),
-                            getAD_OrgTrx_ID(),
+                            getBusinessPartnerId(),
+                            getTransactionOrganizationId(),
                             getC_LocFrom_ID(),
                             getC_LocTo_ID(),
                             getC_SalesRegion_ID(),
-                            getC_Project_ID(),
-                            getC_Campaign_ID(),
-                            getC_Activity_ID(),
-                            getUser1_ID(),
-                            getUser2_ID(),
+                            getProjectId(),
+                            getCampaignId(),
+                            getBusinessActivityId(),
+                            getUser1Id(),
+                            getUser2Id(),
                             0,
                             0,
                             null);
@@ -452,17 +453,17 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
             setAccount_ID(combi.getAccount_ID() > 0 ? combi.getAccount_ID() : 0);
             setC_SubAcct_ID(combi.getC_SubAcct_ID() > 0 ? combi.getC_SubAcct_ID() : 0);
             setM_Product_ID(combi.getM_Product_ID() > 0 ? combi.getM_Product_ID() : 0);
-            setC_BPartner_ID(combi.getC_BPartner_ID() > 0 ? combi.getC_BPartner_ID() : 0);
-            setAD_OrgTrx_ID(combi.getAD_OrgTrx_ID() > 0 ? combi.getAD_OrgTrx_ID() : 0);
+            setBusinessPartnerId(combi.getBusinessPartnerId() > 0 ? combi.getBusinessPartnerId() : 0);
+            setTransactionOrganizationId(combi.getTransactionOrganizationId() > 0 ? combi.getTransactionOrganizationId() : 0);
             setOrgId(combi.getOrgId() > 0 ? combi.getOrgId() : 0);
             setC_LocFrom_ID(combi.getC_LocFrom_ID() > 0 ? combi.getC_LocFrom_ID() : 0);
             setC_LocTo_ID(combi.getC_LocTo_ID() > 0 ? combi.getC_LocTo_ID() : 0);
             setC_SalesRegion_ID(combi.getC_SalesRegion_ID() > 0 ? combi.getC_SalesRegion_ID() : 0);
-            setC_Project_ID(combi.getC_Project_ID() > 0 ? combi.getC_Project_ID() : 0);
-            setC_Campaign_ID(combi.getC_Campaign_ID() > 0 ? combi.getC_Campaign_ID() : 0);
-            setC_Activity_ID(combi.getC_Activity_ID() > 0 ? combi.getC_Activity_ID() : 0);
-            setUser1_ID(combi.getUser1_ID() > 0 ? combi.getUser1_ID() : 0);
-            setUser2_ID(combi.getUser2_ID() > 0 ? combi.getUser2_ID() : 0);
+            setProjectId(combi.getProjectId() > 0 ? combi.getProjectId() : 0);
+            setCampaignId(combi.getCampaignId() > 0 ? combi.getCampaignId() : 0);
+            setBusinessActivityId(combi.getBusinessActivityId() > 0 ? combi.getBusinessActivityId() : 0);
+            setUser1Id(combi.getUser1Id() > 0 ? combi.getUser1Id() : 0);
+            setUser2Id(combi.getUser2Id() > 0 ? combi.getUser2Id() : 0);
         }
     } // fillDimensionsFromCombination
 

@@ -135,6 +135,6 @@ public class MRequestProcessor extends X_R_RequestProcessor
      * @param DateLastRun Date the process was last run.
      */
     public void setDateLastRun(Timestamp DateLastRun) {
-        set_Value(COLUMNNAME_DateLastRun, DateLastRun);
+        setValue(COLUMNNAME_DateLastRun, DateLastRun);
     }
 } //	MRequestProcessor

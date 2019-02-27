@@ -456,6 +456,7 @@ public abstract class Doc implements IDoc {
      * Quantity
      */
     private BigDecimal m_qty = null;
+
     /**
      * ************************************************************************ Constructor
      *
@@ -941,13 +942,13 @@ public abstract class Doc implements IDoc {
         if (DocumentType != null) m_DocumentType = DocumentType;
         //  IDEMPIERE-3342 - prefer the category defined for the doctype if there is such column in the
         // table
-        if (p_po.getColumnIndex("C_DocType_ID") >= 0 && getC_DocType_ID() != 0) {
+        if (p_po.getColumnIndex("C_DocType_ID") >= 0 && getDocumentTypeId() != 0) {
             String sql = "SELECT DocBaseType, GL_Category_ID FROM C_DocType WHERE C_DocType_ID=?";
             PreparedStatement pstmt = null;
             ResultSet rsDT = null;
             try {
                 pstmt = prepareStatement(sql);
-                pstmt.setInt(1, getC_DocType_ID());
+                pstmt.setInt(1, getDocumentTypeId());
                 rsDT = pstmt.executeQuery();
                 if (rsDT.next()) {
                     m_DocumentType = rsDT.getString(1);
@@ -964,7 +965,7 @@ public abstract class Doc implements IDoc {
             log.log(
                     Level.SEVERE,
                     "No DocBaseType for C_DocType_ID="
-                            + getC_DocType_ID()
+                            + getDocumentTypeId()
                             + ", DocumentNo="
                             + getDocumentNo());
         }
@@ -1042,7 +1043,7 @@ public abstract class Doc implements IDoc {
      */
     public boolean isConvertible(MAcctSchema acctSchema) {
         //  No Currency in document
-        if (getC_Currency_ID() == NO_CURRENCY) {
+        if (getCurrencyId() == NO_CURRENCY) {
             if (log.isLoggable(Level.FINE)) log.fine("(none) - " + toString());
             return true;
         }
@@ -1053,16 +1054,16 @@ public abstract class Doc implements IDoc {
         }
         //  Get All Currencies
         HashSet<Integer> set = new HashSet<Integer>();
-        set.add(new Integer(getC_Currency_ID()));
+        set.add(new Integer(getCurrencyId()));
         for (int i = 0; p_lines != null && i < p_lines.length; i++) {
-            int C_Currency_ID = p_lines[i].getC_Currency_ID();
+            int C_Currency_ID = p_lines[i].getCurrencyId();
             if (C_Currency_ID != NO_CURRENCY) set.add(new Integer(C_Currency_ID));
         }
 
         //  just one and the same
-        if (set.size() == 1 && acctSchema.getCurrencyId() == getC_Currency_ID()) {
+        if (set.size() == 1 && acctSchema.getCurrencyId() == getCurrencyId()) {
             if (log.isLoggable(Level.FINE))
-                log.fine("(same) Cur=" + getC_Currency_ID() + " - " + toString());
+                log.fine("(same) Cur=" + getCurrencyId() + " - " + toString());
             return true;
         }
 
@@ -1076,7 +1077,7 @@ public abstract class Doc implements IDoc {
                                 C_Currency_ID,
                                 acctSchema.getCurrencyId(),
                                 getDateAcct(),
-                                getC_ConversionType_ID(),
+                                getConversionTypeId(),
                                 getClientId(),
                                 getOrgId());
                 if (amt == null) {
@@ -1218,31 +1219,31 @@ public abstract class Doc implements IDoc {
             else
                 sql = "SELECT CH_Expense_Acct FROM C_Charge_Acct WHERE C_Charge_ID=? AND C_AcctSchema_ID=?";
 
-            para_1 = getC_Charge_ID();
+            para_1 = getChargeId();
         } else if (AcctType == ACCTTYPE_V_Liability) {
             sql =
                     "SELECT V_Liability_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         } else if (AcctType == ACCTTYPE_V_Liability_Services) {
             sql =
                     "SELECT V_Liability_Services_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         } else if (AcctType == ACCTTYPE_C_Receivable) {
             sql =
                     "SELECT C_Receivable_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         } else if (AcctType == ACCTTYPE_C_Receivable_Services) {
             sql =
                     "SELECT C_Receivable_Services_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         } else if (AcctType == ACCTTYPE_V_Prepayment) {
             sql =
                     "SELECT V_Prepayment_Acct FROM C_BP_Vendor_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         } else if (AcctType == ACCTTYPE_C_Prepayment) {
             sql =
                     "SELECT C_Prepayment_Acct FROM C_BP_Customer_Acct WHERE C_BPartner_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         }
 
         /** Account Type - Payment */
@@ -1265,17 +1266,17 @@ public abstract class Doc implements IDoc {
             sql =
                     "SELECT a.PayDiscount_Exp_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
                             + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         } else if (AcctType == ACCTTYPE_DiscountRev) {
             sql =
                     "SELECT PayDiscount_Rev_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
                             + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         } else if (AcctType == ACCTTYPE_WriteOff) {
             sql =
                     "SELECT WriteOff_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
                             + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         }
 
         /** Account Type - Bank Statement */
@@ -1321,21 +1322,21 @@ public abstract class Doc implements IDoc {
                     "SELECT W_Differences_Acct FROM M_Warehouse_Acct WHERE M_Warehouse_ID=? AND C_AcctSchema_ID=?";
             //  "SELECT W_Inventory_Acct, W_Revaluation_Acct, W_InvActualAdjust_Acct FROM M_Warehouse_Acct
             // WHERE M_Warehouse_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getM_Warehouse_ID();
+            para_1 = getWarehouseId();
         } else if (AcctType == ACCTTYPE_NotInvoicedReceipts) {
             sql =
                     "SELECT NotInvoicedReceipts_Acct FROM C_BP_Group_Acct a, C_BPartner bp "
                             + "WHERE a.C_BP_Group_ID=bp.C_BP_Group_ID AND bp.C_BPartner_ID=? AND a.C_AcctSchema_ID=?";
-            para_1 = getC_BPartner_ID();
+            para_1 = getBusinessPartnerId();
         }
 
         /** Project Accounts */
         else if (AcctType == ACCTTYPE_ProjectAsset) {
             sql = "SELECT PJ_Asset_Acct FROM C_Project_Acct WHERE C_Project_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_Project_ID();
+            para_1 = getProjectId();
         } else if (AcctType == ACCTTYPE_ProjectWIP) {
             sql = "SELECT PJ_WIP_Acct FROM C_Project_Acct WHERE C_Project_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_Project_ID();
+            para_1 = getProjectId();
         }
 
         /** GL Accounts */
@@ -1463,7 +1464,7 @@ public abstract class Doc implements IDoc {
      *
      * @return currency
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         if (m_C_Currency_ID == -1) {
             int index = p_po.getColumnIndex("C_Currency_ID");
             if (index != -1) {
@@ -1480,7 +1481,7 @@ public abstract class Doc implements IDoc {
      *
      * @param C_Currency_ID id
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
+    public void setCurrencyId(int C_Currency_ID) {
         m_C_Currency_ID = C_Currency_ID;
     } //	setCurrencyId
 
@@ -1516,14 +1517,14 @@ public abstract class Doc implements IDoc {
      *
      * @return ConversionType
      */
-    public int getC_ConversionType_ID() {
+    public int getConversionTypeId() {
         int index = p_po.getColumnIndex("C_ConversionType_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_ConversionType_ID
+    } //	getConversionTypeId
 
     /**
      * Get GL_Category_ID
@@ -1638,7 +1639,7 @@ public abstract class Doc implements IDoc {
      *
      * @return DocType
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         int index = p_po.getColumnIndex("C_DocType_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
@@ -1708,28 +1709,28 @@ public abstract class Doc implements IDoc {
      *
      * @return Charge
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         int index = p_po.getColumnIndex("C_Charge_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_Charge_ID
+    } //	getChargeId
 
     /**
      * Get SalesRep_ID
      *
      * @return SalesRep
      */
-    public int getSalesRep_ID() {
+    public int getSalesRepresentativeId() {
         int index = p_po.getColumnIndex("SalesRep_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getSalesRep_ID
+    } //	getSalesRepresentativeId
 
     /**
      * Get C_BankAccount_ID
@@ -1788,7 +1789,7 @@ public abstract class Doc implements IDoc {
      *
      * @return Warehouse
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         int index = p_po.getColumnIndex("M_Warehouse_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
@@ -1802,7 +1803,7 @@ public abstract class Doc implements IDoc {
      *
      * @return BPartner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         if (m_C_BPartner_ID == -1) {
             int index = p_po.getColumnIndex("C_BPartner_ID");
             if (index != -1) {
@@ -1812,44 +1813,44 @@ public abstract class Doc implements IDoc {
             if (m_C_BPartner_ID == -1) m_C_BPartner_ID = 0;
         }
         return m_C_BPartner_ID;
-    } //	getC_BPartner_ID
+    } //	getBusinessPartnerId
 
     /**
      * Set C_BPartner_ID
      *
      * @param C_BPartner_ID bp
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
+    public void setBusinessPartnerId(int C_BPartner_ID) {
         m_C_BPartner_ID = C_BPartner_ID;
-    } //	setC_BPartner_ID
+    } //	setBusinessPartnerId
 
     /**
      * Get C_BPartner_Location_ID
      *
      * @return BPartner Location
      */
-    public int getC_BPartner_Location_ID() {
+    public int getBusinessPartnerLocationId() {
         int index = p_po.getColumnIndex("C_BPartner_Location_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_BPartner_Location_ID
+    } //	getBusinessPartnerLocationId
 
     /**
      * Get C_Project_ID
      *
      * @return Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         int index = p_po.getColumnIndex("C_Project_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_Project_ID
+    } //	getProjectId
 
     /**
      * Get C_ProjectPhase_ID
@@ -1924,28 +1925,28 @@ public abstract class Doc implements IDoc {
      *
      * @return Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         int index = p_po.getColumnIndex("C_Activity_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_Activity_ID
+    } //	getBusinessActivityId
 
     /**
      * Get C_Campaign_ID
      *
      * @return Campaign
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         int index = p_po.getColumnIndex("C_Campaign_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_Campaign_ID
+    } //	getCampaignId
 
     /**
      * Get M_Product_ID
@@ -1966,14 +1967,14 @@ public abstract class Doc implements IDoc {
      *
      * @return Trx Org
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         int index = p_po.getColumnIndex("AD_OrgTrx_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getAD_OrgTrx_ID
+    } //	getTransactionOrganizationId
 
     /**
      * Get C_LocFrom_ID
@@ -1998,28 +1999,28 @@ public abstract class Doc implements IDoc {
      *
      * @return Campaign
      */
-    public int getUser1_ID() {
+    public int getUser1Id() {
         int index = p_po.getColumnIndex("User1_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getUser1_ID
+    } //	getUser1Id
 
     /**
      * Get User2_ID
      *
      * @return Campaign
      */
-    public int getUser2_ID() {
+    public int getUser2Id() {
         int index = p_po.getColumnIndex("User2_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getUser2_ID
+    } //	getUser2Id
 
     /**
      * Get User Defined value

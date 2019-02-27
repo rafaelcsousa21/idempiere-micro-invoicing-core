@@ -131,7 +131,7 @@ public class StorageCleanup extends SvrProcess {
     //	Create Movement
     MMovement mh = new MMovement (getCtx(), 0, null);
     mh.setOrgId(target.getOrgId());
-    mh.setC_DocType_ID(p_C_DocType_ID);
+    mh.setDocumentTypeId(p_C_DocType_ID);
     mh.setDescription(getName());
     if (!mh.save())
     	return 0;

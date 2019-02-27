@@ -49,7 +49,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
         super(ctx, C_Project_ID);
         /**
          * if (C_Project_ID == 0) { setCurrencyId (0); setCommittedAmt (Env.ZERO); setCommittedQty
-         * (Env.ZERO); setC_Project_ID (0); setInvoicedAmt (Env.ZERO); setInvoicedQty (Env.ZERO);
+         * (Env.ZERO); setProjectId (0); setInvoicedAmt (Env.ZERO); setInvoicedQty (Env.ZERO);
          * setIsCommitCeiling (false); setIsCommitment (false); setIsSummary (false); setName (null);
          * setPlannedAmt (Env.ZERO); setPlannedMarginAmt (Env.ZERO); setPlannedQty (Env.ZERO);
          * setProcessed (false); setProjectBalanceAmt (Env.ZERO); setProjectLineLevel (null); // P
@@ -83,7 +83,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Performing or initiating organization
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
@@ -94,7 +94,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return User within the system - Internal or Business Partner Contact
      */
-    public int getAD_User_ID() {
+    public int getUserId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
@@ -105,9 +105,9 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @param AD_User_ID User within the system - Internal or Business Partner Contact
      */
-    public void setAD_User_ID(int AD_User_ID) {
-        if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-        else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+    public void setUserId(int AD_User_ID) {
+        if (AD_User_ID < 1) setValue(COLUMNNAME_AD_User_ID, null);
+        else setValue(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Business Activity
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
@@ -126,7 +126,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -137,7 +137,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Identifies the (ship to) address for this Business Partner
      */
-    public int getC_BPartner_Location_ID() {
+    public int getBusinessPartnerLocationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_Location_ID);
         if (ii == null) return 0;
         return ii;
@@ -148,7 +148,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Marketing Campaign
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
@@ -159,7 +159,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -170,9 +170,9 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-        else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValue(COLUMNNAME_C_Currency_ID, null);
+        else setValue(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     /**
@@ -181,7 +181,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param CommittedAmt The (legal) commitment amount
      */
     public void setCommittedAmt(BigDecimal CommittedAmt) {
-        set_Value(COLUMNNAME_CommittedAmt, CommittedAmt);
+        setValue(COLUMNNAME_CommittedAmt, CommittedAmt);
     }
 
     /**
@@ -190,7 +190,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param CommittedQty The (legal) commitment Quantity
      */
     public void setCommittedQty(BigDecimal CommittedQty) {
-        set_Value(COLUMNNAME_CommittedQty, CommittedQty);
+        setValue(COLUMNNAME_CommittedQty, CommittedQty);
     }
 
     /**
@@ -198,7 +198,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return The terms of Payment (timing, discount)
      */
-    public int getC_PaymentTerm_ID() {
+    public int getPaymentTermId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_PaymentTerm_ID);
         if (ii == null) return 0;
         return ii;
@@ -209,7 +209,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Financial Project
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
@@ -230,7 +230,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param C_ProjectType_ID Type of the project
      */
     public void setC_ProjectType_ID(String C_ProjectType_ID) {
-        set_Value(COLUMNNAME_C_ProjectType_ID, C_ProjectType_ID);
+        setValue(COLUMNNAME_C_ProjectType_ID, C_ProjectType_ID);
     }
 
     /**
@@ -277,7 +277,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param InvoicedAmt The amount invoiced
      */
     public void setInvoicedAmt(BigDecimal InvoicedAmt) {
-        set_ValueNoCheck(COLUMNNAME_InvoicedAmt, InvoicedAmt);
+        setValueNoCheck(COLUMNNAME_InvoicedAmt, InvoicedAmt);
     }
 
     /**
@@ -286,7 +286,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param InvoicedQty The quantity invoiced
      */
     public void setInvoicedQty(BigDecimal InvoicedQty) {
-        set_ValueNoCheck(COLUMNNAME_InvoicedQty, InvoicedQty);
+        setValueNoCheck(COLUMNNAME_InvoicedQty, InvoicedQty);
     }
 
     /**
@@ -295,7 +295,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param IsCommitCeiling The commitment amount/quantity is the chargeable ceiling
      */
     public void setIsCommitCeiling(boolean IsCommitCeiling) {
-        set_Value(COLUMNNAME_IsCommitCeiling, Boolean.valueOf(IsCommitCeiling));
+        setValue(COLUMNNAME_IsCommitCeiling, Boolean.valueOf(IsCommitCeiling));
     }
 
     /**
@@ -304,7 +304,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param IsCommitment Is this document a (legal) commitment?
      */
     public void setIsCommitment(boolean IsCommitment) {
-        set_Value(COLUMNNAME_IsCommitment, Boolean.valueOf(IsCommitment));
+        setValue(COLUMNNAME_IsCommitment, Boolean.valueOf(IsCommitment));
     }
 
     /**
@@ -313,7 +313,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param IsSummary This is a summary entity
      */
     public void setIsSummary(boolean IsSummary) {
-        set_Value(COLUMNNAME_IsSummary, Boolean.valueOf(IsSummary));
+        setValue(COLUMNNAME_IsSummary, Boolean.valueOf(IsSummary));
     }
 
     /**
@@ -333,8 +333,8 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param M_PriceList_Version_ID Identifies a unique instance of a Price List
      */
     public void setM_PriceList_Version_ID(int M_PriceList_Version_ID) {
-        if (M_PriceList_Version_ID < 1) set_Value(COLUMNNAME_M_PriceList_Version_ID, null);
-        else set_Value(COLUMNNAME_M_PriceList_Version_ID, Integer.valueOf(M_PriceList_Version_ID));
+        if (M_PriceList_Version_ID < 1) setValue(COLUMNNAME_M_PriceList_Version_ID, null);
+        else setValue(COLUMNNAME_M_PriceList_Version_ID, Integer.valueOf(M_PriceList_Version_ID));
     }
 
     /**
@@ -342,7 +342,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -354,7 +354,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param PlannedAmt Planned amount for this project
      */
     public void setPlannedAmt(BigDecimal PlannedAmt) {
-        set_Value(COLUMNNAME_PlannedAmt, PlannedAmt);
+        setValue(COLUMNNAME_PlannedAmt, PlannedAmt);
     }
 
     /**
@@ -363,7 +363,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param PlannedMarginAmt Project's planned margin amount
      */
     public void setPlannedMarginAmt(BigDecimal PlannedMarginAmt) {
-        set_Value(COLUMNNAME_PlannedMarginAmt, PlannedMarginAmt);
+        setValue(COLUMNNAME_PlannedMarginAmt, PlannedMarginAmt);
     }
 
     /**
@@ -372,7 +372,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param PlannedQty Planned quantity for this project
      */
     public void setPlannedQty(BigDecimal PlannedQty) {
-        set_Value(COLUMNNAME_PlannedQty, PlannedQty);
+        setValue(COLUMNNAME_PlannedQty, PlannedQty);
     }
 
     /**
@@ -395,7 +395,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -404,7 +404,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      * @param ProjectBalanceAmt Total Project Balance
      */
     public void setProjectBalanceAmt(BigDecimal ProjectBalanceAmt) {
-        set_ValueNoCheck(COLUMNNAME_ProjectBalanceAmt, ProjectBalanceAmt);
+        setValueNoCheck(COLUMNNAME_ProjectBalanceAmt, ProjectBalanceAmt);
     }
 
     /**
@@ -423,7 +423,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      */
     public void setProjectCategory(String ProjectCategory) {
 
-        set_Value(COLUMNNAME_ProjectCategory, ProjectCategory);
+        setValue(COLUMNNAME_ProjectCategory, ProjectCategory);
     }
 
     /**
@@ -433,7 +433,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      */
     public void setProjectLineLevel(String ProjectLineLevel) {
 
-        set_Value(COLUMNNAME_ProjectLineLevel, ProjectLineLevel);
+        setValue(COLUMNNAME_ProjectLineLevel, ProjectLineLevel);
     }
 
     /**
@@ -443,7 +443,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      */
     public void setProjInvoiceRule(String ProjInvoiceRule) {
 
-        set_Value(COLUMNNAME_ProjInvoiceRule, ProjInvoiceRule);
+        setValue(COLUMNNAME_ProjInvoiceRule, ProjInvoiceRule);
     }
 
     /**
@@ -451,7 +451,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Sales Representative or Company Agent
      */
-    public int getSalesRep_ID() {
+    public int getSalesRepresentativeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_SalesRep_ID);
         if (ii == null) return 0;
         return ii;

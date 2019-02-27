@@ -79,7 +79,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      */
     public void setEntryType(String A_Entry_Type) {
 
-        set_Value(COLUMNNAME_A_Entry_Type, A_Entry_Type);
+        setValue(COLUMNNAME_A_Entry_Type, A_Entry_Type);
     }
 
     /**
@@ -88,8 +88,8 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @param C_AcctSchema_ID Rules for accounting
      */
     public void setAcctSchemaId(int C_AcctSchema_ID) {
-        if (C_AcctSchema_ID < 1) set_Value(COLUMNNAME_C_AcctSchema_ID, null);
-        else set_Value(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
+        if (C_AcctSchema_ID < 1) setValue(COLUMNNAME_C_AcctSchema_ID, null);
+        else setValue(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
 
     /**
@@ -98,8 +98,8 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @param C_Currency_ID The Currency for this record
      */
     public void setCurrencyId(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-        else set_Value(COLUMNNAME_C_Currency_ID, C_Currency_ID);
+        if (C_Currency_ID < 1) setValue(COLUMNNAME_C_Currency_ID, null);
+        else setValue(COLUMNNAME_C_Currency_ID, C_Currency_ID);
     }
 
     /**
@@ -130,8 +130,8 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @param C_Period_ID Period of the Calendar
      */
     public void setPeriodId(int C_Period_ID) {
-        if (C_Period_ID < 1) set_Value(COLUMNNAME_C_Period_ID, null);
-        else set_Value(COLUMNNAME_C_Period_ID, C_Period_ID);
+        if (C_Period_ID < 1) setValue(COLUMNNAME_C_Period_ID, null);
+        else setValue(COLUMNNAME_C_Period_ID, C_Period_ID);
     }
 
     /**
@@ -159,7 +159,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -186,7 +186,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, IsApproved);
+        setValue(COLUMNNAME_IsApproved, IsApproved);
     }
 
     /**
@@ -209,7 +209,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        set_Value(COLUMNNAME_Posted, Posted);
+        setValue(COLUMNNAME_Posted, Posted);
     }
 
     /**
@@ -219,7 +219,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      */
     public void setPostingType(String PostingType) {
 
-        set_Value(COLUMNNAME_PostingType, PostingType);
+        setValue(COLUMNNAME_PostingType, PostingType);
     }
 
     /**
@@ -242,7 +242,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Processed);
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     /**
@@ -251,7 +251,7 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Processing);
+        setValue(COLUMNNAME_Processing, Processing);
     }
 
 }

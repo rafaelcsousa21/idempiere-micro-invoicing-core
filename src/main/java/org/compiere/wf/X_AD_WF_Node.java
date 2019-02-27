@@ -160,7 +160,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      */
     public void setAction(String Action) {
 
-        set_Value(COLUMNNAME_Action, Action);
+        setValue(COLUMNNAME_Action, Action);
     }
 
     /**
@@ -274,8 +274,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param AD_Workflow_ID Workflow or combination of tasks
      */
     public void setWorkflowId(int AD_Workflow_ID) {
-        if (AD_Workflow_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, AD_Workflow_ID);
+        if (AD_Workflow_ID < 1) setValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_Workflow_ID, AD_Workflow_ID);
     }
 
     /**
@@ -293,7 +293,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param AttributeName Name of the Attribute
      */
     public void setAttributeName(String AttributeName) {
-        set_Value(COLUMNNAME_AttributeName, AttributeName);
+        setValue(COLUMNNAME_AttributeName, AttributeName);
     }
 
     /**
@@ -311,7 +311,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param Cost Cost information
      */
     public void setCost(BigDecimal Cost) {
-        set_Value(COLUMNNAME_Cost, Cost);
+        setValue(COLUMNNAME_Cost, Cost);
     }
 
     /**
@@ -338,7 +338,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param Duration Normal Duration in Duration Unit
      */
     public void setDuration(int Duration) {
-        set_Value(COLUMNNAME_Duration, Integer.valueOf(Duration));
+        setValue(COLUMNNAME_Duration, Integer.valueOf(Duration));
     }
 
     /**
@@ -366,7 +366,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      */
     public void setEntityType(String EntityType) {
 
-        set_Value(COLUMNNAME_EntityType, EntityType);
+        setValue(COLUMNNAME_EntityType, EntityType);
     }
 
     /**
@@ -384,7 +384,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param IsCentrallyMaintained Information maintained in System Element table
      */
     public void setIsCentrallyMaintained(boolean IsCentrallyMaintained) {
-        set_Value(COLUMNNAME_IsCentrallyMaintained, Boolean.valueOf(IsCentrallyMaintained));
+        setValue(COLUMNNAME_IsCentrallyMaintained, Boolean.valueOf(IsCentrallyMaintained));
     }
 
     /**
@@ -403,7 +403,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      */
     public void setJoinElement(String JoinElement) {
 
-        set_Value(COLUMNNAME_JoinElement, JoinElement);
+        setValue(COLUMNNAME_JoinElement, JoinElement);
     }
 
     /**
@@ -423,7 +423,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param Limit Maximum Duration in Duration Unit
      */
     public void setLimit(int Limit) {
-        set_Value(COLUMNNAME_Limit, Integer.valueOf(Limit));
+        setValue(COLUMNNAME_Limit, Integer.valueOf(Limit));
     }
 
     /**
@@ -464,7 +464,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      */
     public void setSplitElement(String SplitElement) {
 
-        set_Value(COLUMNNAME_SplitElement, SplitElement);
+        setValue(COLUMNNAME_SplitElement, SplitElement);
     }
 
     /**
@@ -473,7 +473,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param WaitingTime Workflow Simulation Waiting time
      */
     public void setWaitingTime(int WaitingTime) {
-        set_Value(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
+        setValue(COLUMNNAME_WaitingTime, Integer.valueOf(WaitingTime));
     }
 
     /**
@@ -493,7 +493,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param XPosition Absolute X (horizontal) position in 1/72 of an inch
      */
     public void setXPosition(int XPosition) {
-        set_Value(COLUMNNAME_XPosition, Integer.valueOf(XPosition));
+        setValue(COLUMNNAME_XPosition, Integer.valueOf(XPosition));
     }
 
     /**
@@ -502,7 +502,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      * @param YPosition Absolute Y (vertical) position in 1/72 of an inch
      */
     public void setYPosition(int YPosition) {
-        set_Value(COLUMNNAME_YPosition, Integer.valueOf(YPosition));
+        setValue(COLUMNNAME_YPosition, Integer.valueOf(YPosition));
     }
 
     @Override

@@ -826,7 +826,7 @@ public class ImportGLJournal extends SvrProcess {
                     batch.setClientOrg(imp.getClientId(), imp.getAD_OrgDoc_ID());
                     if (imp.getBatchDocumentNo() != null && imp.getBatchDocumentNo().length() > 0)
                         batch.setDocumentNo(imp.getBatchDocumentNo());
-                    batch.setC_DocType_ID(imp.getC_DocType_ID());
+                    batch.setDocumentTypeId(imp.getDocumentTypeId());
                     batch.setPostingType(imp.getPostingType());
                     StringBuilder description;
                     if (imp.getBatchDescription() == null
@@ -854,10 +854,10 @@ public class ImportGLJournal extends SvrProcess {
                 if (journal == null
                         || imp.isCreateNewJournal()
                         || !JournalDocumentNo.equals(impJournalDocumentNo)
-                        || journal.getC_DocType_ID() != imp.getC_DocType_ID()
+                        || journal.getDocumentTypeId() != imp.getDocumentTypeId()
                         || journal.getGL_Category_ID() != imp.getGL_Category_ID()
                         || !journal.getPostingType().equals(imp.getPostingType())
-                        || journal.getC_Currency_ID() != imp.getC_Currency_ID()
+                        || journal.getCurrencyId() != imp.getCurrencyId()
                         || !impDateAcct.equals(DateAcct)) {
                     JournalDocumentNo = impJournalDocumentNo; // 	cannot compare real DocumentNo
                     DateAcct = impDateAcct;
@@ -872,13 +872,13 @@ public class ImportGLJournal extends SvrProcess {
                         journal.setDocumentNo(imp.getJournalDocumentNo());
                     //
                     journal.setC_AcctSchema_ID(imp.getC_AcctSchema_ID());
-                    journal.setC_DocType_ID(imp.getC_DocType_ID());
+                    journal.setDocumentTypeId(imp.getDocumentTypeId());
                     journal.setGL_Category_ID(imp.getGL_Category_ID());
                     journal.setPostingType(imp.getPostingType());
                     journal.setGL_Budget_ID(imp.getGL_Budget_ID());
                     //
                     journal.setCurrency(
-                            imp.getC_Currency_ID(), imp.getC_ConversionType_ID(), imp.getCurrencyRate());
+                            imp.getCurrencyId(), imp.getConversionTypeId(), imp.getCurrencyRate());
                     //
                     journal.setC_Period_ID(imp.getC_Period_ID());
                     journal.setDateAcct(imp.getDateAcct()); // 	sets Period if not defined
@@ -901,7 +901,7 @@ public class ImportGLJournal extends SvrProcess {
                 //
                 line.setDescription(imp.getDescription());
                 line.setCurrency(
-                        imp.getC_Currency_ID(), imp.getC_ConversionType_ID(), imp.getCurrencyRate());
+                        imp.getCurrencyId(), imp.getConversionTypeId(), imp.getCurrencyRate());
                 //	Set/Get Account Combination
                 if (imp.getC_ValidCombination_ID() == 0) {
                     MAccount acct =
@@ -913,16 +913,16 @@ public class ImportGLJournal extends SvrProcess {
                                     imp.getAccount_ID(),
                                     0,
                                     imp.getM_Product_ID(),
-                                    imp.getC_BPartner_ID(),
-                                    imp.getAD_OrgTrx_ID(),
+                                    imp.getBusinessPartnerId(),
+                                    imp.getTransactionOrganizationId(),
                                     imp.getC_LocFrom_ID(),
                                     imp.getC_LocTo_ID(),
                                     imp.getC_SalesRegion_ID(),
-                                    imp.getC_Project_ID(),
-                                    imp.getC_Campaign_ID(),
-                                    imp.getC_Activity_ID(),
-                                    imp.getUser1_ID(),
-                                    imp.getUser2_ID(),
+                                    imp.getProjectId(),
+                                    imp.getCampaignId(),
+                                    imp.getBusinessActivityId(),
+                                    imp.getUser1Id(),
+                                    imp.getUser2Id(),
                                     0,
                                     0,
                                     null);

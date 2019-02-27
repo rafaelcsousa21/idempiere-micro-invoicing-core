@@ -87,18 +87,18 @@ public class ExpenseAPInvoice extends SvrProcess {
                 MTimeExpense te = new MTimeExpense(getCtx(), rs);
 
                 //	New BPartner - New Order
-                if (te.getC_BPartner_ID() != old_BPartner_ID) {
+                if (te.getBusinessPartnerId() != old_BPartner_ID) {
                     completeInvoice(invoice);
-                    MBPartner bp = new MBPartner(getCtx(), te.getC_BPartner_ID());
+                    MBPartner bp = new MBPartner(getCtx(), te.getBusinessPartnerId());
                     //
                     if (log.isLoggable(Level.INFO)) log.info("New Invoice for " + bp);
                     invoice = new MInvoice(getCtx(), 0);
                     invoice.setClientOrg(te.getClientId(), te.getOrgId());
-                    invoice.setC_DocTypeTarget_ID(MDocType.DOCBASETYPE_APInvoice); // 	API
+                    invoice.setTargetDocumentTypeId(MDocType.DOCBASETYPE_APInvoice); // 	API
                     invoice.setDocumentNo(te.getDocumentNo());
                     //
                     invoice.setBPartner(bp);
-                    if (invoice.getC_BPartner_Location_ID() == 0) {
+                    if (invoice.getBusinessPartnerLocationId() == 0) {
                         StringBuilder msglog = new StringBuilder("No BP Location: ").append(bp);
                         log.log(Level.SEVERE, msglog.toString());
                         msglog =
@@ -110,8 +110,8 @@ public class ExpenseAPInvoice extends SvrProcess {
                         invoice = null;
                         break;
                     }
-                    invoice.setM_PriceList_ID(te.getM_PriceList_ID());
-                    invoice.setSalesRep_ID(te.getDoc_User_ID());
+                    invoice.setPriceListId(te.getPriceListId());
+                    invoice.setSalesRepresentativeId(te.getDoc_User_ID());
                     StringBuilder descr =
                             new StringBuilder()
                                     .append(Msg.translate(getCtx(), "S_TimeExpense_ID"))
@@ -121,7 +121,7 @@ public class ExpenseAPInvoice extends SvrProcess {
                                     .append(DisplayType.getDateFormat(DisplayType.Date).format(te.getDateReport()));
                     invoice.setDescription(descr.toString());
                     if (!invoice.save()) throw new IllegalStateException("Cannot save Invoice");
-                    old_BPartner_ID = bp.getC_BPartner_ID();
+                    old_BPartner_ID = bp.getBusinessPartnerId();
                 }
                 MTimeExpenseLine[] tel = te.getLines(false);
                 for (int i = 0; i < tel.length; i++) {
@@ -133,12 +133,12 @@ public class ExpenseAPInvoice extends SvrProcess {
                             || Env.ZERO.compareTo(line.getPriceReimbursed()) == 0) continue;
 
                     //	Update Header info
-                    if (line.getC_Activity_ID() != 0 && line.getC_Activity_ID() != invoice.getC_Activity_ID())
-                        invoice.setC_Activity_ID(line.getC_Activity_ID());
-                    if (line.getC_Campaign_ID() != 0 && line.getC_Campaign_ID() != invoice.getC_Campaign_ID())
-                        invoice.setC_Campaign_ID(line.getC_Campaign_ID());
-                    if (line.getC_Project_ID() != 0 && line.getC_Project_ID() != invoice.getC_Project_ID())
-                        invoice.setC_Project_ID(line.getC_Project_ID());
+                    if (line.getBusinessActivityId() != 0 && line.getBusinessActivityId() != invoice.getBusinessActivityId())
+                        invoice.setBusinessActivityId(line.getBusinessActivityId());
+                    if (line.getCampaignId() != 0 && line.getCampaignId() != invoice.getCampaignId())
+                        invoice.setCampaignId(line.getCampaignId());
+                    if (line.getProjectId() != 0 && line.getProjectId() != invoice.getProjectId())
+                        invoice.setProjectId(line.getProjectId());
                     if (!invoice.save()) throw new IllegalStateException("Cannot save Invoice");
 
                     //	Create OrderLine
@@ -148,11 +148,11 @@ public class ExpenseAPInvoice extends SvrProcess {
                     il.setQty(line.getQtyReimbursed()); // 	Entered/Invoiced
                     il.setDescription(line.getDescription());
                     //
-                    il.setC_Project_ID(line.getC_Project_ID());
+                    il.setProjectId(line.getProjectId());
                     il.setC_ProjectPhase_ID(line.getC_ProjectPhase_ID());
                     il.setC_ProjectTask_ID(line.getC_ProjectTask_ID());
-                    il.setC_Activity_ID(line.getC_Activity_ID());
-                    il.setC_Campaign_ID(line.getC_Campaign_ID());
+                    il.setBusinessActivityId(line.getBusinessActivityId());
+                    il.setCampaignId(line.getCampaignId());
                     //
                     //	il.setPrice();	//	not really a list/limit price for reimbursements
                     il.setPrice(line.getPriceReimbursed()); //
@@ -201,6 +201,6 @@ public class ExpenseAPInvoice extends SvrProcess {
                 invoice.getGrandTotal(),
                 invoice.getDocumentNo(),
                 invoice.getTableId(),
-                invoice.getC_Invoice_ID());
+                invoice.getInvoiceId());
     } //	completeInvoice
 } //	ExpenseAPInvoice

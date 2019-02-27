@@ -68,11 +68,11 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
             //	setGL_Journal_ID (0);		//	PK
             //	setAccountingSchemaId (0);
             //	setCurrencyId (0);
-            //	setC_DocType_ID (0);
+            //	setDocumentTypeId (0);
             //	setPeriodId (0);
             //
             setCurrencyRate(Env.ONE);
-            //	setC_ConversionType_ID(0);
+            //	setConversionTypeId(0);
             setDateAcct(new Timestamp(System.currentTimeMillis()));
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             //	setDescription (null);
@@ -110,13 +110,13 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
         setGL_JournalBatch_ID(parent.getGL_JournalBatch_ID());
-        setC_DocType_ID(parent.getC_DocType_ID());
+        setDocumentTypeId(parent.getDocumentTypeId());
         setPostingType(parent.getPostingType());
         //
         setDateDoc(parent.getDateDoc());
         setC_Period_ID(parent.getC_Period_ID());
         setDateAcct(parent.getDateAcct());
-        setC_Currency_ID(parent.getC_Currency_ID());
+        setCurrencyId(parent.getCurrencyId());
     } //	MJournal
 
     /**
@@ -134,11 +134,11 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         setGL_Category_ID(original.getGL_Category_ID());
         setPostingType(original.getPostingType());
         setDescription(original.getDescription());
-        setC_DocType_ID(original.getC_DocType_ID());
+        setDocumentTypeId(original.getDocumentTypeId());
         setControlAmt(original.getControlAmt());
         //
-        setC_Currency_ID(original.getC_Currency_ID());
-        setC_ConversionType_ID(original.getC_ConversionType_ID());
+        setCurrencyId(original.getCurrencyId());
+        setConversionTypeId(original.getConversionTypeId());
         setCurrencyRate(original.getCurrencyRate());
 
         //	setDateDoc(original.getDateDoc());
@@ -178,8 +178,8 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * @param CurrencyRate        rate
      */
     public void setCurrency(int C_Currency_ID, int C_ConversionType_ID, BigDecimal CurrencyRate) {
-        if (C_Currency_ID != 0) setC_Currency_ID(C_Currency_ID);
-        if (C_ConversionType_ID != 0) setC_ConversionType_ID(C_ConversionType_ID);
+        if (C_Currency_ID != 0) setCurrencyId(C_Currency_ID);
+        if (C_ConversionType_ID != 0) setConversionTypeId(C_ConversionType_ID);
         if (CurrencyRate != null && CurrencyRate.compareTo(Env.ZERO) == 0)
             setCurrencyRate(CurrencyRate);
     } //	setCurrency
@@ -415,7 +415,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
 
         // Get Period
         MPeriod period = (MPeriod) getC_Period();
@@ -605,19 +605,19 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             if (this.getProcessedOn().signum() == 0) {
                 setDateDoc(new Timestamp(System.currentTimeMillis()));
                 if (getDateAcct().before(getDateDoc())) {
                     setDateAcct(getDateDoc());
-                    MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getOrgId());
+                    MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocumentTypeId(), getOrgId());
                 }
             }
         }
         if (dt.isOverwriteSeqOnComplete()) {
             if (this.getProcessedOn().signum() == 0) {
-                String value = MSequence.getDocumentNo(getC_DocType_ID(), null, true, this);
+                String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
                 if (value != null) setDocumentNo(value);
             }
         }
@@ -808,7 +808,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
             reversalDate = new Timestamp(System.currentTimeMillis());
         }
         reverse.setDateDoc(reversalDate);
-        reverse.set_ValueNoCheck("C_Period_ID", null); // 	reset
+        reverse.setValueNoCheck("C_Period_ID", null); // 	reset
         reverse.setDateAcct(reversalDate);
         //	Reverse indicator
         StringBuilder msgd = new StringBuilder("(->").append(getDocumentNo()).append(")");
@@ -851,7 +851,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         if (m_processMsg != null) return false;
 
         // teo_sarca - FR [ 1776045 ] Add ReActivate action to GL Journal
-        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getOrgId());
+        MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocumentTypeId(), getOrgId());
         MFactAcct.deleteEx(MJournal.Table_ID, getId());
         setPosted(false);
         setProcessed(false);
@@ -915,7 +915,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * @return document info (untranslated)
      */
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
         return msgreturn.toString();

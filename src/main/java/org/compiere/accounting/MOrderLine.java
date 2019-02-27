@@ -99,10 +99,10 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
             return false;
         }
         //	Get Defaults from Parent
-        if (getC_BPartner_ID() == 0
-                || getC_BPartner_Location_ID() == 0
-                || getM_Warehouse_ID() == 0
-                || getC_Currency_ID() == 0) setOrder(getParent());
+        if (getBusinessPartnerId() == 0
+                || getBusinessPartnerLocationId() == 0
+                || getWarehouseId() == 0
+                || getCurrencyId() == 0) setOrder(getParent());
         if (m_M_PriceList_ID == 0) setHeaderInfo(getParent());
 
         //	R/O Check - Product/Warehouse Change
@@ -111,7 +111,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         } //	Product Changed
 
         //	Charge
-        if (getC_Charge_ID() != 0 && getM_Product_ID() != 0) setM_Product_ID(0);
+        if (getChargeId() != 0 && getM_Product_ID() != 0) setM_Product_ID(0);
         //	No Product
         if (getM_Product_ID() == 0) setM_AttributeSetInstance_ID(0);
             //	Product
@@ -125,7 +125,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
             if (m_productPrice == null) getProductPricing(m_M_PriceList_ID);
             // IDEMPIERE-1574 Sales Order Line lets Price under the Price Limit when updating
             //	Check PriceLimit
-            boolean enforce = m_IsSOTrx && getParent().getM_PriceList().isEnforcePriceLimit();
+            boolean enforce = m_IsSOTrx && getParent().getPriceList().isEnforcePriceLimit();
             if (enforce && MRole.getDefault().isOverwritePriceLimit()) enforce = false;
             //	Check Price Limit?
             if (enforce
@@ -146,7 +146,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         if (getC_UOM_ID() == 0
                 && (getM_Product_ID() != 0
                 || getPriceEntered().compareTo(Env.ZERO) != 0
-                || getC_Charge_ID() != 0)) {
+                || getChargeId() != 0)) {
             int C_UOM_ID = MUOM.getDefault_UOM_ID(getCtx());
             if (C_UOM_ID > 0) setC_UOM_ID(C_UOM_ID);
         }
@@ -174,7 +174,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
                     MStorageOnHand[] storages =
                             MStorageOnHand.getWarehouse(
                                     getCtx(),
-                                    getM_Warehouse_ID(),
+                                    getWarehouseId(),
                                     getM_Product_ID(),
                                     getMAttributeSetInstance_ID(),
                                     null,
@@ -206,7 +206,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         //	Get Line No
         if (getLine() == 0) {
             String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_OrderLine WHERE C_Order_ID=?";
-            int ii = getSQLValue(sql, getC_Order_ID());
+            int ii = getSQLValue(sql, getOrderId());
             setLine(ii);
         }
 
@@ -217,8 +217,8 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         /* Carlos Ruiz - globalqss
          * IDEMPIERE-178 Orders and Invoices must disallow amount lines without product/charge
          */
-        if (getParent().getC_DocTypeTarget().isChargeOrProductMandatory()) {
-            if (getC_Charge_ID() == 0
+        if (getParent().getTargetDocumentType().isChargeOrProductMandatory()) {
+            if (getChargeId() == 0
                     && getM_Product_ID() == 0
                     && (getPriceEntered().signum() != 0 || getQtyEntered().signum() != 0)) {
                 log.saveError("FillMandatory", Msg.translate(getCtx(), "ChargeOrProductMandatory"));

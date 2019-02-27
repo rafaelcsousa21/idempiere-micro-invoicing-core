@@ -223,8 +223,8 @@ public class MMeasure extends X_PA_Measure {
             //	Find Role
             MRole role = null;
             if (goal.getAD_Role_ID() != 0) role = MRole.get(getCtx(), goal.getAD_Role_ID());
-            else if (goal.getAD_User_ID() != 0) {
-                MUser user = MUser.get(getCtx(), goal.getAD_User_ID());
+            else if (goal.getUserId() != 0) {
+                MUser user = MUser.get(getCtx(), goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }
@@ -278,8 +278,8 @@ public class MMeasure extends X_PA_Measure {
             //	Find Role
             MRole role = null;
             if (goal.getAD_Role_ID() != 0) role = MRole.get(getCtx(), goal.getAD_Role_ID());
-            else if (goal.getAD_User_ID() != 0) {
-                MUser user = MUser.get(getCtx(), goal.getAD_User_ID());
+            else if (goal.getUserId() != 0) {
+                MUser user = MUser.get(getCtx(), goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }
@@ -319,8 +319,8 @@ public class MMeasure extends X_PA_Measure {
             //	Find Role
             MRole role = null;
             if (goal.getAD_Role_ID() != 0) role = MRole.get(getCtx(), goal.getAD_Role_ID());
-            else if (goal.getAD_User_ID() != 0) {
-                MUser user = MUser.get(getCtx(), goal.getAD_User_ID());
+            else if (goal.getUserId() != 0) {
+                MUser user = MUser.get(getCtx(), goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
                 if (roles.length > 0) role = roles[0];
             }

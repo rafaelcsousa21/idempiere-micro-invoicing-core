@@ -110,8 +110,8 @@ public class BPartnerValidate extends SvrProcess {
         bp.setActualLifeTimeValue();
         bp.saveEx();
         //
-        //	if (bp.getSO_CreditUsed().signum() != 0)
-        addLog(0, null, bp.getSO_CreditUsed(), Msg.getElement(getCtx(), "SO_CreditUsed"));
+        //	if (bp.getSalesOrderCreditUsed().signum() != 0)
+        addLog(0, null, bp.getSalesOrderCreditUsed(), Msg.getElement(getCtx(), "SO_CreditUsed"));
         addLog(0, null, bp.getTotalOpenBalance(), Msg.getElement(getCtx(), "TotalOpenBalance"));
         addLog(0, null, bp.getActualLifeTimeValue(), Msg.getElement(getCtx(), "ActualLifeTimeValue"));
         //
@@ -125,7 +125,7 @@ public class BPartnerValidate extends SvrProcess {
     private void checkPayments(MBPartner bp) {
         //	See also VMerge.postMerge
         int changed = 0;
-        MPayment[] payments = MPayment.getOfBPartner(getCtx(), bp.getC_BPartner_ID());
+        MPayment[] payments = MPayment.getOfBPartner(getCtx(), bp.getBusinessPartnerId());
         for (int i = 0; i < payments.length; i++) {
             MPayment payment = payments[i];
             if (payment.testAllocation()) {
@@ -149,7 +149,7 @@ public class BPartnerValidate extends SvrProcess {
     private void checkInvoices(MBPartner bp) {
         //	See also VMerge.postMerge
         int changed = 0;
-        MInvoice[] invoices = MInvoice.getOfBPartner(getCtx(), bp.getC_BPartner_ID());
+        MInvoice[] invoices = MInvoice.getOfBPartner(getCtx(), bp.getBusinessPartnerId());
         for (int i = 0; i < invoices.length; i++) {
             MInvoice invoice = invoices[i];
             if (invoice.testAllocation()) {

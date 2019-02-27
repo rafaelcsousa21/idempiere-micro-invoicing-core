@@ -42,7 +42,7 @@ public class MProject extends X_C_Project {
     public MProject(Properties ctx, int C_Project_ID) {
         super(ctx, C_Project_ID);
         if (C_Project_ID == 0) {
-            //	setC_Project_ID(0);
+            //	setProjectId(0);
             //	setValue (null);
             //	setCurrencyId (0);
             setCommittedAmt(Env.ZERO);
@@ -98,7 +98,7 @@ public class MProject extends X_C_Project {
      */
     public void setC_ProjectType_ID(int C_ProjectType_ID) {
         if (C_ProjectType_ID == 0) super.setC_ProjectType_ID(null);
-        else super.set_Value("C_ProjectType_ID", C_ProjectType_ID);
+        else super.setValue("C_ProjectType_ID", C_ProjectType_ID);
     } //	setC_ProjectType_ID
 
     /**
@@ -123,14 +123,14 @@ public class MProject extends X_C_Project {
      *
      * @return price list or 0
      */
-    public int getM_PriceList_ID() {
+    public int getPriceListId() {
         if (getM_PriceList_Version_ID() == 0) return 0;
         if (m_M_PriceList_ID > 0) return m_M_PriceList_ID;
         //
         String sql = "SELECT M_PriceList_ID FROM M_PriceList_Version WHERE M_PriceList_Version_ID=?";
         m_M_PriceList_ID = getSQLValue(sql, getM_PriceList_Version_ID());
         return m_M_PriceList_ID;
-    } //	getM_PriceList_ID
+    } //	getPriceListId
 
     /**
      * Set PL Version
@@ -152,7 +152,7 @@ public class MProject extends X_C_Project {
         final String whereClause = "C_Project_ID=?";
         List<MProjectLine> list =
                 new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause)
-                        .setParameters(getC_Project_ID())
+                        .setParameters(getProjectId())
                         .setOrderBy("Line")
                         .list();
         //
@@ -171,7 +171,7 @@ public class MProject extends X_C_Project {
         final String whereClause = "C_Project_ID=? and C_ProjectPhase_ID=?";
         List<MProjectLine> list =
                 new Query(getCtx(), I_C_ProjectLine.Table_Name, whereClause)
-                        .setParameters(getC_Project_ID(), phase)
+                        .setParameters(getProjectId(), phase)
                         .setOrderBy("Line")
                         .list();
         //
@@ -190,7 +190,7 @@ public class MProject extends X_C_Project {
         String whereClause = "C_Project_ID=?";
         List<MProjectIssue> list =
                 new Query(getCtx(), I_C_ProjectIssue.Table_Name, whereClause)
-                        .setParameters(getC_Project_ID())
+                        .setParameters(getProjectId())
                         .setOrderBy("Line")
                         .list();
         //
@@ -209,7 +209,7 @@ public class MProject extends X_C_Project {
         String whereClause = "C_Project_ID=?";
         List<MProjectPhase> list =
                 new Query(getCtx(), I_C_ProjectPhase.Table_Name, whereClause)
-                        .setParameters(getC_Project_ID())
+                        .setParameters(getProjectId())
                         .setOrderBy("SeqNo")
                         .list();
         //
@@ -248,11 +248,11 @@ public class MProject extends X_C_Project {
 
             MProjectLine line = new MProjectLine(getCtx(), 0);
             copyValues(fromLines[i], line, getClientId(), getOrgId());
-            line.setC_Project_ID(getC_Project_ID());
+            line.setProjectId(getProjectId());
             line.setInvoicedAmt(Env.ZERO);
             line.setInvoicedQty(Env.ZERO);
             line.setC_OrderPO_ID(0);
-            line.setC_Order_ID(0);
+            line.setOrderId(0);
             line.setProcessed(false);
             if (line.save()) count++;
         }
@@ -297,8 +297,8 @@ public class MProject extends X_C_Project {
             } else {
                 MProjectPhase toPhase = new MProjectPhase(getCtx(), 0);
                 copyValues(fromPhases[i], toPhase, getClientId(), getOrgId());
-                toPhase.setC_Project_ID(getC_Project_ID());
-                toPhase.setC_Order_ID(0);
+                toPhase.setProjectId(getProjectId());
+                toPhase.setOrderId(0);
                 toPhase.setIsComplete(false);
                 toPhase.saveEx();
                 count++;
@@ -356,13 +356,13 @@ public class MProject extends X_C_Project {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getAD_User_ID() == -1) // 	Summary Project in Dimensions
-            setAD_User_ID(0);
+        if (getUserId() == -1) // 	Summary Project in Dimensions
+            setUserId(0);
 
         //	Set Currency
         if (is_ValueChanged("M_PriceList_Version_ID") && getM_PriceList_Version_ID() != 0) {
-            MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
-            if (pl != null && pl.getId() != 0) setC_Currency_ID(pl.getC_Currency_ID());
+            MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
+            if (pl != null && pl.getId() != 0) setCurrencyId(pl.getCurrencyId());
         }
 
         return true;
@@ -385,7 +385,7 @@ public class MProject extends X_C_Project {
 
         //	Value/Name change
         if (!newRecord && (is_ValueChanged("Value") || is_ValueChanged("Name")))
-            MAccount.updateValueDescription(getCtx(), "C_Project_ID=" + getC_Project_ID());
+            MAccount.updateValueDescription(getCtx(), "C_Project_ID=" + getProjectId());
 
         return success;
     } //	afterSave

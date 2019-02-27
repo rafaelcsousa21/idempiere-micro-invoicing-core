@@ -73,11 +73,11 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
 
         int invId = 0;
 
-        if (shipment.getC_Invoice_ID() != 0) {
-            invId = shipment.getC_Invoice_ID();
+        if (shipment.getInvoiceId() != 0) {
+            invId = shipment.getInvoiceId();
         } else {
             String sqlStmt = "SELECT C_Invoice_ID FROM C_Invoice WHERE C_Order_ID=?";
-            invId = getSQLValueEx(sqlStmt, shipment.getC_Order_ID());
+            invId = getSQLValueEx(sqlStmt, shipment.getOrderId());
         }
 
         if (invId <= 0) {
@@ -95,22 +95,22 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      */
     @Override
     protected boolean beforeSave(boolean newRecord) {
-        if (newRecord) setC_Order_ID(0);
+        if (newRecord) setOrderId(0);
         getShipment();
         //	Set BPartner
-        if (getC_BPartner_ID() == 0) {
-            if (m_inout != null) setC_BPartner_ID(m_inout.getC_BPartner_ID());
+        if (getBusinessPartnerId() == 0) {
+            if (m_inout != null) setBusinessPartnerId(m_inout.getBusinessPartnerId());
         }
         //	Set Currency
-        if (getC_Currency_ID() == 0) {
+        if (getCurrencyId() == 0) {
             if (m_inout != null) {
-                if (m_inout.getC_Order_ID() != 0) {
+                if (m_inout.getOrderId() != 0) {
                     org.compiere.order.MOrder order =
-                            new MOrder(getCtx(), m_inout.getC_Order_ID());
-                    setC_Currency_ID(order.getC_Currency_ID());
-                } else if (m_inout.getC_Invoice_ID() != 0) {
-                    MInvoice invoice = new MInvoice(getCtx(), m_inout.getC_Invoice_ID());
-                    setC_Currency_ID(invoice.getC_Currency_ID());
+                            new MOrder(getCtx(), m_inout.getOrderId());
+                    setCurrencyId(order.getCurrencyId());
+                } else if (m_inout.getInvoiceId() != 0) {
+                    MInvoice invoice = new MInvoice(getCtx(), m_inout.getInvoiceId());
+                    setCurrencyId(invoice.getCurrencyId());
                 }
             }
         }
@@ -244,20 +244,20 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(null);
         if (counterC_BPartner_ID == 0) return null;
         //	Business Partner needs to be linked to Org
-        org.compiere.crm.MBPartner bp = new MBPartner(getCtx(), getC_BPartner_ID());
+        org.compiere.crm.MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());
         int counterAD_Org_ID = bp.getAD_OrgBP_ID_Int();
         if (counterAD_Org_ID == 0) return null;
 
         //	Document Type
         int C_DocTypeTarget_ID = 0;
-        MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getCtx(), getC_DocType_ID());
+        MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getCtx(), getDocumentTypeId());
         if (counterDT != null) {
             if (log.isLoggable(Level.FINE)) log.fine(counterDT.toString());
             if (!counterDT.isCreateCounter() || !counterDT.isValid()) return null;
             C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
         } else //	indirect
         {
-            C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocType_ID(getCtx(), getC_DocType_ID());
+            C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocType_ID(getCtx(), getDocumentTypeId());
             if (log.isLoggable(Level.FINE)) log.fine("Indirect C_DocTypeTarget_ID=" + C_DocTypeTarget_ID);
             if (C_DocTypeTarget_ID <= 0) return null;
         }
@@ -267,7 +267,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
 
         //
         counter.setOrgId(counterAD_Org_ID);
-        counter.setC_BPartner_ID(counterC_BPartner_ID);
+        counter.setBusinessPartnerId(counterC_BPartner_ID);
         counter.saveEx();
 
         //	Update copied lines
@@ -499,7 +499,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      * @return AD_User_ID
      */
     public int getDoc_User_ID() {
-        return getSalesRep_ID();
+        return getSalesRepresentativeId();
     } //	getDoc_User_ID
 
     /**

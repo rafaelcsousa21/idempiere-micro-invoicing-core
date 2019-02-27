@@ -375,30 +375,30 @@ public class ReplenishReport extends SvrProcess {
         X_T_Replenish[] replenishs = getReplenish("M_WarehouseSource_ID IS NULL");
         for (int i = 0; i < replenishs.length; i++) {
             X_T_Replenish replenish = replenishs[i];
-            if (wh == null || wh.getM_Warehouse_ID() != replenish.getM_Warehouse_ID())
-                wh = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
+            if (wh == null || wh.getWarehouseId() != replenish.getWarehouseId())
+                wh = MWarehouse.get(getCtx(), replenish.getWarehouseId());
             //
             if (order == null
-                    || order.getC_BPartner_ID() != replenish.getC_BPartner_ID()
-                    || order.getM_Warehouse_ID() != replenish.getM_Warehouse_ID()) {
+                    || order.getBusinessPartnerId() != replenish.getBusinessPartnerId()
+                    || order.getWarehouseId() != replenish.getWarehouseId()) {
                 order = new MOrder(getCtx(), 0);
                 order.setIsSOTrx(false);
-                order.setC_DocTypeTarget_ID(p_C_DocType_ID);
-                MBPartner bp = new MBPartner(getCtx(), replenish.getC_BPartner_ID());
+                order.setTargetDocumentTypeId(p_C_DocType_ID);
+                MBPartner bp = new MBPartner(getCtx(), replenish.getBusinessPartnerId());
                 order.setBPartner(bp);
-                order.setSalesRep_ID(getAD_User_ID());
+                order.setSalesRepresentativeId(getUserId());
                 order.setDescription(Msg.getMsg(getCtx(), "Replenishment"));
                 //	Set Org/WH
                 order.setOrgId(wh.getOrgId());
-                order.setM_Warehouse_ID(wh.getM_Warehouse_ID());
+                order.setWarehouseId(wh.getWarehouseId());
                 if (!order.save()) return;
                 addBufferLog(
-                        order.getC_Order_ID(),
+                        order.getOrderId(),
                         order.getDateOrdered(),
                         null,
                         Msg.parseTranslation(getCtx(), "@C_Order_ID@ @Created@"),
                         MOrder.Table_ID,
-                        order.getC_Order_ID());
+                        order.getOrderId());
                 if (log.isLoggable(Level.FINE)) log.fine(order.toString());
                 noOrders++;
                 info.append(" - ");
@@ -426,17 +426,17 @@ public class ReplenishReport extends SvrProcess {
         X_T_Replenish[] replenishs = getReplenish("M_WarehouseSource_ID IS NULL");
         for (int i = 0; i < replenishs.length; i++) {
             X_T_Replenish replenish = replenishs[i];
-            if (wh == null || wh.getM_Warehouse_ID() != replenish.getM_Warehouse_ID())
-                wh = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
+            if (wh == null || wh.getWarehouseId() != replenish.getWarehouseId())
+                wh = MWarehouse.get(getCtx(), replenish.getWarehouseId());
             //
-            if (requisition == null || requisition.getM_Warehouse_ID() != replenish.getM_Warehouse_ID()) {
+            if (requisition == null || requisition.getWarehouseId() != replenish.getWarehouseId()) {
                 requisition = new MRequisition(getCtx(), 0);
-                requisition.setAD_User_ID(getAD_User_ID());
-                requisition.setC_DocType_ID(p_C_DocType_ID);
+                requisition.setUserId(getUserId());
+                requisition.setDocumentTypeId(p_C_DocType_ID);
                 requisition.setDescription(Msg.getMsg(getCtx(), "Replenishment"));
                 //	Set Org/WH
                 requisition.setOrgId(wh.getOrgId());
-                requisition.setM_Warehouse_ID(wh.getM_Warehouse_ID());
+                requisition.setWarehouseId(wh.getWarehouseId());
                 if (!requisition.save()) return;
                 addBufferLog(
                         requisition.getM_Requisition_ID(),
@@ -453,7 +453,7 @@ public class ReplenishReport extends SvrProcess {
             //
             MRequisitionLine line = new MRequisitionLine(requisition);
             line.setM_Product_ID(replenish.getM_Product_ID());
-            line.setC_BPartner_ID(replenish.getC_BPartner_ID());
+            line.setBusinessPartnerId(replenish.getBusinessPartnerId());
             line.setQty(replenish.getQtyToOrder());
             line.setPrice();
             line.saveEx();
@@ -481,19 +481,19 @@ public class ReplenishReport extends SvrProcess {
             if (whSource == null
                     || whSource.getM_WarehouseSource_ID() != replenish.getM_WarehouseSource_ID())
                 whSource = MWarehouse.get(getCtx(), replenish.getM_WarehouseSource_ID());
-            if (wh == null || wh.getM_Warehouse_ID() != replenish.getM_Warehouse_ID())
-                wh = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
+            if (wh == null || wh.getWarehouseId() != replenish.getWarehouseId())
+                wh = MWarehouse.get(getCtx(), replenish.getWarehouseId());
             if (client == null || client.getClientId() != whSource.getClientId())
                 client = MClient.get(getCtx(), whSource.getClientId());
             //
             if (move == null
                     || M_WarehouseSource_ID != replenish.getM_WarehouseSource_ID()
-                    || M_Warehouse_ID != replenish.getM_Warehouse_ID()) {
+                    || M_Warehouse_ID != replenish.getWarehouseId()) {
                 M_WarehouseSource_ID = replenish.getM_WarehouseSource_ID();
-                M_Warehouse_ID = replenish.getM_Warehouse_ID();
+                M_Warehouse_ID = replenish.getWarehouseId();
 
                 move = new MMovement(getCtx(), 0);
-                move.setC_DocType_ID(p_C_DocType_ID);
+                move.setDocumentTypeId(p_C_DocType_ID);
                 move.setDescription(
                         Msg.getMsg(getCtx(), "Replenishment")
                                 + ": "
@@ -522,7 +522,7 @@ public class ReplenishReport extends SvrProcess {
             MStorageOnHand[] storages =
                     MStorageOnHand.getWarehouse(
                             getCtx(),
-                            whSource.getM_Warehouse_ID(),
+                            whSource.getWarehouseId(),
                             replenish.getM_Product_ID(),
                             0,
                             null,
@@ -588,19 +588,19 @@ public class ReplenishReport extends SvrProcess {
             if (whSource == null
                     || whSource.getM_WarehouseSource_ID() != replenish.getM_WarehouseSource_ID())
                 whSource = MWarehouse.get(getCtx(), replenish.getM_WarehouseSource_ID());
-            if (wh == null || wh.getM_Warehouse_ID() != replenish.getM_Warehouse_ID())
-                wh = MWarehouse.get(getCtx(), replenish.getM_Warehouse_ID());
+            if (wh == null || wh.getWarehouseId() != replenish.getWarehouseId())
+                wh = MWarehouse.get(getCtx(), replenish.getWarehouseId());
             if (client == null || client.getClientId() != whSource.getClientId())
                 client = MClient.get(getCtx(), whSource.getClientId());
             //
             if (order == null
                     || M_WarehouseSource_ID != replenish.getM_WarehouseSource_ID()
-                    || M_Warehouse_ID != replenish.getM_Warehouse_ID()) {
+                    || M_Warehouse_ID != replenish.getWarehouseId()) {
                 M_WarehouseSource_ID = replenish.getM_WarehouseSource_ID();
-                M_Warehouse_ID = replenish.getM_Warehouse_ID();
+                M_Warehouse_ID = replenish.getWarehouseId();
 
                 order = new MDDOrder(getCtx(), 0);
-                order.setC_DocType_ID(p_C_DocType_ID);
+                order.setDocumentTypeId(p_C_DocType_ID);
                 StringBuffer msgsd =
                         new StringBuffer(Msg.getMsg(getCtx(), "Replenishment"))
                                 .append(": ")
@@ -612,7 +612,7 @@ public class ReplenishReport extends SvrProcess {
                 order.setOrgId(whSource.getOrgId());
                 // Set Org Trx
                 MOrg orgTrx = MOrg.get(getCtx(), wh.getOrgId());
-                order.setAD_OrgTrx_ID(orgTrx.getOrgId());
+                order.setTransactionOrganizationId(orgTrx.getOrgId());
                 int C_BPartner_ID = orgTrx.getLinkedC_BPartner_ID(null);
                 if (C_BPartner_ID == 0)
                     throw new AdempiereUserError(
@@ -636,9 +636,9 @@ public class ReplenishReport extends SvrProcess {
                 // Warehouse in Transit
                 MWarehouse[] whsInTransit = MWarehouse.getForOrg(getCtx(), whSource.getOrgId());
                 for (MWarehouse whInTransit : whsInTransit) {
-                    if (whInTransit.isInTransit()) order.setM_Warehouse_ID(whInTransit.getM_Warehouse_ID());
+                    if (whInTransit.isInTransit()) order.setWarehouseId(whInTransit.getWarehouseId());
                 }
-                if (order.getM_Warehouse_ID() == 0)
+                if (order.getWarehouseId() == 0)
                     throw new AdempiereUserError("Warehouse inTransit is @FillMandatory@ ");
 
                 if (!order.save()) return;

@@ -59,7 +59,7 @@ public class Doc_BankStatement extends Doc {
 
         //  Set Bank Account Info (Currency)
         MBankAccount ba = MBankAccount.get(getCtx(), m_C_BankAccount_ID);
-        setC_Currency_ID(ba.getC_Currency_ID());
+        setCurrencyId(ba.getCurrencyId());
 
         //	Contained Objects
         p_lines = loadLines(bs);
@@ -140,7 +140,7 @@ public class Doc_BankStatement extends Doc {
         //  Lines
         for (int i = 0; i < p_lines.length; i++) {
             DocLine_Bank line = (DocLine_Bank) p_lines[i];
-            int C_BPartner_ID = line.getC_BPartner_ID();
+            int C_BPartner_ID = line.getBusinessPartnerId();
 
             // Avoid usage of clearing accounts
             // If both accounts BankAsset and BankInTransit are equal
@@ -164,10 +164,10 @@ public class Doc_BankStatement extends Doc {
                             fact.createLine(
                                     line,
                                     getAccount(Doc.ACCTTYPE_BankAsset, as),
-                                    line.getC_Currency_ID(),
+                                    line.getCurrencyId(),
                                     amt_stmt_minus_trx);
                     if (fl != null && AD_Org_ID != 0) fl.setOrgId(AD_Org_ID);
-                    if (fl != null && C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
+                    if (fl != null && C_BPartner_ID != 0) fl.setBusinessPartnerId(C_BPartner_ID);
                 }
 
             } else {
@@ -179,20 +179,20 @@ public class Doc_BankStatement extends Doc {
                         fact.createLine(
                                 line,
                                 getAccount(Doc.ACCTTYPE_BankAsset, as),
-                                line.getC_Currency_ID(),
+                                line.getCurrencyId(),
                                 line.getStmtAmt());
                 if (fl != null && AD_Org_ID != 0) fl.setOrgId(AD_Org_ID);
-                if (fl != null && C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
+                if (fl != null && C_BPartner_ID != 0) fl.setBusinessPartnerId(C_BPartner_ID);
 
                 //  BankInTransit   DR      CR              (Payment)
                 fl =
                         fact.createLine(
                                 line,
                                 getAccount(Doc.ACCTTYPE_BankInTransit, as),
-                                line.getC_Currency_ID(),
+                                line.getCurrencyId(),
                                 line.getTrxAmt().negate());
                 if (fl != null) {
-                    if (C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
+                    if (C_BPartner_ID != 0) fl.setBusinessPartnerId(C_BPartner_ID);
                     if (AD_Org_ID != 0) fl.setOrgId(AD_Org_ID);
                     else fl.setOrgId(line.getOrgId(true)); // from payment
                 }
@@ -205,7 +205,7 @@ public class Doc_BankStatement extends Doc {
                         fact.createLine(
                                 line,
                                 line.getChargeAccount(as, line.getChargeAmt().negate()),
-                                line.getC_Currency_ID(),
+                                line.getCurrencyId(),
                                 null,
                                 line.getChargeAmt());
             } else {
@@ -213,11 +213,11 @@ public class Doc_BankStatement extends Doc {
                         fact.createLine(
                                 line,
                                 line.getChargeAccount(as, line.getChargeAmt().negate()),
-                                line.getC_Currency_ID(),
+                                line.getCurrencyId(),
                                 line.getChargeAmt().negate(),
                                 null);
             }
-            if (fl != null && C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
+            if (fl != null && C_BPartner_ID != 0) fl.setBusinessPartnerId(C_BPartner_ID);
 
             //  Interest        DR      CR  (Interest)
             if (line.getInterestAmt().signum() < 0)
@@ -226,7 +226,7 @@ public class Doc_BankStatement extends Doc {
                                 line,
                                 getAccount(Doc.ACCTTYPE_InterestExp, as),
                                 getAccount(Doc.ACCTTYPE_InterestExp, as),
-                                line.getC_Currency_ID(),
+                                line.getCurrencyId(),
                                 line.getInterestAmt().negate());
             else
                 fl =
@@ -234,9 +234,9 @@ public class Doc_BankStatement extends Doc {
                                 line,
                                 getAccount(Doc.ACCTTYPE_InterestRev, as),
                                 getAccount(Doc.ACCTTYPE_InterestRev, as),
-                                line.getC_Currency_ID(),
+                                line.getCurrencyId(),
                                 line.getInterestAmt().negate());
-            if (fl != null && C_BPartner_ID != 0) fl.setC_BPartner_ID(C_BPartner_ID);
+            if (fl != null && C_BPartner_ID != 0) fl.setBusinessPartnerId(C_BPartner_ID);
             //
             //	fact.createTaxCorrection();
         }

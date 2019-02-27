@@ -65,7 +65,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
             //	setGL_JournalBatch_ID (0);	PK
             //	setDescription (null);
             //	setDocumentNo (null);
-            //	setC_DocType_ID (0);
+            //	setDocumentTypeId (0);
             setPostingType(X_GL_JournalBatch.POSTINGTYPE_Actual);
             setDocAction(X_GL_JournalBatch.DOCACTION_Complete);
             setDocStatus(X_GL_JournalBatch.DOCSTATUS_Drafted);
@@ -102,11 +102,11 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         setGL_Category_ID(original.getGL_Category_ID());
         setPostingType(original.getPostingType());
         setDescription(original.getDescription());
-        setC_DocType_ID(original.getC_DocType_ID());
+        setDocumentTypeId(original.getDocumentTypeId());
         setControlAmt(original.getControlAmt());
         //
-        setC_Currency_ID(original.getC_Currency_ID());
-        //	setC_ConversionType_ID(original.getC_ConversionType_ID());
+        setCurrencyId(original.getCurrencyId());
+        //	setConversionTypeId(original.getConversionTypeId());
         //	setCurrencyRate(original.getCurrencyRate());
 
         //	setDateDoc(original.getDateDoc());
@@ -182,8 +182,8 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
             MJournal toJournal = new MJournal(getCtx(), 0);
             PO.copyValues(fromJournals[i], toJournal, getClientId(), getOrgId());
             toJournal.setGL_JournalBatch_ID(getGL_JournalBatch_ID());
-            toJournal.set_ValueNoCheck("DocumentNo", null); // 	create new
-            toJournal.set_ValueNoCheck("C_Period_ID", null);
+            toJournal.setValueNoCheck("DocumentNo", null); // 	create new
+            toJournal.setValueNoCheck("C_Period_ID", null);
             toJournal.setDateDoc(getDateDoc()); // 	dates from this Batch
             toJournal.setDateAcct(getDateAcct());
             toJournal.setDocStatus(MJournal.DOCSTATUS_Drafted);
@@ -249,7 +249,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
 
         //	Std Period open?
         if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType(), getOrgId())) {
@@ -309,10 +309,10 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
                     line.saveEx();
                 }
             }
-            if (journal.getC_ConversionType_ID() > 0) {
+            if (journal.getConversionTypeId() > 0) {
                 for (int j = 0; j < lines.length; j++) {
                     MJournalLine line = lines[j];
-                    line.setC_ConversionType_ID(journal.getC_ConversionType_ID());
+                    line.setConversionTypeId(journal.getConversionTypeId());
                     line.saveEx();
                 }
             }
@@ -429,16 +429,16 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             if (getDateAcct().before(getDateDoc())) {
                 setDateAcct(getDateDoc());
-                MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getC_DocType_ID(), getOrgId());
+                MPeriod.testPeriodOpen(getCtx(), getDateAcct(), getDocumentTypeId(), getOrgId());
             }
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getC_DocType_ID(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
             if (value != null) setDocumentNo(value);
         }
     }
@@ -750,7 +750,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * @return document info (untranslated)
      */
     public String getDocumentInfo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         StringBuilder msgreturn =
                 new StringBuilder().append(dt.getNameTrl()).append(" ").append(getDocumentNo());
         return msgreturn.toString();

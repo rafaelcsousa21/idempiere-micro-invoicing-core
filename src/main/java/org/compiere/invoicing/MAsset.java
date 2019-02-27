@@ -74,7 +74,7 @@ public class MAsset extends org.compiere.product.MAsset {
             setProductId(inoutLine.getM_Product_ID());
             setAttributeSetInstanceId(inoutLine.getMAttributeSetInstance_ID());
         }
-        MBPartner bp = new MBPartner(getCtx(), invoiceLine.getC_Invoice().getC_BPartner_ID());
+        MBPartner bp = new MBPartner(getCtx(), invoiceLine.getC_Invoice().getBusinessPartnerId());
         name += bp.getName() + "-" + invoiceLine.getC_Invoice().getDocumentNo();
         if (log.isLoggable(Level.FINE)) log.fine("name=" + name);
         setValue(name);
@@ -199,10 +199,10 @@ public class MAsset extends org.compiere.product.MAsset {
 
         // Activity
     /*
-    if (invLine.getC_Activity_ID() > 0)
-    	setC_Activity_ID(invLine.getC_Activity_ID());
+    if (invLine.getBusinessActivityId() > 0)
+    	setBusinessActivityId(invLine.getBusinessActivityId());
     */
-        if (inventory.getC_Activity_ID() > 0) setActivityId(inventory.getC_Activity_ID());
+        if (inventory.getBusinessActivityId() > 0) setActivityId(inventory.getBusinessActivityId());
 
         //
 

@@ -46,7 +46,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
     public MInvoicePaySchedule(Properties ctx, int C_InvoicePaySchedule_ID) {
         super(ctx, C_InvoicePaySchedule_ID);
         if (C_InvoicePaySchedule_ID == 0) {
-            //	setC_Invoice_ID (0);
+            //	setInvoiceId (0);
             //	setDiscountAmt (Env.ZERO);
             //	setDiscountDate (new Timestamp(System.currentTimeMillis()));
             //	setDueAmt (Env.ZERO);
@@ -76,11 +76,11 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
         super(invoice.getCtx(), 0);
         m_parent = invoice;
         setClientOrg(invoice);
-        setC_Invoice_ID(invoice.getC_Invoice_ID());
+        setInvoiceId(invoice.getInvoiceId());
         setC_PaySchedule_ID(paySchedule.getC_PaySchedule_ID());
 
         //	Amounts
-        int scale = MCurrency.getStdPrecision(getCtx(), invoice.getC_Currency_ID());
+        int scale = MCurrency.getStdPrecision(getCtx(), invoice.getCurrencyId());
         BigDecimal due = invoice.getGrandTotal();
         if (due.compareTo(Env.ZERO) == 0) {
             setDueAmt(Env.ZERO);
@@ -153,7 +153,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
      * @return Returns the parent.
      */
     public MInvoice getParent() {
-        if (m_parent == null) m_parent = new MInvoice(getCtx(), getC_Invoice_ID());
+        if (m_parent == null) m_parent = new MInvoice(getCtx(), getInvoiceId());
         return m_parent;
     } //	getParent
 

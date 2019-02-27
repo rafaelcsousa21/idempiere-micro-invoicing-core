@@ -119,6 +119,7 @@ public class X_AD_Table_ScriptValidator extends PO
      *
      */
     private static final long serialVersionUID = 20171031L;
+
     /**
      * Standard Constructor
      */
@@ -130,6 +131,7 @@ public class X_AD_Table_ScriptValidator extends PO
          * setAD_Table_ScriptValidator_ID (0); setEventModelValidator (null); setSeqNo (0); // 0 }
          */
     }
+
     /**
      * Load Constructor
      */
@@ -199,7 +201,7 @@ public class X_AD_Table_ScriptValidator extends PO
      * @param SeqNo Method of ordering records; lowest number comes first
      */
     public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+        setValue(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
     }
 
     @Override

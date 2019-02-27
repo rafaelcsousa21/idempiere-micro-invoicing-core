@@ -21,6 +21,7 @@ public class DocLine_Allocation extends DocLine {
     private BigDecimal m_DiscountAmt;
     private BigDecimal m_WriteOffAmt;
     private BigDecimal m_OverUnderAmt;
+
     /**
      * DocLine_Allocation
      *
@@ -29,10 +30,10 @@ public class DocLine_Allocation extends DocLine {
      */
     public DocLine_Allocation(MAllocationLine line, Doc doc) {
         super(line, doc);
-        m_C_Payment_ID = line.getC_Payment_ID();
+        m_C_Payment_ID = line.getPaymentId();
         m_C_CashLine_ID = line.getC_CashLine_ID();
-        m_C_Invoice_ID = line.getC_Invoice_ID();
-        m_C_Order_ID = line.getC_Order_ID();
+        m_C_Invoice_ID = line.getInvoiceId();
+        m_C_Order_ID = line.getOrderId();
         // adaxa-pb
         Object obj = line.getValue("C_Charge_ID");
         if (obj != null) m_C_Charge_ID = (Integer) line.getValue("C_Charge_ID");
@@ -44,10 +45,10 @@ public class DocLine_Allocation extends DocLine {
         m_OverUnderAmt = line.getOverUnderAmt();
 
         //	Get Payment Conversion Rate
-        if (line.getC_Payment_ID() != 0) {
-            MPayment payment = new MPayment(doc.getCtx(), line.getC_Payment_ID());
-            int C_ConversionType_ID = payment.getC_ConversionType_ID();
-            this.setC_ConversionType_ID(C_ConversionType_ID);
+        if (line.getPaymentId() != 0) {
+            MPayment payment = new MPayment(doc.getCtx(), line.getPaymentId());
+            int C_ConversionType_ID = payment.getConversionTypeId();
+            this.setConversionTypeId(C_ConversionType_ID);
         }
     } //	DocLine_Allocation
 
@@ -91,7 +92,7 @@ public class DocLine_Allocation extends DocLine {
     /**
      * @return Returns the c_Order_ID.
      */
-    public int getC_Order_ID() {
+    public int getOrderId() {
         return m_C_Order_ID;
     }
 
@@ -126,14 +127,14 @@ public class DocLine_Allocation extends DocLine {
     /**
      * @return Returns the c_Invoice_ID.
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         return m_C_Invoice_ID;
     }
 
     /**
      * @return Returns the c_Payment_ID.
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         return m_C_Payment_ID;
     }
 
@@ -142,14 +143,14 @@ public class DocLine_Allocation extends DocLine {
      *
      * @return Returns the C_Charge_ID.
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         return m_C_Charge_ID;
     }
 
     @Override
     public Timestamp getDateConv() {
-        if (getC_Payment_ID() > 0) {
-            MPayment payment = new MPayment(p_po.getCtx(), getC_Payment_ID());
+        if (getPaymentId() > 0) {
+            MPayment payment = new MPayment(p_po.getCtx(), getPaymentId());
             return payment.getDateAcct(); // use payment date
         }
         return super.getDateConv();

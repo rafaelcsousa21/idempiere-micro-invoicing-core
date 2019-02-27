@@ -237,8 +237,8 @@ public class InOutGenerate extends SvrProcess {
                 //	New Header different Shipper, Shipment Location
                 if (!p_ConsolidateDocument
                         || (m_shipment != null
-                        && (m_shipment.getC_BPartner_Location_ID() != order.getC_BPartner_Location_ID()
-                        || m_shipment.getM_Shipper_ID() != order.getM_Shipper_ID())))
+                        && (m_shipment.getBusinessPartnerLocationId() != order.getBusinessPartnerLocationId()
+                        || m_shipment.getShipperId() != order.getShipperId())))
                     completeShipment();
                 if (log.isLoggable(Level.FINE))
                     log.fine("check: " + order + " - DeliveryRule=" + order.getDeliveryRule());
@@ -271,7 +271,7 @@ public class InOutGenerate extends SvrProcess {
                         order.getLines(where.toString(), "C_BPartner_Location_ID, M_Product_ID");
                 for (int i = 0; i < lines.length; i++) {
                     MOrderLine line = lines[i];
-                    if (line.getM_Warehouse_ID() != p_M_Warehouse_ID) continue;
+                    if (line.getWarehouseId() != p_M_Warehouse_ID) continue;
                     if (log.isLoggable(Level.FINE)) log.fine("check: " + line);
                     BigDecimal onHand = Env.ZERO;
                     BigDecimal toDeliver = line.getQtyOrdered().subtract(line.getQtyDelivered());
@@ -280,7 +280,7 @@ public class InOutGenerate extends SvrProcess {
                     if (product != null && toDeliver.signum() == 0) continue;
 
                     // or it's a charge - Bug#: 1603966
-                    if (line.getC_Charge_ID() != 0 && toDeliver.signum() == 0) continue;
+                    if (line.getChargeId() != 0 && toDeliver.signum() == 0) continue;
 
                     //	Check / adjust for confirmations
                     BigDecimal unconfirmedShippedQty = Env.ZERO;
@@ -324,7 +324,7 @@ public class InOutGenerate extends SvrProcess {
 
                     MStorageOnHand[] storages =
                             getStorages(
-                                    line.getM_Warehouse_ID(),
+                                    line.getWarehouseId(),
                                     line.getM_Product_ID(),
                                     line.getMAttributeSetInstance_ID(),
                                     minGuaranteeDate,
@@ -434,7 +434,7 @@ public class InOutGenerate extends SvrProcess {
                 if (completeOrder && MOrder.DELIVERYRULE_CompleteOrder.equals(order.getDeliveryRule())) {
                     for (int i = 0; i < lines.length; i++) {
                         MOrderLine line = lines[i];
-                        if (line.getM_Warehouse_ID() != p_M_Warehouse_ID) continue;
+                        if (line.getWarehouseId() != p_M_Warehouse_ID) continue;
                         MProduct product = line.getProduct();
                         BigDecimal toDeliver = line.getQtyOrdered().subtract(line.getQtyDelivered());
                         //
@@ -443,7 +443,7 @@ public class InOutGenerate extends SvrProcess {
                             String MMPolicy = product.getMMPolicy();
                             storages =
                                     getStorages(
-                                            line.getM_Warehouse_ID(),
+                                            line.getWarehouseId(),
                                             line.getM_Product_ID(),
                                             line.getMAttributeSetInstance_ID(),
                                             minGuaranteeDate,
@@ -483,16 +483,16 @@ public class InOutGenerate extends SvrProcess {
             MStorageOnHand[] storages,
             boolean force) {
         //	Complete last Shipment - can have multiple shipments
-        if (m_lastC_BPartner_Location_ID != orderLine.getC_BPartner_Location_ID()) completeShipment();
-        m_lastC_BPartner_Location_ID = orderLine.getC_BPartner_Location_ID();
+        if (m_lastC_BPartner_Location_ID != orderLine.getBusinessPartnerLocationId()) completeShipment();
+        m_lastC_BPartner_Location_ID = orderLine.getBusinessPartnerLocationId();
         //	Create New Shipment
         if (m_shipment == null) {
             m_shipment = new MInOut(order, 0, m_movementDate);
-            m_shipment.setM_Warehouse_ID(orderLine.getM_Warehouse_ID()); // 	sets Org too
-            if (order.getC_BPartner_ID() != orderLine.getC_BPartner_ID())
-                m_shipment.setC_BPartner_ID(orderLine.getC_BPartner_ID());
-            if (order.getC_BPartner_Location_ID() != orderLine.getC_BPartner_Location_ID())
-                m_shipment.setC_BPartner_Location_ID(orderLine.getC_BPartner_Location_ID());
+            m_shipment.setWarehouseId(orderLine.getWarehouseId()); // 	sets Org too
+            if (order.getBusinessPartnerId() != orderLine.getBusinessPartnerId())
+                m_shipment.setBusinessPartnerId(orderLine.getBusinessPartnerId());
+            if (order.getBusinessPartnerLocationId() != orderLine.getBusinessPartnerLocationId())
+                m_shipment.setBusinessPartnerLocationId(orderLine.getBusinessPartnerLocationId());
             if (!m_shipment.save()) throw new IllegalStateException("Could not create Shipment");
         }
         //	Non Inventory Lines
@@ -702,6 +702,7 @@ public class InOutGenerate extends SvrProcess {
          * FiFo
          */
         public boolean FiFo;
+
         /**
          * Parameter
          *

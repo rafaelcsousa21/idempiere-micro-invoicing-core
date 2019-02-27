@@ -74,7 +74,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      */
     public void setAccountSign(String AccountSign) {
 
-        set_Value(COLUMNNAME_AccountSign, AccountSign);
+        setValue(COLUMNNAME_AccountSign, AccountSign);
     }
 
     /**
@@ -93,7 +93,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      */
     public void setAccountType(String AccountType) {
 
-        set_Value(COLUMNNAME_AccountType, AccountType);
+        setValue(COLUMNNAME_AccountType, AccountType);
     }
 
     public org.compiere.model.I_C_Element getElement() throws RuntimeException {
@@ -119,8 +119,8 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @param C_Element_ID Accounting Element
      */
     public void setElementId(int C_Element_ID) {
-        if (C_Element_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Element_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Element_ID, C_Element_ID);
+        if (C_Element_ID < 1) setValueNoCheck(COLUMNNAME_C_Element_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Element_ID, C_Element_ID);
     }
 
     /**
@@ -149,7 +149,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -158,7 +158,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @param IsBankAccount Indicates if this is the Bank Account
      */
     public void setIsBankAccount(boolean IsBankAccount) {
-        set_Value(COLUMNNAME_IsBankAccount, IsBankAccount);
+        setValue(COLUMNNAME_IsBankAccount, IsBankAccount);
     }
 
     /**
@@ -168,7 +168,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      *                        post manually to it
      */
     public void setIsDocControlled(boolean IsDocControlled) {
-        set_Value(COLUMNNAME_IsDocControlled, IsDocControlled);
+        setValue(COLUMNNAME_IsDocControlled, IsDocControlled);
     }
 
     /**
@@ -193,7 +193,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      *                          currency
      */
     public void setIsForeignCurrency(boolean IsForeignCurrency) {
-        set_Value(COLUMNNAME_IsForeignCurrency, IsForeignCurrency);
+        setValue(COLUMNNAME_IsForeignCurrency, IsForeignCurrency);
     }
 
     /**
@@ -202,7 +202,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @param IsSummary This is a summary entity
      */
     public void setIsSummary(boolean IsSummary) {
-        set_Value(COLUMNNAME_IsSummary, IsSummary);
+        setValue(COLUMNNAME_IsSummary, IsSummary);
     }
 
     /**
@@ -239,7 +239,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @param PostActual Actual Values can be posted
      */
     public void setPostActual(boolean PostActual) {
-        set_Value(COLUMNNAME_PostActual, PostActual);
+        setValue(COLUMNNAME_PostActual, PostActual);
     }
 
     /**
@@ -262,7 +262,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @param PostBudget Budget values can be posted
      */
     public void setPostBudget(boolean PostBudget) {
-        set_Value(COLUMNNAME_PostBudget, PostBudget);
+        setValue(COLUMNNAME_PostBudget, PostBudget);
     }
 
     /**
@@ -271,7 +271,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @param PostEncumbrance Post commitments to this account
      */
     public void setPostEncumbrance(boolean PostEncumbrance) {
-        set_Value(COLUMNNAME_PostEncumbrance, PostEncumbrance);
+        setValue(COLUMNNAME_PostEncumbrance, PostEncumbrance);
     }
 
     /**
@@ -294,7 +294,7 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
      * @param PostStatistical Post statistical quantities to this account?
      */
     public void setPostStatistical(boolean PostStatistical) {
-        set_Value(COLUMNNAME_PostStatistical, PostStatistical);
+        setValue(COLUMNNAME_PostStatistical, PostStatistical);
     }
 
     @Override

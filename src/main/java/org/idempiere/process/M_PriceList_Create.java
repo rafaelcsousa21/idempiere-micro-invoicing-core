@@ -417,7 +417,7 @@ public class M_PriceList_Create extends SvrProcess {
                     //
                     v_temp = rsCurgen.getInt("M_PriceList_Version_Base_ID");
                     int seqproductpriceid = MSequence.get(getCtx(), "M_ProductPrice").getId();
-                    int currentUserID = Env.getAD_User_ID(getCtx());
+                    int currentUserID = Env.getUserId(getCtx());
                     if (v_temp == p_PriceList_Version_ID)
                         //
                         // We have Prices already

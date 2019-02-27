@@ -41,6 +41,7 @@ public class MBOM extends X_M_BOM {
             setBOMUse(BOMUSE_Master); // A
         }
     } //	MBOM
+
     /**
      * Load Constructor
      *

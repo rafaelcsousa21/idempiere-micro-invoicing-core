@@ -212,8 +212,8 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
      * @param C_Period_ID Period of the Calendar
      */
     public void setC_Period_ID(int C_Period_ID) {
-        if (C_Period_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Period_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
+        if (C_Period_ID < 1) setValueNoCheck(COLUMNNAME_C_Period_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
     }
 
     /**
@@ -232,7 +232,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
      */
     public void setDocBaseType(String DocBaseType) {
 
-        set_ValueNoCheck(COLUMNNAME_DocBaseType, DocBaseType);
+        setValueNoCheck(COLUMNNAME_DocBaseType, DocBaseType);
     }
 
     /**
@@ -251,7 +251,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
      */
     public void setPeriodAction(String PeriodAction) {
 
-        set_Value(COLUMNNAME_PeriodAction, PeriodAction);
+        setValue(COLUMNNAME_PeriodAction, PeriodAction);
     }
 
     /**
@@ -270,7 +270,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
      */
     public void setPeriodStatus(String PeriodStatus) {
 
-        set_ValueNoCheck(COLUMNNAME_PeriodStatus, PeriodStatus);
+        setValueNoCheck(COLUMNNAME_PeriodStatus, PeriodStatus);
     }
 
     @Override

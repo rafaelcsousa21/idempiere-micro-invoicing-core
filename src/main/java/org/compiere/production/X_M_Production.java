@@ -107,9 +107,9 @@ public class X_M_Production extends BasePOName {
      *
      * @param AD_OrgTrx_ID Performing or initiating organization
      */
-    public void setAD_OrgTrx_ID(int AD_OrgTrx_ID) {
-        if (AD_OrgTrx_ID < 1) set_Value(I_M_Production.COLUMNNAME_AD_OrgTrx_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+    public void setTransactionOrganizationId(int AD_OrgTrx_ID) {
+        if (AD_OrgTrx_ID < 1) setValue(I_M_Production.COLUMNNAME_AD_OrgTrx_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
     /**
@@ -117,9 +117,9 @@ public class X_M_Production extends BasePOName {
      *
      * @param C_Activity_ID Business Activity
      */
-    public void setC_Activity_ID(int C_Activity_ID) {
-        if (C_Activity_ID < 1) set_Value(I_M_Production.COLUMNNAME_C_Activity_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+    public void setBusinessActivityId(int C_Activity_ID) {
+        if (C_Activity_ID < 1) setValue(I_M_Production.COLUMNNAME_C_Activity_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
     }
 
     /**
@@ -127,9 +127,9 @@ public class X_M_Production extends BasePOName {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_ValueNoCheck(I_M_Production.COLUMNNAME_C_BPartner_ID, null);
-        else set_ValueNoCheck(I_M_Production.COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValueNoCheck(I_M_Production.COLUMNNAME_C_BPartner_ID, null);
+        else setValueNoCheck(I_M_Production.COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -137,9 +137,9 @@ public class X_M_Production extends BasePOName {
      *
      * @param C_Campaign_ID Marketing Campaign
      */
-    public void setC_Campaign_ID(int C_Campaign_ID) {
-        if (C_Campaign_ID < 1) set_Value(I_M_Production.COLUMNNAME_C_Campaign_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
+    public void setCampaignId(int C_Campaign_ID) {
+        if (C_Campaign_ID < 1) setValue(I_M_Production.COLUMNNAME_C_Campaign_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
     }
 
     /**
@@ -147,9 +147,9 @@ public class X_M_Production extends BasePOName {
      *
      * @param C_Project_ID Financial Project
      */
-    public void setC_Project_ID(int C_Project_ID) {
-        if (C_Project_ID < 1) set_Value(I_M_Production.COLUMNNAME_C_Project_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+    public void setProjectId(int C_Project_ID) {
+        if (C_Project_ID < 1) setValue(I_M_Production.COLUMNNAME_C_Project_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
     }
 
     /**
@@ -158,9 +158,9 @@ public class X_M_Production extends BasePOName {
      * @param C_ProjectPhase_ID Phase of a Project
      */
     public void setC_ProjectPhase_ID(int C_ProjectPhase_ID) {
-        if (C_ProjectPhase_ID < 1) set_ValueNoCheck(I_M_Production.COLUMNNAME_C_ProjectPhase_ID, null);
+        if (C_ProjectPhase_ID < 1) setValueNoCheck(I_M_Production.COLUMNNAME_C_ProjectPhase_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     I_M_Production.COLUMNNAME_C_ProjectPhase_ID, Integer.valueOf(C_ProjectPhase_ID));
     }
 
@@ -170,9 +170,9 @@ public class X_M_Production extends BasePOName {
      * @param C_ProjectTask_ID Actual Project Task in a Phase
      */
     public void setC_ProjectTask_ID(int C_ProjectTask_ID) {
-        if (C_ProjectTask_ID < 1) set_ValueNoCheck(I_M_Production.COLUMNNAME_C_ProjectTask_ID, null);
+        if (C_ProjectTask_ID < 1) setValueNoCheck(I_M_Production.COLUMNNAME_C_ProjectTask_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     I_M_Production.COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
     }
 
@@ -182,8 +182,8 @@ public class X_M_Production extends BasePOName {
      * @param C_OrderLine_ID Sales Order Line
      */
     public void setC_OrderLine_ID(int C_OrderLine_ID) {
-        if (C_OrderLine_ID < 1) set_Value(I_M_Production.COLUMNNAME_C_OrderLine_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_C_OrderLine_ID, C_OrderLine_ID);
+        if (C_OrderLine_ID < 1) setValue(I_M_Production.COLUMNNAME_C_OrderLine_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_C_OrderLine_ID, C_OrderLine_ID);
     }
 
     /**
@@ -192,7 +192,7 @@ public class X_M_Production extends BasePOName {
      * @param DatePromised Date Order was promised
      */
     public void setDatePromised(Timestamp DatePromised) {
-        set_Value(I_M_Production.COLUMNNAME_DatePromised, DatePromised);
+        setValue(I_M_Production.COLUMNNAME_DatePromised, DatePromised);
     }
 
     /**
@@ -210,7 +210,7 @@ public class X_M_Production extends BasePOName {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(I_M_Production.COLUMNNAME_Description, Description);
+        setValue(I_M_Production.COLUMNNAME_Description, Description);
     }
 
     /**
@@ -229,7 +229,7 @@ public class X_M_Production extends BasePOName {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(I_M_Production.COLUMNNAME_DocAction, DocAction);
+        setValue(I_M_Production.COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -248,7 +248,7 @@ public class X_M_Production extends BasePOName {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(I_M_Production.COLUMNNAME_DocStatus, DocStatus);
+        setValue(I_M_Production.COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -266,7 +266,7 @@ public class X_M_Production extends BasePOName {
      * @param IsComplete It is complete
      */
     public void setIsComplete(boolean IsComplete) {
-        set_Value(I_M_Production.COLUMNNAME_IsComplete, Boolean.valueOf(IsComplete));
+        setValue(I_M_Production.COLUMNNAME_IsComplete, Boolean.valueOf(IsComplete));
     }
 
     /**
@@ -285,7 +285,7 @@ public class X_M_Production extends BasePOName {
      */
     public void setIsCreated(String IsCreated) {
 
-        set_Value(I_M_Production.COLUMNNAME_IsCreated, IsCreated);
+        setValue(I_M_Production.COLUMNNAME_IsCreated, IsCreated);
     }
 
     /**
@@ -294,7 +294,7 @@ public class X_M_Production extends BasePOName {
      * @param IsUseProductionPlan Use Production Plan
      */
     public void setIsUseProductionPlan(boolean IsUseProductionPlan) {
-        set_Value(I_M_Production.COLUMNNAME_IsUseProductionPlan, IsUseProductionPlan);
+        setValue(I_M_Production.COLUMNNAME_IsUseProductionPlan, IsUseProductionPlan);
     }
 
     /**
@@ -328,8 +328,8 @@ public class X_M_Production extends BasePOName {
      * @param M_Locator_ID Warehouse Locator
      */
     public void setM_Locator_ID(int M_Locator_ID) {
-        if (M_Locator_ID < 1) set_Value(I_M_Production.COLUMNNAME_M_Locator_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        if (M_Locator_ID < 1) setValue(I_M_Production.COLUMNNAME_M_Locator_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
     /**
@@ -347,7 +347,7 @@ public class X_M_Production extends BasePOName {
      * @param MovementDate Date a product was moved in or out of inventory
      */
     public void setMovementDate(Timestamp MovementDate) {
-        set_Value(I_M_Production.COLUMNNAME_MovementDate, MovementDate);
+        setValue(I_M_Production.COLUMNNAME_MovementDate, MovementDate);
     }
 
     /**
@@ -367,8 +367,8 @@ public class X_M_Production extends BasePOName {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(I_M_Production.COLUMNNAME_M_Product_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(I_M_Production.COLUMNNAME_M_Product_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -402,7 +402,7 @@ public class X_M_Production extends BasePOName {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(I_M_Production.COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(I_M_Production.COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -411,7 +411,7 @@ public class X_M_Production extends BasePOName {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(I_M_Production.COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(I_M_Production.COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -431,7 +431,7 @@ public class X_M_Production extends BasePOName {
      * @param ProductionQty Quantity of products to produce
      */
     public void setProductionQty(BigDecimal ProductionQty) {
-        set_Value(I_M_Production.COLUMNNAME_ProductionQty, ProductionQty);
+        setValue(I_M_Production.COLUMNNAME_ProductionQty, ProductionQty);
     }
 
     /**
@@ -440,8 +440,8 @@ public class X_M_Production extends BasePOName {
      * @param Reversal_ID ID of document reversal
      */
     public void setReversal_ID(int Reversal_ID) {
-        if (Reversal_ID < 1) set_Value(I_M_Production.COLUMNNAME_Reversal_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_Reversal_ID, Reversal_ID);
+        if (Reversal_ID < 1) setValue(I_M_Production.COLUMNNAME_Reversal_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_Reversal_ID, Reversal_ID);
     }
 
     @Override
@@ -454,9 +454,9 @@ public class X_M_Production extends BasePOName {
      *
      * @param User1_ID User defined list element #1
      */
-    public void setUser1_ID(int User1_ID) {
-        if (User1_ID < 1) set_Value(I_M_Production.COLUMNNAME_User1_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_User1_ID, User1_ID);
+    public void setUser1Id(int User1_ID) {
+        if (User1_ID < 1) setValue(I_M_Production.COLUMNNAME_User1_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_User1_ID, User1_ID);
     }
 
 
@@ -465,8 +465,8 @@ public class X_M_Production extends BasePOName {
      *
      * @param User2_ID User defined list element #2
      */
-    public void setUser2_ID(int User2_ID) {
-        if (User2_ID < 1) set_Value(I_M_Production.COLUMNNAME_User2_ID, null);
-        else set_Value(I_M_Production.COLUMNNAME_User2_ID, User2_ID);
+    public void setUser2Id(int User2_ID) {
+        if (User2_ID < 1) setValue(I_M_Production.COLUMNNAME_User2_ID, null);
+        else setValue(I_M_Production.COLUMNNAME_User2_ID, User2_ID);
     }
 }

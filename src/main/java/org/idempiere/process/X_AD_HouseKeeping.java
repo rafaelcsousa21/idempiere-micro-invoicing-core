@@ -106,7 +106,7 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
      * @param LastDeleted Last Deleted
      */
     public void setLastDeleted(int LastDeleted) {
-        set_Value(COLUMNNAME_LastDeleted, Integer.valueOf(LastDeleted));
+        setValue(COLUMNNAME_LastDeleted, Integer.valueOf(LastDeleted));
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
      * @param LastRun Last Run
      */
     public void setLastRun(Timestamp LastRun) {
-        set_Value(COLUMNNAME_LastRun, LastRun);
+        setValue(COLUMNNAME_LastRun, LastRun);
     }
 
     /**

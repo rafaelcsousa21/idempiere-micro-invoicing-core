@@ -69,7 +69,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptAMEX Accept American Express Card
      */
     public void setAcceptAMEX(boolean AcceptAMEX) {
-        set_Value(COLUMNNAME_AcceptAMEX, Boolean.valueOf(AcceptAMEX));
+        setValue(COLUMNNAME_AcceptAMEX, Boolean.valueOf(AcceptAMEX));
     }
 
     /**
@@ -92,7 +92,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptATM Accept Bank ATM Card
      */
     public void setAcceptATM(boolean AcceptATM) {
-        set_Value(COLUMNNAME_AcceptATM, Boolean.valueOf(AcceptATM));
+        setValue(COLUMNNAME_AcceptATM, Boolean.valueOf(AcceptATM));
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptCheck Accept ECheck (Electronic Checks)
      */
     public void setAcceptCheck(boolean AcceptCheck) {
-        set_Value(COLUMNNAME_AcceptCheck, Boolean.valueOf(AcceptCheck));
+        setValue(COLUMNNAME_AcceptCheck, Boolean.valueOf(AcceptCheck));
     }
 
     /**
@@ -138,7 +138,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptCorporate Accept Corporate Purchase Cards
      */
     public void setAcceptCorporate(boolean AcceptCorporate) {
-        set_Value(COLUMNNAME_AcceptCorporate, Boolean.valueOf(AcceptCorporate));
+        setValue(COLUMNNAME_AcceptCorporate, Boolean.valueOf(AcceptCorporate));
     }
 
     /**
@@ -161,7 +161,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptDiners Accept Diner's Club
      */
     public void setAcceptDiners(boolean AcceptDiners) {
-        set_Value(COLUMNNAME_AcceptDiners, Boolean.valueOf(AcceptDiners));
+        setValue(COLUMNNAME_AcceptDiners, Boolean.valueOf(AcceptDiners));
     }
 
     /**
@@ -184,7 +184,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptDirectDebit Accept Direct Debits (vendor initiated)
      */
     public void setAcceptDirectDebit(boolean AcceptDirectDebit) {
-        set_Value(COLUMNNAME_AcceptDirectDebit, Boolean.valueOf(AcceptDirectDebit));
+        setValue(COLUMNNAME_AcceptDirectDebit, Boolean.valueOf(AcceptDirectDebit));
     }
 
     /**
@@ -207,7 +207,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptDirectDeposit Accept Direct Deposit (payee initiated)
      */
     public void setAcceptDirectDeposit(boolean AcceptDirectDeposit) {
-        set_Value(COLUMNNAME_AcceptDirectDeposit, Boolean.valueOf(AcceptDirectDeposit));
+        setValue(COLUMNNAME_AcceptDirectDeposit, Boolean.valueOf(AcceptDirectDeposit));
     }
 
     /**
@@ -230,7 +230,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptDiscover Accept Discover Card
      */
     public void setAcceptDiscover(boolean AcceptDiscover) {
-        set_Value(COLUMNNAME_AcceptDiscover, Boolean.valueOf(AcceptDiscover));
+        setValue(COLUMNNAME_AcceptDiscover, Boolean.valueOf(AcceptDiscover));
     }
 
     /**
@@ -253,7 +253,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptMC Accept Master Card
      */
     public void setAcceptMC(boolean AcceptMC) {
-        set_Value(COLUMNNAME_AcceptMC, Boolean.valueOf(AcceptMC));
+        setValue(COLUMNNAME_AcceptMC, Boolean.valueOf(AcceptMC));
     }
 
     /**
@@ -276,7 +276,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param AcceptVisa Accept Visa Cards
      */
     public void setAcceptVisa(boolean AcceptVisa) {
-        set_Value(COLUMNNAME_AcceptVisa, Boolean.valueOf(AcceptVisa));
+        setValue(COLUMNNAME_AcceptVisa, Boolean.valueOf(AcceptVisa));
     }
 
     public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
@@ -302,8 +302,8 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param C_BankAccount_ID Account at the Bank
      */
     public void setC_BankAccount_ID(int C_BankAccount_ID) {
-        if (C_BankAccount_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BankAccount_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
+        if (C_BankAccount_ID < 1) setValueNoCheck(COLUMNNAME_C_BankAccount_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }
 
     /**
@@ -312,7 +312,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param Commission Commission stated as a percentage
      */
     public void setCommission(BigDecimal Commission) {
-        set_Value(COLUMNNAME_Commission, Commission);
+        setValue(COLUMNNAME_Commission, Commission);
     }
 
     /**
@@ -321,7 +321,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param CostPerTrx Fixed cost per transaction
      */
     public void setCostPerTrx(BigDecimal CostPerTrx) {
-        set_Value(COLUMNNAME_CostPerTrx, CostPerTrx);
+        setValue(COLUMNNAME_CostPerTrx, CostPerTrx);
     }
 
     /**
@@ -339,7 +339,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      * @param RequireVV Require 3/4 digit Credit Verification Code
      */
     public void setRequireVV(boolean RequireVV) {
-        set_Value(COLUMNNAME_RequireVV, Boolean.valueOf(RequireVV));
+        setValue(COLUMNNAME_RequireVV, Boolean.valueOf(RequireVV));
     }
 
     @Override

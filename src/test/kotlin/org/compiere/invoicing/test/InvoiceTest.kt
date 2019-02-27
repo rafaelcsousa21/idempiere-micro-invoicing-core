@@ -71,7 +71,7 @@ class InvoiceTest : BaseComponentTest() {
                 salesPriceList.setIsDefault(true)
                 salesPriceList.setIsSOPriceList(true)
                 salesPriceList.name = "S-" + randomString(10)
-                salesPriceList.c_Currency_ID = EUR
+                salesPriceList.currencyId = EUR
                 salesPriceList.save()
                 val check1: MPriceList = getById(salesPriceList.id, I_M_PriceList.Table_Name)
                 assertNotNull(check1)
@@ -111,10 +111,10 @@ class InvoiceTest : BaseComponentTest() {
             vendorShipment.setOrgId(org.orgId)
             vendorShipment.setIsSOTrx(false)
             vendorShipment.movementType = X_M_InOut.MOVEMENTTYPE_VendorReceipts
-            vendorShipment.setC_DocType_ID()
-            vendorShipment.c_BPartner_ID = vendor.id
-            vendorShipment.c_BPartner_Location_ID = vendor.locations.first().c_BPartner_Location_ID
-            vendorShipment.m_Warehouse_ID = warehouse.m_Warehouse_ID
+            vendorShipment.setDocumentTypeId()
+            vendorShipment.businessPartnerId = vendor.id
+            vendorShipment.businessPartnerLocationId = vendor.locations.first().businessPartnerLocationId
+            vendorShipment.warehouseId = warehouse.warehouseId
             vendorShipment.save()
             val receipt = getById<MInOut>(vendorShipment.id, I_M_InOut.Table_Name)
             assertNotNull(receipt)
@@ -172,15 +172,15 @@ class InvoiceTest : BaseComponentTest() {
     private fun createOrder(c_DocType_ID: Int, product_id: Int): Triple<MOrder, Int, Int> {
         val order = MOrder(Env.getCtx(), 0)
         order.setOrgId(1000000)
-        order.m_Warehouse_ID = 1000000
+        order.warehouseId = 1000000
         order.setIsSOTrx(true)
-        order.c_DocType_ID =
+        order.documentTypeId =
             c_DocType_ID // 133 on credit order (generates invoice), 130 prepay order, 132 standard order
-        order.c_DocTypeTarget_ID = c_DocType_ID
-        order.m_PriceList_ID = MPriceList.getDefault(ctx, true).id
-        order.setC_Currency_ID(EUR) // EUR
-        order.c_PaymentTerm_ID = paymentTerm.id
-        order.salesRep_ID = 1000000
+        order.targetDocumentTypeId = c_DocType_ID
+        order.priceListId = MPriceList.getDefault(ctx, true).id
+        order.setCurrencyId(EUR) // EUR
+        order.paymentTermId = paymentTerm.id
+        order.salesRepresentativeId = 1000000
 
         val partner = createBPartner()
 
@@ -204,17 +204,17 @@ class InvoiceTest : BaseComponentTest() {
         DB.run {
             createInvoiceFromOrder(1000030, testProduct.id, BigDecimal("1.10")) {
                 val payment = MPayment(ctx, 0)
-                payment.c_BPartner_ID = it.c_BPartner_ID
+                payment.businessPartnerId = it.businessPartnerId
                 payment.setOrgId(org.orgId)
                 payment.c_BankAccount_ID = bankAccount.id
-                payment.setC_Currency_ID(EUR) // EUR
+                payment.setCurrencyId(EUR) // EUR
                 payment.payAmt = 1.10.toBigDecimal()
                 payment.save()
 
                 val pay: MPayment = getById(payment.id, I_C_Payment.Table_Name)
                 assertNotNull(pay)
 
-                it.c_Payment_ID = pay.id
+                it.paymentId = pay.id
                 it.save()
             }
         }
@@ -238,7 +238,7 @@ class InvoiceTest : BaseComponentTest() {
         val invoice = completion.result as I_C_Invoice
         assertEquals(1, order.invoices.count())
         assertEquals(invoice, order.invoices.first())
-        assertEquals(id, invoice.c_BPartner_ID)
+        assertEquals(id, invoice.businessPartnerId)
         val lines = invoice.getLines(false)
         assertEquals(1, lines.count())
         val line = lines.first()

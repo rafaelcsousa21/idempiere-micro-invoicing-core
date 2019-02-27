@@ -70,8 +70,8 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext {
      * @param AD_WF_Next_ID Next Node in workflow
      */
     public void setWorkflowNextId(int AD_WF_Next_ID) {
-        if (AD_WF_Next_ID < 1) set_Value(COLUMNNAME_AD_WF_Next_ID, null);
-        else set_Value(COLUMNNAME_AD_WF_Next_ID, Integer.valueOf(AD_WF_Next_ID));
+        if (AD_WF_Next_ID < 1) setValue(COLUMNNAME_AD_WF_Next_ID, null);
+        else setValue(COLUMNNAME_AD_WF_Next_ID, Integer.valueOf(AD_WF_Next_ID));
     }
 
     /**
@@ -91,8 +91,8 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext {
      * @param AD_WF_Node_ID Workflow Node (activity), step or process
      */
     public void setWorkflowNodeId(int AD_WF_Node_ID) {
-        if (AD_WF_Node_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WF_Node_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
+        if (AD_WF_Node_ID < 1) setValueNoCheck(COLUMNNAME_AD_WF_Node_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
     }
 
     /**
@@ -122,7 +122,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext {
      */
     public void setEntityType(String EntityType) {
 
-        set_Value(COLUMNNAME_EntityType, EntityType);
+        setValue(COLUMNNAME_EntityType, EntityType);
     }
 
     /**
@@ -131,7 +131,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext {
      * @param IsStdUserWorkflow Standard Manual User Approval Workflow
      */
     public void setIsStdUserWorkflow(boolean IsStdUserWorkflow) {
-        set_Value(COLUMNNAME_IsStdUserWorkflow, Boolean.valueOf(IsStdUserWorkflow));
+        setValue(COLUMNNAME_IsStdUserWorkflow, Boolean.valueOf(IsStdUserWorkflow));
     }
 
     /**
@@ -165,7 +165,7 @@ public class X_AD_WF_NodeNext extends PO implements I_AD_WF_NodeNext {
      * @param SeqNo Method of ordering records; lowest number comes first
      */
     public void setSeqNo(int SeqNo) {
-        set_Value(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
+        setValue(COLUMNNAME_SeqNo, Integer.valueOf(SeqNo));
     }
 
     @Override

@@ -72,7 +72,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;

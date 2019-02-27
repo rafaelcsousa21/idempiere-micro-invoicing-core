@@ -65,10 +65,10 @@ public class Scheduler extends AdempiereServer {
             if (schedorg.getWarehouseId() > 0)
                 Env.setContext(getCtx(), "#M_Warehouse_ID", schedorg.getWarehouseId());
         }
-        Env.setContext(getCtx(), "#AD_User_ID", getAD_User_ID());
-        Env.setContext(getCtx(), "#SalesRep_ID", getAD_User_ID());
+        Env.setContext(getCtx(), "#AD_User_ID", getUserId());
+        Env.setContext(getCtx(), "#SalesRep_ID", getUserId());
         // TODO: It can be convenient to add  AD_Scheduler.AD_Role_ID
-        MUser scheduser = MUser.get(getCtx(), getAD_User_ID());
+        MUser scheduser = MUser.get(getCtx(), getUserId());
         MRole[] schedroles = scheduser.getRoles(m_model.getOrgId());
         if (schedroles != null && schedroles.length > 0)
             Env.setContext(
@@ -128,12 +128,12 @@ public class Scheduler extends AdempiereServer {
         //
         ProcessInfo pi =
                 new ProcessInfo(process.getName(), process.getProcessId(), AD_Table_ID, Record_ID);
-        pi.setAD_User_ID(getAD_User_ID());
+        pi.setUserId(getUserId());
         pi.setADClientID(m_model.getClientId());
         pi.setAD_PInstance_ID(pInstance.getPInstanceId());
         pi.setIsBatch(true);
         pi.setPrintPreview(true);
-        MUser from = new MUser(getCtx(), pi.getAD_User_ID());
+        MUser from = new MUser(getCtx(), pi.getUserId());
 
         pi.setTransactionName(null);
         ServerProcessCtl.process(pi);
@@ -263,7 +263,7 @@ public class Scheduler extends AdempiereServer {
         return pi.getSummary();
     } //	runProcess
 
-    protected int getAD_User_ID() {
+    protected int getUserId() {
         int AD_User_ID;
         if (m_model.getSupervisorId() > 0) AD_User_ID = m_model.getSupervisorId();
         else if (m_model.getCreatedBy() > 0) AD_User_ID = m_model.getCreatedBy();

@@ -226,7 +226,7 @@ public class MMovementLine extends X_M_MovementLine {
     public void setM_Locator_ID(int M_Locator_ID) {
         if (M_Locator_ID < 0) throw new IllegalArgumentException("M_Locator_ID is mandatory.");
         //      set to 0 explicitly to reset
-        set_Value(COLUMNNAME_M_Locator_ID, M_Locator_ID);
+        setValue(COLUMNNAME_M_Locator_ID, M_Locator_ID);
     } //      setM_Locator_ID
 
     /**
@@ -238,7 +238,7 @@ public class MMovementLine extends X_M_MovementLine {
     public void setM_LocatorTo_ID(int M_LocatorTo_ID) {
         if (M_LocatorTo_ID < 0) throw new IllegalArgumentException("M_LocatorTo_ID is mandatory.");
         //      set to 0 explicitly to reset
-        set_Value(COLUMNNAME_M_LocatorTo_ID, M_LocatorTo_ID);
+        setValue(COLUMNNAME_M_LocatorTo_ID, M_LocatorTo_ID);
     } //      M_LocatorTo_ID
 
     public String toString() {

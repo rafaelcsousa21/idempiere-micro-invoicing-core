@@ -60,8 +60,8 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
     public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
-        if (C_InvoiceLine_ID < 1) set_Value(COLUMNNAME_C_InvoiceLine_ID, null);
-        else set_Value(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+        if (C_InvoiceLine_ID < 1) setValue(COLUMNNAME_C_InvoiceLine_ID, null);
+        else setValue(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
 
     /**
@@ -70,7 +70,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param ConfirmationNo Confirmation Number
      */
     public void setConfirmationNo(String ConfirmationNo) {
-        set_Value(COLUMNNAME_ConfirmationNo, ConfirmationNo);
+        setValue(COLUMNNAME_ConfirmationNo, ConfirmationNo);
     }
 
     /**
@@ -90,7 +90,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param ConfirmedQty Confirmation of a received quantity
      */
     public void setConfirmedQty(BigDecimal ConfirmedQty) {
-        set_Value(COLUMNNAME_ConfirmedQty, ConfirmedQty);
+        setValue(COLUMNNAME_ConfirmedQty, ConfirmedQty);
     }
 
     /**
@@ -99,7 +99,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -119,7 +119,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param DifferenceQty Difference Quantity
      */
     public void setDifferenceQty(BigDecimal DifferenceQty) {
-        set_Value(COLUMNNAME_DifferenceQty, DifferenceQty);
+        setValue(COLUMNNAME_DifferenceQty, DifferenceQty);
     }
 
     /**
@@ -128,8 +128,8 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param M_InOutConfirm_ID Material Shipment or Receipt Confirmation
      */
     public void setM_InOutConfirm_ID(int M_InOutConfirm_ID) {
-        if (M_InOutConfirm_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, Integer.valueOf(M_InOutConfirm_ID));
+        if (M_InOutConfirm_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, Integer.valueOf(M_InOutConfirm_ID));
     }
 
     /**
@@ -149,8 +149,8 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
     public void setM_InOutLine_ID(int M_InOutLine_ID) {
-        if (M_InOutLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
+        if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
     }
 
     /**
@@ -159,8 +159,8 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
     public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
-        if (M_InventoryLine_ID < 1) set_Value(COLUMNNAME_M_InventoryLine_ID, null);
-        else set_Value(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
+        if (M_InventoryLine_ID < 1) setValue(COLUMNNAME_M_InventoryLine_ID, null);
+        else setValue(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
     }
 
     /**
@@ -169,7 +169,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -189,7 +189,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param ScrappedQty The Quantity scrapped due to QA issues
      */
     public void setScrappedQty(BigDecimal ScrappedQty) {
-        set_Value(COLUMNNAME_ScrappedQty, ScrappedQty);
+        setValue(COLUMNNAME_ScrappedQty, ScrappedQty);
     }
 
     /**
@@ -209,7 +209,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      * @param TargetQty Target Movement Quantity
      */
     public void setTargetQty(BigDecimal TargetQty) {
-        set_ValueNoCheck(COLUMNNAME_TargetQty, TargetQty);
+        setValueNoCheck(COLUMNNAME_TargetQty, TargetQty);
     }
 
     @Override

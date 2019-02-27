@@ -126,7 +126,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param ApprovalAmt Document Approval Amount
      */
     public void setApprovalAmt(BigDecimal ApprovalAmt) {
-        set_Value(COLUMNNAME_ApprovalAmt, ApprovalAmt);
+        setValue(COLUMNNAME_ApprovalAmt, ApprovalAmt);
     }
 
     /**
@@ -145,7 +145,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -156,9 +156,9 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-        else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValue(COLUMNNAME_C_Currency_ID, null);
+        else setValue(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     /**
@@ -166,9 +166,9 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      *
      * @param C_DocType_ID Document type or rules
      */
-    public void setC_DocType_ID(int C_DocType_ID) {
-        if (C_DocType_ID < 0) set_ValueNoCheck(COLUMNNAME_C_DocType_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+    public void setDocumentTypeId(int C_DocType_ID) {
+        if (C_DocType_ID < 0) setValueNoCheck(COLUMNNAME_C_DocType_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
     }
 
     /**
@@ -186,7 +186,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param DateAcct Accounting Date
      */
     public void setDateAcct(Timestamp DateAcct) {
-        set_Value(COLUMNNAME_DateAcct, DateAcct);
+        setValue(COLUMNNAME_DateAcct, DateAcct);
     }
 
     /**
@@ -204,7 +204,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param DateTrx Transaction Date
      */
     public void setDateTrx(Timestamp DateTrx) {
-        set_Value(COLUMNNAME_DateTrx, DateTrx);
+        setValue(COLUMNNAME_DateTrx, DateTrx);
     }
 
     /**
@@ -222,7 +222,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -241,7 +241,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -260,7 +260,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -278,7 +278,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param DocumentNo Document sequence number of the document
      */
     public void setDocumentNo(String DocumentNo) {
-        set_Value(COLUMNNAME_DocumentNo, DocumentNo);
+        setValue(COLUMNNAME_DocumentNo, DocumentNo);
     }
 
     /**
@@ -287,7 +287,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -310,7 +310,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param IsManual This is a manual process
      */
     public void setIsManual(boolean IsManual) {
-        set_Value(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
+        setValue(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
     }
 
     /**
@@ -333,7 +333,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+        setValue(COLUMNNAME_Posted, Boolean.valueOf(Posted));
     }
 
     /**
@@ -356,7 +356,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -365,7 +365,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -374,8 +374,8 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      * @param Reversal_ID ID of document reversal
      */
     public void setReversal_ID(int Reversal_ID) {
-        if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
-        else set_Value(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+        if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
+        else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }
 
     @Override

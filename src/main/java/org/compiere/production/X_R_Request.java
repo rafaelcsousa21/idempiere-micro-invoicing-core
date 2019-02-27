@@ -124,6 +124,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      */
     private static final long serialVersionUID = 20171031L;
+
     /**
      * Standard Constructor
      */
@@ -163,7 +164,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -184,7 +185,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param CloseDate Close Date
      */
     public void setCloseDate(Timestamp CloseDate) {
-        set_Value(COLUMNNAME_CloseDate, CloseDate);
+        setValue(COLUMNNAME_CloseDate, CloseDate);
     }
 
     /**
@@ -203,7 +204,7 @@ public class X_R_Request extends PO implements I_R_Request {
      */
     public void setConfidentialType(String ConfidentialType) {
 
-        set_Value(COLUMNNAME_ConfidentialType, ConfidentialType);
+        setValue(COLUMNNAME_ConfidentialType, ConfidentialType);
     }
 
     /**
@@ -222,7 +223,7 @@ public class X_R_Request extends PO implements I_R_Request {
      */
     public void setConfidentialTypeEntry(String ConfidentialTypeEntry) {
 
-        set_Value(COLUMNNAME_ConfidentialTypeEntry, ConfidentialTypeEntry);
+        setValue(COLUMNNAME_ConfidentialTypeEntry, ConfidentialTypeEntry);
     }
 
     /**
@@ -240,7 +241,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param DateNextAction Date that this request should be acted on
      */
     public void setDateNextAction(Timestamp DateNextAction) {
-        set_Value(COLUMNNAME_DateNextAction, DateNextAction);
+        setValue(COLUMNNAME_DateNextAction, DateNextAction);
     }
 
     /**
@@ -259,7 +260,7 @@ public class X_R_Request extends PO implements I_R_Request {
      */
     public void setDueType(String DueType) {
 
-        set_Value(COLUMNNAME_DueType, DueType);
+        setValue(COLUMNNAME_DueType, DueType);
     }
 
     /**
@@ -268,7 +269,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param IsEscalated This request has been escalated
      */
     public void setIsEscalated(boolean IsEscalated) {
-        set_Value(COLUMNNAME_IsEscalated, Boolean.valueOf(IsEscalated));
+        setValue(COLUMNNAME_IsEscalated, Boolean.valueOf(IsEscalated));
     }
 
     /**
@@ -277,7 +278,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param IsInvoiced Is this invoiced?
      */
     public void setIsInvoiced(boolean IsInvoiced) {
-        set_Value(COLUMNNAME_IsInvoiced, Boolean.valueOf(IsInvoiced));
+        setValue(COLUMNNAME_IsInvoiced, Boolean.valueOf(IsInvoiced));
     }
 
     /**
@@ -300,7 +301,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param IsSelfService This is a Self-Service entry or this entry can be changed via Self-Service
      */
     public void setIsSelfService(boolean IsSelfService) {
-        set_ValueNoCheck(COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
+        setValueNoCheck(COLUMNNAME_IsSelfService, Boolean.valueOf(IsSelfService));
     }
 
     /**
@@ -320,8 +321,8 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param M_ChangeRequest_ID BOM (Engineering) Change Request
      */
     public void setM_ChangeRequest_ID(int M_ChangeRequest_ID) {
-        if (M_ChangeRequest_ID < 1) set_Value(COLUMNNAME_M_ChangeRequest_ID, null);
-        else set_Value(COLUMNNAME_M_ChangeRequest_ID, Integer.valueOf(M_ChangeRequest_ID));
+        if (M_ChangeRequest_ID < 1) setValue(COLUMNNAME_M_ChangeRequest_ID, null);
+        else setValue(COLUMNNAME_M_ChangeRequest_ID, Integer.valueOf(M_ChangeRequest_ID));
     }
 
     /**
@@ -340,7 +341,7 @@ public class X_R_Request extends PO implements I_R_Request {
      */
     public void setPriority(String Priority) {
 
-        set_Value(COLUMNNAME_Priority, Priority);
+        setValue(COLUMNNAME_Priority, Priority);
     }
 
     /**
@@ -359,7 +360,7 @@ public class X_R_Request extends PO implements I_R_Request {
      */
     public void setPriorityUser(String PriorityUser) {
 
-        set_Value(COLUMNNAME_PriorityUser, PriorityUser);
+        setValue(COLUMNNAME_PriorityUser, PriorityUser);
     }
 
     /**
@@ -382,7 +383,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -391,7 +392,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param RequestAmt Amount associated with this request
      */
     public void setRequestAmt(BigDecimal RequestAmt) {
-        set_Value(COLUMNNAME_RequestAmt, RequestAmt);
+        setValue(COLUMNNAME_RequestAmt, RequestAmt);
     }
 
     /**
@@ -442,8 +443,8 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param R_RequestType_ID Type of request (e.g. Inquiry, Complaint, ..)
      */
     public void setR_RequestType_ID(int R_RequestType_ID) {
-        if (R_RequestType_ID < 1) set_Value(COLUMNNAME_R_RequestType_ID, null);
-        else set_Value(COLUMNNAME_R_RequestType_ID, Integer.valueOf(R_RequestType_ID));
+        if (R_RequestType_ID < 1) setValue(COLUMNNAME_R_RequestType_ID, null);
+        else setValue(COLUMNNAME_R_RequestType_ID, Integer.valueOf(R_RequestType_ID));
     }
 
     /**
@@ -463,8 +464,8 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param R_Status_ID Request Status
      */
     public void setR_Status_ID(int R_Status_ID) {
-        if (R_Status_ID < 1) set_Value(COLUMNNAME_R_Status_ID, null);
-        else set_Value(COLUMNNAME_R_Status_ID, Integer.valueOf(R_Status_ID));
+        if (R_Status_ID < 1) setValue(COLUMNNAME_R_Status_ID, null);
+        else setValue(COLUMNNAME_R_Status_ID, Integer.valueOf(R_Status_ID));
     }
 
     /**
@@ -472,7 +473,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @return Sales Representative or Company Agent
      */
-    public int getSalesRep_ID() {
+    public int getSalesRepresentativeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_SalesRep_ID);
         if (ii == null) return 0;
         return ii;
@@ -483,9 +484,9 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @param SalesRep_ID Sales Representative or Company Agent
      */
-    public void setSalesRep_ID(int SalesRep_ID) {
-        if (SalesRep_ID < 1) set_Value(COLUMNNAME_SalesRep_ID, null);
-        else set_Value(COLUMNNAME_SalesRep_ID, SalesRep_ID);
+    public void setSalesRepresentativeId(int SalesRep_ID) {
+        if (SalesRep_ID < 1) setValue(COLUMNNAME_SalesRep_ID, null);
+        else setValue(COLUMNNAME_SalesRep_ID, SalesRep_ID);
     }
 
     /**
@@ -503,7 +504,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param StartDate First effective day (inclusive)
      */
     public void setStartDate(Timestamp StartDate) {
-        set_Value(COLUMNNAME_StartDate, StartDate);
+        setValue(COLUMNNAME_StartDate, StartDate);
     }
 
     /**
@@ -521,7 +522,7 @@ public class X_R_Request extends PO implements I_R_Request {
      * @param Summary Textual summary of this request
      */
     public void setSummary(String Summary) {
-        set_Value(COLUMNNAME_Summary, Summary);
+        setValue(COLUMNNAME_Summary, Summary);
     }
 
     @Override

@@ -67,11 +67,11 @@ public class UserPassword extends SvrProcess {
      */
     protected String doIt() throws Exception {
         if (log.isLoggable(Level.INFO))
-            log.info("AD_User_ID=" + p_AD_User_ID + " from " + getAD_User_ID());
+            log.info("AD_User_ID=" + p_AD_User_ID + " from " + getUserId());
 
         MUser user = MUser.get(getCtx(), p_AD_User_ID);
         user.load();
-        MUser operator = MUser.get(getCtx(), getAD_User_ID());
+        MUser operator = MUser.get(getCtx(), getUserId());
         if (log.isLoggable(Level.FINE)) log.fine("User=" + user + ", Operator=" + operator);
 
         boolean hash_password = MSysConfig.getBooleanValue(MSysConfig.USER_PASSWORD_HASH, false);

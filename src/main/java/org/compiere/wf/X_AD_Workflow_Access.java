@@ -63,8 +63,8 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access {
      * @param AD_Role_ID Responsibility Role
      */
     public void setRoleId(int AD_Role_ID) {
-        if (AD_Role_ID < 0) set_ValueNoCheck(COLUMNNAME_AD_Role_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
+        if (AD_Role_ID < 0) setValueNoCheck(COLUMNNAME_AD_Role_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
     }
 
     /**
@@ -73,8 +73,8 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access {
      * @param AD_Workflow_ID Workflow or combination of tasks
      */
     public void setWorkflowId(int AD_Workflow_ID) {
-        if (AD_Workflow_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
+        if (AD_Workflow_ID < 1) setValueNoCheck(COLUMNNAME_AD_Workflow_ID, null);
+        else setValueNoCheck(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
     }
 
     /**
@@ -83,7 +83,7 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access {
      * @param IsReadWrite Field is read / write
      */
     public void setIsReadWrite(boolean IsReadWrite) {
-        set_Value(COLUMNNAME_IsReadWrite, Boolean.valueOf(IsReadWrite));
+        setValue(COLUMNNAME_IsReadWrite, Boolean.valueOf(IsReadWrite));
     }
 
 }

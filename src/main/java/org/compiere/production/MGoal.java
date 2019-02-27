@@ -268,8 +268,8 @@ public class MGoal extends X_PA_Goal {
 
         //	User/Role Check
         if ((newRecord || is_ValueChanged("AD_User_ID") || is_ValueChanged("AD_Role_ID"))
-                && getAD_User_ID() != 0) {
-            MUser user = MUser.get(getCtx(), getAD_User_ID());
+                && getUserId() != 0) {
+            MUser user = MUser.get(getCtx(), getUserId());
             MRole[] roles = user.getRoles(getOrgId());
             if (roles.length == 0) // 	No Role
                 setAD_Role_ID(0);

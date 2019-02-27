@@ -103,7 +103,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param BeginningBalance Balance prior to any transactions
      */
     public void setBeginningBalance(BigDecimal BeginningBalance) {
-        set_Value(COLUMNNAME_BeginningBalance, BeginningBalance);
+        setValue(COLUMNNAME_BeginningBalance, BeginningBalance);
     }
 
     /**
@@ -123,8 +123,8 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param C_CashBook_ID Cash Book for recording petty cash transactions
      */
     public void setC_CashBook_ID(int C_CashBook_ID) {
-        if (C_CashBook_ID < 1) set_ValueNoCheck(COLUMNNAME_C_CashBook_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_CashBook_ID, Integer.valueOf(C_CashBook_ID));
+        if (C_CashBook_ID < 1) setValueNoCheck(COLUMNNAME_C_CashBook_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_CashBook_ID, Integer.valueOf(C_CashBook_ID));
     }
 
     /**
@@ -153,7 +153,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param DateAcct Accounting Date
      */
     public void setDateAcct(Timestamp DateAcct) {
-        set_Value(COLUMNNAME_DateAcct, DateAcct);
+        setValue(COLUMNNAME_DateAcct, DateAcct);
     }
 
     /**
@@ -171,7 +171,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -190,7 +190,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -209,7 +209,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -229,7 +229,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param EndingBalance Ending or closing balance
      */
     public void setEndingBalance(BigDecimal EndingBalance) {
-        set_Value(COLUMNNAME_EndingBalance, EndingBalance);
+        setValue(COLUMNNAME_EndingBalance, EndingBalance);
     }
 
     /**
@@ -238,7 +238,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -261,7 +261,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+        setValue(COLUMNNAME_Posted, Boolean.valueOf(Posted));
     }
 
     /**
@@ -270,7 +270,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -279,7 +279,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -297,7 +297,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      * @param StatementDate Date of the statement
      */
     public void setStatementDate(Timestamp StatementDate) {
-        set_Value(COLUMNNAME_StatementDate, StatementDate);
+        setValue(COLUMNNAME_StatementDate, StatementDate);
     }
 
     /**
@@ -318,7 +318,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      *                            balance
      */
     public void setStatementDifference(BigDecimal StatementDifference) {
-        set_Value(COLUMNNAME_StatementDifference, StatementDifference);
+        setValue(COLUMNNAME_StatementDifference, StatementDifference);
     }
 
     @Override

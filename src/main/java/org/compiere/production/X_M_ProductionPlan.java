@@ -103,8 +103,8 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
      * @param M_Production_ID Plan for producing a product
      */
     public void setM_Production_ID(int M_Production_ID) {
-        if (M_Production_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Production_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Production_ID, Integer.valueOf(M_Production_ID));
+        if (M_Production_ID < 1) setValueNoCheck(COLUMNNAME_M_Production_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Production_ID, Integer.valueOf(M_Production_ID));
     }
 
     /**
@@ -124,7 +124,7 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -144,7 +144,7 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
      * @param ProductionQty Quantity of products to produce
      */
     public void setProductionQty(BigDecimal ProductionQty) {
-        set_Value(COLUMNNAME_ProductionQty, ProductionQty);
+        setValue(COLUMNNAME_ProductionQty, ProductionQty);
     }
 
     @Override

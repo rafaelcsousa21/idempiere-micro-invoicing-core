@@ -57,7 +57,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      * @param IsQCPass QC Pass
      */
     public void setIsQCPass(boolean IsQCPass) {
-        set_Value(COLUMNNAME_IsQCPass, Boolean.valueOf(IsQCPass));
+        setValue(COLUMNNAME_IsQCPass, Boolean.valueOf(IsQCPass));
     }
 
     /**
@@ -66,9 +66,9 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
@@ -78,8 +78,8 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      * @param M_QualityTest_ID Quality Test
      */
     public void setM_QualityTest_ID(int M_QualityTest_ID) {
-        if (M_QualityTest_ID < 1) set_ValueNoCheck(COLUMNNAME_M_QualityTest_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_QualityTest_ID, Integer.valueOf(M_QualityTest_ID));
+        if (M_QualityTest_ID < 1) setValueNoCheck(COLUMNNAME_M_QualityTest_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_QualityTest_ID, Integer.valueOf(M_QualityTest_ID));
     }
 
     /**
@@ -88,7 +88,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     @Override

@@ -972,7 +972,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 sql,
                 new Object[]{
                         addition,
-                        Env.getAD_User_ID(Env.getCtx()),
+                        Env.getUserId(Env.getCtx()),
                         getM_Product_ID(),
                         getM_Locator_ID(),
                         getMAttributeSetInstance_ID(),
@@ -981,11 +981,11 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         );
         load((HashMap) null);
         if (getQtyOnHand().signum() == -1) {
-            MWarehouse wh = MWarehouse.get(Env.getCtx(), getM_Warehouse_ID());
+            MWarehouse wh = MWarehouse.get(Env.getCtx(), getWarehouseId());
             if (wh.isDisallowNegativeInv()) {
                 throw new NegativeInventoryDisallowedException(
                         getCtx(),
-                        getM_Warehouse_ID(),
+                        getWarehouseId(),
                         getM_Product_ID(),
                         getMAttributeSetInstance_ID(),
                         getM_Locator_ID(),
@@ -1000,10 +1000,10 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      *
      * @return warehouse
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         if (m_M_Warehouse_ID == 0) {
             MLocator loc = MLocator.get(getCtx(), getM_Locator_ID());
-            m_M_Warehouse_ID = loc.getM_Warehouse_ID();
+            m_M_Warehouse_ID = loc.getWarehouseId();
         }
         return m_M_Warehouse_ID;
     } //	getWarehouseId
@@ -1019,7 +1019,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     protected boolean beforeSave(boolean newRecord) {
         //	Negative Inventory check
         if (newRecord || is_ValueChanged("QtyOnHand")) {
-            MWarehouse wh = new MWarehouse(getCtx(), getM_Warehouse_ID());
+            MWarehouse wh = new MWarehouse(getCtx(), getWarehouseId());
             if (wh.isDisallowNegativeInv()) {
                 String sql =
                         "SELECT SUM(QtyOnHand) "
@@ -1034,7 +1034,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                                 sql,
                                 new Object[]{
                                         getM_Product_ID(),
-                                        getM_Warehouse_ID(),
+                                        getWarehouseId(),
                                         getM_Locator_ID(),
                                         getMAttributeSetInstance_ID()
                                 });
@@ -1048,7 +1048,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                             "Error",
                             new NegativeInventoryDisallowedException(
                                     getCtx(),
-                                    getM_Warehouse_ID(),
+                                    getWarehouseId(),
                                     getM_Product_ID(),
                                     getMAttributeSetInstance_ID(),
                                     getM_Locator_ID(),
@@ -1062,7 +1062,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                             "Error",
                             new NegativeInventoryDisallowedException(
                                     getCtx(),
-                                    getM_Warehouse_ID(),
+                                    getWarehouseId(),
                                     getM_Product_ID(),
                                     getMAttributeSetInstance_ID(),
                                     getM_Locator_ID(),

@@ -137,7 +137,7 @@ public class MWarehouse extends X_M_Warehouse {
         final String whereClause = "M_Warehouse_ID=?";
         List<PO> list =
                 new Query(getCtx(), I_M_Locator.Table_Name, whereClause)
-                        .setParameters(getM_Warehouse_ID())
+                        .setParameters(getWarehouseId())
                         .setOnlyActiveRecords(true)
                         .setOrderBy("X,Y,Z")
                         .list();
@@ -163,7 +163,7 @@ public class MWarehouse extends X_M_Warehouse {
             String whereClause = "M_Warehouse_ID=?";
             List<PO> list =
                     new Query(getCtx(), I_M_Locator.Table_Name, whereClause)
-                            .setParameters(getM_Warehouse_ID())
+                            .setParameters(getWarehouseId())
                             .setOnlyActiveRecords(false)
                             .list();
             if (!list.isEmpty()) {
@@ -200,7 +200,7 @@ public class MWarehouse extends X_M_Warehouse {
                             + " GROUP BY M_Product_ID, M_Locator_ID, M_AttributeSetInstance_ID "
                             + " HAVING SUM(s.QtyOnHand) < 0 ";
 
-            int prdid = getSQLValueEx(sql, getM_Warehouse_ID());
+            int prdid = getSQLValueEx(sql, getWarehouseId());
             if (prdid > 0) {
                 log.saveError("Error", Msg.translate(getCtx(), "NegativeOnhandExists"));
                 return false;

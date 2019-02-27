@@ -44,7 +44,7 @@ public class MStorageReservation extends X_M_StorageReservation {
             MWarehouse warehouse, int M_Product_ID, int M_AttributeSetInstance_ID, boolean isSOTrx) {
         this(warehouse.getCtx(), 0);
         setClientOrg(warehouse);
-        setM_Warehouse_ID(warehouse.getM_Warehouse_ID());
+        setWarehouseId(warehouse.getWarehouseId());
         setM_Product_ID(M_Product_ID);
         setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
         setIsSOTrx(isSOTrx);
@@ -232,7 +232,7 @@ public class MStorageReservation extends X_M_StorageReservation {
                 getCreate(ctx, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID, isSOTrx);
         forUpdate(storage);
         //	Verify
-        if (storage.getM_Warehouse_ID() != M_Warehouse_ID
+        if (storage.getWarehouseId() != M_Warehouse_ID
                 && storage.getM_Product_ID() != M_Product_ID
                 && storage.getMAttributeSetInstance_ID() != M_AttributeSetInstance_ID) {
             s_log.severe(
@@ -334,9 +334,9 @@ public class MStorageReservation extends X_M_StorageReservation {
                 sql,
                 new Object[]{
                         addition,
-                        Env.getAD_User_ID(Env.getCtx()),
+                        Env.getUserId(Env.getCtx()),
                         getM_Product_ID(),
-                        getM_Warehouse_ID(),
+                        getWarehouseId(),
                         getMAttributeSetInstance_ID(),
                         isSOTrx()
                 }
@@ -353,7 +353,7 @@ public class MStorageReservation extends X_M_StorageReservation {
         StringBuffer sb =
                 new StringBuffer("MStorageReservation[")
                         .append("M_Warehouse_ID=")
-                        .append(getM_Warehouse_ID())
+                        .append(getWarehouseId())
                         .append(",M_Product_ID=")
                         .append(getM_Product_ID())
                         .append(",M_AttributeSetInstance_ID=")

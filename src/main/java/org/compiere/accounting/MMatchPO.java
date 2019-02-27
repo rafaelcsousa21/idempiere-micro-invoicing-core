@@ -603,8 +603,8 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
         I_C_Order order = getOrderLine().getParent();
 
         BigDecimal priceActual = iLine.getPriceActual();
-        int invoiceCurrency_ID = invoice.getC_Currency_ID();
-        int orderCurrency_ID = order.getC_Currency_ID();
+        int invoiceCurrency_ID = invoice.getCurrencyId();
+        int orderCurrency_ID = order.getCurrencyId();
         if (invoiceCurrency_ID != orderCurrency_ID) {
             priceActual =
                     MConversionRate.convert(
@@ -613,7 +613,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
                             invoiceCurrency_ID,
                             orderCurrency_ID,
                             invoice.getDateInvoiced(),
-                            invoice.getC_ConversionType_ID(),
+                            invoice.getConversionTypeId(),
                             getClientId(),
                             getOrgId());
         }
@@ -698,7 +698,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
                 difference = difference.multiply(getQty());
                 setPriceMatchDifference(difference);
                 //	Approval
-                MBPGroup group = getOfBPartner(getCtx(), getOrderLine().getC_BPartner_ID());
+                MBPGroup group = getOfBPartner(getCtx(), getOrderLine().getBusinessPartnerId());
                 BigDecimal mt = group.getPriceMatchTolerance();
                 if (mt != null && mt.signum() != 0) {
                     BigDecimal poAmt = poPrice.multiply(getQty());
@@ -964,7 +964,7 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
             reversal.setQty(this.getQty().negate());
             reversal.setDateAcct(reversalDate);
             reversal.setDateTrx(reversalDate);
-            reversal.set_ValueNoCheck("DocumentNo", null);
+            reversal.setValueNoCheck("DocumentNo", null);
             reversal.setPosted(false);
             reversal.setReversal_ID(getM_MatchPO_ID());
             reversal.saveEx();

@@ -75,6 +75,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             setTenderType(X_C_PaymentTransaction.TENDERTYPE_Check);
         }
     }
+
     public MPaymentTransaction(Properties ctx, ResultSet rs) {
         super(ctx, rs);
     }
@@ -112,7 +113,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             String trxName) {
         MPaymentTransaction to = new MPaymentTransaction(from.getCtx(), 0);
         PO.copyValues(from, to, from.getClientId(), from.getOrgId());
-        to.set_ValueNoCheck(I_C_PaymentTransaction.COLUMNNAME_C_PaymentTransaction_ID, I_ZERO);
+        to.setValueNoCheck(I_C_PaymentTransaction.COLUMNNAME_C_PaymentTransaction_ID, I_ZERO);
         //
         to.setA_City(from.getA_City());
         to.setA_Country(from.getA_Country());
@@ -128,11 +129,11 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         to.setOrgId(from.getOrgId());
         to.setC_BankAccount_ID(from.getC_BankAccount_ID());
         to.setC_BP_BankAccount_ID(from.getC_BP_BankAccount_ID());
-        to.setC_BPartner_ID(from.getC_BPartner_ID());
-        to.setC_ConversionType_ID(from.getC_ConversionType_ID());
-        to.setC_Currency_ID(from.getC_Currency_ID());
-        to.setC_Invoice_ID(from.getC_Invoice_ID());
-        to.setC_Order_ID(from.getC_Order_ID());
+        to.setBusinessPartnerId(from.getBusinessPartnerId());
+        to.setConversionTypeId(from.getConversionTypeId());
+        to.setCurrencyId(from.getCurrencyId());
+        to.setInvoiceId(from.getInvoiceId());
+        to.setOrderId(from.getOrderId());
         to.setC_PaymentProcessor_ID(from.getC_PaymentProcessor_ID());
         to.setC_POSTenderType_ID(from.getC_POSTenderType_ID());
         to.setCheckNo(from.getCheckNo());
@@ -250,7 +251,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                             tender,
                             CCType,
                             getClientId(),
-                            getC_Currency_ID(),
+                            getCurrencyId(),
                             getPayAmt(),
                             null);
         //	Relax Amount
@@ -261,7 +262,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                             tender,
                             CCType,
                             getClientId(),
-                            getC_Currency_ID(),
+                            getCurrencyId(),
                             Env.ZERO,
                             null);
         if (m_mBankAccountProcessors == null || m_mBankAccountProcessors.length == 0) return false;
@@ -366,7 +367,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                             && !getTrxType().equals(MPaymentTransaction.TRXTYPE_Void)) {
                         MPayment m_mPayment = createPayment(null);
                         m_mPayment.saveEx();
-                        setC_Payment_ID(m_mPayment.getC_Payment_ID());
+                        setPaymentId(m_mPayment.getPaymentId());
                         processed = m_mPayment.processIt(DocAction.Companion.getACTION_Complete());
                         if (!processed) setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNotProcessed"));
                         else m_mPayment.saveEx();
@@ -475,14 +476,14 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 m_mPaymentTransaction.setIsVoided(false);
                 m_mPaymentTransaction.setIsDelayedCapture(false);
 
-                if (C_Invoice_ID != 0) m_mPaymentTransaction.setC_Invoice_ID(C_Invoice_ID);
+                if (C_Invoice_ID != 0) m_mPaymentTransaction.setInvoiceId(C_Invoice_ID);
 
                 ok = m_mPaymentTransaction.processOnline();
                 m_mPaymentTransaction.setRef_PaymentTransaction_ID(getC_PaymentTransaction_ID());
                 m_mPaymentTransaction.saveEx();
 
                 if (ok) {
-                    if (C_Invoice_ID != 0) setC_Invoice_ID(C_Invoice_ID);
+                    if (C_Invoice_ID != 0) setInvoiceId(C_Invoice_ID);
                     setIsDelayedCapture(true);
                     setRef_PaymentTransaction_ID(m_mPaymentTransaction.getC_PaymentTransaction_ID());
                 } else setErrorMessage(m_mPaymentTransaction.getErrorMessage());
@@ -540,11 +541,11 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         payment.setOrgId(getOrgId());
         payment.setC_BankAccount_ID(getC_BankAccount_ID());
         payment.setC_BP_BankAccount_ID(getC_BP_BankAccount_ID());
-        payment.setC_BPartner_ID(getC_BPartner_ID());
-        payment.setC_ConversionType_ID(getC_ConversionType_ID());
-        payment.setC_Currency_ID(getC_Currency_ID());
-        payment.setC_Invoice_ID(getC_Invoice_ID());
-        payment.setC_Order_ID(getC_Order_ID());
+        payment.setBusinessPartnerId(getBusinessPartnerId());
+        payment.setConversionTypeId(getConversionTypeId());
+        payment.setCurrencyId(getCurrencyId());
+        payment.setInvoiceId(getInvoiceId());
+        payment.setOrderId(getOrderId());
         payment.setC_PaymentProcessor_ID(getC_PaymentProcessor_ID());
         payment.setC_POSTenderType_ID(getC_POSTenderType_ID());
         payment.setCheckNo(getCheckNo());

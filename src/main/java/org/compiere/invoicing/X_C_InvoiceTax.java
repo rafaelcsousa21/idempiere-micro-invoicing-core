@@ -28,7 +28,7 @@ public class X_C_InvoiceTax extends PO {
     public X_C_InvoiceTax(Properties ctx, int C_InvoiceTax_ID) {
         super(ctx, C_InvoiceTax_ID);
         /**
-         * if (C_InvoiceTax_ID == 0) { setC_Invoice_ID (0); setC_Tax_ID (0); setIsTaxIncluded (false);
+         * if (C_InvoiceTax_ID == 0) { setInvoiceId (0); setC_Tax_ID (0); setIsTaxIncluded (false);
          * setProcessed (false); setTaxAmt (Env.ZERO); setTaxBaseAmt (Env.ZERO); }
          */
     }
@@ -63,7 +63,7 @@ public class X_C_InvoiceTax extends PO {
      *
      * @return Invoice Identifier
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         Integer ii = (Integer) getValue(I_C_InvoiceTax.COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -74,9 +74,9 @@ public class X_C_InvoiceTax extends PO {
      *
      * @param C_Invoice_ID Invoice Identifier
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        if (C_Invoice_ID < 1) set_ValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Invoice_ID, null);
-        else set_ValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    public void setInvoiceId(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) setValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Invoice_ID, null);
+        else setValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
     /**
@@ -96,8 +96,8 @@ public class X_C_InvoiceTax extends PO {
      * @param C_Tax_ID Tax identifier
      */
     public void setC_Tax_ID(int C_Tax_ID) {
-        if (C_Tax_ID < 1) set_ValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID, null);
-        else set_ValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID, Integer.valueOf(C_Tax_ID));
+        if (C_Tax_ID < 1) setValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID, null);
+        else setValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID, Integer.valueOf(C_Tax_ID));
     }
 
     /**
@@ -106,7 +106,7 @@ public class X_C_InvoiceTax extends PO {
      * @param IsTaxIncluded Tax is included in the price
      */
     public void setIsTaxIncluded(boolean IsTaxIncluded) {
-        set_Value(I_C_InvoiceTax.COLUMNNAME_IsTaxIncluded, Boolean.valueOf(IsTaxIncluded));
+        setValue(I_C_InvoiceTax.COLUMNNAME_IsTaxIncluded, Boolean.valueOf(IsTaxIncluded));
     }
 
     /**
@@ -140,7 +140,7 @@ public class X_C_InvoiceTax extends PO {
      * @param TaxAmt Tax Amount for a document
      */
     public void setTaxAmt(BigDecimal TaxAmt) {
-        set_ValueNoCheck(I_C_InvoiceTax.COLUMNNAME_TaxAmt, TaxAmt);
+        setValueNoCheck(I_C_InvoiceTax.COLUMNNAME_TaxAmt, TaxAmt);
     }
 
     /**
@@ -160,7 +160,7 @@ public class X_C_InvoiceTax extends PO {
      * @param TaxBaseAmt Base for calculating the tax amount
      */
     public void setTaxBaseAmt(BigDecimal TaxBaseAmt) {
-        set_ValueNoCheck(I_C_InvoiceTax.COLUMNNAME_TaxBaseAmt, TaxBaseAmt);
+        setValueNoCheck(I_C_InvoiceTax.COLUMNNAME_TaxBaseAmt, TaxBaseAmt);
     }
 
     @Override

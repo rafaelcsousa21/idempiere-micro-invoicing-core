@@ -38,6 +38,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      * Parent
      */
     private MDDOrder m_parent = null;
+
     /**
      * ************************************************************************ Default Constructor
      *
@@ -48,11 +49,11 @@ public class MDDOrderLine extends X_DD_OrderLine {
     public MDDOrderLine(Properties ctx, int C_OrderLine_ID) {
         super(ctx, C_OrderLine_ID);
         if (C_OrderLine_ID == 0) {
-            //	setC_Order_ID (0);
+            //	setOrderId (0);
             //	setLine (0);
             //	setWarehouseId (0);	// @M_Warehouse_ID@
-            //	setC_BPartner_ID(0);
-            //	setC_BPartner_Location_ID (0);	// @C_BPartner_Location_ID@
+            //	setBusinessPartnerId(0);
+            //	setBusinessPartnerLocationId (0);	// @C_BPartner_Location_ID@
             //	setCurrencyId (0);	// @C_Currency_ID@
             //	setDateOrdered (new Timestamp(System.currentTimeMillis()));	// @DateOrdered@
             //
@@ -81,6 +82,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
 
     /** Cached Currency Precision */
     // private Integer			m_precision = null;
+
     /**
      * Parent Constructor. ol.setM_Product_ID(wbl.getM_Product_ID());
      * ol.setQtyOrdered(wbl.getQuantity()); ol.setPrice(); ol.setPriceActual(wbl.getPrice());
@@ -94,6 +96,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
         setDD_Order_ID(order.getDD_Order_ID()); // 	parent
         setOrder(order);
     } //	MDDOrderLine
+
     /**
      * Load Constructor
      *
@@ -112,8 +115,8 @@ public class MDDOrderLine extends X_DD_OrderLine {
      */
     public void setOrder(MDDOrder order) {
         setClientOrg(order);
-    /*setC_BPartner_ID(order.getC_BPartner_ID());
-    setC_BPartner_Location_ID(order.getC_BPartner_Location_ID());*/
+    /*setBusinessPartnerId(order.getBusinessPartnerId());
+    setBusinessPartnerLocationId(order.getBusinessPartnerLocationId());*/
         // setWarehouseId(order.getWarehouseId());
         setDateOrdered(order.getDateOrdered());
         setDatePromised(order.getDatePromised());
@@ -160,7 +163,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID == 0) // 	 0 is valid ID
-            set_Value("M_AttributeSetInstance_ID", new Integer(0));
+            setValue("M_AttributeSetInstance_ID", new Integer(0));
         else super.setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
     } //	setM_AttributeSetInstance_ID
 
@@ -204,66 +207,66 @@ public class MDDOrderLine extends X_DD_OrderLine {
      *
      * @return project
      */
-    public int getC_Project_ID() {
-        int ii = super.getC_Project_ID();
-        if (ii == 0) ii = getParent().getC_Project_ID();
+    public int getProjectId() {
+        int ii = super.getProjectId();
+        if (ii == 0) ii = getParent().getProjectId();
         return ii;
-    } //	getC_Project_ID
+    } //	getProjectId
 
     /**
      * Get C_Activity_ID
      *
      * @return Activity
      */
-    public int getC_Activity_ID() {
-        int ii = super.getC_Activity_ID();
-        if (ii == 0) ii = getParent().getC_Activity_ID();
+    public int getBusinessActivityId() {
+        int ii = super.getBusinessActivityId();
+        if (ii == 0) ii = getParent().getBusinessActivityId();
         return ii;
-    } //	getC_Activity_ID
+    } //	getBusinessActivityId
 
     /**
      * Get C_Campaign_ID
      *
      * @return Campaign
      */
-    public int getC_Campaign_ID() {
-        int ii = super.getC_Campaign_ID();
-        if (ii == 0) ii = getParent().getC_Campaign_ID();
+    public int getCampaignId() {
+        int ii = super.getCampaignId();
+        if (ii == 0) ii = getParent().getCampaignId();
         return ii;
-    } //	getC_Campaign_ID
+    } //	getCampaignId
 
     /**
      * Get User2_ID
      *
      * @return User2
      */
-    public int getUser1_ID() {
-        int ii = super.getUser1_ID();
-        if (ii == 0) ii = getParent().getUser1_ID();
+    public int getUser1Id() {
+        int ii = super.getUser1Id();
+        if (ii == 0) ii = getParent().getUser1Id();
         return ii;
-    } //	getUser1_ID
+    } //	getUser1Id
 
     /**
      * Get User2_ID
      *
      * @return User2
      */
-    public int getUser2_ID() {
-        int ii = super.getUser2_ID();
-        if (ii == 0) ii = getParent().getUser2_ID();
+    public int getUser2Id() {
+        int ii = super.getUser2Id();
+        if (ii == 0) ii = getParent().getUser2Id();
         return ii;
-    } //	getUser2_ID
+    } //	getUser2Id
 
     /**
      * Get AD_OrgTrx_ID
      *
      * @return trx org
      */
-    public int getAD_OrgTrx_ID() {
-        int ii = super.getAD_OrgTrx_ID();
-        if (ii == 0) ii = getParent().getAD_OrgTrx_ID();
+    public int getTransactionOrganizationId() {
+        int ii = super.getTransactionOrganizationId();
+        if (ii == 0) ii = getParent().getTransactionOrganizationId();
         return ii;
-    } //	getAD_OrgTrx_ID
+    } //	getTransactionOrganizationId
 
     /**
      * ************************************************************************ String Representation
@@ -302,10 +305,10 @@ public class MDDOrderLine extends X_DD_OrderLine {
      *
      * @param C_Charge_ID charge
      */
-    public void setC_Charge_ID(int C_Charge_ID) {
-        super.setC_Charge_ID(C_Charge_ID);
-        if (C_Charge_ID > 0) set_ValueNoCheck("C_UOM_ID", null);
-    } //	setC_Charge_ID
+    public void setChargeId(int C_Charge_ID) {
+        super.setChargeId(C_Charge_ID);
+        if (C_Charge_ID > 0) setValueNoCheck("C_UOM_ID", null);
+    } //	setChargeId
 
     /**
      * Set Qty Entered/Ordered. Use this Method if the Line UOM is the Product UOM
@@ -356,7 +359,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
             return false;
         }
         //	Get Defaults from Parent
-    /*if (getC_BPartner_ID() == 0 || getC_BPartner_Location_ID() == 0
+    /*if (getBusinessPartnerId() == 0 || getBusinessPartnerLocationId() == 0
     || getWarehouseId() == 0)
     setOrder (getParent());*/
         if (m_M_PriceList_ID == 0) setHeaderInfo(getParent());
@@ -370,13 +373,13 @@ public class MDDOrderLine extends X_DD_OrderLine {
         } //	Product Changed
 
         //	Charge
-        if (getC_Charge_ID() != 0 && getM_Product_ID() != 0) setM_Product_ID(0);
+        if (getChargeId() != 0 && getM_Product_ID() != 0) setM_Product_ID(0);
         //	No Product
         if (getM_Product_ID() == 0) setM_AttributeSetInstance_ID(0);
         //	Product
 
         //	UOM
-        if (getC_UOM_ID() == 0 && (getM_Product_ID() != 0 || getC_Charge_ID() != 0)) {
+        if (getC_UOM_ID() == 0 && (getM_Product_ID() != 0 || getChargeId() != 0)) {
             int C_UOM_ID = MUOM.getDefault_UOM_ID(getCtx());
             if (C_UOM_ID > 0) setC_UOM_ID(C_UOM_ID);
         }
@@ -405,7 +408,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
                     MStorageOnHand[] storages =
                             MStorageOnHand.getWarehouse(
                                     getCtx(),
-                                    locator_from.getM_Warehouse_ID(),
+                                    locator_from.getWarehouseId(),
                                     getM_Product_ID(),
                                     getMAttributeSetInstance_ID(),
                                     null,

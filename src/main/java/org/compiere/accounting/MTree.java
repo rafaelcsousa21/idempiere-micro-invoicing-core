@@ -54,6 +54,7 @@ public class MTree extends MTree_Base {
      */
     private boolean m_clientTree = true;
     private HashMap<Integer, ArrayList<Integer>> m_nodeIdMap;
+
     /**
      * Default Constructor. Need to call loadNodes explicitly
      *
@@ -64,6 +65,7 @@ public class MTree extends MTree_Base {
     public MTree(Properties ctx, int AD_Tree_ID) {
         super(ctx, AD_Tree_ID);
     } //  MTree
+
     /**
      * Construct & Load Tree
      *

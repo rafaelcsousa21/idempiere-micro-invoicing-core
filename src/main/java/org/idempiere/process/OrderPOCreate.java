@@ -202,7 +202,7 @@ public class OrderPOCreate extends SvrProcess {
         MOrder po = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, so.getC_Order_ID());
+            pstmt.setInt(1, so.getOrderId());
             if (p_Vendor_ID != 0) pstmt.setInt(2, p_Vendor_ID);
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -211,7 +211,7 @@ public class OrderPOCreate extends SvrProcess {
                 if (po == null || po.getBill_BPartner_ID() != C_BPartner_ID) {
                     po = createPOForVendor(rs.getInt(1), so);
                     String message = Msg.parseTranslation(getCtx(), "@OrderCreated@ " + po.getDocumentNo());
-                    addBufferLog(0, null, null, message, po.getTableId(), po.getC_Order_ID());
+                    addBufferLog(0, null, null, message, po.getTableId(), po.getOrderId());
                     counter++;
                 }
 
@@ -222,7 +222,7 @@ public class OrderPOCreate extends SvrProcess {
                         MOrderLine poLine = new MOrderLine(po);
                         poLine.setLink_OrderLine_ID(soLines[i].getC_OrderLine_ID());
                         poLine.setM_Product_ID(soLines[i].getM_Product_ID());
-                        poLine.setC_Charge_ID(soLines[i].getC_Charge_ID());
+                        poLine.setChargeId(soLines[i].getChargeId());
                         poLine.setM_AttributeSetInstance_ID(soLines[i].getMAttributeSetInstance_ID());
                         poLine.setC_UOM_ID(soLines[i].getC_UOM_ID());
                         poLine.setQtyEntered(soLines[i].getQtyEntered());
@@ -247,7 +247,7 @@ public class OrderPOCreate extends SvrProcess {
         }
         //	Set Reference to PO
         if (counter == 1 && po != null) {
-            so.setLink_Order_ID(po.getC_Order_ID());
+            so.setLink_Order_ID(po.getOrderId());
             so.saveEx();
         }
         return counter;
@@ -262,15 +262,15 @@ public class OrderPOCreate extends SvrProcess {
     public MOrder createPOForVendor(int C_BPartner_ID, MOrder so) {
         MOrder po = new MOrder(getCtx(), 0);
         po.setClientOrg(so.getClientId(), so.getOrgId());
-        po.setLink_Order_ID(so.getC_Order_ID());
+        po.setLink_Order_ID(so.getOrderId());
         po.setIsSOTrx(false);
-        po.setC_DocTypeTarget_ID();
+        po.setTargetDocumentTypeId();
         //
         po.setDescription(so.getDescription());
         po.setPOReference(so.getDocumentNo());
         po.setPriorityRule(so.getPriorityRule());
-        po.setSalesRep_ID(so.getSalesRep_ID());
-        po.setM_Warehouse_ID(so.getM_Warehouse_ID());
+        po.setSalesRepresentativeId(so.getSalesRepresentativeId());
+        po.setWarehouseId(so.getWarehouseId());
         //	Set Vendor
         MBPartner vendor = new MBPartner(getCtx(), C_BPartner_ID);
         po.setBPartner(vendor);
@@ -278,29 +278,29 @@ public class OrderPOCreate extends SvrProcess {
         if (p_IsDropShip) {
             po.setIsDropShip(p_IsDropShip);
             po.setDeliveryViaRule(so.getDeliveryViaRule());
-            po.setM_Shipper_ID(so.getM_Shipper_ID());
+            po.setShipperId(so.getShipperId());
 
             if (so.isDropShip() && so.getDropShip_BPartner_ID() != 0) {
                 po.setDropShip_BPartner_ID(so.getDropShip_BPartner_ID());
                 po.setDropShip_Location_ID(so.getDropShip_Location_ID());
                 po.setDropShip_User_ID(so.getDropShip_User_ID());
             } else {
-                po.setDropShip_BPartner_ID(so.getC_BPartner_ID());
-                po.setDropShip_Location_ID(so.getC_BPartner_Location_ID());
-                po.setDropShip_User_ID(so.getAD_User_ID());
+                po.setDropShip_BPartner_ID(so.getBusinessPartnerId());
+                po.setDropShip_Location_ID(so.getBusinessPartnerLocationId());
+                po.setDropShip_User_ID(so.getUserId());
             }
             // get default drop ship warehouse
             MOrgInfo orginfo = MOrgInfo.get(getCtx(), po.getOrgId());
             if (orginfo.getDropShipWarehouseId() != 0)
-                po.setM_Warehouse_ID(orginfo.getDropShipWarehouseId());
+                po.setWarehouseId(orginfo.getDropShipWarehouseId());
             else log.log(Level.SEVERE, "Must specify drop ship warehouse in org info.");
         }
         //	References
-        po.setC_Activity_ID(so.getC_Activity_ID());
-        po.setC_Campaign_ID(so.getC_Campaign_ID());
-        po.setC_Project_ID(so.getC_Project_ID());
-        po.setUser1_ID(so.getUser1_ID());
-        po.setUser2_ID(so.getUser2_ID());
+        po.setBusinessActivityId(so.getBusinessActivityId());
+        po.setCampaignId(so.getCampaignId());
+        po.setProjectId(so.getProjectId());
+        po.setUser1Id(so.getUser1Id());
+        po.setUser2Id(so.getUser2Id());
         //
         po.saveEx();
         return po;

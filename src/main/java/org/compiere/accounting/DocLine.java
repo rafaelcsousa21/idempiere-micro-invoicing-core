@@ -143,16 +143,16 @@ public class DocLine {
     /**
      * Get Currency
      *
-     * @return c_Currency_ID
+     * @return currencyId
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         if (m_C_Currency_ID == -1) {
             int index = p_po.getColumnIndex("C_Currency_ID");
             if (index != -1) {
                 Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_Currency_ID = ii.intValue();
             }
-            if (m_C_Currency_ID <= 0) m_C_Currency_ID = m_doc.getC_Currency_ID();
+            if (m_C_Currency_ID <= 0) m_C_Currency_ID = m_doc.getCurrencyId();
         }
         return m_C_Currency_ID;
     } //  getCurrencyId
@@ -162,26 +162,26 @@ public class DocLine {
      *
      * @return C_ConversionType_ID
      */
-    public int getC_ConversionType_ID() {
+    public int getConversionTypeId() {
         if (m_C_ConversionType_ID == -1) {
             int index = p_po.getColumnIndex("C_ConversionType_ID");
             if (index != -1) {
                 Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_ConversionType_ID = ii.intValue();
             }
-            if (m_C_ConversionType_ID <= 0) m_C_ConversionType_ID = m_doc.getC_ConversionType_ID();
+            if (m_C_ConversionType_ID <= 0) m_C_ConversionType_ID = m_doc.getConversionTypeId();
         }
         return m_C_ConversionType_ID;
-    } //  getC_ConversionType_ID
+    } //  getConversionTypeId
 
     /**
      * Set C_ConversionType_ID
      *
      * @param C_ConversionType_ID id
      */
-    protected void setC_ConversionType_ID(int C_ConversionType_ID) {
+    protected void setConversionTypeId(int C_ConversionType_ID) {
         m_C_ConversionType_ID = C_ConversionType_ID;
-    } //	setC_ConversionType_ID
+    } //	setConversionTypeId
 
     /**
      * Set Amount (DR)
@@ -416,7 +416,7 @@ public class DocLine {
      */
     public MAccount getAccount(int AcctType, MAcctSchema as) {
         //	Charge Account
-        if (getM_Product_ID() == 0 && getC_Charge_ID() != 0) {
+        if (getM_Product_ID() == 0 && getChargeId() != 0) {
             BigDecimal amt = new BigDecimal(-1); // 	Revenue (-)
             if (!m_doc.isSOTrx()) amt = new BigDecimal(+1); // 	Expense (+)
             MAccount acct = getChargeAccount(as, amt);
@@ -431,14 +431,14 @@ public class DocLine {
      *
      * @return C_Charge_ID
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         int index = p_po.getColumnIndex("C_Charge_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_Charge_ID
+    } //	getChargeId
 
     /**
      * Get Charge Account
@@ -448,7 +448,7 @@ public class DocLine {
      * @return Charge Account or null
      */
     public MAccount getChargeAccount(MAcctSchema as, BigDecimal amount) {
-        int C_Charge_ID = getC_Charge_ID();
+        int C_Charge_ID = getChargeId();
         if (C_Charge_ID == 0) return null;
         return MCharge.getAccount(C_Charge_ID, as);
     } //  getChargeAccount
@@ -789,54 +789,54 @@ public class DocLine {
      *
      * @return C_BPartner_ID
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         if (m_C_BPartner_ID == -1) {
             int index = p_po.getColumnIndex("C_BPartner_ID");
             if (index != -1) {
                 Integer ii = (Integer) p_po.getValue(index);
                 if (ii != null) m_C_BPartner_ID = ii.intValue();
             }
-            if (m_C_BPartner_ID <= 0) m_C_BPartner_ID = m_doc.getC_BPartner_ID();
+            if (m_C_BPartner_ID <= 0) m_C_BPartner_ID = m_doc.getBusinessPartnerId();
         }
         return m_C_BPartner_ID;
-    } //  getC_BPartner_ID
+    } //  getBusinessPartnerId
 
     /**
      * Set C_BPartner_ID
      *
      * @param C_BPartner_ID id
      */
-    protected void setC_BPartner_ID(int C_BPartner_ID) {
+    protected void setBusinessPartnerId(int C_BPartner_ID) {
         m_C_BPartner_ID = C_BPartner_ID;
-    } //	setC_BPartner_ID
+    } //	setBusinessPartnerId
 
     /**
      * Get C_BPartner_Location_ID
      *
      * @return BPartner Location
      */
-    public int getC_BPartner_Location_ID() {
+    public int getBusinessPartnerLocationId() {
         int index = p_po.getColumnIndex("C_BPartner_Location_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
-        return m_doc.getC_BPartner_Location_ID();
-    } //	getC_BPartner_Location_ID
+        return m_doc.getBusinessPartnerLocationId();
+    } //	getBusinessPartnerLocationId
 
     /**
      * Get TrxOrg
      *
      * @return AD_OrgTrx_ID
      */
-    public int getAD_OrgTrx_ID() {
+    public int getTransactionOrganizationId() {
         int index = p_po.getColumnIndex("AD_OrgTrx_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getAD_OrgTrx_ID
+    } //  getTransactionOrganizationId
 
     /**
      * Get SalesRegion. - get Sales Region from BPartner
@@ -846,12 +846,12 @@ public class DocLine {
     public int getC_SalesRegion_ID() {
         if (m_C_SalesRegion_ID == -1) // 	never tried
         {
-            if (getC_BPartner_Location_ID() != 0)
+            if (getBusinessPartnerLocationId() != 0)
             //	&& m_acctSchema.isAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_SalesRegion))
             {
                 String sql =
                         "SELECT COALESCE(C_SalesRegion_ID,0) FROM C_BPartner_Location WHERE C_BPartner_Location_ID=?";
-                m_C_SalesRegion_ID = getSQLValue(sql, getC_BPartner_Location_ID());
+                m_C_SalesRegion_ID = getSQLValue(sql, getBusinessPartnerLocationId());
                 if (log.isLoggable(Level.FINE))
                     log.fine("C_SalesRegion_ID=" + m_C_SalesRegion_ID + " (from BPL)");
                 if (m_C_SalesRegion_ID == 0) m_C_SalesRegion_ID = -2; // 	don't try again
@@ -867,14 +867,14 @@ public class DocLine {
      *
      * @return C_Project_ID
      */
-    public int getC_Project_ID() {
+    public int getProjectId() {
         int index = p_po.getColumnIndex("C_Project_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getC_Project_ID
+    } //  getProjectId
 
     /**
      * Get Project Phase
@@ -909,56 +909,56 @@ public class DocLine {
      *
      * @return C_Campaign_ID
      */
-    public int getC_Campaign_ID() {
+    public int getCampaignId() {
         int index = p_po.getColumnIndex("C_Campaign_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getC_Campaign_ID
+    } //  getCampaignId
 
     /**
      * Get Activity
      *
      * @return C_Activity_ID
      */
-    public int getC_Activity_ID() {
+    public int getBusinessActivityId() {
         int index = p_po.getColumnIndex("C_Activity_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getC_Activity_ID
+    } //  getBusinessActivityId
 
     /**
      * Get User 1
      *
      * @return user defined 1
      */
-    public int getUser1_ID() {
+    public int getUser1Id() {
         int index = p_po.getColumnIndex("User1_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getUser1_ID
+    } //  getUser1Id
 
     /**
      * Get User 2
      *
      * @return user defined 2
      */
-    public int getUser2_ID() {
+    public int getUser2Id() {
         int index = p_po.getColumnIndex("User2_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getUser2_ID
+    } //  getUser2Id
 
     /**
      * Get User Defined Column

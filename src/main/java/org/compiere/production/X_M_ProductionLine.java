@@ -63,7 +63,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(I_M_ProductionLine.COLUMNNAME_Description, Description);
+        setValue(I_M_ProductionLine.COLUMNNAME_Description, Description);
     }
 
     /**
@@ -72,7 +72,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param IsEndProduct End Product of production
      */
     public void setIsEndProduct(boolean IsEndProduct) {
-        set_Value(I_M_ProductionLine.COLUMNNAME_IsEndProduct, Boolean.valueOf(IsEndProduct));
+        setValue(I_M_ProductionLine.COLUMNNAME_IsEndProduct, Boolean.valueOf(IsEndProduct));
     }
 
     /**
@@ -106,7 +106,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param Line Unique line for this document
      */
     public void setLine(int Line) {
-        set_Value(I_M_ProductionLine.COLUMNNAME_Line, Integer.valueOf(Line));
+        setValue(I_M_ProductionLine.COLUMNNAME_Line, Integer.valueOf(Line));
     }
 
     /**
@@ -116,9 +116,9 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0)
-            set_Value(I_M_ProductionLine.COLUMNNAME_M_AttributeSetInstance_ID, null);
+            setValue(I_M_ProductionLine.COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_Value(
+            setValue(
                     I_M_ProductionLine.COLUMNNAME_M_AttributeSetInstance_ID,
                     Integer.valueOf(M_AttributeSetInstance_ID));
     }
@@ -151,8 +151,8 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param M_Locator_ID Warehouse Locator
      */
     public void setM_Locator_ID(int M_Locator_ID) {
-        if (M_Locator_ID < 1) set_Value(I_M_ProductionLine.COLUMNNAME_M_Locator_ID, null);
-        else set_Value(I_M_ProductionLine.COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        if (M_Locator_ID < 1) setValue(I_M_ProductionLine.COLUMNNAME_M_Locator_ID, null);
+        else setValue(I_M_ProductionLine.COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
     /**
@@ -172,7 +172,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param MovementQty Quantity of a product moved.
      */
     public void setMovementQty(BigDecimal MovementQty) {
-        set_Value(I_M_ProductionLine.COLUMNNAME_MovementQty, MovementQty);
+        setValue(I_M_ProductionLine.COLUMNNAME_MovementQty, MovementQty);
     }
 
     public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
@@ -198,8 +198,8 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(I_M_ProductionLine.COLUMNNAME_M_Product_ID, null);
-        else set_Value(I_M_ProductionLine.COLUMNNAME_M_Product_ID, M_Product_ID);
+        if (M_Product_ID < 1) setValue(I_M_ProductionLine.COLUMNNAME_M_Product_ID, null);
+        else setValue(I_M_ProductionLine.COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     public org.compiere.model.I_M_Production getM_Production() throws RuntimeException {
@@ -225,9 +225,9 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param M_Production_ID Plan for producing a product
      */
     public void setM_Production_ID(int M_Production_ID) {
-        if (M_Production_ID < 1) set_ValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_Production_ID, null);
+        if (M_Production_ID < 1) setValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_Production_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     I_M_ProductionLine.COLUMNNAME_M_Production_ID, Integer.valueOf(M_Production_ID));
     }
 
@@ -249,9 +249,9 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      */
     public void setM_ProductionLine_ID(int M_ProductionLine_ID) {
         if (M_ProductionLine_ID < 1)
-            set_ValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_ProductionLine_ID, null);
+            setValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_ProductionLine_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     I_M_ProductionLine.COLUMNNAME_M_ProductionLine_ID, Integer.valueOf(M_ProductionLine_ID));
     }
 
@@ -279,9 +279,9 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      */
     public void setM_ProductionPlan_ID(int M_ProductionPlan_ID) {
         if (M_ProductionPlan_ID < 1)
-            set_ValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID, null);
+            setValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID, M_ProductionPlan_ID);
     }
 
@@ -302,7 +302,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param PlannedQty Planned quantity for this project
      */
     public void setPlannedQty(BigDecimal PlannedQty) {
-        set_Value(I_M_ProductionLine.COLUMNNAME_PlannedQty, PlannedQty);
+        setValue(I_M_ProductionLine.COLUMNNAME_PlannedQty, PlannedQty);
     }
 
     /**
@@ -311,7 +311,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(I_M_ProductionLine.COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(I_M_ProductionLine.COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -331,7 +331,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      * @param QtyUsed Quantity Used
      */
     public void setQtyUsed(BigDecimal QtyUsed) {
-        set_Value(I_M_ProductionLine.COLUMNNAME_QtyUsed, QtyUsed);
+        setValue(I_M_ProductionLine.COLUMNNAME_QtyUsed, QtyUsed);
     }
 
     @Override

@@ -59,7 +59,7 @@ public class MRequest extends X_R_Request {
         super(ctx, R_Request_ID);
         if (R_Request_ID == 0) {
             setDueType(X_R_Request.DUETYPE_Due);
-            //  setSalesRep_ID (0);
+            //  setSalesRepresentativeId (0);
             //	setDocumentNo (null);
             setConfidentialType(X_R_Request.CONFIDENTIALTYPE_PublicInformation); // A
             setConfidentialTypeEntry(X_R_Request.CONFIDENTIALTYPEENTRY_PublicInformation); // A
@@ -73,6 +73,7 @@ public class MRequest extends X_R_Request {
             setIsInvoiced(false);
         }
     } //	MRequest
+
     /**
      * SelfService Constructor
      *
@@ -91,8 +92,8 @@ public class MRequest extends X_R_Request {
             boolean isSelfService,
             String trxName) {
         this(ctx, 0);
-        set_Value("SalesRep_ID", new Integer(SalesRep_ID)); // 	could be 0
-        set_Value("R_RequestType_ID", new Integer(R_RequestType_ID));
+        setValue("SalesRep_ID", new Integer(SalesRep_ID)); // 	could be 0
+        setValue("R_RequestType_ID", new Integer(R_RequestType_ID));
         setSummary(Summary);
         setIsSelfService(isSelfService);
         getRequestType();
@@ -104,6 +105,7 @@ public class MRequest extends X_R_Request {
             }
         }
     } //	MRequest
+
     /**
      * Load Constructor
      *
@@ -215,9 +217,9 @@ public class MRequest extends X_R_Request {
      * @return Sales Rep User
      */
     public MBPartner getBPartner() {
-        if (getC_BPartner_ID() == 0) return null;
-        if (m_partner != null && m_partner.getC_BPartner_ID() != getC_BPartner_ID()) m_partner = null;
-        if (m_partner == null) m_partner = new MBPartner(getCtx(), getC_BPartner_ID());
+        if (getBusinessPartnerId() == 0) return null;
+        if (m_partner != null && m_partner.getBusinessPartnerId() != getBusinessPartnerId()) m_partner = null;
+        if (m_partner == null) m_partner = new MBPartner(getCtx(), getBusinessPartnerId());
         return m_partner;
     } //	getBPartner
 
@@ -378,8 +380,8 @@ public class MRequest extends X_R_Request {
 
   		//  Check that UI user is Request User
   //		int realSalesRep_ID = Env.getContextAsInt (getCtx(), "#AD_User_ID");
-  //		if (realSalesRep_ID != getSalesRep_ID())
-  //			setSalesRep_ID(realSalesRep_ID);
+  //		if (realSalesRep_ID != getSalesRepresentativeId())
+  //			setSalesRepresentativeId(realSalesRep_ID);
 
   		//  RequestActionEMailInfo - EMail from {0} to {1}
   //		Object[] args = new Object[] {emailFrom, emailTo};
@@ -396,11 +398,11 @@ public class MRequest extends X_R_Request {
      *
      * @param SalesRep_ID id
      */
-    public void setSalesRep_ID(int SalesRep_ID) {
-        if (SalesRep_ID != 0) super.setSalesRep_ID(SalesRep_ID);
-        else if (getSalesRep_ID() != 0)
-            log.warning("Ignored - Tried to set SalesRep_ID to 0 from " + getSalesRep_ID());
-    } //	setSalesRep_ID
+    public void setSalesRepresentativeId(int SalesRep_ID) {
+        if (SalesRep_ID != 0) super.setSalesRepresentativeId(SalesRep_ID);
+        else if (getSalesRepresentativeId() != 0)
+            log.warning("Ignored - Tried to set SalesRep_ID to 0 from " + getSalesRepresentativeId());
+    } //	setSalesRepresentativeId
 
     /**
      * After Save
@@ -461,13 +463,13 @@ public class MRequest extends X_R_Request {
   		Object[] args = new Object[] {getDocumentNo(),
   			MUser.getNameOfUser(AD_User_ID),
   			MUser.getNameOfUser(oldSalesRep_ID),
-  			MUser.getNameOfUser(getSalesRep_ID())
+  			MUser.getNameOfUser(getSalesRepresentativeId())
   			};
   		String subject = Msg.getMsg(getCtx(), "RequestActionTransfer", args);
   		String message = subject + "\n" + getSummary();
   		MClient client = MClient.get(getCtx());
   		MUser from = MUser.get (getCtx(), AD_User_ID);
-  		MUser to = MUser.get (getCtx(), getSalesRep_ID());
+  		MUser to = MUser.get (getCtx(), getSalesRepresentativeId());
   		//
   		client.sendEMail(from, to, subject, message, createPDF());
   	}	//	afterSaveTransfer

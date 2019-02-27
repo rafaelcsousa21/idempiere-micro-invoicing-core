@@ -57,7 +57,7 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
      * @param IsError An Error occurred in the execution
      */
     public void setIsError(boolean IsError) {
-        set_Value(COLUMNNAME_IsError, Boolean.valueOf(IsError));
+        setValue(COLUMNNAME_IsError, Boolean.valueOf(IsError));
     }
 
     /**
@@ -66,8 +66,8 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
      * @param R_RequestProcessor_ID Processor for Requests
      */
     public void setR_RequestProcessor_ID(int R_RequestProcessor_ID) {
-        if (R_RequestProcessor_ID < 1) set_ValueNoCheck(COLUMNNAME_R_RequestProcessor_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_R_RequestProcessor_ID, Integer.valueOf(R_RequestProcessor_ID));
+        if (R_RequestProcessor_ID < 1) setValueNoCheck(COLUMNNAME_R_RequestProcessor_ID, null);
+        else setValueNoCheck(COLUMNNAME_R_RequestProcessor_ID, Integer.valueOf(R_RequestProcessor_ID));
     }
 
     /**
@@ -76,7 +76,7 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
      * @param Summary Textual summary of this request
      */
     public void setSummary(String Summary) {
-        set_Value(COLUMNNAME_Summary, Summary);
+        setValue(COLUMNNAME_Summary, Summary);
     }
 
 }

@@ -25,7 +25,7 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
     public X_T_Replenish(Properties ctx, int T_Replenish_ID) {
         super(ctx, T_Replenish_ID);
         /**
-         * if (T_Replenish_ID == 0) { setAD_PInstance_ID (0); setC_BPartner_ID (0); setLevel_Max
+         * if (T_Replenish_ID == 0) { setAD_PInstance_ID (0); setBusinessPartnerId (0); setLevel_Max
          * (Env.ZERO); setLevel_Min (Env.ZERO); setM_Product_ID (0); setWarehouseId (0);
          * setReplenishType (null); }
          */
@@ -57,7 +57,7 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -79,7 +79,7 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -113,7 +113,7 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
      * @param QtyToOrder Quantity to Order
      */
     public void setQtyToOrder(BigDecimal QtyToOrder) {
-        set_Value(COLUMNNAME_QtyToOrder, QtyToOrder);
+        setValue(COLUMNNAME_QtyToOrder, QtyToOrder);
     }
 
     /**

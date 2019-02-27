@@ -55,18 +55,18 @@ public class RMACreateOrder extends SvrProcess {
         // Create new order and set the different values based on original order/RMA doc
         MOrder order = new MOrder(getCtx(), 0);
         order.setOrgId(rma.getOrgId());
-        order.setC_BPartner_ID(originalOrder.getC_BPartner_ID());
-        order.setC_BPartner_Location_ID(originalOrder.getC_BPartner_Location_ID());
-        order.setAD_User_ID(originalOrder.getAD_User_ID());
+        order.setBusinessPartnerId(originalOrder.getBusinessPartnerId());
+        order.setBusinessPartnerLocationId(originalOrder.getBusinessPartnerLocationId());
+        order.setUserId(originalOrder.getUserId());
         order.setBill_BPartner_ID(originalOrder.getBill_BPartner_ID());
-        order.setBill_Location_ID(originalOrder.getBill_Location_ID());
+        order.setBusinessPartnerInvoicingLocationId(originalOrder.getBusinessPartnerInvoicingLocationId());
         order.setBill_User_ID(originalOrder.getBill_User_ID());
-        order.setSalesRep_ID(rma.getSalesRep_ID());
-        order.setM_PriceList_ID(originalOrder.getM_PriceList_ID());
+        order.setSalesRepresentativeId(rma.getSalesRepresentativeId());
+        order.setPriceListId(originalOrder.getPriceListId());
         order.setIsSOTrx(originalOrder.isSOTrx());
-        order.setM_Warehouse_ID(originalOrder.getM_Warehouse_ID());
-        order.setC_DocTypeTarget_ID(originalOrder.getC_DocTypeTarget_ID());
-        order.setC_PaymentTerm_ID(originalOrder.getC_PaymentTerm_ID());
+        order.setWarehouseId(originalOrder.getWarehouseId());
+        order.setTargetDocumentTypeId(originalOrder.getTargetDocumentTypeId());
+        order.setPaymentTermId(originalOrder.getPaymentTermId());
         order.setDeliveryRule(originalOrder.getDeliveryRule());
 
         if (!order.save()) {
@@ -90,12 +90,12 @@ public class RMACreateOrder extends SvrProcess {
                 orderLine.setM_AttributeSetInstance_ID(originalOLine.getMAttributeSetInstance_ID());
                 orderLine.setC_UOM_ID(originalOLine.getC_UOM_ID());
                 orderLine.setC_Tax_ID(originalOLine.getC_Tax_ID());
-                orderLine.setM_Warehouse_ID(originalOLine.getM_Warehouse_ID());
-                orderLine.setC_Currency_ID(originalOLine.getC_Currency_ID());
+                orderLine.setWarehouseId(originalOLine.getWarehouseId());
+                orderLine.setCurrencyId(originalOLine.getCurrencyId());
                 orderLine.setQty(line.getQty());
-                orderLine.setC_Project_ID(originalOLine.getC_Project_ID());
-                orderLine.setC_Activity_ID(originalOLine.getC_Activity_ID());
-                orderLine.setC_Campaign_ID(originalOLine.getC_Campaign_ID());
+                orderLine.setProjectId(originalOLine.getProjectId());
+                orderLine.setBusinessActivityId(originalOLine.getBusinessActivityId());
+                orderLine.setCampaignId(originalOLine.getCampaignId());
                 orderLine.setPrice();
                 orderLine.setPrice(line.getAmt());
 
@@ -110,12 +110,12 @@ public class RMACreateOrder extends SvrProcess {
                     orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
                     orderLine.setC_UOM_ID(line.getC_UOM_ID());
                     orderLine.setC_Tax_ID(line.getC_Tax_ID());
-                    orderLine.setM_Warehouse_ID(originalShipment.getM_Warehouse_ID());
-                    orderLine.setC_Currency_ID(originalInvoice.getC_Currency_ID());
+                    orderLine.setWarehouseId(originalShipment.getWarehouseId());
+                    orderLine.setCurrencyId(originalInvoice.getCurrencyId());
                     orderLine.setQty(line.getQty());
-                    orderLine.setC_Project_ID(line.getC_Project_ID());
-                    orderLine.setC_Activity_ID(line.getC_Activity_ID());
-                    orderLine.setC_Campaign_ID(line.getC_Campaign_ID());
+                    orderLine.setProjectId(line.getProjectId());
+                    orderLine.setBusinessActivityId(line.getBusinessActivityId());
+                    orderLine.setCampaignId(line.getCampaignId());
                     orderLine.setPrice();
                     orderLine.setPrice(line.getAmt());
 
@@ -129,12 +129,12 @@ public class RMACreateOrder extends SvrProcess {
                     orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
                     orderLine.setC_UOM_ID(line.getC_UOM_ID());
                     orderLine.setC_Tax_ID(line.getC_Tax_ID());
-                    orderLine.setM_Warehouse_ID(originalOrder.getM_Warehouse_ID());
-                    orderLine.setC_Currency_ID(originalOrder.getC_Currency_ID());
+                    orderLine.setWarehouseId(originalOrder.getWarehouseId());
+                    orderLine.setCurrencyId(originalOrder.getCurrencyId());
                     orderLine.setQty(line.getQty());
-                    orderLine.setC_Project_ID(line.getC_Project_ID());
-                    orderLine.setC_Activity_ID(line.getC_Activity_ID());
-                    orderLine.setC_Campaign_ID(line.getC_Campaign_ID());
+                    orderLine.setProjectId(line.getProjectId());
+                    orderLine.setBusinessActivityId(line.getBusinessActivityId());
+                    orderLine.setCampaignId(line.getCampaignId());
                     orderLine.setPrice();
                     orderLine.setPrice(line.getAmt());
 
@@ -145,7 +145,7 @@ public class RMACreateOrder extends SvrProcess {
             }
         }
 
-        rma.setC_Order_ID(order.getC_Order_ID());
+        rma.setOrderId(order.getOrderId());
         if (!rma.save()) {
             throw new IllegalStateException("Could not update RMA document");
         }

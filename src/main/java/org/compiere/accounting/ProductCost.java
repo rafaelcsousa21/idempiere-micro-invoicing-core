@@ -80,6 +80,7 @@ public class ProductCost {
      */
     private MProduct m_product = null;
     private BigDecimal m_qty = Env.ZERO;
+
     /**
      * Constructor
      *

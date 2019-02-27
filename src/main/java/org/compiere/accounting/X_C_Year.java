@@ -65,8 +65,8 @@ public class X_C_Year extends PO implements I_C_Year {
      * @param C_Calendar_ID Accounting Calendar Name
      */
     public void setC_Calendar_ID(int C_Calendar_ID) {
-        if (C_Calendar_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Calendar_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Calendar_ID, Integer.valueOf(C_Calendar_ID));
+        if (C_Calendar_ID < 1) setValueNoCheck(COLUMNNAME_C_Calendar_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Calendar_ID, Integer.valueOf(C_Calendar_ID));
     }
 
     /**
@@ -95,7 +95,7 @@ public class X_C_Year extends PO implements I_C_Year {
      * @param FiscalYear The Fiscal Year
      */
     public void setFiscalYear(String FiscalYear) {
-        set_Value(COLUMNNAME_FiscalYear, FiscalYear);
+        setValue(COLUMNNAME_FiscalYear, FiscalYear);
     }
 
     /**
@@ -104,7 +104,7 @@ public class X_C_Year extends PO implements I_C_Year {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     @Override

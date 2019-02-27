@@ -46,7 +46,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
             setDocumentAmt(Env.ZERO);
             setIsSOTrx(false); // N
             setProcessed(false);
-            //	setSalesRep_ID (0);
+            //	setSalesRepresentativeId (0);
         }
     } //	MInvoiceBatch
 

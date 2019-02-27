@@ -103,16 +103,16 @@ public class MDistribution extends X_GL_Distribution {
                 acct.getOrgId(),
                 acct.getAccount_ID(),
                 acct.getM_Product_ID(),
-                acct.getC_BPartner_ID(),
-                acct.getC_Project_ID(),
-                acct.getC_Campaign_ID(),
-                acct.getC_Activity_ID(),
-                acct.getAD_OrgTrx_ID(),
+                acct.getBusinessPartnerId(),
+                acct.getProjectId(),
+                acct.getCampaignId(),
+                acct.getBusinessActivityId(),
+                acct.getTransactionOrganizationId(),
                 acct.getC_SalesRegion_ID(),
                 acct.getC_LocTo_ID(),
                 acct.getC_LocFrom_ID(),
-                acct.getUser1_ID(),
-                acct.getUser2_ID());
+                acct.getUser1Id(),
+                acct.getUser2Id());
     } //	get
 
     /**
@@ -167,27 +167,27 @@ public class MDistribution extends X_GL_Distribution {
             //	Only Posting Type / DocType
             if (distribution.getPostingType() != null
                     && !distribution.getPostingType().equals(PostingType)) continue;
-            if (distribution.getC_DocType_ID() != 0 && distribution.getC_DocType_ID() != C_DocType_ID)
+            if (distribution.getDocumentTypeId() != 0 && distribution.getDocumentTypeId() != C_DocType_ID)
                 continue;
 
             //	Optional Elements - "non-Any"
             if (!distribution.isAnyOrg() && distribution.getOrgId() != AD_Org_ID) continue;
             if (!distribution.isAnyAcct() && distribution.getAccount_ID() != Account_ID) continue;
             if (!distribution.isAnyProduct() && distribution.getM_Product_ID() != M_Product_ID) continue;
-            if (!distribution.isAnyBPartner() && distribution.getC_BPartner_ID() != C_BPartner_ID)
+            if (!distribution.isAnyBPartner() && distribution.getBusinessPartnerId() != C_BPartner_ID)
                 continue;
-            if (!distribution.isAnyProject() && distribution.getC_Project_ID() != C_Project_ID) continue;
-            if (!distribution.isAnyCampaign() && distribution.getC_Campaign_ID() != C_Campaign_ID)
+            if (!distribution.isAnyProject() && distribution.getProjectId() != C_Project_ID) continue;
+            if (!distribution.isAnyCampaign() && distribution.getCampaignId() != C_Campaign_ID)
                 continue;
-            if (!distribution.isAnyActivity() && distribution.getC_Activity_ID() != C_Activity_ID)
+            if (!distribution.isAnyActivity() && distribution.getBusinessActivityId() != C_Activity_ID)
                 continue;
-            if (!distribution.isAnyOrgTrx() && distribution.getAD_OrgTrx_ID() != AD_OrgTrx_ID) continue;
+            if (!distribution.isAnyOrgTrx() && distribution.getTransactionOrganizationId() != AD_OrgTrx_ID) continue;
             if (!distribution.isAnySalesRegion()
                     && distribution.getC_SalesRegion_ID() != C_SalesRegion_ID) continue;
             if (!distribution.isAnyLocTo() && distribution.getC_LocTo_ID() != C_LocTo_ID) continue;
             if (!distribution.isAnyLocFrom() && distribution.getC_LocFrom_ID() != C_LocFrom_ID) continue;
-            if (!distribution.isAnyUser1() && distribution.getUser1_ID() != User1_ID) continue;
-            if (!distribution.isAnyUser2() && distribution.getUser2_ID() != User2_ID) continue;
+            if (!distribution.isAnyUser1() && distribution.getUser1Id() != User1_ID) continue;
+            if (!distribution.isAnyUser2() && distribution.getUser2Id() != User2_ID) continue;
             //
             list.add(distribution);
         } //	 for all distributions with acct
@@ -386,18 +386,18 @@ public class MDistribution extends X_GL_Distribution {
     protected boolean beforeSave(boolean newRecord) {
         //	Reset not selected Any
         if (isAnyAcct() && getAccount_ID() != 0) setAccount_ID(0);
-        if (isAnyActivity() && getC_Activity_ID() != 0) setC_Activity_ID(0);
-        if (isAnyBPartner() && getC_BPartner_ID() != 0) setC_BPartner_ID(0);
-        if (isAnyCampaign() && getC_Campaign_ID() != 0) setC_Campaign_ID(0);
+        if (isAnyActivity() && getBusinessActivityId() != 0) setBusinessActivityId(0);
+        if (isAnyBPartner() && getBusinessPartnerId() != 0) setBusinessPartnerId(0);
+        if (isAnyCampaign() && getCampaignId() != 0) setCampaignId(0);
         if (isAnyLocFrom() && getC_LocFrom_ID() != 0) setC_LocFrom_ID(0);
         if (isAnyLocTo() && getC_LocTo_ID() != 0) setC_LocTo_ID(0);
         if (isAnyOrg() && getOrg_ID() != 0) setOrg_ID(0);
-        if (isAnyOrgTrx() && getAD_OrgTrx_ID() != 0) setAD_OrgTrx_ID(0);
+        if (isAnyOrgTrx() && getTransactionOrganizationId() != 0) setTransactionOrganizationId(0);
         if (isAnyProduct() && getM_Product_ID() != 0) setM_Product_ID(0);
-        if (isAnyProject() && getC_Project_ID() != 0) setC_Project_ID(0);
+        if (isAnyProject() && getProjectId() != 0) setProjectId(0);
         if (isAnySalesRegion() && getC_SalesRegion_ID() != 0) setC_SalesRegion_ID(0);
-        if (isAnyUser1() && getUser1_ID() != 0) setUser1_ID(0);
-        if (isAnyUser2() && getUser2_ID() != 0) setUser2_ID(0);
+        if (isAnyUser1() && getUser1Id() != 0) setUser1Id(0);
+        if (isAnyUser2() && getUser2Id() != 0) setUser2Id(0);
         return true;
     } //	beforeSave
 } //	MDistribution

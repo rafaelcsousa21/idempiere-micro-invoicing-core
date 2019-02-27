@@ -213,8 +213,8 @@ public class X_C_BankAccount_Processor extends PO
      * @param C_BankAccount_ID Account at the Bank
      */
     public void setC_BankAccount_ID(int C_BankAccount_ID) {
-        if (C_BankAccount_ID < 1) set_ValueNoCheck(COLUMNNAME_C_BankAccount_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
+        if (C_BankAccount_ID < 1) setValueNoCheck(COLUMNNAME_C_BankAccount_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }
 
     /**
@@ -234,8 +234,8 @@ public class X_C_BankAccount_Processor extends PO
      * @param C_PaymentProcessor_ID Payment processor for electronic payments
      */
     public void setC_PaymentProcessor_ID(int C_PaymentProcessor_ID) {
-        if (C_PaymentProcessor_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PaymentProcessor_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_PaymentProcessor_ID, Integer.valueOf(C_PaymentProcessor_ID));
+        if (C_PaymentProcessor_ID < 1) setValueNoCheck(COLUMNNAME_C_PaymentProcessor_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_PaymentProcessor_ID, Integer.valueOf(C_PaymentProcessor_ID));
     }
 
     @Override

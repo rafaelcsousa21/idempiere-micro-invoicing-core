@@ -123,7 +123,7 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
      * @return true if value set
      */
     public boolean setValue(String columnName, Integer value) {
-        return super.set_Value(columnName, value);
+        return super.setValue(columnName, value);
     } //	setValue
 
     /**

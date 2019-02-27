@@ -62,7 +62,7 @@ public class X_C_Bank extends BasePOName implements I_C_Bank {
      * @param RoutingNo Bank Routing Number
      */
     public void setRoutingNo(String RoutingNo) {
-        set_Value(COLUMNNAME_RoutingNo, RoutingNo);
+        setValue(COLUMNNAME_RoutingNo, RoutingNo);
     }
 
     /**

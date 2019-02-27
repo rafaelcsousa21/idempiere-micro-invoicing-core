@@ -54,8 +54,8 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction {
      * @param R_Request_ID Request from a Business Partner or Prospect
      */
     public void setR_Request_ID(int R_Request_ID) {
-        if (R_Request_ID < 1) set_ValueNoCheck(COLUMNNAME_R_Request_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_R_Request_ID, Integer.valueOf(R_Request_ID));
+        if (R_Request_ID < 1) setValueNoCheck(COLUMNNAME_R_Request_ID, null);
+        else setValueNoCheck(COLUMNNAME_R_Request_ID, Integer.valueOf(R_Request_ID));
     }
 
     @Override

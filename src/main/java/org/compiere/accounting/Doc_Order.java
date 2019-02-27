@@ -41,6 +41,7 @@ public class Doc_Order extends Doc {
      * Order Currency Precision
      */
     private int m_precision = -1;
+
     /**
      * Constructor
      *
@@ -87,8 +88,8 @@ public class Doc_Order extends Doc {
                 DocLine docLine = new DocLine(line, doc);
                 //	Currency
                 if (precision == -1) {
-                    doc.setC_Currency_ID(docLine.getC_Currency_ID());
-                    precision = MCurrency.getStdPrecision(doc.getCtx(), docLine.getC_Currency_ID());
+                    doc.setCurrencyId(docLine.getCurrencyId());
+                    precision = MCurrency.getStdPrecision(doc.getCtx(), docLine.getCurrencyId());
                 }
                 //	Qty
                 BigDecimal Qty = line.getQtyOrdered().max(maxQty);
@@ -156,8 +157,8 @@ public class Doc_Order extends Doc {
         int C_Currency_ID = -1;
         for (int i = 0; i < commitments.length; i++) {
             DocLine line = commitments[i];
-            if (C_Currency_ID == -1) C_Currency_ID = line.getC_Currency_ID();
-            else if (C_Currency_ID != line.getC_Currency_ID()) {
+            if (C_Currency_ID == -1) C_Currency_ID = line.getCurrencyId();
+            else if (C_Currency_ID != line.getCurrencyId()) {
                 doc.p_Error = "Different Currencies of Order Lines";
                 s_log.log(Level.SEVERE, doc.p_Error);
                 return null;
@@ -210,8 +211,8 @@ public class Doc_Order extends Doc {
                 DocLine docLine = new DocLine(line, doc);
                 //	Currency
                 if (precision == -1) {
-                    doc.setC_Currency_ID(docLine.getC_Currency_ID());
-                    precision = MCurrency.getStdPrecision(doc.getCtx(), docLine.getC_Currency_ID());
+                    doc.setCurrencyId(docLine.getCurrencyId());
+                    precision = MCurrency.getStdPrecision(doc.getCtx(), docLine.getCurrencyId());
                 }
                 //	Qty
                 BigDecimal Qty = line.getQtyOrdered().max(maxQty);
@@ -279,8 +280,8 @@ public class Doc_Order extends Doc {
         int C_Currency_ID = -1;
         for (int i = 0; i < commitments.length; i++) {
             DocLine line = commitments[i];
-            if (C_Currency_ID == -1) C_Currency_ID = line.getC_Currency_ID();
-            else if (C_Currency_ID != line.getC_Currency_ID()) {
+            if (C_Currency_ID == -1) C_Currency_ID = line.getCurrencyId();
+            else if (C_Currency_ID != line.getCurrencyId()) {
                 doc.p_Error = "Different Currencies of Order Lines";
                 s_log.log(Level.SEVERE, doc.p_Error);
                 return null;
@@ -403,7 +404,7 @@ public class Doc_Order extends Doc {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, order.getC_Order_ID());
+            pstmt.setInt(1, order.getOrderId());
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 MRequisitionLine line = new MRequisitionLine(getCtx(), rs);
@@ -443,7 +444,7 @@ public class Doc_Order extends Doc {
      * @return precision
      */
     private int getStdPrecision() {
-        if (m_precision == -1) m_precision = MCurrency.getStdPrecision(getCtx(), getC_Currency_ID());
+        if (m_precision == -1) m_precision = MCurrency.getStdPrecision(getCtx(), getCurrencyId());
         return m_precision;
     } //	getPrecision
 
@@ -571,7 +572,7 @@ public class Doc_Order extends Doc {
 
                     //	Account
                     MAccount expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
-                    fl = fact.createLine(line, expense, getC_Currency_ID(), cost, null);
+                    fl = fact.createLine(line, expense, getCurrencyId(), cost, null);
                 }
                 //	Offset
                 MAccount offset = getAccount(ACCTTYPE_CommitmentOffset, as);
@@ -580,7 +581,7 @@ public class Doc_Order extends Doc {
                     log.log(Level.SEVERE, p_Error);
                     return null;
                 }
-                fact.createLine(null, offset, getC_Currency_ID(), null, total);
+                fact.createLine(null, offset, getCurrencyId(), null, total);
                 //
                 facts.add(fact);
             }
@@ -597,7 +598,7 @@ public class Doc_Order extends Doc {
 
                     //	Account
                     MAccount expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
-                    fl = fact.createLine(line, expense, getC_Currency_ID(), null, cost);
+                    fl = fact.createLine(line, expense, getCurrencyId(), null, cost);
                 }
                 //	Offset
                 if (m_requisitions.length > 0) {
@@ -607,7 +608,7 @@ public class Doc_Order extends Doc {
                         log.log(Level.SEVERE, p_Error);
                         return null;
                     }
-                    fact.createLine(null, offset, getC_Currency_ID(), total, null);
+                    fact.createLine(null, offset, getCurrencyId(), total, null);
                 }
                 //
                 facts.add(fact);
@@ -628,7 +629,7 @@ public class Doc_Order extends Doc {
 
                     //	Account
                     MAccount revenue = line.getAccount(ProductCost.ACCTTYPE_P_Revenue, as);
-                    fl = fact.createLine(line, revenue, getC_Currency_ID(), null, cost);
+                    fl = fact.createLine(line, revenue, getCurrencyId(), null, cost);
                 }
                 //	Offset
                 MAccount offset = getAccount(ACCTTYPE_CommitmentOffsetSales, as);
@@ -637,7 +638,7 @@ public class Doc_Order extends Doc {
                     log.log(Level.SEVERE, p_Error);
                     return null;
                 }
-                fact.createLine(null, offset, getC_Currency_ID(), total, null);
+                fact.createLine(null, offset, getCurrencyId(), total, null);
                 //
                 facts.add(fact);
             }

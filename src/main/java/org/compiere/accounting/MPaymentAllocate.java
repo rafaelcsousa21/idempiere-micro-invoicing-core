@@ -38,8 +38,8 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
     public MPaymentAllocate(Properties ctx, int C_PaymentAllocate_ID) {
         super(ctx, C_PaymentAllocate_ID);
         if (C_PaymentAllocate_ID == 0) {
-            //	setC_Payment_ID (0);	//	Parent
-            //	setC_Invoice_ID (0);
+            //	setPaymentId (0);	//	Parent
+            //	setInvoiceId (0);
             setAmount(Env.ZERO);
             setDiscountAmt(Env.ZERO);
             setOverUnderAmt(Env.ZERO);
@@ -70,7 +70,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
         Query query =
                 MTable.get(parent.getCtx(), I_C_PaymentAllocate.Table_ID)
                         .createQuery(whereClause);
-        query.setParameters(parent.getC_Payment_ID()).setOnlyActiveRecords(true);
+        query.setParameters(parent.getPaymentId()).setOnlyActiveRecords(true);
         List<MPaymentAllocate> list = query.list();
         return list.toArray(new MPaymentAllocate[list.size()]);
     } //	get
@@ -80,10 +80,10 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      *
      * @param C_Invoice_ID id
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        super.setC_Invoice_ID(C_Invoice_ID);
+    public void setInvoiceId(int C_Invoice_ID) {
+        super.setInvoiceId(C_Invoice_ID);
         m_invoice = null;
-    } //	setC_Invoice_ID
+    } //	setInvoiceId
 
     /**
      * Get Invoice
@@ -91,8 +91,8 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      * @return invoice
      */
     public MInvoice getInvoice() {
-        if (m_invoice == null && getC_Invoice_ID() != 0)
-            m_invoice = new MInvoice(getCtx(), getC_Invoice_ID());
+        if (m_invoice == null && getInvoiceId() != 0)
+            m_invoice = new MInvoice(getCtx(), getInvoiceId());
         return m_invoice;
     } //	getInvoice
 
@@ -101,11 +101,11 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      *
      * @return bp
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         if (m_invoice == null) getInvoice();
         if (m_invoice == null) return 0;
-        return m_invoice.getC_BPartner_ID();
-    } //	getC_BPartner_ID
+        return m_invoice.getBusinessPartnerId();
+    } //	getBusinessPartnerId
 
     /**
      * Before Save
@@ -114,11 +114,11 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        MPayment payment = new MPayment(getCtx(), getC_Payment_ID());
+        MPayment payment = new MPayment(getCtx(), getPaymentId());
         if ((newRecord || is_ValueChanged("C_Invoice_ID"))
-                && (payment.getC_Charge_ID() != 0
-                || payment.getC_Invoice_ID() != 0
-                || payment.getC_Order_ID() != 0)) {
+                && (payment.getChargeId() != 0
+                || payment.getInvoiceId() != 0
+                || payment.getOrderId() != 0)) {
             log.saveError("PaymentIsAllocated", "");
             return false;
         }

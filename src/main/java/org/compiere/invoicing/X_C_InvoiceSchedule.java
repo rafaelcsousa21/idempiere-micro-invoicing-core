@@ -54,6 +54,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
      *
      */
     private static final long serialVersionUID = 20171031L;
+
     /**
      * Standard Constructor
      */

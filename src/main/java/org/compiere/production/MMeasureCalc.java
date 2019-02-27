@@ -117,7 +117,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
             for (int i = 0; i < restrictions.length; i++) {
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_BusinessPartner.equals(
                         restrictions[i].getGoalRestrictionType()))
-                    listBP.add(restrictions[i].getC_BPartner_ID());
+                    listBP.add(restrictions[i].getBusinessPartnerId());
                 //	Hierarchy comes here
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_BusPartnerGroup.equals(
                         restrictions[i].getGoalRestrictionType()))

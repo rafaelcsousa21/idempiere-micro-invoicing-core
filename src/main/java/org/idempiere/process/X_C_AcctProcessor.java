@@ -65,8 +65,8 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
      * @param AD_Schedule_ID Schedule
      */
     public void setScheduleId(int AD_Schedule_ID) {
-        if (AD_Schedule_ID < 1) set_Value(COLUMNNAME_AD_Schedule_ID, null);
-        else set_Value(COLUMNNAME_AD_Schedule_ID, Integer.valueOf(AD_Schedule_ID));
+        if (AD_Schedule_ID < 1) setValue(COLUMNNAME_AD_Schedule_ID, null);
+        else setValue(COLUMNNAME_AD_Schedule_ID, Integer.valueOf(AD_Schedule_ID));
     }
 
     /**
@@ -95,7 +95,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
      * @param DateNextRun Date the process will run next
      */
     public void setDateNextRun(Timestamp DateNextRun) {
-        set_Value(COLUMNNAME_DateNextRun, DateNextRun);
+        setValue(COLUMNNAME_DateNextRun, DateNextRun);
     }
 
     /**
@@ -104,7 +104,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
      * @param KeepLogDays Number of days to keep the log entries
      */
     public void setKeepLogDays(int KeepLogDays) {
-        set_Value(COLUMNNAME_KeepLogDays, Integer.valueOf(KeepLogDays));
+        setValue(COLUMNNAME_KeepLogDays, Integer.valueOf(KeepLogDays));
     }
 
     /**
@@ -113,7 +113,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
      * @param Supervisor_ID Supervisor for this user/organization - used for escalation and approval
      */
     public void setSupervisorId(int Supervisor_ID) {
-        if (Supervisor_ID < 1) set_Value(COLUMNNAME_Supervisor_ID, null);
-        else set_Value(COLUMNNAME_Supervisor_ID, Integer.valueOf(Supervisor_ID));
+        if (Supervisor_ID < 1) setValue(COLUMNNAME_Supervisor_ID, null);
+        else setValue(COLUMNNAME_Supervisor_ID, Integer.valueOf(Supervisor_ID));
     }
 }

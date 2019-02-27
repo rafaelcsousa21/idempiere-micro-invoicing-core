@@ -57,7 +57,7 @@ public class OrderLineCreateShipment extends SvrProcess {
         //
         MOrderLine line = new MOrderLine(getCtx(), p_C_OrderLine_ID);
         if (line.getId() == 0) throw new IllegalArgumentException("Order line not found");
-        MOrder order = new MOrder(getCtx(), line.getC_Order_ID());
+        MOrder order = new MOrder(getCtx(), line.getOrderId());
         if (!MOrder.DOCSTATUS_Completed.equals(order.getDocStatus()))
             throw new IllegalArgumentException("Order not completed");
 
@@ -67,10 +67,10 @@ public class OrderLineCreateShipment extends SvrProcess {
         int C_DocTypeShipment_ID =
                 getSQLValue(
                         "SELECT C_DocTypeShipment_ID FROM C_DocType WHERE C_DocType_ID=?",
-                        order.getC_DocType_ID());
+                        order.getDocumentTypeId());
 
         MInOut shipment = new MInOut(order, C_DocTypeShipment_ID, p_MovementDate);
-        shipment.setM_Warehouse_ID(line.getM_Warehouse_ID());
+        shipment.setWarehouseId(line.getWarehouseId());
         shipment.setMovementDate(line.getDatePromised());
         if (!shipment.save()) throw new IllegalArgumentException("Cannot save shipment header");
 
@@ -80,7 +80,7 @@ public class OrderLineCreateShipment extends SvrProcess {
         sline.setQtyEntered(line.getQtyReserved());
         sline.setC_UOM_ID(line.getC_UOM_ID());
         sline.setQty(line.getQtyReserved());
-        sline.setM_Warehouse_ID(line.getM_Warehouse_ID());
+        sline.setWarehouseId(line.getWarehouseId());
         if (!sline.save()) throw new IllegalArgumentException("Cannot save Shipment Line");
 
         return shipment.getDocumentNo();

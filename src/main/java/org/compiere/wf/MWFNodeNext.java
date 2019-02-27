@@ -51,6 +51,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
             setSeqNo(10); // 10
         }
     } //	MWFNodeNext
+
     /**
      * Default Constructor
      *
@@ -61,6 +62,7 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
     public MWFNodeNext(Properties ctx, ResultSet rs) {
         super(ctx, rs);
     } //	MWFNodeNext
+
     /**
      * Parent constructor
      *

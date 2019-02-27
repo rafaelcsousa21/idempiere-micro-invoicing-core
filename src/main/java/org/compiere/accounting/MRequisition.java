@@ -66,7 +66,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         if (M_Requisition_ID == 0) {
             //	setDocumentNo (null);
             //	setUserId (0);
-            //	setM_PriceList_ID (0);
+            //	setPriceListId (0);
             //	setWarehouseId(0);
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             setDateRequired(new Timestamp(System.currentTimeMillis()));
@@ -144,11 +144,11 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
     /**
      * Set default PriceList
      */
-    public void setM_PriceList_ID() {
+    public void setPriceListId() {
         MPriceList defaultPL = MPriceList.getDefault(getCtx(), false);
         if (defaultPL == null) defaultPL = MPriceList.getDefault(getCtx(), true);
-        if (defaultPL != null) setM_PriceList_ID(defaultPL.getM_PriceList_ID());
-    } //	setM_PriceList_ID()
+        if (defaultPL != null) setPriceListId(defaultPL.getPriceListId());
+    } //	setPriceListId()
 
     /**
      * Before Save
@@ -157,7 +157,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getM_PriceList_ID() == 0) setM_PriceList_ID();
+        if (getPriceListId() == 0) setPriceListId();
         return true;
     } //	beforeSave
 
@@ -215,7 +215,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         MRequisitionLine[] lines = getLines();
 
         //	Invalid
-        if (getAD_User_ID() == 0 || getM_PriceList_ID() == 0 || getM_Warehouse_ID() == 0) {
+        if (getUserId() == 0 || getPriceListId() == 0 || getWarehouseId() == 0) {
             return DocAction.Companion.getSTATUS_Invalid();
         }
 
@@ -228,7 +228,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
                 getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getOrgId());
 
         //	Add up Amounts
-        int precision = MPriceList.getStandardPrecision(getCtx(), getM_PriceList_ID());
+        int precision = MPriceList.getStandardPrecision(getCtx(), getPriceListId());
         BigDecimal totalLines = Env.ZERO;
         for (int i = 0; i < lines.length; i++) {
             MRequisitionLine line = lines[i];
@@ -319,14 +319,14 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * Set the definite document number after completed
      */
     private void setDefiniteDocumentNo() {
-        MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         if (dt.isOverwriteDateOnComplete()) {
             setDateDoc(new Timestamp(System.currentTimeMillis()));
             MPeriod.testPeriodOpen(
                     getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getOrgId());
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getC_DocType_ID(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
             if (value != null) setDocumentNo(value);
         }
     }
@@ -506,7 +506,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * @return AD_User_ID
      */
     public int getDoc_User_ID() {
-        return getAD_User_ID();
+        return getUserId();
     }
 
     /**
@@ -514,9 +514,9 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      *
      * @return C_Currency_ID
      */
-    public int getC_Currency_ID() {
-        MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
-        return pl.getC_Currency_ID();
+    public int getCurrencyId() {
+        MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
+        return pl.getCurrencyId();
     }
 
     /**
@@ -534,7 +534,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * @return user name
      */
     public String getUserName() {
-        return MUser.get(getCtx(), getAD_User_ID()).getName();
+        return MUser.get(getCtx(), getUserId()).getName();
     } //	getUserName
 
     /**

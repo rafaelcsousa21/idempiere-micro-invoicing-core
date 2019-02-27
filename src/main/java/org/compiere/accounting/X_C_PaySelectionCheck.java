@@ -48,7 +48,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
     public X_C_PaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID) {
         super(ctx, C_PaySelectionCheck_ID);
         /**
-         * if (C_PaySelectionCheck_ID == 0) { setC_BPartner_ID (0); setC_PaySelectionCheck_ID (0);
+         * if (C_PaySelectionCheck_ID == 0) { setBusinessPartnerId (0); setC_PaySelectionCheck_ID (0);
          * setC_PaySelection_ID (0); setDiscountAmt (Env.ZERO); setIsGeneratedDraft (false); // N
          * setIsPrinted (false); setIsReceipt (false); setPayAmt (Env.ZERO); setPaymentRule (null);
          * setProcessed (false); // N setQty (0); setWriteOffAmt (Env.ZERO); // 0 }
@@ -81,7 +81,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -92,9 +92,9 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValue(COLUMNNAME_C_BPartner_ID, null);
+        else setValue(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -114,8 +114,8 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param C_BP_BankAccount_ID Bank Account of the Business Partner
      */
     public void setC_BP_BankAccount_ID(int C_BP_BankAccount_ID) {
-        if (C_BP_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BP_BankAccount_ID, null);
-        else set_Value(COLUMNNAME_C_BP_BankAccount_ID, Integer.valueOf(C_BP_BankAccount_ID));
+        if (C_BP_BankAccount_ID < 1) setValue(COLUMNNAME_C_BP_BankAccount_ID, null);
+        else setValue(COLUMNNAME_C_BP_BankAccount_ID, Integer.valueOf(C_BP_BankAccount_ID));
     }
 
     /**
@@ -123,7 +123,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @return Payment identifier
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
@@ -134,9 +134,9 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @param C_Payment_ID Payment identifier
      */
-    public void setC_Payment_ID(int C_Payment_ID) {
-        if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-        else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    public void setPaymentId(int C_Payment_ID) {
+        if (C_Payment_ID < 1) setValue(COLUMNNAME_C_Payment_ID, null);
+        else setValue(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
     }
 
     /**
@@ -173,8 +173,8 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param C_PaySelection_ID Payment Selection
      */
     public void setC_PaySelection_ID(int C_PaySelection_ID) {
-        if (C_PaySelection_ID < 1) set_ValueNoCheck(COLUMNNAME_C_PaySelection_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_PaySelection_ID, C_PaySelection_ID);
+        if (C_PaySelection_ID < 1) setValueNoCheck(COLUMNNAME_C_PaySelection_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_PaySelection_ID, C_PaySelection_ID);
     }
 
     /**
@@ -194,7 +194,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param DiscountAmt Calculated amount of discount
      */
     public void setDiscountAmt(BigDecimal DiscountAmt) {
-        set_Value(COLUMNNAME_DiscountAmt, DiscountAmt);
+        setValue(COLUMNNAME_DiscountAmt, DiscountAmt);
     }
 
     /**
@@ -226,7 +226,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param IsPrinted Indicates if this document / line is printed
      */
     public void setIsPrinted(boolean IsPrinted) {
-        set_Value(COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
+        setValue(COLUMNNAME_IsPrinted, Boolean.valueOf(IsPrinted));
     }
 
     /**
@@ -235,7 +235,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param IsReceipt This is a sales transaction (receipt)
      */
     public void setIsReceipt(boolean IsReceipt) {
-        set_Value(COLUMNNAME_IsReceipt, Boolean.valueOf(IsReceipt));
+        setValue(COLUMNNAME_IsReceipt, Boolean.valueOf(IsReceipt));
     }
 
     /**
@@ -269,7 +269,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param PayAmt Amount being paid
      */
     public void setPayAmt(BigDecimal PayAmt) {
-        set_Value(COLUMNNAME_PayAmt, PayAmt);
+        setValue(COLUMNNAME_PayAmt, PayAmt);
     }
 
     /**
@@ -288,7 +288,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      */
     public void setPaymentRule(String PaymentRule) {
 
-        set_Value(COLUMNNAME_PaymentRule, PaymentRule);
+        setValue(COLUMNNAME_PaymentRule, PaymentRule);
     }
 
     /**
@@ -311,7 +311,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -331,7 +331,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param Qty Quantity
      */
     public void setQty(int Qty) {
-        set_Value(COLUMNNAME_Qty, Integer.valueOf(Qty));
+        setValue(COLUMNNAME_Qty, Integer.valueOf(Qty));
     }
 
     /**
@@ -351,7 +351,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      * @param WriteOffAmt Amount to write-off
      */
     public void setWriteOffAmt(BigDecimal WriteOffAmt) {
-        set_Value(COLUMNNAME_WriteOffAmt, WriteOffAmt);
+        setValue(COLUMNNAME_WriteOffAmt, WriteOffAmt);
     }
 
     @Override

@@ -68,7 +68,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      * @param AccountNo Account Number
      */
     public void setAccountNo(String AccountNo) {
-        set_Value(COLUMNNAME_AccountNo, AccountNo);
+        setValue(COLUMNNAME_AccountNo, AccountNo);
     }
 
     /**
@@ -78,7 +78,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      */
     public void setBankAccountType(String BankAccountType) {
 
-        set_Value(COLUMNNAME_BankAccountType, BankAccountType);
+        setValue(COLUMNNAME_BankAccountType, BankAccountType);
     }
 
     /**
@@ -86,7 +86,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      *
      * @return Account at the Bank
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -97,7 +97,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      *
      * @return Bank
      */
-    public int getC_Bank_ID() {
+    public int getBankId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Bank_ID);
         if (ii == null) return 0;
         return ii;
@@ -108,9 +108,9 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      *
      * @param C_Bank_ID Bank
      */
-    public void setC_Bank_ID(int C_Bank_ID) {
-        if (C_Bank_ID < 1) set_ValueNoCheck(COLUMNNAME_C_Bank_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_Bank_ID, C_Bank_ID);
+    public void setBankId(int C_Bank_ID) {
+        if (C_Bank_ID < 1) setValueNoCheck(COLUMNNAME_C_Bank_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_Bank_ID, C_Bank_ID);
     }
 
     /**
@@ -118,7 +118,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -129,9 +129,9 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-        else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValue(COLUMNNAME_C_Currency_ID, null);
+        else setValue(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     /**
@@ -140,7 +140,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      * @param CreditLimit Amount of Credit allowed
      */
     public void setCreditLimit(BigDecimal CreditLimit) {
-        set_Value(COLUMNNAME_CreditLimit, CreditLimit);
+        setValue(COLUMNNAME_CreditLimit, CreditLimit);
     }
 
     /**
@@ -160,7 +160,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      * @param CurrentBalance Current Balance
      */
     public void setCurrentBalance(BigDecimal CurrentBalance) {
-        set_Value(COLUMNNAME_CurrentBalance, CurrentBalance);
+        setValue(COLUMNNAME_CurrentBalance, CurrentBalance);
     }
 
     /**
@@ -178,7 +178,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      * @param IBAN International Bank Account Number
      */
     public void setIBAN(String IBAN) {
-        set_Value(COLUMNNAME_IBAN, IBAN);
+        setValue(COLUMNNAME_IBAN, IBAN);
     }
 
     /**
@@ -187,7 +187,7 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        set_Value(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
     }
 
     @Override

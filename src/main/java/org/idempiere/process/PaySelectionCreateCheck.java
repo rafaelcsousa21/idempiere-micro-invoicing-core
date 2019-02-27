@@ -104,7 +104,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
         for (int i = 0; i < m_list.size(); i++) {
             MPaySelectionCheck check = (MPaySelectionCheck) m_list.get(i);
             //	Add to existing
-            if (check.getC_BPartner_ID() == line.getInvoice().getC_BPartner_ID()) {
+            if (check.getBusinessPartnerId() == line.getInvoice().getBusinessPartnerId()) {
                 check.addLine(line);
                 if (!check.save()) throw new IllegalStateException("Cannot save MPaySelectionCheck");
                 line.setC_PaySelectionCheck_ID(check.getC_PaySelectionCheck_ID());
@@ -120,7 +120,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
         }
         MPaySelectionCheck check = new MPaySelectionCheck(line, PaymentRule);
         if (!check.isValid()) {
-            int C_BPartner_ID = check.getC_BPartner_ID();
+            int C_BPartner_ID = check.getBusinessPartnerId();
             I_C_BPartner bp = MBPartner.get(getCtx(), C_BPartner_ID);
             StringBuilder msg = new StringBuilder("@NotFound@ @C_BP_BankAccount@: ").append(bp.getName());
             throw new AdempiereUserError(msg.toString());

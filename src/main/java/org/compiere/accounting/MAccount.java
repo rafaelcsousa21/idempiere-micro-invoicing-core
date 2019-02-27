@@ -278,16 +278,16 @@ public class MAccount extends X_C_ValidCombination {
         //	--  Optional Accounting fields
         newAccount.setC_SubAcct_ID(C_SubAcct_ID);
         newAccount.setM_Product_ID(M_Product_ID);
-        newAccount.setC_BPartner_ID(C_BPartner_ID);
-        newAccount.setAD_OrgTrx_ID(AD_OrgTrx_ID);
+        newAccount.setBusinessPartnerId(C_BPartner_ID);
+        newAccount.setTransactionOrganizationId(AD_OrgTrx_ID);
         newAccount.setC_LocFrom_ID(C_LocFrom_ID);
         newAccount.setC_LocTo_ID(C_LocTo_ID);
         newAccount.setC_SalesRegion_ID(C_SalesRegion_ID);
-        newAccount.setC_Project_ID(C_Project_ID);
-        newAccount.setC_Campaign_ID(C_Campaign_ID);
-        newAccount.setC_Activity_ID(C_Activity_ID);
-        newAccount.setUser1_ID(User1_ID);
-        newAccount.setUser2_ID(User2_ID);
+        newAccount.setProjectId(C_Project_ID);
+        newAccount.setCampaignId(C_Campaign_ID);
+        newAccount.setBusinessActivityId(C_Activity_ID);
+        newAccount.setUser1Id(User1_ID);
+        newAccount.setUser2Id(User2_ID);
         newAccount.setUserElement1_ID(UserElement1_ID);
         newAccount.setUserElement2_ID(UserElement2_ID);
         //
@@ -315,16 +315,16 @@ public class MAccount extends X_C_ValidCombination {
                         fa.getAccount_ID(),
                         fa.getC_SubAcct_ID(),
                         fa.getM_Product_ID(),
-                        fa.getC_BPartner_ID(),
-                        fa.getAD_OrgTrx_ID(),
+                        fa.getBusinessPartnerId(),
+                        fa.getTransactionOrganizationId(),
                         fa.getC_LocFrom_ID(),
                         fa.getC_LocTo_ID(),
                         fa.getC_SalesRegion_ID(),
-                        fa.getC_Project_ID(),
-                        fa.getC_Campaign_ID(),
-                        fa.getC_Activity_ID(),
-                        fa.getUser1_ID(),
-                        fa.getUser2_ID(),
+                        fa.getProjectId(),
+                        fa.getCampaignId(),
+                        fa.getBusinessActivityId(),
+                        fa.getUser1Id(),
+                        fa.getUser2Id(),
                         fa.getUserElement1_ID(),
                         fa.getUserElement2_ID());
         return acct;
@@ -354,27 +354,27 @@ public class MAccount extends X_C_ValidCombination {
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SubAccount) && setValue)
                 vc.setC_SubAcct_ID(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_BPartner) && setValue)
-                vc.setC_BPartner_ID(defaultValue);
+                vc.setBusinessPartnerId(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Product) && setValue)
                 vc.setM_Product_ID(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Activity) && setValue)
-                vc.setC_Activity_ID(defaultValue);
+                vc.setBusinessActivityId(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_LocationFrom) && setValue)
                 vc.setC_LocFrom_ID(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_LocationTo) && setValue)
                 vc.setC_LocTo_ID(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Campaign) && setValue)
-                vc.setC_Campaign_ID(defaultValue);
+                vc.setCampaignId(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_OrgTrx) && setValue)
-                vc.setAD_OrgTrx_ID(defaultValue);
+                vc.setTransactionOrganizationId(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Project) && setValue)
-                vc.setC_Project_ID(defaultValue);
+                vc.setProjectId(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SalesRegion) && setValue)
                 vc.setC_SalesRegion_ID(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserElementList1) && setValue)
-                vc.setUser1_ID(defaultValue);
+                vc.setUser1Id(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserElementList2) && setValue)
-                vc.setUser2_ID(defaultValue);
+                vc.setUser2Id(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserColumn1) && setValue)
                 vc.setUserElement1_ID(defaultValue);
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserColumn2) && setValue)
@@ -445,16 +445,16 @@ public class MAccount extends X_C_ValidCombination {
                     .append(" ");
             if (getC_SubAcct_ID() != 0) sb.append(",C_SubAcct_ID=").append(getC_SubAcct_ID());
             if (getM_Product_ID() != 0) sb.append(",M_Product_ID=").append(getM_Product_ID());
-            if (getC_BPartner_ID() != 0) sb.append(",C_BPartner_ID=").append(getC_BPartner_ID());
-            if (getAD_OrgTrx_ID() != 0) sb.append(",AD_OrgTrx_ID=").append(getAD_OrgTrx_ID());
+            if (getBusinessPartnerId() != 0) sb.append(",C_BPartner_ID=").append(getBusinessPartnerId());
+            if (getTransactionOrganizationId() != 0) sb.append(",AD_OrgTrx_ID=").append(getTransactionOrganizationId());
             if (getC_LocFrom_ID() != 0) sb.append(",C_LocFrom_ID=").append(getC_LocFrom_ID());
             if (getC_LocTo_ID() != 0) sb.append(",C_LocTo_ID=").append(getC_LocTo_ID());
             if (getC_SalesRegion_ID() != 0) sb.append(",C_SalesRegion_ID=").append(getC_SalesRegion_ID());
-            if (getC_Project_ID() != 0) sb.append(",C_Project_ID=").append(getC_Project_ID());
-            if (getC_Campaign_ID() != 0) sb.append(",C_Campaign_ID=").append(getC_Campaign_ID());
-            if (getC_Activity_ID() != 0) sb.append(",C_Activity_ID=").append(getC_Activity_ID());
-            if (getUser1_ID() != 0) sb.append(",User1_ID=").append(getUser1_ID());
-            if (getUser2_ID() != 0) sb.append(",User2_ID=").append(getUser2_ID());
+            if (getProjectId() != 0) sb.append(",C_Project_ID=").append(getProjectId());
+            if (getCampaignId() != 0) sb.append(",C_Campaign_ID=").append(getCampaignId());
+            if (getBusinessActivityId() != 0) sb.append(",C_Activity_ID=").append(getBusinessActivityId());
+            if (getUser1Id() != 0) sb.append(",User1_ID=").append(getUser1Id());
+            if (getUser2Id() != 0) sb.append(",User2_ID=").append(getUser2Id());
             if (getUserElement1_ID() != 0) sb.append(",UserElement1_ID=").append(getUserElement1_ID());
             if (getUserElement2_ID() != 0) sb.append(",UserElement2_ID=").append(getUserElement2_ID());
         }
@@ -575,8 +575,8 @@ public class MAccount extends X_C_ValidCombination {
                     fullyQualified = false;
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_BPartner.equals(element.getElementType())) {
-                if (getC_BPartner_ID() != 0) {
-                    X_C_BPartner partner = new X_C_BPartner(getCtx(), getC_BPartner_ID());
+                if (getBusinessPartnerId() != 0) {
+                    X_C_BPartner partner = new X_C_BPartner(getCtx(), getBusinessPartnerId());
                     combiStr = partner.getSearchKey();
                     descrStr = partner.getName();
                 } else if (element.isMandatory()) {
@@ -584,8 +584,8 @@ public class MAccount extends X_C_ValidCombination {
                     fullyQualified = false;
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_OrgTrx.equals(element.getElementType())) {
-                if (getAD_OrgTrx_ID() != 0) {
-                    MOrg org = new MOrg(getCtx(), getAD_OrgTrx_ID()); // in Trx!
+                if (getTransactionOrganizationId() != 0) {
+                    MOrg org = new MOrg(getCtx(), getTransactionOrganizationId()); // in Trx!
                     combiStr = org.getSearchKey();
                     descrStr = org.getName();
                 } else if (element.isMandatory()) {
@@ -620,8 +620,8 @@ public class MAccount extends X_C_ValidCombination {
                     fullyQualified = false;
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_Project.equals(element.getElementType())) {
-                if (getC_Project_ID() != 0) {
-                    X_C_Project project = new X_C_Project(getCtx(), getC_Project_ID());
+                if (getProjectId() != 0) {
+                    X_C_Project project = new X_C_Project(getCtx(), getProjectId());
                     combiStr = project.getSearchKey();
                     descrStr = project.getName();
                 } else if (element.isMandatory()) {
@@ -629,8 +629,8 @@ public class MAccount extends X_C_ValidCombination {
                     fullyQualified = false;
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_Campaign.equals(element.getElementType())) {
-                if (getC_Campaign_ID() != 0) {
-                    X_C_Campaign campaign = new X_C_Campaign(getCtx(), getC_Campaign_ID());
+                if (getCampaignId() != 0) {
+                    X_C_Campaign campaign = new X_C_Campaign(getCtx(), getCampaignId());
                     combiStr = campaign.getSearchKey();
                     descrStr = campaign.getName();
                 } else if (element.isMandatory()) {
@@ -638,8 +638,8 @@ public class MAccount extends X_C_ValidCombination {
                     fullyQualified = false;
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_Activity.equals(element.getElementType())) {
-                if (getC_Activity_ID() != 0) {
-                    X_C_Activity act = new X_C_Activity(getCtx(), getC_Activity_ID());
+                if (getBusinessActivityId() != 0) {
+                    X_C_Activity act = new X_C_Activity(getCtx(), getBusinessActivityId());
                     combiStr = act.getSearchKey();
                     descrStr = act.getName();
                 } else if (element.isMandatory()) {
@@ -647,14 +647,14 @@ public class MAccount extends X_C_ValidCombination {
                     fullyQualified = false;
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_UserElementList1.equals(element.getElementType())) {
-                if (getUser1_ID() != 0) {
-                    MElementValue ev = new MElementValue(getCtx(), getUser1_ID());
+                if (getUser1Id() != 0) {
+                    MElementValue ev = new MElementValue(getCtx(), getUser1Id());
                     combiStr = ev.getSearchKey();
                     descrStr = ev.getName();
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_UserElementList2.equals(element.getElementType())) {
-                if (getUser2_ID() != 0) {
-                    MElementValue ev = new MElementValue(getCtx(), getUser2_ID());
+                if (getUser2Id() != 0) {
+                    MElementValue ev = new MElementValue(getCtx(), getUser2Id());
                     combiStr = ev.getSearchKey();
                     descrStr = ev.getName();
                 }

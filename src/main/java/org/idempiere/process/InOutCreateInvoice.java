@@ -71,7 +71,7 @@ public class InOutCreateInvoice extends SvrProcess {
         MInvoice invoice = new MInvoice(ship, null);
         // Should not override pricelist for RMA
         if (p_M_PriceList_ID != 0 && ship.getM_RMA_ID() == 0)
-            invoice.setM_PriceList_ID(p_M_PriceList_ID);
+            invoice.setPriceListId(p_M_PriceList_ID);
         if (p_InvoiceDocumentNo != null && p_InvoiceDocumentNo.length() > 0)
             invoice.setDocumentNo(p_InvoiceDocumentNo);
         if (!invoice.save()) throw new IllegalArgumentException("Cannot save Invoice");
@@ -86,24 +86,24 @@ public class InOutCreateInvoice extends SvrProcess {
             if (!line.save()) throw new IllegalArgumentException("Cannot save Invoice Line");
         }
 
-        if (invoice.getC_Order_ID() > 0) {
-            MOrder order = new MOrder(getCtx(), invoice.getC_Order_ID());
+        if (invoice.getOrderId() > 0) {
+            MOrder order = new MOrder(getCtx(), invoice.getOrderId());
             invoice.setPaymentRule(order.getPaymentRule());
-            invoice.setC_PaymentTerm_ID(order.getC_PaymentTerm_ID());
+            invoice.setPaymentTermId(order.getPaymentTermId());
             invoice.saveEx();
             invoice.load(); // refresh from DB
             // copy payment schedule from order if invoice doesn't have a current payment schedule
             MOrderPaySchedule[] opss =
-                    MOrderPaySchedule.getOrderPaySchedule(getCtx(), order.getC_Order_ID(), 0);
+                    MOrderPaySchedule.getOrderPaySchedule(getCtx(), order.getOrderId(), 0);
             MInvoicePaySchedule[] ipss =
                     MInvoicePaySchedule.getInvoicePaySchedule(
-                            getCtx(), invoice.getC_Invoice_ID(), 0);
+                            getCtx(), invoice.getInvoiceId(), 0);
             if (ipss.length == 0 && opss.length > 0) {
                 BigDecimal ogt = order.getGrandTotal();
                 BigDecimal igt = invoice.getGrandTotal();
                 BigDecimal percent = Env.ONE;
                 if (ogt.compareTo(igt) != 0) percent = igt.divide(ogt, 10, BigDecimal.ROUND_HALF_UP);
-                MCurrency cur = MCurrency.get(order.getCtx(), order.getC_Currency_ID());
+                MCurrency cur = MCurrency.get(order.getCtx(), order.getCurrencyId());
                 int scale = cur.getStdPrecision();
 
                 for (MOrderPaySchedule ops : opss) {
@@ -115,7 +115,7 @@ public class InOutCreateInvoice extends SvrProcess {
                             propDueAmt = propDueAmt.setScale(scale, BigDecimal.ROUND_HALF_UP);
                         ips.setDueAmt(propDueAmt);
                     }
-                    ips.setC_Invoice_ID(invoice.getC_Invoice_ID());
+                    ips.setInvoiceId(invoice.getInvoiceId());
                     ips.setOrgId(ops.getOrgId());
                     ips.setProcessing(ops.isProcessing());
                     ips.setIsActive(ops.isActive());
@@ -127,12 +127,12 @@ public class InOutCreateInvoice extends SvrProcess {
         }
 
         addLog(
-                invoice.getC_Invoice_ID(),
+                invoice.getInvoiceId(),
                 invoice.getDateInvoiced(),
                 invoice.getGrandTotal(),
                 invoice.getDocumentNo(),
                 invoice.getTableId(),
-                invoice.getC_Invoice_ID());
+                invoice.getInvoiceId());
 
         return invoice.getDocumentNo();
     } //	InOutCreateInvoice

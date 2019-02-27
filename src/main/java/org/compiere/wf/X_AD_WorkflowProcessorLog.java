@@ -63,9 +63,9 @@ public class X_AD_WorkflowProcessorLog extends PO
      * @param AD_WorkflowProcessor_ID Workflow Processor Server
      */
     public void setWorkflowProcessorId(int AD_WorkflowProcessor_ID) {
-        if (AD_WorkflowProcessor_ID < 1) set_ValueNoCheck(COLUMNNAME_AD_WorkflowProcessor_ID, null);
+        if (AD_WorkflowProcessor_ID < 1) setValueNoCheck(COLUMNNAME_AD_WorkflowProcessor_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_AD_WorkflowProcessor_ID, Integer.valueOf(AD_WorkflowProcessor_ID));
     }
 
@@ -75,7 +75,7 @@ public class X_AD_WorkflowProcessorLog extends PO
      * @param IsError An Error occurred in the execution
      */
     public void setIsError(boolean IsError) {
-        set_Value(COLUMNNAME_IsError, Boolean.valueOf(IsError));
+        setValue(COLUMNNAME_IsError, Boolean.valueOf(IsError));
     }
 
     /**
@@ -84,7 +84,7 @@ public class X_AD_WorkflowProcessorLog extends PO
      * @param Summary Textual summary of this request
      */
     public void setSummary(String Summary) {
-        set_Value(COLUMNNAME_Summary, Summary);
+        setValue(COLUMNNAME_Summary, Summary);
     }
 
 }

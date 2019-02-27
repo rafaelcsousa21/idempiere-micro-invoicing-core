@@ -88,6 +88,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * Parent
      */
     private MInvoice m_parent = null;
+
     /**
      * ************************************************************************ Invoice Line
      * Constructor
@@ -113,6 +114,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             setQtyInvoiced(Env.ZERO);
         }
     } //	MInvoiceLine
+
     /**
      * Parent Constructor
      *
@@ -122,7 +124,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         this(invoice.getCtx(), 0);
         if (invoice.getId() == 0) throw new IllegalArgumentException("Header not saved");
         setClientOrg(invoice.getClientId(), invoice.getOrgId());
-        setC_Invoice_ID(invoice.getC_Invoice_ID());
+        setInvoiceId(invoice.getInvoiceId());
         setInvoice(invoice);
     } //	MInvoiceLine
 
@@ -136,6 +138,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     public MInvoiceLine(Properties ctx, ResultSet rs) {
         super(ctx, rs);
     } //	MInvoiceLine
+
     public MInvoiceLine(Properties ctx, Row row) {
         super(ctx, row);
     } //	MInvoiceLine
@@ -194,10 +197,10 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      */
     public void setInvoice(MInvoice invoice) {
         m_parent = invoice;
-        m_M_PriceList_ID = invoice.getM_PriceList_ID();
+        m_M_PriceList_ID = invoice.getPriceListId();
         m_DateInvoiced = invoice.getDateInvoiced();
-        m_C_BPartner_ID = invoice.getC_BPartner_ID();
-        m_C_BPartner_Location_ID = invoice.getC_BPartner_Location_ID();
+        m_C_BPartner_ID = invoice.getBusinessPartnerId();
+        m_C_BPartner_Location_ID = invoice.getBusinessPartnerLocationId();
         m_IsSOTrx = invoice.isSOTrx();
         m_precision = new Integer(invoice.getPrecision());
     } //	setOrder
@@ -208,7 +211,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @return parent
      */
     public MInvoice getParent() {
-        if (m_parent == null) m_parent = new MInvoice(getCtx(), getC_Invoice_ID());
+        if (m_parent == null) m_parent = new MInvoice(getCtx(), getInvoiceId());
         return m_parent;
     } //	getParent
 
@@ -224,7 +227,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         setIsDescription(oLine.isDescription());
         setDescription(oLine.getDescription());
         //
-        if (oLine.getM_Product_ID() == 0) setC_Charge_ID(oLine.getC_Charge_ID());
+        if (oLine.getM_Product_ID() == 0) setChargeId(oLine.getChargeId());
         //
         setM_Product_ID(oLine.getM_Product_ID());
         setM_AttributeSetInstance_ID(oLine.getMAttributeSetInstance_ID());
@@ -239,14 +242,14 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         setC_Tax_ID(oLine.getC_Tax_ID());
         setLineNetAmt(oLine.getLineNetAmt());
         //
-        setC_Project_ID(oLine.getC_Project_ID());
+        setProjectId(oLine.getProjectId());
         setC_ProjectPhase_ID(oLine.getC_ProjectPhase_ID());
         setC_ProjectTask_ID(oLine.getC_ProjectTask_ID());
-        setC_Activity_ID(oLine.getC_Activity_ID());
-        setC_Campaign_ID(oLine.getC_Campaign_ID());
-        setAD_OrgTrx_ID(oLine.getAD_OrgTrx_ID());
-        setUser1_ID(oLine.getUser1_ID());
-        setUser2_ID(oLine.getUser2_ID());
+        setBusinessActivityId(oLine.getBusinessActivityId());
+        setCampaignId(oLine.getCampaignId());
+        setTransactionOrganizationId(oLine.getTransactionOrganizationId());
+        setUser1Id(oLine.getUser1Id());
+        setUser2Id(oLine.getUser2Id());
         //
         setRRAmt(oLine.getRRAmt());
         setRRStartDate(oLine.getRRStartDate());
@@ -275,7 +278,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             setC_UOM_ID(getProduct().getC_UOM_ID());
         setM_AttributeSetInstance_ID(sLine.getMAttributeSetInstance_ID());
         //	setS_ResourceAssignment_ID(sLine.getS_ResourceAssignment_ID());
-        if (getM_Product_ID() == 0) setC_Charge_ID(sLine.getC_Charge_ID());
+        if (getM_Product_ID() == 0) setChargeId(sLine.getChargeId());
         //
         int C_OrderLine_ID = sLine.getC_OrderLine_ID();
         if (C_OrderLine_ID != 0) {
@@ -290,7 +293,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             //
             setC_Tax_ID(oLine.getC_Tax_ID());
             setLineNetAmt(oLine.getLineNetAmt());
-            setC_Project_ID(oLine.getC_Project_ID());
+            setProjectId(oLine.getProjectId());
         }
         // Check if shipment line is based on RMA
         else if (sLine.getM_RMALine_ID() != 0) {
@@ -306,14 +309,14 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             setTax();
         }
         //
-        setC_Project_ID(sLine.getC_Project_ID());
+        setProjectId(sLine.getProjectId());
         setC_ProjectPhase_ID(sLine.getC_ProjectPhase_ID());
         setC_ProjectTask_ID(sLine.getC_ProjectTask_ID());
-        setC_Activity_ID(sLine.getC_Activity_ID());
-        setC_Campaign_ID(sLine.getC_Campaign_ID());
-        setAD_OrgTrx_ID(sLine.getAD_OrgTrx_ID());
-        setUser1_ID(sLine.getUser1_ID());
-        setUser2_ID(sLine.getUser2_ID());
+        setBusinessActivityId(sLine.getBusinessActivityId());
+        setCampaignId(sLine.getCampaignId());
+        setTransactionOrganizationId(sLine.getTransactionOrganizationId());
+        setUser1Id(sLine.getUser1Id());
+        setUser2Id(sLine.getUser2Id());
     } //	setShipLine
 
     /**
@@ -337,7 +340,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID == 0) // 	 0 is valid ID
-            set_Value("M_AttributeSetInstance_ID", new Integer(0));
+            setValue("M_AttributeSetInstance_ID", new Integer(0));
         else super.setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
     } //	setM_AttributeSetInstance_ID
 
@@ -365,7 +368,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         if (log.isLoggable(Level.FINE)) log.fine("M_PriceList_ID=" + M_PriceList_ID);
         m_productPricing = MProduct.getProductPricing();
         m_productPricing.setInvoiceLine(this);
-        m_productPricing.setM_PriceList_ID(M_PriceList_ID);
+        m_productPricing.setPriceListId(M_PriceList_ID);
         //
         setPriceActual(m_productPricing.getPriceStd());
         setPriceList(m_productPricing.getPriceList());
@@ -401,7 +404,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      */
     public void setPriceActual(BigDecimal PriceActual) {
         if (PriceActual == null) throw new IllegalArgumentException("PriceActual is mandatory");
-        set_ValueNoCheck("PriceActual", PriceActual);
+        setValueNoCheck("PriceActual", PriceActual);
     } //	setPriceActual
 
     /**
@@ -418,7 +421,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 Tax.get(
                         getCtx(),
                         getM_Product_ID(),
-                        getC_Charge_ID(),
+                        getChargeId(),
                         m_DateInvoiced,
                         m_DateInvoiced,
                         getOrgId(),
@@ -515,8 +518,8 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @return product or null
      */
     public MCharge getCharge() {
-        if (m_charge == null && getC_Charge_ID() != 0)
-            m_charge = MCharge.get(getCtx(), getC_Charge_ID());
+        if (m_charge == null && getChargeId() != 0)
+            m_charge = MCharge.get(getCtx(), getChargeId());
         return m_charge;
     }
 
@@ -612,66 +615,66 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      *
      * @return project
      */
-    public int getC_Project_ID() {
-        int ii = super.getC_Project_ID();
-        if (ii == 0) ii = getParent().getC_Project_ID();
+    public int getProjectId() {
+        int ii = super.getProjectId();
+        if (ii == 0) ii = getParent().getProjectId();
         return ii;
-    } //	getC_Project_ID
+    } //	getProjectId
 
     /**
      * Get C_Activity_ID
      *
      * @return Activity
      */
-    public int getC_Activity_ID() {
-        int ii = super.getC_Activity_ID();
-        if (ii == 0) ii = getParent().getC_Activity_ID();
+    public int getBusinessActivityId() {
+        int ii = super.getBusinessActivityId();
+        if (ii == 0) ii = getParent().getBusinessActivityId();
         return ii;
-    } //	getC_Activity_ID
+    } //	getBusinessActivityId
 
     /**
      * Get C_Campaign_ID
      *
      * @return Campaign
      */
-    public int getC_Campaign_ID() {
-        int ii = super.getC_Campaign_ID();
-        if (ii == 0) ii = getParent().getC_Campaign_ID();
+    public int getCampaignId() {
+        int ii = super.getCampaignId();
+        if (ii == 0) ii = getParent().getCampaignId();
         return ii;
-    } //	getC_Campaign_ID
+    } //	getCampaignId
 
     /**
      * Get User2_ID
      *
      * @return User2
      */
-    public int getUser1_ID() {
-        int ii = super.getUser1_ID();
-        if (ii == 0) ii = getParent().getUser1_ID();
+    public int getUser1Id() {
+        int ii = super.getUser1Id();
+        if (ii == 0) ii = getParent().getUser1Id();
         return ii;
-    } //	getUser1_ID
+    } //	getUser1Id
 
     /**
      * Get User2_ID
      *
      * @return User2
      */
-    public int getUser2_ID() {
-        int ii = super.getUser2_ID();
-        if (ii == 0) ii = getParent().getUser2_ID();
+    public int getUser2Id() {
+        int ii = super.getUser2Id();
+        if (ii == 0) ii = getParent().getUser2Id();
         return ii;
-    } //	getUser2_ID
+    } //	getUser2Id
 
     /**
      * Get AD_OrgTrx_ID
      *
      * @return trx org
      */
-    public int getAD_OrgTrx_ID() {
-        int ii = super.getAD_OrgTrx_ID();
-        if (ii == 0) ii = getParent().getAD_OrgTrx_ID();
+    public int getTransactionOrganizationId() {
+        int ii = super.getTransactionOrganizationId();
+        if (ii == 0) ii = getParent().getTransactionOrganizationId();
         return ii;
-    } //	getAD_OrgTrx_ID
+    } //	getTransactionOrganizationId
 
     /**
      * String Representation
@@ -704,7 +707,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 "SELECT c.StdPrecision "
                         + "FROM C_Currency c INNER JOIN C_Invoice x ON (x.C_Currency_ID=c.C_Currency_ID) "
                         + "WHERE x.C_Invoice_ID=?";
-        int i = getSQLValue(sql, getC_Invoice_ID());
+        int i = getSQLValue(sql, getInvoiceId());
         if (i < 0) {
             log.warning("getPrecision = " + i + " - set to 2");
             i = 2;
@@ -723,7 +726,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             m_M_PriceList_ID =
                     getSQLValue(
                             "SELECT M_PriceList_ID FROM C_Invoice WHERE C_Invoice_ID=?",
-                            getC_Invoice_ID());
+                            getInvoiceId());
         }
         MPriceList pl = MPriceList.get(getCtx(), m_M_PriceList_ID);
         return pl.isTaxIncluded();
@@ -748,7 +751,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
 
         if (!parentComplete && !isReversal) { // do not change things when parent is complete
             //	Charge
-            if (getC_Charge_ID() != 0) {
+            if (getChargeId() != 0) {
                 if (getM_Product_ID() != 0) setM_Product_ID(0);
             } else //	Set Product Price
             {
@@ -757,7 +760,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                         && Env.ZERO.compareTo(getPriceList()) == 0) setPrice();
                 // IDEMPIERE-1574 Sales Order Line lets Price under the Price Limit when updating
                 //	Check PriceLimit
-                boolean enforce = m_IsSOTrx && getParent().getM_PriceList().isEnforcePriceLimit();
+                boolean enforce = m_IsSOTrx && getParent().getPriceList().isEnforcePriceLimit();
                 if (enforce && MRole.getDefault().isOverwritePriceLimit()) enforce = false;
                 //	Check Price Limit?
                 if (enforce
@@ -777,7 +780,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             //	Get Line No
             if (getLine() == 0) {
                 String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_InvoiceLine WHERE C_Invoice_ID=?";
-                int ii = getSQLValue(sql, getC_Invoice_ID());
+                int ii = getSQLValue(sql, getInvoiceId());
                 setLine(ii);
             }
             //	UOM
@@ -800,7 +803,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
              * IDEMPIERE-178 Orders and Invoices must disallow amount lines without product/charge
              */
             if (getParent().getC_DocTypeTarget().isChargeOrProductMandatory()) {
-                if (getC_Charge_ID() == 0
+                if (getChargeId() == 0
                         && getM_Product_ID() == 0
                         && (getPriceEntered().signum() != 0 || getQtyEntered().signum() != 0)) {
                     log.saveError("FillMandatory", Msg.translate(getCtx(), "ChargeOrProductMandatory"));
@@ -952,7 +955,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                     if (base.signum() != 0) {
                         double result = getLineNetAmt().multiply(base).doubleValue();
                         result /= total.doubleValue();
-                        lca.setAmt(result, getParent().getC_Currency().getCostingPrecision());
+                        lca.setAmt(result, getParent().getCurrency().getCostingPrecision());
                     }
                     if (!lca.save()) {
                         msgreturn = new StringBuilder("Cannot save line Allocation = ").append(lca);
@@ -1068,7 +1071,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
             if (base.signum() != 0) {
                 double result = getLineNetAmt().multiply(base).doubleValue();
                 result /= total.doubleValue();
-                lca.setAmt(result, getParent().getC_Currency().getCostingPrecision());
+                lca.setAmt(result, getParent().getCurrency().getCostingPrecision());
             }
             if (!lca.save()) {
                 msgreturn = new StringBuilder("Cannot save line Allocation = ").append(lca);
@@ -1166,7 +1169,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                     fromLandedCost.getClientId(),
                     fromLandedCost.getOrgId());
             landedCost.setC_InvoiceLine_ID(getC_InvoiceLine_ID());
-            landedCost.set_ValueNoCheck("C_LandedCost_ID", I_ZERO); // new
+            landedCost.setValueNoCheck("C_LandedCost_ID", I_ZERO); // new
             if (landedCost.save()) count++;
         }
         if (fromLandedCosts.length != count)
@@ -1189,7 +1192,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         setM_RMALine_ID(rmaLine.getM_RMALine_ID());
         setDescription(rmaLine.getDescription());
         setLine(rmaLine.getLine());
-        setC_Charge_ID(rmaLine.getC_Charge_ID());
+        setChargeId(rmaLine.getChargeId());
         setM_Product_ID(rmaLine.getM_Product_ID());
         setC_UOM_ID(rmaLine.getC_UOM_ID());
         setC_Tax_ID(rmaLine.getC_Tax_ID());
@@ -1200,9 +1203,9 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
         setLineNetAmt();
         setTaxAmt();
         setLineTotalAmt(rmaLine.getLineNetAmt());
-        setC_Project_ID(rmaLine.getC_Project_ID());
-        setC_Activity_ID(rmaLine.getC_Activity_ID());
-        setC_Campaign_ID(rmaLine.getC_Campaign_ID());
+        setProjectId(rmaLine.getProjectId());
+        setBusinessActivityId(rmaLine.getBusinessActivityId());
+        setCampaignId(rmaLine.getCampaignId());
     }
 
 

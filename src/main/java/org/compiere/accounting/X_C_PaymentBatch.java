@@ -68,7 +68,7 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Processed);
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     /**
@@ -77,7 +77,7 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Processing);
+        setValue(COLUMNNAME_Processing, Processing);
     }
 
     @Override

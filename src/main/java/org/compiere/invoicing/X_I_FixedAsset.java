@@ -117,8 +117,8 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_Value(COLUMNNAME_M_Product_ID, null);
-        else set_Value(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
+        else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -127,7 +127,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset {
      * @param ProductValue Key of the Product
      */
     public void setProductValue(String ProductValue) {
-        set_Value(COLUMNNAME_ProductValue, ProductValue);
+        setValue(COLUMNNAME_ProductValue, ProductValue);
     }
 
     @Override

@@ -62,6 +62,7 @@ public final class DocTax {
      * Sales Tax
      */
     private boolean m_salesTax = false;
+
     /**
      * Create Tax
      *

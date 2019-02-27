@@ -66,23 +66,13 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
     }
 
     /**
-     * Set Table.
-     *
-     * @param AD_Table_ID Database Table information
-     */
-    public void setTableId(int AD_Table_ID) {
-        if (AD_Table_ID < 1) set_Value(COLUMNNAME_AD_Table_ID, null);
-        else set_Value(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
-    }
-
-    /**
      * Set User/Contact.
      *
      * @param AD_User_ID User within the system - Internal or Business Partner Contact
      */
     public void setUserId(int AD_User_ID) {
-        if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-        else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+        if (AD_User_ID < 1) setValue(COLUMNNAME_AD_User_ID, null);
+        else setValue(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
     }
 
     /**
@@ -102,8 +92,8 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param AD_WF_Node_ID Workflow Node (activity), step or process
      */
     public void setWorkflowNodeId(int AD_WF_Node_ID) {
-        if (AD_WF_Node_ID < 1) set_Value(COLUMNNAME_AD_WF_Node_ID, null);
-        else set_Value(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
+        if (AD_WF_Node_ID < 1) setValue(COLUMNNAME_AD_WF_Node_ID, null);
+        else setValue(COLUMNNAME_AD_WF_Node_ID, Integer.valueOf(AD_WF_Node_ID));
     }
 
     /**
@@ -112,8 +102,8 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param AD_WF_Process_ID Actual Workflow Process Instance
      */
     public void setWorkflowProcessId(int AD_WF_Process_ID) {
-        if (AD_WF_Process_ID < 1) set_Value(COLUMNNAME_AD_WF_Process_ID, null);
-        else set_Value(COLUMNNAME_AD_WF_Process_ID, Integer.valueOf(AD_WF_Process_ID));
+        if (AD_WF_Process_ID < 1) setValue(COLUMNNAME_AD_WF_Process_ID, null);
+        else setValue(COLUMNNAME_AD_WF_Process_ID, Integer.valueOf(AD_WF_Process_ID));
     }
 
     /**
@@ -122,8 +112,8 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param AD_WF_Responsible_ID Responsible for Workflow Execution
      */
     public void setWorkflowResponsibleId(int AD_WF_Responsible_ID) {
-        if (AD_WF_Responsible_ID < 1) set_Value(COLUMNNAME_AD_WF_Responsible_ID, null);
-        else set_Value(COLUMNNAME_AD_WF_Responsible_ID, Integer.valueOf(AD_WF_Responsible_ID));
+        if (AD_WF_Responsible_ID < 1) setValue(COLUMNNAME_AD_WF_Responsible_ID, null);
+        else setValue(COLUMNNAME_AD_WF_Responsible_ID, Integer.valueOf(AD_WF_Responsible_ID));
     }
 
     /**
@@ -132,7 +122,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param AttributeName Name of the Attribute
      */
     public void setAttributeName(String AttributeName) {
-        set_Value(COLUMNNAME_AttributeName, AttributeName);
+        setValue(COLUMNNAME_AttributeName, AttributeName);
     }
 
     /**
@@ -141,7 +131,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param ElapsedTimeMS Elapsed Time in milli seconds
      */
     public void setElapsedTimeMS(BigDecimal ElapsedTimeMS) {
-        set_Value(COLUMNNAME_ElapsedTimeMS, ElapsedTimeMS);
+        setValue(COLUMNNAME_ElapsedTimeMS, ElapsedTimeMS);
     }
 
     /**
@@ -151,7 +141,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      */
     public void setEventType(String EventType) {
 
-        set_Value(COLUMNNAME_EventType, EventType);
+        setValue(COLUMNNAME_EventType, EventType);
     }
 
     /**
@@ -160,7 +150,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param NewValue New field value
      */
     public void setNewValue(String NewValue) {
-        set_Value(COLUMNNAME_NewValue, NewValue);
+        setValue(COLUMNNAME_NewValue, NewValue);
     }
 
     /**
@@ -169,7 +159,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param OldValue The old file data
      */
     public void setOldValue(String OldValue) {
-        set_Value(COLUMNNAME_OldValue, OldValue);
+        setValue(COLUMNNAME_OldValue, OldValue);
     }
 
     /**
@@ -178,8 +168,8 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param Record_ID Direct internal record ID
      */
     public void setRecordId(int Record_ID) {
-        if (Record_ID < 0) set_Value(COLUMNNAME_Record_ID, null);
-        else set_Value(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
+        if (Record_ID < 0) setValue(COLUMNNAME_Record_ID, null);
+        else setValue(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
     }
 
     /**
@@ -188,7 +178,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      * @param TextMsg Text Message
      */
     public void setTextMsg(String TextMsg) {
-        set_Value(COLUMNNAME_TextMsg, TextMsg);
+        setValue(COLUMNNAME_TextMsg, TextMsg);
     }
 
     /**
@@ -198,11 +188,21 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      */
     public void setWFState(String WFState) {
 
-        set_Value(COLUMNNAME_WFState, WFState);
+        setValue(COLUMNNAME_WFState, WFState);
     }
 
     @Override
     public int getTableId() {
         return I_AD_WF_EventAudit.Table_ID;
+    }
+
+    /**
+     * Set Table.
+     *
+     * @param AD_Table_ID Database Table information
+     */
+    public void setTableId(int AD_Table_ID) {
+        if (AD_Table_ID < 1) setValue(COLUMNNAME_AD_Table_ID, null);
+        else setValue(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
     }
 }

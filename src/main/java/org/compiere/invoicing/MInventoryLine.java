@@ -78,6 +78,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
 
     /** Manually created */
     // private boolean 	m_isManualEntry = true;
+
     /**
      * Detail Constructor. Locator/Product/AttributeSetInstance must be unique
      *
@@ -111,6 +112,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         if (QtyInternalUse != null && QtyInternalUse.signum() != 0) setQtyInternalUse(QtyInternalUse);
         // m_isManualEntry = false;
     } //	MInventoryLine
+
     public MInventoryLine(
             MInventory inventory,
             int M_Locator_ID,
@@ -279,7 +281,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         if (newRecord || is_ValueChanged("QtyCount")) setQtyCount(getQtyCount());
         if (newRecord || is_ValueChanged("QtyInternalUse")) setQtyInternalUse(getQtyInternalUse());
 
-        MDocType dt = MDocType.get(getCtx(), getParent().getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getParent().getDocumentTypeId());
         String docSubTypeInv = dt.getDocSubTypeInv();
 
         if (MDocType.DOCSUBTYPEINV_InternalUseInventory.equals(docSubTypeInv)) {
@@ -288,7 +290,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
             if (!X_M_InventoryLine.INVENTORYTYPE_ChargeAccount.equals(getInventoryType()))
                 setInventoryType(X_M_InventoryLine.INVENTORYTYPE_ChargeAccount);
             //
-            if (getC_Charge_ID() == 0) {
+            if (getChargeId() == 0) {
                 log.saveError("InternalUseNeedsCharge", "");
                 return false;
             }
@@ -313,12 +315,12 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
 
             // Physical Inventory validations
             if (X_M_InventoryLine.INVENTORYTYPE_ChargeAccount.equals(getInventoryType())) {
-                if (getC_Charge_ID() == 0) {
+                if (getChargeId() == 0) {
                     log.saveError("FillMandatory", Msg.getElement(getCtx(), "C_Charge_ID"));
                     return false;
                 }
-            } else if (getC_Charge_ID() != 0) {
-                setC_Charge_ID(0);
+            } else if (getChargeId() != 0) {
+                setChargeId(0);
             }
             if (getQtyInternalUse().signum() != 0) {
                 log.saveError(
@@ -356,7 +358,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         }
 
         //	Set AD_Org to parent if not charge
-        if (getC_Charge_ID() == 0) setOrgId(getParent().getOrgId());
+        if (getChargeId() == 0) setOrgId(getParent().getOrgId());
 
         return true;
     } //	beforeSave
@@ -428,7 +430,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
      */
     public boolean isInternalUseInventory() {
         //  IDEMPIERE-675
-        MDocType dt = MDocType.get(getCtx(), getParent().getC_DocType_ID());
+        MDocType dt = MDocType.get(getCtx(), getParent().getDocumentTypeId());
         String docSubTypeInv = dt.getDocSubTypeInv();
         return (MDocType.DOCSUBTYPEINV_InternalUseInventory.equals(docSubTypeInv));
     }

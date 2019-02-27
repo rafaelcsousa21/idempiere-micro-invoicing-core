@@ -83,7 +83,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Processed);
+        setValue(COLUMNNAME_Processed, Processed);
     }
 
     /**
@@ -124,7 +124,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Processing);
+        setValue(COLUMNNAME_Processing, Processing);
     }
 
     /**
@@ -133,7 +133,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
      * @param TotalAmt Total Amount
      */
     public void setTotalAmt(BigDecimal TotalAmt) {
-        set_Value(COLUMNNAME_TotalAmt, TotalAmt);
+        setValue(COLUMNNAME_TotalAmt, TotalAmt);
     }
 
     @Override

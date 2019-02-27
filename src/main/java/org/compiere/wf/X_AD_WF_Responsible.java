@@ -81,8 +81,8 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
      * @param AD_Role_ID Responsibility Role
      */
     public void setRoleId(int AD_Role_ID) {
-        if (AD_Role_ID < 0) set_Value(I_AD_WF_Responsible.COLUMNNAME_AD_Role_ID, null);
-        else set_Value(I_AD_WF_Responsible.COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
+        if (AD_Role_ID < 0) setValue(I_AD_WF_Responsible.COLUMNNAME_AD_Role_ID, null);
+        else setValue(I_AD_WF_Responsible.COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
     }
 
     /**

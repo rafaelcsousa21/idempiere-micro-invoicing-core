@@ -46,9 +46,9 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
     public X_S_TimeExpense(Properties ctx, int S_TimeExpense_ID) {
         super(ctx, S_TimeExpense_ID);
         /**
-         * if (S_TimeExpense_ID == 0) { setC_BPartner_ID (0); setDateReport (new Timestamp(
+         * if (S_TimeExpense_ID == 0) { setBusinessPartnerId (0); setDateReport (new Timestamp(
          * System.currentTimeMillis() )); // @#Date@ setDocAction (null); // CO setDocStatus (null); //
-         * DR setDocumentNo (null); setIsApproved (false); setM_PriceList_ID (0); setWarehouseId (0);
+         * DR setDocumentNo (null); setIsApproved (false); setPriceListId (0); setWarehouseId (0);
          * setProcessed (false); setS_TimeExpense_ID (0); }
          */
     }
@@ -91,7 +91,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      * @param ApprovalAmt Document Approval Amount
      */
     public void setApprovalAmt(BigDecimal ApprovalAmt) {
-        set_Value(COLUMNNAME_ApprovalAmt, ApprovalAmt);
+        setValue(COLUMNNAME_ApprovalAmt, ApprovalAmt);
     }
 
     /**
@@ -99,7 +99,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -120,7 +120,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      * @param DateReport Expense/Time Report Date
      */
     public void setDateReport(Timestamp DateReport) {
-        set_Value(COLUMNNAME_DateReport, DateReport);
+        setValue(COLUMNNAME_DateReport, DateReport);
     }
 
     /**
@@ -148,7 +148,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -175,7 +175,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -197,7 +197,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      *
      * @return Unique identifier of a Price List
      */
-    public int getM_PriceList_ID() {
+    public int getPriceListId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_PriceList_ID);
         if (ii == null) return 0;
         return ii;
@@ -208,7 +208,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -234,7 +234,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -243,7 +243,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**

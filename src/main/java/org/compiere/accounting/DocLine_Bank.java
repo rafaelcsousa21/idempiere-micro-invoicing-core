@@ -24,6 +24,7 @@ public class DocLine_Bank extends DocLine {
     private BigDecimal m_TrxAmt = Env.ZERO;
     private BigDecimal m_StmtAmt = Env.ZERO;
     private BigDecimal m_InterestAmt = Env.ZERO;
+
     /**
      * Constructor
      *
@@ -32,7 +33,7 @@ public class DocLine_Bank extends DocLine {
      */
     public DocLine_Bank(MBankStatementLine line, Doc_BankStatement doc) {
         super(line, doc);
-        m_C_Payment_ID = line.getC_Payment_ID();
+        m_C_Payment_ID = line.getPaymentId();
         m_IsReversal = line.isReversal();
         //
         m_StmtAmt = line.getStmtAmt();
@@ -41,7 +42,7 @@ public class DocLine_Bank extends DocLine {
         //
         setDateDoc(line.getValutaDate());
         setDateAcct(doc.getDateAcct()); // adaxa-pb use statement date
-        setC_BPartner_ID(line.getC_BPartner_ID());
+        setBusinessPartnerId(line.getBusinessPartnerId());
     } //  DocLine_Bank
 
     /**
@@ -49,9 +50,9 @@ public class DocLine_Bank extends DocLine {
      *
      * @return C_Paymnet_ID
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         return m_C_Payment_ID;
-    } //  getC_Payment_ID
+    } //  getPaymentId
 
     /**
      * Get orgId
@@ -60,9 +61,9 @@ public class DocLine_Bank extends DocLine {
      * @return org
      */
     public int getOrgId(boolean payment) {
-        if (payment && getC_Payment_ID() != 0) {
+        if (payment && getPaymentId() != 0) {
             String sql = "SELECT AD_Org_ID FROM C_Payment WHERE C_Payment_ID=?";
-            int id = getSQLValue(sql, getC_Payment_ID());
+            int id = getSQLValue(sql, getPaymentId());
             if (id > 0) return id;
         }
         return super.getOrgId();

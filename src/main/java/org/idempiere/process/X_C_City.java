@@ -65,8 +65,8 @@ public class X_C_City extends BasePOName implements I_C_City {
      * @param C_Region_ID Identifies a geographical Region
      */
     public void setC_Region_ID(int C_Region_ID) {
-        if (C_Region_ID < 1) set_Value(COLUMNNAME_C_Region_ID, null);
-        else set_Value(COLUMNNAME_C_Region_ID, Integer.valueOf(C_Region_ID));
+        if (C_Region_ID < 1) setValue(COLUMNNAME_C_Region_ID, null);
+        else setValue(COLUMNNAME_C_Region_ID, Integer.valueOf(C_Region_ID));
     }
 
 }

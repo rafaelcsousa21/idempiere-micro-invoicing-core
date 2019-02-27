@@ -39,7 +39,7 @@ public class MProjectLine extends X_C_ProjectLine {
     public MProjectLine(Properties ctx, int C_ProjectLine_ID) {
         super(ctx, C_ProjectLine_ID);
         if (C_ProjectLine_ID == 0) {
-            //  setC_Project_ID (0);
+            //  setProjectId (0);
             //	setC_ProjectLine_ID (0);
             setLine(0);
             setIsPrinted(true);
@@ -73,7 +73,7 @@ public class MProjectLine extends X_C_ProjectLine {
     public MProjectLine(MProject project) {
         this(project.getCtx(), 0);
         setClientOrg(project);
-        setC_Project_ID(project.getC_Project_ID()); // Parent
+        setProjectId(project.getProjectId()); // Parent
         setLine();
     } //	MProjectLine
 
@@ -84,7 +84,7 @@ public class MProjectLine extends X_C_ProjectLine {
         setLine(
                 getSQLValue(
                         "SELECT COALESCE(MAX(Line),0)+10 FROM C_ProjectLine WHERE C_Project_ID=?",
-                        getC_Project_ID()));
+                        getProjectId()));
     } //	setLine
 
     /**
@@ -114,8 +114,8 @@ public class MProjectLine extends X_C_ProjectLine {
      * @return parent
      */
     public MProject getProject() {
-        if (m_parent == null && getC_Project_ID() != 0) {
-            m_parent = new MProject(getCtx(), getC_Project_ID());
+        if (m_parent == null && getProjectId() != 0) {
+            m_parent = new MProject(getCtx(), getProjectId());
             if (null != null) m_parent.load();
         }
         return m_parent;
@@ -132,7 +132,7 @@ public class MProjectLine extends X_C_ProjectLine {
         if (getProject() == null) return limitPrice;
         IProductPricing pp = MProduct.getProductPricing();
         pp.setProjectLine(this);
-        pp.setM_PriceList_ID(m_parent.getM_PriceList_ID());
+        pp.setPriceListId(m_parent.getPriceListId());
         if (pp.calculatePrice()) limitPrice = pp.getPriceLimit();
         return limitPrice;
     } //	getLimitPrice
@@ -148,7 +148,7 @@ public class MProjectLine extends X_C_ProjectLine {
                 .append("-")
                 .append(getLine())
                 .append(",C_Project_ID=")
-                .append(getC_Project_ID())
+                .append(getProjectId())
                 .append(",C_ProjectPhase_ID=")
                 .append(getC_ProjectPhase_ID())
                 .append(",C_ProjectTask_ID=")
@@ -203,7 +203,7 @@ public class MProjectLine extends X_C_ProjectLine {
             if (pp == null || pp.getId() == 0) {
                 log.warning("Project Phase Not Found - " + getC_ProjectPhase_ID());
                 return false;
-            } else setC_Project_ID(pp.getC_Project_ID());
+            } else setProjectId(pp.getProjectId());
         }
 
         return true;
@@ -249,7 +249,7 @@ public class MProjectLine extends X_C_ProjectLine {
                         + "FROM C_ProjectLine pl "
                         + "WHERE pl.C_Project_ID=p.C_Project_ID AND pl.IsActive='Y') "
                         + "WHERE C_Project_ID="
-                        + getC_Project_ID();
+                        + getProjectId();
         int no = executeUpdate(sql);
         if (no != 1) log.log(Level.SEVERE, "updateHeader project - #" + no);
         /*onhate + globalqss BF 3060367*/
@@ -265,7 +265,7 @@ public class MProjectLine extends X_C_ProjectLine {
                             + "  AND l.C_ProjectPhase_ID=x.C_ProjectPhase_ID "
                             + "  AND l.IsActive='Y') "
                             + "WHERE x.C_Project_ID="
-                            + getC_Project_ID()
+                            + getProjectId()
                             + "  AND x.C_ProjectPhase_ID="
                             + getC_ProjectPhase_ID();
             no = executeUpdate(sql);

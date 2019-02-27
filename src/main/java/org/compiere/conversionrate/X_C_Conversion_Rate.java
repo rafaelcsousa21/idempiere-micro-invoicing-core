@@ -28,7 +28,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
     public X_C_Conversion_Rate(Properties ctx, int C_Conversion_Rate_ID) {
         super(ctx, C_Conversion_Rate_ID);
         /**
-         * if (C_Conversion_Rate_ID == 0) { setC_Conversion_Rate_ID (0); setC_ConversionType_ID (0);
+         * if (C_Conversion_Rate_ID == 0) { setC_Conversion_Rate_ID (0); setConversionTypeId (0);
          * setCurrencyId (0); setC_Currency_ID_To (0); setDivideRate (Env.ZERO); setMultiplyRate
          * (Env.ZERO); setValidFrom (new Timestamp( System.currentTimeMillis() )); }
          */
@@ -71,11 +71,11 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      *
      * @param C_ConversionType_ID Currency Conversion Rate Type
      */
-    public void setC_ConversionType_ID(int C_ConversionType_ID) {
+    public void setConversionTypeId(int C_ConversionType_ID) {
         if (C_ConversionType_ID < 1)
-            set_Value(I_C_Conversion_Rate.COLUMNNAME_C_ConversionType_ID, null);
+            setValue(I_C_Conversion_Rate.COLUMNNAME_C_ConversionType_ID, null);
         else
-            set_Value(
+            setValue(
                     I_C_Conversion_Rate.COLUMNNAME_C_ConversionType_ID, Integer.valueOf(C_ConversionType_ID));
     }
 
@@ -84,7 +84,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -95,9 +95,9 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID, null);
-        else set_Value(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValue(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID, null);
+        else setValue(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     /**
@@ -117,7 +117,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      * @param C_Currency_ID_To Target currency
      */
     public void setC_Currency_ID_To(int C_Currency_ID_To) {
-        set_Value(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID_To, Integer.valueOf(C_Currency_ID_To));
+        setValue(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID_To, Integer.valueOf(C_Currency_ID_To));
     }
 
     /**
@@ -137,7 +137,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      * @param DivideRate To convert Source number to Target number, the Source is divided
      */
     public void setDivideRate(BigDecimal DivideRate) {
-        set_Value(I_C_Conversion_Rate.COLUMNNAME_DivideRate, DivideRate);
+        setValue(I_C_Conversion_Rate.COLUMNNAME_DivideRate, DivideRate);
     }
 
     /**
@@ -157,7 +157,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      * @param MultiplyRate Rate to multiple the source by to calculate the target.
      */
     public void setMultiplyRate(BigDecimal MultiplyRate) {
-        set_Value(I_C_Conversion_Rate.COLUMNNAME_MultiplyRate, MultiplyRate);
+        setValue(I_C_Conversion_Rate.COLUMNNAME_MultiplyRate, MultiplyRate);
     }
 
     /**
@@ -175,7 +175,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      * @param ValidFrom Valid from including this date (first day)
      */
     public void setValidFrom(Timestamp ValidFrom) {
-        set_Value(I_C_Conversion_Rate.COLUMNNAME_ValidFrom, ValidFrom);
+        setValue(I_C_Conversion_Rate.COLUMNNAME_ValidFrom, ValidFrom);
     }
 
     /**
@@ -193,7 +193,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      * @param ValidTo Valid to including this date (last day)
      */
     public void setValidTo(Timestamp ValidTo) {
-        set_Value(I_C_Conversion_Rate.COLUMNNAME_ValidTo, ValidTo);
+        setValue(I_C_Conversion_Rate.COLUMNNAME_ValidTo, ValidTo);
     }
 
     @Override

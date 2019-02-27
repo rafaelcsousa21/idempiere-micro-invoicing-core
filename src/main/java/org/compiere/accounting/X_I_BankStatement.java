@@ -68,8 +68,8 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      * @param C_BankStatement_ID Bank Statement of account
      */
     public void setC_BankStatement_ID(int C_BankStatement_ID) {
-        if (C_BankStatement_ID < 1) set_Value(COLUMNNAME_C_BankStatement_ID, null);
-        else set_Value(COLUMNNAME_C_BankStatement_ID, Integer.valueOf(C_BankStatement_ID));
+        if (C_BankStatement_ID < 1) setValue(COLUMNNAME_C_BankStatement_ID, null);
+        else setValue(COLUMNNAME_C_BankStatement_ID, Integer.valueOf(C_BankStatement_ID));
     }
 
     /**
@@ -78,8 +78,8 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      * @param C_BankStatementLine_ID Line on a statement from this Bank
      */
     public void setC_BankStatementLine_ID(int C_BankStatementLine_ID) {
-        if (C_BankStatementLine_ID < 1) set_Value(COLUMNNAME_C_BankStatementLine_ID, null);
-        else set_Value(COLUMNNAME_C_BankStatementLine_ID, Integer.valueOf(C_BankStatementLine_ID));
+        if (C_BankStatementLine_ID < 1) setValue(COLUMNNAME_C_BankStatementLine_ID, null);
+        else setValue(COLUMNNAME_C_BankStatementLine_ID, Integer.valueOf(C_BankStatementLine_ID));
     }
 
     /**
@@ -87,7 +87,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @return Identifies a Business Partner
      */
-    public int getC_BPartner_ID() {
+    public int getBusinessPartnerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
@@ -98,9 +98,9 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @param C_BPartner_ID Identifies a Business Partner
      */
-    public void setC_BPartner_ID(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) set_Value(COLUMNNAME_C_BPartner_ID, null);
-        else set_Value(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+    public void setBusinessPartnerId(int C_BPartner_ID) {
+        if (C_BPartner_ID < 1) setValue(COLUMNNAME_C_BPartner_ID, null);
+        else setValue(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
     }
 
     /**
@@ -108,7 +108,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @return Additional document charges
      */
-    public int getC_Charge_ID() {
+    public int getChargeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Charge_ID);
         if (ii == null) return 0;
         return ii;
@@ -119,7 +119,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @return The Currency for this record
      */
-    public int getC_Currency_ID() {
+    public int getCurrencyId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Currency_ID);
         if (ii == null) return 0;
         return ii;
@@ -130,9 +130,9 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @param C_Currency_ID The Currency for this record
      */
-    public void setC_Currency_ID(int C_Currency_ID) {
-        if (C_Currency_ID < 1) set_Value(COLUMNNAME_C_Currency_ID, null);
-        else set_Value(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
+    public void setCurrencyId(int C_Currency_ID) {
+        if (C_Currency_ID < 1) setValue(COLUMNNAME_C_Currency_ID, null);
+        else setValue(COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
     }
 
     /**
@@ -151,7 +151,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @return Invoice Identifier
      */
-    public int getC_Invoice_ID() {
+    public int getInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -162,9 +162,9 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @param C_Invoice_ID Invoice Identifier
      */
-    public void setC_Invoice_ID(int C_Invoice_ID) {
-        if (C_Invoice_ID < 1) set_Value(COLUMNNAME_C_Invoice_ID, null);
-        else set_Value(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
+    public void setInvoiceId(int C_Invoice_ID) {
+        if (C_Invoice_ID < 1) setValue(COLUMNNAME_C_Invoice_ID, null);
+        else setValue(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
     /**
@@ -172,7 +172,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @return Payment identifier
      */
-    public int getC_Payment_ID() {
+    public int getPaymentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Payment_ID);
         if (ii == null) return 0;
         return ii;
@@ -183,9 +183,9 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @param C_Payment_ID Payment identifier
      */
-    public void setC_Payment_ID(int C_Payment_ID) {
-        if (C_Payment_ID < 1) set_Value(COLUMNNAME_C_Payment_ID, null);
-        else set_Value(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
+    public void setPaymentId(int C_Payment_ID) {
+        if (C_Payment_ID < 1) setValue(COLUMNNAME_C_Payment_ID, null);
+        else setValue(COLUMNNAME_C_Payment_ID, Integer.valueOf(C_Payment_ID));
     }
 
     /**
@@ -331,7 +331,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      * @param I_IsImported Has this import been processed
      */
     public void setI_IsImported(boolean I_IsImported) {
-        set_Value(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
+        setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
     /**
@@ -383,7 +383,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -441,7 +441,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      * @param TrxAmt Amount of a transaction
      */
     public void setTrxAmt(BigDecimal TrxAmt) {
-        set_Value(COLUMNNAME_TrxAmt, TrxAmt);
+        setValue(COLUMNNAME_TrxAmt, TrxAmt);
     }
 
     /**

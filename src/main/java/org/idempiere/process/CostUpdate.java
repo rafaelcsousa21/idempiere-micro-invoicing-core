@@ -287,7 +287,7 @@ public class CostUpdate extends SvrProcess {
             }
             if (lines.size() > 0) {
                 inventoryDoc = new MInventory(getCtx(), 0);
-                inventoryDoc.setC_DocType_ID(p_C_DocType_ID);
+                inventoryDoc.setDocumentTypeId(p_C_DocType_ID);
                 inventoryDoc.setCostingMethod(MCostElement.COSTINGMETHOD_StandardCosting);
                 inventoryDoc.setDocAction(DocAction.Companion.getACTION_Complete());
                 inventoryDoc.saveEx();

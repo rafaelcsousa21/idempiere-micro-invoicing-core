@@ -74,8 +74,8 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct {
      * @param A_Asset_ID Asset used internally or by customers
      */
     public void setAssetId(int A_Asset_ID) {
-        if (A_Asset_ID < 1) set_ValueNoCheck(COLUMNNAME_A_Asset_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
+        if (A_Asset_ID < 1) setValueNoCheck(COLUMNNAME_A_Asset_ID, null);
+        else setValueNoCheck(COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
     }
 
     /**
@@ -95,8 +95,8 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct {
      * @param A_Depreciation_F_ID Depreciation (fiscal)
      */
     public void setDepreciationFiscalId(int A_Depreciation_F_ID) {
-        if (A_Depreciation_F_ID < 1) set_Value(COLUMNNAME_A_Depreciation_F_ID, null);
-        else set_Value(COLUMNNAME_A_Depreciation_F_ID, Integer.valueOf(A_Depreciation_F_ID));
+        if (A_Depreciation_F_ID < 1) setValue(COLUMNNAME_A_Depreciation_F_ID, null);
+        else setValue(COLUMNNAME_A_Depreciation_F_ID, Integer.valueOf(A_Depreciation_F_ID));
     }
 
     /**
@@ -105,8 +105,8 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct {
      * @param A_Depreciation_ID Depreciation
      */
     public void setDepreciationId(int A_Depreciation_ID) {
-        if (A_Depreciation_ID < 1) set_Value(COLUMNNAME_A_Depreciation_ID, null);
-        else set_Value(COLUMNNAME_A_Depreciation_ID, Integer.valueOf(A_Depreciation_ID));
+        if (A_Depreciation_ID < 1) setValue(COLUMNNAME_A_Depreciation_ID, null);
+        else setValue(COLUMNNAME_A_Depreciation_ID, Integer.valueOf(A_Depreciation_ID));
     }
 
     /**
@@ -137,7 +137,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct {
      * @param A_Period_End A_Period_End
      */
     public void setPeriodEnd(int A_Period_End) {
-        set_Value(COLUMNNAME_A_Period_End, Integer.valueOf(A_Period_End));
+        setValue(COLUMNNAME_A_Period_End, Integer.valueOf(A_Period_End));
     }
 
     /**
@@ -146,7 +146,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct {
      * @param A_Period_Start A_Period_Start
      */
     public void setPeriodStart(int A_Period_Start) {
-        set_Value(COLUMNNAME_A_Period_Start, Integer.valueOf(A_Period_Start));
+        setValue(COLUMNNAME_A_Period_Start, Integer.valueOf(A_Period_Start));
     }
 
     /**
@@ -155,7 +155,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct {
      * @param A_Salvage_Value Asset Salvage Value
      */
     public void setSalvageValue(BigDecimal A_Salvage_Value) {
-        set_Value(COLUMNNAME_A_Salvage_Value, A_Salvage_Value);
+        setValue(COLUMNNAME_A_Salvage_Value, A_Salvage_Value);
     }
 
     /**
@@ -193,7 +193,7 @@ public class X_A_Asset_Acct extends PO implements I_A_Asset_Acct {
      * @param ValidFrom Valid from including this date (first day)
      */
     public void setValidFrom(Timestamp ValidFrom) {
-        set_ValueNoCheck(COLUMNNAME_ValidFrom, ValidFrom);
+        setValueNoCheck(COLUMNNAME_ValidFrom, ValidFrom);
     }
 
     @Override

@@ -82,7 +82,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @param CronPattern Cron pattern to define when the process should be invoked.
      */
     public void setCronPattern(String CronPattern) {
-        set_Value(I_AD_Schedule.COLUMNNAME_CronPattern, CronPattern);
+        setValue(I_AD_Schedule.COLUMNNAME_CronPattern, CronPattern);
     }
 
     /**
@@ -102,7 +102,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      * @param Frequency Frequency of events
      */
     public void setFrequency(int Frequency) {
-        set_Value(I_AD_Schedule.COLUMNNAME_Frequency, Integer.valueOf(Frequency));
+        setValue(I_AD_Schedule.COLUMNNAME_Frequency, Integer.valueOf(Frequency));
     }
 
     /**
@@ -121,7 +121,7 @@ public class X_AD_Schedule extends BasePOName implements I_AD_Schedule {
      */
     public void setFrequencyType(String FrequencyType) {
 
-        set_Value(I_AD_Schedule.COLUMNNAME_FrequencyType, FrequencyType);
+        setValue(I_AD_Schedule.COLUMNNAME_FrequencyType, FrequencyType);
     }
 
     /**

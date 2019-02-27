@@ -609,7 +609,7 @@ public class ImportProduct extends SvrProcess implements ImportProcess {
                 X_I_Product imp = new X_I_Product(getCtx(), rs);
                 int I_Product_ID = imp.getI_Product_ID();
                 int M_Product_ID = imp.getM_Product_ID();
-                int C_BPartner_ID = imp.getC_BPartner_ID();
+                int C_BPartner_ID = imp.getBusinessPartnerId();
                 boolean newProduct = M_Product_ID == 0;
                 if (log.isLoggable(Level.FINE))
                     log.fine(

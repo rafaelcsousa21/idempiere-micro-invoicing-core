@@ -45,6 +45,7 @@ public class MWFProcess extends X_AD_WF_Process {
      * Message from Activity
      */
     private String m_processMsg = null;
+
     /**
      * Standard Constructor
      *
@@ -63,6 +64,7 @@ public class MWFProcess extends X_AD_WF_Process {
   *
   private ProcessInfo			m_pi = null;
   */
+
     /**
      * Load Constructor
      *
@@ -74,6 +76,7 @@ public class MWFProcess extends X_AD_WF_Process {
         super(ctx, rs);
         m_state = new StateEngine(getWorkflowState());
     } //	MWFProcess
+
     /**
      * New Constructor
      *
@@ -104,7 +107,7 @@ public class MWFProcess extends X_AD_WF_Process {
         //	Responsible/User
         if (wf.getWorkflowResponsibleId() == 0) setAD_WF_Responsible_ID();
         else setWorkFlowResponsibleId(wf.getWorkflowResponsibleId());
-        setUser_ID(pi.getAD_User_ID()); // 	user starting
+        setUser_ID(pi.getUserId()); // 	user starting
         //
         m_state = new StateEngine(getWorkflowState());
         setProcessed(false);
@@ -321,7 +324,7 @@ public class MWFProcess extends X_AD_WF_Process {
         //	Responsible
         MWFResponsible resp = MWFResponsible.get(getCtx(), getWorkFlowResponsibleId());
         //	(1) User - Directly responsible
-        int AD_User_ID = resp.getAD_User_ID();
+        int AD_User_ID = resp.getUserId();
 
         //	Invoker - get Sales Rep or last updater of Document
         if (AD_User_ID == 0 && resp.isInvoker()) {
@@ -343,7 +346,7 @@ public class MWFProcess extends X_AD_WF_Process {
         //	(4) Process Owner
         if (AD_User_ID == 0 && User_ID != null) AD_User_ID = User_ID.intValue();
         //	Fallback
-        if (AD_User_ID == 0) AD_User_ID = Env.getAD_User_ID(getCtx());
+        if (AD_User_ID == 0) AD_User_ID = Env.getUserId(getCtx());
         //
         setUserId(AD_User_ID);
     } //	setUser_ID

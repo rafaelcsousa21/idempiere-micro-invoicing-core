@@ -59,6 +59,7 @@ public class MStatus extends X_R_Status {
             setIsWebCanUpdate(true);
         }
     } //	MStatus
+
     /**
      * Load Constructor
      *

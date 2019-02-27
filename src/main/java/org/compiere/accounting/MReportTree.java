@@ -51,9 +51,11 @@ public class MReportTree {
      * Logger
      */
     private CLogger log = CLogger.getCLogger(getClass());
+
     public MReportTree(Properties ctx, int PA_Hierarchy_ID, String ElementType) {
         this(ctx, PA_Hierarchy_ID, false, ElementType);
     }
+
     /**
      * ************************************************************************ Report Tree
      *
@@ -114,7 +116,7 @@ public class MReportTree {
             key =
                     Env.getClientId(ctx)
                             + "_"
-                            + Env.getAD_User_ID(ctx)
+                            + Env.getUserId(ctx)
                             + "_"
                             + role.getRoleId()
                             + "_"

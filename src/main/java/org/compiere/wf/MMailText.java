@@ -65,6 +65,7 @@ public class MMailText extends X_R_MailText {
      */
     private String m_MailText3 = null;
     private String m_language = null;
+
     /**
      * Standard Constructor
      *

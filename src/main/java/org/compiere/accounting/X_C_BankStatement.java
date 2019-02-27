@@ -87,6 +87,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
          * (false); setStatementDate (new Timestamp( System.currentTimeMillis() )); // @Date@ }
          */
     }
+
     /**
      * Load Constructor
      */
@@ -125,7 +126,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param BeginningBalance Balance prior to any transactions
      */
     public void setBeginningBalance(BigDecimal BeginningBalance) {
-        set_Value(COLUMNNAME_BeginningBalance, BeginningBalance);
+        setValue(COLUMNNAME_BeginningBalance, BeginningBalance);
     }
 
     /**
@@ -145,8 +146,8 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param C_BankAccount_ID Account at the Bank
      */
     public void setC_BankAccount_ID(int C_BankAccount_ID) {
-        if (C_BankAccount_ID < 1) set_Value(COLUMNNAME_C_BankAccount_ID, null);
-        else set_Value(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
+        if (C_BankAccount_ID < 1) setValue(COLUMNNAME_C_BankAccount_ID, null);
+        else setValue(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }
 
     /**
@@ -175,7 +176,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param DateAcct Accounting Date
      */
     public void setDateAcct(Timestamp DateAcct) {
-        set_Value(COLUMNNAME_DateAcct, DateAcct);
+        setValue(COLUMNNAME_DateAcct, DateAcct);
     }
 
     /**
@@ -193,7 +194,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -212,7 +213,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -231,7 +232,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -240,7 +241,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param EftStatementDate Electronic Funds Transfer Statement Date
      */
     public void setEftStatementDate(Timestamp EftStatementDate) {
-        set_Value(COLUMNNAME_EftStatementDate, EftStatementDate);
+        setValue(COLUMNNAME_EftStatementDate, EftStatementDate);
     }
 
     /**
@@ -258,7 +259,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param EftStatementReference Electronic Funds Transfer Statement Reference
      */
     public void setEftStatementReference(String EftStatementReference) {
-        set_Value(COLUMNNAME_EftStatementReference, EftStatementReference);
+        setValue(COLUMNNAME_EftStatementReference, EftStatementReference);
     }
 
     /**
@@ -267,7 +268,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param EndingBalance Ending or closing balance
      */
     public void setEndingBalance(BigDecimal EndingBalance) {
-        set_Value(COLUMNNAME_EndingBalance, EndingBalance);
+        setValue(COLUMNNAME_EndingBalance, EndingBalance);
     }
 
     /**
@@ -276,7 +277,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -299,7 +300,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param IsManual This is a manual process
      */
     public void setIsManual(boolean IsManual) {
-        set_Value(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
+        setValue(COLUMNNAME_IsManual, Boolean.valueOf(IsManual));
     }
 
     /**
@@ -308,7 +309,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+        setValue(COLUMNNAME_Posted, Boolean.valueOf(Posted));
     }
 
     /**
@@ -331,7 +332,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -340,7 +341,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -358,7 +359,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      * @param StatementDate Date of the statement
      */
     public void setStatementDate(Timestamp StatementDate) {
-        set_Value(COLUMNNAME_StatementDate, StatementDate);
+        setValue(COLUMNNAME_StatementDate, StatementDate);
     }
 
     /**
@@ -379,7 +380,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      *                            balance
      */
     public void setStatementDifference(BigDecimal StatementDifference) {
-        set_Value(COLUMNNAME_StatementDifference, StatementDifference);
+        setValue(COLUMNNAME_StatementDifference, StatementDifference);
     }
 
     @Override

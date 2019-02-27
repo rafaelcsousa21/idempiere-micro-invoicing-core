@@ -45,10 +45,10 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
     public X_M_Requisition(Properties ctx, int M_Requisition_ID) {
         super(ctx, M_Requisition_ID);
         /**
-         * if (M_Requisition_ID == 0) { setUserId (0); setC_DocType_ID (0); setDateDoc (new
+         * if (M_Requisition_ID == 0) { setUserId (0); setDocumentTypeId (0); setDateDoc (new
          * Timestamp( System.currentTimeMillis() )); // @#Date@ setDateRequired (new Timestamp(
          * System.currentTimeMillis() )); setDocAction (null); // CO setDocStatus (null); // DR
-         * setDocumentNo (null); setIsApproved (false); setM_PriceList_ID (0); setM_Requisition_ID (0);
+         * setDocumentNo (null); setIsApproved (false); setPriceListId (0); setM_Requisition_ID (0);
          * setWarehouseId (0); setPosted (false); setPriorityRule (null); // 5 setProcessed (false);
          * setTotalLines (Env.ZERO); }
          */
@@ -80,7 +80,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @return User within the system - Internal or Business Partner Contact
      */
-    public int getAD_User_ID() {
+    public int getUserId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_User_ID);
         if (ii == null) return 0;
         return ii;
@@ -91,15 +91,15 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @param AD_User_ID User within the system - Internal or Business Partner Contact
      */
-    public void setAD_User_ID(int AD_User_ID) {
-        if (AD_User_ID < 1) set_Value(COLUMNNAME_AD_User_ID, null);
-        else set_Value(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
+    public void setUserId(int AD_User_ID) {
+        if (AD_User_ID < 1) setValue(COLUMNNAME_AD_User_ID, null);
+        else setValue(COLUMNNAME_AD_User_ID, Integer.valueOf(AD_User_ID));
     }
 
-    public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException {
+    public org.compiere.model.I_C_DocType getDocumentType() throws RuntimeException {
         return (org.compiere.model.I_C_DocType)
                 MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-                        .getPO(getC_DocType_ID());
+                        .getPO(getDocumentTypeId());
     }
 
     /**
@@ -107,7 +107,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @return Document type or rules
      */
-    public int getC_DocType_ID() {
+    public int getDocumentTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -118,9 +118,9 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @param C_DocType_ID Document type or rules
      */
-    public void setC_DocType_ID(int C_DocType_ID) {
-        if (C_DocType_ID < 0) set_Value(COLUMNNAME_C_DocType_ID, null);
-        else set_Value(COLUMNNAME_C_DocType_ID, C_DocType_ID);
+    public void setDocumentTypeId(int C_DocType_ID) {
+        if (C_DocType_ID < 0) setValue(COLUMNNAME_C_DocType_ID, null);
+        else setValue(COLUMNNAME_C_DocType_ID, C_DocType_ID);
     }
 
     /**
@@ -138,7 +138,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param DateDoc Date of the Document
      */
     public void setDateDoc(Timestamp DateDoc) {
-        set_Value(COLUMNNAME_DateDoc, DateDoc);
+        setValue(COLUMNNAME_DateDoc, DateDoc);
     }
 
     /**
@@ -156,7 +156,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param DateRequired Date when required
      */
     public void setDateRequired(Timestamp DateRequired) {
-        set_Value(COLUMNNAME_DateRequired, DateRequired);
+        setValue(COLUMNNAME_DateRequired, DateRequired);
     }
 
     /**
@@ -174,7 +174,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -193,7 +193,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      */
     public void setDocAction(String DocAction) {
 
-        set_Value(COLUMNNAME_DocAction, DocAction);
+        setValue(COLUMNNAME_DocAction, DocAction);
     }
 
     /**
@@ -212,7 +212,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      */
     public void setDocStatus(String DocStatus) {
 
-        set_Value(COLUMNNAME_DocStatus, DocStatus);
+        setValue(COLUMNNAME_DocStatus, DocStatus);
     }
 
     /**
@@ -230,7 +230,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param DocumentNo Document sequence number of the document
      */
     public void setDocumentNo(String DocumentNo) {
-        set_ValueNoCheck(COLUMNNAME_DocumentNo, DocumentNo);
+        setValueNoCheck(COLUMNNAME_DocumentNo, DocumentNo);
     }
 
     /**
@@ -239,7 +239,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param IsApproved Indicates if this document requires approval
      */
     public void setIsApproved(boolean IsApproved) {
-        set_Value(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+        setValue(COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
     }
 
     /**
@@ -261,7 +261,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @return Unique identifier of a Price List
      */
-    public int getM_PriceList_ID() {
+    public int getPriceListId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_PriceList_ID);
         if (ii == null) return 0;
         return ii;
@@ -272,9 +272,9 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @param M_PriceList_ID Unique identifier of a Price List
      */
-    public void setM_PriceList_ID(int M_PriceList_ID) {
-        if (M_PriceList_ID < 1) set_Value(COLUMNNAME_M_PriceList_ID, null);
-        else set_Value(COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
+    public void setPriceListId(int M_PriceList_ID) {
+        if (M_PriceList_ID < 1) setValue(COLUMNNAME_M_PriceList_ID, null);
+        else setValue(COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
     }
 
     /**
@@ -293,7 +293,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @return Storage Warehouse and Service Point
      */
-    public int getM_Warehouse_ID() {
+    public int getWarehouseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Warehouse_ID);
         if (ii == null) return 0;
         return ii;
@@ -304,9 +304,9 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @param M_Warehouse_ID Storage Warehouse and Service Point
      */
-    public void setM_Warehouse_ID(int M_Warehouse_ID) {
-        if (M_Warehouse_ID < 1) set_Value(COLUMNNAME_M_Warehouse_ID, null);
-        else set_Value(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
+    public void setWarehouseId(int M_Warehouse_ID) {
+        if (M_Warehouse_ID < 1) setValue(COLUMNNAME_M_Warehouse_ID, null);
+        else setValue(COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
     }
 
     /**
@@ -315,7 +315,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        set_Value(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+        setValue(COLUMNNAME_Posted, Boolean.valueOf(Posted));
     }
 
     /**
@@ -325,7 +325,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      */
     public void setPriorityRule(String PriorityRule) {
 
-        set_Value(COLUMNNAME_PriorityRule, PriorityRule);
+        setValue(COLUMNNAME_PriorityRule, PriorityRule);
     }
 
     /**
@@ -334,7 +334,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_Value(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValue(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -343,7 +343,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -363,7 +363,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      * @param TotalLines Total of all document lines
      */
     public void setTotalLines(BigDecimal TotalLines) {
-        set_Value(COLUMNNAME_TotalLines, TotalLines);
+        setValue(COLUMNNAME_TotalLines, TotalLines);
     }
 
     @Override

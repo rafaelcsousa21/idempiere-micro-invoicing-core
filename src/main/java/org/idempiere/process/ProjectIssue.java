@@ -153,12 +153,12 @@ public class ProjectIssue extends SvrProcess {
             throw new IllegalArgumentException("Receipt not valid - " + inOut);
         if (log.isLoggable(Level.INFO)) log.info(inOut.toString());
         //	Set Project of Receipt
-        if (inOut.getC_Project_ID() == 0) {
-            inOut.setC_Project_ID(m_project.getC_Project_ID());
+        if (inOut.getProjectId() == 0) {
+            inOut.setProjectId(m_project.getProjectId());
             inOut.saveEx();
-        } else if (inOut.getC_Project_ID() != m_project.getC_Project_ID())
+        } else if (inOut.getProjectId() != m_project.getProjectId())
             throw new IllegalArgumentException(
-                    "Receipt for other Project (" + inOut.getC_Project_ID() + ")");
+                    "Receipt for other Project (" + inOut.getProjectId() + ")");
 
         MInOutLine[] inOutLines = inOut.getLines(false);
         int counter = 0;
@@ -190,7 +190,7 @@ public class ProjectIssue extends SvrProcess {
             MProjectLine[] pls = m_project.getLines();
             for (int ii = 0; ii < pls.length; ii++) {
                 //	The Order we generated is the same as the Order of the receipt
-                if (pls[ii].getC_OrderPO_ID() == inOut.getC_Order_ID()
+                if (pls[ii].getC_OrderPO_ID() == inOut.getOrderId()
                         && pls[ii].getM_Product_ID() == inOutLines[i].getM_Product_ID()
                         && pls[ii].getC_ProjectIssue_ID() == 0) // 	not issued
                 {
@@ -228,7 +228,7 @@ public class ProjectIssue extends SvrProcess {
             //	Need to have Quantity
             if (expenseLines[i].getQty() == null || expenseLines[i].getQty().signum() == 0) continue;
             //	Need to the same project
-            if (expenseLines[i].getC_Project_ID() != m_project.getC_Project_ID()) continue;
+            if (expenseLines[i].getProjectId() != m_project.getProjectId()) continue;
             //	not issued yet
             if (projectIssueHasExpense(expenseLines[i].getS_TimeExpenseLine_ID())) continue;
 
@@ -238,7 +238,7 @@ public class ProjectIssue extends SvrProcess {
             //	if (product.isStocked())
             M_Locator_ID =
                     MStorageOnHand.getM_Locator_ID(
-                            expense.getM_Warehouse_ID(),
+                            expense.getWarehouseId(),
                             expenseLines[i].getM_Product_ID(),
                             0, //	no ASI
                             expenseLines[i].getQty(),

@@ -95,7 +95,7 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
      * @return true if set
      */
     public boolean setValue(String columnName, Integer value) {
-        return super.set_Value(columnName, value);
+        return super.setValue(columnName, value);
     } //	setValue
 
     /**

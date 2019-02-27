@@ -73,8 +73,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
     public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
-        if (C_InvoiceLine_ID < 1) set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
+        if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
 
     /**
@@ -92,7 +92,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param DateAcct Accounting Date
      */
     public void setDateAcct(Timestamp DateAcct) {
-        set_Value(COLUMNNAME_DateAcct, DateAcct);
+        setValue(COLUMNNAME_DateAcct, DateAcct);
     }
 
     /**
@@ -110,7 +110,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param DateTrx Transaction Date
      */
     public void setDateTrx(Timestamp DateTrx) {
-        set_ValueNoCheck(COLUMNNAME_DateTrx, DateTrx);
+        setValueNoCheck(COLUMNNAME_DateTrx, DateTrx);
     }
 
     /**
@@ -128,7 +128,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        set_Value(COLUMNNAME_Description, Description);
+        setValue(COLUMNNAME_Description, Description);
     }
 
     /**
@@ -146,9 +146,9 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
     public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) set_ValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
-            set_ValueNoCheck(
+            setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
@@ -180,8 +180,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
     public void setM_InOutLine_ID(int M_InOutLine_ID) {
-        if (M_InOutLine_ID < 1) set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
+        if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
     }
 
     /**
@@ -201,8 +201,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param M_Product_ID Product, Service, Item
      */
     public void setM_Product_ID(int M_Product_ID) {
-        if (M_Product_ID < 1) set_ValueNoCheck(COLUMNNAME_M_Product_ID, null);
-        else set_ValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
+        else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
     /**
@@ -225,7 +225,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param Posted Posting status
      */
     public void setPosted(boolean Posted) {
-        set_ValueNoCheck(COLUMNNAME_Posted, Boolean.valueOf(Posted));
+        setValueNoCheck(COLUMNNAME_Posted, Boolean.valueOf(Posted));
     }
 
     /**
@@ -248,7 +248,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param Processed The document has been processed
      */
     public void setProcessed(boolean Processed) {
-        set_ValueNoCheck(COLUMNNAME_Processed, Boolean.valueOf(Processed));
+        setValueNoCheck(COLUMNNAME_Processed, Boolean.valueOf(Processed));
     }
 
     /**
@@ -257,7 +257,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param Processing Process Now
      */
     public void setProcessing(boolean Processing) {
-        set_Value(COLUMNNAME_Processing, Boolean.valueOf(Processing));
+        setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
     /**
@@ -277,7 +277,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param Qty Quantity
      */
     public void setQty(BigDecimal Qty) {
-        set_ValueNoCheck(COLUMNNAME_Qty, Qty);
+        setValueNoCheck(COLUMNNAME_Qty, Qty);
     }
 
     /**
@@ -297,8 +297,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      * @param Reversal_ID ID of document reversal
      */
     public void setReversal_ID(int Reversal_ID) {
-        if (Reversal_ID < 1) set_Value(COLUMNNAME_Reversal_ID, null);
-        else set_Value(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
+        if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
+        else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }
 
     @Override
