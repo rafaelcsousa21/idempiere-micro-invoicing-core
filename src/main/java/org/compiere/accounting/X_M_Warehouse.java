@@ -57,7 +57,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse {
      *
      * @param C_Location_ID Location or Address
      */
-    public void setC_Location_ID(int C_Location_ID) {
+    public void setLocationId(int C_Location_ID) {
         if (C_Location_ID < 1) setValue(COLUMNNAME_C_Location_ID, null);
         else setValue(COLUMNNAME_C_Location_ID, Integer.valueOf(C_Location_ID));
     }

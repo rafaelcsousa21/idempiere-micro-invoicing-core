@@ -59,7 +59,6 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @param ctx         context
      * @param DD_Order_ID order to load, (0 create new order)
-     * @param trxName     trx name
      */
     public MDDOrder(Properties ctx, int DD_Order_ID) {
         super(ctx, DD_Order_ID);
@@ -177,16 +176,17 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         }
 
         //	Set Locations
-        I_C_BPartner_Location[] locs = bp.getLocations();
+        List<I_C_BPartner_Location> locs = bp.getLocations();
         if (locs != null) {
-            for (int i = 0; i < locs.length; i++) {
-                if (locs[i].isShipTo()) {
-                    super.setBusinessPartnerLocationId(locs[i].getBusinessPartnerLocationId());
+            for (int i = 0; i < locs.size(); i++) {
+                I_C_BPartner_Location loc = locs.get(i);
+                if (loc.isShipTo()) {
+                    super.setBusinessPartnerLocationId(loc.getBusinessPartnerLocationId());
                 }
             }
             //	set to first
-            if (getBusinessPartnerLocationId() == 0 && locs.length > 0) {
-                super.setBusinessPartnerLocationId(locs[0].getBusinessPartnerLocationId());
+            if (getBusinessPartnerLocationId() == 0 && locs.size() > 0) {
+                super.setBusinessPartnerLocationId(locs.get(0).getBusinessPartnerLocationId());
             }
         }
         if (getBusinessPartnerLocationId() == 0) {
@@ -194,10 +194,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         }
 
         //	Set Contact
-        I_AD_User[] contacts = bp.getContacts();
-        if (contacts != null && contacts.length == 1) {
-            setUserId(contacts[0].getUserId());
-        }
+        List<I_AD_User> contacts = bp.getContacts();
+        if (contacts != null && contacts.size() == 1) setUserId(contacts.get(0).getUserId());
     } //	setBPartner
 
     /**

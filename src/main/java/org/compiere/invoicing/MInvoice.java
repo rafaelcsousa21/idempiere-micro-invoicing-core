@@ -448,15 +448,16 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         if (ss != null) setPaymentRule(ss);
 
         //	Set Locations
-        I_C_BPartner_Location[] locs = bp.getLocations();
+        List<I_C_BPartner_Location> locs = bp.getLocations();
         if (locs != null) {
-            for (int i = 0; i < locs.length; i++) {
-                if ((locs[i].isBillTo() && isSOTrx()) || (locs[i].isPayFrom() && !isSOTrx()))
-                    setBusinessPartnerLocationId(locs[i].getBusinessPartnerLocationId());
+            for (int i = 0; i < locs.size(); i++) {
+                I_C_BPartner_Location loc = locs.get(i);
+                if ((loc.isBillTo() && isSOTrx()) || (loc.isPayFrom() && !isSOTrx()))
+                    setBusinessPartnerLocationId(loc.getBusinessPartnerLocationId());
             }
             //	set to first
-            if (getBusinessPartnerLocationId() == 0 && locs.length > 0)
-                setBusinessPartnerLocationId(locs[0].getBusinessPartnerLocationId());
+            if (getBusinessPartnerLocationId() == 0 && locs.size() > 0)
+                setBusinessPartnerLocationId(locs.get(0).getBusinessPartnerLocationId());
         }
         if (getBusinessPartnerLocationId() == 0)
             log.log(
@@ -464,9 +465,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
                     new BPartnerNoAddressException(bp).getLocalizedMessage()); // TODO: throw exception?
 
         //	Set Contact
-        I_AD_User[] contacts = bp.getContacts();
-        if (contacts != null && contacts.length > 0) // 	get first User
-            setUserId(contacts[0].getUserId());
+        List<I_AD_User> contacts = bp.getContacts();
+        if (contacts != null && contacts.size() == 1) setUserId(contacts.get(0).getUserId());
     } //	setBPartner
 
     /**

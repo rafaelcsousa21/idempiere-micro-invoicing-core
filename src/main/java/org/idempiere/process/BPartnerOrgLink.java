@@ -27,6 +27,7 @@ import org.compiere.process.SvrProcess;
 import org.compiere.production.MLocator;
 import org.idempiere.common.util.AdempiereUserError;
 
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -91,11 +92,11 @@ public class BPartnerOrgLink extends SvrProcess {
         if (bp.getId() == 0)
             throw new AdempiereUserError("Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);
         //	BP Location
-        I_C_BPartner_Location[] locs = bp.getLocations(false);
-        if (locs == null || locs.length == 0)
+        List<I_C_BPartner_Location> locs = bp.getLocations(false);
+        if (locs == null || locs.size() == 0)
             throw new IllegalArgumentException("Business Partner has no Location");
         //	Location
-        int C_Location_ID = locs[0].getC_Location_ID();
+        int C_Location_ID = locs.get(0).getLocationId();
         if (C_Location_ID == 0)
             throw new IllegalArgumentException("Business Partner Location has no Address");
 

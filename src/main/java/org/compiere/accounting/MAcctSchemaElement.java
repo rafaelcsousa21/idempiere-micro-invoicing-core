@@ -195,9 +195,9 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Activity))
             defaultValue = getBusinessActivityId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_LocationFrom))
-            defaultValue = getC_Location_ID();
+            defaultValue = getLocationId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_LocationTo))
-            defaultValue = getC_Location_ID();
+            defaultValue = getLocationId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Campaign))
             defaultValue = getCampaignId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx))
@@ -284,8 +284,8 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Campaign.equals(et) && getCampaignId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Campaign_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_LocationFrom.equals(et)
-                    && getC_Location_ID() == 0) errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Location_ID;
-            else if (X_C_AcctSchema_Element.ELEMENTTYPE_LocationTo.equals(et) && getC_Location_ID() == 0)
+                    && getLocationId() == 0) errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Location_ID;
+            else if (X_C_AcctSchema_Element.ELEMENTTYPE_LocationTo.equals(et) && getLocationId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Location_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Organization.equals(et) && getOrg_ID() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_Org_ID;

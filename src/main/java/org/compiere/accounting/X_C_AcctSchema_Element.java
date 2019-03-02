@@ -208,7 +208,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Location or Address
      */
-    public int getC_Location_ID() {
+    public int getLocationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Location_ID);
         if (ii == null) return 0;
         return ii;

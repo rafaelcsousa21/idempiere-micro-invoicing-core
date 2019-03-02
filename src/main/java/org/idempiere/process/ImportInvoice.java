@@ -21,6 +21,7 @@ import org.compiere.crm.MUser;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IProcessInfoParameter;
+import org.compiere.model.I_AD_User;
 import org.compiere.model.I_C_BPartner_Location;
 import org.compiere.model.I_C_Location;
 import org.compiere.process.SvrProcess;
@@ -31,6 +32,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -639,22 +641,22 @@ public class ImportInvoice extends SvrProcess {
 
                 //	BP Location
                 I_C_BPartner_Location bpl = null;
-                I_C_BPartner_Location[] bpls = bp.getLocations(true);
-                for (int i = 0; bpl == null && i < bpls.length; i++) {
-                    if (imp.getBusinessPartnerLocationId() == bpls[i].getBusinessPartnerLocationId()) bpl = bpls[i];
+                List<I_C_BPartner_Location> bpls = bp.getLocations(true);
+                for (int i = 0; bpl == null && i < bpls.size(); i++) {
+                    if (imp.getBusinessPartnerLocationId() == bpls.get(i).getBusinessPartnerLocationId()) bpl = bpls.get(i);
                         //	Same Location ID
-                    else if (imp.getC_Location_ID() == bpls[i].getC_Location_ID()) bpl = bpls[i];
+                    else if (imp.getLocationId() == bpls.get(i).getLocationId()) bpl = bpls.get(i);
                         //	Same Location Info
-                    else if (imp.getC_Location_ID() == 0) {
-                        I_C_Location loc = bpls[i].getLocation();
+                    else if (imp.getLocationId() == 0) {
+                        I_C_Location loc = bpls.get(i).getLocation();
                         if (loc.equals(
-                                imp.getC_Country_ID(),
-                                imp.getC_Region_ID(),
+                                imp.getCountryId(),
+                                imp.getRegionId(),
                                 imp.getPostal(),
                                 "",
                                 imp.getCity(),
                                 imp.getAddress1(),
-                                imp.getAddress2())) bpl = bpls[i];
+                                imp.getAddress2())) bpl = bpls.get(i);
                     }
                 }
                 if (bpl == null) {
@@ -664,26 +666,26 @@ public class ImportInvoice extends SvrProcess {
                     loc.setAddress2(imp.getAddress2());
                     loc.setCity(imp.getCity());
                     loc.setPostal(imp.getPostal());
-                    if (imp.getC_Region_ID() != 0) loc.setC_Region_ID(imp.getC_Region_ID());
-                    loc.setC_Country_ID(imp.getC_Country_ID());
+                    if (imp.getRegionId() != 0) loc.setRegionId(imp.getRegionId());
+                    loc.setCountryId(imp.getCountryId());
                     if (!loc.save()) continue;
                     //
                     bpl = new MBPartnerLocation(bp);
-                    bpl.setC_Location_ID(
-                            imp.getC_Location_ID() > 0 ? imp.getC_Location_ID() : loc.getC_Location_ID());
+                    bpl.setLocationId(
+                            imp.getLocationId() > 0 ? imp.getLocationId() : loc.getLocationId());
                     if (!bpl.save()) continue;
                 }
-                imp.setC_Location_ID(bpl.getC_Location_ID());
+                imp.setLocationId(bpl.getLocationId());
                 imp.setBusinessPartnerLocationId(bpl.getBusinessPartnerLocationId());
 
                 //	User/Contact
                 if (imp.getContactName() != null || imp.getEMail() != null || imp.getPhone() != null) {
-                    MUser[] users = bp.getContacts(true);
-                    MUser user = null;
-                    for (int i = 0; user == null && i < users.length; i++) {
-                        String name = users[i].getName();
+                    List<I_AD_User> users = bp.getContacts(true);
+                    I_AD_User user = null;
+                    for (int i = 0; user == null && i < users.size(); i++) {
+                        String name = users.get(i).getName();
                         if (name.equals(imp.getContactName()) || name.equals(imp.getName())) {
-                            user = users[i];
+                            user = users.get(i);
                             imp.setUserId(user.getUserId());
                         }
                     }
@@ -703,8 +705,6 @@ public class ImportInvoice extends SvrProcess {
             log.log(Level.SEVERE, "CreateBP", e);
         } finally {
 
-            rs = null;
-            pstmt = null;
         }
         sql =
                 new StringBuilder("UPDATE I_Invoice ")

@@ -133,7 +133,7 @@ class MSetup
             name = "newClient"
         m_clientName = name
         m_client = MClient(m_ctx, 0, true)
-        m_client!!.setSearchKey(m_clientName!!)
+        m_client!!.searchKey = m_clientName!!
         m_client!!.name = m_clientName!!
         if (!m_client!!.save()) {
             val err = "Client NOT created"
@@ -270,7 +270,7 @@ class MSetup
             clientAdminUser.password = name
         clientAdminUser.description = name
         clientAdminUser.name = name
-        clientAdminUser.setSearchKey(name)
+        clientAdminUser.searchKey = name
         clientAdminUser.setADClientID(AD_Client_ID)
         clientAdminUser.setOrgId(0)
         clientAdminUser.eMail = adminEmail
@@ -301,7 +301,7 @@ class MSetup
             clientUser.password = name
         clientUser.description = name
         clientUser.name = name
-        clientUser.setSearchKey(name)
+        clientUser.searchKey = name
         clientUser.setADClientID(AD_Client_ID)
         clientUser.setOrgId(0)
         clientUser.eMail = userEmail
@@ -1172,7 +1172,7 @@ class MSetup
         val bpLoc = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
         bpLoc.saveEx()
         val bpl = MBPartnerLocation(bp)
-        bpl.c_Location_ID = bpLoc.c_Location_ID
+        bpl.locationId = bpLoc.locationId
         if (!bpl.save())
             log.log(Level.SEVERE, "BP_Location (Standard) NOT inserted")
         //  Default
@@ -1266,7 +1266,7 @@ class MSetup
         loc.postal = postal
         loc.saveEx()
         sqlCmd = StringBuffer("UPDATE AD_OrgInfo SET C_Location_ID=")
-        sqlCmd.append(loc.c_Location_ID).append(" WHERE AD_Org_ID=").append(aD_Org_ID)
+        sqlCmd.append(loc.locationId).append(" WHERE AD_Org_ID=").append(aD_Org_ID)
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "Location NOT inserted")
@@ -1280,7 +1280,7 @@ class MSetup
         val wh = MWarehouse(m_ctx, 0)
         wh.setSearchKey(defaultName)
         wh.name = defaultName
-        wh.setC_Location_ID(locwh.c_Location_ID)
+        wh.setLocationId(locwh.locationId)
         if (!wh.save())
             log.log(Level.SEVERE, "Warehouse NOT inserted")
 
@@ -1353,7 +1353,7 @@ class MSetup
         val bpLocCU = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
         bpLocCU.saveEx()
         val bplCU = MBPartnerLocation(bpCU)
-        bplCU.c_Location_ID = bpLocCU.c_Location_ID
+        bplCU.locationId = bpLocCU.locationId
         if (!bplCU.save())
             log.log(Level.SEVERE, "BP_Location (User) NOT inserted")
         //  Update User
@@ -1379,7 +1379,7 @@ class MSetup
         val bpLocCA = MLocation(m_ctx, C_Country_ID, C_Region_ID, City)
         bpLocCA.saveEx()
         val bplCA = MBPartnerLocation(bpCA)
-        bplCA.c_Location_ID = bpLocCA.c_Location_ID
+        bplCA.locationId = bpLocCA.locationId
         if (!bplCA.save())
             log.log(Level.SEVERE, "BP_Location (Admin) NOT inserted")
         //  Update User

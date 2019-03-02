@@ -148,7 +148,7 @@ class InvoiceTest : BaseComponentTest() {
         val location = MLocation(defaultCountry, defaultRegion)
         location.save()
         val partnerLocation = MBPartnerLocation(newPartner)
-        partnerLocation.c_Location_ID = location.c_Location_ID
+        partnerLocation.locationId = location.locationId
         partnerLocation.save()
 
         return newPartner

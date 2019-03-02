@@ -86,7 +86,7 @@ public class MWarehouse extends X_M_Warehouse {
         setClientOrg(org);
         setSearchKey(org.getSearchKey());
         setName(org.getName());
-        if (org.getInfo() != null) setC_Location_ID(org.getInfo().getLocationId());
+        if (org.getInfo() != null) setLocationId(org.getInfo().getLocationId());
     } //	MWarehouse
 
     /**

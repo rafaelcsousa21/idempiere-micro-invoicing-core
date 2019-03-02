@@ -62,7 +62,7 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
      */
     public MCity(MRegion region, String cityName) {
         super(region.getCtx(), 0);
-        setC_Region_ID(region.getC_Region_ID());
+        setRegionId(region.getRegionId());
         setName(cityName);
     } //  MCity
 
