@@ -35,7 +35,7 @@ class AcctSchemaDefaultCopy(
             else
                 log.log(Level.SEVERE, "Unknown Parameter: $name")
         }
-    } //	prepare
+    } // 	prepare
 
     /**
      * Process
@@ -63,7 +63,7 @@ class AcctSchemaDefaultCopy(
         var updatedTotal = 0
         var createdTotal = 0
 
-        //	Update existing Product Category
+        // 	Update existing Product Category
         if (p_CopyOverwriteAcct) {
             sql = StringBuilder("UPDATE M_Product_Category_Acct pa ")
                 .append("SET P_Revenue_Acct=")
@@ -101,7 +101,7 @@ class AcctSchemaDefaultCopy(
             addLog(0, null, BigDecimal(updated), "@Updated@ @M_Product_Category_ID@")
             updatedTotal += updated
         }
-        //	Insert new Product Category
+        // 	Insert new Product Category
         sql = StringBuilder("INSERT INTO M_Product_Category_Acct ")
             .append("(M_Product_Category_ID, C_AcctSchema_ID,")
             .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
@@ -134,7 +134,7 @@ class AcctSchemaDefaultCopy(
         addLog(0, null, BigDecimal(created), "@Created@ @M_Product_Category_ID@")
         createdTotal += created
         if (!p_CopyOverwriteAcct)
-        //	Insert new Products
+        // 	Insert new Products
         {
             sql = StringBuilder("INSERT INTO M_Product_Acct ")
                 .append("(M_Product_ID, C_AcctSchema_ID,")
@@ -172,7 +172,7 @@ class AcctSchemaDefaultCopy(
             createdTotal += created
         }
 
-        //	Update Business Partner Group
+        // 	Update Business Partner Group
         if (p_CopyOverwriteAcct) {
             sql = StringBuilder("UPDATE C_BP_Group_Acct a ")
                 .append("SET C_Receivable_Acct=")
@@ -236,7 +236,7 @@ class AcctSchemaDefaultCopy(
         createdTotal += created
 
         // IDEMPIERE-362 Hide things that don't work on iDempiere
-        //	Update Business Partner - Employee
+        // 	Update Business Partner - Employee
         /*
     if (p_CopyOverwriteAcct)
     {
@@ -315,7 +315,7 @@ class AcctSchemaDefaultCopy(
             createdTotal += created
         }
         // IDEMPIERE-362 Hide things that don't work on iDempiere
-        //	Update Warehouse
+        // 	Update Warehouse
         if (p_CopyOverwriteAcct) {
             sql = StringBuilder("UPDATE M_Warehouse_Acct a ")
                 .append("SET W_Differences_Acct=")
@@ -329,7 +329,7 @@ class AcctSchemaDefaultCopy(
             addLog(0, null, BigDecimal(updated), "@Updated@ @M_Warehouse_ID@")
             updatedTotal += updated
         }
-        //	Insert new Warehouse
+        // 	Insert new Warehouse
         sql = StringBuilder("INSERT INTO M_Warehouse_Acct ")
             .append("(M_Warehouse_ID, C_AcctSchema_ID,")
             .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
@@ -348,7 +348,7 @@ class AcctSchemaDefaultCopy(
         addLog(0, null, BigDecimal(created), "@Created@ @M_Warehouse_ID@")
         createdTotal += created
 
-        //	Update Project
+        // 	Update Project
         if (p_CopyOverwriteAcct) {
             sql = StringBuilder("UPDATE C_Project_Acct a ")
                 .append("SET PJ_Asset_Acct=")
@@ -364,7 +364,7 @@ class AcctSchemaDefaultCopy(
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_Project_ID@")
             updatedTotal += updated
         }
-        //	Insert new Projects
+        // 	Insert new Projects
         sql = StringBuilder("INSERT INTO C_Project_Acct ")
             .append("(C_Project_ID, C_AcctSchema_ID,")
             .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
@@ -384,7 +384,7 @@ class AcctSchemaDefaultCopy(
         createdTotal += created
 
         // IDEMPIERE-362 Hide things that don't work on iDempiere
-        //	Update Tax
+        // 	Update Tax
         if (p_CopyOverwriteAcct) {
             sql = StringBuilder("UPDATE C_Tax_Acct a ")
                 .append("SET T_Due_Acct=")
@@ -402,7 +402,7 @@ class AcctSchemaDefaultCopy(
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_Tax_ID@")
             updatedTotal += updated
         }
-        //	Insert new Tax
+        // 	Insert new Tax
         sql = StringBuilder("INSERT INTO C_Tax_Acct ")
             .append("(C_Tax_ID, C_AcctSchema_ID,")
             .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
@@ -421,7 +421,7 @@ class AcctSchemaDefaultCopy(
         addLog(0, null, BigDecimal(created), "@Created@ @C_Tax_ID@")
         createdTotal += created
 
-        //	Update BankAccount
+        // 	Update BankAccount
         if (p_CopyOverwriteAcct) {
             sql = StringBuilder("UPDATE C_BankAccount_Acct a ")
                 .append("SET B_InTransit_Acct=")
@@ -445,7 +445,7 @@ class AcctSchemaDefaultCopy(
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_BankAccount_ID@")
             updatedTotal += updated
         }
-        //	Insert new BankAccount
+        // 	Insert new BankAccount
         sql = StringBuilder("INSERT INTO C_BankAccount_Acct ")
             .append("(C_BankAccount_ID, C_AcctSchema_ID,")
             .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
@@ -469,7 +469,7 @@ class AcctSchemaDefaultCopy(
         createdTotal += created
 
         // IDEMPIERE-362 Hide things that don't work on iDempiere
-        //	Update Withholding
+        // 	Update Withholding
         /*
     if (p_CopyOverwriteAcct)
     {
@@ -502,7 +502,7 @@ class AcctSchemaDefaultCopy(
     createdTotal += created;
     */
 
-        //	Update Charge
+        // 	Update Charge
         if (p_CopyOverwriteAcct) {
             sql = StringBuilder("UPDATE C_Charge_Acct a ")
                 .append("SET Ch_Expense_Acct=")
@@ -516,7 +516,7 @@ class AcctSchemaDefaultCopy(
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_Charge_ID@")
             updatedTotal += updated
         }
-        //	Insert new Charge
+        // 	Insert new Charge
         sql = StringBuilder("INSERT INTO C_Charge_Acct ")
             .append("(C_Charge_ID, C_AcctSchema_ID,")
             .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
@@ -535,7 +535,7 @@ class AcctSchemaDefaultCopy(
         addLog(0, null, BigDecimal(created), "@Created@ @C_Charge_ID@")
         createdTotal += created
 
-        //	Update Cashbook
+        // 	Update Cashbook
         if (p_CopyOverwriteAcct) {
             sql = StringBuilder("UPDATE C_Cashbook_Acct a ")
                 .append("SET CB_Asset_Acct=")
@@ -557,7 +557,7 @@ class AcctSchemaDefaultCopy(
             addLog(0, null, BigDecimal(updated), "@Updated@ @C_Cashbook_ID@")
             updatedTotal += updated
         }
-        //	Insert new Cashbook
+        // 	Insert new Cashbook
         sql = StringBuilder("INSERT INTO C_Cashbook_Acct ")
             .append("(C_Cashbook_ID, C_AcctSchema_ID,")
             .append(" AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,")
@@ -583,5 +583,5 @@ class AcctSchemaDefaultCopy(
             .append(", @Updated@=")
             .append(updatedTotal)
         return msgreturn.toString()
-    } //	doIt
-} //	AcctSchemaDefaultCopy
+    } // 	doIt
+} // 	AcctSchemaDefaultCopy

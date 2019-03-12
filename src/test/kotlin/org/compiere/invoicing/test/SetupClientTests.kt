@@ -6,7 +6,7 @@ import org.compiere.process.ProcessInfo
 import org.idempiere.common.util.ServerContext
 import org.idempiere.process.AcctSchemaDefaultCopy
 import org.idempiere.process.InitialClientSetup
-import java.util.*
+import java.util.Properties
 import kotlin.test.assertTrue
 
 class SetupClientTests : BaseComponentTest() {

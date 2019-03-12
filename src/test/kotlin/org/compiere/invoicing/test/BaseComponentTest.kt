@@ -213,7 +213,6 @@ abstract class BaseComponentTest {
         inventory.setDocAction(DocAction.STATUS_Completed)
         inventory.save()
 
-
         inventory.completeIt()
 
         return getProductById(product.id)

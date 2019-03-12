@@ -8,7 +8,7 @@ import software.hsharp.core.util.DB
 import software.hsharp.core.util.TO_STRING
 import software.hsharp.core.util.queryOf
 import java.sql.ResultSet
-import java.util.*
+import java.util.Properties
 import java.util.logging.Level
 
 open class MBaseClient : org.compiere.orm.MClient {
@@ -75,19 +75,19 @@ open class MBaseClient : org.compiere.orm.MClient {
                     val result = tree.save()
                     AD_Tree_Activity_ID = tree.treeId
                     result
-                } else if (value == X_AD_Tree.TREETYPE_Menu // 	No Menu
+                } else if (value == X_AD_Tree.TREETYPE_Menu || // 	No Menu
 
-                    || value == X_AD_Tree.TREETYPE_CustomTable // 	No Custom Table
+                    value == X_AD_Tree.TREETYPE_CustomTable || // 	No Custom Table
 
-                    || value == X_AD_Tree.TREETYPE_User1 // 	No custom user trees
+                    value == X_AD_Tree.TREETYPE_User1 || // 	No custom user trees
 
-                    || value == X_AD_Tree.TREETYPE_User2
-                    || value == X_AD_Tree.TREETYPE_User3
-                    || value == X_AD_Tree.TREETYPE_User4
+                    value == X_AD_Tree.TREETYPE_User2 ||
+                    value == X_AD_Tree.TREETYPE_User3 ||
+                    value == X_AD_Tree.TREETYPE_User4
                 )
                     true
                 else
-                //	PC (Product Category), BB (BOM)
+                // 	PC (Product Category), BB (BOM)
                 {
                     val tree = MTree_Base(this, name.toString(), value)
                     tree.save()
@@ -100,7 +100,7 @@ open class MBaseClient : org.compiere.orm.MClient {
             return success
         }
 
-        //	Create Trees
+        // 	Create Trees
         val sql: StringBuilder? =
             if (Env.isBaseLanguage(language, "AD_Ref_List"))
             // 	Get TreeTypes & Name
@@ -120,7 +120,7 @@ open class MBaseClient : org.compiere.orm.MClient {
 
         if (!success) return false
 
-        //	Create ClientInfo
+        // 	Create ClientInfo
         val clientInfo = MClientInfo(
             this,
             AD_Tree_Org_ID,
