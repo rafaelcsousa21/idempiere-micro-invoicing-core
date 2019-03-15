@@ -8,22 +8,17 @@ import org.compiere.model.I_M_InOutLineMA;
 import org.compiere.order.MInOutLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
-import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
 
 /**
  * Shipment Material Allocation
@@ -47,7 +42,6 @@ public class MInOutLineMA extends X_M_InOutLineMA {
      *
      * @param ctx              context
      * @param M_InOutLineMA_ID ignored
-     * @param trxName          trx
      */
     public MInOutLineMA(Properties ctx, int M_InOutLineMA_ID) {
         super(ctx, M_InOutLineMA_ID);
@@ -57,20 +51,14 @@ public class MInOutLineMA extends X_M_InOutLineMA {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MInOutLineMA(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInOutLineMA(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MInOutLineMA
 
     //	/**	Logger	*/
     //	private static CLogger	s_log	= CLogger.getCLogger (MInOutLineMA.class);
-
-    public MInOutLineMA(Properties ctx, Row row) {
-        super(ctx, row);
-    } //	MInOutLineMA
 
     /**
      * Parent Constructor
@@ -124,7 +112,6 @@ public class MInOutLineMA extends X_M_InOutLineMA {
      *
      * @param ctx            context
      * @param M_InOutLine_ID line
-     * @param trxName        trx
      * @return allocations
      */
     public static MInOutLineMA[] get(Properties ctx, int M_InOutLine_ID) {
@@ -142,7 +129,6 @@ public class MInOutLineMA extends X_M_InOutLineMA {
      * Delete all Material Allocation for InOutLine
      *
      * @param M_InOutLine_ID Shipment Line
-     * @param trxName        transaction
      * @return number of rows deleted or -1 for error
      */
     public static int deleteInOutLineMA(int M_InOutLine_ID) {
@@ -179,7 +165,6 @@ public class MInOutLineMA extends X_M_InOutLineMA {
      * Total qty on LineMA for M_InoutLine
      *
      * @param M_InOutLine_ID
-     * @param trxName
      * @return
      */
     public static BigDecimal getManualQty(int M_InOutLine_ID) {
@@ -194,38 +179,10 @@ public class MInOutLineMA extends X_M_InOutLineMA {
      *
      * @param ctx            context
      * @param M_InOutLine_ID line
-     * @param trxName        trx
      * @return allocations
      */
     public static MInOutLineMA[] getNonReturned(Properties ctx, int M_InOutLine_ID) {
-        String sql =
-                "SELECT * FROM M_InoutLineMA_Returned WHERE (returnedQty<>movementQty or returnedQty is null) and m_inoutline_id=? ";
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        ArrayList<MInOutLineMA> list = new ArrayList<MInOutLineMA>();
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, M_InOutLine_ID);
-
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MInOutLineMA lineMA = new MInOutLineMA(ctx, rs);
-                list.add(lineMA);
-            }
-
-        } catch (SQLException ex) {
-            s_log.log(Level.SEVERE, sql, ex);
-            throw new AdempiereException(ex.getLocalizedMessage(), ex);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        MInOutLineMA[] retValue = new MInOutLineMA[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseInOutLineMAKt.getMaterialAllocationsFromShipmentWhichIsNotReturned(ctx, M_InOutLine_ID);
     } //	getNonReturned
 
     @Override

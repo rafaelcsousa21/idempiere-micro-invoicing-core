@@ -1,12 +1,12 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.accounting.MProduct;
 import org.compiere.product.IProductPricing;
 import org.compiere.product.MProductCategory;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -61,8 +61,8 @@ public class MProjectLine extends X_C_ProjectLine {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MProjectLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProjectLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProjectLine
 
     /**

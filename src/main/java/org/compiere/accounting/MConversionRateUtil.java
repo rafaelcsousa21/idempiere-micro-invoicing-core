@@ -3,8 +3,8 @@
  */
 package org.compiere.accounting;
 
+import org.compiere.bo.MCurrency;
 import org.compiere.conversionrate.MConversionType;
-import org.compiere.product.MCurrency;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 

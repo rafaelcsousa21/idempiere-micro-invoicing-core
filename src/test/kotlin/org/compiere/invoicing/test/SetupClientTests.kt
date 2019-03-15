@@ -1,6 +1,5 @@
 package org.compiere.invoicing.test
 
-import company.bigger.test.support.randomString
 import org.compiere.crm.MCountry
 import org.compiere.process.ProcessInfo
 import org.idempiere.common.util.ServerContext

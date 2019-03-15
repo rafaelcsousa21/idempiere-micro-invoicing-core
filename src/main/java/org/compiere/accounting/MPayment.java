@@ -1,15 +1,35 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.bank.IBAN;
 import org.compiere.bank.MBankAccount;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.X_C_BPartner;
 import org.compiere.docengine.DocumentEngine;
-import org.compiere.invoicing.*;
-import org.compiere.model.*;
+import org.compiere.invoicing.MBPBankAccount;
+import org.compiere.invoicing.MConversionRate;
+import org.compiere.invoicing.MDocTypeCounter;
+import org.compiere.invoicing.MInvoice;
+import org.compiere.invoicing.MPaymentTransaction;
+import org.compiere.invoicing.MPaymentValidate;
+import org.compiere.invoicing.PaymentUtil;
+import org.compiere.model.IDoc;
+import org.compiere.model.IPODoc;
+import org.compiere.model.IPaymentProcessor;
+import org.compiere.model.IProcessInfo;
+import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_Payment;
+import org.compiere.model.PaymentInterface;
 import org.compiere.order.MOnlineTrxHistory;
 import org.compiere.order.X_C_Order;
-import org.compiere.orm.*;
+import org.compiere.orm.MDocType;
+import org.compiere.orm.MOrg;
+import org.compiere.orm.MSequence;
+import org.compiere.orm.MSysConfig;
+import org.compiere.orm.PO;
+import org.compiere.orm.PeriodClosedException;
+import org.compiere.orm.Query;
+import org.compiere.orm.X_C_DocType;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.process.IProcessUI;
@@ -31,7 +51,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.forUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Payment Model. - retrieve and create payments for invoice
@@ -152,8 +175,8 @@ public class MPayment extends X_C_Payment
      * @param rs      result set record
      * @param trxName transaction
      */
-    public MPayment(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPayment(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MPayment
 
     /**
@@ -748,8 +771,8 @@ public class MPayment extends X_C_Payment
                             CCType,
                             getClientId(),
                             getCurrencyId(),
-                            getPayAmt(),
-                            null);
+                            getPayAmt()
+                    );
         //	Relax Amount
         if (m_mBankAccountProcessors == null || m_mBankAccountProcessors.length == 0)
             m_mBankAccountProcessors =
@@ -759,8 +782,8 @@ public class MPayment extends X_C_Payment
                             CCType,
                             getClientId(),
                             getCurrencyId(),
-                            Env.ZERO,
-                            null);
+                            Env.ZERO
+                    );
         if (m_mBankAccountProcessors == null || m_mBankAccountProcessors.length == 0) return false;
 
         //	Find the first right one

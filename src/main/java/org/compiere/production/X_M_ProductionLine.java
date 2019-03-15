@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_M_ProductionLine;
 import org.compiere.orm.MTable;
@@ -7,7 +8,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -28,7 +28,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      */
     public X_M_ProductionLine(Properties ctx, int M_ProductionLine_ID) {
         super(ctx, M_ProductionLine_ID);
-        /**
+        /*
          * if (M_ProductionLine_ID == 0) { setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS
          * DefaultValue FROM M_ProductionLine WHERE M_Production_ID=@M_Production_ID@
          * setM_AttributeSetInstance_ID (0); setM_Locator_ID (0); // @M_Locator_ID@ setMovementQty
@@ -39,8 +39,8 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
     /**
      * Load Constructor
      */
-    public X_M_ProductionLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_ProductionLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -53,8 +53,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_ProductionLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_ProductionLine[" + getId() + "]";
     }
 
     /**

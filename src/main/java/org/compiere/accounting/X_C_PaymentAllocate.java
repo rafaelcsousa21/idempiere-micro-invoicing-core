@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_PaymentAllocate;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -36,8 +36,8 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
     /**
      * Load Constructor
      */
-    public X_C_PaymentAllocate(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_PaymentAllocate(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

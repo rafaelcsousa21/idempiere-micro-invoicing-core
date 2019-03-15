@@ -1,8 +1,7 @@
 package org.compiere.accounting;
 
+import org.compiere.bo.MCurrency;
 import org.compiere.conversionrate.MConversionRate;
-import org.compiere.model.I_M_Movement;
-import org.compiere.product.MCurrency;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -58,7 +57,6 @@ public final class FactLine extends X_Fact_Acct {
      * @param AD_Table_ID - Table of Document Source
      * @param Record_ID   - Record of document
      * @param Line_ID     - Optional line id
-     * @param trxName     transaction
      */
     public FactLine(Properties ctx, int AD_Table_ID, int Record_ID, int Line_ID) {
         super(ctx, 0);
@@ -69,7 +67,6 @@ public final class FactLine extends X_Fact_Acct {
         setAmtAcctDr(Env.ZERO);
         setAmtSourceCr(Env.ZERO);
         setAmtSourceDr(Env.ZERO);
-        //	Log.trace(this,Log.l1_User, "FactLine " + AD_Table_ID + ":" + Record_ID);
         setAD_Table_ID(AD_Table_ID);
         setRecord_ID(Record_ID);
         setLine_ID(Line_ID);
@@ -806,7 +803,8 @@ public final class FactLine extends X_Fact_Acct {
             if (getC_LocFrom_ID() == 0) setC_LocFrom_ID(m_acct.getC_LocFrom_ID());
             if (getC_LocTo_ID() == 0) setC_LocTo_ID(m_acct.getC_LocTo_ID());
             if (getBusinessPartnerId() == 0) setBusinessPartnerId(m_acct.getBusinessPartnerId());
-            if (getTransactionOrganizationId() == 0) setTransactionOrganizationId(m_acct.getTransactionOrganizationId());
+            if (getTransactionOrganizationId() == 0)
+                setTransactionOrganizationId(m_acct.getTransactionOrganizationId());
             if (getProjectId() == 0) setProjectId(m_acct.getProjectId());
             if (getCampaignId() == 0) setCampaignId(m_acct.getCampaignId());
             if (getBusinessActivityId() == 0) setBusinessActivityId(m_acct.getBusinessActivityId());
@@ -998,120 +996,70 @@ public final class FactLine extends X_Fact_Acct {
             int AD_Table_ID, int Record_ID, int Line_ID, BigDecimal multiplier) {
         boolean success = false;
 
-        StringBuilder sql =
-                new StringBuilder("SELECT * ")
-                        .append("FROM Fact_Acct ")
-                        .append("WHERE C_AcctSchema_ID=? AND AD_Table_ID=? AND Record_ID=?")
-                        .append(" AND Account_ID=?");
-        if (Line_ID > 0) {
-            sql.append(" AND Line_ID=? ");
-        } else {
-            sql.append(" AND Line_ID IS NULL ");
-        }
-        // MZ Goodwill
-        // for Inventory Move
-        if (I_M_Movement.Table_ID == AD_Table_ID) sql.append(" AND M_Locator_ID=?");
-        // end MZ
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            int pindex = 1;
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(pindex++, getC_AcctSchema_ID());
-            pstmt.setInt(pindex++, AD_Table_ID);
-            pstmt.setInt(pindex++, Record_ID);
-            pstmt.setInt(pindex++, m_acct.getAccount_ID());
-            if (Line_ID > 0) {
-                pstmt.setInt(pindex++, Line_ID);
-            }
-            // MZ Goodwill
-            // for Inventory Move
-            if (I_M_Movement.Table_ID == AD_Table_ID) pstmt.setInt(pindex++, getM_Locator_ID());
-            // end MZ
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                MFactAcct fact = new MFactAcct(getCtx(), rs);
-                //  Accounted Amounts - reverse
-                BigDecimal dr = fact.getAmtAcctDr();
-                BigDecimal cr = fact.getAmtAcctCr();
-                // setAmtAcctDr (cr.multiply(multiplier));
-                // setAmtAcctCr (dr.multiply(multiplier));
-                setAmtAcct(fact.getCurrencyId(), cr.multiply(multiplier), dr.multiply(multiplier));
-                //
-                //  Bayu Sistematika - Source Amounts
-                //  Fixing source amounts
-                BigDecimal drSourceAmt = fact.getAmtSourceDr();
-                BigDecimal crSourceAmt = fact.getAmtSourceCr();
-                setAmtSource(
-                        fact.getCurrencyId(),
-                        crSourceAmt.multiply(multiplier),
-                        drSourceAmt.multiply(multiplier));
-                //  end Bayu Sistematika
-                //
-                success = true;
-                if (log.isLoggable(Level.FINE))
-                    log.fine(
-                            new StringBuilder("(Table=")
-                                    .append(AD_Table_ID)
-                                    .append(",Record_ID=")
-                                    .append(Record_ID)
-                                    .append(",Line=")
-                                    .append(Record_ID)
-                                    .append(", Account=")
-                                    .append(m_acct)
-                                    .append(",dr=")
-                                    .append(dr)
-                                    .append(",cr=")
-                                    .append(cr)
-                                    .append(") - DR=")
-                                    .append(getAmtSourceDr())
-                                    .append("|")
-                                    .append(getAmtAcctDr())
-                                    .append(", CR=")
-                                    .append(getAmtSourceCr())
-                                    .append("|")
-                                    .append(getAmtAcctCr())
-                                    .toString());
-                //	Dimensions
-                setTransactionOrganizationId(fact.getTransactionOrganizationId());
-                setProjectId(fact.getProjectId());
-                setC_ProjectPhase_ID(fact.getC_ProjectPhase_ID());
-                setC_ProjectTask_ID(fact.getC_ProjectTask_ID());
-                setBusinessActivityId(fact.getBusinessActivityId());
-                setCampaignId(fact.getCampaignId());
-                setC_SalesRegion_ID(fact.getC_SalesRegion_ID());
-                setC_LocFrom_ID(fact.getC_LocFrom_ID());
-                setC_LocTo_ID(fact.getC_LocTo_ID());
-                setM_Product_ID(fact.getM_Product_ID());
-                setM_Locator_ID(fact.getM_Locator_ID());
-                setUser1Id(fact.getUser1Id());
-                setUser2Id(fact.getUser2Id());
-                setC_UOM_ID(fact.getC_UOM_ID());
-                setC_Tax_ID(fact.getC_Tax_ID());
-                //	Org for cross charge
-                setOrgId(fact.getOrgId());
-                if (fact.getQty() != null) setQty(fact.getQty().negate());
-            } else
-                log.warning(
-                        new StringBuilder("Not Found (try later) ")
-                                .append(",C_AcctSchema_ID=")
-                                .append(getC_AcctSchema_ID())
-                                .append(", AD_Table_ID=")
-                                .append(AD_Table_ID)
-                                .append(",Record_ID=")
-                                .append(Record_ID)
-                                .append(",Line_ID=")
-                                .append(Line_ID)
-                                .append(", Account_ID=")
-                                .append(m_acct.getAccount_ID())
-                                .toString());
-        } catch (SQLException e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
+        MFactAcct fact = BaseFactLineKt.updateReverseLineGetData(AD_Table_ID, Record_ID, Line_ID, multiplier,
+                getC_AcctSchema_ID(), m_acct.getAccount_ID(), getM_Locator_ID(), getCtx()
+        );
+        //  Accounted Amounts - reverse
+        BigDecimal dr = fact.getAmtAcctDr();
+        BigDecimal cr = fact.getAmtAcctCr();
+        // setAmtAcctDr (cr.multiply(multiplier));
+        // setAmtAcctCr (dr.multiply(multiplier));
+        setAmtAcct(fact.getCurrencyId(), cr.multiply(multiplier), dr.multiply(multiplier));
+        //
+        //  Bayu Sistematika - Source Amounts
+        //  Fixing source amounts
+        BigDecimal drSourceAmt = fact.getAmtSourceDr();
+        BigDecimal crSourceAmt = fact.getAmtSourceCr();
+        setAmtSource(
+                fact.getCurrencyId(),
+                crSourceAmt.multiply(multiplier),
+                drSourceAmt.multiply(multiplier));
+        //  end Bayu Sistematika
+        //
+        success = true;
+        if (log.isLoggable(Level.FINE))
+            log.fine(
+                    new StringBuilder("(Table=")
+                            .append(AD_Table_ID)
+                            .append(",Record_ID=")
+                            .append(Record_ID)
+                            .append(",Line=")
+                            .append(Record_ID)
+                            .append(", Account=")
+                            .append(m_acct)
+                            .append(",dr=")
+                            .append(dr)
+                            .append(",cr=")
+                            .append(cr)
+                            .append(") - DR=")
+                            .append(getAmtSourceDr())
+                            .append("|")
+                            .append(getAmtAcctDr())
+                            .append(", CR=")
+                            .append(getAmtSourceCr())
+                            .append("|")
+                            .append(getAmtAcctCr())
+                            .toString());
+        //	Dimensions
+        setTransactionOrganizationId(fact.getTransactionOrganizationId());
+        setProjectId(fact.getProjectId());
+        setC_ProjectPhase_ID(fact.getC_ProjectPhase_ID());
+        setC_ProjectTask_ID(fact.getC_ProjectTask_ID());
+        setBusinessActivityId(fact.getBusinessActivityId());
+        setCampaignId(fact.getCampaignId());
+        setC_SalesRegion_ID(fact.getC_SalesRegion_ID());
+        setC_LocFrom_ID(fact.getC_LocFrom_ID());
+        setC_LocTo_ID(fact.getC_LocTo_ID());
+        setM_Product_ID(fact.getM_Product_ID());
+        setM_Locator_ID(fact.getM_Locator_ID());
+        setUser1Id(fact.getUser1Id());
+        setUser2Id(fact.getUser2Id());
+        setC_UOM_ID(fact.getC_UOM_ID());
+        setC_Tax_ID(fact.getC_Tax_ID());
+        //	Org for cross charge
+        setOrgId(fact.getOrgId());
+        if (fact.getQty() != null) setQty(fact.getQty().negate());
 
-            rs = null;
-            pstmt = null;
-        }
         return success;
     } //  updateReverseLine
 } //	FactLine

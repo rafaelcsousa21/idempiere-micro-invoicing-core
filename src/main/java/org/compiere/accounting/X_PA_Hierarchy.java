@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_Hierarchy;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_PA_Hierarchy extends BasePOName implements I_PA_Hierarchy {
     /**
      * Load Constructor
      */
-    public X_PA_Hierarchy(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PA_Hierarchy(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

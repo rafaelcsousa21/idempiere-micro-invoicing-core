@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_RequisitionLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -27,19 +27,13 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      */
     public X_M_RequisitionLine(Properties ctx, int M_RequisitionLine_ID) {
         super(ctx, M_RequisitionLine_ID);
-        /**
-         * if (M_RequisitionLine_ID == 0) { setLine (0); // @SQL=SELECT COALESCE(MAX(Line),0)+10 AS
-         * DefaultValue FROM M_RequisitionLine WHERE M_Requisition_ID=@M_Requisition_ID@ setLineNetAmt
-         * (Env.ZERO); setM_Requisition_ID (0); setM_RequisitionLine_ID (0); setPriceActual (Env.ZERO);
-         * setQty (Env.ZERO); // 1 }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_RequisitionLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_RequisitionLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -52,8 +46,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_RequisitionLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_RequisitionLine[" + getId() + "]";
     }
 
     /**

@@ -1,10 +1,10 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_BOMProduct;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
@@ -36,19 +36,13 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      */
     public X_M_BOMProduct(Properties ctx, int M_BOMProduct_ID) {
         super(ctx, M_BOMProduct_ID);
-        /**
-         * if (M_BOMProduct_ID == 0) { setBOMProductType (null); // S setBOMQty (Env.ZERO); // 1
-         * setIsPhantom (false); setLeadTimeOffset (0); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10
-         * AS DefaultValue FROM M_BOMProduct WHERE M_BOM_ID=@M_BOM_ID@ setM_BOM_ID (0);
-         * setM_BOMProduct_ID (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_BOMProduct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_BOMProduct(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -66,8 +60,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_BOMProduct[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_BOMProduct[" + getId() + "]";
     }
 
     /**

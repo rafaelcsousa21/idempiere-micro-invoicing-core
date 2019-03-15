@@ -1,12 +1,12 @@
 // package org.compiere.mfg.model;
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
 import org.eevolution.model.I_PP_Product_BOM;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,8 @@ public class MPPProductBOM extends X_PP_Product_BOM {
         super(ctx, PP_Product_BOM_ID);
     }
 
-    public MPPProductBOM(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPPProductBOM(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

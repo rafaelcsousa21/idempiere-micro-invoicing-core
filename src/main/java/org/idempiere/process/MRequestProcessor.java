@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.schedule.MSchedule;
 import org.compiere.util.Msg;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Properties;
@@ -43,10 +43,9 @@ public class MRequestProcessor extends X_R_RequestProcessor
      * Load Constructor
      *
      * @param ctx context
-     * @param rs  result set
      */
-    public MRequestProcessor(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequestProcessor(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequestProcessor
 
     /**

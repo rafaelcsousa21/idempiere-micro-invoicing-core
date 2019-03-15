@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -48,13 +47,9 @@ public class X_M_Cost extends PO implements I_M_Cost {
     /**
      * Load Constructor
      */
-    public X_M_Cost(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_M_Cost(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MCost
+    }
 
     /**
      * AccessLevel

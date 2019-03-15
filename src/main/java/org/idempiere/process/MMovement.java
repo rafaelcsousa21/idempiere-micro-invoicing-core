@@ -1,6 +1,11 @@
 package org.idempiere.process;
 
-import org.compiere.accounting.*;
+import kotliquery.Row;
+import org.compiere.accounting.MClient;
+import org.compiere.accounting.MPeriod;
+import org.compiere.accounting.MProduct;
+import org.compiere.accounting.MStorageOnHand;
+import org.compiere.accounting.NegativeInventoryDisallowedException;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -21,7 +26,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -83,12 +87,10 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MMovement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMovement(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMovement
 
     /**

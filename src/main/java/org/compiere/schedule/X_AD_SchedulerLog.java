@@ -1,9 +1,9 @@
 package org.compiere.schedule;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_SchedulerLog;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,17 +24,13 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
      */
     public X_AD_SchedulerLog(Properties ctx, int AD_SchedulerLog_ID) {
         super(ctx, AD_SchedulerLog_ID);
-        /**
-         * if (AD_SchedulerLog_ID == 0) { setAD_Scheduler_ID (0); setAD_SchedulerLog_ID (0); setIsError
-         * (false); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_SchedulerLog(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_SchedulerLog(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -58,7 +54,7 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
      */
     public void setSchedulerId(int AD_Scheduler_ID) {
         if (AD_Scheduler_ID < 1) setValueNoCheck(COLUMNNAME_AD_Scheduler_ID, null);
-        else setValueNoCheck(COLUMNNAME_AD_Scheduler_ID, Integer.valueOf(AD_Scheduler_ID));
+        else setValueNoCheck(COLUMNNAME_AD_Scheduler_ID, AD_Scheduler_ID);
     }
 
     /**
@@ -67,7 +63,7 @@ public class X_AD_SchedulerLog extends PO implements I_AD_SchedulerLog {
      * @param IsError An Error occurred in the execution
      */
     public void setIsError(boolean IsError) {
-        setValue(COLUMNNAME_IsError, Boolean.valueOf(IsError));
+        setValue(COLUMNNAME_IsError, IsError);
     }
 
     /**

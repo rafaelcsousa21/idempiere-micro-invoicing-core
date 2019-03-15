@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_StatusCategory;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
@@ -45,7 +46,6 @@ public class MStatusCategory extends X_R_StatusCategory {
      *
      * @param ctx                 context
      * @param R_StatusCategory_ID id
-     * @param trxName             trx
      */
     public MStatusCategory(Properties ctx, int R_StatusCategory_ID) {
         super(ctx, R_StatusCategory_ID);
@@ -58,42 +58,21 @@ public class MStatusCategory extends X_R_StatusCategory {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MStatusCategory(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MStatusCategory(Properties ctx, Row row) {
+        super(ctx, row);
     } //	RStatusCategory
 
     /**
-     * Get Default Status Categpru for Client
+     * Get Default Status category for Client
      *
      * @param ctx context
      * @return status category or null
      */
     public static MStatusCategory getDefault(Properties ctx) {
         int AD_Client_ID = Env.getClientId(ctx);
-        String sql =
-                "SELECT * FROM R_StatusCategory "
-                        + "WHERE clientId in (0,?) AND IsDefault='Y' "
-                        + "ORDER BY clientId DESC";
-        MStatusCategory retValue = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, AD_Client_ID);
-            rs = pstmt.executeQuery();
-            if (rs.next()) retValue = new MStatusCategory(ctx, rs);
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        return retValue;
+        return MBaseStatusCategoryKt.getDefaultStatusCategoryForClient(ctx, AD_Client_ID);
     } //	getDefault
 
     /**
@@ -144,25 +123,7 @@ public class MStatusCategory extends X_R_StatusCategory {
      */
     public MStatus[] getStatus(boolean reload) {
         if (m_status != null && !reload) return m_status;
-        String sql = "SELECT * FROM R_Status " + "WHERE R_StatusCategory_ID=? " + "ORDER BY SeqNo";
-        ArrayList<MStatus> list = new ArrayList<MStatus>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getR_StatusCategory_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MStatus(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        m_status = new MStatus[list.size()];
-        list.toArray(m_status);
+        m_status = MBaseStatusCategoryKt.getAllStatus(getCtx(), getR_StatusCategory_ID());
         return m_status;
     } //	getStatus
 

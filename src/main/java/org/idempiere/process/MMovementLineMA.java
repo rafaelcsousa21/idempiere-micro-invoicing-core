@@ -1,5 +1,6 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_Movement;
 import org.compiere.model.I_M_MovementLine;
@@ -10,14 +11,11 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
 
 public class MMovementLineMA extends X_M_MovementLineMA {
     /**
@@ -34,7 +32,6 @@ public class MMovementLineMA extends X_M_MovementLineMA {
      *
      * @param ctx                 context
      * @param M_MovementLineMA_ID ignored
-     * @param trxName             trx
      */
     public MMovementLineMA(Properties ctx, int M_MovementLineMA_ID) {
         super(ctx, M_MovementLineMA_ID);
@@ -44,12 +41,10 @@ public class MMovementLineMA extends X_M_MovementLineMA {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result ser
-     * @param trxName trx
+     * @param ctx context
      */
-    public MMovementLineMA(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMovementLineMA(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMovementLineMA
 
     /**
@@ -106,32 +101,10 @@ public class MMovementLineMA extends X_M_MovementLineMA {
      *
      * @param ctx               context
      * @param M_MovementLine_ID line
-     * @param trxName           trx
      * @return allocations
      */
     public static MMovementLineMA[] get(Properties ctx, int M_MovementLine_ID) {
-        ArrayList<MMovementLineMA> list = new ArrayList<MMovementLineMA>();
-        String sql = "SELECT * FROM M_MovementLineMA WHERE M_MovementLine_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, M_MovementLine_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                list.add(new MMovementLineMA(ctx, rs));
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        MMovementLineMA[] retValue = new MMovementLineMA[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseMovementLineMAKt.getMaterialAllocationsForLine(ctx, M_MovementLine_ID);
     } //	get
 
     /**

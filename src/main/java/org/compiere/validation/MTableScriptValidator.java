@@ -1,10 +1,10 @@
 package org.compiere.validation;
 
+import kotliquery.Row;
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -43,7 +43,6 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
      *
      * @param ctx                         context
      * @param AD_Table_ScriptValidator_ID id
-     * @param trxName                     transaction
      */
     public MTableScriptValidator(Properties ctx, int AD_Table_ScriptValidator_ID) {
         super(ctx, AD_Table_ScriptValidator_ID);
@@ -52,20 +51,17 @@ public class MTableScriptValidator extends X_AD_Table_ScriptValidator {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MTableScriptValidator(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MTableScriptValidator(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MTableScriptValidator
 
     /**
      * Get Model Validation Script Rules for a table/event
      *
-     * @param ctx      context
-     * @param table_id AD_Table_ID
-     * @param event    Event
+     * @param ctx   context
+     * @param event Event
      * @return array of MTableScriptValidator or null if error or no validators found
      */
     public static List<MTableScriptValidator> getModelValidatorRules(

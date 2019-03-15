@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_GL_Distribution;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -31,8 +31,8 @@ public class X_GL_Distribution extends BasePOName implements I_GL_Distribution {
     /**
      * Load Constructor
      */
-    public X_GL_Distribution(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_GL_Distribution(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -28,23 +27,15 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      */
     public X_M_StorageOnHand(Properties ctx, int M_StorageOnHand_ID) {
         super(ctx, M_StorageOnHand_ID);
-        /**
-         * if (M_StorageOnHand_ID == 0) { setDateMaterialPolicy (new Timestamp(
-         * System.currentTimeMillis() )); setM_AttributeSetInstance_ID (0); setM_Locator_ID (0);
-         * setM_Product_ID (0); setQtyOnHand (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_StorageOnHand(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_M_StorageOnHand(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MStorageOnHand
+    }
+
 
     /**
      * AccessLevel
@@ -61,8 +52,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_StorageOnHand[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_StorageOnHand[" + getId() + "]";
     }
 
     /**

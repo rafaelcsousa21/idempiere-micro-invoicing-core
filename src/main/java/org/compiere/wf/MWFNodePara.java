@@ -1,10 +1,10 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_Node_Para;
 import org.compiere.orm.Query;
 import org.compiere.process.MProcessPara;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -27,9 +27,8 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
     /**
      * ************************************************************************ Standard Constructor
      *
-     * @param ctx     context
-     * @param id      id
-     * @param trxName transaction
+     * @param ctx context
+     * @param id  id
      */
     public MWFNodePara(Properties ctx, int id) {
         super(ctx, id);
@@ -38,12 +37,10 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWFNodePara(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFNodePara(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWFNodePara
 
     /**
@@ -57,7 +54,7 @@ public class MWFNodePara extends X_AD_WF_Node_Para {
 
         List<MWFNodePara> list =
                 new Query(ctx, I_AD_WF_Node_Para.Table_Name, "AD_WF_Node_ID=?")
-                        .setParameters(new Object[]{AD_WF_Node_ID})
+                        .setParameters(AD_WF_Node_ID)
                         .list();
         MWFNodePara[] retValue = new MWFNodePara[list.size()];
         list.toArray(retValue);

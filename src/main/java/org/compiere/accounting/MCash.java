@@ -1,8 +1,13 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.MConversionRate;
-import org.compiere.model.*;
+import org.compiere.model.IDoc;
+import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_Cash;
+import org.compiere.model.I_C_CashLine;
+import org.compiere.model.I_C_Invoice;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.Query;
@@ -17,7 +22,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -106,8 +110,8 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MCash(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MCash(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MCash
 
     /**
@@ -123,11 +127,10 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         if (today != null) {
             setStatementDate(today);
             setDateAcct(today);
-            StringBuilder name =
-                    new StringBuilder(DisplayType.getDateFormat(DisplayType.Date).format(today))
-                            .append(" ")
-                            .append(cb.getName());
-            setName(name.toString());
+            String name = DisplayType.getDateFormat(DisplayType.Date).format(today) +
+                    " " +
+                    cb.getName();
+            setName(name);
         }
         m_book = cb;
     } //	MCash

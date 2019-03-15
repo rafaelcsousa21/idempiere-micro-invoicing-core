@@ -1,10 +1,10 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.HasName;
 import org.compiere.model.I_AD_WF_Responsible;
 import org.compiere.orm.BasePOUser;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -46,8 +46,8 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
     /**
      * Load Constructor
      */
-    public X_AD_WF_Responsible(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WF_Responsible(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -60,8 +60,7 @@ public class X_AD_WF_Responsible extends BasePOUser implements I_AD_WF_Responsib
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_WF_Responsible[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_WF_Responsible[" + getId() + "]";
     }
 
     /**

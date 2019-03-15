@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_UOM_Conversion;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,17 +26,13 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
      */
     public X_C_UOM_Conversion(Properties ctx, int C_UOM_Conversion_ID) {
         super(ctx, C_UOM_Conversion_ID);
-        /**
-         * if (C_UOM_Conversion_ID == 0) { setC_UOM_Conversion_ID (0); setC_UOM_ID (0); setC_UOM_To_ID
-         * (0); setDivideRate (Env.ZERO); setMultiplyRate (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_UOM_Conversion(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_UOM_Conversion(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -55,8 +51,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_UOM_Conversion[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_UOM_Conversion[" + getId() + "]";
     }
 
     /**

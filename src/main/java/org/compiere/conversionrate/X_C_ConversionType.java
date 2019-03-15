@@ -1,9 +1,9 @@
 package org.compiere.conversionrate;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_ConversionType;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -30,8 +30,8 @@ public class X_C_ConversionType extends BasePONameValue
     /**
      * Load Constructor
      */
-    public X_C_ConversionType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_ConversionType(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +44,7 @@ public class X_C_ConversionType extends BasePONameValue
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_ConversionType[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_ConversionType[" + getId() + "]";
     }
 
     @Override

@@ -1,10 +1,10 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_RequestUpdate;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MTable;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -40,8 +40,8 @@ public class MRequestUpdate extends X_R_RequestUpdate {
      * @param rs      result set
      * @param trxName trx
      */
-    public MRequestUpdate(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequestUpdate(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequestUpdate
 
     /**

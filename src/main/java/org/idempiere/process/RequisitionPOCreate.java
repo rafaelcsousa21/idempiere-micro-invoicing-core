@@ -1,12 +1,16 @@
 package org.idempiere.process;
 
 import org.apache.commons.collections.keyvalue.MultiKey;
-import org.compiere.accounting.*;
+import org.compiere.accounting.MOrder;
+import org.compiere.accounting.MOrderLine;
+import org.compiere.accounting.MProduct;
+import org.compiere.accounting.MProductPO;
+import org.compiere.accounting.MRequisition;
+import org.compiere.accounting.MRequisitionLine;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.model.I_C_BPartner;
 import org.compiere.order.MCharge;
-import org.compiere.orm.POResultSet;
 import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
@@ -257,20 +261,16 @@ public class RequisitionPOCreate extends SvrProcess {
                 "(SELECT DateRequired FROM M_Requisition r WHERE M_RequisitionLine.M_Requisition_ID=r.M_Requisition_ID),");
         orderClause.append("M_Product_ID, C_Charge_ID, M_AttributeSetInstance_ID");
 
-        POResultSet<MRequisitionLine> rs =
+        List<MRequisitionLine> result =
                 new Query(getCtx(), MRequisitionLine.Table_Name, whereClause.toString())
                         .setParameters(params)
                         .setOrderBy(orderClause.toString())
                         .setClient_ID()
-                        .scroll();
-        try {
-            while (rs.hasNext()) {
-                process(rs.next());
-            }
-        } finally {
-            POResultSet.close(rs);
-            rs = null;
+                        .list();
+        for (MRequisitionLine line : result) {
+            process(line);
         }
+
         closeOrder();
         return "";
     } //	doit

@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_MailText;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_R_MailText extends BasePOName implements I_R_MailText {
     /**
      * Load Constructor
      */
-    public X_R_MailText(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_MailText(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -43,8 +43,7 @@ public class X_R_MailText extends BasePOName implements I_R_MailText {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_MailText[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_MailText[" + getId() + "]";
     }
 
     /**

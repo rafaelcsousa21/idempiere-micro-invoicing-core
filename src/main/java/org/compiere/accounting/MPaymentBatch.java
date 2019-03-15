@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 /**
@@ -34,20 +35,17 @@ public class MPaymentBatch extends X_C_PaymentBatch {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MPaymentBatch(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPaymentBatch(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MPaymentBatch
 
     /**
      * New Constructor
      *
-     * @param ctx     context
-     * @param Name    name
-     * @param trxName trx
+     * @param ctx  context
+     * @param Name name
      */
     public MPaymentBatch(Properties ctx, String Name) {
         this(ctx, 0);

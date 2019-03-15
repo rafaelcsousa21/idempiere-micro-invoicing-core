@@ -1,12 +1,12 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_ProjectLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -39,8 +39,8 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
     /**
      * Load Constructor
      */
-    public X_C_ProjectLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_ProjectLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

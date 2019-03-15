@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_A_Asset_Type;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_A_Asset_Type extends BasePONameValue implements I_A_Asset_Type {
     /**
      * Load Constructor
      */
-    public X_A_Asset_Type(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_A_Asset_Type(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

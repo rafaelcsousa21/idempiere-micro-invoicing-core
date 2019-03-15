@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -15,15 +16,9 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Journal Batch Model
@@ -57,7 +52,6 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @param ctx                context
      * @param GL_JournalBatch_ID id if 0 - create actual batch
-     * @param trxName            transaction
      */
     public MJournalBatch(Properties ctx, int GL_JournalBatch_ID) {
         super(ctx, GL_JournalBatch_ID);
@@ -80,12 +74,10 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MJournalBatch(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MJournalBatch(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MJournalBatch
 
     /**
@@ -97,8 +89,6 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         this(original.getCtx(), 0);
         setClientOrg(original);
         //
-        //	setAccountingSchemaId(original.getAccountingSchemaId());
-        //	setGL_Budget_ID(original.getGL_Budget_ID());
         setGL_Category_ID(original.getGL_Category_ID());
         setPostingType(original.getPostingType());
         setDescription(original.getDescription());
@@ -106,12 +96,6 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         setControlAmt(original.getControlAmt());
         //
         setCurrencyId(original.getCurrencyId());
-        //	setConversionTypeId(original.getConversionTypeId());
-        //	setCurrencyRate(original.getCurrencyRate());
-
-        //	setDateDoc(original.getDateDoc());
-        //	setDateAcct(original.getDateAcct());
-        //	setPeriodId(original.getC_Period_ID());
     } //	MJournal
 
     /**
@@ -145,26 +129,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * @return Array of lines
      */
     public MJournal[] getJournals(boolean requery) {
-        ArrayList<MJournal> list = new ArrayList<MJournal>();
-        String sql = "SELECT * FROM GL_Journal WHERE GL_JournalBatch_ID=? ORDER BY DocumentNo";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getGL_JournalBatch_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MJournal(getCtx(), rs));
-        } catch (SQLException ex) {
-            log.log(Level.SEVERE, sql, ex);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        MJournal[] retValue = new MJournal[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseJournalBatchKt.getJournalLines(getCtx(), getGL_JournalBatch_ID());
     } //	getJournals
 
     /**

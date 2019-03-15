@@ -11,7 +11,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
 
 import java.io.File;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -57,10 +56,6 @@ public class MClient extends MBaseClient {
     public MClient(Properties ctx, Row row) {
         super(ctx, row);
     } //	MClient
-
-    public MClient(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
 
     /**
      * Get all clients

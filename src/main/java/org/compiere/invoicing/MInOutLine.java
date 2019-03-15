@@ -19,7 +19,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -55,14 +54,8 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set record
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MInOutLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MInOutLine
-
     public MInOutLine(Properties ctx, Row row) {
         super(ctx, row);
     } //	MInOutLine
@@ -73,7 +66,6 @@ public class MInOutLine extends org.compiere.order.MInOutLine implements IPODoc 
      * @param ctx            context
      * @param C_OrderLine_ID line
      * @param where          optional addition where clause
-     * @param trxName        transaction
      * @return array of receipt lines
      */
     public static MInOutLine[] getOfOrderLine(

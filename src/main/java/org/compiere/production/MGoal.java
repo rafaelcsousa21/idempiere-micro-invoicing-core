@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.crm.MUser;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MSysConfig;
@@ -9,14 +10,9 @@ import org.idempiere.common.util.Env;
 
 import java.awt.*;
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Performance Goal
@@ -51,7 +47,6 @@ public class MGoal extends X_PA_Goal {
      *
      * @param ctx        context
      * @param PA_Goal_ID id
-     * @param trxName    trx
      */
     public MGoal(Properties ctx, int PA_Goal_ID) {
         super(ctx, PA_Goal_ID);
@@ -72,12 +67,10 @@ public class MGoal extends X_PA_Goal {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MGoal(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MGoal(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MGoal
 
     /**
@@ -87,7 +80,6 @@ public class MGoal extends X_PA_Goal {
      * @param Name          Name
      * @param Description   Decsription
      * @param MeasureTarget target
-     * @param trxName       trx
      */
     public MGoal(
             Properties ctx, String Name, String Description, BigDecimal MeasureTarget) {
@@ -105,25 +97,7 @@ public class MGoal extends X_PA_Goal {
      * @return goals
      */
     public static MGoal[] getMeasureGoals(Properties ctx, int PA_Measure_ID) {
-        ArrayList<MGoal> list = new ArrayList<MGoal>();
-        String sql = "SELECT * FROM PA_Goal WHERE IsActive='Y' AND PA_Measure_ID=? " + "ORDER BY SeqNo";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, PA_Measure_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MGoal(ctx, rs));
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        MGoal[] retValue = new MGoal[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseGoalKt.getGoalsWithMeasure(ctx, PA_Measure_ID);
     } //	getMeasureGoals
 
     /**
@@ -134,29 +108,7 @@ public class MGoal extends X_PA_Goal {
      */
     public MGoalRestriction[] getRestrictions(boolean reload) {
         if (m_restrictions != null && !reload) return m_restrictions;
-        ArrayList<MGoalRestriction> list = new ArrayList<MGoalRestriction>();
-        //
-        String sql =
-                "SELECT * FROM PA_GoalRestriction "
-                        + "WHERE PA_Goal_ID=? AND IsActive='Y' "
-                        + "ORDER BY Org_ID, C_BPartner_ID, M_Product_ID";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getPA_Goal_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MGoalRestriction(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        m_restrictions = new MGoalRestriction[list.size()];
-        list.toArray(m_restrictions);
+        m_restrictions = MBaseGoalKt.getRestrictions(getCtx(), getPA_Goal_ID());
         return m_restrictions;
     } //	getRestrictions
 

@@ -69,10 +69,6 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MInvoiceTax(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MInvoiceTax
-
     public MInvoiceTax(Properties ctx, Row row) {
         super(ctx, row);
     } //	MInvoiceTax

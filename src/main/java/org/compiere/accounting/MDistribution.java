@@ -1,16 +1,16 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.model.I_GL_Distribution;
 import org.compiere.model.I_GL_DistributionLine;
 import org.compiere.orm.Query;
-import org.compiere.product.MCurrency;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -82,8 +82,8 @@ public class MDistribution extends X_GL_Distribution {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MDistribution(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDistribution(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MDistribution
 
     /**

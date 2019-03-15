@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -91,8 +91,8 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
     /**
      * Load Constructor
      */
-    public X_C_AllocationHdr(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_AllocationHdr(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

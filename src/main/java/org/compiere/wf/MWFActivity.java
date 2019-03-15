@@ -1,10 +1,23 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.crm.MUser;
-import org.compiere.orm.*;
-import org.compiere.process.*;
+import org.compiere.orm.MAttachment;
+import org.compiere.orm.MColumn;
+import org.compiere.orm.MOrg;
+import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MRefList;
+import org.compiere.orm.MRole;
+import org.compiere.orm.MTable;
+import org.compiere.orm.MUserRoles;
+import org.compiere.orm.PO;
+import org.compiere.process.DocAction;
+import org.compiere.process.MPInstance;
+import org.compiere.process.MPInstancePara;
+import org.compiere.process.MProcess;
+import org.compiere.process.ProcessInfo;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.compiere.util.SystemIDs;
@@ -96,8 +109,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MWFActivity(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFActivity(Properties ctx, Row row) {
+        super(ctx, row);
         m_state = new StateEngine(getWorkflowState());
     } //	MWFActivity
 

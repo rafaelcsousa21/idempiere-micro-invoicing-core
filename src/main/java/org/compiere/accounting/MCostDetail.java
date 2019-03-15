@@ -9,13 +9,12 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.forUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValueString;
 
 /**
  * Cost Detail Model
@@ -53,7 +52,6 @@ public class MCostDetail extends X_M_CostDetail {
      *
      * @param ctx             context
      * @param M_CostDetail_ID id
-     * @param trxName         trx
      */
     public MCostDetail(Properties ctx, int M_CostDetail_ID) {
         super(ctx, M_CostDetail_ID);
@@ -76,17 +74,12 @@ public class MCostDetail extends X_M_CostDetail {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MCostDetail(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MCostDetail
-
     public MCostDetail(Properties ctx, Row row) {
         super(ctx, row);
     } //	MCostDetail
+
 
     /**
      * New Constructor
@@ -99,7 +92,6 @@ public class MCostDetail extends X_M_CostDetail {
      * @param Amt                       amt
      * @param Qty                       qty
      * @param Description               optional description
-     * @param trxName                   transaction
      */
     public MCostDetail(
             MAcctSchema as,
@@ -136,7 +128,6 @@ public class MCostDetail extends X_M_CostDetail {
      * @param Amt                       amt
      * @param Qty                       qty
      * @param Description               optional description
-     * @param trxName                   transaction
      * @return true if created
      */
     public static boolean createInvoice(
@@ -214,7 +205,6 @@ public class MCostDetail extends X_M_CostDetail {
      * @param Qty                       qty
      * @param Description               optional description
      * @param IsSOTrx                   sales order
-     * @param trxName                   transaction
      * @return true if no error
      */
     public static boolean createShipment(
@@ -360,48 +350,6 @@ public class MCostDetail extends X_M_CostDetail {
      * @param whereClause               where clause
      * @param ID                        1st parameter
      * @param M_AttributeSetInstance_ID ASI
-     * @param trxName                   trx
-     * @return cost detail
-     * @deprecated
-     */
-    public static MCostDetail get(
-            Properties ctx, String whereClause, int ID, int M_AttributeSetInstance_ID) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM M_CostDetail WHERE ").append(whereClause);
-
-        MClientInfo clientInfo = MClientInfo.get(ctx);
-        MAcctSchema primary = clientInfo.getMAcctSchema1();
-        int C_AcctSchema_ID = primary != null ? primary.getAccountingSchemaId() : 0;
-        if (C_AcctSchema_ID > 0) {
-            sql.append(" AND C_AcctSchema_ID=?");
-        }
-        MCostDetail retValue = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, ID);
-            pstmt.setInt(2, M_AttributeSetInstance_ID);
-            if (C_AcctSchema_ID > 0) {
-                pstmt.setInt(3, C_AcctSchema_ID);
-            }
-            rs = pstmt.executeQuery();
-            if (rs.next()) retValue = new MCostDetail(ctx, rs);
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql + " - " + ID, e);
-        } finally {
-
-        }
-        return retValue;
-    }
-
-    /**
-     * ************************************************************************ Get Cost Detail
-     *
-     * @param ctx                       context
-     * @param whereClause               where clause
-     * @param ID                        1st parameter
-     * @param M_AttributeSetInstance_ID ASI
-     * @param trxName                   trx
      * @return cost detail
      */
     public static MCostDetail get(
@@ -425,7 +373,6 @@ public class MCostDetail extends X_M_CostDetail {
      * Process Cost Details for product
      *
      * @param product product
-     * @param trxName transaction
      * @return true if no error
      */
     public static boolean processProduct(I_M_Product product) {
@@ -632,7 +579,7 @@ public class MCostDetail extends X_M_CostDetail {
             if (ce.isAverageInvoice()) return true;
         }
 
-        MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID(), null);
+        MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID());
 
         forUpdate(cost);
 
@@ -748,8 +695,8 @@ public class MCostDetail extends X_M_CostDetail {
                                 getMAttributeSetInstance_ID(),
                                 as,
                                 Org_ID,
-                                ce.getM_CostElement_ID(),
-                                null);
+                                ce.getM_CostElement_ID()
+                        );
                 cq.setCosts(amt, qty, precision);
                 cq.saveEx();
                 //	Get Costs - costing level Org/ASI
@@ -871,8 +818,8 @@ public class MCostDetail extends X_M_CostDetail {
                                         getMAttributeSetInstance_ID(),
                                         as,
                                         Org_ID,
-                                        ce.getM_CostElement_ID(),
-                                        null);
+                                        ce.getM_CostElement_ID()
+                                );
                         cq.setCosts(amt, qty, precision);
                         cq.saveEx();
                     } else {

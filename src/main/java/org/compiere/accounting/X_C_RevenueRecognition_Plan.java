@@ -1,10 +1,10 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_RevenueRecognition_Plan;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -27,19 +27,13 @@ public class X_C_RevenueRecognition_Plan extends PO
     public X_C_RevenueRecognition_Plan(
             Properties ctx, int C_RevenueRecognition_Plan_ID) {
         super(ctx, C_RevenueRecognition_Plan_ID);
-        /**
-         * if (C_RevenueRecognition_Plan_ID == 0) { setAccountingSchemaId (0); setCurrencyId (0);
-         * setC_InvoiceLine_ID (0); setC_RevenueRecognition_ID (0); setC_RevenueRecognition_Plan_ID (0);
-         * setP_Revenue_Acct (0); setRecognizedAmt (Env.ZERO); setTotalAmt (Env.ZERO);
-         * setUnEarnedRevenue_Acct (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_RevenueRecognition_Plan(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_RevenueRecognition_Plan(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -57,8 +51,7 @@ public class X_C_RevenueRecognition_Plan extends PO
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_RevenueRecognition_Plan[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_RevenueRecognition_Plan[" + getId() + "]";
     }
 
     /**
@@ -68,7 +61,7 @@ public class X_C_RevenueRecognition_Plan extends PO
      */
     public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
+        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
 
     /**

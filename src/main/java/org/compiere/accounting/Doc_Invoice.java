@@ -1,12 +1,13 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.invoicing.MLandedCostAllocation;
 import org.compiere.model.IFact;
 import org.compiere.model.I_M_InOutLine;
-import org.compiere.product.MCurrency;
 import org.compiere.tax.MTax;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
@@ -21,7 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Post Invoice Documents.
@@ -61,7 +64,7 @@ public class Doc_Invoice extends Doc {
      * @param rs      record
      * @param trxName trx
      */
-    public Doc_Invoice(MAcctSchema as, ResultSet rs) {
+    public Doc_Invoice(MAcctSchema as, Row rs) {
         super(as, MInvoice.class, rs, null);
     } //	Doc_Invoice
 

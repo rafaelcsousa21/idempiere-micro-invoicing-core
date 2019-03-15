@@ -1,21 +1,21 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_StorageReservation;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
+import static software.hsharp.core.util.DBKt.forUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
 
 public class MStorageReservation extends X_M_StorageReservation {
     /**
@@ -28,8 +28,8 @@ public class MStorageReservation extends X_M_StorageReservation {
         super(ctx, M_StorageReservation_ID);
     }
 
-    public MStorageReservation(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MStorageReservation(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -59,7 +59,6 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @param M_Product_ID              product
      * @param M_AttributeSetInstance_ID instance
      * @param isSOTrx
-     * @param trxName                   transaction
      * @return existing or null
      */
     public static MStorageReservation get(
@@ -68,54 +67,13 @@ public class MStorageReservation extends X_M_StorageReservation {
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
             boolean isSOTrx) {
-        MStorageReservation retValue = null;
-        String sql =
-                "SELECT * FROM M_StorageReservation "
-                        + "WHERE M_Warehouse_ID=? AND M_Product_ID=? AND IsSOTrx=? AND ";
-        if (M_AttributeSetInstance_ID == 0)
-            sql += "(M_AttributeSetInstance_ID=? OR M_AttributeSetInstance_ID IS NULL)";
-        else sql += "M_AttributeSetInstance_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, M_Warehouse_ID);
-            pstmt.setInt(2, M_Product_ID);
-            pstmt.setString(3, isSOTrx ? "Y" : "N");
-            pstmt.setInt(4, M_AttributeSetInstance_ID);
-            rs = pstmt.executeQuery();
-            if (rs.next()) retValue = new MStorageReservation(ctx, rs);
-        } catch (SQLException ex) {
-            s_log.log(Level.SEVERE, sql, ex);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        if (retValue == null) {
-            if (s_log.isLoggable(Level.FINE))
-                s_log.fine(
-                        "Not Found - M_Warehouse_ID="
-                                + M_Warehouse_ID
-                                + ", M_Product_ID="
-                                + M_Product_ID
-                                + ", M_AttributeSetInstance_ID="
-                                + M_AttributeSetInstance_ID
-                                + ", IsSOTrx="
-                                + isSOTrx);
-        } else {
-            if (s_log.isLoggable(Level.FINE))
-                s_log.fine(
-                        "M_Warehouse_ID="
-                                + M_Warehouse_ID
-                                + ", M_Product_ID="
-                                + M_Product_ID
-                                + ", M_AttributeSetInstance_ID="
-                                + M_AttributeSetInstance_ID
-                                + ", IsSOTrx="
-                                + isSOTrx);
-        }
-        return retValue;
+        return MBaseStorageReservationKt.getStorageInfo(
+                ctx,
+                M_Warehouse_ID,
+                M_Product_ID,
+                M_AttributeSetInstance_ID,
+                isSOTrx
+        );
     } //	get
 
     /**
@@ -123,7 +81,6 @@ public class MStorageReservation extends X_M_StorageReservation {
      *
      * @param ctx          context
      * @param M_Product_ID product
-     * @param trxName      transaction
      * @return existing or null
      */
     public static MStorageReservation[] getOfProduct(
@@ -147,7 +104,6 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @param M_Warehouse_ID
      * @param M_AttributeSetInstance_ID
      * @param isSOTrx                   - true to get reserved, false to get ordered
-     * @param trxName
      * @return
      */
     private static BigDecimal getQty(
@@ -184,7 +140,6 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @param M_Warehouse_ID            wh
      * @param M_Product_ID              product
      * @param M_AttributeSetInstance_ID masi
-     * @param trxName                   transaction
      * @return qty available (QtyOnHand-QtyReserved) or null
      */
     public static BigDecimal getQtyAvailable(
@@ -292,10 +247,8 @@ public class MStorageReservation extends X_M_StorageReservation {
      * Create or Get Storage Info
      *
      * @param ctx                       context
-     * @param M_Locator_ID              locator
      * @param M_Product_ID              product
      * @param M_AttributeSetInstance_ID instance
-     * @param trxName                   transaction
      * @return existing/new or null
      */
     public static MStorageReservation getCreate(

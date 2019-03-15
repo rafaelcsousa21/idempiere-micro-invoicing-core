@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Element;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -95,13 +94,9 @@ public class X_C_AcctSchema_Element extends BasePOName
     /**
      * Load Constructor
      */
-    public X_C_AcctSchema_Element(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_C_AcctSchema_Element(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MAcctSchemaElement
+    }
 
     /**
      * AccessLevel

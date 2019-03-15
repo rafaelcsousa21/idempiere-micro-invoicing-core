@@ -1,14 +1,24 @@
 package org.compiere.production;
 
+import kotliquery.Row;
+import org.compiere.accounting.Doc;
+import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
-import org.compiere.accounting.*;
+import org.compiere.accounting.MPeriod;
+import org.compiere.accounting.MProduct;
+import org.compiere.accounting.MStorageOnHand;
+import org.compiere.accounting.MWarehouse;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_M_Production;
 import org.compiere.model.I_M_ProductionPlan;
 import org.compiere.order.MOrderLine;
-import org.compiere.orm.*;
+import org.compiere.orm.MDocType;
+import org.compiere.orm.MSysConfig;
+import org.compiere.orm.PO;
+import org.compiere.orm.PeriodClosedException;
+import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.product.MAttributeSetInstance;
@@ -31,7 +41,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
+import static software.hsharp.core.util.DBKt.getSQLValueString;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MProduction extends X_M_Production implements I_M_Production, DocAction, IPODoc {
     /**
@@ -65,8 +78,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         }
     }
 
-    public MProduction(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProduction(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public MProduction(MOrderLine line) {

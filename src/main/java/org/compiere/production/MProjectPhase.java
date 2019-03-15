@@ -1,19 +1,14 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_ProjectLine;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Project Phase Model
@@ -32,7 +27,6 @@ public class MProjectPhase extends X_C_ProjectPhase {
      *
      * @param ctx               context
      * @param C_ProjectPhase_ID id
-     * @param trxName           transaction
      */
     public MProjectPhase(Properties ctx, int C_ProjectPhase_ID) {
         super(ctx, C_ProjectPhase_ID);
@@ -52,12 +46,10 @@ public class MProjectPhase extends X_C_ProjectPhase {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MProjectPhase(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProjectPhase(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProjectPhase
 
     /**
@@ -95,25 +87,7 @@ public class MProjectPhase extends X_C_ProjectPhase {
      * @return Array of tasks
      */
     public MProjectTask[] getTasks() {
-        ArrayList<MProjectTask> list = new ArrayList<MProjectTask>();
-        String sql = "SELECT * FROM C_ProjectTask WHERE C_ProjectPhase_ID=? ORDER BY SeqNo";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_ProjectPhase_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MProjectTask(getCtx(), rs));
-        } catch (SQLException ex) {
-            log.log(Level.SEVERE, sql, ex);
-        } finally {
-            rs = null;
-            pstmt = null;
-        }
-        //
-        MProjectTask[] retValue = new MProjectTask[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseProjectPhaseKt.getProjectPhaseTasks(getCtx(), getC_ProjectPhase_ID());
     } //	getTasks
 
     /**

@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Requisition;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -44,21 +44,13 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      */
     public X_M_Requisition(Properties ctx, int M_Requisition_ID) {
         super(ctx, M_Requisition_ID);
-        /**
-         * if (M_Requisition_ID == 0) { setUserId (0); setDocumentTypeId (0); setDateDoc (new
-         * Timestamp( System.currentTimeMillis() )); // @#Date@ setDateRequired (new Timestamp(
-         * System.currentTimeMillis() )); setDocAction (null); // CO setDocStatus (null); // DR
-         * setDocumentNo (null); setIsApproved (false); setPriceListId (0); setM_Requisition_ID (0);
-         * setWarehouseId (0); setPosted (false); setPriorityRule (null); // 5 setProcessed (false);
-         * setTotalLines (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Requisition(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_Requisition(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -71,8 +63,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Requisition[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Requisition[" + getId() + "]";
     }
 
     /**

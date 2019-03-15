@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_BP_BankAccount;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -36,17 +36,13 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      */
     public X_C_BP_BankAccount(Properties ctx, int C_BP_BankAccount_ID) {
         super(ctx, C_BP_BankAccount_ID);
-        /**
-         * if (C_BP_BankAccount_ID == 0) { setA_Name (null); setBusinessPartnerId (0);
-         * setC_BP_BankAccount_ID (0); setIsACH (false); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_BP_BankAccount(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_BP_BankAccount(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

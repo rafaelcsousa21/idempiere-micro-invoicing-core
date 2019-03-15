@@ -1,9 +1,9 @@
 package org.idempiere.process
 
+import org.compiere.bo.MCurrency
 import org.compiere.crm.EMail
 import org.compiere.orm.MSysConfig
 import org.compiere.process.SvrProcess
-import org.compiere.product.MCurrency
 import org.idempiere.common.exceptions.AdempiereException
 import org.idempiere.common.util.Env
 import org.idempiere.common.util.KeyNamePair

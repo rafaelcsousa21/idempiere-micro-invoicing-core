@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class MMovementLineConfirm extends X_M_MovementLineConfirm {
@@ -22,7 +22,6 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
      *
      * @param ctx                      ctx
      * @param M_MovementLineConfirm_ID id
-     * @param trxName                  transaction
      */
     public MMovementLineConfirm(Properties ctx, int M_MovementLineConfirm_ID) {
         super(ctx, M_MovementLineConfirm_ID);
@@ -40,12 +39,10 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
     /**
      * M_MovementLineConfirm
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MMovementLineConfirm(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMovementLineConfirm(Properties ctx, Row row) {
+        super(ctx, row);
     } //	M_MovementLineConfirm
 
     /**

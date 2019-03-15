@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.orm.MOrgInfo;
 import org.compiere.orm.Query;
 import org.compiere.product.MResource;
@@ -9,7 +10,6 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -38,25 +38,20 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
      *
      * @param ctx                    context
      * @param pp_product_planning_id id
-     * @param trxName
      * @return MPPProductPlanning Data Product Planning
      */
     public MPPProductPlanning(Properties ctx, int pp_product_planning_id) {
         super(ctx, pp_product_planning_id);
-        if (pp_product_planning_id == 0) {
-        }
     } //	MPPProductPlanning
 
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName Transaction Name
+     * @param ctx context
      * @return MPPProductPlanning Data Product Planning
      */
-    public MPPProductPlanning(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPPProductPlanning(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -65,7 +60,6 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
      * @param ctx          Context
      * @param ad_org_id    Organization ID
      * @param m_product_id Product ID
-     * @param trxName      Transaction Name
      * @return MPPProductPlanning
      */
     public static MPPProductPlanning get(

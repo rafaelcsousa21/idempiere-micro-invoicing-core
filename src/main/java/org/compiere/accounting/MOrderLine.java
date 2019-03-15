@@ -12,7 +12,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -35,10 +34,6 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
      * @param rs      result set record
      * @param trxName transaction
      */
-    public MOrderLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public MOrderLine(Properties ctx, Row row) {
         super(ctx, row);
     }

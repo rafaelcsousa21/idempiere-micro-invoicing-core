@@ -13,12 +13,8 @@ import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Create AP Invoices from Expense Reports
@@ -72,104 +68,89 @@ public class ExpenseAPInvoice extends SvrProcess {
         int old_BPartner_ID = -1;
         MInvoice invoice = null;
         //
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            int par = 1;
-            pstmt.setInt(par++, getClientId());
-            if (m_C_BPartner_ID != 0) pstmt.setInt(par++, m_C_BPartner_ID);
-            if (m_DateFrom != null) pstmt.setTimestamp(par++, m_DateFrom);
-            if (m_DateTo != null) pstmt.setTimestamp(par++, m_DateTo);
-            rs = pstmt.executeQuery();
-            while (rs.next()) // 	********* Expense Line Loop
-            {
-                MTimeExpense te = new MTimeExpense(getCtx(), rs);
-
-                //	New BPartner - New Order
-                if (te.getBusinessPartnerId() != old_BPartner_ID) {
-                    completeInvoice(invoice);
-                    MBPartner bp = new MBPartner(getCtx(), te.getBusinessPartnerId());
-                    //
-                    if (log.isLoggable(Level.INFO)) log.info("New Invoice for " + bp);
-                    invoice = new MInvoice(getCtx(), 0);
-                    invoice.setClientOrg(te.getClientId(), te.getOrgId());
-                    invoice.setTargetDocumentTypeId(MDocType.DOCBASETYPE_APInvoice); // 	API
-                    invoice.setDocumentNo(te.getDocumentNo());
-                    //
-                    invoice.setBPartner(bp);
-                    if (invoice.getBusinessPartnerLocationId() == 0) {
-                        StringBuilder msglog = new StringBuilder("No BP Location: ").append(bp);
-                        log.log(Level.SEVERE, msglog.toString());
-                        msglog =
-                                new StringBuilder("No Location: ")
-                                        .append(te.getDocumentNo())
-                                        .append(" ")
-                                        .append(bp.getName());
-                        addLog(0, te.getDateReport(), null, msglog.toString());
-                        invoice = null;
-                        break;
-                    }
-                    invoice.setPriceListId(te.getPriceListId());
-                    invoice.setSalesRepresentativeId(te.getDoc_User_ID());
-                    StringBuilder descr =
-                            new StringBuilder()
-                                    .append(Msg.translate(getCtx(), "S_TimeExpense_ID"))
-                                    .append(": ")
+        MTimeExpense[] items =
+                BaseCreateAPInvoicesFromExpenseReportsKt.getExpensesToBeInvoices(
+                        getCtx(), sql.toString(), getClientId(), m_C_BPartner_ID, m_DateFrom, m_DateTo
+                );
+        for (MTimeExpense te : items) // 	********* Expense Line Loop
+        {
+            //	New BPartner - New Order
+            if (te.getBusinessPartnerId() != old_BPartner_ID) {
+                completeInvoice(invoice);
+                MBPartner bp = new MBPartner(getCtx(), te.getBusinessPartnerId());
+                //
+                if (log.isLoggable(Level.INFO)) log.info("New Invoice for " + bp);
+                invoice = new MInvoice(getCtx(), 0);
+                invoice.setClientOrg(te.getClientId(), te.getOrgId());
+                invoice.setTargetDocumentTypeId(MDocType.DOCBASETYPE_APInvoice); // 	API
+                invoice.setDocumentNo(te.getDocumentNo());
+                //
+                invoice.setBPartner(bp);
+                if (invoice.getBusinessPartnerLocationId() == 0) {
+                    StringBuilder msglog = new StringBuilder("No BP Location: ").append(bp);
+                    log.log(Level.SEVERE, msglog.toString());
+                    msglog =
+                            new StringBuilder("No Location: ")
                                     .append(te.getDocumentNo())
                                     .append(" ")
-                                    .append(DisplayType.getDateFormat(DisplayType.Date).format(te.getDateReport()));
-                    invoice.setDescription(descr.toString());
-                    if (!invoice.save()) throw new IllegalStateException("Cannot save Invoice");
-                    old_BPartner_ID = bp.getBusinessPartnerId();
+                                    .append(bp.getName());
+                    addLog(0, te.getDateReport(), null, msglog.toString());
+                    invoice = null;
+                    break;
                 }
-                MTimeExpenseLine[] tel = te.getLines(false);
-                for (int i = 0; i < tel.length; i++) {
-                    MTimeExpenseLine line = tel[i];
+                invoice.setPriceListId(te.getPriceListId());
+                invoice.setSalesRepresentativeId(te.getDoc_User_ID());
+                StringBuilder descr =
+                        new StringBuilder()
+                                .append(Msg.translate(getCtx(), "S_TimeExpense_ID"))
+                                .append(": ")
+                                .append(te.getDocumentNo())
+                                .append(" ")
+                                .append(DisplayType.getDateFormat(DisplayType.Date).format(te.getDateReport()));
+                invoice.setDescription(descr.toString());
+                if (!invoice.save()) throw new IllegalStateException("Cannot save Invoice");
+                old_BPartner_ID = bp.getBusinessPartnerId();
+            }
+            MTimeExpenseLine[] tel = te.getLines(false);
+            for (int i = 0; i < tel.length; i++) {
+                MTimeExpenseLine line = tel[i];
 
-                    //	Already Invoiced or nothing to be reimbursed
-                    if (line.getC_InvoiceLine_ID() != 0
-                            || Env.ZERO.compareTo(line.getQtyReimbursed()) == 0
-                            || Env.ZERO.compareTo(line.getPriceReimbursed()) == 0) continue;
+                //	Already Invoiced or nothing to be reimbursed
+                if (line.getC_InvoiceLine_ID() != 0
+                        || Env.ZERO.compareTo(line.getQtyReimbursed()) == 0
+                        || Env.ZERO.compareTo(line.getPriceReimbursed()) == 0) continue;
 
-                    //	Update Header info
-                    if (line.getBusinessActivityId() != 0 && line.getBusinessActivityId() != invoice.getBusinessActivityId())
-                        invoice.setBusinessActivityId(line.getBusinessActivityId());
-                    if (line.getCampaignId() != 0 && line.getCampaignId() != invoice.getCampaignId())
-                        invoice.setCampaignId(line.getCampaignId());
-                    if (line.getProjectId() != 0 && line.getProjectId() != invoice.getProjectId())
-                        invoice.setProjectId(line.getProjectId());
-                    if (!invoice.save()) throw new IllegalStateException("Cannot save Invoice");
+                //	Update Header info
+                if (line.getBusinessActivityId() != 0 && line.getBusinessActivityId() != invoice.getBusinessActivityId())
+                    invoice.setBusinessActivityId(line.getBusinessActivityId());
+                if (line.getCampaignId() != 0 && line.getCampaignId() != invoice.getCampaignId())
+                    invoice.setCampaignId(line.getCampaignId());
+                if (line.getProjectId() != 0 && line.getProjectId() != invoice.getProjectId())
+                    invoice.setProjectId(line.getProjectId());
+                if (!invoice.save()) throw new IllegalStateException("Cannot save Invoice");
 
-                    //	Create OrderLine
-                    MInvoiceLine il = new MInvoiceLine(invoice);
-                    //
-                    if (line.getM_Product_ID() != 0) il.setM_Product_ID(line.getM_Product_ID(), true);
-                    il.setQty(line.getQtyReimbursed()); // 	Entered/Invoiced
-                    il.setDescription(line.getDescription());
-                    //
-                    il.setProjectId(line.getProjectId());
-                    il.setC_ProjectPhase_ID(line.getC_ProjectPhase_ID());
-                    il.setC_ProjectTask_ID(line.getC_ProjectTask_ID());
-                    il.setBusinessActivityId(line.getBusinessActivityId());
-                    il.setCampaignId(line.getCampaignId());
-                    //
-                    //	il.setPrice();	//	not really a list/limit price for reimbursements
-                    il.setPrice(line.getPriceReimbursed()); //
-                    il.setTax();
-                    if (!il.save()) throw new IllegalStateException("Cannot save Invoice Line");
-                    //	Update TEL
-                    line.setC_InvoiceLine_ID(il.getC_InvoiceLine_ID());
-                    line.saveEx();
-                } //	for all expense lines
-            } //	********* Expense Line Loop
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
+                //	Create OrderLine
+                MInvoiceLine il = new MInvoiceLine(invoice);
+                //
+                if (line.getM_Product_ID() != 0) il.setM_Product_ID(line.getM_Product_ID(), true);
+                il.setQty(line.getQtyReimbursed()); // 	Entered/Invoiced
+                il.setDescription(line.getDescription());
+                //
+                il.setProjectId(line.getProjectId());
+                il.setC_ProjectPhase_ID(line.getC_ProjectPhase_ID());
+                il.setC_ProjectTask_ID(line.getC_ProjectTask_ID());
+                il.setBusinessActivityId(line.getBusinessActivityId());
+                il.setCampaignId(line.getCampaignId());
+                //
+                //	il.setPrice();	//	not really a list/limit price for reimbursements
+                il.setPrice(line.getPriceReimbursed()); //
+                il.setTax();
+                if (!il.save()) throw new IllegalStateException("Cannot save Invoice Line");
+                //	Update TEL
+                line.setC_InvoiceLine_ID(il.getC_InvoiceLine_ID());
+                line.saveEx();
+            } //	for all expense lines
+        } //	********* Expense Line Loop
         completeInvoice(invoice);
         StringBuilder msgreturn = new StringBuilder("@Created@=").append(m_noInvoices);
         return msgreturn.toString();

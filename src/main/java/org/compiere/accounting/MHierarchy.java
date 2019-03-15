@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_Hierarchy;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -41,8 +41,8 @@ public class MHierarchy extends X_PA_Hierarchy {
      * @param rs      result set
      * @param trxName trx
      */
-    public MHierarchy(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MHierarchy(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MHierarchy
 
     /**

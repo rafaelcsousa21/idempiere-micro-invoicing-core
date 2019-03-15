@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.bank.MBankAccount;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDocLine;
@@ -8,7 +9,6 @@ import org.compiere.model.I_C_Invoice;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 import static software.hsharp.core.orm.POKt.I_ZERO;
@@ -69,12 +69,10 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     /**
      * Load Cosntructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MCashLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MCashLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MCashLine
 
     /**

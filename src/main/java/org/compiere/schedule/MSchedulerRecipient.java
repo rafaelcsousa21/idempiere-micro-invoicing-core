@@ -1,6 +1,7 @@
 package org.compiere.schedule;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 /**
@@ -20,7 +21,6 @@ public class MSchedulerRecipient extends X_AD_SchedulerRecipient {
      *
      * @param ctx                      context
      * @param AD_SchedulerRecipient_ID id
-     * @param trxName                  transaction
      */
     public MSchedulerRecipient(Properties ctx, int AD_SchedulerRecipient_ID) {
         super(ctx, AD_SchedulerRecipient_ID);
@@ -29,11 +29,9 @@ public class MSchedulerRecipient extends X_AD_SchedulerRecipient {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MSchedulerRecipient(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MSchedulerRecipient(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MSchedulerRecipient
 } //	MSchedulerRecipient

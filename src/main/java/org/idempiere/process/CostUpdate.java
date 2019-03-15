@@ -1,20 +1,10 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
-import org.compiere.accounting.*;
+import org.compiere.accounting.MAcctSchema;
+import org.compiere.accounting.MClient;
+import org.compiere.accounting.MCost;
+import org.compiere.accounting.MCostElement;
+import org.compiere.accounting.MProduct;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInventoryLine;
@@ -203,34 +193,16 @@ public class CostUpdate extends SvrProcess {
             addLog(0, null, null, txt);
             return;
         }
-        String sql =
-                "SELECT * FROM M_Product p "
-                        + "WHERE NOT EXISTS (SELECT * FROM M_Cost c WHERE c.M_Product_ID=p.M_Product_ID"
-                        + " AND c.M_CostType_ID=? AND c.C_AcctSchema_ID=? AND c.M_CostElement_ID=?"
-                        + " AND c.M_AttributeSetInstance_ID=0) "
-                        + "AND AD_Client_ID=?";
-        if (p_M_Product_Category_ID != 0) sql += " AND M_Product_Category_ID=?";
-        int counter = 0;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, as.getCostTypeId());
-            pstmt.setInt(2, as.getAccountingSchemaId());
-            pstmt.setInt(3, m_ce.getM_CostElement_ID());
-            pstmt.setInt(4, as.getClientId());
-            if (p_M_Product_Category_ID != 0) pstmt.setInt(5, p_M_Product_Category_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                if (createNew(new MProduct(getCtx(), rs), as)) counter++;
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
 
-            rs = null;
-            pstmt = null;
+        int counter = 0;
+
+        MProduct[] items =
+                BaseCostUpdateKt.getProductsToCreateNewStandardCosts(getCtx(), as, p_M_Product_Category_ID, m_ce.getM_CostElement_ID());
+
+        for(MProduct product : items) {
+            if (createNew(product, as)) counter++;
         }
+
         if (log.isLoggable(Level.INFO)) log.info("#" + counter);
         addLog(0, null, new BigDecimal(counter), "Created for " + as.getName());
     } //	createNew
@@ -243,7 +215,7 @@ public class CostUpdate extends SvrProcess {
      * @return true if created
      */
     private boolean createNew(MProduct product, MAcctSchema as) {
-        MCost cost = MCost.get(product, 0, as, 0, m_ce.getM_CostElement_ID(), null);
+        MCost cost = MCost.get(product, 0, as, 0, m_ce.getM_CostElement_ID());
         if (cost.isNew()) return cost.save();
         return false;
     } //	createNew
@@ -253,85 +225,70 @@ public class CostUpdate extends SvrProcess {
      *
      * @return no updated
      */
-    private int update() {
+    private int update() throws Exception {
         int counter = 0;
         String sql = "SELECT * FROM M_Cost c WHERE M_CostElement_ID=?";
         if (p_M_Product_Category_ID != 0)
             sql +=
                     " AND EXISTS (SELECT * FROM M_Product p "
                             + "WHERE c.M_Product_ID=p.M_Product_ID AND p.M_Product_Category_ID=?)";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            List<MInventoryLine> lines = new ArrayList<MInventoryLine>();
-            MClient client = MClient.get(getCtx());
-            MAcctSchema primarySchema = client.getAcctSchema();
-            MInventory inventoryDoc = null;
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, m_ce.getM_CostElement_ID());
-            if (p_M_Product_Category_ID != 0) pstmt.setInt(2, p_M_Product_Category_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MCost cost = new MCost(getCtx(), rs);
-                for (int i = 0; i < m_ass.length; i++) {
-                    //	Update Costs only for default Cost Type
-                    if (m_ass[i].getAccountingSchemaId() == cost.getC_AcctSchema_ID()
-                            && m_ass[i].getCostTypeId() == cost.getM_CostType_ID()) {
-                        if (m_ass[i].getAccountingSchemaId() == primarySchema.getAccountingSchemaId()) {
-                            if (update(cost, lines)) counter++;
-                        } else {
-                            if (update(cost, null)) counter++;
-                        }
+        List<MInventoryLine> lines = new ArrayList<MInventoryLine>();
+        MClient client = MClient.get(getCtx());
+        MAcctSchema primarySchema = client.getAcctSchema();
+        MInventory inventoryDoc = null;
+
+        MCost[] items = BaseCostUpdateKt.getCostsToUpdate(getCtx(), sql, m_ce.getM_CostElement_ID(), p_M_Product_Category_ID);
+
+        for (MCost cost : items) {
+            for (int i = 0; i < m_ass.length; i++) {
+                //	Update Costs only for default Cost Type
+                if (m_ass[i].getAccountingSchemaId() == cost.getC_AcctSchema_ID()
+                        && m_ass[i].getCostTypeId() == cost.getM_CostType_ID()) {
+                    if (m_ass[i].getAccountingSchemaId() == primarySchema.getAccountingSchemaId()) {
+                        if (update(cost, lines)) counter++;
+                    } else {
+                        if (update(cost, null)) counter++;
                     }
                 }
             }
-            if (lines.size() > 0) {
-                inventoryDoc = new MInventory(getCtx(), 0);
-                inventoryDoc.setDocumentTypeId(p_C_DocType_ID);
-                inventoryDoc.setCostingMethod(MCostElement.COSTINGMETHOD_StandardCosting);
-                inventoryDoc.setDocAction(DocAction.Companion.getACTION_Complete());
-                inventoryDoc.saveEx();
-
-                for (MInventoryLine line : lines) {
-                    line.setM_Inventory_ID(inventoryDoc.getM_Inventory_ID());
-                    line.saveEx();
-                }
-
-                if (!DocumentEngine.processIt(inventoryDoc, DocAction.Companion.getACTION_Complete())) {
-                    StringBuilder msg = new StringBuilder();
-                    msg.append(Msg.getMsg(getCtx(), "ProcessFailed")).append(": ");
-                    if (Env.isBaseLanguage(getCtx(), I_C_DocType.Table_Name)) msg.append(m_docType.getName());
-                    else msg.append(m_docType.get_Translation(HasName.Companion.getCOLUMNNAME_Name()));
-                    throw new AdempiereUserError(msg.toString());
-                } else {
-                    inventoryDoc.saveEx();
-                    StringBuilder msg = new StringBuilder();
-                    if (Env.isBaseLanguage(getCtx(), I_C_DocType.Table_Name))
-                        msg.append(m_docType.getName()).append(" ").append(inventoryDoc.getDocumentNo());
-                    else
-                        msg.append(m_docType.get_Translation(HasName.Companion.getCOLUMNNAME_Name()))
-                                .append(" ")
-                                .append(inventoryDoc.getDocumentNo());
-                    addBufferLog(
-                            getAD_PInstance_ID(),
-                            null,
-                            null,
-                            msg.toString(),
-                            I_M_Inventory.Table_ID,
-                            inventoryDoc.getM_Inventory_ID());
-                }
-            }
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else {
-                throw new RuntimeException(e);
-            }
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
+        if (lines.size() > 0) {
+            inventoryDoc = new MInventory(getCtx(), 0);
+            inventoryDoc.setDocumentTypeId(p_C_DocType_ID);
+            inventoryDoc.setCostingMethod(MCostElement.COSTINGMETHOD_StandardCosting);
+            inventoryDoc.setDocAction(DocAction.Companion.getACTION_Complete());
+            inventoryDoc.saveEx();
+
+            for (MInventoryLine line : lines) {
+                line.setM_Inventory_ID(inventoryDoc.getM_Inventory_ID());
+                line.saveEx();
+            }
+
+            if (!DocumentEngine.processIt(inventoryDoc, DocAction.Companion.getACTION_Complete())) {
+                StringBuilder msg = new StringBuilder();
+                msg.append(Msg.getMsg(getCtx(), "ProcessFailed")).append(": ");
+                if (Env.isBaseLanguage(getCtx(), I_C_DocType.Table_Name)) msg.append(m_docType.getName());
+                else msg.append(m_docType.get_Translation(HasName.Companion.getCOLUMNNAME_Name()));
+                throw new AdempiereUserError(msg.toString());
+            } else {
+                inventoryDoc.saveEx();
+                StringBuilder msg = new StringBuilder();
+                if (Env.isBaseLanguage(getCtx(), I_C_DocType.Table_Name))
+                    msg.append(m_docType.getName()).append(" ").append(inventoryDoc.getDocumentNo());
+                else
+                    msg.append(m_docType.get_Translation(HasName.Companion.getCOLUMNNAME_Name()))
+                            .append(" ")
+                            .append(inventoryDoc.getDocumentNo());
+                addBufferLog(
+                        getAD_PInstance_ID(),
+                        null,
+                        null,
+                        msg.toString(),
+                        I_M_Inventory.Table_ID,
+                        inventoryDoc.getM_Inventory_ID());
+            }
+        }
+
         if (log.isLoggable(Level.INFO)) log.info("#" + counter);
         addLog(0, null, new BigDecimal(counter), "@Updated@");
         return counter;
@@ -341,7 +298,6 @@ public class CostUpdate extends SvrProcess {
      * Update Cost Records
      *
      * @param cost         cost
-     * @param inventoryDoc
      * @return true if updated
      * @throws Exception
      */
@@ -419,8 +375,8 @@ public class CostUpdate extends SvrProcess {
                             cost.getM_CostType_ID(),
                             cost.getC_AcctSchema_ID(),
                             ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID(),
-                            null);
+                            cost.getMAttributeSetInstance_ID()
+                    );
             if (xCost != null) retValue = xCost.getCurrentCostPrice();
         }
         //	Average Invoice History
@@ -436,8 +392,8 @@ public class CostUpdate extends SvrProcess {
                             cost.getM_CostType_ID(),
                             cost.getC_AcctSchema_ID(),
                             ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID(),
-                            null);
+                            cost.getMAttributeSetInstance_ID()
+                    );
             if (xCost != null) retValue = xCost.getHistoryAverage();
         }
 
@@ -454,8 +410,8 @@ public class CostUpdate extends SvrProcess {
                             cost.getM_CostType_ID(),
                             cost.getC_AcctSchema_ID(),
                             ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID(),
-                            null);
+                            cost.getMAttributeSetInstance_ID()
+                    );
             if (xCost != null) retValue = xCost.getCurrentCostPrice();
         }
         //	Average PO History
@@ -471,8 +427,8 @@ public class CostUpdate extends SvrProcess {
                             cost.getM_CostType_ID(),
                             cost.getC_AcctSchema_ID(),
                             ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID(),
-                            null);
+                            cost.getMAttributeSetInstance_ID()
+                    );
             if (xCost != null) retValue = xCost.getHistoryAverage();
         }
 
@@ -489,8 +445,8 @@ public class CostUpdate extends SvrProcess {
                             cost.getM_CostType_ID(),
                             cost.getC_AcctSchema_ID(),
                             ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID(),
-                            null);
+                            cost.getMAttributeSetInstance_ID()
+                    );
             if (xCost != null) retValue = xCost.getCurrentCostPrice();
         }
 
@@ -510,8 +466,8 @@ public class CostUpdate extends SvrProcess {
                                 cost.getM_CostType_ID(),
                                 cost.getC_AcctSchema_ID(),
                                 ce.getM_CostElement_ID(),
-                                cost.getMAttributeSetInstance_ID(),
-                                null);
+                                cost.getMAttributeSetInstance_ID()
+                        );
                 if (xCost != null) retValue = xCost.getCurrentCostPrice();
             }
             if (retValue == null) {
@@ -539,8 +495,8 @@ public class CostUpdate extends SvrProcess {
                                 cost.getM_CostType_ID(),
                                 cost.getC_AcctSchema_ID(),
                                 ce.getM_CostElement_ID(),
-                                cost.getMAttributeSetInstance_ID(),
-                                null);
+                                cost.getMAttributeSetInstance_ID()
+                        );
                 if (xCost != null) retValue = xCost.getCurrentCostPrice();
             }
             if (retValue == null) {
@@ -568,8 +524,8 @@ public class CostUpdate extends SvrProcess {
                             cost.getM_CostType_ID(),
                             cost.getC_AcctSchema_ID(),
                             ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID(),
-                            null);
+                            cost.getMAttributeSetInstance_ID()
+                    );
             if (xCost != null) retValue = xCost.getCurrentCostPrice();
         }
 

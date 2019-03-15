@@ -3,7 +3,6 @@ package org.compiere.production;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -36,17 +35,6 @@ public class MTransaction extends X_M_Transaction {
             setMovementQty(Env.ZERO);
             //	setMovementType (MOVEMENTTYPE_CustomerShipment);
         }
-    } //	MTransaction
-
-    /**
-     * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
-     */
-    public MTransaction(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
     } //	MTransaction
 
     /**

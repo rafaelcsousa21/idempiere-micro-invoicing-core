@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_CashLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -46,18 +46,13 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      */
     public X_C_CashLine(Properties ctx, int C_CashLine_ID) {
         super(ctx, C_CashLine_ID);
-        /**
-         * if (C_CashLine_ID == 0) { setAmount (Env.ZERO); setCashType (null); // E setC_Cash_ID (0);
-         * setC_CashLine_ID (0); setLine (0); // @SQL=SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue
-         * FROM C_CashLine WHERE C_Cash_ID=@C_Cash_ID@ setProcessed (false); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_CashLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_CashLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -70,8 +65,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_CashLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_CashLine[" + getId() + "]";
     }
 
     /**

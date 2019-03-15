@@ -1,9 +1,9 @@
 package org.compiere.bank;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Bank;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -28,7 +28,6 @@ public class MBank extends X_C_Bank {
      *
      * @param ctx       context
      * @param C_Bank_ID bank
-     * @param trxName   trx
      */
     public MBank(Properties ctx, int C_Bank_ID) {
         super(ctx, C_Bank_ID);
@@ -37,12 +36,10 @@ public class MBank extends X_C_Bank {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MBank(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBank(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MBank
 
     /**
@@ -53,7 +50,7 @@ public class MBank extends X_C_Bank {
      * @return MBank
      */
     public static MBank get(Properties ctx, int C_Bank_ID) {
-        Integer key = new Integer(C_Bank_ID);
+        Integer key = C_Bank_ID;
         MBank retValue = (MBank) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MBank(ctx, C_Bank_ID);

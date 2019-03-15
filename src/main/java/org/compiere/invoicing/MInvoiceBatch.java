@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
 import java.sql.PreparedStatement;
@@ -34,7 +35,6 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
      *
      * @param ctx               context
      * @param C_InvoiceBatch_ID id
-     * @param trxName           trx
      */
     public MInvoiceBatch(Properties ctx, int C_InvoiceBatch_ID) {
         super(ctx, C_InvoiceBatch_ID);
@@ -53,12 +53,10 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MInvoiceBatch(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInvoiceBatch(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MInvoiceBatch
 
     /**
@@ -71,27 +69,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
         if (m_lines != null && !reload) {
             return m_lines;
         }
-        String sql = "SELECT * FROM C_InvoiceBatchLine WHERE C_InvoiceBatch_ID=? ORDER BY Line";
-        ArrayList<MInvoiceBatchLine> list = new ArrayList<MInvoiceBatchLine>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_InvoiceBatch_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                list.add(new MInvoiceBatchLine(getCtx(), rs));
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        m_lines = new MInvoiceBatchLine[list.size()];
-        list.toArray(m_lines);
+        m_lines = MBaseInvoiceBatchKt.getLines(getCtx(), getC_InvoiceBatch_ID());
         return m_lines;
     } //	getLines
 

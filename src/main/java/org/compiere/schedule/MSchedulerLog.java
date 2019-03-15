@@ -1,8 +1,8 @@
 package org.compiere.schedule;
 
+import kotliquery.Row;
 import org.compiere.model.AdempiereProcessorLog;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -22,7 +22,6 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
      *
      * @param ctx                context
      * @param AD_SchedulerLog_ID id
-     * @param trxName            transaction
      */
     public MSchedulerLog(Properties ctx, int AD_SchedulerLog_ID) {
         super(ctx, AD_SchedulerLog_ID);
@@ -32,12 +31,10 @@ public class MSchedulerLog extends X_AD_SchedulerLog implements AdempiereProcess
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MSchedulerLog(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MSchedulerLog(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MSchedulerLog
 
     /**

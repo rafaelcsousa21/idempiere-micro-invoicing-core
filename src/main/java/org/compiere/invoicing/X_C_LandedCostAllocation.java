@@ -1,12 +1,12 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_LandedCostAllocation;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -37,8 +37,8 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
     /**
      * Load Constructor
      */
-    public X_C_LandedCostAllocation(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_LandedCostAllocation(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

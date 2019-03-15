@@ -3,6 +3,7 @@
  */
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.product.MAttributeSetInstance;
@@ -30,7 +31,6 @@ public class MProductionPlan extends X_M_ProductionPlan {
     /**
      * @param ctx
      * @param M_ProductionPlan_ID
-     * @param trxName
      */
     public MProductionPlan(Properties ctx, int M_ProductionPlan_ID) {
         super(ctx, M_ProductionPlan_ID);
@@ -38,11 +38,9 @@ public class MProductionPlan extends X_M_ProductionPlan {
 
     /**
      * @param ctx
-     * @param rs
-     * @param trxName
      */
-    public MProductionPlan(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProductionPlan(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public MProductionLine[] getLines() {

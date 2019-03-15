@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_UOM_Conversion;
 import org.compiere.orm.MSysConfig;
 import org.compiere.orm.Query;
@@ -53,7 +54,6 @@ public class MUOMConversion extends X_C_UOM_Conversion {
      *
      * @param ctx                 context
      * @param C_UOM_Conversion_ID id
-     * @param trxName             transaction
      */
     public MUOMConversion(Properties ctx, int C_UOM_Conversion_ID) {
         super(ctx, C_UOM_Conversion_ID);
@@ -62,12 +62,10 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MUOMConversion(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MUOMConversion(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MUOMConversion
 
     /**

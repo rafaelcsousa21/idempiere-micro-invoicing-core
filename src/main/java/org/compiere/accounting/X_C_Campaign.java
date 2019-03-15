@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Campaign;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_C_Campaign extends BasePONameValue implements I_C_Campaign {
     /**
      * Load Constructor
      */
-    public X_C_Campaign(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_Campaign(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -49,8 +49,7 @@ public class X_C_Campaign extends BasePONameValue implements I_C_Campaign {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_Campaign[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_Campaign[" + getId() + "]";
     }
 
 }

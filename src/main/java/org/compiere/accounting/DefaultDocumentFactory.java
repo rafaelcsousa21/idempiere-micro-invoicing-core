@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.IDocFactory;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.MTable;
@@ -17,42 +18,12 @@ import static software.hsharp.core.util.DBKt.prepareStatement;
 /**
  * @author hengsin
  */
-public class DefaultDocumentFactory implements IDocFactory {
+public class DefaultDocumentFactory extends BaseDefaultDocumentFactory {
 
     private static final CLogger s_log = CLogger.getCLogger(DefaultDocumentFactory.class);
 
     @Override
-    public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, int Record_ID) {
-        String tableName = MTable.getDbTableName(Env.getCtx(), AD_Table_ID);
-        //
-        Doc doc = null;
-        StringBuffer sql =
-                new StringBuffer("SELECT * FROM ")
-                        .append(tableName)
-                        .append(" WHERE ")
-                        .append(tableName)
-                        .append("_ID=? AND Processed='Y'");
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, Record_ID);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                doc = getDocument(as, AD_Table_ID, rs);
-            } else s_log.severe("Not Found: " + tableName + "_ID=" + Record_ID);
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        return doc;
-    }
-
-    @Override
-    public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, ResultSet rs) {
+    public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, Row rs) {
         Doc doc = null;
 
     /* Classname of the Doc class follows this convention:
@@ -110,7 +81,7 @@ public class DefaultDocumentFactory implements IDocFactory {
         try {
             Class<?> cClass = Class.forName(className);
             Constructor<?> cnstr =
-                    cClass.getConstructor(new Class[]{MAcctSchema.class, ResultSet.class});
+                    cClass.getConstructor(new Class[]{MAcctSchema.class, Row.class});
             doc = (Doc) cnstr.newInstance(as, rs);
         } catch (Exception e) {
             s_log.log(Level.SEVERE, "Doc Class invalid: " + className + " (" + e.toString() + ")");

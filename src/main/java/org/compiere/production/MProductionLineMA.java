@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_ProductionLineMA;
 import org.compiere.orm.MTable;
@@ -8,7 +9,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -24,8 +24,8 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
         super(ctx, M_ProductionLineMA_ID);
     }
 
-    public MProductionLineMA(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProductionLineMA(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

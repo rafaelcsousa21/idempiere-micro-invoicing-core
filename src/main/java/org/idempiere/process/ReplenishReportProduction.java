@@ -1,6 +1,13 @@
 package org.idempiere.process;
 
-import org.compiere.accounting.*;
+import org.compiere.accounting.MClient;
+import org.compiere.accounting.MOrder;
+import org.compiere.accounting.MOrderLine;
+import org.compiere.accounting.MProduct;
+import org.compiere.accounting.MRequisition;
+import org.compiere.accounting.MRequisitionLine;
+import org.compiere.accounting.MStorageOnHand;
+import org.compiere.accounting.MWarehouse;
 import org.compiere.crm.MBPartner;
 import org.compiere.invoicing.MLocatorType;
 import org.compiere.model.IProcessInfoParameter;
@@ -839,27 +846,6 @@ public class ReplenishReportProduction extends SvrProcess {
      * @return replenish
      */
     private X_T_Replenish[] getReplenish(String where) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM T_Replenish ");
-        sql.append("WHERE AD_PInstance_ID=? ");
-        if (where != null && where.length() > 0) sql.append(" AND ").append(where);
-        sql.append(" ORDER BY M_Warehouse_ID, M_WarehouseSource_ID, C_BPartner_ID");
-        ArrayList<X_T_Replenish> list = new ArrayList<X_T_Replenish>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, getAD_PInstance_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new X_T_Replenish(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        X_T_Replenish[] retValue = new X_T_Replenish[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return BaseReplenishReportProductionKt.getReplenish(getCtx(), where, getAD_PInstance_ID());
     } //	getReplenish
 } //	Replenish

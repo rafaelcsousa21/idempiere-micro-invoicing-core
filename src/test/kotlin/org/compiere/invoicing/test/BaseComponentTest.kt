@@ -1,16 +1,25 @@
 package org.compiere.invoicing.test
 
-import company.bigger.test.support.randomString
-import org.compiere.accounting.*
+import org.compiere.accounting.MWarehouse
+import org.compiere.accounting.MCharge
+import org.compiere.accounting.MCostDetail
+import org.compiere.accounting.MAcctSchema
+import org.compiere.accounting.MCostElement
 import org.compiere.bank.MBank
 import org.compiere.bank.MBankAccount
 import org.compiere.invoicing.MInventory
 import org.compiere.invoicing.MInventoryLine
 import org.compiere.invoicing.MPaymentTerm
 import org.compiere.invoicing.test.SetupClientTests.Companion.createClient
-import org.compiere.model.*
+import org.compiere.model.I_AD_Org
+import org.compiere.model.I_C_Tax
+import org.compiere.model.I_C_TaxCategory
+import org.compiere.model.I_M_Warehouse
+import org.compiere.model.I_C_PaymentTerm
+import org.compiere.model.I_C_BankAccount
+import org.compiere.model.I_C_Charge
+import org.compiere.model.I_M_Product
 import org.compiere.order.MPaySchedule
-import org.compiere.orm.*
 import org.compiere.orm.MClient
 import org.compiere.orm.MDocType
 import org.compiere.process.DocAction
@@ -28,9 +37,25 @@ import software.hsharp.core.util.HikariCPI
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
+import org.compiere.orm.MOrg
+import org.compiere.orm.Query
+import org.compiere.orm.IModelFactory
+import org.compiere.orm.DefaultModelFactory
+import java.util.*
 
 internal val sessionUrl =
     System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
+
+/**
+ * Generate a random string (small letters)
+ */
+fun randomString(length: Int): String {
+    fun ClosedRange<Char>.randomString(length: Int) =
+        (1..length)
+            .map { (Random().nextInt(endInclusive.toInt() - start.toInt()) + start.toInt()).toChar() }
+            .joinToString("")
+    return ('a'..'z').randomString(length)
+}
 
 abstract class BaseComponentTest {
     companion object {

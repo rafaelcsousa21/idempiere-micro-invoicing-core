@@ -1,10 +1,10 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_PaySelectionLine;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -58,8 +58,8 @@ public class MPaySelection extends X_C_PaySelection {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MPaySelection(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPaySelection(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MPaySelection
 
     /**

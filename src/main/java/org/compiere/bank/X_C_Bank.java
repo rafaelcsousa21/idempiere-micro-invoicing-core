@@ -1,9 +1,9 @@
 package org.compiere.bank;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Bank;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_C_Bank extends BasePOName implements I_C_Bank {
     /**
      * Load Constructor
      */
-    public X_C_Bank(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_Bank(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -43,8 +43,7 @@ public class X_C_Bank extends BasePOName implements I_C_Bank {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_Bank[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_Bank[" + getId() + "]";
     }
 
     /**

@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_CashBook;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -33,8 +33,8 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook {
     /**
      * Load Constructor
      */
-    public X_C_CashBook(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_CashBook(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

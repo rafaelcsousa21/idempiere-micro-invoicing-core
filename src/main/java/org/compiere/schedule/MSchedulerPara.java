@@ -1,8 +1,8 @@
 package org.compiere.schedule;
 
+import kotliquery.Row;
 import org.compiere.process.MProcessPara;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,7 +26,6 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
      *
      * @param ctx                  context
      * @param AD_Scheduler_Para_ID id
-     * @param trxName              transaction
      */
     public MSchedulerPara(Properties ctx, int AD_Scheduler_Para_ID) {
         super(ctx, AD_Scheduler_Para_ID);
@@ -35,12 +34,10 @@ public class MSchedulerPara extends X_AD_Scheduler_Para {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MSchedulerPara(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MSchedulerPara(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MSchedulerPara
 
     /**

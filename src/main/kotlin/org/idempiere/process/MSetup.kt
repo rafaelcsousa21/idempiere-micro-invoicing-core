@@ -27,8 +27,9 @@ import java.io.File
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
-import java.util.*
+import java.util.Properties
 import java.util.logging.Level
+import java.util.UUID
 
 class MSetup
 /**
@@ -1161,8 +1162,8 @@ class MSetup
 
         //	Create BPartner
         val bp = MBPartner(m_ctx, 0)
-        bp.setSearchKey(defaultName)
-        bp.setName(defaultName)
+        bp.searchKey = defaultName
+        bp.name = defaultName
         bp.setBPGroup(bpg)
         if (bp.save())
             m_info!!.append(Msg.translate(m_lang, "C_BPartner_ID")).append("=").append(defaultName).append("\n")
@@ -1340,8 +1341,8 @@ class MSetup
 
         //	Create Sales Rep for Client-User
         val bpCU = MBPartner(m_ctx, 0)
-        bpCU.setSearchKey(AD_User_U_Name!!)
-        bpCU.setName(AD_User_U_Name!!)
+        bpCU.searchKey = AD_User_U_Name!!
+        bpCU.name = AD_User_U_Name!!
         bpCU.setBPGroup(bpg)
         bpCU.setIsEmployee(true)
         bpCU.setIsSalesRep(true)
@@ -1366,8 +1367,8 @@ class MSetup
 
         //	Create Sales Rep for Client-Admin
         val bpCA = MBPartner(m_ctx, 0)
-        bpCA.setSearchKey(AD_User_Name!!)
-        bpCA.setName(AD_User_Name!!)
+        bpCA.searchKey = AD_User_Name!!
+        bpCA.name = AD_User_Name!!
         bpCA.setBPGroup(bpg)
         bpCA.setIsEmployee(true)
         bpCA.setIsSalesRep(true)

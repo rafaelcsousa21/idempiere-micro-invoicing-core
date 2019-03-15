@@ -1,8 +1,8 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.AdempiereProcessorLog;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class MAcctProcessorLog extends X_C_AcctProcessorLog implements AdempiereProcessorLog {
@@ -17,7 +17,6 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
      *
      * @param ctx                   context
      * @param C_AcctProcessorLog_ID id
-     * @param trxName               transaction
      */
     public MAcctProcessorLog(Properties ctx, int C_AcctProcessorLog_ID) {
         super(ctx, C_AcctProcessorLog_ID);
@@ -26,12 +25,10 @@ public class MAcctProcessorLog extends X_C_AcctProcessorLog implements Adempiere
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MAcctProcessorLog(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAcctProcessorLog(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MAcctProcessorLog
 
     /**

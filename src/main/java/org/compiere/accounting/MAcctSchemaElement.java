@@ -9,7 +9,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -77,10 +76,6 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MAcctSchemaElement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MAcctSchemaElement
-
     public MAcctSchemaElement(Properties ctx, Row row) {
         super(ctx, row);
     } //	MAcctSchemaElement

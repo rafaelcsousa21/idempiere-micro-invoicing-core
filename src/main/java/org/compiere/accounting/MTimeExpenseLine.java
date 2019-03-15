@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MConversionRate;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -62,8 +62,8 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MTimeExpenseLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MTimeExpenseLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MTimeExpenseLine
 
     /**

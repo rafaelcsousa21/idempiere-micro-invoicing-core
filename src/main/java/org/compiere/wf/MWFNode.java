@@ -1,11 +1,11 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_Node;
 import org.compiere.orm.MColumn;
 import org.compiere.orm.MRole;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
-import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
@@ -129,19 +129,15 @@ public class MWFNode extends X_AD_WF_Node {
      * @param rs      result set to load info from
      * @param trxName transaction
      */
-    public MWFNode(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFNode(Properties ctx, Row row) {
+        super(ctx, row);
         loadNext();
         loadTrl();
         //	Save to Cache
         String key = null;
-        try {
-            Integer wfnodeid = new Integer(rs.getInt("AD_WF_Node_ID"));
-            if (wfnodeid != null && wfnodeid.intValue() > 0)
-                key = Env.getADLanguage(ctx) + "_" + wfnodeid;
-        } catch (SQLException e) {
-            throw new AdempiereException(e);
-        }
+        Integer wfnodeid = row.intOrNull("AD_WF_Node_ID");
+        if (wfnodeid != null && wfnodeid > 0)
+            key = Env.getADLanguage(ctx) + "_" + wfnodeid;
         if (key != null && !s_cache.containsKey(key)) s_cache.put(key, this);
     } //	MWFNode
 

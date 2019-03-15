@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.IFact;
 import org.idempiere.common.util.Env;
 
@@ -33,7 +34,7 @@ public class Doc_GLJournal extends Doc {
      * @param rs      record
      * @param trxName trx
      */
-    public Doc_GLJournal(MAcctSchema as, ResultSet rs) {
+    public Doc_GLJournal(MAcctSchema as, Row rs) {
         super(as, MJournal.class, rs, null);
     } //	Doc_GL_Journal
 

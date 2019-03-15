@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.crm.MBPartner;
@@ -27,11 +13,7 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.AdempiereSystemError;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Create Invoices for Requests
@@ -75,15 +57,30 @@ public class RequestInvoice extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("R_RequestType_ID")) p_R_RequestType_ID = para[i].getParameterAsInt();
-            else if (name.equals("R_Group_ID")) p_R_Group_ID = para[i].getParameterAsInt();
-            else if (name.equals("R_Category_ID")) p_R_Category_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("M_Product_ID")) p_M_Product_ID = para[i].getParameterAsInt();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null) {
+                switch (name) {
+                    case "R_RequestType_ID":
+                        p_R_RequestType_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "R_Group_ID":
+                        p_R_Group_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "R_Category_ID":
+                        p_R_Category_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "C_BPartner_ID":
+                        p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "M_Product_ID":
+                        p_M_Product_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    default:
+                        log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                        break;
+                }
+            }
         }
     } //	prepare
 
@@ -125,38 +122,24 @@ public class RequestInvoice extends SvrProcess {
         if (p_C_BPartner_ID != 0) sql.append(" AND r.C_BPartner_ID=?");
         sql.append(" AND r.IsInvoiced='Y' ").append("ORDER BY C_BPartner_ID");
 
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            int index = 1;
-            pstmt.setInt(index++, p_R_RequestType_ID);
-            if (p_R_Group_ID != 0) pstmt.setInt(index++, p_R_Group_ID);
-            if (p_R_Category_ID != 0) pstmt.setInt(index++, p_R_Category_ID);
-            if (p_C_BPartner_ID != 0) pstmt.setInt(index++, p_C_BPartner_ID);
-            rs = pstmt.executeQuery();
-            int oldC_BPartner_ID = 0;
-            while (rs.next()) {
-                MRequest request = new MRequest(getCtx(), rs);
-                if (!request.isInvoiced()) continue;
-                if (oldC_BPartner_ID != request.getBusinessPartnerId()) invoiceDone();
-                if (m_invoice == null) {
-                    invoiceNew(request);
-                    oldC_BPartner_ID = request.getBusinessPartnerId();
-                }
-                invoiceLine(request);
-            }
-            invoiceDone();
-            //
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-            throw e;
-        } finally {
+        MRequest[] requests =
+                BaseRequestInvoiceKt.getRequestsToBeInvoiced(
+                        getCtx(), p_R_RequestType_ID,
+                        p_R_Group_ID, p_R_Category_ID, p_C_BPartner_ID
+                );
 
-            rs = null;
-            pstmt = null;
+        int oldC_BPartner_ID = 0;
+        for (MRequest request : requests) {
+            if (!request.isInvoiced()) continue;
+            if (oldC_BPartner_ID != request.getBusinessPartnerId()) invoiceDone();
+            if (m_invoice == null) {
+                invoiceNew(request);
+                oldC_BPartner_ID = request.getBusinessPartnerId();
+            }
+            invoiceLine(request);
         }
-        //	R_Category_ID
+        invoiceDone();
+        //
         return null;
     } //	doIt
 
@@ -211,11 +194,9 @@ public class RequestInvoice extends SvrProcess {
      */
     private void invoiceLine(MRequest request) {
         MRequestUpdate[] updates = request.getUpdates(null);
-        for (int i = 0; i < updates.length; i++) {
-            BigDecimal qty = updates[i].getQtyInvoiced();
+        for (MRequestUpdate update : updates) {
+            BigDecimal qty = update.getQtyInvoiced();
             if (qty == null || qty.signum() == 0) continue;
-            // if (updates[i].getC_InvoiceLine_ID() > 0)
-            //	continue;
 
             MInvoiceLine il = new MInvoiceLine(m_invoice);
             m_linecount++;
@@ -223,14 +204,12 @@ public class RequestInvoice extends SvrProcess {
             //
             il.setQty(qty);
             //	Product
-            int M_Product_ID = updates[i].getM_ProductSpent_ID();
+            int M_Product_ID = update.getM_ProductSpent_ID();
             if (M_Product_ID == 0) M_Product_ID = p_M_Product_ID;
             il.setM_Product_ID(M_Product_ID);
             //
             il.setPrice();
             il.saveEx();
-            // updates[i].setC_InvoiceLine_ID(il.getC_InvoiceLine_ID());
-            // updates[i].saveEx();
         }
     } //	invoiceLine
 } //	RequestInvoice

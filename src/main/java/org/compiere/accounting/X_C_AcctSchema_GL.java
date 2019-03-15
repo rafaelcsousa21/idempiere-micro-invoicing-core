@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -36,13 +35,9 @@ public class X_C_AcctSchema_GL extends PO implements I_C_AcctSchema_GL {
     /**
      * Load Constructor
      */
-    public X_C_AcctSchema_GL(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_C_AcctSchema_GL(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MAcctSchemaGL
+    }
 
     /**
      * AccessLevel

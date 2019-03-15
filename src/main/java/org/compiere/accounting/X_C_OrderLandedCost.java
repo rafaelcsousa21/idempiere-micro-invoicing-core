@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -27,18 +27,13 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost {
      */
     public X_C_OrderLandedCost(Properties ctx, int C_OrderLandedCost_ID) {
         super(ctx, C_OrderLandedCost_ID);
-        /**
-         * if (C_OrderLandedCost_ID == 0) { setAmt (Env.ZERO); // 0 setOrderId (0);
-         * setC_OrderLandedCost_ID (0); setLandedCostDistribution (null); // Q setM_CostElement_ID (0);
-         * setProcessed (false); // N }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_OrderLandedCost(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_OrderLandedCost(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -57,8 +52,7 @@ public class X_C_OrderLandedCost extends PO implements I_C_OrderLandedCost {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_OrderLandedCost[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_OrderLandedCost[" + getId() + "]";
     }
 
     /**

@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_ActivityApprover;
 import org.compiere.orm.Query;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,8 +15,8 @@ public class MWFActivityApprover extends X_AD_WF_ActivityApprover {
         super(ctx, AD_WF_ActivityApprover_ID);
     }
 
-    public MWFActivityApprover(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFActivityApprover(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public static MWFActivityApprover[] getOfActivity(

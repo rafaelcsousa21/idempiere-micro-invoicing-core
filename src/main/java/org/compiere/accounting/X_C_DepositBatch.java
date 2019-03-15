@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_DepositBatch;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -31,7 +31,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      */
     public X_C_DepositBatch(Properties ctx, int C_DepositBatch_ID) {
         super(ctx, C_DepositBatch_ID);
-        /**
+        /*
          * if (C_DepositBatch_ID == 0) { setC_BankAccount_ID (0); setC_DepositBatch_ID (0);
          * setDocumentTypeId (0); setDateDeposit (new Timestamp( System.currentTimeMillis() )); // @#Date@
          * setDateDoc (new Timestamp( System.currentTimeMillis() )); // @#Date@ setDepositAmt
@@ -42,8 +42,8 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
     /**
      * Load Constructor
      */
-    public X_C_DepositBatch(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_DepositBatch(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -56,8 +56,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_DepositBatch[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_DepositBatch[" + getId() + "]";
     }
 
     /**

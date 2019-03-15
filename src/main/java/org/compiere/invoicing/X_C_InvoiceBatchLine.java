@@ -1,11 +1,11 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_InvoiceBatchLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -27,25 +27,13 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      */
     public X_C_InvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID) {
         super(ctx, C_InvoiceBatchLine_ID);
-        /**
-         * if (C_InvoiceBatchLine_ID == 0) { setBusinessPartnerId (0); // @C_BPartner_ID@
-         * setBusinessPartnerLocationId (0); // @C_BPartner_Location_ID@ setChargeId (0);
-         * setDocumentTypeId (0); // @C_DocType_ID@ setC_InvoiceBatch_ID (0); setC_InvoiceBatchLine_ID
-         * (0); setC_Tax_ID (0); setDateAcct (new Timestamp( System.currentTimeMillis() ));
-         * // @DateAcct@;@DateDoc@ setDateInvoiced (new Timestamp( System.currentTimeMillis() ));
-         * // @DateInvoiced@;@DateDoc@ setDocumentNo (null); // @DocumentNo@ setIsTaxIncluded (false);
-         * // @IsTaxIncluded@ setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM
-         * C_InvoiceBatchLine WHERE C_InvoiceBatch_ID=@C_InvoiceBatch_ID@ setLineNetAmt (Env.ZERO);
-         * setLineTotalAmt (Env.ZERO); setPriceEntered (Env.ZERO); setProcessed (false); setQtyEntered
-         * (Env.ZERO); // 1 setTaxAmt (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_InvoiceBatchLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_InvoiceBatchLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -58,8 +46,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_InvoiceBatchLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_InvoiceBatchLine[" + getId() + "]";
     }
 
     /**

@@ -1,11 +1,17 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.accounting.MPeriod;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.accounting.NegativeInventoryDisallowedException;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
-import org.compiere.model.*;
+import org.compiere.model.IDoc;
+import org.compiere.model.IPODoc;
+import org.compiere.model.I_AD_User;
+import org.compiere.model.I_C_BPartner;
+import org.compiere.model.I_C_BPartner_Location;
+import org.compiere.model.I_M_Product;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
@@ -22,7 +28,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -130,8 +135,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * @param rs      result set record
      * @param trxName transaction
      */
-    public MDDOrder(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDDOrder(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MDDOrder
 
     /**
@@ -180,7 +185,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         if (locs != null) {
             for (int i = 0; i < locs.size(); i++) {
                 I_C_BPartner_Location loc = locs.get(i);
-                if (loc.isShipTo()) {
+                if (loc.getIsShipTo()) {
                     super.setBusinessPartnerLocationId(loc.getBusinessPartnerLocationId());
                 }
             }

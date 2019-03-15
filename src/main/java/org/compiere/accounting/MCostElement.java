@@ -11,7 +11,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -68,10 +67,6 @@ public class MCostElement extends X_M_CostElement {
      * @param rs      result set
      * @param trxName trx
      */
-    public MCostElement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MCostElement
-
     public MCostElement(Properties ctx, Row row) {
         super(ctx, row);
     } //	MCostElement

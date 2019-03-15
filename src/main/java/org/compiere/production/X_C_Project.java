@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Project;
 import org.compiere.orm.BasePONameValue;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -60,8 +60,8 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
     /**
      * Load Constructor
      */
-    public X_C_Project(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_Project(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

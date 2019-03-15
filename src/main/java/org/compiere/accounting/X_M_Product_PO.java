@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Product_PO;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,7 +26,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
      */
     public X_M_Product_PO(Properties ctx, int M_Product_PO_ID) {
         super(ctx, M_Product_PO_ID);
-        /**
+        /*
          * if (M_Product_PO_ID == 0) { setBusinessPartnerId (0); setIsCurrentVendor (true); // Y
          * setM_Product_ID (0); // @M_Product_ID@ setVendorProductNo (null); // @Value@ }
          */
@@ -35,8 +35,8 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
     /**
      * Load Constructor
      */
-    public X_M_Product_PO(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_Product_PO(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -49,8 +49,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Product_PO[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Product_PO[" + getId() + "]";
     }
 
     /**

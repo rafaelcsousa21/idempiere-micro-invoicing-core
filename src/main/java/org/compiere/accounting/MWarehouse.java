@@ -11,7 +11,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -68,10 +67,6 @@ public class MWarehouse extends X_M_Warehouse {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MWarehouse(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MWarehouse
-
     public MWarehouse(Properties ctx, Row row) {
         super(ctx, row);
     } //	MWarehouse

@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_MovementLine;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_M_MovementLine extends PO implements I_M_MovementLine {
@@ -21,7 +21,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
      */
     public X_M_MovementLine(Properties ctx, int M_MovementLine_ID) {
         super(ctx, M_MovementLine_ID);
-        /**
+        /*
          * if (M_MovementLine_ID == 0) { setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue
          * FROM M_MovementLine WHERE M_Movement_ID=@M_Movement_ID@ setM_Locator_ID (0);
          * // @M_Locator_ID@ setM_LocatorTo_ID (0); // @M_LocatorTo_ID@ setM_Movement_ID (0);
@@ -33,8 +33,8 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
     /**
      * Load Constructor
      */
-    public X_M_MovementLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_MovementLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -53,8 +53,7 @@ public class X_M_MovementLine extends PO implements I_M_MovementLine {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_MovementLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_MovementLine[" + getId() + "]";
     }
 
     /**

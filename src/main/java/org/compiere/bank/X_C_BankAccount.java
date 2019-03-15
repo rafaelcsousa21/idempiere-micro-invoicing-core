@@ -1,11 +1,11 @@
 package org.compiere.bank;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_BankAccount;
 import org.compiere.orm.BasePONameValue;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -35,8 +35,8 @@ public class X_C_BankAccount extends BasePONameValue implements I_C_BankAccount 
     /**
      * Load Constructor
      */
-    public X_C_BankAccount(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_BankAccount(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

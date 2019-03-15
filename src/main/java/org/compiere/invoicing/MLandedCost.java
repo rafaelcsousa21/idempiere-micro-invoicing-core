@@ -1,15 +1,10 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**
@@ -33,7 +28,6 @@ public class MLandedCost extends X_C_LandedCost {
      *
      * @param ctx             context
      * @param C_LandedCost_ID id
-     * @param trxName         trx
      */
     public MLandedCost(Properties ctx, int C_LandedCost_ID) {
         super(ctx, C_LandedCost_ID);
@@ -47,12 +41,10 @@ public class MLandedCost extends X_C_LandedCost {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MLandedCost(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MLandedCost(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MLandedCost
 
     /**
@@ -62,28 +54,7 @@ public class MLandedCost extends X_C_LandedCost {
      * @return array of landed cost lines
      */
     public static MLandedCost[] getLandedCosts(MInvoiceLine il) {
-        ArrayList<MLandedCost> list = new ArrayList<MLandedCost>();
-        String sql = "SELECT * FROM C_LandedCost WHERE C_InvoiceLine_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, il.getC_InvoiceLine_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                list.add(new MLandedCost(il.getCtx(), rs));
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        MLandedCost[] retValue = new MLandedCost[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseLandedCostKt.getInvoiceLineLandedCosts(il);
     } // getLandedCosts
 
     /**

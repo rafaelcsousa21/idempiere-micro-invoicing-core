@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_Category;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -28,7 +28,6 @@ public class MRequestCategory extends X_R_Category {
      *
      * @param ctx           context
      * @param R_Category_ID id
-     * @param trxName       trx
      */
     public MRequestCategory(Properties ctx, int R_Category_ID) {
         super(ctx, R_Category_ID);
@@ -37,12 +36,10 @@ public class MRequestCategory extends X_R_Category {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MRequestCategory(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequestCategory(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MCategory
 
     /**

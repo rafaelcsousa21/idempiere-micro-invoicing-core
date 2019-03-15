@@ -1,11 +1,11 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.HasName;
 import org.compiere.model.I_AD_WF_EventAudit;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -30,7 +30,6 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
      *
      * @param ctx                 context
      * @param AD_WF_EventAudit_ID id
-     * @param trxName             transaction
      */
     public MWFEventAudit(Properties ctx, int AD_WF_EventAudit_ID) {
         super(ctx, AD_WF_EventAudit_ID);
@@ -39,12 +38,10 @@ public class MWFEventAudit extends X_AD_WF_EventAudit {
     /**
      * Load Cosntructors
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWFEventAudit(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFEventAudit(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWFEventAudit
 
     /**

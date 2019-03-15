@@ -1,12 +1,12 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_InventoryLineMA;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -28,17 +28,13 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA {
      */
     public X_M_InventoryLineMA(Properties ctx, int M_InventoryLineMA_ID) {
         super(ctx, M_InventoryLineMA_ID);
-        /**
-         * if (M_InventoryLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setM_InventoryLine_ID (0);
-         * setMovementQty (Env.ZERO); // 1 }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_InventoryLineMA(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_InventoryLineMA(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -57,8 +53,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_InventoryLineMA[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_InventoryLineMA[" + getId() + "]";
     }
 
     /**

@@ -1,8 +1,8 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.idempiere.icommon.model.IPO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class MQualityTestResult extends X_M_QualityTestResult {
@@ -16,8 +16,8 @@ public class MQualityTestResult extends X_M_QualityTestResult {
         super(ctx, M_QualityTestResult_ID);
     }
 
-    public MQualityTestResult(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MQualityTestResult(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     @Override

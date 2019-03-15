@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_Group;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -41,8 +41,8 @@ public class MGroup extends X_R_Group {
      * @param rs      result set
      * @param trxName trx
      */
-    public MGroup(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MGroup(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MGroup
 
     /**
@@ -53,7 +53,7 @@ public class MGroup extends X_R_Group {
      * @return MGroup
      */
     public static MGroup get(Properties ctx, int R_Group_ID) {
-        Integer key = new Integer(R_Group_ID);
+        Integer key = R_Group_ID;
         MGroup retValue = (MGroup) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MGroup(ctx, R_Group_ID);

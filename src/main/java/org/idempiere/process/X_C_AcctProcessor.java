@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_AcctProcessor;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -24,8 +24,8 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
     /**
      * Load Constructor
      */
-    public X_C_AcctProcessor(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_AcctProcessor(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +44,7 @@ public class X_C_AcctProcessor extends BasePOName implements I_C_AcctProcessor {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_AcctProcessor[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_AcctProcessor[" + getId() + "]";
     }
 
     /**

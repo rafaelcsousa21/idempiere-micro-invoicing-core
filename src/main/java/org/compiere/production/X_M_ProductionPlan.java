@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_ProductionPlan;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,19 +26,13 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
      */
     public X_M_ProductionPlan(Properties ctx, int M_ProductionPlan_ID) {
         super(ctx, M_ProductionPlan_ID);
-        /**
-         * if (M_ProductionPlan_ID == 0) { setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS
-         * DefaultValue FROM M_ProductionPlan WHERE M_Production_ID=@M_Production_ID@ setM_Locator_ID
-         * (0); // @M_Locator_ID@ setM_Product_ID (0); setM_Production_ID (0); setM_ProductionPlan_ID
-         * (0); setProcessed (false); setProductionQty (Env.ZERO); // 1 }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_ProductionPlan(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_ProductionPlan(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -51,8 +45,7 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_ProductionPlan[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_ProductionPlan[" + getId() + "]";
     }
 
     /**

@@ -1,8 +1,8 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.util.Msg;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -22,7 +22,6 @@ public class MCostType extends X_M_CostType {
      *
      * @param ctx           context
      * @param M_CostType_ID id
-     * @param trxName       trx
      */
     public MCostType(Properties ctx, int M_CostType_ID) {
         super(ctx, M_CostType_ID);
@@ -31,12 +30,10 @@ public class MCostType extends X_M_CostType {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MCostType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MCostType(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MCostType
 
     /**
@@ -45,9 +42,7 @@ public class MCostType extends X_M_CostType {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MCostType[");
-        sb.append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "MCostType[" + getId() + "-" + getName() + "]";
     } //	toString
 
     /**

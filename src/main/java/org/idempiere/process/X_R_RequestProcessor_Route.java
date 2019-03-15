@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_RequestProcessor_Route;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_R_RequestProcessor_Route extends PO
@@ -20,17 +20,13 @@ public class X_R_RequestProcessor_Route extends PO
     public X_R_RequestProcessor_Route(
             Properties ctx, int R_RequestProcessor_Route_ID) {
         super(ctx, R_RequestProcessor_Route_ID);
-        /**
-         * if (R_RequestProcessor_Route_ID == 0) { setUserId (0); setR_RequestProcessor_ID (0);
-         * setR_RequestProcessor_Route_ID (0); setSeqNo (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_R_RequestProcessor_Route(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_RequestProcessor_Route(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,8 +44,7 @@ public class X_R_RequestProcessor_Route extends PO
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_RequestProcessor_Route[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_RequestProcessor_Route[" + getId() + "]";
     }
 
 }

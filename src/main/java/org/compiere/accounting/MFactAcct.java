@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -33,7 +33,6 @@ public class MFactAcct extends X_Fact_Acct {
      *
      * @param ctx          context
      * @param Fact_Acct_ID id
-     * @param trxName      transaction
      */
     public MFactAcct(Properties ctx, int Fact_Acct_ID) {
         super(ctx, Fact_Acct_ID);
@@ -42,12 +41,10 @@ public class MFactAcct extends X_Fact_Acct {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MFactAcct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MFactAcct(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MFactAcct
 
     /**
@@ -55,7 +52,6 @@ public class MFactAcct extends X_Fact_Acct {
      *
      * @param AD_Table_ID table
      * @param Record_ID   record
-     * @param trxName     transaction
      * @return number of rows or -1 for error
      * @deprecated Since ADempiere 3.5.2a; please use {@link #deleteEx(int, int, String)} instead.
      */
@@ -65,7 +61,6 @@ public class MFactAcct extends X_Fact_Acct {
             no = deleteEx(AD_Table_ID, Record_ID);
         } catch (DBException e) {
             s_log.log(Level.SEVERE, "failed: AD_Table_ID=" + AD_Table_ID + ", Record_ID" + Record_ID, e);
-            no = -1;
         }
         return no;
     } //	delete
@@ -75,7 +70,6 @@ public class MFactAcct extends X_Fact_Acct {
      *
      * @param AD_Table_ID table
      * @param Record_ID   record
-     * @param trxName     transaction
      * @return number of rows deleted
      * @throws DBException on database exception
      */

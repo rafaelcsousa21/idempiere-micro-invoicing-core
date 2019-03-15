@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_Resolution;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -28,7 +28,6 @@ public class MResolution extends X_R_Resolution {
      *
      * @param ctx             context
      * @param R_Resolution_ID id
-     * @param trxName
      */
     public MResolution(Properties ctx, int R_Resolution_ID) {
         super(ctx, R_Resolution_ID);
@@ -37,12 +36,10 @@ public class MResolution extends X_R_Resolution {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MResolution(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MResolution(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MResolution
 
     /**
@@ -53,7 +50,7 @@ public class MResolution extends X_R_Resolution {
      * @return MResolution
      */
     public static MResolution get(Properties ctx, int R_Resolution_ID) {
-        Integer key = new Integer(R_Resolution_ID);
+        Integer key = R_Resolution_ID;
         MResolution retValue = (MResolution) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MResolution(ctx, R_Resolution_ID);

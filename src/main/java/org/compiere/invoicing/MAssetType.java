@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_A_Asset_Type;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -38,8 +38,8 @@ public class MAssetType extends X_A_Asset_Type {
     /**
      * Load Constructor
      */
-    public MAssetType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAssetType(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

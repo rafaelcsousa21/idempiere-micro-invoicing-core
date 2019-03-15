@@ -1,8 +1,18 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.docengine.DocumentEngine;
-import org.compiere.model.*;
+import org.compiere.model.IDoc;
+import org.compiere.model.IFact;
+import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_AllocationHdr;
+import org.compiere.model.I_C_BankStatement;
+import org.compiere.model.I_C_Cash;
+import org.compiere.model.I_C_ProjectIssue;
+import org.compiere.model.I_M_MatchInv;
+import org.compiere.model.I_M_MatchPO;
+import org.compiere.model.I_M_Production;
 import org.compiere.orm.MDocType;
 import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
@@ -25,7 +35,9 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Posting Document Root.
@@ -464,10 +476,9 @@ public abstract class Doc implements IDoc {
      * @param clazz               Document Class
      * @param rs                  result set
      * @param defaultDocumentType default document type or null
-     * @param trxName             trx
      */
     public Doc(
-            MAcctSchema as, Class<?> clazz, ResultSet rs, String defaultDocumentType) {
+            MAcctSchema as, Class<?> clazz, Row rs, String defaultDocumentType) {
         p_Status = STATUS_Error;
         m_as = as;
         m_ctx = new Properties(m_as.getCtx());
@@ -477,7 +488,7 @@ public abstract class Doc implements IDoc {
         className = className.substring(className.lastIndexOf('.') + 1);
         try {
             Constructor<?> constructor =
-                    clazz.getConstructor(new Class[]{Properties.class, ResultSet.class});
+                    clazz.getConstructor(new Class[]{Properties.class, Row.class});
             p_po = (IPODoc) constructor.newInstance(new Object[]{m_ctx, rs});
         } catch (Exception e) {
             String msg = className + ": " + e.getLocalizedMessage();
@@ -506,7 +517,6 @@ public abstract class Doc implements IDoc {
      * @param as          accounting schema
      * @param AD_Table_ID Table ID of Documents
      * @param Record_ID   record ID to load
-     * @param trxName     transaction name
      * @return Document or null
      */
     public static IDoc get(MAcctSchema as, int AD_Table_ID, int Record_ID) {
@@ -519,11 +529,10 @@ public abstract class Doc implements IDoc {
      * @param as          accounting schema
      * @param AD_Table_ID Table ID of Documents
      * @param rs          ResultSet
-     * @param trxName     transaction name
      * @return Document
      * @throws AdempiereUserError
      */
-    public static IDoc get(MAcctSchema as, int AD_Table_ID, ResultSet rs) {
+    public static IDoc get(MAcctSchema as, int AD_Table_ID, Row rs) {
         return DocManager.INSTANCE.getDocument(as, AD_Table_ID, rs);
     } //  get
 
@@ -534,7 +543,6 @@ public abstract class Doc implements IDoc {
      * @param AD_Table_ID Transaction table
      * @param Record_ID   Record ID of this document
      * @param force       force posting
-     * @param trxName     transaction
      * @return null if the document was posted or error message
      */
     public static String postImmediate(

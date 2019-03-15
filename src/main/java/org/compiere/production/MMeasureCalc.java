@@ -1,12 +1,12 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_MeasureCalc;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MTable;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -35,7 +35,6 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      *
      * @param ctx               context
      * @param PA_MeasureCalc_ID id
-     * @param trxName           trx
      */
     public MMeasureCalc(Properties ctx, int PA_MeasureCalc_ID) {
         super(ctx, PA_MeasureCalc_ID);
@@ -44,12 +43,10 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MMeasureCalc(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMeasureCalc(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMeasureCalc
 
     /**

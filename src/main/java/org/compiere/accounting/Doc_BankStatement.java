@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.bank.MBankAccount;
 import org.compiere.model.IFact;
 import org.idempiere.common.util.Env;
@@ -39,7 +40,7 @@ public class Doc_BankStatement extends Doc {
      * @param rs      record
      * @param trxName trx
      */
-    public Doc_BankStatement(MAcctSchema as, ResultSet rs) {
+    public Doc_BankStatement(MAcctSchema as, Row rs) {
         super(as, MBankStatement.class, rs, DOCTYPE_BankStatement);
     } //	Doc_Bank
 

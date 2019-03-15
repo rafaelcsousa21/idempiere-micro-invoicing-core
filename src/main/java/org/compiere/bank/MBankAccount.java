@@ -1,12 +1,12 @@
 package org.compiere.bank;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_BankAccount;
 import org.compiere.orm.MSysConfig;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -48,12 +48,10 @@ public class MBankAccount extends X_C_BankAccount {
     /**
      * Bank Account Model
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MBankAccount(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBankAccount(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MBankAccount
 
     /**
@@ -64,7 +62,7 @@ public class MBankAccount extends X_C_BankAccount {
      * @return MBankAccount
      */
     public static MBankAccount get(Properties ctx, int C_BankAccount_ID) {
-        Integer key = new Integer(C_BankAccount_ID);
+        Integer key = C_BankAccount_ID;
         MBankAccount retValue = (MBankAccount) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MBankAccount(ctx, C_BankAccount_ID);

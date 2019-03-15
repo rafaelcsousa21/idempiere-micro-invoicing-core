@@ -15,7 +15,6 @@
 package org.idempiere.process;
 
 import org.compiere.model.IProcessInfoParameter;
-import org.compiere.orm.GenericPO;
 import org.compiere.orm.MTable;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
@@ -95,8 +94,9 @@ public class HouseKeeping extends SvrProcess {
                 pstmt = prepareStatement(sql.toString());
                 rs = pstmt.executeQuery();
                 while (rs.next()) {
+                    /* DAP can reimplement later
                     GenericPO po = new GenericPO(tableName, getCtx(), rs);
-                    linexml = po.get_xmlString(linexml);
+                    linexml = po.get_xmlString(linexml);*/
                     noexp++;
                 }
                 if (linexml != null) file.write(linexml.toString());

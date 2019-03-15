@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_Status;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
     /**
      * Load Constructor
      */
-    public X_R_Status(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_Status(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -43,8 +43,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_Status[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_Status[" + getId() + "]";
     }
 
     /**
@@ -53,7 +52,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param IsClosed The status is closed
      */
     public void setIsClosed(boolean IsClosed) {
-        setValue(COLUMNNAME_IsClosed, Boolean.valueOf(IsClosed));
+        setValue(COLUMNNAME_IsClosed, IsClosed);
     }
 
     /**
@@ -64,7 +63,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
     public boolean isClosed() {
         Object oo = getValue(COLUMNNAME_IsClosed);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -76,7 +75,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, IsDefault);
     }
 
     /**
@@ -87,7 +86,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
     public boolean isDefault() {
         Object oo = getValue(COLUMNNAME_IsDefault);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;

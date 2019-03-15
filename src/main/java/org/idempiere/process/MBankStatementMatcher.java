@@ -1,16 +1,10 @@
 package org.idempiere.process;
 
-import org.compiere.orm.MRole;
+import kotliquery.Row;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MBankStatementMatcher extends X_C_BankStatementMatcher {
     /**
@@ -29,7 +23,6 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
      *
      * @param ctx                       context
      * @param C_BankStatementMatcher_ID id
-     * @param trxName                   transaction
      */
     public MBankStatementMatcher(Properties ctx, int C_BankStatementMatcher_ID) {
         super(ctx, C_BankStatementMatcher_ID);
@@ -38,49 +31,20 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MBankStatementMatcher(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBankStatementMatcher(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MBankStatementMatcher
 
     /**
      * Get Bank Statement Matcher Algorithms
      *
-     * @param ctx     context
-     * @param trxName transaction
+     * @param ctx context
      * @return matchers
      */
     public static MBankStatementMatcher[] getMatchers(Properties ctx) {
-        ArrayList<MBankStatementMatcher> list = new ArrayList<MBankStatementMatcher>();
-        String sql =
-                MRole.getDefault(ctx, false)
-                        .addAccessSQL(
-                                "SELECT * FROM C_BankStatementMatcher ORDER BY SeqNo",
-                                "C_BankStatementMatcher",
-                                MRole.SQL_NOTQUALIFIED,
-                                MRole.SQL_RO);
-        @SuppressWarnings("unused")
-        int AD_Client_ID = Env.getClientId(ctx);
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MBankStatementMatcher(ctx, rs));
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //	Convert
-        MBankStatementMatcher[] retValue = new MBankStatementMatcher[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseBankStatementMatcherKt.getBankStatementMatcherAlgorithms(ctx);
     } //	getMatchers
 
     /**
@@ -112,7 +76,7 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
      */
     public boolean isMatcherValid() {
         if (m_matcherValid == null) getMatcher();
-        return m_matcherValid.booleanValue();
+        return m_matcherValid;
     } //	isMatcherValid
 
     /**
@@ -121,7 +85,7 @@ public class MBankStatementMatcher extends X_C_BankStatementMatcher {
      * @return Matcher Instance
      */
     public BankStatementMatcherInterface getMatcher() {
-        if (m_matcher != null || (m_matcherValid != null && m_matcherValid.booleanValue()))
+        if (m_matcher != null || (m_matcherValid != null && m_matcherValid))
             return m_matcher;
 
         String className = getClassname();

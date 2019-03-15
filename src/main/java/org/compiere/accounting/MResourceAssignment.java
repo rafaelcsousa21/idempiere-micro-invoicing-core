@@ -1,8 +1,8 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -42,50 +42,9 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
      * @param ctx context
      * @param rs  result set
      */
-    public MResourceAssignment(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MResourceAssignment(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MResourceAssignment
-
-    /**
-     * After Save
-     *
-     * @param newRecord new
-     * @param success success
-     * @return true
-     */
-    //	protected boolean afterSave (boolean newRecord, boolean success)
-    //	{
-    //		/*
-    //		if (!success)
-    //		    return success;
-    //		v_Description := :new.Name;
-    //	IF (:new.Description IS NOT NULL AND LENGTH(:new.Description) > 0) THEN
-    //		v_Description := v_Description || ' (' || :new.Description || ')';
-    //	END IF;
-    //
-    //	-- Update Expense Line
-    //	UPDATE S_TimeExpenseLine
-    //	  SET  Description = v_Description,
-    //		Qty = :new.Qty
-    //	WHERE S_ResourceAssignment_ID = :new.S_ResourceAssignment_ID
-    //	  AND (Description <> v_Description OR Qty <> :new.Qty);
-    //
-    //	-- Update Order Line
-    //	UPDATE C_OrderLine
-    //	  SET  Description = v_Description,
-    //		QtyOrdered = :new.Qty
-    //	WHERE S_ResourceAssignment_ID = :new.S_ResourceAssignment_ID
-    //	  AND (Description <> v_Description OR QtyOrdered <> :new.Qty);
-    //
-    //	-- Update Invoice Line
-    //	UPDATE C_InvoiceLine
-    //	  SET  Description = v_Description,
-    //		QtyInvoiced = :new.Qty
-    //	WHERE S_ResourceAssignment_ID = :new.S_ResourceAssignment_ID
-    //	  AND (Description <> v_Description OR QtyInvoiced <> :new.Qty);
-    //	  */
-    //		return success;
-    //	}	//	afterSave
 
     /**
      * String Representation
@@ -93,18 +52,17 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
      * @return string
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MResourceAssignment[ID=");
-        sb.append(getId())
-                .append(",S_Resource_ID=")
-                .append(getS_Resource_ID())
-                .append(",From=")
-                .append(getAssignDateFrom())
-                .append(",To=")
-                .append(getAssignDateTo())
-                .append(",Qty=")
-                .append(getQty())
-                .append("]");
-        return sb.toString();
+        String sb = "MResourceAssignment[ID=" + getId() +
+                ",S_Resource_ID=" +
+                getS_Resource_ID() +
+                ",From=" +
+                getAssignDateFrom() +
+                ",To=" +
+                getAssignDateTo() +
+                ",Qty=" +
+                getQty() +
+                "]";
+        return sb;
     } //  toString
 
     /**
@@ -114,8 +72,6 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
      */
     protected boolean beforeDelete() {
         //	 allow to delete, when not confirmed
-        if (isConfirmed()) return false;
-
-        return true;
+        return !isConfirmed();
     } //	beforeDelete
 } //	MResourceAssignment

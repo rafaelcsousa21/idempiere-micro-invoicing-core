@@ -1,9 +1,9 @@
 package org.compiere.conversionrate;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_ConversionType;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -36,7 +36,6 @@ public class MConversionType extends X_C_ConversionType {
      *
      * @param ctx                 context
      * @param C_ConversionType_ID id
-     * @param trxName             transaction
      */
     public MConversionType(Properties ctx, int C_ConversionType_ID) {
         super(ctx, C_ConversionType_ID);
@@ -45,12 +44,10 @@ public class MConversionType extends X_C_ConversionType {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MConversionType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MConversionType(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MConversionType
 
     /**

@@ -1,18 +1,12 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**
@@ -38,8 +32,8 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
     }
 
-    public MBankAccountProcessor(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBankAccountProcessor(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public MBankAccountProcessor(
@@ -58,7 +52,6 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
      * @param AD_Client_ID  Client
      * @param C_Currency_ID Currency (ignored)
      * @param Amt           Amount (ignored)
-     * @param trxName       transaction
      * @return Array of BankAccount[0] & PaymentProcessor[1] or null
      */
     public static MBankAccountProcessor[] find(
@@ -67,81 +60,8 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
             String CCType,
             int AD_Client_ID,
             int C_Currency_ID,
-            BigDecimal Amt,
-            String trxName) {
-        ArrayList<MBankAccountProcessor> list = new ArrayList<MBankAccountProcessor>();
-        StringBuffer sql =
-                new StringBuffer(
-                        "SELECT bap.* "
-                                + "FROM C_BankAccount_Processor bap, C_PaymentProcessor pp, C_BankAccount ba "
-                                + "WHERE pp.C_PaymentProcessor_ID = bap.C_PaymentProcessor_ID"
-                                + " AND ba.C_BankAccount_ID = bap.C_BankAccount_ID"
-                                + " AND ba.AD_Client_ID=? AND pp.IsActive='Y'" //	#1
-                                + " AND ba.IsActive='Y' AND bap.IsActive='Y' "
-                                + " AND (bap.C_Currency_ID IS NULL OR bap.C_Currency_ID=?)" //	#2
-                                + " AND (bap.MinimumAmt IS NULL OR bap.MinimumAmt = 0 OR bap.MinimumAmt <= ?)"); //	#3
-        if (MPayment.TENDERTYPE_DirectDeposit.equals(tender))
-            sql.append(" AND bap.AcceptDirectDeposit='Y' AND pp.AcceptDirectDeposit='Y' ");
-        else if (MPayment.TENDERTYPE_DirectDebit.equals(tender))
-            sql.append(" AND bap.AcceptDirectDebit='Y' AND pp.AcceptDirectDebit='Y' ");
-        else if (MPayment.TENDERTYPE_Check.equals(tender))
-            sql.append(" AND bap.AcceptCheck='Y' AND pp.AcceptCheck='Y' ");
-            //  CreditCards
-        else if (MPayment.CREDITCARDTYPE_ATM.equals(CCType))
-            sql.append(" AND bap.AcceptATM='Y' AND pp.AcceptATM='Y' ");
-        else if (MPayment.CREDITCARDTYPE_Amex.equals(CCType))
-            sql.append(" AND bap.AcceptAMEX='Y' AND pp.AcceptAMEX='Y' ");
-        else if (MPayment.CREDITCARDTYPE_Visa.equals(CCType))
-            sql.append(" AND bap.AcceptVISA='Y' AND pp.AcceptVISA='Y' ");
-        else if (MPayment.CREDITCARDTYPE_MasterCard.equals(CCType))
-            sql.append(" AND bap.AcceptMC='Y' AND pp.AcceptMC='Y' ");
-        else if (MPayment.CREDITCARDTYPE_Diners.equals(CCType))
-            sql.append(" AND bap.AcceptDiners='Y' AND pp.AcceptDiners='Y' ");
-        else if (MPayment.CREDITCARDTYPE_Discover.equals(CCType))
-            sql.append(" AND bap.AcceptDiscover='Y' AND pp.AcceptDiscover='Y' ");
-        else if (MPayment.CREDITCARDTYPE_PurchaseCard.equals(CCType))
-            sql.append(" AND bap.AcceptCORPORATE='Y' AND pp.AcceptCORPORATE='Y' ");
-        sql.append(" ORDER BY ba.IsDefault DESC ");
-        //
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, AD_Client_ID);
-            pstmt.setInt(2, C_Currency_ID);
-            pstmt.setBigDecimal(3, Amt);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MBankAccountProcessor(ctx, rs));
-        } catch (SQLException e) {
-            s_log.log(Level.SEVERE, "find - " + sql, e);
-            return null;
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        if (list.size() == 0)
-            s_log.warning(
-                    "find - not found - AD_Client_ID="
-                            + AD_Client_ID
-                            + ", C_Currency_ID="
-                            + C_Currency_ID
-                            + ", Amt="
-                            + Amt);
-        else if (s_log.isLoggable(Level.FINE))
-            s_log.fine(
-                    "find - #"
-                            + list.size()
-                            + " - AD_Client_ID="
-                            + AD_Client_ID
-                            + ", C_Currency_ID="
-                            + C_Currency_ID
-                            + ", Amt="
-                            + Amt);
-        MBankAccountProcessor[] retValue = new MBankAccountProcessor[list.size()];
-        list.toArray(retValue);
-        return retValue;
+            BigDecimal Amt) {
+        return MBaseBankAccountProcessorKt.findBankAccountProcessors(ctx, tender, CCType, AD_Client_ID, C_Currency_ID, Amt);
     } //  find
 
     @Override

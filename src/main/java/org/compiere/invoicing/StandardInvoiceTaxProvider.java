@@ -1,6 +1,10 @@
 package org.compiere.invoicing;
 
-import org.compiere.model.*;
+import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_InvoiceLine;
+import org.compiere.model.I_C_InvoiceTax;
+import org.compiere.model.I_C_Tax;
+import org.compiere.model.I_C_TaxProvider;
 import org.compiere.order.StandardTaxProvider;
 import org.compiere.tax.IInvoiceTaxProvider;
 import org.compiere.tax.MTax;

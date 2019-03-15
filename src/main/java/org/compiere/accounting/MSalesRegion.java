@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_SalesRegion;
 import org.compiere.orm.MTree_Base;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -36,8 +36,8 @@ public class MSalesRegion extends X_C_SalesRegion {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MSalesRegion(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MSalesRegion(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MSalesRegion
 
     /**

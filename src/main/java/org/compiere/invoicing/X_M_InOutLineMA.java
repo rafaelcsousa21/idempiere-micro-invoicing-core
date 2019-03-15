@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -38,13 +37,9 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA {
     /**
      * Load Constructor
      */
-    public X_M_InOutLineMA(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_M_InOutLineMA(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MInOutLineMA
+    }
 
     /**
      * AccessLevel

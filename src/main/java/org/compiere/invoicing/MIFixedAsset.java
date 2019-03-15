@@ -1,10 +1,10 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MProduct;
 import org.idempiere.common.util.Util;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -47,8 +47,8 @@ public class MIFixedAsset extends X_I_FixedAsset {
      * @param ctx context
      * @param rs  result set record
      */
-    public MIFixedAsset(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MIFixedAsset(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MIFixedAsset
 
     public MProduct getProduct() {

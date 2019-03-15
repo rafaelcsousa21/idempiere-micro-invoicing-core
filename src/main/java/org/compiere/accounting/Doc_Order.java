@@ -1,8 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.model.IFact;
 import org.compiere.order.MOrderLine;
-import org.compiere.product.MCurrency;
 import org.compiere.tax.MTax;
 import org.idempiere.common.util.Env;
 
@@ -11,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
@@ -45,11 +45,10 @@ public class Doc_Order extends Doc {
     /**
      * Constructor
      *
-     * @param as      accounting schema
-     * @param rs      record
-     * @param trxName trx
+     * @param as accounting schema
+     * @param rs record
      */
-    public Doc_Order(MAcctSchema as, ResultSet rs) {
+    public Doc_Order(MAcctSchema as, Row rs) {
         super(as, MOrder.class, rs, null);
     } //	Doc_Order
 
@@ -62,78 +61,7 @@ public class Doc_Order extends Doc {
      * @return commitments (order lines)
      */
     protected static DocLine[] getCommitments(Doc doc, BigDecimal maxQty, int C_InvoiceLine_ID) {
-        int precision = -1;
-        //
-        ArrayList<DocLine> list = new ArrayList<DocLine>();
-        StringBuilder sql =
-                new StringBuilder("SELECT * FROM C_OrderLine ol ")
-                        .append("WHERE EXISTS ")
-                        .append("(SELECT * FROM C_InvoiceLine il ")
-                        .append("WHERE il.C_OrderLine_ID=ol.C_OrderLine_ID")
-                        .append(" AND il.C_InvoiceLine_ID=?)")
-                        .append(" OR EXISTS ")
-                        .append("(SELECT * FROM M_MatchPO po ")
-                        .append("WHERE po.C_OrderLine_ID=ol.C_OrderLine_ID")
-                        .append(" AND po.C_InvoiceLine_ID=?)");
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, C_InvoiceLine_ID);
-            pstmt.setInt(2, C_InvoiceLine_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                if (maxQty.signum() == 0) continue;
-                MOrderLine line = new MOrderLine(doc.getCtx(), rs);
-                DocLine docLine = new DocLine(line, doc);
-                //	Currency
-                if (precision == -1) {
-                    doc.setCurrencyId(docLine.getCurrencyId());
-                    precision = MCurrency.getStdPrecision(doc.getCtx(), docLine.getCurrencyId());
-                }
-                //	Qty
-                BigDecimal Qty = line.getQtyOrdered().max(maxQty);
-                docLine.setQty(Qty, false);
-                //
-                BigDecimal PriceActual = line.getPriceActual();
-                BigDecimal PriceCost = line.getPriceCost();
-                BigDecimal LineNetAmt = null;
-                if (PriceCost != null && PriceCost.signum() != 0) LineNetAmt = Qty.multiply(PriceCost);
-                else if (Qty.equals(maxQty)) LineNetAmt = line.getLineNetAmt();
-                else LineNetAmt = Qty.multiply(PriceActual);
-                maxQty = maxQty.subtract(Qty);
-
-                docLine.setAmount(LineNetAmt); // 	DR
-                BigDecimal PriceList = line.getPriceList();
-                int C_Tax_ID = docLine.getC_Tax_ID();
-                //	Correct included Tax
-                if (C_Tax_ID != 0 && line.getParent().isTaxIncluded()) {
-                    MTax tax = MTax.get(doc.getCtx(), C_Tax_ID);
-                    if (!tax.isZeroTax()) {
-                        BigDecimal LineNetAmtTax = tax.calculateTax(LineNetAmt, true, precision);
-                        if (s_log.isLoggable(Level.FINE))
-                            s_log.fine("LineNetAmt=" + LineNetAmt + " - Tax=" + LineNetAmtTax);
-                        LineNetAmt = LineNetAmt.subtract(LineNetAmtTax);
-                        BigDecimal PriceListTax = tax.calculateTax(PriceList, true, precision);
-                        PriceList = PriceList.subtract(PriceListTax);
-                    }
-                } //	correct included Tax
-
-                docLine.setAmount(LineNetAmt, PriceList, Qty);
-                list.add(docLine);
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        //	Return Array
-        DocLine[] dl = new DocLine[list.size()];
-        list.toArray(dl);
-        return dl;
+        return BaseDoc_OrderKt.getCommitments(doc, maxQty, C_InvoiceLine_ID);
     } //	getCommitments
 
     /**
@@ -184,89 +112,21 @@ public class Doc_Order extends Doc {
     /**
      * Get Commitments Sales
      *
-     * @param doc            document
-     * @param maxQty         Qty invoiced/matched
-     * @param C_OrderLine_ID invoice line
+     * @param doc    document
+     * @param maxQty Qty invoiced/matched
      * @return commitments (order lines)
      */
     protected static DocLine[] getCommitmentsSales(Doc doc, BigDecimal maxQty, int M_InOutLine_ID) {
-        int precision = -1;
-        //
-        ArrayList<DocLine> list = new ArrayList<DocLine>();
-        StringBuilder sql =
-                new StringBuilder("SELECT * FROM C_OrderLine ol ")
-                        .append("WHERE EXISTS ")
-                        .append("(SELECT * FROM M_InOutLine il ")
-                        .append("WHERE il.C_OrderLine_ID=ol.C_OrderLine_ID")
-                        .append(" AND il.M_InOutLine_ID=?)");
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, M_InOutLine_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                if (maxQty.signum() == 0) continue;
-                MOrderLine line = new MOrderLine(doc.getCtx(), rs);
-                DocLine docLine = new DocLine(line, doc);
-                //	Currency
-                if (precision == -1) {
-                    doc.setCurrencyId(docLine.getCurrencyId());
-                    precision = MCurrency.getStdPrecision(doc.getCtx(), docLine.getCurrencyId());
-                }
-                //	Qty
-                BigDecimal Qty = line.getQtyOrdered().max(maxQty);
-                docLine.setQty(Qty, false);
-                //
-                BigDecimal PriceActual = line.getPriceActual();
-                BigDecimal PriceCost = line.getPriceCost();
-                BigDecimal LineNetAmt = null;
-                if (PriceCost != null && PriceCost.signum() != 0) LineNetAmt = Qty.multiply(PriceCost);
-                else if (Qty.equals(maxQty)) LineNetAmt = line.getLineNetAmt();
-                else LineNetAmt = Qty.multiply(PriceActual);
-                maxQty = maxQty.subtract(Qty);
-
-                docLine.setAmount(LineNetAmt); // 	DR
-                BigDecimal PriceList = line.getPriceList();
-                int C_Tax_ID = docLine.getC_Tax_ID();
-                //	Correct included Tax
-                if (C_Tax_ID != 0 && line.getParent().isTaxIncluded()) {
-                    MTax tax = MTax.get(doc.getCtx(), C_Tax_ID);
-                    if (!tax.isZeroTax()) {
-                        BigDecimal LineNetAmtTax = tax.calculateTax(LineNetAmt, true, precision);
-                        if (s_log.isLoggable(Level.FINE))
-                            s_log.fine("LineNetAmt=" + LineNetAmt + " - Tax=" + LineNetAmtTax);
-                        LineNetAmt = LineNetAmt.subtract(LineNetAmtTax);
-                        BigDecimal PriceListTax = tax.calculateTax(PriceList, true, precision);
-                        PriceList = PriceList.subtract(PriceListTax);
-                    }
-                } //	correct included Tax
-
-                docLine.setAmount(LineNetAmt, PriceList, Qty);
-                list.add(docLine);
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        //	Return Array
-        DocLine[] dl = new DocLine[list.size()];
-        list.toArray(dl);
-        return dl;
+        return BaseDoc_OrderKt.getCommitmentsSales(doc, maxQty, M_InOutLine_ID);
     } //	getCommitmentsSales
 
     /**
      * Get Commitment Sales Release. Called from InOut
      *
-     * @param as             accounting schema
-     * @param doc            doc
-     * @param Qty            qty invoiced/matched
-     * @param C_OrderLine_ID line
-     * @param multiplier     1 for accrual
+     * @param as         accounting schema
+     * @param doc        doc
+     * @param Qty        qty invoiced/matched
+     * @param multiplier 1 for accrual
      * @return Fact
      */
     protected static Fact getCommitmentSalesRelease(
@@ -384,58 +244,7 @@ public class Doc_Order extends Doc {
      * @return requisition lines of Order
      */
     private DocLine[] loadRequisitions() {
-        MOrder order = (MOrder) getPO();
-        MOrderLine[] oLines = order.getLines();
-        HashMap<Integer, BigDecimal> qtys = new HashMap<Integer, BigDecimal>();
-        for (int i = 0; i < oLines.length; i++) {
-            MOrderLine line = oLines[i];
-            qtys.put(new Integer(line.getC_OrderLine_ID()), line.getQtyOrdered());
-        }
-        //
-        ArrayList<DocLine> list = new ArrayList<DocLine>();
-        String sql =
-                "SELECT * FROM M_RequisitionLine rl "
-                        + "WHERE EXISTS (SELECT * FROM C_Order o "
-                        + " INNER JOIN C_OrderLine ol ON (o.C_Order_ID=ol.C_Order_ID) "
-                        + "WHERE ol.C_OrderLine_ID=rl.C_OrderLine_ID"
-                        + " AND o.C_Order_ID=?) "
-                        + "ORDER BY rl.C_OrderLine_ID";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, order.getOrderId());
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MRequisitionLine line = new MRequisitionLine(getCtx(), rs);
-                DocLine docLine = new DocLine(line, this);
-                //	Quantity - not more then OrderLine
-                //	Issue: Split of Requisition to multiple POs & different price
-                Integer key = new Integer(line.getC_OrderLine_ID());
-                BigDecimal maxQty = qtys.get(key);
-                BigDecimal Qty = line.getQty().max(maxQty);
-                if (Qty.signum() == 0) continue;
-                docLine.setQty(Qty, false);
-                qtys.put(key, maxQty.subtract(Qty));
-                //
-                BigDecimal PriceActual = line.getPriceActual();
-                BigDecimal LineNetAmt = line.getLineNetAmt();
-                if (line.getQty().compareTo(Qty) != 0) LineNetAmt = PriceActual.multiply(Qty);
-                docLine.setAmount(LineNetAmt); // DR
-                list.add(docLine);
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        // Return Array
-        DocLine[] dls = new DocLine[list.size()];
-        list.toArray(dls);
-        return dls;
+        return BaseDoc_OrderKt.loadRequisitions(getCtx(), (MOrder) getPO(), this);
     } // loadRequisitions
 
     /**

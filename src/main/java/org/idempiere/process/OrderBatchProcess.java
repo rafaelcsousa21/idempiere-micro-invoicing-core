@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Order Batch Processing
@@ -112,26 +114,15 @@ public class OrderBatchProcess extends SvrProcess {
             sql.append(" AND EXISTS (SELECT l.C_OrderLine_ID FROM C_OrderLine l ")
                     .append(" WHERE l.C_Order_ID=o.C_Order_ID AND l.QtyOrdered>l.QtyInvoiced) ");
 
+        MOrder[] items = BaseOrderBatchProcessKt.getOrdersToBatchProcess(getCtx(), sql.toString(), p_C_DocTypeTarget_ID, p_DocStatus);
+
         int counter = 0;
         int errCounter = 0;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, p_C_DocTypeTarget_ID);
-            pstmt.setString(2, p_DocStatus);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                if (process(new MOrder(getCtx(), rs))) counter++;
-                else errCounter++;
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
+        for ( MOrder order : items ) {
+            if (process(order)) counter++;
+            else errCounter++;
         }
+
         StringBuilder msgreturn =
                 new StringBuilder("@Updated@=").append(counter).append(", @Errors@=").append(errCounter);
         return msgreturn.toString();

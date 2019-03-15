@@ -15,11 +15,11 @@
  */
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -60,12 +60,10 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MDepositBatch(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDepositBatch(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MDepositBatch
 
     /**

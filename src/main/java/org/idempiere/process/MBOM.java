@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_BOM;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -45,12 +45,10 @@ public class MBOM extends X_M_BOM {
     /**
      * Load Constructor
      *
-     * @param ctx     ctx
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx ctx
      */
-    public MBOM(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBOM(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MBOM
 
     /**
@@ -61,7 +59,7 @@ public class MBOM extends X_M_BOM {
      * @return MBOM
      */
     public static MBOM get(Properties ctx, int M_BOM_ID) {
-        Integer key = new Integer(M_BOM_ID);
+        Integer key = M_BOM_ID;
         MBOM retValue = (MBOM) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MBOM(ctx, M_BOM_ID);

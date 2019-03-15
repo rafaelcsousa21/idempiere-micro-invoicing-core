@@ -1,7 +1,11 @@
 package org.compiere.invoicing;
 
 import kotliquery.Row;
-import org.compiere.accounting.*;
+import org.compiere.accounting.MAcctSchema;
+import org.compiere.accounting.MClient;
+import org.compiere.accounting.MCost;
+import org.compiere.accounting.MCostElement;
+import org.compiere.accounting.MProduct;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_M_InventoryLine;
 import org.compiere.orm.MDocType;
@@ -10,7 +14,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -68,10 +71,6 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MInventoryLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MInventoryLine
-
     public MInventoryLine(Properties ctx, Row row) {
         super(ctx, row);
     } //	MInventoryLine

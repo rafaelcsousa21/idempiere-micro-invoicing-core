@@ -1,5 +1,6 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -7,7 +8,6 @@ import org.eevolution.model.I_PP_Order;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -23,26 +23,13 @@ public class X_PP_Order extends PO implements I_PP_Order {
      */
     public X_PP_Order(Properties ctx, int PP_Order_ID) {
         super(ctx, PP_Order_ID);
-        /**
-         * if (PP_Order_ID == 0) { setAD_Workflow_ID (0); setTargetDocumentTypeId (0); // 0 setC_UOM_ID
-         * (0); // @UOMConversion@=Y | @Processed@='Y' setDateOrdered (new Timestamp(
-         * System.currentTimeMillis() )); // @#Date@ setDatePromised (new Timestamp(
-         * System.currentTimeMillis() )); setDateStartSchedule (new Timestamp(
-         * System.currentTimeMillis() )); // @#Date@ setDocAction (null); // -- setDocStatus (null); //
-         * DR setDocumentNo (null); setIsApproved (false); // N setIsPrinted (false); // N setIsSelected
-         * (false); // N setIsSOTrx (false); // N setLine (0); setM_Product_ID (0); setWarehouseId
-         * (0); setPP_Order_ID (0); setPP_Product_BOM_ID (0); setPriorityRule (null); setProcessed
-         * (false); // N setQtyDelivered (Env.ZERO); // 0 setQtyOrdered (Env.ZERO); // 1 setQtyReject
-         * (Env.ZERO); // 0 setQtyScrap (Env.ZERO); // 0 setS_Resource_ID (0); setYield (Env.ZERO); //
-         * 100 }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_PP_Order(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PP_Order(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

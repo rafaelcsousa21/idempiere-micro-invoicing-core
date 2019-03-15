@@ -1,10 +1,10 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_A_Asset_Group_Acct;
 import org.compiere.model.UseLife;
 import org.compiere.orm.Query;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -35,10 +35,9 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
      * Load Constructor
      *
      * @param ctx context
-     * @param rs  result set
      */
-    public MAssetGroupAcct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAssetGroupAcct(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MAssetGroupAcct
 
     /**

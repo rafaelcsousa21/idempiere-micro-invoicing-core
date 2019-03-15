@@ -20,7 +20,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.isOracle;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Synchronize Column with Database

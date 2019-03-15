@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_CashBook;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -37,7 +37,6 @@ public class MCashBook extends X_C_CashBook {
      *
      * @param ctx           context
      * @param C_CashBook_ID id
-     * @param trxName       transaction
      */
     public MCashBook(Properties ctx, int C_CashBook_ID) {
         super(ctx, C_CashBook_ID);
@@ -46,12 +45,10 @@ public class MCashBook extends X_C_CashBook {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MCashBook(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MCashBook(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MCashBook
 
     /**
@@ -59,11 +56,10 @@ public class MCashBook extends X_C_CashBook {
      *
      * @param ctx           context
      * @param C_CashBook_ID id of cashbook to load
-     * @param trxName       transaction name
      * @return Cashbook
      */
     public static MCashBook get(Properties ctx, int C_CashBook_ID) {
-        Integer key = new Integer(C_CashBook_ID);
+        Integer key = C_CashBook_ID;
         MCashBook retValue = (MCashBook) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MCashBook(ctx, C_CashBook_ID);

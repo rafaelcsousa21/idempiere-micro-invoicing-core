@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_ActivityApprover;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,17 +24,13 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
      */
     public X_AD_WF_ActivityApprover(Properties ctx, int AD_WF_ActivityApprover_ID) {
         super(ctx, AD_WF_ActivityApprover_ID);
-        /**
-         * if (AD_WF_ActivityApprover_ID == 0) { setUserId (0); setAD_WF_ActivityApprover_ID (0);
-         * setAD_WF_Activity_ID (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_WF_ActivityApprover(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WF_ActivityApprover(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -47,8 +43,7 @@ public class X_AD_WF_ActivityApprover extends PO implements I_AD_WF_ActivityAppr
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_WF_ActivityApprover[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_WF_ActivityApprover[" + getId() + "]";
     }
 
     /**

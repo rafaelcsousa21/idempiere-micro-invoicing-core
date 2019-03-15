@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_I_Payment;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -21,14 +21,13 @@ public class X_I_Payment extends PO implements I_I_Payment {
      */
     public X_I_Payment(Properties ctx, int I_Payment_ID) {
         super(ctx, I_Payment_ID);
-        /** if (I_Payment_ID == 0) { setI_IsImported (false); setI_Payment_ID (0); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_I_Payment(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_I_Payment(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -41,8 +40,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_I_Payment[").append(getId()).append("]");
-        return sb.toString();
+        return "X_I_Payment[" + getId() + "]";
     }
 
     /**

@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_BankStatementMatcher;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_C_BankStatementMatcher extends BasePOName
@@ -19,17 +19,13 @@ public class X_C_BankStatementMatcher extends BasePOName
      */
     public X_C_BankStatementMatcher(Properties ctx, int C_BankStatementMatcher_ID) {
         super(ctx, C_BankStatementMatcher_ID);
-        /**
-         * if (C_BankStatementMatcher_ID == 0) { setC_BankStatementMatcher_ID (0); setClassname (null);
-         * setName (null); setSeqNo (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_BankStatementMatcher(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_BankStatementMatcher(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,8 +44,7 @@ public class X_C_BankStatementMatcher extends BasePOName
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_BankStatementMatcher[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_BankStatementMatcher[" + getId() + "]";
     }
 
     /**

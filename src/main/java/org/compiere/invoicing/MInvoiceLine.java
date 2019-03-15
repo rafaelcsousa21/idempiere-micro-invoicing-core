@@ -15,7 +15,11 @@ import org.compiere.product.IProductPricing;
 import org.compiere.product.MPriceList;
 import org.compiere.product.MProduct;
 import org.compiere.product.MUOM;
-import org.compiere.tax.*;
+import org.compiere.tax.IInvoiceTaxProvider;
+import org.compiere.tax.MTax;
+import org.compiere.tax.MTaxCategory;
+import org.compiere.tax.MTaxProvider;
+import org.compiere.tax.Tax;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
@@ -23,8 +27,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.orm.POKt.I_ZERO;
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.getSQLValueBDEx;
 
 /**
  * Invoice Line Model
@@ -95,7 +99,6 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      *
      * @param ctx              context
      * @param C_InvoiceLine_ID invoice line or 0
-     * @param trxName          transaction name
      */
     public MInvoiceLine(Properties ctx, int C_InvoiceLine_ID) {
         super(ctx, C_InvoiceLine_ID);
@@ -131,14 +134,8 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set record
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MInvoiceLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MInvoiceLine
-
     public MInvoiceLine(Properties ctx, Row row) {
         super(ctx, row);
     } //	MInvoiceLine
@@ -1124,30 +1121,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      * @return landedCost
      */
     public MLandedCost[] getLandedCost(String whereClause) {
-        ArrayList<MLandedCost> list = new ArrayList<MLandedCost>();
-        String sql = "SELECT * FROM C_LandedCost WHERE C_InvoiceLine_ID=? ";
-        if (whereClause != null) sql += whereClause;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_InvoiceLine_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MLandedCost lc = new MLandedCost(getCtx(), rs);
-                list.add(lc);
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, "getLandedCost", e);
-        } finally {
-            rs = null;
-            pstmt = null;
-        }
-
-        //
-        MLandedCost[] landedCost = new MLandedCost[list.size()];
-        list.toArray(landedCost);
-        return landedCost;
+        return MBaseInvoiceLineKt.getInvoiceLineLandedCost(getCtx(), getC_InvoiceLine_ID(), whereClause);
     } //	getLandedCost
 
     /**

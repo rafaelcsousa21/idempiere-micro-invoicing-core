@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_Achievement;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -32,8 +32,8 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement {
     /**
      * Load Constructor
      */
-    public X_PA_Achievement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PA_Achievement(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -52,8 +52,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_PA_Achievement[").append(getId()).append("]");
-        return sb.toString();
+        return "X_PA_Achievement[" + getId() + "]";
     }
 
     /**

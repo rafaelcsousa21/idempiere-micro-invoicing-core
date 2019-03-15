@@ -1,6 +1,7 @@
 package org.idempiere.process;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 public class MRequestProcessorRoute extends X_R_RequestProcessor_Route {
@@ -25,7 +26,7 @@ public class MRequestProcessorRoute extends X_R_RequestProcessor_Route {
      * @param ctx context
      * @param rs  result set
      */
-    public MRequestProcessorRoute(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequestProcessorRoute(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequestProcessorRoute
 } //	MRequestProcessorRoute

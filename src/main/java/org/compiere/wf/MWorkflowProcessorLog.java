@@ -1,8 +1,8 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.AdempiereProcessorLog;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -35,12 +35,10 @@ public class MWorkflowProcessorLog extends X_AD_WorkflowProcessorLog
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWorkflowProcessorLog(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWorkflowProcessorLog(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWorkflowProcessorLog
 
     /**

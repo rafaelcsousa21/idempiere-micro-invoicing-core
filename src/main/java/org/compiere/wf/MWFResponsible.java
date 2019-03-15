@@ -1,11 +1,11 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_Responsible;
 import org.compiere.orm.MRole;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -30,7 +30,6 @@ public class MWFResponsible extends X_AD_WF_Responsible {
      *
      * @param ctx                  context
      * @param AD_WF_Responsible_ID id
-     * @param trxName              transaction
      */
     public MWFResponsible(Properties ctx, int AD_WF_Responsible_ID) {
         super(ctx, AD_WF_Responsible_ID);
@@ -39,12 +38,10 @@ public class MWFResponsible extends X_AD_WF_Responsible {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWFResponsible(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFResponsible(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWFResponsible
 
     /**

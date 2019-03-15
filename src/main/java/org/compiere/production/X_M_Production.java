@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Production;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -84,8 +84,8 @@ public class X_M_Production extends BasePOName {
     /**
      * Load Constructor
      */
-    public X_M_Production(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_Production(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -98,8 +98,7 @@ public class X_M_Production extends BasePOName {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Production[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Production[" + getId() + "]";
     }
 
     /**
@@ -109,7 +108,7 @@ public class X_M_Production extends BasePOName {
      */
     public void setTransactionOrganizationId(int AD_OrgTrx_ID) {
         if (AD_OrgTrx_ID < 1) setValue(I_M_Production.COLUMNNAME_AD_OrgTrx_ID, null);
-        else setValue(I_M_Production.COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+        else setValue(I_M_Production.COLUMNNAME_AD_OrgTrx_ID, AD_OrgTrx_ID);
     }
 
     /**
@@ -119,7 +118,7 @@ public class X_M_Production extends BasePOName {
      */
     public void setBusinessActivityId(int C_Activity_ID) {
         if (C_Activity_ID < 1) setValue(I_M_Production.COLUMNNAME_C_Activity_ID, null);
-        else setValue(I_M_Production.COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+        else setValue(I_M_Production.COLUMNNAME_C_Activity_ID, C_Activity_ID);
     }
 
     /**

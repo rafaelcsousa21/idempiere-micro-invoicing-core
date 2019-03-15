@@ -1,11 +1,27 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
+import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MClientInfo;
-import org.compiere.accounting.*;
+import org.compiere.accounting.MCost;
+import org.compiere.accounting.MPeriod;
+import org.compiere.accounting.MProduct;
+import org.compiere.accounting.MStorageOnHand;
+import org.compiere.accounting.MWarehouse;
+import org.compiere.accounting.NegativeInventoryDisallowedException;
 import org.compiere.docengine.DocumentEngine;
-import org.compiere.model.*;
-import org.compiere.orm.*;
+import org.compiere.model.IDoc;
+import org.compiere.model.IPODoc;
+import org.compiere.model.I_M_AttributeSet;
+import org.compiere.model.I_M_Cost;
+import org.compiere.model.I_M_Inventory;
+import org.compiere.model.I_M_InventoryLine;
+import org.compiere.orm.MDocType;
+import org.compiere.orm.MSequence;
+import org.compiere.orm.PO;
+import org.compiere.orm.PeriodClosedException;
+import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.production.MTransaction;
@@ -17,7 +33,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -93,8 +108,8 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MInventory(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInventory(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MInventory
 
     /**
@@ -645,7 +660,6 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                                 null,
                                 MClient.MMPOLICY_FiFo.equals(product.getMMPolicy()),
                                 line.getM_Locator_ID(),
-                                null,
                                 false);
                 for (MStorageOnHand storage : storages) {
                     if (storage.getQtyOnHand().signum() < 0) {

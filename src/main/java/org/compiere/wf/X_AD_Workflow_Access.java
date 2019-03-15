@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_Workflow_Access;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,17 +24,13 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access {
      */
     public X_AD_Workflow_Access(Properties ctx, int AD_Workflow_Access_ID) {
         super(ctx, AD_Workflow_Access_ID);
-        /**
-         * if (AD_Workflow_Access_ID == 0) { setRoleId (0); setAD_Workflow_ID (0); setIsReadWrite
-         * (false); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_Workflow_Access(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_Workflow_Access(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -53,8 +49,7 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_Workflow_Access[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_Workflow_Access[" + getId() + "]";
     }
 
     /**
@@ -64,7 +59,7 @@ public class X_AD_Workflow_Access extends PO implements I_AD_Workflow_Access {
      */
     public void setRoleId(int AD_Role_ID) {
         if (AD_Role_ID < 0) setValueNoCheck(COLUMNNAME_AD_Role_ID, null);
-        else setValueNoCheck(COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
+        else setValueNoCheck(COLUMNNAME_AD_Role_ID, AD_Role_ID);
     }
 
     /**

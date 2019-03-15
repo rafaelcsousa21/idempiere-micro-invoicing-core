@@ -1,5 +1,6 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -31,7 +32,6 @@ public class MGLCategory extends X_GL_Category {
      *
      * @param ctx            context
      * @param GL_Category_ID id
-     * @param trxName        transaction
      */
     public MGLCategory(Properties ctx, int GL_Category_ID) {
         super(ctx, GL_Category_ID);
@@ -45,12 +45,10 @@ public class MGLCategory extends X_GL_Category {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MGLCategory(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MGLCategory(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MGLCategory
 
     /**
@@ -61,7 +59,7 @@ public class MGLCategory extends X_GL_Category {
      * @return MGLCategory
      */
     public static MGLCategory get(Properties ctx, int GL_Category_ID) {
-        Integer key = new Integer(GL_Category_ID);
+        Integer key = GL_Category_ID;
         MGLCategory retValue = (MGLCategory) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MGLCategory(ctx, GL_Category_ID);
@@ -77,30 +75,7 @@ public class MGLCategory extends X_GL_Category {
      * @return GL Category or null
      */
     public static MGLCategory getDefault(Properties ctx, String CategoryType) {
-        MGLCategory retValue = null;
-        String sql = "SELECT * FROM GL_Category " + "WHERE AD_Client_ID=? AND IsDefault='Y'";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, Env.getClientId(ctx));
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MGLCategory temp = new MGLCategory(ctx, rs);
-                if (CategoryType != null && CategoryType.equals(temp.getCategoryType())) {
-                    retValue = temp;
-                    break;
-                }
-                if (retValue == null) retValue = temp;
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        return retValue;
+        return MBaseGLCategoryKt.getDefault(ctx, CategoryType);
     } //	getDefault
 
     /**

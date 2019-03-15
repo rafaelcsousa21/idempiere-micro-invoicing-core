@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.accounting.MAccount;
 import org.compiere.model.I_C_ProjectIssue;
 import org.compiere.model.I_C_ProjectLine;
@@ -9,7 +10,6 @@ import org.compiere.orm.Query;
 import org.compiere.product.MPriceList;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -70,8 +70,8 @@ public class MProject extends X_C_Project {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MProject(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProject(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProject
 
     /**

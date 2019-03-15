@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.bank.MBankAccount;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
@@ -16,7 +17,6 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -63,7 +63,6 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @param ctx                context
      * @param C_BankStatement_ID id
-     * @param trxName            transaction
      */
     public MBankStatement(Properties ctx, int C_BankStatement_ID) {
         super(ctx, C_BankStatement_ID);
@@ -85,12 +84,10 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     /**
      * Load Constructor
      *
-     * @param ctx     Current context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx Current context
      */
-    public MBankStatement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBankStatement(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MBankStatement
 
     /**

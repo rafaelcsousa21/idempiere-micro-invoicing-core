@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -12,7 +13,6 @@ import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -73,12 +73,10 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MMatchInv(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMatchInv(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMatchInv
 
     /**

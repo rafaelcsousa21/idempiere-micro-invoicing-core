@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -7,7 +8,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -41,35 +41,25 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
      *
      * @param ctx                    context
      * @param C_BankStatementLine_ID id
-     * @param trxName                transaction
      */
     public MBankStatementLine(Properties ctx, int C_BankStatementLine_ID) {
         super(ctx, C_BankStatementLine_ID);
         if (C_BankStatementLine_ID == 0) {
-            //	setC_BankStatement_ID (0);		//	Parent
-            //	setChargeId (0);
-            //	setCurrencyId (0);	//	Bank Acct Currency
-            //	setLine (0);	// @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM C_BankStatementLine
-            // WHERE C_BankStatement_ID=@C_BankStatement_ID@
             setStmtAmt(Env.ZERO);
             setTrxAmt(Env.ZERO);
             setInterestAmt(Env.ZERO);
             setChargeAmt(Env.ZERO);
             setIsReversal(false);
-            //	setValutaDate (new Timestamp(System.currentTimeMillis()));	// @StatementDate@
-            //	setDateAcct (new Timestamp(System.currentTimeMillis()));	// @StatementDate@
         }
     } //	MBankStatementLine
 
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MBankStatementLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBankStatementLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MBankStatementLine
 
     /**

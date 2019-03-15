@@ -1,16 +1,16 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.HasName;
 import org.compiere.model.I_C_ElementValue;
 import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_Fact_Acct;
 import org.compiere.orm.MTree_Base;
-import org.compiere.orm.POResultSet;
 import org.compiere.orm.Query;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -61,8 +61,8 @@ public class MElementValue extends X_C_ElementValue {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MElementValue(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MElementValue(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MElementValue
 
     /**
@@ -169,18 +169,12 @@ public class MElementValue extends X_C_ElementValue {
             //
             // Check Valid Combinations - teo_sarca FR [ 1883533 ]
             String whereClause = MAccount.COLUMNNAME_Account_ID + "=?";
-            POResultSet<MAccount> rs = null;
-            try {
-                rs =
-                        new Query(getCtx(), I_C_ValidCombination.Table_Name, whereClause)
-                                .setParameters(getId())
-                                .scroll();
-                while (rs.hasNext()) {
-                    rs.next().deleteEx(true);
-                }
-            } finally {
-                POResultSet.close(rs);
-                rs = null;
+            List<MAccount> result =
+                    new Query(getCtx(), I_C_ValidCombination.Table_Name, whereClause)
+                            .setParameters(getId())
+                            .list();
+            for (MAccount account : result) {
+                account.deleteEx(true);
             }
         }
         return true;

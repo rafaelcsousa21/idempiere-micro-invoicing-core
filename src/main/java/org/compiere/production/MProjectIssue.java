@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MProduct;
 import org.compiere.accounting.MStorageOnHand;
@@ -10,7 +11,6 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -62,8 +62,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MProjectIssue(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProjectIssue(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProjectIssue
 
     /**

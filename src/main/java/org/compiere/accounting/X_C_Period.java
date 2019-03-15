@@ -1,10 +1,10 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Period;
 import org.compiere.orm.BasePOName;
 import org.compiere.orm.MTable;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -39,8 +39,8 @@ public class X_C_Period extends BasePOName implements I_C_Period {
     /**
      * Load Constructor
      */
-    public X_C_Period(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_Period(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

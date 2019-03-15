@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_Fact_Acct;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -55,8 +55,8 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
     /**
      * Load Constructor
      */
-    public X_Fact_Acct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_Fact_Acct(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

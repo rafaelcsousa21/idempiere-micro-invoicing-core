@@ -1,13 +1,33 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
-import org.compiere.accounting.*;
+import org.compiere.accounting.MMatchInv;
+import org.compiere.accounting.MMatchPO;
+import org.compiere.accounting.MOrderLine;
+import org.compiere.accounting.MPeriod;
+import org.compiere.accounting.MProduct;
+import org.compiere.accounting.MStorageOnHand;
+import org.compiere.accounting.MStorageReservation;
+import org.compiere.accounting.NegativeInventoryDisallowedException;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
-import org.compiere.model.*;
+import org.compiere.model.IDoc;
+import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_Order;
+import org.compiere.model.I_M_InOutConfirm;
+import org.compiere.model.I_M_InOutLine;
 import org.compiere.order.MOrder;
 import org.compiere.order.MRMALine;
-import org.compiere.orm.*;
+import org.compiere.orm.MDocType;
+import org.compiere.orm.MOrg;
+import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MSequence;
+import org.compiere.orm.MSysConfig;
+import org.compiere.orm.PeriodClosedException;
+import org.compiere.orm.Query;
+import org.compiere.orm.TimeUtil;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.production.MTransaction;
@@ -19,7 +39,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +83,8 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * @param rs      result set record
      * @param trxName transaction
      */
-    public MInOut(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInOut(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -1594,7 +1613,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         null,
                         org.compiere.orm.MClient.MMPOLICY_FiFo.equals(product.getMMPolicy()),
                         line.getM_Locator_ID(),
-                        null,
                         false);
 
         Timestamp dateMPolicy = null;

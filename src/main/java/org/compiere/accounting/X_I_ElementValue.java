@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_I_ElementValue;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -30,8 +30,8 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
     /**
      * Load Constructor
      */
-    public X_I_ElementValue(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_I_ElementValue(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

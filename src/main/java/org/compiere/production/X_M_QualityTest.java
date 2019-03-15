@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_QualityTest;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_M_QualityTest extends BasePOName implements I_M_QualityTest {
     /**
      * Load Constructor
      */
-    public X_M_QualityTest(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_QualityTest(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -43,8 +43,7 @@ public class X_M_QualityTest extends BasePOName implements I_M_QualityTest {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_QualityTest[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_QualityTest[" + getId() + "]";
     }
 
     /**

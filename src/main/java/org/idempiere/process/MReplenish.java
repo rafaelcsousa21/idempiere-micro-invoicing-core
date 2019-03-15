@@ -1,10 +1,10 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Replenish;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -20,7 +20,6 @@ public class MReplenish extends X_M_Replenish {
      *
      * @param ctx
      * @param M_Replenish_ID
-     * @param trxName
      */
     public MReplenish(Properties ctx, int M_Replenish_ID) {
         super(ctx, M_Replenish_ID);
@@ -30,17 +29,14 @@ public class MReplenish extends X_M_Replenish {
      * Standard constructor to create a PO from a resultset.
      *
      * @param ctx
-     * @param rs
-     * @param trxName
      */
-    public MReplenish(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MReplenish(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
      * @param ctx
      * @param M_ProductID
-     * @param trxName
      * @return A list of active replenish lines for given product.
      */
     public static List<MReplenish> getForProduct(Properties ctx, int M_ProductID) {

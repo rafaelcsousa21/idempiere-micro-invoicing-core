@@ -1,12 +1,16 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.IProcessInfo;
-import org.compiere.orm.*;
+import org.compiere.orm.MRole;
+import org.compiere.orm.MTable;
+import org.compiere.orm.PO;
+import org.compiere.orm.Query;
+import org.compiere.orm.TimeUtil;
 import org.compiere.process.DocAction;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -68,21 +72,18 @@ public class MWFProcess extends X_AD_WF_Process {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWFProcess(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFProcess(Properties ctx, Row row) {
+        super(ctx, row);
         m_state = new StateEngine(getWorkflowState());
     } //	MWFProcess
 
     /**
      * New Constructor
      *
-     * @param wf      workflow
-     * @param pi      Process Info (Record_ID)
-     * @param trxName
+     * @param wf workflow
+     * @param pi Process Info (Record_ID)
      * @throws Exception
      */
     public MWFProcess(MWorkflow wf, IProcessInfo pi) throws Exception {

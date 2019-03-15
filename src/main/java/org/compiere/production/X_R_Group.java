@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_Group;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,14 +24,13 @@ public class X_R_Group extends BasePOName implements I_R_Group {
      */
     public X_R_Group(Properties ctx, int R_Group_ID) {
         super(ctx, R_Group_ID);
-        /** if (R_Group_ID == 0) { setName (null); setR_Group_ID (0); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_R_Group(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_Group(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +43,7 @@ public class X_R_Group extends BasePOName implements I_R_Group {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_Group[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_Group[" + getId() + "]";
     }
 
     /**

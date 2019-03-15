@@ -1,6 +1,11 @@
 package org.idempiere.process;
 
-import org.compiere.accounting.*;
+import org.compiere.accounting.MAccount;
+import org.compiere.accounting.MAcctSchema;
+import org.compiere.accounting.MAcctSchemaDefault;
+import org.compiere.accounting.MFactAcct;
+import org.compiere.accounting.MJournal;
+import org.compiere.accounting.MJournalLine;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.orm.MDocType;

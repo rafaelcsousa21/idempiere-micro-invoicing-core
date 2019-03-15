@@ -1,11 +1,11 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_I_Inventory;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -21,14 +21,13 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      */
     public X_I_Inventory(Properties ctx, int I_Inventory_ID) {
         super(ctx, I_Inventory_ID);
-        /** if (I_Inventory_ID == 0) { setI_Inventory_ID (0); setI_IsImported (false); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_I_Inventory(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_I_Inventory(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

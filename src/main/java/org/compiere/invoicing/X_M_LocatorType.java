@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_LocatorType;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,18 +24,13 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType {
      */
     public X_M_LocatorType(Properties ctx, int M_LocatorType_ID) {
         super(ctx, M_LocatorType_ID);
-        /**
-         * if (M_LocatorType_ID == 0) { setIsAvailableForReplenishment (true); // Y
-         * setIsAvailableForReservation (true); // Y setIsAvailableForShipping (true); // Y
-         * setM_LocatorType_ID (0); setName (null); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_LocatorType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_LocatorType(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,8 +43,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_LocatorType[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_LocatorType[" + getId() + "]";
     }
 
     /**
@@ -58,7 +52,7 @@ public class X_M_LocatorType extends BasePOName implements I_M_LocatorType {
      * @param IsAvailableForReplenishment Available for Replenishment
      */
     public void setIsAvailableForReplenishment(boolean IsAvailableForReplenishment) {
-        setValue(COLUMNNAME_IsAvailableForReplenishment, Boolean.valueOf(IsAvailableForReplenishment));
+        setValue(COLUMNNAME_IsAvailableForReplenishment, IsAvailableForReplenishment);
     }
 
     /**

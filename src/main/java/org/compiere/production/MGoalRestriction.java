@@ -1,6 +1,7 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 /**
@@ -33,8 +34,8 @@ public class MGoalRestriction extends X_PA_GoalRestriction {
      * @param rs      result set
      * @param trxName trx
      */
-    public MGoalRestriction(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MGoalRestriction(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MGoalRestriction
 
     /**

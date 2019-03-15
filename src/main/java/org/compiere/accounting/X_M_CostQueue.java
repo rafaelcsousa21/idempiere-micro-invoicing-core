@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_CostQueue;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,18 +26,13 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue {
      */
     public X_M_CostQueue(Properties ctx, int M_CostQueue_ID) {
         super(ctx, M_CostQueue_ID);
-        /**
-         * if (M_CostQueue_ID == 0) { setAccountingSchemaId (0); setCurrentCostPrice (Env.ZERO);
-         * setCurrentQty (Env.ZERO); setM_AttributeSetInstance_ID (0); setM_CostElement_ID (0);
-         * setM_CostQueue_ID (0); setCostTypeId (0); setM_Product_ID (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_CostQueue(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_CostQueue(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -55,8 +50,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_CostQueue[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_CostQueue[" + getId() + "]";
     }
 
     /**
@@ -66,7 +60,7 @@ public class X_M_CostQueue extends PO implements I_M_CostQueue {
      */
     public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
+        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
 
     /**

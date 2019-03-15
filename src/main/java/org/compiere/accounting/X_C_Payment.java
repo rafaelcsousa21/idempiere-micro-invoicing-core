@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Payment;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -171,8 +171,8 @@ public class X_C_Payment extends PO implements I_C_Payment {
     /**
      * Load Constructor
      */
-    public X_C_Payment(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_Payment(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

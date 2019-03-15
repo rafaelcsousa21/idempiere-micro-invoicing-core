@@ -1,6 +1,7 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 /**
@@ -33,7 +34,7 @@ public class MWFBlock extends X_AD_WF_Block {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MWFBlock(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFBlock(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWFBlock
 } //	MWFBlock

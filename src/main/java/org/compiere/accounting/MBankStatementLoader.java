@@ -1,12 +1,12 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.bank.X_C_BankAccount;
+import org.compiere.bo.X_C_Currency;
 import org.compiere.orm.MTable;
 import org.compiere.orm.Query;
-import org.compiere.product.X_C_Currency;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
@@ -82,12 +82,10 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     /**
      * Create a Statement Loader
      *
-     * @param ctx     Current context
-     * @param rs      ResultSet
-     * @param trxName transaction
+     * @param ctx Current context
      */
-    public MBankStatementLoader(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBankStatementLoader(Properties ctx, Row row) {
+        super(ctx, row);
         init(null);
     } //	MBankStatementLoader
 

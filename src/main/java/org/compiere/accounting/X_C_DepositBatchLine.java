@@ -1,10 +1,10 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_DepositBatchLine;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -25,19 +25,13 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
      */
     public X_C_DepositBatchLine(Properties ctx, int C_DepositBatchLine_ID) {
         super(ctx, C_DepositBatchLine_ID);
-        /**
-         * if (C_DepositBatchLine_ID == 0) { setC_DepositBatch_ID (0); setC_DepositBatchLine_ID (0);
-         * setPaymentId (0); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM
-         * C_DepositBatchLine WHERE C_DepositBatch_ID=@C_DepositBatch_ID@ setPayAmt (Env.ZERO);
-         * setProcessed (false); setProcessing (false); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_DepositBatchLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_DepositBatchLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -50,8 +44,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_DepositBatchLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_DepositBatchLine[" + getId() + "]";
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.crm.MLocation;
 import org.compiere.crm.X_C_BPartner;
 import org.compiere.orm.MOrg;
@@ -8,7 +9,6 @@ import org.compiere.product.X_M_Product;
 import org.compiere.production.X_C_Project;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -62,8 +62,8 @@ public class MAccount extends X_C_ValidCombination {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MAccount(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAccount(Properties ctx, Row row) {
+        super(ctx, row);
     } //  MAccount
 
     /**

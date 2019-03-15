@@ -1,32 +1,23 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MOrder;
 import org.compiere.accounting.MOrderLine;
+import org.compiere.bo.MCurrency;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.MLocation;
-import org.compiere.invoicing.*;
+import org.compiere.invoicing.MInOut;
+import org.compiere.invoicing.MInOutLine;
+import org.compiere.invoicing.MInvoice;
+import org.compiere.invoicing.MInvoiceLine;
+import org.compiere.invoicing.MInvoicePaySchedule;
+import org.compiere.invoicing.MInvoiceSchedule;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.orm.MDocType;
 import org.compiere.orm.PO;
 import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
-import org.compiere.product.MCurrency;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -192,171 +183,148 @@ public class InvoiceGenerate extends SvrProcess {
                             "ORDER BY M_Warehouse_ID, PriorityRule, C_BPartner_ID, Bill_Location_ID, C_Order_ID");
         }
         //	sql += " FOR UPDATE";
-
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            int index = 1;
-            if (p_Selection) {
-                pstmt.setInt(index, getAD_PInstance_ID());
-            } else {
-                if (p_AD_Org_ID != 0) pstmt.setInt(index++, p_AD_Org_ID);
-                if (p_C_BPartner_ID != 0) pstmt.setInt(index++, p_C_BPartner_ID);
-                if (p_C_Order_ID != 0) pstmt.setInt(index++, p_C_Order_ID);
-            }
-        } catch (Exception e) {
-            throw new AdempiereException(e);
-        }
-        return generate(pstmt);
+        return generate(sql.toString());
     } //	doIt
 
     /**
      * Generate Shipments
      *
-     * @param pstmt order query
      * @return info
      */
-    private String generate(PreparedStatement pstmt) {
-        ResultSet rs = null;
-        try {
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                p_MinimumAmtInvSched = null;
-                MOrder order = new MOrder(getCtx(), rs);
-                StringBuilder msgsup =
-                        new StringBuilder(Msg.getMsg(getCtx(), "Processing"))
-                                .append(" ")
-                                .append(order.getDocumentInfo());
-                statusUpdate(msgsup.toString());
+    private String generate(String sql) {
+        MOrder[] orders = BaseInvoiceGenerateKt.getOrdersForInvoiceGeneration(getCtx(), sql, getAD_PInstance_ID(),
+                p_Selection, p_AD_Org_ID, p_C_BPartner_ID, p_C_Order_ID);
 
-                //	New Invoice Location
-                if (!p_ConsolidateDocument
-                        || (m_invoice != null
-                        && m_invoice.getBusinessPartnerLocationId() != order.getBusinessPartnerInvoicingLocationId()))
-                    completeInvoice();
-                boolean completeOrder =
-                        MOrder.INVOICERULE_AfterOrderDelivered.equals(order.getInvoiceRule());
+        for (MOrder order : orders) {
+            p_MinimumAmtInvSched = null;
+            StringBuilder msgsup =
+                    new StringBuilder(Msg.getMsg(getCtx(), "Processing"))
+                            .append(" ")
+                            .append(order.getDocumentInfo());
+            statusUpdate(msgsup.toString());
 
-                //	Schedule After Delivery
-                boolean doInvoice = false;
-                if (MOrder.INVOICERULE_CustomerScheduleAfterDelivery.equals(order.getInvoiceRule())) {
-                    m_bp = new MBPartner(getCtx(), order.getBill_BPartner_ID());
-                    if (m_bp.getC_InvoiceSchedule_ID() == 0) {
-                        log.warning("BPartner has no Schedule - set to After Delivery");
-                        order.setInvoiceRule(MOrder.INVOICERULE_AfterDelivery);
-                        order.saveEx();
+            //	New Invoice Location
+            if (!p_ConsolidateDocument
+                    || (m_invoice != null
+                    && m_invoice.getBusinessPartnerLocationId() != order.getBusinessPartnerInvoicingLocationId()))
+                completeInvoice();
+            boolean completeOrder =
+                    MOrder.INVOICERULE_AfterOrderDelivered.equals(order.getInvoiceRule());
+
+            //	Schedule After Delivery
+            boolean doInvoice = false;
+            if (MOrder.INVOICERULE_CustomerScheduleAfterDelivery.equals(order.getInvoiceRule())) {
+                m_bp = new MBPartner(getCtx(), order.getBill_BPartner_ID());
+                if (m_bp.getC_InvoiceSchedule_ID() == 0) {
+                    log.warning("BPartner has no Schedule - set to After Delivery");
+                    order.setInvoiceRule(MOrder.INVOICERULE_AfterDelivery);
+                    order.saveEx();
+                } else {
+                    MInvoiceSchedule is =
+                            MInvoiceSchedule.get(getCtx(), m_bp.getC_InvoiceSchedule_ID());
+                    if (is.canInvoice(order.getDateOrdered())) {
+                        if (is.isAmount() && is.getAmt() != null) p_MinimumAmtInvSched = is.getAmt();
+                        doInvoice = true;
                     } else {
-                        MInvoiceSchedule is =
-                                MInvoiceSchedule.get(getCtx(), m_bp.getC_InvoiceSchedule_ID());
-                        if (is.canInvoice(order.getDateOrdered())) {
-                            if (is.isAmount() && is.getAmt() != null) p_MinimumAmtInvSched = is.getAmt();
-                            doInvoice = true;
-                        } else {
-                            continue;
-                        }
-                    }
-                } //	Schedule
-
-                //	After Delivery
-                if (doInvoice || MOrder.INVOICERULE_AfterDelivery.equals(order.getInvoiceRule())) {
-                    MInOut[] shipments = order.getShipments();
-                    for (int i = 0; i < shipments.length; i++) {
-                        MInOut ship = shipments[i];
-                        if (!ship.isComplete() // 	ignore incomplete or reversals
-                                || ship.getDocStatus().equals(MInOut.DOCSTATUS_Reversed)) continue;
-                        MInOutLine[] shipLines = ship.getLines(false);
-                        for (int j = 0; j < shipLines.length; j++) {
-                            MInOutLine shipLine = shipLines[j];
-                            if (!order.isOrderLine(shipLine.getC_OrderLine_ID())) continue;
-                            if (!shipLine.isInvoiced()) createLine(order, ship, shipLine);
-                        }
-                        m_line += 1000;
+                        continue;
                     }
                 }
-                //	After Order Delivered, Immediate
-                else {
-                    MOrderLine[] oLines = order.getLines(true, null);
-                    for (int i = 0; i < oLines.length; i++) {
-                        MOrderLine oLine = oLines[i];
-                        BigDecimal toInvoice = oLine.getQtyOrdered().subtract(oLine.getQtyInvoiced());
-                        if (toInvoice.compareTo(Env.ZERO) == 0 && oLine.getM_Product_ID() != 0) continue;
-                        @SuppressWarnings("unused")
-                        BigDecimal notInvoicedShipment =
-                                oLine.getQtyDelivered().subtract(oLine.getQtyInvoiced());
-                        //
-                        boolean fullyDelivered = oLine.getQtyOrdered().compareTo(oLine.getQtyDelivered()) == 0;
+            } //	Schedule
 
-                        //	Complete Order
-                        if (completeOrder && !fullyDelivered) {
-                            if (log.isLoggable(Level.FINE)) log.fine("Failed CompleteOrder - " + oLine);
-                            addBufferLog(
-                                    0,
-                                    null,
-                                    null,
-                                    "Failed CompleteOrder - " + oLine,
-                                    oLine.getTableId(),
-                                    oLine.getC_OrderLine_ID()); // Elaine 2008/11/25
-                            completeOrder = false;
-                            break;
-                        }
-                        //	Immediate
-                        else if (MOrder.INVOICERULE_Immediate.equals(order.getInvoiceRule())) {
-                            if (log.isLoggable(Level.FINE))
-                                log.fine("Immediate - ToInvoice=" + toInvoice + " - " + oLine);
-                            BigDecimal qtyEntered = toInvoice;
-                            //	Correct UOM for QtyEntered
-                            if (oLine.getQtyEntered().compareTo(oLine.getQtyOrdered()) != 0)
-                                qtyEntered =
-                                        toInvoice
-                                                .multiply(oLine.getQtyEntered())
-                                                .divide(oLine.getQtyOrdered(), 12, BigDecimal.ROUND_HALF_UP);
-                            createLine(order, oLine, toInvoice, qtyEntered);
-                        } else if (!completeOrder) {
-                            if (log.isLoggable(Level.FINE))
-                                log.fine(
-                                        "Failed: "
-                                                + order.getInvoiceRule()
-                                                + " - ToInvoice="
-                                                + toInvoice
-                                                + " - "
-                                                + oLine);
-                            addBufferLog(
-                                    0,
-                                    null,
-                                    null,
-                                    "Failed: " + order.getInvoiceRule() + " - ToInvoice=" + toInvoice + " - " + oLine,
-                                    oLine.getTableId(),
-                                    oLine.getC_OrderLine_ID());
-                        }
-                    } //	for all order lines
-                    if (MOrder.INVOICERULE_Immediate.equals(order.getInvoiceRule())) m_line += 1000;
-                }
-
-                //	Complete Order successful
-                if (completeOrder
-                        && MOrder.INVOICERULE_AfterOrderDelivered.equals(order.getInvoiceRule())) {
-                    MInOut[] shipments = order.getShipments();
-                    for (int i = 0; i < shipments.length; i++) {
-                        MInOut ship = shipments[i];
-                        if (!ship.isComplete() // 	ignore incomplete or reversals
-                                || ship.getDocStatus().equals(MInOut.DOCSTATUS_Reversed)) continue;
-                        MInOutLine[] shipLines = ship.getLines(false);
-                        for (int j = 0; j < shipLines.length; j++) {
-                            MInOutLine shipLine = shipLines[j];
-                            if (!order.isOrderLine(shipLine.getC_OrderLine_ID())) continue;
-                            if (!shipLine.isInvoiced()) createLine(order, ship, shipLine);
-                        }
-                        m_line += 1000;
+            //	After Delivery
+            if (doInvoice || MOrder.INVOICERULE_AfterDelivery.equals(order.getInvoiceRule())) {
+                MInOut[] shipments = order.getShipments();
+                for (int i = 0; i < shipments.length; i++) {
+                    MInOut ship = shipments[i];
+                    if (!ship.isComplete() // 	ignore incomplete or reversals
+                            || ship.getDocStatus().equals(MInOut.DOCSTATUS_Reversed)) continue;
+                    MInOutLine[] shipLines = ship.getLines(false);
+                    for (int j = 0; j < shipLines.length; j++) {
+                        MInOutLine shipLine = shipLines[j];
+                        if (!order.isOrderLine(shipLine.getC_OrderLine_ID())) continue;
+                        if (!shipLine.isInvoiced()) createLine(order, ship, shipLine);
                     }
-                } //	complete Order
-            } //	for all orders
-        } catch (Exception e) {
-            throw new AdempiereException(e);
-        } finally {
+                    m_line += 1000;
+                }
+            }
+            //	After Order Delivered, Immediate
+            else {
+                MOrderLine[] oLines = order.getLines(true, null);
+                for (int i = 0; i < oLines.length; i++) {
+                    MOrderLine oLine = oLines[i];
+                    BigDecimal toInvoice = oLine.getQtyOrdered().subtract(oLine.getQtyInvoiced());
+                    if (toInvoice.compareTo(Env.ZERO) == 0 && oLine.getM_Product_ID() != 0) continue;
+                    @SuppressWarnings("unused")
+                    BigDecimal notInvoicedShipment =
+                            oLine.getQtyDelivered().subtract(oLine.getQtyInvoiced());
+                    //
+                    boolean fullyDelivered = oLine.getQtyOrdered().compareTo(oLine.getQtyDelivered()) == 0;
 
-            rs = null;
-            pstmt = null;
-        }
+                    //	Complete Order
+                    if (completeOrder && !fullyDelivered) {
+                        if (log.isLoggable(Level.FINE)) log.fine("Failed CompleteOrder - " + oLine);
+                        addBufferLog(
+                                0,
+                                null,
+                                null,
+                                "Failed CompleteOrder - " + oLine,
+                                oLine.getTableId(),
+                                oLine.getC_OrderLine_ID()); // Elaine 2008/11/25
+                        completeOrder = false;
+                        break;
+                    }
+                    //	Immediate
+                    else if (MOrder.INVOICERULE_Immediate.equals(order.getInvoiceRule())) {
+                        if (log.isLoggable(Level.FINE))
+                            log.fine("Immediate - ToInvoice=" + toInvoice + " - " + oLine);
+                        BigDecimal qtyEntered = toInvoice;
+                        //	Correct UOM for QtyEntered
+                        if (oLine.getQtyEntered().compareTo(oLine.getQtyOrdered()) != 0)
+                            qtyEntered =
+                                    toInvoice
+                                            .multiply(oLine.getQtyEntered())
+                                            .divide(oLine.getQtyOrdered(), 12, BigDecimal.ROUND_HALF_UP);
+                        createLine(order, oLine, toInvoice, qtyEntered);
+                    } else if (!completeOrder) {
+                        if (log.isLoggable(Level.FINE))
+                            log.fine(
+                                    "Failed: "
+                                            + order.getInvoiceRule()
+                                            + " - ToInvoice="
+                                            + toInvoice
+                                            + " - "
+                                            + oLine);
+                        addBufferLog(
+                                0,
+                                null,
+                                null,
+                                "Failed: " + order.getInvoiceRule() + " - ToInvoice=" + toInvoice + " - " + oLine,
+                                oLine.getTableId(),
+                                oLine.getC_OrderLine_ID());
+                    }
+                } //	for all order lines
+                if (MOrder.INVOICERULE_Immediate.equals(order.getInvoiceRule())) m_line += 1000;
+            }
+
+            //	Complete Order successful
+            if (completeOrder
+                    && MOrder.INVOICERULE_AfterOrderDelivered.equals(order.getInvoiceRule())) {
+                MInOut[] shipments = order.getShipments();
+                for (int i = 0; i < shipments.length; i++) {
+                    MInOut ship = shipments[i];
+                    if (!ship.isComplete() // 	ignore incomplete or reversals
+                            || ship.getDocStatus().equals(MInOut.DOCSTATUS_Reversed)) continue;
+                    MInOutLine[] shipLines = ship.getLines(false);
+                    for (int j = 0; j < shipLines.length; j++) {
+                        MInOutLine shipLine = shipLines[j];
+                        if (!order.isOrderLine(shipLine.getC_OrderLine_ID())) continue;
+                        if (!shipLine.isInvoiced()) createLine(order, ship, shipLine);
+                    }
+                    m_line += 1000;
+                }
+            } //	complete Order
+        } //	for all orders
+
         completeInvoice();
         StringBuilder msgreturn = new StringBuilder("@Created@ = ").append(m_created);
         return msgreturn.toString();

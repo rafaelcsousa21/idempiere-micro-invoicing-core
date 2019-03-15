@@ -1,10 +1,10 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_Workflow;
 import org.compiere.orm.BasePONameValue;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -71,8 +71,8 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
     /**
      * Load Constructor
      */
-    public X_AD_Workflow(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_Workflow(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -85,8 +85,7 @@ public class X_AD_Workflow extends BasePONameValue implements I_AD_Workflow {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_Workflow[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_Workflow[" + getId() + "]";
     }
 
     /**

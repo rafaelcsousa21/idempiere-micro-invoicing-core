@@ -1,12 +1,12 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_Planning;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -39,19 +39,14 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      */
     public X_PP_Product_Planning(Properties ctx, int PP_Product_Planning_ID) {
         super(ctx, PP_Product_Planning_ID);
-        /**
-         * if (PP_Product_Planning_ID == 0) { setIsCreatePlan (true); // Y setIsPhantom (false);
-         * setIsRequiredDRP (false); setIsRequiredMRP (false); setM_Product_ID (0);
-         * setPP_Product_Planning_ID (0); }
-         */
     }
 
 
     /**
      * Load Constructor
      */
-    public X_PP_Product_Planning(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PP_Product_Planning(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -69,8 +64,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_PP_Product_Planning[").append(getId()).append("]");
-        return sb.toString();
+        return "X_PP_Product_Planning[" + getId() + "]";
     }
 
     public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {

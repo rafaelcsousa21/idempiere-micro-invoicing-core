@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,7 +25,7 @@ public class X_M_Product_Category_Acct extends PO
      */
     public X_M_Product_Category_Acct(Properties ctx, int M_Product_Category_Acct_ID) {
         super(ctx, M_Product_Category_Acct_ID);
-        /**
+        /*
          * if (M_Product_Category_Acct_ID == 0) { setAccountingSchemaId (0); setM_Product_Category_ID (0);
          * setP_Asset_Acct (0); setP_COGS_Acct (0); setP_CostAdjustment_Acct (0); setP_Expense_Acct (0);
          * setP_InventoryClearing_Acct (0); setP_InvoicePriceVariance_Acct (0);
@@ -38,10 +37,6 @@ public class X_M_Product_Category_Acct extends PO
     /**
      * Load Constructor
      */
-    public X_M_Product_Category_Acct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_M_Product_Category_Acct(Properties ctx, Row row) {
         super(ctx, row);
     }
@@ -56,8 +51,7 @@ public class X_M_Product_Category_Acct extends PO
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Product_Category_Acct[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Product_Category_Acct[" + getId() + "]";
     }
 
     /**

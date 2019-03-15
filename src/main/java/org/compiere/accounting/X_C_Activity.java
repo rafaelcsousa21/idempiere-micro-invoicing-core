@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Activity;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,17 +24,13 @@ public class X_C_Activity extends BasePONameValue implements I_C_Activity {
      */
     public X_C_Activity(Properties ctx, int C_Activity_ID) {
         super(ctx, C_Activity_ID);
-        /**
-         * if (C_Activity_ID == 0) { setBusinessActivityId (0); setIsSummary (false); setName (null);
-         * setValue (null); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Activity(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_Activity(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -53,8 +49,7 @@ public class X_C_Activity extends BasePONameValue implements I_C_Activity {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_Activity[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_Activity[" + getId() + "]";
     }
 
 }

@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_Locator;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -25,19 +24,11 @@ public class X_M_Locator extends PO implements I_M_Locator {
      */
     public X_M_Locator(Properties ctx, int M_Locator_ID) {
         super(ctx, M_Locator_ID);
-        /**
-         * if (M_Locator_ID == 0) { setIsDefault (false); setM_Locator_ID (0); setWarehouseId (0);
-         * setPriorityNo (0); // 50 setValue (null); setX (null); setY (null); setZ (null); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Locator(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_M_Locator(Properties ctx, Row row) {
         super(ctx, row);
     }
@@ -57,8 +48,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Locator[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Locator[" + getId() + "]";
     }
 
     /**
@@ -67,7 +57,7 @@ public class X_M_Locator extends PO implements I_M_Locator {
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, IsDefault);
     }
 
     /**

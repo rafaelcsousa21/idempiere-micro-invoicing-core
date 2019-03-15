@@ -26,7 +26,7 @@ import org.idempiere.common.util.AdempiereUserError;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -81,13 +81,13 @@ public class BPartnerValidate extends SvrProcess {
             checkBP(bp);
         } else {
             final String whereClause = "C_BP_Group_ID=?";
-            Iterator<MBPartner> it =
+            List<MBPartner> it =
                     new Query(getCtx(), I_C_BPartner.Table_Name, whereClause)
                             .setParameters(p_C_BP_Group_ID)
                             .setOnlyActiveRecords(true)
-                            .iterate();
-            while (it.hasNext()) {
-                checkBP(it.next());
+                            .list();
+            for (MBPartner partner : it) {
+                checkBP(partner);
             }
         }
         //

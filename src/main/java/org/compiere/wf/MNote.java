@@ -1,6 +1,7 @@
 package org.compiere.wf;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 
@@ -34,12 +35,10 @@ public class MNote extends X_AD_Note {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MNote(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MNote(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MNote
 
     /**
@@ -48,7 +47,6 @@ public class MNote extends X_AD_Note {
      * @param ctx           context
      * @param AD_Message_ID message
      * @param AD_User_ID    targeted user
-     * @param trxName       transaction
      */
     public MNote(Properties ctx, int AD_Message_ID, int AD_User_ID) {
         this(ctx, 0);
@@ -62,7 +60,6 @@ public class MNote extends X_AD_Note {
      * @param ctx             context
      * @param AD_MessageValue message
      * @param AD_User_ID      targeted user
-     * @param trxName         transaction
      */
     public MNote(Properties ctx, String AD_MessageValue, int AD_User_ID) {
         this(ctx, MMessage.getAD_Message_ID(ctx, AD_MessageValue), AD_User_ID);

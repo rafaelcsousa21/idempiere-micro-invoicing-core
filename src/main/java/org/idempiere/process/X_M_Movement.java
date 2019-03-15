@@ -1,11 +1,11 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Movement;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -77,7 +77,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      */
     public X_M_Movement(Properties ctx, int M_Movement_ID) {
         super(ctx, M_Movement_ID);
-        /**
+        /*
          * if (M_Movement_ID == 0) { setDocumentTypeId (0); setDocAction (null); // CO setDocStatus
          * (null); // DR setDocumentNo (null); setIsApproved (false); setIsInTransit (false);
          * setM_Movement_ID (0); setMovementDate (new Timestamp( System.currentTimeMillis() ));
@@ -88,8 +88,8 @@ public class X_M_Movement extends PO implements I_M_Movement {
     /**
      * Load Constructor
      */
-    public X_M_Movement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_Movement(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -107,8 +107,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Movement[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Movement[" + getId() + "]";
     }
 
     /**

@@ -1,17 +1,16 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.crm.MClientInfo;
 import org.compiere.model.I_AD_ClientInfo;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.orm.MClient;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.Query;
-import org.compiere.product.MCurrency;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.KeyNamePair;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -110,10 +109,6 @@ public class MAcctSchema extends X_C_AcctSchema {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MAcctSchema(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MAcctSchema
-
     public MAcctSchema(Properties ctx, Row row) {
         super(ctx, row);
     } //	MAcctSchema

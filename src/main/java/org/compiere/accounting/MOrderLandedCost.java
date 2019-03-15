@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_OrderLandedCost;
 import org.compiere.model.I_C_OrderLandedCostAllocation;
 import org.compiere.orm.Query;
@@ -7,7 +8,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -26,7 +26,6 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
     /**
      * @param ctx
      * @param C_OrderLandedCost_ID
-     * @param trxName
      */
     public MOrderLandedCost(Properties ctx, int C_OrderLandedCost_ID) {
         super(ctx, C_OrderLandedCost_ID);
@@ -34,11 +33,9 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
 
     /**
      * @param ctx
-     * @param rs
-     * @param trxName
      */
-    public MOrderLandedCost(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MOrderLandedCost(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,10 +45,8 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
      * @return lines
      */
     public static MOrderLandedCost[] getOfOrder(int C_Order_ID) {
-        StringBuilder whereClause =
-                new StringBuilder(I_C_OrderLandedCost.COLUMNNAME_C_Order_ID).append("=?");
         List<MOrderLandedCostAllocation> list =
-                new Query(Env.getCtx(), I_C_OrderLandedCost.Table_Name, whereClause.toString())
+                new Query(Env.getCtx(), I_C_OrderLandedCost.Table_Name, I_C_OrderLandedCost.COLUMNNAME_C_Order_ID + "=?")
                         .setParameters(C_Order_ID)
                         .list();
         return list.toArray(new MOrderLandedCost[list.size()]);

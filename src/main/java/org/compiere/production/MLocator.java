@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.accounting.X_M_Locator;
 import org.compiere.model.I_M_Locator;
@@ -7,12 +8,7 @@ import org.compiere.model.I_M_Warehouse;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**
@@ -44,7 +40,6 @@ public class MLocator extends X_M_Locator {
      *
      * @param ctx          Context
      * @param M_Locator_ID id
-     * @param trxName      transaction
      */
     public MLocator(Properties ctx, int M_Locator_ID) {
         super(ctx, M_Locator_ID);
@@ -77,44 +72,19 @@ public class MLocator extends X_M_Locator {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MLocator(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MLocator(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MLocator
 
     /**
      * FR [ 1966333 ] Get oldest Default Locator of warehouse with locator
      *
-     * @param ctx          context
-     * @param M_Locator_ID locator
      * @return locator or null
      */
     public static MLocator getDefault(I_M_Warehouse warehouse) {
-        String trxName = null;
-        MLocator retValue = null;
-        String sql =
-                "SELECT * FROM M_Locator l "
-                        + "WHERE IsActive = 'Y' AND IsDefault='Y' AND l.M_Warehouse_ID=? "
-                        + "ORDER BY PriorityNo";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, warehouse.getWarehouseId());
-            rs = pstmt.executeQuery();
-            while (rs.next()) retValue = new MLocator(warehouse.getCtx(), rs);
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        return retValue;
+        return MBaseLocatorKt.getOldestDefaultLocatorOfWarehouseWithLocator(warehouse);
     } //	getDefault
 
     /**
@@ -126,7 +96,7 @@ public class MLocator extends X_M_Locator {
      */
     public static MLocator get(Properties ctx, int M_Locator_ID) {
         if (s_cache == null) s_cache = new CCache<Integer, MLocator>(I_M_Locator.Table_Name, 20);
-        Integer key = new Integer(M_Locator_ID);
+        Integer key = M_Locator_ID;
         MLocator retValue = (MLocator) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MLocator(ctx, M_Locator_ID);

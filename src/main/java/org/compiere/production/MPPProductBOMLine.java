@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.product.MProduct;
 import org.compiere.product.MUOM;
 import org.eevolution.model.I_PP_Product_BOMLine;
@@ -8,7 +9,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -60,8 +60,8 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
      * @param ctx context
      * @param rs  result set record
      */
-    public MPPProductBOMLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPPProductBOMLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	 MPPProductBOMLine
 
     /**

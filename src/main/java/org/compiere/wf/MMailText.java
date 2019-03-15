@@ -1,5 +1,6 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.MUser;
 import org.compiere.model.I_R_MailText;
@@ -71,7 +72,6 @@ public class MMailText extends X_R_MailText {
      *
      * @param ctx           context
      * @param R_MailText_ID id
-     * @param trxName       transaction
      */
     public MMailText(Properties ctx, int R_MailText_ID) {
         super(ctx, R_MailText_ID);
@@ -80,12 +80,10 @@ public class MMailText extends X_R_MailText {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MMailText(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMailText(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMailText
 
     /**

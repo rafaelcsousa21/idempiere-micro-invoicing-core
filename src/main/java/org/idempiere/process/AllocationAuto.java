@@ -1,20 +1,11 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
-import org.compiere.accounting.*;
+import org.compiere.accounting.MAllocationHdr;
+import org.compiere.accounting.MAllocationLine;
+import org.compiere.accounting.MClient;
+import org.compiere.accounting.MPaySelectionCheck;
+import org.compiere.accounting.MPaySelectionLine;
+import org.compiere.accounting.MPayment;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
@@ -26,7 +17,6 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.prepareStatement;
@@ -38,8 +28,6 @@ import static software.hsharp.core.util.DBKt.prepareStatement;
  * @version $Id: AllocationAuto.java,v 1.2 2006/07/30 00:51:01 jjanke Exp $
  */
 public class AllocationAuto extends SvrProcess {
-    private static String ONLY_AP = "P";
-    private static String ONLY_AR = "R";
     /**
      * BP Group
      */
@@ -74,13 +62,13 @@ public class AllocationAuto extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("AllocateOldest")) p_AllocateOldest = "Y".equals(para[i].getParameter());
-            else if (name.equals("APAR")) p_APAR = (String) para[i].getParameter();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() == null) ;
+            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("AllocateOldest")) p_AllocateOldest = "Y".equals(iProcessInfoParameter.getParameter());
+            else if (name.equals("APAR")) p_APAR = (String) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare
@@ -264,38 +252,7 @@ public class AllocationAuto extends SvrProcess {
      * @return unallocated payments
      */
     private MPayment[] getPayments(int C_BPartner_ID) {
-        ArrayList<MPayment> list = new ArrayList<MPayment>();
-        StringBuilder sql =
-                new StringBuilder("SELECT * FROM C_Payment ")
-                        .append("WHERE IsAllocated='N' AND Processed='Y' AND C_BPartner_ID=?")
-                        .append(" AND IsPrepayment='N' AND C_Charge_ID IS NULL ");
-        if (ONLY_AP.equals(p_APAR)) sql.append("AND IsReceipt='N' ");
-        else if (ONLY_AR.equals(p_APAR)) sql.append("AND IsReceipt='Y' ");
-        sql.append("ORDER BY DateTrx");
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, C_BPartner_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MPayment payment = new MPayment(getCtx(), rs);
-                BigDecimal allocated = payment.getAllocatedAmt();
-                if (allocated != null && allocated.compareTo(payment.getPayAmt()) == 0) {
-                    payment.setIsAllocated(true);
-                    payment.saveEx();
-                } else list.add(payment);
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        m_payments = new MPayment[list.size()];
-        list.toArray(m_payments);
-        return m_payments;
+        return BaseAllocationAutoKt.getBusinessPartnerAllocationPayments(getCtx(), C_BPartner_ID, p_APAR);
     } //	getPayments
 
     /**
@@ -305,36 +262,7 @@ public class AllocationAuto extends SvrProcess {
      * @return unallocated Invoices
      */
     private MInvoice[] getInvoices(int C_BPartner_ID) {
-        ArrayList<MInvoice> list = new ArrayList<MInvoice>();
-        StringBuilder sql =
-                new StringBuilder("SELECT * FROM C_Invoice ")
-                        .append("WHERE IsPaid='N' AND Processed='Y' AND C_BPartner_ID=? ");
-        if (ONLY_AP.equals(p_APAR)) sql.append("AND IsSOTrx='N' ");
-        else if (ONLY_AR.equals(p_APAR)) sql.append("AND IsSOTrx='Y' ");
-        sql.append("ORDER BY DateInvoiced");
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, C_BPartner_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MInvoice invoice = new MInvoice(getCtx(), rs);
-                if (invoice.getOpenAmt(false, null).signum() == 0) {
-                    invoice.setIsPaid(true);
-                    invoice.saveEx();
-                } else list.add(invoice);
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        m_invoices = new MInvoice[list.size()];
-        list.toArray(m_invoices);
-        return m_invoices;
+        return BaseAllocationAutoKt.getBusinessPartnerAllocationInvoices(getCtx(), C_BPartner_ID, p_APAR);
     } //	getInvoices
 
     /**

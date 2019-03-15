@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
     /**
      * Load Constructor
      */
-    public X_C_DocTypeCounter(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_DocTypeCounter(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

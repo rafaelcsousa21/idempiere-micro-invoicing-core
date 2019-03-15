@@ -1,12 +1,12 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_A_Depreciation_Workfile;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -45,7 +45,7 @@ public class X_A_Depreciation_Workfile extends PO
      */
     public X_A_Depreciation_Workfile(Properties ctx, int A_Depreciation_Workfile_ID) {
         super(ctx, A_Depreciation_Workfile_ID);
-        /**
+        /*
          * if (A_Depreciation_Workfile_ID == 0) { setA_Accumulated_Depr (Env.ZERO); // 0
          * setA_Accumulated_Depr_F (Env.ZERO); // 0 setA_Asset_Cost (Env.ZERO); // 0 setA_Asset_ID (0);
          * setA_Asset_Life_Current_Year (Env.ZERO); // 0 setA_Asset_Life_Years (0); // 0
@@ -60,8 +60,8 @@ public class X_A_Depreciation_Workfile extends PO
     /**
      * Load Constructor
      */
-    public X_A_Depreciation_Workfile(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_A_Depreciation_Workfile(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -74,8 +74,7 @@ public class X_A_Depreciation_Workfile extends PO
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_A_Depreciation_Workfile[").append(getId()).append("]");
-        return sb.toString();
+        return "X_A_Depreciation_Workfile[" + getId() + "]";
     }
 
     /**

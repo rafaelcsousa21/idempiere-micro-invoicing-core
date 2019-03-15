@@ -1,21 +1,13 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html * Contributor(s):
- * Chris Farley - northernbrewer *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
-import org.compiere.accounting.*;
+import org.compiere.accounting.MClient;
+import org.compiere.accounting.MOrder;
+import org.compiere.accounting.MOrderLine;
+import org.compiere.accounting.MProduct;
+import org.compiere.accounting.MRequisition;
+import org.compiere.accounting.MRequisitionLine;
+import org.compiere.accounting.MStorageOnHand;
+import org.compiere.accounting.MWarehouse;
 import org.compiere.crm.MBPartner;
 import org.compiere.invoicing.MLocatorType;
 import org.compiere.model.IProcessInfoParameter;
@@ -727,28 +719,7 @@ public class ReplenishReport extends SvrProcess {
      * @return replenish
      */
     private X_T_Replenish[] getReplenish(String where) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM T_Replenish ");
-        sql.append("WHERE AD_PInstance_ID=? AND C_BPartner_ID > 0 ");
-        if (where != null && where.length() > 0) sql.append(" AND ").append(where);
-        sql.append(" ORDER BY M_Warehouse_ID, M_WarehouseSource_ID, C_BPartner_ID");
-        ArrayList<X_T_Replenish> list = new ArrayList<X_T_Replenish>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, getAD_PInstance_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new X_T_Replenish(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        X_T_Replenish[] retValue = new X_T_Replenish[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return BaseReplenishReportKt.getReplenishRecords(getCtx(), where, getAD_PInstance_ID());
     } //	getReplenish
 
     /**
@@ -757,27 +728,6 @@ public class ReplenishReport extends SvrProcess {
      * @return replenish
      */
     private X_T_Replenish[] getReplenishDO(String where) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM T_Replenish ");
-        sql.append("WHERE AD_PInstance_ID=? ");
-        if (where != null && where.length() > 0) sql.append(" AND ").append(where);
-        sql.append(" ORDER BY M_Warehouse_ID, M_WarehouseSource_ID, C_BPartner_ID");
-        ArrayList<X_T_Replenish> list = new ArrayList<X_T_Replenish>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, getAD_PInstance_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new X_T_Replenish(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        X_T_Replenish[] retValue = new X_T_Replenish[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return BaseReplenishReportKt.getReplenishDO(getCtx(), where, getAD_PInstance_ID());
     } //	getReplenish
 } //	Replenish

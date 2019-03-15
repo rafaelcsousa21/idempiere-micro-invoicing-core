@@ -13,6 +13,7 @@ import org.compiere.accounting.MPaymentProcessor;
 import org.compiere.accounting.MPeriod;
 import org.compiere.accounting.MProduct;
 import org.compiere.bank.MBankAccount;
+import org.compiere.bo.MCurrency;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.MUser;
 import org.compiere.docengine.DocumentEngine;
@@ -41,7 +42,6 @@ import org.compiere.orm.PeriodClosedException;
 import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.product.MCurrency;
 import org.compiere.product.MPriceList;
 import org.compiere.product.MPriceListVersion;
 import org.compiere.product.MProductBOM;
@@ -176,10 +176,6 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      * @param rs      result set record
      * @param trxName transaction
      */
-    public MInvoice(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MInvoice
-
     public MInvoice(Properties ctx, Row row) {
         super(ctx, row);
     } //	MInvoice
@@ -486,7 +482,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         if (locs != null) {
             for (int i = 0; i < locs.size(); i++) {
                 I_C_BPartner_Location loc = locs.get(i);
-                if ((loc.isBillTo() && isSOTrx()) || (loc.isPayFrom() && !isSOTrx()))
+                if ((loc.getIsBillTo() && isSOTrx()) || (loc.isPayFrom() && !isSOTrx()))
                     setBusinessPartnerLocationId(loc.getBusinessPartnerLocationId());
             }
             //	set to first

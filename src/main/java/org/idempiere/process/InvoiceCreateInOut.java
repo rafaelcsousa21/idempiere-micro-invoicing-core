@@ -14,7 +14,11 @@
  */
 package org.idempiere.process;
 
-import org.compiere.invoicing.*;
+import org.compiere.invoicing.MInOut;
+import org.compiere.invoicing.MInOutLine;
+import org.compiere.invoicing.MInvoice;
+import org.compiere.invoicing.MInvoiceLine;
+import org.compiere.invoicing.X_C_Invoice;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.exceptions.AdempiereException;

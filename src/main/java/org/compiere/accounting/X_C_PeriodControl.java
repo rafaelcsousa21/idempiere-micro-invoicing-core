@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_PeriodControl;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -177,8 +177,8 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
     /**
      * Load Constructor
      */
-    public X_C_PeriodControl(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_PeriodControl(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -191,8 +191,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_PeriodControl[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_PeriodControl[" + getId() + "]";
     }
 
     /**

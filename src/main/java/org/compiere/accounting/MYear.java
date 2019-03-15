@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Year;
 import org.compiere.process.IProcessUI;
 import org.compiere.process.SvrProcess;
@@ -7,7 +8,6 @@ import org.idempiere.common.exceptions.FillMandatoryException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,12 +51,10 @@ public class MYear extends X_C_Year {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MYear(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MYear(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MYear
 
     /**

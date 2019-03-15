@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema_Default;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -44,14 +43,9 @@ public class X_C_AcctSchema_Default extends PO implements I_C_AcctSchema_Default
     /**
      * Load Constructor
      */
-    public X_C_AcctSchema_Default(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_C_AcctSchema_Default(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MAcctSchemaDefault
-
+    }
 
     /**
      * AccessLevel

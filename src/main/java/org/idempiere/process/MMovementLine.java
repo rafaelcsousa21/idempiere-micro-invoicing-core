@@ -1,11 +1,11 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.accounting.MProduct;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -47,12 +47,10 @@ public class MMovementLine extends X_M_MovementLine {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MMovementLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMovementLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMovementLine
 
     /**

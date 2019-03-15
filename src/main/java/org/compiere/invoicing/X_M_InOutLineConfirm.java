@@ -1,11 +1,11 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_InOutLineConfirm;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -36,8 +36,8 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
     /**
      * Load Constructor
      */
-    public X_M_InOutLineConfirm(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_InOutLineConfirm(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

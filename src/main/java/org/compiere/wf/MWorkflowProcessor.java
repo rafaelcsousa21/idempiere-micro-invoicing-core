@@ -1,10 +1,10 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.schedule.MSchedule;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Properties;
@@ -28,7 +28,6 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
      *
      * @param ctx                     context
      * @param AD_WorkflowProcessor_ID id
-     * @param trxName                 transaction
      */
     public MWorkflowProcessor(Properties ctx, int AD_WorkflowProcessor_ID) {
         super(ctx, AD_WorkflowProcessor_ID);
@@ -37,12 +36,10 @@ public class MWorkflowProcessor extends X_AD_WorkflowProcessor
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWorkflowProcessor(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWorkflowProcessor(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWorkflowProcessor
 
     /**

@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_CostElement;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -74,10 +73,6 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement {
     /**
      * Load Constructor
      */
-    public X_M_CostElement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_M_CostElement(Properties ctx, Row row) {
         super(ctx, row);
     }

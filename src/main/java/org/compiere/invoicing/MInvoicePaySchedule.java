@@ -1,8 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.order.MPaySchedule;
 import org.compiere.orm.TimeUtil;
-import org.compiere.product.MCurrency;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -41,16 +42,10 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
      *
      * @param ctx                     context
      * @param C_InvoicePaySchedule_ID id
-     * @param trxName                 transaction
      */
     public MInvoicePaySchedule(Properties ctx, int C_InvoicePaySchedule_ID) {
         super(ctx, C_InvoicePaySchedule_ID);
         if (C_InvoicePaySchedule_ID == 0) {
-            //	setInvoiceId (0);
-            //	setDiscountAmt (Env.ZERO);
-            //	setDiscountDate (new Timestamp(System.currentTimeMillis()));
-            //	setDueAmt (Env.ZERO);
-            //	setDueDate (new Timestamp(System.currentTimeMillis()));
             setIsValid(false);
         }
     } //	MInvoicePaySchedule
@@ -58,12 +53,10 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MInvoicePaySchedule(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInvoicePaySchedule(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MInvoicePaySchedule
 
     /**
@@ -112,41 +105,11 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
      * @param ctx                     context
      * @param C_Invoice_ID            invoice id (direct)
      * @param C_InvoicePaySchedule_ID id (indirect)
-     * @param trxName                 transaction
      * @return array of schedule
      */
     public static MInvoicePaySchedule[] getInvoicePaySchedule(
             Properties ctx, int C_Invoice_ID, int C_InvoicePaySchedule_ID) {
-        StringBuilder sql =
-                new StringBuilder("SELECT * FROM C_InvoicePaySchedule ips WHERE IsActive='Y' ");
-        if (C_Invoice_ID != 0) sql.append("AND C_Invoice_ID=? ");
-        else
-            sql.append("AND EXISTS (SELECT * FROM C_InvoicePaySchedule x")
-                    .append(" WHERE x.C_InvoicePaySchedule_ID=? AND ips.C_Invoice_ID=x.C_Invoice_ID) ");
-        sql.append("ORDER BY DueDate");
-        //
-        ArrayList<MInvoicePaySchedule> list = new ArrayList<MInvoicePaySchedule>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            if (C_Invoice_ID != 0) pstmt.setInt(1, C_Invoice_ID);
-            else pstmt.setInt(1, C_InvoicePaySchedule_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                list.add(new MInvoicePaySchedule(ctx, rs));
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, "getInvoicePaySchedule", e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        MInvoicePaySchedule[] retValue = new MInvoicePaySchedule[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseInvoicePayScheduleKt.getInvoicePaySchedule(ctx, C_Invoice_ID, C_InvoicePaySchedule_ID);
     } //	getSchedule
 
     /**

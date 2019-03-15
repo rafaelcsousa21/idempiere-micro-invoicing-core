@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_BOM;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_M_BOM extends BasePOName implements I_M_BOM {
@@ -30,18 +30,14 @@ public class X_M_BOM extends BasePOName implements I_M_BOM {
      */
     public X_M_BOM(Properties ctx, int M_BOM_ID) {
         super(ctx, M_BOM_ID);
-        /**
-         * if (M_BOM_ID == 0) { setBOMType (null); // A setBOMUse (null); // A setM_BOM_ID (0);
-         * setM_Product_ID (0); setName (null); }
-         */
     }
 
 
     /**
      * Load Constructor
      */
-    public X_M_BOM(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_BOM(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -59,8 +55,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_BOM[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_BOM[" + getId() + "]";
     }
 
     /**

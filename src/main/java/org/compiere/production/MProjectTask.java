@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_ProjectLine;
 import org.compiere.orm.PO;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -48,8 +48,8 @@ public class MProjectTask extends X_C_ProjectTask {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MProjectTask(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProjectTask(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProjectTask
 
     /**

@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_ProductionLineMA;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -27,17 +27,13 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
      */
     public X_M_ProductionLineMA(Properties ctx, int M_ProductionLineMA_ID) {
         super(ctx, M_ProductionLineMA_ID);
-        /**
-         * if (M_ProductionLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setMovementQty
-         * (Env.ZERO); setM_ProductionLine_ID (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_ProductionLineMA(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_ProductionLineMA(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -50,8 +46,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_ProductionLineMA[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_ProductionLineMA[" + getId() + "]";
     }
 
     /**

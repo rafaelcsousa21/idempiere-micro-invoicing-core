@@ -1,11 +1,11 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_T_Replenish;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_T_Replenish extends PO implements I_T_Replenish {
@@ -24,18 +24,13 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
      */
     public X_T_Replenish(Properties ctx, int T_Replenish_ID) {
         super(ctx, T_Replenish_ID);
-        /**
-         * if (T_Replenish_ID == 0) { setAD_PInstance_ID (0); setBusinessPartnerId (0); setLevel_Max
-         * (Env.ZERO); setLevel_Min (Env.ZERO); setM_Product_ID (0); setWarehouseId (0);
-         * setReplenishType (null); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_T_Replenish(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_T_Replenish(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,8 +43,7 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_T_Replenish[").append(getId()).append("]");
-        return sb.toString();
+        return "X_T_Replenish[" + getId() + "]";
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.compiere.schedule;
 
+import kotliquery.Row;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.model.I_AD_SchedulerRecipient;
@@ -12,7 +13,6 @@ import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.idempiere.icommon.model.IPO;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -63,8 +63,8 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
      * @param rs      result set
      * @param trxName transaction
      */
-    public MScheduler(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MScheduler(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MScheduler
 
     /**

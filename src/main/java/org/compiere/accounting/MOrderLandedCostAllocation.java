@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_OrderLandedCostAllocation;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -22,7 +22,6 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
     /**
      * @param ctx
      * @param C_OrderLandedCostAllocation_ID
-     * @param trxName
      */
     public MOrderLandedCostAllocation(
             Properties ctx, int C_OrderLandedCostAllocation_ID) {
@@ -31,27 +30,22 @@ public class MOrderLandedCostAllocation extends X_C_OrderLandedCostAllocation {
 
     /**
      * @param ctx
-     * @param rs
-     * @param trxName
      */
-    public MOrderLandedCostAllocation(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MOrderLandedCostAllocation(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
      * Get Lines of allocation
      *
-     * @param whereClause starting with AND
      * @return lines
      */
     public static MOrderLandedCostAllocation[] getOfOrderLine(int C_OrderLine_ID) {
-        StringBuilder whereClause =
-                new StringBuilder(I_C_OrderLandedCostAllocation.COLUMNNAME_C_OrderLine_ID).append("=?");
         List<MOrderLandedCostAllocation> list =
                 new Query(
                         Env.getCtx(),
                         I_C_OrderLandedCostAllocation.Table_Name,
-                        whereClause.toString()
+                        I_C_OrderLandedCostAllocation.COLUMNNAME_C_OrderLine_ID + "=?"
                 )
                         .setParameters(C_OrderLine_ID)
                         .list();

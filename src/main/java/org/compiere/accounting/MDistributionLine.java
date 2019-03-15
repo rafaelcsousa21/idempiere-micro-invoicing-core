@@ -1,10 +1,10 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValue;
@@ -75,8 +75,8 @@ public class MDistributionLine extends X_GL_DistributionLine {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MDistributionLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDistributionLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MDistributionLine
 
     /**

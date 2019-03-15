@@ -1,6 +1,7 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 /**
@@ -29,10 +30,9 @@ public class MRequestAction extends X_R_RequestAction {
      * Load Construtor
      *
      * @param ctx context
-     * @param rs  result set
      */
-    public MRequestAction(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequestAction(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequestAction
 
     /**

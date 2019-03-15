@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WorkflowProcessorLog;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -25,17 +25,13 @@ public class X_AD_WorkflowProcessorLog extends PO
      */
     public X_AD_WorkflowProcessorLog(Properties ctx, int AD_WorkflowProcessorLog_ID) {
         super(ctx, AD_WorkflowProcessorLog_ID);
-        /**
-         * if (AD_WorkflowProcessorLog_ID == 0) { setAD_WorkflowProcessor_ID (0);
-         * setAD_WorkflowProcessorLog_ID (0); setIsError (false); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_WorkflowProcessorLog(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WorkflowProcessorLog(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -53,8 +49,7 @@ public class X_AD_WorkflowProcessorLog extends PO
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_WorkflowProcessorLog[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_WorkflowProcessorLog[" + getId() + "]";
     }
 
     /**

@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_GL_JournalBatch;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -75,19 +75,13 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      */
     public X_GL_JournalBatch(Properties ctx, int GL_JournalBatch_ID) {
         super(ctx, GL_JournalBatch_ID);
-        /**
-         * if (GL_JournalBatch_ID == 0) { setDocumentTypeId (0); setDescription (null); setDocAction
-         * (null); // CO setDocStatus (null); // DR setDocumentNo (null); setGL_JournalBatch_ID (0);
-         * setPostingType (null); // A setProcessed (false); setProcessing (false); setTotalCr
-         * (Env.ZERO); setTotalDr (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_GL_JournalBatch(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_GL_JournalBatch(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_Measure;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -62,17 +62,13 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure {
      */
     public X_PA_Measure(Properties ctx, int PA_Measure_ID) {
         super(ctx, PA_Measure_ID);
-        /**
-         * if (PA_Measure_ID == 0) { setMeasureDataType (null); // T setMeasureType (null); // M setName
-         * (null); setPA_Measure_ID (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_PA_Measure(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PA_Measure(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -85,8 +81,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_PA_Measure[").append(getId()).append("]");
-        return sb.toString();
+        return "X_PA_Measure[" + getId() + "]";
     }
 
     /**

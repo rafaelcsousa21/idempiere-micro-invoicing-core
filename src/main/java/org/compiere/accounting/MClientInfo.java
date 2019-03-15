@@ -1,17 +1,12 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.orm.MClient;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Client Info Model
@@ -38,12 +33,10 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MClientInfo(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MClientInfo(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public MClientInfo(
@@ -83,33 +76,16 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
      *
      * @param ctx          context
      * @param AD_Client_ID id
-     * @param trxName      optional trx
      * @return Client Info
      */
     public static MClientInfo get(Properties ctx, int AD_Client_ID) {
-        Integer key = new Integer(AD_Client_ID);
+        Integer key = AD_Client_ID;
         MClientInfo info = (MClientInfo) s_cache.get(key);
         if (info != null) return info;
-        //
-        String sql = "SELECT * FROM AD_ClientInfo WHERE AD_Client_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, AD_Client_ID);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                info = new MClientInfo(ctx, rs);
-                s_cache.put(key, info);
-            }
-        } catch (SQLException ex) {
-            s_log.log(Level.SEVERE, sql, ex);
-        } finally {
 
-            rs = null;
-            pstmt = null;
-        }
-        //
+        info = MBaseClientInfoKt.getClientInfo(ctx, AD_Client_ID);
+
+        s_cache.put(key, info);
         return info;
     } //	get
 

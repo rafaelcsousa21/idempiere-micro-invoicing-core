@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_A_Asset_Acct;
 import org.compiere.orm.Query;
 import org.compiere.orm.SetGetUtil;
@@ -8,7 +9,6 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -39,8 +39,8 @@ public class MAssetAcct extends X_A_Asset_Acct {
         }
     }
 
-    public MAssetAcct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAssetAcct(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

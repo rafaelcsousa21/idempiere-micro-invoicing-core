@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_Inventory;
 import org.compiere.model.I_M_InventoryLine;
@@ -10,14 +11,11 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValueBD;
 
 /**
  * Inventory Material Allocation
@@ -40,7 +38,6 @@ public class MInventoryLineMA extends X_M_InventoryLineMA {
      *
      * @param ctx                  context
      * @param M_InventoryLineMA_ID ignored
-     * @param trxName              trx
      */
     public MInventoryLineMA(Properties ctx, int M_InventoryLineMA_ID) {
         super(ctx, M_InventoryLineMA_ID);
@@ -50,12 +47,10 @@ public class MInventoryLineMA extends X_M_InventoryLineMA {
     /**
      * Load Cosntructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MInventoryLineMA(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInventoryLineMA(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MInventoryLineMA
 
     /**
@@ -112,30 +107,10 @@ public class MInventoryLineMA extends X_M_InventoryLineMA {
      *
      * @param ctx                context
      * @param M_InventoryLine_ID line
-     * @param trxName            trx
      * @return allocations
      */
     public static MInventoryLineMA[] get(Properties ctx, int M_InventoryLine_ID) {
-        ArrayList<MInventoryLineMA> list = new ArrayList<MInventoryLineMA>();
-        String sql = "SELECT * FROM M_InventoryLineMA WHERE M_InventoryLine_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, M_InventoryLine_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MInventoryLineMA(ctx, rs));
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        MInventoryLineMA[] retValue = new MInventoryLineMA[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return BaseInventoryMaterialAllocationKt.getMaterialAllocationsForLine(ctx, M_InventoryLine_ID);
     } //	get
 
     /**

@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_ColorSchema;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,18 +24,13 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      */
     public X_PA_ColorSchema(Properties ctx, int PA_ColorSchema_ID) {
         super(ctx, PA_ColorSchema_ID);
-        /**
-         * if (PA_ColorSchema_ID == 0) { setAD_PrintColor1_ID (0); setAD_PrintColor2_ID (0);
-         * setEntityType (null); // @SQL=select get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual
-         * setMark1Percent (0); setMark2Percent (0); setName (null); setPA_ColorSchema_ID (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_PA_ColorSchema(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PA_ColorSchema(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,8 +43,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_PA_ColorSchema[").append(getId()).append("]");
-        return sb.toString();
+        return "X_PA_ColorSchema[" + getId() + "]";
     }
 
     /**

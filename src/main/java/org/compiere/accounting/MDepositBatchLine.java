@@ -15,10 +15,10 @@
  */
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
@@ -53,12 +53,10 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MDepositBatchLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDepositBatchLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MDepositBatchLine
 
     /**

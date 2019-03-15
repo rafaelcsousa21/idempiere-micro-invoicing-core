@@ -1,5 +1,6 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.HasName;
 import org.compiere.model.IProcessInfo;
 import org.compiere.model.I_AD_Workflow;
@@ -103,12 +104,10 @@ public class MWorkflow extends X_AD_Workflow {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWorkflow(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWorkflow(Properties ctx, Row row) {
+        super(ctx, row);
         loadTrl();
         loadNodes();
     } //	Workflow

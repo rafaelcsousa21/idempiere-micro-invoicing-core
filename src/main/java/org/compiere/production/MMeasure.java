@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.crm.MUser;
 import org.compiere.model.I_PA_Measure;
 import org.compiere.model.MeasureInterface;
@@ -15,7 +16,6 @@ import org.idempiere.common.util.Util;
 
 import javax.script.ScriptEngine;
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -50,7 +50,6 @@ public class MMeasure extends X_PA_Measure {
      *
      * @param ctx           context
      * @param PA_Measure_ID id
-     * @param trxName       trx
      */
     public MMeasure(Properties ctx, int PA_Measure_ID) {
         super(ctx, PA_Measure_ID);
@@ -59,12 +58,10 @@ public class MMeasure extends X_PA_Measure {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MMeasure(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMeasure(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMeasure
 
     /**
@@ -75,7 +72,7 @@ public class MMeasure extends X_PA_Measure {
      * @return MMeasure
      */
     public static MMeasure get(Properties ctx, int PA_Measure_ID) {
-        Integer key = new Integer(PA_Measure_ID);
+        Integer key = PA_Measure_ID;
         MMeasure retValue = (MMeasure) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MMeasure(ctx, PA_Measure_ID);

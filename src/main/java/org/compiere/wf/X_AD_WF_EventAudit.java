@@ -1,10 +1,10 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_EventAudit;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -37,7 +37,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
      */
     public X_AD_WF_EventAudit(Properties ctx, int AD_WF_EventAudit_ID) {
         super(ctx, AD_WF_EventAudit_ID);
-        /**
+        /*
          * if (AD_WF_EventAudit_ID == 0) { setColumnTableId (0); setAD_WF_EventAudit_ID (0);
          * setAD_WF_Node_ID (0); setAD_WF_Process_ID (0); setAD_WF_Responsible_ID (0); setElapsedTimeMS
          * (Env.ZERO); setEventType (null); setRecordId (0); setWFState (null); }
@@ -47,8 +47,8 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
     /**
      * Load Constructor
      */
-    public X_AD_WF_EventAudit(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WF_EventAudit(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -61,8 +61,7 @@ public class X_AD_WF_EventAudit extends PO implements I_AD_WF_EventAudit {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_WF_EventAudit[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_WF_EventAudit[" + getId() + "]";
     }
 
     /**

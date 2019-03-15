@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MBPBankAccount;
 import org.compiere.order.X_C_Order;
 import org.compiere.process.DocAction;
@@ -8,13 +9,8 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Payment Print/Export model.
@@ -45,7 +41,6 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      *
      * @param ctx                    context
      * @param C_PaySelectionCheck_ID C_PaySelectionCheck_ID
-     * @param trxName                transaction
      */
     public MPaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID) {
         super(ctx, C_PaySelectionCheck_ID);
@@ -65,12 +60,10 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MPaySelectionCheck(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPaySelectionCheck(Properties ctx, Row row) {
+        super(ctx, row);
     } //  MPaySelectionCheck
 
     /**
@@ -132,34 +125,10 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      *
      * @param ctx          context
      * @param C_Payment_ID id
-     * @param trxName      transaction
      * @return pay selection check for payment or null
      */
     public static MPaySelectionCheck getOfPayment(Properties ctx, int C_Payment_ID) {
-        MPaySelectionCheck retValue = null;
-        String sql = "SELECT * FROM C_PaySelectionCheck WHERE C_Payment_ID=?";
-        int count = 0;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, C_Payment_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MPaySelectionCheck psc = new MPaySelectionCheck(ctx, rs);
-                if (retValue == null) retValue = psc;
-                else if (!retValue.isProcessed() && psc.isProcessed()) retValue = psc;
-                count++;
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        if (count > 1) s_log.warning("More then one for C_Payment_ID=" + C_Payment_ID);
-        return retValue;
+        return MBasePaySelectionCheckKt.getCheckforPayment(ctx, C_Payment_ID);
     } //	getOfPayment
 
     /**
@@ -261,7 +230,6 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      *
      * @param ctx          context
      * @param C_Payment_ID id
-     * @param trxName      transaction
      * @return
      */
     public static boolean deleteGeneratedDraft(Properties ctx, int C_Payment_ID) {
@@ -343,18 +311,17 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MPaymentCheck[");
-        sb.append(getId())
-                .append("-")
-                .append(getDocumentNo())
-                .append("-")
-                .append(getPayAmt())
-                .append(",PaymetRule=")
-                .append(getPaymentRule())
-                .append(",Qty=")
-                .append(getQty())
-                .append("]");
-        return sb.toString();
+        String sb = "MPaymentCheck[" + getId() +
+                "-" +
+                getDocumentNo() +
+                "-" +
+                getPayAmt() +
+                ",PaymetRule=" +
+                getPaymentRule() +
+                ",Qty=" +
+                getQty() +
+                "]";
+        return sb;
     } //	toString
 
     /**
@@ -367,25 +334,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         if (m_lines != null && !requery) {
             return m_lines;
         }
-        ArrayList<MPaySelectionLine> list = new ArrayList<MPaySelectionLine>();
-        String sql = "SELECT * FROM C_PaySelectionLine WHERE C_PaySelectionCheck_ID=? ORDER BY Line";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_PaySelectionCheck_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MPaySelectionLine(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        m_lines = new MPaySelectionLine[list.size()];
-        list.toArray(m_lines);
+        m_lines = MBasePaySelectionCheckKt.getPaySelectionLines(getCtx(), getC_PaySelectionCheck_ID());
         return m_lines;
     } //	getPaySelectionLines
 } //  MPaySelectionCheck

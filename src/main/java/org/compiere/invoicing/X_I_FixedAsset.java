@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_I_FixedAsset;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -25,18 +25,13 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset {
      */
     public X_I_FixedAsset(Properties ctx, int I_FixedAsset_ID) {
         super(ctx, I_FixedAsset_ID);
-        /**
-         * if (I_FixedAsset_ID == 0) { setA_Asset_Cost (Env.ZERO); // 0 setA_Remaining_Period (0); // 0
-         * setAssetPeriodDepreciationAmt (Env.ZERO); // 0 setDocAction (null); // 'CO' setI_IsImported
-         * (false); // 'N' }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_I_FixedAsset(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_I_FixedAsset(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -49,8 +44,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_I_FixedAsset[").append(getId()).append("]");
-        return sb.toString();
+        return "X_I_FixedAsset[" + getId() + "]";
     }
 
     /**

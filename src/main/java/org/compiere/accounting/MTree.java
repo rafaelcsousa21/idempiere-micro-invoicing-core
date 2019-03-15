@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.orm.MClient;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MTable;
@@ -109,12 +110,10 @@ public class MTree extends MTree_Base {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MTree(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MTree(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MTree_Base
 
     /**

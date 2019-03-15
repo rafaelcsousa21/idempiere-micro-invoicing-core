@@ -5,7 +5,6 @@ import org.compiere.model.I_M_Product_Category_Acct;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -44,13 +43,9 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
      * @param rs      result set
      * @param trxName trx
      */
-    public MProductCategoryAcct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MProductCategoryAcct
-
     public MProductCategoryAcct(Properties ctx, Row row) {
         super(ctx, row);
-    }
+    } //	MProductCategoryAcct
 
     /**
      * Get Category Acct
@@ -58,7 +53,6 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
      * @param ctx                   context
      * @param M_Product_Category_ID category
      * @param C_AcctSchema_ID       acct schema
-     * @param trxName               trx
      * @return category acct
      */
     public static MProductCategoryAcct get(

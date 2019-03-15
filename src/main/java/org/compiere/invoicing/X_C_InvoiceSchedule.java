@@ -1,11 +1,11 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_InvoiceSchedule;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
@@ -60,7 +60,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
      */
     public X_C_InvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID) {
         super(ctx, C_InvoiceSchedule_ID);
-        /**
+        /*
          * if (C_InvoiceSchedule_ID == 0) { setAmt (Env.ZERO); setC_InvoiceSchedule_ID (0);
          * setInvoiceDay (0); // 1 setInvoiceFrequency (null); setInvoiceWeekDay (null); setIsAmount
          * (false); setIsDefault (false); setName (null); }
@@ -70,8 +70,8 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
     /**
      * Load Constructor
      */
-    public X_C_InvoiceSchedule(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_InvoiceSchedule(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -84,8 +84,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_InvoiceSchedule[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_InvoiceSchedule[" + getId() + "]";
     }
 
     /**

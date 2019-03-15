@@ -1,10 +1,10 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.orm.MSequence;
 import org.idempiere.icommon.model.IPO;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -29,9 +29,8 @@ public class MWFNextCondition extends X_AD_WF_NextCondition {
     /**
      * Default Constructor
      *
-     * @param ctx     context
-     * @param id      id
-     * @param trxName transaction
+     * @param ctx context
+     * @param id  id
      */
     public MWFNextCondition(Properties ctx, int id) {
         super(ctx, id);
@@ -40,12 +39,10 @@ public class MWFNextCondition extends X_AD_WF_NextCondition {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWFNextCondition(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFNextCondition(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWFNextCondition
 
     /**

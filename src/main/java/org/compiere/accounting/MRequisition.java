@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.crm.MUser;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
@@ -18,7 +19,6 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -84,10 +84,9 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      * Load Constructor
      *
      * @param ctx context
-     * @param rs  result set
      */
-    public MRequisition(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequisition(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequisition
 
     /**

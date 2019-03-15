@@ -1,8 +1,8 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -28,7 +28,7 @@ public class MProjectTypeTask extends X_C_Task {
         }
     } //	MProjectTypeTask
 
-    public MProjectTypeTask(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProjectTypeTask(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProjectTypeTask
 } //	MProjectTypeTask

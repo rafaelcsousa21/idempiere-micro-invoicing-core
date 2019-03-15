@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MAcctSchema;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MPeriod;
@@ -16,10 +17,8 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -66,8 +65,8 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     /**
      * Load Constructor
      */
-    public MDepreciationEntry(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDepreciationEntry(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public static void deleteFacts(MDepreciationExp depexp) {
@@ -158,7 +157,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     /**
      * Get Lines
      */
-    public Iterator<MDepreciationExp> getLinesIterator(boolean onlyNotProcessed) {
+    public List<MDepreciationExp> getLinesIterator(boolean onlyNotProcessed) {
         final String trxName = null;
         final List<Object> params = new ArrayList<Object>();
         String whereClause = MDepreciationExp.COLUMNNAME_A_Depreciation_Entry_ID + "=?";
@@ -179,11 +178,11 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
                         + ","
                         + MDepreciationExp.COLUMNNAME_A_Entry_Type;
 
-        Iterator<MDepreciationExp> it =
+        List<MDepreciationExp> it =
                 new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
                         .setOrderBy(orderBy)
                         .setParameters(params)
-                        .iterate();
+                        .list();
         return it;
     }
 
@@ -253,11 +252,10 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         final MPeriod period = MPeriod.get(getCtx(), getPeriodId());
 
         final ArrayList<Exception> errors = new ArrayList<Exception>();
-        final Iterator<MDepreciationExp> it = getLinesIterator(true);
+        final List<MDepreciationExp> it = getLinesIterator(true);
         //
-        while (it.hasNext()) {
+        for (MDepreciationExp depexp : it) {
             try {
-                MDepreciationExp depexp = it.next();
                 // Check if is in Period
                 if (!period.isInPeriod(depexp.getDateAcct())) {
                     throw new AssetException(

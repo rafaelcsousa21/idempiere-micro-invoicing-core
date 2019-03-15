@@ -1,24 +1,22 @@
 package org.compiere.accounting;
 
-import org.compiere.model.I_C_Period;
-import org.compiere.orm.*;
+import kotliquery.Row;
+import org.compiere.orm.MDocType;
+import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MTable;
+import org.compiere.orm.PeriodClosedException;
+import org.compiere.orm.Query;
+import org.compiere.orm.TimeUtil;
 import org.compiere.util.DisplayType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Calendar Period Model
@@ -38,11 +36,6 @@ public class MPeriod extends X_C_Period {
      */
     private static final long serialVersionUID = 769103495098446073L;
     /**
-     * Cache
-     */
-    private static CCache<Integer, MPeriod> s_cache =
-            new CCache<Integer, MPeriod>(I_C_Period.Table_Name, 10);
-    /**
      * Logger
      */
     private static CLogger s_log = CLogger.getCLogger(MPeriod.class);
@@ -60,7 +53,6 @@ public class MPeriod extends X_C_Period {
      *
      * @param ctx         context
      * @param C_Period_ID id
-     * @param trxName     transaction
      */
     public MPeriod(Properties ctx, int C_Period_ID) {
         super(ctx, C_Period_ID);
@@ -74,16 +66,9 @@ public class MPeriod extends X_C_Period {
         }
     } //	MPeriod
 
-    /**
-     * Load Constructor
-     *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
-     */
-    public MPeriod(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MPeriod
+    public MPeriod(Properties ctx, Row row) {
+        super(ctx, row);
+    }
 
     /**
      * Parent constructor
@@ -115,6 +100,7 @@ public class MPeriod extends X_C_Period {
         if (C_Period_ID <= 0) return null;
         //
         Integer key = new Integer(C_Period_ID);
+        CCache<Integer, MPeriod> s_cache = MBasePeriodKt.getPeriodCache();
         MPeriod retValue = (MPeriod) s_cache.get(key);
         if (retValue != null) return retValue;
         //
@@ -156,62 +142,11 @@ public class MPeriod extends X_C_Period {
      * @param ctx
      * @param DateAcct
      * @param C_Calendar_ID
-     * @param trxName
      * @return MPeriod
      */
     public static MPeriod findByCalendar(
             Properties ctx, Timestamp DateAcct, int C_Calendar_ID) {
-
-        int AD_Client_ID = Env.getClientId(ctx);
-        //	Search in Cache first
-        Iterator<MPeriod> it = s_cache.values().iterator();
-        while (it.hasNext()) {
-            MPeriod period = (MPeriod) it.next();
-            if (period.getC_Calendar_ID() == C_Calendar_ID
-                    && period.isStandardPeriod()
-                    && period.isInPeriod(DateAcct)
-                    && period.getClientId()
-                    == AD_Client_ID) // globalqss - CarlosRuiz - Fix [ 1820810 ] Wrong Period Assigned to
-                // Fact_Acct
-                return period;
-        }
-
-        //	Get it from DB
-        MPeriod retValue = null;
-        String sql =
-                "SELECT * "
-                        + "FROM C_Period "
-                        + "WHERE C_Year_ID IN "
-                        + "(SELECT C_Year_ID FROM C_Year WHERE C_Calendar_ID= ?)"
-                        + " AND ? BETWEEN TRUNC(StartDate) AND TRUNC(EndDate)"
-                        + " AND IsActive=? AND PeriodType=?";
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, C_Calendar_ID);
-            pstmt.setTimestamp(2, TimeUtil.getDay(DateAcct));
-            pstmt.setString(3, "Y");
-            pstmt.setString(4, "S");
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MPeriod period = new MPeriod(ctx, rs);
-                Integer key = new Integer(period.getC_Period_ID());
-                s_cache.put(key, period);
-                if (period.isStandardPeriod()) retValue = period;
-            }
-        } catch (SQLException e) {
-            s_log.log(Level.SEVERE, "DateAcct=" + DateAcct, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        if (retValue == null)
-            if (s_log.isLoggable(Level.INFO))
-                s_log.info("No Standard Period for " + DateAcct + " (AD_Client_ID=" + AD_Client_ID + ")");
-        return retValue;
+        return MBasePeriodKt.findByCalendar(ctx, DateAcct, C_Calendar_ID);
     }
 
     /**
@@ -306,40 +241,7 @@ public class MPeriod extends X_C_Period {
      * @return active first Period
      */
     public static MPeriod getFirstInYear(Properties ctx, Timestamp DateAcct, int AD_Org_ID) {
-        MPeriod retValue = null;
-        int C_Calendar_ID = MPeriod.get(ctx, DateAcct, AD_Org_ID).getC_Calendar_ID();
-
-        String sql =
-                "SELECT * "
-                        + "FROM C_Period "
-                        + "WHERE C_Year_ID IN "
-                        + "(SELECT p.C_Year_ID "
-                        + "FROM C_Year y"
-                        + " INNER JOIN C_Period p ON (y.C_Year_ID=p.C_Year_ID) "
-                        + "WHERE y.C_Calendar_ID=?"
-                        + "     AND ? BETWEEN StartDate AND EndDate)"
-                        + " AND IsActive=? AND PeriodType=? "
-                        + "ORDER BY StartDate";
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, C_Calendar_ID);
-            pstmt.setTimestamp(2, DateAcct);
-            pstmt.setString(3, "Y");
-            pstmt.setString(4, "S");
-            rs = pstmt.executeQuery();
-            if (rs.next()) // 	first only
-                retValue = new MPeriod(ctx, rs);
-        } catch (SQLException e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        return retValue;
+        return MBasePeriodKt.getFirstPeriodInYear(ctx, DateAcct, AD_Org_ID);
     } //	getFirstInYear
 
     /**
@@ -440,26 +342,7 @@ public class MPeriod extends X_C_Period {
      */
     public MPeriodControl[] getPeriodControls(boolean requery) {
         if (m_controls != null && !requery) return m_controls;
-        //
-        ArrayList<MPeriodControl> list = new ArrayList<MPeriodControl>();
-        String sql = "SELECT * FROM C_PeriodControl " + "WHERE C_Period_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_Period_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MPeriodControl(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        m_controls = new MPeriodControl[list.size()];
-        list.toArray(m_controls);
+        m_controls = MBasePeriodKt.getPeriodControls(getCtx(), getC_Period_ID());
         return m_controls;
     } //	getPeriodControls
 

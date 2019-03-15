@@ -1,8 +1,8 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,13 +26,6 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan {
     public MRevenueRecognitionPlan(Properties ctx, int C_RevenueRecognition_Plan_ID) {
         super(ctx, C_RevenueRecognition_Plan_ID);
         if (C_RevenueRecognition_Plan_ID == 0) {
-            //	setAccountingSchemaId (0);
-            //	setCurrencyId (0);
-            //	setC_InvoiceLine_ID (0);
-            //	setC_RevenueRecognition_ID (0);
-            //	setC_RevenueRecognition_Plan_ID (0);
-            //	setP_Revenue_Acct (0);
-            //	setUnEarnedRevenue_Acct (0);
             setTotalAmt(Env.ZERO);
             setRecognizedAmt(Env.ZERO);
         }
@@ -42,49 +35,10 @@ public class MRevenueRecognitionPlan extends X_C_RevenueRecognition_Plan {
      * Load Constructor
      *
      * @param ctx context
-     * @param rs  result set
      */
-    public MRevenueRecognitionPlan(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRevenueRecognitionPlan(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRevenueRecognitionPlan
 
-    /**
-     * After Save
-     *
-     * @param newRecord new
-     * @param success success
-     * @return success
-     */
-    //	protected boolean afterSave (boolean newRecord, boolean success)
-    //	{
-    //		if (!success)
-    //			return success;
-    //		if (newRecord)
-    //		{
-    //			MRevenueRecognition rr = new MRevenueRecognition(getCtx(), getC_RevenueRecognition_ID(),
-    // null);
-    //			if (rr.isTimeBased())
-    //			{
-    //				/**	Get InvoiveQty
-    //				SELECT	QtyInvoiced, M_Product_ID
-    //				  INTO	v_Qty, v_M_Product_ID
-    //				FROM	C_InvoiceLine
-    //				WHERE 	C_InvoiceLine_ID=:new.C_InvoiceLine_ID;
-    //				--	Insert
-    //				AD_Sequence_Next ('C_ServiceLevel', :new.AD_Client_ID, v_NextNo);
-    //				INSERT INTO C_ServiceLevel
-    //					(C_ServiceLevel_ID, C_RevenueRecognition_Plan_ID,
-    //					AD_Client_ID,AD_Org_ID,IsActive,Created,CreatedBy,Updated,UpdatedBy,
-    //					M_Product_ID, Description, ServiceLevelInvoiced, ServiceLevelProvided,
-    //					Processing,Processed)
-    //				VALUES
-    //					(v_NextNo, :new.C_RevenueRecognition_Plan_ID,
-    //					:new.AD_Client_ID,:new.AD_Org_ID,'Y',SysDate,:new.CreatedBy,SysDate,:new.UpdatedBy,
-    //					v_M_Product_ID, NULL, v_Qty, 0,
-    //					'N', 'N');
-    //				**/
-    //			}
-    //		}
-    //		return success;
-    //	}	//	afterSave
+
 } //	MRevenueRecognitionPlan

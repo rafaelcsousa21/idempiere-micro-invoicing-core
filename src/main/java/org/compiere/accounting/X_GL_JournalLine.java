@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_GL_JournalLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -27,22 +27,13 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      */
     public X_GL_JournalLine(Properties ctx, int GL_JournalLine_ID) {
         super(ctx, GL_JournalLine_ID);
-        /**
-         * if (GL_JournalLine_ID == 0) { setAmtAcctCr (Env.ZERO); setAmtAcctDr (Env.ZERO);
-         * setAmtSourceCr (Env.ZERO); setAmtSourceDr (Env.ZERO); setConversionTypeId (0);
-         * setCurrencyId (0); // @C_Currency_ID@ setCurrencyRate (Env.ZERO); // @CurrencyRate@;1
-         * setDateAcct (new Timestamp( System.currentTimeMillis() )); // @DateAcct@ setGL_Journal_ID
-         * (0); setGL_JournalLine_ID (0); setIsGenerated (false); setLine (0); // @SQL=SELECT
-         * NVL(MAX(Line),0)+10 AS DefaultValue FROM GL_JournalLine WHERE GL_Journal_ID=@GL_Journal_ID@
-         * setProcessed (false); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_GL_JournalLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_GL_JournalLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -55,8 +46,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_GL_JournalLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_GL_JournalLine[" + getId() + "]";
     }
 
     /**

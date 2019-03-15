@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
@@ -17,7 +18,6 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -93,12 +93,10 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MJournal(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MJournal(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MJournal
 
     /**

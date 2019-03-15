@@ -13,7 +13,9 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.orm.MBaseSequenceKt.doCheckClientSequences;
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
+import static software.hsharp.core.util.DBKt.getSQLValue;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * System + Document Sequence Check
@@ -137,44 +139,7 @@ public class SequenceCheck extends SvrProcess {
      * @param sp  server process or null
      */
     private static void checkTableID(Properties ctx, SvrProcess sp) {
-        int IDRangeEnd = getSQLValue("SELECT IDRangeEnd FROM AD_System");
-        if (IDRangeEnd <= 0)
-            IDRangeEnd = getSQLValue("SELECT MIN(IDRangeStart)-1 FROM AD_Replication");
-        if (s_log.isLoggable(Level.INFO)) s_log.info("IDRangeEnd = " + IDRangeEnd);
-        //
-        String sql = "SELECT * FROM AD_Sequence " + "WHERE IsTableID='Y' " + "ORDER BY Name";
-        int counter = 0;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        String trxName = null;
-        if (sp != null) trxName = null;
-        try {
-            pstmt = prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MSequence seq = new MSequence(ctx, rs);
-                /* NOTE: When using native sequences - every time the sequence check process is run
-                 * a sequence number is lost on all sequences - because with native sequences
-                 * reading the sequence consumes a number
-                 */
-                String tableValidation = seq.validateTableIDValue();
-                if (tableValidation != null) {
-                    if (sp != null) sp.addLog(0, null, null, tableValidation);
-                    else s_log.fine(tableValidation);
-
-                    if (seq.save()) counter++;
-                    else s_log.severe("Not updated: " + seq);
-                }
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-            throw new AdempiereException(e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        if (s_log.isLoggable(Level.FINE)) s_log.fine("#" + counter);
+        MBaseSequenceCheckKt.checkTableID(ctx, sp);
     } //	checkTableID
 
     /**

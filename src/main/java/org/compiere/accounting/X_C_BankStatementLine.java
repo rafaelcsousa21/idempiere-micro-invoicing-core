@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_BankStatementLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -27,24 +27,13 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      */
     public X_C_BankStatementLine(Properties ctx, int C_BankStatementLine_ID) {
         super(ctx, C_BankStatementLine_ID);
-        /**
-         * if (C_BankStatementLine_ID == 0) { setC_BankStatement_ID (0); setC_BankStatementLine_ID (0);
-         * setCurrencyId (0); // @SQL=SELECT C_Currency_ID FROM C_BankAccount WHERE
-         * C_BankAccount_ID=@C_BankAccount_ID@ setChargeAmt (Env.ZERO); setDateAcct (new Timestamp(
-         * System.currentTimeMillis() )); // @DateAcct@ setInterestAmt (Env.ZERO); setIsManual (true);
-         * // Y setIsReversal (false); setLine (0); // @SQL=SELECT COALESCE(MAX(Line),0)+10 FROM
-         * C_BankStatementLine WHERE C_BankStatement_ID=@C_BankStatement_ID@ setProcessed (false);
-         * setStatementLineDate (new Timestamp( System.currentTimeMillis() )); // @StatementLineDate@
-         * setStmtAmt (Env.ZERO); setTrxAmt (Env.ZERO); setValutaDate (new Timestamp(
-         * System.currentTimeMillis() )); // @StatementDate@ }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_BankStatementLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_BankStatementLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -57,8 +46,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_BankStatementLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_BankStatementLine[" + getId() + "]";
     }
 
     /**

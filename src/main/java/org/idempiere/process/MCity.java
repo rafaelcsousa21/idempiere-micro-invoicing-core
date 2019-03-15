@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.crm.MRegion;
 import org.compiere.model.I_C_City;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
 import java.io.Serializable;
-import java.sql.ResultSet;
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.Properties;
@@ -41,24 +41,17 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
         }
     } //  MCity
 
-    /** Region Cache */
-
     /**
      * Create City from current row in ResultSet
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MCity(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MCity(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MCity
 
     /**
      * Parent Constructor
-     *
-     * @param Region   Region
-     * @param CityName City Name
      */
     public MCity(MRegion region, String cityName) {
         super(region.getCtx(), 0);
@@ -74,7 +67,7 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
      * @return City
      */
     public static MCity get(Properties ctx, int C_City_ID) {
-        Integer key = new Integer(C_City_ID);
+        Integer key = C_City_ID;
         MCity r = s_Cities.get(key);
         if (r != null) return r;
         r = new MCity(ctx, C_City_ID);

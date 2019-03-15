@@ -1,8 +1,8 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.util.Msg;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -61,8 +61,8 @@ public class MChangeRequest extends X_M_ChangeRequest {
      * @param rs      result set
      * @param trxName trx
      */
-    public MChangeRequest(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MChangeRequest(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MChangeRequest
 
     /**

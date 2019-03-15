@@ -1,8 +1,8 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.AdempiereProcessorLog;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class MRequestProcessorLog extends X_R_RequestProcessorLog implements AdempiereProcessorLog {
@@ -30,8 +30,8 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
      * @param ctx context
      * @param rs  result set
      */
-    public MRequestProcessorLog(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequestProcessorLog(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequestProcessorLog
 
     /**

@@ -1,14 +1,31 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.bank.MBankAccount;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
-import org.compiere.invoicing.*;
-import org.compiere.model.*;
+import org.compiere.invoicing.MConversionRate;
+import org.compiere.invoicing.MDocTypeCounter;
+import org.compiere.invoicing.MInOut;
+import org.compiere.invoicing.MInvoice;
+import org.compiere.invoicing.MInvoiceLine;
+import org.compiere.invoicing.MInvoicePaySchedule;
+import org.compiere.invoicing.MPaymentTerm;
+import org.compiere.model.IDoc;
+import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_Invoice;
+import org.compiere.model.I_C_OrderLine;
+import org.compiere.model.I_M_InOut;
 import org.compiere.order.MInOutLine;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.order.MOrderTax;
-import org.compiere.orm.*;
+import org.compiere.orm.MDocType;
+import org.compiere.orm.MOrg;
+import org.compiere.orm.MOrgInfo;
+import org.compiere.orm.MSequence;
+import org.compiere.orm.MSysConfig;
+import org.compiere.orm.PO;
+import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
 import org.compiere.product.MPriceList;
@@ -24,7 +41,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -59,8 +75,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      * @param rs      result set record
      * @param trxName transaction
      */
-    public MOrder(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MOrder(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MOrder
 
     /**
@@ -283,7 +299,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
             setBill_BPartner_ID(getBusinessPartnerId());
             setBusinessPartnerInvoicingLocationId(getBusinessPartnerLocationId());
         }
-        if (getBusinessPartnerInvoicingLocationId() == 0) setBusinessPartnerInvoicingLocationId(getBusinessPartnerLocationId());
+        if (getBusinessPartnerInvoicingLocationId() == 0)
+            setBusinessPartnerInvoicingLocationId(getBusinessPartnerLocationId());
 
         //	Default Price List
         if (getPriceListId() == 0) {

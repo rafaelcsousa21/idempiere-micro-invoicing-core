@@ -5,7 +5,6 @@ import org.compiere.model.I_C_AcctSchema_GL;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.KeyNamePair;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -48,10 +47,6 @@ public class MAcctSchemaGL extends X_C_AcctSchema_GL {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MAcctSchemaGL(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MAcctSchemaGL
-
     public MAcctSchemaGL(Properties ctx, Row row) {
         super(ctx, row);
     } //	MAcctSchemaGL

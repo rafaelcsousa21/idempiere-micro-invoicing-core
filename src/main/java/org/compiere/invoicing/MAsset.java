@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
 import org.compiere.accounting.MMatchInv;
 import org.compiere.accounting.MProduct;
@@ -19,7 +20,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.icommon.model.IPO;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Properties;
@@ -34,8 +34,8 @@ public class MAsset extends org.compiere.product.MAsset {
         super(ctx, A_Asset_ID);
     }
 
-    public MAsset(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAsset(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MAsset
 
     /**

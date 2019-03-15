@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_HouseKeeping;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -19,17 +19,13 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
      */
     public X_AD_HouseKeeping(Properties ctx, int AD_HouseKeeping_ID) {
         super(ctx, AD_HouseKeeping_ID);
-        /**
-         * if (AD_HouseKeeping_ID == 0) { setAD_HouseKeeping_ID (0); setColumnTableId (0); setName (null);
-         * setValue (null); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_HouseKeeping(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_HouseKeeping(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,8 +44,7 @@ public class X_AD_HouseKeeping extends BasePONameValue implements I_AD_HouseKeep
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_HouseKeeping[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_HouseKeeping[" + getId() + "]";
     }
 
     /**

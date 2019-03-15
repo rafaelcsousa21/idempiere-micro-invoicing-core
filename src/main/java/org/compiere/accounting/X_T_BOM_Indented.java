@@ -1,10 +1,10 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_T_BOM_Indented;
 import org.compiere.orm.PO;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
@@ -19,14 +19,13 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      */
     public X_T_BOM_Indented(Properties ctx, int T_BOM_Indented_ID) {
         super(ctx, T_BOM_Indented_ID);
-        /** if (T_BOM_Indented_ID == 0) { setT_BOM_Indented_ID (0); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_T_BOM_Indented(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_T_BOM_Indented(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -39,8 +38,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_T_BOM_Indented[").append(getId()).append("]");
-        return sb.toString();
+        return "X_T_BOM_Indented[" + getId() + "]";
     }
 
     /**
@@ -50,7 +48,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      */
     public void setAD_PInstance_ID(int AD_PInstance_ID) {
         if (AD_PInstance_ID < 1) setValue(COLUMNNAME_AD_PInstance_ID, null);
-        else setValue(COLUMNNAME_AD_PInstance_ID, Integer.valueOf(AD_PInstance_ID));
+        else setValue(COLUMNNAME_AD_PInstance_ID, AD_PInstance_ID);
     }
 
     /**

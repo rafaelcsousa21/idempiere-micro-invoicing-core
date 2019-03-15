@@ -167,34 +167,10 @@ public class ClientAcctProcessor extends SvrProcess {
                 sql.append(") AND Processed='Y' AND Posted='N' AND IsActive='Y'")
                         .append(" ORDER BY Created");
                 //
-                PreparedStatement pstmt = null;
-                ResultSet rs = null;
-                try {
-                    pstmt = prepareStatement(sql.toString());
-                    pstmt.setInt(1, getClientId());
-                    if (processedOn.compareTo(Env.ZERO) != 0) pstmt.setBigDecimal(2, processedOn);
-                    rs = pstmt.executeQuery();
-                    while (rs.next()) {
-                        count[i]++;
-                        boolean ok = true;
-                        // Run every posting document in own transaction
 
-                        try {
-                            String error =
-                                    DocManager.INSTANCE.postDocument(
-                                            m_ass, AD_Table_ID, rs, false, false);
-                            ok = (error == null);
-                        } catch (Exception e) {
-                            log.log(Level.SEVERE, getName() + ": " + TableName, e);
-                            ok = false;
-                        }
-                        if (!ok) countError[i]++;
-                    }
-                } catch (Exception e) {
-                    log.log(Level.SEVERE, sql.toString(), e);
-                } finally {
-
-                }
+                BaseClientAccountingProcessorKt.postDocumentsInPostSession(
+                        sql.toString(), getClientId(), processedOn, m_ass, AD_Table_ID
+                );
             } // for tableID
         } // for processedOn
 

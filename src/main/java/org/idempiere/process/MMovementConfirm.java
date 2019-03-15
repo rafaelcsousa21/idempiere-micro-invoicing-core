@@ -1,5 +1,6 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.accounting.MPeriod;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.crm.MUser;
@@ -22,15 +23,11 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.ValueNamePair;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, IPODoc {
     /**
@@ -68,7 +65,6 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @param ctx                  context
      * @param M_MovementConfirm_ID id
-     * @param trxName              transaction
      */
     public MMovementConfirm(Properties ctx, int M_MovementConfirm_ID) {
         super(ctx, M_MovementConfirm_ID);
@@ -84,12 +80,10 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MMovementConfirm(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMovementConfirm(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMovementConfirm
 
     /**
@@ -114,8 +108,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         if (checkExisting) {
             MMovementConfirm[] confirmations = move.getConfirmations(false);
             if (confirmations.length > 0) {
-                MMovementConfirm confirm = confirmations[0];
-                return confirm;
+                return confirmations[0];
             }
         }
 
@@ -141,24 +134,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         if (m_lines != null && !requery) {
             return m_lines;
         }
-        String sql = "SELECT * FROM M_MovementLineConfirm " + "WHERE M_MovementConfirm_ID=?";
-        ArrayList<MMovementLineConfirm> list = new ArrayList<MMovementLineConfirm>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getM_MovementConfirm_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MMovementLineConfirm(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        m_lines = new MMovementLineConfirm[list.size()];
-        list.toArray(m_lines);
+        m_lines = MBaseMovementLineConfirmKt.getMovementLineConfirmLines(getCtx(), getM_MovementConfirm_ID());
         return m_lines;
     } //	getLines
 

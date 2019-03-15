@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_S_ResourceAssignment;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -33,8 +33,8 @@ public class X_S_ResourceAssignment extends BasePOName
     /**
      * Load Constructor
      */
-    public X_S_ResourceAssignment(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_S_ResourceAssignment(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -47,8 +47,7 @@ public class X_S_ResourceAssignment extends BasePOName
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_S_ResourceAssignment[").append(getId()).append("]");
-        return sb.toString();
+        return "X_S_ResourceAssignment[" + getId() + "]";
     }
 
     /**

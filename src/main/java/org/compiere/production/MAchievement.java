@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_Achievement;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -31,7 +31,6 @@ public class MAchievement extends X_PA_Achievement {
      *
      * @param ctx               context
      * @param PA_Achievement_ID id
-     * @param trxName           trx
      */
     public MAchievement(Properties ctx, int PA_Achievement_ID) {
         super(ctx, PA_Achievement_ID);
@@ -40,12 +39,10 @@ public class MAchievement extends X_PA_Achievement {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MAchievement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAchievement(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MAchievement
 
     /**
@@ -74,9 +71,7 @@ public class MAchievement extends X_PA_Achievement {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MAchievement[");
-        sb.append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "MAchievement[" + getId() + "-" + getName() + "]";
     } //	toString
 
     /**

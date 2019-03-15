@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_RequestProcessorLog;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorLog {
@@ -18,17 +18,13 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
      */
     public X_R_RequestProcessorLog(Properties ctx, int R_RequestProcessorLog_ID) {
         super(ctx, R_RequestProcessorLog_ID);
-        /**
-         * if (R_RequestProcessorLog_ID == 0) { setIsError (false); setR_RequestProcessor_ID (0);
-         * setR_RequestProcessorLog_ID (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_R_RequestProcessorLog(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_RequestProcessorLog(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -47,8 +43,7 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_RequestProcessorLog[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_RequestProcessorLog[" + getId() + "]";
     }
 
     /**
@@ -57,7 +52,7 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
      * @param IsError An Error occurred in the execution
      */
     public void setIsError(boolean IsError) {
-        setValue(COLUMNNAME_IsError, Boolean.valueOf(IsError));
+        setValue(COLUMNNAME_IsError, IsError);
     }
 
     /**

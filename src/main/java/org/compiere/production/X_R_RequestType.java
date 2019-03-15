@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_RequestType;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -40,8 +40,8 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
     /**
      * Load Constructor
      */
-    public X_R_RequestType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_RequestType(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

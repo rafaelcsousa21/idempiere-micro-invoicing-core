@@ -1,5 +1,7 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.conversionrate.MConversionRate;
 import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
@@ -7,7 +9,6 @@ import org.compiere.invoicing.MInOutLineMA;
 import org.compiere.model.IFact;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_RMALine;
-import org.compiere.product.MCurrency;
 import org.compiere.tax.MTax;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
@@ -47,7 +48,7 @@ public class Doc_InOut extends Doc {
      * @param rs      record
      * @param trxName trx
      */
-    public Doc_InOut(MAcctSchema as, ResultSet rs) {
+    public Doc_InOut(MAcctSchema as, Row rs) {
         super(as, MInOut.class, rs, null);
     } //  DocInOut
 

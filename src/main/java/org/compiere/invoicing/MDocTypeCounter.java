@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_DocTypeCounter;
 import org.compiere.orm.MDocType;
 import org.idempiere.common.util.CCache;
@@ -40,7 +41,6 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      *
      * @param ctx                 context
      * @param C_DocTypeCounter_ID id
-     * @param trxName             transaction
      */
     public MDocTypeCounter(Properties ctx, int C_DocTypeCounter_ID) {
         super(ctx, C_DocTypeCounter_ID);
@@ -53,12 +53,10 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MDocTypeCounter(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDocTypeCounter(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MDocTypeCounter
 
     /**
@@ -103,38 +101,12 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      * @return counter document (may be invalid) or null
      */
     public static MDocTypeCounter getCounterDocType(Properties ctx, int C_DocType_ID) {
-        Integer key = new Integer(C_DocType_ID);
-        MDocTypeCounter retValue = (MDocTypeCounter) s_counter.get(key);
+        Integer key = C_DocType_ID;
+        MDocTypeCounter retValue = s_counter.get(key);
         if (retValue != null) return retValue;
 
         //	Direct Relationship
-        MDocTypeCounter temp = null;
-        String sql = "SELECT * FROM C_DocTypeCounter WHERE C_DocType_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, C_DocType_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next() && retValue == null) {
-                retValue = new MDocTypeCounter(ctx, rs);
-                if (!retValue.isCreateCounter() || !retValue.isValid()) {
-                    temp = retValue;
-                    retValue = null;
-                }
-            }
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, "getCounterDocType", e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        if (retValue != null) // 	valid
-            return retValue;
-        if (temp != null) // 	invalid
-            return temp;
-        return null; //	nothing found
+        return MBaseDocTypeCounterKt.getCounterDocType(ctx, C_DocType_ID);
     } //	getCounterDocType
 
     /**

@@ -1,10 +1,10 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.orm.TimeUtil;
 import org.idempiere.common.util.CCache;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Properties;
@@ -26,7 +26,6 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
      *
      * @param ctx                  context
      * @param C_InvoiceSchedule_ID id
-     * @param trxName              transaction
      */
     public MInvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID) {
         super(ctx, C_InvoiceSchedule_ID);
@@ -35,12 +34,10 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MInvoiceSchedule(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInvoiceSchedule(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MInvoiceSchedule
 
     /**
@@ -48,11 +45,10 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
      *
      * @param ctx                  context
      * @param C_InvoiceSchedule_ID id
-     * @param trxName              transaction
      * @return MInvoiceSchedule
      */
     public static MInvoiceSchedule get(Properties ctx, int C_InvoiceSchedule_ID) {
-        Integer key = new Integer(C_InvoiceSchedule_ID);
+        Integer key = C_InvoiceSchedule_ID;
         MInvoiceSchedule retValue = (MInvoiceSchedule) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MInvoiceSchedule(ctx, C_InvoiceSchedule_ID);

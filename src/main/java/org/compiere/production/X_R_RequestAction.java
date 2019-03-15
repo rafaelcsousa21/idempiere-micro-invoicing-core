@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_RequestAction;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,14 +24,13 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction {
      */
     public X_R_RequestAction(Properties ctx, int R_RequestAction_ID) {
         super(ctx, R_RequestAction_ID);
-        /** if (R_RequestAction_ID == 0) { setR_RequestAction_ID (0); setR_Request_ID (0); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_R_RequestAction(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_RequestAction(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +43,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_RequestAction[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_RequestAction[" + getId() + "]";
     }
 
     /**
@@ -55,7 +53,7 @@ public class X_R_RequestAction extends PO implements I_R_RequestAction {
      */
     public void setR_Request_ID(int R_Request_ID) {
         if (R_Request_ID < 1) setValueNoCheck(COLUMNNAME_R_Request_ID, null);
-        else setValueNoCheck(COLUMNNAME_R_Request_ID, Integer.valueOf(R_Request_ID));
+        else setValueNoCheck(COLUMNNAME_R_Request_ID, R_Request_ID);
     }
 
     @Override

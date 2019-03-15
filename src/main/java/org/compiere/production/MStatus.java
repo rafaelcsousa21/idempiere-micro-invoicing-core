@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_Status;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
@@ -45,7 +46,6 @@ public class MStatus extends X_R_Status {
      *
      * @param ctx         context
      * @param R_Status_ID is
-     * @param trxName     trx
      */
     public MStatus(Properties ctx, int R_Status_ID) {
         super(ctx, R_Status_ID);
@@ -63,12 +63,10 @@ public class MStatus extends X_R_Status {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MStatus(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MStatus(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MStatus
 
     /**
@@ -80,7 +78,7 @@ public class MStatus extends X_R_Status {
      */
     public static MStatus get(Properties ctx, int R_Status_ID) {
         if (R_Status_ID == 0) return null;
-        Integer key = new Integer(R_Status_ID);
+        Integer key = R_Status_ID;
         MStatus retValue = (MStatus) s_cache.get(key);
         if (retValue == null) {
             retValue = new MStatus(ctx, R_Status_ID);
@@ -97,31 +95,10 @@ public class MStatus extends X_R_Status {
      * @return Request Type
      */
     public static MStatus getDefault(Properties ctx, int R_RequestType_ID) {
-        Integer key = new Integer(R_RequestType_ID);
+        Integer key = R_RequestType_ID;
         MStatus retValue = (MStatus) s_cacheDefault.get(key);
         if (retValue != null) return retValue;
-        //	Get New
-        String sql =
-                "SELECT * FROM R_Status s "
-                        + "WHERE EXISTS (SELECT * FROM R_RequestType rt "
-                        + "WHERE rt.R_StatusCategory_ID=s.R_StatusCategory_ID"
-                        + " AND rt.R_RequestType_ID=?)"
-                        + " AND IsDefault='Y' "
-                        + "ORDER BY SeqNo";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, R_RequestType_ID);
-            rs = pstmt.executeQuery();
-            if (rs.next()) retValue = new MStatus(ctx, rs);
-        } catch (SQLException ex) {
-            s_log.log(Level.SEVERE, sql, ex);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
+        retValue = MBaseStatusKt.getDefaultRequestStatus(ctx, R_RequestType_ID);
         if (retValue != null) s_cacheDefault.put(key, retValue);
         return retValue;
     } //	getDefault
@@ -133,29 +110,7 @@ public class MStatus extends X_R_Status {
      * @return Request Type
      */
     public static MStatus[] getClosed(Properties ctx) {
-        int AD_Client_ID = Env.getClientId(ctx);
-        String sql =
-                "SELECT * FROM R_Status "
-                        + "WHERE AD_Client_ID=? AND IsActive='Y' AND IsClosed='Y' "
-                        + "ORDER BY Value";
-        ArrayList<MStatus> list = new ArrayList<MStatus>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, AD_Client_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MStatus(ctx, rs));
-        } catch (SQLException ex) {
-            s_log.log(Level.SEVERE, sql, ex);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        MStatus[] retValue = new MStatus[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseStatusKt.getClosedStatuses(ctx);
     } //	get
 
     /**

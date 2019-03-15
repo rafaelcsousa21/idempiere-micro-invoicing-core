@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.bank.IBAN;
 import org.compiere.bank.MBank;
 import org.compiere.crm.MBPartner;
@@ -12,7 +13,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -56,12 +56,10 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
     /**
      * Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MBPBankAccount(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBPBankAccount(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MBP_BankAccount
 
     /**

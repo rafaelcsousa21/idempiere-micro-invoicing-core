@@ -1,11 +1,11 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_MovementConfirm;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
@@ -40,7 +40,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      */
     public X_M_MovementConfirm(Properties ctx, int M_MovementConfirm_ID) {
         super(ctx, M_MovementConfirm_ID);
-        /**
+        /*
          * if (M_MovementConfirm_ID == 0) { setDocAction (null); setDocStatus (null); setDocumentNo
          * (null); setIsApproved (false); // N setM_MovementConfirm_ID (0); setM_Movement_ID (0);
          * setProcessed (false); }
@@ -50,8 +50,8 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
     /**
      * Load Constructor
      */
-    public X_M_MovementConfirm(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_MovementConfirm(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -69,8 +69,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_MovementConfirm[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_MovementConfirm[" + getId() + "]";
     }
 
     /**

@@ -1,11 +1,11 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_InvoiceBatch;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -27,19 +27,13 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      */
     public X_C_InvoiceBatch(Properties ctx, int C_InvoiceBatch_ID) {
         super(ctx, C_InvoiceBatch_ID);
-        /**
-         * if (C_InvoiceBatch_ID == 0) { setCurrencyId (0); // @$C_Currency_ID@ setC_InvoiceBatch_ID
-         * (0); setControlAmt (Env.ZERO); // 0 setDateDoc (new Timestamp( System.currentTimeMillis() ));
-         * // @#Date@ setDocumentAmt (Env.ZERO); setDocumentNo (null); setIsSOTrx (false); // N
-         * setProcessed (false); setSalesRepresentativeId (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_InvoiceBatch(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_InvoiceBatch(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -52,8 +46,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_InvoiceBatch[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_InvoiceBatch[" + getId() + "]";
     }
 
     /**

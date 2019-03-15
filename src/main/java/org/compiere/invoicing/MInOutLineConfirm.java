@@ -1,11 +1,11 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.order.MInOutConfirm;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -51,8 +51,8 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MInOutLineConfirm(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInOutLineConfirm(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MInOutLineConfirm
 
     /**

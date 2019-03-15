@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_QualityTestResult;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,17 +24,13 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      */
     public X_M_QualityTestResult(Properties ctx, int M_QualityTestResult_ID) {
         super(ctx, M_QualityTestResult_ID);
-        /**
-         * if (M_QualityTestResult_ID == 0) { setIsQCPass (false); // N setM_AttributeSetInstance_ID
-         * (0); setM_QualityTest_ID (0); setM_QualityTestResult_ID (0); setProcessed (false); // N }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_QualityTestResult(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_QualityTestResult(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -47,8 +43,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_QualityTestResult[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_QualityTestResult[" + getId() + "]";
     }
 
     /**
@@ -57,7 +52,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      * @param IsQCPass QC Pass
      */
     public void setIsQCPass(boolean IsQCPass) {
-        setValue(COLUMNNAME_IsQCPass, Boolean.valueOf(IsQCPass));
+        setValue(COLUMNNAME_IsQCPass, IsQCPass);
     }
 
     /**

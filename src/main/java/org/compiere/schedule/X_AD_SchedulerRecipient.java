@@ -1,9 +1,9 @@
 package org.compiere.schedule;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_SchedulerRecipient;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,7 +24,7 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
      */
     public X_AD_SchedulerRecipient(Properties ctx, int AD_SchedulerRecipient_ID) {
         super(ctx, AD_SchedulerRecipient_ID);
-        /**
+        /*
          * if (AD_SchedulerRecipient_ID == 0) { setAD_Scheduler_ID (0); setAD_SchedulerRecipient_ID (0);
          * }
          */
@@ -33,8 +33,8 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
     /**
      * Load Constructor
      */
-    public X_AD_SchedulerRecipient(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_SchedulerRecipient(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -47,8 +47,7 @@ public class X_AD_SchedulerRecipient extends PO implements I_AD_SchedulerRecipie
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_SchedulerRecipient[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_SchedulerRecipient[" + getId() + "]";
     }
 
     /**

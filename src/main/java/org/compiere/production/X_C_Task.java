@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Task;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -31,8 +31,8 @@ public class X_C_Task extends BasePOName implements I_C_Task {
     /**
      * Load Constructor
      */
-    public X_C_Task(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_Task(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

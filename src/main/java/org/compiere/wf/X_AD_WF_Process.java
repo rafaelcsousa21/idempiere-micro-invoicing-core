@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_Process;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -40,7 +40,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process {
      */
     public X_AD_WF_Process(Properties ctx, int AD_WF_Process_ID) {
         super(ctx, AD_WF_Process_ID);
-        /**
+        /*
          * if (AD_WF_Process_ID == 0) { setColumnTableId (0); setAD_WF_Process_ID (0);
          * setAD_WF_Responsible_ID (0); setAD_Workflow_ID (0); setProcessed (false); setRecordId (0);
          * setWFState (null); }
@@ -50,8 +50,8 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process {
     /**
      * Load Constructor
      */
-    public X_AD_WF_Process(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WF_Process(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -64,8 +64,7 @@ public class X_AD_WF_Process extends PO implements I_AD_WF_Process {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_WF_Process[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_WF_Process[" + getId() + "]";
     }
 
     /**

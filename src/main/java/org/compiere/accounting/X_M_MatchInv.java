@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_MatchInv;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -27,7 +27,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      */
     public X_M_MatchInv(Properties ctx, int M_MatchInv_ID) {
         super(ctx, M_MatchInv_ID);
-        /**
+        /*
          * if (M_MatchInv_ID == 0) { setC_InvoiceLine_ID (0); setDateAcct (new Timestamp(
          * System.currentTimeMillis() )); setDateTrx (new Timestamp( System.currentTimeMillis() ));
          * setM_InOutLine_ID (0); setM_MatchInv_ID (0); setM_Product_ID (0); setPosted (false);
@@ -38,8 +38,8 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
     /**
      * Load Constructor
      */
-    public X_M_MatchInv(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_MatchInv(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -52,8 +52,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_MatchInv[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_MatchInv[" + getId() + "]";
     }
 
     /**

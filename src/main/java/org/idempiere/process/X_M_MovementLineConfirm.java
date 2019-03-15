@@ -1,11 +1,11 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_MovementLineConfirm;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfirm {
@@ -20,7 +20,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      */
     public X_M_MovementLineConfirm(Properties ctx, int M_MovementLineConfirm_ID) {
         super(ctx, M_MovementLineConfirm_ID);
-        /**
+        /*
          * if (M_MovementLineConfirm_ID == 0) { setConfirmedQty (Env.ZERO); setDifferenceQty (Env.ZERO);
          * setM_MovementConfirm_ID (0); setM_MovementLineConfirm_ID (0); setM_MovementLine_ID (0);
          * setProcessed (false); setScrappedQty (Env.ZERO); setTargetQty (Env.ZERO); }
@@ -30,8 +30,8 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
     /**
      * Load Constructor
      */
-    public X_M_MovementLineConfirm(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_MovementLineConfirm(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -50,8 +50,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_MovementLineConfirm[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_MovementLineConfirm[" + getId() + "]";
     }
 
     /**

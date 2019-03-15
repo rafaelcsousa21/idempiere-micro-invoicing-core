@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_Block;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_AD_WF_Block extends BasePOName implements I_AD_WF_Block {
     /**
      * Load Constructor
      */
-    public X_AD_WF_Block(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WF_Block(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

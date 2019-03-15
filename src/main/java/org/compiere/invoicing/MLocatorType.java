@@ -13,11 +13,11 @@
  */
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_LocatorType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -46,7 +46,6 @@ public class MLocatorType extends X_M_LocatorType {
      *
      * @param ctx              Context
      * @param M_LocatorType_ID id
-     * @param trxName          transaction
      */
     public MLocatorType(Properties ctx, int M_LocatorType_ID) {
         super(ctx, M_LocatorType_ID);
@@ -60,12 +59,10 @@ public class MLocatorType extends X_M_LocatorType {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MLocatorType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MLocatorType(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MLocatorType
 
     /**
@@ -78,7 +75,7 @@ public class MLocatorType extends X_M_LocatorType {
     public static MLocatorType get(Properties ctx, int M_LocatorType_ID) {
         if (s_cache == null)
             s_cache = new CCache<Integer, MLocatorType>(I_M_LocatorType.Table_Name, 20);
-        Integer key = new Integer(M_LocatorType_ID);
+        Integer key = M_LocatorType_ID;
         MLocatorType retValue = (MLocatorType) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MLocatorType(ctx, M_LocatorType_ID);

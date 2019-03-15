@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -7,7 +8,6 @@ import org.eevolution.model.I_PP_Product_BOMLine;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -37,20 +37,13 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      */
     public X_PP_Product_BOMLine(Properties ctx, int PP_Product_BOMLine_ID) {
         super(ctx, PP_Product_BOMLine_ID);
-        /**
-         * if (PP_Product_BOMLine_ID == 0) { setIssueMethod (null); // 1 setLine (0); // @SQL=SELECT
-         * COALESCE(MAX(Line),0)+10 AS DefaultValue FROM PP_Product_BOMLine WHERE
-         * PP_Product_BOM_ID=@PP_Product_BOM_ID@ setM_Product_ID (0); setPP_Product_BOM_ID (0);
-         * setPP_Product_BOMLine_ID (0); setValidFrom (new Timestamp( System.currentTimeMillis() ));
-         * // @#Date@ }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_PP_Product_BOMLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PP_Product_BOMLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -63,8 +56,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_PP_Product_BOMLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_PP_Product_BOMLine[" + getId() + "]";
     }
 
     /**

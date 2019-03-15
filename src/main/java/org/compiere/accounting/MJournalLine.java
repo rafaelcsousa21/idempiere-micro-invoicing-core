@@ -1,14 +1,14 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_GL_JournalLine;
-import org.compiere.product.MCurrency;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -56,17 +56,12 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     public MJournalLine(Properties ctx, int GL_JournalLine_ID) {
         super(ctx, GL_JournalLine_ID);
         if (GL_JournalLine_ID == 0) {
-            //	setGL_JournalLine_ID (0);		//	PK
-            //	setGL_Journal_ID (0);			//	Parent
-            //	setCurrencyId (0);
-            //	setC_ValidCombination_ID (0);
             setLine(0);
             setAmtAcctCr(Env.ZERO);
             setAmtAcctDr(Env.ZERO);
             setAmtSourceCr(Env.ZERO);
             setAmtSourceDr(Env.ZERO);
             setCurrencyRate(Env.ONE);
-            //	setConversionTypeId (0);
             setDateAcct(new Timestamp(System.currentTimeMillis()));
             setIsGenerated(true);
         }
@@ -75,12 +70,10 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MJournalLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MJournalLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MJournalLine
 
     /**

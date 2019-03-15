@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
@@ -22,17 +8,12 @@ import org.compiere.conversionrate.MConversionRate;
 import org.compiere.crm.MBPartner;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.DocAction;
-import org.compiere.process.SvrProcess;
 import org.compiere.production.MProject;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Create Sales Orders from Expense Reports
@@ -40,24 +21,8 @@ import static software.hsharp.core.util.DBKt.prepareStatement;
  * @author Jorg Janke
  * @version $Id: ExpenseSOrder.java,v 1.3 2006/07/30 00:51:01 jjanke Exp $
  */
-public class ExpenseSOrder extends SvrProcess {
-    /**
-     * BPartner
-     */
-    private int p_C_BPartner_ID = 0;
-    /**
-     * Date Drom
-     */
-    private Timestamp p_DateFrom = null;
-    /**
-     * Date To
-     */
-    private Timestamp m_DateTo = null;
+public class ExpenseSOrder extends BaseExpenseSOrder {
 
-    /**
-     * No SO generated
-     */
-    private int m_noOrders = 0;
     /**
      * Current Order
      */
@@ -68,87 +33,16 @@ public class ExpenseSOrder extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("DateExpense")) {
-                p_DateFrom = (Timestamp) para[i].getParameter();
-                m_DateTo = (Timestamp) para[i].getParameter_To();
-            } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameter_To() != null)
+                if (name.equals("C_BPartner_ID")) setP_C_BPartner_ID(iProcessInfoParameter.getParameterAsInt());
+                else if (name.equals("DateExpense")) {
+                    setP_DateFrom((Timestamp) iProcessInfoParameter.getParameter());
+                    setM_DateTo((Timestamp) iProcessInfoParameter.getParameter_To());
+                } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare
-
-    /**
-     * Perform process.
-     *
-     * @return Message to be translated
-     * @throws Exception
-     */
-    protected String doIt() throws java.lang.Exception {
-        StringBuilder sql =
-                new StringBuilder("SELECT * FROM S_TimeExpenseLine el ")
-                        .append("WHERE el.AD_Client_ID=?") // 	#1
-                        .append(" AND el.C_BPartner_ID>0 AND el.IsInvoiced='Y'") // 	Business Partner && to be
-                        // invoiced
-                        .append(" AND el.C_OrderLine_ID IS NULL") // 	not invoiced yet
-                        .append(" AND EXISTS (SELECT * FROM S_TimeExpense e ") // 	processed only
-                        .append("WHERE el.S_TimeExpense_ID=e.S_TimeExpense_ID AND e.Processed='Y')");
-        if (p_C_BPartner_ID != 0) sql.append(" AND el.C_BPartner_ID=?"); // 	#2
-        if (p_DateFrom != null || m_DateTo != null) {
-            sql.append(" AND EXISTS (SELECT * FROM S_TimeExpense e ")
-                    .append("WHERE el.S_TimeExpense_ID=e.S_TimeExpense_ID");
-            if (p_DateFrom != null) sql.append(" AND e.DateReport >= ?"); // 	#3
-            if (m_DateTo != null) sql.append(" AND e.DateReport <= ?"); // 	#4
-            sql.append(")");
-        }
-        sql.append(" ORDER BY el.C_BPartner_ID, el.C_Project_ID, el.S_TimeExpense_ID, el.Line");
-
-        //
-        MBPartner oldBPartner = null;
-        int old_Project_ID = -1;
-        MTimeExpense te = null;
-        //
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            int par = 1;
-            pstmt.setInt(par++, getClientId());
-            if (p_C_BPartner_ID != 0) pstmt.setInt(par++, p_C_BPartner_ID);
-            if (p_DateFrom != null) pstmt.setTimestamp(par++, p_DateFrom);
-            if (m_DateTo != null) pstmt.setTimestamp(par++, m_DateTo);
-            rs = pstmt.executeQuery();
-            while (rs.next()) // 	********* Expense Line Loop
-            {
-                MTimeExpenseLine tel = new MTimeExpenseLine(getCtx(), rs);
-                if (!tel.isInvoiced()) continue;
-
-                //	New BPartner - New Order
-                if (oldBPartner == null || oldBPartner.getBusinessPartnerId() != tel.getBusinessPartnerId()) {
-                    completeOrder();
-                    oldBPartner = new MBPartner(getCtx(), tel.getBusinessPartnerId());
-                }
-                //	New Project - New Order
-                if (old_Project_ID != tel.getProjectId()) {
-                    completeOrder();
-                    old_Project_ID = tel.getProjectId();
-                }
-                if (te == null || te.getS_TimeExpense_ID() != tel.getS_TimeExpense_ID())
-                    te = new MTimeExpense(getCtx(), tel.getS_TimeExpense_ID());
-                //
-                processLine(te, tel, oldBPartner);
-            } //	********* Expense Line Loop
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-            rs = null;
-            pstmt = null;
-        }
-        completeOrder();
-        StringBuilder msgreturn = new StringBuilder("@Created@=").append(m_noOrders);
-        return msgreturn.toString();
-    } //	doIt
 
     /**
      * Process Expense Line
@@ -157,7 +51,7 @@ public class ExpenseSOrder extends SvrProcess {
      * @param tel line
      * @param bp  bp
      */
-    private void processLine(MTimeExpense te, MTimeExpenseLine tel, MBPartner bp) {
+    protected void processLine(MTimeExpense te, MTimeExpenseLine tel, MBPartner bp) {
         if (m_order == null) {
             if (log.isLoggable(Level.INFO))
                 log.info("New Order for " + bp + ", Project=" + tel.getProjectId());
@@ -247,7 +141,7 @@ public class ExpenseSOrder extends SvrProcess {
     /**
      * Complete Order
      */
-    private void completeOrder() {
+    protected void completeOrder() {
         if (m_order == null) return;
         m_order.setDocAction(DocAction.Companion.getACTION_Prepare());
         if (!m_order.processIt(DocAction.Companion.getACTION_Prepare())) {
@@ -265,7 +159,7 @@ public class ExpenseSOrder extends SvrProcess {
             throw new IllegalStateException(msglog.toString());
         }
         if (!m_order.save()) throw new IllegalStateException("Cannot save Order");
-        m_noOrders++;
+        setM_noOrders(getM_noOrders() + 1);
         addBufferLog(
                 m_order.getId(),
                 m_order.getDateOrdered(),

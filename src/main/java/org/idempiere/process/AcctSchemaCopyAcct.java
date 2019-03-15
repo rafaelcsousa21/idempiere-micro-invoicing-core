@@ -14,7 +14,11 @@
  */
 package org.idempiere.process;
 
-import org.compiere.accounting.*;
+import org.compiere.accounting.MAccount;
+import org.compiere.accounting.MAcctSchema;
+import org.compiere.accounting.MAcctSchemaDefault;
+import org.compiere.accounting.MAcctSchemaElement;
+import org.compiere.accounting.MAcctSchemaGL;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereSystemError;

@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_DD_Order;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -78,23 +78,13 @@ public class X_DD_Order extends PO implements I_DD_Order {
      */
     public X_DD_Order(Properties ctx, int DD_Order_ID) {
         super(ctx, DD_Order_ID);
-        /**
-         * if (DD_Order_ID == 0) { setBusinessPartnerId (0); setBusinessPartnerLocationId (0); setDocumentTypeId
-         * (0); setDateOrdered (new Timestamp( System.currentTimeMillis() )); // @#Date@ setDatePromised
-         * (new Timestamp( System.currentTimeMillis() )); // @#Date@ setDD_Order_ID (0); setDeliveryRule
-         * (null); // A setDeliveryViaRule (null); // P setDocAction (null); // CO setDocStatus (null);
-         * // DR setDocumentNo (null); setFreightCostRule (null); // I setIsApproved (false);
-         * setIsInDispute (false); setIsInTransit (false); setIsPrinted (false); setIsSOTrx (false);
-         * // @IsSOTrx@ setWarehouseId (0); setPosted (false); setPriorityRule (null); // 5
-         * setProcessed (false); setSendEMail (false); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_DD_Order(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_DD_Order(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -112,8 +102,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_DD_Order[").append(getId()).append("]");
-        return sb.toString();
+        return "X_DD_Order[" + getId() + "]";
     }
 
     /**

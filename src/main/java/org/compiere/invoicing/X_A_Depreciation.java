@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_A_Depreciation;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_A_Depreciation extends BasePOName implements I_A_Depreciation {
     /**
      * Load Constructor
      */
-    public X_A_Depreciation(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_A_Depreciation(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -43,8 +43,7 @@ public class X_A_Depreciation extends BasePOName implements I_A_Depreciation {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_A_Depreciation[").append(getId()).append("]");
-        return sb.toString();
+        return "X_A_Depreciation[" + getId() + "]";
     }
 
     /**

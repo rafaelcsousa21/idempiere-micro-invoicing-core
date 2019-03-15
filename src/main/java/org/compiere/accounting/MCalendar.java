@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Calendar;
 import org.compiere.orm.MClient;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CCache;
 
-import java.sql.ResultSet;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -31,7 +31,6 @@ public class MCalendar extends X_C_Calendar {
      *
      * @param ctx           context
      * @param C_Calendar_ID id
-     * @param trxName       transaction
      */
     public MCalendar(Properties ctx, int C_Calendar_ID) {
         super(ctx, C_Calendar_ID);
@@ -40,12 +39,10 @@ public class MCalendar extends X_C_Calendar {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MCalendar(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MCalendar(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MCalendar
 
     /**
@@ -56,12 +53,10 @@ public class MCalendar extends X_C_Calendar {
     public MCalendar(MClient client) {
         super(client.getCtx(), 0);
         setClientOrg(client);
-        StringBuilder msgset =
-                new StringBuilder()
-                        .append(client.getName())
-                        .append(" ")
-                        .append(Msg.translate(client.getCtx(), "C_Calendar_ID"));
-        setName(msgset.toString());
+        String msgset = client.getName() +
+                " " +
+                Msg.translate(client.getCtx(), "C_Calendar_ID");
+        setName(msgset);
     } //	MCalendar
 
     /**
@@ -72,7 +67,7 @@ public class MCalendar extends X_C_Calendar {
      * @return MCalendar
      */
     public static MCalendar get(Properties ctx, int C_Calendar_ID) {
-        Integer key = new Integer(C_Calendar_ID);
+        Integer key = C_Calendar_ID;
         MCalendar retValue = (MCalendar) s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MCalendar(ctx, C_Calendar_ID);

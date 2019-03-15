@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_RequestProcessor;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -24,8 +24,8 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
     /**
      * Load Constructor
      */
-    public X_R_RequestProcessor(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_RequestProcessor(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +44,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_RequestProcessor[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_RequestProcessor[" + getId() + "]";
     }
 
     /**
@@ -66,7 +65,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      */
     public void setAD_Schedule_ID(int AD_Schedule_ID) {
         if (AD_Schedule_ID < 1) setValue(COLUMNNAME_AD_Schedule_ID, null);
-        else setValue(COLUMNNAME_AD_Schedule_ID, Integer.valueOf(AD_Schedule_ID));
+        else setValue(COLUMNNAME_AD_Schedule_ID, AD_Schedule_ID);
     }
 
     /**

@@ -1,16 +1,12 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Cost Queue Model
@@ -33,7 +29,6 @@ public class MCostQueue extends X_M_CostQueue {
      *
      * @param ctx     context
      * @param ignored multi-key
-     * @param trxName trx
      */
     public MCostQueue(Properties ctx, int ignored) {
         super(ctx, ignored);
@@ -51,12 +46,10 @@ public class MCostQueue extends X_M_CostQueue {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MCostQueue(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MCostQueue(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MCostQueue
 
     /**
@@ -67,7 +60,6 @@ public class MCostQueue extends X_M_CostQueue {
      * @param as                        Acct Schema
      * @param AD_Org_ID                 org
      * @param M_CostElement_ID          cost element
-     * @param trxName                   transaction
      */
     public MCostQueue(
             MProduct product,
@@ -92,7 +84,6 @@ public class MCostQueue extends X_M_CostQueue {
      * @param as                        accounting schema
      * @param AD_Org_ID                 real org
      * @param M_CostElement_ID          element
-     * @param trxName                   transaction
      * @return cost queue or null
      */
     public static MCostQueue get(
@@ -100,42 +91,13 @@ public class MCostQueue extends X_M_CostQueue {
             int M_AttributeSetInstance_ID,
             MAcctSchema as,
             int AD_Org_ID,
-            int M_CostElement_ID,
-            String trxName) {
-        MCostQueue costQ = null;
-        String sql =
-                "SELECT * FROM M_CostQueue "
-                        + "WHERE AD_Client_ID=? AND AD_Org_ID=?"
-                        + " AND M_Product_ID=?"
-                        + " AND M_AttributeSetInstance_ID=?"
-                        + " AND M_CostType_ID=? AND C_AcctSchema_ID=?"
-                        + " AND M_CostElement_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, product.getClientId());
-            pstmt.setInt(2, AD_Org_ID);
-            pstmt.setInt(3, product.getM_Product_ID());
-            pstmt.setInt(4, M_AttributeSetInstance_ID);
-            pstmt.setInt(5, as.getCostTypeId());
-            pstmt.setInt(6, as.getAccountingSchemaId());
-            pstmt.setInt(7, M_CostElement_ID);
-            rs = pstmt.executeQuery();
-            if (rs.next()) costQ = new MCostQueue(product.getCtx(), rs);
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //	New
-        if (costQ == null)
-            costQ =
-                    new MCostQueue(
-                            product, M_AttributeSetInstance_ID, as, AD_Org_ID, M_CostElement_ID);
-        return costQ;
+            int M_CostElement_ID) {
+        return MBaseCostQueueKt.getCreateCostQueueRecord(product,
+                M_AttributeSetInstance_ID,
+                as,
+                AD_Org_ID,
+                M_CostElement_ID
+        );
     } //	get
 
     /**
@@ -146,44 +108,11 @@ public class MCostQueue extends X_M_CostQueue {
      * @param as       accounting schema
      * @param Org_ID   costing level org
      * @param ce       Cost Element
-     * @param trxName  transaction
      * @return cost queue or null
      */
     public static MCostQueue[] getQueue(
             MProduct product, int M_ASI_ID, MAcctSchema as, int Org_ID, MCostElement ce) {
-        ArrayList<MCostQueue> list = new ArrayList<MCostQueue>();
-        StringBuilder sql =
-                new StringBuilder("SELECT * FROM M_CostQueue ")
-                        .append("WHERE AD_Client_ID=? AND AD_Org_ID=?")
-                        .append(" AND M_Product_ID=?")
-                        .append(" AND M_CostType_ID=? AND C_AcctSchema_ID=?")
-                        .append(" AND M_CostElement_ID=?");
-        if (M_ASI_ID != 0) sql.append(" AND M_AttributeSetInstance_ID=?");
-        sql.append(" AND CurrentQty<>0 ").append("ORDER BY M_AttributeSetInstance_ID ");
-        if (!ce.isFifo()) sql.append("DESC");
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, product.getClientId());
-            pstmt.setInt(2, Org_ID);
-            pstmt.setInt(3, product.getM_Product_ID());
-            pstmt.setInt(4, as.getCostTypeId());
-            pstmt.setInt(5, as.getAccountingSchemaId());
-            pstmt.setInt(6, ce.getM_CostElement_ID());
-            if (M_ASI_ID != 0) pstmt.setInt(7, M_ASI_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MCostQueue(product.getCtx(), rs));
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        MCostQueue[] costQ = new MCostQueue[list.size()];
-        list.toArray(costQ);
-        return costQ;
+        return MBaseCostQueueKt.getCostQueueRecordsInLifoFifoOrder(product, M_ASI_ID, as, Org_ID, ce);
     } //	getQueue
 
     /**
@@ -271,7 +200,6 @@ public class MCostQueue extends X_M_CostQueue {
      * @param Org_ID   costing level org
      * @param ce       Cost Element
      * @param Qty      quantity to be reduced
-     * @param trxName  transaction
      * @return cost for qty or null of error
      */
     public static BigDecimal getCosts(

@@ -1,5 +1,7 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.invoicing.MConversionRate;
@@ -8,10 +10,13 @@ import org.compiere.model.IDoc;
 import org.compiere.model.IPODoc;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.model.I_C_Invoice;
-import org.compiere.orm.*;
+import org.compiere.orm.MDocType;
+import org.compiere.orm.MTable;
+import org.compiere.orm.PO;
+import org.compiere.orm.PeriodClosedException;
+import org.compiere.orm.Query;
 import org.compiere.process.CompleteActionResult;
 import org.compiere.process.DocAction;
-import org.compiere.product.MCurrency;
 import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
@@ -20,16 +25,14 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.orm.POKt.I_ZERO;
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.forUpdate;
 
 /**
  * Payment Allocation Model. Allocation Trigger update C_BPartner
@@ -81,7 +84,6 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @param ctx                context
      * @param C_AllocationHdr_ID id
-     * @param trxName            transaction
      */
     public MAllocationHdr(Properties ctx, int C_AllocationHdr_ID) {
         super(ctx, C_AllocationHdr_ID);
@@ -133,12 +135,10 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MAllocationHdr(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAllocationHdr(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MAllocation
 
     /**
@@ -146,33 +146,10 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @param ctx          context
      * @param C_Payment_ID payment
-     * @param trxName      transaction
      * @return allocations of payment
      */
     public static MAllocationHdr[] getOfPayment(Properties ctx, int C_Payment_ID) {
-        String sql =
-                "SELECT * FROM C_AllocationHdr h "
-                        + "WHERE IsActive='Y'"
-                        + " AND EXISTS (SELECT * FROM C_AllocationLine l "
-                        + "WHERE h.C_AllocationHdr_ID=l.C_AllocationHdr_ID AND l.C_Payment_ID=?)";
-        ArrayList<MAllocationHdr> list = new ArrayList<MAllocationHdr>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, C_Payment_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MAllocationHdr(ctx, rs));
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        MAllocationHdr[] retValue = new MAllocationHdr[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseAllocationHdrKt.getAllocationsOfPayment(ctx, C_Payment_ID);
     } //	getOfPayment
 
     /**
@@ -180,33 +157,10 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @param ctx          context
      * @param C_Invoice_ID payment
-     * @param trxName      transaction
      * @return allocations of payment
      */
     public static MAllocationHdr[] getOfInvoice(Properties ctx, int C_Invoice_ID) {
-        String sql =
-                "SELECT * FROM C_AllocationHdr h "
-                        + "WHERE IsActive='Y'"
-                        + " AND EXISTS (SELECT * FROM C_AllocationLine l "
-                        + "WHERE h.C_AllocationHdr_ID=l.C_AllocationHdr_ID AND l.C_Invoice_ID=?)";
-        ArrayList<MAllocationHdr> list = new ArrayList<MAllocationHdr>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, C_Invoice_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MAllocationHdr(ctx, rs));
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        MAllocationHdr[] retValue = new MAllocationHdr[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseAllocationHdrKt.getAllocationsOfInvoice(ctx, C_Invoice_ID);
     } //	getOfInvoice
 
     /**
@@ -214,7 +168,6 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @param ctx       context
      * @param C_Cash_ID Cash ID
-     * @param trxName   transaction
      * @return allocations of payment
      */
     public static MAllocationHdr[] getOfCash(Properties ctx, int C_Cash_ID) {
@@ -237,7 +190,6 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      * @param from     allocation
      * @param dateAcct date of the document accounting date
      * @param dateTrx  date of the document transaction.
-     * @param trxName
      * @return Allocation
      */
     public static MAllocationHdr copyFrom(
@@ -277,30 +229,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         if (m_lines != null && m_lines.length != 0 && !requery) {
             return m_lines;
         }
-        //
-        String sql = "SELECT * FROM C_AllocationLine WHERE C_AllocationHdr_ID=?";
-        ArrayList<MAllocationLine> list = new ArrayList<MAllocationLine>();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_AllocationHdr_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MAllocationLine line = new MAllocationLine(getCtx(), rs);
-                line.setParent(this);
-                list.add(line);
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //
-        m_lines = new MAllocationLine[list.size()];
-        list.toArray(m_lines);
+        m_lines = MBaseAllocationHdrKt.getAllocationLines(getCtx(), getC_AllocationHdr_ID(), this);
         return m_lines;
     } //	getLines
 

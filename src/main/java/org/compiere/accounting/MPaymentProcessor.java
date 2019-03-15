@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_BankAccount;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,7 +24,6 @@ public class MPaymentProcessor extends X_C_PaymentProcessor {
      *
      * @param ctx                   context
      * @param C_PaymentProcessor_ID payment processor
-     * @param trxName               transaction
      */
     public MPaymentProcessor(Properties ctx, int C_PaymentProcessor_ID) {
         super(ctx, C_PaymentProcessor_ID);
@@ -54,12 +53,10 @@ public class MPaymentProcessor extends X_C_PaymentProcessor {
     /**
      * Payment Processor Model
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MPaymentProcessor(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPaymentProcessor(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MPaymentProcessor
 
     /**

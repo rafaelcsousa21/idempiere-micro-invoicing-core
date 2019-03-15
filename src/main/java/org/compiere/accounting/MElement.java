@@ -1,10 +1,10 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.orm.MClient;
 import org.compiere.orm.X_AD_Tree;
 import org.compiere.util.Msg;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -44,12 +44,10 @@ public class MElement extends X_C_Element {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MElement(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MElement(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MElement
 
     /**

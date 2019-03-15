@@ -6,7 +6,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -36,13 +35,9 @@ public class X_C_InvoiceTax extends PO {
     /**
      * Load Constructor
      */
-    public X_C_InvoiceTax(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_C_InvoiceTax(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MInvoiceTax
+    }
 
     /**
      * AccessLevel

@@ -1,11 +1,11 @@
 package org.compiere.conversionrate;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Conversion_Rate;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -27,18 +27,13 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      */
     public X_C_Conversion_Rate(Properties ctx, int C_Conversion_Rate_ID) {
         super(ctx, C_Conversion_Rate_ID);
-        /**
-         * if (C_Conversion_Rate_ID == 0) { setC_Conversion_Rate_ID (0); setConversionTypeId (0);
-         * setCurrencyId (0); setC_Currency_ID_To (0); setDivideRate (Env.ZERO); setMultiplyRate
-         * (Env.ZERO); setValidFrom (new Timestamp( System.currentTimeMillis() )); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_Conversion_Rate(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_Conversion_Rate(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -51,8 +46,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_Conversion_Rate[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_Conversion_Rate[" + getId() + "]";
     }
 
     /**

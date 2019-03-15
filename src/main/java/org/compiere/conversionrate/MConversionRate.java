@@ -1,8 +1,9 @@
 package org.compiere.conversionrate;
 
+import kotliquery.Row;
+import org.compiere.bo.MCurrency;
 import org.compiere.model.I_C_Conversion_Rate;
 import org.compiere.orm.PO;
-import org.compiere.product.MCurrency;
 import org.compiere.util.DisplayType;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
@@ -57,12 +58,10 @@ public class MConversionRate extends X_C_Conversion_Rate {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MConversionRate(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MConversionRate(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MConversionRate
 
     /**

@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_GoalRestriction;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -49,8 +49,8 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
     /**
      * Load Constructor
      */
-    public X_PA_GoalRestriction(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PA_GoalRestriction(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

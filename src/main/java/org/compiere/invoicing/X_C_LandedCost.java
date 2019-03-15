@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_LandedCost;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -53,8 +53,8 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
     /**
      * Load Constructor
      */
-    public X_C_LandedCost(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_LandedCost(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

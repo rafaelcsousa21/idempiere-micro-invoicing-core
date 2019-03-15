@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_StorageReservation;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,17 +26,13 @@ public class X_M_StorageReservation extends PO implements I_M_StorageReservation
      */
     public X_M_StorageReservation(Properties ctx, int M_StorageReservation_ID) {
         super(ctx, M_StorageReservation_ID);
-        /**
-         * if (M_StorageReservation_ID == 0) { setIsSOTrx (true); // Y setM_AttributeSetInstance_ID (0);
-         * setM_Product_ID (0); setWarehouseId (0); setQty (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_StorageReservation(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_StorageReservation(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

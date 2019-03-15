@@ -5,7 +5,6 @@ import org.compiere.model.I_C_AcctSchema_Default;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.KeyNamePair;
 
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -43,10 +42,6 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MAcctSchemaDefault(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MAcctSchemaDefault
-
     public MAcctSchemaDefault(Properties ctx, Row row) {
         super(ctx, row);
     } //	MAcctSchemaDefault

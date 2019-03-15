@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 /**
@@ -35,12 +36,10 @@ public class MPeriodControl extends X_C_PeriodControl {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MPeriodControl(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPeriodControl(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MPeriodControl
 
     /**

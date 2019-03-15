@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_Resolution;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,14 +24,13 @@ public class X_R_Resolution extends BasePOName implements I_R_Resolution {
      */
     public X_R_Resolution(Properties ctx, int R_Resolution_ID) {
         super(ctx, R_Resolution_ID);
-        /** if (R_Resolution_ID == 0) { setName (null); setR_Resolution_ID (0); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_R_Resolution(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_Resolution(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +43,7 @@ public class X_R_Resolution extends BasePOName implements I_R_Resolution {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_Resolution[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_Resolution[" + getId() + "]";
     }
 
     @Override

@@ -1,9 +1,9 @@
 package org.compiere.schedule;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_Scheduler_Para;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,14 +24,13 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para {
      */
     public X_AD_Scheduler_Para(Properties ctx, int AD_Scheduler_Para_ID) {
         super(ctx, AD_Scheduler_Para_ID);
-        /** if (AD_Scheduler_Para_ID == 0) { setAD_Process_Para_ID (0); setAD_Scheduler_ID (0); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_Scheduler_Para(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_Scheduler_Para(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +43,7 @@ public class X_AD_Scheduler_Para extends PO implements I_AD_Scheduler_Para {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_Scheduler_Para[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_Scheduler_Para[" + getId() + "]";
     }
 
     /**

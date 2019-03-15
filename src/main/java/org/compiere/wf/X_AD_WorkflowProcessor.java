@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WorkflowProcessor;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -26,17 +26,13 @@ public class X_AD_WorkflowProcessor extends BasePOName
      */
     public X_AD_WorkflowProcessor(Properties ctx, int AD_WorkflowProcessor_ID) {
         super(ctx, AD_WorkflowProcessor_ID);
-        /**
-         * if (AD_WorkflowProcessor_ID == 0) { setScheduleId (0); setAD_WorkflowProcessor_ID (0);
-         * setKeepLogDays (0); // 7 setName (null); setSupervisorId (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_WorkflowProcessor(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WorkflowProcessor(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -49,8 +45,7 @@ public class X_AD_WorkflowProcessor extends BasePOName
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_WorkflowProcessor[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_WorkflowProcessor[" + getId() + "]";
     }
 
     /**

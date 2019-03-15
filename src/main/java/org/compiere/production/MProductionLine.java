@@ -1,6 +1,11 @@
 package org.compiere.production;
 
-import org.compiere.accounting.*;
+import kotliquery.Row;
+import org.compiere.accounting.MAcctSchema;
+import org.compiere.accounting.MClientInfo;
+import org.compiere.accounting.MCost;
+import org.compiere.accounting.MProduct;
+import org.compiere.accounting.MStorageOnHand;
 import org.compiere.model.I_M_AttributeSet;
 import org.compiere.model.I_M_Cost;
 import org.compiere.model.I_M_ProductionPlan;
@@ -10,13 +15,14 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.executeUpdateEx;
+import static software.hsharp.core.util.DBKt.forUpdate;
+import static software.hsharp.core.util.DBKt.getSQLValueEx;
 
 public class MProductionLine extends X_M_ProductionLine {
     /**
@@ -36,10 +42,7 @@ public class MProductionLine extends X_M_ProductionLine {
         super(ctx, M_ProductionLine_ID);
         if (M_ProductionLine_ID == 0) {
             setLine(0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM M_ProductionLine WHERE
-            // M_Production_ID=@M_Production_ID@
             setM_AttributeSetInstance_ID(0);
-            //			setM_Locator_ID (0);	// @M_Locator_ID@
-            //			setM_Product_ID (0);
             setM_ProductionLine_ID(0);
             setM_Production_ID(0);
             setMovementQty(Env.ZERO);
@@ -47,14 +50,12 @@ public class MProductionLine extends X_M_ProductionLine {
         }
     } // MProductionLine
 
-    public MProductionLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProductionLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProductionLine
 
     /**
      * Parent Constructor
-     *
-     * @param plan
      */
     public MProductionLine(MProduction header) {
         super(header.getCtx(), 0);

@@ -1,8 +1,8 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.orm.MRole;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,6 @@ public class MWorkflowAccess extends X_AD_Workflow_Access {
         super(ctx, 0);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
         else {
-            //	setRoleId (0);
-            //	setAD_Workflow_ID (0);
             setIsReadWrite(true);
         }
     } //	MWorkflowAccess
@@ -38,12 +36,10 @@ public class MWorkflowAccess extends X_AD_Workflow_Access {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWorkflowAccess(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWorkflowAccess(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWorkflowAccess
 
     /**

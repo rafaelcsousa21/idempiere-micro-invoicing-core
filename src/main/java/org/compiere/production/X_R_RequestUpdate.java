@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_RequestUpdate;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -43,8 +43,8 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate {
     /**
      * Load Constructor
      */
-    public X_R_RequestUpdate(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_RequestUpdate(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

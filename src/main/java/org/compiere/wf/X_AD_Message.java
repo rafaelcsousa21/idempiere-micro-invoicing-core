@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_Message;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,18 +24,13 @@ public class X_AD_Message extends PO implements I_AD_Message {
      */
     public X_AD_Message(Properties ctx, int AD_Message_ID) {
         super(ctx, AD_Message_ID);
-        /**
-         * if (AD_Message_ID == 0) { setAD_Message_ID (0); setEntityType (null); // @SQL=select
-         * get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual setMsgText (null); setMsgType (null);
-         * // I setValue (null); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_Message(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_Message(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,8 +43,7 @@ public class X_AD_Message extends PO implements I_AD_Message {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_Message[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_Message[" + getId() + "]";
     }
 
     /**

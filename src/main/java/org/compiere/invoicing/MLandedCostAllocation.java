@@ -1,16 +1,11 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Landed Cost Allocation Model
@@ -33,7 +28,6 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
      *
      * @param ctx                       context
      * @param C_LandedCostAllocation_ID id
-     * @param trxName                   trx
      */
     public MLandedCostAllocation(Properties ctx, int C_LandedCostAllocation_ID) {
         super(ctx, C_LandedCostAllocation_ID);
@@ -48,12 +42,10 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result name
-     * @param trxName trx
+     * @param ctx context
      */
-    public MLandedCostAllocation(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MLandedCostAllocation(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MLandedCostAllocation
 
     /**
@@ -74,30 +66,11 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
      *
      * @param ctx              context
      * @param C_InvoiceLine_ID invoice line
-     * @param trxName          trx
      * @return landed cost alloc
      */
     public static MLandedCostAllocation[] getOfInvoiceLine(
             Properties ctx, int C_InvoiceLine_ID) {
-        ArrayList<MLandedCostAllocation> list = new ArrayList<MLandedCostAllocation>();
-        String sql = "SELECT * FROM C_LandedCostAllocation WHERE C_InvoiceLine_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, C_InvoiceLine_ID);
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MLandedCostAllocation(ctx, rs));
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        MLandedCostAllocation[] retValue = new MLandedCostAllocation[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseLandedCostAllocationKt.getCostAllocationsforInvoiceLine(ctx, C_InvoiceLine_ID);
     } //	getOfInvliceLine
 
     /**

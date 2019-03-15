@@ -1,19 +1,14 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_ProjectType;
 import org.compiere.orm.MRole;
 import org.idempiere.common.util.CCache;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.TO_DATE;
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**
@@ -38,22 +33,18 @@ public class MProjectType extends X_C_ProjectType {
      *
      * @param ctx              context
      * @param C_ProjectType_ID id
-     * @param trxName          trx
      */
     public MProjectType(Properties ctx, int C_ProjectType_ID) {
         super(ctx, C_ProjectType_ID);
-        /** if (C_ProjectType_ID == 0) { setC_ProjectType_ID (0); setName (null); } */
     } //	MProjectType
 
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MProjectType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProjectType(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProjectType
 
     /**
@@ -90,25 +81,7 @@ public class MProjectType extends X_C_ProjectType {
      * @return Array of phases
      */
     public MProjectTypePhase[] getPhases() {
-        ArrayList<MProjectTypePhase> list = new ArrayList<MProjectTypePhase>();
-        String sql = "SELECT * FROM C_Phase WHERE C_ProjectType_ID=? ORDER BY SeqNo";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_ProjectType_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MProjectTypePhase(getCtx(), rs));
-        } catch (SQLException ex) {
-            log.log(Level.SEVERE, sql, ex);
-        } finally {
-            rs = null;
-            pstmt = null;
-        }
-        //
-        MProjectTypePhase[] retValue = new MProjectTypePhase[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseProjectTypeKt.getProjectTypePhases(getCtx(), getC_ProjectType_ID());
     } //	getPhases
 
     /**

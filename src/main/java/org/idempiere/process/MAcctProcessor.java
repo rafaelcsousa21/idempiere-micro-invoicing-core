@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.accounting.MClient;
 import org.compiere.model.AdempiereProcessor;
 import org.compiere.model.AdempiereProcessor2;
 import org.compiere.schedule.MSchedule;
 import org.compiere.util.Msg;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Properties;
@@ -40,12 +40,10 @@ public class MAcctProcessor extends X_C_AcctProcessor
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MAcctProcessor(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAcctProcessor(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MAcctProcessor
 
     /**

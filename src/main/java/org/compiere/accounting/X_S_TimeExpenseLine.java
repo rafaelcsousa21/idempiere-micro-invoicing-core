@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_S_TimeExpenseLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -33,8 +33,8 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
     /**
      * Load Constructor
      */
-    public X_S_TimeExpenseLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_S_TimeExpenseLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

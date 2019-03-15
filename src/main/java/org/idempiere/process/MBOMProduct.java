@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_BOMProduct;
 import org.compiere.orm.Query;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -60,12 +60,10 @@ public class MBOMProduct extends X_M_BOMProduct {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MBOMProduct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MBOMProduct(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MBOMProduct
 
     /**

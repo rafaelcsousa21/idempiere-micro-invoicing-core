@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MConversionRate;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
@@ -45,11 +46,10 @@ public class Doc_AllocationHdr extends Doc {
     /**
      * Constructor
      *
-     * @param as      accounting schema
-     * @param rs      record
-     * @param trxName trx
+     * @param as accounting schema
+     * @param rs record
      */
-    public Doc_AllocationHdr(MAcctSchema as, ResultSet rs) {
+    public Doc_AllocationHdr(MAcctSchema as, Row rs) {
         super(as, MAllocationHdr.class, rs, DOCTYPE_Allocation);
     } //  Doc_Allocation
 
@@ -544,7 +544,6 @@ public class Doc_AllocationHdr extends Doc {
     /**
      * Compare the dimension ID's from two factlines
      *
-     * @param allEquals
      * @param prevFactLine
      * @param factLine
      * @return boolean indicating if both dimension ID's are equal
@@ -873,43 +872,21 @@ public class Doc_AllocationHdr extends Doc {
             boolean isSOTrx) {
         if (log.isLoggable(Level.INFO)) log.info(line.toString());
         BigDecimal discount = Env.ZERO;
-        if (as.isTaxCorrectionDiscount()) discount = line.getDiscountAmt();
+        if (as.isTaxCorrectionDiscount())
+            discount = line.getDiscountAmt();
         BigDecimal writeOff = Env.ZERO;
-        if (as.isTaxCorrectionWriteOff()) writeOff = line.getWriteOffAmt();
+        if (as.isTaxCorrectionWriteOff())
+            writeOff = line.getWriteOffAmt();
 
-        Doc_AllocationTax tax =
-                new Doc_AllocationTax(DiscountAccount, discount, WriteOffAccoint, writeOff, isSOTrx);
+        Doc_AllocationTax tax = new Doc_AllocationTax(
+                DiscountAccount, discount, WriteOffAccoint, writeOff, isSOTrx);
 
-        //	Get Source Amounts with account
-        String sql =
-                "SELECT * "
-                        + "FROM Fact_Acct "
-                        + "WHERE AD_Table_ID=318 AND Record_ID=?" //	Invoice
-                        + " AND C_AcctSchema_ID=?"
-                        + " AND Line_ID IS NULL"; //	header lines like tax or total
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, line.getInvoiceId());
-            pstmt.setInt(2, as.getAccountingSchemaId());
-            rs = pstmt.executeQuery();
-            while (rs.next()) tax.addInvoiceFact(new MFactAcct(getCtx(), rs));
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-        //	Invoice Not posted
-        if (tax.getLineCount() == 0) {
-            log.warning("Invoice not posted yet - " + line);
-            return false;
-        }
-        //	size = 1 if no tax
-        if (tax.getLineCount() < 2) return true;
-        return tax.createEntries(as, fact, line);
+        return BasePostAllocationDocumentsKt.createTaxCorrection(getCtx(), as,
+                fact,
+                line,
+                DiscountAccount,
+                WriteOffAccoint,
+                isSOTrx, tax);
     } //	createTaxCorrection
 } //  Doc_Allocation
 
@@ -919,7 +896,7 @@ public class Doc_AllocationHdr extends Doc {
  * @author Jorg Janke
  * @version $Id: Doc_Allocation.java,v 1.6 2006/07/30 00:53:33 jjanke Exp $
  */
-class Doc_AllocationTax {
+class Doc_AllocationTax implements DocAllocationTax {
     private CLogger log = CLogger.getCLogger(getClass());
     private MAccount m_DiscountAccount;
     private BigDecimal m_DiscountAmt;

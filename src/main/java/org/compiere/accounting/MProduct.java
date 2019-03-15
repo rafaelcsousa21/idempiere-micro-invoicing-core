@@ -17,7 +17,6 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -60,10 +59,6 @@ public class MProduct extends org.compiere.product.MProduct {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MProduct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    } //	MProduct
-
     public MProduct(Properties ctx, Row row) {
         super(ctx, row);
     } //	MProduct
@@ -318,7 +313,7 @@ public class MProduct extends org.compiere.product.MProduct {
         if (ce == null) {
             return null;
         }
-        MCost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getM_CostElement_ID(), null);
+        MCost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getM_CostElement_ID());
         return cost.isNew() ? null : cost;
     }
 

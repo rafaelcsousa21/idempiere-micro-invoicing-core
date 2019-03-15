@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_StatusCategory;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_R_StatusCategory extends BasePOName implements I_R_StatusCategory
     /**
      * Load Constructor
      */
-    public X_R_StatusCategory(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_StatusCategory(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -43,8 +43,7 @@ public class X_R_StatusCategory extends BasePOName implements I_R_StatusCategory
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_StatusCategory[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_StatusCategory[" + getId() + "]";
     }
 
     /**
@@ -53,7 +52,7 @@ public class X_R_StatusCategory extends BasePOName implements I_R_StatusCategory
      * @param IsDefault Default value
      */
     public void setIsDefault(boolean IsDefault) {
-        setValue(COLUMNNAME_IsDefault, Boolean.valueOf(IsDefault));
+        setValue(COLUMNNAME_IsDefault, IsDefault);
     }
 
     /**

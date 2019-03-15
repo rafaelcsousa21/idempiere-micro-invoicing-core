@@ -1,6 +1,7 @@
 package org.compiere.production;
 
-import java.sql.ResultSet;
+import kotliquery.Row;
+
 import java.util.Properties;
 
 public class MQualityTest extends X_M_QualityTest {
@@ -14,8 +15,8 @@ public class MQualityTest extends X_M_QualityTest {
         super(ctx, M_QualityTest_ID);
     }
 
-    public MQualityTest(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MQualityTest(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public MQualityTestResult createResult(int m_attributesetinstance_id) {

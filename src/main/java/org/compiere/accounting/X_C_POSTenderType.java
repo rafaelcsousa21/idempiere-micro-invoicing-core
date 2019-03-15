@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_POSTenderType;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_C_POSTenderType extends BasePONameValue implements I_C_POSTenderT
     /**
      * Load Constructor
      */
-    public X_C_POSTenderType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_POSTenderType(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -49,8 +49,7 @@ public class X_C_POSTenderType extends BasePONameValue implements I_C_POSTenderT
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_POSTenderType[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_POSTenderType[" + getId() + "]";
     }
 
     /**

@@ -1,11 +1,11 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_Goal;
 import org.compiere.orm.BasePOName;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -84,8 +84,8 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
     /**
      * Load Constructor
      */
-    public X_PA_Goal(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PA_Goal(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.I_C_PaymentAllocate;
 import org.compiere.orm.MTable;
@@ -8,7 +9,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -55,8 +55,8 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      * @param rs      result set
      * @param trxName trx
      */
-    public MPaymentAllocate(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPaymentAllocate(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MPaymentAllocate
 
     /**

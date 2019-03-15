@@ -1,20 +1,19 @@
 package org.compiere.invoicing.test
 
-import company.bigger.test.support.randomString
-import org.compiere.accounting.*
 import org.compiere.accounting.MProduct
-import org.compiere.crm.*
+import org.compiere.accounting.MStorageOnHand
+import org.compiere.accounting.MOrder
+import org.compiere.accounting.MOrderLine
+import org.compiere.accounting.MPayment
 import org.compiere.invoicing.MInOut
 import org.compiere.invoicing.MInOutLine
 import org.compiere.invoicing.MInvoice
-import org.compiere.model.*
 import org.compiere.order.X_M_InOut
 import org.compiere.orm.DefaultModelFactory
 import org.compiere.orm.IModelFactory
 import org.compiere.orm.MDocType
 import org.compiere.process.DocAction
 import org.compiere.process.ProcessInfo
-import org.compiere.product.*
 import org.compiere.production.MLocator
 import org.compiere.production.MProduction
 import org.idempiere.common.util.Env
@@ -28,7 +27,30 @@ import java.math.BigDecimal
 import java.sql.Date
 import java.sql.Timestamp
 import java.time.Instant
-import kotlin.test.*
+import org.compiere.crm.MBPartner
+import org.compiere.crm.MCountry
+import org.compiere.crm.MRegion
+import org.compiere.crm.MLocation
+import org.compiere.crm.MBPartnerLocation
+import org.compiere.model.I_M_PriceList
+import org.compiere.model.I_M_Product
+import org.compiere.model.I_M_PriceList_Version
+import org.compiere.model.I_M_InOut
+import org.compiere.model.I_M_InOutLine
+import org.compiere.model.I_C_BPartner
+import org.compiere.model.I_C_Invoice
+import org.compiere.model.I_C_Payment
+import org.compiere.model.I_M_Production
+import org.compiere.product.MProductBOM
+import org.compiere.product.MPriceList
+import org.compiere.product.MPriceListVersion
+import org.compiere.product.MDiscountSchema
+import org.compiere.product.MProductPrice
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+import kotlin.test.fail
 
 data class InvoiceImportantTestAttributes(
     val grandTotal: BigDecimal,
@@ -79,7 +101,7 @@ class InvoiceTest : BaseComponentTest() {
                 return salesPriceList
             }
 
-            // make sure the pricelist is there
+            // make sure the price list is there
             _salesPriceList = MPriceList.getDefault(ctx, true) ?: createSalesPriceList()
 
             fun createSalesPriceListVersion(): MPriceListVersion {
@@ -99,7 +121,7 @@ class InvoiceTest : BaseComponentTest() {
             val product: MProduct = createAProduct(MAT + randomString(5), I_M_Product.PRODUCTTYPE_Item) as MProduct
             _testProduct = product
 
-            // put the product on the pricelist
+            // put the product on the price list
             val currentPriceListVersion = salesPriceList.getPriceListVersion(now) ?: createSalesPriceListVersion()
             val price = 1.toBigDecimal()
             val productPrice = MProductPrice(currentPriceListVersion, product.id, price, price, price)
@@ -138,9 +160,9 @@ class InvoiceTest : BaseComponentTest() {
     private fun createBPartner(): I_C_BPartner {
         val newPartner = MBPartner.getTemplate(ctx, AD_CLIENT_ID)
         val name = "Test " + randomString(10)
-        newPartner.setName(name)
+        newPartner.name = name
         val value = "t-" + randomString(5)
-        newPartner.setSearchKey(value)
+        newPartner.searchKey = value
         newPartner.save()
 
         val defaultCountry = MCountry.getDefault(ctx)
@@ -158,11 +180,11 @@ class InvoiceTest : BaseComponentTest() {
     fun `get invoice by id`() {
         DB.run {
             loginClient(11)
-            val invoice_id = 106
+            val invoiceId = 106
 
-            val invoice: MInvoice = getById(invoice_id, I_C_Invoice.Table_Name)
+            val invoice: MInvoice = getById(invoiceId, I_C_Invoice.Table_Name)
             assertNotNull(invoice)
-            assertEquals(invoice_id, invoice.id)
+            assertEquals(invoiceId, invoice.id)
             val lines = invoice.lines
             assertNotNull(lines)
             assertEquals(6, lines.count())
@@ -304,7 +326,7 @@ class InvoiceTest : BaseComponentTest() {
             innerProduct.line = 10
             innerProduct.save()
 
-            // put the product on the pricelist
+            // put the product on the price list
             val currentPriceListVersion = salesPriceList.getPriceListVersion(now)!!
             val price = 11.0.toBigDecimal()
             val productPrice = MProductPrice(currentPriceListVersion, bomProduct.id, price, price, price)
@@ -338,12 +360,12 @@ class InvoiceTest : BaseComponentTest() {
     }
 
     @Test
-    fun `create invoice from order (on credit) without pricelist should fail`() {
+    fun `create invoice from order (on credit) without price list should fail`() {
         DB.run {
             val product = createAProduct("Other 1-" + randomString(5), I_M_Product.PRODUCTTYPE_Item)
             try {
                 createInvoiceFromOrder(1000033, product.id, BigDecimal("1.10")) {}
-                fail("Invoice was created for a product not on a pricelist")
+                fail("Invoice was created for a product not on a price list")
             } catch (e: Exception) {
             }
         }
@@ -366,11 +388,11 @@ class InvoiceTest : BaseComponentTest() {
         }
     }
 
-    fun `should have specific no of material movements after all runs`() {
+    private fun `should have specific no of material movements after all runs`() {
         if (index == 3) {
-            "/sql/recent_material_movements.sql".asResource {
+            "/sql/recent_material_movements.sql".asResource { sql ->
                 val loadQuery =
-                    queryOf(it, listOf())
+                    queryOf(sql, listOf())
                         .map { row ->
                             MaterialMovementImportantTestAttributes(
                                 row.string("pro_name"), row.sqlDate("move_date"),

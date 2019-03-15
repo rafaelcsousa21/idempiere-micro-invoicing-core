@@ -1,15 +1,11 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_Message;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**
@@ -38,7 +34,6 @@ public class MMessage extends X_AD_Message {
      *
      * @param ctx           context
      * @param AD_Message_ID id
-     * @param trxName       transaction
      */
     public MMessage(Properties ctx, int AD_Message_ID) {
         super(ctx, AD_Message_ID);
@@ -47,12 +42,10 @@ public class MMessage extends X_AD_Message {
     /**
      * Load Cosntructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MMessage(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MMessage(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MMessage
 
     /**
@@ -67,21 +60,7 @@ public class MMessage extends X_AD_Message {
         MMessage retValue = (MMessage) s_cache.get(Value);
         //
         if (retValue == null) {
-            String sql = "SELECT * FROM AD_Message WHERE Value=?";
-            PreparedStatement pstmt = null;
-            ResultSet rs = null;
-            try {
-                pstmt = prepareStatement(sql);
-                pstmt.setString(1, Value);
-                rs = pstmt.executeQuery();
-                if (rs.next()) retValue = new MMessage(ctx, rs);
-            } catch (Exception e) {
-                s_log.log(Level.SEVERE, "get", e);
-            } finally {
-
-                rs = null;
-                pstmt = null;
-            }
+            retValue = MBaseMessageKt.getMessage(ctx, Value);
             if (retValue != null) s_cache.put(Value, retValue);
         }
         return retValue;

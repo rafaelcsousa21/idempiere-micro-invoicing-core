@@ -1,12 +1,16 @@
 package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
-import org.compiere.invoicing.*;
+import org.compiere.bo.MCurrency;
+import org.compiere.invoicing.MInOut;
+import org.compiere.invoicing.MInOutLine;
+import org.compiere.invoicing.MInvoice;
+import org.compiere.invoicing.MInvoiceLine;
+import org.compiere.invoicing.MInvoicePaySchedule;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.order.MOrderPaySchedule;
 import org.compiere.orm.PO;
 import org.compiere.process.SvrProcess;
-import org.compiere.product.MCurrency;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;

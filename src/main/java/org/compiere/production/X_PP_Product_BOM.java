@@ -1,12 +1,12 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.HasName;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.eevolution.model.I_PP_Product_BOM;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -28,17 +28,13 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      */
     public X_PP_Product_BOM(Properties ctx, int PP_Product_BOM_ID) {
         super(ctx, PP_Product_BOM_ID);
-        /**
-         * if (PP_Product_BOM_ID == 0) { setM_Product_ID (0); setName (null); setPP_Product_BOM_ID (0);
-         * setValidFrom (new Timestamp( System.currentTimeMillis() )); // @#Date@ setValue (null); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_PP_Product_BOM(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PP_Product_BOM(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -51,8 +47,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_PP_Product_BOM[").append(getId()).append("]");
-        return sb.toString();
+        return "X_PP_Product_BOM[" + getId() + "]";
     }
 
     /**

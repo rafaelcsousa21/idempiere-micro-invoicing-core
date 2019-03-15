@@ -1,11 +1,11 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.orm.Query;
 import org.compiere.process.DocAction;
 import org.idempiere.common.util.Env;
 import org.idempiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -55,12 +55,10 @@ public class MWFNodeNext extends X_AD_WF_NodeNext {
     /**
      * Default Constructor
      *
-     * @param ctx     context
-     * @param rs      result set to load info from
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MWFNodeNext(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MWFNodeNext(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MWFNodeNext
 
     /**

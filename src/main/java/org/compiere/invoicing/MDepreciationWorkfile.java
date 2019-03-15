@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.apache.commons.collections.keyvalue.MultiKey;
 import org.compiere.model.I_A_Depreciation_Workfile;
 import org.compiere.model.SetGetModel;
@@ -12,7 +13,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Properties;
@@ -77,10 +77,9 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * Load Constructor
      *
      * @param ctx context
-     * @param rs  result set
      */
-    public MDepreciationWorkfile(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDepreciationWorkfile(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MDepreciationWorkfile
 
     /**

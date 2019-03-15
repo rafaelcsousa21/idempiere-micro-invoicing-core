@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Product_Acct;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_M_Product_Acct extends PO implements I_M_Product_Acct {
@@ -18,20 +18,13 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct {
      */
     public X_M_Product_Acct(Properties ctx, int M_Product_Acct_ID) {
         super(ctx, M_Product_Acct_ID);
-        /**
-         * if (M_Product_Acct_ID == 0) { setAccountingSchemaId (0); setM_Product_ID (0); setP_Asset_Acct
-         * (0); setP_COGS_Acct (0); setP_CostAdjustment_Acct (0); setP_Expense_Acct (0);
-         * setP_InventoryClearing_Acct (0); setP_InvoicePriceVariance_Acct (0);
-         * setP_PurchasePriceVariance_Acct (0); setP_RateVariance_Acct (0); setP_Revenue_Acct (0);
-         * setP_TradeDiscountGrant_Acct (0); setP_TradeDiscountRec_Acct (0); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_Product_Acct(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_Product_Acct(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -50,8 +43,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Product_Acct[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Product_Acct[" + getId() + "]";
     }
 
     /**
@@ -60,7 +52,7 @@ public class X_M_Product_Acct extends PO implements I_M_Product_Acct {
      * @param P_Expense_Acct Account for Product Expense
      */
     public void setP_Expense_Acct(int P_Expense_Acct) {
-        setValue(COLUMNNAME_P_Expense_Acct, Integer.valueOf(P_Expense_Acct));
+        setValue(COLUMNNAME_P_Expense_Acct, P_Expense_Acct);
     }
 
     /**

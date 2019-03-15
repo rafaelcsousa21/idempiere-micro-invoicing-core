@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_Category;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,14 +24,13 @@ public class X_R_Category extends BasePOName implements I_R_Category {
      */
     public X_R_Category(Properties ctx, int R_Category_ID) {
         super(ctx, R_Category_ID);
-        /** if (R_Category_ID == 0) { setName (null); setR_Category_ID (0); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_R_Category(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_R_Category(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +43,7 @@ public class X_R_Category extends BasePOName implements I_R_Category {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_R_Category[").append(getId()).append("]");
-        return sb.toString();
+        return "X_R_Category[" + getId() + "]";
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.crm.MUser;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
@@ -18,7 +19,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -56,7 +56,6 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @param ctx              context
      * @param S_TimeExpense_ID id
-     * @param trxName          transaction
      */
     public MTimeExpense(Properties ctx, int S_TimeExpense_ID) {
         super(ctx, S_TimeExpense_ID);
@@ -75,12 +74,10 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MTimeExpense(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MTimeExpense(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MTimeExpense
 
     /**
@@ -94,30 +91,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             return m_lines;
         }
         //
-        int C_Currency_ID = getCurrencyId();
-        ArrayList<MTimeExpenseLine> list = new ArrayList<MTimeExpenseLine>();
-        //
-        String sql = "SELECT * FROM S_TimeExpenseLine WHERE S_TimeExpense_ID=? ORDER BY Line";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getS_TimeExpense_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                MTimeExpenseLine te = new MTimeExpenseLine(getCtx(), rs);
-                te.setC_Currency_Report_ID(C_Currency_ID);
-                list.add(te);
-            }
-        } catch (SQLException ex) {
-            log.log(Level.SEVERE, "getLines", ex);
-        } finally {
-            rs = null;
-            pstmt = null;
-        }
-        //
-        m_lines = new MTimeExpenseLine[list.size()];
-        list.toArray(m_lines);
+        m_lines = MBaseTimeExpenseKt.getBaseExpenseLines(getCtx(), getS_TimeExpense_ID(), getCurrencyId());
         return m_lines;
     } //	getLines
 

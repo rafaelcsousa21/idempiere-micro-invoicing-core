@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_A_Depreciation_Entry;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -50,8 +50,8 @@ public class X_A_Depreciation_Entry extends PO implements I_A_Depreciation_Entry
     /**
      * Load Constructor
      */
-    public X_A_Depreciation_Entry(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_A_Depreciation_Entry(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

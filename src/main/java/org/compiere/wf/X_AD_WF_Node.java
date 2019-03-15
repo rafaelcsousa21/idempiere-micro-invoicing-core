@@ -1,11 +1,11 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_Node;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -126,8 +126,8 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
     /**
      * Load Constructor
      */
-    public X_AD_WF_Node(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WF_Node(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

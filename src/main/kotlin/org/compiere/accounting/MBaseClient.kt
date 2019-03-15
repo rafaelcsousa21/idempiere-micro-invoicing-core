@@ -7,13 +7,11 @@ import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.TO_STRING
 import software.hsharp.core.util.queryOf
-import java.sql.ResultSet
 import java.util.Properties
 import java.util.logging.Level
 
 open class MBaseClient : org.compiere.orm.MClient {
     constructor(ctx: Properties, ID: Int) : super(ctx, ID)
-    constructor (ctx: Properties, rs: ResultSet) : super(ctx, rs)
     constructor(ctx: Properties, rs: Row) : super(ctx, rs)
     constructor(ctx: Properties, clientId: Int, createNew: Boolean) : super(ctx, clientId, createNew)
 

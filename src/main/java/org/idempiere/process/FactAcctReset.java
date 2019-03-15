@@ -14,7 +14,18 @@
  */
 package org.idempiere.process;
 
-import org.compiere.accounting.*;
+import org.compiere.accounting.MAcctSchema;
+import org.compiere.accounting.MAllocationHdr;
+import org.compiere.accounting.MBankStatement;
+import org.compiere.accounting.MCash;
+import org.compiere.accounting.MClient;
+import org.compiere.accounting.MJournal;
+import org.compiere.accounting.MMatchInv;
+import org.compiere.accounting.MMatchPO;
+import org.compiere.accounting.MOrder;
+import org.compiere.accounting.MPayment;
+import org.compiere.accounting.MPeriodControl;
+import org.compiere.accounting.MRequisition;
 import org.compiere.invoicing.MInventory;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IProcessInfoParameter;
@@ -32,7 +43,9 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.*;
+import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.executeUpdate;
+import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Accounting Fact Reset

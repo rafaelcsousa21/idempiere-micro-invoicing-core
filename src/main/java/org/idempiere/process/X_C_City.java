@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_City;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_C_City extends BasePOName implements I_C_City {
@@ -18,14 +18,13 @@ public class X_C_City extends BasePOName implements I_C_City {
      */
     public X_C_City(Properties ctx, int C_City_ID) {
         super(ctx, C_City_ID);
-        /** if (C_City_ID == 0) { setC_City_ID (0); setName (null); } */
     }
 
     /**
      * Load Constructor
      */
-    public X_C_City(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_City(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +43,7 @@ public class X_C_City extends BasePOName implements I_C_City {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_City[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_City[" + getId() + "]";
     }
 
     /**

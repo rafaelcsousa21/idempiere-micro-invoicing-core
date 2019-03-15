@@ -1,9 +1,9 @@
 package org.compiere.schedule;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_Scheduler;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -30,8 +30,8 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
     /**
      * Load Constructor
      */
-    public X_AD_Scheduler(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_Scheduler(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -44,8 +44,7 @@ public class X_AD_Scheduler extends BasePOName implements I_AD_Scheduler {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_Scheduler[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_Scheduler[" + getId() + "]";
     }
 
     /**

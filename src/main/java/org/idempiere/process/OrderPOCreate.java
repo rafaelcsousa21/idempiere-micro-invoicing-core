@@ -1,17 +1,3 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
 import org.compiere.accounting.MOrder;
@@ -139,33 +125,16 @@ public class OrderPOCreate extends SvrProcess {
             else if (p_DateOrdered_From == null && p_DateOrdered_To != null)
                 sql.append("AND TRUNC(o.DateOrdered) <= ?");
         }
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
         int counter = 0;
-        try {
-            pstmt = prepareStatement(sql.toString());
-            if (p_C_Order_ID != 0) pstmt.setInt(1, p_C_Order_ID);
-            else {
-                int index = 1;
-                if (p_C_BPartner_ID != 0) pstmt.setInt(index++, p_C_BPartner_ID);
-                if (p_Vendor_ID != 0) pstmt.setInt(index++, p_Vendor_ID);
-                if (p_DateOrdered_From != null && p_DateOrdered_To != null) {
-                    pstmt.setTimestamp(index++, p_DateOrdered_From);
-                    pstmt.setTimestamp(index++, p_DateOrdered_To);
-                } else if (p_DateOrdered_From != null && p_DateOrdered_To == null)
-                    pstmt.setTimestamp(index++, p_DateOrdered_From);
-                else if (p_DateOrdered_From == null && p_DateOrdered_To != null)
-                    pstmt.setTimestamp(index++, p_DateOrdered_To);
-            }
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                counter += createPOFromSO(new MOrder(getCtx(), rs));
-            }
-        } finally {
 
-            rs = null;
-            pstmt = null;
+        MOrder[] orders = BaseOrderPOCreateKt.getOrdersForPO(getCtx(), sql.toString(),
+                p_C_Order_ID, p_C_BPartner_ID, p_Vendor_ID,
+                p_DateOrdered_From, p_DateOrdered_To
+        );
+        for(MOrder order : orders) {
+            counter += createPOFromSO(order);
         }
+
         if (counter == 0) if (log.isLoggable(Level.FINE)) log.fine(sql.toString());
         StringBuilder msgreturn = new StringBuilder("@Created@ ").append(counter);
         return msgreturn.toString();

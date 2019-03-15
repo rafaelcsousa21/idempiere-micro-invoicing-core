@@ -1,10 +1,10 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_ElementValue;
 import org.compiere.orm.BasePONameValue;
 import org.compiere.orm.MTable;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -50,8 +50,8 @@ public class X_C_ElementValue extends BasePONameValue implements I_C_ElementValu
     /**
      * Load Constructor
      */
-    public X_C_ElementValue(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_C_ElementValue(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

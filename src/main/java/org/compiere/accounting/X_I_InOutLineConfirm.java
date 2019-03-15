@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_I_InOutLineConfirm;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
@@ -20,18 +20,13 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
      */
     public X_I_InOutLineConfirm(Properties ctx, int I_InOutLineConfirm_ID) {
         super(ctx, I_InOutLineConfirm_ID);
-        /**
-         * if (I_InOutLineConfirm_ID == 0) { setConfirmationNo (null); setConfirmedQty (Env.ZERO);
-         * setDifferenceQty (Env.ZERO); setI_InOutLineConfirm_ID (0); setI_IsImported (false);
-         * setM_InOutLineConfirm_ID (0); setScrappedQty (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_I_InOutLineConfirm(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_I_InOutLineConfirm(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -49,8 +44,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_I_InOutLineConfirm[").append(getId()).append("]");
-        return sb.toString();
+        return "X_I_InOutLineConfirm[" + getId() + "]";
     }
 
     /**

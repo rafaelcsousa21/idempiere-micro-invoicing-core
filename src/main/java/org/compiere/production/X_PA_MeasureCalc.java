@@ -1,9 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_MeasureCalc;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,7 +24,7 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc {
      */
     public X_PA_MeasureCalc(Properties ctx, int PA_MeasureCalc_ID) {
         super(ctx, PA_MeasureCalc_ID);
-        /**
+        /*
          * if (PA_MeasureCalc_ID == 0) { setColumnTableId (0); setDateColumn (null); // x.Date
          * setEntityType (null); // @SQL=select get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual
          * setKeyColumn (null); setName (null); setOrgColumn (null); // x.orgId setPA_MeasureCalc_ID
@@ -35,8 +35,8 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc {
     /**
      * Load Constructor
      */
-    public X_PA_MeasureCalc(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_PA_MeasureCalc(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

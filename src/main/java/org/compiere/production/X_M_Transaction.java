@@ -5,7 +5,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -60,13 +59,6 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
          * setMovementDate (new Timestamp( System.currentTimeMillis() )); setMovementQty (Env.ZERO);
          * setMovementType (null); setM_Product_ID (0); setM_Transaction_ID (0); }
          */
-    }
-
-    /**
-     * Load Constructor
-     */
-    public X_M_Transaction(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
     }
 
     /**

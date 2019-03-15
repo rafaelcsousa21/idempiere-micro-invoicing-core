@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_GL_DistributionLine;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -40,8 +40,8 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
     /**
      * Load Constructor
      */
-    public X_GL_DistributionLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_GL_DistributionLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

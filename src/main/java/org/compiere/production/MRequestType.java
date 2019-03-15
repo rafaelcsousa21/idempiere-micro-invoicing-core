@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_R_RequestType;
 import org.compiere.orm.MRole;
 import org.compiere.orm.Query;
@@ -81,8 +82,8 @@ public class MRequestType extends X_R_RequestType {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MRequestType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequestType(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequestType
 
     /**
@@ -93,7 +94,7 @@ public class MRequestType extends X_R_RequestType {
      * @return Request Type
      */
     public static MRequestType get(Properties ctx, int R_RequestType_ID) {
-        Integer key = new Integer(R_RequestType_ID);
+        Integer key = R_RequestType_ID;
         MRequestType retValue = (MRequestType) s_cache.get(key);
         if (retValue == null) {
             retValue = new MRequestType(ctx, R_RequestType_ID);

@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_Activity;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -47,8 +47,8 @@ public class X_AD_WF_Activity extends PO implements I_AD_WF_Activity {
     /**
      * Load Constructor
      */
-    public X_AD_WF_Activity(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WF_Activity(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**

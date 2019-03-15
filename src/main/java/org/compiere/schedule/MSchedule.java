@@ -2,12 +2,12 @@ package org.compiere.schedule;
 
 import it.sauronsoftware.cron4j.Predictor;
 import it.sauronsoftware.cron4j.SchedulingPattern;
+import kotliquery.Row;
 import org.compiere.model.I_AD_Schedule;
 import org.idempiere.common.util.CCache;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.sql.ResultSet;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -34,12 +34,10 @@ public class MSchedule extends X_AD_Schedule {
 
     public MSchedule(Properties ctx, int AD_Schedule_ID) {
         super(ctx, AD_Schedule_ID);
-        // TODO Auto-generated constructor stub
     }
 
-    public MSchedule(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-        // TODO Auto-generated constructor stub
+    public MSchedule(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public static MSchedule get(Properties ctx, int AD_Schedule_ID) {

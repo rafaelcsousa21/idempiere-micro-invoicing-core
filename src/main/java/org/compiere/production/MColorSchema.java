@@ -1,10 +1,10 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_PA_ColorSchema;
 import org.idempiere.common.util.CCache;
 
 import java.awt.*;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -33,24 +33,15 @@ public class MColorSchema extends X_PA_ColorSchema {
      */
     public MColorSchema(Properties ctx, int PA_ColorSchema_ID) {
         super(ctx, PA_ColorSchema_ID);
-        if (PA_ColorSchema_ID == 0) {
-            //	setName (null);
-            //	setMark1Percent (50);
-            //	setAD_PrintColor1_ID (102);		//	red
-            //	setMark2Percent (100);
-            //	setAD_PrintColor2_ID (113);		//	yellow
-        }
     } //	MColorSchema
 
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MColorSchema(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MColorSchema(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MColorSchema
 
     /**

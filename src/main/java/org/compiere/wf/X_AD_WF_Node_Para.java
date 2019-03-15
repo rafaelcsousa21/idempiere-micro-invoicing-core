@@ -1,9 +1,9 @@
 package org.compiere.wf;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_WF_Node_Para;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -24,7 +24,7 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para {
      */
     public X_AD_WF_Node_Para(Properties ctx, int AD_WF_Node_Para_ID) {
         super(ctx, AD_WF_Node_Para_ID);
-        /**
+        /*
          * if (AD_WF_Node_Para_ID == 0) { setAD_WF_Node_ID (0); // @1|AD_WF_Node_ID@
          * setAD_WF_Node_Para_ID (0); setEntityType (null); // @SQL=select
          * get_sysconfig('DEFAULT_ENTITYTYPE','U',0,0) from dual }
@@ -34,8 +34,8 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para {
     /**
      * Load Constructor
      */
-    public X_AD_WF_Node_Para(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_WF_Node_Para(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -48,8 +48,7 @@ public class X_AD_WF_Node_Para extends PO implements I_AD_WF_Node_Para {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_WF_Node_Para[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_WF_Node_Para[" + getId() + "]";
     }
 
     /**

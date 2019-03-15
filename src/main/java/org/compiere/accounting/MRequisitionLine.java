@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.IDocLine;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_RequisitionLine;
@@ -11,7 +12,6 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
@@ -69,12 +69,10 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
+     * @param ctx context
      */
-    public MRequisitionLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequisitionLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequisitionLine
 
     /**
@@ -94,8 +92,6 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * Get corresponding Requisition Line for given Order Line
      *
      * @param ctx
-     * @param C_OrderLine_ID order line
-     * @param trxName
      * @return Requisition Line
      */
     public static MRequisitionLine[] forC_Order_ID(Properties ctx, int C_Order_ID) {

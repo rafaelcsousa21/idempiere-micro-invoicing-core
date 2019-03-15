@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_M_Warehouse;
 import org.compiere.orm.BasePONameValue;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -30,13 +29,9 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse {
     /**
      * Load Constructor
      */
-    public X_M_Warehouse(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_M_Warehouse(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MWarehouse
+    }
 
     /**
      * AccessLevel

@@ -1,12 +1,12 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_MovementLineMA;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -22,7 +22,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
      */
     public X_M_MovementLineMA(Properties ctx, int M_MovementLineMA_ID) {
         super(ctx, M_MovementLineMA_ID);
-        /**
+        /*
          * if (M_MovementLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setM_MovementLine_ID (0); }
          */
     }
@@ -30,8 +30,8 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
     /**
      * Load Constructor
      */
-    public X_M_MovementLineMA(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_MovementLineMA(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -50,8 +50,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_MovementLineMA[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_MovementLineMA[" + getId() + "]";
     }
 
     /**

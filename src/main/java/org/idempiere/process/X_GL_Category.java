@@ -1,9 +1,9 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_GL_Category;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 public class X_GL_Category extends BasePOName implements I_GL_Category {
@@ -36,8 +36,8 @@ public class X_GL_Category extends BasePOName implements I_GL_Category {
     /**
      * Load Constructor
      */
-    public X_GL_Category(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_GL_Category(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -55,8 +55,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_GL_Category[").append(getId()).append("]");
-        return sb.toString();
+        return "X_GL_Category[" + getId() + "]";
     }
 
     /**

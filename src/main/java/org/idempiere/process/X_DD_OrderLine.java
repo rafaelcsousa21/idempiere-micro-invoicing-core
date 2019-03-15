@@ -1,5 +1,6 @@
 package org.idempiere.process;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
 import org.compiere.orm.MTable;
 import org.compiere.orm.PO;
@@ -7,7 +8,6 @@ import org.eevolution.model.I_DD_OrderLine;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -23,20 +23,13 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      */
     public X_DD_OrderLine(Properties ctx, int DD_OrderLine_ID) {
         super(ctx, DD_OrderLine_ID);
-        /**
-         * if (DD_OrderLine_ID == 0) { setC_UOM_ID (0); // @#C_UOM_ID@ setDD_Order_ID (0);
-         * setDD_OrderLine_ID (0); setIsDescription (false); // N setIsInvoiced (false); setLine (0);
-         * // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM DD_OrderLine WHERE
-         * DD_Order_ID=@DD_Order_ID@ setM_Locator_ID (0); // @M_Locator_ID@ setM_LocatorTo_ID (0);
-         * setProcessed (false); setQtyEntered (Env.ZERO); setQtyOrdered (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_DD_OrderLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_DD_OrderLine(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -55,8 +48,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
 
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_DD_OrderLine[").append(getId()).append("]");
-        return sb.toString();
+        return "X_DD_OrderLine[" + getId() + "]";
     }
 
     /**

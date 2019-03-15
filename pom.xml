@@ -13,22 +13,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <kotlin.version>1.3.10</kotlin.version>
+        <kotlin.version>1.3.21</kotlin.version>
         <kotlin.code.style>official</kotlin.code.style>
         <junit.version>4.12</junit.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <idempiere-micro.groupId>org.idempiere</idempiere-micro.groupId>
-        <idempiere-micro-base-interfaces.version>1.0-SNAPSHOT</idempiere-micro-base-interfaces.version>
-        <idempiere-micro-test-support.version>1.0-SNAPSHOT</idempiere-micro-test-support.version>
-        <idempiere-micro-model-core.version>1.0-SNAPSHOT</idempiere-micro-model-core.version>
-        <idempiere-micro-model-interfaces.version>1.0-SNAPSHOT</idempiere-micro-model-interfaces.version>
-        <idempiere-micro-crm-core.version>1.0-SNAPSHOT</idempiere-micro-crm-core.version>
-        <idempiere-micro-product-core.version>1.0-SNAPSHOT</idempiere-micro-product-core.version>
-        <idempiere-micro-tax-core.version>1.0-SNAPSHOT</idempiere-micro-tax-core.version>
-        <idempiere-micro-order-core.version>1.0-SNAPSHOT</idempiere-micro-order-core.version>
-        <idempiere-micro-process-core.version>1.0-SNAPSHOT</idempiere-micro-process-core.version>
+        <idempiere-micro.version>1.0-SNAPSHOT</idempiere-micro.version>
     </properties>
 
     <profiles>
@@ -41,17 +33,7 @@
             </activation>
             <properties>
                 <idempiere-micro.groupId>com.github.iDempiere-micro</idempiere-micro.groupId>
-                <idempiere-micro-base-interfaces.version>${env.IDEMPIERE_MICRO_VERSION}
-                </idempiere-micro-base-interfaces.version>
-                <idempiere-micro-test-support.version>${env.IDEMPIERE_MICRO_VERSION}</idempiere-micro-test-support.version>
-                <idempiere-micro-model-core.version>${env.IDEMPIERE_MICRO_VERSION}</idempiere-micro-model-core.version>
-                <idempiere-micro-model-interfaces.version>${env.IDEMPIERE_MICRO_VERSION}
-                </idempiere-micro-model-interfaces.version>
-                <idempiere-micro-crm-core.version>${env.IDEMPIERE_MICRO_VERSION}</idempiere-micro-crm-core.version>
-                <idempiere-micro-product-core.version>${env.IDEMPIERE_MICRO_VERSION}</idempiere-micro-product-core.version>
-                <idempiere-micro-tax-core.version>${env.IDEMPIERE_MICRO_VERSION}</idempiere-micro-tax-core.version>
-                <idempiere-micro-order-core.version>${env.IDEMPIERE_MICRO_VERSION}</idempiere-micro-order-core.version>
-                <idempiere-micro-process-core.version>${env.IDEMPIERE_MICRO_VERSION}</idempiere-micro-process-core.version>
+                <idempiere-micro.version>${env.IDEMPIERE_MICRO_VERSION}</idempiere-micro.version>
             </properties>
         </profile>
         <profile>
@@ -63,15 +45,7 @@
             </activation>
             <properties>
                 <idempiere-micro.groupId>com.github.iDempiere-micro</idempiere-micro.groupId>
-                <idempiere-micro-base-interfaces.version>0.12.0</idempiere-micro-base-interfaces.version>
-                <idempiere-micro-test-support.version>0.12.0</idempiere-micro-test-support.version>
-                <idempiere-micro-model-core.version>0.12.0</idempiere-micro-model-core.version>
-                <idempiere-micro-model-interfaces.version>0.12.0</idempiere-micro-model-interfaces.version>
-                <idempiere-micro-crm-core.version>0.12.0</idempiere-micro-crm-core.version>
-                <idempiere-micro-product-core.version>0.12.0</idempiere-micro-product-core.version>
-                <idempiere-micro-tax-core.version>0.12.0</idempiere-micro-tax-core.version>
-                <idempiere-micro-order-core.version>0.12.0</idempiere-micro-order-core.version>
-                <idempiere-micro-process-core.version>0.12.0</idempiere-micro-process-core.version>
+                <idempiere-micro.version>0.13.0</idempiere-micro.version>
             </properties>
         </profile>
     </profiles>
@@ -79,7 +53,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
@@ -111,48 +85,42 @@
         <dependency>
             <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-base-interfaces</artifactId>
-            <version>${idempiere-micro-base-interfaces.version}</version>
+            <version>${idempiere-micro.version}</version>
         </dependency>
         <dependency>
             <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-model-interfaces</artifactId>
-            <version>${idempiere-micro-model-interfaces.version}</version>
+            <version>${idempiere-micro.version}</version>
         </dependency>
         <dependency>
             <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-model-core</artifactId>
-            <version>${idempiere-micro-model-core.version}</version>
+            <version>${idempiere-micro.version}</version>
         </dependency>
         <dependency>
             <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-crm-core</artifactId>
-            <version>${idempiere-micro-crm-core.version}</version>
+            <version>${idempiere-micro.version}</version>
         </dependency>
         <dependency>
             <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-product-core</artifactId>
-            <version>${idempiere-micro-product-core.version}</version>
+            <version>${idempiere-micro.version}</version>
         </dependency>
         <dependency>
             <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-order-core</artifactId>
-            <version>${idempiere-micro-order-core.version}</version>
+            <version>${idempiere-micro.version}</version>
         </dependency>
         <dependency>
             <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-process-core</artifactId>
-            <version>${idempiere-micro-process-core.version}</version>
+            <version>${idempiere-micro.version}</version>
         </dependency>
         <dependency>
             <groupId>${idempiere-micro.groupId}</groupId>
             <artifactId>idempiere-micro-tax-core</artifactId>
-            <version>${idempiere-micro-tax-core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${idempiere-micro.groupId}</groupId>
-            <artifactId>idempiere-micro-test-support</artifactId>
-            <version>${idempiere-micro-test-support.version}</version>
-            <scope>test</scope>
+            <version>${idempiere-micro.version}</version>
         </dependency>
         <dependency>
             <groupId>it.sauronsoftware.cron4j</groupId>
@@ -170,6 +138,12 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.25</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -202,12 +176,15 @@
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <source>src/test/java</source>
                                 <source>src/test/kotlin</source>
+                                <source>src/test/java</source>
                             </sourceDirs>
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <jvmTarget>1.8</jvmTarget>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

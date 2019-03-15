@@ -1,15 +1,9 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Project Type Phase Model
@@ -28,7 +22,6 @@ public class MProjectTypePhase extends X_C_Phase {
      *
      * @param ctx        context
      * @param C_Phase_ID id
-     * @param trxName    trx
      */
     public MProjectTypePhase(Properties ctx, int C_Phase_ID) {
         super(ctx, C_Phase_ID);
@@ -44,12 +37,10 @@ public class MProjectTypePhase extends X_C_Phase {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName
+     * @param ctx context
      */
-    public MProjectTypePhase(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MProjectTypePhase(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MProjectTypePhase
 
     /**
@@ -58,24 +49,6 @@ public class MProjectTypePhase extends X_C_Phase {
      * @return Array of phases
      */
     public MProjectTypeTask[] getTasks() {
-        ArrayList<MProjectTypeTask> list = new ArrayList<MProjectTypeTask>();
-        String sql = "SELECT * FROM C_Task WHERE C_Phase_ID=? ORDER BY SeqNo";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_Phase_ID());
-            rs = pstmt.executeQuery();
-            while (rs.next()) list.add(new MProjectTypeTask(getCtx(), rs));
-        } catch (SQLException ex) {
-            log.log(Level.SEVERE, sql, ex);
-        } finally {
-            rs = null;
-            pstmt = null;
-        }
-        //
-        MProjectTypeTask[] retValue = new MProjectTypeTask[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return MBaseProjectTypePhaseKt.getProjectTypePhaseTasks(getCtx(), getC_Phase_ID());
     } //	getPhases
 } //	MProjectTypePhase

@@ -1,9 +1,9 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 
@@ -31,13 +31,6 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
     public MInvoiceBatchLine(Properties ctx, int C_InvoiceBatchLine_ID) {
         super(ctx, C_InvoiceBatchLine_ID);
         if (C_InvoiceBatchLine_ID == 0) {
-            //	setC_InvoiceBatch_ID (0);
-            /**
-             * setBusinessPartnerId (0); setBusinessPartnerLocationId (0); setChargeId (0); setDocumentTypeId
-             * (0); // @C_DocType_ID@ setC_Tax_ID (0); setDocumentNo (null); setLine (0); // @SQL=SELECT
-             * NVL(MAX(Line),0)+10 AS DefaultValue FROM C_InvoiceBatchLine WHERE
-             * C_InvoiceBatch_ID=@C_InvoiceBatch_ID@
-             */
             setDateAcct(new Timestamp(System.currentTimeMillis())); // @DateDoc@
             setDateInvoiced(new Timestamp(System.currentTimeMillis())); // @DateDoc@
             setIsTaxIncluded(false);
@@ -53,12 +46,10 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
     /**
      * Load Constructor
      *
-     * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
+     * @param ctx context
      */
-    public MInvoiceBatchLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MInvoiceBatchLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MInvoiceBatchLine
 
     /**

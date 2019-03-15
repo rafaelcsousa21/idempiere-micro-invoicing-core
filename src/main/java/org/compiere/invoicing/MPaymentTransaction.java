@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MBankAccountProcessor;
 import org.compiere.accounting.MPayment;
 import org.compiere.accounting.MPaymentProcessor;
@@ -18,7 +19,6 @@ import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -76,8 +76,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         }
     }
 
-    public MPaymentTransaction(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MPaymentTransaction(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     public static IPaymentProcessor createPaymentProcessor(
@@ -252,8 +252,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                             CCType,
                             getClientId(),
                             getCurrencyId(),
-                            getPayAmt(),
-                            null);
+                            getPayAmt()
+                    );
         //	Relax Amount
         if (m_mBankAccountProcessors == null || m_mBankAccountProcessors.length == 0)
             m_mBankAccountProcessors =
@@ -263,8 +263,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                             CCType,
                             getClientId(),
                             getCurrencyId(),
-                            Env.ZERO,
-                            null);
+                            Env.ZERO
+                    );
         if (m_mBankAccountProcessors == null || m_mBankAccountProcessors.length == 0) return false;
 
         //	Find the first right one

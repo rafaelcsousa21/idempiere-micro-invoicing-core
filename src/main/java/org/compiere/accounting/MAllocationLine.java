@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.model.IDocLine;
 import org.compiere.util.Msg;
@@ -7,7 +8,6 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -63,8 +63,8 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MAllocationLine(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MAllocationLine(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MAllocationLine
 
     /**

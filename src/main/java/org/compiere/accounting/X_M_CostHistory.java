@@ -1,11 +1,11 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_CostHistory;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -26,19 +26,13 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      */
     public X_M_CostHistory(Properties ctx, int M_CostHistory_ID) {
         super(ctx, M_CostHistory_ID);
-        /**
-         * if (M_CostHistory_ID == 0) { setM_AttributeSetInstance_ID (0); setM_CostDetail_ID (0);
-         * setM_CostElement_ID (0); setM_CostHistory_ID (0); setM_CostHistory_UU (null);
-         * setCostTypeId (0); setNewCostPrice (Env.ZERO); setNewQty (Env.ZERO); setOldCostPrice
-         * (Env.ZERO); setOldQty (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_CostHistory(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_CostHistory(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -51,8 +45,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_CostHistory[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_CostHistory[" + getId() + "]";
     }
 
     /**
@@ -64,7 +57,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
-                    COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+                    COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
     }
 
     /**

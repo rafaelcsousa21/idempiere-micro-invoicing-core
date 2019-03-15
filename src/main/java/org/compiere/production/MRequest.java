@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.crm.MBPGroup;
 import org.compiere.crm.MBPartner;
 import org.compiere.crm.X_C_BP_Group;
@@ -9,7 +10,6 @@ import org.compiere.orm.Query;
 import org.compiere.orm.TimeUtil;
 import org.idempiere.common.util.Env;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,8 +113,8 @@ public class MRequest extends X_R_Request {
      * @param rs      result set
      * @param trxName transaction
      */
-    public MRequest(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MRequest(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MRequest
 
     /**

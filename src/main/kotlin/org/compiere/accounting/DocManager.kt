@@ -1,14 +1,16 @@
 package org.compiere.accounting
 
+import kotliquery.Row
 import org.compiere.model.IDoc
 import org.compiere.orm.MTable
-import org.idempiere.common.exceptions.AdempiereException
 import org.idempiere.common.exceptions.DBException
 import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
+import software.hsharp.core.util.DB
 import software.hsharp.core.util.executeUpdate
 import software.hsharp.core.util.prepareStatement
+import software.hsharp.core.util.queryOf
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.SQLException
@@ -109,7 +111,7 @@ object DocManager {
      * @return Document
      * @throws AdempiereUserError
      */
-    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: ResultSet): IDoc? {
+    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: Row): IDoc? {
         val factory = DefaultDocumentFactory()
         val doc = factory.getDocument(`as`, AD_Table_ID, rs)
         if (doc != null)
@@ -152,25 +154,11 @@ object DocManager {
         val sql = StringBuilder("SELECT * FROM ")
             .append(tableName)
             .append(" WHERE ").append(tableName).append("_ID=? AND Processed='Y'")
-        var pstmt: PreparedStatement?
-        var rs: ResultSet?
-        try {
-            pstmt = prepareStatement(sql.toString())
-            pstmt!!.setInt(1, Record_ID)
-            rs = pstmt.executeQuery()
-            if (rs!!.next()) {
-                return postDocument(ass, AD_Table_ID, rs, force, repost)
-            } else {
-                s_log.severe("Not Found: " + tableName + "_ID=" + Record_ID)
-                return "NoDoc"
-            }
-        } catch (e: Exception) {
-            if (e is RuntimeException)
-                throw e
-            else
-                throw AdempiereException(e)
-        } finally {
-        }
+
+        val query =
+            queryOf(sql.toString(), listOf(Record_ID))
+                .map { row -> postDocument(ass, AD_Table_ID, row, force, repost) }.asSingle
+        return DB.current.run(query) ?: "NoDoc"
     }
 
     /**
@@ -186,7 +174,7 @@ object DocManager {
     fun postDocument(
         ass: Array<MAcctSchema>,
         AD_Table_ID: Int,
-        rs: ResultSet,
+        rs: Row,
         force: Boolean,
         repost: Boolean
     ): String? {
@@ -208,7 +196,7 @@ object DocManager {
         }
 
         val table = MTable.get(Env.getCtx(), AD_Table_ID)
-        val Record_ID = rs.getInt(table.tableKeyColumns[0])
+        val Record_ID = rs.int(table.tableKeyColumns[0])
         //  Commit Doc
         if (!save(AD_Table_ID, Record_ID, status)) {
             val dbError = CLogger.retrieveError()

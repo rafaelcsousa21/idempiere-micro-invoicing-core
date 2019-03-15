@@ -1,9 +1,9 @@
 package org.compiere.validation;
 
+import kotliquery.Row;
 import org.compiere.model.I_AD_Table_ScriptValidator;
 import org.compiere.orm.PO;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -126,17 +126,13 @@ public class X_AD_Table_ScriptValidator extends PO
     public X_AD_Table_ScriptValidator(
             Properties ctx, int AD_Table_ScriptValidator_ID) {
         super(ctx, AD_Table_ScriptValidator_ID);
-        /**
-         * if (AD_Table_ScriptValidator_ID == 0) { setAD_Rule_ID (0); setColumnTableId (0);
-         * setAD_Table_ScriptValidator_ID (0); setEventModelValidator (null); setSeqNo (0); // 0 }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_AD_Table_ScriptValidator(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_AD_Table_ScriptValidator(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -149,8 +145,7 @@ public class X_AD_Table_ScriptValidator extends PO
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_AD_Table_ScriptValidator[").append(getId()).append("]");
-        return sb.toString();
+        return "X_AD_Table_ScriptValidator[" + getId() + "]";
     }
 
     /**

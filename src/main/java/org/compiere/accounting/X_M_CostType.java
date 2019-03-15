@@ -1,9 +1,9 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_CostType;
 import org.compiere.orm.BasePOName;
 
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -29,8 +29,8 @@ public class X_M_CostType extends BasePOName implements I_M_CostType {
     /**
      * Load Constructor
      */
-    public X_M_CostType(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public X_M_CostType(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -43,8 +43,7 @@ public class X_M_CostType extends BasePOName implements I_M_CostType {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_CostType[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_CostType[" + getId() + "]";
     }
 
     /**

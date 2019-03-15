@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_A_Depreciation;
 import org.compiere.orm.Query;
 import org.idempiere.common.util.CCache;
@@ -9,7 +10,6 @@ import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,8 +60,8 @@ public class MDepreciation extends X_A_Depreciation {
      * @param ctx context
      * @param rs  result set record
      */
-    public MDepreciation(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
+    public MDepreciation(Properties ctx, Row row) {
+        super(ctx, row);
     } //	MDepreciation
 
     private static void addToCache(MDepreciation depr) {

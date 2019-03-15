@@ -7,7 +7,6 @@ import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -28,23 +27,14 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      */
     public X_M_CostDetail(Properties ctx, int M_CostDetail_ID) {
         super(ctx, M_CostDetail_ID);
-        /**
-         * if (M_CostDetail_ID == 0) { setAmt (Env.ZERO); setAccountingSchemaId (0); setIsSOTrx (false);
-         * setM_AttributeSetInstance_ID (0); setM_CostDetail_ID (0); setM_Product_ID (0); setProcessed
-         * (false); setQty (Env.ZERO); }
-         */
     }
 
     /**
      * Load Constructor
      */
-    public X_M_CostDetail(Properties ctx, ResultSet rs) {
-        super(ctx, rs);
-    }
-
     public X_M_CostDetail(Properties ctx, Row row) {
         super(ctx, row);
-    } //	MCostDetail
+    }
 
     /**
      * AccessLevel
@@ -62,8 +52,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_CostDetail[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_CostDetail[" + getId() + "]";
     }
 
     /**
