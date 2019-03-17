@@ -118,15 +118,15 @@ public class RequisitionPOCreate extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
             else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
             else if (name.equals("M_Warehouse_ID")) p_M_Warehouse_ID = para[i].getParameterAsInt();
             else if (name.equals("DateDoc")) {
                 p_DateDoc_From = (Timestamp) para[i].getParameter();
-                p_DateDoc_To = (Timestamp) para[i].getParameter_To();
+                p_DateDoc_To = (Timestamp) para[i].getParameterTo();
             } else if (name.equals("DateRequired")) {
                 p_DateRequired_From = (Timestamp) para[i].getParameter();
-                p_DateRequired_To = (Timestamp) para[i].getParameter_To();
+                p_DateRequired_To = (Timestamp) para[i].getParameterTo();
             } else if (name.equals("PriorityRule")) p_PriorityRule = (String) para[i].getParameter();
             else if (name.equals("AD_User_ID")) p_AD_User_ID = para[i].getParameterAsInt();
             else if (name.equals("M_Product_ID")) p_M_Product_ID = para[i].getParameterAsInt();
@@ -156,7 +156,7 @@ public class RequisitionPOCreate extends SvrProcess {
             }
             MRequisitionLine[] lines = req.getLines();
             for (int i = 0; i < lines.length; i++) {
-                if (lines[i].getC_OrderLine_ID() == 0) {
+                if (lines[i].getOrderLineId() == 0) {
                     process(lines[i]);
                 }
             }
@@ -265,7 +265,7 @@ public class RequisitionPOCreate extends SvrProcess {
                 new Query(getCtx(), MRequisitionLine.Table_Name, whereClause.toString())
                         .setParameters(params)
                         .setOrderBy(orderClause.toString())
-                        .setClient_ID()
+                        .setClientId()
                         .list();
         for (MRequisitionLine line : result) {
             process(line);
@@ -282,7 +282,7 @@ public class RequisitionPOCreate extends SvrProcess {
      * @throws Exception
      */
     private void process(MRequisitionLine rLine) throws Exception {
-        if (rLine.getM_Product_ID() == 0 && rLine.getChargeId() == 0) {
+        if (rLine.getProductId() == 0 && rLine.getChargeId() == 0) {
             log.warning(
                     "Ignored Line"
                             + rLine.getLine()
@@ -293,12 +293,12 @@ public class RequisitionPOCreate extends SvrProcess {
             return;
         }
 
-        if (!p_ConsolidateDocument && rLine.getM_Requisition_ID() != m_M_Requisition_ID) {
+        if (!p_ConsolidateDocument && rLine.getRequisitionId() != m_M_Requisition_ID) {
             closeOrder();
         }
         if (m_orderLine == null
-                || rLine.getM_Product_ID() != m_M_Product_ID
-                || rLine.getMAttributeSetInstance_ID() != m_M_AttributeSetInstance_ID
+                || rLine.getProductId() != m_M_Product_ID
+                || rLine.getAttributeSetInstanceId() != m_M_AttributeSetInstance_ID
                 || rLine.getChargeId() != 0 // 	single line per charge
                 || m_order == null
                 || m_order.getDatePromised().compareTo(rLine.getDateRequired()) != 0) {
@@ -310,7 +310,7 @@ public class RequisitionPOCreate extends SvrProcess {
         //	Update Order Line
         m_orderLine.setQty(m_orderLine.getQtyOrdered().add(rLine.getQty()));
         //	Update Requisition Line
-        rLine.setC_OrderLine_ID(m_orderLine.getC_OrderLine_ID());
+        rLine.setOrderLineId(m_orderLine.getOrderLineId());
         rLine.saveEx();
     } //	process
 
@@ -360,7 +360,7 @@ public class RequisitionPOCreate extends SvrProcess {
             // Put to cache
             m_cacheOrders.put(key, m_order);
         }
-        m_M_Requisition_ID = rLine.getM_Requisition_ID();
+        m_M_Requisition_ID = rLine.getRequisitionId();
     } //	newOrder
 
     /**
@@ -398,12 +398,11 @@ public class RequisitionPOCreate extends SvrProcess {
             m_orderLine.saveEx();
         }
         m_orderLine = null;
-        MProduct product = MProduct.get(getCtx(), rLine.getM_Product_ID());
+        MProduct product = MProduct.get(getCtx(), rLine.getProductId());
 
         //	Get Business Partner
         int C_BPartner_ID = rLine.getBusinessPartnerId();
         if (C_BPartner_ID != 0) {
-            ;
         } else if (rLine.getChargeId() != 0) {
             MCharge charge = MCharge.get(getCtx(), rLine.getChargeId());
             C_BPartner_ID = charge.getBusinessPartnerId();
@@ -413,7 +412,7 @@ public class RequisitionPOCreate extends SvrProcess {
         } else {
             // Find Strategic Vendor for Product
             // TODO: refactor
-            MProductPO[] ppos = MProductPO.getOfProduct(getCtx(), product.getM_Product_ID());
+            MProductPO[] ppos = MProductPO.getOfProduct(getCtx(), product.getProductId());
             for (int i = 0; i < ppos.length; i++) {
                 if (ppos[i].isCurrentVendor() && ppos[i].getBusinessPartnerId() != 0) {
                     C_BPartner_ID = ppos[i].getBusinessPartnerId();
@@ -445,7 +444,7 @@ public class RequisitionPOCreate extends SvrProcess {
         m_orderLine.setDatePromised(rLine.getDateRequired());
         if (product != null) {
             m_orderLine.setProduct(product);
-            m_orderLine.setM_AttributeSetInstance_ID(rLine.getMAttributeSetInstance_ID());
+            m_orderLine.setAttributeSetInstanceId(rLine.getAttributeSetInstanceId());
         } else {
             m_orderLine.setChargeId(rLine.getChargeId());
             m_orderLine.setPriceActual(rLine.getPriceActual());
@@ -453,8 +452,8 @@ public class RequisitionPOCreate extends SvrProcess {
         m_orderLine.setOrgId(rLine.getOrgId());
 
         //	Prepare Save
-        m_M_Product_ID = rLine.getM_Product_ID();
-        m_M_AttributeSetInstance_ID = rLine.getMAttributeSetInstance_ID();
+        m_M_Product_ID = rLine.getProductId();
+        m_M_AttributeSetInstance_ID = rLine.getAttributeSetInstanceId();
         m_orderLine.saveEx();
     } //	newLine
 
@@ -476,7 +475,7 @@ public class RequisitionPOCreate extends SvrProcess {
                         MBPartner.Table_Name,
                         "C_BPartner_ID=? AND C_BP_Group_ID=?"
                 )
-                        .setParameters(new Object[]{C_BPartner_ID, p_C_BP_Group_ID})
+                        .setParameters(C_BPartner_ID, p_C_BP_Group_ID)
                         .match();
         if (!match) {
             m_excludedVendors.add(C_BPartner_ID);

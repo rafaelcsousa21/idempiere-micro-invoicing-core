@@ -54,7 +54,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @return Bank Statement of account
      */
-    public int getC_BankStatement_ID() {
+    public int getBankStatementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankStatement_ID);
         if (ii == null) return 0;
         return ii;
@@ -65,7 +65,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @param C_BankStatement_ID Bank Statement of account
      */
-    public void setC_BankStatement_ID(int C_BankStatement_ID) {
+    public void setBankStatementId(int C_BankStatement_ID) {
         if (C_BankStatement_ID < 1) setValueNoCheck(COLUMNNAME_C_BankStatement_ID, null);
         else setValueNoCheck(COLUMNNAME_C_BankStatement_ID, Integer.valueOf(C_BankStatement_ID));
     }
@@ -75,7 +75,7 @@ public class X_C_BankStatementLine extends PO implements I_C_BankStatementLine {
      *
      * @return Line on a statement from this Bank
      */
-    public int getC_BankStatementLine_ID() {
+    public int getBankStatementLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankStatementLine_ID);
         if (ii == null) return 0;
         return ii;

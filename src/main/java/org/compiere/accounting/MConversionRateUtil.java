@@ -34,8 +34,8 @@ public final class MConversionRateUtil {
                         ctx,
                         adMessage,
                         new Object[]{
-                                MCurrency.get(ctx, currencyFromID).getISO_Code(),
-                                MCurrency.get(ctx, currencyToID).getISO_Code(),
+                                MCurrency.get(ctx, currencyFromID).getISOCode(),
+                                MCurrency.get(ctx, currencyToID).getISOCode(),
                                 new MConversionType(ctx, convertionTypeID).getName(),
                                 date
                         });

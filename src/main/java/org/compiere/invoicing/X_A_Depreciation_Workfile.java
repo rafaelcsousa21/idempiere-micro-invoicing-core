@@ -52,7 +52,7 @@ public class X_A_Depreciation_Workfile extends PO
          * setA_Asset_Life_Years_F (0); // 0 setA_Curr_Dep_Exp (Env.ZERO); // 0
          * setA_Depreciation_Workfile_ID (0); setA_Life_Period (0); // 0 setA_Life_Period_F (0); // 0
          * setA_QTY_Current (Env.ZERO); setA_Salvage_Value (Env.ZERO); // 0 setA_Tip_Finantare (null);
-         * // 'P' setProcessed (false); // N setUseLifeMonths (0); // 0 setUseLifeMonths_F (0); // 0
+         * // 'P' setProcessed (false); // N setUseLifeMonths (0); // 0 setUseLifeMonthsFiscal (0); // 0
          * setUseLifeYears (0); // 0 setUseLifeYears_F (0); // 0 }
          */
     }
@@ -371,7 +371,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @return Use Life - Months (fiscal)
      */
-    public int getUseLifeMonths_F() {
+    public int getUseLifeMonthsFiscal() {
         Integer ii = (Integer) getValue(COLUMNNAME_UseLifeMonths_F);
         if (ii == null) return 0;
         return ii;
@@ -382,7 +382,7 @@ public class X_A_Depreciation_Workfile extends PO
      *
      * @param UseLifeMonths_F Use Life - Months (fiscal)
      */
-    public void setUseLifeMonths_F(int UseLifeMonths_F) {
+    public void setUseLifeMonthsFiscal(int UseLifeMonths_F) {
         setValue(COLUMNNAME_UseLifeMonths_F, Integer.valueOf(UseLifeMonths_F));
     }
 

@@ -46,9 +46,9 @@ public class MConversionRate extends X_C_Conversion_Rate {
     public MConversionRate(Properties ctx, int C_Conversion_Rate_ID) {
         super(ctx, C_Conversion_Rate_ID);
         if (C_Conversion_Rate_ID == 0) {
-            //	setC_Conversion_Rate_ID (0);
+            //	setConversionRateId (0);
             //	setCurrencyId (0);
-            //	setC_Currency_ID_To (null);
+            //	setTargetCurrencyId (null);
             super.setDivideRate(Env.ZERO);
             super.setMultiplyRate(Env.ZERO);
             setValidFrom(new Timestamp(System.currentTimeMillis()));
@@ -85,7 +85,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
         setClientOrg(po);
         setConversionTypeId(C_ConversionType_ID);
         setCurrencyId(C_Currency_ID);
-        setC_Currency_ID_To(C_Currency_ID_To);
+        setTargetCurrencyId(C_Currency_ID_To);
         //
         setMultiplyRate(MultiplyRate);
         setValidFrom(ValidFrom);
@@ -314,7 +314,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
                 .append(",Currency=")
                 .append(getCurrencyId())
                 .append(",To=")
-                .append(getC_Currency_ID_To())
+                .append(getTargetCurrencyId())
                 .append(", Multiply=")
                 .append(getMultiplyRate())
                 .append(",Divide=")
@@ -333,7 +333,7 @@ public class MConversionRate extends X_C_Conversion_Rate {
      */
     protected boolean beforeSave(boolean newRecord) {
         //	From - To is the same
-        if (getCurrencyId() == getC_Currency_ID_To()) {
+        if (getCurrencyId() == getTargetCurrencyId()) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@C_Currency_ID@ = @C_Currency_ID@"));
             return false;
         }

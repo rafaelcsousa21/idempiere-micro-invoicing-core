@@ -76,11 +76,11 @@ public class IndentedBOM extends SvrProcess {
         X_T_BOM_Indented tboml = new X_T_BOM_Indented(getCtx(), 0);
 
         tboml.setOrgId(p_AD_Org_ID);
-        tboml.setC_AcctSchema_ID(p_C_AcctSchema_ID);
-        tboml.setAD_PInstance_ID(getAD_PInstance_ID());
-        tboml.setM_CostElement_ID(p_M_CostElement_ID);
-        tboml.setSel_Product_ID(product.getId());
-        tboml.setM_Product_ID(p_M_Product_ID);
+        tboml.setAcctSchemaId(p_C_AcctSchema_ID);
+        tboml.setPInstanceId(getAD_PInstanceId());
+        tboml.setCostElementId(p_M_CostElement_ID);
+        tboml.setSelectedProductId(product.getId());
+        tboml.setProductId(p_M_Product_ID);
         tboml.setQtyBOM(qty);
         tboml.setQty(accumQty);
         //
@@ -105,7 +105,7 @@ public class IndentedBOM extends SvrProcess {
             m_LevelNo++;
             llCost ll =
                     explodeProduct(
-                            bom.getM_ProductBOM_ID(), bom.getBOMQty(), accumQty.multiply(bom.getBOMQty()));
+                            bom.getBOMProductId(), bom.getBOMQty(), accumQty.multiply(bom.getBOMQty()));
             llCost = llCost.add(ll.currentCost.multiply(accumQty.multiply(bom.getBOMQty())));
             llFutureCost = llFutureCost.add(ll.futureCost.multiply(accumQty.multiply(bom.getBOMQty())));
             m_LevelNo--;

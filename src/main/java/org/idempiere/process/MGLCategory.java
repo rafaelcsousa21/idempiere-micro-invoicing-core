@@ -3,14 +3,8 @@ package org.idempiere.process;
 import kotliquery.Row;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 public class MGLCategory extends X_GL_Category {
     /**
@@ -60,7 +54,7 @@ public class MGLCategory extends X_GL_Category {
      */
     public static MGLCategory get(Properties ctx, int GL_Category_ID) {
         Integer key = GL_Category_ID;
-        MGLCategory retValue = (MGLCategory) s_cache.get(key);
+        MGLCategory retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MGLCategory(ctx, GL_Category_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);

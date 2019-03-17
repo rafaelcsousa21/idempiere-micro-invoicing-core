@@ -14,7 +14,6 @@ import java.util.logging.Level;
 
 import static software.hsharp.core.orm.MBaseSequenceKt.doCheckClientSequences;
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
-import static software.hsharp.core.util.DBKt.getSQLValue;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -139,7 +138,7 @@ public class SequenceCheck extends SvrProcess {
      * @param sp  server process or null
      */
     private static void checkTableID(Properties ctx, SvrProcess sp) {
-        MBaseSequenceCheckKt.checkTableID(ctx, sp);
+        MBaseSequenceCheckKt.checkTableID(ctx);
     } //	checkTableID
 
     /**
@@ -149,17 +148,9 @@ public class SequenceCheck extends SvrProcess {
      * @param sp  server process or null
      */
     private static void checkClientSequences(Properties ctx, SvrProcess sp) {
-        String trxName = null;
-        if (sp != null) trxName = null;
-
-        // CarlosRuiz - globalqss - [ 1887608 ] SequenceCheck deadlock
-        // Commit previous work on AD_Sequence
-        // previously could update a sequence record needed now that is going to create new ones
-
         //	Sequence for DocumentNo/Value
         MClient[] clients = MClient.getAll(ctx);
-        for (int i = 0; i < clients.length; i++) {
-            MClient client = clients[i];
+        for (MClient client : clients) {
             if (!client.isActive()) continue;
             doCheckClientSequences(ctx, client.getClientId());
         } //	for all clients

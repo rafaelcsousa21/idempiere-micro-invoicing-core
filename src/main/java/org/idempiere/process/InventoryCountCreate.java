@@ -105,7 +105,7 @@ public class InventoryCountCreate extends SvrProcess {
             else if (name.equals("DeleteOld")) p_DeleteOld = "Y".equals(para[i].getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_M_Inventory_ID = getRecord_ID();
+        p_M_Inventory_ID = getRecordId();
     } //	prepare
 
     /**
@@ -304,11 +304,11 @@ public class InventoryCountCreate extends SvrProcess {
 
         // TODO???? This is not working --- must create one line and multiple MA
         if (m_line != null
-                && m_line.getM_Locator_ID() == M_Locator_ID
-                && m_line.getM_Product_ID() == M_Product_ID) {
+                && m_line.getLocatorId() == M_Locator_ID
+                && m_line.getProductId() == M_Product_ID) {
             if (QtyOnHand.signum() == 0) return 0;
             //	Same ASI and Date
-            if (m_line.getMAttributeSetInstance_ID() == M_AttributeSetInstance_ID
+            if (m_line.getAttributeSetInstanceId() == M_AttributeSetInstance_ID
                     && ((dateMPolicy == null && oldDateMPolicy == null)
                     || (dateMPolicy != null && dateMPolicy.equals(oldDateMPolicy))
                     || (oldDateMPolicy != null && oldDateMPolicy.equals(dateMPolicy)))) {
@@ -318,17 +318,17 @@ public class InventoryCountCreate extends SvrProcess {
                 return 0;
             }
             //	Save Old Line info
-            else if (m_line.getMAttributeSetInstance_ID() != 0) {
+            else if (m_line.getAttributeSetInstanceId() != 0) {
                 MInventoryLineMA ma =
                         new MInventoryLineMA(
                                 m_line,
-                                m_line.getMAttributeSetInstance_ID(),
+                                m_line.getAttributeSetInstanceId(),
                                 m_line.getQtyBook(),
                                 oldDateMPolicy,
                                 true);
                 if (!ma.save()) log.warning("Could not save " + ma);
             }
-            m_line.setM_AttributeSetInstance_ID(0);
+            m_line.setAttributeSetInstanceId(0);
             m_line.setQtyBook(m_line.getQtyBook().add(QtyOnHand));
             m_line.setQtyCount(m_line.getQtyCount().add(QtyOnHand));
             m_line.saveEx();

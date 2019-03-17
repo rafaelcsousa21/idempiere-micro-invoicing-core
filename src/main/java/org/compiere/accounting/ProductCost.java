@@ -388,7 +388,7 @@ public class ProductCost {
     /**
      * @param M_AttributeSetInstance_ID the m_M_AttributeSetInstance_ID to set
      */
-    public void setM_M_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setM_AttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         this.m_M_AttributeSetInstance_ID = M_AttributeSetInstance_ID;
     }
 } //	ProductCost

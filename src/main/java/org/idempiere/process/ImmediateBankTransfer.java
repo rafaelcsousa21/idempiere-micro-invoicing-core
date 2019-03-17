@@ -162,7 +162,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         cash.setDescription(p_Description);
         cash.setDateAcct(p_DateAcct);
         cash.setStatementDate(p_StatementDate);
-        cash.setC_CashBook_ID(p_C_CashBook_ID);
+        cash.setCashBookId(p_C_CashBook_ID);
         if (!cash.save()) {
             throw new IllegalStateException("Could not create Cash");
         }
@@ -176,7 +176,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         // From Bank (From) to CashLine
         MCashLine cashLine = new MCashLine(cash);
         cashLine.setAmount(p_Amount);
-        cashLine.setC_BankAccount_ID(p_From_C_BankAccount_ID);
+        cashLine.setBankAccountId(p_From_C_BankAccount_ID);
         cashLine.setCurrencyId(m_C_Currency_ID);
 
         if (p_Description != null) cashLine.setDescription(p_Description);
@@ -192,7 +192,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         // From CashLine to Bank (To)
         cashLine = new MCashLine(cash);
         cashLine.setAmount(p_Amount.negate());
-        cashLine.setC_BankAccount_ID(p_To_C_BankAccount_ID);
+        cashLine.setBankAccountId(p_To_C_BankAccount_ID);
         cashLine.setCurrencyId(m_C_Currency_ID);
         if (p_Description != null) cashLine.setDescription(p_Description);
         else cashLine.setDescription(p_Name);
@@ -204,7 +204,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         }
         cashLineList.add(cashLine);
 
-        MCashLine cashLines[] = new MCashLine[cashLineList.size()];
+        MCashLine[] cashLines = new MCashLine[cashLineList.size()];
         cashLineList.toArray(cashLines);
         return cashLines;
     } //  createCashLines
@@ -217,7 +217,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         //	Create Cash & CashLines
         MCash cash = createCash();
         @SuppressWarnings("unused")
-        MCashLine cashLines[] = createCashLines(cash);
+        MCashLine[] cashLines = createCashLines(cash);
 
         StringBuilder processMsg = new StringBuilder().append(cash.getDocumentNo());
 
@@ -236,7 +236,7 @@ public class ImmediateBankTransfer extends SvrProcess {
                             .append(" - ")
                             .append(cash.getProcessMsg())
                             .append(" / please complete it manually");
-            addLog(cash.getC_Cash_ID(), cash.getStatementDate(), null, msglog.toString());
+            addLog(cash.getCashId(), cash.getStatementDate(), null, msglog.toString());
             throw new IllegalStateException(
                     "Cash Processing failed: " + cash + " - " + cash.getProcessMsg());
         }
@@ -245,7 +245,7 @@ public class ImmediateBankTransfer extends SvrProcess {
         }
 
         // Add processing information to process log
-        addLog(cash.getC_Cash_ID(), cash.getStatementDate(), null, processMsg.toString());
+        addLog(cash.getCashId(), cash.getStatementDate(), null, processMsg.toString());
         m_created++;
     } //  generateBankTransfer
 } //	ImmediateBankTransfer

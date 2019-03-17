@@ -52,7 +52,7 @@ public class PeriodStatus extends SvrProcess {
             else if (name.equals("PeriodAction")) p_PeriodAction = (String) para[i].getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_Period_ID = getRecord_ID();
+        p_C_Period_ID = getRecordId();
     } //	prepare
 
     /**
@@ -84,7 +84,7 @@ public class PeriodStatus extends SvrProcess {
         sql.append("', PeriodAction='N', Updated=SysDate,UpdatedBy=").append(getUserId());
         //	WHERE
         sql.append(" WHERE C_Period_ID=")
-                .append(period.getC_Period_ID())
+                .append(period.getPeriodId())
                 .append(" AND PeriodStatus<>'P'")
                 .append(" AND PeriodStatus<>'")
                 .append(p_PeriodAction)

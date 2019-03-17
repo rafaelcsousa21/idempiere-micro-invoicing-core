@@ -251,7 +251,7 @@ public class X_S_TimeExpense extends PO implements I_S_TimeExpense {
      *
      * @return Time and Expense Report
      */
-    public int getS_TimeExpense_ID() {
+    public int getTimeExpenseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_S_TimeExpense_ID);
         if (ii == null) return 0;
         return ii;

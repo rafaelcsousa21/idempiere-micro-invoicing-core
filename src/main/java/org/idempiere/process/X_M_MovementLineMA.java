@@ -23,7 +23,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
     public X_M_MovementLineMA(Properties ctx, int M_MovementLineMA_ID) {
         super(ctx, M_MovementLineMA_ID);
         /*
-         * if (M_MovementLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setM_MovementLine_ID (0); }
+         * if (M_MovementLineMA_ID == 0) { setAttributeSetInstanceId (0); setMovementLine_ID (0); }
          */
     }
 
@@ -95,32 +95,32 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
     }
 
     /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getAttributeSetInstanceId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
      * Set Attribute Set Instance.
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
-    /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    public org.compiere.model.I_M_MovementLine getM_MovementLine() throws RuntimeException {
+    public org.compiere.model.I_M_MovementLine getMovementLine() throws RuntimeException {
         return (org.compiere.model.I_M_MovementLine)
                 MTable.get(getCtx(), org.compiere.model.I_M_MovementLine.Table_Name)
-                        .getPO(getM_MovementLine_ID());
+                        .getPO(getMovementLineId());
     }
 
     /**
@@ -128,7 +128,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
      *
      * @return Inventory Move document Line
      */
-    public int getM_MovementLine_ID() {
+    public int getMovementLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_MovementLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -139,7 +139,7 @@ public class X_M_MovementLineMA extends PO implements I_M_MovementLineMA {
      *
      * @param M_MovementLine_ID Inventory Move document Line
      */
-    public void setM_MovementLine_ID(int M_MovementLine_ID) {
+    public void setMovementLineId(int M_MovementLine_ID) {
         if (M_MovementLine_ID < 1) setValueNoCheck(COLUMNNAME_M_MovementLine_ID, null);
         else setValueNoCheck(COLUMNNAME_M_MovementLine_ID, Integer.valueOf(M_MovementLine_ID));
     }

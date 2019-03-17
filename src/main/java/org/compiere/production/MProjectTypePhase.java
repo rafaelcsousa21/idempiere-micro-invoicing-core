@@ -26,8 +26,8 @@ public class MProjectTypePhase extends X_C_Phase {
     public MProjectTypePhase(Properties ctx, int C_Phase_ID) {
         super(ctx, C_Phase_ID);
         if (C_Phase_ID == 0) {
-            //	setC_Phase_ID (0);			//	PK
-            //	setC_ProjectType_ID (0);	//	Parent
+            //	setPhaseId (0);			//	PK
+            //	setProjectTypeId (0);	//	Parent
             //	setName (null);
             setSeqNo(0);
             setStandardQty(Env.ZERO);
@@ -49,6 +49,6 @@ public class MProjectTypePhase extends X_C_Phase {
      * @return Array of phases
      */
     public MProjectTypeTask[] getTasks() {
-        return MBaseProjectTypePhaseKt.getProjectTypePhaseTasks(getCtx(), getC_Phase_ID());
+        return MBaseProjectTypePhaseKt.getProjectTypePhaseTasks(getCtx(), getPhaseId());
     } //	getPhases
 } //	MProjectTypePhase

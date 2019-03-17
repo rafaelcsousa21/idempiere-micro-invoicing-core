@@ -82,7 +82,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
         super(ctx, M_Inventory_ID);
         /**
          * if (M_Inventory_ID == 0) { setDocumentTypeId (0); setDocAction (null); // CO setDocStatus
-         * (null); // DR setDocumentNo (null); setIsApproved (false); setM_Inventory_ID (0);
+         * (null); // DR setDocumentNo (null); setIsApproved (false); setInventoryId (0);
          * setMovementDate (new Timestamp( System.currentTimeMillis() )); // @#Date@ setPosted (false);
          * setProcessed (false); }
          */
@@ -290,7 +290,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      *
      * @return Parameters for a Physical Inventory
      */
-    public int getM_Inventory_ID() {
+    public int getInventoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Inventory_ID);
         if (ii == null) return 0;
         return ii;
@@ -381,7 +381,7 @@ public class X_M_Inventory extends PO implements I_M_Inventory {
      *
      * @param Reversal_ID ID of document reversal
      */
-    public void setReversal_ID(int Reversal_ID) {
+    public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
         else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }

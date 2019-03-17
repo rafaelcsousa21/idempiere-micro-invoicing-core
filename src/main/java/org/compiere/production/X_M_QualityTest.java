@@ -51,7 +51,7 @@ public class X_M_QualityTest extends BasePOName implements I_M_QualityTest {
      *
      * @return Quality Test
      */
-    public int getM_QualityTest_ID() {
+    public int getQualityTestId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_QualityTest_ID);
         if (ii == null) return 0;
         return ii;

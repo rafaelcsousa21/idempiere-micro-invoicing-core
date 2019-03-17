@@ -101,7 +101,7 @@ public class X_M_Warehouse extends BasePONameValue implements I_M_Warehouse {
      *
      * @return Optional Warehouse to replenish from
      */
-    public int getM_WarehouseSource_ID() {
+    public int getWarehouseSourceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_WarehouseSource_ID);
         if (ii == null) return 0;
         return ii;

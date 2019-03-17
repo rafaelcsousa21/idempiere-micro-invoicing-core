@@ -31,7 +31,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
     public X_C_Period(Properties ctx, int C_Period_ID) {
         super(ctx, C_Period_ID);
         /**
-         * if (C_Period_ID == 0) { setPeriodId (0); setC_Year_ID (0); setName (null); setPeriodNo
+         * if (C_Period_ID == 0) { setPeriodId (0); setYearId (0); setName (null); setPeriodNo
          * (0); setPeriodType (null); // S setStartDate (new Timestamp( System.currentTimeMillis() )); }
          */
     }
@@ -62,16 +62,16 @@ public class X_C_Period extends BasePOName implements I_C_Period {
      *
      * @return Period of the Calendar
      */
-    public int getC_Period_ID() {
+    public int getPeriodId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_C_Year getC_Year() throws RuntimeException {
+    public org.compiere.model.I_C_Year getYear() throws RuntimeException {
         return (org.compiere.model.I_C_Year)
                 MTable.get(getCtx(), org.compiere.model.I_C_Year.Table_Name)
-                        .getPO(getC_Year_ID());
+                        .getPO(getYearId());
     }
 
     /**
@@ -79,7 +79,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
      *
      * @return Calendar Year
      */
-    public int getC_Year_ID() {
+    public int getYearId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Year_ID);
         if (ii == null) return 0;
         return ii;
@@ -90,7 +90,7 @@ public class X_C_Period extends BasePOName implements I_C_Period {
      *
      * @param C_Year_ID Calendar Year
      */
-    public void setC_Year_ID(int C_Year_ID) {
+    public void setYearId(int C_Year_ID) {
         if (C_Year_ID < 1) setValueNoCheck(COLUMNNAME_C_Year_ID, null);
         else setValueNoCheck(COLUMNNAME_C_Year_ID, C_Year_ID);
     }

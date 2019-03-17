@@ -46,7 +46,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      *
      * @param AD_PInstance_ID Instance of the process
      */
-    public void setAD_PInstance_ID(int AD_PInstance_ID) {
+    public void setPInstanceId(int AD_PInstance_ID) {
         if (AD_PInstance_ID < 1) setValue(COLUMNNAME_AD_PInstance_ID, null);
         else setValue(COLUMNNAME_AD_PInstance_ID, AD_PInstance_ID);
     }
@@ -56,7 +56,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      *
      * @param C_AcctSchema_ID Rules for accounting
      */
-    public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
+    public void setAcctSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValue(COLUMNNAME_C_AcctSchema_ID, null);
         else setValue(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
     }
@@ -139,7 +139,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      *
      * @param M_CostElement_ID Product Cost Element
      */
-    public void setM_CostElement_ID(int M_CostElement_ID) {
+    public void setCostElementId(int M_CostElement_ID) {
         if (M_CostElement_ID < 1) setValue(COLUMNNAME_M_CostElement_ID, null);
         else setValue(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
     }
@@ -149,7 +149,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
@@ -177,7 +177,7 @@ public class X_T_BOM_Indented extends PO implements I_T_BOM_Indented {
      *
      * @param Sel_Product_ID Selected Product
      */
-    public void setSel_Product_ID(int Sel_Product_ID) {
+    public void setSelectedProductId(int Sel_Product_ID) {
         if (Sel_Product_ID < 1) setValue(COLUMNNAME_Sel_Product_ID, null);
         else setValue(COLUMNNAME_Sel_Product_ID, Integer.valueOf(Sel_Product_ID));
     }

@@ -58,7 +58,7 @@ public class CopyComponentsFromView extends SvrProcess {
             else if (name.equals("AD_Table_ID")) p_source_AD_Table_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_target_AD_Table_ID = getRecord_ID();
+        p_target_AD_Table_ID = getRecordId();
     } //	prepare
 
     /**

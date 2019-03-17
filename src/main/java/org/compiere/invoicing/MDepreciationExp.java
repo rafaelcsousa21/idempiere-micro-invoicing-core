@@ -118,7 +118,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             if (accumAmt != null) depexp.setAccumulatedDepreciation(accumAmt);
             if (accumAmt_F != null) depexp.setAccumulatedDepreciationFiscal(accumAmt_F);
             if (help != null && help.length() > 0) depexp.setHelp(help);
-            depexp.setExpense_F(amt_F);
+            depexp.setFiscalExpense(amt_F);
             depexp.setAccumulatedDepreciationDelta(amt);
             depexp.setAccumulatedDepreciationFiscalDelta(amt_F);
             depexp.saveEx();
@@ -144,7 +144,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         boolean match =
                 new Query(ctx, MDepreciationExp.Table_Name, whereClause)
                         .setParameters(
-                                new Object[]{A_Asset_ID, TimeUtil.getMonthFirstDay(dateAcct), postingType, false})
+                                A_Asset_ID, TimeUtil.getMonthFirstDay(dateAcct), postingType, false)
                         .match();
         if (match) {
             throw new AssetException("There are unprocessed records to date");
@@ -161,7 +161,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         setAccumulatedDepreciation(wk.getAccumulatedDepreciation());
         setAccumulatedDepreciationFiscal(wk.getAccumulatedDepreciationFiscal());
         setUseLifeMonths(wk.getUseLifeMonths());
-        setUseLifeMonths_F(wk.getUseLifeMonths_F());
+        setUseLifeMonthsFiscal(wk.getUseLifeMonthsFiscal());
         setAssetRemaining(wk.getAssetRemaining());
         setAssetRemainingFiscal(wk.getAssetRemainingFiscal());
     }
@@ -196,7 +196,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             }
             //
             setDateAcct(assetwk.getDateAcct());
-            assetwk.adjustAccumulatedDepr(getExpense(), getExpense_F(), false);
+            assetwk.adjustAccumulatedDepr(getExpense(), getFiscalExpense(), false);
         } else {
             // nothing to do for other entry types
         }

@@ -73,8 +73,8 @@ public class BOMVerify extends SvrProcess {
             else if (name.equals("IsReValidate")) p_IsReValidate = "Y".equals(para[i].getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        if (p_M_Product_ID == 0) p_M_Product_ID = getRecord_ID();
-        p_fromButton = (getRecord_ID() > 0);
+        if (p_M_Product_ID == 0) p_M_Product_ID = getRecordId();
+        p_fromButton = (getRecordId() > 0);
     } //	prepare
 
     /**
@@ -149,7 +149,7 @@ public class BOMVerify extends SvrProcess {
         for (MProductBOM productsBOM : productsBOMs) {
             if (!productsBOM.isActive()) continue;
             lines++;
-            MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID());
+            MProduct pp = new MProduct(getCtx(), productsBOM.getBOMProductId());
             if (!pp.isBOM()) {
                 if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
             } else {
@@ -169,7 +169,7 @@ public class BOMVerify extends SvrProcess {
                                 null,
                                 product.getValue() + " recursively contains " + pp.getValue(),
                                 MProduct.Table_ID,
-                                product.getM_Product_ID());
+                                product.getProductId());
                 } else {
                     if (!validateProduct(pp)) {
                         containsinvalid = true;
@@ -188,7 +188,7 @@ public class BOMVerify extends SvrProcess {
                         null,
                         product.getValue() + " does not have lines",
                         MProduct.Table_ID,
-                        product.getM_Product_ID());
+                        product.getProductId());
         }
 
         checkedproducts.add(product);

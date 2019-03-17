@@ -83,7 +83,7 @@ public class CopyOrder extends SvrProcess {
                         true,
                         null); //	copy ASI
         newOrder.setTargetDocumentTypeId(p_C_DocType_ID);
-        newOrder.setQuotationOrder_ID(from.getOrderId()); // IDEMPIERE-475
+        newOrder.setQuotationOrderId(from.getOrderId()); // IDEMPIERE-475
         boolean OK = newOrder.save();
         if (!OK) throw new IllegalStateException("Could not create new Order");
         //

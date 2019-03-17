@@ -80,7 +80,7 @@ public class X_T_InvoiceGL extends PO implements I_T_InvoiceGL {
      *
      * @return Accounting Fact
      */
-    public int getFact_Acct_ID() {
+    public int getFactAcctId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Fact_Acct_ID);
         if (ii == null) return 0;
         return ii;

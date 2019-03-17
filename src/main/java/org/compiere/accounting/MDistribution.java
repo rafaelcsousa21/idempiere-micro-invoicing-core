@@ -97,20 +97,20 @@ public class MDistribution extends X_GL_Distribution {
     public static MDistribution[] get(MAccount acct, String PostingType, int C_DocType_ID) {
         return get(
                 acct.getCtx(),
-                acct.getC_AcctSchema_ID(),
+                acct.getAccountingSchemaId(),
                 PostingType,
                 C_DocType_ID,
                 acct.getOrgId(),
-                acct.getAccount_ID(),
-                acct.getM_Product_ID(),
+                acct.getAccountId(),
+                acct.getProductId(),
                 acct.getBusinessPartnerId(),
                 acct.getProjectId(),
                 acct.getCampaignId(),
                 acct.getBusinessActivityId(),
                 acct.getTransactionOrganizationId(),
-                acct.getC_SalesRegion_ID(),
-                acct.getC_LocTo_ID(),
-                acct.getC_LocFrom_ID(),
+                acct.getSalesRegionId(),
+                acct.getLocationToId(),
+                acct.getLocationFromId(),
                 acct.getUser1Id(),
                 acct.getUser2Id());
     } //	get
@@ -163,7 +163,7 @@ public class MDistribution extends X_GL_Distribution {
             MDistribution distribution = acctList[i];
             if (!distribution.isActive() || !distribution.isValid()) continue;
             //	Mandatory Acct Schema
-            if (distribution.getC_AcctSchema_ID() != C_AcctSchema_ID) continue;
+            if (distribution.getAccountingSchemaId() != C_AcctSchema_ID) continue;
             //	Only Posting Type / DocType
             if (distribution.getPostingType() != null
                     && !distribution.getPostingType().equals(PostingType)) continue;
@@ -172,8 +172,8 @@ public class MDistribution extends X_GL_Distribution {
 
             //	Optional Elements - "non-Any"
             if (!distribution.isAnyOrg() && distribution.getOrgId() != AD_Org_ID) continue;
-            if (!distribution.isAnyAcct() && distribution.getAccount_ID() != Account_ID) continue;
-            if (!distribution.isAnyProduct() && distribution.getM_Product_ID() != M_Product_ID) continue;
+            if (!distribution.isAnyAcct() && distribution.getAccountId() != Account_ID) continue;
+            if (!distribution.isAnyProduct() && distribution.getProductId() != M_Product_ID) continue;
             if (!distribution.isAnyBPartner() && distribution.getBusinessPartnerId() != C_BPartner_ID)
                 continue;
             if (!distribution.isAnyProject() && distribution.getProjectId() != C_Project_ID) continue;
@@ -183,9 +183,9 @@ public class MDistribution extends X_GL_Distribution {
                 continue;
             if (!distribution.isAnyOrgTrx() && distribution.getTransactionOrganizationId() != AD_OrgTrx_ID) continue;
             if (!distribution.isAnySalesRegion()
-                    && distribution.getC_SalesRegion_ID() != C_SalesRegion_ID) continue;
-            if (!distribution.isAnyLocTo() && distribution.getC_LocTo_ID() != C_LocTo_ID) continue;
-            if (!distribution.isAnyLocFrom() && distribution.getC_LocFrom_ID() != C_LocFrom_ID) continue;
+                    && distribution.getSalesRegionId() != C_SalesRegion_ID) continue;
+            if (!distribution.isAnyLocTo() && distribution.getLocationToId() != C_LocTo_ID) continue;
+            if (!distribution.isAnyLocFrom() && distribution.getLocationFromId() != C_LocFrom_ID) continue;
             if (!distribution.isAnyUser1() && distribution.getUser1Id() != User1_ID) continue;
             if (!distribution.isAnyUser2() && distribution.getUser2Id() != User2_ID) continue;
             //
@@ -206,7 +206,7 @@ public class MDistribution extends X_GL_Distribution {
      */
     public static MDistribution[] get(Properties ctx, int Account_ID) {
         Integer key = new Integer(Account_ID);
-        MDistribution[] retValue = (MDistribution[]) s_accounts.get(key);
+        MDistribution[] retValue = s_accounts.get(key);
         if (retValue != null) return retValue;
         String whereClause = "";
         Object[] parameters = new Object[]{};
@@ -216,7 +216,7 @@ public class MDistribution extends X_GL_Distribution {
         }
         List<MDistribution> list =
                 new Query(ctx, I_GL_Distribution.Table_Name, whereClause)
-                        .setClient_ID()
+                        .setClientId()
                         .setParameters(parameters)
                         .list();
         //
@@ -252,7 +252,7 @@ public class MDistribution extends X_GL_Distribution {
         final String whereClause = I_GL_DistributionLine.COLUMNNAME_GL_Distribution_ID + "=?";
         List<MDistributionLine> list =
                 new Query(getCtx(), I_GL_DistributionLine.Table_Name, whereClause)
-                        .setParameters(getGL_Distribution_ID())
+                        .setParameters(getGLDistributionId())
                         .setOrderBy("Line")
                         .list();
         // red1 Query  -end-
@@ -385,17 +385,17 @@ public class MDistribution extends X_GL_Distribution {
      */
     protected boolean beforeSave(boolean newRecord) {
         //	Reset not selected Any
-        if (isAnyAcct() && getAccount_ID() != 0) setAccount_ID(0);
+        if (isAnyAcct() && getAccountId() != 0) setAccountId(0);
         if (isAnyActivity() && getBusinessActivityId() != 0) setBusinessActivityId(0);
         if (isAnyBPartner() && getBusinessPartnerId() != 0) setBusinessPartnerId(0);
         if (isAnyCampaign() && getCampaignId() != 0) setCampaignId(0);
-        if (isAnyLocFrom() && getC_LocFrom_ID() != 0) setC_LocFrom_ID(0);
-        if (isAnyLocTo() && getC_LocTo_ID() != 0) setC_LocTo_ID(0);
-        if (isAnyOrg() && getOrg_ID() != 0) setOrg_ID(0);
+        if (isAnyLocFrom() && getLocationFromId() != 0) setLocationFromId(0);
+        if (isAnyLocTo() && getLocationToId() != 0) setLocationToId(0);
+        if (isAnyOrg() && this.getOrgId() != 0) this.setOrgId(0);
         if (isAnyOrgTrx() && getTransactionOrganizationId() != 0) setTransactionOrganizationId(0);
-        if (isAnyProduct() && getM_Product_ID() != 0) setM_Product_ID(0);
+        if (isAnyProduct() && getProductId() != 0) setProductId(0);
         if (isAnyProject() && getProjectId() != 0) setProjectId(0);
-        if (isAnySalesRegion() && getC_SalesRegion_ID() != 0) setC_SalesRegion_ID(0);
+        if (isAnySalesRegion() && getSalesRegionId() != 0) setSalesRegionId(0);
         if (isAnyUser1() && getUser1Id() != 0) setUser1Id(0);
         if (isAnyUser2() && getUser2Id() != 0) setUser2Id(0);
         return true;

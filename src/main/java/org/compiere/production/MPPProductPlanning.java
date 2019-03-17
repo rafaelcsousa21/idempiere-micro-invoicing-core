@@ -189,17 +189,17 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
 
     @Override
     public MPPProductBOM getPP_Product_BOM() {
-        return MPPProductBOM.get(getCtx(), getPP_Product_BOM_ID());
+        return MPPProductBOM.get(getCtx(), getPP_Product_BOMId());
     }
 
     @Override
     public MWorkflow getAD_Workflow() {
-        return MWorkflow.get(getCtx(), getAD_Workflow_ID());
+        return MWorkflow.get(getCtx(), getAD_WorkflowId());
     }
 
     @Override
     public MResource getS_Resource() {
-        return MResource.get(getCtx(), getS_Resource_ID());
+        return MResource.get(getCtx(), getResourceID());
     }
 
     /**
@@ -213,11 +213,11 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
         if (!CLogMgt.isLevelInfo()) return;
         log.info("------------ Planning Data --------------");
         log.info("           Create Plan: " + isCreatePlan());
-        log.info("              Resource: " + getS_Resource_ID());
-        log.info("          M_Product_ID: " + getM_Product_ID());
-        log.info("                   BOM: " + getPP_Product_BOM_ID());
-        log.info("              Workflow: " + getAD_Workflow_ID());
-        log.info("  Network Distribution: " + getDD_NetworkDistribution_ID());
+        log.info("              Resource: " + getResourceID());
+        log.info("          M_Product_ID: " + getProductId());
+        log.info("                   BOM: " + getPP_Product_BOMId());
+        log.info("              Workflow: " + getAD_WorkflowId());
+        log.info("  Network Distribution: " + getDD_NetworkDistributionId());
         log.info("Delivery Time Promised: " + getDeliveryTime_Promised());
         log.info("         TransfertTime: " + getTransfertTime());
         log.info("         Order Min/Max: " + getOrder_Min() + " / " + getOrder_Max());
@@ -226,7 +226,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
         log.info("          Order Period: " + getOrder_Period());
         log.info("          Order Policy: " + getOrder_Policy());
         log.info("             Warehouse: " + getWarehouseId());
-        log.info("               Planner: " + getPlanner_ID());
+        log.info("               Planner: " + getPlannerId());
         log.info("              Supplier: " + getBusinessPartnerId());
     }
 } //	Product Data Planning

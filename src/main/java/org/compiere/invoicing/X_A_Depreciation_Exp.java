@@ -295,7 +295,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp {
      *
      * @return Expense (fiscal)
      */
-    public BigDecimal getExpense_F() {
+    public BigDecimal getFiscalExpense() {
         BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Expense_F);
         if (bd == null) return Env.ZERO;
         return bd;
@@ -306,7 +306,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp {
      *
      * @param Expense_F Expense (fiscal)
      */
-    public void setExpense_F(BigDecimal Expense_F) {
+    public void setFiscalExpense(BigDecimal Expense_F) {
         setValue(COLUMNNAME_Expense_F, Expense_F);
     }
 
@@ -384,7 +384,7 @@ public class X_A_Depreciation_Exp extends PO implements I_A_Depreciation_Exp {
      *
      * @param UseLifeMonths_F Use Life - Months (fiscal)
      */
-    public void setUseLifeMonths_F(int UseLifeMonths_F) {
+    public void setUseLifeMonthsFiscal(int UseLifeMonths_F) {
         setValue(COLUMNNAME_UseLifeMonths_F, UseLifeMonths_F);
     }
 

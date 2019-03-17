@@ -80,7 +80,7 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
      */
     public static MClientInfo get(Properties ctx, int AD_Client_ID) {
         Integer key = AD_Client_ID;
-        MClientInfo info = (MClientInfo) s_cache.get(key);
+        MClientInfo info = s_cache.get(key);
         if (info != null) return info;
 
         info = MBaseClientInfoKt.getClientInfo(ctx, AD_Client_ID);

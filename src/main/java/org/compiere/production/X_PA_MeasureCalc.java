@@ -58,7 +58,7 @@ public class X_PA_MeasureCalc extends BasePOName implements I_PA_MeasureCalc {
      *
      * @return Database Table information
      */
-    public int getAD_Table_ID() {
+    public int getRowTableId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_Table_ID);
         if (ii == null) return 0;
         return ii;

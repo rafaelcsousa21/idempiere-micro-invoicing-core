@@ -28,9 +28,9 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
     public X_M_MatchInv(Properties ctx, int M_MatchInv_ID) {
         super(ctx, M_MatchInv_ID);
         /*
-         * if (M_MatchInv_ID == 0) { setC_InvoiceLine_ID (0); setDateAcct (new Timestamp(
+         * if (M_MatchInv_ID == 0) { setInvoiceLineId (0); setDateAcct (new Timestamp(
          * System.currentTimeMillis() )); setDateTrx (new Timestamp( System.currentTimeMillis() ));
-         * setM_InOutLine_ID (0); setM_MatchInv_ID (0); setM_Product_ID (0); setPosted (false);
+         * setInOutLineId (0); setMatchInv_ID (0); setProductId (0); setPosted (false);
          * setProcessed (false); setProcessing (false); setQty (Env.ZERO); }
          */
     }
@@ -60,7 +60,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      *
      * @return Invoice Detail Line
      */
-    public int getC_InvoiceLine_ID() {
+    public int getInvoiceLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -71,7 +71,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -140,11 +140,22 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
     }
 
     /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getAttributeSetInstanceId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
      * Set Attribute Set Instance.
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
@@ -152,22 +163,11 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
     }
 
     /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Shipment/Receipt Line.
      *
      * @return Line on Shipment or Receipt document
      */
-    public int getM_InOutLine_ID() {
+    public int getInOutLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -178,7 +178,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      *
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
-    public void setM_InOutLine_ID(int M_InOutLine_ID) {
+    public void setInOutLineId(int M_InOutLine_ID) {
         if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
         else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
     }
@@ -188,7 +188,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      *
      * @return Match Shipment/Receipt to Invoice
      */
-    public int getM_MatchInv_ID() {
+    public int getMatchInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_MatchInv_ID);
         if (ii == null) return 0;
         return ii;
@@ -199,7 +199,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
@@ -284,7 +284,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      *
      * @return ID of document reversal
      */
-    public int getReversal_ID() {
+    public int getReversalId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Reversal_ID);
         if (ii == null) return 0;
         return ii;
@@ -295,7 +295,7 @@ public class X_M_MatchInv extends PO implements I_M_MatchInv {
      *
      * @param Reversal_ID ID of document reversal
      */
-    public void setReversal_ID(int Reversal_ID) {
+    public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
         else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }

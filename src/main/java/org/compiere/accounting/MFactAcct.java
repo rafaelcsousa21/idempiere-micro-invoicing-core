@@ -90,7 +90,7 @@ public class MFactAcct extends X_Fact_Acct {
         StringBuilder sb = new StringBuilder("MFactAcct[");
         sb.append(getId())
                 .append("-Acct=")
-                .append(getAccount_ID())
+                .append(getAccountId())
                 .append(",Dr=")
                 .append(getAmtSourceDr())
                 .append("|")
@@ -114,22 +114,22 @@ public class MFactAcct extends X_Fact_Acct {
                         getCtx(),
                         getClientId(),
                         getOrgId(),
-                        getC_AcctSchema_ID(),
-                        getAccount_ID(),
-                        getC_SubAcct_ID(),
-                        getM_Product_ID(),
+                        getAccountingSchemaId(),
+                        getAccountId(),
+                        getSubAccountId(),
+                        getProductId(),
                         getBusinessPartnerId(),
                         getTransactionOrganizationId(),
-                        getC_LocFrom_ID(),
-                        getC_LocTo_ID(),
-                        getC_SalesRegion_ID(),
+                        getLocationFromId(),
+                        getLocationToId(),
+                        getSalesRegionId(),
                         getProjectId(),
                         getCampaignId(),
                         getBusinessActivityId(),
                         getUser1Id(),
                         getUser2Id(),
-                        getUserElement1_ID(),
-                        getUserElement2_ID(),
+                        getUserElement1Id(),
+                        getUserElement2Id(),
                         null);
         if (acct != null && acct.getId() == 0) acct.saveEx();
         return acct;

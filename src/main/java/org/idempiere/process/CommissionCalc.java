@@ -76,7 +76,7 @@ public class CommissionCalc extends SvrProcess {
     	SimpleDateFormat format = DisplayType.getDateFormat(DisplayType.Date);
     	StringBuilder description = new StringBuilder().append(format.format(p_StartDate))
     		.append(" - ").append(format.format(m_EndDate))
-    		.append(" - ").append(MCurrency.getISO_Code(getCtx(), m_com.getCurrencyId()));
+    		.append(" - ").append(MCurrency.getISOCode(getCtx(), m_com.getCurrencyId()));
     	comRun.setDescription(description.toString());
     	if (!comRun.save())
     		throw new AdempiereSystemError("Could not save Commission Run");
@@ -85,7 +85,7 @@ public class CommissionCalc extends SvrProcess {
     	for (int i = 0; i < lines.length; i++)
     	{
     		//	Amt for Line - Updated By Trigger
-    		MCommissionAmt comAmt = new MCommissionAmt (comRun, lines[i].getC_CommissionLine_ID());
+    		MCommissionAmt comAmt = new MCommissionAmt (comRun, lines[i].getCommissionLineId());
     		if (!comAmt.save())
     			throw new AdempiereSystemError ("Could not save Commission Amt");
     		//
@@ -206,26 +206,26 @@ public class CommissionCalc extends SvrProcess {
     			}
     		}
     		//	Organization
-    		if (lines[i].getOrg_ID() != 0)
-    			sql.append(" AND h.AD_Org_ID=").append(lines[i].getOrg_ID());
+    		if (lines[i].getOrgId() != 0)
+    			sql.append(" AND h.AD_Org_ID=").append(lines[i].getOrgId());
     		//	BPartner
     		if (lines[i].getBusinessPartnerId() != 0)
     			sql.append(" AND h.C_BPartner_ID=").append(lines[i].getBusinessPartnerId());
     		//	BPartner Group
-    		if (lines[i].getC_BP_Group_ID() != 0)
+    		if (lines[i].getBPGroupId() != 0)
     			sql.append(" AND h.C_BPartner_ID IN ")
-    				.append("(SELECT C_BPartner_ID FROM C_BPartner WHERE C_BP_Group_ID=").append(lines[i].getC_BP_Group_ID()).append(")");
+    				.append("(SELECT C_BPartner_ID FROM C_BPartner WHERE C_BP_Group_ID=").append(lines[i].getBPGroupId()).append(")");
     		//	Sales Region
-    		if (lines[i].getC_SalesRegion_ID() != 0)
+    		if (lines[i].getSalesRegionId() != 0)
     			sql.append(" AND h.C_BPartner_Location_ID IN ")
-    				.append("(SELECT C_BPartner_Location_ID FROM C_BPartner_Location WHERE C_SalesRegion_ID=").append(lines[i].getC_SalesRegion_ID()).append(")");
+    				.append("(SELECT C_BPartner_Location_ID FROM C_BPartner_Location WHERE C_SalesRegion_ID=").append(lines[i].getSalesRegionId()).append(")");
     		//	Product
-    		if (lines[i].getM_Product_ID() != 0)
-    			sql.append(" AND l.M_Product_ID=").append(lines[i].getM_Product_ID());
+    		if (lines[i].getProductId() != 0)
+    			sql.append(" AND l.M_Product_ID=").append(lines[i].getProductId());
     		//	Product Category
-    		if (lines[i].getM_Product_Category_ID() != 0)
+    		if (lines[i].getProductCategoryId() != 0)
     			sql.append(" AND l.M_Product_ID IN ")
-    				.append("(SELECT M_Product_ID FROM M_Product WHERE M_Product_Category_ID=").append(lines[i].getM_Product_Category_ID()).append(")");
+    				.append("(SELECT M_Product_ID FROM M_Product WHERE M_Product_Category_ID=").append(lines[i].getProductCategoryId()).append(")");
     		//	Payment Rule
     		if (lines[i].getPaymentRule() != null)
     			sql.append(" AND h.PaymentRule='").append(lines[i].getPaymentRule()).append("'");

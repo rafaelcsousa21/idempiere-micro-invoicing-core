@@ -57,11 +57,11 @@ public class MCostDetail extends X_M_CostDetail {
         super(ctx, M_CostDetail_ID);
         if (M_CostDetail_ID == 0) {
             //	setAccountingSchemaId (0);
-            //	setM_Product_ID (0);
-            setM_AttributeSetInstance_ID(0);
-            //	setC_OrderLine_ID (0);
-            //	setM_InOutLine_ID(0);
-            //	setC_InvoiceLine_ID (0);
+            //	setProductId (0);
+            setAttributeSetInstanceId(0);
+            //	setOrderLineId (0);
+            //	setInOutLineId(0);
+            //	setInvoiceLineId (0);
             setProcessed(false);
             setAmt(Env.ZERO);
             setQty(Env.ZERO);
@@ -104,11 +104,11 @@ public class MCostDetail extends X_M_CostDetail {
             String Description) {
         this(as.getCtx(), 0);
         setClientOrg(as.getClientId(), AD_Org_ID);
-        setC_AcctSchema_ID(as.getAccountingSchemaId());
-        setM_Product_ID(M_Product_ID);
-        setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
+        setAccountingSchemaId(as.getAccountingSchemaId());
+        setProductId(M_Product_ID);
+        setAttributeSetInstanceId(M_AttributeSetInstance_ID);
         //
-        setM_CostElement_ID(M_CostElement_ID);
+        setCostElementId(M_CostElement_ID);
         //
         setAmt(Amt);
         setQty(Qty);
@@ -163,7 +163,7 @@ public class MCostDetail extends X_M_CostDetail {
                             Amt,
                             Qty,
                             Description);
-            cd.setC_InvoiceLine_ID(C_InvoiceLine_ID);
+            cd.setInvoiceLineId(C_InvoiceLine_ID);
         } else {
             if (cd.isProcessed()) {
                 // MZ Goodwill
@@ -238,7 +238,7 @@ public class MCostDetail extends X_M_CostDetail {
                             Amt,
                             Qty,
                             Description);
-            cd.setM_InOutLine_ID(M_InOutLine_ID);
+            cd.setInOutLineId(M_InOutLine_ID);
             cd.setIsSOTrx(IsSOTrx);
         } else {
             if (cd.isProcessed()) {
@@ -314,7 +314,7 @@ public class MCostDetail extends X_M_CostDetail {
                             Amt,
                             Qty,
                             Description);
-            cd.setM_InventoryLine_ID(M_InventoryLine_ID);
+            cd.setInventoryLineId(M_InventoryLine_ID);
         } else {
             if (cd.isProcessed()) {
                 // MZ Goodwill
@@ -386,7 +386,7 @@ public class MCostDetail extends X_M_CostDetail {
         int counterError = 0;
         List<MCostDetail> list =
                 new Query(product.getCtx(), I_M_CostDetail.Table_Name, whereClause)
-                        .setParameters(product.getM_Product_ID(), false)
+                        .setParameters(product.getProductId(), false)
                         .setOrderBy(
                                 "C_AcctSchema_ID, M_CostElement_ID, AD_Org_ID, M_AttributeSetInstance_ID, Created")
                         .list();
@@ -428,16 +428,16 @@ public class MCostDetail extends X_M_CostDetail {
      * @return true if sales order shipment
      */
     public boolean isShipment() {
-        return isSOTrx() && getM_InOutLine_ID() != 0;
+        return isSOTrx() && getInOutLineId() != 0;
     } //	isShipment
 
     /**
      * @return true if return to vendor
      */
     public boolean isVendorRMA() {
-        if (!isSOTrx() && getM_InOutLine_ID() > 0) {
+        if (!isSOTrx() && getInOutLineId() > 0) {
             String docBaseType =
-                    getSQLValueString(INOUTLINE_DOCBASETYPE_SQL, getM_InOutLine_ID());
+                    getSQLValueString(INOUTLINE_DOCBASETYPE_SQL, getInOutLineId());
             return Doc.DOCTYPE_MatShipment.equals(docBaseType);
         }
         return false;
@@ -469,17 +469,17 @@ public class MCostDetail extends X_M_CostDetail {
     public String toString() {
         StringBuilder sb = new StringBuilder("MCostDetail[");
         sb.append(getId());
-        if (getC_OrderLine_ID() != 0) sb.append(",C_OrderLine_ID=").append(getC_OrderLine_ID());
-        if (getM_InOutLine_ID() != 0) sb.append(",M_InOutLine_ID=").append(getM_InOutLine_ID());
-        if (getC_InvoiceLine_ID() != 0) sb.append(",C_InvoiceLine_ID=").append(getC_InvoiceLine_ID());
-        if (getC_ProjectIssue_ID() != 0)
-            sb.append(",C_ProjectIssue_ID=").append(getC_ProjectIssue_ID());
-        if (getM_MovementLine_ID() != 0)
-            sb.append(",M_MovementLine_ID=").append(getM_MovementLine_ID());
-        if (getM_InventoryLine_ID() != 0)
-            sb.append(",M_InventoryLine_ID=").append(getM_InventoryLine_ID());
-        if (getM_ProductionLine_ID() != 0)
-            sb.append(",M_ProductionLine_ID=").append(getM_ProductionLine_ID());
+        if (getOrderLineId() != 0) sb.append(",C_OrderLine_ID=").append(getOrderLineId());
+        if (getInOutLineId() != 0) sb.append(",M_InOutLine_ID=").append(getInOutLineId());
+        if (getInvoiceLineId() != 0) sb.append(",C_InvoiceLine_ID=").append(getInvoiceLineId());
+        if (getProjectIssueId() != 0)
+            sb.append(",C_ProjectIssue_ID=").append(getProjectIssueId());
+        if (getMovementLineId() != 0)
+            sb.append(",M_MovementLine_ID=").append(getMovementLineId());
+        if (getInventoryLineId() != 0)
+            sb.append(",M_InventoryLine_ID=").append(getInventoryLineId());
+        if (getProductionLineId() != 0)
+            sb.append(",M_ProductionLine_ID=").append(getProductionLineId());
         sb.append(",Amt=").append(getAmt()).append(",Qty=").append(getQty());
         if (isDelta())
             sb.append(",DeltaAmt=").append(getDeltaAmt()).append(",DeltaQty=").append(getDeltaQty());
@@ -501,12 +501,12 @@ public class MCostDetail extends X_M_CostDetail {
         boolean ok = false;
 
         //	get costing level for product
-        MAcctSchema as = MAcctSchema.get(getCtx(), getC_AcctSchema_ID());
-        MProduct product = new MProduct(getCtx(), getM_Product_ID());
+        MAcctSchema as = MAcctSchema.get(getCtx(), getAccountingSchemaId());
+        MProduct product = new MProduct(getCtx(), getProductId());
         String CostingLevel = product.getCostingLevel(as);
         //	Org Element
         int Org_ID = getOrgId();
-        int M_ASI_ID = getMAttributeSetInstance_ID();
+        int M_ASI_ID = getAttributeSetInstanceId();
         if (MAcctSchema.COSTINGLEVEL_Client.equals(CostingLevel)) {
             Org_ID = 0;
             M_ASI_ID = 0;
@@ -514,7 +514,7 @@ public class MCostDetail extends X_M_CostDetail {
         else if (MAcctSchema.COSTINGLEVEL_BatchLot.equals(CostingLevel)) Org_ID = 0;
 
         //	Create Material Cost elements
-        if (getM_CostElement_ID() == 0) {
+        if (getCostElementId() == 0) {
             MCostElement[] ces = MCostElement.getCostingMethods(this);
             for (int i = 0; i < ces.length; i++) {
                 MCostElement ce = ces[i];
@@ -526,7 +526,7 @@ public class MCostDetail extends X_M_CostDetail {
             }
         } //	Material Cost elements
         else {
-            MCostElement ce = MCostElement.get(getCtx(), getM_CostElement_ID());
+            MCostElement ce = MCostElement.get(getCtx(), getCostElementId());
             if (ce.getCostingMethod() == null) {
                 MCostElement[] ces = MCostElement.getCostingMethods(this);
                 for (MCostElement costingElement : ces) {
@@ -579,20 +579,20 @@ public class MCostDetail extends X_M_CostDetail {
             if (ce.isAverageInvoice()) return true;
         }
 
-        MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getM_CostElement_ID());
+        MCost cost = MCost.get(product, M_ASI_ID, as, Org_ID, ce.getCostElementId());
 
         forUpdate(cost);
 
         //	if (cost == null)
         //		cost = new MCost(product, M_ASI_ID,
-        //			as, Org_ID, ce.getM_CostElement_ID());
+        //			as, Org_ID, ce.getCostElementId());
 
         // save history for m_cost
         X_M_CostHistory history = new X_M_CostHistory(getCtx(), 0);
-        history.setM_AttributeSetInstance_ID(cost.getMAttributeSetInstance_ID());
-        history.setM_CostDetail_ID(this.getM_CostDetail_ID());
-        history.setM_CostElement_ID(ce.getM_CostElement_ID());
-        history.setM_CostType_ID(cost.getM_CostType_ID());
+        history.setAttributeSetInstanceId(cost.getAttributeSetInstanceId());
+        history.setCostDetailId(this.getCostDetailId());
+        history.setCostElementId(ce.getCostElementId());
+        history.setCostTypeId(cost.getCostTypeId());
         history.setClientOrg(cost.getClientId(), cost.getOrgId());
         history.setOldQty(cost.getCurrentQty());
         history.setOldCostPrice(cost.getCurrentCostPrice());
@@ -614,8 +614,8 @@ public class MCostDetail extends X_M_CostDetail {
 
         // determine whether this is cost only adjustment entry
         boolean costAdjustment = false;
-        if (this.getM_CostElement_ID() > 0 && this.getM_CostElement_ID() != ce.getM_CostElement_ID()) {
-            MCostElement thisCostElement = MCostElement.get(getCtx(), getM_CostElement_ID());
+        if (this.getCostElementId() > 0 && this.getCostElementId() != ce.getCostElementId()) {
+            MCostElement thisCostElement = MCostElement.get(getCtx(), getCostElementId());
             if (thisCostElement.getCostingMethod() == null && ce.getCostingMethod() != null) {
                 qty = BigDecimal.ZERO;
                 costAdjustment = true;
@@ -633,7 +633,7 @@ public class MCostDetail extends X_M_CostDetail {
          */
 
         //	*** Purchase Order Detail Record ***
-        if (getC_OrderLine_ID() != 0) {
+        if (getOrderLineId() != 0) {
             boolean isReturnTrx = qty.signum() < 0;
 
             if (ce.isAveragePO()) {
@@ -657,7 +657,7 @@ public class MCostDetail extends X_M_CostDetail {
                     if (cost.getCurrentCostPrice().signum() == 0) {
                         cost.setCurrentCostPrice(
                                 MCost.getSeedCosts(
-                                        product, M_ASI_ID, as, Org_ID, ce.getCostingMethod(), getC_OrderLine_ID()));
+                                        product, M_ASI_ID, as, Org_ID, ce.getCostingMethod(), getOrderLineId()));
                     }
                     if (log.isLoggable(Level.FINEST))
                         log.finest(
@@ -679,7 +679,7 @@ public class MCostDetail extends X_M_CostDetail {
         }
 
         //	*** AP Invoice Detail Record ***
-        else if (getC_InvoiceLine_ID() != 0) {
+        else if (getInvoiceLineId() != 0) {
             boolean isReturnTrx = qty.signum() < 0;
 
             if (ce.isAverageInvoice()) {
@@ -692,10 +692,10 @@ public class MCostDetail extends X_M_CostDetail {
                 MCostQueue cq =
                         MCostQueue.get(
                                 product,
-                                getMAttributeSetInstance_ID(),
+                                getAttributeSetInstanceId(),
                                 as,
                                 Org_ID,
-                                ce.getM_CostElement_ID()
+                                ce.getCostElementId()
                         );
                 cq.setCosts(amt, qty, precision);
                 cq.saveEx();
@@ -724,7 +724,7 @@ public class MCostDetail extends X_M_CostDetail {
                     if (cost.getCurrentCostPrice().signum() == 0) {
                         cost.setCurrentCostPrice(
                                 MCost.getSeedCosts(
-                                        product, M_ASI_ID, as, Org_ID, ce.getCostingMethod(), getC_OrderLine_ID()));
+                                        product, M_ASI_ID, as, Org_ID, ce.getCostingMethod(), getOrderLineId()));
                         if (log.isLoggable(Level.FINEST))
                             log.finest(
                                     "Inv - Standard - CurrentCostPrice(seed)="
@@ -742,26 +742,26 @@ public class MCostDetail extends X_M_CostDetail {
             }
             //	else
             //		log.warning("Inv - " + ce + " - " + cost);
-        } else if (getM_InOutLine_ID() != 0 && costAdjustment) {
+        } else if (getInOutLineId() != 0 && costAdjustment) {
             if (ce.isAverageInvoice()) {
                 cost.setWeightedAverage(amt, qty);
             }
         }
         //	*** Qty Adjustment Detail Record ***
-        else if (getM_InOutLine_ID() != 0 // 	AR Shipment Detail Record
-                || getM_MovementLine_ID() != 0
-                || getM_InventoryLine_ID() != 0
-                || getM_ProductionLine_ID() != 0
-                || getC_ProjectIssue_ID() != 0
-                || getPP_Cost_Collector_ID() != 0) {
+        else if (getInOutLineId() != 0 // 	AR Shipment Detail Record
+                || getMovementLineId() != 0
+                || getInventoryLineId() != 0
+                || getProductionLineId() != 0
+                || getProjectIssueId() != 0
+                || getManufacturingCostCollectorId() != 0) {
             boolean addition = qty.signum() > 0;
-            boolean adjustment = getM_InventoryLine_ID() > 0 && qty.signum() == 0 && amt.signum() != 0;
+            boolean adjustment = getInventoryLineId() > 0 && qty.signum() == 0 && amt.signum() != 0;
             boolean isVendorRMA = isVendorRMA();
             //
             if (ce.isAverageInvoice()) {
                 if (!isVendorRMA) {
                     if (adjustment) {
-                        costingMethod = getM_InventoryLine().getM_Inventory().getCostingMethod();
+                        costingMethod = getInventoryLine().getInventory().getCostingMethod();
                         if (MCostElement.COSTINGMETHOD_AverageInvoice.equals(costingMethod)) {
                             if (cost.getCurrentQty().signum() == 0 && qty.signum() == 0) {
                                 // IDEMPIERE-2057 - this is a cost adjustment when there is no qty - setting the
@@ -783,7 +783,7 @@ public class MCostDetail extends X_M_CostDetail {
                 }
             } else if (ce.isAveragePO()) {
                 if (adjustment) {
-                    costingMethod = getM_InventoryLine().getM_Inventory().getCostingMethod();
+                    costingMethod = getInventoryLine().getInventory().getCostingMethod();
                     if (MCostElement.COSTINGMETHOD_AveragePO.equals(costingMethod)) {
                         if (cost.getCurrentQty().signum() == 0 && qty.signum() == 0) {
                             // IDEMPIERE-2057 - this is a cost adjustment when there is no qty - setting the
@@ -815,10 +815,10 @@ public class MCostDetail extends X_M_CostDetail {
                         MCostQueue cq =
                                 MCostQueue.get(
                                         product,
-                                        getMAttributeSetInstance_ID(),
+                                        getAttributeSetInstanceId(),
                                         as,
                                         Org_ID,
-                                        ce.getM_CostElement_ID()
+                                        ce.getCostElementId()
                                 );
                         cq.setCosts(amt, qty, precision);
                         cq.saveEx();
@@ -842,15 +842,15 @@ public class MCostDetail extends X_M_CostDetail {
                 if (log.isLoggable(Level.FINER)) log.finer("QtyAdjust - LastPO - " + cost);
             } else if (ce.isStandardCosting() && !isVendorRMA) {
                 if (adjustment) {
-                    costingMethod = getM_InventoryLine().getM_Inventory().getCostingMethod();
+                    costingMethod = getInventoryLine().getInventory().getCostingMethod();
                     if (MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod)) {
                         cost.add(amt.multiply(cost.getCurrentQty()), qty);
                         cost.setCurrentCostPrice(cost.getCurrentCostPrice().add(amt));
                     }
                 } else if (addition) {
                     MProductionLine productionLine =
-                            getM_ProductionLine_ID() > 0
-                                    ? new MProductionLine(getCtx(), getM_ProductionLine_ID())
+                            getProductionLineId() > 0
+                                    ? new MProductionLine(getCtx(), getProductionLineId())
                                     : null;
                     if (productionLine != null && productionLine.getProductionReversalId() > 0)
                         cost.setCurrentQty(cost.getCurrentQty().add(qty));
@@ -881,7 +881,7 @@ public class MCostDetail extends X_M_CostDetail {
 
             } else log.warning("QtyAdjust - " + ce + " - " + cost);
 
-        } else if (getM_MatchInv_ID() > 0) {
+        } else if (getMatchInvoiceId() > 0) {
             if (ce.isAveragePO()) {
                 cost.setWeightedAverage(amt, qty);
             }

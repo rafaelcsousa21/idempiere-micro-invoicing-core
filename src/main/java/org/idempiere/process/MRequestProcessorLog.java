@@ -43,7 +43,7 @@ public class MRequestProcessorLog extends X_R_RequestProcessorLog implements Ade
     public MRequestProcessorLog(MRequestProcessor parent, String summary) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setR_RequestProcessor_ID(parent.getR_RequestProcessor_ID());
+        setRequestProcessorId(parent.getRequestProcessorId());
         setSummary(summary);
     } //	MRequestProcessorLog
 } //	MRequestProcessorLog

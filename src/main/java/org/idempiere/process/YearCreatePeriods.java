@@ -46,7 +46,7 @@ public class YearCreatePeriods extends SvrProcess {
             else if (name.equals("DateFormat")) p_DateFormat = (String) para[i].getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_Year_ID = getRecord_ID();
+        p_C_Year_ID = getRecordId();
     } //	prepare
 
     /**

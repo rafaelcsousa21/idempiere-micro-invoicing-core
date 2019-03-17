@@ -29,8 +29,8 @@ public class X_C_BankAccount_Processor extends PO
          * if (C_BankAccount_Processor_ID == 0) { setAcceptAMEX (false); // N setAcceptATM (false); // N
          * setAcceptCheck (false); // N setAcceptCorporate (false); // N setAcceptDiners (false); // N
          * setAcceptDirectDebit (false); // N setAcceptDirectDeposit (false); // N setAcceptDiscover
-         * (false); // N setAcceptMC (false); // N setAcceptVisa (false); // N setC_BankAccount_ID (0);
-         * setC_PaymentProcessor_ID (0); setPassword (null); setRequireVV (false); // N setUserID
+         * (false); // N setAcceptMC (false); // N setAcceptVisa (false); // N setBankAccountId (0);
+         * setPaymentProcessor_ID (0); setPassword (null); setRequireVV (false); // N setUserID
          * (null); }
          */
     }
@@ -201,7 +201,7 @@ public class X_C_BankAccount_Processor extends PO
      *
      * @return Account at the Bank
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -212,7 +212,7 @@ public class X_C_BankAccount_Processor extends PO
      *
      * @param C_BankAccount_ID Account at the Bank
      */
-    public void setC_BankAccount_ID(int C_BankAccount_ID) {
+    public void setBankAccountId(int C_BankAccount_ID) {
         if (C_BankAccount_ID < 1) setValueNoCheck(COLUMNNAME_C_BankAccount_ID, null);
         else setValueNoCheck(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }
@@ -222,7 +222,7 @@ public class X_C_BankAccount_Processor extends PO
      *
      * @return Payment processor for electronic payments
      */
-    public int getC_PaymentProcessor_ID() {
+    public int getPaymentProcessorId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_PaymentProcessor_ID);
         if (ii == null) return 0;
         return ii;
@@ -233,7 +233,7 @@ public class X_C_BankAccount_Processor extends PO
      *
      * @param C_PaymentProcessor_ID Payment processor for electronic payments
      */
-    public void setC_PaymentProcessor_ID(int C_PaymentProcessor_ID) {
+    public void setPaymentProcessorId(int C_PaymentProcessor_ID) {
         if (C_PaymentProcessor_ID < 1) setValueNoCheck(COLUMNNAME_C_PaymentProcessor_ID, null);
         else setValueNoCheck(COLUMNNAME_C_PaymentProcessor_ID, Integer.valueOf(C_PaymentProcessor_ID));
     }

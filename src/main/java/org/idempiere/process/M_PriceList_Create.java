@@ -57,8 +57,8 @@ public class M_PriceList_Create extends SvrProcess {
             else if (name.equals("DeleteOld")) p_DeleteOld = (String) para[i].getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_PriceList_Version_ID = getRecord_ID();
-        m_AD_PInstance_ID = getAD_PInstance_ID();
+        p_PriceList_Version_ID = getRecordId();
+        m_AD_PInstance_ID = getAD_PInstanceId();
     } // *prepare*/
 
     /**
@@ -535,7 +535,7 @@ public class M_PriceList_Create extends SvrProcess {
                         int product_id = 0;
                         MUOMConversion conversion = null;
                         try {
-                            pstmtconversion = prepareStatement(sqlconversion.toString());
+                            pstmtconversion = prepareStatement(sqlconversion);
                             pstmtconversion.setInt(1, p_PriceList_Version_ID);
                             pstmtconversion.setInt(2, m_AD_PInstance_ID);
 
@@ -545,7 +545,7 @@ public class M_PriceList_Create extends SvrProcess {
                                 MUOMConversion[] conversions =
                                         MUOMConversion.getProductConversions(getCtx(), product_id);
                                 for (int i = 0; i < conversions.length; i++) {
-                                    if (conversions[i].getC_UOM_To_ID() == rsconversion.getInt(2)) {
+                                    if (conversions[i].getTargetUOMId() == rsconversion.getInt(2)) {
                                         conversion = conversions[i];
                                         price = rsconversion.getBigDecimal(3);
                                     }

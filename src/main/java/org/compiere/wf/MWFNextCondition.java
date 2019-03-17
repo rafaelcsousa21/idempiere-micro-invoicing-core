@@ -127,7 +127,7 @@ public class MWFNextCondition extends X_AD_WF_NextCondition {
         try {
             if (valueObj instanceof BigDecimal) valueObjB = (BigDecimal) valueObj;
             else if (valueObj instanceof Integer)
-                valueObjB = new BigDecimal(((Integer) valueObj).intValue());
+                valueObjB = new BigDecimal(valueObj.intValue());
             else valueObjB = new BigDecimal(String.valueOf(valueObj));
         } catch (Exception e) {
             if (log.isLoggable(Level.FINE))

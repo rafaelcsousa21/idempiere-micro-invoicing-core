@@ -88,7 +88,7 @@ public class RecurringRun extends SvrProcess {
 
     List<MRecurring> recs = new Query(getCtx(), MRecurring.Table_Name, whereClause.toString(), null)
     	.setOnlyActiveRecords(true)
-    	.setClient_ID()
+    	.setClientId()
     	.setParameters(parameters)
     	.setOrderBy("Name, C_Recurring_ID")
     	.list();

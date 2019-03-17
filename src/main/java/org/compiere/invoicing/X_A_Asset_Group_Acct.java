@@ -26,10 +26,10 @@ public class X_A_Asset_Group_Acct extends PO implements I_A_Asset_Group_Acct {
         super(ctx, A_Asset_Group_Acct_ID);
         /*
          * if (A_Asset_Group_Acct_ID == 0) { setA_Accumdepreciation_Acct (0); setA_Asset_Acct (0);
-         * setA_Asset_Group_Acct_ID (0); setA_Asset_Group_ID (0); setA_Depreciation_Acct (0);
+         * setAssetGroup_Acct_ID (0); setAssetGroup_ID (0); setA_Depreciation_Acct (0);
          * setA_Depreciation_F_ID (0); setA_Depreciation_ID (0); setA_Disposal_Loss_Acct (0);
          * setA_Disposal_Revenue_Acct (0); setA_Split_Percent (Env.ZERO); // 1 setAccountingSchemaId (0);
-         * setPostingType (null); // 'A' setUseLifeMonths_F (0); // 0 setUseLifeYears_F (0); // 0 }
+         * setPostingType (null); // 'A' setUseLifeMonthsFiscal (0); // 0 setUseLifeYears_F (0); // 0 }
          */
     }
 

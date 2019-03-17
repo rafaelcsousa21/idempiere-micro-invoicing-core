@@ -29,8 +29,8 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
         super(ctx, C_LandedCostAllocation_ID);
         /**
          * if (C_LandedCostAllocation_ID == 0) { setAmt (Env.ZERO); setBase (Env.ZERO);
-         * setC_InvoiceLine_ID (0); setC_LandedCostAllocation_ID (0); setM_CostElement_ID (0);
-         * setM_Product_ID (0); setQty (Env.ZERO); }
+         * setInvoiceLineId (0); setLandedCostAllocationId (0); setCostElementId (0);
+         * setProductId (0); setQty (Env.ZERO); }
          */
     }
 
@@ -100,7 +100,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -110,8 +110,19 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      *
      * @return Allocation for Land Costs
      */
-    public int getC_LandedCostAllocation_ID() {
+    public int getLandedCostAllocationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_LandedCostAllocation_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getAttributeSetInstanceId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -121,7 +132,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
@@ -129,22 +140,11 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
     }
 
     /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Cost Element.
      *
      * @return Product Cost Element
      */
-    public int getM_CostElement_ID() {
+    public int getCostElementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
@@ -155,15 +155,15 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      *
      * @param M_CostElement_ID Product Cost Element
      */
-    public void setM_CostElement_ID(int M_CostElement_ID) {
+    public void setCostElementId(int M_CostElement_ID) {
         if (M_CostElement_ID < 1) setValue(COLUMNNAME_M_CostElement_ID, null);
         else setValue(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
     }
 
-    public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
+    public org.compiere.model.I_M_InOutLine getInOutLine() throws RuntimeException {
         return (org.compiere.model.I_M_InOutLine)
                 MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-                        .getPO(getM_InOutLine_ID());
+                        .getPO(getInOutLineId());
     }
 
     /**
@@ -171,7 +171,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      *
      * @return Line on Shipment or Receipt document
      */
-    public int getM_InOutLine_ID() {
+    public int getInOutLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -182,7 +182,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      *
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
-    public void setM_InOutLine_ID(int M_InOutLine_ID) {
+    public void setInOutLineId(int M_InOutLine_ID) {
         if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
         else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, M_InOutLine_ID);
     }
@@ -192,7 +192,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -203,7 +203,7 @@ public class X_C_LandedCostAllocation extends PO implements I_C_LandedCostAlloca
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }

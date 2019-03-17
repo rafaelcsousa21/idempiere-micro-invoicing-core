@@ -112,7 +112,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @return Account at the Bank
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -123,7 +123,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @param C_BankAccount_ID Account at the Bank
      */
-    public void setC_BankAccount_ID(int C_BankAccount_ID) {
+    public void setBankAccountId(int C_BankAccount_ID) {
         if (C_BankAccount_ID < 1) setValue(COLUMNNAME_C_BankAccount_ID, null);
         else setValue(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }
@@ -133,7 +133,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @return Cash Journal
      */
-    public int getC_Cash_ID() {
+    public int getCashId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Cash_ID);
         if (ii == null) return 0;
         return ii;
@@ -144,7 +144,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @param C_Cash_ID Cash Journal
      */
-    public void setC_Cash_ID(int C_Cash_ID) {
+    public void setCashId(int C_Cash_ID) {
         if (C_Cash_ID < 1) setValueNoCheck(COLUMNNAME_C_Cash_ID, null);
         else setValueNoCheck(COLUMNNAME_C_Cash_ID, Integer.valueOf(C_Cash_ID));
     }
@@ -154,7 +154,7 @@ public class X_C_CashLine extends PO implements I_C_CashLine {
      *
      * @return Cash Journal Line
      */
-    public int getC_CashLine_ID() {
+    public int getCashLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_CashLine_ID);
         if (ii == null) return 0;
         return ii;

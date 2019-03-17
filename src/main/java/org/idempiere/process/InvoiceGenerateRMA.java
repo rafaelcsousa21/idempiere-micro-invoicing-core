@@ -95,7 +95,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, Env.getClientId(getCtx()));
-            pstmt.setInt(2, getAD_PInstance_ID());
+            pstmt.setInt(2, getAD_PInstanceId());
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -144,10 +144,10 @@ public class InvoiceGenerateRMA extends SvrProcess {
     private MInvoiceLine[] createInvoiceLines(MRMA rma, MInvoice invoice) {
         ArrayList<MInvoiceLine> invLineList = new ArrayList<MInvoiceLine>();
 
-        MRMALine rmaLines[] = rma.getLines(true);
+        MRMALine[] rmaLines = rma.getLines(true);
 
         for (MRMALine rmaLine : rmaLines) {
-            if (rmaLine.getM_InOutLine_ID() == 0 && rmaLine.getChargeId() == 0) {
+            if (rmaLine.getInOutLineId() == 0 && rmaLine.getChargeId() == 0) {
                 StringBuilder msgiste =
                         new StringBuilder("No customer return line - RMA = ")
                                 .append(rma.getDocumentNo())
@@ -166,7 +166,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
             invLineList.add(invLine);
         }
 
-        MInvoiceLine invLines[] = new MInvoiceLine[invLineList.size()];
+        MInvoiceLine[] invLines = new MInvoiceLine[invLineList.size()];
         invLineList.toArray(invLines);
 
         return invLines;
@@ -177,7 +177,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
         statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
 
         MInvoice invoice = createInvoice(rma);
-        MInvoiceLine invoiceLines[] = createInvoiceLines(rma, invoice);
+        MInvoiceLine[] invoiceLines = createInvoiceLines(rma, invoice);
 
         if (invoiceLines.length == 0) {
             StringBuilder msglog =

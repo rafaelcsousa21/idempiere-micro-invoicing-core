@@ -27,8 +27,8 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
     public X_C_PaySelectionLine(Properties ctx, int C_PaySelectionLine_ID) {
         super(ctx, C_PaySelectionLine_ID);
         /**
-         * if (C_PaySelectionLine_ID == 0) { setInvoiceId (0); setC_PaySelection_ID (0);
-         * setC_PaySelectionLine_ID (0); setDifferenceAmt (Env.ZERO); setDiscountAmt (Env.ZERO);
+         * if (C_PaySelectionLine_ID == 0) { setInvoiceId (0); setPaySelectionId (0);
+         * setPaySelectionLine_ID (0); setDifferenceAmt (Env.ZERO); setDiscountAmt (Env.ZERO);
          * setIsManual (false); setIsSOTrx (false); setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS
          * DefaultValue FROM C_PaySelectionLine WHERE C_PaySelection_ID=@C_PaySelection_ID@ setOpenAmt
          * (Env.ZERO); setPayAmt (Env.ZERO); setPaymentRule (null); // S setProcessed (false); // N
@@ -83,7 +83,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      *
      * @param C_PaySelectionCheck_ID Payment Selection Check
      */
-    public void setC_PaySelectionCheck_ID(int C_PaySelectionCheck_ID) {
+    public void setPaySelectionCheckId(int C_PaySelectionCheck_ID) {
         if (C_PaySelectionCheck_ID < 1) setValue(COLUMNNAME_C_PaySelectionCheck_ID, null);
         else setValue(COLUMNNAME_C_PaySelectionCheck_ID, Integer.valueOf(C_PaySelectionCheck_ID));
     }
@@ -93,7 +93,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      *
      * @return Payment Selection
      */
-    public int getC_PaySelection_ID() {
+    public int getPaySelectionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_PaySelection_ID);
         if (ii == null) return 0;
         return ii;
@@ -104,7 +104,7 @@ public class X_C_PaySelectionLine extends PO implements I_C_PaySelectionLine {
      *
      * @param C_PaySelection_ID Payment Selection
      */
-    public void setC_PaySelection_ID(int C_PaySelection_ID) {
+    public void setPaySelectionId(int C_PaySelection_ID) {
         if (C_PaySelection_ID < 1) setValueNoCheck(COLUMNNAME_C_PaySelection_ID, null);
         else setValueNoCheck(COLUMNNAME_C_PaySelection_ID, Integer.valueOf(C_PaySelection_ID));
     }

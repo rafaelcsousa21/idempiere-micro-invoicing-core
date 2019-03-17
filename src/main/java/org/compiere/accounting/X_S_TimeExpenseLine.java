@@ -26,7 +26,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
          * )); // @DateExpense@;@DateReport@ setIsInvoiced (false); setIsTimeReport (false); setLine
          * (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM S_TimeExpenseLine WHERE
          * S_TimeExpense_ID=@S_TimeExpense_ID@ setProcessed (false); setS_TimeExpense_ID (0);
-         * setS_TimeExpenseLine_ID (0); }
+         * setTimeExpenseLineId (0); }
          */
     }
 
@@ -105,7 +105,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @return Invoice Detail Line
      */
-    public int getC_InvoiceLine_ID() {
+    public int getInvoiceLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -116,7 +116,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -146,7 +146,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @param C_OrderLine_ID Sales Order Line
      */
-    public void setC_OrderLine_ID(int C_OrderLine_ID) {
+    public void setOrderLineId(int C_OrderLine_ID) {
         if (C_OrderLine_ID < 1) setValueNoCheck(COLUMNNAME_C_OrderLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_OrderLine_ID, Integer.valueOf(C_OrderLine_ID));
     }
@@ -167,7 +167,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @return Phase of a Project
      */
-    public int getC_ProjectPhase_ID() {
+    public int getProjectPhaseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
@@ -178,7 +178,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @return Actual Project Task in a Phase
      */
-    public int getC_ProjectTask_ID() {
+    public int getProjectTaskId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectTask_ID);
         if (ii == null) return 0;
         return ii;
@@ -189,7 +189,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @return Unit of Measure
      */
-    public int getC_UOM_ID() {
+    public int getUOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -333,7 +333,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -455,7 +455,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @return Resource Assignment
      */
-    public int getS_ResourceAssignment_ID() {
+    public int getResourceAssignmentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_S_ResourceAssignment_ID);
         if (ii == null) return 0;
         return ii;
@@ -466,7 +466,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @return Time and Expense Report
      */
-    public int getS_TimeExpense_ID() {
+    public int getTimeExpenseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_S_TimeExpense_ID);
         if (ii == null) return 0;
         return ii;
@@ -477,7 +477,7 @@ public class X_S_TimeExpenseLine extends PO implements I_S_TimeExpenseLine {
      *
      * @return Time and Expense Report Line
      */
-    public int getS_TimeExpenseLine_ID() {
+    public int getTimeExpenseLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_S_TimeExpenseLine_ID);
         if (ii == null) return 0;
         return ii;

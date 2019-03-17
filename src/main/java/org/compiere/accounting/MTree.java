@@ -212,8 +212,8 @@ public class MTree extends MTree_Base {
         if (m_buffer.size() != 0) {
             if (log.isLoggable(Level.FINEST)) log.finest("clearing buffer - Adding to: " + m_root);
             for (int i = 0; i < m_buffer.size(); i++) {
-                MTreeNode node = (MTreeNode) m_buffer.get(i);
-                MTreeNode parent = m_root.findNode(node.getParent_ID());
+                MTreeNode node = m_buffer.get(i);
+                MTreeNode parent = m_root.findNode(node.getParentId());
                 if (parent != null && parent.getAllowsChildren()) {
                     parent.add(node);
                     int sizeBeforeCheckBuffer = m_buffer.size();
@@ -228,7 +228,7 @@ public class MTree extends MTree_Base {
         if (m_buffer.size() != 0) {
             log.severe("Nodes w/o parent - adding to root - " + m_buffer);
             for (int i = 0; i < m_buffer.size(); i++) {
-                MTreeNode node = (MTreeNode) m_buffer.get(i);
+                MTreeNode node = m_buffer.get(i);
                 m_root.add(node);
                 int sizeBeforeCheckBuffer = m_buffer.size();
                 checkBuffer(node);
@@ -279,8 +279,8 @@ public class MTree extends MTree_Base {
         if (!newNode.isSummary() || !newNode.getAllowsChildren()) return;
         //
         for (int i = 0; i < m_buffer.size(); i++) {
-            MTreeNode node = (MTreeNode) m_buffer.get(i);
-            if (node.getParent_ID() == newNode.getNode_ID()) {
+            MTreeNode node = m_buffer.get(i);
+            if (node.getParentId() == newNode.getNodeId()) {
                 try {
                     newNode.add(node);
                 } catch (Exception e) {
@@ -504,7 +504,7 @@ public class MTree extends MTree_Base {
   		MTreeNode nd = (MTreeNode)en.nextElement();
   		for (int i = 0; i < nd.getLevel(); i++)
   			sb.append(" ");
-  		sb.append("ID=").append(nd.getNode_ID())
+  		sb.append("ID=").append(nd.getNodeId())
   			.append(", SeqNo=").append(nd.getSeqNo())
   			.append(" ").append(nd.getName());
   		System.out.println(sb.toString());

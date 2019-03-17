@@ -46,7 +46,7 @@ public class RfQCreate extends SvrProcess {
             else if (name.equals("IsSendRfQ")) p_IsSendRfQ = "Y".equals(para[i].getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_RfQ_ID = getRecord_ID();
+        p_C_RfQ_ID = getRecordId();
     } //	prepare
 
     /**
@@ -73,7 +73,7 @@ public class RfQCreate extends SvrProcess {
     MRfQResponse[] responses = rfq.getResponses (false, false);
 
     //	Topic
-    MRfQTopic topic = new MRfQTopic (getCtx(), rfq.getC_RfQ_Topic_ID(), null);
+    MRfQTopic topic = new MRfQTopic (getCtx(), rfq.getRfQ_TopicId(), null);
     MRfQTopicSubscriber[] subscribers = topic.getSubscribers();
     for (int i = 0; i < subscribers.length; i++)
     {

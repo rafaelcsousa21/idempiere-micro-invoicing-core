@@ -84,7 +84,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     public MJournalLine(MJournal parent) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setGL_Journal_ID(parent.getGL_Journal_ID());
+        setGLJournalId(parent.getGLJournalId());
         setCurrencyId(parent.getCurrencyId());
         setConversionTypeId(parent.getConversionTypeId());
         setDateAcct(parent.getDateAcct());
@@ -96,7 +96,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      * @return parent
      */
     public MJournal getParent() {
-        if (m_parent == null) m_parent = new MJournal(getCtx(), getGL_Journal_ID());
+        if (m_parent == null) m_parent = new MJournal(getCtx(), getGLJournalId());
         return m_parent;
     } //	getParent
 
@@ -188,23 +188,23 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      *
      * @param C_ValidCombination_ID id
      */
-    public void setC_ValidCombination_ID(int C_ValidCombination_ID) {
-        super.setC_ValidCombination_ID(C_ValidCombination_ID);
+    public void setValidAccountCombinationId(int C_ValidCombination_ID) {
+        super.setValidAccountCombinationId(C_ValidCombination_ID);
         m_account = null;
         m_accountElement = null;
-    } //	setC_ValidCombination_ID
+    } //	setValidCombination_ID
 
     /**
      * Set C_ValidCombination_ID
      *
      * @param acct account
      */
-    public void setC_ValidCombination_ID(MAccount acct) {
+    public void setValidCombinationId(MAccount acct) {
         if (acct == null) throw new IllegalArgumentException("Account is null");
-        super.setC_ValidCombination_ID(acct.getC_ValidCombination_ID());
+        super.setValidAccountCombinationId(acct.getValidAccountCombinationId());
         m_account = acct;
         m_accountElement = null;
-    } //	setC_ValidCombination_ID
+    } //	setValidCombination_ID
 
     /**
      * Get Account (Valid Combination)
@@ -212,8 +212,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      * @return combination or null
      */
     public MAccount getAccount_Combi() {
-        if (m_account == null && getC_ValidCombination_ID() != 0)
-            m_account = new MAccount(getCtx(), getC_ValidCombination_ID());
+        if (m_account == null && getValidAccountCombinationId() != 0)
+            m_account = new MAccount(getCtx(), getValidAccountCombinationId());
         return m_account;
     } //	getValidCombination
 
@@ -225,8 +225,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     public MElementValue getAccountElementValue() {
         if (m_accountElement == null) {
             MAccount vc = getAccount_Combi();
-            if (vc != null && vc.getAccount_ID() != 0)
-                m_accountElement = new MElementValue(getCtx(), vc.getAccount_ID());
+            if (vc != null && vc.getAccountId() != 0)
+                m_accountElement = new MElementValue(getCtx(), vc.getAccountId());
         }
         return m_accountElement;
     } //	getAccountElement
@@ -239,7 +239,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
     public boolean isDocControlled() {
         MElementValue acct = getAccountElementValue();
         if (acct == null) {
-            log.warning("Account not found for C_ValidCombination_ID=" + getC_ValidCombination_ID());
+            log.warning("Account not found for C_ValidCombination_ID=" + getValidAccountCombinationId());
             return false;
         }
         return acct.isDocControlled();
@@ -258,7 +258,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         }
         // idempiere 344 - nmicoud
         if (!getOrCreateCombination()) return false;
-        if (getC_ValidCombination_ID() <= 0) {
+        if (getValidAccountCombinationId() <= 0) {
             log.saveError(
                     "SaveError",
                     Msg.parseTranslation(getCtx(), "@FillMandatory@" + "@C_ValidCombination_ID@"));
@@ -319,7 +319,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                         .append(
                                 " FROM GL_JournalLine jl WHERE jl.IsActive='Y' AND j.GL_Journal_ID=jl.GL_Journal_ID) ")
                         .append("WHERE GL_Journal_ID=")
-                        .append(getGL_Journal_ID());
+                        .append(getGLJournalId());
         int no = executeUpdate(sql.toString());
         if (no != 1) log.warning("afterSave - Update Journal #" + no);
 
@@ -327,7 +327,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
         int GL_JournalBatch_ID =
                 getSQLValue(
                         "SELECT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=?",
-                        getGL_Journal_ID());
+                        getGLJournalId());
         if (GL_JournalBatch_ID != 0) { // idempiere 344 - nmicoud
             sql =
                     new StringBuilder("UPDATE GL_JournalBatch jb")
@@ -336,7 +336,7 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                             .append(" FROM GL_Journal j WHERE jb.GL_JournalBatch_ID=j.GL_JournalBatch_ID) ")
                             .append("WHERE GL_JournalBatch_ID=")
                             .append("(SELECT DISTINCT GL_JournalBatch_ID FROM GL_Journal WHERE GL_Journal_ID=")
-                            .append(getGL_Journal_ID())
+                            .append(getGLJournalId())
                             .append(")");
             no = executeUpdate(sql.toString());
             if (no != 1) log.warning("Update Batch #" + no);
@@ -348,31 +348,31 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      * Update combination and optionally *
      */
     private boolean getOrCreateCombination() {
-        if (getC_ValidCombination_ID() == 0
+        if (getValidAccountCombinationId() == 0
                 || (!isNew()
-                && (is_ValueChanged("Account_ID")
-                || is_ValueChanged("C_SubAcct_ID")
-                || is_ValueChanged("M_Product_ID")
-                || is_ValueChanged("C_BPartner_ID")
-                || is_ValueChanged("AD_OrgTrx_ID")
-                || is_ValueChanged("AD_Org_ID")
-                || is_ValueChanged("C_LocFrom_ID")
-                || is_ValueChanged("C_LocTo_ID")
-                || is_ValueChanged("C_SalesRegion_ID")
-                || is_ValueChanged("C_Project_ID")
-                || is_ValueChanged("C_Campaign_ID")
-                || is_ValueChanged("C_Activity_ID")
-                || is_ValueChanged("User1_ID")
-                || is_ValueChanged("User2_ID")))) {
-            MJournal gl = new MJournal(getCtx(), getGL_Journal_ID());
+                && (isValueChanged("Account_ID")
+                || isValueChanged("C_SubAcct_ID")
+                || isValueChanged("M_Product_ID")
+                || isValueChanged("C_BPartner_ID")
+                || isValueChanged("AD_OrgTrx_ID")
+                || isValueChanged("AD_Org_ID")
+                || isValueChanged("C_LocFrom_ID")
+                || isValueChanged("C_LocTo_ID")
+                || isValueChanged("C_SalesRegion_ID")
+                || isValueChanged("C_Project_ID")
+                || isValueChanged("C_Campaign_ID")
+                || isValueChanged("C_Activity_ID")
+                || isValueChanged("User1_ID")
+                || isValueChanged("User2_ID")))) {
+            MJournal gl = new MJournal(getCtx(), getGLJournalId());
 
             // Validate all mandatory combinations are set
-            MAcctSchema as = (MAcctSchema) getParent().getC_AcctSchema();
+            MAcctSchema as = (MAcctSchema) getParent().getAccountingSchema();
             String errorFields = "";
             for (MAcctSchemaElement elem : MAcctSchemaElement.getAcctSchemaElements(as)) {
                 if (!elem.isMandatory()) continue;
                 String et = elem.getElementType();
-                if (MAcctSchemaElement.ELEMENTTYPE_Account.equals(et) && getAccount_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_Account.equals(et) && getAccountId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_Account_ID + "@, ";
                 if (MAcctSchemaElement.ELEMENTTYPE_Activity.equals(et) && getBusinessActivityId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_Activity_ID + "@, ";
@@ -384,11 +384,11 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_AD_Org_ID + "@, ";
                 if (MAcctSchemaElement.ELEMENTTYPE_OrgTrx.equals(et) && getTransactionOrganizationId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_AD_OrgTrx_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_Product.equals(et) && getM_Product_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_Product.equals(et) && getProductId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_M_Product_ID + "@, ";
                 if (MAcctSchemaElement.ELEMENTTYPE_Project.equals(et) && getProjectId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_Project_ID + "@, ";
-                if (MAcctSchemaElement.ELEMENTTYPE_SalesRegion.equals(et) && getC_SalesRegion_ID() == 0)
+                if (MAcctSchemaElement.ELEMENTTYPE_SalesRegion.equals(et) && getSalesRegionId() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_C_SalesRegion_ID + "@, ";
                 if (MAcctSchemaElement.ELEMENTTYPE_UserElementList1.equals(et) && getUser1Id() == 0)
                     errorFields += "@" + I_GL_JournalLine.COLUMNNAME_User1_ID + "@, ";
@@ -408,15 +408,15 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                             getCtx(),
                             getClientId(),
                             getOrgId(),
-                            gl.getC_AcctSchema_ID(),
-                            getAccount_ID(),
-                            getC_SubAcct_ID(),
-                            getM_Product_ID(),
+                            gl.getAccountingSchemaId(),
+                            getAccountId(),
+                            getSubAccountId(),
+                            getProductId(),
                             getBusinessPartnerId(),
                             getTransactionOrganizationId(),
-                            getC_LocFrom_ID(),
-                            getC_LocTo_ID(),
-                            getC_SalesRegion_ID(),
+                            getLocationFromId(),
+                            getLocationToId(),
+                            getSalesRegionId(),
                             getProjectId(),
                             getCampaignId(),
                             getBusinessActivityId(),
@@ -428,10 +428,10 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
 
             if (acct != null) {
                 acct.saveEx(); // get ID from transaction
-                setC_ValidCombination_ID(acct.getId());
+                setValidAccountCombinationId(acct.getId());
                 if (acct.getAlias() != null && acct.getAlias().length() > 0)
-                    setAlias_ValidCombination_ID(acct.getId());
-                else setAlias_ValidCombination_ID(0);
+                    setValidAccountAliasId(acct.getId());
+                else setValidAccountAliasId(0);
             }
         }
         return true;
@@ -441,17 +441,17 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
      * Fill Accounting Dimensions from line combination *
      */
     private void fillDimensionsFromCombination() {
-        if (getC_ValidCombination_ID() > 0) {
-            MAccount combi = new MAccount(getCtx(), getC_ValidCombination_ID());
-            setAccount_ID(combi.getAccount_ID() > 0 ? combi.getAccount_ID() : 0);
-            setC_SubAcct_ID(combi.getC_SubAcct_ID() > 0 ? combi.getC_SubAcct_ID() : 0);
-            setM_Product_ID(combi.getM_Product_ID() > 0 ? combi.getM_Product_ID() : 0);
+        if (getValidAccountCombinationId() > 0) {
+            MAccount combi = new MAccount(getCtx(), getValidAccountCombinationId());
+            setAccountId(combi.getAccountId() > 0 ? combi.getAccountId() : 0);
+            setSubAccountId(combi.getSubAccountId() > 0 ? combi.getSubAccountId() : 0);
+            setProductId(combi.getProductId() > 0 ? combi.getProductId() : 0);
             setBusinessPartnerId(combi.getBusinessPartnerId() > 0 ? combi.getBusinessPartnerId() : 0);
             setTransactionOrganizationId(combi.getTransactionOrganizationId() > 0 ? combi.getTransactionOrganizationId() : 0);
             setOrgId(combi.getOrgId() > 0 ? combi.getOrgId() : 0);
-            setC_LocFrom_ID(combi.getC_LocFrom_ID() > 0 ? combi.getC_LocFrom_ID() : 0);
-            setC_LocTo_ID(combi.getC_LocTo_ID() > 0 ? combi.getC_LocTo_ID() : 0);
-            setC_SalesRegion_ID(combi.getC_SalesRegion_ID() > 0 ? combi.getC_SalesRegion_ID() : 0);
+            setLocationFromId(combi.getLocationFromId() > 0 ? combi.getLocationFromId() : 0);
+            setLocationToId(combi.getLocationToId() > 0 ? combi.getLocationToId() : 0);
+            setSalesRegionId(combi.getSalesRegionId() > 0 ? combi.getSalesRegionId() : 0);
             setProjectId(combi.getProjectId() > 0 ? combi.getProjectId() : 0);
             setCampaignId(combi.getCampaignId() > 0 ? combi.getCampaignId() : 0);
             setBusinessActivityId(combi.getBusinessActivityId() > 0 ? combi.getBusinessActivityId() : 0);

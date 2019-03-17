@@ -39,7 +39,7 @@ public class DocTypeCounterValidate extends SvrProcess {
      * Prepare
      */
     protected void prepare() {
-        p_C_DocTypeCounter_ID = getRecord_ID();
+        p_C_DocTypeCounter_ID = getRecordId();
     } //	prepare
 
     /**

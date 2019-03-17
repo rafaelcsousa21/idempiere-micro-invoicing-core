@@ -22,7 +22,7 @@ public class MatchInvDelete extends SvrProcess {
      * Prepare
      */
     protected void prepare() {
-        p_M_MatchInv_ID = getRecord_ID();
+        p_M_MatchInv_ID = getRecordId();
     } //	prepare
 
     /**

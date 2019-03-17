@@ -50,12 +50,12 @@ public class MSalesRegion extends X_C_SalesRegion {
     protected boolean afterSave(boolean newRecord, boolean success) {
         if (!success) return success;
         if (newRecord) insert_Tree(MTree_Base.TREETYPE_SalesRegion);
-        if (newRecord || is_ValueChanged(I_C_SalesRegion.COLUMNNAME_Value))
+        if (newRecord || isValueChanged(I_C_SalesRegion.COLUMNNAME_Value))
             update_Tree(MTree_Base.TREETYPE_SalesRegion);
         //	Value/Name change
-        if (!newRecord && (is_ValueChanged("Value") || is_ValueChanged("Name")))
+        if (!newRecord && (isValueChanged("Value") || isValueChanged("Name")))
             MAccount.updateValueDescription(
-                    getCtx(), "C_SalesRegion_ID=" + getC_SalesRegion_ID());
+                    getCtx(), "C_SalesRegion_ID=" + getSalesRegionId());
 
         return true;
     } //	afterSave

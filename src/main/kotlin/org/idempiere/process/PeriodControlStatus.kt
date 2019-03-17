@@ -24,7 +24,7 @@ class PeriodControlStatus(var p_C_PeriodControl_ID: Int = 0) : SvrProcess() {
             else
                 log.log(Level.SEVERE, "Unknown Parameter: $name")
         }
-        if (p_C_PeriodControl_ID == 0) p_C_PeriodControl_ID = record_ID
+        if (p_C_PeriodControl_ID == 0) p_C_PeriodControl_ID = recordId
     } // 	prepare
 
     /**
@@ -60,7 +60,7 @@ class PeriodControlStatus(var p_C_PeriodControl_ID: Int = 0) : SvrProcess() {
 
         // 	Reset Cache
         CacheMgt.get().reset("C_PeriodControl", 0)
-        CacheMgt.get().reset("C_Period", pc.c_Period_ID)
+        CacheMgt.get().reset("C_Period", pc.periodId)
 
         return if (!ok) "@Error@" else "@OK@"
     } // 	doIt

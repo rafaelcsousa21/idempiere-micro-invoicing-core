@@ -27,7 +27,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
     public X_C_PaySelection(Properties ctx, int C_PaySelection_ID) {
         super(ctx, C_PaySelection_ID);
         /**
-         * if (C_PaySelection_ID == 0) { setC_BankAccount_ID (0); setC_PaySelection_ID (0);
+         * if (C_PaySelection_ID == 0) { setBankAccountId (0); setPaySelectionId (0);
          * setIsApproved (false); setName (null); // @#Date@ setPayDate (new Timestamp(
          * System.currentTimeMillis() )); // @#Date@ setProcessed (false); setProcessing (false);
          * setTotalAmt (Env.ZERO); }
@@ -60,7 +60,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
      *
      * @return Account at the Bank
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -71,7 +71,7 @@ public class X_C_PaySelection extends BasePOName implements I_C_PaySelection {
      *
      * @return Payment Selection
      */
-    public int getC_PaySelection_ID() {
+    public int getPaySelectionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_PaySelection_ID);
         if (ii == null) return 0;
         return ii;

@@ -50,10 +50,10 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
         return sb.toString();
     }
 
-    public org.compiere.model.I_C_ProjectPhase getC_ProjectPhase() throws RuntimeException {
+    public org.compiere.model.I_C_ProjectPhase getProjectPhase() throws RuntimeException {
         return (org.compiere.model.I_C_ProjectPhase)
                 MTable.get(getCtx(), org.compiere.model.I_C_ProjectPhase.Table_Name)
-                        .getPO(getC_ProjectPhase_ID());
+                        .getPO(getProjectPhaseId());
     }
 
     /**
@@ -61,7 +61,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      *
      * @return Phase of a Project
      */
-    public int getC_ProjectPhase_ID() {
+    public int getProjectPhaseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
@@ -72,7 +72,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      *
      * @param C_ProjectPhase_ID Phase of a Project
      */
-    public void setC_ProjectPhase_ID(int C_ProjectPhase_ID) {
+    public void setProjectPhaseId(int C_ProjectPhase_ID) {
         if (C_ProjectPhase_ID < 1) setValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, null);
         else setValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, C_ProjectPhase_ID);
     }
@@ -82,7 +82,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      *
      * @return Actual Project Task in a Phase
      */
-    public int getC_ProjectTask_ID() {
+    public int getProjectTaskId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectTask_ID);
         if (ii == null) return 0;
         return ii;
@@ -93,7 +93,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      *
      * @return Standard Project Type Task
      */
-    public int getC_Task_ID() {
+    public int getTaskId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Task_ID);
         if (ii == null) return 0;
         return ii;
@@ -104,7 +104,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      *
      * @param C_Task_ID Standard Project Type Task
      */
-    public void setC_Task_ID(int C_Task_ID) {
+    public void setTaskId(int C_Task_ID) {
         if (C_Task_ID < 1) setValueNoCheck(COLUMNNAME_C_Task_ID, null);
         else setValueNoCheck(COLUMNNAME_C_Task_ID, Integer.valueOf(C_Task_ID));
     }
@@ -141,7 +141,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -152,7 +152,7 @@ public class X_C_ProjectTask extends BasePOName implements I_C_ProjectTask {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }

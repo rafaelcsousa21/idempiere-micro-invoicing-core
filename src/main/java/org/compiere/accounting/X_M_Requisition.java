@@ -273,7 +273,7 @@ public class X_M_Requisition extends PO implements I_M_Requisition {
      *
      * @return Material Requisition
      */
-    public int getM_Requisition_ID() {
+    public int getRequisitionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Requisition_ID);
         if (ii == null) return 0;
         return ii;

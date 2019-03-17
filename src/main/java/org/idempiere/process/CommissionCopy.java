@@ -46,7 +46,7 @@ public class CommissionCopy extends SvrProcess {
             else if (name.equals("C_Commission_ID")) p_C_Commission_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        p_C_CommissionTo_ID = getRecord_ID();
+        p_C_CommissionTo_ID = getRecordId();
     } //	prepare
 
     /**

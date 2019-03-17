@@ -57,7 +57,7 @@ public class TreeMaintenance extends SvrProcess {
             if (para[i].getParameter() == null) ;
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        m_AD_Tree_ID = getRecord_ID(); // 	from Window
+        m_AD_Tree_ID = getRecordId(); // 	from Window
     } //	prepare
 
     /**

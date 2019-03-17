@@ -76,14 +76,14 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
         //
         setBusinessPartnerId(bp.getBusinessPartnerId());
         //
-        setA_Name(bpc.getName());
-        setA_EMail(bpc.getEMail());
+        setAccountName(bpc.getName());
+        setAccountEMail(bpc.getEMail());
         //
-        setA_Street(location.getAddress1());
-        setA_City(location.getCity());
-        setA_Zip(location.getPostal());
-        setA_State(location.getRegionName(true));
-        setA_Country(location.getCountryName());
+        setAccountStreet(location.getAddress1());
+        setAccountCity(location.getCity());
+        setAccountZip(location.getPostal());
+        setAccountState(location.getRegionName(true));
+        setAccountCountry(location.getCountryName());
     } //	MBP_BankAccount
 
     /**
@@ -138,7 +138,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
      * @return bank
      */
     public MBank getBank() {
-        int C_Bank_ID = getC_Bank_ID();
+        int C_Bank_ID = getBankId();
         if (C_Bank_ID == 0) return null;
         if (m_bank == null) m_bank = new MBank(getCtx(), C_Bank_ID);
         return m_bank;
@@ -211,7 +211,7 @@ public class MBPBankAccount extends X_C_BP_BankAccount {
                 new StringBuilder("MBP_BankAccount[")
                         .append(getId())
                         .append(", Name=")
-                        .append(getA_Name())
+                        .append(getAccountName())
                         .append("]");
         return sb.toString();
     } //	toString

@@ -26,8 +26,6 @@ public class MAssetType extends X_A_Asset_Type {
     private static CCache<Integer, MAssetType> s_cache =
             new CCache<Integer, MAssetType>(I_A_Asset_Type.Table_Name, 10, 0);
 
-    ;
-
     /**
      * Standard Constructor
      */
@@ -84,31 +82,31 @@ public class MAssetType extends X_A_Asset_Type {
         return A_ASSET_TYPE_MFX.equals(getSearchKey());
     }
 
-    public static interface Model {
+    public interface Model {
         /**
          * Get Context
          */
-        public Properties getCtx();
+        Properties getCtx();
 
         /**
          * Get Asset Type
          */
-        public int getA_Asset_Type_ID();
+        int getA_Asset_TypeId();
 
         /**
          * Get In Possession. The asset is in the possession of the organization
          */
-        public boolean isInPosession();
+        boolean isInPosession();
 
         /**
          * Get Owned. The asset is owned by the organization
          */
-        public boolean isOwned();
+        boolean isOwned();
 
         /**
          * Get Is Depreciated
          */
-        public boolean isDepreciated();
+        boolean isDepreciated();
     }
 
 } // class MAssetType

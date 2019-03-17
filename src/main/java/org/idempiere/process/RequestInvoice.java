@@ -204,9 +204,9 @@ public class RequestInvoice extends SvrProcess {
             //
             il.setQty(qty);
             //	Product
-            int M_Product_ID = update.getM_ProductSpent_ID();
+            int M_Product_ID = update.getProductSpentId();
             if (M_Product_ID == 0) M_Product_ID = p_M_Product_ID;
-            il.setM_Product_ID(M_Product_ID);
+            il.setProductId(M_Product_ID);
             //
             il.setPrice();
             il.saveEx();

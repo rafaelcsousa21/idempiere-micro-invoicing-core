@@ -79,8 +79,8 @@ public class MProject extends X_C_Project {
      *
      * @return C_ProjectType_ID id
      */
-    public int getC_ProjectType_ID_Int() {
-        String pj = super.getC_ProjectType_ID();
+    public int getProjectTypeId_Int() {
+        String pj = super.getProjectTypeId();
         if (pj == null) return 0;
         int C_ProjectType_ID = 0;
         try {
@@ -89,17 +89,17 @@ public class MProject extends X_C_Project {
             log.log(Level.SEVERE, pj, ex);
         }
         return C_ProjectType_ID;
-    } //	getC_ProjectType_ID_Int
+    } //	getProjectTypeId_Int
 
     /**
      * Set Project Type (overwrite r/o)
      *
      * @param C_ProjectType_ID id
      */
-    public void setC_ProjectType_ID(int C_ProjectType_ID) {
-        if (C_ProjectType_ID == 0) super.setC_ProjectType_ID(null);
+    public void setProjectTypeId(int C_ProjectType_ID) {
+        if (C_ProjectType_ID == 0) super.setProjectTypeId(null);
         else super.setValue("C_ProjectType_ID", C_ProjectType_ID);
-    } //	setC_ProjectType_ID
+    } //	setProjectTypeId
 
     /**
      * String Representation
@@ -124,11 +124,11 @@ public class MProject extends X_C_Project {
      * @return price list or 0
      */
     public int getPriceListId() {
-        if (getM_PriceList_Version_ID() == 0) return 0;
+        if (getPriceListVersionId() == 0) return 0;
         if (m_M_PriceList_ID > 0) return m_M_PriceList_ID;
         //
         String sql = "SELECT M_PriceList_ID FROM M_PriceList_Version WHERE M_PriceList_Version_ID=?";
-        m_M_PriceList_ID = getSQLValue(sql, getM_PriceList_Version_ID());
+        m_M_PriceList_ID = getSQLValue(sql, getPriceListVersionId());
         return m_M_PriceList_ID;
     } //	getPriceListId
 
@@ -137,10 +137,10 @@ public class MProject extends X_C_Project {
      *
      * @param M_PriceList_Version_ID id
      */
-    public void setM_PriceList_Version_ID(int M_PriceList_Version_ID) {
-        super.setM_PriceList_Version_ID(M_PriceList_Version_ID);
+    public void setPriceListVersionId(int M_PriceList_Version_ID) {
+        super.setPriceListVersionId(M_PriceList_Version_ID);
         m_M_PriceList_ID = 0; // 	reset
-    } //	setM_PriceList_Version_ID
+    } //	setPriceListVersionId
 
     /**
      * ************************************************************************ Get Project Lines
@@ -243,7 +243,7 @@ public class MProject extends X_C_Project {
         MProjectLine[] fromLines = project.getLines();
         for (int i = 0; i < fromLines.length; i++) {
             // BF 3067850 - monhate
-            if ((fromLines[i].getC_ProjectPhase_ID() != 0) || (fromLines[i].getC_ProjectTask_ID() != 0))
+            if ((fromLines[i].getProjectPhaseId() != 0) || (fromLines[i].getProjectTaskId() != 0))
                 continue;
 
             MProjectLine line = new MProjectLine(getCtx(), 0);
@@ -251,7 +251,7 @@ public class MProject extends X_C_Project {
             line.setProjectId(getProjectId());
             line.setInvoicedAmt(Env.ZERO);
             line.setInvoicedQty(Env.ZERO);
-            line.setC_OrderPO_ID(0);
+            line.setOrderPOId(0);
             line.setOrderId(0);
             line.setProcessed(false);
             if (line.save()) count++;
@@ -279,12 +279,12 @@ public class MProject extends X_C_Project {
         //	Copy Phases
         for (int i = 0; i < fromPhases.length; i++) {
             //	Check if Phase already exists
-            int C_Phase_ID = fromPhases[i].getC_Phase_ID();
+            int C_Phase_ID = fromPhases[i].getPhaseId();
             boolean exists = false;
             if (C_Phase_ID == 0) exists = false;
             else {
                 for (int ii = 0; ii < myPhases.length; ii++) {
-                    if (myPhases[ii].getC_Phase_ID() == C_Phase_ID) {
+                    if (myPhases[ii].getPhaseId() == C_Phase_ID) {
                         exists = true;
                         break;
                     }
@@ -320,7 +320,7 @@ public class MProject extends X_C_Project {
      */
     public void setProjectType(MProjectType type) {
         if (type == null) return;
-        setC_ProjectType_ID(type.getC_ProjectType_ID());
+        setProjectTypeId(type.getProjectTypeId());
         setProjectCategory(type.getProjectCategory());
         if (PROJECTCATEGORY_ServiceChargeProject.equals(getProjectCategory())) copyPhasesFrom(type);
     } //	setProjectType
@@ -360,7 +360,7 @@ public class MProject extends X_C_Project {
             setUserId(0);
 
         //	Set Currency
-        if (is_ValueChanged("M_PriceList_Version_ID") && getM_PriceList_Version_ID() != 0) {
+        if (isValueChanged("M_PriceList_Version_ID") && getPriceListVersionId() != 0) {
             MPriceList pl = MPriceList.get(getCtx(), getPriceListId());
             if (pl != null && pl.getId() != 0) setCurrencyId(pl.getCurrencyId());
         }
@@ -381,10 +381,10 @@ public class MProject extends X_C_Project {
             insert_Accounting("C_Project_Acct", "C_AcctSchema_Default", null);
             insert_Tree(MTree_Base.TREETYPE_Project);
         }
-        if (newRecord || is_ValueChanged(COLUMNNAME_Value)) update_Tree(MTree_Base.TREETYPE_Project);
+        if (newRecord || isValueChanged(COLUMNNAME_Value)) update_Tree(MTree_Base.TREETYPE_Project);
 
         //	Value/Name change
-        if (!newRecord && (is_ValueChanged("Value") || is_ValueChanged("Name")))
+        if (!newRecord && (isValueChanged("Value") || isValueChanged("Name")))
             MAccount.updateValueDescription(getCtx(), "C_Project_ID=" + getProjectId());
 
         return success;

@@ -51,12 +51,12 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     public MInventoryLine(Properties ctx, int M_InventoryLine_ID) {
         super(ctx, M_InventoryLine_ID);
         if (M_InventoryLine_ID == 0) {
-            //	setM_Inventory_ID (0);			//	Parent
-            //	setM_InventoryLine_ID (0);		//	PK
-            //	setM_Locator_ID (0);			//	FK
+            //	setInventoryId (0);			//	Parent
+            //	setInventoryLineId (0);		//	PK
+            //	setLocatorId (0);			//	FK
             setLine(0);
-            //	setM_Product_ID (0);			//	FK
-            setM_AttributeSetInstance_ID(0); // 	FK
+            //	setProductId (0);			//	FK
+            setAttributeSetInstanceId(0); // 	FK
             setInventoryType(X_M_InventoryLine.INVENTORYTYPE_InventoryDifference);
             setQtyBook(Env.ZERO);
             setQtyCount(Env.ZERO);
@@ -100,11 +100,11 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         this(inventory.getCtx(), 0);
         if (inventory.getId() == 0) throw new IllegalArgumentException("Header not saved");
         m_parent = inventory;
-        setM_Inventory_ID(inventory.getM_Inventory_ID()); // 	Parent
+        setInventoryId(inventory.getInventoryId()); // 	Parent
         setClientOrg(inventory.getClientId(), inventory.getOrgId());
-        setM_Locator_ID(M_Locator_ID); // 	FK
-        setM_Product_ID(M_Product_ID); // 	FK
-        setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
+        setLocatorId(M_Locator_ID); // 	FK
+        setProductId(M_Product_ID); // 	FK
+        setAttributeSetInstanceId(M_AttributeSetInstance_ID);
         //
         if (QtyBook != null) setQtyBook(QtyBook);
         if (QtyCount != null && QtyCount.signum() != 0) setQtyCount(QtyCount);
@@ -128,9 +128,9 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
      * @return product or null if not defined
      */
     public MProduct getProduct() {
-        int M_Product_ID = getM_Product_ID();
+        int M_Product_ID = getProductId();
         if (M_Product_ID == 0) return null;
-        if (m_product != null && m_product.getM_Product_ID() != M_Product_ID)
+        if (m_product != null && m_product.getProductId() != M_Product_ID)
             m_product = null; // 	reset
         if (m_product == null) m_product = MProduct.get(getCtx(), M_Product_ID);
         return m_product;
@@ -190,7 +190,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
      * @return parent
      */
     public MInventory getParent() {
-        if (m_parent == null) m_parent = new MInventory(getCtx(), getM_Inventory_ID());
+        if (m_parent == null) m_parent = new MInventory(getCtx(), getInventoryId());
         return m_parent;
     } //	getParent
 
@@ -212,7 +212,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         StringBuilder sb = new StringBuilder("MInventoryLine[");
         sb.append(getId())
                 .append("-M_Product_ID=")
-                .append(getM_Product_ID())
+                .append(getProductId())
                 .append(",QtyCount=")
                 .append(getQtyCount())
                 .append(",QtyInternalUse=")
@@ -220,7 +220,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
                 .append(",QtyBook=")
                 .append(getQtyBook())
                 .append(",M_AttributeSetInstance_ID=")
-                .append(getMAttributeSetInstance_ID())
+                .append(getAttributeSetInstanceId())
                 .append("]");
         return sb.toString();
     } //	toString
@@ -240,9 +240,9 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     if (m_isManualEntry)
     {
     	//	Product requires ASI
-    	if (getMAttributeSetInstance_ID() == 0)
+    	if (getAttributeSetInstanceId() == 0)
     	{
-    		MProduct product = MProduct.get(getCtx(), getM_Product_ID());
+    		MProduct product = MProduct.get(getCtx(), getProductId());
     		if (product != null && product.isASIMandatory(isSOTrx()))
     		{
     			if(product.getAttributeSet()==null){
@@ -262,7 +262,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         if (getLine() == 0) {
             String sql =
                     "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_InventoryLine WHERE M_Inventory_ID=?";
-            int ii = getSQLValue(sql, getM_Inventory_ID());
+            int ii = getSQLValue(sql, getInventoryId());
             setLine(ii);
         }
 
@@ -270,15 +270,15 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
         // GlobalQSS -> reverting this change because of Bug 2904321 - Create Inventory Count List not
         // taking negative qty products
     /*
-    if ( (!newRecord) && is_ValueChanged("QtyCount") && getQtyCount().signum() < 0)
+    if ( (!newRecord) && isValueChanged("QtyCount") && getQtyCount().signum() < 0)
     {
     	log.saveError("Warning", Msg.getElement(getCtx(), COLUMNNAME_QtyCount)+" < 0");
     	return false;
     }
     */
         //	Enforce Qty UOM
-        if (newRecord || is_ValueChanged("QtyCount")) setQtyCount(getQtyCount());
-        if (newRecord || is_ValueChanged("QtyInternalUse")) setQtyInternalUse(getQtyInternalUse());
+        if (newRecord || isValueChanged("QtyCount")) setQtyCount(getQtyCount());
+        if (newRecord || isValueChanged("QtyInternalUse")) setQtyInternalUse(getQtyInternalUse());
 
         MDocType dt = MDocType.get(getCtx(), getParent().getDocumentTypeId());
         String docSubTypeInv = dt.getDocSubTypeInv();
@@ -327,8 +327,8 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
                 return false;
             }
         } else if (MDocType.DOCSUBTYPEINV_CostAdjustment.equals(docSubTypeInv)) {
-            int M_ASI_ID = getMAttributeSetInstance_ID();
-            MProduct product = new MProduct(getCtx(), getM_Product_ID());
+            int M_ASI_ID = getAttributeSetInstanceId();
+            MProduct product = new MProduct(getCtx(), getProductId());
             MClient client = MClient.get(getCtx());
             MAcctSchema as = client.getAcctSchema();
             String costingLevel = product.getCostingLevel(as);
@@ -350,7 +350,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
                     return false;
                 }
             }
-            setM_Locator_ID(0);
+            setLocatorId(0);
         } else {
             log.saveError("Error", "Document inventory subtype not configured, cannot complete");
             return false;
@@ -376,7 +376,7 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     //
     //	//	Create MA
     //	//if (newRecord && success
-    //	//	&& m_isManualEntry && getMAttributeSetInstance_ID() == 0)
+    //	//	&& m_isManualEntry && getAttributeSetInstanceId() == 0)
     //	//	createMA();
     //	return true;
     // }	//	afterSave
@@ -384,12 +384,12 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
     /** Create Material Allocations for new Instances */
   /*private void createMA()
   {
-  	MStorageOnHand[] storages = MStorageOnHand.getAll(getCtx(), getM_Product_ID(),
-  		getM_Locator_ID(), null);
+  	MStorageOnHand[] storages = MStorageOnHand.getAll(getCtx(), getProductId(),
+  		getLocatorId(), null);
   	boolean allZeroASI = true;
   	for (int i = 0; i < storages.length; i++)
   	{
-  		if (storages[i].getMAttributeSetInstance_ID() != 0)
+  		if (storages[i].getAttributeSetInstanceId() != 0)
   		{
   			allZeroASI = false;
   			break;
@@ -406,11 +406,11 @@ public class MInventoryLine extends X_M_InventoryLine implements IDocLine {
   		if (storage.getQtyOnHand().signum() == 0)
   			continue;
   		if (ma != null
-  			&& ma.getMAttributeSetInstance_ID() == storage.getMAttributeSetInstance_ID())
+  			&& ma.getAttributeSetInstanceId() == storage.getAttributeSetInstanceId())
   			ma.setMovementQty(ma.getMovementQty().add(storage.getQtyOnHand()));
   		else
   			ma = new MInventoryLineMA (this,
-  				storage.getMAttributeSetInstance_ID(), storage.getQtyOnHand());
+  				storage.getAttributeSetInstanceId(), storage.getQtyOnHand());
   		if (!ma.save())
   			;
   		sum = sum.add(storage.getQtyOnHand());

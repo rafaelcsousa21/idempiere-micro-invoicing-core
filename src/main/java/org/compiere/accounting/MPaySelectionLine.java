@@ -35,7 +35,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
     public MPaySelectionLine(Properties ctx, int C_PaySelectionLine_ID) {
         super(ctx, C_PaySelectionLine_ID);
         if (C_PaySelectionLine_ID == 0) {
-            //	setC_PaySelection_ID (0);
+            //	setPaySelectionId (0);
             //	setPaymentRule (null);	// S
             //	setLine (0);	// @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM C_PaySelectionLine
             // WHERE C_PaySelection_ID=@C_PaySelection_ID@
@@ -69,7 +69,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
     public MPaySelectionLine(MPaySelection ps, int Line, String PaymentRule) {
         this(ps.getCtx(), 0);
         setClientOrg(ps);
-        setC_PaySelection_ID(ps.getC_PaySelection_ID());
+        setPaySelectionId(ps.getPaySelectionId());
         setLine(Line);
         setPaymentRule(PaymentRule);
     } //	MPaySelectionLine
@@ -158,7 +158,7 @@ public class MPaySelectionLine extends X_C_PaySelectionLine {
                         + "FROM C_PaySelectionLine psl "
                         + "WHERE ps.C_PaySelection_ID=psl.C_PaySelection_ID AND psl.IsActive='Y') "
                         + "WHERE C_PaySelection_ID="
-                        + getC_PaySelection_ID();
+                        + getPaySelectionId();
         executeUpdate(sql);
     } //	setHeader
 

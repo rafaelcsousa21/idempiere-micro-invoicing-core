@@ -52,7 +52,7 @@ public class FactAcctSummary extends SvrProcess {
 
     /*
     List<MReportCube> cubes = new Query(getCtx(), MReportCube.Table_Name, where.toString(), null)
-    .setOnlyActiveRecords(true).setClient_ID()
+    .setOnlyActiveRecords(true).setClientId()
     .list();
 
     for ( MReportCube cube : cubes )

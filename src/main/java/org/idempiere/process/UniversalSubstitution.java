@@ -40,7 +40,7 @@ public class UniversalSubstitution extends SvrProcess {
         int count = 0;
         // Use model class to invalidate the product
         for (MProductBOM bom : boms) {
-            bom.setM_ProductBOM_ID(replacementId);
+            bom.setBOMProductId(replacementId);
             bom.saveEx();
             count++;
         }

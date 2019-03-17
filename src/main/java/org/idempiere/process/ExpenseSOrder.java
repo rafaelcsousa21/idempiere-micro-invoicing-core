@@ -35,11 +35,11 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
         IProcessInfoParameter[] para = getParameter();
         for (IProcessInfoParameter iProcessInfoParameter : para) {
             String name = iProcessInfoParameter.getParameterName();
-            if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameter_To() != null)
+            if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameterTo() != null)
                 if (name.equals("C_BPartner_ID")) setP_C_BPartner_ID(iProcessInfoParameter.getParameterAsInt());
                 else if (name.equals("DateExpense")) {
                     setP_DateFrom((Timestamp) iProcessInfoParameter.getParameter());
-                    setM_DateTo((Timestamp) iProcessInfoParameter.getParameter_To());
+                    setM_DateTo((Timestamp) iProcessInfoParameter.getParameterTo());
                 } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare
@@ -82,7 +82,7 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
                 if (project.getPriceListId() != 0)
                     m_order.setPriceListId(project.getPriceListId());
             }
-            m_order.setSalesRepresentativeId(te.getDoc_User_ID());
+            m_order.setSalesRepresentativeId(te.getDoc_UserId());
             //
             if (!m_order.save()) {
                 throw new IllegalStateException("Cannot save Order");
@@ -99,15 +99,15 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
         //	OrderLine
         MOrderLine ol = new MOrderLine(m_order);
         //
-        if (tel.getM_Product_ID() != 0) ol.setM_Product_ID(tel.getM_Product_ID(), tel.getC_UOM_ID());
-        if (tel.getS_ResourceAssignment_ID() != 0)
-            ol.setS_ResourceAssignment_ID(tel.getS_ResourceAssignment_ID());
+        if (tel.getProductId() != 0) ol.setProductId(tel.getProductId(), tel.getUOMId());
+        if (tel.getResourceAssignmentId() != 0)
+            ol.setS_ResourceAssignmentId(tel.getResourceAssignmentId());
         ol.setQty(tel.getQtyInvoiced()); //
         ol.setDescription(tel.getDescription());
         //
         ol.setProjectId(tel.getProjectId());
-        ol.setC_ProjectPhase_ID(tel.getC_ProjectPhase_ID());
-        ol.setC_ProjectTask_ID(tel.getC_ProjectTask_ID());
+        ol.setProjectPhaseId(tel.getProjectPhaseId());
+        ol.setProjectTaskId(tel.getProjectTaskId());
         ol.setBusinessActivityId(tel.getBusinessActivityId());
         ol.setCampaignId(tel.getCampaignId());
         //
@@ -124,13 +124,13 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
                                 m_order.getOrgId());
             ol.setPrice(price);
         } else ol.setPrice();
-        if (tel.getC_UOM_ID() != 0 && ol.getC_UOM_ID() == 0) ol.setC_UOM_ID(tel.getC_UOM_ID());
+        if (tel.getUOMId() != 0 && ol.getUOMId() == 0) ol.setUOMId(tel.getUOMId());
         ol.setTax();
         if (!ol.save()) {
             throw new IllegalStateException("Cannot save Order Line");
         }
         //	Update TimeExpense Line
-        tel.setC_OrderLine_ID(ol.getC_OrderLine_ID());
+        tel.setOrderLineId(ol.getOrderLineId());
         if (tel.save()) {
             if (log.isLoggable(Level.FINE)) log.fine("Updated " + tel + " with C_OrderLine_ID");
         } else {

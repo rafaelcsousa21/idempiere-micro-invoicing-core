@@ -73,7 +73,7 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
      *
      * @return Warehouse Locator
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
@@ -84,7 +84,7 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -95,7 +95,7 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
      *
      * @param M_Production_ID Plan for producing a product
      */
-    public void setM_Production_ID(int M_Production_ID) {
+    public void setProductionId(int M_Production_ID) {
         if (M_Production_ID < 1) setValueNoCheck(COLUMNNAME_M_Production_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Production_ID, Integer.valueOf(M_Production_ID));
     }
@@ -105,7 +105,7 @@ public class X_M_ProductionPlan extends PO implements I_M_ProductionPlan {
      *
      * @return Plan for how a product is produced
      */
-    public int getM_ProductionPlan_ID() {
+    public int getProductionPlanId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ProductionPlan_ID);
         if (ii == null) return 0;
         return ii;

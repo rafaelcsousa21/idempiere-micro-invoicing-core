@@ -60,7 +60,7 @@ public class X_R_StatusCategory extends BasePOName implements I_R_StatusCategory
      *
      * @return Request Status Category
      */
-    public int getR_StatusCategory_ID() {
+    public int getStatusCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_StatusCategory_ID);
         if (ii == null) return 0;
         return ii;

@@ -25,7 +25,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook {
     public X_C_CashBook(Properties ctx, int C_CashBook_ID) {
         super(ctx, C_CashBook_ID);
         /**
-         * if (C_CashBook_ID == 0) { setC_CashBook_ID (0); setCurrencyId (0); setIsDefault (false);
+         * if (C_CashBook_ID == 0) { setCashBookId (0); setCurrencyId (0); setIsDefault (false);
          * setName (null); }
          */
     }
@@ -56,7 +56,7 @@ public class X_C_CashBook extends BasePOName implements I_C_CashBook {
      *
      * @return Cash Book for recording petty cash transactions
      */
-    public int getC_CashBook_ID() {
+    public int getCashBookId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_CashBook_ID);
         if (ii == null) return 0;
         return ii;

@@ -44,7 +44,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
     public X_Fact_Acct(Properties ctx, int Fact_Acct_ID) {
         super(ctx, Fact_Acct_ID);
         /**
-         * if (Fact_Acct_ID == 0) { setAccount_ID (0); setColumnTableId (0); setAmtAcctCr (Env.ZERO);
+         * if (Fact_Acct_ID == 0) { setAccountId (0); setColumnTableId (0); setAmtAcctCr (Env.ZERO);
          * setAmtAcctDr (Env.ZERO); setAmtSourceCr (Env.ZERO); setAmtSourceDr (Env.ZERO);
          * setAccountingSchemaId (0); setCurrencyId (0); setPeriodId (0); setDateAcct (new Timestamp(
          * System.currentTimeMillis() )); setDateTrx (new Timestamp( System.currentTimeMillis() ));
@@ -78,7 +78,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Asset used internally or by customers
      */
-    public int getA_Asset_ID() {
+    public int getAssetId() {
         Integer ii = (Integer) getValue(COLUMNNAME_A_Asset_ID);
         if (ii == null) return 0;
         return ii;
@@ -89,7 +89,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Account used
      */
-    public int getAccount_ID() {
+    public int getAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Account_ID);
         if (ii == null) return 0;
         return ii;
@@ -100,7 +100,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param Account_ID Account used
      */
-    public void setAccount_ID(int Account_ID) {
+    public void setAccountId(int Account_ID) {
         if (Account_ID < 1) setValueNoCheck(COLUMNNAME_Account_ID, null);
         else setValueNoCheck(COLUMNNAME_Account_ID, Integer.valueOf(Account_ID));
     }
@@ -131,7 +131,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Database Table information
      */
-    public int getAD_Table_ID() {
+    public int getRowTableId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_Table_ID);
         if (ii == null) return 0;
         return ii;
@@ -142,7 +142,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param AD_Table_ID Database Table information
      */
-    public void setAD_Table_ID(int AD_Table_ID) {
+    public void setRowTableId(int AD_Table_ID) {
         if (AD_Table_ID < 1) setValueNoCheck(COLUMNNAME_AD_Table_ID, null);
         else setValueNoCheck(COLUMNNAME_AD_Table_ID, Integer.valueOf(AD_Table_ID));
     }
@@ -232,7 +232,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Rules for accounting
      */
-    public int getC_AcctSchema_ID() {
+    public int getAccountingSchemaId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
@@ -243,7 +243,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_AcctSchema_ID Rules for accounting
      */
-    public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
+    public void setAccountingSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
         else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
     }
@@ -337,7 +337,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Location that inventory was moved from
      */
-    public int getC_LocFrom_ID() {
+    public int getLocationFromId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_LocFrom_ID);
         if (ii == null) return 0;
         return ii;
@@ -348,7 +348,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_LocFrom_ID Location that inventory was moved from
      */
-    public void setC_LocFrom_ID(int C_LocFrom_ID) {
+    public void setLocationFromId(int C_LocFrom_ID) {
         if (C_LocFrom_ID < 1) setValueNoCheck(COLUMNNAME_C_LocFrom_ID, null);
         else setValueNoCheck(COLUMNNAME_C_LocFrom_ID, Integer.valueOf(C_LocFrom_ID));
     }
@@ -358,7 +358,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Location that inventory was moved to
      */
-    public int getC_LocTo_ID() {
+    public int getLocationToId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_LocTo_ID);
         if (ii == null) return 0;
         return ii;
@@ -369,7 +369,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_LocTo_ID Location that inventory was moved to
      */
-    public void setC_LocTo_ID(int C_LocTo_ID) {
+    public void setLocationToId(int C_LocTo_ID) {
         if (C_LocTo_ID < 1) setValueNoCheck(COLUMNNAME_C_LocTo_ID, null);
         else setValueNoCheck(COLUMNNAME_C_LocTo_ID, Integer.valueOf(C_LocTo_ID));
     }
@@ -379,7 +379,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Period of the Calendar
      */
-    public int getC_Period_ID() {
+    public int getPeriodId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
@@ -390,7 +390,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_Period_ID Period of the Calendar
      */
-    public void setC_Period_ID(int C_Period_ID) {
+    public void setPeriodId(int C_Period_ID) {
         if (C_Period_ID < 1) setValueNoCheck(COLUMNNAME_C_Period_ID, null);
         else setValueNoCheck(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
     }
@@ -421,7 +421,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Phase of a Project
      */
-    public int getC_ProjectPhase_ID() {
+    public int getProjectPhaseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
@@ -432,7 +432,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_ProjectPhase_ID Phase of a Project
      */
-    public void setC_ProjectPhase_ID(int C_ProjectPhase_ID) {
+    public void setProjectPhaseId(int C_ProjectPhase_ID) {
         if (C_ProjectPhase_ID < 1) setValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, null);
         else setValueNoCheck(COLUMNNAME_C_ProjectPhase_ID, Integer.valueOf(C_ProjectPhase_ID));
     }
@@ -442,7 +442,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Actual Project Task in a Phase
      */
-    public int getC_ProjectTask_ID() {
+    public int getProjectTaskId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectTask_ID);
         if (ii == null) return 0;
         return ii;
@@ -453,7 +453,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_ProjectTask_ID Actual Project Task in a Phase
      */
-    public void setC_ProjectTask_ID(int C_ProjectTask_ID) {
+    public void setProjectTaskId(int C_ProjectTask_ID) {
         if (C_ProjectTask_ID < 1) setValueNoCheck(COLUMNNAME_C_ProjectTask_ID, null);
         else setValueNoCheck(COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
     }
@@ -463,7 +463,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Sales coverage region
      */
-    public int getC_SalesRegion_ID() {
+    public int getSalesRegionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
@@ -474,7 +474,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_SalesRegion_ID Sales coverage region
      */
-    public void setC_SalesRegion_ID(int C_SalesRegion_ID) {
+    public void setSalesRegionId(int C_SalesRegion_ID) {
         if (C_SalesRegion_ID < 1) setValueNoCheck(COLUMNNAME_C_SalesRegion_ID, null);
         else setValueNoCheck(COLUMNNAME_C_SalesRegion_ID, Integer.valueOf(C_SalesRegion_ID));
     }
@@ -484,7 +484,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Sub account for Element Value
      */
-    public int getC_SubAcct_ID() {
+    public int getSubAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_SubAcct_ID);
         if (ii == null) return 0;
         return ii;
@@ -495,7 +495,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_SubAcct_ID Sub account for Element Value
      */
-    public void setC_SubAcct_ID(int C_SubAcct_ID) {
+    public void setSubAccountId(int C_SubAcct_ID) {
         if (C_SubAcct_ID < 1) setValue(COLUMNNAME_C_SubAcct_ID, null);
         else setValue(COLUMNNAME_C_SubAcct_ID, Integer.valueOf(C_SubAcct_ID));
     }
@@ -505,7 +505,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Tax identifier
      */
-    public int getC_Tax_ID() {
+    public int getTaxId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Tax_ID);
         if (ii == null) return 0;
         return ii;
@@ -516,7 +516,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_Tax_ID Tax identifier
      */
-    public void setC_Tax_ID(int C_Tax_ID) {
+    public void setTaxId(int C_Tax_ID) {
         if (C_Tax_ID < 1) setValueNoCheck(COLUMNNAME_C_Tax_ID, null);
         else setValueNoCheck(COLUMNNAME_C_Tax_ID, Integer.valueOf(C_Tax_ID));
     }
@@ -526,7 +526,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Unit of Measure
      */
-    public int getC_UOM_ID() {
+    public int getUOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -537,7 +537,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param C_UOM_ID Unit of Measure
      */
-    public void setC_UOM_ID(int C_UOM_ID) {
+    public void setUOMId(int C_UOM_ID) {
         if (C_UOM_ID < 1) setValueNoCheck(COLUMNNAME_C_UOM_ID, null);
         else setValueNoCheck(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
     }
@@ -592,7 +592,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return General Ledger Budget
      */
-    public int getGL_Budget_ID() {
+    public int getGLBudgetId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Budget_ID);
         if (ii == null) return 0;
         return ii;
@@ -603,7 +603,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param GL_Budget_ID General Ledger Budget
      */
-    public void setGL_Budget_ID(int GL_Budget_ID) {
+    public void setGLBudgetId(int GL_Budget_ID) {
         if (GL_Budget_ID < 1) setValueNoCheck(COLUMNNAME_GL_Budget_ID, null);
         else setValueNoCheck(COLUMNNAME_GL_Budget_ID, Integer.valueOf(GL_Budget_ID));
     }
@@ -613,7 +613,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return General Ledger Category
      */
-    public int getGL_Category_ID() {
+    public int getGLCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Category_ID);
         if (ii == null) return 0;
         return ii;
@@ -624,7 +624,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param GL_Category_ID General Ledger Category
      */
-    public void setGL_Category_ID(int GL_Category_ID) {
+    public void setGLCategoryId(int GL_Category_ID) {
         if (GL_Category_ID < 1) setValueNoCheck(COLUMNNAME_GL_Category_ID, null);
         else setValueNoCheck(COLUMNNAME_GL_Category_ID, Integer.valueOf(GL_Category_ID));
     }
@@ -634,7 +634,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Transaction line ID (internal)
      */
-    public int getLine_ID() {
+    public int getLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Line_ID);
         if (ii == null) return 0;
         return ii;
@@ -645,7 +645,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param Line_ID Transaction line ID (internal)
      */
-    public void setLine_ID(int Line_ID) {
+    public void setLineId(int Line_ID) {
         if (Line_ID < 1) setValueNoCheck(COLUMNNAME_Line_ID, null);
         else setValueNoCheck(COLUMNNAME_Line_ID, Integer.valueOf(Line_ID));
     }
@@ -655,7 +655,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Warehouse Locator
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
@@ -666,7 +666,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param M_Locator_ID Warehouse Locator
      */
-    public void setM_Locator_ID(int M_Locator_ID) {
+    public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 1) setValueNoCheck(COLUMNNAME_M_Locator_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
@@ -676,7 +676,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -687,7 +687,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
@@ -736,7 +736,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return Direct internal record ID
      */
-    public int getRecord_ID() {
+    public int getRecordId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Record_ID);
         if (ii == null) return 0;
         return ii;
@@ -747,7 +747,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param Record_ID Direct internal record ID
      */
-    public void setRecord_ID(int Record_ID) {
+    public void setRecordId(int Record_ID) {
         if (Record_ID < 0) setValueNoCheck(COLUMNNAME_Record_ID, null);
         else setValueNoCheck(COLUMNNAME_Record_ID, Integer.valueOf(Record_ID));
     }
@@ -799,7 +799,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return User defined accounting Element
      */
-    public int getUserElement1_ID() {
+    public int getUserElement1Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_UserElement1_ID);
         if (ii == null) return 0;
         return ii;
@@ -810,7 +810,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param UserElement1_ID User defined accounting Element
      */
-    public void setUserElement1_ID(int UserElement1_ID) {
+    public void setUserElement1Id(int UserElement1_ID) {
         if (UserElement1_ID < 1) setValueNoCheck(COLUMNNAME_UserElement1_ID, null);
         else setValueNoCheck(COLUMNNAME_UserElement1_ID, Integer.valueOf(UserElement1_ID));
     }
@@ -820,7 +820,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @return User defined accounting Element
      */
-    public int getUserElement2_ID() {
+    public int getUserElement2Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_UserElement2_ID);
         if (ii == null) return 0;
         return ii;
@@ -831,7 +831,7 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      *
      * @param UserElement2_ID User defined accounting Element
      */
-    public void setUserElement2_ID(int UserElement2_ID) {
+    public void setUserElement2Id(int UserElement2_ID) {
         if (UserElement2_ID < 1) setValueNoCheck(COLUMNNAME_UserElement2_ID, null);
         else setValueNoCheck(COLUMNNAME_UserElement2_ID, Integer.valueOf(UserElement2_ID));
     }

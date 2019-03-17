@@ -22,7 +22,7 @@ fun createCostingForClient(client: MClient) {
     fun load(row: Row): Int {
         val product = MProduct(client.ctx, row)
         for (i in ass.indices) {
-            val cost = getCurrentCost(
+            getCurrentCost(
                 product,
                 0,
                 ass[i],

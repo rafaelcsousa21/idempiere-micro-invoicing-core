@@ -18,13 +18,13 @@ import org.compiere.accounting.MClient;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.wf.MMailText;
+import software.hsharp.core.util.DBKt;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -106,7 +106,7 @@ public class AssetDelivery extends SvrProcess {
         if (s.endsWith(" WHERE ")) throw new Exception("@RestrictSelection@");
         //	No mail to expired
         if (m_NoGuarantee_MailText_ID == 0) {
-            sql.append("TRUNC(GuaranteeDate) >= ").append(TO_DATE(m_GuaranteeDate, true));
+            sql.append("TRUNC(GuaranteeDate) >= ").append(DBKt.convertDate(m_GuaranteeDate, true));
             s = sql.toString();
         }
         //	Clean up
@@ -179,7 +179,7 @@ public class AssetDelivery extends SvrProcess {
     MUser user = new MUser (getCtx(), asset.getUserId(), null);
     if (user.getEMail() == null || user.getEMail().length() == 0)
     	return "** No Asset User Email";
-    if (m_MailText == null || m_MailText.getR_MailText_ID() != R_MailText_ID)
+    if (m_MailText == null || m_MailText.getMailTemplateId() != R_MailText_ID)
     	m_MailText = new MMailText (getCtx(), R_MailText_ID, null);
     if (m_MailText.getMailHeader() == null || m_MailText.getMailHeader().length() == 0)
     	return "** No Subject";
@@ -225,10 +225,10 @@ public class AssetDelivery extends SvrProcess {
     MUser user = new MUser (getCtx(), asset.getUserId(), null);
     if (user.getEMail() == null || user.getEMail().length() == 0)
     	return "** No Asset User Email";
-    if (asset.getProductR_MailText_ID() == 0)
+    if (asset.getProductR_MailTextId() == 0)
     	return "** Product Mail Text";
-    if (m_MailText == null || m_MailText.getR_MailText_ID() != asset.getProductR_MailText_ID())
-    	m_MailText = new MMailText (getCtx(), asset.getProductR_MailText_ID(), null);
+    if (m_MailText == null || m_MailText.getMailTemplateId() != asset.getProductR_MailTextId())
+    	m_MailText = new MMailText (getCtx(), asset.getProductR_MailTextId(), null);
     if (m_MailText.getMailHeader() == null || m_MailText.getMailHeader().length() == 0)
     	return "** No Subject";
 

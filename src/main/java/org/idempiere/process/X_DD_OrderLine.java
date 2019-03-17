@@ -72,7 +72,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
         else setValue(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
-    public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
+    public org.compiere.model.I_C_Activity getActivity() throws RuntimeException {
         return (org.compiere.model.I_C_Activity)
                 MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
                         .getPO(getBusinessActivityId());
@@ -99,7 +99,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
         else setValue(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
     }
 
-    public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
+    public org.compiere.model.I_C_Campaign getCampaign() throws RuntimeException {
         return (org.compiere.model.I_C_Campaign)
                 MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
                         .getPO(getCampaignId());
@@ -126,7 +126,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
         else setValue(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
     }
 
-    public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
+    public org.compiere.model.I_C_Charge getCharge() throws RuntimeException {
         return (org.compiere.model.I_C_Charge)
                 MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
                         .getPO(getChargeId());
@@ -173,7 +173,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
         setValue(COLUMNNAME_ConfirmedQty, ConfirmedQty);
     }
 
-    public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
+    public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
                 MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
@@ -200,10 +200,10 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
         else setValue(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
     }
 
-    public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
+    public org.compiere.model.I_C_UOM getUOM() throws RuntimeException {
         return (org.compiere.model.I_C_UOM)
                 MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-                        .getPO(getC_UOM_ID());
+                        .getPO(getUOMId());
     }
 
     /**
@@ -211,7 +211,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Unit of Measure
      */
-    public int getC_UOM_ID() {
+    public int getUOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -222,7 +222,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param C_UOM_ID Unit of Measure
      */
-    public void setC_UOM_ID(int C_UOM_ID) {
+    public void setUOMId(int C_UOM_ID) {
         if (C_UOM_ID < 1) setValueNoCheck(COLUMNNAME_C_UOM_ID, null);
         else setValueNoCheck(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
     }
@@ -284,7 +284,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
     public org.eevolution.model.I_DD_Order getDD_Order() throws RuntimeException {
         return (org.eevolution.model.I_DD_Order)
                 MTable.get(getCtx(), org.eevolution.model.I_DD_Order.Table_Name)
-                        .getPO(getDD_Order_ID());
+                        .getPO(getDD_OrderId());
     }
 
     /**
@@ -292,7 +292,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Distribution Order
      */
-    public int getDD_Order_ID() {
+    public int getDD_OrderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_DD_Order_ID);
         if (ii == null) return 0;
         return ii;
@@ -303,7 +303,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param DD_Order_ID Distribution Order
      */
-    public void setDD_Order_ID(int DD_Order_ID) {
+    public void setDD_OrderId(int DD_Order_ID) {
         if (DD_Order_ID < 1) setValueNoCheck(COLUMNNAME_DD_Order_ID, null);
         else setValueNoCheck(COLUMNNAME_DD_Order_ID, Integer.valueOf(DD_Order_ID));
     }
@@ -313,7 +313,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Distribution Order Line
      */
-    public int getDD_OrderLine_ID() {
+    public int getDD_OrderLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_DD_OrderLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -324,7 +324,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param DD_OrderLine_ID Distribution Order Line
      */
-    public void setDD_OrderLine_ID(int DD_OrderLine_ID) {
+    public void setDD_OrderLineId(int DD_OrderLine_ID) {
         if (DD_OrderLine_ID < 1) setValueNoCheck(COLUMNNAME_DD_OrderLine_ID, null);
         else setValueNoCheck(COLUMNNAME_DD_OrderLine_ID, Integer.valueOf(DD_OrderLine_ID));
     }
@@ -474,18 +474,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
         return (I_M_AttributeSetInstance)
                 MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-                        .getPO(getMAttributeSetInstance_ID());
-    }
-
-    /**
-     * Set Attribute Set Instance.
-     *
-     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-     */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
-        else
-            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+                        .getPO(getAttributeSetInstanceId());
     }
 
     /**
@@ -493,16 +482,27 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Product Attribute Set Instance
      */
-    public int getMAttributeSetInstance_ID() {
+    public int getAttributeSetInstanceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
 
+    /**
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+    }
+
     public I_M_AttributeSetInstance getMAttributeSetInstanceTo() throws RuntimeException {
         return (I_M_AttributeSetInstance)
                 MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-                        .getPO(getMAttributeSetInstanceTo_ID());
+                        .getPO(getMAttributeSetInstanceToId());
     }
 
     /**
@@ -510,7 +510,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param M_AttributeSetInstanceTo_ID Target Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstanceTo_ID(int M_AttributeSetInstanceTo_ID) {
+    public void setAttributeSetInstanceToId(int M_AttributeSetInstanceTo_ID) {
         if (M_AttributeSetInstanceTo_ID < 1) setValue(COLUMNNAME_M_AttributeSetInstanceTo_ID, null);
         else
             setValue(
@@ -522,16 +522,16 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Target Product Attribute Set Instance
      */
-    public int getMAttributeSetInstanceTo_ID() {
+    public int getMAttributeSetInstanceToId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstanceTo_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_M_Locator getM_Locator() throws RuntimeException {
+    public org.compiere.model.I_M_Locator getLocator() throws RuntimeException {
         return (org.compiere.model.I_M_Locator)
                 MTable.get(getCtx(), org.compiere.model.I_M_Locator.Table_Name)
-                        .getPO(getM_Locator_ID());
+                        .getPO(getLocatorId());
     }
 
     /**
@@ -539,7 +539,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Warehouse Locator
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
@@ -550,15 +550,15 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param M_Locator_ID Warehouse Locator
      */
-    public void setM_Locator_ID(int M_Locator_ID) {
+    public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 1) setValue(COLUMNNAME_M_Locator_ID, null);
         else setValue(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
-    public org.compiere.model.I_M_Locator getM_LocatorTo() throws RuntimeException {
+    public org.compiere.model.I_M_Locator getLocatorTo() throws RuntimeException {
         return (org.compiere.model.I_M_Locator)
                 MTable.get(getCtx(), org.compiere.model.I_M_Locator.Table_Name)
-                        .getPO(getM_LocatorTo_ID());
+                        .getPO(getLocatorToId());
     }
 
     /**
@@ -566,7 +566,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Location inventory is moved to
      */
-    public int getM_LocatorTo_ID() {
+    public int getLocatorToId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_LocatorTo_ID);
         if (ii == null) return 0;
         return ii;
@@ -577,15 +577,15 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param M_LocatorTo_ID Location inventory is moved to
      */
-    public void setM_LocatorTo_ID(int M_LocatorTo_ID) {
+    public void setLocatorToId(int M_LocatorTo_ID) {
         if (M_LocatorTo_ID < 1) setValue(COLUMNNAME_M_LocatorTo_ID, null);
         else setValue(COLUMNNAME_M_LocatorTo_ID, Integer.valueOf(M_LocatorTo_ID));
     }
 
-    public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
+    public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
                 MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-                        .getPO(getM_Product_ID());
+                        .getPO(getProductId());
     }
 
     /**
@@ -593,7 +593,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -604,12 +604,12 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
-    public org.compiere.model.I_M_Shipper getM_Shipper() throws RuntimeException {
+    public org.compiere.model.I_M_Shipper getShipper() throws RuntimeException {
         return (org.compiere.model.I_M_Shipper)
                 MTable.get(getCtx(), org.compiere.model.I_M_Shipper.Table_Name)
                         .getPO(getShipperId());

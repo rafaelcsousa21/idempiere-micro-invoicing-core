@@ -28,7 +28,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
         super(ctx, C_ProjectPhase_ID);
         /**
          * if (C_ProjectPhase_ID == 0) { setCommittedAmt (Env.ZERO); setProjectId (0);
-         * setC_ProjectPhase_ID (0); setIsCommitCeiling (false); setIsComplete (false); setName (null);
+         * setProjectPhaseId (0); setIsCommitCeiling (false); setIsComplete (false); setName (null);
          * setPlannedAmt (Env.ZERO); setProjInvoiceRule (null); // @ProjInvoiceRule@ setSeqNo (0);
          * // @SQL=SELECT NVL(MAX(SeqNo),0)+10 AS DefaultValue FROM C_ProjectPhase WHERE
          * C_Project_ID=@C_Project_ID@ }
@@ -80,7 +80,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      *
      * @return Standard Phase of the Project Type
      */
-    public int getC_Phase_ID() {
+    public int getPhaseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Phase_ID);
         if (ii == null) return 0;
         return ii;
@@ -91,7 +91,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      *
      * @param C_Phase_ID Standard Phase of the Project Type
      */
-    public void setC_Phase_ID(int C_Phase_ID) {
+    public void setPhaseId(int C_Phase_ID) {
         if (C_Phase_ID < 1) setValueNoCheck(COLUMNNAME_C_Phase_ID, null);
         else setValueNoCheck(COLUMNNAME_C_Phase_ID, Integer.valueOf(C_Phase_ID));
     }
@@ -122,7 +122,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      *
      * @return Phase of a Project
      */
-    public int getC_ProjectPhase_ID() {
+    public int getProjectPhaseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
@@ -178,7 +178,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -189,7 +189,7 @@ public class X_C_ProjectPhase extends BasePOName implements I_C_ProjectPhase {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }

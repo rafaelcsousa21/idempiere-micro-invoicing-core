@@ -115,7 +115,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
      */
     protected boolean beforeSave(boolean newRecord) {
         MPayment payment = new MPayment(getCtx(), getPaymentId());
-        if ((newRecord || is_ValueChanged("C_Invoice_ID"))
+        if ((newRecord || isValueChanged("C_Invoice_ID"))
                 && (payment.getChargeId() != 0
                 || payment.getInvoiceId() != 0
                 || payment.getOrderId() != 0)) {
@@ -134,7 +134,7 @@ public class MPaymentAllocate extends X_C_PaymentAllocate {
         }
 
         //	Org
-        if (newRecord || is_ValueChanged("C_Invoice_ID")) {
+        if (newRecord || isValueChanged("C_Invoice_ID")) {
             getInvoice();
             if (m_invoice != null) setOrgId(m_invoice.getOrgId());
         }

@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.convertDate;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -59,7 +59,7 @@ public class MRequestType extends X_R_RequestType {
     public MRequestType(Properties ctx, int R_RequestType_ID) {
         super(ctx, R_RequestType_ID);
         if (R_RequestType_ID == 0) {
-            //	setR_RequestType_ID (0);
+            //	setRequestTypeId (0);
             //	setName (null);
             setDueDateTolerance(7);
             setIsDefault(false);
@@ -95,7 +95,7 @@ public class MRequestType extends X_R_RequestType {
      */
     public static MRequestType get(Properties ctx, int R_RequestType_ID) {
         Integer key = R_RequestType_ID;
-        MRequestType retValue = (MRequestType) s_cache.get(key);
+        MRequestType retValue = s_cache.get(key);
         if (retValue == null) {
             retValue = new MRequestType(ctx, R_RequestType_ID);
             s_cache.put(key, retValue);
@@ -148,7 +148,7 @@ public class MRequestType extends X_R_RequestType {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getR_RequestType_ID());
+            pstmt.setInt(1, getRequestTypeId());
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 m_openNo = rs.getInt(1);
@@ -174,10 +174,10 @@ public class MRequestType extends X_R_RequestType {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (getR_StatusCategory_ID() == 0) {
+        if (getStatusCategoryId() == 0) {
             MStatusCategory sc = MStatusCategory.getDefault(getCtx());
-            if (sc != null && sc.getR_StatusCategory_ID() != 0)
-                setR_StatusCategory_ID(sc.getR_StatusCategory_ID());
+            if (sc != null && sc.getStatusCategoryId() != 0)
+                setStatusCategoryId(sc.getStatusCategoryId());
         }
         return true;
     } //	beforeSave
@@ -218,7 +218,7 @@ public class MRequestType extends X_R_RequestType {
                 new StringBuilder(
                         "SELECT COUNT(*) "
                                 + "FROM R_Request WHERE R_RequestType_ID="
-                                + getR_RequestType_ID()
+                                + getRequestTypeId()
                                 + " AND Processed<>'Y'");
         //	Date Restriction
 
@@ -226,7 +226,7 @@ public class MRequestType extends X_R_RequestType {
                 && !MGoal.MEASUREDISPLAY_Total.equals(MeasureScope)) {
             if (reportDate == null) reportDate = new Timestamp(System.currentTimeMillis());
             @SuppressWarnings("unused")
-            String dateString = TO_DATE(reportDate);
+            String dateString = convertDate(reportDate);
             String trunc = "D";
             if (MGoal.MEASUREDISPLAY_Year.equals(MeasureScope)) trunc = "Y";
             else if (MGoal.MEASUREDISPLAY_Quarter.equals(MeasureScope)) trunc = "Q";
@@ -239,7 +239,7 @@ public class MRequestType extends X_R_RequestType {
                     .append(",'")
                     .append(trunc)
                     .append("')=TRUNC(")
-                    .append(TO_DATE(reportDate))
+                    .append(convertDate(reportDate))
                     .append(",'")
                     .append(trunc)
                     .append("')");

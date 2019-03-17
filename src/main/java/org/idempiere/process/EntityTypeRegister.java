@@ -37,7 +37,7 @@ public class EntityTypeRegister extends SvrProcess {
      * Prepare
      */
     protected void prepare() {
-        p_AD_EntityType_ID = getRecord_ID();
+        p_AD_EntityType_ID = getRecordId();
     } //	prepare
 
     /**

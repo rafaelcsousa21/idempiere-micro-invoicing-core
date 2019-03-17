@@ -20,7 +20,7 @@ import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
 import org.idempiere.common.util.KeyNamePair
-import software.hsharp.core.util.TO_STRING
+import software.hsharp.core.util.convertString
 import software.hsharp.core.util.executeUpdateEx
 import software.hsharp.core.util.prepareStatement
 import java.io.File
@@ -40,7 +40,7 @@ class MSetup
     (ctx: Properties, private val m_WindowNo: Int) {
 
     /**	Logger			 */
-    protected var log = CLogger.getCLogger(javaClass)
+    protected var log : CLogger = CLogger.getCLogger(javaClass)
 
     private val m_ctx: Properties
     private val m_lang: String
@@ -327,18 +327,18 @@ class MSetup
          */
         //  ClientUser          - Admin & User
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
-                + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + admin.roleId + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
+                + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + admin.roleId + "," + convertString(UUID.randomUUID().toString()) + ")")
         no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole ClientUser+Admin NOT inserted")
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
-                + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + user.roleId + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
+                + " VALUES (" + m_stdValues + "," + aD_User_ID + "," + user.roleId + "," + convertString(UUID.randomUUID().toString()) + ")")
         no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole ClientUser+User NOT inserted")
         //  OrgUser             - User
         sql = ("INSERT INTO AD_User_Roles(" + m_stdColumns + ",AD_User_ID,AD_Role_ID,AD_User_Roles_UU)"
-                + " VALUES (" + m_stdValues + "," + AD_User_U_ID + "," + user.roleId + "," + TO_STRING(UUID.randomUUID().toString()) + ")")
+                + " VALUES (" + m_stdValues + "," + AD_User_U_ID + "," + user.roleId + "," + convertString(UUID.randomUUID().toString()) + ")")
         no = executeUpdateEx(sql)
         if (no != 1)
             log.log(Level.SEVERE, "UserRole OrgUser+Org NOT inserted")
@@ -349,7 +349,7 @@ class MSetup
         ap.saveEx()
 
         val rp = MRequestProcessor(m_client!!, aD_User_ID)
-        rp.aD_Schedule_ID = SystemIDs.SCHEDULE_15_MINUTES
+        rp.scheduleId = SystemIDs.SCHEDULE_15_MINUTES
         rp.saveEx()
 
         log.info("fini")
@@ -443,7 +443,7 @@ class MSetup
             throw Error(err)
         }
 
-        val summary_ID = m_nap!!.getC_ElementValue_ID("SUMMARY")
+        val summary_ID = m_nap!!.getElementValueId("SUMMARY")
         if (log.isLoggable(Level.FINE)) log.fine("summary_ID=$summary_ID")
         if (summary_ID > 0) {
             executeUpdateEx(
@@ -452,7 +452,7 @@ class MSetup
             )
         }
 
-        val C_ElementValue_ID = m_nap!!.getC_ElementValue_ID("DEFAULT_ACCT")
+        val C_ElementValue_ID = m_nap!!.getElementValueId("DEFAULT_ACCT")
         if (log.isLoggable(Level.FINE)) log.fine("C_ElementValue_ID=$C_ElementValue_ID")
 
         /**
@@ -478,7 +478,7 @@ class MSetup
         else
             sql2 = ("SELECT l.Value, t.Name FROM AD_Ref_List l, AD_Ref_List_Trl t "
                     + "WHERE l.AD_Reference_ID=181 AND l.AD_Ref_List_ID=t.AD_Ref_List_ID"
-                    + " AND t.AD_Language=" + TO_STRING(m_lang)) //bug [ 1638421 ]
+                    + " AND t.AD_Language=" + convertString(m_lang)) //bug [ 1638421 ]
         var stmt: PreparedStatement?
         var rs: ResultSet?
         try {
@@ -539,7 +539,7 @@ class MSetup
                         .append("'").append(ElementType).append("','").append(name).append("',").append(SeqNo)
                         .append(",'")
                         .append(IsMandatory).append("','").append(IsBalanced).append("',")
-                        .append(TO_STRING(UUID.randomUUID().toString())).append(")")
+                        .append(convertString(UUID.randomUUID().toString())).append(")")
                     no = executeUpdateEx(sqlCmd.toString())
                     if (no == 1)
                         m_info!!.append(
@@ -835,7 +835,7 @@ class MSetup
         //  Update ClientInfo
         sqlCmd = StringBuffer("UPDATE AD_ClientInfo SET ")
         sqlCmd.append("C_AcctSchema1_ID=").append(m_as!!.accountingSchemaId)
-            .append(", C_Calendar_ID=").append(m_calendar!!.c_Calendar_ID)
+            .append(", C_Calendar_ID=").append(m_calendar!!.calendarId)
             .append(" WHERE AD_Client_ID=").append(m_client!!.clientId)
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1) {
@@ -899,18 +899,18 @@ class MSetup
     private fun getAcct(key: String): Int? {
         log.fine(key)
         //  Element
-        val C_ElementValue_ID = m_nap!!.getC_ElementValue_ID(key.toUpperCase())
+        val C_ElementValue_ID = m_nap!!.getElementValueId(key.toUpperCase())
         if (C_ElementValue_ID == 0) {
             throw AdempiereUserError("Account not defined: $key")
         }
 
         val vc = MAccount.getDefault(m_as, true)    //	optional null
         vc.setOrgId(0)
-        vc.account_ID = C_ElementValue_ID
+        vc.accountId = C_ElementValue_ID
         if (!vc.save()) {
             throw AdempiereUserError("Not Saved - Key=$key, C_ElementValue_ID=$C_ElementValue_ID")
         }
-        val C_ValidCombination_ID = vc.c_ValidCombination_ID
+        val C_ValidCombination_ID = vc.validAccountCombinationId
         if (C_ValidCombination_ID == 0) {
             throw AdempiereUserError("No account - Key=$key, C_ElementValue_ID=$C_ElementValue_ID")
         }
@@ -934,7 +934,7 @@ class MSetup
             return 0
         }
         //
-        return cat.gL_Category_ID
+        return cat.glCategoryId
     }   //  createGLCategory
 
     /**
@@ -1041,7 +1041,7 @@ class MSetup
         sqlCmd.append("(C_Channel_ID,Name,")
         sqlCmd.append(m_stdColumns).append(",C_Channel_UU) VALUES (")
         sqlCmd.append(C_Channel_ID).append(",").append(defaultEntry)
-        sqlCmd.append(m_stdValues).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(")")
+        sqlCmd.append(m_stdValues).append(",").append(convertString(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "Channel NOT inserted")
@@ -1052,7 +1052,7 @@ class MSetup
         sqlCmd.append(" Value,Name,Costs,C_Campaign_UU) VALUES (")
         sqlCmd.append(C_Campaign_ID).append(",").append(C_Channel_ID).append(",").append(m_stdValues).append(",")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("0").append(",")
-            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
+            .append(convertString(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Campaign_ID")).append("=").append(defaultName).append("\n")
@@ -1086,7 +1086,7 @@ class MSetup
         sqlCmd.append(" Value,Name,IsSummary,C_SalesRegion_UU) VALUES (")
         sqlCmd.append(C_SalesRegion_ID).append(",").append(m_stdValues).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",")
-            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
+            .append(convertString(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_SalesRegion_ID")).append("=").append(defaultName).append("\n")
@@ -1120,7 +1120,7 @@ class MSetup
         sqlCmd.append(" Value,Name,IsSummary,C_Activity_UU) VALUES (")
         sqlCmd.append(C_Activity_ID).append(",").append(m_stdValues).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append("'N'").append(",")
-            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
+            .append(convertString(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Activity_ID")).append("=").append(defaultName).append("\n")
@@ -1213,7 +1213,7 @@ class MSetup
             sqlCmd.append("'Sales Tax','Y',")
         else
             sqlCmd.append(defaultEntry).append("'Y',")
-        sqlCmd.append(TO_STRING(UUID.randomUUID().toString())).append(")")
+        sqlCmd.append(convertString(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "TaxCategory NOT inserted")
@@ -1242,16 +1242,16 @@ class MSetup
         val product = MProduct(m_ctx, 0)
         product.value = defaultName
         product.name = defaultName
-        product.c_UOM_ID = C_UOM_ID
-        product.m_Product_Category_ID = pc.m_Product_Category_ID
-        product.c_TaxCategory_ID = C_TaxCategory_ID
+        product.uomId = C_UOM_ID
+        product.productCategoryId = pc.productCategoryId
+        product.taxCategoryId = C_TaxCategory_ID
         if (product.save())
             m_info!!.append(Msg.translate(m_lang, "M_Product_ID")).append("=").append(defaultName).append("\n")
         else
             log.log(Level.SEVERE, "Product NOT inserted")
         //  Default
         sqlCmd = StringBuffer("UPDATE C_AcctSchema_Element SET ")
-        sqlCmd.append("M_Product_ID=").append(product.m_Product_ID)
+        sqlCmd.append("M_Product_ID=").append(product.productId)
         sqlCmd.append(" WHERE C_AcctSchema_ID=").append(m_as!!.accountingSchemaId)
         sqlCmd.append(" AND ElementType='PR'")
         no = executeUpdateEx(sqlCmd.toString())
@@ -1294,11 +1294,7 @@ class MSetup
         //  Update ClientInfo
         sqlCmd = StringBuffer("UPDATE AD_ClientInfo SET ")
         sqlCmd.append("C_BPartnerCashTrx_ID=").append(bp.businessPartnerId)
-        sqlCmd.append(",M_ProductFreight_ID=").append(product.m_Product_ID)
-        //		sqlCmd.append("C_UOM_Volume_ID=");
-        //		sqlCmd.append(",C_UOM_Weight_ID=");
-        //		sqlCmd.append(",C_UOM_Length_ID=");
-        //		sqlCmd.append(",C_UOM_Time_ID=");
+        sqlCmd.append(",M_ProductFreight_ID=").append(product.productId)
         sqlCmd.append(" WHERE AD_Client_ID=").append(aD_Client_ID)
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1) {
@@ -1327,12 +1323,12 @@ class MSetup
         //  PriceList Version
         val plv = MPriceListVersion(pl)
         plv.setName()
-        plv.setM_DiscountSchema_ID(ds.m_DiscountSchema_ID)
+        plv.setDiscountSchemaId(ds.discountSchemaId)
         if (!plv.save())
             log.log(Level.SEVERE, "PriceList_Version NOT inserted")
         //  ProductPrice
         val pp = MProductPrice(
-            plv, product.m_Product_ID,
+            plv, product.productId,
             Env.ONE, Env.ONE, Env.ONE
         )
         if (!pp.save())
@@ -1398,7 +1394,7 @@ class MSetup
         sqlCmd.append("Value,Name,NetDays,GraceDays,DiscountDays,Discount,DiscountDays2,Discount2,IsDefault,C_PaymentTerm_UU) VALUES (")
         sqlCmd.append(C_PaymentTerm_ID).append(",").append(m_stdValues).append(",")
         sqlCmd.append("'Immediate','Immediate',0,0,0,0,0,0,'Y'").append(",")
-            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
+            .append(convertString(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
             log.log(Level.SEVERE, "PaymentTerm NOT inserted")
@@ -1419,7 +1415,7 @@ class MSetup
         sqlCmd.append("(C_Cycle_ID,").append(m_stdColumns).append(",")
         sqlCmd.append(" Name,C_Currency_ID,C_Cycle_UU) VALUES (")
         sqlCmd.append(C_Cycle_ID).append(",").append(m_stdValues).append(", ")
-        sqlCmd.append(defaultEntry).append(C_Currency_ID).append(",").append(TO_STRING(UUID.randomUUID().toString()))
+        sqlCmd.append(defaultEntry).append(C_Currency_ID).append(",").append(convertString(UUID.randomUUID().toString()))
             .append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no != 1)
@@ -1436,7 +1432,7 @@ class MSetup
         sqlCmd.append(" Value,Name,C_Currency_ID,IsSummary,C_Project_UU) VALUES (")
         sqlCmd.append(C_Project_ID).append(",").append(m_stdValuesOrg).append(", ")
         sqlCmd.append(defaultEntry).append(defaultEntry).append(C_Currency_ID).append(",'N'").append(",")
-            .append(TO_STRING(UUID.randomUUID().toString())).append(")")
+            .append(convertString(UUID.randomUUID().toString())).append(")")
         no = executeUpdateEx(sqlCmd.toString())
         if (no == 1)
             m_info!!.append(Msg.translate(m_lang, "C_Project_ID")).append("=").append(defaultName).append("\n")
@@ -1477,7 +1473,7 @@ class MSetup
         val sqlCmd = StringBuilder("INSERT INTO AD_Preference ")
         sqlCmd.append("(AD_Preference_ID,").append("AD_Preference_UU,").append(m_stdColumns).append(",")
         sqlCmd.append("Attribute,Value,AD_Window_ID) VALUES (")
-        sqlCmd.append(AD_Preference_ID).append(",").append(TO_STRING(UUID.randomUUID().toString())).append(",")
+        sqlCmd.append(AD_Preference_ID).append(",").append(convertString(UUID.randomUUID().toString())).append(",")
             .append(m_stdValues).append(",")
         sqlCmd.append("'").append(Attribute).append("','").append(Value).append("',")
         if (AD_Window_ID == 0)

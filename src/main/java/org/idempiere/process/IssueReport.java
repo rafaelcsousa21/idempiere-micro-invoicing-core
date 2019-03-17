@@ -32,7 +32,7 @@ public class IssueReport extends SvrProcess {
      * Prepare
      */
     protected void prepare() {
-        m_AD_Issue_ID = getRecord_ID();
+        m_AD_Issue_ID = getRecordId();
     } //	prepare
 
     /**

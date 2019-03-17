@@ -42,7 +42,7 @@ public class OrderLineCreateShipment extends SvrProcess {
         if (p_MovementDate == null) p_MovementDate = Env.getContextAsDate(getCtx(), "#Date");
         if (p_MovementDate == null) p_MovementDate = new Timestamp(System.currentTimeMillis());
 
-        p_C_OrderLine_ID = getRecord_ID();
+        p_C_OrderLine_ID = getRecordId();
     } //	prepare
 
     /**
@@ -78,7 +78,7 @@ public class OrderLineCreateShipment extends SvrProcess {
         sline.setOrderLine(line, 0, line.getQtyReserved());
         // sline.setDatePromised(line.getDatePromised());
         sline.setQtyEntered(line.getQtyReserved());
-        sline.setC_UOM_ID(line.getC_UOM_ID());
+        sline.setUOMId(line.getUOMId());
         sline.setQty(line.getQtyReserved());
         sline.setWarehouseId(line.getWarehouseId());
         if (!sline.save()) throw new IllegalArgumentException("Cannot save Shipment Line");

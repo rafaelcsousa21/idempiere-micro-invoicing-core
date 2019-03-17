@@ -24,7 +24,7 @@ public class X_C_Year extends PO implements I_C_Year {
      */
     public X_C_Year(Properties ctx, int C_Year_ID) {
         super(ctx, C_Year_ID);
-        /* if (C_Year_ID == 0) { setC_Calendar_ID (0); setC_Year_ID (0); setFiscalYear (null); } */
+        /* if (C_Year_ID == 0) { setCalendarId (0); setYearId (0); setFiscalYear (null); } */
     }
 
     /**
@@ -52,7 +52,7 @@ public class X_C_Year extends PO implements I_C_Year {
      *
      * @return Accounting Calendar Name
      */
-    public int getC_Calendar_ID() {
+    public int getCalendarId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Calendar_ID);
         if (ii == null) return 0;
         return ii;
@@ -63,7 +63,7 @@ public class X_C_Year extends PO implements I_C_Year {
      *
      * @param C_Calendar_ID Accounting Calendar Name
      */
-    public void setC_Calendar_ID(int C_Calendar_ID) {
+    public void setCalendarId(int C_Calendar_ID) {
         if (C_Calendar_ID < 1) setValueNoCheck(COLUMNNAME_C_Calendar_ID, null);
         else setValueNoCheck(COLUMNNAME_C_Calendar_ID, Integer.valueOf(C_Calendar_ID));
     }
@@ -73,7 +73,7 @@ public class X_C_Year extends PO implements I_C_Year {
      *
      * @return Calendar Year
      */
-    public int getC_Year_ID() {
+    public int getYearId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Year_ID);
         if (ii == null) return 0;
         return ii;

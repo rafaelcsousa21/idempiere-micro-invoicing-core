@@ -42,7 +42,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
         super(ctx, M_MovementConfirm_ID);
         /*
          * if (M_MovementConfirm_ID == 0) { setDocAction (null); setDocStatus (null); setDocumentNo
-         * (null); setIsApproved (false); // N setM_MovementConfirm_ID (0); setM_Movement_ID (0);
+         * (null); setIsApproved (false); // N setMovementConfirmId (0); setMovementId (0);
          * setProcessed (false); }
          */
     }
@@ -176,7 +176,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      *
      * @return Parameters for a Physical Inventory
      */
-    public int getM_Inventory_ID() {
+    public int getInventoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Inventory_ID);
         if (ii == null) return 0;
         return ii;
@@ -187,7 +187,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      *
      * @param M_Inventory_ID Parameters for a Physical Inventory
      */
-    public void setM_Inventory_ID(int M_Inventory_ID) {
+    public void setInventoryId(int M_Inventory_ID) {
         if (M_Inventory_ID < 1) setValue(COLUMNNAME_M_Inventory_ID, null);
         else setValue(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
     }
@@ -197,7 +197,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      *
      * @return Inventory Move Confirmation
      */
-    public int getM_MovementConfirm_ID() {
+    public int getMovementConfirmId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_MovementConfirm_ID);
         if (ii == null) return 0;
         return ii;
@@ -208,7 +208,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      *
      * @return Movement of Inventory
      */
-    public int getM_Movement_ID() {
+    public int getMovementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Movement_ID);
         if (ii == null) return 0;
         return ii;
@@ -219,7 +219,7 @@ public class X_M_MovementConfirm extends PO implements I_M_MovementConfirm {
      *
      * @param M_Movement_ID Movement of Inventory
      */
-    public void setM_Movement_ID(int M_Movement_ID) {
+    public void setMovementId(int M_Movement_ID) {
         if (M_Movement_ID < 1) setValue(COLUMNNAME_M_Movement_ID, null);
         else setValue(COLUMNNAME_M_Movement_ID, Integer.valueOf(M_Movement_ID));
     }

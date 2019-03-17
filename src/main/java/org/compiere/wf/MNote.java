@@ -62,7 +62,7 @@ public class MNote extends X_AD_Note {
      * @param AD_User_ID      targeted user
      */
     public MNote(Properties ctx, String AD_MessageValue, int AD_User_ID) {
-        this(ctx, MMessage.getAD_Message_ID(ctx, AD_MessageValue), AD_User_ID);
+        this(ctx, MMessage.getAD_MessageId(ctx, AD_MessageValue), AD_User_ID);
     } //	MNote
 
     /**
@@ -109,7 +109,7 @@ public class MNote extends X_AD_Note {
             int AD_Client_ID,
             int AD_Org_ID,
             String trxName) {
-        this(ctx, MMessage.getAD_Message_ID(ctx, AD_MessageValue), AD_User_ID);
+        this(ctx, MMessage.getAD_MessageId(ctx, AD_MessageValue), AD_User_ID);
         setClientOrg(AD_Client_ID, AD_Org_ID);
     } //	MNote
 
@@ -120,7 +120,7 @@ public class MNote extends X_AD_Note {
      */
     public void setMessageId(int AD_Message_ID) {
         if (AD_Message_ID == 0)
-            super.setMessageId(MMessage.getAD_Message_ID(getCtx(), "NoMessageFound"));
+            super.setMessageId(MMessage.getAD_MessageId(getCtx(), "NoMessageFound"));
         else super.setMessageId(AD_Message_ID);
     } //	setAD_Message_ID
 

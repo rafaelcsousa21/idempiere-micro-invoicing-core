@@ -86,13 +86,13 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
             I_C_InvoiceLine line, int precision, boolean oldTax) {
         MInvoiceTax retValue = null;
         if (line == null || line.getInvoiceId() == 0) return null;
-        int C_Tax_ID = line.getC_Tax_ID();
+        int C_Tax_ID = line.getTaxId();
         boolean isOldTax =
                 oldTax
                         && (line instanceof org.idempiere.orm.PO)
-                        && ((org.idempiere.orm.PO) line).is_ValueChanged(MInvoiceLine.COLUMNNAME_C_Tax_ID);
+                        && ((org.idempiere.orm.PO) line).isValueChanged(MInvoiceLine.COLUMNNAME_C_Tax_ID);
         if (isOldTax) {
-            Object old = ((org.idempiere.orm.PO) line).get_ValueOld(MInvoiceLine.COLUMNNAME_C_Tax_ID);
+            Object old = ((org.idempiere.orm.PO) line).getValueOld(MInvoiceLine.COLUMNNAME_C_Tax_ID);
             if (old == null) return null;
             C_Tax_ID = ((Integer) old).intValue();
         }
@@ -120,7 +120,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         retValue = new MInvoiceTax(line.getCtx(), 0);
         retValue.setClientOrg(line);
         retValue.setInvoiceId(line.getInvoiceId());
-        retValue.setC_Tax_ID(line.getC_Tax_ID());
+        retValue.setTaxId(line.getTaxId());
         retValue.setPrecision(precision);
         retValue.setIsTaxIncluded(line.isTaxIncluded());
         if (s_log.isLoggable(Level.FINE)) s_log.fine("(new) " + retValue);
@@ -152,7 +152,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      * @return tax
      */
     public I_C_Tax getTax() {
-        if (m_tax == null) m_tax = MTax.get(getCtx(), getC_Tax_ID());
+        if (m_tax == null) m_tax = MTax.get(getCtx(), getTaxId());
         return m_tax;
     } //	getTax
 
@@ -179,7 +179,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, getInvoiceId());
-            pstmt.setInt(2, getC_Tax_ID());
+            pstmt.setInt(2, getTaxId());
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 //	BaseAmt
@@ -229,7 +229,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
         sb.append("C_Invoice_ID=")
                 .append(getInvoiceId())
                 .append(",C_Tax_ID=")
-                .append(getC_Tax_ID())
+                .append(getTaxId())
                 .append(", Base=")
                 .append(getTaxBaseAmt())
                 .append(",Tax=")
@@ -247,7 +247,7 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
      *
      * @return Tax Provider
      */
-    public int getC_TaxProvider_ID() {
+    public int getTaxProviderId() {
         Integer ii = (Integer) getValue(I_C_InvoiceTax.COLUMNNAME_C_TaxProvider_ID);
         if (ii == null) return 0;
         return ii;

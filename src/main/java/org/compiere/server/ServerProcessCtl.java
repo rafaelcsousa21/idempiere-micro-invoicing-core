@@ -69,9 +69,9 @@ public class ServerProcessCtl implements Runnable {
         if (log.isLoggable(Level.FINE)) log.fine("ServerProcess - " + pi);
 
         MPInstance instance = null;
-        if (pi.getAD_PInstance_ID() <= 0) {
+        if (pi.getPInstanceId() <= 0) {
             try {
-                instance = new MPInstance(Env.getCtx(), pi.getAD_Process_ID(), pi.getRecord_ID());
+                instance = new MPInstance(Env.getCtx(), pi.getProcessId(), pi.getRecordId());
             } catch (Exception e) {
                 pi.setSummary(e.getLocalizedMessage());
                 pi.setError(true);
@@ -88,9 +88,9 @@ public class ServerProcessCtl implements Runnable {
                 pi.setError(true);
                 return null;
             }
-            pi.setAD_PInstance_ID(instance.getPInstanceId());
+            pi.setAD_PInstanceId(instance.getPInstanceId());
         } else {
-            instance = new MPInstance(Env.getCtx(), pi.getAD_PInstance_ID(), null);
+            instance = new MPInstance(Env.getCtx(), pi.getPInstanceId(), null);
         }
 
         //	execute
@@ -155,7 +155,7 @@ public class ServerProcessCtl implements Runnable {
     public void run() {
         if (log.isLoggable(Level.FINE))
             log.fine(
-                    "AD_PInstance_ID=" + m_pi.getAD_PInstance_ID() + ", Record_ID=" + m_pi.getRecord_ID());
+                    "AD_PInstance_ID=" + m_pi.getPInstanceId() + ", Record_ID=" + m_pi.getRecordId());
 
         //	Get Process Information: Name, Procedure Name, ClassName, IsReport, IsDirectPrint
         String ProcedureName = "";
@@ -194,13 +194,13 @@ public class ServerProcessCtl implements Runnable {
         try {
             pstmt =
                     prepareStatement(sql);
-            pstmt.setInt(1, m_pi.getAD_PInstance_ID());
+            pstmt.setInt(1, m_pi.getPInstanceId());
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 m_pi.setTitle(rs.getString(1));
                 ProcedureName = rs.getString(2);
                 m_pi.setClassName(rs.getString(3));
-                m_pi.setAD_Process_ID(rs.getInt(4));
+                m_pi.setProcessId(rs.getInt(4));
                 //	Report
                 if ("Y".equals(rs.getString(5))) {
                     IsReport = true;
@@ -214,7 +214,7 @@ public class ServerProcessCtl implements Runnable {
                 }
                 m_IsServerProcess = "Y".equals(rs.getString(10));
                 JasperReport = rs.getString(11);
-            } else log.log(Level.SEVERE, "No AD_PInstance_ID=" + m_pi.getAD_PInstance_ID());
+            } else log.log(Level.SEVERE, "No AD_PInstance_ID=" + m_pi.getPInstanceId());
         } catch (Throwable e) {
             m_pi.setSummary(
                     Msg.getMsg(Env.getCtx(), "ProcessNoProcedure") + " " + e.getLocalizedMessage(), true);

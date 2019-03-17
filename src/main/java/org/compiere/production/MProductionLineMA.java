@@ -39,18 +39,18 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
     public MProductionLineMA(
             MProductionLine parent, int asi, BigDecimal qty, Timestamp dateMaterialPolicy) {
         super(parent.getCtx(), 0);
-        setM_AttributeSetInstance_ID(asi);
-        setM_ProductionLine_ID(parent.getId());
+        setAttributeSetInstanceId(asi);
+        setProductionLineId(parent.getId());
         setMovementQty(qty);
         setOrgId(parent.getOrgId());
         if (dateMaterialPolicy == null) {
             if (asi > 0) {
                 dateMaterialPolicy =
                         MStorageOnHand.getDateMaterialPolicy(
-                                parent.getM_Product_ID(), asi);
+                                parent.getProductId(), asi);
             }
             if (dateMaterialPolicy == null) {
-                dateMaterialPolicy = parent.getM_Production().getMovementDate();
+                dateMaterialPolicy = parent.getProduction().getMovementDate();
             }
         }
         setDateMaterialPolicy(dateMaterialPolicy);
@@ -66,7 +66,7 @@ public class MProductionLineMA extends X_M_ProductionLineMA {
         MProductionLineMA lineMA =
                 MTable.get(parent.getCtx(), I_M_ProductionLineMA.Table_Name)
                         .createQuery(where)
-                        .setParameters(parent.getM_ProductionLine_ID(), asi, dateMPolicy)
+                        .setParameters(parent.getProductionLineId(), asi, dateMPolicy)
                         .first();
 
         if (lineMA != null) return lineMA;

@@ -107,7 +107,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         final String whereClause = I_M_InOutLineConfirm.COLUMNNAME_M_InOutConfirm_ID + "=?";
         List<MInOutLineConfirm> list =
                 new Query(getCtx(), I_M_InOutLineConfirm.Table_Name, whereClause)
-                        .setParameters(getM_InOutConfirm_ID())
+                        .setParameters(getInOutConfirmId())
                         .list();
         m_lines = new MInOutLineConfirm[list.size()];
         list.toArray(m_lines);
@@ -191,7 +191,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         if (!isApproved()) approveIt();
         if (log.isLoggable(Level.INFO)) log.info(toString());
         //
-        MInOut inout = new MInOut(getCtx(), getM_InOut_ID());
+        MInOut inout = new MInOut(getCtx(), getInOutId());
         MInOutLineConfirm[] lines = getLines(false);
 
         //	Check if we need to split Shipment
@@ -284,16 +284,16 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             }
             //
             org.compiere.order.MInOutLine splitLine = new org.compiere.order.MInOutLine(split);
-            splitLine.setC_OrderLine_ID(oldLine.getC_OrderLine_ID());
-            splitLine.setC_UOM_ID(oldLine.getC_UOM_ID());
+            splitLine.setOrderLineId(oldLine.getOrderLineId());
+            splitLine.setUOMId(oldLine.getUOMId());
             splitLine.setDescription(oldLine.getDescription());
             splitLine.setIsDescription(oldLine.isDescription());
             splitLine.setLine(oldLine.getLine());
-            splitLine.setM_AttributeSetInstance_ID(oldLine.getMAttributeSetInstance_ID());
-            splitLine.setM_Locator_ID(oldLine.getM_Locator_ID());
-            splitLine.setM_Product_ID(oldLine.getM_Product_ID());
+            splitLine.setAttributeSetInstanceId(oldLine.getAttributeSetInstanceId());
+            splitLine.setLocatorId(oldLine.getLocatorId());
+            splitLine.setProductId(oldLine.getProductId());
             splitLine.setWarehouseId(oldLine.getWarehouseId());
-            splitLine.setRef_InOutLine_ID(oldLine.getRef_InOutLine_ID());
+            splitLine.setReferencedInOutLineId(oldLine.getReferencedInOutLineId());
             StringBuilder msgd = new StringBuilder("Split: from ").append(oldLine.getMovementQty());
             splitLine.addDescription(msgd.toString());
             //	Qtys
@@ -364,7 +364,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         //	Credit Memo if linked Document
         if (confirm.getDifferenceQty().signum() != 0
                 && !inout.isSOTrx()
-                && inout.getRef_InOut_ID() != 0) {
+                && inout.getReferencedInOutId() != 0) {
             if (log.isLoggable(Level.INFO)) log.info("Difference=" + confirm.getDifferenceQty());
             if (m_creditMemo == null) {
                 m_creditMemo = new MInvoice(inout, null);
@@ -382,12 +382,12 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             line.setShipLine(confirm.getLine());
             if (confirm.getLine().getProduct() != null) {
                 // use product UOM in case the shipment hasn't the same uom than the order
-                line.setC_UOM_ID(confirm.getLine().getProduct().getC_UOM_ID());
+                line.setUOMId(confirm.getLine().getProduct().getUOMId());
             }
             // Note: confirmation is always in the qty according to the product UOM
             line.setQty(confirm.getDifferenceQty()); // 	Entered/Invoiced
             line.saveEx();
-            confirm.setC_InvoiceLine_ID(line.getC_InvoiceLine_ID());
+            confirm.setInvoiceLineId(line.getInvoiceLineId());
         }
 
         //	Create Inventory Difference
@@ -404,22 +404,22 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
                 m_inventory.setDescription(msgd.toString());
                 setInventoryDocType(m_inventory);
                 m_inventory.saveEx();
-                setM_Inventory_ID(m_inventory.getM_Inventory_ID());
+                setInventoryId(m_inventory.getInventoryId());
             }
             MInOutLine ioLine = confirm.getLine();
             MInventoryLine line =
                     new MInventoryLine(
                             m_inventory,
-                            ioLine.getM_Locator_ID(),
-                            ioLine.getM_Product_ID(),
-                            ioLine.getMAttributeSetInstance_ID(),
+                            ioLine.getLocatorId(),
+                            ioLine.getProductId(),
+                            ioLine.getAttributeSetInstanceId(),
                             confirm.getScrappedQty(),
                             Env.ZERO);
             if (!line.save()) {
                 m_processMsg += "Inventory Line not created";
                 return false;
             }
-            confirm.setM_InventoryLine_ID(line.getM_InventoryLine_ID());
+            confirm.setInventoryLineId(line.getInventoryLineId());
         }
 
         //
@@ -469,7 +469,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
                 || X_M_InOutConfirm.DOCSTATUS_InProgress.equals(getDocStatus())
                 || X_M_InOutConfirm.DOCSTATUS_Approved.equals(getDocStatus())
                 || X_M_InOutConfirm.DOCSTATUS_NotApproved.equals(getDocStatus())) {
-            org.compiere.order.MInOut inout = (org.compiere.order.MInOut) getM_InOut();
+            org.compiere.order.MInOut inout = (org.compiere.order.MInOut) getInOut();
             if (!org.compiere.order.MInOut.DOCSTATUS_Voided.equals(inout.getDocStatus())
                     && !MInOut.DOCSTATUS_Reversed.equals(inout.getDocStatus())) {
                 throw new AdempiereException("@M_InOut_ID@ @DocStatus@<>VO");
@@ -515,9 +515,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -664,7 +662,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getUpdatedBy();
     } //	getDoc_User_ID
 

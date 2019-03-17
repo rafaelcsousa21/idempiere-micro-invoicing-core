@@ -165,7 +165,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @return Period of the Calendar
      */
-    public int getC_Period_ID() {
+    public int getPeriodId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
@@ -176,7 +176,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @param C_Period_ID Period of the Calendar
      */
-    public void setC_Period_ID(int C_Period_ID) {
+    public void setPeriodId(int C_Period_ID) {
         if (C_Period_ID < 1) setValue(COLUMNNAME_C_Period_ID, null);
         else setValue(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
     }
@@ -296,7 +296,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @return General Ledger Category
      */
-    public int getGL_Category_ID() {
+    public int getGLCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Category_ID);
         if (ii == null) return 0;
         return ii;
@@ -307,7 +307,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @param GL_Category_ID General Ledger Category
      */
-    public void setGL_Category_ID(int GL_Category_ID) {
+    public void setGLCategoryId(int GL_Category_ID) {
         if (GL_Category_ID < 1) setValue(COLUMNNAME_GL_Category_ID, null);
         else setValue(COLUMNNAME_GL_Category_ID, Integer.valueOf(GL_Category_ID));
     }
@@ -317,7 +317,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @return General Ledger Journal Batch
      */
-    public int getGL_JournalBatch_ID() {
+    public int getGLJournalBatchId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_JournalBatch_ID);
         if (ii == null) return 0;
         return ii;
@@ -388,7 +388,7 @@ public class X_GL_JournalBatch extends PO implements I_GL_JournalBatch {
      *
      * @param Reversal_ID ID of document reversal
      */
-    public void setReversal_ID(int Reversal_ID) {
+    public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
         else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }

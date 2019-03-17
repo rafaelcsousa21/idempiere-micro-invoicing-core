@@ -103,9 +103,9 @@ public class MProductCategoryAcct extends X_M_Product_Category_Acct {
         StringBuilder sb = new StringBuilder("MProductCategoryAcct[");
         sb.append(getId())
                 .append(",M_Product_Category_ID=")
-                .append(getM_Product_Category_ID())
+                .append(getProductCategoryId())
                 .append(",C_AcctSchema_ID=")
-                .append(getC_AcctSchema_ID())
+                .append(getAccountingSchemaId())
                 .append(",CostingLevel=")
                 .append(getCostingLevel())
                 .append(",CostingMethod=")

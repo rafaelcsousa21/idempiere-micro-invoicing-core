@@ -131,7 +131,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         Map<Integer, MAccount> validCombMap = new TreeMap<Integer, MAccount>();
         for (Iterator<MAccount> it = validCombs.iterator(); it.hasNext(); ) {
             validComb = it.next();
-            validCombMap.put(validComb.getAccount_ID(), validComb);
+            validCombMap.put(validComb.getAccountId(), validComb);
         }
 
         // Read all accounttypes that fit the given criteria.
@@ -167,9 +167,9 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                 product.setDescription(elem.getDescription());
                 product.setIsActive(true);
                 product.setProductType(MProduct.PRODUCTTYPE_ExpenseType);
-                product.setM_Product_Category_ID(m_productCategoryId);
-                product.setC_UOM_ID(m_uomId);
-                product.setC_TaxCategory_ID(m_taxCategoryId);
+                product.setProductCategoryId(m_productCategoryId);
+                product.setUOMId(m_uomId);
+                product.setTaxCategoryId(m_taxCategoryId);
                 product.setIsStocked(false);
                 product.setIsPurchased(true);
                 product.setIsSold(false);
@@ -191,8 +191,8 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                     validComb.set_ValueOfColumn("AD_Client_ID", m_clientId);
                     validComb.setOrgId(0);
                     validComb.setAlias(elem.getSearchKey());
-                    validComb.setAccount_ID(elem.getId());
-                    validComb.setC_AcctSchema_ID(m_acctSchemaId);
+                    validComb.setAccountId(elem.getId());
+                    validComb.setAccountingSchemaId(m_acctSchemaId);
                     validComb.saveEx();
                 }
 
@@ -206,8 +206,8 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                         )
                                 .setParameters(product.getId(), m_acctSchemaId)
                                 .first();
-                productAcct.setP_Expense_Acct(validComb.getId());
-                productAcct.setP_Revenue_Acct(validComb.getId());
+                productAcct.setProductExpenseAccount(validComb.getId());
+                productAcct.setRevenueAccount(validComb.getId());
                 productAcct.saveEx();
 
                 addCount++;

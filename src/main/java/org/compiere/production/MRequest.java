@@ -66,7 +66,7 @@ public class MRequest extends X_R_Request {
             setProcessed(false);
             setRequestAmt(Env.ZERO);
             setPriorityUser(X_R_Request.PRIORITY_Low);
-            //  setR_RequestType_ID (0);
+            //  setRequestTypeId (0);
             //  setSummary (null);
             setIsEscalated(false);
             setIsSelfService(false);
@@ -121,22 +121,22 @@ public class MRequest extends X_R_Request {
      * ************************************************************************ Set Default Request
      * Type.
      */
-    public void setR_RequestType_ID() {
+    public void setRequestTypeId() {
         m_requestType = MRequestType.getDefault(getCtx());
         if (m_requestType == null) log.warning("No default found");
-        else super.setR_RequestType_ID(m_requestType.getR_RequestType_ID());
-    } //	setR_RequestType_ID
+        else super.setRequestTypeId(m_requestType.getRequestTypeId());
+    } //	setRequestTypeId
 
     /**
      * Set Default Request Status.
      */
-    public void setR_Status_ID() {
-        MStatus status = MStatus.getDefault(getCtx(), getR_RequestType_ID());
+    public void setStatusId() {
+        MStatus status = MStatus.getDefault(getCtx(), getRequestTypeId());
         if (status == null) {
             log.warning("No default found");
-            if (getR_Status_ID() != 0) setR_Status_ID(0);
-        } else setR_Status_ID(status.getR_Status_ID());
-    } //	setR_Status_ID
+            if (getStatusId() != 0) setStatusId(0);
+        } else setStatusId(status.getStatusId());
+    } //	setStatusId
 
     /**
      * Set DueType based on Date Next Action
@@ -201,10 +201,10 @@ public class MRequest extends X_R_Request {
      */
     public MRequestType getRequestType() {
         if (m_requestType == null) {
-            int R_RequestType_ID = getR_RequestType_ID();
+            int R_RequestType_ID = getRequestTypeId();
             if (R_RequestType_ID == 0) {
-                setR_RequestType_ID();
-                R_RequestType_ID = getR_RequestType_ID();
+                setRequestTypeId();
+                R_RequestType_ID = getRequestTypeId();
             }
             m_requestType = MRequestType.get(getCtx(), R_RequestType_ID);
         }
@@ -230,7 +230,7 @@ public class MRequest extends X_R_Request {
         if (getPriorityUser() == null) setPriorityUser(X_R_Request.PRIORITYUSER_Low);
         //
         if (getBPartner() != null) {
-            MBPGroup bpg = MBPGroup.get(getCtx(), getBPartner().getC_BP_Group_ID());
+            MBPGroup bpg = MBPGroup.get(getCtx(), getBPartner().getBPGroupId());
             String prioBase = bpg.getPriorityBase();
             if (prioBase != null && !prioBase.equals(X_C_BP_Group.PRIORITYBASE_Same)) {
                 char targetPrio = getPriorityUser().charAt(0);
@@ -296,7 +296,7 @@ public class MRequest extends X_R_Request {
     protected boolean beforeSave(boolean newRecord) {
         //	Request Type
         getRequestType();
-        if (newRecord || is_ValueChanged("R_RequestType_ID")) {
+        if (newRecord || isValueChanged("R_RequestType_ID")) {
             if (m_requestType != null) {
                 if (isInvoiced() != m_requestType.isInvoiced()) setIsInvoiced(m_requestType.isInvoiced());
                 if (getDateNextAction() == null && m_requestType.getAutoDueDateDays() > 0)
@@ -305,19 +305,19 @@ public class MRequest extends X_R_Request {
                                     new Timestamp(System.currentTimeMillis()), m_requestType.getAutoDueDateDays()));
             }
             //	Is Status Valid
-            if (getR_Status_ID() != 0) {
-                MStatus sta = MStatus.get(getCtx(), getR_Status_ID());
-                MRequestType rt = MRequestType.get(getCtx(), getR_RequestType_ID());
-                if (sta.getR_StatusCategory_ID() != rt.getR_StatusCategory_ID())
-                    setR_Status_ID(); //	set to default
+            if (getStatusId() != 0) {
+                MStatus sta = MStatus.get(getCtx(), getStatusId());
+                MRequestType rt = MRequestType.get(getCtx(), getRequestTypeId());
+                if (sta.getStatusCategoryId() != rt.getStatusCategoryId())
+                    setStatusId(); //	set to default
             }
         }
 
         //	Request Status
-        if (getR_Status_ID() == 0) setR_Status_ID();
+        if (getStatusId() == 0) setStatusId();
         //	Validate/Update Due Type
         setDueType();
-        MStatus status = MStatus.get(getCtx(), getR_Status_ID());
+        MStatus status = MStatus.get(getCtx(), getStatusId());
         //	Close/Open
         if (status != null) {
             if (status.isOpen()) {
@@ -421,21 +421,21 @@ public class MRequest extends X_R_Request {
         }
 
         //	ChangeRequest - created in Request Processor
-        if (getM_ChangeRequest_ID() != 0
-                && is_ValueChanged(I_R_Request.COLUMNNAME_R_Group_ID)) // 	different ECN assignment?
+        if (getChangeRequestId() != 0
+                && isValueChanged(I_R_Request.COLUMNNAME_R_Group_ID)) // 	different ECN assignment?
         {
-            int oldID = get_ValueOldAsInt(I_R_Request.COLUMNNAME_R_Group_ID);
-            if (getR_Group_ID() == 0) {
-                setM_ChangeRequest_ID(0); // 	not effective as in afterSave
+            int oldID = getValueOldAsInt(I_R_Request.COLUMNNAME_R_Group_ID);
+            if (getGroupId() == 0) {
+                setChangeRequestId(0); // 	not effective as in afterSave
             } else {
                 MGroup oldG = MGroup.get(getCtx(), oldID);
-                MGroup newG = MGroup.get(getCtx(), getR_Group_ID());
-                if (oldG.getPP_Product_BOM_ID() != newG.getPP_Product_BOM_ID()
-                        || oldG.getM_ChangeNotice_ID() != newG.getM_ChangeNotice_ID()) {
-                    MChangeRequest ecr = new MChangeRequest(getCtx(), getM_ChangeRequest_ID());
-                    if (!ecr.isProcessed() || ecr.getM_FixChangeNotice_ID() == 0) {
-                        ecr.setPP_Product_BOM_ID(newG.getPP_Product_BOM_ID());
-                        ecr.setM_ChangeNotice_ID(newG.getM_ChangeNotice_ID());
+                MGroup newG = MGroup.get(getCtx(), getGroupId());
+                if (oldG.getPPProductBOMId() != newG.getPPProductBOMId()
+                        || oldG.getChangeNoticeId() != newG.getChangeNoticeId()) {
+                    MChangeRequest ecr = new MChangeRequest(getCtx(), getChangeRequestId());
+                    if (!ecr.isProcessed() || ecr.getFixChangeNoticeId() == 0) {
+                        ecr.setProductBOMId(newG.getPPProductBOMId());
+                        ecr.setChangeNoticeId(newG.getChangeNoticeId());
                         ecr.saveEx();
                     }
                 }
@@ -454,7 +454,7 @@ public class MRequest extends X_R_Request {
   		if (AD_User_ID == 0)
   			AD_User_ID = getUpdatedBy();
   		//	Old
-  		Object oo = get_ValueOld("SalesRep_ID");
+  		Object oo = getValueOld("SalesRep_ID");
   		int oldSalesRep_ID = 0;
   		if (oo instanceof Integer)
   			oldSalesRep_ID = ((Integer)oo).intValue();

@@ -121,7 +121,7 @@ public class MWorkflow extends X_AD_Workflow {
      */
     public static MWorkflow get(Properties ctx, int AD_Workflow_ID) {
         String key = Env.getADLanguage(ctx) + "_" + AD_Workflow_ID;
-        MWorkflow retValue = (MWorkflow) s_cache.get(key);
+        MWorkflow retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MWorkflow(ctx, AD_Workflow_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -148,7 +148,7 @@ public class MWorkflow extends X_AD_Workflow {
             final String whereClause = "WorkflowType=? AND IsValid=?";
             List<MWorkflow> workflows =
                     new Query(ctx, I_AD_Workflow.Table_Name, whereClause)
-                            .setParameters(new Object[]{X_AD_Workflow.WORKFLOWTYPE_DocumentValue, true})
+                            .setParameters(X_AD_Workflow.WORKFLOWTYPE_DocumentValue, true)
                             .setOnlyActiveRecords(true)
                             .setOrderBy("AD_Client_ID, AD_Table_ID")
                             .list();
@@ -176,7 +176,7 @@ public class MWorkflow extends X_AD_Workflow {
             if (s_log.isLoggable(Level.CONFIG)) s_log.config("#" + s_cacheDocValue.size());
         }
         //	Look for Entry
-        MWorkflow[] retValue = (MWorkflow[]) s_cacheDocValue.get(key);
+        MWorkflow[] retValue = s_cacheDocValue.get(key);
         // hengsin: this is not threadsafe
     /*
     //set trxName to all workflow instance
@@ -227,7 +227,7 @@ public class MWorkflow extends X_AD_Workflow {
     private void loadNodes() {
         m_nodes =
                 new Query(getCtx(), MWFNode.Table_Name, "AD_WorkFlow_ID=?")
-                        .setParameters(new Object[]{getId()})
+                        .setParameters(getId())
                         .setOnlyActiveRecords(true)
                         .list();
         if (log.isLoggable(Level.FINE)) log.fine("#" + m_nodes.size());
@@ -241,7 +241,7 @@ public class MWorkflow extends X_AD_Workflow {
      */
     protected MWFNode getNode(int AD_WF_Node_ID) {
         for (int i = 0; i < m_nodes.size(); i++) {
-            MWFNode node = (MWFNode) m_nodes.get(i);
+            MWFNode node = m_nodes.get(i);
             if (node.getWorkflowNodeId() == AD_WF_Node_ID) return node;
         }
         return null;
@@ -260,12 +260,12 @@ public class MWorkflow extends X_AD_Workflow {
         if (m_nodes.size() != list.size()) {
             //	Add Stand alone
             for (int n = 0; n < m_nodes.size(); n++) {
-                MWFNode node = (MWFNode) m_nodes.get(n);
+                MWFNode node = m_nodes.get(n);
                 if (!node.isActive()) continue;
                 if (node.getClientId() == 0 || node.getClientId() == AD_Client_ID) {
                     boolean found = false;
                     for (int i = 0; i < list.size(); i++) {
-                        MWFNode existing = (MWFNode) list.get(i);
+                        MWFNode existing = list.get(i);
                         if (existing.getWorkflowNodeId() == node.getWorkflowNodeId()) {
                             found = true;
                             break;
@@ -302,7 +302,7 @@ public class MWorkflow extends X_AD_Workflow {
   		for (int i = 0; i < nexts.length; i++)
   		{
   			if (nexts[i].isActive())
-  				addNodesDF (list, nexts[i].getAD_WF_Next_ID(), clientId);
+  				addNodesDF (list, nexts[i].getAD_WF_NextId(), clientId);
   		}
   	}
   }	//	addNodesDF*/
@@ -396,16 +396,16 @@ public class MWorkflow extends X_AD_Workflow {
         }
 
         if (newRecord) {
-            int AD_Role_ID = Env.getAD_Role_ID(getCtx());
+            int AD_Role_ID = Env.getRoleId(getCtx());
             MWorkflowAccess wa = new MWorkflowAccess(this, AD_Role_ID);
             wa.saveEx();
         }
         //	Menu/Workflow
-        else if (is_ValueChanged("IsActive")
-                || is_ValueChanged(HasName.Companion.getCOLUMNNAME_Name())
-                || is_ValueChanged(I_AD_Workflow.COLUMNNAME_Description)) {
+        else if (isValueChanged("IsActive")
+                || isValueChanged(HasName.Companion.getCOLUMNNAME_Name())
+                || isValueChanged(I_AD_Workflow.COLUMNNAME_Description)) {
       /* TODO Add DAP
-      MMenu[] menues = MMenu.get(getCtx(), "AD_Workflow_ID=" + getAD_Workflow_ID(), null);
+      MMenu[] menues = MMenu.get(getCtx(), "AD_Workflow_ID=" + getAD_WorkflowId(), null);
       for (int i = 0; i < menues.length; i++)
       {
       	menues[i].setIsActive(isActive());

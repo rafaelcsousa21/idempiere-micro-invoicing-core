@@ -52,7 +52,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset {
      *
      * @return Group of Assets
      */
-    public int getA_Asset_Group_ID() {
+    public int getAssetGroupId() {
         Integer ii = (Integer) getValue(COLUMNNAME_A_Asset_Group_ID);
         if (ii == null) return 0;
         return ii;
@@ -99,7 +99,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -110,7 +110,7 @@ public class X_I_FixedAsset extends BasePOName implements I_I_FixedAsset {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }

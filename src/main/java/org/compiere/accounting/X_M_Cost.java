@@ -38,8 +38,8 @@ public class X_M_Cost extends PO implements I_M_Cost {
         /**
          * if (M_Cost_ID == 0) { setAccountingSchemaId (0); setCurrentCostPrice (Env.ZERO);
          * setCurrentCostPriceLL (Env.ZERO); setCurrentQty (Env.ZERO); setFutureCostPrice (Env.ZERO);
-         * setM_AttributeSetInstance_ID (0); setM_CostElement_ID (0); setCostTypeId (0);
-         * setM_Product_ID (0); }
+         * setAttributeSetInstanceId (0); setCostElementId (0); setCostTypeId (0);
+         * setProductId (0); }
          */
     }
 
@@ -65,10 +65,10 @@ public class X_M_Cost extends PO implements I_M_Cost {
         return sb.toString();
     }
 
-    public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
+    public org.compiere.model.I_C_AcctSchema getAccountingSchema() throws RuntimeException {
         return (org.compiere.model.I_C_AcctSchema)
                 MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-                        .getPO(getC_AcctSchema_ID());
+                        .getPO(getAccountingSchemaId());
     }
 
     /**
@@ -76,7 +76,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
      *
      * @return Rules for accounting
      */
-    public int getC_AcctSchema_ID() {
+    public int getAccountingSchemaId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
@@ -87,7 +87,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
      *
      * @param C_AcctSchema_ID Rules for accounting
      */
-    public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
+    public void setAccountingSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
         else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
@@ -205,32 +205,32 @@ public class X_M_Cost extends PO implements I_M_Cost {
     }
 
     /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getAttributeSetInstanceId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
      * Set Attribute Set Instance.
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
-    /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    public org.compiere.model.I_M_CostElement getM_CostElement() throws RuntimeException {
+    public org.compiere.model.I_M_CostElement getCostElement() throws RuntimeException {
         return (org.compiere.model.I_M_CostElement)
                 MTable.get(getCtx(), org.compiere.model.I_M_CostElement.Table_Name)
-                        .getPO(getM_CostElement_ID());
+                        .getPO(getCostElementId());
     }
 
     /**
@@ -238,7 +238,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
      *
      * @return Product Cost Element
      */
-    public int getM_CostElement_ID() {
+    public int getCostElementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
@@ -249,7 +249,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
      *
      * @param M_CostElement_ID Product Cost Element
      */
-    public void setM_CostElement_ID(int M_CostElement_ID) {
+    public void setCostElementId(int M_CostElement_ID) {
         if (M_CostElement_ID < 1) setValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
         else setValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
     }
@@ -259,7 +259,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
      *
      * @return Type of Cost (e.g. Current, Plan, Future)
      */
-    public int getM_CostType_ID() {
+    public int getCostTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_CostType_ID);
         if (ii == null) return 0;
         return ii;
@@ -270,15 +270,15 @@ public class X_M_Cost extends PO implements I_M_Cost {
      *
      * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
      */
-    public void setM_CostType_ID(int M_CostType_ID) {
+    public void setCostTypeId(int M_CostType_ID) {
         if (M_CostType_ID < 1) setValueNoCheck(COLUMNNAME_M_CostType_ID, null);
         else setValueNoCheck(COLUMNNAME_M_CostType_ID, Integer.valueOf(M_CostType_ID));
     }
 
-    public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
+    public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
                 MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-                        .getPO(getM_Product_ID());
+                        .getPO(getProductId());
     }
 
     /**
@@ -286,7 +286,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -297,7 +297,7 @@ public class X_M_Cost extends PO implements I_M_Cost {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Product_ID, M_Product_ID);
     }

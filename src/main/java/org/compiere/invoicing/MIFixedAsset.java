@@ -52,15 +52,15 @@ public class MIFixedAsset extends X_I_FixedAsset {
     } //	MIFixedAsset
 
     public MProduct getProduct() {
-        if (m_product == null && getM_Product_ID() > 0) {
-            m_product = new MProduct(getCtx(), getM_Product_ID());
+        if (m_product == null && getProductId() > 0) {
+            m_product = new MProduct(getCtx(), getProductId());
         }
         return m_product;
     }
 
     public void setProduct(MProduct product) {
         m_product = product;
-        setM_Product_ID(product.getId());
+        setProductId(product.getId());
         setProductValue(product.getValue());
         if (Util.isEmpty(getName())) setName(product.getName());
     }

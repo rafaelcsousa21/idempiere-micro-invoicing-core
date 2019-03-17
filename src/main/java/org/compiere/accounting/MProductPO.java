@@ -35,7 +35,7 @@ public class MProductPO extends X_M_Product_PO {
         super(ctx, 0);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");
         else {
-            //	setM_Product_ID (0);	// @M_Product_ID@
+            //	setProductId (0);	// @M_Product_ID@
             //	setBusinessPartnerId (0);	// 0
             //	setVendorProductNo (null);	// @Value@
             setIsCurrentVendor(true); // Y
@@ -79,15 +79,15 @@ public class MProductPO extends X_M_Product_PO {
     protected boolean beforeSave(boolean newRecord) {
         if ((newRecord && isActive() && isCurrentVendor())
                 || (!newRecord
-                && ((is_ValueChanged("IsActive") && isActive()) // now active
-                || (is_ValueChanged("IsCurrentVendor") && isCurrentVendor()) // now current vendor
-                || is_ValueChanged("C_BPartner_ID")
-                || is_ValueChanged("M_Product_ID")))) {
+                && ((isValueChanged("IsActive") && isActive()) // now active
+                || (isValueChanged("IsCurrentVendor") && isCurrentVendor()) // now current vendor
+                || isValueChanged("C_BPartner_ID")
+                || isValueChanged("M_Product_ID")))) {
             int cnt =
                     getSQLValue(
                             "SELECT COUNT(*) FROM M_Product_PO WHERE IsActive='Y' AND IsCurrentVendor='Y' AND C_BPartner_ID!=? AND M_Product_ID=?",
                             getBusinessPartnerId(),
-                            getM_Product_ID());
+                            getProductId());
             if (cnt > 0) {
                 log.saveError(
                         "SaveError",

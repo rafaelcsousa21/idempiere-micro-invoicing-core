@@ -44,7 +44,7 @@ public class RfQCreateSO extends SvrProcess {
             else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        p_C_RfQ_ID = getRecord_ID();
+        p_C_RfQ_ID = getRecordId();
     } //	prepare
 
     /**
@@ -92,8 +92,8 @@ public class RfQCreateSO extends SvrProcess {
     		if (qty.isActive() && qty.isOfferQty())
     		{
     			MOrderLine ol = new MOrderLine (order);
-    			ol.setM_Product_ID(line.getM_Product_ID(),
-    				qty.getC_UOM_ID());
+    			ol.setProductId(line.getProductId(),
+    				qty.getUOMId());
     			ol.setDescription(line.getDescription());
     			ol.setQty(qty.getQty());
     			//

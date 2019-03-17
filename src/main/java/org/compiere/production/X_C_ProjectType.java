@@ -25,7 +25,7 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType {
     public X_C_ProjectType(Properties ctx, int C_ProjectType_ID) {
         super(ctx, C_ProjectType_ID);
         /**
-         * if (C_ProjectType_ID == 0) { setC_ProjectType_ID (0); setName (null); setProjectCategory
+         * if (C_ProjectType_ID == 0) { setProjectTypeId (0); setName (null); setProjectCategory
          * (null); // N }
          */
     }
@@ -56,7 +56,7 @@ public class X_C_ProjectType extends BasePOName implements I_C_ProjectType {
      *
      * @return Type of the project
      */
-    public int getC_ProjectType_ID() {
+    public int getProjectTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectType_ID);
         if (ii == null) return 0;
         return ii;

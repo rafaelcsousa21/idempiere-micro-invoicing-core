@@ -69,10 +69,10 @@ public class M_Production_Run extends SvrProcess {
             String name = para[i].getParameterName();
             if (para[i].getParameter() == null) ;
             else if (name.equals("MustBeStocked"))
-                mustBeStocked = ((String) para[i].getParameter()).equals("Y");
+                mustBeStocked = para[i].getParameter().equals("Y");
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_Record_ID = getRecord_ID();
+        p_Record_ID = getRecordId();
     } // prepare
 
     /**
@@ -104,22 +104,22 @@ public class M_Production_Run extends SvrProcess {
                 int no =
                         executeUpdateEx(
                                 "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = ?",
-                                new Object[]{pp.getM_ProductionPlan_ID()}
+                                new Object[]{pp.getProductionPlanId()}
                         );
                 if (no == -1)
                     raiseError(
                             "ERROR",
-                            "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = " + pp.getM_ProductionPlan_ID());
+                            "DELETE M_ProductionLine WHERE M_ProductionPlan_ID = " + pp.getProductionPlanId());
 
-                MProduct product = MProduct.get(getCtx(), pp.getM_Product_ID());
+                MProduct product = MProduct.get(getCtx(), pp.getProductId());
 
                 X_M_ProductionLine pl = new X_M_ProductionLine(getCtx(), 0);
                 pl.setOrgId(pp.getOrgId());
                 pl.setLine(line);
                 pl.setDescription(pp.getDescription());
-                pl.setM_Product_ID(pp.getM_Product_ID());
-                pl.setM_Locator_ID(pp.getM_Locator_ID());
-                pl.setM_ProductionPlan_ID(pp.getM_ProductionPlan_ID());
+                pl.setProductId(pp.getProductId());
+                pl.setLocatorId(pp.getLocatorId());
+                pl.setProductionPlanId(pp.getProductionPlanId());
                 pl.setMovementQty(pp.getProductionQty());
                 pl.saveEx();
                 if (explosion(pp, product, pp.getProductionQty(), line) == 0)
@@ -129,12 +129,12 @@ public class M_Production_Run extends SvrProcess {
                 whereClause = "M_ProductionPlan_ID= ? ";
                 List<X_M_ProductionLine> production_lines =
                         new Query(getCtx(), X_M_ProductionLine.Table_Name, whereClause)
-                                .setParameters(pp.getM_ProductionPlan_ID())
+                                .setParameters(pp.getProductionPlanId())
                                 .setOrderBy("Line")
                                 .list();
 
                 for (X_M_ProductionLine pline : production_lines) {
-                    MLocator locator = MLocator.get(getCtx(), pline.getM_Locator_ID());
+                    MLocator locator = MLocator.get(getCtx(), pline.getLocatorId());
                     String MovementType = MTransaction.MOVEMENTTYPE_ProductionPlus;
                     BigDecimal MovementQty = pline.getMovementQty();
                     if (MovementQty.signum() == 0) continue;
@@ -142,30 +142,30 @@ public class M_Production_Run extends SvrProcess {
                         BigDecimal QtyAvailable =
                                 MStorageReservation.getQtyAvailable(
                                         locator.getWarehouseId(),
-                                        pline.getM_Product_ID(),
-                                        pline.getMAttributeSetInstance_ID());
+                                        pline.getProductId(),
+                                        pline.getAttributeSetInstanceId());
 
                         if (mustBeStocked && QtyAvailable.add(MovementQty).signum() < 0) {
-                            raiseError("@NotEnoughStocked@: " + pline.getM_Product().getName(), "");
+                            raiseError("@NotEnoughStocked@: " + pline.getProduct().getName(), "");
                         }
 
                         MovementType = MTransaction.MOVEMENTTYPE_Production_;
                     }
 
                     Timestamp dateMPolicy = production.getMovementDate();
-                    if (pline.getMAttributeSetInstance_ID() > 0) {
+                    if (pline.getAttributeSetInstanceId() > 0) {
                         Timestamp t =
                                 MStorageOnHand.getDateMaterialPolicy(
-                                        pline.getM_Product_ID(), pline.getMAttributeSetInstance_ID());
+                                        pline.getProductId(), pline.getAttributeSetInstanceId());
                         if (t != null) dateMPolicy = t;
                     }
 
                     if (!MStorageOnHand.add(
                             getCtx(),
                             locator.getWarehouseId(),
-                            locator.getM_Locator_ID(),
-                            pline.getM_Product_ID(),
-                            pline.getMAttributeSetInstance_ID(),
+                            locator.getLocatorId(),
+                            pline.getProductId(),
+                            pline.getAttributeSetInstanceId(),
                             MovementQty,
                             dateMPolicy,
                             null)) {
@@ -178,13 +178,13 @@ public class M_Production_Run extends SvrProcess {
                                     getCtx(),
                                     pline.getOrgId(),
                                     MovementType,
-                                    locator.getM_Locator_ID(),
-                                    pline.getM_Product_ID(),
-                                    pline.getMAttributeSetInstance_ID(),
+                                    locator.getLocatorId(),
+                                    pline.getProductId(),
+                                    pline.getAttributeSetInstanceId(),
                                     MovementQty,
                                     production.getMovementDate(),
                                     null);
-                    mtrx.setM_ProductionLine_ID(pline.getM_ProductionLine_ID());
+                    mtrx.setProductionLineId(pline.getProductionLineId());
                     mtrx.saveEx();
 
                     pline.setProcessed(true);
@@ -244,7 +244,7 @@ public class M_Production_Run extends SvrProcess {
         int components = 0;
         line = line * m_level;
         for (MPPProductBOMLine bomline : bom_lines) {
-            MProduct component = MProduct.get(getCtx(), bomline.getM_Product_ID());
+            MProduct component = MProduct.get(getCtx(), bomline.getProductId());
 
             if (component.isBOM() && !component.isStocked()) {
                 explosion(pp, component, bomline.getQtyBOM().multiply(qty), line);
@@ -254,9 +254,9 @@ public class M_Production_Run extends SvrProcess {
                 pl.setOrgId(pp.getOrgId());
                 pl.setLine(line);
                 pl.setDescription(bomline.getDescription());
-                pl.setM_Product_ID(bomline.getM_Product_ID());
-                pl.setM_Locator_ID(pp.getM_Locator_ID());
-                pl.setM_ProductionPlan_ID(pp.getM_ProductionPlan_ID());
+                pl.setProductId(bomline.getProductId());
+                pl.setLocatorId(pp.getLocatorId());
+                pl.setProductionPlanId(pp.getProductionPlanId());
                 pl.setMovementQty(bomline.getQtyBOM().multiply(qty).negate());
                 pl.saveEx();
                 components += 1;

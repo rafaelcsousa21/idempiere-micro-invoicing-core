@@ -67,7 +67,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     public MBankStatement(Properties ctx, int C_BankStatement_ID) {
         super(ctx, C_BankStatement_ID);
         if (C_BankStatement_ID == 0) {
-            //	setC_BankAccount_ID (0);	//	parent
+            //	setBankAccountId (0);	//	parent
             setStatementDate(new Timestamp(System.currentTimeMillis())); // @Date@
             setDocAction(X_C_BankStatement.DOCACTION_Complete); // CO
             setDocStatus(X_C_BankStatement.DOCSTATUS_Drafted); // DR
@@ -99,7 +99,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
     public MBankStatement(MBankAccount account, boolean isManual) {
         this(account.getCtx(), 0);
         setClientOrg(account);
-        setC_BankAccount_ID(account.getBankAccountId());
+        setBankAccountId(account.getBankAccountId());
         setStatementDate(new Timestamp(System.currentTimeMillis()));
         setDateAcct(new Timestamp(System.currentTimeMillis()));
         setBeginningBalance(account.getCurrentBalance());
@@ -130,7 +130,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         final String whereClause = I_C_BankStatementLine.COLUMNNAME_C_BankStatement_ID + "=?";
         List<MBankStatementLine> list =
                 new Query(getCtx(), I_C_BankStatementLine.Table_Name, whereClause)
-                        .setParameters(getC_BankStatement_ID())
+                        .setParameters(getBankStatementId())
                         .setOrderBy("Line")
                         .list();
         MBankStatementLine[] retValue = new MBankStatementLine[list.size()];
@@ -164,7 +164,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
                 new StringBuilder("UPDATE C_BankStatementLine SET Processed='")
                         .append((processed ? "Y" : "N"))
                         .append("' WHERE C_BankStatement_ID=")
-                        .append(getC_BankStatement_ID());
+                        .append(getBankStatementId());
         int noLine = executeUpdate(sql.toString());
         m_lines = null;
         if (log.isLoggable(Level.FINE)) log.fine("setProcessed - " + processed + " - Lines=" + noLine);
@@ -176,7 +176,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      * @return bank Account
      */
     public MBankAccount getBankAccount() {
-        return MBankAccount.get(getCtx(), getC_BankAccount_ID());
+        return MBankAccount.get(getCtx(), getBankAccountId());
     } //	getBankAccount
 
     /**
@@ -399,7 +399,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         else {
             MPeriod.testPeriodOpen(
                     getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getOrgId());
-            MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getC_BankStatement_ID());
+            MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getBankStatementId());
         }
 
         if (isProcessed()) {
@@ -487,8 +487,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -590,7 +589,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getUpdatedBy();
     } //	getDoc_User_ID
 

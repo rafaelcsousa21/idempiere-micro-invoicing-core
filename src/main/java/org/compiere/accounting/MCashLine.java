@@ -83,7 +83,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
     public MCashLine(MCash cash) {
         this(cash.getCtx(), 0);
         setClientOrg(cash);
-        setC_Cash_ID(cash.getC_Cash_ID());
+        setCashId(cash.getCashId());
         m_parent = cash;
         m_cashBook = m_parent.getCashBook();
     } //	MCashLine
@@ -105,7 +105,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * @return cash
      */
     public MCash getParent() {
-        if (m_parent == null) m_parent = new MCash(getCtx(), getC_Cash_ID());
+        if (m_parent == null) m_parent = new MCash(getCtx(), getCashId());
         return m_parent;
     } //	getCash
 
@@ -115,7 +115,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * @return cash book
      */
     public MCashBook getCashBook() {
-        if (m_cashBook == null) m_cashBook = MCashBook.get(getCtx(), getParent().getC_CashBook_ID());
+        if (m_cashBook == null) m_cashBook = MCashBook.get(getCtx(), getParent().getCashBookId());
         return m_cashBook;
     } //	getCashBook
 
@@ -125,8 +125,8 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      * @return bank account
      */
     public MBankAccount getBankAccount() {
-        if (m_bankAccount == null && getC_BankAccount_ID() != 0)
-            m_bankAccount = MBankAccount.get(getCtx(), getC_BankAccount_ID());
+        if (m_bankAccount == null && getBankAccountId() != 0)
+            m_bankAccount = MBankAccount.get(getCtx(), getBankAccountId());
         return m_bankAccount;
     } //	getBankAccount
 
@@ -148,9 +148,9 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
      */
     protected boolean beforeDelete() {
         //	Cannot Delete generated Invoices
-        Boolean generated = (Boolean) get_ValueOld("IsGenerated");
+        Boolean generated = (Boolean) getValueOld("IsGenerated");
         if (generated != null && generated.booleanValue()) {
-            if (get_ValueOld("C_Invoice_ID") != null) {
+            if (getValueOld("C_Invoice_ID") != null) {
                 log.saveError("Error", Msg.getMsg(getCtx(), "CannotDeleteCashGenInvoice"));
                 return false;
             }
@@ -181,8 +181,8 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
             return false;
         }
         //	Cannot change generated Invoices
-        if (is_ValueChanged(I_C_CashLine.COLUMNNAME_C_Invoice_ID)) {
-            Object generated = get_ValueOld(I_C_CashLine.COLUMNNAME_IsGenerated);
+        if (isValueChanged(I_C_CashLine.COLUMNNAME_C_Invoice_ID)) {
+            Object generated = getValueOld(I_C_CashLine.COLUMNNAME_IsGenerated);
             if (generated != null && ((Boolean) generated).booleanValue()) {
                 log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeCashGenInvoice"));
                 return false;
@@ -193,15 +193,15 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         if (X_C_CashLine.CASHTYPE_Invoice.equals(getCashType()) && getInvoiceId() == 0)
             setCashType(X_C_CashLine.CASHTYPE_GeneralExpense);
         if (X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType())
-                && getC_BankAccount_ID() == 0) setCashType(X_C_CashLine.CASHTYPE_GeneralExpense);
+                && getBankAccountId() == 0) setCashType(X_C_CashLine.CASHTYPE_GeneralExpense);
         if (X_C_CashLine.CASHTYPE_Charge.equals(getCashType()) && getChargeId() == 0)
             setCashType(X_C_CashLine.CASHTYPE_GeneralExpense);
 
         boolean verify =
                 newRecord
-                        || is_ValueChanged("CashType")
-                        || is_ValueChanged("C_Invoice_ID")
-                        || is_ValueChanged("C_BankAccount_ID");
+                        || isValueChanged("CashType")
+                        || isValueChanged("C_Invoice_ID")
+                        || isValueChanged("C_BankAccount_ID");
         if (verify) {
             //	Verify Currency
             if (X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType()))
@@ -225,7 +225,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         // If CashType is not Bank Account Transfer, set C_BankAccount_ID to null - teo_sarca BF [
         // 1760240 ]
         if (!X_C_CashLine.CASHTYPE_BankAccountTransfer.equals(getCashType()))
-            setC_BankAccount_ID(I_ZERO);
+            setBankAccountId(I_ZERO);
 
         /**
          * General fix of Currency UPDATE C_CashLine cl SET C_Currency_ID = (SELECT C_Currency_ID FROM
@@ -240,7 +240,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
         //	Get Line No
         if (getLine() == 0) {
             String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_CashLine WHERE C_Cash_ID=?";
-            int ii = getSQLValue(sql, getC_Cash_ID());
+            int ii = getSQLValue(sql, getCashId());
             setLine(ii);
         }
 
@@ -276,7 +276,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
                         + " AND cl.IsActive='Y'"
                         + ") "
                         + "WHERE C_Cash_ID="
-                        + getC_Cash_ID();
+                        + getCashId();
         int no = executeUpdate(sql);
         if (no != 1) log.warning("Difference #" + no);
         //	Ending Balance
@@ -284,7 +284,7 @@ public class MCashLine extends X_C_CashLine implements IDocLine {
                 "UPDATE C_Cash"
                         + " SET EndingBalance = BeginningBalance + StatementDifference "
                         + "WHERE C_Cash_ID="
-                        + getC_Cash_ID();
+                        + getCashId();
         no = executeUpdate(sql);
         if (no != 1) log.warning("Balance #" + no);
         return no == 1;

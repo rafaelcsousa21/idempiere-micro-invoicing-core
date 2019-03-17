@@ -68,26 +68,26 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
     }
 
     /**
-     * Set Attribute Set Instance.
-     *
-     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-     */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
-        else
-            setValueNoCheck(
-                    COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-    }
-
-    /**
      * Get Attribute Set Instance.
      *
      * @return Product Attribute Set Instance
      */
-    public int getMAttributeSetInstance_ID() {
+    public int getAttributeSetInstanceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
+    }
+
+    /**
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            setValueNoCheck(
+                    COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_M_ProductionLineMA extends PO implements I_M_ProductionLineMA {
      *
      * @param M_ProductionLine_ID Document Line representing a production
      */
-    public void setM_ProductionLine_ID(int M_ProductionLine_ID) {
+    public void setProductionLineId(int M_ProductionLine_ID) {
         if (M_ProductionLine_ID < 1) setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, null);
         else setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, Integer.valueOf(M_ProductionLine_ID));
     }

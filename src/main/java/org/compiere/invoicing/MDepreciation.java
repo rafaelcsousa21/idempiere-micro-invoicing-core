@@ -113,7 +113,7 @@ public class MDepreciation extends X_A_Depreciation {
         depr =
                 new Query(ctx, I_A_Depreciation.Table_Name, whereClause)
                         .setOrderBy("AD_Client_ID DESC")
-                        .setParameters(new Object[]{depreciationType, AD_Client_ID})
+                        .setParameters(depreciationType, AD_Client_ID)
                         .firstOnly();
         addToCache(depr);
         return depr;
@@ -345,9 +345,9 @@ public class MDepreciation extends X_A_Depreciation {
         /** Life in months */
         int A_Life_Period = wk.getLifePeriod();
         /** Year = integer part of (current period / 12) => first year will be 0 */
-        int A_Current_Year = (int) (A_Current_Period / 12);
+        int A_Current_Year = (A_Current_Period / 12);
         /** Life in years = integer part of (the life in months / 12) => first year will be 0 */
-        int A_Life_Year = (int) (A_Life_Period / 12);
+        int A_Life_Year = (A_Life_Period / 12);
         // ~ /** Number of years of use remaining (including current year) */
         // ~ int A_RemainingLife_Year = A_Life_Year - A_Current_Year;
 

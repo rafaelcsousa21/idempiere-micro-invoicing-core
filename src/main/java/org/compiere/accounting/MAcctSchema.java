@@ -146,7 +146,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     public static MAcctSchema get(Properties ctx, int C_AcctSchema_ID) {
         //  Check Cache
         Integer key = C_AcctSchema_ID;
-        MAcctSchema retValue = (MAcctSchema) s_cache.get(key);
+        MAcctSchema retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MAcctSchema(ctx, C_AcctSchema_ID);
         s_cache.put(key, retValue);
@@ -165,7 +165,7 @@ public class MAcctSchema extends X_C_AcctSchema {
             Properties ctx, int AD_Client_ID) {
         //  Check Cache
         Integer key = AD_Client_ID;
-        if (s_schema.containsKey(key)) return (MAcctSchema[]) s_schema.get(key);
+        if (s_schema.containsKey(key)) return s_schema.get(key);
 
         //  Create New
         ArrayList<MAcctSchema> list = new ArrayList<MAcctSchema>();
@@ -272,7 +272,7 @@ public class MAcctSchema extends X_C_AcctSchema {
      */
     public boolean isSuspenseBalancing() {
         if (m_gl == null) getAcctSchemaGL();
-        return m_gl.isUseSuspenseBalancing() && m_gl.getSuspenseBalancing_Acct() != 0;
+        return m_gl.isUseSuspenseBalancing() && m_gl.getSuspenseBalancingAccount() != 0;
     } //	isSuspenseBalancing
 
     /**
@@ -283,7 +283,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     public MAccount getSuspenseBalancing_Acct() {
         if (m_SuspenseError_Acct != null) return m_SuspenseError_Acct;
         if (m_gl == null) getAcctSchemaGL();
-        int C_ValidCombination_ID = m_gl.getSuspenseBalancing_Acct();
+        int C_ValidCombination_ID = m_gl.getSuspenseBalancingAccount();
         m_SuspenseError_Acct = MAccount.get(getCtx(), C_ValidCombination_ID);
         return m_SuspenseError_Acct;
     } //	getSuspenseBalancing_Acct
@@ -303,13 +303,13 @@ public class MAcctSchema extends X_C_AcctSchema {
      *
      * @return currency balancing account
      */
-    public MAccount getCurrencyBalancing_Acct() {
+    public MAccount getCurrencyBalancingAccount() {
         if (m_CurrencyBalancing_Acct != null) return m_CurrencyBalancing_Acct;
         if (m_gl == null) getAcctSchemaGL();
-        int C_ValidCombination_ID = m_gl.getCurrencyBalancing_Acct();
+        int C_ValidCombination_ID = m_gl.getCurrencyBalancingAccount();
         m_CurrencyBalancing_Acct = MAccount.get(getCtx(), C_ValidCombination_ID);
         return m_CurrencyBalancing_Acct;
-    } //	getCurrencyBalancing_Acct
+    } //	getCurrencyBalancingAccount
 
     /**
      * Get Due To Account for Segment
@@ -320,7 +320,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     public MAccount getDueTo_Acct(String segment) {
         if (m_DueTo_Acct != null) return m_DueTo_Acct;
         if (m_gl == null) getAcctSchemaGL();
-        int C_ValidCombination_ID = m_gl.getIntercompanyDueTo_Acct();
+        int C_ValidCombination_ID = m_gl.getIntercompanyDueToAccount();
         m_DueTo_Acct = MAccount.get(getCtx(), C_ValidCombination_ID);
         return m_DueTo_Acct;
     } //	getDueTo_Acct
@@ -334,7 +334,7 @@ public class MAcctSchema extends X_C_AcctSchema {
     public MAccount getDueFrom_Acct(String segment) {
         if (m_DueFrom_Acct != null) return m_DueFrom_Acct;
         if (m_gl == null) getAcctSchemaGL();
-        int C_ValidCombination_ID = m_gl.getIntercompanyDueFrom_Acct();
+        int C_ValidCombination_ID = m_gl.getIntercompanyDueFromAccount();
         m_DueFrom_Acct = MAccount.get(getCtx(), C_ValidCombination_ID);
         return m_DueFrom_Acct;
     } //	getDueFrom_Acct
@@ -374,7 +374,7 @@ public class MAcctSchema extends X_C_AcctSchema {
             ct.setClientOrg(getClientId(), 0);
             ct.setName(getName());
             ct.saveEx();
-            setCostTypeId(ct.getM_CostType_ID());
+            setCostTypeId(ct.getCostTypeId());
         }
 
         //	Create Cost Elements

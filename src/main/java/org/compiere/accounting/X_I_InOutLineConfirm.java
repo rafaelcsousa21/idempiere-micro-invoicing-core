@@ -92,7 +92,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
      *
      * @param I_ErrorMsg Messages generated from import process
      */
-    public void setI_ErrorMsg(String I_ErrorMsg) {
+    public void setImportErrorMsg(String I_ErrorMsg) {
         setValue(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
     }
 
@@ -101,7 +101,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
      *
      * @param I_IsImported Has this import been processed
      */
-    public void setI_IsImported(boolean I_IsImported) {
+    public void setIsImported(boolean I_IsImported) {
         setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
@@ -110,7 +110,7 @@ public class X_I_InOutLineConfirm extends PO implements I_I_InOutLineConfirm {
      *
      * @return Material Shipment or Receipt Confirmation Line
      */
-    public int getM_InOutLineConfirm_ID() {
+    public int getInOutLineConfirmId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLineConfirm_ID);
         if (ii == null) return 0;
         return ii;

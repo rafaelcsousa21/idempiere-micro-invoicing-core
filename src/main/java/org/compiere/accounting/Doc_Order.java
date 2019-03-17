@@ -208,7 +208,7 @@ public class Doc_Order extends Doc {
             else LineNetAmt = line.getLineNetAmt();
             docLine.setAmount(LineNetAmt); // 	DR
             BigDecimal PriceList = line.getPriceList();
-            int C_Tax_ID = docLine.getC_Tax_ID();
+            int C_Tax_ID = docLine.getTaxId();
             //	Correct included Tax
             if (isTaxIncluded() && C_Tax_ID != 0) {
                 MTax tax = MTax.get(getCtx(), C_Tax_ID);
@@ -218,7 +218,7 @@ public class Doc_Order extends Doc {
                         log.fine("LineNetAmt=" + LineNetAmt + " - Tax=" + LineNetAmtTax);
                     LineNetAmt = LineNetAmt.subtract(LineNetAmtTax);
                     for (int t = 0; t < m_taxes.length; t++) {
-                        if (m_taxes[t].getC_Tax_ID() == C_Tax_ID) {
+                        if (m_taxes[t].getTaxId() == C_Tax_ID) {
                             m_taxes[t].addIncludedTax(LineNetAmtTax);
                             break;
                         }
@@ -273,7 +273,7 @@ public class Doc_Order extends Doc {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql.toString());
-            pstmt.setInt(1, get_ID());
+            pstmt.setInt(1, getId());
             rs = pstmt.executeQuery();
             //
             while (rs.next()) {
@@ -477,17 +477,17 @@ public class Doc_Order extends Doc {
                 .append("WHERE o1.C_Order_ID=ol1.C_Order_ID")
                 .append(" AND po.M_Product_ID=ol1.M_Product_ID AND po.C_BPartner_ID=o1.C_BPartner_ID")
                 .append("  AND o1.C_Order_ID=")
-                .append(get_ID())
+                .append(getId())
                 .append(") ");
         sql.append("  AND o.C_Order_ID=")
-                .append(get_ID())
+                .append(getId())
                 .append(") ")
                 .append("WHERE EXISTS (SELECT * ")
                 .append("FROM C_Order o, C_OrderLine ol ")
                 .append("WHERE o.C_Order_ID=ol.C_Order_ID")
                 .append(" AND po.M_Product_ID=ol.M_Product_ID AND po.C_BPartner_ID=o.C_BPartner_ID")
                 .append(" AND o.C_Order_ID=")
-                .append(get_ID())
+                .append(getId())
                 .append(")");
         int no = executeUpdate(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine("Updated=" + no);

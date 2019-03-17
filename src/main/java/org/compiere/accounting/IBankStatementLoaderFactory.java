@@ -11,5 +11,5 @@ public interface IBankStatementLoaderFactory {
      * @param className
      * @return BankStatementLoader instance
      */
-    public BankStatementLoaderInterface newBankStatementLoaderInstance(String className);
+    BankStatementLoaderInterface newBankStatementLoaderInstance(String className);
 }

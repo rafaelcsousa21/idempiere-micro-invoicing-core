@@ -150,14 +150,14 @@ public class InOutGenerate extends BaseInOutGenerate {
             }
             if (deliver.signum() == 0) // 	zero deliver
                 continue;
-            int M_Locator_ID = storage.getM_Locator_ID();
+            int M_Locator_ID = storage.getLocatorId();
             //
             MInOutLine line = null;
-            if (orderLine.getMAttributeSetInstance_ID() == 0) //      find line with Locator
+            if (orderLine.getAttributeSetInstanceId() == 0) //      find line with Locator
             {
                 for (int ll = 0; ll < list.size(); ll++) {
-                    MInOutLine test = (MInOutLine) list.get(ll);
-                    if (test.getM_Locator_ID() == M_Locator_ID && test.getMAttributeSetInstance_ID() == 0) {
+                    MInOutLine test = list.get(ll);
+                    if (test.getLocatorId() == M_Locator_ID && test.getAttributeSetInstanceId() == 0) {
                         line = test;
                         break;
                     }
@@ -243,10 +243,10 @@ public class InOutGenerate extends BaseInOutGenerate {
             /* IDEMPIERE-2668 - filter just locators enabled for shipping */
             List<MStorageOnHand> m_storagesForShipping = new ArrayList<MStorageOnHand>();
             for (MStorageOnHand soh : tmpStorages) {
-                MLocator loc = MLocator.get(getCtx(), soh.getM_Locator_ID());
+                MLocator loc = MLocator.get(getCtx(), soh.getLocatorId());
                 MLocatorType lt = null;
-                if (loc.getM_LocatorType_ID() > 0)
-                    lt = MLocatorType.get(getCtx(), loc.getM_LocatorType_ID());
+                if (loc.getLocatorTypeId() > 0)
+                    lt = MLocatorType.get(getCtx(), loc.getLocatorTypeId());
                 if (lt == null || lt.isAvailableForShipping()) m_storagesForShipping.add(soh);
             }
             m_lastStorages = new MStorageOnHand[m_storagesForShipping.size()];
@@ -275,12 +275,12 @@ public class InOutGenerate extends BaseInOutGenerate {
             String message =
                     Msg.parseTranslation(getCtx(), "@ShipmentProcessed@ " + m_shipment.getDocumentNo());
             addBufferLog(
-                    m_shipment.getM_InOut_ID(),
+                    m_shipment.getInOutId(),
                     m_shipment.getMovementDate(),
                     null,
                     message,
                     m_shipment.getTableId(),
-                    m_shipment.getM_InOut_ID());
+                    m_shipment.getInOutId());
             setM_created(getM_created() + 1);
 
             // reset storage cache as MInOut.completeIt will update m_storage

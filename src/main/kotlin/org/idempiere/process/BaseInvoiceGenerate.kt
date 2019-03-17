@@ -20,8 +20,7 @@ internal fun getOrdersForInvoiceGeneration(
             AD_PInstance_ID
         } else {
             (if (p_AD_Org_ID != 0) listOf(p_AD_Org_ID) else emptyList()) +
-            (if (p_C_BPartner_ID != 0) listOf(p_C_BPartner_ID) else emptyList()) +
-             (if (p_C_Order_ID != 0) listOf(p_C_Order_ID) else emptyList())
+            (if (p_C_BPartner_ID != 0) listOf(p_C_BPartner_ID) else emptyList()) + (if (p_C_Order_ID != 0) listOf(p_C_Order_ID) else emptyList())
         }
     )
 

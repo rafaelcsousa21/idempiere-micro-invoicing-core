@@ -24,7 +24,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      */
     public X_I_ElementValue(Properties ctx, int I_ElementValue_ID) {
         super(ctx, I_ElementValue_ID);
-        /** if (I_ElementValue_ID == 0) { setI_ElementValue_ID (0); setI_IsImported (false); } */
+        /** if (I_ElementValue_ID == 0) { setI_ElementValue_ID (0); setIsImported (false); } */
     }
 
     /**
@@ -71,7 +71,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      *
      * @return Accounting Element
      */
-    public int getC_Element_ID() {
+    public int getElementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Element_ID);
         if (ii == null) return 0;
         return ii;
@@ -82,7 +82,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      *
      * @return Account Element
      */
-    public int getC_ElementValue_ID() {
+    public int getElementValueId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ElementValue_ID);
         if (ii == null) return 0;
         return ii;
@@ -93,7 +93,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      *
      * @param C_ElementValue_ID Account Element
      */
-    public void setC_ElementValue_ID(int C_ElementValue_ID) {
+    public void setElementValueId(int C_ElementValue_ID) {
         if (C_ElementValue_ID < 1) setValue(COLUMNNAME_C_ElementValue_ID, null);
         else setValue(COLUMNNAME_C_ElementValue_ID, Integer.valueOf(C_ElementValue_ID));
     }
@@ -112,7 +112,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      *
      * @return Import Account Value
      */
-    public int getI_ElementValue_ID() {
+    public int getIMportAccountElementValueId() {
         Integer ii = (Integer) getValue(COLUMNNAME_I_ElementValue_ID);
         if (ii == null) return 0;
         return ii;
@@ -123,7 +123,7 @@ public class X_I_ElementValue extends BasePONameValue implements I_I_ElementValu
      *
      * @param I_IsImported Has this import been processed
      */
-    public void setI_IsImported(boolean I_IsImported) {
+    public void setIsImported(boolean I_IsImported) {
         setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 

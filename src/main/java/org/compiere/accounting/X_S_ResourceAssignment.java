@@ -134,7 +134,7 @@ public class X_S_ResourceAssignment extends BasePOName
      *
      * @return Resource
      */
-    public int getS_Resource_ID() {
+    public int getResourceID() {
         Integer ii = (Integer) getValue(COLUMNNAME_S_Resource_ID);
         if (ii == null) return 0;
         return ii;

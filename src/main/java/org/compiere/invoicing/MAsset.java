@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.convertString;
 import static software.hsharp.core.util.DBKt.executeUpdateEx;
 
 public class MAsset extends org.compiere.product.MAsset {
@@ -47,35 +47,35 @@ public class MAsset extends org.compiere.product.MAsset {
         this(match.getCtx(), 0);
 
         MInvoiceLine invoiceLine =
-                new MInvoiceLine(getCtx(), match.getC_InvoiceLine_ID());
-        MInOutLine inoutLine = new MInOutLine(getCtx(), match.getM_InOutLine_ID());
+                new MInvoiceLine(getCtx(), match.getInvoiceLineId());
+        MInOutLine inoutLine = new MInOutLine(getCtx(), match.getInOutLineId());
 
         setIsOwned(true);
         setIsInPosession(true);
-        setAssetCreateDate(inoutLine.getM_InOut().getMovementDate());
+        setAssetCreateDate(inoutLine.getInOut().getMovementDate());
 
         // Asset Group:
-        int A_Asset_Group_ID = invoiceLine.getA_Asset_Group_ID();
+        int A_Asset_Group_ID = invoiceLine.getAssetGroupId();
         org.compiere.accounting.MProduct product =
-                org.compiere.accounting.MProduct.get(getCtx(), invoiceLine.getM_Product_ID());
+                org.compiere.accounting.MProduct.get(getCtx(), invoiceLine.getProductId());
         if (A_Asset_Group_ID <= 0) {
-            A_Asset_Group_ID = product.getA_Asset_Group_ID();
+            A_Asset_Group_ID = product.getAssetGroupId();
         }
         setAssetGroupId(A_Asset_Group_ID);
         setHelp(
                 Msg.getMsg(
                         MClient.get(getCtx()).getADLanguage(),
                         "CreatedFromInvoiceLine",
-                        new Object[]{invoiceLine.getC_Invoice().getDocumentNo(), invoiceLine.getLine()}));
+                        new Object[]{invoiceLine.getInvoice().getDocumentNo(), invoiceLine.getLine()}));
 
         String name = "";
-        if (inoutLine.getM_Product_ID() > 0) {
+        if (inoutLine.getProductId() > 0) {
             name += product.getName() + "-";
-            setProductId(inoutLine.getM_Product_ID());
-            setAttributeSetInstanceId(inoutLine.getMAttributeSetInstance_ID());
+            setProductId(inoutLine.getProductId());
+            setAttributeSetInstanceId(inoutLine.getAttributeSetInstanceId());
         }
-        MBPartner bp = new MBPartner(getCtx(), invoiceLine.getC_Invoice().getBusinessPartnerId());
-        name += bp.getName() + "-" + invoiceLine.getC_Invoice().getDocumentNo();
+        MBPartner bp = new MBPartner(getCtx(), invoiceLine.getInvoice().getBusinessPartnerId());
+        name += bp.getName() + "-" + invoiceLine.getInvoice().getDocumentNo();
         if (log.isLoggable(Level.FINE)) log.fine("name=" + name);
         setValue(name);
         setName(name);
@@ -103,15 +103,15 @@ public class MAsset extends org.compiere.product.MAsset {
         setAssetCreateDate(ifa.getAssetServiceDate());
         // setAssetServiceDate(ifa.getAssetServiceDate()); //commented by @win
     /* commented by @win
-    setA_Asset_Class_ID(ifa.getA_Asset_Class_ID());
+    setA_Asset_ClassId(ifa.getA_Asset_ClassId());
     */
         // commented by @win
         org.compiere.accounting.MProduct product = ifa.getProduct();
         if (product != null) {
-            setProductId(product.getM_Product_ID());
-            setAssetGroupId(ifa.getA_Asset_Group_ID());
+            setProductId(product.getProductId());
+            setAssetGroupId(ifa.getAssetGroupId());
             MAttributeSetInstance asi = MAttributeSetInstance.create(getCtx(), product);
-            setAttributeSetInstanceId(asi.getMAttributeSetInstance_ID());
+            setAttributeSetInstanceId(asi.getAttributeSetInstanceId());
         }
 
         setDateAcct(ifa.getDateAcct());
@@ -163,13 +163,13 @@ public class MAsset extends org.compiere.product.MAsset {
         super(invLine.getCtx(), 0);
         setClientOrg(invLine);
 
-        org.compiere.accounting.MProduct product = MProduct.get(getCtx(), invLine.getM_Product_ID());
+        org.compiere.accounting.MProduct product = MProduct.get(getCtx(), invLine.getProductId());
         // Defaults from group:
         MAssetGroup assetGroup =
                 MAssetGroup.get(
-                        invLine.getCtx(), invLine.getM_Product().getM_Product_Category().getA_Asset_Group_ID());
+                        invLine.getCtx(), invLine.getProduct().getProductCategory().getAssetGroupId());
         if (assetGroup == null)
-            assetGroup = MAssetGroup.get(invLine.getCtx(), product.getA_Asset_Group_ID());
+            assetGroup = MAssetGroup.get(invLine.getCtx(), product.getAssetGroupId());
         setAssetGroup(assetGroup);
 
         // setValue(prod)
@@ -181,14 +181,14 @@ public class MAsset extends org.compiere.product.MAsset {
         setIsInPosession(true);
 
         //	Product
-        setProductId(product.getM_Product_ID());
+        setProductId(product.getProductId());
         //	Guarantee & Version
         // setGuaranteeDate(TimeUtil.addDays(shipment.getMovementDate(), product.getGuaranteeDays()));
         setVersionNo(product.getVersionNo());
         // ASI
-        if (invLine.getMAttributeSetInstance_ID() != 0) {
+        if (invLine.getAttributeSetInstanceId() != 0) {
             MAttributeSetInstance asi =
-                    new MAttributeSetInstance(getCtx(), invLine.getMAttributeSetInstance_ID());
+                    new MAttributeSetInstance(getCtx(), invLine.getAttributeSetInstanceId());
             setASI(asi);
         }
         // setSerNo(invLine.getSerNo());
@@ -252,7 +252,7 @@ public class MAsset extends org.compiere.product.MAsset {
             setInventoryNo(invNo);
             executeUpdateEx(
                     "UPDATE A_Asset SET InventoryNo="
-                            + TO_STRING(invNo)
+                            + convertString(invNo)
                             + " WHERE A_Asset_ID="
                             + getAssetId());
             if (log.isLoggable(Level.FINE)) log.fine("InventoryNo=" + getInventoryNo());
@@ -277,7 +277,7 @@ public class MAsset extends org.compiere.product.MAsset {
 
             // for each asset group acounting create an asset accounting and a workfile too
             for (MAssetGroupAcct assetgrpacct :
-                    MAssetGroupAcct.forA_Asset_Group_ID(getCtx(), getAssetGroupId())) {
+                    MAssetGroupAcct.forA_Asset_GroupId(getCtx(), getAssetGroupId())) {
                 // Asset Accounting
                 MAssetAcct assetacct = new MAssetAcct(this, assetgrpacct);
                 assetacct.setOrgId(getOrgId()); // added by @win
@@ -290,7 +290,7 @@ public class MAsset extends org.compiere.product.MAsset {
                 assetwk.setUseLifeYears(0);
                 assetwk.setUseLifeMonths(0);
                 assetwk.setUseLifeYearsFiscal(0);
-                assetwk.setUseLifeMonths_F(0);
+                assetwk.setUseLifeMonthsFiscal(0);
                 assetwk.saveEx();
 
                 // Change Log
@@ -303,7 +303,7 @@ public class MAsset extends org.compiere.product.MAsset {
 
         //
         // Update child.IsDepreciated flag
-        if (!newRecord && is_ValueChanged(I_A_Asset.COLUMNNAME_IsDepreciated)) {
+        if (!newRecord && isValueChanged(I_A_Asset.COLUMNNAME_IsDepreciated)) {
             final String sql =
                     "UPDATE "
                             + MDepreciationWorkfile.Table_Name
@@ -385,7 +385,7 @@ public class MAsset extends org.compiere.product.MAsset {
             setAssetDisposalDate(date);
             // TODO: move to MAsetDisposal
             Collection<MDepreciationWorkfile> workFiles =
-                    MDepreciationWorkfile.forA_Asset_ID(getCtx(), getAssetId());
+                    MDepreciationWorkfile.forA_AssetId(getCtx(), getAssetId());
             for (MDepreciationWorkfile assetwk : workFiles) {
                 assetwk.truncDepreciation();
                 assetwk.saveEx();

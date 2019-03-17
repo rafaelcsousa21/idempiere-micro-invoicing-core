@@ -54,7 +54,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @return Account at the Bank
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -65,7 +65,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @param C_BankStatement_ID Bank Statement of account
      */
-    public void setC_BankStatement_ID(int C_BankStatement_ID) {
+    public void setBankStatementId(int C_BankStatement_ID) {
         if (C_BankStatement_ID < 1) setValue(COLUMNNAME_C_BankStatement_ID, null);
         else setValue(COLUMNNAME_C_BankStatement_ID, Integer.valueOf(C_BankStatement_ID));
     }
@@ -75,7 +75,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @param C_BankStatementLine_ID Line on a statement from this Bank
      */
-    public void setC_BankStatementLine_ID(int C_BankStatementLine_ID) {
+    public void setBankStatementLineId(int C_BankStatementLine_ID) {
         if (C_BankStatementLine_ID < 1) setValue(COLUMNNAME_C_BankStatementLine_ID, null);
         else setValue(COLUMNNAME_C_BankStatementLine_ID, Integer.valueOf(C_BankStatementLine_ID));
     }
@@ -328,7 +328,7 @@ public class X_I_BankStatement extends BasePOName implements I_I_BankStatement {
      *
      * @param I_IsImported Has this import been processed
      */
-    public void setI_IsImported(boolean I_IsImported) {
+    public void setIsImported(boolean I_IsImported) {
         setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 

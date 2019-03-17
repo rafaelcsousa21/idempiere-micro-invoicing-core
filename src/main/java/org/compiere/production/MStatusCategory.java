@@ -7,14 +7,10 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Request Status Category Model
@@ -90,7 +86,7 @@ public class MStatusCategory extends X_R_StatusCategory {
         if (!retValue.save()) return null;
         String sql =
                 "UPDATE R_Status SET R_StatusCategory_ID="
-                        + retValue.getR_StatusCategory_ID()
+                        + retValue.getStatusCategoryId()
                         + " WHERE R_StatusCategory_ID IS NULL AND AD_Client_ID="
                         + AD_Client_ID;
         int no = executeUpdate(sql);
@@ -108,7 +104,7 @@ public class MStatusCategory extends X_R_StatusCategory {
      */
     public static MStatusCategory get(Properties ctx, int R_StatusCategory_ID) {
         Integer key = new Integer(R_StatusCategory_ID);
-        MStatusCategory retValue = (MStatusCategory) s_cache.get(key);
+        MStatusCategory retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MStatusCategory(ctx, R_StatusCategory_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -123,7 +119,7 @@ public class MStatusCategory extends X_R_StatusCategory {
      */
     public MStatus[] getStatus(boolean reload) {
         if (m_status != null && !reload) return m_status;
-        m_status = MBaseStatusCategoryKt.getAllStatus(getCtx(), getR_StatusCategory_ID());
+        m_status = MBaseStatusCategoryKt.getAllStatus(getCtx(), getStatusCategoryId());
         return m_status;
     } //	getStatus
 
@@ -132,12 +128,12 @@ public class MStatusCategory extends X_R_StatusCategory {
      *
      * @return id or 0
      */
-    public int getDefaultR_Status_ID() {
+    public int getDefaultR_StatusId() {
         if (m_status == null) getStatus(false);
         for (int i = 0; i < m_status.length; i++) {
-            if (m_status[i].isDefault() && m_status[i].isActive()) return m_status[i].getR_Status_ID();
+            if (m_status[i].isDefault() && m_status[i].isActive()) return m_status[i].getStatusId();
         }
-        if (m_status.length > 0 && m_status[0].isActive()) return m_status[0].getR_Status_ID();
+        if (m_status.length > 0 && m_status[0].isActive()) return m_status[0].getStatusId();
         return 0;
     } //	getDefaultR_Status_ID
 

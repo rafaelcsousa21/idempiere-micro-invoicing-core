@@ -134,7 +134,7 @@ public class X_R_Request extends PO implements I_R_Request {
          * if (R_Request_ID == 0) { setConfidentialType (null); // C setConfidentialTypeEntry (null); //
          * C setDocumentNo (null); setDueType (null); // 5 setIsEscalated (false); setIsInvoiced
          * (false); setIsSelfService (false); // N setPriority (null); // 5 setProcessed (false);
-         * setRequestAmt (Env.ZERO); setR_Request_ID (0); setR_RequestType_ID (0); setSummary (null); }
+         * setRequestAmt (Env.ZERO); setRequestId (0); setRequestTypeId (0); setSummary (null); }
          */
     }
 
@@ -309,7 +309,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @return BOM (Engineering) Change Request
      */
-    public int getM_ChangeRequest_ID() {
+    public int getChangeRequestId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ChangeRequest_ID);
         if (ii == null) return 0;
         return ii;
@@ -320,7 +320,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @param M_ChangeRequest_ID BOM (Engineering) Change Request
      */
-    public void setM_ChangeRequest_ID(int M_ChangeRequest_ID) {
+    public void setChangeRequestId(int M_ChangeRequest_ID) {
         if (M_ChangeRequest_ID < 1) setValue(COLUMNNAME_M_ChangeRequest_ID, null);
         else setValue(COLUMNNAME_M_ChangeRequest_ID, Integer.valueOf(M_ChangeRequest_ID));
     }
@@ -409,7 +409,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @return Request Group
      */
-    public int getR_Group_ID() {
+    public int getGroupId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_Group_ID);
         if (ii == null) return 0;
         return ii;
@@ -420,7 +420,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @return Request from a Business Partner or Prospect
      */
-    public int getR_Request_ID() {
+    public int getRequestId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_Request_ID);
         if (ii == null) return 0;
         return ii;
@@ -431,7 +431,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @return Type of request (e.g. Inquiry, Complaint, ..)
      */
-    public int getR_RequestType_ID() {
+    public int getRequestTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_RequestType_ID);
         if (ii == null) return 0;
         return ii;
@@ -442,7 +442,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @param R_RequestType_ID Type of request (e.g. Inquiry, Complaint, ..)
      */
-    public void setR_RequestType_ID(int R_RequestType_ID) {
+    public void setRequestTypeId(int R_RequestType_ID) {
         if (R_RequestType_ID < 1) setValue(COLUMNNAME_R_RequestType_ID, null);
         else setValue(COLUMNNAME_R_RequestType_ID, Integer.valueOf(R_RequestType_ID));
     }
@@ -452,7 +452,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @return Request Status
      */
-    public int getR_Status_ID() {
+    public int getStatusId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_Status_ID);
         if (ii == null) return 0;
         return ii;
@@ -463,7 +463,7 @@ public class X_R_Request extends PO implements I_R_Request {
      *
      * @param R_Status_ID Request Status
      */
-    public void setR_Status_ID(int R_Status_ID) {
+    public void setStatusId(int R_Status_ID) {
         if (R_Status_ID < 1) setValue(COLUMNNAME_R_Status_ID, null);
         else setValue(COLUMNNAME_R_Status_ID, Integer.valueOf(R_Status_ID));
     }

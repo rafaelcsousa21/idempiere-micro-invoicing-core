@@ -52,7 +52,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      *
      * @return Schedule
      */
-    public int getAD_Schedule_ID() {
+    public int getScheduleId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_Schedule_ID);
         if (ii == null) return 0;
         return ii;
@@ -63,7 +63,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      *
      * @param AD_Schedule_ID Schedule
      */
-    public void setAD_Schedule_ID(int AD_Schedule_ID) {
+    public void setScheduleId(int AD_Schedule_ID) {
         if (AD_Schedule_ID < 1) setValue(COLUMNNAME_AD_Schedule_ID, null);
         else setValue(COLUMNNAME_AD_Schedule_ID, AD_Schedule_ID);
     }
@@ -127,7 +127,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      *
      * @return Processor for Requests
      */
-    public int getR_RequestProcessor_ID() {
+    public int getRequestProcessorId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_RequestProcessor_ID);
         if (ii == null) return 0;
         return ii;
@@ -138,7 +138,7 @@ public class X_R_RequestProcessor extends BasePOName implements I_R_RequestProce
      *
      * @param Supervisor_ID Supervisor for this user/organization - used for escalation and approval
      */
-    public void setSupervisor_ID(int Supervisor_ID) {
+    public void setSupervisorId(int Supervisor_ID) {
         if (Supervisor_ID < 1) setValue(COLUMNNAME_Supervisor_ID, null);
         else setValue(COLUMNNAME_Supervisor_ID, Integer.valueOf(Supervisor_ID));
     }

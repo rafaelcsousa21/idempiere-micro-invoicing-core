@@ -172,7 +172,7 @@ public class MTreeNode extends DefaultMutableTreeNode {
      *
      * @return node id (e.g. AD_Menu_ID)
      */
-    public int getNode_ID() {
+    public int getNodeId() {
         return m_node_ID;
     } //  getID
 
@@ -190,7 +190,7 @@ public class MTreeNode extends DefaultMutableTreeNode {
      *
      * @return Parent_ID (e.g. AD_Menu_ID)
      */
-    public int getParent_ID() {
+    public int getParentId() {
         return m_parent_ID;
     } //	getParent
 
@@ -262,7 +262,7 @@ public class MTreeNode extends DefaultMutableTreeNode {
         Enumeration<?> en = preorderEnumeration();
         while (en.hasMoreElements()) {
             MTreeNode nd = (MTreeNode) en.nextElement();
-            if (ID == nd.getNode_ID()) {
+            if (ID == nd.getNodeId()) {
                 m_lastID = ID;
                 m_lastNode = nd;
                 return nd;

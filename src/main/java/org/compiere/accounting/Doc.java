@@ -488,7 +488,7 @@ public abstract class Doc implements IDoc {
         className = className.substring(className.lastIndexOf('.') + 1);
         try {
             Constructor<?> constructor =
-                    clazz.getConstructor(new Class[]{Properties.class, Row.class});
+                    clazz.getConstructor(Properties.class, Row.class);
             p_po = (IPODoc) constructor.newInstance(new Object[]{m_ctx, rs});
         } catch (Exception e) {
             String msg = className + ": " + e.getLocalizedMessage();
@@ -586,7 +586,7 @@ public abstract class Doc implements IDoc {
      *
      * @return record id
      */
-    public int get_ID() {
+    public int getId() {
         return p_po.getId();
     } //	getId
 
@@ -648,19 +648,19 @@ public abstract class Doc implements IDoc {
                 .append(" SET Processing='Y' WHERE ")
                 .append(get_TableName())
                 .append("_ID=")
-                .append(get_ID())
+                .append(getId())
                 .append(" AND Processed='Y' AND IsActive='Y'");
         if (!force) sql.append(" AND (Processing='N' OR Processing IS NULL)");
         if (!repost) sql.append(" AND Posted='N'");
         if (executeUpdate(sql.toString()) == 1) {
-            if (log.isLoggable(Level.INFO)) log.info("Locked: " + get_TableName() + "_ID=" + get_ID());
+            if (log.isLoggable(Level.INFO)) log.info("Locked: " + get_TableName() + "_ID=" + getId());
         } else {
             log.log(
                     Level.SEVERE,
                     "Resubmit - Cannot lock "
                             + get_TableName()
                             + "_ID="
-                            + get_ID()
+                            + getId()
                             + ", Force="
                             + force
                             + ",RePost="
@@ -770,7 +770,7 @@ public abstract class Doc implements IDoc {
                     .append(" - DocumentNo=")
                     .append(getDocumentNo())
                     .append(", DateAcct=")
-                    .append(getDateAcct().toString().substring(0, 10))
+                    .append(getDateAcct().toString(), 0, 10)
                     .append(", Amount=")
                     .append(getAmount())
                     .append(", Sta=")
@@ -985,7 +985,7 @@ public abstract class Doc implements IDoc {
             PreparedStatement pstmt = null;
             ResultSet rsDT = null;
             try {
-                pstmt = prepareStatement(sql.toString());
+                pstmt = prepareStatement(sql);
                 pstmt.setInt(1, getClientId());
                 pstmt.setString(2, m_DocumentType);
                 rsDT = pstmt.executeQuery();
@@ -1128,7 +1128,7 @@ public abstract class Doc implements IDoc {
             m_period = MPeriod.get(getCtx(), getDateAcct(), getOrgId());
         //	Is Period Open?
         if (m_period != null && m_period.isOpen(getDocumentType(), getDateAcct()))
-            m_C_Period_ID = m_period.getC_Period_ID();
+            m_C_Period_ID = m_period.getPeriodId();
         else m_C_Period_ID = -1;
         //
         if (log.isLoggable(Level.FINE))
@@ -1141,10 +1141,10 @@ public abstract class Doc implements IDoc {
      *
      * @return period
      */
-    public int getC_Period_ID() {
+    public int getPeriodId() {
         if (m_period == null) setPeriod();
         return m_C_Period_ID;
-    } //	getC_Period_ID
+    } //	getPeriodId
 
     /**
      * Is Period Open
@@ -1215,7 +1215,7 @@ public abstract class Doc implements IDoc {
      * @param as       accounting schema
      * @return C_ValidCombination_ID
      */
-    public int getValidCombination_ID(int AcctType, MAcctSchema as) {
+    public int getValidCombinationId(int AcctType, MAcctSchema as) {
         int para_1 = 0; //  first parameter (second is always AcctSchema)
         String sql = null;
 
@@ -1258,15 +1258,15 @@ public abstract class Doc implements IDoc {
         else if (AcctType == ACCTTYPE_UnallocatedCash) {
             sql =
                     "SELECT B_UnallocatedCash_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BankAccount_ID();
+            para_1 = getBankAccountId();
         } else if (AcctType == ACCTTYPE_BankInTransit) {
             sql =
                     "SELECT B_InTransit_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BankAccount_ID();
+            para_1 = getBankAccountId();
         } else if (AcctType == ACCTTYPE_PaymentSelect) {
             sql =
                     "SELECT B_PaymentSelect_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BankAccount_ID();
+            para_1 = getBankAccountId();
         }
 
         /** Account Type - Allocation */
@@ -1291,37 +1291,37 @@ public abstract class Doc implements IDoc {
         else if (AcctType == ACCTTYPE_BankAsset) {
             sql =
                     "SELECT B_Asset_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BankAccount_ID();
+            para_1 = getBankAccountId();
         } else if (AcctType == ACCTTYPE_InterestRev) {
             sql =
                     "SELECT B_InterestRev_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BankAccount_ID();
+            para_1 = getBankAccountId();
         } else if (AcctType == ACCTTYPE_InterestExp) {
             sql =
                     "SELECT B_InterestExp_Acct FROM C_BankAccount_Acct WHERE C_BankAccount_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_BankAccount_ID();
+            para_1 = getBankAccountId();
         }
 
         /** Account Type - Cash */
         else if (AcctType == ACCTTYPE_CashAsset) {
             sql = "SELECT CB_Asset_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_CashBook_ID();
+            para_1 = getCashBookId();
         } else if (AcctType == ACCTTYPE_CashTransfer) {
             sql =
                     "SELECT CB_CashTransfer_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_CashBook_ID();
+            para_1 = getCashBookId();
         } else if (AcctType == ACCTTYPE_CashExpense) {
             sql =
                     "SELECT CB_Expense_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_CashBook_ID();
+            para_1 = getCashBookId();
         } else if (AcctType == ACCTTYPE_CashReceipt) {
             sql =
                     "SELECT CB_Receipt_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_CashBook_ID();
+            para_1 = getCashBookId();
         } else if (AcctType == ACCTTYPE_CashDifference) {
             sql =
                     "SELECT CB_Differences_Acct FROM C_CashBook_Acct WHERE C_CashBook_ID=? AND C_AcctSchema_ID=?";
-            para_1 = getC_CashBook_ID();
+            para_1 = getCashBookId();
         }
 
         /** Inventory Accounts */
@@ -1395,7 +1395,7 @@ public abstract class Doc implements IDoc {
             return 0;
         }
         return Account_ID;
-    } //	getAccount_ID
+    } //	getAccountId
 
     /**
      * Get the account for Accounting Schema
@@ -1405,7 +1405,7 @@ public abstract class Doc implements IDoc {
      * @return Account
      */
     public final MAccount getAccount(int AcctType, MAcctSchema as) {
-        int C_ValidCombination_ID = getValidCombination_ID(AcctType, as);
+        int C_ValidCombination_ID = getValidCombinationId(AcctType, as);
         if (C_ValidCombination_ID == 0) return null;
         //	Return Account
         MAccount acct = MAccount.get(as.getCtx(), C_ValidCombination_ID);
@@ -1539,7 +1539,7 @@ public abstract class Doc implements IDoc {
      *
      * @return category
      */
-    public int getGL_Category_ID() {
+    public int getGLCategoryId() {
         int index = p_po.getColumnIndex("GL_Category_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
@@ -1553,14 +1553,14 @@ public abstract class Doc implements IDoc {
      *
      * @return category
      */
-    public int getGL_Budget_ID() {
+    public int getGLBudgetId() {
         int index = p_po.getColumnIndex("GL_Budget_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getGL_Budget_ID
+    } //	getGLBudgetId
 
     /**
      * Get Accounting Date
@@ -1745,7 +1745,7 @@ public abstract class Doc implements IDoc {
      *
      * @return BankAccount
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         if (m_C_BankAccount_ID == -1) {
             int index = p_po.getColumnIndex("C_BankAccount_ID");
             if (index != -1) {
@@ -1755,23 +1755,23 @@ public abstract class Doc implements IDoc {
             if (m_C_BankAccount_ID == -1) m_C_BankAccount_ID = 0;
         }
         return m_C_BankAccount_ID;
-    } //	getC_BankAccount_ID
+    } //	getBankAccountId
 
     /**
      * Set C_BankAccount_ID
      *
      * @param C_BankAccount_ID bank acct
      */
-    public void setC_BankAccount_ID(int C_BankAccount_ID) {
+    public void setBankAccountId(int C_BankAccount_ID) {
         m_C_BankAccount_ID = C_BankAccount_ID;
-    } //	setC_BankAccount_ID
+    } //	setBankAccountId
 
     /**
      * Get C_CashBook_ID
      *
      * @return CashBook
      */
-    public int getC_CashBook_ID() {
+    public int getCashBookId() {
         if (m_C_CashBook_ID == -1) {
             int index = p_po.getColumnIndex("C_CashBook_ID");
             if (index != -1) {
@@ -1781,16 +1781,16 @@ public abstract class Doc implements IDoc {
             if (m_C_CashBook_ID == -1) m_C_CashBook_ID = 0;
         }
         return m_C_CashBook_ID;
-    } //	getC_CashBook_ID
+    } //	getCashBookId
 
     /**
      * Set C_CashBook_ID
      *
      * @param C_CashBook_ID cash book
      */
-    public void setC_CashBook_ID(int C_CashBook_ID) {
+    public void setCashBookId(int C_CashBook_ID) {
         m_C_CashBook_ID = C_CashBook_ID;
-    } //	setC_CashBook_ID
+    } //	setCashBookId
 
     /**
      * Get M_Warehouse_ID
@@ -1865,49 +1865,49 @@ public abstract class Doc implements IDoc {
      *
      * @return Project Phase
      */
-    public int getC_ProjectPhase_ID() {
+    public int getProjectPhaseId() {
         int index = p_po.getColumnIndex("C_ProjectPhase_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_ProjectPhase_ID
+    } //	getProjectPhaseId
 
     /**
      * Get C_ProjectTask_ID
      *
      * @return Project Task
      */
-    public int getC_ProjectTask_ID() {
+    public int getProjectTaskId() {
         int index = p_po.getColumnIndex("C_ProjectTask_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_ProjectTask_ID
+    } //	getProjectTaskId
 
     /**
      * Get C_SalesRegion_ID
      *
      * @return Sales Region
      */
-    public int getC_SalesRegion_ID() {
+    public int getSalesRegionId() {
         int index = p_po.getColumnIndex("C_SalesRegion_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_SalesRegion_ID
+    } //	getSalesRegionId
 
     /**
      * Get C_SalesRegion_ID
      *
      * @return Sales Region
      */
-    public int getBP_C_SalesRegion_ID() {
+    public int getBP_C_SalesRegionId() {
         if (m_BP_C_SalesRegion_ID == -1) {
             int index = p_po.getColumnIndex("C_SalesRegion_ID");
             if (index != -1) {
@@ -1924,7 +1924,7 @@ public abstract class Doc implements IDoc {
      *
      * @param C_SalesRegion_ID id
      */
-    public void setBP_C_SalesRegion_ID(int C_SalesRegion_ID) {
+    public void setBP_C_SalesRegionId(int C_SalesRegion_ID) {
         m_BP_C_SalesRegion_ID = C_SalesRegion_ID;
     } //	setBP_C_SalesRegion_ID
 
@@ -1961,14 +1961,14 @@ public abstract class Doc implements IDoc {
      *
      * @return Product
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         int index = p_po.getColumnIndex("M_Product_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getM_Product_ID
+    } //	getProductId
 
     /**
      * Get AD_OrgTrx_ID
@@ -1989,18 +1989,18 @@ public abstract class Doc implements IDoc {
      *
      * @return loc from
      */
-    public int getC_LocFrom_ID() {
+    public int getLocationFromId() {
         return m_C_LocFrom_ID;
-    } //	getC_LocFrom_ID
+    } //	getLocationFromId
 
     /**
      * Get C_LocTo_ID
      *
      * @return loc to
      */
-    public int getC_LocTo_ID() {
+    public int getLocationToId() {
         return m_C_LocTo_ID;
-    } //	getC_LocTo_ID
+    } //	getLocationToId
 
     /**
      * Get User1_ID

@@ -101,7 +101,7 @@ public class X_R_MailText extends BasePOName implements I_R_MailText {
      *
      * @return Text templates for mailings
      */
-    public int getR_MailText_ID() {
+    public int getMailTemplateId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_MailText_ID);
         if (ii == null) return 0;
         return ii;

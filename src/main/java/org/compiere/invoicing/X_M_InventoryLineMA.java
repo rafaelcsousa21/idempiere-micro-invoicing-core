@@ -98,32 +98,32 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA {
     }
 
     /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getAttributeSetInstanceId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
      * Set Attribute Set Instance.
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
-    /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
+    public org.compiere.model.I_M_InventoryLine getInventoryLine() throws RuntimeException {
         return (org.compiere.model.I_M_InventoryLine)
                 MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-                        .getPO(getM_InventoryLine_ID());
+                        .getPO(getInventoryLineId());
     }
 
     /**
@@ -131,7 +131,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA {
      *
      * @return Unique line in an Inventory document
      */
-    public int getM_InventoryLine_ID() {
+    public int getInventoryLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InventoryLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -142,7 +142,7 @@ public class X_M_InventoryLineMA extends PO implements I_M_InventoryLineMA {
      *
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
-    public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
+    public void setInventoryLineId(int M_InventoryLine_ID) {
         if (M_InventoryLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InventoryLine_ID, null);
         else setValueNoCheck(COLUMNNAME_M_InventoryLine_ID, M_InventoryLine_ID);
     }

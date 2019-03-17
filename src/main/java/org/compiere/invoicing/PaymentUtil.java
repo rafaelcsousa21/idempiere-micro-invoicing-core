@@ -17,7 +17,7 @@ public class PaymentUtil {
             encryptedCC.append("0");
         }
 
-        encryptedCC.append(value.substring(valueLength - 4, valueLength));
+        encryptedCC.append(value, valueLength - 4, valueLength);
 
         return encryptedCC.toString();
     }

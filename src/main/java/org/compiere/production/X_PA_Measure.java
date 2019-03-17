@@ -98,7 +98,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure {
      *
      * @return Type of the project
      */
-    public int getC_ProjectType_ID() {
+    public int getProjectTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectType_ID);
         if (ii == null) return 0;
         return ii;
@@ -138,7 +138,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure {
      *
      * @return Calculation method for measuring performance
      */
-    public int getPA_MeasureCalc_ID() {
+    public int getMeasureCalcId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PA_MeasureCalc_ID);
         if (ii == null) return 0;
         return ii;
@@ -149,7 +149,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure {
      *
      * @return Concrete Performance Measurement
      */
-    public int getPA_Measure_ID() {
+    public int getMeasureId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PA_Measure_ID);
         if (ii == null) return 0;
         return ii;
@@ -160,7 +160,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure {
      *
      * @return Performance Ratio
      */
-    public int getPA_Ratio_ID() {
+    public int getRatioId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PA_Ratio_ID);
         if (ii == null) return 0;
         return ii;
@@ -171,7 +171,7 @@ public class X_PA_Measure extends BasePOName implements I_PA_Measure {
      *
      * @return Type of request (e.g. Inquiry, Complaint, ..)
      */
-    public int getR_RequestType_ID() {
+    public int getRequestTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_RequestType_ID);
         if (ii == null) return 0;
         return ii;

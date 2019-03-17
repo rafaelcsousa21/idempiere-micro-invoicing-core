@@ -53,7 +53,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
@@ -65,7 +65,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      *
      * @param M_CostDetail_ID Cost Detail Information
      */
-    public void setM_CostDetail_ID(int M_CostDetail_ID) {
+    public void setCostDetailId(int M_CostDetail_ID) {
         if (M_CostDetail_ID < 1) setValueNoCheck(COLUMNNAME_M_CostDetail_ID, null);
         else setValueNoCheck(COLUMNNAME_M_CostDetail_ID, Integer.valueOf(M_CostDetail_ID));
     }
@@ -75,7 +75,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      *
      * @param M_CostElement_ID Product Cost Element
      */
-    public void setM_CostElement_ID(int M_CostElement_ID) {
+    public void setCostElementId(int M_CostElement_ID) {
         if (M_CostElement_ID < 1) setValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
         else setValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
     }
@@ -85,7 +85,7 @@ public class X_M_CostHistory extends PO implements I_M_CostHistory {
      *
      * @param M_CostType_ID Type of Cost (e.g. Current, Plan, Future)
      */
-    public void setM_CostType_ID(int M_CostType_ID) {
+    public void setCostTypeId(int M_CostType_ID) {
         if (M_CostType_ID < 1) setValueNoCheck(COLUMNNAME_M_CostType_ID, null);
         else setValueNoCheck(COLUMNNAME_M_CostType_ID, Integer.valueOf(M_CostType_ID));
     }

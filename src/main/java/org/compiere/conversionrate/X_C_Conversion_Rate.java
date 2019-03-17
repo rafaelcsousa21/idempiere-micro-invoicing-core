@@ -54,7 +54,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      *
      * @return Rate used for converting currencies
      */
-    public int getC_Conversion_Rate_ID() {
+    public int getConversionRateId() {
         Integer ii = (Integer) getValue(I_C_Conversion_Rate.COLUMNNAME_C_Conversion_Rate_ID);
         if (ii == null) return 0;
         return ii;
@@ -99,7 +99,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      *
      * @return Target currency
      */
-    public int getC_Currency_ID_To() {
+    public int getTargetCurrencyId() {
         Integer ii = (Integer) getValue(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID_To);
         if (ii == null) return 0;
         return ii;
@@ -110,7 +110,7 @@ public class X_C_Conversion_Rate extends PO implements I_C_Conversion_Rate {
      *
      * @param C_Currency_ID_To Target currency
      */
-    public void setC_Currency_ID_To(int C_Currency_ID_To) {
+    public void setTargetCurrencyId(int C_Currency_ID_To) {
         setValue(I_C_Conversion_Rate.COLUMNNAME_C_Currency_ID_To, Integer.valueOf(C_Currency_ID_To));
     }
 

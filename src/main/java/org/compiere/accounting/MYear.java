@@ -42,7 +42,7 @@ public class MYear extends X_C_Year {
     public MYear(Properties ctx, int C_Year_ID) {
         super(ctx, C_Year_ID);
         if (C_Year_ID == 0) {
-            //	setC_Calendar_ID (0);
+            //	setCalendarId (0);
             //	setYear (null);
             setProcessing(false); // N
         }
@@ -65,7 +65,7 @@ public class MYear extends X_C_Year {
     public MYear(MCalendar calendar) {
         this(calendar.getCtx(), 0);
         setClientOrg(calendar);
-        setC_Calendar_ID(calendar.getC_Calendar_ID());
+        setCalendarId(calendar.getCalendarId());
         setYear();
     } //	MYear
 
@@ -190,11 +190,11 @@ public class MYear extends X_C_Year {
             cal.add(Calendar.DAY_OF_YEAR, -1);
             Timestamp end = new Timestamp(cal.getTimeInMillis());
             //
-            MPeriod period = MPeriod.findByCalendar(getCtx(), start, getC_Calendar_ID());
+            MPeriod period = MPeriod.findByCalendar(getCtx(), start, getCalendarId());
             if (period == null) {
                 period = new MPeriod(this, month + 1, name, start, end);
             } else {
-                period.setC_Year_ID(this.getC_Year_ID());
+                period.setYearId(this.getYearId());
                 period.setPeriodNo(month + 1);
                 period.setName(name);
                 period.setStartDate(start);

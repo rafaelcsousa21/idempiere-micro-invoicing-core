@@ -73,7 +73,7 @@ public class MMeasure extends X_PA_Measure {
      */
     public static MMeasure get(Properties ctx, int PA_Measure_ID) {
         Integer key = PA_Measure_ID;
-        MMeasure retValue = (MMeasure) s_cache.get(key);
+        MMeasure retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MMeasure(ctx, PA_Measure_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -99,10 +99,10 @@ public class MMeasure extends X_PA_Measure {
      */
     protected boolean beforeSave(boolean newRecord) {
         if (X_PA_Measure.MEASURETYPE_Calculated.equals(getMeasureType())
-                && getPA_MeasureCalc_ID() == 0) {
+                && getMeasureCalcId() == 0) {
             log.saveError("FillMandatory", Msg.getElement(getCtx(), "PA_MeasureCalc_ID"));
             return false;
-        } else if (X_PA_Measure.MEASURETYPE_Ratio.equals(getMeasureType()) && getPA_Ratio_ID() == 0) {
+        } else if (X_PA_Measure.MEASURETYPE_Ratio.equals(getMeasureType()) && getRatioId() == 0) {
             log.saveError("FillMandatory", Msg.getElement(getCtx(), "PA_Ratio_ID"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_UserDefined.equals(getMeasureType())
@@ -110,11 +110,11 @@ public class MMeasure extends X_PA_Measure {
             log.saveError("FillMandatory", Msg.getElement(getCtx(), "CalculationClass"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_Request.equals(getMeasureType())
-                && getR_RequestType_ID() == 0) {
+                && getRequestTypeId() == 0) {
             log.saveError("FillMandatory", Msg.getElement(getCtx(), "R_RequestType_ID"));
             return false;
         } else if (X_PA_Measure.MEASURETYPE_Project.equals(getMeasureType())
-                && getC_ProjectType_ID() == 0) {
+                && getProjectTypeId() == 0) {
             log.saveError("FillMandatory", Msg.getElement(getCtx(), "C_ProjectType_ID"));
             return false;
         }
@@ -164,7 +164,7 @@ public class MMeasure extends X_PA_Measure {
      */
     private boolean updateManualGoals() {
         if (!X_PA_Measure.MEASURETYPE_Manual.equals(getMeasureType())) return false;
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getPA_Measure_ID());
+        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
         for (int i = 0; i < goals.length; i++) {
             MGoal goal = goals[i];
             goal.setMeasureActual(getManualActual());
@@ -181,7 +181,7 @@ public class MMeasure extends X_PA_Measure {
     private boolean updateAchievementGoals() {
         if (!X_PA_Measure.MEASURETYPE_Achievements.equals(getMeasureType())) return false;
         Timestamp today = new Timestamp(System.currentTimeMillis());
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getPA_Measure_ID());
+        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
         for (int i = 0; i < goals.length; i++) {
             MGoal goal = goals[i];
             String MeasureScope = goal.getMeasureScope();
@@ -192,7 +192,7 @@ public class MMeasure extends X_PA_Measure {
             else if (MGoal.MEASUREDISPLAY_Week.equals(MeasureScope)) trunc = TimeUtil.TRUNC_WEEK;
             Timestamp compare = TimeUtil.trunc(today, trunc);
             //
-            MAchievement[] achievements = MAchievement.getOfMeasure(getCtx(), getPA_Measure_ID());
+            MAchievement[] achievements = MAchievement.getOfMeasure(getCtx(), getMeasureId());
             BigDecimal ManualActual = Env.ZERO;
             for (int j = 0; j < achievements.length; j++) {
                 MAchievement achievement = achievements[j];
@@ -214,12 +214,12 @@ public class MMeasure extends X_PA_Measure {
      */
     private boolean updateCalculatedGoals() {
         if (!X_PA_Measure.MEASURETYPE_Calculated.equals(getMeasureType())) return false;
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getPA_Measure_ID());
+        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
         for (int i = 0; i < goals.length; i++) {
             MGoal goal = goals[i];
             //	Find Role
             MRole role = null;
-            if (goal.getAD_Role_ID() != 0) role = MRole.get(getCtx(), goal.getAD_Role_ID());
+            if (goal.getRoleId() != 0) role = MRole.get(getCtx(), goal.getRoleId());
             else if (goal.getUserId() != 0) {
                 MUser user = MUser.get(getCtx(), goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
@@ -227,9 +227,9 @@ public class MMeasure extends X_PA_Measure {
             }
             if (role == null) role = MRole.getDefault(getCtx(), false); // 	could result in wrong data
             //
-            MMeasureCalc mc = MMeasureCalc.get(getCtx(), getPA_MeasureCalc_ID());
-            if (mc == null || mc.getId() == 0 || mc.getId() != getPA_MeasureCalc_ID()) {
-                log.log(Level.SEVERE, "Not found PA_MeasureCalc_ID=" + getPA_MeasureCalc_ID());
+            MMeasureCalc mc = MMeasureCalc.get(getCtx(), getMeasureCalcId());
+            if (mc == null || mc.getId() == 0 || mc.getId() != getMeasureCalcId()) {
+                log.log(Level.SEVERE, "Not found PA_MeasureCalc_ID=" + getMeasureCalcId());
                 return false;
             }
             String sql =
@@ -239,7 +239,7 @@ public class MMeasure extends X_PA_Measure {
                             getMeasureDataType(),
                             null,
                             role);
-            BigDecimal ManualActual = getSQLValueBD(sql, new Object[]{});
+            BigDecimal ManualActual = getSQLValueBD(sql);
             //	SQL may return no rows or null
             if (ManualActual == null) {
                 ManualActual = Env.ZERO;
@@ -267,14 +267,14 @@ public class MMeasure extends X_PA_Measure {
      * @return true if updated
      */
     private boolean updateRequests() {
-        if (!X_PA_Measure.MEASURETYPE_Request.equals(getMeasureType()) || getR_RequestType_ID() == 0)
+        if (!X_PA_Measure.MEASURETYPE_Request.equals(getMeasureType()) || getRequestTypeId() == 0)
             return false;
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getPA_Measure_ID());
+        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
         for (int i = 0; i < goals.length; i++) {
             MGoal goal = goals[i];
             //	Find Role
             MRole role = null;
-            if (goal.getAD_Role_ID() != 0) role = MRole.get(getCtx(), goal.getAD_Role_ID());
+            if (goal.getRoleId() != 0) role = MRole.get(getCtx(), goal.getRoleId());
             else if (goal.getUserId() != 0) {
                 MUser user = MUser.get(getCtx(), goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
@@ -282,7 +282,7 @@ public class MMeasure extends X_PA_Measure {
             }
             if (role == null) role = MRole.getDefault(getCtx(), false); // 	could result in wrong data
             //
-            MRequestType rt = MRequestType.get(getCtx(), getR_RequestType_ID());
+            MRequestType rt = MRequestType.get(getCtx(), getRequestTypeId());
             String sql =
                     rt.getSqlPI(
                             goal.getRestrictions(false),
@@ -290,7 +290,7 @@ public class MMeasure extends X_PA_Measure {
                             getMeasureDataType(),
                             null,
                             role);
-            BigDecimal ManualActual = getSQLValueBD(sql, new Object[]{});
+            BigDecimal ManualActual = getSQLValueBD(sql);
             //	SQL may return no rows or null
             if (ManualActual == null) {
                 ManualActual = Env.ZERO;
@@ -308,14 +308,14 @@ public class MMeasure extends X_PA_Measure {
      * @return true if updated
      */
     private boolean updateProjects() {
-        if (!X_PA_Measure.MEASURETYPE_Project.equals(getMeasureType()) || getC_ProjectType_ID() == 0)
+        if (!X_PA_Measure.MEASURETYPE_Project.equals(getMeasureType()) || getProjectTypeId() == 0)
             return false;
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getPA_Measure_ID());
+        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
         for (int i = 0; i < goals.length; i++) {
             MGoal goal = goals[i];
             //	Find Role
             MRole role = null;
-            if (goal.getAD_Role_ID() != 0) role = MRole.get(getCtx(), goal.getAD_Role_ID());
+            if (goal.getRoleId() != 0) role = MRole.get(getCtx(), goal.getRoleId());
             else if (goal.getUserId() != 0) {
                 MUser user = MUser.get(getCtx(), goal.getUserId());
                 MRole[] roles = user.getRoles(goal.getOrgId());
@@ -323,7 +323,7 @@ public class MMeasure extends X_PA_Measure {
             }
             if (role == null) role = MRole.getDefault(getCtx(), false); // 	could result in wrong data
             //
-            MProjectType pt = MProjectType.get(getCtx(), getC_ProjectType_ID());
+            MProjectType pt = MProjectType.get(getCtx(), getProjectTypeId());
             String sql =
                     pt.getSqlPI(
                             goal.getRestrictions(false),
@@ -331,7 +331,7 @@ public class MMeasure extends X_PA_Measure {
                             getMeasureDataType(),
                             null,
                             role);
-            BigDecimal ManualActual = getSQLValueBD(sql, new Object[]{});
+            BigDecimal ManualActual = getSQLValueBD(sql);
             //	SQL may return no rows or null
             if (ManualActual == null) {
                 ManualActual = Env.ZERO;
@@ -349,7 +349,7 @@ public class MMeasure extends X_PA_Measure {
      * @return true if updated
      */
     private boolean updateUserDefined() {
-        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getPA_Measure_ID());
+        MGoal[] goals = MGoal.getMeasureGoals(getCtx(), getMeasureId());
         for (MGoal goal : goals) {
             BigDecimal amt = Env.ZERO;
             PO po =

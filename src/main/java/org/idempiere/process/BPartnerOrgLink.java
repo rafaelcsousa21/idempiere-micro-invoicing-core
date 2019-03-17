@@ -67,7 +67,7 @@ public class BPartnerOrgLink extends SvrProcess {
             else if (name.equals("AD_Role_ID")) p_AD_Role_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        p_C_BPartner_ID = getRecord_ID();
+        p_C_BPartner_ID = getRecordId();
     } //	prepare
 
     /**
@@ -110,7 +110,7 @@ public class BPartnerOrgLink extends SvrProcess {
             if (!org.save()) throw new Exception("Organization not saved");
         } else //	check if linked to already
         {
-            int C_BPartner_ID = org.getLinkedC_BPartner_ID(null);
+            int C_BPartner_ID = org.getLinkedC_BPartnerId(null);
             if (C_BPartner_ID > 0)
                 throw new IllegalArgumentException(
                         "Organization '"
@@ -150,7 +150,7 @@ public class BPartnerOrgLink extends SvrProcess {
         if (!oInfo.save()) throw new Exception("Organization Info not saved");
 
         //	Update BPartner
-        bp.setAD_OrgBP_ID(p_AD_Org_ID);
+        bp.setLinkedOrganizationId(p_AD_Org_ID);
         if (bp.getOrgId() != 0) bp.setClientOrg(bp.getClientId(), 0); // 	Shared BPartner
 
         //	Save BP

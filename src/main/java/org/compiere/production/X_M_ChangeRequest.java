@@ -69,7 +69,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      *
      * @return Bill of Materials (Engineering) Change Notice (Version)
      */
-    public int getM_ChangeNotice_ID() {
+    public int getChangeNoticeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ChangeNotice_ID);
         if (ii == null) return 0;
         return ii;
@@ -80,7 +80,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      *
      * @param M_ChangeNotice_ID Bill of Materials (Engineering) Change Notice (Version)
      */
-    public void setM_ChangeNotice_ID(int M_ChangeNotice_ID) {
+    public void setChangeNoticeId(int M_ChangeNotice_ID) {
         if (M_ChangeNotice_ID < 1) setValueNoCheck(COLUMNNAME_M_ChangeNotice_ID, null);
         else setValueNoCheck(COLUMNNAME_M_ChangeNotice_ID, Integer.valueOf(M_ChangeNotice_ID));
     }
@@ -90,7 +90,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      *
      * @return Fixed in Change Notice
      */
-    public int getM_FixChangeNotice_ID() {
+    public int getFixChangeNoticeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_FixChangeNotice_ID);
         if (ii == null) return 0;
         return ii;
@@ -101,7 +101,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      *
      * @return BOM & Formula
      */
-    public int getPP_Product_BOM_ID() {
+    public int getProductBOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -112,7 +112,7 @@ public class X_M_ChangeRequest extends BasePOName implements I_M_ChangeRequest {
      *
      * @param PP_Product_BOM_ID BOM & Formula
      */
-    public void setPP_Product_BOM_ID(int PP_Product_BOM_ID) {
+    public void setProductBOMId(int PP_Product_BOM_ID) {
         if (PP_Product_BOM_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
         else setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, Integer.valueOf(PP_Product_BOM_ID));
     }

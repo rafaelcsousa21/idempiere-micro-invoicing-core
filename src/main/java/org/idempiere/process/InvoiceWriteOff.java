@@ -23,6 +23,7 @@ import org.compiere.process.DocAction;
 import org.compiere.process.SvrProcess;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
+import software.hsharp.core.util.DBKt;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -30,7 +31,6 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
@@ -103,7 +103,7 @@ public class InvoiceWriteOff extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
             else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
             else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
             else if (name.equals("C_Invoice_ID")) p_C_Invoice_ID = para[i].getParameterAsInt();
@@ -114,7 +114,7 @@ public class InvoiceWriteOff extends SvrProcess {
                 //
             else if (name.equals("DateInvoiced")) {
                 p_DateInvoiced_From = (Timestamp) para[i].getParameter();
-                p_DateInvoiced_To = (Timestamp) para[i].getParameter_To();
+                p_DateInvoiced_To = (Timestamp) para[i].getParameterTo();
             } else if (name.equals("DateAcct")) p_DateAcct = (Timestamp) para[i].getParameter();
                 //
             else if (name.equals("CreatePayment")) p_CreatePayment = "Y".equals(para[i].getParameter());
@@ -175,13 +175,13 @@ public class InvoiceWriteOff extends SvrProcess {
             //
             if (p_DateInvoiced_From != null && p_DateInvoiced_To != null)
                 sql.append(" AND TRUNC(DateInvoiced) BETWEEN ")
-                        .append(TO_DATE(p_DateInvoiced_From, true))
+                        .append(DBKt.convertDate(p_DateInvoiced_From, true))
                         .append(" AND ")
-                        .append(TO_DATE(p_DateInvoiced_To, true));
+                        .append(DBKt.convertDate(p_DateInvoiced_To, true));
             else if (p_DateInvoiced_From != null)
-                sql.append(" AND TRUNC(DateInvoiced) >= ").append(TO_DATE(p_DateInvoiced_From, true));
+                sql.append(" AND TRUNC(DateInvoiced) >= ").append(DBKt.convertDate(p_DateInvoiced_From, true));
             else if (p_DateInvoiced_To != null)
-                sql.append(" AND TRUNC(DateInvoiced) <= ").append(TO_DATE(p_DateInvoiced_To, true));
+                sql.append(" AND TRUNC(DateInvoiced) <= ").append(DBKt.convertDate(p_DateInvoiced_To, true));
         }
         sql.append(" AND IsPaid='N' ORDER BY C_Currency_ID, C_BPartner_ID, DateInvoiced");
         if (log.isLoggable(Level.FINER)) log.finer(sql.toString());
@@ -249,7 +249,7 @@ public class InvoiceWriteOff extends SvrProcess {
                             true,
                             p_DateAcct,
                             C_Currency_ID,
-                            getProcessInfo().getTitle() + " #" + getAD_PInstance_ID(),
+                            getProcessInfo().getTitle() + " #" + getAD_PInstanceId(),
                             null);
             m_alloc.setOrgId(invoice.getOrgId());
             if (!m_alloc.save()) {
@@ -265,11 +265,11 @@ public class InvoiceWriteOff extends SvrProcess {
             processPayment();
             m_payment = new MPayment(getCtx(), 0);
             m_payment.setOrgId(invoice.getOrgId());
-            m_payment.setC_BankAccount_ID(p_C_BankAccount_ID);
+            m_payment.setBankAccountId(p_C_BankAccount_ID);
             m_payment.setTenderType(MPayment.TENDERTYPE_Check);
             m_payment.setDateTrx(p_DateAcct);
             m_payment.setDateAcct(p_DateAcct);
-            m_payment.setDescription(getProcessInfo().getTitle() + " #" + getAD_PInstance_ID());
+            m_payment.setDescription(getProcessInfo().getTitle() + " #" + getAD_PInstanceId());
             m_payment.setBusinessPartnerId(invoice.getBusinessPartnerId());
             m_payment.setIsReceipt(true); // 	payments are negative
             m_payment.setCurrencyId(C_Currency_ID);

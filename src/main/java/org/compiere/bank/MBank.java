@@ -51,7 +51,7 @@ public class MBank extends X_C_Bank {
      */
     public static MBank get(Properties ctx, int C_Bank_ID) {
         Integer key = C_Bank_ID;
-        MBank retValue = (MBank) s_cache.get(key);
+        MBank retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MBank(ctx, C_Bank_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);

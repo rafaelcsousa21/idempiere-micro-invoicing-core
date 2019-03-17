@@ -35,7 +35,7 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate {
     public X_R_RequestUpdate(Properties ctx, int R_RequestUpdate_ID) {
         super(ctx, R_RequestUpdate_ID);
         /**
-         * if (R_RequestUpdate_ID == 0) { setConfidentialTypeEntry (null); setR_Request_ID (0);
+         * if (R_RequestUpdate_ID == 0) { setConfidentialTypeEntry (null); setRequestId (0);
          * setR_RequestUpdate_ID (0); }
          */
     }
@@ -85,7 +85,7 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate {
      *
      * @return Product/Resource/Service used in Request
      */
-    public int getM_ProductSpent_ID() {
+    public int getProductSpentId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ProductSpent_ID);
         if (ii == null) return 0;
         return ii;
@@ -107,7 +107,7 @@ public class X_R_RequestUpdate extends PO implements I_R_RequestUpdate {
      *
      * @param R_Request_ID Request from a Business Partner or Prospect
      */
-    public void setR_Request_ID(int R_Request_ID) {
+    public void setRequestId(int R_Request_ID) {
         if (R_Request_ID < 1) setValueNoCheck(COLUMNNAME_R_Request_ID, null);
         else setValueNoCheck(COLUMNNAME_R_Request_ID, Integer.valueOf(R_Request_ID));
     }

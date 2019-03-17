@@ -87,7 +87,7 @@ public class ProjectGenProduction extends SvrProcess {
      * @param projectLine project line
      */
     private void createProduction(MProject project, MProjectLine projectLine) {
-        if (projectLine.getM_Product_ID() == 0) {
+        if (projectLine.getProductId() == 0) {
             addLog(
                     project.getProjectId(),
                     project.getCreated(),
@@ -97,11 +97,11 @@ public class ProjectGenProduction extends SvrProcess {
                             + " Desc:"
                             + projectLine.getDescription(),
                     projectLine.getTableId(),
-                    projectLine.getC_ProjectLine_ID());
+                    projectLine.getProjectLineId());
             return;
         }
 
-        MProduct M_Product = new MProduct(getCtx(), projectLine.getM_Product_ID());
+        MProduct M_Product = new MProduct(getCtx(), projectLine.getProductId());
         if (!M_Product.isManufactured()) {
             addLog(
                     project.getProjectId(),
@@ -112,11 +112,11 @@ public class ProjectGenProduction extends SvrProcess {
                             + " Desc:"
                             + projectLine.getDescription(),
                     projectLine.getTableId(),
-                    projectLine.getC_ProjectLine_ID());
+                    projectLine.getProjectLineId());
             return;
         }
 
-        if (projectLine.getM_Production_ID() != 0) {
+        if (projectLine.getProductionId() != 0) {
             addLog(projectLine.getLine(), null, null, "Line was produced previously");
             return;
         }
@@ -136,17 +136,17 @@ public class ProjectGenProduction extends SvrProcess {
         production.saveEx();
 
         //	update ProjectLine
-        projectLine.setM_Production_ID(production.getM_Production_ID());
+        projectLine.setProductionId(production.getProductionId());
         projectLine.saveEx();
 
         addBufferLog(
-                production.getM_Production_ID(),
+                production.getProductionId(),
                 production.getMovementDate(),
                 new BigDecimal(0),
                 Msg.getElement(Env.getADLanguage(Env.getCtx()), "M_Production_ID", false)
                         + ":"
                         + production.getDocumentNo(),
                 production.getTableId(),
-                production.getM_Production_ID());
+                production.getProductionId());
     } //	createProductionfromProjectLine
 } //	ProjectGenProduction

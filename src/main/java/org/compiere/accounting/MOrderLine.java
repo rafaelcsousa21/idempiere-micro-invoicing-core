@@ -101,14 +101,14 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         if (m_M_PriceList_ID == 0) setHeaderInfo(getParent());
 
         //	R/O Check - Product/Warehouse Change
-        if (!newRecord && (is_ValueChanged("M_Product_ID") || is_ValueChanged("M_Warehouse_ID"))) {
+        if (!newRecord && (isValueChanged("M_Product_ID") || isValueChanged("M_Warehouse_ID"))) {
             if (!canChangeWarehouse()) return false;
         } //	Product Changed
 
         //	Charge
-        if (getChargeId() != 0 && getM_Product_ID() != 0) setM_Product_ID(0);
+        if (getChargeId() != 0 && getProductId() != 0) setProductId(0);
         //	No Product
-        if (getM_Product_ID() == 0) setM_AttributeSetInstance_ID(0);
+        if (getProductId() == 0) setAttributeSetInstanceId(0);
             //	Product
         else //	Set/check Product Price
         {
@@ -138,27 +138,27 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         }
 
         //	UOM
-        if (getC_UOM_ID() == 0
-                && (getM_Product_ID() != 0
+        if (getUOMId() == 0
+                && (getProductId() != 0
                 || getPriceEntered().compareTo(Env.ZERO) != 0
                 || getChargeId() != 0)) {
-            int C_UOM_ID = MUOM.getDefault_UOM_ID(getCtx());
-            if (C_UOM_ID > 0) setC_UOM_ID(C_UOM_ID);
+            int C_UOM_ID = MUOM.getDefault_UOMId(getCtx());
+            if (C_UOM_ID > 0) setUOMId(C_UOM_ID);
         }
         //	Qty Precision
-        if (newRecord || is_ValueChanged("QtyEntered")) setQtyEntered(getQtyEntered());
-        if (newRecord || is_ValueChanged("QtyOrdered")) setQtyOrdered(getQtyOrdered());
+        if (newRecord || isValueChanged("QtyEntered")) setQtyEntered(getQtyEntered());
+        if (newRecord || isValueChanged("QtyOrdered")) setQtyOrdered(getQtyOrdered());
 
         //	Qty on instance ASI for SO
         if (m_IsSOTrx
-                && getMAttributeSetInstance_ID() != 0
+                && getAttributeSetInstanceId() != 0
                 && (newRecord
-                || is_ValueChanged("M_Product_ID")
-                || is_ValueChanged("M_AttributeSetInstance_ID")
-                || is_ValueChanged("M_Warehouse_ID"))) {
+                || isValueChanged("M_Product_ID")
+                || isValueChanged("M_AttributeSetInstance_ID")
+                || isValueChanged("M_Warehouse_ID"))) {
             MProduct product = getProduct();
             if (product.isStocked()) {
-                int M_AttributeSet_ID = product.getMAttributeSet_ID();
+                int M_AttributeSet_ID = product.getAttributeSetId();
                 boolean isInstance = M_AttributeSet_ID != 0;
                 if (isInstance) {
                     MAttributeSet mas = MAttributeSet.get(getCtx(), M_AttributeSet_ID);
@@ -170,8 +170,8 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
                             MStorageOnHand.getWarehouse(
                                     getCtx(),
                                     getWarehouseId(),
-                                    getM_Product_ID(),
-                                    getMAttributeSetInstance_ID(),
+                                    getProductId(),
+                                    getAttributeSetInstanceId(),
                                     null,
                                     true,
                                     false,
@@ -179,7 +179,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
                                     null);
                     BigDecimal qty = Env.ZERO;
                     for (int i = 0; i < storages.length; i++) {
-                        if (storages[i].getMAttributeSetInstance_ID() == getMAttributeSetInstance_ID())
+                        if (storages[i].getAttributeSetInstanceId() == getAttributeSetInstanceId())
                             qty = qty.add(storages[i].getQtyOnHand());
                     }
 
@@ -196,7 +196,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         if (Env.ZERO.compareTo(getFreightAmt()) != 0) setFreightAmt(Env.ZERO);
 
         //	Set Tax
-        if (getC_Tax_ID() == 0) setTax();
+        if (getTaxId() == 0) setTax();
 
         //	Get Line No
         if (getLine() == 0) {
@@ -214,7 +214,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
          */
         if (getParent().getTargetDocumentType().isChargeOrProductMandatory()) {
             if (getChargeId() == 0
-                    && getM_Product_ID() == 0
+                    && getProductId() == 0
                     && (getPriceEntered().signum() != 0 || getQtyEntered().signum() != 0)) {
                 log.saveError("FillMandatory", Msg.translate(getCtx(), "ChargeOrProductMandatory"));
                 return false;
@@ -248,7 +248,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
         }
 
         // UnLink All Requisitions
-        MRequisitionLine.unlinkC_OrderLine_ID(getCtx(), getId());
+        MRequisitionLine.unlinkC_OrderLineId(getCtx(), getId());
 
         return true;
     } //	beforeDelete
@@ -262,9 +262,9 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
     @Override
     protected boolean afterDelete(boolean success) {
         if (!success) return success;
-        if (getS_ResourceAssignment_ID() != 0) {
+        if (getResourceAssignmentId() != 0) {
             MResourceAssignment ra =
-                    new MResourceAssignment(getCtx(), getS_ResourceAssignment_ID());
+                    new MResourceAssignment(getCtx(), getResourceAssignmentId());
             ra.delete(true);
         }
 
@@ -277,8 +277,8 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
      * @return product or null
      */
     public MProduct getProduct() {
-        if (m_product == null && getM_Product_ID() != 0)
-            m_product = MProduct.get(getCtx(), getM_Product_ID());
+        if (m_product == null && getProductId() != 0)
+            m_product = MProduct.get(getCtx(), getProductId());
         return m_product;
     } //	getProduct
 

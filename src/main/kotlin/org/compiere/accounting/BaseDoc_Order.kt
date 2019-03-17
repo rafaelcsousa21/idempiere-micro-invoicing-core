@@ -44,23 +44,23 @@ fun getCommitmentsSales(doc: Doc, maxQuantity: BigDecimal, M_InOutLine_ID: Int):
             precision = MCurrency.getStdPrecision(doc.ctx, docLine.currencyId)
         }
         // 	Qty
-        val Qty = line.getQtyOrdered().max(maxQty)
-        docLine.setQty(Qty, false)
+        val qty = line.qtyOrdered.max(maxQty)
+        docLine.setQty(qty, false)
         //
-        val PriceActual = line.getPriceActual()
-        val PriceCost = line.getPriceCost()
-        var LineNetAmt: BigDecimal? = null
-        if (PriceCost != null && PriceCost.signum() != 0)
-            LineNetAmt = Qty.multiply(PriceCost)
-        else if (Qty == maxQty)
+        val priceActual = line.priceActual
+        val priceCost = line.priceCost
+        var LineNetAmt: BigDecimal?
+        if (priceCost != null && priceCost.signum() != 0)
+            LineNetAmt = qty.multiply(priceCost)
+        else if (qty == maxQty)
             LineNetAmt = line.getLineNetAmt()
         else
-            LineNetAmt = Qty.multiply(PriceActual)
-        maxQty = maxQty.subtract(Qty)
+            LineNetAmt = qty.multiply(priceActual)
+        maxQty = maxQty.subtract(qty)
 
         docLine.setAmount(LineNetAmt) // 	DR
         var PriceList = line.getPriceList()
-        val C_Tax_ID = docLine.c_Tax_ID
+        val C_Tax_ID = docLine.taxId
         // 	Correct included Tax
         if (C_Tax_ID != 0 && line.getParent().isTaxIncluded()) {
             val tax = MTax.get(doc.ctx, C_Tax_ID)
@@ -74,7 +74,7 @@ fun getCommitmentsSales(doc: Doc, maxQuantity: BigDecimal, M_InOutLine_ID: Int):
             }
         } // 	correct included Tax
 
-        docLine.setAmount(LineNetAmt, PriceList, Qty)
+        docLine.setAmount(LineNetAmt, PriceList, qty)
         docLine
     }.toTypedArray()
 } // 	getCommitmentsSales
@@ -89,7 +89,7 @@ fun loadRequisitions(ctx: Properties, order: MOrder, docOrder: Doc_Order): Array
     val qtys = HashMap<Int, BigDecimal>()
     for (i in oLines.indices) {
         val line = oLines[i]
-        qtys[line.c_OrderLine_ID] = line.qtyOrdered
+        qtys[line.orderLineId] = line.qtyOrdered
     }
     //
     val sql = ("SELECT * FROM M_RequisitionLine rl " +
@@ -105,7 +105,7 @@ fun loadRequisitions(ctx: Properties, order: MOrder, docOrder: Doc_Order): Array
         val docLine = DocLine(line, docOrder)
         // 	Quantity - not more then OrderLine
         // 	Issue: Split of Requisition to multiple POs & different price
-        val key = line.getC_OrderLine_ID()
+        val key = line.getOrderLineId()
         val maxQty = qtys[key]
         val Qty = line.getQty().max(maxQty)
         if (Qty.signum() != 0) {
@@ -125,12 +125,12 @@ fun loadRequisitions(ctx: Properties, order: MOrder, docOrder: Doc_Order): Array
  * Get Commitments
  *
  * @param doc document
- * @param maxQty Qty invoiced/matched
+ * @param QtyInvoicedOrMatched Qty invoiced/matched
  * @param C_InvoiceLine_ID invoice line
  * @return commitments (order lines)
  */
-fun getCommitments(doc: Doc, maxQty: BigDecimal, C_InvoiceLine_ID: Int): Array<DocLine> {
-    var maxQty = maxQty
+fun getCommitments(doc: Doc, QtyInvoicedOrMatched: BigDecimal, C_InvoiceLine_ID: Int): Array<DocLine> {
+    var maxQty = QtyInvoicedOrMatched
     var precision = -1
     //
     val sql = StringBuilder("SELECT * FROM C_OrderLine ol ")
@@ -160,7 +160,7 @@ fun getCommitments(doc: Doc, maxQty: BigDecimal, C_InvoiceLine_ID: Int): Array<D
         //
         val PriceActual = line.getPriceActual()
         val PriceCost = line.getPriceCost()
-        var LineNetAmt: BigDecimal? = null
+        var LineNetAmt: BigDecimal?
         if (PriceCost != null && PriceCost.signum() != 0)
             LineNetAmt = Qty.multiply(PriceCost)
         else if (Qty == maxQty)
@@ -171,7 +171,7 @@ fun getCommitments(doc: Doc, maxQty: BigDecimal, C_InvoiceLine_ID: Int): Array<D
 
         docLine.setAmount(LineNetAmt) // 	DR
         var PriceList = line.getPriceList()
-        val C_Tax_ID = docLine.c_Tax_ID
+        val C_Tax_ID = docLine.taxId
         // 	Correct included Tax
         if (C_Tax_ID != 0 && line.getParent().isTaxIncluded()) {
             val tax = MTax.get(doc.ctx, C_Tax_ID)

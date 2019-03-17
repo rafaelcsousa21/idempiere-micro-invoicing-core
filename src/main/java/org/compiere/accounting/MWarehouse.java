@@ -94,7 +94,7 @@ public class MWarehouse extends X_M_Warehouse {
      */
     public static MWarehouse get(Properties ctx, int M_Warehouse_ID) {
         Integer key = new Integer(M_Warehouse_ID);
-        MWarehouse retValue = (MWarehouse) s_cache.get(key);
+        MWarehouse retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         //
         retValue = new MWarehouse(ctx, M_Warehouse_ID);
@@ -187,7 +187,7 @@ public class MWarehouse extends X_M_Warehouse {
     protected boolean beforeSave(boolean newRecord) {
     /* Disallow Negative Inventory cannot be checked if there are storage records
     with negative onhand. */
-        if (is_ValueChanged("IsDisallowNegativeInv") && isDisallowNegativeInv()) {
+        if (isValueChanged("IsDisallowNegativeInv") && isDisallowNegativeInv()) {
             String sql =
                     "SELECT M_Product_ID FROM M_StorageOnHand s "
                             + "WHERE s.M_Locator_ID IN (SELECT M_Locator_ID FROM M_Locator l "

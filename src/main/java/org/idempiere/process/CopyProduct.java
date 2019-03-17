@@ -35,7 +35,7 @@ public class CopyProduct extends SvrProcess {
     @Override
     protected String doIt() throws Exception {
 
-        int toMProductID = getRecord_ID();
+        int toMProductID = getRecordId();
         if (log.isLoggable(Level.INFO))
             log.info("From M_Product_ID=" + m_copyFromId + " to " + toMProductID);
         if (toMProductID == 0) throw new IllegalArgumentException("Target M_Product_ID == 0");
@@ -44,7 +44,7 @@ public class CopyProduct extends SvrProcess {
         // Get product price from the source product
         List<MProductPrice> prices =
                 new Query(getCtx(), MProductPrice.Table_Name, "M_Product_ID=?")
-                        .setParameters(new Object[]{m_copyFromId})
+                        .setParameters(m_copyFromId)
                         .setOnlyActiveRecords(true)
                         .list();
 
@@ -54,8 +54,8 @@ public class CopyProduct extends SvrProcess {
         for (Iterator<MProductPrice> it = prices.iterator(); it.hasNext(); ) {
             priceSrc = it.next();
             priceDst = new MProductPrice(getCtx(), 0);
-            priceDst.setM_Product_ID(toMProductID);
-            priceDst.setM_PriceList_Version_ID(priceSrc.getM_PriceList_Version_ID());
+            priceDst.setProductId(toMProductID);
+            priceDst.setPriceListVersionId(priceSrc.getPriceListVersionId());
             priceDst.setPrices(priceSrc.getPriceList(), priceSrc.getPriceStd(), priceSrc.getPriceLimit());
             priceDst.saveEx();
         }
@@ -76,8 +76,8 @@ public class CopyProduct extends SvrProcess {
     for (Iterator<X_M_Substitute> it = subs.iterator(); it.hasNext();) {
     	subSrc = it.next();
     	subDst = new X_M_Substitute(getCtx(), 0, null);
-    	subDst.setM_Product_ID(toMProductID);
-    	subDst.setSubstitute_ID(subSrc.getSubstitute_ID());
+    	subDst.setProductId(toMProductID);
+    	subDst.setSubstituteId(subSrc.getSubstituteId());
     	subDst.setName(subSrc.getName());
     	subDst.setDescription(subSrc.getDescription());
     	subDst.saveEx(null);
@@ -96,8 +96,8 @@ public class CopyProduct extends SvrProcess {
     for (Iterator<X_M_RelatedProduct> it = related.iterator(); it.hasNext();) {
     	relatedSrc = it.next();
     	relatedDst = new X_M_RelatedProduct(getCtx(), 0, null);
-    	relatedDst.setM_Product_ID(toMProductID);
-    	relatedDst.setRelatedProduct_ID(relatedSrc.getRelatedProduct_ID());
+    	relatedDst.setProductId(toMProductID);
+    	relatedDst.setRelatedProductId(relatedSrc.getRelatedProductId());
     	relatedDst.setRelatedProductType(relatedSrc.getRelatedProductType());
     	relatedDst.setName(relatedSrc.getName());
     	relatedDst.setDescription(relatedSrc.getDescription());
@@ -117,11 +117,11 @@ public class CopyProduct extends SvrProcess {
     for (Iterator<X_M_Replenish> it = replenish.iterator(); it.hasNext();) {
     	replenishSrc = it.next();
     	replenishDst = new X_M_Replenish(getCtx(), 0, null);
-    	replenishDst.setM_Product_ID(toMProductID);
+    	replenishDst.setProductId(toMProductID);
     	replenishDst.setWarehouseId(replenishSrc.getWarehouseId());
-    	replenishDst.setM_WarehouseSource_ID(replenishSrc.getM_WarehouseSource_ID());
+    	replenishDst.setWarehouseSourceId(replenishSrc.getWarehouseSourceId());
     	replenishDst.setReplenishType(replenishSrc.getReplenishType());
-    	replenishDst.setM_Locator_ID(replenishSrc.getM_Locator_ID());
+    	replenishDst.setLocatorId(replenishSrc.getLocatorId());
     	replenishDst.setLevel_Min(replenishSrc.getLevel_Min());
     	replenishDst.setLevel_Max(replenishSrc.getLevel_Max());
     	replenishDst.saveEx(null);
@@ -146,7 +146,7 @@ public class CopyProduct extends SvrProcess {
     	bpDst.setBusinessPartnerId(bpSrc.getBusinessPartnerId());
     	bpDst.setDescription(bpSrc.getDescription());
     	bpDst.setIsManufacturer(bpSrc.isManufacturer());
-    	bpDst.setM_Product_ID(toMProductID);
+    	bpDst.setProductId(toMProductID);
     	bpDst.setManufacturer(bpSrc.getManufacturer());
     	bpDst.setQualityRating(bpSrc.getQualityRating());
     	bpDst.setShelfLifeMinDays(bpSrc.getShelfLifeMinDays());
@@ -168,7 +168,7 @@ public class CopyProduct extends SvrProcess {
     for (Iterator<MProductDownload> it = dlList.iterator(); it.hasNext();) {
     	dlSrc = it.next();
     	dlDst = new MProductDownload(getCtx(), 0, null);
-    	dlDst.setM_Product_ID(toMProductID);
+    	dlDst.setProductId(toMProductID);
     	dlDst.setName(dlSrc.getName());
     	dlDst.setDownloadURL(dlSrc.getDownloadURL());
     	dlDst.saveEx(null);

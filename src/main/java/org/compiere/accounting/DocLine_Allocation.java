@@ -31,7 +31,7 @@ public class DocLine_Allocation extends DocLine {
     public DocLine_Allocation(MAllocationLine line, Doc doc) {
         super(line, doc);
         m_C_Payment_ID = line.getPaymentId();
-        m_C_CashLine_ID = line.getC_CashLine_ID();
+        m_C_CashLine_ID = line.getCashLineId();
         m_C_Invoice_ID = line.getInvoiceId();
         m_C_Order_ID = line.getOrderId();
         // adaxa-pb
@@ -57,7 +57,7 @@ public class DocLine_Allocation extends DocLine {
      *
      * @return 0 if no invoice -1 if not found
      */
-    public int getInvoiceC_Currency_ID() {
+    public int getInvoiceC_CurrencyId() {
         if (m_C_Invoice_ID == 0) return 0;
         String sql = "SELECT C_Currency_ID " + "FROM C_Invoice " + "WHERE C_Invoice_ID=?";
         return getSQLValue(sql, m_C_Invoice_ID);
@@ -70,7 +70,7 @@ public class DocLine_Allocation extends DocLine {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder("DocLine_Allocation[");
-        sb.append(get_ID())
+        sb.append(getId())
                 .append(",Amt=")
                 .append(getAmtSource())
                 .append(",Discount=")
@@ -120,7 +120,7 @@ public class DocLine_Allocation extends DocLine {
     /**
      * @return Returns the c_CashLine_ID.
      */
-    public int getC_CashLine_ID() {
+    public int getCashLineId() {
         return m_C_CashLine_ID;
     }
 

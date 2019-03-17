@@ -75,7 +75,7 @@ public class X_C_InvoicePaySchedule extends PO implements I_C_InvoicePaySchedule
      *
      * @param C_PaySchedule_ID Payment Schedule Template
      */
-    public void setC_PaySchedule_ID(int C_PaySchedule_ID) {
+    public void setPayScheduleId(int C_PaySchedule_ID) {
         if (C_PaySchedule_ID < 1) setValueNoCheck(COLUMNNAME_C_PaySchedule_ID, null);
         else setValueNoCheck(COLUMNNAME_C_PaySchedule_ID, Integer.valueOf(C_PaySchedule_ID));
     }

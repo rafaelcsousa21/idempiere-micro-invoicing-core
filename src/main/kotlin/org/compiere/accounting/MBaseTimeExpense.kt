@@ -16,7 +16,7 @@ fun getBaseExpenseLines(ctx: Properties, timeExpenseId: Int, currencyId: Int): A
 
     fun load(row: Row): MTimeExpenseLine {
         val te = MTimeExpenseLine(ctx, row)
-        te.c_Currency_Report_ID = currencyId
+        te.currency_ReportId = currencyId
         return te
     }
 

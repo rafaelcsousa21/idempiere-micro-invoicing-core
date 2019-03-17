@@ -30,12 +30,12 @@ public class MMovementLine extends X_M_MovementLine {
     public MMovementLine(Properties ctx, int M_MovementLine_ID) {
         super(ctx, M_MovementLine_ID);
         if (M_MovementLine_ID == 0) {
-            //	setM_LocatorTo_ID (0);	// @M_LocatorTo_ID@
-            //	setM_Locator_ID (0);	// @M_Locator_ID@
-            //	setM_MovementLine_ID (0);
+            //	setLocatorTo_ID (0);	// @M_LocatorTo_ID@
+            //	setLocatorId (0);	// @M_Locator_ID@
+            //	setMovementLine_ID (0);
             //	setLine (0);
-            //	setM_Product_ID (0);
-            setM_AttributeSetInstance_ID(0); // 	ID
+            //	setProductId (0);
+            setAttributeSetInstanceId(0); // 	ID
             setMovementQty(Env.ZERO); // 1
             setTargetQty(Env.ZERO); // 0
             setScrappedQty(Env.ZERO);
@@ -61,7 +61,7 @@ public class MMovementLine extends X_M_MovementLine {
     public MMovementLine(MMovement parent) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setM_Movement_ID(parent.getM_Movement_ID());
+        setMovementId(parent.getMovementId());
     } //	MMovementLine
 
     /**
@@ -70,10 +70,10 @@ public class MMovementLine extends X_M_MovementLine {
      * @return ASI
      */
     @Override
-    public int getMAttributeSetInstanceTo_ID() {
-        int M_AttributeSetInstanceTo_ID = super.getMAttributeSetInstanceTo_ID();
-        if (M_AttributeSetInstanceTo_ID == 0 && (getM_Locator_ID() == getM_LocatorTo_ID()))
-            M_AttributeSetInstanceTo_ID = super.getMAttributeSetInstance_ID();
+    public int getMAttributeSetInstanceToId() {
+        int M_AttributeSetInstanceTo_ID = super.getMAttributeSetInstanceToId();
+        if (M_AttributeSetInstanceTo_ID == 0 && (getLocatorId() == getLocatorToId()))
+            M_AttributeSetInstanceTo_ID = super.getAttributeSetInstanceId();
         return M_AttributeSetInstanceTo_ID;
     } //	getMAttributeSetInstanceTo_ID
 
@@ -94,7 +94,7 @@ public class MMovementLine extends X_M_MovementLine {
      * @return product or null if not defined
      */
     public MProduct getProduct() {
-        if (getM_Product_ID() != 0) return MProduct.get(getCtx(), getM_Product_ID());
+        if (getProductId() != 0) return MProduct.get(getCtx(), getProductId());
         return null;
     } //	getProduct
 
@@ -121,7 +121,7 @@ public class MMovementLine extends X_M_MovementLine {
      * @return Parent Movement
      */
     public MMovement getParent() {
-        if (m_parent == null) m_parent = new MMovement(getCtx(), getM_Movement_ID());
+        if (m_parent == null) m_parent = new MMovement(getCtx(), getMovementId());
         return m_parent;
     } //	getParent
 
@@ -141,13 +141,13 @@ public class MMovementLine extends X_M_MovementLine {
         if (getLine() == 0) {
             String sql =
                     "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_MovementLine WHERE M_Movement_ID=?";
-            int ii = getSQLValue(sql, getM_Movement_ID());
+            int ii = getSQLValue(sql, getMovementId());
             setLine(ii);
         }
 
         // either movement between locator or movement between lot
-        if (getM_Locator_ID() == getM_LocatorTo_ID()
-                && getMAttributeSetInstance_ID() == getMAttributeSetInstanceTo_ID()) {
+        if (getLocatorId() == getLocatorToId()
+                && getAttributeSetInstanceId() == getMAttributeSetInstanceToId()) {
             log.saveError(
                     "Error",
                     Msg.parseTranslation(
@@ -172,12 +172,12 @@ public class MMovementLine extends X_M_MovementLine {
         }
 
         //	Qty Precision
-        if (newRecord || is_ValueChanged(COLUMNNAME_MovementQty)) setMovementQty(getMovementQty());
+        if (newRecord || isValueChanged(COLUMNNAME_MovementQty)) setMovementQty(getMovementQty());
 
         //      Mandatory Instance
     /* IDEMPIERE-1770 - ASI validation must be moved to MMovement.prepareIt, saving a line without ASI is ok on draft
     MProduct product = getProduct();
-    if (getMAttributeSetInstance_ID() == 0) {
+    if (getAttributeSetInstanceId() == 0) {
     	if (product != null && product.isASIMandatory(true)) {
     		if (product.getAttributeSet()==null) {
     			log.saveError("NoAttributeSet", product.getValue());
@@ -190,15 +190,15 @@ public class MMovementLine extends X_M_MovementLine {
     	}
     }
     */
-        if (getMAttributeSetInstanceTo_ID() == 0) {
+        if (getMAttributeSetInstanceToId() == 0) {
             // instance id default to same for movement between locator
-            if (getM_Locator_ID() != getM_LocatorTo_ID()) {
-                if (getMAttributeSetInstance_ID() != 0) // set to from
-                    setM_AttributeSetInstanceTo_ID(getMAttributeSetInstance_ID());
+            if (getLocatorId() != getLocatorToId()) {
+                if (getAttributeSetInstanceId() != 0) // set to from
+                    setAttributeSetInstanceToId(getAttributeSetInstanceId());
             }
 
       /* IDEMPIERE-1770 - ASI validation must be moved to MMovement.prepareIt, saving a line without ASI is ok on draft
-      if (product != null && product.isASIMandatory(false) && getMAttributeSetInstanceTo_ID() == 0)
+      if (product != null && product.isASIMandatory(false) && getMAttributeSetInstanceToId() == 0)
       {
       	if (product.getAttributeSet()==null) {
       		log.saveError("NoAttributeSet", product.getValue());
@@ -221,11 +221,11 @@ public class MMovementLine extends X_M_MovementLine {
      * @param M_Locator_ID id
      */
     @Override
-    public void setM_Locator_ID(int M_Locator_ID) {
+    public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 0) throw new IllegalArgumentException("M_Locator_ID is mandatory.");
         //      set to 0 explicitly to reset
         setValue(COLUMNNAME_M_Locator_ID, M_Locator_ID);
-    } //      setM_Locator_ID
+    } //      setLocatorId
 
     /**
      * Set M_LocatorTo_ID
@@ -233,7 +233,7 @@ public class MMovementLine extends X_M_MovementLine {
      * @param M_LocatorTo_ID id
      */
     @Override
-    public void setM_LocatorTo_ID(int M_LocatorTo_ID) {
+    public void setLocatorToId(int M_LocatorTo_ID) {
         if (M_LocatorTo_ID < 0) throw new IllegalArgumentException("M_LocatorTo_ID is mandatory.");
         //      set to 0 explicitly to reset
         setValue(COLUMNNAME_M_LocatorTo_ID, M_LocatorTo_ID);
@@ -244,15 +244,15 @@ public class MMovementLine extends X_M_MovementLine {
                 + "["
                 + getId()
                 + ", M_Product_ID="
-                + getM_Product_ID()
+                + getProductId()
                 + ", M_ASI_ID="
-                + getMAttributeSetInstance_ID()
+                + getAttributeSetInstanceId()
                 + ", M_ASITo_ID="
-                + getMAttributeSetInstanceTo_ID()
+                + getMAttributeSetInstanceToId()
                 + ", M_Locator_ID="
-                + getM_Locator_ID()
+                + getLocatorId()
                 + ", M_LocatorTo_ID="
-                + getM_LocatorTo_ID()
+                + getLocatorToId()
                 + "]";
     }
 } //	MMovementLine

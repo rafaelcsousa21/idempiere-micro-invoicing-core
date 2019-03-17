@@ -33,7 +33,7 @@ public class RMACreateOrder extends SvrProcess {
 
     @Override
     protected void prepare() {
-        rmaId = getRecord_ID();
+        rmaId = getRecordId();
     }
 
     @Override
@@ -58,9 +58,9 @@ public class RMACreateOrder extends SvrProcess {
         order.setBusinessPartnerId(originalOrder.getBusinessPartnerId());
         order.setBusinessPartnerLocationId(originalOrder.getBusinessPartnerLocationId());
         order.setUserId(originalOrder.getUserId());
-        order.setBill_BPartner_ID(originalOrder.getBill_BPartner_ID());
+        order.setBill_BPartnerId(originalOrder.getBill_BPartnerId());
         order.setBusinessPartnerInvoicingLocationId(originalOrder.getBusinessPartnerInvoicingLocationId());
-        order.setBill_User_ID(originalOrder.getBill_User_ID());
+        order.setBill_UserId(originalOrder.getBill_UserId());
         order.setSalesRepresentativeId(rma.getSalesRepresentativeId());
         order.setPriceListId(originalOrder.getPriceListId());
         order.setIsSOTrx(originalOrder.isSOTrx());
@@ -76,20 +76,20 @@ public class RMACreateOrder extends SvrProcess {
         MInOut originalShipment = rma.getShipment();
         I_C_Invoice originalInvoice = rma.getOriginalInvoice();
 
-        MRMALine lines[] = rma.getLines(true);
+        MRMALine[] lines = rma.getLines(true);
         for (MRMALine line : lines) {
             if (line.getShipLine() != null
-                    && line.getShipLine().getC_OrderLine_ID() != 0
-                    && line.getM_Product_ID() != 0) {
+                    && line.getShipLine().getOrderLineId() != 0
+                    && line.getProductId() != 0) {
                 // Create order lines if the RMA Doc line has a shipment line
                 MOrderLine orderLine = new MOrderLine(order);
                 MOrderLine originalOLine =
-                        new MOrderLine(getCtx(), line.getShipLine().getC_OrderLine_ID());
+                        new MOrderLine(getCtx(), line.getShipLine().getOrderLineId());
                 orderLine.setOrgId(line.getOrgId());
-                orderLine.setM_Product_ID(originalOLine.getM_Product_ID());
-                orderLine.setM_AttributeSetInstance_ID(originalOLine.getMAttributeSetInstance_ID());
-                orderLine.setC_UOM_ID(originalOLine.getC_UOM_ID());
-                orderLine.setC_Tax_ID(originalOLine.getC_Tax_ID());
+                orderLine.setProductId(originalOLine.getProductId());
+                orderLine.setAttributeSetInstanceId(originalOLine.getAttributeSetInstanceId());
+                orderLine.setUOMId(originalOLine.getUOMId());
+                orderLine.setTaxId(originalOLine.getTaxId());
                 orderLine.setWarehouseId(originalOLine.getWarehouseId());
                 orderLine.setCurrencyId(originalOLine.getCurrencyId());
                 orderLine.setQty(line.getQty());
@@ -102,14 +102,14 @@ public class RMACreateOrder extends SvrProcess {
                 if (!orderLine.save()) {
                     throw new IllegalStateException("Could not create Order Line");
                 }
-            } else if (line.getM_Product_ID() != 0) {
+            } else if (line.getProductId() != 0) {
                 if (originalInvoice != null) {
                     MOrderLine orderLine = new MOrderLine(order);
                     orderLine.setOrgId(line.getOrgId());
-                    orderLine.setM_Product_ID(line.getM_Product_ID());
-                    orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
-                    orderLine.setC_UOM_ID(line.getC_UOM_ID());
-                    orderLine.setC_Tax_ID(line.getC_Tax_ID());
+                    orderLine.setProductId(line.getProductId());
+                    orderLine.setAttributeSetInstanceId(line.getAttributeSetInstanceId());
+                    orderLine.setUOMId(line.getUOMId());
+                    orderLine.setTaxId(line.getTaxId());
                     orderLine.setWarehouseId(originalShipment.getWarehouseId());
                     orderLine.setCurrencyId(originalInvoice.getCurrencyId());
                     orderLine.setQty(line.getQty());
@@ -125,10 +125,10 @@ public class RMACreateOrder extends SvrProcess {
                 } else if (originalOrder != null) {
                     MOrderLine orderLine = new MOrderLine(order);
                     orderLine.setOrgId(line.getOrgId());
-                    orderLine.setM_Product_ID(line.getM_Product_ID());
-                    orderLine.setM_AttributeSetInstance_ID(line.getMAttributeSetInstance_ID());
-                    orderLine.setC_UOM_ID(line.getC_UOM_ID());
-                    orderLine.setC_Tax_ID(line.getC_Tax_ID());
+                    orderLine.setProductId(line.getProductId());
+                    orderLine.setAttributeSetInstanceId(line.getAttributeSetInstanceId());
+                    orderLine.setUOMId(line.getUOMId());
+                    orderLine.setTaxId(line.getTaxId());
                     orderLine.setWarehouseId(originalOrder.getWarehouseId());
                     orderLine.setCurrencyId(originalOrder.getCurrencyId());
                     orderLine.setQty(line.getQty());

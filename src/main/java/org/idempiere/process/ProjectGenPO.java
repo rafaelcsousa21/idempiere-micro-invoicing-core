@@ -107,18 +107,18 @@ public class ProjectGenPO extends SvrProcess {
      * @param projectLine project line
      */
     private void createPO(MProject project, MProjectLine projectLine) {
-        if (projectLine.getM_Product_ID() == 0) {
+        if (projectLine.getProductId() == 0) {
             addLog(projectLine.getLine(), null, null, "Line has no Product");
             return;
         }
-        if (projectLine.getC_OrderPO_ID() != 0) {
+        if (projectLine.getOrderPOId() != 0) {
             addLog(projectLine.getLine(), null, null, "Line was ordered previously");
             return;
         }
 
         //	PO Record
         MProductPO[] pos =
-                MProductPO.getOfProduct(getCtx(), projectLine.getM_Product_ID());
+                MProductPO.getOfProduct(getCtx(), projectLine.getProductId());
         if (pos == null || pos.length == 0) {
             addLog(projectLine.getLine(), null, null, "Product has no PO record");
             return;
@@ -128,7 +128,7 @@ public class ProjectGenPO extends SvrProcess {
         MOrder order = null;
         //	try to find PO to C_BPartner
         for (int i = 0; i < m_pos.size(); i++) {
-            MOrder test = (MOrder) m_pos.get(i);
+            MOrder test = m_pos.get(i);
             if (test.getBusinessPartnerId() == pos[0].getBusinessPartnerId()) {
                 order = test;
                 break;
@@ -155,7 +155,7 @@ public class ProjectGenPO extends SvrProcess {
 
         //	Create Line
         MOrderLine orderLine = new MOrderLine(order);
-        orderLine.setM_Product_ID(projectLine.getM_Product_ID(), true);
+        orderLine.setProductId(projectLine.getProductId(), true);
         orderLine.setQty(projectLine.getPlannedQty());
         orderLine.setDescription(projectLine.getDescription());
 
@@ -189,7 +189,7 @@ public class ProjectGenPO extends SvrProcess {
         orderLine.saveEx();
 
         //	update ProjectLine
-        projectLine.setC_OrderPO_ID(order.getOrderId());
+        projectLine.setOrderPOId(order.getOrderId());
         projectLine.saveEx();
         addBufferLog(
                 order.getOrderId(),

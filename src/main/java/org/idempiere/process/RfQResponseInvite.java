@@ -41,7 +41,7 @@ public class RfQResponseInvite extends SvrProcess {
             if (para[i].getParameter() == null) ;
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_RfQResponse_ID = getRecord_ID();
+        p_C_RfQResponse_ID = getRecordId();
     } //	prepare
 
     /**

@@ -21,9 +21,9 @@ public class VoidOnlineAuthorizationPaymentTransaction extends SvrProcess {
     }
 
     protected String doIt() throws Exception {
-        if (log.isLoggable(Level.INFO)) log.info("Record_ID=" + getRecord_ID());
+        if (log.isLoggable(Level.INFO)) log.info("Record_ID=" + getRecordId());
         //	get Payment
-        MPaymentTransaction pt = new MPaymentTransaction(getCtx(), getRecord_ID());
+        MPaymentTransaction pt = new MPaymentTransaction(getCtx(), getRecordId());
 
         if (!pt.getTenderType().equals(MPaymentTransaction.TENDERTYPE_CreditCard)
                 || !pt.isOnline()

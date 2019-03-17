@@ -73,7 +73,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @param A_City City or the Credit Card or Account Holder
      */
-    public void setA_City(String A_City) {
+    public void setAccountCity(String A_City) {
         setValue(COLUMNNAME_A_City, A_City);
     }
 
@@ -82,7 +82,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @param A_Country Country
      */
-    public void setA_Country(String A_Country) {
+    public void setAccountCountry(String A_Country) {
         setValue(COLUMNNAME_A_Country, A_Country);
     }
 
@@ -91,7 +91,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @param A_EMail Email Address
      */
-    public void setA_EMail(String A_EMail) {
+    public void setAccountEMail(String A_EMail) {
         setValue(COLUMNNAME_A_EMail, A_EMail);
     }
 
@@ -100,7 +100,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @return Name on Credit Card or Account holder
      */
-    public String getA_Name() {
+    public String getAccountName() {
         return (String) getValue(COLUMNNAME_A_Name);
     }
 
@@ -109,7 +109,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @param A_Name Name on Credit Card or Account holder
      */
-    public void setA_Name(String A_Name) {
+    public void setAccountName(String A_Name) {
         setValue(COLUMNNAME_A_Name, A_Name);
     }
 
@@ -118,7 +118,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @param A_State State of the Credit Card or Account holder
      */
-    public void setA_State(String A_State) {
+    public void setAccountState(String A_State) {
         setValue(COLUMNNAME_A_State, A_State);
     }
 
@@ -127,7 +127,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @param A_Street Street address of the Credit Card or Account holder
      */
-    public void setA_Street(String A_Street) {
+    public void setAccountStreet(String A_Street) {
         setValue(COLUMNNAME_A_Street, A_Street);
     }
 
@@ -136,7 +136,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @param A_Zip Zip Code of the Credit Card or Account Holder
      */
-    public void setA_Zip(String A_Zip) {
+    public void setAccountZip(String A_Zip) {
         setValue(COLUMNNAME_A_Zip, A_Zip);
     }
 
@@ -164,7 +164,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @return Bank
      */
-    public int getC_Bank_ID() {
+    public int getBankId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Bank_ID);
         if (ii == null) return 0;
         return ii;
@@ -185,7 +185,7 @@ public class X_C_BP_BankAccount extends PO implements I_C_BP_BankAccount {
      *
      * @return Bank Account of the Business Partner
      */
-    public int getC_BP_BankAccount_ID() {
+    public int getBusinessPartnerBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BP_BankAccount_ID);
         if (ii == null) return 0;
         return ii;

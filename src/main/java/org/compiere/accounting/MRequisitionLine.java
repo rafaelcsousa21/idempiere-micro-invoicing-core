@@ -56,7 +56,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     public MRequisitionLine(Properties ctx, int M_RequisitionLine_ID) {
         super(ctx, M_RequisitionLine_ID);
         if (M_RequisitionLine_ID == 0) {
-            //	setM_Requisition_ID (0);
+            //	setRequisition_ID (0);
             setLine(
                     0); // @SQL=SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM M_RequisitionLine WHERE
             // M_Requisition_ID=@M_Requisition_ID@
@@ -83,7 +83,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     public MRequisitionLine(MRequisition req) {
         this(req.getCtx(), 0);
         setClientOrg(req);
-        setM_Requisition_ID(req.getM_Requisition_ID());
+        setRequisitionId(req.getRequisitionId());
         m_M_PriceList_ID = req.getPriceListId();
         m_parent = req;
     } //	MRequisitionLine
@@ -94,7 +94,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param ctx
      * @return Requisition Line
      */
-    public static MRequisitionLine[] forC_Order_ID(Properties ctx, int C_Order_ID) {
+    public static MRequisitionLine[] forC_OrderId(Properties ctx, int C_Order_ID) {
         final String whereClause =
                 "EXISTS (SELECT 1 FROM C_OrderLine ol"
                         + " WHERE ol.C_OrderLine_ID=M_RequisitionLine.C_OrderLine_ID"
@@ -113,9 +113,9 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param C_Order_ID
      * @param trxName
      */
-    public static void unlinkC_Order_ID(Properties ctx, int C_Order_ID) {
-        for (MRequisitionLine line : MRequisitionLine.forC_Order_ID(ctx, C_Order_ID)) {
-            line.setC_OrderLine_ID(0);
+    public static void unlinkC_OrderId(Properties ctx, int C_Order_ID) {
+        for (MRequisitionLine line : MRequisitionLine.forC_OrderId(ctx, C_Order_ID)) {
+            line.setOrderLineId(0);
             line.saveEx();
         }
     }
@@ -128,7 +128,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param trxName
      * @return array of Requisition Line(s)
      */
-    public static MRequisitionLine[] forC_OrderLine_ID(
+    public static MRequisitionLine[] forC_OrderLineId(
             Properties ctx, int C_OrderLine_ID) {
         final String whereClause = I_M_RequisitionLine.COLUMNNAME_C_OrderLine_ID + "=?";
         List<MRequisitionLine> list =
@@ -145,9 +145,9 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param C_OrderLine_ID
      * @param trxName
      */
-    public static void unlinkC_OrderLine_ID(Properties ctx, int C_OrderLine_ID) {
-        for (MRequisitionLine line : forC_OrderLine_ID(ctx, C_OrderLine_ID)) {
-            line.setC_OrderLine_ID(0);
+    public static void unlinkC_OrderLineId(Properties ctx, int C_OrderLine_ID) {
+        for (MRequisitionLine line : forC_OrderLineId(ctx, C_OrderLine_ID)) {
+            line.setOrderLineId(0);
             line.saveEx();
         }
     }
@@ -159,7 +159,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      */
     public MRequisition getParent() {
         if (m_parent == null)
-            m_parent = new MRequisition(getCtx(), getM_Requisition_ID());
+            m_parent = new MRequisition(getCtx(), getRequisitionId());
         return m_parent;
     } //	getParent
 
@@ -179,7 +179,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
             MCharge charge = MCharge.get(getCtx(), getChargeId());
             setPriceActual(charge.getChargeAmt());
         }
-        if (getM_Product_ID() == 0) return;
+        if (getProductId() == 0) return;
         if (m_M_PriceList_ID == 0) m_M_PriceList_ID = getParent().getPriceListId();
         if (m_M_PriceList_ID == 0) {
             throw new AdempiereException("PriceList unknown!");
@@ -193,7 +193,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
      * @param M_PriceList_ID price list
      */
     public void setPrice(int M_PriceList_ID) {
-        if (getM_Product_ID() == 0) return;
+        if (getProductId() == 0) return;
         //
         if (log.isLoggable(Level.FINE)) log.fine("M_PriceList_ID=" + M_PriceList_ID);
         IProductPricing pp = MProduct.getProductPricing();
@@ -226,16 +226,16 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
         if (getLine() == 0) {
             String sql =
                     "SELECT COALESCE(MAX(Line),0)+10 FROM M_RequisitionLine WHERE M_Requisition_ID=?";
-            int ii = getSQLValueEx(sql, getM_Requisition_ID());
+            int ii = getSQLValueEx(sql, getRequisitionId());
             setLine(ii);
         }
         //	Product & ASI - Charge
-        if (getM_Product_ID() != 0 && getChargeId() != 0) setChargeId(0);
-        if (getMAttributeSetInstance_ID() != 0 && getChargeId() != 0)
-            setM_AttributeSetInstance_ID(0);
+        if (getProductId() != 0 && getChargeId() != 0) setChargeId(0);
+        if (getAttributeSetInstanceId() != 0 && getChargeId() != 0)
+            setAttributeSetInstanceId(0);
         // Product UOM
-        if (getM_Product_ID() > 0 && getC_UOM_ID() <= 0) {
-            setC_UOM_ID(getM_Product().getC_UOM_ID());
+        if (getProductId() > 0 && getUOMId() <= 0) {
+            setUOMId(getProduct().getUOMId());
         }
         //
         if (getPriceActual().signum() == 0) setPrice();
@@ -245,7 +245,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
          * IDEMPIERE-178 Orders and Invoices must disallow amount lines without product/charge
          */
         if (getParent().getDocumentType().isChargeOrProductMandatory()) {
-            if (getChargeId() == 0 && getM_Product_ID() == 0 && getPriceActual().signum() != 0) {
+            if (getChargeId() == 0 && getProductId() == 0 && getPriceActual().signum() != 0) {
                 log.saveError("FillMandatory", Msg.translate(getCtx(), "ChargeOrProductMandatory"));
                 return false;
             }
@@ -278,8 +278,8 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
     } //	afterDelete
 
     @Override
-    public I_M_Product getM_Product() {
-        return MProduct.get(getCtx(), getM_Product_ID());
+    public I_M_Product getProduct() {
+        return MProduct.get(getCtx(), getProductId());
     }
 
     /**
@@ -295,7 +295,7 @@ public class MRequisitionLine extends X_M_RequisitionLine implements IDocLine {
                         + "(SELECT COALESCE(SUM(LineNetAmt),0) FROM M_RequisitionLine rl "
                         + "WHERE r.M_Requisition_ID=rl.M_Requisition_ID) "
                         + "WHERE M_Requisition_ID=?";
-        int no = executeUpdateEx(sql, new Object[]{getM_Requisition_ID()});
+        int no = executeUpdateEx(sql, new Object[]{getRequisitionId()});
         if (no != 1) log.log(Level.SEVERE, "Header update #" + no);
         m_parent = null;
         return no == 1;

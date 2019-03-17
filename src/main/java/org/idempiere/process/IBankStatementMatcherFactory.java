@@ -10,5 +10,5 @@ public interface IBankStatementMatcherFactory {
      * @param className
      * @return BankStatementMatcher instance
      */
-    public BankStatementMatcherInterface newBankStatementMatcherInstance(String className);
+    BankStatementMatcherInterface newBankStatementMatcherInstance(String className);
 }

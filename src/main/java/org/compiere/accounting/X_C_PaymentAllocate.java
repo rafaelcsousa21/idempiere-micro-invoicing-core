@@ -28,7 +28,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
         super(ctx, C_PaymentAllocate_ID);
         /**
          * if (C_PaymentAllocate_ID == 0) { setAmount (Env.ZERO); setInvoiceId (0);
-         * setC_PaymentAllocate_ID (0); setPaymentId (0); setDiscountAmt (Env.ZERO); setOverUnderAmt
+         * setPaymentAllocate_ID (0); setPaymentId (0); setDiscountAmt (Env.ZERO); setOverUnderAmt
          * (Env.ZERO); setWriteOffAmt (Env.ZERO); }
          */
     }
@@ -79,7 +79,7 @@ public class X_C_PaymentAllocate extends PO implements I_C_PaymentAllocate {
      *
      * @param C_AllocationLine_ID Allocation Line
      */
-    public void setC_AllocationLine_ID(int C_AllocationLine_ID) {
+    public void setAllocationLineId(int C_AllocationLine_ID) {
         if (C_AllocationLine_ID < 1) setValue(COLUMNNAME_C_AllocationLine_ID, null);
         else setValue(COLUMNNAME_C_AllocationLine_ID, Integer.valueOf(C_AllocationLine_ID));
     }

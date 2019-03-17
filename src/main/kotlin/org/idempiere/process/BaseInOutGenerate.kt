@@ -11,7 +11,7 @@ import org.compiere.process.SvrProcess
 import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
-import software.hsharp.core.util.TO_DATE
+import software.hsharp.core.util.convertDate
 import software.hsharp.core.util.queryOf
 import java.math.BigDecimal
 import java.sql.Timestamp
@@ -115,7 +115,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
             if (p_DatePromised != null)
                 where
                     .append(" AND (TRUNC(DatePromised)<=")
-                    .append(TO_DATE(p_DatePromised, true))
+                    .append(convertDate(p_DatePromised, true))
                     .append(" OR DatePromised IS NULL)")
             // 	Exclude Auto Delivery if not Force
             if (MOrder.DELIVERYRULE_Force != order.getDeliveryRule())
@@ -152,7 +152,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                 if (p_IsUnconfirmedInOut && product != null && toDeliver.signum() != 0) {
                     val where2 =
                         "EXISTS (SELECT * FROM M_InOut io WHERE io.M_InOut_ID=M_InOutLine.M_InOut_ID AND io.DocStatus IN ('DR','IN','IP','WC'))"
-                    val iols = MInOutLine.getOfOrderLine(ctx, line.getC_OrderLine_ID(), where2)
+                    val iols = MInOutLine.getOfOrderLine(ctx, line.getOrderLineId(), where2)
                     for (j in iols.indices)
                         unconfirmedShippedQty = unconfirmedShippedQty.add(iols[j].movementQty)
                     val logInfo = StringBuilder("Unconfirmed Qty=")
@@ -172,7 +172,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                 }
 
                 // 	Comments & lines w/o product & services
-                if ((product == null || !product!!.isStocked()) && (line.getQtyOrdered().signum() == 0 || // 	comments
+                if ((product == null || !product.isStocked) && (line.qtyOrdered.signum() == 0 || // 	comments
                             toDeliver.signum() != 0)
                 )
                 // 	lines w/o product
@@ -184,19 +184,19 @@ abstract class BaseInOutGenerate : SvrProcess() {
                 }
 
                 // 	Stored Product
-                val MMPolicy = product!!.getMMPolicy()
+                val MMPolicy = product!!.mmPolicy
 
                 val storages = getStorages(
-                    line.getWarehouseId(),
-                    line.getM_Product_ID(),
-                    line.getMAttributeSetInstance_ID(),
+                    line.warehouseId,
+                    line.productId,
+                    line.attributeSetInstanceId,
                     minGuaranteeDate,
                     MClient.MMPOLICY_FiFo == MMPolicy
                 )
 
                 for (j in storages.indices) {
                     val storage = storages[j]
-                    onHand = onHand.add(storage.getQtyOnHand())
+                    onHand = onHand.add(storage.qtyOnHand)
                 }
                 val fullLine = onHand.compareTo(toDeliver) >= 0 || toDeliver.signum() < 0
 
@@ -303,12 +303,12 @@ abstract class BaseInOutGenerate : SvrProcess() {
                     val toDeliver = line.getQtyOrdered().subtract(line.getQtyDelivered())
                     //
                     var storages: Array<MStorageOnHand>? = null
-                    if (product != null && product!!.isStocked()) {
-                        val MMPolicy = product!!.getMMPolicy()
+                    if (product != null && product.isStocked()) {
+                        val MMPolicy = product.getMMPolicy()
                         storages = getStorages(
                             line.getWarehouseId(),
-                            line.getM_Product_ID(),
-                            line.getMAttributeSetInstance_ID(),
+                            line.getProductId(),
+                            line.getAttributeSetInstanceId(),
                             minGuaranteeDate,
                             MClient.MMPOLICY_FiFo == MMPolicy
                         )
@@ -373,7 +373,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
 
         val parameters =
             if (p_Selection) {
-                listOf(Env.getClientId(ctx), aD_PInstance_ID)
+                listOf(Env.getClientId(ctx), aD_PInstanceId)
             } else {
                 listOf(p_M_Warehouse_ID) +
                         (if (p_DatePromised != null) listOf(p_DatePromised) else emptyList()) +

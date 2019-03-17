@@ -62,7 +62,7 @@ public class InvoiceCreateInOut extends SvrProcess {
             else if (name.equals(PARAM_M_Warehouse_ID)) p_M_Warehouse_ID = para.getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_Invoice_ID = getRecord_ID();
+        p_C_Invoice_ID = getRecordId();
     } //	prepare
 
     /**
@@ -88,12 +88,12 @@ public class InvoiceCreateInOut extends SvrProcess {
         if (m_inout == null) throw new InvoiceFullyMatchedException();
 
         addLog(
-                m_inout.getM_InOut_ID(),
+                m_inout.getInOutId(),
                 m_inout.getMovementDate(),
                 null,
                 m_inout.getDocumentNo(),
                 m_inout.getTableId(),
-                m_inout.getM_InOut_ID());
+                m_inout.getInOutId());
         //
         return m_inout.getDocumentNo();
     } //	doIt
@@ -140,7 +140,7 @@ public class InvoiceCreateInOut extends SvrProcess {
         }
         sLine.saveEx();
         //
-        invoiceLine.setM_InOutLine_ID(sLine.getM_InOutLine_ID());
+        invoiceLine.setInOutLineId(sLine.getInOutLineId());
         invoiceLine.saveEx();
         //
         return sLine;

@@ -166,7 +166,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      *
      * @return Move to next status automatically after timeout
      */
-    public int getNext_Status_ID() {
+    public int getNextStatusId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Next_Status_ID);
         if (ii == null) return 0;
         return ii;
@@ -177,7 +177,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      *
      * @param Next_Status_ID Move to next status automatically after timeout
      */
-    public void setNext_Status_ID(int Next_Status_ID) {
+    public void setNextStatusId(int Next_Status_ID) {
         if (Next_Status_ID < 1) setValue(COLUMNNAME_Next_Status_ID, null);
         else setValue(COLUMNNAME_Next_Status_ID, Integer.valueOf(Next_Status_ID));
     }
@@ -187,7 +187,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      *
      * @return Request Status Category
      */
-    public int getR_StatusCategory_ID() {
+    public int getStatusCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_StatusCategory_ID);
         if (ii == null) return 0;
         return ii;
@@ -198,7 +198,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      *
      * @return Request Status
      */
-    public int getR_Status_ID() {
+    public int getStatusId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_Status_ID);
         if (ii == null) return 0;
         return ii;
@@ -220,7 +220,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      *
      * @return Automatically change the status after entry from web
      */
-    public int getUpdate_Status_ID() {
+    public int getUpdateStatusId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Update_Status_ID);
         if (ii == null) return 0;
         return ii;
@@ -231,7 +231,7 @@ public class X_R_Status extends BasePONameValue implements I_R_Status {
      *
      * @param Update_Status_ID Automatically change the status after entry from web
      */
-    public void setUpdate_Status_ID(int Update_Status_ID) {
+    public void setUpdateStatusId(int Update_Status_ID) {
         if (Update_Status_ID < 1) setValue(COLUMNNAME_Update_Status_ID, null);
         else setValue(COLUMNNAME_Update_Status_ID, Integer.valueOf(Update_Status_ID));
     }

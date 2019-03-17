@@ -278,10 +278,10 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
         setValue(COLUMNNAME_AcceptVisa, Boolean.valueOf(AcceptVisa));
     }
 
-    public org.compiere.model.I_C_BankAccount getC_BankAccount() throws RuntimeException {
+    public org.compiere.model.I_C_BankAccount getBankAccount() throws RuntimeException {
         return (org.compiere.model.I_C_BankAccount)
                 MTable.get(getCtx(), org.compiere.model.I_C_BankAccount.Table_Name)
-                        .getPO(getC_BankAccount_ID());
+                        .getPO(getBankAccountId());
     }
 
     /**
@@ -289,7 +289,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      *
      * @return Account at the Bank
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -300,7 +300,7 @@ public class X_C_PaymentProcessor extends BasePOName implements I_C_PaymentProce
      *
      * @param C_BankAccount_ID Account at the Bank
      */
-    public void setC_BankAccount_ID(int C_BankAccount_ID) {
+    public void setBankAccountId(int C_BankAccount_ID) {
         if (C_BankAccount_ID < 1) setValueNoCheck(COLUMNNAME_C_BankAccount_ID, null);
         else setValueNoCheck(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }

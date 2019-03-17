@@ -154,7 +154,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         }
 
         for (MRMALine line : lines) {
-            if (line.getM_InOutLine_ID() != 0) {
+            if (line.getInOutLineId() != 0) {
                 if (!line.checkQty()) {
                     m_processMsg = "@AmtReturned>Shipped@";
                     return DocAction.Companion.getSTATUS_Invalid();
@@ -237,15 +237,15 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      */
     private org.compiere.order.MRMA createCounterDoc() {
         //	Is this a counter doc ?
-        if (getRef_RMA_ID() > 0) return null;
+        if (getRef_RMAId() > 0) return null;
 
         //	Org Must be linked to BPartner
         org.compiere.orm.MOrg org = MOrg.get(getCtx(), getOrgId());
-        int counterC_BPartner_ID = org.getLinkedC_BPartner_ID(null);
+        int counterC_BPartner_ID = org.getLinkedC_BPartnerId(null);
         if (counterC_BPartner_ID == 0) return null;
         //	Business Partner needs to be linked to Org
         org.compiere.crm.MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());
-        int counterAD_Org_ID = bp.getAD_OrgBP_ID_Int();
+        int counterAD_Org_ID = bp.getLinkedOrganizationId();
         if (counterAD_Org_ID == 0) return null;
 
         //	Document Type
@@ -254,10 +254,10 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         if (counterDT != null) {
             if (log.isLoggable(Level.FINE)) log.fine(counterDT.toString());
             if (!counterDT.isCreateCounter() || !counterDT.isValid()) return null;
-            C_DocTypeTarget_ID = counterDT.getCounter_C_DocType_ID();
+            C_DocTypeTarget_ID = counterDT.getCounterDocTypeId();
         } else //	indirect
         {
-            C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocType_ID(getCtx(), getDocumentTypeId());
+            C_DocTypeTarget_ID = MDocTypeCounter.getCounterDocTypeId(getCtx(), getDocumentTypeId());
             if (log.isLoggable(Level.FINE)) log.fine("Indirect C_DocTypeTarget_ID=" + C_DocTypeTarget_ID);
             if (C_DocTypeTarget_ID <= 0) return null;
         }
@@ -313,10 +313,10 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
                 "SELECT COUNT(1) "
                         + "FROM M_InOut "
                         + "WHERE M_RMA_ID=? AND (DocStatus NOT IN ('VO','RE'))";
-        int count = getSQLValueEx(validation, getM_RMA_ID());
+        int count = getSQLValueEx(validation, getRMAId());
 
         if (count == 0) {
-            MRMALine lines[] = getLines(true);
+            MRMALine[] lines = getLines(true);
             // Set Qty and Amt on all lines to be Zero
             for (MRMALine rmaLine : lines) {
                 rmaLine.addDescription(Msg.getMsg(getCtx(), "Voided") + " (" + rmaLine.getQty() + ")");
@@ -362,9 +362,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -465,7 +463,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         }
         List<MRMALine> list =
                 new Query(getCtx(), I_M_RMALine.Table_Name, "M_RMA_ID=?")
-                        .setParameters(getM_RMA_ID())
+                        .setParameters(getRMAId())
                         .setOrderBy(MRMALine.COLUMNNAME_Line)
                         .list();
 
@@ -488,8 +486,8 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      * @return shipment
      */
     public MInOut getShipment() {
-        if (m_inout == null && getInOut_ID() != 0)
-            m_inout = new MInOut(getCtx(), getInOut_ID());
+        if (m_inout == null && getInOutId() != 0)
+            m_inout = new MInOut(getCtx(), getInOutId());
         return (MInOut) m_inout;
     } //	getShipment
 
@@ -498,7 +496,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getSalesRepresentativeId();
     } //	getDoc_User_ID
 

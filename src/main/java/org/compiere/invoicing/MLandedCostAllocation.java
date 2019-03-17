@@ -32,7 +32,7 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
     public MLandedCostAllocation(Properties ctx, int C_LandedCostAllocation_ID) {
         super(ctx, C_LandedCostAllocation_ID);
         if (C_LandedCostAllocation_ID == 0) {
-            //	setM_CostElement_ID(0);
+            //	setCostElementId(0);
             setAmt(Env.ZERO);
             setQty(Env.ZERO);
             setBase(Env.ZERO);
@@ -57,8 +57,8 @@ public class MLandedCostAllocation extends X_C_LandedCostAllocation {
     public MLandedCostAllocation(MInvoiceLine parent, int M_CostElement_ID) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setC_InvoiceLine_ID(parent.getC_InvoiceLine_ID());
-        setM_CostElement_ID(M_CostElement_ID);
+        setInvoiceLineId(parent.getInvoiceLineId());
+        setCostElementId(M_CostElement_ID);
     } //	MLandedCostAllocation
 
     /**

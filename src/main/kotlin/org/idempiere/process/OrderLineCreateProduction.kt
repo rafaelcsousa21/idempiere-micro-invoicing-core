@@ -50,7 +50,7 @@ class OrderLineCreateProduction(
         if (p_MovementDate == null)
             p_MovementDate = Timestamp(System.currentTimeMillis())
 
-        if (p_C_OrderLine_ID == 0) p_C_OrderLine_ID = record_ID
+        if (p_C_OrderLine_ID == 0) p_C_OrderLine_ID = recordId
     } // 	prepare
 
     /**
@@ -94,19 +94,19 @@ class OrderLineCreateProduction(
         }
 
         val production: I_M_Production = MProduction(line)
-        val product = MProduct(ctx, line.m_Product_ID)
+        val product = MProduct(ctx, line.productId)
 
-        production.m_Product_ID = line.m_Product_ID
+        production.productId = line.productId
         production.setProductionQty(line.qtyOrdered.subtract(line.qtyDelivered))
         production.setDatePromised(line.datePromised)
-        if (product.m_Locator_ID > 0)
-            production.setM_Locator_ID(product.m_Locator_ID)
-        production.setC_OrderLine_ID(p_C_OrderLine_ID)
+        if (product.locatorId > 0)
+            production.setLocatorId(product.locatorId)
+        production.setOrderLineId(p_C_OrderLine_ID)
 
-        var locator = product.m_Locator_ID
+        var locator = product.locatorId
         if (locator == 0)
             locator = MWarehouse.get(ctx, line.warehouseId).defaultLocator!!.id
-        production.setM_Locator_ID(locator)
+        production.setLocatorId(locator)
 
         if (line.businessPartnerId > 0) {
             production.setBusinessPartnerId(order.businessPartnerId)
@@ -155,7 +155,7 @@ class OrderLineCreateProduction(
         production.saveEx()
 
         val msg = Msg.parseTranslation(ctx, "@M_Production_ID@ @Created@ " + production.getDocumentNo())
-        addLog(production.m_Production_ID, null, null, msg, MProduction.Table_ID, production.m_Production_ID)
+        addLog(production.productionId, null, null, msg, MProduction.Table_ID, production.productionId)
         return "@OK@"
     } // 	OrderLineCreateShipment
 } // 	OrderLineCreateShipment

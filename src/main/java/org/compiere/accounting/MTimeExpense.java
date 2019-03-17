@@ -91,7 +91,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             return m_lines;
         }
         //
-        m_lines = MBaseTimeExpenseKt.getBaseExpenseLines(getCtx(), getS_TimeExpense_ID(), getCurrencyId());
+        m_lines = MBaseTimeExpenseKt.getBaseExpenseLines(getCtx(), getTimeExpenseId(), getCurrencyId());
         return m_lines;
     } //	getLines
 
@@ -100,7 +100,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return locator
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         if (m_M_Locator_ID != 0) return m_M_Locator_ID;
         //
         String sql =
@@ -114,7 +114,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
             rs = pstmt.executeQuery();
             if (rs.next()) m_M_Locator_ID = rs.getInt(1);
         } catch (SQLException ex) {
-            log.log(Level.SEVERE, "getM_Locator_ID", ex);
+            log.log(Level.SEVERE, "getLocatorId", ex);
         } finally {
 
             rs = null;
@@ -122,7 +122,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
         }
         //
         return m_M_Locator_ID;
-    } //	getM_Locator_ID
+    } //	getLocatorId
 
     /**
      * Set Processed. Propergate to Lines/Taxes
@@ -136,7 +136,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
                 "UPDATE S_TimeExpenseLine SET Processed='"
                         + (processed ? "Y" : "N")
                         + "' WHERE S_TimeExpense_ID="
-                        + getS_TimeExpense_ID();
+                        + getTimeExpenseId();
         int noLine = executeUpdate(sql);
         m_lines = null;
         if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
@@ -311,9 +311,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
         // After Void
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_VOID);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	voidIt
 
     /**
@@ -330,11 +328,8 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-
-        //	Close Not delivered Qty
+        return m_processMsg == null;//	Close Not delivered Qty
         //	setDocAction(DOCACTION_None);
-        return true;
     } //	closeIt
 
     /**
@@ -438,7 +433,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         if (m_AD_User_ID != 0) return m_AD_User_ID;
         if (getBusinessPartnerId() != 0) {
             MUser[] users = MUser.getOfBPartner(getCtx(), getBusinessPartnerId());

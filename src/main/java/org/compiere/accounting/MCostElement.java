@@ -205,7 +205,7 @@ public class MCostElement extends X_M_CostElement {
      */
     public static MCostElement get(Properties ctx, int M_CostElement_ID) {
         Integer key = new Integer(M_CostElement_ID);
-        MCostElement retValue = (MCostElement) s_cache.get(key);
+        MCostElement retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MCostElement(ctx, M_CostElement_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -245,7 +245,7 @@ public class MCostElement extends X_M_CostElement {
                 //			|| COSTELEMENTTYPE_BurdenMOverhead.equals(getCostElementType())
                 //			|| COSTELEMENTTYPE_Overhead.equals(getCostElementType())
                 || X_M_CostElement.COSTELEMENTTYPE_OutsideProcessing.equals(getCostElementType()))
-                && (newRecord || is_ValueChanged(I_M_CostElement.COLUMNNAME_CostingMethod))) {
+                && (newRecord || isValueChanged(I_M_CostElement.COLUMNNAME_CostingMethod))) {
             String sql =
                     "SELECT  COALESCE(MAX(M_CostElement_ID),0) FROM M_CostElement "
                             + "WHERE AD_Client_ID=? AND CostingMethod=? AND CostElementType=?";
@@ -309,7 +309,7 @@ public class MCostElement extends X_M_CostElement {
                 new Query(getCtx(), I_M_Product_Category_Acct.Table_Name, whereClause)
                         .setParameters(getClientId(), getCostingMethod())
                         .first();
-        if (retValue != null) M_Product_Category_ID = retValue.getM_Product_Category_ID();
+        if (retValue != null) M_Product_Category_ID = retValue.getProductCategoryId();
         if (M_Product_Category_ID != 0) {
             log.saveError(
                     "CannotDeleteUsed",

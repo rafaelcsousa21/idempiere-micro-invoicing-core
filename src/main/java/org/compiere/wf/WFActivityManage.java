@@ -44,7 +44,7 @@ public class WFActivityManage extends SvrProcess {
                 p_AD_WF_Responsible_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_AD_WF_Activity_ID = getRecord_ID();
+        p_AD_WF_Activity_ID = getRecordId();
     } //	prepare
 
     /**

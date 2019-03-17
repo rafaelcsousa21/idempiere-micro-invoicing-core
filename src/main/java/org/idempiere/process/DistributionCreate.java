@@ -96,7 +96,7 @@ public class DistributionCreate extends SvrProcess {
             else if (name.equals("IsTest")) p_IsTest = "Y".equals(para[i].getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_M_DistributionList_ID = getRecord_ID();
+        p_M_DistributionList_ID = getRecordId();
     } //	prepare
 
     /**
@@ -233,7 +233,7 @@ public class DistributionCreate extends SvrProcess {
   	if (dll.getBusinessPartnerLocationId() != 0)
   		line.setBusinessPartnerLocationId(dll.getBusinessPartnerLocationId());
   	//
-  	line.setM_Product_ID(p_M_Product_ID, true);
+  	line.setProductId(p_M_Product_ID, true);
   	line.setQty(qty);
   	line.setPrice();
   	if (!line.save())

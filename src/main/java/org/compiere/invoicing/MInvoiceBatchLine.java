@@ -81,7 +81,7 @@ public class MInvoiceBatchLine extends X_C_InvoiceBatchLine {
                             .append("SET DocumentAmt = NVL((SELECT SUM(LineTotalAmt) FROM C_InvoiceBatchLine l ")
                             .append("WHERE h.C_InvoiceBatch_ID=l.C_InvoiceBatch_ID AND l.IsActive='Y'),0) ")
                             .append("WHERE C_InvoiceBatch_ID=")
-                            .append(getC_InvoiceBatch_ID());
+                            .append(getInvoiceBatchId());
             executeUpdate(sql.toString());
         }
         return success;

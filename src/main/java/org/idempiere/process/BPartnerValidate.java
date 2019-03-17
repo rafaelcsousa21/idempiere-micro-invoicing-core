@@ -50,7 +50,7 @@ public class BPartnerValidate extends SvrProcess {
      * Prepare
      */
     protected void prepare() {
-        p_C_BPartner_ID = getRecord_ID();
+        p_C_BPartner_ID = getRecordId();
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();

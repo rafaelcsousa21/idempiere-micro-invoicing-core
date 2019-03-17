@@ -81,7 +81,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     public MCash(Properties ctx, int C_Cash_ID) {
         super(ctx, C_Cash_ID);
         if (C_Cash_ID == 0) {
-            //	setC_CashBook_ID (0);		//	FK
+            //	setCashBookId (0);		//	FK
             setBeginningBalance(Env.ZERO);
             setEndingBalance(Env.ZERO);
             setStatementDifference(Env.ZERO);
@@ -123,7 +123,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
     public MCash(MCashBook cb, Timestamp today) {
         this(cb.getCtx(), 0);
         setClientOrg(cb);
-        setC_CashBook_ID(cb.getC_CashBook_ID());
+        setCashBookId(cb.getCashBookId());
         if (today != null) {
             setStatementDate(today);
             setDateAcct(today);
@@ -189,7 +189,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         final String whereClause = MCashLine.COLUMNNAME_C_Cash_ID + "=?";
         List<MCashLine> list =
                 new Query(getCtx(), I_C_CashLine.Table_Name, whereClause)
-                        .setParameters(getC_Cash_ID())
+                        .setParameters(getCashId())
                         .setOrderBy(I_C_CashLine.COLUMNNAME_Line)
                         .setOnlyActiveRecords(true)
                         .list();
@@ -204,7 +204,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @return cash book
      */
     public MCashBook getCashBook() {
-        if (m_book == null) m_book = MCashBook.get(getCtx(), getC_CashBook_ID());
+        if (m_book == null) m_book = MCashBook.get(getCtx(), getCashBookId());
         return m_book;
     } //	getCashBook
 
@@ -429,7 +429,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                         new MAllocationLine(
                                 hdr, line.getAmount(), line.getDiscountAmt(), line.getWriteOffAmt(), Env.ZERO);
                 aLine.setInvoiceId(line.getInvoiceId());
-                aLine.setC_CashLine_ID(line.getC_CashLine_ID());
+                aLine.setCashLineId(line.getCashLineId());
                 if (!aLine.save()) {
                     m_processMsg = CLogger.retrieveErrorString("Could not create Allocation Line");
                     return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -449,15 +449,15 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 pay.setOrgId(getOrgId());
                 String documentNo = getName();
                 pay.setDocumentNo(documentNo);
-                pay.setR_PnRef(documentNo);
+                pay.setPaymentReference(documentNo);
                 pay.setValueNoCheck("TrxType", "X"); // 	Transfer
                 pay.setValueNoCheck("TenderType", "X");
                 //
                 // Modification for cash payment - Posterita
-                pay.setC_CashBook_ID(getC_CashBook_ID());
+                pay.setCashBookId(getCashBookId());
                 // End of modification - Posterita
 
-                pay.setC_BankAccount_ID(line.getC_BankAccount_ID());
+                pay.setBankAccountId(line.getBankAccountId());
                 pay.setDocumentTypeId(true); // 	Receipt
                 pay.setDateTrx(getStatementDate());
                 pay.setDateAcct(getDateAcct());
@@ -544,7 +544,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
 
         //	Reverse Allocations
         MAllocationHdr[] allocations =
-                MAllocationHdr.getOfCash(getCtx(), getC_Cash_ID());
+                MAllocationHdr.getOfCash(getCtx(), getCashId());
         for (MAllocationHdr allocation : allocations) {
             allocation.reverseCorrectIt();
             if (!allocation.save()) throw new IllegalStateException("Cannot reverse allocations");
@@ -589,7 +589,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         saveEx();
 
         //	Delete Posting
-        MFactAcct.deleteEx(I_C_Cash.Table_ID, getC_Cash_ID());
+        MFactAcct.deleteEx(I_C_Cash.Table_ID, getCashId());
 
         return true;
     } //	reverse
@@ -625,8 +625,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -711,7 +710,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
                 new StringBuilder("UPDATE C_CashLine SET Processed='")
                         .append((processed ? "Y" : "N"))
                         .append("' WHERE C_Cash_ID=")
-                        .append(getC_Cash_ID());
+                        .append(getCashId());
         int noLine = executeUpdate(sql.toString());
         m_lines = null;
         if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
@@ -775,7 +774,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

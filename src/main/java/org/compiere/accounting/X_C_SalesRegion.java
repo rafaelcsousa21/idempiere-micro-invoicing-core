@@ -25,7 +25,7 @@ public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion 
     public X_C_SalesRegion(Properties ctx, int C_SalesRegion_ID) {
         super(ctx, C_SalesRegion_ID);
         /**
-         * if (C_SalesRegion_ID == 0) { setC_SalesRegion_ID (0); setIsDefault (false); setIsSummary
+         * if (C_SalesRegion_ID == 0) { setSalesRegionId (0); setIsDefault (false); setIsSummary
          * (false); setName (null); setValue (null); }
          */
     }
@@ -56,7 +56,7 @@ public class X_C_SalesRegion extends BasePONameValue implements I_C_SalesRegion 
      *
      * @return Sales coverage region
      */
-    public int getC_SalesRegion_ID() {
+    public int getSalesRegionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;

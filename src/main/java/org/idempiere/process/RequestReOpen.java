@@ -44,7 +44,7 @@ public class RequestReOpen extends SvrProcess {
         if (request.getId() == 0)
             throw new AdempiereUserError("@NotFound@ @R_Request_ID@ " + p_R_Request_ID);
 
-        request.setR_Status_ID(); // 	set default status
+        request.setStatusId(); // 	set default status
         request.setProcessed(false);
         if (request.save() && !request.isProcessed()) return "@OK@";
         return "@Error@";

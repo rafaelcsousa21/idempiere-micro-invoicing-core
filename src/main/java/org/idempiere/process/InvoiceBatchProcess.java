@@ -73,7 +73,7 @@ public class InvoiceBatchProcess extends SvrProcess {
             if (para[i].getParameter() == null) ;
             else if (name.equals("DocAction")) p_DocAction = (String) para[i].getParameter();
         }
-        p_C_InvoiceBatch_ID = getRecord_ID();
+        p_C_InvoiceBatch_ID = getRecordId();
     } //  prepare
 
     /**
@@ -98,7 +98,7 @@ public class InvoiceBatchProcess extends SvrProcess {
         MInvoiceBatchLine[] lines = batch.getLines(false);
         for (int i = 0; i < lines.length; i++) {
             MInvoiceBatchLine line = lines[i];
-            if (line.getInvoiceId() != 0 || line.getC_InvoiceLine_ID() != 0) continue;
+            if (line.getInvoiceId() != 0 || line.getInvoiceLineId() != 0) continue;
 
             if ((m_oldDocumentNo != null && !m_oldDocumentNo.equals(line.getDocumentNo()))
                     || m_oldC_BPartner_ID != line.getBusinessPartnerId()
@@ -124,7 +124,7 @@ public class InvoiceBatchProcess extends SvrProcess {
             invoiceLine.setChargeId(line.getChargeId());
             invoiceLine.setQty(line.getQtyEntered()); // Entered/Invoiced
             invoiceLine.setPrice(line.getPriceEntered());
-            invoiceLine.setC_Tax_ID(line.getC_Tax_ID());
+            invoiceLine.setTaxId(line.getTaxId());
             invoiceLine.setTaxAmt(line.getTaxAmt());
             invoiceLine.setLineNetAmt(line.getLineNetAmt());
             invoiceLine.setLineTotalAmt(line.getLineTotalAmt());
@@ -135,7 +135,7 @@ public class InvoiceBatchProcess extends SvrProcess {
 
             //	Update Batch Line
             line.setInvoiceId(m_invoice.getInvoiceId());
-            line.setC_InvoiceLine_ID(invoiceLine.getC_InvoiceLine_ID());
+            line.setInvoiceLineId(invoiceLine.getInvoiceLineId());
             line.saveEx();
         } //	for all lines
         completeInvoice();

@@ -49,7 +49,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
             else if (name.equals("C_AcctSchema_ID")) p_SourceAcctSchema_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_TargetAcctSchema_ID = getRecord_ID();
+        p_TargetAcctSchema_ID = getRecordId();
     } //	prepare
 
     /**
@@ -93,7 +93,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
                 target.getAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_Account);
         if (targetAcctElement == null)
             throw new AdempiereUserError("NotFound Target AC C_AcctSchema_Element");
-        if (sourceAcctElement.getC_Element_ID() != targetAcctElement.getC_Element_ID())
+        if (sourceAcctElement.getElementId() != targetAcctElement.getElementId())
             throw new AdempiereUserError("@C_Element_ID@ different");
 
         if (MAcctSchemaGL.get(getCtx(), p_TargetAcctSchema_ID) == null) copyGL(target);
@@ -111,7 +111,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
     private void copyGL(MAcctSchema targetAS) throws Exception {
         MAcctSchemaGL source = MAcctSchemaGL.get(getCtx(), p_SourceAcctSchema_ID);
         MAcctSchemaGL target = new MAcctSchemaGL(getCtx(), 0);
-        target.setC_AcctSchema_ID(p_TargetAcctSchema_ID);
+        target.setAccountingSchemaId(p_TargetAcctSchema_ID);
         ArrayList<KeyNamePair> list = source.getAcctInfo();
         for (int i = 0; i < list.size(); i++) {
             KeyNamePair pp = list.get(i);
@@ -119,7 +119,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
             String columnName = pp.getName();
             MAccount sourceAccount = MAccount.get(getCtx(), sourceC_ValidCombination_ID);
             MAccount targetAccount = createAccount(targetAS, sourceAccount);
-            target.setValue(columnName, targetAccount.getC_ValidCombination_ID());
+            target.setValue(columnName, targetAccount.getValidAccountCombinationId());
         }
         if (!target.save()) throw new AdempiereSystemError("Could not Save GL");
     } //	copyGL
@@ -142,7 +142,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
             String columnName = pp.getName();
             MAccount sourceAccount = MAccount.get(getCtx(), sourceC_ValidCombination_ID);
             MAccount targetAccount = createAccount(targetAS, sourceAccount);
-            target.setValue(columnName, targetAccount.getC_ValidCombination_ID());
+            target.setValue(columnName, targetAccount.getValidAccountCombinationId());
         }
         if (!target.save()) throw new AdempiereSystemError("Could not Save Default");
     } //	copyDefault
@@ -184,19 +184,19 @@ public class AcctSchemaCopyAcct extends SvrProcess {
             if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Organization))
                 AD_Org_ID = sourceAcct.getOrgId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Account))
-                Account_ID = sourceAcct.getAccount_ID();
+                Account_ID = sourceAcct.getAccountId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SubAccount))
-                C_SubAcct_ID = sourceAcct.getC_SubAcct_ID();
+                C_SubAcct_ID = sourceAcct.getSubAccountId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_BPartner))
                 C_BPartner_ID = sourceAcct.getBusinessPartnerId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Product))
-                M_Product_ID = sourceAcct.getM_Product_ID();
+                M_Product_ID = sourceAcct.getProductId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Activity))
                 C_Activity_ID = sourceAcct.getBusinessActivityId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_LocationFrom))
-                C_LocFrom_ID = sourceAcct.getC_LocFrom_ID();
+                C_LocFrom_ID = sourceAcct.getLocationFromId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_LocationTo))
-                C_LocTo_ID = sourceAcct.getC_LocTo_ID();
+                C_LocTo_ID = sourceAcct.getLocationToId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Campaign))
                 C_Campaign_ID = sourceAcct.getCampaignId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_OrgTrx))
@@ -204,15 +204,15 @@ public class AcctSchemaCopyAcct extends SvrProcess {
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_Project))
                 C_Project_ID = sourceAcct.getProjectId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_SalesRegion))
-                C_SalesRegion_ID = sourceAcct.getC_SalesRegion_ID();
+                C_SalesRegion_ID = sourceAcct.getSalesRegionId();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserElementList1))
                 User1_ID = sourceAcct.getUser1Id();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserElementList2))
                 User2_ID = sourceAcct.getUser2Id();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserColumn1))
-                UserElement1_ID = sourceAcct.getUserElement1_ID();
+                UserElement1_ID = sourceAcct.getUserElement1Id();
             else if (elementType.equals(MAcctSchemaElement.ELEMENTTYPE_UserColumn2))
-                UserElement2_ID = sourceAcct.getUserElement2_ID();
+                UserElement2_ID = sourceAcct.getUserElement2Id();
             //	No UserElement
         }
         //

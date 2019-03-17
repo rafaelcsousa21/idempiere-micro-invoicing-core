@@ -35,7 +35,7 @@ public class MBOM extends X_M_BOM {
     public MBOM(Properties ctx, int M_BOM_ID) {
         super(ctx, M_BOM_ID);
         if (M_BOM_ID == 0) {
-            //	setM_Product_ID (0);
+            //	setProductId (0);
             //	setName (null);
             setBOMType(BOMTYPE_CurrentActive); // A
             setBOMUse(BOMUSE_Master); // A
@@ -60,7 +60,7 @@ public class MBOM extends X_M_BOM {
      */
     public static MBOM get(Properties ctx, int M_BOM_ID) {
         Integer key = M_BOM_ID;
-        MBOM retValue = (MBOM) s_cache.get(key);
+        MBOM retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MBOM(ctx, M_BOM_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -99,16 +99,16 @@ public class MBOM extends X_M_BOM {
      */
     protected boolean beforeSave(boolean newRecord) {
         //	BOM Type
-        if (newRecord || is_ValueChanged("BOMType")) {
+        if (newRecord || isValueChanged("BOMType")) {
             //	Only one Current Active
             if (getBOMType().equals(BOMTYPE_CurrentActive)) {
                 StringBuilder msgofp =
                         new StringBuilder("BOMType='A' AND BOMUse='")
                                 .append(getBOMUse())
                                 .append("' AND IsActive='Y'");
-                MBOM[] boms = getOfProduct(getCtx(), getM_Product_ID(), null, msgofp.toString());
+                MBOM[] boms = getOfProduct(getCtx(), getProductId(), null, msgofp.toString());
                 if (boms.length == 0 // 	only one = this
-                        || (boms.length == 1 && boms[0].getM_BOM_ID() == getM_BOM_ID())) ;
+                        || (boms.length == 1 && boms[0].getBOMId() == getBOMId())) ;
                 else {
                     log.saveError(
                             "Error",
@@ -122,9 +122,9 @@ public class MBOM extends X_M_BOM {
             }
             //	Only one MTO
             else if (getBOMType().equals(BOMTYPE_Make_To_Order)) {
-                MBOM[] boms = getOfProduct(getCtx(), getM_Product_ID(), null, "IsActive='Y'");
+                MBOM[] boms = getOfProduct(getCtx(), getProductId(), null, "IsActive='Y'");
                 if (boms.length == 0 // 	only one = this
-                        || (boms.length == 1 && boms[0].getM_BOM_ID() == getM_BOM_ID())) ;
+                        || (boms.length == 1 && boms[0].getBOMId() == getBOMId())) ;
                 else {
                     log.saveError(
                             "Error",

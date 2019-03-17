@@ -54,7 +54,7 @@ public class X_C_Task extends BasePOName implements I_C_Task {
      *
      * @return Standard Project Type Task
      */
-    public int getC_Task_ID() {
+    public int getTaskId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Task_ID);
         if (ii == null) return 0;
         return ii;
@@ -83,7 +83,7 @@ public class X_C_Task extends BasePOName implements I_C_Task {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;

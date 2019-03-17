@@ -162,7 +162,7 @@ public class Doc_AllocationHdr extends Doc {
             if (line.getPaymentId() != 0
                     && line.getInvoiceId() == 0
                     && line.getOrderId() == 0
-                    && line.getC_CashLine_ID() == 0
+                    && line.getCashLineId() == 0
                     && line.getBusinessPartnerId() == 0
                     && Env.ZERO.compareTo(line.getDiscountAmt()) == 0
                     && Env.ZERO.compareTo(line.getWriteOffAmt()) == 0) continue;
@@ -226,8 +226,8 @@ public class Doc_AllocationHdr extends Doc {
                 MAccount acct_unallocated_cash = null;
                 if (line.getPaymentId() != 0)
                     acct_unallocated_cash = getPaymentAcct(as, line.getPaymentId());
-                else if (line.getC_CashLine_ID() != 0)
-                    acct_unallocated_cash = getCashAcct(as, line.getC_CashLine_ID());
+                else if (line.getCashLineId() != 0)
+                    acct_unallocated_cash = getCashAcct(as, line.getCashLineId());
                 MAccount acct_receivable = getAccount(Doc.ACCTTYPE_C_Receivable, as);
 
                 if ((!as.isPostIfClearingEqual())
@@ -253,15 +253,15 @@ public class Doc_AllocationHdr extends Doc {
                                         line.getAmtSource(),
                                         null);
                         if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
-                    } else if (line.getC_CashLine_ID() != 0) {
+                    } else if (line.getCashLineId() != 0) {
                         fl =
                                 fact.createLine(
                                         line,
-                                        getCashAcct(as, line.getC_CashLine_ID()),
+                                        getCashAcct(as, line.getCashLineId()),
                                         getCurrencyId(),
                                         line.getAmtSource(),
                                         null);
-                        MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID());
+                        MCashLine cashLine = new MCashLine(getCtx(), line.getCashLineId());
                         if (fl != null && cashLine.getId() != 0) fl.setOrgId(cashLine.getOrgId());
                     }
                 }
@@ -323,8 +323,8 @@ public class Doc_AllocationHdr extends Doc {
                 MAccount acct_payment_select = null;
                 if (line.getPaymentId() != 0)
                     acct_payment_select = getPaymentAcct(as, line.getPaymentId());
-                else if (line.getC_CashLine_ID() != 0)
-                    acct_payment_select = getCashAcct(as, line.getC_CashLine_ID());
+                else if (line.getCashLineId() != 0)
+                    acct_payment_select = getCashAcct(as, line.getCashLineId());
                 MAccount acct_liability = getAccount(Doc.ACCTTYPE_V_Liability, as);
                 boolean isUsingClearing = true;
 
@@ -402,16 +402,16 @@ public class Doc_AllocationHdr extends Doc {
                                     line.getAmtSource().negate());
                     if (fl != null && payment != null) fl.setOrgId(payment.getOrgId());
                 } else if (isUsingClearing
-                        && line.getC_CashLine_ID() != 0) // Avoid usage of clearing accounts
+                        && line.getCashLineId() != 0) // Avoid usage of clearing accounts
                 {
                     fl =
                             fact.createLine(
                                     line,
-                                    getCashAcct(as, line.getC_CashLine_ID()),
+                                    getCashAcct(as, line.getCashLineId()),
                                     getCurrencyId(),
                                     null,
                                     line.getAmtSource().negate());
-                    MCashLine cashLine = new MCashLine(getCtx(), line.getC_CashLine_ID());
+                    MCashLine cashLine = new MCashLine(getCtx(), line.getCashLineId());
                     if (fl != null && cashLine.getId() != 0) fl.setOrgId(cashLine.getOrgId());
                 }
             }
@@ -442,7 +442,7 @@ public class Doc_AllocationHdr extends Doc {
             if (invoice != null
                     && (getCurrencyId() != as.getCurrencyId() // 	payment allocation in foreign currency
                     || getCurrencyId()
-                    != line.getInvoiceC_Currency_ID())) // 	allocation <> invoice currency
+                    != line.getInvoiceC_CurrencyId())) // 	allocation <> invoice currency
             {
                 p_Error =
                         createRealizedGainLoss(
@@ -520,8 +520,8 @@ public class Doc_AllocationHdr extends Doc {
             }
             int orgcashline = startorg;
             MCashLine cashline = null;
-            if (line.getC_CashLine_ID() != 0) {
-                cashline = new MCashLine(getCtx(), line.getC_CashLine_ID());
+            if (line.getCashLineId() != 0) {
+                cashline = new MCashLine(getCtx(), line.getCashLineId());
                 orgcashline = cashline.getOrgId();
             }
             int orgorder = startorg;
@@ -549,32 +549,32 @@ public class Doc_AllocationHdr extends Doc {
      * @return boolean indicating if both dimension ID's are equal
      */
     private boolean equalFactLineIDs(FactLine prevFactLine, FactLine factLine) {
-        return (factLine.getA_Asset_ID() == prevFactLine.getA_Asset_ID()
-                && factLine.getAccount_ID() == prevFactLine.getAccount_ID()
+        return (factLine.getAssetId() == prevFactLine.getAssetId()
+                && factLine.getAccountId() == prevFactLine.getAccountId()
                 && factLine.getClientId() == prevFactLine.getClientId()
                 && factLine.getOrgId() == prevFactLine.getOrgId()
                 && factLine.getTransactionOrganizationId() == prevFactLine.getTransactionOrganizationId()
-                && factLine.getC_AcctSchema_ID() == prevFactLine.getC_AcctSchema_ID()
+                && factLine.getAccountingSchemaId() == prevFactLine.getAccountingSchemaId()
                 && factLine.getBusinessActivityId() == prevFactLine.getBusinessActivityId()
                 && factLine.getBusinessPartnerId() == prevFactLine.getBusinessPartnerId()
                 && factLine.getCampaignId() == prevFactLine.getCampaignId()
                 && factLine.getCurrencyId() == prevFactLine.getCurrencyId()
-                && factLine.getC_LocFrom_ID() == prevFactLine.getC_LocFrom_ID()
-                && factLine.getC_LocTo_ID() == prevFactLine.getC_LocTo_ID()
-                && factLine.getC_Period_ID() == prevFactLine.getC_Period_ID()
+                && factLine.getLocationFromId() == prevFactLine.getLocationFromId()
+                && factLine.getLocationToId() == prevFactLine.getLocationToId()
+                && factLine.getPeriodId() == prevFactLine.getPeriodId()
                 && factLine.getProjectId() == prevFactLine.getProjectId()
-                && factLine.getC_ProjectPhase_ID() == prevFactLine.getC_ProjectPhase_ID()
-                && factLine.getC_ProjectTask_ID() == prevFactLine.getC_ProjectTask_ID()
-                && factLine.getC_SalesRegion_ID() == prevFactLine.getC_SalesRegion_ID()
-                && factLine.getC_SubAcct_ID() == prevFactLine.getC_SubAcct_ID()
-                && factLine.getC_Tax_ID() == prevFactLine.getC_Tax_ID()
-                && factLine.getC_UOM_ID() == prevFactLine.getC_UOM_ID()
-                && factLine.getGL_Budget_ID() == prevFactLine.getGL_Budget_ID()
-                && factLine.getGL_Category_ID() == prevFactLine.getGL_Category_ID()
-                && factLine.getM_Locator_ID() == prevFactLine.getM_Locator_ID()
-                && factLine.getM_Product_ID() == prevFactLine.getM_Product_ID()
-                && factLine.getUserElement1_ID() == prevFactLine.getUserElement1_ID()
-                && factLine.getUserElement2_ID() == prevFactLine.getUserElement2_ID()
+                && factLine.getProjectPhaseId() == prevFactLine.getProjectPhaseId()
+                && factLine.getProjectTaskId() == prevFactLine.getProjectTaskId()
+                && factLine.getSalesRegionId() == prevFactLine.getSalesRegionId()
+                && factLine.getSubAccountId() == prevFactLine.getSubAccountId()
+                && factLine.getTaxId() == prevFactLine.getTaxId()
+                && factLine.getUOMId() == prevFactLine.getUOMId()
+                && factLine.getGLBudgetId() == prevFactLine.getGLBudgetId()
+                && factLine.getGLCategoryId() == prevFactLine.getGLCategoryId()
+                && factLine.getLocatorId() == prevFactLine.getLocatorId()
+                && factLine.getProductId() == prevFactLine.getProductId()
+                && factLine.getUserElement1Id() == prevFactLine.getUserElement1Id()
+                && factLine.getUserElement2Id() == prevFactLine.getUserElement2Id()
                 && factLine.getUser1Id() == prevFactLine.getUser1Id()
                 && factLine.getUser2Id() == prevFactLine.getUser2Id());
     }
@@ -619,7 +619,7 @@ public class Doc_AllocationHdr extends Doc {
                                 as,
                                 this,
                                 lines[i].getQtyInvoiced(),
-                                lines[i].getC_InvoiceLine_ID(),
+                                lines[i].getInvoiceLineId(),
                                 BigDecimal.valueOf(percent));
                 if (factC == null) return null;
                 m_facts.add(factC);
@@ -637,7 +637,7 @@ public class Doc_AllocationHdr extends Doc {
      * @return acct
      */
     private MAccount getPaymentAcct(MAcctSchema as, int C_Payment_ID) {
-        setC_BankAccount_ID(0);
+        setBankAccountId(0);
         //	Doc.ACCTTYPE_UnallocatedCash (AR) or C_Prepayment
         //	or Doc.ACCTTYPE_PaymentSelect (AP) or V_Prepayment
         int accountType = Doc.ACCTTYPE_UnallocatedCash;
@@ -653,7 +653,7 @@ public class Doc_AllocationHdr extends Doc {
             pstmt.setInt(1, C_Payment_ID);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                setC_BankAccount_ID(rs.getInt(1));
+                setBankAccountId(rs.getInt(1));
                 if (DOCTYPE_APPayment.equals(rs.getString(2))) accountType = Doc.ACCTTYPE_PaymentSelect;
                 //	Prepayment
                 if ("Y".equals(rs.getString(4))) // 	Prepayment
@@ -672,7 +672,7 @@ public class Doc_AllocationHdr extends Doc {
         }
 
         //
-        if (getC_BankAccount_ID() <= 0) {
+        if (getBankAccountId() <= 0) {
             log.log(Level.SEVERE, "NONE for C_Payment_ID=" + C_Payment_ID);
             return null;
         }
@@ -691,9 +691,9 @@ public class Doc_AllocationHdr extends Doc {
                 "SELECT c.C_CashBook_ID "
                         + "FROM C_Cash c, C_CashLine cl "
                         + "WHERE c.C_Cash_ID=cl.C_Cash_ID AND cl.C_CashLine_ID=?";
-        setC_CashBook_ID(getSQLValue(sql, C_CashLine_ID));
+        setCashBookId(getSQLValue(sql, C_CashLine_ID));
 
-        if (getC_CashBook_ID() <= 0) {
+        if (getCashBookId() <= 0) {
             log.log(Level.SEVERE, "NONE for C_CashLine_ID=" + C_CashLine_ID);
             return null;
         }
@@ -832,8 +832,8 @@ public class Doc_AllocationHdr extends Doc {
             return null;
         }
 
-        MAccount gain = MAccount.get(as.getCtx(), as.getAcctSchemaDefault().getRealizedGain_Acct());
-        MAccount loss = MAccount.get(as.getCtx(), as.getAcctSchemaDefault().getRealizedLoss_Acct());
+        MAccount gain = MAccount.get(as.getCtx(), as.getAcctSchemaDefault().getRealizedGainAccount());
+        MAccount loss = MAccount.get(as.getCtx(), as.getAcctSchemaDefault().getRealizedLossAccount());
         //
         if (invoice.isSOTrx()) {
             FactLine fl = fact.createLine(line, loss, gain, as.getCurrencyId(), acctDifference);
@@ -884,9 +884,7 @@ public class Doc_AllocationHdr extends Doc {
         return BasePostAllocationDocumentsKt.createTaxCorrection(getCtx(), as,
                 fact,
                 line,
-                DiscountAccount,
-                WriteOffAccoint,
-                isSOTrx, tax);
+                tax);
     } //	createTaxCorrection
 } //  Doc_Allocation
 
@@ -957,7 +955,7 @@ class Doc_AllocationTax implements DocAllocationTax {
         //	get total index (the Receivables/Liabilities line)
         BigDecimal total = Env.ZERO;
         for (int i = 0; i < m_facts.size(); i++) {
-            MFactAcct factAcct = (MFactAcct) m_facts.get(i);
+            MFactAcct factAcct = m_facts.get(i);
             if (factAcct.getAmtSourceDr().compareTo(total) > 0) {
                 total = factAcct.getAmtSourceDr();
                 m_totalIndex = i;
@@ -968,14 +966,14 @@ class Doc_AllocationTax implements DocAllocationTax {
             }
         }
 
-        MFactAcct factAcct = (MFactAcct) m_facts.get(m_totalIndex);
+        MFactAcct factAcct = m_facts.get(m_totalIndex);
         if (log.isLoggable(Level.INFO)) log.info("Total Invoice = " + total + " - " + factAcct);
         int precision = as.getStdPrecision();
         for (int i = 0; i < m_facts.size(); i++) {
             //	No Tax Line
             if (i == m_totalIndex) continue;
 
-            factAcct = (MFactAcct) m_facts.get(i);
+            factAcct = m_facts.get(i);
             if (log.isLoggable(Level.INFO)) log.info(i + ": " + factAcct);
 
             //	Create Tax Account

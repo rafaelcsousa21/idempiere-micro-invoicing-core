@@ -120,7 +120,7 @@ public class MProduct extends org.compiere.product.MProduct {
                         I_M_Transaction.COLUMNNAME_M_Product_ID + "=?"
                 )
                         .setOnlyActiveRecords(true)
-                        .setParameters(new Object[]{getId()})
+                        .setParameters(getId())
                         .match();
         if (hasTrx) {
             return true;
@@ -136,11 +136,8 @@ public class MProduct extends org.compiere.product.MProduct {
                         .setOnlyActiveRecords(true)
                         .setParameters(getId())
                         .match();
-        if (hasCosts) {
-            return true;
-        }
+        return hasCosts;
 
-        return false;
     }
 
     @Override
@@ -148,11 +145,11 @@ public class MProduct extends org.compiere.product.MProduct {
         if (!success) return success;
 
         //	Value/Name change in Account
-        if (!newRecord && (is_ValueChanged("Value") || is_ValueChanged("Name")))
-            MAccount.updateValueDescription(getCtx(), "M_Product_ID=" + getM_Product_ID());
+        if (!newRecord && (isValueChanged("Value") || isValueChanged("Name")))
+            MAccount.updateValueDescription(getCtx(), "M_Product_ID=" + getProductId());
 
         //	Name/Description Change in Asset	MAsset.setValueNameDescription
-        if (!newRecord && (is_ValueChanged("Name") || is_ValueChanged("Description"))) {
+        if (!newRecord && (isValueChanged("Name") || isValueChanged("Description"))) {
             String sql =
                     "UPDATE A_Asset a "
                             + "SET (Name, Description)="
@@ -162,7 +159,7 @@ public class MProduct extends org.compiere.product.MProduct {
                             + "WHERE IsActive='Y'"
                             //	+ " AND GuaranteeDate > SysDate"
                             + "  AND M_Product_ID="
-                            + getM_Product_ID();
+                            + getProductId();
             int no = executeUpdate(sql);
             if (log.isLoggable(Level.FINE)) log.fine("Asset Description updated #" + no);
         }
@@ -172,21 +169,21 @@ public class MProduct extends org.compiere.product.MProduct {
             insert_Accounting(
                     "M_Product_Acct",
                     "M_Product_Category_Acct",
-                    "p.M_Product_Category_ID=" + getM_Product_Category_ID());
+                    "p.M_Product_Category_ID=" + getProductCategoryId());
             insert_Tree(X_AD_Tree.TREETYPE_Product);
         }
-        if (newRecord || is_ValueChanged(I_M_Product.COLUMNNAME_Value))
+        if (newRecord || isValueChanged(I_M_Product.COLUMNNAME_Value))
             update_Tree(MTree_Base.TREETYPE_Product);
 
         //	New Costing
-        if (newRecord || is_ValueChanged("M_Product_Category_ID")) MCost.create(this);
+        if (newRecord || isValueChanged("M_Product_Category_ID")) MCost.create(this);
 
         return success;
     } //	afterSave
 
     @Override
     protected boolean beforeDelete() {
-        if (I_M_Product.PRODUCTTYPE_Resource.equals(getProductType()) && getS_Resource_ID() > 0) {
+        if (I_M_Product.PRODUCTTYPE_Resource.equals(getProductType()) && getResourceID() > 0) {
             throw new AdempiereException("@S_Resource_ID@<>0");
         }
         //	Check Storage
@@ -219,7 +216,7 @@ public class MProduct extends org.compiere.product.MProduct {
     	if(ce == null)
     		continue;
 
-    	MCost mcost = MCost.get(this, 0, mass[i], 0, ce.getM_CostElement_ID());
+    	MCost mcost = MCost.get(this, 0, mass[i], 0, ce.getCostElementId());
     	mcost.delete(true, null);
     }*/
 
@@ -245,7 +242,7 @@ public class MProduct extends org.compiere.product.MProduct {
         }
         //
         // Check Attribute Set settings
-        int M_AttributeSet_ID = getMAttributeSet_ID();
+        int M_AttributeSet_ID = getAttributeSetId();
         if (M_AttributeSet_ID != 0) {
             MAttributeSet mas = MAttributeSet.get(getCtx(), M_AttributeSet_ID);
             if (mas == null || !mas.isInstanceAttribute()) return false;
@@ -269,7 +266,7 @@ public class MProduct extends org.compiere.product.MProduct {
     public String getCostingLevel(MAcctSchema as) {
         String costingLevel = null;
         MProductCategoryAcct pca =
-                MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId());
+                MProductCategoryAcct.get(getCtx(), getProductCategoryId(), as.getId());
         if (pca != null) {
             costingLevel = pca.getCostingLevel();
         }
@@ -288,7 +285,7 @@ public class MProduct extends org.compiere.product.MProduct {
     public String getCostingMethod(MAcctSchema as) {
         String costingMethod = null;
         MProductCategoryAcct pca =
-                MProductCategoryAcct.get(getCtx(), getM_Product_Category_ID(), as.getId());
+                MProductCategoryAcct.get(getCtx(), getProductCategoryId(), as.getId());
         if (pca != null) {
             costingMethod = pca.getCostingMethod();
         }
@@ -313,7 +310,7 @@ public class MProduct extends org.compiere.product.MProduct {
         if (ce == null) {
             return null;
         }
-        MCost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getM_CostElement_ID());
+        MCost cost = MCost.get(this, M_ASI_ID, as, AD_Org_ID, ce.getCostElementId());
         return cost.isNew() ? null : cost;
     }
 
@@ -322,10 +319,10 @@ public class MProduct extends org.compiere.product.MProduct {
         //	Check Storage
         if (!newRecord
                 && //
-                ((is_ValueChanged("IsActive") && !isActive()) // 	now not active
-                        || (is_ValueChanged("IsStocked") && !isStocked()) // 	now not stocked
-                        || (is_ValueChanged("ProductType") // 	from Item
-                        && I_M_Product.PRODUCTTYPE_Item.equals(get_ValueOld("ProductType"))))) {
+                ((isValueChanged("IsActive") && !isActive()) // 	now not active
+                        || (isValueChanged("IsStocked") && !isStocked()) // 	now not stocked
+                        || (isValueChanged("ProductType") // 	from Item
+                        && I_M_Product.PRODUCTTYPE_Item.equals(getValueOld("ProductType"))))) {
             String errMsg = verifyStorage();
             if (!Util.isEmpty(errMsg)) {
                 log.saveError("Error", Msg.parseTranslation(getCtx(), errMsg));
@@ -334,7 +331,7 @@ public class MProduct extends org.compiere.product.MProduct {
         } //	storage
 
         // it checks if UOM has been changed , if so disallow the change if the condition is true.
-        if ((!newRecord) && is_ValueChanged("C_UOM_ID") && hasInventoryOrCost()) {
+        if ((!newRecord) && isValueChanged("C_UOM_ID") && hasInventoryOrCost()) {
             log.saveError("Error", Msg.getMsg(getCtx(), "SaveUomError"));
             return false;
         }
@@ -345,27 +342,27 @@ public class MProduct extends org.compiere.product.MProduct {
         if (!I_M_Product.PRODUCTTYPE_Item.equals(getProductType())) setIsStocked(false);
 
         //	UOM reset
-        if (m_precision != null && is_ValueChanged("C_UOM_ID")) m_precision = null;
+        if (m_precision != null && isValueChanged("C_UOM_ID")) m_precision = null;
 
         // AttributeSetInstance reset
-        if (getMAttributeSetInstance_ID() > 0
-                && is_ValueChanged(I_M_Product.COLUMNNAME_M_AttributeSet_ID)) {
+        if (getAttributeSetInstanceId() > 0
+                && isValueChanged(I_M_Product.COLUMNNAME_M_AttributeSet_ID)) {
             MAttributeSetInstance asi =
-                    new MAttributeSetInstance(getCtx(), getMAttributeSetInstance_ID());
-            if (asi.getMAttributeSet_ID() != getMAttributeSet_ID()) setM_AttributeSetInstance_ID(0);
+                    new MAttributeSetInstance(getCtx(), getAttributeSetInstanceId());
+            if (asi.getAttributeSetId() != getAttributeSetId()) setAttributeSetInstanceId(0);
         }
-        if (!newRecord && is_ValueChanged(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID)) {
+        if (!newRecord && isValueChanged(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID)) {
             // IDEMPIERE-2752 check if the ASI is referenced in other products before trying to delete it
-            int oldasiid = get_ValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID);
+            int oldasiid = getValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID);
             if (oldasiid > 0) {
                 MAttributeSetInstance oldasi =
                         new MAttributeSetInstance(
                                 getCtx(),
-                                get_ValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID));
+                                getValueOldAsInt(I_M_Product.COLUMNNAME_M_AttributeSetInstance_ID));
                 int cnt =
                         getSQLValueEx(
                                 "SELECT COUNT(*) FROM M_Product WHERE M_AttributeSetInstance_ID=?",
-                                oldasi.getMAttributeSetInstance_ID());
+                                oldasi.getAttributeSetInstanceId());
                 if (cnt == 1) {
                     // Delete the old m_attributesetinstance
                     try {

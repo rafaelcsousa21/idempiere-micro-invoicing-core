@@ -46,7 +46,7 @@ public class ProjectLinePricing extends SvrProcess {
             if (para[i].getParameter() == null) ;
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        m_C_ProjectLine_ID = getRecord_ID();
+        m_C_ProjectLine_ID = getRecordId();
     } //	prepare
 
     /**
@@ -59,7 +59,7 @@ public class ProjectLinePricing extends SvrProcess {
         if (m_C_ProjectLine_ID == 0) throw new IllegalArgumentException("No Project Line");
         MProjectLine projectLine = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
         if (log.isLoggable(Level.INFO)) log.info("doIt - " + projectLine);
-        if (projectLine.getM_Product_ID() == 0) throw new IllegalArgumentException("No Product");
+        if (projectLine.getProductId() == 0) throw new IllegalArgumentException("No Product");
         //
         MProject project = new MProject(getCtx(), projectLine.getProjectId());
         if (project.getPriceListId() == 0) throw new IllegalArgumentException("No PriceList");
@@ -67,7 +67,7 @@ public class ProjectLinePricing extends SvrProcess {
         boolean isSOTrx = true;
         IProductPricing pp = MProduct.getProductPricing();
         pp.setInitialValues(
-                projectLine.getM_Product_ID(),
+                projectLine.getProductId(),
                 project.getBusinessPartnerId(),
                 projectLine.getPlannedQty(),
                 isSOTrx);

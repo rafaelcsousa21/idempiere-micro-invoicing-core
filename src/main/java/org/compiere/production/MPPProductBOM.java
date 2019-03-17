@@ -76,8 +76,8 @@ public class MPPProductBOM extends X_PP_Product_BOM {
                         I_PP_Product_BOM.Table_Name,
                         "M_Product_ID=? AND Value=?"
                 )
-                        .setParameters(new Object[]{product.getM_Product_ID(), product.getValue()})
-                        .setClient_ID()
+                        .setParameters(product.getProductId(), product.getValue())
+                        .setClientId()
                         .firstOnly();
         // If outside trx, then cache it
         if (bom != null) {
@@ -114,7 +114,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
             final String whereClause = MPPProductBOMLine.COLUMNNAME_PP_Product_BOM_ID + "=?";
             this.m_lines =
                     new Query(getCtx(), MPPProductBOMLine.Table_Name, whereClause)
-                            .setParameters(new Object[]{getPP_Product_BOM_ID()})
+                            .setParameters(getPP_Product_BOMId())
                             .setOnlyActiveRecords(true)
                             .setOrderBy(MPPProductBOMLine.COLUMNNAME_Line)
                             .list();
@@ -134,7 +134,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
     protected boolean afterSave(boolean newRecord, boolean success) {
         if (!success) return false;
 
-        if (newRecord || is_ValueChanged("IsActive")) {
+        if (newRecord || isValueChanged("IsActive")) {
             updateProduct();
         }
         return true;
@@ -147,10 +147,10 @@ public class MPPProductBOM extends X_PP_Product_BOM {
                         I_PP_Product_BOM.Table_Name,
                         I_PP_Product_BOM.COLUMNNAME_M_Product_ID + "=?"
                 )
-                        .setParameters(new Object[]{getM_Product_ID()})
+                        .setParameters(getProductId())
                         .setOnlyActiveRecords(true)
                         .count();
-        MProduct product = new MProduct(getCtx(), getM_Product_ID());
+        MProduct product = new MProduct(getCtx(), getProductId());
         product.setIsBOM(count > 0);
         product.saveEx();
     }

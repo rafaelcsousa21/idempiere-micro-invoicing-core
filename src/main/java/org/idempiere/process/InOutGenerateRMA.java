@@ -101,7 +101,7 @@ public class InOutGenerateRMA extends SvrProcess {
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, Env.getClientId(getCtx()));
-            pstmt.setInt(2, getAD_PInstance_ID());
+            pstmt.setInt(2, getAD_PInstanceId());
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
@@ -140,7 +140,7 @@ public class InOutGenerateRMA extends SvrProcess {
         MInOut originalReceipt = rma.getShipment();
 
         MInOut shipment = new MInOut(getCtx(), 0);
-        shipment.setM_RMA_ID(rma.getId());
+        shipment.setRMAId(rma.getId());
         shipment.setOrgId(rma.getOrgId());
         shipment.setTransactionOrganizationId(originalReceipt.getTransactionOrganizationId());
         shipment.setDescription(rma.getDescription());
@@ -166,13 +166,13 @@ public class InOutGenerateRMA extends SvrProcess {
     private MInOutLine[] createShipmentLines(MRMA rma, MInOut shipment) {
         ArrayList<MInOutLine> shipLineList = new ArrayList<MInOutLine>();
 
-        MRMALine rmaLines[] = rma.getLines(true);
+        MRMALine[] rmaLines = rma.getLines(true);
         for (MRMALine rmaLine : rmaLines) {
-            if (rmaLine.getM_InOutLine_ID() != 0
+            if (rmaLine.getInOutLineId() != 0
                     || rmaLine.getChargeId() != 0
-                    || rmaLine.getM_Product_ID() != 0) {
+                    || rmaLine.getProductId() != 0) {
                 MInOutLine shipLine = new MInOutLine(shipment);
-                shipLine.setM_RMALine_ID(rmaLine.getId());
+                shipLine.setRMALineId(rmaLine.getId());
                 shipLine.setLine(rmaLine.getLine());
                 shipLine.setDescription(rmaLine.getDescription());
 
@@ -182,18 +182,18 @@ public class InOutGenerateRMA extends SvrProcess {
                     shipLine.setValueNoCheck(MInOutLine.COLUMNNAME_M_AttributeSetInstance_ID, null);
                     shipLine.setValueNoCheck(MInOutLine.COLUMNNAME_M_Locator_ID, null);
                 } else {
-                    shipLine.setM_Product_ID(rmaLine.getM_Product_ID());
-                    shipLine.setM_AttributeSetInstance_ID(rmaLine.getMAttributeSetInstance_ID());
-                    shipLine.setM_Locator_ID(rmaLine.getM_Locator_ID());
+                    shipLine.setProductId(rmaLine.getProductId());
+                    shipLine.setAttributeSetInstanceId(rmaLine.getAttributeSetInstanceId());
+                    shipLine.setLocatorId(rmaLine.getLocatorId());
                 }
 
-                shipLine.setC_UOM_ID(rmaLine.getC_UOM_ID());
+                shipLine.setUOMId(rmaLine.getUOMId());
                 shipLine.setQty(rmaLine.getQty());
                 shipLine.setProjectId(rmaLine.getProjectId());
                 shipLine.setCampaignId(rmaLine.getCampaignId());
                 shipLine.setBusinessActivityId(rmaLine.getBusinessActivityId());
-                shipLine.setC_ProjectPhase_ID(rmaLine.getC_ProjectPhase_ID());
-                shipLine.setC_ProjectTask_ID(rmaLine.getC_ProjectTask_ID());
+                shipLine.setProjectPhaseId(rmaLine.getProjectPhaseId());
+                shipLine.setProjectTaskId(rmaLine.getProjectTaskId());
                 shipLine.setUser1Id(rmaLine.getUser1Id());
                 shipLine.setUser2Id(rmaLine.getUser2Id());
                 shipLine.saveEx();
@@ -207,16 +207,16 @@ public class InOutGenerateRMA extends SvrProcess {
                                 I_C_InvoiceLine.Table_Name,
                                 I_C_InvoiceLine.COLUMNNAME_M_RMALine_ID + "=?"
                         )
-                                .setParameters(rmaLine.getM_RMALine_ID())
+                                .setParameters(rmaLine.getRMALineId())
                                 .firstOnly();
                 if (invoiceLine != null) {
-                    invoiceLine.setM_InOutLine_ID(shipLine.getM_InOutLine_ID());
+                    invoiceLine.setInOutLineId(shipLine.getInOutLineId());
                     invoiceLine.saveEx();
                 }
             }
         }
 
-        MInOutLine shipLines[] = new MInOutLine[shipLineList.size()];
+        MInOutLine[] shipLines = new MInOutLine[shipLineList.size()];
         shipLineList.toArray(shipLines);
 
         return shipLines;
@@ -227,7 +227,7 @@ public class InOutGenerateRMA extends SvrProcess {
         statusUpdate(Msg.getMsg(getCtx(), "Processing") + " " + rma.getDocumentInfo());
 
         MInOut shipment = createShipment(rma);
-        MInOutLine shipmentLines[] = createShipmentLines(rma, shipment);
+        MInOutLine[] shipmentLines = createShipmentLines(rma, shipment);
 
         if (shipmentLines.length == 0) {
             StringBuilder msglog =
@@ -258,12 +258,12 @@ public class InOutGenerateRMA extends SvrProcess {
 
         // Add processing information to process log
         addBufferLog(
-                shipment.getM_InOut_ID(),
+                shipment.getInOutId(),
                 shipment.getMovementDate(),
                 null,
                 processMsg.toString(),
                 shipment.getTableId(),
-                shipment.getM_InOut_ID());
+                shipment.getInOutId());
         m_created++;
     }
 }

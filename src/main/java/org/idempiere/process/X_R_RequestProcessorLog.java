@@ -60,7 +60,7 @@ public class X_R_RequestProcessorLog extends PO implements I_R_RequestProcessorL
      *
      * @param R_RequestProcessor_ID Processor for Requests
      */
-    public void setR_RequestProcessor_ID(int R_RequestProcessor_ID) {
+    public void setRequestProcessorId(int R_RequestProcessor_ID) {
         if (R_RequestProcessor_ID < 1) setValueNoCheck(COLUMNNAME_R_RequestProcessor_ID, null);
         else setValueNoCheck(COLUMNNAME_R_RequestProcessor_ID, Integer.valueOf(R_RequestProcessor_ID));
     }

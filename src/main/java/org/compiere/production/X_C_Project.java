@@ -220,7 +220,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Type of the project
      */
-    public String getC_ProjectType_ID() {
+    public String getProjectTypeId() {
         return (String) getValue(COLUMNNAME_C_ProjectType_ID);
     }
 
@@ -229,7 +229,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @param C_ProjectType_ID Type of the project
      */
-    public void setC_ProjectType_ID(String C_ProjectType_ID) {
+    public void setProjectTypeId(String C_ProjectType_ID) {
         setValue(COLUMNNAME_C_ProjectType_ID, C_ProjectType_ID);
     }
 
@@ -321,7 +321,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @return Identifies a unique instance of a Price List
      */
-    public int getM_PriceList_Version_ID() {
+    public int getPriceListVersionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_PriceList_Version_ID);
         if (ii == null) return 0;
         return ii;
@@ -332,7 +332,7 @@ public class X_C_Project extends BasePONameValue implements I_C_Project {
      *
      * @param M_PriceList_Version_ID Identifies a unique instance of a Price List
      */
-    public void setM_PriceList_Version_ID(int M_PriceList_Version_ID) {
+    public void setPriceListVersionId(int M_PriceList_Version_ID) {
         if (M_PriceList_Version_ID < 1) setValue(COLUMNNAME_M_PriceList_Version_ID, null);
         else setValue(COLUMNNAME_M_PriceList_Version_ID, Integer.valueOf(M_PriceList_Version_ID));
     }

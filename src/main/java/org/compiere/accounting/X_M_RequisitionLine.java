@@ -96,7 +96,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @return Sales Order Line
      */
-    public int getC_OrderLine_ID() {
+    public int getOrderLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -107,7 +107,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @param C_OrderLine_ID Sales Order Line
      */
-    public void setC_OrderLine_ID(int C_OrderLine_ID) {
+    public void setOrderLineId(int C_OrderLine_ID) {
         if (C_OrderLine_ID < 1) setValue(COLUMNNAME_C_OrderLine_ID, null);
         else setValue(COLUMNNAME_C_OrderLine_ID, Integer.valueOf(C_OrderLine_ID));
     }
@@ -117,7 +117,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @return Unit of Measure
      */
-    public int getC_UOM_ID() {
+    public int getUOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -128,7 +128,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @param C_UOM_ID Unit of Measure
      */
-    public void setC_UOM_ID(int C_UOM_ID) {
+    public void setUOMId(int C_UOM_ID) {
         if (C_UOM_ID < 1) setValueNoCheck(COLUMNNAME_C_UOM_ID, null);
         else setValueNoCheck(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
     }
@@ -192,31 +192,31 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
     }
 
     /**
-     * Set Attribute Set Instance.
-     *
-     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-     */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
-        else
-            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-    }
-
-    /**
      * Get Attribute Set Instance.
      *
      * @return Product Attribute Set Instance
      */
-    public int getMAttributeSetInstance_ID() {
+    public int getAttributeSetInstanceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
+    /**
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+    }
+
+    public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
                 MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-                        .getPO(getM_Product_ID());
+                        .getPO(getProductId());
     }
 
     /**
@@ -224,7 +224,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -235,7 +235,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
@@ -245,7 +245,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @return Material Requisition
      */
-    public int getM_Requisition_ID() {
+    public int getRequisitionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Requisition_ID);
         if (ii == null) return 0;
         return ii;
@@ -256,7 +256,7 @@ public class X_M_RequisitionLine extends PO implements I_M_RequisitionLine {
      *
      * @param M_Requisition_ID Material Requisition
      */
-    public void setM_Requisition_ID(int M_Requisition_ID) {
+    public void setRequisitionId(int M_Requisition_ID) {
         if (M_Requisition_ID < 1) setValueNoCheck(COLUMNNAME_M_Requisition_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Requisition_ID, M_Requisition_ID);
     }

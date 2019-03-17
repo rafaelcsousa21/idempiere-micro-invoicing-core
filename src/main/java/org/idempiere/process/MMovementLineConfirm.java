@@ -26,8 +26,8 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
     public MMovementLineConfirm(Properties ctx, int M_MovementLineConfirm_ID) {
         super(ctx, M_MovementLineConfirm_ID);
         if (M_MovementLineConfirm_ID == 0) {
-            //	setM_MovementConfirm_ID (0);	Parent
-            //	setM_MovementLine_ID (0);
+            //	setMovementConfirmId (0);	Parent
+            //	setMovementLine_ID (0);
             setConfirmedQty(Env.ZERO);
             setDifferenceQty(Env.ZERO);
             setScrappedQty(Env.ZERO);
@@ -53,7 +53,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
     public MMovementLineConfirm(MMovementConfirm parent) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setM_MovementConfirm_ID(parent.getM_MovementConfirm_ID());
+        setMovementConfirmId(parent.getMovementConfirmId());
     } //	MMovementLineConfirm
 
     /**
@@ -62,7 +62,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
      * @param line line
      */
     public void setMovementLine(MMovementLine line) {
-        setM_MovementLine_ID(line.getM_MovementLine_ID());
+        setMovementLineId(line.getMovementLineId());
         setTargetQty(line.getMovementQty());
         setConfirmedQty(getTargetQty()); // 	suggestion
         m_line = line;
@@ -74,7 +74,7 @@ public class MMovementLineConfirm extends X_M_MovementLineConfirm {
      * @return line
      */
     public MMovementLine getLine() {
-        if (m_line == null) m_line = new MMovementLine(getCtx(), getM_MovementLine_ID());
+        if (m_line == null) m_line = new MMovementLine(getCtx(), getMovementLineId());
         return m_line;
     } //	getLine
 

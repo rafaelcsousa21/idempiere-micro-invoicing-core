@@ -10,7 +10,7 @@ public interface BankStatementLoaderInterface {
      * @param controller Reference to the MBankStatementLoader controller object
      * @return Initialized successfully
      */
-    public boolean init(MBankStatementLoader controller);
+    boolean init(MBankStatementLoader controller);
 
     /**
      * Verify whether the data to be imported is valid
@@ -18,14 +18,14 @@ public interface BankStatementLoaderInterface {
      * @return Data is valid If the actual loaders does not do any validity checks it will just return
      * true.
      */
-    public boolean isValid();
+    boolean isValid();
 
     /**
      * Start importing statement lines
      *
      * @return Statement lines imported successfully
      */
-    public boolean loadLines();
+    boolean loadLines();
 
     /**
      * Return the most recent error
@@ -33,7 +33,7 @@ public interface BankStatementLoaderInterface {
      * @return Error message This error message will be handled as a ADempiere message, (e.g. it can
      * be translated)
      */
-    public String getLastErrorMessage();
+    String getLastErrorMessage();
 
     /**
      * Return the most recent error description
@@ -42,28 +42,28 @@ public interface BankStatementLoaderInterface {
      * descriptive information, such as a file name or SQL error, that can not be translated by
      * the ADempiere message system.
      */
-    public String getLastErrorDescription();
+    String getLastErrorDescription();
 
     /**
      * The routing number of the bank account for the statement line.
      *
      * @return Routing number
      */
-    public String getRoutingNo();
+    String getRoutingNo();
 
     /**
      * The account number of the bank account for the statement line.
      *
      * @return Bank account number
      */
-    public String getBankAccountNo();
+    String getBankAccountNo();
 
     /**
      * The IBAN of the bank account for the statement line.
      *
      * @return IBAN
      */
-    public String getIBAN();
+    String getIBAN();
 
     /**
      * Additional reference information Statement level reference information. If a specific loader
@@ -71,7 +71,7 @@ public interface BankStatementLoaderInterface {
      *
      * @return Statement Reference
      */
-    public String getStatementReference();
+    String getStatementReference();
 
     /**
      * Statement Date Date of the bank statement. If a specific loader does not provide this, it is
@@ -79,7 +79,7 @@ public interface BankStatementLoaderInterface {
      *
      * @return Statement Date
      */
-    public Timestamp getStatementDate();
+    Timestamp getStatementDate();
 
     /**
      * Transaction ID assigned by the bank. For OFX this is the <FITID> If a specific loader does not
@@ -87,7 +87,7 @@ public interface BankStatementLoaderInterface {
      *
      * @return Transaction ID
      */
-    public String getTrxID();
+    String getTrxID();
 
     /**
      * Additional reference information Statement line level reference information. For OFX this is
@@ -95,7 +95,7 @@ public interface BankStatementLoaderInterface {
      *
      * @return Reference
      */
-    public String getReference();
+    String getReference();
 
     /**
      * Check number Check number, in case the transaction was initiated by a check. For OFX this is
@@ -104,7 +104,7 @@ public interface BankStatementLoaderInterface {
      *
      * @return Transaction reference
      */
-    public String getCheckNo();
+    String getCheckNo();
 
     /**
      * Payee name Name information, for OFX this is the <NAME> or <PAYEE><NAME> field If a specific
@@ -112,7 +112,7 @@ public interface BankStatementLoaderInterface {
      *
      * @return Payee name
      */
-    public String getPayeeName();
+    String getPayeeName();
 
     /**
      * Payee account Account information of "the other party" If a specific loader class does not
@@ -120,14 +120,14 @@ public interface BankStatementLoaderInterface {
      *
      * @return Payee bank account number
      */
-    public String getPayeeAccountNo();
+    String getPayeeAccountNo();
 
     /**
      * Statement line date This has to be provided by all loader classes.
      *
      * @return Statement line date
      */
-    public Timestamp getStatementLineDate();
+    Timestamp getStatementLineDate();
 
     /**
      * Effective date Date at the funds became available. If a specific loader does not provide this,
@@ -135,7 +135,7 @@ public interface BankStatementLoaderInterface {
      *
      * @return Effective date
      */
-    public Timestamp getValutaDate();
+    Timestamp getValutaDate();
 
     /**
      * Transaction type
@@ -145,7 +145,7 @@ public interface BankStatementLoaderInterface {
      * reference only. If a specific loader class does not provide this, it is allowed to return
      * null.
      */
-    public String getTrxType();
+    String getTrxType();
 
     /**
      * Currency
@@ -154,28 +154,28 @@ public interface BankStatementLoaderInterface {
      * appears in the import data, it should not be processed by the loader in any way. If a
      * specific loader class does not provide this, it is allowed to return null.
      */
-    public String getCurrency();
+    String getCurrency();
 
     /**
      * Statement line amount
      *
      * @return Statement Line Amount This has to be provided by all loader classes.
      */
-    public BigDecimal getStmtAmt();
+    BigDecimal getStmtAmt();
 
     /**
      * Transaction Amount
      *
      * @return Transaction Amount
      */
-    public BigDecimal getTrxAmt();
+    BigDecimal getTrxAmt();
 
     /**
      * Interest Amount
      *
      * @return Interest Amount
      */
-    public BigDecimal getInterestAmt();
+    BigDecimal getInterestAmt();
 
     /**
      * Transaction memo
@@ -184,7 +184,7 @@ public interface BankStatementLoaderInterface {
      * MT940 this is the "86" line. If a specific loader does not provide this, it is allowed to
      * return null.
      */
-    public String getMemo();
+    String getMemo();
 
     /**
      * Charge name
@@ -192,7 +192,7 @@ public interface BankStatementLoaderInterface {
      * @return Charge name Name of the charge, in case this transaction is a bank charge. If a
      * specific loader class does not provide this, it is allowed to return null.
      */
-    public String getChargeName();
+    String getChargeName();
 
     /**
      * Charge amount
@@ -200,5 +200,5 @@ public interface BankStatementLoaderInterface {
      * @return Charge amount Name of the charge, in case this transaction is a bank charge. If a
      * specific loader class does not provide this, it is allowed to return null.
      */
-    public BigDecimal getChargeAmt();
+    BigDecimal getChargeAmt();
 }

@@ -72,7 +72,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      *
      * @return Generated Counter Document Type (To)
      */
-    public int getCounter_C_DocType_ID() {
+    public int getCounterDocTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Counter_C_DocType_ID);
         if (ii == null) return 0;
         return ii;
@@ -83,7 +83,7 @@ public class X_C_DocTypeCounter extends BasePOName implements I_C_DocTypeCounter
      *
      * @param Counter_C_DocType_ID Generated Counter Document Type (To)
      */
-    public void setCounter_C_DocType_ID(int Counter_C_DocType_ID) {
+    public void setCounterDocTypeId(int Counter_C_DocType_ID) {
         if (Counter_C_DocType_ID < 1) setValue(COLUMNNAME_Counter_C_DocType_ID, null);
         else setValue(COLUMNNAME_Counter_C_DocType_ID, Counter_C_DocType_ID);
     }

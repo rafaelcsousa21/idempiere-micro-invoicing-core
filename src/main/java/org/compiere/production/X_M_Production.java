@@ -156,7 +156,7 @@ public class X_M_Production extends BasePOName {
      *
      * @param C_ProjectPhase_ID Phase of a Project
      */
-    public void setC_ProjectPhase_ID(int C_ProjectPhase_ID) {
+    public void setProjectPhaseId(int C_ProjectPhase_ID) {
         if (C_ProjectPhase_ID < 1) setValueNoCheck(I_M_Production.COLUMNNAME_C_ProjectPhase_ID, null);
         else
             setValueNoCheck(
@@ -168,7 +168,7 @@ public class X_M_Production extends BasePOName {
      *
      * @param C_ProjectTask_ID Actual Project Task in a Phase
      */
-    public void setC_ProjectTask_ID(int C_ProjectTask_ID) {
+    public void setProjectTaskId(int C_ProjectTask_ID) {
         if (C_ProjectTask_ID < 1) setValueNoCheck(I_M_Production.COLUMNNAME_C_ProjectTask_ID, null);
         else
             setValueNoCheck(
@@ -180,7 +180,7 @@ public class X_M_Production extends BasePOName {
      *
      * @param C_OrderLine_ID Sales Order Line
      */
-    public void setC_OrderLine_ID(int C_OrderLine_ID) {
+    public void setOrderLineId(int C_OrderLine_ID) {
         if (C_OrderLine_ID < 1) setValue(I_M_Production.COLUMNNAME_C_OrderLine_ID, null);
         else setValue(I_M_Production.COLUMNNAME_C_OrderLine_ID, C_OrderLine_ID);
     }
@@ -315,7 +315,7 @@ public class X_M_Production extends BasePOName {
      *
      * @return Warehouse Locator
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         Integer ii = (Integer) getValue(I_M_Production.COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
@@ -326,7 +326,7 @@ public class X_M_Production extends BasePOName {
      *
      * @param M_Locator_ID Warehouse Locator
      */
-    public void setM_Locator_ID(int M_Locator_ID) {
+    public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 1) setValue(I_M_Production.COLUMNNAME_M_Locator_ID, null);
         else setValue(I_M_Production.COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
@@ -354,7 +354,7 @@ public class X_M_Production extends BasePOName {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(I_M_Production.COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -365,7 +365,7 @@ public class X_M_Production extends BasePOName {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(I_M_Production.COLUMNNAME_M_Product_ID, null);
         else setValue(I_M_Production.COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
@@ -375,7 +375,7 @@ public class X_M_Production extends BasePOName {
      *
      * @return Plan for producing a product
      */
-    public int getM_Production_ID() {
+    public int getProductionId() {
         Integer ii = (Integer) getValue(I_M_Production.COLUMNNAME_M_Production_ID);
         if (ii == null) return 0;
         return ii;
@@ -438,7 +438,7 @@ public class X_M_Production extends BasePOName {
      *
      * @param Reversal_ID ID of document reversal
      */
-    public void setReversal_ID(int Reversal_ID) {
+    public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(I_M_Production.COLUMNNAME_Reversal_ID, null);
         else setValue(I_M_Production.COLUMNNAME_Reversal_ID, Reversal_ID);
     }

@@ -5,7 +5,7 @@ import org.compiere.orm.MTree_Base
 import org.compiere.orm.X_AD_Tree
 import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
-import software.hsharp.core.util.TO_STRING
+import software.hsharp.core.util.convertString
 import software.hsharp.core.util.queryOf
 import java.util.Properties
 import java.util.logging.Level
@@ -111,7 +111,7 @@ open class MBaseClient : org.compiere.orm.MClient {
                         "WHERE l.AD_Reference_ID=120 AND l.AD_Ref_List_ID=t.AD_Ref_List_ID AND l.IsActive='Y'"
                     )
                     .append(" AND t.AD_Language=")
-                    .append(TO_STRING(language))
+                    .append(convertString(language))
 
         val loadQuery = queryOf(sql.toString(), listOf()).map { mapRow(it) }.asList
         val success = DB.current.run(loadQuery).min() ?: false

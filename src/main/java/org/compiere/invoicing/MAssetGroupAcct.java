@@ -43,20 +43,20 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     /**
      * Get Asset Group Accountings for given group
      */
-    public static List<MAssetGroupAcct> forA_Asset_Group_ID(Properties ctx, int A_Asset_Group_ID) {
+    public static List<MAssetGroupAcct> forA_Asset_GroupId(Properties ctx, int A_Asset_Group_ID) {
         return new Query(
                 ctx,
                 I_A_Asset_Group_Acct.Table_Name,
                 I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID + "=?"
         )
-                .setParameters(new Object[]{A_Asset_Group_ID})
+                .setParameters(A_Asset_Group_ID)
                 .list();
     }
 
     /**
      * Get Asset Group Accountings for given group
      */
-    public static MAssetGroupAcct forA_Asset_Group_ID(
+    public static MAssetGroupAcct forA_Asset_GroupId(
             Properties ctx, int A_Asset_Group_ID, String postingType) {
         final String whereClause =
                 I_A_Asset_Group_Acct.COLUMNNAME_A_Asset_Group_ID
@@ -64,14 +64,14 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
                         + I_A_Asset_Group_Acct.COLUMNNAME_PostingType
                         + "=?";
         return new Query(ctx, I_A_Asset_Group_Acct.Table_Name, whereClause)
-                .setParameters(new Object[]{A_Asset_Group_ID, postingType})
+                .setParameters(A_Asset_Group_ID, postingType)
                 .firstOnly();
     }
 
   /* commented by @win
-  public int getA_Asset_Class_ID()
+  public int getA_Asset_ClassId()
   {
-  	return getParent().getA_Asset_Class_ID();
+  	return getParent().getA_Asset_ClassId();
   }
   */
 
@@ -80,10 +80,7 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     }
 
     public boolean beforeSave(boolean newRecord) {
-        if (!UseLifeImpl.get(this).validate()) {
-            return false;
-        }
-        return true;
+        return UseLifeImpl.get(this).validate();
     }
 
     public boolean setAttrValue(String ColumnName, Object value) {
@@ -101,6 +98,6 @@ public class MAssetGroupAcct extends X_A_Asset_Group_Acct implements UseLife {
     public boolean isAttrValueChanged(String ColumnName) {
         int index = getColumnIndex(ColumnName);
         if (index < 0) return false;
-        return is_ValueChanged(index);
+        return isValueChanged(index);
     }
 } //	MAssetGroupAcct

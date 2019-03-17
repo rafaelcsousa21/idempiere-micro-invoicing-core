@@ -68,7 +68,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
                         I_C_OrderLandedCostAllocation.Table_Name,
                         whereClauseFinal.toString()
                 )
-                        .setParameters(getC_OrderLandedCost_ID())
+                        .setParameters(getOrderLandedCostId())
                         .list();
         return list.toArray(new MOrderLandedCostAllocation[list.size()]);
     } //	getLines
@@ -76,16 +76,16 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
     public String distributeLandedCost() {
         MOrderLandedCostAllocation[] lines = getLines("");
         if (lines.length == 0) {
-            MOrder order = (MOrder) getC_Order();
+            MOrder order = (MOrder) getOrder();
             MOrderLine[] orderLines = order.getLines();
             if (orderLines.length > 0) {
                 List<MOrderLandedCostAllocation> list = new ArrayList<MOrderLandedCostAllocation>();
                 for (MOrderLine line : orderLines) {
-                    if (line.getM_Product_ID() > 0) {
+                    if (line.getProductId() > 0) {
                         MOrderLandedCostAllocation allocation =
                                 new MOrderLandedCostAllocation(getCtx(), 0);
-                        allocation.setC_OrderLandedCost_ID(getC_OrderLandedCost_ID());
-                        allocation.setC_OrderLine_ID(line.getC_OrderLine_ID());
+                        allocation.setOrderLandedCostId(getOrderLandedCostId());
+                        allocation.setOrderLineId(line.getOrderLineId());
                         allocation.setClientOrg(getClientId(), getOrgId());
                         allocation.setAmt(BigDecimal.ZERO);
                         allocation.setBase(BigDecimal.ZERO);
@@ -101,7 +101,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
         }
 
         if (lines.length == 1) {
-            MOrderLine orderLine = (MOrderLine) lines[0].getC_OrderLine();
+            MOrderLine orderLine = (MOrderLine) lines[0].getOrderLine();
             BigDecimal base = orderLine.getBase(getLandedCostDistribution());
             if (base.signum() == 0) {
                 StringBuilder msgreturn =
@@ -116,7 +116,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
             //	Calculate total & base
             BigDecimal total = Env.ZERO;
             for (MOrderLandedCostAllocation allocation : lines) {
-                MOrderLine orderLine = (MOrderLine) allocation.getC_OrderLine();
+                MOrderLine orderLine = (MOrderLine) allocation.getOrderLine();
                 total = total.add(orderLine.getBase(getLandedCostDistribution()));
             }
             if (total.signum() == 0) {
@@ -126,7 +126,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
             }
             //	Create Allocations
             for (MOrderLandedCostAllocation allocation : lines) {
-                MOrderLine orderLine = (MOrderLine) allocation.getC_OrderLine();
+                MOrderLine orderLine = (MOrderLine) allocation.getOrderLine();
                 BigDecimal base = orderLine.getBase(getLandedCostDistribution());
                 allocation.setBase(base);
                 allocation.setQty(orderLine.getQtyOrdered());
@@ -171,7 +171,7 @@ public class MOrderLandedCost extends X_C_OrderLandedCost {
                         "Difference="
                                 + difference
                                 + ", C_OrderLandedCostAllocation_ID="
-                                + largestAmtAllocation.getC_OrderLandedCostAllocation_ID()
+                                + largestAmtAllocation.getOrderLandedCostAllocationId()
                                 + ", Amt"
                                 + largestAmtAllocation.getAmt());
         }

@@ -27,8 +27,8 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
     public X_M_InOutLineConfirm(Properties ctx, int M_InOutLineConfirm_ID) {
         super(ctx, M_InOutLineConfirm_ID);
         /**
-         * if (M_InOutLineConfirm_ID == 0) { setConfirmedQty (Env.ZERO); setM_InOutConfirm_ID (0);
-         * setM_InOutLineConfirm_ID (0); setM_InOutLine_ID (0); setProcessed (false); setTargetQty
+         * if (M_InOutLineConfirm_ID == 0) { setConfirmedQty (Env.ZERO); setInOutConfirmId (0);
+         * setInOutLineConfirm_ID (0); setInOutLineId (0); setProcessed (false); setTargetQty
          * (Env.ZERO); }
          */
     }
@@ -59,7 +59,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValue(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValue(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -127,7 +127,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      *
      * @param M_InOutConfirm_ID Material Shipment or Receipt Confirmation
      */
-    public void setM_InOutConfirm_ID(int M_InOutConfirm_ID) {
+    public void setInOutConfirmId(int M_InOutConfirm_ID) {
         if (M_InOutConfirm_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, null);
         else setValueNoCheck(COLUMNNAME_M_InOutConfirm_ID, Integer.valueOf(M_InOutConfirm_ID));
     }
@@ -137,7 +137,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      *
      * @return Line on Shipment or Receipt document
      */
-    public int getM_InOutLine_ID() {
+    public int getInOutLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -148,7 +148,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      *
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
-    public void setM_InOutLine_ID(int M_InOutLine_ID) {
+    public void setInOutLineId(int M_InOutLine_ID) {
         if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
         else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
     }
@@ -158,7 +158,7 @@ public class X_M_InOutLineConfirm extends PO implements I_M_InOutLineConfirm {
      *
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
-    public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
+    public void setInventoryLineId(int M_InventoryLine_ID) {
         if (M_InventoryLine_ID < 1) setValue(COLUMNNAME_M_InventoryLine_ID, null);
         else setValue(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
     }

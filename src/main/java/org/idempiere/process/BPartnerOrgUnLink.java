@@ -47,9 +47,9 @@ public class BPartnerOrgUnLink extends SvrProcess {
             throw new IllegalArgumentException(
                     "Business Partner not found - C_BPartner_ID=" + p_C_BPartner_ID);
         //
-        if (bp.getAD_OrgBP_ID_Int() == 0)
+        if (bp.getLinkedOrganizationId() == 0)
             throw new IllegalArgumentException("Business Partner not linked to an Organization");
-        bp.setAD_OrgBP_ID(null);
+        bp.setLinkedOrganizationId(null);
         if (!bp.save()) throw new IllegalArgumentException("Business Partner not changed");
 
         return "OK";

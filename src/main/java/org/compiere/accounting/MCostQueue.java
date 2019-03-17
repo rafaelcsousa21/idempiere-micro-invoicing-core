@@ -34,10 +34,10 @@ public class MCostQueue extends X_M_CostQueue {
         super(ctx, ignored);
         if (ignored == 0) {
             //	setAccountingSchemaId (0);
-            //	setM_AttributeSetInstance_ID (0);
-            //	setM_CostElement_ID (0);
+            //	setAttributeSetInstanceId (0);
+            //	setCostElementId (0);
             //	setCostTypeId (0);
-            //	setM_Product_ID (0);
+            //	setProductId (0);
             setCurrentCostPrice(Env.ZERO);
             setCurrentQty(Env.ZERO);
         } else throw new IllegalArgumentException("Multi-Key");
@@ -69,11 +69,11 @@ public class MCostQueue extends X_M_CostQueue {
             int M_CostElement_ID) {
         this(product.getCtx(), 0);
         setClientOrg(product.getClientId(), AD_Org_ID);
-        setC_AcctSchema_ID(as.getAccountingSchemaId());
-        setM_CostType_ID(as.getCostTypeId());
-        setM_Product_ID(product.getM_Product_ID());
-        setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
-        setM_CostElement_ID(M_CostElement_ID);
+        setAccountingSchemaId(as.getAccountingSchemaId());
+        setCostTypeId(as.getCostTypeId());
+        setProductId(product.getProductId());
+        setAttributeSetInstanceId(M_AttributeSetInstance_ID);
+        setCostElementId(M_CostElement_ID);
     } //	MCostQueue
 
     /**
@@ -151,7 +151,7 @@ public class MCostQueue extends X_M_CostQueue {
                                 "Qty="
                                         + remainingQty
                                         + "(!), ASI="
-                                        + queue.getMAttributeSetInstance_ID()
+                                        + queue.getAttributeSetInstanceId()
                                         + " - "
                                         + oldQty
                                         + " -> "
@@ -173,7 +173,7 @@ public class MCostQueue extends X_M_CostQueue {
                                 "Qty="
                                         + reduction
                                         + ", ASI="
-                                        + queue.getMAttributeSetInstance_ID()
+                                        + queue.getAttributeSetInstanceId()
                                         + " - "
                                         + oldQty
                                         + " -> "
@@ -229,7 +229,7 @@ public class MCostQueue extends X_M_CostQueue {
                 if (s_log.isLoggable(Level.CONFIG))
                     s_log.config(
                             "ASI="
-                                    + queue.getMAttributeSetInstance_ID()
+                                    + queue.getAttributeSetInstanceId()
                                     + " - Cost="
                                     + lastPrice
                                     + " * Qty="
@@ -251,7 +251,7 @@ public class MCostQueue extends X_M_CostQueue {
                 if (s_log.isLoggable(Level.FINE))
                     s_log.fine(
                             "ASI="
-                                    + queue.getMAttributeSetInstance_ID()
+                                    + queue.getAttributeSetInstanceId()
                                     + " - Cost="
                                     + lastPrice
                                     + " * Qty="

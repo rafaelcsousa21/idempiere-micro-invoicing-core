@@ -58,7 +58,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
             else if (name.equals("PaymentRule")) p_PaymentRule = (String) para[i].getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_PaySelection_ID = getRecord_ID();
+        p_C_PaySelection_ID = getRecordId();
         if (p_PaymentRule != null && p_PaymentRule.equals(X_C_Order.PAYMENTRULE_DirectDebit))
             p_PaymentRule = null;
     } //	prepare
@@ -102,12 +102,12 @@ public class PaySelectionCreateCheck extends SvrProcess {
     private void createCheck(MPaySelectionLine line) throws Exception {
         //	Try to find one
         for (int i = 0; i < m_list.size(); i++) {
-            MPaySelectionCheck check = (MPaySelectionCheck) m_list.get(i);
+            MPaySelectionCheck check = m_list.get(i);
             //	Add to existing
             if (check.getBusinessPartnerId() == line.getInvoice().getBusinessPartnerId()) {
                 check.addLine(line);
                 if (!check.save()) throw new IllegalStateException("Cannot save MPaySelectionCheck");
-                line.setC_PaySelectionCheck_ID(check.getC_PaySelectionCheck_ID());
+                line.setPaySelectionCheckId(check.getPaySelectionCheckId());
                 line.setProcessed(true);
                 if (!line.save()) throw new IllegalStateException("Cannot save MPaySelectionLine");
                 return;
@@ -126,7 +126,7 @@ public class PaySelectionCreateCheck extends SvrProcess {
             throw new AdempiereUserError(msg.toString());
         }
         if (!check.save()) throw new IllegalStateException("Cannot save MPaySelectionCheck");
-        line.setC_PaySelectionCheck_ID(check.getC_PaySelectionCheck_ID());
+        line.setPaySelectionCheckId(check.getPaySelectionCheckId());
         line.setProcessed(true);
         if (!line.save()) throw new IllegalStateException("Cannot save MPaySelectionLine");
         m_list.add(check);

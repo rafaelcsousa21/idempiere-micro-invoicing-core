@@ -54,7 +54,7 @@ public class MResourceAssignment extends X_S_ResourceAssignment {
     public String toString() {
         String sb = "MResourceAssignment[ID=" + getId() +
                 ",S_Resource_ID=" +
-                getS_Resource_ID() +
+                getResourceID() +
                 ",From=" +
                 getAssignDateFrom() +
                 ",To=" +

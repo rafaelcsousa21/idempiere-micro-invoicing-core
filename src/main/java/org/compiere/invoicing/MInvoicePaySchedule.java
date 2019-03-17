@@ -8,14 +8,8 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Invoice Payment Schedule Model
@@ -70,7 +64,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
         m_parent = invoice;
         setClientOrg(invoice);
         setInvoiceId(invoice.getInvoiceId());
-        setC_PaySchedule_ID(paySchedule.getC_PaySchedule_ID());
+        setPayScheduleId(paySchedule.getPayScheduleId());
 
         //	Amounts
         int scale = MCurrency.getStdPrecision(getCtx(), invoice.getCurrencyId());
@@ -154,7 +148,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
      * @return true
      */
     protected boolean beforeSave(boolean newRecord) {
-        if (is_ValueChanged("DueAmt")) {
+        if (isValueChanged("DueAmt")) {
             log.fine("beforeSave");
             setIsValid(false);
         }
@@ -170,7 +164,7 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
      */
     protected boolean afterSave(boolean newRecord, boolean success) {
         if (!success) return success;
-        if (is_ValueChanged("DueAmt") || is_ValueChanged("IsActive")) {
+        if (isValueChanged("DueAmt") || isValueChanged("IsActive")) {
             log.fine("afterSave");
             getParent();
             m_parent.validatePaySchedule();

@@ -76,7 +76,7 @@ public class MReportTree {
         m_PA_Hierarchy_ID = PA_Hierarchy_ID;
         m_ctx = ctx;
         //
-        int AD_Tree_ID = getAD_Tree_ID();
+        int AD_Tree_ID = getAD_TreeId();
         //	Not found
         if (AD_Tree_ID == 0)
             throw new IllegalArgumentException(
@@ -125,7 +125,7 @@ public class MReportTree {
                             + ElementType;
         }
 
-        MReportTree tree = (MReportTree) s_trees.get(key);
+        MReportTree tree = s_trees.get(key);
         if (tree == null) {
             tree = new MReportTree(ctx, PA_Hierarchy_ID, ElementType);
             s_trees.put(key, tree);
@@ -138,13 +138,13 @@ public class MReportTree {
      *
      * @return tree
      */
-    protected int getAD_Tree_ID() {
-        if (m_PA_Hierarchy_ID == 0) return getDefaultAD_Tree_ID();
+    protected int getAD_TreeId() {
+        if (m_PA_Hierarchy_ID == 0) return getDefaultAD_TreeId();
 
         MHierarchy hierarchy = MHierarchy.get(m_ctx, m_PA_Hierarchy_ID);
-        int AD_Tree_ID = hierarchy.getAD_Tree_ID(m_TreeType);
+        int AD_Tree_ID = hierarchy.getAD_TreeId(m_TreeType);
 
-        if (AD_Tree_ID == 0) return getDefaultAD_Tree_ID();
+        if (AD_Tree_ID == 0) return getDefaultAD_TreeId();
 
         return AD_Tree_ID;
     } //	getTreeId
@@ -154,7 +154,7 @@ public class MReportTree {
      *
      * @return tree
      */
-    protected int getDefaultAD_Tree_ID() {
+    protected int getDefaultAD_TreeId() {
         int AD_Tree_ID = 0;
         int AD_Client_ID = Env.getClientId(m_ctx);
 
@@ -199,7 +199,7 @@ public class MReportTree {
             while (en.hasMoreElements()) {
                 MTreeNode nn = (MTreeNode) en.nextElement();
                 if (!nn.isSummary()) {
-                    list.add(new Integer(nn.getNode_ID()));
+                    list.add(new Integer(nn.getNodeId()));
                     if (log.isLoggable(Level.FINEST)) log.finest("- " + nn);
                 } else if (log.isLoggable(Level.FINEST)) log.finest("- skipped parent (" + nn + ")");
             }

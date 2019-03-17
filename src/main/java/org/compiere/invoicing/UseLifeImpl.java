@@ -186,11 +186,11 @@ public class UseLifeImpl implements UseLife {
 
     /** @return asset class ID */
   /* commented out by @win
-  public int getA_Asset_Class_ID()
+  public int getA_Asset_ClassId()
   {
   	if (m_obj instanceof UseLife)
   	{
-  		return ((UseLife)m_obj).getA_Asset_Class_ID();
+  		return ((UseLife)m_obj).getA_Asset_ClassId();
   	}
   	else
   	{
@@ -252,7 +252,7 @@ public class UseLifeImpl implements UseLife {
             useLifeYears = useLifeMonths / 12;
         }
     /* commented out by @win
-    int A_Asset_Class_ID = getA_Asset_Class_ID();
+    int A_Asset_Class_ID = getA_Asset_ClassId();
     if (A_Asset_Class_ID > 0 && (useLifeMonths == 0 || useLifeYears == 0)) {
     	if(saveError) log.saveError("Error", "@Invalid@ @UseLifeMonths@=" + useLifeMonths + ", @UseLifeYears@=" + useLifeYears);
     	return false;
@@ -288,7 +288,7 @@ public class UseLifeImpl implements UseLife {
                 + isFiscal()
                 + ", AssetServiceDate="
                 + getAssetServiceDate()
-                // + ", A_Asset_Class=" + getA_Asset_Class_ID() //commented by @win
+                // + ", A_Asset_Class=" + getA_Asset_ClassId() //commented by @win
                 + ", m_obj="
                 + m_obj
                 + "]";

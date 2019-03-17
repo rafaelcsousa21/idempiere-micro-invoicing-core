@@ -1,6 +1,7 @@
 package org.idempiere.process
-
-import org.compiere.accounting.*
+import org.compiere.accounting.MAcctSchema
+import org.compiere.accounting.MCost
+import org.compiere.accounting.MProduct
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 import java.util.Properties

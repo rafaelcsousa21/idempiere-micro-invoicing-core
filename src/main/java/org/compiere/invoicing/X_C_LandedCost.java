@@ -45,8 +45,8 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
     public X_C_LandedCost(Properties ctx, int C_LandedCost_ID) {
         super(ctx, C_LandedCost_ID);
         /**
-         * if (C_LandedCost_ID == 0) { setC_InvoiceLine_ID (0); setC_LandedCost_ID (0);
-         * setLandedCostDistribution (null); // Q setM_CostElement_ID (0); }
+         * if (C_LandedCost_ID == 0) { setInvoiceLineId (0); setLandedCost_ID (0);
+         * setLandedCostDistribution (null); // Q setCostElementId (0); }
          */
     }
 
@@ -76,7 +76,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
      *
      * @return Invoice Detail Line
      */
-    public int getC_InvoiceLine_ID() {
+    public int getInvoiceLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -87,7 +87,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -116,7 +116,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
      *
      * @return Product Cost Element
      */
-    public int getM_CostElement_ID() {
+    public int getCostElementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
@@ -127,7 +127,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
      *
      * @return Material Shipment Document
      */
-    public int getM_InOut_ID() {
+    public int getInOutId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InOut_ID);
         if (ii == null) return 0;
         return ii;
@@ -138,7 +138,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
      *
      * @return Line on Shipment or Receipt document
      */
-    public int getM_InOutLine_ID() {
+    public int getInOutLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -149,7 +149,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -160,7 +160,7 @@ public class X_C_LandedCost extends PO implements I_C_LandedCost {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }

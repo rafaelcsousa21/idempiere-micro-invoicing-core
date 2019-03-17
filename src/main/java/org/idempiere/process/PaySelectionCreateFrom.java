@@ -94,7 +94,7 @@ public class PaySelectionCreateFrom extends SvrProcess {
             else if (name.equals("DueDate")) p_DueDate = (Timestamp) para[i].getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_PaySelection_ID = getRecord_ID();
+        p_C_PaySelection_ID = getRecordId();
     } //	prepare
 
     /**

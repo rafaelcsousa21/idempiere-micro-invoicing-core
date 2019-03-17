@@ -47,7 +47,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
     public MDistributionLine(Properties ctx, int GL_DistributionLine_ID) {
         super(ctx, GL_DistributionLine_ID);
         if (GL_DistributionLine_ID == 0) {
-            //	setGL_Distribution_ID (0);		//	Parent
+            //	setGLDistributionId (0);		//	Parent
             //	setLine (0);
             //
             setOverwriteAcct(false);
@@ -86,7 +86,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
      */
     public MDistribution getParent() {
         if (m_parent == null)
-            m_parent = new MDistribution(getCtx(), getGL_Distribution_ID());
+            m_parent = new MDistribution(getCtx(), getGLDistributionId());
         return m_parent;
     } //	getParent
 
@@ -109,24 +109,24 @@ public class MDistributionLine extends X_GL_DistributionLine {
                 MAccount.get(
                         getCtx(),
                         m_account.getClientId(),
-                        isOverwriteOrg() && getOrg_ID() != 0 ? getOrg_ID() : m_account.getOrgId(),
-                        m_account.getC_AcctSchema_ID(),
-                        isOverwriteAcct() && getAccount_ID() != 0 ? getAccount_ID() : m_account.getAccount_ID(),
-                        m_account.getC_SubAcct_ID(),
+                        isOverwriteOrg() && getOrgId() != 0 ? getOrgId() : m_account.getOrgId(),
+                        m_account.getAccountingSchemaId(),
+                        isOverwriteAcct() && getAccountId() != 0 ? getAccountId() : m_account.getAccountId(),
+                        m_account.getSubAccountId(),
                         //
-                        isOverwriteProduct() ? getM_Product_ID() : m_account.getM_Product_ID(),
+                        isOverwriteProduct() ? getProductId() : m_account.getProductId(),
                         isOverwriteBPartner() ? getBusinessPartnerId() : m_account.getBusinessPartnerId(),
                         isOverwriteOrgTrx() ? getTransactionOrganizationId() : m_account.getTransactionOrganizationId(),
-                        isOverwriteLocFrom() ? getC_LocFrom_ID() : m_account.getC_LocFrom_ID(),
-                        isOverwriteLocTo() ? getC_LocTo_ID() : m_account.getC_LocTo_ID(),
-                        isOverwriteSalesRegion() ? getC_SalesRegion_ID() : m_account.getC_SalesRegion_ID(),
+                        isOverwriteLocFrom() ? getLocationFromId() : m_account.getLocationFromId(),
+                        isOverwriteLocTo() ? getLocationToId() : m_account.getLocationToId(),
+                        isOverwriteSalesRegion() ? getSalesRegionId() : m_account.getSalesRegionId(),
                         isOverwriteProject() ? getProjectId() : m_account.getProjectId(),
                         isOverwriteCampaign() ? getCampaignId() : m_account.getCampaignId(),
                         isOverwriteActivity() ? getBusinessActivityId() : m_account.getBusinessActivityId(),
                         isOverwriteUser1() ? getUser1Id() : m_account.getUser1Id(),
                         isOverwriteUser2() ? getUser2Id() : m_account.getUser2Id(),
-                        m_account.getUserElement1_ID(),
-                        m_account.getUserElement2_ID(),
+                        m_account.getUserElement1Id(),
+                        m_account.getUserElement2Id(),
                         null);
         return acct;
     } //	setAccount
@@ -209,31 +209,31 @@ public class MDistributionLine extends X_GL_DistributionLine {
         if (getLine() == 0) {
             String sql =
                     "SELECT COALESCE(MAX(Line),0)+10 FROM GL_DistributionLine WHERE GL_Distribution_ID=?";
-            int ii = getSQLValue(sql, getGL_Distribution_ID());
+            int ii = getSQLValue(sql, getGLDistributionId());
             setLine(ii);
         }
         //	Reset not selected Overwrite
-        if (!isOverwriteAcct() && getAccount_ID() != 0) setAccount_ID(0);
+        if (!isOverwriteAcct() && getAccountId() != 0) setAccountId(0);
         if (!isOverwriteActivity() && getBusinessActivityId() != 0) setBusinessActivityId(0);
         if (!isOverwriteBPartner() && getBusinessPartnerId() != 0) setBusinessPartnerId(0);
         if (!isOverwriteCampaign() && getCampaignId() != 0) setCampaignId(0);
-        if (!isOverwriteLocFrom() && getC_LocFrom_ID() != 0) setC_LocFrom_ID(0);
-        if (!isOverwriteLocTo() && getC_LocTo_ID() != 0) setC_LocTo_ID(0);
-        if (!isOverwriteOrg() && getOrg_ID() != 0) setOrg_ID(0);
+        if (!isOverwriteLocFrom() && getLocationFromId() != 0) setLocationFromId(0);
+        if (!isOverwriteLocTo() && getLocationToId() != 0) setLocationToId(0);
+        if (!isOverwriteOrg() && getOrgId() != 0) setOrgId(0);
         if (!isOverwriteOrgTrx() && getTransactionOrganizationId() != 0) setTransactionOrganizationId(0);
-        if (!isOverwriteProduct() && getM_Product_ID() != 0) setM_Product_ID(0);
+        if (!isOverwriteProduct() && getProductId() != 0) setProductId(0);
         if (!isOverwriteProject() && getProjectId() != 0) setProjectId(0);
-        if (!isOverwriteSalesRegion() && getC_SalesRegion_ID() != 0) setC_SalesRegion_ID(0);
+        if (!isOverwriteSalesRegion() && getSalesRegionId() != 0) setSalesRegionId(0);
         if (!isOverwriteUser1() && getUser1Id() != 0) setUser1Id(0);
         if (!isOverwriteUser2() && getUser2Id() != 0) setUser2Id(0);
 
         //	Account Overwrite cannot be 0
-        if (isOverwriteAcct() && getAccount_ID() == 0) {
+        if (isOverwriteAcct() && getAccountId() == 0) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@Account_ID@ = 0"));
             return false;
         }
         //	Org Overwrite cannot be 0
-        if (isOverwriteOrg() && getOrg_ID() == 0) {
+        if (isOverwriteOrg() && getOrgId() == 0) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@Org_ID@ = 0"));
             return false;
         }

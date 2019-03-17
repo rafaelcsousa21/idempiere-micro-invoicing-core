@@ -5,7 +5,6 @@ import org.compiere.model.IFact;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -46,7 +45,7 @@ public class Doc_GLJournal extends Doc {
     protected String loadDocumentDetails() {
         MJournal journal = (MJournal) getPO();
         m_PostingType = journal.getPostingType();
-        m_C_AcctSchema_ID = journal.getC_AcctSchema_ID();
+        m_C_AcctSchema_ID = journal.getAccountingSchemaId();
 
         //	Contained Objects
         p_lines = loadLines(journal);
@@ -127,7 +126,7 @@ public class Doc_GLJournal extends Doc {
         if (getDocumentType().equals(DOCTYPE_GLJournal)) {
             //  account     DR      CR
             for (int i = 0; i < p_lines.length; i++) {
-                if (p_lines[i].getC_AcctSchema_ID() == as.getAccountingSchemaId()) {
+                if (p_lines[i].getAccountingSchemaId() == as.getAccountingSchemaId()) {
                     @SuppressWarnings("unused")
                     FactLine line =
                             fact.createLine(

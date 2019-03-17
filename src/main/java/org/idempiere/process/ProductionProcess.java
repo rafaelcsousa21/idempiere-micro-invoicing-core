@@ -41,7 +41,7 @@ public class ProductionProcess extends SvrProcess {
                                 "M_ProductionPlan.M_Production_ID=?"
                         );
                 List<MProductionPlan> plans =
-                        planQuery.setParameters(production.getM_Production_ID()).list();
+                        planQuery.setParameters(production.getProductionId()).list();
                 int linesCount = 0;
                 for (MProductionPlan plan : plans) {
                     MProductionLine[] lines = plan.getLines();
@@ -65,7 +65,7 @@ public class ProductionProcess extends SvrProcess {
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 
-        p_M_Production_ID = getRecord_ID();
+        p_M_Production_ID = getRecordId();
         if (p_M_Production_ID > 0)
             m_production = new MProduction(getCtx(), p_M_Production_ID);
     } // prepare

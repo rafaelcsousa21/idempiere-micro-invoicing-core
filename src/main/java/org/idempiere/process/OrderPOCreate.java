@@ -58,10 +58,10 @@ public class OrderPOCreate extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
             else if (name.equals("DateOrdered")) {
                 p_DateOrdered_From = (Timestamp) para[i].getParameter();
-                p_DateOrdered_To = (Timestamp) para[i].getParameter_To();
+                p_DateOrdered_To = (Timestamp) para[i].getParameterTo();
             } else if (name.equals("C_BPartner_ID"))
                 p_C_BPartner_ID = ((BigDecimal) para[i].getParameter()).intValue();
             else if (name.equals("Vendor_ID"))
@@ -69,12 +69,12 @@ public class OrderPOCreate extends SvrProcess {
             else if (name.equals("C_Order_ID"))
                 p_C_Order_ID = ((BigDecimal) para[i].getParameter()).intValue();
             else if (name.equals("IsDropShip"))
-                p_IsDropShip = ((String) para[i].getParameter()).equals("Y");
+                p_IsDropShip = para[i].getParameter().equals("Y");
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 
         // called from order window w/o parameters
-        if (getTable_ID() == MOrder.Table_ID && getRecord_ID() > 0) p_C_Order_ID = getRecord_ID();
+        if (getTableId() == MOrder.Table_ID && getRecordId() > 0) p_C_Order_ID = getRecordId();
     } //	prepare
 
     /**
@@ -131,7 +131,7 @@ public class OrderPOCreate extends SvrProcess {
                 p_C_Order_ID, p_C_BPartner_ID, p_Vendor_ID,
                 p_DateOrdered_From, p_DateOrdered_To
         );
-        for(MOrder order : orders) {
+        for (MOrder order : orders) {
             counter += createPOFromSO(order);
         }
 
@@ -177,7 +177,7 @@ public class OrderPOCreate extends SvrProcess {
             while (rs.next()) {
                 //	New Order
                 int C_BPartner_ID = rs.getInt(1);
-                if (po == null || po.getBill_BPartner_ID() != C_BPartner_ID) {
+                if (po == null || po.getBill_BPartnerId() != C_BPartner_ID) {
                     po = createPOForVendor(rs.getInt(1), so);
                     String message = Msg.parseTranslation(getCtx(), "@OrderCreated@ " + po.getDocumentNo());
                     addBufferLog(0, null, null, message, po.getTableId(), po.getOrderId());
@@ -187,13 +187,13 @@ public class OrderPOCreate extends SvrProcess {
                 //	Line
                 int M_Product_ID = rs.getInt(2);
                 for (int i = 0; i < soLines.length; i++) {
-                    if (soLines[i].getM_Product_ID() == M_Product_ID) {
+                    if (soLines[i].getProductId() == M_Product_ID) {
                         MOrderLine poLine = new MOrderLine(po);
-                        poLine.setLink_OrderLine_ID(soLines[i].getC_OrderLine_ID());
-                        poLine.setM_Product_ID(soLines[i].getM_Product_ID());
+                        poLine.setLink_OrderLineId(soLines[i].getOrderLineId());
+                        poLine.setProductId(soLines[i].getProductId());
                         poLine.setChargeId(soLines[i].getChargeId());
-                        poLine.setM_AttributeSetInstance_ID(soLines[i].getMAttributeSetInstance_ID());
-                        poLine.setC_UOM_ID(soLines[i].getC_UOM_ID());
+                        poLine.setAttributeSetInstanceId(soLines[i].getAttributeSetInstanceId());
+                        poLine.setUOMId(soLines[i].getUOMId());
                         poLine.setQtyEntered(soLines[i].getQtyEntered());
                         poLine.setQtyOrdered(soLines[i].getQtyOrdered());
                         poLine.setDescription(soLines[i].getDescription());
@@ -201,7 +201,7 @@ public class OrderPOCreate extends SvrProcess {
                         poLine.setPrice();
                         poLine.saveEx();
 
-                        soLines[i].setLink_OrderLine_ID(poLine.getC_OrderLine_ID());
+                        soLines[i].setLink_OrderLineId(poLine.getOrderLineId());
                         soLines[i].saveEx();
                     }
                 }
@@ -216,7 +216,7 @@ public class OrderPOCreate extends SvrProcess {
         }
         //	Set Reference to PO
         if (counter == 1 && po != null) {
-            so.setLink_Order_ID(po.getOrderId());
+            so.setLink_OrderId(po.getOrderId());
             so.saveEx();
         }
         return counter;
@@ -231,7 +231,7 @@ public class OrderPOCreate extends SvrProcess {
     public MOrder createPOForVendor(int C_BPartner_ID, MOrder so) {
         MOrder po = new MOrder(getCtx(), 0);
         po.setClientOrg(so.getClientId(), so.getOrgId());
-        po.setLink_Order_ID(so.getOrderId());
+        po.setLink_OrderId(so.getOrderId());
         po.setIsSOTrx(false);
         po.setTargetDocumentTypeId();
         //
@@ -249,14 +249,14 @@ public class OrderPOCreate extends SvrProcess {
             po.setDeliveryViaRule(so.getDeliveryViaRule());
             po.setShipperId(so.getShipperId());
 
-            if (so.isDropShip() && so.getDropShip_BPartner_ID() != 0) {
-                po.setDropShip_BPartner_ID(so.getDropShip_BPartner_ID());
-                po.setDropShip_Location_ID(so.getDropShip_Location_ID());
-                po.setDropShip_User_ID(so.getDropShip_User_ID());
+            if (so.isDropShip() && so.getDropShipBPartnerId() != 0) {
+                po.setDropShipBPartnerId(so.getDropShipBPartnerId());
+                po.setDropShipLocationId(so.getDropShipLocationId());
+                po.setDropShipUserId(so.getDropShipUserId());
             } else {
-                po.setDropShip_BPartner_ID(so.getBusinessPartnerId());
-                po.setDropShip_Location_ID(so.getBusinessPartnerLocationId());
-                po.setDropShip_User_ID(so.getUserId());
+                po.setDropShipBPartnerId(so.getBusinessPartnerId());
+                po.setDropShipLocationId(so.getBusinessPartnerLocationId());
+                po.setDropShipUserId(so.getUserId());
             }
             // get default drop ship warehouse
             MOrgInfo orginfo = MOrgInfo.get(getCtx(), po.getOrgId());

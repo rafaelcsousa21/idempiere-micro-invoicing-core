@@ -50,7 +50,7 @@ public class AD_PrintPaper_Default extends SvrProcess {
             else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_Record_ID = getRecord_ID();
+        p_Record_ID = getRecordId();
     } //	prepare
 
     /**

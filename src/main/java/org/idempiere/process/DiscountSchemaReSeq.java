@@ -38,7 +38,7 @@ public class DiscountSchemaReSeq extends SvrProcess {
      * @see org.compiere.process.SvrProcess#prepare()
      */
     protected void prepare() {
-        p_M_DiscountSchema_ID = getRecord_ID();
+        p_M_DiscountSchema_ID = getRecordId();
     } //	prepare
 
     /**

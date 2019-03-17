@@ -41,7 +41,7 @@ public class MBankAccount extends X_C_BankAccount {
             setCurrentBalance(Env.ZERO);
             //	setCurrencyId (0);
             setCreditLimit(Env.ZERO);
-            //	setC_BankAccount_ID (0);
+            //	setBankAccountId (0);
         }
     } //	MBankAccount
 
@@ -63,7 +63,7 @@ public class MBankAccount extends X_C_BankAccount {
      */
     public static MBankAccount get(Properties ctx, int C_BankAccount_ID) {
         Integer key = C_BankAccount_ID;
-        MBankAccount retValue = (MBankAccount) s_cache.get(key);
+        MBankAccount retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MBankAccount(ctx, C_BankAccount_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);

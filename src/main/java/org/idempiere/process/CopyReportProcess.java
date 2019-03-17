@@ -55,6 +55,6 @@ public class CopyReportProcess extends SvrProcess {
             else log.log(Level.WARNING, "Unknown paramter: " + para);
         }
 
-        if (targetId == 0) targetId = getRecord_ID();
+        if (targetId == 0) targetId = getRecordId();
     }
 }

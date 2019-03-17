@@ -110,23 +110,23 @@ public class DistributionRun extends SvrProcess {
                 m_docType = new MDocType(getCtx(), p_C_DocType_ID);
             } else if (name.equals("DatePromised")) {
                 p_DatePromised = (Timestamp) para[i].getParameter();
-                // p_DatePromised_To = (Timestamp)para[i].getParameter_To();
+                // p_DatePromised_To = (Timestamp)para[i].getParameterTo();
             } else if (name.equals("IsTest")) p_IsTest = "Y".equals(para[i].getParameter());
             else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
                     && name.equals("M_Warehouse_ID"))
                 p_M_Warehouse_ID = ((BigDecimal) para[i].getParameter()).intValue();
             else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
                     && name.equals("ConsolidateDocument"))
-                p_ConsolidateDocument = "Y".equals((String) para[i].getParameter());
+                p_ConsolidateDocument = "Y".equals(para[i].getParameter());
             else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
                     && name.equals("M_DistributionList_ID"))
                 p_M_DistributionList_ID = para[i].getParameterAsInt();
             else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
                     && name.equals("IsRequiredDRP"))
-                p_BasedInDamnd = "Y".equals((String) para[i].getParameter());
+                p_BasedInDamnd = "Y".equals(para[i].getParameter());
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        p_M_DistributionRun_ID = getRecord_ID();
+        p_M_DistributionRun_ID = getRecordId();
     } //	prepare
 
     /**
@@ -289,7 +289,7 @@ public class DistributionRun extends SvrProcess {
     	for (int j = 0; j < m_runLines.length; j++)
     	{
     		MDistributionRunLine runLine = m_runLines[j];
-    		if (runLine.getM_DistributionRunLine_ID() == detail.getM_DistributionRunLine_ID())
+    		if (runLine.getDistributionRunLineId() == detail.getDistributionRunLineId())
     		{
     			//	Round
     			detail.round(runLine.getUOMPrecision());
@@ -384,7 +384,7 @@ public class DistributionRun extends SvrProcess {
     	for (int i = 0; i < m_details.length; i++)
     	{
     		MDistributionRunDetail detail = m_details[i];
-    		if (runLine.getM_DistributionRunLine_ID() == detail.getM_DistributionRunLine_ID())
+    		if (runLine.getDistributionRunLineId() == detail.getDistributionRunLineId())
     		{
     			if (log.isLoggable(Level.FINE)) log.fine("Biggest - DetailAllocation=" + detail.getActualAllocation()
     				+ ", MaxAllocation=" + runLine.getMaxAllocation()
@@ -409,7 +409,7 @@ public class DistributionRun extends SvrProcess {
     	for (int i = 0; i < m_details.length; i++)
     	{
     		MDistributionRunDetail detail = m_details[i];
-    		if (runLine.getM_DistributionRunLine_ID() == detail.getM_DistributionRunLine_ID())
+    		if (runLine.getDistributionRunLineId() == detail.getDistributionRunLineId())
     		{
     			if (detail.isCanAdjust())
     				ratioTotal = ratioTotal.add(detail.getRatio());
@@ -424,7 +424,7 @@ public class DistributionRun extends SvrProcess {
     	for (int i = 0; i < m_details.length; i++)
     	{
     		MDistributionRunDetail detail = m_details[i];
-    		if (runLine.getM_DistributionRunLine_ID() == detail.getM_DistributionRunLine_ID())
+    		if (runLine.getDistributionRunLineId() == detail.getDistributionRunLineId())
     		{
     			if (detail.isCanAdjust())
     			{
@@ -457,7 +457,7 @@ public class DistributionRun extends SvrProcess {
     if (runAD_Org_ID == 0)
     	runAD_Org_ID = Env.getOrgId(getCtx());
     MOrg runOrg = MOrg.get(getCtx(), runAD_Org_ID);
-    int runC_BPartner_ID = runOrg.getLinkedC_BPartner_ID(null);
+    int runC_BPartner_ID = runOrg.getLinkedC_BPartnerId(null);
     boolean counter = !m_run.isCreateSingleOrder()	//	no single Order
     	&& runC_BPartner_ID > 0						//	Org linked to BP
     	&& !m_docType.isSOTrx();					//	PO
@@ -564,8 +564,8 @@ public class DistributionRun extends SvrProcess {
     	}
 
     	//	Line
-    	if (product == null || product.getM_Product_ID() != detail.getM_Product_ID())
-    		product = MProduct.get (getCtx(), detail.getM_Product_ID());
+    	if (product == null || product.getProductId() != detail.getProductId())
+    		product = MProduct.get (getCtx(), detail.getProductId());
     	if (p_IsTest)
     	{
     		StringBuilder msglog = new StringBuilder().append(bp.getName()).append(" - ").append(product.getName());
@@ -656,10 +656,10 @@ public class DistributionRun extends SvrProcess {
     	for(MDistributionRunDetail record : records)
     	{
 
-    			MDistributionRunLine drl = (MDistributionRunLine) MTable.get(getCtx(), MDistributionRunLine.Table_ID).getPO(record.getM_DistributionRunLine_ID(), null);
-    			MProduct product = MProduct.get(getCtx(), record.getM_Product_ID());
+    			MDistributionRunLine drl = (MDistributionRunLine) MTable.get(getCtx(), MDistributionRunLine.Table_ID).getPO(record.getDistributionRunLineId(), null);
+    			MProduct product = MProduct.get(getCtx(), record.getProductId());
     			BigDecimal ration = record.getRatio();
-    			BigDecimal totalration = getQtyDemand(record.getM_Product_ID());
+    			BigDecimal totalration = getQtyDemand(record.getProductId());
     			if (log.isLoggable(Level.INFO)){
     				log.info("Value:" + product.getValue());
     				log.info("Product:" + product.getName());
@@ -765,8 +765,8 @@ public class DistributionRun extends SvrProcess {
     	{
     			BigDecimal total_ration = getSQLValueBD(null,
     			"SELECT SUM(Ratio) FROM T_DistributionRunDetail WHERE M_DistributionRun_ID=? AND M_Product_ID=? GROUP BY  M_Product_ID"
-    			, p_M_DistributionRun_ID, record.getM_Product_ID());
-    			MDistributionRunLine drl = (MDistributionRunLine) MTable.get(getCtx(), MDistributionRunLine.Table_ID).getPO(record.getM_DistributionRunLine_ID(), null);
+    			, p_M_DistributionRun_ID, record.getProductId());
+    			MDistributionRunLine drl = (MDistributionRunLine) MTable.get(getCtx(), MDistributionRunLine.Table_ID).getPO(record.getDistributionRunLineId(), null);
     			BigDecimal ration = record.getRatio();
     			BigDecimal factor = ration.divide(total_ration,BigDecimal.ROUND_HALF_UP);
     			record.setQty(factor.multiply(drl.getTotalQty()));
@@ -816,7 +816,7 @@ public class DistributionRun extends SvrProcess {
      	    {
      	    		pstmt = prepareStatement (sql.toString(),null);
      	    		pstmt.setInt(1, detail.getBusinessPartnerId());
-     	    		pstmt.setInt(2, detail.getM_Product_ID());
+     	    		pstmt.setInt(2, detail.getProductId());
      	    		pstmt.setInt(3, M_Warehouse_ID);
      	    		pstmt.setTimestamp(4, p_DatePromised);
      	    		//pstmt.setTimestamp(5, p_DatePromised_To);
@@ -826,7 +826,7 @@ public class DistributionRun extends SvrProcess {
      	            {
     	 	   			//	Create Order Line
     	 	   			MDDOrderLine line = new MDDOrderLine(getCtx(), rs , null);
-    	 	   			line.setM_Product_ID(detail.getM_Product_ID());
+    	 	   			line.setProductId(detail.getProductId());
     	 	   			line.setConfirmedQty(line.getTargetQty().add(detail.getActualAllocation()));
     	 	   			if(p_M_Warehouse_ID>0)
     	 	   			line.setDescription(Msg.translate(getCtx(), "PlannedQty"));
@@ -859,7 +859,7 @@ public class DistributionRun extends SvrProcess {
     if (runAD_Org_ID == 0)
     	runAD_Org_ID = Env.getOrgId(getCtx());
     MOrg runOrg = MOrg.get(getCtx(), runAD_Org_ID);
-    int runC_BPartner_ID = runOrg.getLinkedC_BPartner_ID(null);
+    int runC_BPartner_ID = runOrg.getLinkedC_BPartnerId(null);
     boolean counter = !m_run.isCreateSingleOrder()	//	no single Order
     	&& runC_BPartner_ID > 0						//	Org linked to BP
     	&& !m_docType.isSOTrx();					//	PO
@@ -1018,8 +1018,8 @@ public class DistributionRun extends SvrProcess {
     	}
 
     	//	Line
-    	if (product == null || product.getM_Product_ID() != detail.getM_Product_ID())
-    		product = MProduct.get (getCtx(), detail.getM_Product_ID());
+    	if (product == null || product.getProductId() != detail.getProductId())
+    		product = MProduct.get (getCtx(), detail.getProductId());
     	if (p_IsTest)
     	{
     		StringBuilder msglog = new StringBuilder().append(bp.getName()).append(" - ").append(product.getName());
@@ -1031,13 +1031,13 @@ public class DistributionRun extends SvrProcess {
     	{
 
     		String sql = "SELECT DD_OrderLine_ID FROM DD_OrderLine ol INNER JOIN DD_Order o ON (o.DD_Order_ID=ol.DD_Order_ID) WHERE o.DocStatus IN ('DR','IN') AND o.C_BPartner_ID = ? AND M_Product_ID=? AND  ol.M_Locator_ID=?  AND ol.DatePromised <= ?";
-    		int DD_OrderLine_ID = getSQLValueEx(null, sql, new Object[]{detail.getBusinessPartnerId(),product.getM_Product_ID(), m_locator.getM_Locator_ID(), p_DatePromised});
+    		int DD_OrderLine_ID = getSQLValueEx(null, sql, new Object[]{detail.getBusinessPartnerId(),product.getProductId(), m_locator.getLocatorId(), p_DatePromised});
     		if (DD_OrderLine_ID  <= 0)
     		{
     			MDDOrderLine line = new MDDOrderLine(order);
     			line.setOrgId(bp.getAD_OrgBP_ID_Int());
-    			line.setM_Locator_ID(m_locator.getM_Locator_ID());
-    			line.setM_LocatorTo_ID(m_locator_to.getM_Locator_ID());
+    			line.setLocatorId(m_locator.getLocatorId());
+    			line.setLocatorToId(m_locator_to.getLocatorId());
     			line.setIsInvoiced(false);
     			line.setProduct(product);
     			BigDecimal QtyAllocation = detail.getActualAllocation();
@@ -1083,8 +1083,8 @@ public class DistributionRun extends SvrProcess {
     			;	//	don't overwrite counter doc
     		//
     		line.setOrgId(bp.getAD_OrgBP_ID_Int());
-    		line.setM_Locator_ID(m_locator.getM_Locator_ID());
-    		line.setM_LocatorTo_ID(m_locator_to.getM_Locator_ID());
+    		line.setLocatorId(m_locator.getLocatorId());
+    		line.setLocatorToId(m_locator_to.getLocatorId());
     		line.setIsInvoiced(false);
     		line.setProduct(product);
     		line.setQty(detail.getActualAllocation());

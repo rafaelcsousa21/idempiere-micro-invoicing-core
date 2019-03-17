@@ -101,7 +101,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM {
      *
      * @return Bill of Material
      */
-    public int getM_BOM_ID() {
+    public int getBOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_BOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -112,7 +112,7 @@ public class X_M_BOM extends BasePOName implements I_M_BOM {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;

@@ -40,7 +40,7 @@ public class LandedCostDistribute extends SvrProcess {
      * Prepare
      */
     protected void prepare() {
-        p_C_LandedCost_ID = getRecord_ID();
+        p_C_LandedCost_ID = getRecordId();
     } //	prepare
 
     /**

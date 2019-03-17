@@ -41,7 +41,7 @@ public class MPaySelection extends X_C_PaySelection {
     public MPaySelection(Properties ctx, int C_PaySelection_ID) {
         super(ctx, C_PaySelection_ID);
         if (C_PaySelection_ID == 0) {
-            //	setC_BankAccount_ID (0);
+            //	setBankAccountId (0);
             //	setName (null);	// @#Date@
             //	setPayDate (new Timestamp(System.currentTimeMillis()));	// @#Date@
             setTotalAmt(Env.ZERO);
@@ -76,7 +76,7 @@ public class MPaySelection extends X_C_PaySelection {
         final String whereClause = "C_PaySelection_ID=?";
         List<MPaySelectionLine> list =
                 new Query(getCtx(), I_C_PaySelectionLine.Table_Name, whereClause)
-                        .setParameters(getC_PaySelection_ID())
+                        .setParameters(getPaySelectionId())
                         .setOrderBy("Line")
                         .list();
         //
@@ -93,7 +93,7 @@ public class MPaySelection extends X_C_PaySelection {
     public int getCurrencyId() {
         if (m_C_Currency_ID == 0) {
             String sql = "SELECT C_Currency_ID FROM C_BankAccount " + "WHERE C_BankAccount_ID=?";
-            m_C_Currency_ID = getSQLValue(sql, getC_BankAccount_ID());
+            m_C_Currency_ID = getSQLValue(sql, getBankAccountId());
         }
         return m_C_Currency_ID;
     } //	getCurrencyId

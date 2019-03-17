@@ -2,7 +2,7 @@ package org.idempiere.process
 
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.*
+import java.util.Properties
 
 /**
  * Get Replenish Records

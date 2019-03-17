@@ -180,8 +180,8 @@ public class MMailText extends X_R_MailText {
 
         int i = inStr.indexOf('@');
         while (i != -1) {
-            outStr.append(inStr.substring(0, i)); // up to @
-            inStr = inStr.substring(i + 1, inStr.length()); // from first @
+            outStr.append(inStr, 0, i); // up to @
+            inStr = inStr.substring(i + 1); // from first @
 
             int j = inStr.indexOf('@'); // next @
             if (j < 0) // no second tag
@@ -193,7 +193,7 @@ public class MMailText extends X_R_MailText {
             token = inStr.substring(0, j);
             outStr.append(parseVariable(token, po)); // replace context
 
-            inStr = inStr.substring(j + 1, inStr.length()); // from second @
+            inStr = inStr.substring(j + 1); // from second @
             i = inStr.indexOf('@');
         }
 
@@ -348,7 +348,7 @@ public class MMailText extends X_R_MailText {
         String sql = "SELECT * FROM R_MailText_Trl WHERE R_MailText_ID=? AND AD_Language=?";
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getR_MailText_ID());
+            pstmt.setInt(1, getMailTemplateId());
             pstmt.setString(2, AD_Language);
             rs = pstmt.executeQuery();
             if (rs.next()) {

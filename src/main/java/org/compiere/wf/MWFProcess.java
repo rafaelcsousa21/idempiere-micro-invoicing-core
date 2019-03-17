@@ -98,17 +98,17 @@ public class MWFProcess extends X_AD_WF_Process {
 
         //	Document
         setDBTableId(wf.getDBTableId());
-        setRecordId(pi.getRecord_ID());
+        setRecordId(pi.getRecordId());
         if (pi.getPO() != null) m_po = (PO) pi.getPO();
         if (getPO() == null) {
-            setTextMsg("No PO with ID=" + pi.getRecord_ID());
+            setTextMsg("No PO with ID=" + pi.getRecordId());
             addTextMsg(new Exception(""));
             super.setWorkflowState(X_AD_WF_Process.WFSTATE_Terminated);
         } else setTextMsg(getPO());
         //	Responsible/User
-        if (wf.getWorkflowResponsibleId() == 0) setAD_WF_Responsible_ID();
+        if (wf.getWorkflowResponsibleId() == 0) setAD_WF_ResponsibleId();
         else setWorkFlowResponsibleId(wf.getWorkflowResponsibleId());
-        setUser_ID(pi.getUserId()); // 	user starting
+        setUserId(pi.getUserId()); // 	user starting
         //
         m_state = new StateEngine(getWorkflowState());
         setProcessed(false);
@@ -268,7 +268,7 @@ public class MWFProcess extends X_AD_WF_Process {
         if (log.isLoggable(Level.FINE)) log.fine("Last=" + last);
         //	transitions from the last processed node
         MWFNodeNext[] transitions =
-                getWorkflow().getNodeNexts(last.getWorkflowNodeId(), last.getPO_AD_Client_ID());
+                getWorkflow().getNodeNexts(last.getWorkflowNodeId(), last.getPO_AD_ClientId());
         if (transitions == null || transitions.length == 0) return false; // 	done
 
         //	We need to wait for last activity
@@ -301,7 +301,7 @@ public class MWFProcess extends X_AD_WF_Process {
      * ************************************************************************ Set Workflow
      * Responsible. Searches for a Invoker.
      */
-    public void setAD_WF_Responsible_ID() {
+    public void setAD_WF_ResponsibleId() {
         int AD_WF_Responsible_ID =
                 getSQLValueEx(
                         MRole.getDefault(getCtx(), false)
@@ -321,7 +321,7 @@ public class MWFProcess extends X_AD_WF_Process {
      *
      * @param User_ID process invoker
      */
-    private void setUser_ID(Integer User_ID) {
+    private void setUserId(Integer User_ID) {
         //	Responsible
         MWFResponsible resp = MWFResponsible.get(getCtx(), getWorkFlowResponsibleId());
         //	(1) User - Directly responsible
@@ -333,7 +333,7 @@ public class MWFProcess extends X_AD_WF_Process {
             //	(2) Doc Owner
             if (m_po != null && m_po instanceof DocAction) {
                 DocAction da = (DocAction) m_po;
-                AD_User_ID = da.getDoc_User_ID();
+                AD_User_ID = da.getDoc_UserId();
             }
             //	(2) Sales Rep
             if (AD_User_ID == 0 && m_po != null && m_po.getColumnIndex("SalesRep_ID") != -1) {

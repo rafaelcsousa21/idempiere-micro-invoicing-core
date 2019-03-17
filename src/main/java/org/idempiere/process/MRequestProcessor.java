@@ -58,7 +58,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
         this(parent.getCtx(), 0);
         setClientOrg(parent);
         setName(parent.getName() + " - " + Msg.translate(getCtx(), "R_RequestProcessor_ID"));
-        setSupervisor_ID(Supervisor_ID);
+        setSupervisorId(Supervisor_ID);
     } //	MRequestProcessor
 
     /**
@@ -80,7 +80,7 @@ public class MRequestProcessor extends X_R_RequestProcessor
      */
     @Override
     protected boolean beforeSave(boolean newRecord) {
-        if (newRecord || is_ValueChanged("AD_Schedule_ID")) {
+        if (newRecord || isValueChanged("AD_Schedule_ID")) {
             long nextWork =
                     MSchedule.getNextRunMS(
                             System.currentTimeMillis(),
@@ -96,27 +96,27 @@ public class MRequestProcessor extends X_R_RequestProcessor
 
     @Override
     public String getFrequencyType() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequencyType();
+        return MSchedule.get(getCtx(), getScheduleId()).getFrequencyType();
     }
 
     @Override
     public int getFrequency() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getFrequency();
+        return MSchedule.get(getCtx(), getScheduleId()).getFrequency();
     }
 
     @Override
     public boolean isIgnoreProcessingTime() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).isIgnoreProcessingTime();
+        return MSchedule.get(getCtx(), getScheduleId()).isIgnoreProcessingTime();
     }
 
     @Override
     public String getScheduleType() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getScheduleType();
+        return MSchedule.get(getCtx(), getScheduleId()).getScheduleType();
     }
 
     @Override
     public String getCronPattern() {
-        return MSchedule.get(getCtx(), getAD_Schedule_ID()).getCronPattern();
+        return MSchedule.get(getCtx(), getScheduleId()).getCronPattern();
     }
 
     /**

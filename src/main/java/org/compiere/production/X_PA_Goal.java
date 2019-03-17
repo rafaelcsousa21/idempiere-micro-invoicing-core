@@ -107,7 +107,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      *
      * @return Responsibility Role
      */
-    public int getAD_Role_ID() {
+    public int getRoleId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_Role_ID);
         if (ii == null) return 0;
         return ii;
@@ -118,7 +118,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      *
      * @param AD_Role_ID Responsibility Role
      */
-    public void setAD_Role_ID(int AD_Role_ID) {
+    public void setRoleId(int AD_Role_ID) {
         if (AD_Role_ID < 0) setValue(COLUMNNAME_AD_Role_ID, null);
         else setValue(COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
     }
@@ -277,7 +277,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      *
      * @return Performance Goal
      */
-    public int getPA_Goal_ID() {
+    public int getGoalId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PA_Goal_ID);
         if (ii == null) return 0;
         return ii;
@@ -288,7 +288,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      *
      * @return Concrete Performance Measurement
      */
-    public int getPA_Measure_ID() {
+    public int getMeasureId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PA_Measure_ID);
         if (ii == null) return 0;
         return ii;
@@ -299,7 +299,7 @@ public class X_PA_Goal extends BasePOName implements I_PA_Goal {
      *
      * @param PA_Measure_ID Concrete Performance Measurement
      */
-    public void setPA_Measure_ID(int PA_Measure_ID) {
+    public void setMeasureId(int PA_Measure_ID) {
         if (PA_Measure_ID < 1) setValue(COLUMNNAME_PA_Measure_ID, null);
         else setValue(COLUMNNAME_PA_Measure_ID, Integer.valueOf(PA_Measure_ID));
     }

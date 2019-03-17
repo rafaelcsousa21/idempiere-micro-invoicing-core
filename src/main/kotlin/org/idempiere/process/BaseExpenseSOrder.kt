@@ -85,8 +85,8 @@ abstract class BaseExpenseSOrder : SvrProcess() {
             }
 
             val localTe = te
-            if (localTe == null || localTe.s_TimeExpense_ID != tel.s_TimeExpense_ID)
-                te = MTimeExpense(getCtx(), tel.s_TimeExpense_ID)
+            if (localTe == null || localTe.timeExpenseId != tel.timeExpenseId)
+                te = MTimeExpense(getCtx(), tel.timeExpenseId)
             //
             processLine(localTe, tel, localOldBPartner)
 

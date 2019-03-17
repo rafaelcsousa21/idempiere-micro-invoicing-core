@@ -67,7 +67,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
     public MDepositBatchLine(MDepositBatch statement) {
         this(statement.getCtx(), 0);
         setClientOrg(statement);
-        setC_DepositBatch_ID(statement.getC_DepositBatch_ID());
+        setDepositBatchId(statement.getDepositBatchId());
     } //	MDepositBatchLine
 
     /**
@@ -105,7 +105,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
         if (getLine() == 0) {
             String sql =
                     "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM C_DepositBatchLine WHERE C_DepositBatch_ID=?";
-            int ii = getSQLValue(sql, getC_DepositBatch_ID());
+            int ii = getSQLValue(sql, getDepositBatchId());
             setLine(ii);
         }
 
@@ -113,7 +113,7 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
         if (getPaymentId() != 0) {
             String sql = "UPDATE C_Payment p SET C_DepositBatch_ID=? WHERE p.C_Payment_ID=?";
             executeUpdateEx(
-                    sql, new Object[]{getC_DepositBatch_ID(), getPaymentId()});
+                    sql, new Object[]{getDepositBatchId(), getPaymentId()});
 
             MPayment payment = new MPayment(getCtx(), getPaymentId());
             setPayment(payment); // set payment amount
@@ -161,6 +161,6 @@ public class MDepositBatchLine extends X_C_DepositBatchLine {
                         + " SET DepositAmt=(SELECT COALESCE(SUM(PayAmt),0) FROM C_DepositBatchLine dpl "
                         + "WHERE dpl.C_DepositBatch_ID=dp.C_DepositBatch_ID AND dpl.IsActive='Y') "
                         + "WHERE C_DepositBatch_ID=?";
-        executeUpdateEx(sql, new Object[]{getC_DepositBatch_ID()});
+        executeUpdateEx(sql, new Object[]{getDepositBatchId()});
     } //	updateHeader
 } //	MDepositBatchLine

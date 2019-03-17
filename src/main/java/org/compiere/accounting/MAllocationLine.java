@@ -48,7 +48,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
     public MAllocationLine(Properties ctx, int C_AllocationLine_ID) {
         super(ctx, C_AllocationLine_ID);
         if (C_AllocationLine_ID == 0) {
-            //	setC_AllocationHdr_ID (0);
+            //	setPaymentAllocationHeaderId (0);
             setAmount(Env.ZERO);
             setDiscountAmt(Env.ZERO);
             setWriteOffAmt(Env.ZERO);
@@ -75,7 +75,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
     public MAllocationLine(MAllocationHdr parent) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setC_AllocationHdr_ID(parent.getC_AllocationHdr_ID());
+        setPaymentAllocationHeaderId(parent.getPaymentAllocationHeaderId());
         m_parent = parent;
     } //	MAllocationLine
 
@@ -108,7 +108,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      */
     public MAllocationHdr getParent() {
         if (m_parent == null)
-            m_parent = new MAllocationHdr(getCtx(), getC_AllocationHdr_ID());
+            m_parent = new MAllocationHdr(getCtx(), getPaymentAllocationHeaderId());
         return m_parent;
     } //	getParent
 
@@ -142,7 +142,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
      */
     public void setPaymentInfo(int C_Payment_ID, int C_CashLine_ID) {
         if (C_Payment_ID != 0) setPaymentId(C_Payment_ID);
-        if (C_CashLine_ID != 0) setC_CashLine_ID(C_CashLine_ID);
+        if (C_CashLine_ID != 0) setCashLineId(C_CashLine_ID);
     } //	setPaymentInfo
 
     /**
@@ -167,7 +167,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
             log.saveError("ParentComplete", Msg.translate(getCtx(), "C_AllocationLine"));
             return false;
         }
-        if (!newRecord && (is_ValueChanged("C_BPartner_ID") || is_ValueChanged("C_Invoice_ID"))) {
+        if (!newRecord && (isValueChanged("C_BPartner_ID") || isValueChanged("C_Invoice_ID"))) {
             log.severe("Cannot Change Business Partner or Invoice");
             return false;
         }
@@ -200,7 +200,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
         StringBuilder sb = new StringBuilder("MAllocationLine[");
         sb.append(getId());
         if (getPaymentId() != 0) sb.append(",C_Payment_ID=").append(getPaymentId());
-        if (getC_CashLine_ID() != 0) sb.append(",C_CashLine_ID=").append(getC_CashLine_ID());
+        if (getCashLineId() != 0) sb.append(",C_CashLine_ID=").append(getCashLineId());
         if (getInvoiceId() != 0) sb.append(",C_Invoice_ID=").append(getInvoiceId());
         if (getBusinessPartnerId() != 0) sb.append(",C_BPartner_ID=").append(getBusinessPartnerId());
         sb.append(", Amount=")
@@ -230,7 +230,7 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
             setBusinessPartnerId(invoice.getBusinessPartnerId());
         //
         int C_Payment_ID = getPaymentId();
-        int C_CashLine_ID = getC_CashLine_ID();
+        int C_CashLine_ID = getCashLineId();
 
         //	Update Payment
         if (C_Payment_ID != 0) {
@@ -289,12 +289,12 @@ public class MAllocationLine extends X_C_AllocationLine implements IDocLine {
         if (C_CashLine_ID != 0 && invoice != null) {
             //	Link to Invoice
             if (reverse) {
-                invoice.setC_CashLine_ID(0);
+                invoice.setCashLineId(0);
                 if (log.isLoggable(Level.FINE))
                     log.fine(
                             "C_CashLine_ID=" + C_CashLine_ID + " Unlinked from C_Invoice_ID=" + C_Invoice_ID);
             } else {
-                invoice.setC_CashLine_ID(C_CashLine_ID);
+                invoice.setCashLineId(C_CashLine_ID);
                 if (log.isLoggable(Level.FINE))
                     log.fine("C_CashLine_ID=" + C_CashLine_ID + " Linked to C_Invoice_ID=" + C_Invoice_ID);
             }

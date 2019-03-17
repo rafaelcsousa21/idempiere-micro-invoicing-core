@@ -416,7 +416,7 @@ public class DocLine {
      */
     public MAccount getAccount(int AcctType, MAcctSchema as) {
         //	Charge Account
-        if (getM_Product_ID() == 0 && getChargeId() != 0) {
+        if (getProductId() == 0 && getChargeId() != 0) {
             BigDecimal amt = new BigDecimal(-1); // 	Revenue (-)
             if (!m_doc.isSOTrx()) amt = new BigDecimal(+1); // 	Expense (+)
             MAccount acct = getChargeAccount(as, amt);
@@ -458,7 +458,7 @@ public class DocLine {
      *
      * @return C_Period_ID
      */
-    protected int getC_Period_ID() {
+    protected int getPeriodId() {
         if (m_C_Period_ID == -1) {
             int index = p_po.getColumnIndex("C_Period_ID");
             if (index != -1) {
@@ -468,7 +468,7 @@ public class DocLine {
             if (m_C_Period_ID == -1) m_C_Period_ID = 0;
         }
         return m_C_Period_ID;
-    } //	getC_Period_ID
+    } //	getPeriodId
 
     /**
      * ************************************************************************ Get (Journal)
@@ -476,7 +476,7 @@ public class DocLine {
      *
      * @return C_AcctSchema_ID
      */
-    public int getC_AcctSchema_ID() {
+    public int getAccountingSchemaId() {
         return m_C_AcctSchema_ID;
     } //  getAccountingSchemaId
 
@@ -485,7 +485,7 @@ public class DocLine {
      *
      * @return id
      */
-    public int get_ID() {
+    public int getId() {
         return p_po.getId();
     } //	getId
 
@@ -503,8 +503,8 @@ public class DocLine {
      *
      * @return order org if defined
      */
-    public int getOrder_Org_ID() {
-        int C_OrderLine_ID = getC_OrderLine_ID();
+    public int getOrder_OrgId() {
+        int C_OrderLine_ID = getOrderLineId();
         if (C_OrderLine_ID != 0) {
             String sql = "SELECT ad_org_id FROM C_OrderLine WHERE C_OrderLine_ID=?";
             int AD_Org_ID = getSQLValue(sql, C_OrderLine_ID);
@@ -518,14 +518,14 @@ public class DocLine {
      *
      * @return M_Product_ID
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         int index = p_po.getColumnIndex("M_Product_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getM_Product_ID
+    } //  getProductId
 
     /**
      * Is this an Item Product (vs. not a Service, a charge)
@@ -536,9 +536,9 @@ public class DocLine {
         if (m_isItem != null) return m_isItem.booleanValue();
 
         m_isItem = Boolean.FALSE;
-        if (getM_Product_ID() != 0) {
-            org.compiere.product.MProduct product = MProduct.get(Env.getCtx(), getM_Product_ID());
-            if (product.getId() == getM_Product_ID() && product.isItem()) m_isItem = Boolean.TRUE;
+        if (getProductId() != 0) {
+            org.compiere.product.MProduct product = MProduct.get(Env.getCtx(), getProductId());
+            if (product.getId() == getProductId() && product.isItem()) m_isItem = Boolean.TRUE;
         }
         return m_isItem.booleanValue();
     } //	isItem
@@ -548,78 +548,78 @@ public class DocLine {
      *
      * @return M_AttributeSetInstance_ID
      */
-    public int getMAttributeSetInstance_ID() {
+    public int getAttributeSetInstanceId() {
         int index = p_po.getColumnIndex("M_AttributeSetInstance_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getMAttributeSetInstance_ID
+    } //  getAttributeSetInstanceId
 
     /**
      * Get Warehouse Locator (from)
      *
      * @return M_Locator_ID
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         int index = p_po.getColumnIndex("M_Locator_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getM_Locator_ID
+    } //  getLocatorId
 
     /**
      * Get Order Line Reference
      *
      * @return C_OrderLine_ID
      */
-    public int getC_OrderLine_ID() {
+    public int getOrderLineId() {
         int index = p_po.getColumnIndex("C_OrderLine_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getC_OrderLine_ID
+    } //  getOrderLineId
 
     /**
      * Get C_LocFrom_ID
      *
      * @return loc from
      */
-    public int getC_LocFrom_ID() {
+    public int getLocationFromId() {
         return m_C_LocFrom_ID;
-    } //	getC_LocFrom_ID
+    } //	getLocationFromId
 
     /**
      * Get PP_Cost_Collector_ID
      *
      * @return Cost Collector ID
      */
-    public int getPP_Cost_Collector_ID() {
+    public int getPP_Cost_CollectorId() {
         return m_PP_Cost_Collector_ID;
-    } //	getC_LocFrom_ID
+    } //	getLocationFromId
 
     /**
      * Get PP_Cost_Collector_ID
      *
      * @return Cost Collector ID
      */
-    public int setPP_Cost_Collector_ID(int PP_Cost_Collector_ID) {
+    public int setPP_Cost_CollectorId(int PP_Cost_Collector_ID) {
         return m_PP_Cost_Collector_ID;
-    } //	getC_LocFrom_ID
+    } //	getLocationFromId
 
     /**
      * Get C_LocTo_ID
      *
      * @return loc to
      */
-    public int getC_LocTo_ID() {
+    public int getLocationToId() {
         return m_C_LocTo_ID;
-    } //	getC_LocTo_ID
+    } //	getLocationToId
 
     // MZ Goodwill
 
@@ -632,7 +632,7 @@ public class DocLine {
         if (m_productCost == null)
             m_productCost =
                     new ProductCost(
-                            Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID());
+                            Env.getCtx(), getProductId(), getAttributeSetInstanceId());
         return m_productCost;
     } //	getProductCost
     // end MZ
@@ -654,8 +654,8 @@ public class DocLine {
                     MCostDetail.get(
                             Env.getCtx(),
                             whereClause,
-                            get_ID(),
-                            getMAttributeSetInstance_ID(),
+                            getId(),
+                            getAttributeSetInstanceId(),
                             as.getAccountingSchemaId());
             if (cd != null) return cd.getAmt();
         }
@@ -672,7 +672,7 @@ public class DocLine {
      */
     public BigDecimal getProductCosts(MAcctSchema as, int AD_Org_ID, boolean zeroCostsOK) {
         ProductCost pc = getProductCost();
-        int C_OrderLine_ID = getC_OrderLine_ID();
+        int C_OrderLine_ID = getOrderLineId();
         String costingMethod = null;
         BigDecimal costs =
                 pc.getProductCosts(as, AD_Org_ID, costingMethod, C_OrderLine_ID, zeroCostsOK);
@@ -689,7 +689,7 @@ public class DocLine {
         if (m_productCost == null)
             m_productCost =
                     new ProductCost(
-                            Env.getCtx(), getM_Product_ID(), getMAttributeSetInstance_ID());
+                            Env.getCtx(), getProductId(), getAttributeSetInstanceId());
         return m_productCost.getProduct();
     } //	getProduct
 
@@ -698,18 +698,18 @@ public class DocLine {
      *
      * @return C_RevenueRecognition_ID or 0
      */
-    public int getC_RevenueRecognition_ID() {
+    public int getRevenueRecognitionId() {
         MProduct product = getProduct();
-        if (product != null) return product.getC_RevenueRecognition_ID();
+        if (product != null) return product.getRevenueRecognitionId();
         return 0;
-    } //  getC_RevenueRecognition_ID
+    } //  getRevenueRecognitionId
 
     /**
      * Quantity UOM
      *
      * @return Transaction or Storage M_UOM_ID
      */
-    public int getC_UOM_ID() {
+    public int getUOMId() {
         //	Trx UOM
         int index = p_po.getColumnIndex("C_UOM_ID");
         if (index != -1) {
@@ -718,10 +718,10 @@ public class DocLine {
         }
         //  Storage UOM
         MProduct product = getProduct();
-        if (product != null) return product.getC_UOM_ID();
+        if (product != null) return product.getUOMId();
         //
         return 0;
-    } //  getC_UOM
+    } //  getUOM
 
     /**
      * Quantity
@@ -761,14 +761,14 @@ public class DocLine {
      *
      * @return C_Tax_ID
      */
-    public int getC_Tax_ID() {
+    public int getTaxId() {
         int index = p_po.getColumnIndex("C_Tax_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getC_Tax_ID
+    } //	getTaxId
 
     /**
      * Get Line Number
@@ -843,7 +843,7 @@ public class DocLine {
      *
      * @return C_SalesRegion_ID
      */
-    public int getC_SalesRegion_ID() {
+    public int getSalesRegionId() {
         if (m_C_SalesRegion_ID == -1) // 	never tried
         {
             if (getBusinessPartnerLocationId() != 0)
@@ -860,7 +860,7 @@ public class DocLine {
         if (m_C_SalesRegion_ID < 0) // 	invalid
             return 0;
         return m_C_SalesRegion_ID;
-    } //  getC_SalesRegion_ID
+    } //  getSalesRegionId
 
     /**
      * Get Project
@@ -881,28 +881,28 @@ public class DocLine {
      *
      * @return C_ProjectPhase_ID
      */
-    public int getC_ProjectPhase_ID() {
+    public int getProjectPhaseId() {
         int index = p_po.getColumnIndex("C_ProjectPhase_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getC_ProjectPhase_ID
+    } //  getProjectPhaseId
 
     /**
      * Get Project Task
      *
      * @return C_ProjectTask_ID
      */
-    public int getC_ProjectTask_ID() {
+    public int getProjectTaskId() {
         int index = p_po.getColumnIndex("C_ProjectTask_ID");
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //  getC_ProjectTask_ID
+    } //  getProjectTaskId
 
     /**
      * Get Campaign
@@ -980,18 +980,18 @@ public class DocLine {
      *
      * @return ReversalLine_ID
      */
-    public int getReversalLine_ID() {
+    public int getReversalLineId() {
         return m_ReversalLine_ID;
-    } //  getReversalLine_ID
+    } //  getReversalLineId
 
     /**
      * Set ReversalLine_ID store original (voided/reversed) document line
      *
      * @param ReversalLine_ID
      */
-    public void setReversalLine_ID(int ReversalLine_ID) {
+    public void setReversalLineId(int ReversalLine_ID) {
         m_ReversalLine_ID = ReversalLine_ID;
-    } //  setReversalLine_ID
+    } //  setReversalLineId
     // end AZ Goodwill
 
     public IDocLine getPO() {
@@ -1007,7 +1007,7 @@ public class DocLine {
         StringBuilder sb = new StringBuilder("DocLine=[");
         sb.append(p_po.getId());
         if (getDescription() != null) sb.append(",").append(getDescription());
-        if (getM_Product_ID() != 0) sb.append(",M_Product_ID=").append(getM_Product_ID());
+        if (getProductId() != 0) sb.append(",M_Product_ID=").append(getProductId());
         sb.append(",Qty=").append(m_qty).append(",Amt=").append(getAmtSource()).append("]");
         return sb.toString();
     } //	toString

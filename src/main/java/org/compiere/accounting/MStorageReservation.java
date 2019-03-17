@@ -45,8 +45,8 @@ public class MStorageReservation extends X_M_StorageReservation {
         this(warehouse.getCtx(), 0);
         setClientOrg(warehouse);
         setWarehouseId(warehouse.getWarehouseId());
-        setM_Product_ID(M_Product_ID);
-        setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
+        setProductId(M_Product_ID);
+        setAttributeSetInstanceId(M_AttributeSetInstance_ID);
         setIsSOTrx(isSOTrx);
         setQty(Env.ZERO);
     } //	MStorageReservation
@@ -177,7 +177,7 @@ public class MStorageReservation extends X_M_StorageReservation {
 
         /* Do NOT use FIFO ASI for reservation */
         MProduct prd = new MProduct(ctx, M_Product_ID);
-        if (prd.getMAttributeSet_ID() == 0 || !prd.getMAttributeSet().isInstanceAttribute()) {
+        if (prd.getAttributeSetId() == 0 || !prd.getMAttributeSet().isInstanceAttribute()) {
             // Product doesn't manage attribute set, always reserved with 0
             M_AttributeSetInstance_ID = 0;
         }
@@ -188,8 +188,8 @@ public class MStorageReservation extends X_M_StorageReservation {
         forUpdate(storage);
         //	Verify
         if (storage.getWarehouseId() != M_Warehouse_ID
-                && storage.getM_Product_ID() != M_Product_ID
-                && storage.getMAttributeSetInstance_ID() != M_AttributeSetInstance_ID) {
+                && storage.getProductId() != M_Product_ID
+                && storage.getAttributeSetInstanceId() != M_AttributeSetInstance_ID) {
             s_log.severe(
                     "No Storage found - M_Warehouse_ID="
                             + M_Warehouse_ID
@@ -288,9 +288,9 @@ public class MStorageReservation extends X_M_StorageReservation {
                 new Object[]{
                         addition,
                         Env.getUserId(Env.getCtx()),
-                        getM_Product_ID(),
+                        getProductId(),
                         getWarehouseId(),
-                        getMAttributeSetInstance_ID(),
+                        getAttributeSetInstanceId(),
                         isSOTrx()
                 }
         );
@@ -308,9 +308,9 @@ public class MStorageReservation extends X_M_StorageReservation {
                         .append("M_Warehouse_ID=")
                         .append(getWarehouseId())
                         .append(",M_Product_ID=")
-                        .append(getM_Product_ID())
+                        .append(getProductId())
                         .append(",M_AttributeSetInstance_ID=")
-                        .append(getMAttributeSetInstance_ID())
+                        .append(getAttributeSetInstanceId())
                         .append(",IsSOTrx=")
                         .append(isSOTrx())
                         .append(": Qty=")

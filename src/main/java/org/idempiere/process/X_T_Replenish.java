@@ -62,7 +62,7 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -84,7 +84,7 @@ public class X_T_Replenish extends PO implements I_T_Replenish {
      *
      * @return Optional Warehouse to replenish from
      */
-    public int getM_WarehouseSource_ID() {
+    public int getWarehouseSourceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_WarehouseSource_ID);
         if (ii == null) return 0;
         return ii;

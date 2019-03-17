@@ -8,8 +8,6 @@ import software.hsharp.core.util.getSQLValue
 import software.hsharp.core.util.getSQLValueBD
 import software.hsharp.core.util.queryOf
 import java.math.BigDecimal
-import java.sql.PreparedStatement
-import java.sql.ResultSet
 import java.sql.Timestamp
 import java.util.Properties
 
@@ -20,7 +18,7 @@ import java.util.Properties
  * @param M_InOutLine_ID receipt
  * @return array of matches
  */
-fun getPOMatchOfReceiptLine(ctx: Properties, M_InOutLine_ID: Int): Array<MMatchPO> {
+internal fun getPOMatchOfReceiptLine(ctx: Properties, M_InOutLine_ID: Int): Array<MMatchPO> {
     if (M_InOutLine_ID == 0) return emptyArray()
     //
     val sql = "SELECT * FROM M_MatchPO WHERE M_InOutLine_ID=?"
@@ -35,7 +33,7 @@ fun getPOMatchOfReceiptLine(ctx: Properties, M_InOutLine_ID: Int): Array<MMatchP
  * @param M_InOut_ID receipt
  * @return array of matches
  */
-fun getPOMatchesOfReceipt(ctx: Properties, M_InOut_ID: Int): Array<MMatchPO> {
+internal fun getPOMatchesOfReceipt(ctx: Properties, M_InOut_ID: Int): Array<MMatchPO> {
     if (M_InOut_ID == 0) return emptyArray()
     //
     val sql = ("SELECT * FROM M_MatchPO m" +
@@ -52,7 +50,7 @@ fun getPOMatchesOfReceipt(ctx: Properties, M_InOut_ID: Int): Array<MMatchPO> {
  * @param C_Invoice_ID invoice
  * @return array of matches
  */
-fun getPOMatchesOfInvoice(ctx: Properties, C_Invoice_ID: Int): Array<MMatchPO> {
+internal fun getPOMatchesOfInvoice(ctx: Properties, C_Invoice_ID: Int): Array<MMatchPO> {
     if (C_Invoice_ID == 0) return emptyArray()
     //
     val sql = ("SELECT * FROM M_MatchPO mi" +
@@ -69,7 +67,7 @@ fun getPOMatchesOfInvoice(ctx: Properties, C_Invoice_ID: Int): Array<MMatchPO> {
  * @param C_OrderLine_ID order
  * @return array of matches
  */
-fun getPOMatchesForOrderLine(ctx: Properties, C_OrderLine_ID: Int): Array<MMatchPO> {
+internal fun getPOMatchesForOrderLine(ctx: Properties, C_OrderLine_ID: Int): Array<MMatchPO> {
     if (C_OrderLine_ID == 0) return emptyArray()
     //
     val sql = "SELECT * FROM M_MatchPO WHERE C_OrderLine_ID=?"
@@ -77,55 +75,53 @@ fun getPOMatchesForOrderLine(ctx: Properties, C_OrderLine_ID: Int): Array<MMatch
     return DB.current.run(query).toTypedArray()
 } // 	getOrderLine
 
-fun create(
+internal fun create(
     ctx: Properties,
     iLine: I_C_InvoiceLine?,
     sLine: MInOutLine?,
     C_OrderLine_ID: Int,
     dateTrx: Timestamp,
-    qty: BigDecimal
+    quantity: BigDecimal
 ): MMatchPO? {
-    var qty = qty
+    var qty = quantity
     var retValue: MMatchPO? = null
     val sql = "SELECT * FROM M_MatchPO WHERE C_OrderLine_ID=? and Reversal_ID IS NULL ORDER BY M_MatchPO_ID"
-    var pstmt: PreparedStatement? = null
-    var rs: ResultSet? = null
     try {
         val query = queryOf(sql, listOf(C_OrderLine_ID)).map { row -> MMatchPO(ctx, row) }.asList
         val items = DB.current.run(query)
 
         for (mpo in items) {
-            if (qty.compareTo(mpo.getQty()) >= 0) {
+            if (qty.compareTo(mpo.qty) >= 0) {
                 var toMatch = qty
-                val matchQty = mpo.getQty()
-                if (toMatch.compareTo(matchQty) > 0) toMatch = matchQty
+                val matchQty = mpo.qty
+                if (toMatch > matchQty) toMatch = matchQty
                 if (iLine != null) {
-                    if (mpo.getC_InvoiceLine_ID() == 0 || mpo.getC_InvoiceLine_ID() == iLine.c_InvoiceLine_ID) {
-                        if (iLine.mAttributeSetInstance_ID != 0) {
-                            if (mpo.getMAttributeSetInstance_ID() == 0)
-                                mpo.setM_AttributeSetInstance_ID(iLine.mAttributeSetInstance_ID)
-                            else if (mpo.getMAttributeSetInstance_ID() != iLine.mAttributeSetInstance_ID)
+                    if (mpo.invoiceLineId == 0 || mpo.invoiceLineId == iLine.invoiceLineId) {
+                        if (iLine.attributeSetInstanceId != 0) {
+                            if (mpo.attributeSetInstanceId == 0)
+                                mpo.attributeSetInstanceId = iLine.attributeSetInstanceId
+                            else if (mpo.attributeSetInstanceId != iLine.attributeSetInstanceId)
                                 continue
                         }
                     } else
                         continue
                 }
                 if (sLine != null) {
-                    if (mpo.getM_InOutLine_ID() == 0 || mpo.getM_InOutLine_ID() == sLine!!.m_InOutLine_ID) {
+                    if (mpo.getInOutLineId() == 0 || mpo.getInOutLineId() == sLine.inOutLineId) {
 
-                        if (sLine!!.mAttributeSetInstance_ID != 0) {
-                            if (mpo.getMAttributeSetInstance_ID() == 0)
-                                mpo.setM_AttributeSetInstance_ID(sLine!!.mAttributeSetInstance_ID)
-                            else if (mpo.getMAttributeSetInstance_ID() != sLine!!.mAttributeSetInstance_ID)
+                        if (sLine.attributeSetInstanceId != 0) {
+                            if (mpo.attributeSetInstanceId == 0)
+                                mpo.attributeSetInstanceId = sLine.attributeSetInstanceId
+                            else if (mpo.attributeSetInstanceId != sLine.attributeSetInstanceId)
                                 continue
                         }
                     } else
                         continue
                 }
-                if ((iLine != null || mpo.getC_InvoiceLine_ID() > 0) && (sLine != null || mpo.getM_InOutLine_ID() > 0)) {
-                    val M_InOutLine_ID = if (sLine != null) sLine!!.m_InOutLine_ID else mpo.getM_InOutLine_ID()
+                if ((iLine != null || mpo.invoiceLineId > 0) && (sLine != null || mpo.inOutLineId > 0)) {
+                    val M_InOutLine_ID = if (sLine != null) sLine.inOutLineId else mpo.inOutLineId
                     val C_InvoiceLine_ID =
-                        if (iLine != null) iLine!!.c_InvoiceLine_ID else mpo.getC_InvoiceLine_ID()
+                        if (iLine != null) iLine.invoiceLineId else mpo.invoiceLineId
 
                     // verify invoiceline not already linked to another inoutline
                     val tmpInOutLineId = getSQLValue(
@@ -144,38 +140,33 @@ fun create(
                     )
                     if (cnt <= 0) {
                         val matchInv = MMatchInv(mpo.ctx, 0)
-                        matchInv.c_InvoiceLine_ID = C_InvoiceLine_ID
-                        matchInv.setM_Product_ID(mpo.getM_Product_ID())
-                        matchInv.m_InOutLine_ID = M_InOutLine_ID
+                        matchInv.invoiceLineId = C_InvoiceLine_ID
+                        matchInv.setProductId(mpo.productId)
+                        matchInv.inOutLineId = M_InOutLine_ID
                         matchInv.setADClientID(mpo.clientId)
                         matchInv.setOrgId(mpo.orgId)
-                        matchInv.setM_AttributeSetInstance_ID(mpo.getMAttributeSetInstance_ID())
-                        matchInv.qty = mpo.getQty()
+                        matchInv.attributeSetInstanceId = mpo.attributeSetInstanceId
+                        matchInv.qty = mpo.qty
                         matchInv.dateTrx = dateTrx
                         matchInv.isProcessed = true
                         if (!matchInv.save()) {
                             matchInv.delete(true)
-                            var msg = "Failed to auto match invoice."
-                            val error = CLogger.retrieveError()
-                            if (error != null) {
-                                msg = msg + " " + error!!.name
-                            }
                             continue
                         }
-                        mpo.setMatchInvCreated(matchInv)
+                        mpo.matchInvCreated = matchInv
                     }
                 }
-                if (iLine != null) mpo.setC_InvoiceLine_ID(iLine)
+                if (iLine != null) mpo.setInvoiceLineId(iLine)
                 if (sLine != null) {
-                    mpo.setM_InOutLine_ID(sLine!!.m_InOutLine_ID)
-                    if (!mpo.isPosted()) mpo.setDateAcct(sLine!!.parent.dateAcct)
+                    mpo.inOutLineId = sLine.inOutLineId
+                    if (!mpo.isPosted) mpo.dateAcct = sLine.parent.dateAcct
                 }
 
                 if (!mpo.save()) {
                     var msg = "Failed to update match po."
                     val error = CLogger.retrieveError()
                     if (error != null) {
-                        msg = msg + " " + error!!.name
+                        msg = msg + " " + error.name
                     }
                     throw RuntimeException(msg)
                 }
@@ -189,13 +180,11 @@ fun create(
         }
     } catch (e: Exception) {
         if (e is RuntimeException) {
-            throw e as RuntimeException
+            throw e
         } else {
             throw IllegalStateException(e)
         }
-    } finally {
     }
-
     // 	Create New
     if (retValue == null) {
         var sLineMatchedQty: BigDecimal? = null
@@ -204,36 +193,36 @@ fun create(
                 ("SELECT Sum(Qty) FROM M_MatchPO WHERE C_OrderLine_ID=" +
                         C_OrderLine_ID +
                         " AND M_InOutLine_ID=?"),
-                sLine!!.m_InOutLine_ID
+                sLine.inOutLineId
             )
         }
 
         if ((sLine != null &&
-                    (sLine!!.c_OrderLine_ID == C_OrderLine_ID || iLine == null) &&
-                    (sLineMatchedQty == null || sLineMatchedQty!!.signum() <= 0))
+                    (sLine.orderLineId == C_OrderLine_ID || iLine == null) &&
+                    (sLineMatchedQty == null || sLineMatchedQty.signum() <= 0))
         ) {
             if (qty.signum() > 0) {
-                retValue = MMatchPO(sLine!!, dateTrx, qty)
-                retValue!!.c_OrderLine_ID = C_OrderLine_ID
-                if (iLine != null) retValue!!.setC_InvoiceLine_ID(iLine)
-                if (!retValue!!.save()) {
+                retValue = MMatchPO(sLine, dateTrx, qty)
+                retValue.orderLineId = C_OrderLine_ID
+                if (iLine != null) retValue.setInvoiceLineId(iLine)
+                if (!retValue.save()) {
                     var msg = "Failed to update match po."
                     val error = CLogger.retrieveError()
                     if (error != null) {
-                        msg = msg + " " + error!!.name
+                        msg = msg + " " + error.name
                     }
                     throw RuntimeException(msg)
                 }
             }
         } else if (iLine != null) {
             if (qty.signum() > 0) {
-                retValue = MMatchPO(iLine!!, dateTrx, qty)
-                retValue!!.c_OrderLine_ID = C_OrderLine_ID
-                if (!retValue!!.save()) {
+                retValue = MMatchPO(iLine, dateTrx, qty)
+                retValue.orderLineId = C_OrderLine_ID
+                if (!retValue.save()) {
                     var msg = "Failed to update match po."
                     val error = CLogger.retrieveError()
                     if (error != null) {
-                        msg = msg + " " + error!!.name
+                        msg = msg + " " + error.name
                     }
                     throw RuntimeException(msg)
                 }

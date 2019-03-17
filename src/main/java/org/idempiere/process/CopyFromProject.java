@@ -37,7 +37,7 @@ public class CopyFromProject extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        int To_C_Project_ID = getRecord_ID();
+        int To_C_Project_ID = getRecordId();
         if (log.isLoggable(Level.INFO))
             log.info("doIt - From C_Project_ID=" + m_C_Project_ID + " to " + To_C_Project_ID);
         if (To_C_Project_ID == 0) throw new IllegalArgumentException("Target C_Project_ID == 0");

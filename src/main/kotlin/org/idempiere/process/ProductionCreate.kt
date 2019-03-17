@@ -40,7 +40,7 @@ class ProductionCreate(
                 log.log(Level.SEVERE, "Unknown Parameter: $name")
         }
 
-        if (p_M_Production_ID == 0) p_M_Production_ID = record_ID
+        if (p_M_Production_ID == 0) p_M_Production_ID = recordId
         if (m_production == null) m_production = MProduction(ctx, p_M_Production_ID)
     } // prepare
 
@@ -88,7 +88,7 @@ class ProductionCreate(
 
         var created = 0
         if (!m_production!!.isUseProductionPlan) {
-            validateEndProduct(m_production!!.m_Product_ID)
+            validateEndProduct(m_production!!.productId)
 
             if (!recreate && "Y".equals(m_production!!.isCreated, ignoreCase = true))
                 throw AdempiereUserError("Production already created.")
@@ -100,9 +100,9 @@ class ProductionCreate(
             created = m_production!!.createLines(mustBeStocked)
         } else {
             val planQuery = Query(ctx, I_M_ProductionPlan.Table_Name, "M_ProductionPlan.M_Production_ID=?")
-            val plans = planQuery.setParameters(m_production!!.m_Production_ID).list<MProductionPlan>()
+            val plans = planQuery.setParameters(m_production!!.productionId).list<MProductionPlan>()
             for (plan in plans) {
-                validateEndProduct(plan.m_Product_ID)
+                validateEndProduct(plan.productId)
 
                 if (!recreate && "Y".equals(m_production!!.isCreated, ignoreCase = true))
                     throw AdempiereUserError("Production already created.")

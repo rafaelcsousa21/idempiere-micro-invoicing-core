@@ -3,7 +3,7 @@ package org.idempiere.process
 import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.*
+import java.util.Properties
 
 /**
  * Get Default Category

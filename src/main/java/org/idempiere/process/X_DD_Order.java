@@ -153,7 +153,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_AD_User_ID, AD_User_ID);
     }
 
-    public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException {
+    public org.compiere.model.I_C_Activity getActivity() throws RuntimeException {
         return (org.compiere.model.I_C_Activity)
                 MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
                         .getPO(getBusinessActivityId());
@@ -180,7 +180,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_C_Activity_ID, C_Activity_ID);
     }
 
-    public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
+    public org.compiere.model.I_C_BPartner getBPartner() throws RuntimeException {
         return (org.compiere.model.I_C_BPartner)
                 MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
                         .getPO(getBusinessPartnerId());
@@ -207,7 +207,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_C_BPartner_ID, C_BPartner_ID);
     }
 
-    public org.compiere.model.I_C_BPartner_Location getC_BPartner_Location() throws RuntimeException {
+    public org.compiere.model.I_C_BPartner_Location getBPartner_Location() throws RuntimeException {
         return (org.compiere.model.I_C_BPartner_Location)
                 MTable.get(getCtx(), org.compiere.model.I_C_BPartner_Location.Table_Name)
                         .getPO(getBusinessPartnerLocationId());
@@ -234,7 +234,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_C_BPartner_Location_ID, C_BPartner_Location_ID);
     }
 
-    public org.compiere.model.I_C_Campaign getC_Campaign() throws RuntimeException {
+    public org.compiere.model.I_C_Campaign getCampaign() throws RuntimeException {
         return (org.compiere.model.I_C_Campaign)
                 MTable.get(getCtx(), org.compiere.model.I_C_Campaign.Table_Name)
                         .getPO(getCampaignId());
@@ -261,7 +261,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_C_Campaign_ID, C_Campaign_ID);
     }
 
-    public org.compiere.model.I_C_Charge getC_Charge() throws RuntimeException {
+    public org.compiere.model.I_C_Charge getCharge() throws RuntimeException {
         return (org.compiere.model.I_C_Charge)
                 MTable.get(getCtx(), org.compiere.model.I_C_Charge.Table_Name)
                         .getPO(getChargeId());
@@ -335,7 +335,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         setValue(COLUMNNAME_ChargeAmt, ChargeAmt);
     }
 
-    public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
+    public org.compiere.model.I_C_Invoice getInvoice() throws RuntimeException {
         return (org.compiere.model.I_C_Invoice)
                 MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
                         .getPO(getInvoiceId());
@@ -362,7 +362,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValueNoCheck(COLUMNNAME_C_Invoice_ID, Integer.valueOf(C_Invoice_ID));
     }
 
-    public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
+    public org.compiere.model.I_C_Order getOrder() throws RuntimeException {
         return (org.compiere.model.I_C_Order)
                 MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
                         .getPO(getOrderId());
@@ -389,7 +389,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValueNoCheck(COLUMNNAME_C_Order_ID, C_Order_ID);
     }
 
-    public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
+    public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
                 MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
@@ -548,7 +548,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @return Distribution Order
      */
-    public int getDD_Order_ID() {
+    public int getDD_OrderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_DD_Order_ID);
         if (ii == null) return 0;
         return ii;
@@ -559,7 +559,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @param DD_Order_ID Distribution Order
      */
-    public void setDD_Order_ID(int DD_Order_ID) {
+    public void setDD_OrderId(int DD_Order_ID) {
         if (DD_Order_ID < 1) setValueNoCheck(COLUMNNAME_DD_Order_ID, null);
         else setValueNoCheck(COLUMNNAME_DD_Order_ID, Integer.valueOf(DD_Order_ID));
     }
@@ -935,7 +935,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         return false;
     }
 
-    public org.compiere.model.I_M_Shipper getM_Shipper() throws RuntimeException {
+    public org.compiere.model.I_M_Shipper getShipper() throws RuntimeException {
         return (org.compiere.model.I_M_Shipper)
                 MTable.get(getCtx(), org.compiere.model.I_M_Shipper.Table_Name)
                         .getPO(getShipperId());
@@ -962,7 +962,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_M_Shipper_ID, Integer.valueOf(M_Shipper_ID));
     }
 
-    public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
+    public org.compiere.model.I_M_Warehouse getWarehouse() throws RuntimeException {
         return (org.compiere.model.I_M_Warehouse)
                 MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
                         .getPO(getWarehouseId());
@@ -1158,7 +1158,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
     public org.compiere.model.I_C_Order getRef_Order() throws RuntimeException {
         return (org.compiere.model.I_C_Order)
                 MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-                        .getPO(getRef_Order_ID());
+                        .getPO(getRef_OrderId());
     }
 
     /**
@@ -1166,7 +1166,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @return Reference to corresponding Sales/Purchase Order
      */
-    public int getRef_Order_ID() {
+    public int getRef_OrderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Ref_Order_ID);
         if (ii == null) return 0;
         return ii;
@@ -1177,7 +1177,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @param Ref_Order_ID Reference to corresponding Sales/Purchase Order
      */
-    public void setRef_Order_ID(int Ref_Order_ID) {
+    public void setRef_OrderId(int Ref_Order_ID) {
         if (Ref_Order_ID < 1) setValue(COLUMNNAME_Ref_Order_ID, null);
         else setValue(COLUMNNAME_Ref_Order_ID, Integer.valueOf(Ref_Order_ID));
     }

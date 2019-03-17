@@ -80,7 +80,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
         /*
          * if (M_Movement_ID == 0) { setDocumentTypeId (0); setDocAction (null); // CO setDocStatus
          * (null); // DR setDocumentNo (null); setIsApproved (false); setIsInTransit (false);
-         * setM_Movement_ID (0); setMovementDate (new Timestamp( System.currentTimeMillis() ));
+         * setMovementId (0); setMovementDate (new Timestamp( System.currentTimeMillis() ));
          * // @#Date@ setPosted (false); setProcessed (false); }
          */
     }
@@ -253,7 +253,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      *
      * @return Movement of Inventory
      */
-    public int getM_Movement_ID() {
+    public int getMovementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Movement_ID);
         if (ii == null) return 0;
         return ii;
@@ -309,7 +309,7 @@ public class X_M_Movement extends PO implements I_M_Movement {
      *
      * @param Reversal_ID ID of document reversal
      */
-    public void setReversal_ID(int Reversal_ID) {
+    public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
         else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }

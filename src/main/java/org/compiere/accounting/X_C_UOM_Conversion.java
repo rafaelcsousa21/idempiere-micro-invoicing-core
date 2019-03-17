@@ -59,7 +59,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
      *
      * @return Unit of Measure
      */
-    public int getC_UOM_ID() {
+    public int getUOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -70,7 +70,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
      *
      * @param C_UOM_ID Unit of Measure
      */
-    public void setC_UOM_ID(int C_UOM_ID) {
+    public void setUOMId(int C_UOM_ID) {
         if (C_UOM_ID < 1) setValue(COLUMNNAME_C_UOM_ID, null);
         else setValue(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
     }
@@ -80,7 +80,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
      *
      * @return Target or destination Unit of Measure
      */
-    public int getC_UOM_To_ID() {
+    public int getTargetUOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_To_ID);
         if (ii == null) return 0;
         return ii;
@@ -91,7 +91,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
      *
      * @param C_UOM_To_ID Target or destination Unit of Measure
      */
-    public void setC_UOM_To_ID(int C_UOM_To_ID) {
+    public void setTargetUOMId(int C_UOM_To_ID) {
         if (C_UOM_To_ID < 1) setValue(COLUMNNAME_C_UOM_To_ID, null);
         else setValue(COLUMNNAME_C_UOM_To_ID, Integer.valueOf(C_UOM_To_ID));
     }
@@ -121,7 +121,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -132,7 +132,7 @@ public class X_C_UOM_Conversion extends PO implements I_C_UOM_Conversion {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }

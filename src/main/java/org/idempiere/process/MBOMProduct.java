@@ -37,7 +37,7 @@ public class MBOMProduct extends X_M_BOMProduct {
     public MBOMProduct(Properties ctx, int M_BOMProduct_ID) {
         super(ctx, M_BOMProduct_ID);
         if (M_BOMProduct_ID == 0) {
-            //	setM_BOM_ID (0);
+            //	setBOM_ID (0);
             setBOMProductType(BOMPRODUCTTYPE_StandardProduct); // S
             setBOMQty(Env.ONE);
             setIsPhantom(false);
@@ -77,7 +77,7 @@ public class MBOMProduct extends X_M_BOMProduct {
         String whereClause = "M_BOM_ID=?";
         List<MBOMProduct> list =
                 new Query(bom.getCtx(), I_M_BOMProduct.Table_Name, whereClause)
-                        .setParameters(bom.getM_BOM_ID())
+                        .setParameters(bom.getBOMId())
                         .setOrderBy("SeqNo")
                         .list();
 
@@ -92,7 +92,7 @@ public class MBOMProduct extends X_M_BOMProduct {
      * @return parent
      */
     private MBOM getBOM() {
-        if (m_bom == null && getM_BOM_ID() != 0) m_bom = MBOM.get(getCtx(), getM_BOM_ID());
+        if (m_bom == null && getBOMId() != 0) m_bom = MBOM.get(getCtx(), getBOMId());
         return m_bom;
     } //	getBOM
 
@@ -105,39 +105,39 @@ public class MBOMProduct extends X_M_BOMProduct {
     protected boolean beforeSave(boolean newRecord) {
         //	Product
         if (getBOMProductType().equals(BOMPRODUCTTYPE_OutsideProcessing)) {
-            if (getM_ProductBOM_ID() != 0) setM_ProductBOM_ID(0);
-        } else if (getM_ProductBOM_ID() == 0) {
+            if (getProductBOMId() != 0) setProductBOMId(0);
+        } else if (getProductBOMId() == 0) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @M_ProductBOM_ID@"));
             return false;
         }
         //	Operation
-        if (getM_ProductOperation_ID() == 0) {
+        if (getProductOperationId() == 0) {
             if (getSeqNo() != 0) setSeqNo(0);
         } else if (getSeqNo() == 0) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @SeqNo@"));
             return false;
         }
         //	Product Attribute Instance
-        if (getMAttributeSetInstance_ID() != 0) {
+        if (getAttributeSetInstanceId() != 0) {
             getBOM();
             if (m_bom != null && MBOM.BOMTYPE_Make_To_Order.equals(m_bom.getBOMType())) ;
             else {
                 log.saveError(
                         "Error",
                         Msg.parseTranslation(getCtx(), "Reset @M_AttributeSetInstance_ID@: Not Make-to-Order"));
-                setM_AttributeSetInstance_ID(0);
+                setAttributeSetInstanceId(0);
                 return false;
             }
         }
         //	Alternate
         if ((getBOMProductType().equals(BOMPRODUCTTYPE_Alternative)
                 || getBOMProductType().equals(BOMPRODUCTTYPE_AlternativeDefault))
-                && getM_BOMAlternative_ID() == 0) {
+                && getBOMAlternativeGroupId() == 0) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @M_BOMAlternative_ID@"));
             return false;
         }
         //	Operation
-        if (getM_ProductOperation_ID() != 0) {
+        if (getProductOperationId() != 0) {
             if (getSeqNo() == 0) {
                 log.saveError("Error", Msg.parseTranslation(getCtx(), "@NotFound@ @SeqNo@"));
                 return false;
@@ -151,7 +151,7 @@ public class MBOMProduct extends X_M_BOMProduct {
         //	Set Line Number
         if (getLine() == 0) {
             String sql = "SELECT NVL(MAX(Line),0)+10 FROM M_BOMProduct WHERE M_BOM_ID=?";
-            int ii = getSQLValue(sql, getM_BOM_ID());
+            int ii = getSQLValue(sql, getBOMId());
             setLine(ii);
         }
 

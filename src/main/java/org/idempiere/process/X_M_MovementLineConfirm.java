@@ -22,7 +22,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
         super(ctx, M_MovementLineConfirm_ID);
         /*
          * if (M_MovementLineConfirm_ID == 0) { setConfirmedQty (Env.ZERO); setDifferenceQty (Env.ZERO);
-         * setM_MovementConfirm_ID (0); setM_MovementLineConfirm_ID (0); setM_MovementLine_ID (0);
+         * setMovementConfirmId (0); setMovementLineConfirm_ID (0); setMovementLine_ID (0);
          * setProcessed (false); setScrappedQty (Env.ZERO); setTargetQty (Env.ZERO); }
          */
     }
@@ -98,7 +98,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      *
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
-    public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
+    public void setInventoryLineId(int M_InventoryLine_ID) {
         if (M_InventoryLine_ID < 1) setValue(COLUMNNAME_M_InventoryLine_ID, null);
         else setValue(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
     }
@@ -108,7 +108,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      *
      * @param M_MovementConfirm_ID Inventory Move Confirmation
      */
-    public void setM_MovementConfirm_ID(int M_MovementConfirm_ID) {
+    public void setMovementConfirmId(int M_MovementConfirm_ID) {
         if (M_MovementConfirm_ID < 1) setValueNoCheck(COLUMNNAME_M_MovementConfirm_ID, null);
         else setValueNoCheck(COLUMNNAME_M_MovementConfirm_ID, Integer.valueOf(M_MovementConfirm_ID));
     }
@@ -118,7 +118,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      *
      * @return Inventory Move document Line
      */
-    public int getM_MovementLine_ID() {
+    public int getMovementLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_MovementLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -129,7 +129,7 @@ public class X_M_MovementLineConfirm extends PO implements I_M_MovementLineConfi
      *
      * @param M_MovementLine_ID Inventory Move document Line
      */
-    public void setM_MovementLine_ID(int M_MovementLine_ID) {
+    public void setMovementLineId(int M_MovementLine_ID) {
         if (M_MovementLine_ID < 1) setValue(COLUMNNAME_M_MovementLine_ID, null);
         else setValue(COLUMNNAME_M_MovementLine_ID, Integer.valueOf(M_MovementLine_ID));
     }

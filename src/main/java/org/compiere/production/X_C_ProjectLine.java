@@ -28,7 +28,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
     public X_C_ProjectLine(Properties ctx, int C_ProjectLine_ID) {
         super(ctx, C_ProjectLine_ID);
         /**
-         * if (C_ProjectLine_ID == 0) { setProjectId (0); setC_ProjectLine_ID (0); setInvoicedAmt
+         * if (C_ProjectLine_ID == 0) { setProjectId (0); setProjectLineId (0); setInvoicedAmt
          * (Env.ZERO); setInvoicedQty (Env.ZERO); // 0 setIsPrinted (true); // Y setLine (0);
          * // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM C_ProjectLine WHERE
          * C_Project_ID=@C_Project_ID@ setPlannedAmt (Env.ZERO); setPlannedMarginAmt (Env.ZERO);
@@ -81,7 +81,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @return Purchase Order
      */
-    public int getC_OrderPO_ID() {
+    public int getOrderPOId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_OrderPO_ID);
         if (ii == null) return 0;
         return ii;
@@ -92,12 +92,12 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @param C_OrderPO_ID Purchase Order
      */
-    public void setC_OrderPO_ID(int C_OrderPO_ID) {
+    public void setOrderPOId(int C_OrderPO_ID) {
         if (C_OrderPO_ID < 1) setValueNoCheck(COLUMNNAME_C_OrderPO_ID, null);
         else setValueNoCheck(COLUMNNAME_C_OrderPO_ID, Integer.valueOf(C_OrderPO_ID));
     }
 
-    public org.compiere.model.I_C_Project getC_Project() throws RuntimeException {
+    public org.compiere.model.I_C_Project getProject() throws RuntimeException {
         return (org.compiere.model.I_C_Project)
                 MTable.get(getCtx(), org.compiere.model.I_C_Project.Table_Name)
                         .getPO(getProjectId());
@@ -129,7 +129,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @return Project Issues (Material, Labor)
      */
-    public int getC_ProjectIssue_ID() {
+    public int getProjectIssueId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectIssue_ID);
         if (ii == null) return 0;
         return ii;
@@ -140,7 +140,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @param C_ProjectIssue_ID Project Issues (Material, Labor)
      */
-    public void setC_ProjectIssue_ID(int C_ProjectIssue_ID) {
+    public void setProjectIssueId(int C_ProjectIssue_ID) {
         if (C_ProjectIssue_ID < 1) setValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, null);
         else setValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, C_ProjectIssue_ID);
     }
@@ -150,7 +150,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @return Task or step in a project
      */
-    public int getC_ProjectLine_ID() {
+    public int getProjectLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -161,7 +161,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @return Phase of a Project
      */
-    public int getC_ProjectPhase_ID() {
+    public int getProjectPhaseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectPhase_ID);
         if (ii == null) return 0;
         return ii;
@@ -172,7 +172,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @param C_ProjectPhase_ID Phase of a Project
      */
-    public void setC_ProjectPhase_ID(int C_ProjectPhase_ID) {
+    public void setProjectPhaseId(int C_ProjectPhase_ID) {
         if (C_ProjectPhase_ID < 1) setValue(COLUMNNAME_C_ProjectPhase_ID, null);
         else setValue(COLUMNNAME_C_ProjectPhase_ID, Integer.valueOf(C_ProjectPhase_ID));
     }
@@ -182,7 +182,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @return Actual Project Task in a Phase
      */
-    public int getC_ProjectTask_ID() {
+    public int getProjectTaskId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectTask_ID);
         if (ii == null) return 0;
         return ii;
@@ -193,7 +193,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @param C_ProjectTask_ID Actual Project Task in a Phase
      */
-    public void setC_ProjectTask_ID(int C_ProjectTask_ID) {
+    public void setProjectTaskId(int C_ProjectTask_ID) {
         if (C_ProjectTask_ID < 1) setValue(COLUMNNAME_C_ProjectTask_ID, null);
         else setValue(COLUMNNAME_C_ProjectTask_ID, Integer.valueOf(C_ProjectTask_ID));
     }
@@ -279,7 +279,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @return Category of a Product
      */
-    public int getM_Product_Category_ID() {
+    public int getProductCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_Category_ID);
         if (ii == null) return 0;
         return ii;
@@ -290,7 +290,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -301,7 +301,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
@@ -311,7 +311,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @return Plan for producing a product
      */
-    public int getM_Production_ID() {
+    public int getProductionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Production_ID);
         if (ii == null) return 0;
         return ii;
@@ -322,7 +322,7 @@ public class X_C_ProjectLine extends PO implements I_C_ProjectLine {
      *
      * @param M_Production_ID Plan for producing a product
      */
-    public void setM_Production_ID(int M_Production_ID) {
+    public void setProductionId(int M_Production_ID) {
         if (M_Production_ID < 1) setValueNoCheck(COLUMNNAME_M_Production_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Production_ID, Integer.valueOf(M_Production_ID));
     }

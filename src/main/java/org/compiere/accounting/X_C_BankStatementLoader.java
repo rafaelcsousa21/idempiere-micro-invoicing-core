@@ -20,7 +20,7 @@ public class X_C_BankStatementLoader extends BasePOName
     public X_C_BankStatementLoader(Properties ctx, int C_BankStatementLoader_ID) {
         super(ctx, C_BankStatementLoader_ID);
         /**
-         * if (C_BankStatementLoader_ID == 0) { setC_BankAccount_ID (0); setC_BankStatementLoader_ID
+         * if (C_BankStatementLoader_ID == 0) { setBankAccountId (0); setBankStatementLoader_ID
          * (0); setName (null); }
          */
     }

@@ -63,7 +63,7 @@ public class DunningRunCreate extends SvrProcess {
             else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_DunningRun_ID = getRecord_ID();
+        p_C_DunningRun_ID = getRecordId();
     } //	prepare
 
     /**
@@ -194,7 +194,7 @@ public class DunningRunCreate extends SvrProcess {
   		pstmt.setTimestamp(2, m_run.getDunningDate());
   		pstmt.setInt (3, m_run.getClientId());
   		pstmt.setTimestamp(4, m_run.getDunningDate());
-  		pstmt.setInt(5, level.getC_DunningLevel_ID());
+  		pstmt.setInt(5, level.getDunningLevelId());
   		pstmt.setTimestamp(6, m_run.getDunningDate());
   		if (p_C_BPartner_ID != 0)
   			pstmt.setInt (7, p_C_BPartner_ID);
@@ -268,7 +268,7 @@ public class DunningRunCreate extends SvrProcess {
   			//
   			if (createInvoiceLine(C_Invoice_ID, C_InvoicePaySchedule_ID, C_Currency_ID, GrandTotal, Open,
   					DaysDue, IsInDispute, C_BPartner_ID,
-  					TimesDunned, DaysAfterLast, level.getC_DunningLevel_ID()))
+  					TimesDunned, DaysAfterLast, level.getDunningLevelId()))
   			{
   				count++;
   			}
@@ -278,7 +278,7 @@ public class DunningRunCreate extends SvrProcess {
   	catch (Exception e)
   	{
   		log.log(Level.SEVERE, "addInvoices", e);
-  		getProcessInfo().addLog(getProcessInfo().getAD_PInstance_ID(), null, null, e.getLocalizedMessage());
+  		getProcessInfo().addLog(getProcessInfo().getAD_PInstanceId(), null, null, e.getLocalizedMessage());
   	}
   	finally
   	{
@@ -332,7 +332,7 @@ public class DunningRunCreate extends SvrProcess {
     		msg.append(", @C_BPartner_ID@ ");
     		msg.append(MBPartner.get(getCtx(), C_BPartner_ID).getName().toString());
     		msg.append(" @No@ @IsActive@ @C_BPartner_Location_ID@");
-    	getProcessInfo().addLog(getProcessInfo().getAD_PInstance_ID(), null, null, msg.toString());
+    	getProcessInfo().addLog(getProcessInfo().getAD_PInstanceId(), null, null, msg.toString());
     	return false;
     }
 
@@ -346,7 +346,7 @@ public class DunningRunCreate extends SvrProcess {
     line.setInvoice(C_Invoice_ID, C_Currency_ID, GrandTotal, Open,
     	Env.ZERO, DaysDue, IsInDispute, TimesDunned,
     	DaysAfterLast);
-    line.setC_InvoicePaySchedule_ID(C_InvoicePaySchedule_ID);
+    line.setInvoicePayScheduleId(C_InvoicePaySchedule_ID);
     if (!line.save())
     	throw new IllegalStateException("Cannot save MDunningRunLine");
 
@@ -402,7 +402,7 @@ public class DunningRunCreate extends SvrProcess {
   	{
   		pstmt = prepareStatement (sql.toString(), null);
   		pstmt.setInt (1, getClientId());
-  		pstmt.setInt (2, level.getC_DunningLevel_ID());
+  		pstmt.setInt (2, level.getDunningLevelId());
   		if (p_C_BPartner_ID != 0)
   			pstmt.setInt (3, p_C_BPartner_ID);
   		else if (p_C_BP_Group_ID != 0)
@@ -421,7 +421,7 @@ public class DunningRunCreate extends SvrProcess {
   				continue;
   			//
   			if (createPaymentLine (C_Payment_ID, C_Currency_ID, PayAmt, OpenAmt,
-  					C_BPartner_ID, level.getC_DunningLevel_ID()))
+  					C_BPartner_ID, level.getDunningLevelId()))
   			{
   				count++;
   			}
@@ -430,7 +430,7 @@ public class DunningRunCreate extends SvrProcess {
   	catch (Exception e)
   	{
   		log.log(Level.SEVERE, sql.toString(), e);
-  		getProcessInfo().addLog(getProcessInfo().getAD_PInstance_ID(), null, null, e.getLocalizedMessage());
+  		getProcessInfo().addLog(getProcessInfo().getAD_PInstanceId(), null, null, e.getLocalizedMessage());
   	}
   	finally
   	{
@@ -473,7 +473,7 @@ public class DunningRunCreate extends SvrProcess {
     		msg.append(", @C_BPartner_ID@ ");
     		msg.append(MBPartner.get(getCtx(), C_BPartner_ID).getName().toString());
     		msg.append(" @No@ @IsActive@ @C_BPartner_Location_ID@");
-    	getProcessInfo().addLog(getProcessInfo().getAD_PInstance_ID(), null, null, msg.toString());
+    	getProcessInfo().addLog(getProcessInfo().getAD_PInstanceId(), null, null, msg.toString());
     	return false;
     }
     if (entry.getId() == 0)

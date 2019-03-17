@@ -54,8 +54,8 @@ public class BankStatementMatcher extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        int Table_ID = getTable_ID();
-        int Record_ID = getRecord_ID();
+        int Table_ID = getTableId();
+        int Record_ID = getRecordId();
         if (m_matchers == null || m_matchers.length == 0)
             throw new IllegalStateException("No Matchers found");
         //

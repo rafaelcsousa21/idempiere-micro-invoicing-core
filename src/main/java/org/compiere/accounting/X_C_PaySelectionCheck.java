@@ -48,8 +48,8 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
     public X_C_PaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID) {
         super(ctx, C_PaySelectionCheck_ID);
         /**
-         * if (C_PaySelectionCheck_ID == 0) { setBusinessPartnerId (0); setC_PaySelectionCheck_ID (0);
-         * setC_PaySelection_ID (0); setDiscountAmt (Env.ZERO); setIsGeneratedDraft (false); // N
+         * if (C_PaySelectionCheck_ID == 0) { setBusinessPartnerId (0); setPaySelectionCheck_ID (0);
+         * setPaySelectionId (0); setDiscountAmt (Env.ZERO); setIsGeneratedDraft (false); // N
          * setIsPrinted (false); setIsReceipt (false); setPayAmt (Env.ZERO); setPaymentRule (null);
          * setProcessed (false); // N setQty (0); setWriteOffAmt (Env.ZERO); // 0 }
          */
@@ -102,7 +102,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @return Bank Account of the Business Partner
      */
-    public int getC_BP_BankAccount_ID() {
+    public int getBusinessPartnerBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BP_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -113,7 +113,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @param C_BP_BankAccount_ID Bank Account of the Business Partner
      */
-    public void setC_BP_BankAccount_ID(int C_BP_BankAccount_ID) {
+    public void setBusinessPartnerBankAccountId(int C_BP_BankAccount_ID) {
         if (C_BP_BankAccount_ID < 1) setValue(COLUMNNAME_C_BP_BankAccount_ID, null);
         else setValue(COLUMNNAME_C_BP_BankAccount_ID, Integer.valueOf(C_BP_BankAccount_ID));
     }
@@ -144,16 +144,16 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @return Payment Selection Check
      */
-    public int getC_PaySelectionCheck_ID() {
+    public int getPaySelectionCheckId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_PaySelectionCheck_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_C_PaySelection getC_PaySelection() throws RuntimeException {
+    public org.compiere.model.I_C_PaySelection getPaySelection() throws RuntimeException {
         return (org.compiere.model.I_C_PaySelection)
                 MTable.get(getCtx(), org.compiere.model.I_C_PaySelection.Table_Name)
-                        .getPO(getC_PaySelection_ID());
+                        .getPO(getPaySelectionId());
     }
 
     /**
@@ -161,7 +161,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @return Payment Selection
      */
-    public int getC_PaySelection_ID() {
+    public int getPaySelectionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_PaySelection_ID);
         if (ii == null) return 0;
         return ii;
@@ -172,7 +172,7 @@ public class X_C_PaySelectionCheck extends PO implements I_C_PaySelectionCheck {
      *
      * @param C_PaySelection_ID Payment Selection
      */
-    public void setC_PaySelection_ID(int C_PaySelection_ID) {
+    public void setPaySelectionId(int C_PaySelection_ID) {
         if (C_PaySelection_ID < 1) setValueNoCheck(COLUMNNAME_C_PaySelection_ID, null);
         else setValueNoCheck(COLUMNNAME_C_PaySelection_ID, C_PaySelection_ID);
     }

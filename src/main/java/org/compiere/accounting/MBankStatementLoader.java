@@ -167,7 +167,7 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
         currencyMap = new HashMap<String, Integer>();
 
         for (X_C_Currency currency : currencyList) {
-            currencyMap.put(currency.getISO_Code(), currency.getId());
+            currencyMap.put(currency.getISOCode(), currency.getId());
         }
         //	Initialize the Loader
         if (!m_loader.init(this)) {

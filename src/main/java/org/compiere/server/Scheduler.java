@@ -22,6 +22,7 @@ import org.idempiere.common.util.Util;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -100,7 +101,7 @@ public class Scheduler extends AdempiereServer {
         MSchedulerLog pLog = new MSchedulerLog(m_model, m_summary.toString());
         pLog.setReference(
                 "#"
-                        + String.valueOf(p_runCount)
+                        + p_runCount
                         + " - "
                         + TimeUtil.formatElapsed(new Timestamp(p_startWork)));
         pLog.saveEx();
@@ -134,7 +135,7 @@ public class Scheduler extends AdempiereServer {
                 new ProcessInfo(process.getName(), process.getProcessId(), AD_Table_ID, Record_ID);
         pi.setUserId(getUserId());
         pi.setADClientID(m_model.getClientId());
-        pi.setAD_PInstance_ID(pInstance.getPInstanceId());
+        pi.setAD_PInstanceId(pInstance.getPInstanceId());
         pi.setIsBatch(true);
         pi.setPrintPreview(true);
         MUser from = new MUser(getCtx(), pi.getUserId());
@@ -162,7 +163,7 @@ public class Scheduler extends AdempiereServer {
                     MNote note = new MNote(getCtx(), AD_Message_ID, supervisor);
                     note.setClientOrg(m_model.getClientId(), m_model.getOrgId());
                     note.setTextMsg(schedulerName + "\n" + pi.getSummary());
-                    note.setRecord(MPInstance.Table_ID, pi.getAD_PInstance_ID());
+                    note.setRecord(MPInstance.Table_ID, pi.getPInstanceId());
                     note.saveEx();
                     String log = pi.getLogInfo(true);
                     if (log != null && log.trim().length() > 0) {
@@ -170,7 +171,7 @@ public class Scheduler extends AdempiereServer {
                                 new MAttachment(getCtx(), MNote.Table_ID, note.getNoteId());
                         attachment.setClientOrg(m_model.getClientId(), m_model.getOrgId());
                         attachment.setTextMsg(schedulerName);
-                        attachment.addEntry("ProcessLog.html", log.getBytes("UTF-8"));
+                        attachment.addEntry("ProcessLog.html", log.getBytes(StandardCharsets.UTF_8));
                         attachment.saveEx();
                     }
                 }
@@ -205,7 +206,7 @@ public class Scheduler extends AdempiereServer {
                         note.setRecord(AD_Table_ID, Record_ID);
                     } else {
                         note.setTextMsg(schedulerName + "\n" + pi.getSummary());
-                        note.setRecord(MPInstance.Table_ID, pi.getAD_PInstance_ID());
+                        note.setRecord(MPInstance.Table_ID, pi.getPInstanceId());
                     }
                     if (note.save()) {
                         MAttachment attachment = null;
@@ -223,7 +224,7 @@ public class Scheduler extends AdempiereServer {
                                 attachment.setClientOrg(m_model.getClientId(), m_model.getOrgId());
                                 attachment.setTextMsg(schedulerName);
                             }
-                            attachment.addEntry("ProcessLog.html", log.getBytes("UTF-8"));
+                            attachment.addEntry("ProcessLog.html", log.getBytes(StandardCharsets.UTF_8));
                             attachment.saveEx();
                         }
                         if (attachment != null) attachment.saveEx();

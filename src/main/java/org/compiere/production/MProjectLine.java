@@ -40,7 +40,7 @@ public class MProjectLine extends X_C_ProjectLine {
         super(ctx, C_ProjectLine_ID);
         if (C_ProjectLine_ID == 0) {
             //  setProjectId (0);
-            //	setC_ProjectLine_ID (0);
+            //	setProjectLineId (0);
             setLine(0);
             setIsPrinted(true);
             setProcessed(false);
@@ -93,8 +93,8 @@ public class MProjectLine extends X_C_ProjectLine {
      * @param pi project issue
      */
     public void setMProjectIssue(MProjectIssue pi) {
-        setC_ProjectIssue_ID(pi.getC_ProjectIssue_ID());
-        setM_Product_ID(pi.getM_Product_ID());
+        setProjectIssueId(pi.getProjectIssueId());
+        setProductId(pi.getProductId());
         setCommittedQty(pi.getMovementQty());
         if (getDescription() != null) setDescription(pi.getDescription());
     } //	setMProjectIssue
@@ -104,9 +104,9 @@ public class MProjectLine extends X_C_ProjectLine {
      *
      * @param C_OrderPO_ID po id
      */
-    public void setC_OrderPO_ID(int C_OrderPO_ID) {
-        super.setC_OrderPO_ID(C_OrderPO_ID);
-    } //	setC_OrderPO_ID
+    public void setOrderPOId(int C_OrderPO_ID) {
+        super.setOrderPOId(C_OrderPO_ID);
+    } //	setOrderPOId
 
     /**
      * Get Project
@@ -128,7 +128,7 @@ public class MProjectLine extends X_C_ProjectLine {
      */
     public BigDecimal getLimitPrice() {
         BigDecimal limitPrice = getPlannedPrice();
-        if (getM_Product_ID() == 0) return limitPrice;
+        if (getProductId() == 0) return limitPrice;
         if (getProject() == null) return limitPrice;
         IProductPricing pp = MProduct.getProductPricing();
         pp.setProjectLine(this);
@@ -150,13 +150,13 @@ public class MProjectLine extends X_C_ProjectLine {
                 .append(",C_Project_ID=")
                 .append(getProjectId())
                 .append(",C_ProjectPhase_ID=")
-                .append(getC_ProjectPhase_ID())
+                .append(getProjectPhaseId())
                 .append(",C_ProjectTask_ID=")
-                .append(getC_ProjectTask_ID())
+                .append(getProjectTaskId())
                 .append(",C_ProjectIssue_ID=")
-                .append(getC_ProjectIssue_ID())
+                .append(getProjectIssueId())
                 .append(", M_Product_ID=")
-                .append(getM_Product_ID())
+                .append(getProductId())
                 .append(", PlannedQty=")
                 .append(getPlannedQty())
                 .append("]");
@@ -176,32 +176,32 @@ public class MProjectLine extends X_C_ProjectLine {
         setPlannedAmt(getPlannedQty().multiply(getPlannedPrice()));
 
         //	Planned Margin
-        if (is_ValueChanged("M_Product_ID")
-                || is_ValueChanged("M_Product_Category_ID")
-                || is_ValueChanged("PlannedQty")
-                || is_ValueChanged("PlannedPrice")) {
-            if (getM_Product_ID() != 0) {
+        if (isValueChanged("M_Product_ID")
+                || isValueChanged("M_Product_Category_ID")
+                || isValueChanged("PlannedQty")
+                || isValueChanged("PlannedPrice")) {
+            if (getProductId() != 0) {
                 BigDecimal marginEach = getPlannedPrice().subtract(getLimitPrice());
                 setPlannedMarginAmt(marginEach.multiply(getPlannedQty()));
-            } else if (getM_Product_Category_ID() != 0) {
-                MProductCategory category = MProductCategory.get(getCtx(), getM_Product_Category_ID());
+            } else if (getProductCategoryId() != 0) {
+                MProductCategory category = MProductCategory.get(getCtx(), getProductCategoryId());
                 BigDecimal marginEach = category.getPlannedMargin();
                 setPlannedMarginAmt(marginEach.multiply(getPlannedQty()));
             }
         }
 
         //	Phase/Task
-        if (is_ValueChanged("C_ProjectTask_ID") && getC_ProjectTask_ID() != 0) {
-            MProjectTask pt = new MProjectTask(getCtx(), getC_ProjectTask_ID());
+        if (isValueChanged("C_ProjectTask_ID") && getProjectTaskId() != 0) {
+            MProjectTask pt = new MProjectTask(getCtx(), getProjectTaskId());
             if (pt == null || pt.getId() == 0) {
-                log.warning("Project Task Not Found - ID=" + getC_ProjectTask_ID());
+                log.warning("Project Task Not Found - ID=" + getProjectTaskId());
                 return false;
-            } else setC_ProjectPhase_ID(pt.getC_ProjectPhase_ID());
+            } else setProjectPhaseId(pt.getProjectPhaseId());
         }
-        if (is_ValueChanged("C_ProjectPhase_ID") && getC_ProjectPhase_ID() != 0) {
-            MProjectPhase pp = new MProjectPhase(getCtx(), getC_ProjectPhase_ID());
+        if (isValueChanged("C_ProjectPhase_ID") && getProjectPhaseId() != 0) {
+            MProjectPhase pp = new MProjectPhase(getCtx(), getProjectPhaseId());
             if (pp == null || pp.getId() == 0) {
-                log.warning("Project Phase Not Found - " + getC_ProjectPhase_ID());
+                log.warning("Project Phase Not Found - " + getProjectPhaseId());
                 return false;
             } else setProjectId(pp.getProjectId());
         }
@@ -253,7 +253,7 @@ public class MProjectLine extends X_C_ProjectLine {
         int no = executeUpdate(sql);
         if (no != 1) log.log(Level.SEVERE, "updateHeader project - #" + no);
         /*onhate + globalqss BF 3060367*/
-        if (getC_ProjectPhase_ID() != 0) {
+        if (getProjectPhaseId() != 0) {
             sql =
                     "UPDATE C_ProjectPhase x SET "
                             + "	(PlannedAmt, CommittedAmt) = "
@@ -267,11 +267,11 @@ public class MProjectLine extends X_C_ProjectLine {
                             + "WHERE x.C_Project_ID="
                             + getProjectId()
                             + "  AND x.C_ProjectPhase_ID="
-                            + getC_ProjectPhase_ID();
+                            + getProjectPhaseId();
             no = executeUpdate(sql);
             if (no != 1) log.log(Level.SEVERE, "updateHeader project phase - #" + no);
         }
-        if (getC_ProjectTask_ID() != 0) {
+        if (getProjectTaskId() != 0) {
             sql =
                     "UPDATE C_ProjectTask x SET "
                             + "	(PlannedAmt, CommittedAmt) = "
@@ -283,9 +283,9 @@ public class MProjectLine extends X_C_ProjectLine {
                             + "  AND l.C_ProjectTask_ID=x.C_ProjectTask_ID "
                             + "  AND l.IsActive='Y') "
                             + "WHERE x.C_ProjectPhase_ID="
-                            + getC_ProjectPhase_ID()
+                            + getProjectPhaseId()
                             + "  AND x.C_ProjectTask_ID="
-                            + getC_ProjectTask_ID();
+                            + getProjectTaskId();
             no = executeUpdate(sql);
             if (no != 1) log.log(Level.SEVERE, "updateHeader project task - #" + no);
         }

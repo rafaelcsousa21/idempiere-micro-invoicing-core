@@ -76,10 +76,10 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     public MUOMConversion(MUOM parent) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setC_UOM_ID(parent.getC_UOM_ID());
-        setM_Product_ID(0);
+        setUOMId(parent.getUOMId());
+        setProductId(0);
         //
-        setC_UOM_To_ID(parent.getC_UOM_ID());
+        setTargetUOMId(parent.getUOMId());
         setMultiplyRate(Env.ONE);
         setDivideRate(Env.ONE);
     } //	MUOMConversion
@@ -92,10 +92,10 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     public MUOMConversion(MProduct parent) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setC_UOM_ID(parent.getC_UOM_ID());
-        setM_Product_ID(parent.getM_Product_ID());
+        setUOMId(parent.getUOMId());
+        setProductId(parent.getProductId());
         //
-        setC_UOM_To_ID(parent.getC_UOM_ID());
+        setTargetUOMId(parent.getUOMId());
         setMultiplyRate(Env.ONE);
         setDivideRate(Env.ONE);
     } //	MUOMConversion
@@ -366,17 +366,17 @@ public class MUOMConversion extends X_C_UOM_Conversion {
 
         for (int i = 0; i < rates.length; i++) {
             MUOMConversion rate = rates[i];
-            if (rate.getC_UOM_To_ID() == C_UOM_To_ID) return rate.getMultiplyRate();
+            if (rate.getTargetUOMId() == C_UOM_To_ID) return rate.getMultiplyRate();
         }
 
         List<MUOMConversion> conversions =
                 new Query(ctx, I_C_UOM_Conversion.Table_Name, "C_UOM_ID=? AND C_UOM_TO_ID=?")
-                        .setParameters(MProduct.get(ctx, M_Product_ID).getC_UOM_ID(), C_UOM_To_ID)
+                        .setParameters(MProduct.get(ctx, M_Product_ID).getUOMId(), C_UOM_To_ID)
                         .setOnlyActiveRecords(true)
                         .list();
         for (int i = 0; i < conversions.size(); i++) {
             MUOMConversion rate = conversions.get(i);
-            if (rate.getC_UOM_To_ID() == C_UOM_To_ID) return rate.getMultiplyRate();
+            if (rate.getTargetUOMId() == C_UOM_To_ID) return rate.getMultiplyRate();
         }
         return null;
     } //	getProductRateTo
@@ -391,7 +391,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
     public static MUOMConversion[] getProductConversions(Properties ctx, int M_Product_ID) {
         if (M_Product_ID == 0) return new MUOMConversion[0];
         Integer key = new Integer(M_Product_ID);
-        MUOMConversion[] result = (MUOMConversion[]) s_conversionProduct.get(key);
+        MUOMConversion[] result = s_conversionProduct.get(key);
         if (result != null) return result;
 
         ArrayList<MUOMConversion> list = new ArrayList<MUOMConversion>();
@@ -427,7 +427,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
      */
     protected boolean beforeSave(boolean newRecord) {
         //	From - To is the same
-        if (getC_UOM_ID() == getC_UOM_To_ID()) {
+        if (getUOMId() == getTargetUOMId()) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@C_UOM_ID@ = @C_UOM_To_ID@"));
             return false;
         }
@@ -439,11 +439,11 @@ public class MUOMConversion extends X_C_UOM_Conversion {
         //	Enforce Product UOM
         if (MSysConfig.getBooleanValue(
                 MSysConfig.ProductUOMConversionUOMValidate, true, getClientId())) {
-            if (getM_Product_ID() != 0 && (newRecord || is_ValueChanged("M_Product_ID"))) {
+            if (getProductId() != 0 && (newRecord || isValueChanged("M_Product_ID"))) {
                 // Check of product must be in the same transaction as the conversion being saved
-                MProduct product = new MProduct(getCtx(), getM_Product_ID());
-                if (product.getC_UOM_ID() != getC_UOM_ID()) {
-                    MUOM uom = MUOM.get(getCtx(), product.getC_UOM_ID());
+                MProduct product = new MProduct(getCtx(), getProductId());
+                if (product.getUOMId() != getUOMId()) {
+                    MUOM uom = MUOM.get(getCtx(), product.getUOMId());
                     log.saveError("ProductUOMConversionUOMError", uom.getName());
                     return false;
                 }
@@ -453,7 +453,7 @@ public class MUOMConversion extends X_C_UOM_Conversion {
         //	The Product UoM needs to be the smallest UoM - Multiplier must be < 0; Divider must be > 0
         if (MSysConfig.getBooleanValue(
                 MSysConfig.ProductUOMConversionRateValidate, true, getClientId())) {
-            if (getM_Product_ID() != 0 && getDivideRate().compareTo(Env.ONE) < 0) {
+            if (getProductId() != 0 && getDivideRate().compareTo(Env.ONE) < 0) {
                 log.saveError("ProductUOMConversionRateError", "");
                 return false;
             }
@@ -471,11 +471,11 @@ public class MUOMConversion extends X_C_UOM_Conversion {
         StringBuilder sb = new StringBuilder("MUOMConversion[");
         sb.append(getId())
                 .append("-C_UOM_ID=")
-                .append(getC_UOM_ID())
+                .append(getUOMId())
                 .append(",C_UOM_To_ID=")
-                .append(getC_UOM_To_ID())
+                .append(getTargetUOMId())
                 .append(",M_Product_ID=")
-                .append(getM_Product_ID())
+                .append(getProductId())
                 .append("-Multiply=")
                 .append(getMultiplyRate())
                 .append("/Divide=")

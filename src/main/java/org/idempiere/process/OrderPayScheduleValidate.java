@@ -49,9 +49,9 @@ public class OrderPayScheduleValidate extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        if (log.isLoggable(Level.INFO)) log.info("C_OrderPaySchedule_ID=" + getRecord_ID());
+        if (log.isLoggable(Level.INFO)) log.info("C_OrderPaySchedule_ID=" + getRecordId());
         MOrderPaySchedule[] schedule =
-                MOrderPaySchedule.getOrderPaySchedule(getCtx(), 0, getRecord_ID());
+                MOrderPaySchedule.getOrderPaySchedule(getCtx(), 0, getRecordId());
         if (schedule.length == 0)
             throw new IllegalArgumentException("OrderPayScheduleValidate - No Schedule");
         //	Get Order

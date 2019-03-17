@@ -28,9 +28,9 @@ public class MTransaction extends X_M_Transaction {
     public MTransaction(Properties ctx, int M_Transaction_ID) {
         super(ctx, M_Transaction_ID);
         if (M_Transaction_ID == 0) {
-            //	setM_Transaction_ID (0);		//	PK
-            //	setM_Locator_ID (0);
-            //	setM_Product_ID (0);
+            //	setTransaction_ID (0);		//	PK
+            //	setLocatorId (0);
+            //	setProductId (0);
             setMovementDate(new Timestamp(System.currentTimeMillis()));
             setMovementQty(Env.ZERO);
             //	setMovementType (MOVEMENTTYPE_CustomerShipment);
@@ -64,10 +64,10 @@ public class MTransaction extends X_M_Transaction {
         setOrgId(AD_Org_ID);
         setMovementType(MovementType);
         if (M_Locator_ID == 0) throw new IllegalArgumentException("No Locator");
-        setM_Locator_ID(M_Locator_ID);
+        setLocatorId(M_Locator_ID);
         if (M_Product_ID == 0) throw new IllegalArgumentException("No Product");
-        setM_Product_ID(M_Product_ID);
-        setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
+        setProductId(M_Product_ID);
+        setAttributeSetInstanceId(M_AttributeSetInstance_ID);
         //
         if (MovementQty != null) // 	Can be 0
             setMovementQty(MovementQty);
@@ -88,9 +88,9 @@ public class MTransaction extends X_M_Transaction {
                 .append(",Qty=")
                 .append(getMovementQty())
                 .append(",M_Product_ID=")
-                .append(getM_Product_ID())
+                .append(getProductId())
                 .append(",ASI=")
-                .append(getMAttributeSetInstance_ID())
+                .append(getAttributeSetInstanceId())
                 .append("]");
         return sb.toString();
     } //	toString

@@ -191,7 +191,7 @@ public class X_C_Invoice extends PO {
         else setValue(I_C_Invoice.COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
     }
 
-    public org.compiere.model.I_C_BPartner getC_BPartner() throws RuntimeException {
+    public org.compiere.model.I_C_BPartner getBPartner() throws RuntimeException {
         return (org.compiere.model.I_C_BPartner)
                 MTable.get(getCtx(), org.compiere.model.I_C_BPartner.Table_Name)
                         .getPO(getBusinessPartnerId());
@@ -267,7 +267,7 @@ public class X_C_Invoice extends PO {
      *
      * @return Cash Journal Line
      */
-    public int getC_CashLine_ID() {
+    public int getCashLineId() {
         Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_CashLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -278,7 +278,7 @@ public class X_C_Invoice extends PO {
      *
      * @param C_CashLine_ID Cash Journal Line
      */
-    public void setC_CashLine_ID(int C_CashLine_ID) {
+    public void setCashLineId(int C_CashLine_ID) {
         if (C_CashLine_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_CashLine_ID, null);
         else setValue(I_C_Invoice.COLUMNNAME_C_CashLine_ID, Integer.valueOf(C_CashLine_ID));
     }
@@ -288,7 +288,7 @@ public class X_C_Invoice extends PO {
      *
      * @return Cash Plan Line
      */
-    public int getC_CashPlanLine_ID() {
+    public int getCashPlanLineId() {
         Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_C_CashPlanLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -299,7 +299,7 @@ public class X_C_Invoice extends PO {
      *
      * @param C_CashPlanLine_ID Cash Plan Line
      */
-    public void setC_CashPlanLine_ID(int C_CashPlanLine_ID) {
+    public void setCashPlanLineId(int C_CashPlanLine_ID) {
         if (C_CashPlanLine_ID < 1) setValue(I_C_Invoice.COLUMNNAME_C_CashPlanLine_ID, null);
         else setValue(I_C_Invoice.COLUMNNAME_C_CashPlanLine_ID, Integer.valueOf(C_CashPlanLine_ID));
     }
@@ -385,7 +385,7 @@ public class X_C_Invoice extends PO {
         else setValueNoCheck(I_C_Invoice.COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
     }
 
-    public org.compiere.model.I_C_DocType getC_DocTypeTarget() throws RuntimeException {
+    public org.compiere.model.I_C_DocType getDocTypeTarget() throws RuntimeException {
         return (org.compiere.model.I_C_DocType)
                 MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
                         .getPO(getTargetDocumentTypeId());
@@ -443,7 +443,7 @@ public class X_C_Invoice extends PO {
         return ii;
     }
 
-    public org.compiere.model.I_C_Order getC_Order() throws RuntimeException {
+    public org.compiere.model.I_C_Order getOrder() throws RuntimeException {
         return (org.compiere.model.I_C_Order)
                 MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
                         .getPO(getOrderId());
@@ -883,7 +883,7 @@ public class X_C_Invoice extends PO {
      *
      * @return Return Material Authorization
      */
-    public int getM_RMA_ID() {
+    public int getRMAId() {
         Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_M_RMA_ID);
         if (ii == null) return 0;
         return ii;
@@ -894,7 +894,7 @@ public class X_C_Invoice extends PO {
      *
      * @param M_RMA_ID Return Material Authorization
      */
-    public void setM_RMA_ID(int M_RMA_ID) {
+    public void setRMAId(int M_RMA_ID) {
         if (M_RMA_ID < 1) setValue(I_C_Invoice.COLUMNNAME_M_RMA_ID, null);
         else setValue(I_C_Invoice.COLUMNNAME_M_RMA_ID, M_RMA_ID);
     }
@@ -997,7 +997,7 @@ public class X_C_Invoice extends PO {
      *
      * @return Referenced Invoice
      */
-    public int getRef_Invoice_ID() {
+    public int getRef_InvoiceId() {
         Integer ii = (Integer) getValue(I_C_Invoice.COLUMNNAME_Ref_Invoice_ID);
         if (ii == null) return 0;
         return ii;
@@ -1008,7 +1008,7 @@ public class X_C_Invoice extends PO {
      *
      * @param Ref_Invoice_ID Referenced Invoice
      */
-    public void setRef_Invoice_ID(int Ref_Invoice_ID) {
+    public void setRef_InvoiceId(int Ref_Invoice_ID) {
         if (Ref_Invoice_ID < 1) setValue(I_C_Invoice.COLUMNNAME_Ref_Invoice_ID, null);
         else setValue(I_C_Invoice.COLUMNNAME_Ref_Invoice_ID, Integer.valueOf(Ref_Invoice_ID));
     }
@@ -1018,7 +1018,7 @@ public class X_C_Invoice extends PO {
      *
      * @param Reversal_ID ID of document reversal
      */
-    public void setReversal_ID(int Reversal_ID) {
+    public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(I_C_Invoice.COLUMNNAME_Reversal_ID, null);
         else setValue(I_C_Invoice.COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }

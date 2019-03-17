@@ -39,8 +39,8 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
     public MBankAccountProcessor(
             Properties ctx, int C_BankAccount_ID, int C_PaymentProcessor_ID) {
         this(ctx, 0);
-        setC_BankAccount_ID(C_BankAccount_ID); // 	FK
-        setC_PaymentProcessor_ID(C_PaymentProcessor_ID); // 	FK
+        setBankAccountId(C_BankAccount_ID); // 	FK
+        setPaymentProcessorId(C_PaymentProcessor_ID); // 	FK
     }
 
     /**
@@ -66,9 +66,9 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
 
     @Override
     protected boolean beforeSave(boolean newRecord) {
-        if (getC_PaymentProcessor_ID() > 0 && isActive()) {
+        if (getPaymentProcessorId() > 0 && isActive()) {
             MPaymentProcessor pp =
-                    new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID());
+                    new MPaymentProcessor(getCtx(), getPaymentProcessorId());
             if (!pp.isActive())
                 throw new AdempiereException(
                         Msg.translate(getCtx(), "InactivePaymentProcessor") + ". " + pp.toString());
@@ -85,11 +85,11 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
      * @return true if acceptes
      */
     public boolean accepts(String TenderType, String CreditCardType) {
-        if (getC_PaymentProcessor_ID() > 0) {
+        if (getPaymentProcessorId() > 0) {
             MPaymentProcessor pp =
-                    new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID());
+                    new MPaymentProcessor(getCtx(), getPaymentProcessorId());
 
-            if ((MPayment.TENDERTYPE_DirectDeposit.equals(TenderType)
+            return (MPayment.TENDERTYPE_DirectDeposit.equals(TenderType)
                     && isAcceptDirectDeposit()
                     && pp.isAcceptDirectDeposit())
                     || (MPayment.TENDERTYPE_DirectDebit.equals(TenderType)
@@ -117,10 +117,9 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
                     && pp.isAcceptMC())
                     || (MPayment.CREDITCARDTYPE_Visa.equals(CreditCardType)
                     && isAcceptVisa()
-                    && pp.isAcceptVisa())) return true;
-            return false;
+                    && pp.isAcceptVisa());
         } else {
-            if ((MPayment.TENDERTYPE_DirectDeposit.equals(TenderType) && isAcceptDirectDeposit())
+            return (MPayment.TENDERTYPE_DirectDeposit.equals(TenderType) && isAcceptDirectDeposit())
                     || (MPayment.TENDERTYPE_DirectDebit.equals(TenderType) && isAcceptDirectDebit())
                     || (MPayment.TENDERTYPE_Check.equals(TenderType) && isAcceptCheck())
                     //
@@ -130,8 +129,7 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
                     || (MPayment.CREDITCARDTYPE_Diners.equals(CreditCardType) && isAcceptDiners())
                     || (MPayment.CREDITCARDTYPE_Discover.equals(CreditCardType) && isAcceptDiscover())
                     || (MPayment.CREDITCARDTYPE_MasterCard.equals(CreditCardType) && isAcceptMC())
-                    || (MPayment.CREDITCARDTYPE_Visa.equals(CreditCardType) && isAcceptVisa())) return true;
-            return false;
+                    || (MPayment.CREDITCARDTYPE_Visa.equals(CreditCardType) && isAcceptVisa());
         }
     } //	accepts
 
@@ -139,9 +137,9 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
         StringBuilder sb =
                 new StringBuilder("MBankAccountProcessor[")
                         .append("C_BankAccount_ID=")
-                        .append(getC_BankAccount_ID())
+                        .append(getBankAccountId())
                         .append(",C_PaymentProcessor_ID=")
-                        .append(getC_PaymentProcessor_ID())
+                        .append(getPaymentProcessorId())
                         .append("]");
         return sb.toString();
     }

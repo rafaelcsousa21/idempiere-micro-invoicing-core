@@ -50,8 +50,8 @@ public class MChangeRequest extends X_M_ChangeRequest {
         setName(msgset.toString());
         setHelp(request.getSummary());
         //
-        setPP_Product_BOM_ID(group.getPP_Product_BOM_ID());
-        setM_ChangeNotice_ID(group.getM_ChangeNotice_ID());
+        setProductBOMId(group.getPPProductBOMId());
+        setChangeNoticeId(group.getChangeNoticeId());
     } //	MChangeRequest
 
     /**
@@ -73,17 +73,17 @@ public class MChangeRequest extends X_M_ChangeRequest {
      */
     protected boolean beforeSave(boolean newRecord) {
         //	Have at least one
-        if (getPP_Product_BOM_ID() == 0 && getM_ChangeNotice_ID() == 0) {
+        if (getProductBOMId() == 0 && getChangeNoticeId() == 0) {
             log.saveError(
                     "Error", Msg.parseTranslation(getCtx(), "@NotFound@: @M_BOM_ID@ / @M_ChangeNotice_ID@"));
             return false;
         }
 
         //	Derive ChangeNotice from BOM if defined
-        if (newRecord && getPP_Product_BOM_ID() != 0 && getM_ChangeNotice_ID() == 0) {
-            MPPProductBOM bom = MPPProductBOM.get(getCtx(), getPP_Product_BOM_ID());
-            if (bom.getM_ChangeNotice_ID() != 0) {
-                setM_ChangeNotice_ID(bom.getM_ChangeNotice_ID());
+        if (newRecord && getProductBOMId() != 0 && getChangeNoticeId() == 0) {
+            MPPProductBOM bom = MPPProductBOM.get(getCtx(), getProductBOMId());
+            if (bom.getChangeNoticeId() != 0) {
+                setChangeNoticeId(bom.getChangeNoticeId());
             }
         }
 

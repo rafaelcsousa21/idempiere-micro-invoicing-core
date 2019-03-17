@@ -45,7 +45,7 @@ public class CommissionAPInvoice extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        if (log.isLoggable(Level.INFO)) log.info("doIt - C_CommissionRun_ID=" + getRecord_ID());
+        if (log.isLoggable(Level.INFO)) log.info("doIt - C_CommissionRun_ID=" + getRecordId());
 
         throw new NotImplementedException();
 
@@ -56,7 +56,7 @@ public class CommissionAPInvoice extends SvrProcess {
     		throw new IllegalArgumentException("CommissionAPInvoice - No Commission Run");
     	if (Env.ZERO.compareTo(comRun.getGrandTotal()) == 0)
     		throw new IllegalArgumentException("@GrandTotal@ = 0");
-    	MCommission com = new MCommission (getCtx(), comRun.getC_Commission_ID(), null);
+    	MCommission com = new MCommission (getCtx(), comRun.getCommissionId(), null);
     	if (com.getId() == 0)
     		throw new IllegalArgumentException("CommissionAPInvoice - No Commission");
     	if (com.getChargeId() == 0)

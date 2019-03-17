@@ -28,7 +28,7 @@ public class MPaymentProcessor extends X_C_PaymentProcessor {
     public MPaymentProcessor(Properties ctx, int C_PaymentProcessor_ID) {
         super(ctx, C_PaymentProcessor_ID);
         if (C_PaymentProcessor_ID == 0) {
-            //	setC_BankAccount_ID (0);		//	Parent
+            //	setBankAccountId (0);		//	Parent
             //	setUserID (null);
             //	setPassword (null);
             //	setHostAddress (null);
@@ -63,23 +63,23 @@ public class MPaymentProcessor extends X_C_PaymentProcessor {
      * @deprecated Use C_BankAccount.C_PaymentProcessor_ID
      */
     @Override
-    public I_C_BankAccount getC_BankAccount() throws RuntimeException {
-        return super.getC_BankAccount();
+    public I_C_BankAccount getBankAccount() throws RuntimeException {
+        return super.getBankAccount();
     }
 
     /**
      * @deprecated Use C_BankAccount.C_PaymentProcessor_ID
      */
     @Override
-    public int getC_BankAccount_ID() {
-        return super.getC_BankAccount_ID();
+    public int getBankAccountId() {
+        return super.getBankAccountId();
     }
 
     /**
      * @deprecated Use C_BankAccount.C_PaymentProcessor_ID
      */
     @Override
-    public void setC_BankAccount_ID(int C_BankAccount_ID) {
-        super.setC_BankAccount_ID(C_BankAccount_ID);
+    public void setBankAccountId(int C_BankAccount_ID) {
+        super.setBankAccountId(C_BankAccount_ID);
     }
 } //	MPaymentProcessor

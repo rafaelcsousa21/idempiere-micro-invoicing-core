@@ -67,9 +67,9 @@ public final class FactLine extends X_Fact_Acct {
         setAmtAcctDr(Env.ZERO);
         setAmtSourceCr(Env.ZERO);
         setAmtSourceDr(Env.ZERO);
-        setAD_Table_ID(AD_Table_ID);
-        setRecord_ID(Record_ID);
-        setLine_ID(Line_ID);
+        setRowTableId(AD_Table_ID);
+        setRecordId(Record_ID);
+        setLineId(Line_ID);
     } //  FactLine
 
     /**
@@ -80,7 +80,7 @@ public final class FactLine extends X_Fact_Acct {
      */
     public FactLine reverse(String description) {
         FactLine reversal =
-                new FactLine(getCtx(), getAD_Table_ID(), getRecord_ID(), getLine_ID());
+                new FactLine(getCtx(), getRowTableId(), getRecordId(), getLineId());
         reversal.setClientOrg(this); // 	needs to be set explicitly
         reversal.setDocumentInfo(m_doc, m_docLine);
         reversal.setAccount(m_acctSchema, m_acct);
@@ -92,18 +92,18 @@ public final class FactLine extends X_Fact_Acct {
         reversal.setDescription(description);
 
         reversal.setBusinessPartnerId(getBusinessPartnerId());
-        reversal.setM_Product_ID(getM_Product_ID());
+        reversal.setProductId(getProductId());
         reversal.setProjectId(getProjectId());
         reversal.setCampaignId(getCampaignId());
         reversal.setBusinessActivityId(getBusinessActivityId());
         reversal.setTransactionOrganizationId(getTransactionOrganizationId());
-        reversal.setC_SalesRegion_ID(getC_SalesRegion_ID());
-        reversal.setC_LocTo_ID(getC_LocTo_ID());
-        reversal.setC_LocFrom_ID(getC_LocFrom_ID());
+        reversal.setSalesRegionId(getSalesRegionId());
+        reversal.setLocationToId(getLocationToId());
+        reversal.setLocationFromId(getLocationFromId());
         reversal.setUser1Id(getUser1Id());
         reversal.setUser2Id(getUser1Id());
-        reversal.setUserElement1_ID(getUserElement1_ID());
-        reversal.setUserElement2_ID(getUserElement2_ID());
+        reversal.setUserElement1Id(getUserElement1Id());
+        reversal.setUserElement2Id(getUserElement2Id());
 
         return reversal;
     } //	reverse
@@ -116,12 +116,12 @@ public final class FactLine extends X_Fact_Acct {
      */
     public void setAccount(MAcctSchema acctSchema, MAccount acct) {
         m_acctSchema = acctSchema;
-        setC_AcctSchema_ID(acctSchema.getAccountingSchemaId());
+        setAccountingSchemaId(acctSchema.getAccountingSchemaId());
         //
         m_acct = acct;
         if (getClientId() == 0) setADClientID(m_acct.getClientId());
-        setAccount_ID(m_acct.getAccount_ID());
-        setC_SubAcct_ID(m_acct.getC_SubAcct_ID());
+        setAccountId(m_acct.getAccountId());
+        setSubAccountId(m_acct.getSubAccountId());
 
         //	User Defined References
         MAcctSchemaElement ud1 =
@@ -135,7 +135,7 @@ public final class FactLine extends X_Fact_Acct {
                     if (m_doc == null) throw new IllegalArgumentException("Document not set yet");
                     ID1 = m_doc.getValue(ColumnName1);
                 }
-                if (ID1 != 0) setUserElement1_ID(ID1);
+                if (ID1 != 0) setUserElement1Id(ID1);
             }
         }
         MAcctSchemaElement ud2 =
@@ -149,7 +149,7 @@ public final class FactLine extends X_Fact_Acct {
                     if (m_doc == null) throw new IllegalArgumentException("Document not set yet");
                     ID2 = m_doc.getValue(ColumnName2);
                 }
-                if (ID2 != 0) setUserElement2_ID(ID2);
+                if (ID2 != 0) setUserElement2Id(ID2);
             }
         }
     } //  setAccount
@@ -280,7 +280,7 @@ public final class FactLine extends X_Fact_Acct {
         m_docLine = docLine;
         //	reset
         setOrgId(0);
-        setC_SalesRegion_ID(0);
+        setSalesRegionId(0);
         //	Client
         if (getClientId() == 0) setADClientID(m_doc.getClientId());
         //	Date Trx
@@ -290,10 +290,10 @@ public final class FactLine extends X_Fact_Acct {
         setDateAcct(m_doc.getDateAcct());
         if (m_docLine != null && m_docLine.getDateAcct() != null) setDateAcct(m_docLine.getDateAcct());
         //	Period, Tax
-        if (m_docLine != null && m_docLine.getC_Period_ID() != 0)
-            setC_Period_ID(m_docLine.getC_Period_ID());
-        else setC_Period_ID(m_doc.getC_Period_ID());
-        if (m_docLine != null) setC_Tax_ID(m_docLine.getC_Tax_ID());
+        if (m_docLine != null && m_docLine.getPeriodId() != 0)
+            setPeriodId(m_docLine.getPeriodId());
+        else setPeriodId(m_doc.getPeriodId());
+        if (m_docLine != null) setTaxId(m_docLine.getTaxId());
         //	Description
         StringBuilder description = new StringBuilder().append(m_doc.getDocumentNo());
         if (m_docLine != null) {
@@ -306,14 +306,14 @@ public final class FactLine extends X_Fact_Acct {
             description.append(" (").append(m_doc.getDescription()).append(")");
         setDescription(description.toString());
         //	Journal Info
-        setGL_Budget_ID(m_doc.getGL_Budget_ID());
-        setGL_Category_ID(m_doc.getGL_Category_ID());
+        setGLBudgetId(m_doc.getGLBudgetId());
+        setGLCategoryId(m_doc.getGLCategoryId());
 
         //	Product
-        if (m_docLine != null) setM_Product_ID(m_docLine.getM_Product_ID());
-        if (getM_Product_ID() == 0) setM_Product_ID(m_doc.getM_Product_ID());
+        if (m_docLine != null) setProductId(m_docLine.getProductId());
+        if (getProductId() == 0) setProductId(m_doc.getProductId());
         //	UOM
-        if (m_docLine != null) setC_UOM_ID(m_docLine.getC_UOM_ID());
+        if (m_docLine != null) setUOMId(m_docLine.getUOMId());
         //	Qty
         if (getValue("Qty") == null) // not previously set
         {
@@ -322,11 +322,11 @@ public final class FactLine extends X_Fact_Acct {
         }
 
         //	Loc From (maybe set earlier)
-        if (getC_LocFrom_ID() == 0 && m_docLine != null) setC_LocFrom_ID(m_docLine.getC_LocFrom_ID());
-        if (getC_LocFrom_ID() == 0) setC_LocFrom_ID(m_doc.getC_LocFrom_ID());
+        if (getLocationFromId() == 0 && m_docLine != null) setLocationFromId(m_docLine.getLocationFromId());
+        if (getLocationFromId() == 0) setLocationFromId(m_doc.getLocationFromId());
         //	Loc To (maybe set earlier)
-        if (getC_LocTo_ID() == 0 && m_docLine != null) setC_LocTo_ID(m_docLine.getC_LocTo_ID());
-        if (getC_LocTo_ID() == 0) setC_LocTo_ID(m_doc.getC_LocTo_ID());
+        if (getLocationToId() == 0 && m_docLine != null) setLocationToId(m_docLine.getLocationToId());
+        if (getLocationToId() == 0) setLocationToId(m_doc.getLocationToId());
         //	BPartner
         if (m_docLine != null) setBusinessPartnerId(m_docLine.getBusinessPartnerId());
         if (getBusinessPartnerId() == 0) setBusinessPartnerId(m_doc.getBusinessPartnerId());
@@ -337,10 +337,10 @@ public final class FactLine extends X_Fact_Acct {
         //	Project
         if (m_docLine != null) setProjectId(m_docLine.getProjectId());
         if (getProjectId() == 0) setProjectId(m_doc.getProjectId());
-        if (m_docLine != null) setC_ProjectPhase_ID(m_docLine.getC_ProjectPhase_ID());
-        if (getC_ProjectPhase_ID() == 0) setC_ProjectPhase_ID(m_doc.getC_ProjectPhase_ID());
-        if (m_docLine != null) setC_ProjectTask_ID(m_docLine.getC_ProjectTask_ID());
-        if (getC_ProjectTask_ID() == 0) setC_ProjectTask_ID(m_doc.getC_ProjectTask_ID());
+        if (m_docLine != null) setProjectPhaseId(m_docLine.getProjectPhaseId());
+        if (getProjectPhaseId() == 0) setProjectPhaseId(m_doc.getProjectPhaseId());
+        if (m_docLine != null) setProjectTaskId(m_docLine.getProjectTaskId());
+        if (getProjectTaskId() == 0) setProjectTaskId(m_doc.getProjectTaskId());
         //	Campaign
         if (m_docLine != null) setCampaignId(m_docLine.getCampaignId());
         if (getCampaignId() == 0) setCampaignId(m_doc.getCampaignId());
@@ -384,10 +384,10 @@ public final class FactLine extends X_Fact_Acct {
      *
      * @param M_Locator_ID locator
      */
-    public void setM_Locator_ID(int M_Locator_ID) {
-        super.setM_Locator_ID(M_Locator_ID);
+    public void setLocatorId(int M_Locator_ID) {
+        super.setLocatorId(M_Locator_ID);
         setOrgId(0); // 	reset
-    } //  setM_Locator_ID
+    } //  setLocatorId
 
     /**
      * ************************************************************************ Set Location
@@ -396,8 +396,8 @@ public final class FactLine extends X_Fact_Acct {
      * @param isFrom        from
      */
     public void setLocation(int C_Location_ID, boolean isFrom) {
-        if (isFrom) setC_LocFrom_ID(C_Location_ID);
-        else setC_LocTo_ID(C_Location_ID);
+        if (isFrom) setLocationFromId(C_Location_ID);
+        else setLocationToId(C_Location_ID);
     } //  setLocator
 
     /**
@@ -643,9 +643,9 @@ public final class FactLine extends X_Fact_Acct {
      */
     public String toString() {
         StringBuilder sb = new StringBuilder("FactLine=[");
-        sb.append(getAD_Table_ID())
+        sb.append(getRowTableId())
                 .append(":")
-                .append(getRecord_ID())
+                .append(getRecordId())
                 .append(",")
                 .append(m_acct)
                 .append(",Cur=")
@@ -675,13 +675,13 @@ public final class FactLine extends X_Fact_Acct {
         if (super.getOrgId() != 0) //  set earlier
             return super.getOrgId();
         //	Prio 1 - get from locator - if exist
-        if (getM_Locator_ID() != 0) {
+        if (getLocatorId() != 0) {
             String sql = "SELECT AD_Org_ID FROM M_Locator WHERE M_Locator_ID=? AND AD_Client_ID=?";
             PreparedStatement pstmt = null;
             ResultSet rs = null;
             try {
                 pstmt = prepareStatement(sql);
-                pstmt.setInt(1, getM_Locator_ID());
+                pstmt.setInt(1, getLocatorId());
                 pstmt.setInt(2, getClientId());
                 rs = pstmt.executeQuery();
                 if (rs.next()) {
@@ -691,9 +691,9 @@ public final class FactLine extends X_Fact_Acct {
                                 "AD_Org_ID="
                                         + super.getOrgId()
                                         + " (1 from M_Locator_ID="
-                                        + getM_Locator_ID()
+                                        + getLocatorId()
                                         + ")");
-                } else log.log(Level.SEVERE, "AD_Org_ID - Did not find M_Locator_ID=" + getM_Locator_ID());
+                } else log.log(Level.SEVERE, "AD_Org_ID - Did not find M_Locator_ID=" + getLocatorId());
             } catch (SQLException e) {
                 log.log(Level.SEVERE, sql, e);
             } finally {
@@ -741,50 +741,50 @@ public final class FactLine extends X_Fact_Acct {
      *
      * @return Sales Region
      */
-    public int getC_SalesRegion_ID() {
-        if (super.getC_SalesRegion_ID() != 0) return super.getC_SalesRegion_ID();
+    public int getSalesRegionId() {
+        if (super.getSalesRegionId() != 0) return super.getSalesRegionId();
         //
-        if (m_docLine != null) setC_SalesRegion_ID(m_docLine.getC_SalesRegion_ID());
+        if (m_docLine != null) setSalesRegionId(m_docLine.getSalesRegionId());
         if (m_doc != null) {
-            if (super.getC_SalesRegion_ID() == 0) setC_SalesRegion_ID(m_doc.getC_SalesRegion_ID());
-            if (super.getC_SalesRegion_ID() == 0 && m_doc.getBP_C_SalesRegion_ID() > 0)
-                setC_SalesRegion_ID(m_doc.getBP_C_SalesRegion_ID());
+            if (super.getSalesRegionId() == 0) setSalesRegionId(m_doc.getSalesRegionId());
+            if (super.getSalesRegionId() == 0 && m_doc.getBP_C_SalesRegionId() > 0)
+                setSalesRegionId(m_doc.getBP_C_SalesRegionId());
             //	derive SalesRegion if AcctSegment
-            if (super.getC_SalesRegion_ID() == 0
+            if (super.getSalesRegionId() == 0
                     && m_doc.getBusinessPartnerLocationId() != 0
-                    && m_doc.getBP_C_SalesRegion_ID() == -1) // 	never tried
+                    && m_doc.getBP_C_SalesRegionId() == -1) // 	never tried
             //	&& m_acctSchema.isAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_SalesRegion))
             {
                 String sql =
                         "SELECT COALESCE(C_SalesRegion_ID,0) FROM C_BPartner_Location WHERE C_BPartner_Location_ID=?";
-                setC_SalesRegion_ID(getSQLValue(sql, m_doc.getBusinessPartnerLocationId()));
-                if (super.getC_SalesRegion_ID() != 0) // 	save in VO
+                setSalesRegionId(getSQLValue(sql, m_doc.getBusinessPartnerLocationId()));
+                if (super.getSalesRegionId() != 0) // 	save in VO
                 {
-                    m_doc.setBP_C_SalesRegion_ID(super.getC_SalesRegion_ID());
+                    m_doc.setBP_C_SalesRegionId(super.getSalesRegionId());
                     if (log.isLoggable(Level.FINE))
-                        log.fine("C_SalesRegion_ID=" + super.getC_SalesRegion_ID() + " (from BPL)");
+                        log.fine("C_SalesRegion_ID=" + super.getSalesRegionId() + " (from BPL)");
                 } else //	From Sales Rep of Document -> Sales Region
                 {
                     sql = "SELECT COALESCE(MAX(C_SalesRegion_ID),0) FROM C_SalesRegion WHERE SalesRep_ID=?";
-                    setC_SalesRegion_ID(getSQLValue(sql, m_doc.getSalesRepresentativeId()));
-                    if (super.getC_SalesRegion_ID() != 0) // 	save in VO
+                    setSalesRegionId(getSQLValue(sql, m_doc.getSalesRepresentativeId()));
+                    if (super.getSalesRegionId() != 0) // 	save in VO
                     {
-                        m_doc.setBP_C_SalesRegion_ID(super.getC_SalesRegion_ID());
+                        m_doc.setBP_C_SalesRegionId(super.getSalesRegionId());
                         if (log.isLoggable(Level.FINE))
-                            log.fine("C_SalesRegion_ID=" + super.getC_SalesRegion_ID() + " (from SR)");
-                    } else m_doc.setBP_C_SalesRegion_ID(-2); // 	don't try again
+                            log.fine("C_SalesRegion_ID=" + super.getSalesRegionId() + " (from SR)");
+                    } else m_doc.setBP_C_SalesRegionId(-2); // 	don't try again
                 }
             }
-            if (m_acct != null && super.getC_SalesRegion_ID() == 0)
-                setC_SalesRegion_ID(m_acct.getC_SalesRegion_ID());
+            if (m_acct != null && super.getSalesRegionId() == 0)
+                setSalesRegionId(m_acct.getSalesRegionId());
         }
         //
-        //	log.fine("C_SalesRegion_ID=" + super.getC_SalesRegion_ID()
+        //	log.fine("C_SalesRegion_ID=" + super.getSalesRegionId()
         //		+ ", C_BPartner_Location_ID=" + m_docVO.C_BPartner_Location_ID
         //		+ ", BP_C_SalesRegion_ID=" + m_docVO.BP_C_SalesRegion_ID
         //		+ ", SR=" + m_acctSchema.isAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_SalesRegion));
-        return super.getC_SalesRegion_ID();
-    } //	getC_SalesRegion_ID
+        return super.getSalesRegionId();
+    } //	getSalesRegionId
 
     /**
      * Before Save
@@ -797,11 +797,11 @@ public final class FactLine extends X_Fact_Acct {
             if (log.isLoggable(Level.FINE)) log.fine(toString());
             //
             getOrgId();
-            getC_SalesRegion_ID();
+            getSalesRegionId();
             //  Set Default Account Info
-            if (getM_Product_ID() == 0) setM_Product_ID(m_acct.getM_Product_ID());
-            if (getC_LocFrom_ID() == 0) setC_LocFrom_ID(m_acct.getC_LocFrom_ID());
-            if (getC_LocTo_ID() == 0) setC_LocTo_ID(m_acct.getC_LocTo_ID());
+            if (getProductId() == 0) setProductId(m_acct.getProductId());
+            if (getLocationFromId() == 0) setLocationFromId(m_acct.getLocationFromId());
+            if (getLocationToId() == 0) setLocationToId(m_acct.getLocationToId());
             if (getBusinessPartnerId() == 0) setBusinessPartnerId(m_acct.getBusinessPartnerId());
             if (getTransactionOrganizationId() == 0)
                 setTransactionOrganizationId(m_acct.getTransactionOrganizationId());
@@ -814,30 +814,30 @@ public final class FactLine extends X_Fact_Acct {
             //  Revenue Recognition for AR Invoices
             if (m_doc.getDocumentType().equals(Doc.DOCTYPE_ARInvoice)
                     && m_docLine != null
-                    && m_docLine.getC_RevenueRecognition_ID() != 0) {
+                    && m_docLine.getRevenueRecognitionId() != 0) {
                 int AD_User_ID = 0;
-                setAccount_ID(
+                setAccountId(
                         createRevenueRecognition(
-                                m_docLine.getC_RevenueRecognition_ID(),
-                                m_docLine.get_ID(),
+                                m_docLine.getRevenueRecognitionId(),
+                                m_docLine.getId(),
                                 getClientId(),
                                 getOrgId(),
                                 AD_User_ID,
-                                getAccount_ID(),
-                                getC_SubAcct_ID(),
-                                getM_Product_ID(),
+                                getAccountId(),
+                                getSubAccountId(),
+                                getProductId(),
                                 getBusinessPartnerId(),
                                 getTransactionOrganizationId(),
-                                getC_LocFrom_ID(),
-                                getC_LocTo_ID(),
-                                getC_SalesRegion_ID(),
+                                getLocationFromId(),
+                                getLocationToId(),
+                                getSalesRegionId(),
                                 getProjectId(),
                                 getCampaignId(),
                                 getBusinessActivityId(),
                                 getUser1Id(),
                                 getUser2Id(),
-                                getUserElement1_ID(),
-                                getUserElement2_ID()));
+                                getUserElement1Id(),
+                                getUserElement2Id()));
             }
         }
         return true;
@@ -900,7 +900,7 @@ public final class FactLine extends X_Fact_Acct {
                         getCtx(),
                         AD_Client_ID,
                         AD_Org_ID,
-                        getC_AcctSchema_ID(),
+                        getAccountingSchemaId(),
                         Account_ID,
                         C_SubAcct_ID,
                         M_Product_ID,
@@ -937,7 +937,7 @@ public final class FactLine extends X_Fact_Acct {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getC_AcctSchema_ID());
+            pstmt.setInt(1, getAccountingSchemaId());
             pstmt.setInt(2, C_BPartner_ID);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -957,11 +957,11 @@ public final class FactLine extends X_Fact_Acct {
         }
 
         MRevenueRecognitionPlan plan = new MRevenueRecognitionPlan(getCtx(), 0);
-        plan.setC_RevenueRecognition_ID(C_RevenueRecognition_ID);
-        plan.setC_AcctSchema_ID(getC_AcctSchema_ID());
-        plan.setC_InvoiceLine_ID(C_InvoiceLine_ID);
-        plan.setUnEarnedRevenue_Acct(UnearnedRevenue_Acct);
-        plan.setP_Revenue_Acct(P_Revenue_Acct);
+        plan.setRevenueRecognitionId(C_RevenueRecognition_ID);
+        plan.setAccountingSchemaId(getAccountingSchemaId());
+        plan.setInvoiceLineId(C_InvoiceLine_ID);
+        plan.setUnEarnedRevenueAccount(UnearnedRevenue_Acct);
+        plan.setRevenueAccount(P_Revenue_Acct);
         plan.setCurrencyId(getCurrencyId());
         plan.setTotalAmt(getAcctBalance());
         if (!plan.save()) {
@@ -996,8 +996,8 @@ public final class FactLine extends X_Fact_Acct {
             int AD_Table_ID, int Record_ID, int Line_ID, BigDecimal multiplier) {
         boolean success = false;
 
-        MFactAcct fact = BaseFactLineKt.updateReverseLineGetData(AD_Table_ID, Record_ID, Line_ID, multiplier,
-                getC_AcctSchema_ID(), m_acct.getAccount_ID(), getM_Locator_ID(), getCtx()
+        MFactAcct fact = BaseFactLineKt.updateReverseLineGetData(AD_Table_ID, Record_ID, Line_ID,
+                getAccountingSchemaId(), m_acct.getAccountId(), getLocatorId(), getCtx()
         );
         //  Accounted Amounts - reverse
         BigDecimal dr = fact.getAmtAcctDr();
@@ -1043,19 +1043,19 @@ public final class FactLine extends X_Fact_Acct {
         //	Dimensions
         setTransactionOrganizationId(fact.getTransactionOrganizationId());
         setProjectId(fact.getProjectId());
-        setC_ProjectPhase_ID(fact.getC_ProjectPhase_ID());
-        setC_ProjectTask_ID(fact.getC_ProjectTask_ID());
+        setProjectPhaseId(fact.getProjectPhaseId());
+        setProjectTaskId(fact.getProjectTaskId());
         setBusinessActivityId(fact.getBusinessActivityId());
         setCampaignId(fact.getCampaignId());
-        setC_SalesRegion_ID(fact.getC_SalesRegion_ID());
-        setC_LocFrom_ID(fact.getC_LocFrom_ID());
-        setC_LocTo_ID(fact.getC_LocTo_ID());
-        setM_Product_ID(fact.getM_Product_ID());
-        setM_Locator_ID(fact.getM_Locator_ID());
+        setSalesRegionId(fact.getSalesRegionId());
+        setLocationFromId(fact.getLocationFromId());
+        setLocationToId(fact.getLocationToId());
+        setProductId(fact.getProductId());
+        setLocatorId(fact.getLocatorId());
         setUser1Id(fact.getUser1Id());
         setUser2Id(fact.getUser2Id());
-        setC_UOM_ID(fact.getC_UOM_ID());
-        setC_Tax_ID(fact.getC_Tax_ID());
+        setUOMId(fact.getUOMId());
+        setTaxId(fact.getTaxId());
         //	Org for cross charge
         setOrgId(fact.getOrgId());
         if (fact.getQty() != null) setQty(fact.getQty().negate());

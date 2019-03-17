@@ -8,7 +8,7 @@ import org.idempiere.common.util.CCache;
 import java.sql.Timestamp;
 import java.util.Properties;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.convertDate;
 
 
 /**
@@ -56,7 +56,7 @@ public class MProjectType extends X_C_ProjectType {
      */
     public static MProjectType get(Properties ctx, int C_ProjectType_ID) {
         Integer key = C_ProjectType_ID;
-        MProjectType retValue = (MProjectType) s_cache.get(key);
+        MProjectType retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MProjectType(ctx, C_ProjectType_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -81,7 +81,7 @@ public class MProjectType extends X_C_ProjectType {
      * @return Array of phases
      */
     public MProjectTypePhase[] getPhases() {
-        return MBaseProjectTypeKt.getProjectTypePhases(getCtx(), getC_ProjectType_ID());
+        return MBaseProjectTypeKt.getProjectTypePhases(getCtx(), getProjectTypeId());
     } //	getPhases
 
     /**
@@ -109,7 +109,7 @@ public class MProjectType extends X_C_ProjectType {
                 new StringBuilder(
                         "SELECT COALESCE(SUM(PlannedAmt),COALESCE(SUM(PlannedQty),COUNT(*))) "
                                 + "FROM C_Project WHERE C_ProjectType_ID="
-                                + getC_ProjectType_ID()
+                                + getProjectTypeId()
                                 + " AND Processed<>'Y')");
         //	Date Restriction
 
@@ -117,7 +117,7 @@ public class MProjectType extends X_C_ProjectType {
                 && !MGoal.MEASUREDISPLAY_Total.equals(MeasureScope)) {
             if (reportDate == null) reportDate = new Timestamp(System.currentTimeMillis());
             @SuppressWarnings("unused")
-            String dateString = TO_DATE(reportDate);
+            String dateString = convertDate(reportDate);
             String trunc = "D";
             if (MGoal.MEASUREDISPLAY_Year.equals(MeasureScope)) trunc = "Y";
             else if (MGoal.MEASUREDISPLAY_Quarter.equals(MeasureScope)) trunc = "Q";
@@ -130,7 +130,7 @@ public class MProjectType extends X_C_ProjectType {
                     .append(",'")
                     .append(trunc)
                     .append("')=TRUNC(")
-                    .append(TO_DATE(reportDate))
+                    .append(convertDate(reportDate))
                     .append(",'")
                     .append(trunc)
                     .append("')");

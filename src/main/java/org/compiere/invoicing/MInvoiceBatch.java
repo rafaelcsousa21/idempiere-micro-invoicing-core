@@ -3,15 +3,11 @@ package org.compiere.invoicing;
 import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Invoice Batch Header Model
@@ -69,7 +65,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
         if (m_lines != null && !reload) {
             return m_lines;
         }
-        m_lines = MBaseInvoiceBatchKt.getLines(getCtx(), getC_InvoiceBatch_ID());
+        m_lines = MBaseInvoiceBatchKt.getLines(getCtx(), getInvoiceBatchId());
         return m_lines;
     } //	getLines
 
@@ -85,7 +81,7 @@ public class MInvoiceBatch extends X_C_InvoiceBatch {
                 new StringBuilder("SET Processed='")
                         .append((processed ? "Y" : "N"))
                         .append("' WHERE C_InvoiceBatch_ID=")
-                        .append(getC_InvoiceBatch_ID());
+                        .append(getInvoiceBatchId());
         int noLine = executeUpdate("UPDATE C_InvoiceBatchLine " + set);
         m_lines = null;
         if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);

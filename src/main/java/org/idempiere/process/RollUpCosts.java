@@ -33,7 +33,7 @@ public class RollUpCosts extends SvrProcess {
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 
-        product_id = getRecord_ID();
+        product_id = getRecordId();
         if (product_id == 0) {
             product_id = chosen_id;
         }

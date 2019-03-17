@@ -105,7 +105,7 @@ public class Doc_Invoice extends Doc {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, get_ID());
+            pstmt.setInt(1, getId());
             rs = pstmt.executeQuery();
             //
             while (rs.next()) {
@@ -157,7 +157,7 @@ public class Doc_Invoice extends Doc {
             //
             BigDecimal LineNetAmt = line.getLineNetAmt();
             BigDecimal PriceList = line.getPriceList();
-            int C_Tax_ID = docLine.getC_Tax_ID();
+            int C_Tax_ID = docLine.getTaxId();
             //	Correct included Tax
             if (isTaxIncluded() && C_Tax_ID != 0) {
                 MTax tax = MTax.get(getCtx(), C_Tax_ID);
@@ -177,7 +177,7 @@ public class Doc_Invoice extends Doc {
                                 if (log.isLoggable(Level.FINE))
                                     log.fine("LineNetAmt=" + LineNetAmt + " - Child Tax=" + childLineNetAmtTax);
                                 for (int t = 0; t < m_taxes.length; t++) {
-                                    if (m_taxes[t].getC_Tax_ID() == childTax.getC_Tax_ID()) {
+                                    if (m_taxes[t].getTaxId() == childTax.getTaxId()) {
                                         m_taxes[t].addIncludedTax(childLineNetAmtTax);
                                         taxToApplyDiff = m_taxes[t];
                                         sumChildLineNetAmtTax = sumChildLineNetAmtTax.add(childLineNetAmtTax);
@@ -192,7 +192,7 @@ public class Doc_Invoice extends Doc {
                         }
                     } else {
                         for (int t = 0; t < m_taxes.length; t++) {
-                            if (m_taxes[t].getC_Tax_ID() == C_Tax_ID) {
+                            if (m_taxes[t].getTaxId() == C_Tax_ID) {
                                 m_taxes[t].addIncludedTax(LineNetAmtTax);
                                 break;
                             }
@@ -222,7 +222,7 @@ public class Doc_Invoice extends Doc {
                 if (m_taxes[i].isIncludedTaxDifference()) {
                     BigDecimal diff = m_taxes[i].getIncludedTaxDifference();
                     for (int j = 0; j < dls.length; j++) {
-                        MTax lineTax = MTax.get(getCtx(), dls[j].getC_Tax_ID());
+                        MTax lineTax = MTax.get(getCtx(), dls[j].getTaxId());
                         MTax[] composingTaxes = null;
                         if (lineTax.isSummary()) {
                             composingTaxes = lineTax.getChildTaxes(false);
@@ -231,7 +231,7 @@ public class Doc_Invoice extends Doc {
                             composingTaxes[0] = lineTax;
                         }
                         for (MTax mTax : composingTaxes) {
-                            if (mTax.getC_Tax_ID() == m_taxes[i].getC_Tax_ID()) {
+                            if (mTax.getTaxId() == m_taxes[i].getTaxId()) {
                                 dls[j].setLineNetAmtDifference(diff);
                                 m_taxes[i].addIncludedTax(diff.negate());
                                 diff = Env.ZERO;
@@ -353,7 +353,7 @@ public class Doc_Invoice extends Doc {
                                     getCurrencyId(),
                                     null,
                                     amt);
-                    if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+                    if (tl != null) tl.setTaxId(m_taxes[i].getTaxId());
                 }
             }
             //  Revenue                 CR
@@ -394,8 +394,8 @@ public class Doc_Invoice extends Doc {
             }
 
             //  Receivables     DR
-            int receivables_ID = getValidCombination_ID(Doc.ACCTTYPE_C_Receivable, as);
-            int receivablesServices_ID = getValidCombination_ID(Doc.ACCTTYPE_C_Receivable_Services, as);
+            int receivables_ID = getValidCombinationId(Doc.ACCTTYPE_C_Receivable, as);
+            int receivablesServices_ID = getValidCombinationId(Doc.ACCTTYPE_C_Receivable_Services, as);
             if (m_allLinesItem || !as.isPostServices() || receivables_ID == receivablesServices_ID) {
                 grossAmt = getAmount(Doc.AMTTYPE_Gross);
                 serviceAmt = Env.ZERO;
@@ -434,7 +434,7 @@ public class Doc_Invoice extends Doc {
                                     getCurrencyId(),
                                     amt,
                                     null);
-                    if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+                    if (tl != null) tl.setTaxId(m_taxes[i].getTaxId());
                 }
             }
             //  Revenue         CR
@@ -474,8 +474,8 @@ public class Doc_Invoice extends Doc {
                 }
             }
             //  Receivables             CR
-            int receivables_ID = getValidCombination_ID(Doc.ACCTTYPE_C_Receivable, as);
-            int receivablesServices_ID = getValidCombination_ID(Doc.ACCTTYPE_C_Receivable_Services, as);
+            int receivables_ID = getValidCombinationId(Doc.ACCTTYPE_C_Receivable, as);
+            int receivablesServices_ID = getValidCombinationId(Doc.ACCTTYPE_C_Receivable_Services, as);
             if (m_allLinesItem || !as.isPostServices() || receivables_ID == receivablesServices_ID) {
                 grossAmt = getAmount(Doc.AMTTYPE_Gross);
                 serviceAmt = Env.ZERO;
@@ -516,7 +516,7 @@ public class Doc_Invoice extends Doc {
                                 getCurrencyId(),
                                 m_taxes[i].getAmount(),
                                 null);
-                if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+                if (tl != null) tl.setTaxId(m_taxes[i].getTaxId());
             }
             //  Expense         DR
             for (int i = 0; i < p_lines.length; i++) {
@@ -564,14 +564,14 @@ public class Doc_Invoice extends Doc {
                         serviceAmt = serviceAmt.add(amt);
                     }
                     //
-                    if (line.getM_Product_ID() != 0
+                    if (line.getProductId() != 0
                             && line.getProduct().isService()) // 	otherwise Inv Matching
                         MCostDetail.createInvoice(
                                 as,
                                 line.getOrgId(),
-                                line.getM_Product_ID(),
-                                line.getMAttributeSetInstance_ID(),
-                                line.get_ID(),
+                                line.getProductId(),
+                                line.getAttributeSetInstanceId(),
+                                line.getId(),
                                 0, //	No Cost Element
                                 line.getAmtSource(),
                                 line.getQty(),
@@ -588,8 +588,8 @@ public class Doc_Invoice extends Doc {
             }
 
             //  Liability               CR
-            int payables_ID = getValidCombination_ID(Doc.ACCTTYPE_V_Liability, as);
-            int payablesServices_ID = getValidCombination_ID(Doc.ACCTTYPE_V_Liability_Services, as);
+            int payables_ID = getValidCombinationId(Doc.ACCTTYPE_V_Liability, as);
+            int payablesServices_ID = getValidCombinationId(Doc.ACCTTYPE_V_Liability_Services, as);
             if (m_allLinesItem || !as.isPostServices() || payables_ID == payablesServices_ID) {
                 grossAmt = getAmount(Doc.AMTTYPE_Gross);
                 serviceAmt = Env.ZERO;
@@ -630,7 +630,7 @@ public class Doc_Invoice extends Doc {
                                 getCurrencyId(),
                                 null,
                                 m_taxes[i].getAmount());
-                if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+                if (tl != null) tl.setTaxId(m_taxes[i].getTaxId());
             }
             //  Expense                 CR
             for (int i = 0; i < p_lines.length; i++) {
@@ -678,14 +678,14 @@ public class Doc_Invoice extends Doc {
                         serviceAmt = serviceAmt.add(amt);
                     }
                     //
-                    if (line.getM_Product_ID() != 0
+                    if (line.getProductId() != 0
                             && line.getProduct().isService()) // 	otherwise Inv Matching
                         MCostDetail.createInvoice(
                                 as,
                                 line.getOrgId(),
-                                line.getM_Product_ID(),
-                                line.getMAttributeSetInstance_ID(),
-                                line.get_ID(),
+                                line.getProductId(),
+                                line.getAttributeSetInstanceId(),
+                                line.getId(),
                                 0, //	No Cost Element
                                 line.getAmtSource().negate(),
                                 line.getQty(),
@@ -701,8 +701,8 @@ public class Doc_Invoice extends Doc {
                 }
             }
             //  Liability       DR
-            int payables_ID = getValidCombination_ID(Doc.ACCTTYPE_V_Liability, as);
-            int payablesServices_ID = getValidCombination_ID(Doc.ACCTTYPE_V_Liability_Services, as);
+            int payables_ID = getValidCombinationId(Doc.ACCTTYPE_V_Liability, as);
+            int payablesServices_ID = getValidCombinationId(Doc.ACCTTYPE_V_Liability_Services, as);
             if (m_allLinesItem || !as.isPostServices() || payables_ID == payablesServices_ID) {
                 grossAmt = getAmount(Doc.AMTTYPE_Gross);
                 serviceAmt = Env.ZERO;
@@ -816,7 +816,7 @@ public class Doc_Invoice extends Doc {
                                 getCurrencyId(),
                                 amt2,
                                 amt);
-            if (tl != null) tl.setC_Tax_ID(m_taxes[i].getC_Tax_ID());
+            if (tl != null) tl.setTaxId(m_taxes[i].getTaxId());
         }
         //  Set Locations
         FactLine[] fLines = fact.getLines();
@@ -844,7 +844,7 @@ public class Doc_Invoice extends Doc {
      * @return true if landed costs were created
      */
     protected boolean landedCost(MAcctSchema as, Fact fact, DocLine line, boolean dr) {
-        int C_InvoiceLine_ID = line.get_ID();
+        int C_InvoiceLine_ID = line.getId();
         MLandedCostAllocation[] lcas =
                 MLandedCostAllocation.getOfInvoiceLine(getCtx(), C_InvoiceLine_ID);
         if (lcas.length == 0) return false;
@@ -872,7 +872,7 @@ public class Doc_Invoice extends Doc {
             MAccount account = null;
             ProductCost pc =
                     new ProductCost(
-                            Env.getCtx(), lca.getM_Product_ID(), lca.getMAttributeSetInstance_ID());
+                            Env.getCtx(), lca.getProductId(), lca.getAttributeSetInstanceId());
             String costingMethod = pc.getProduct().getCostingMethod(as);
             if (X_M_Cost.COSTINGMETHOD_AverageInvoice.equals(costingMethod)
                     || X_M_Cost.COSTINGMETHOD_AveragePO.equals(costingMethod)) {
@@ -882,16 +882,16 @@ public class Doc_Invoice extends Doc {
                 int oCurrencyId = 0;
                 boolean usesSchemaCurrency = false;
                 Timestamp oDateAcct = getDateAcct();
-                if (lca.getM_InOutLine_ID() > 0) {
-                    I_M_InOutLine iol = lca.getM_InOutLine();
-                    if (iol.getC_OrderLine_ID() > 0) {
-                        oCurrencyId = iol.getC_OrderLine().getCurrencyId();
-                        oDateAcct = iol.getC_OrderLine().getC_Order().getDateAcct();
+                if (lca.getInOutLineId() > 0) {
+                    I_M_InOutLine iol = lca.getInOutLine();
+                    if (iol.getOrderLineId() > 0) {
+                        oCurrencyId = iol.getOrderLine().getCurrencyId();
+                        oDateAcct = iol.getOrderLine().getOrder().getDateAcct();
                         MOrderLandedCostAllocation[] allocations =
-                                MOrderLandedCostAllocation.getOfOrderLine(iol.getC_OrderLine_ID());
+                                MOrderLandedCostAllocation.getOfOrderLine(iol.getOrderLineId());
                         for (MOrderLandedCostAllocation allocation : allocations) {
-                            if (allocation.getC_OrderLandedCost().getM_CostElement_ID()
-                                    != lca.getM_CostElement_ID()) continue;
+                            if (allocation.getOrderLandedCost().getCostElementId()
+                                    != lca.getCostElementId()) continue;
 
                             BigDecimal amt = allocation.getAmt();
                             BigDecimal qty = allocation.getQty();
@@ -918,9 +918,9 @@ public class Doc_Invoice extends Doc {
                     BigDecimal otherAmt =
                             getSQLValueBD(
                                     sql.toString(),
-                                    lca.getM_InOutLine_ID(),
-                                    lca.getC_LandedCostAllocation_ID(),
-                                    lca.getM_CostElement_ID(),
+                                    lca.getInOutLineId(),
+                                    lca.getLandedCostAllocationId(),
+                                    lca.getCostElementId(),
                                     lca.getClientId());
                     if (otherAmt != null) {
                         estimatedAmt = estimatedAmt.subtract(otherAmt);
@@ -987,7 +987,7 @@ public class Doc_Invoice extends Doc {
                             costDetailAmt =
                                     costDetailAmt.setScale(as.getCostingPrecision(), BigDecimal.ROUND_HALF_UP);
 
-                        String key = lca.getM_Product_ID() + "_" + lca.getMAttributeSetInstance_ID();
+                        String key = lca.getProductId() + "_" + lca.getAttributeSetInstanceId();
                         BigDecimal prevAmt = costDetailAmtMap.remove(key);
                         if (prevAmt != null) {
                             costDetailAmt = costDetailAmt.add(prevAmt);
@@ -996,10 +996,10 @@ public class Doc_Invoice extends Doc {
                         if (!MCostDetail.createInvoice(
                                 as,
                                 lca.getOrgId(),
-                                lca.getM_Product_ID(),
-                                lca.getMAttributeSetInstance_ID(),
+                                lca.getProductId(),
+                                lca.getAttributeSetInstanceId(),
                                 C_InvoiceLine_ID,
-                                lca.getM_CostElement_ID(),
+                                lca.getCostElementId(),
                                 costDetailAmt,
                                 lca.getQty(),
                                 desc)) {
@@ -1031,7 +1031,7 @@ public class Doc_Invoice extends Doc {
                         account = pc.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as);
                         FactLine fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
-                        fl.setM_Product_ID(lca.getM_Product_ID());
+                        fl.setProductId(lca.getProductId());
                         fl.setQty(line.getQty());
 
                         BigDecimal overAmt = allocationAmt.subtract(estimatedAmt);
@@ -1043,7 +1043,7 @@ public class Doc_Invoice extends Doc {
                                         : pc.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
                         fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
-                        fl.setM_Product_ID(lca.getM_Product_ID());
+                        fl.setProductId(lca.getProductId());
                         fl.setQty(line.getQty());
                     } else if (compare < 0) {
                         drAmt = dr ? (reversal ? null : estimatedAmt) : (reversal ? estimatedAmt : null);
@@ -1051,7 +1051,7 @@ public class Doc_Invoice extends Doc {
                         account = pc.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as);
                         FactLine fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
-                        fl.setM_Product_ID(lca.getM_Product_ID());
+                        fl.setProductId(lca.getProductId());
                         fl.setQty(line.getQty());
 
                         BigDecimal underAmt = estimatedAmt.subtract(allocationAmt);
@@ -1063,7 +1063,7 @@ public class Doc_Invoice extends Doc {
                                         : pc.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
                         fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
-                        fl.setM_Product_ID(lca.getM_Product_ID());
+                        fl.setProductId(lca.getProductId());
                         fl.setQty(line.getQty());
                     } else {
                         drAmt = dr ? (reversal ? null : allocationAmt) : (reversal ? allocationAmt : null);
@@ -1071,7 +1071,7 @@ public class Doc_Invoice extends Doc {
                         account = pc.getAccount(ProductCost.ACCTTYPE_P_LandedCostClearing, as);
                         FactLine fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                         fl.setDescription(desc);
-                        fl.setM_Product_ID(lca.getM_Product_ID());
+                        fl.setProductId(lca.getProductId());
                         fl.setQty(line.getQty());
                     }
                 }
@@ -1082,7 +1082,7 @@ public class Doc_Invoice extends Doc {
                 account = pc.getAccount(ProductCost.ACCTTYPE_P_CostAdjustment, as);
                 FactLine fl = fact.createLine(line, account, getCurrencyId(), drAmt, crAmt);
                 fl.setDescription(desc);
-                fl.setM_Product_ID(lca.getM_Product_ID());
+                fl.setProductId(lca.getProductId());
                 fl.setQty(line.getQty());
             }
         }
@@ -1115,10 +1115,10 @@ public class Doc_Invoice extends Doc {
                 .append("WHERE i1.C_Invoice_ID=il1.C_Invoice_ID")
                 .append(" AND po.M_Product_ID=il1.M_Product_ID AND po.C_BPartner_ID=i1.C_BPartner_ID")
                 .append("  AND i1.C_Invoice_ID=")
-                .append(get_ID())
+                .append(getId())
                 .append(") ");
         sql.append("  AND i.C_Invoice_ID=")
-                .append(get_ID())
+                .append(getId())
                 .append(") ")
                 //	update
                 .append("WHERE EXISTS (SELECT * ")
@@ -1126,7 +1126,7 @@ public class Doc_Invoice extends Doc {
                 .append("WHERE i.C_Invoice_ID=il.C_Invoice_ID")
                 .append(" AND po.M_Product_ID=il.M_Product_ID AND po.C_BPartner_ID=i.C_BPartner_ID")
                 .append(" AND i.C_Invoice_ID=")
-                .append(get_ID())
+                .append(getId())
                 .append(")");
         int no = executeUpdate(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine("Updated=" + no);

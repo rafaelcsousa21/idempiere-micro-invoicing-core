@@ -36,7 +36,7 @@ public class CopyFromJournalDoc extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        int To_GL_Journal_ID = getRecord_ID();
+        int To_GL_Journal_ID = getRecordId();
         if (log.isLoggable(Level.INFO))
             log.info("doIt - From GL_Journal_ID=" + m_GL_Journal_ID + " to " + To_GL_Journal_ID);
         if (To_GL_Journal_ID == 0) throw new IllegalArgumentException("Target GL_Journal_ID == 0");

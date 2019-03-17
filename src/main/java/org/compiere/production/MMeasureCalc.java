@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.convertDate;
 
 /**
  * Performance Measure Calculation
@@ -58,7 +58,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      */
     public static MMeasureCalc get(Properties ctx, int PA_MeasureCalc_ID) {
         Integer key = PA_MeasureCalc_ID;
-        MMeasureCalc retValue = (MMeasureCalc) s_cache.get(key);
+        MMeasureCalc retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MMeasureCalc(ctx, PA_MeasureCalc_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -93,7 +93,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
             ArrayList<Integer> list = new ArrayList<Integer>();
             for (int i = 0; i < restrictions.length; i++) {
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_Organization.equals(
-                        restrictions[i].getGoalRestrictionType())) list.add(restrictions[i].getOrg_ID());
+                        restrictions[i].getGoalRestrictionType())) list.add(restrictions[i].getOrgId());
                 //	Hierarchy comes here
             }
             if (list.size() == 1) sb.append(" AND ").append(orgColumn).append("=").append(list.get(0));
@@ -118,7 +118,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
                 //	Hierarchy comes here
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_BusPartnerGroup.equals(
                         restrictions[i].getGoalRestrictionType()))
-                    listBPG.add(restrictions[i].getC_BP_Group_ID());
+                    listBPG.add(restrictions[i].getBPGroupId());
             }
             //	BP
             if (listBP.size() == 1) sb.append(" AND ").append(bpColumn).append("=").append(listBP.get(0));
@@ -156,11 +156,11 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
             ArrayList<Integer> listPC = new ArrayList<Integer>();
             for (int i = 0; i < restrictions.length; i++) {
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_Product.equals(
-                        restrictions[i].getGoalRestrictionType())) listP.add(restrictions[i].getM_Product_ID());
+                        restrictions[i].getGoalRestrictionType())) listP.add(restrictions[i].getProductId());
                 //	Hierarchy comes here
                 if (MGoalRestriction.GOALRESTRICTIONTYPE_ProductCategory.equals(
                         restrictions[i].getGoalRestrictionType()))
-                    listPC.add(restrictions[i].getM_Product_Category_ID());
+                    listPC.add(restrictions[i].getProductCategoryId());
             }
             //	Product
             if (listP.size() == 1) sb.append(" AND ").append(pColumn).append("=").append(listP.get(0));
@@ -221,7 +221,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
                 && !MGoal.MEASUREDISPLAY_Total.equals(MeasureScope)) {
             if (reportDate == null) reportDate = new Timestamp(System.currentTimeMillis());
             @SuppressWarnings("unused")
-            String dateString = TO_DATE(reportDate);
+            String dateString = convertDate(reportDate);
             // http://download-west.oracle.com/docs/cd/B14117_01/server.101/b10759/functions207.htm#i1002084
             String trunc = "DD";
             if (MGoal.MEASUREDISPLAY_Year.equals(MeasureScope)) trunc = "Y";
@@ -235,7 +235,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
                     .append(",'")
                     .append(trunc)
                     .append("')=TRUNC(")
-                    .append(TO_DATE(reportDate))
+                    .append(convertDate(reportDate))
                     .append(",'")
                     .append(trunc)
                     .append("')");
@@ -272,7 +272,7 @@ public class MMeasureCalc extends X_PA_MeasureCalc {
      * @return Table Name
      */
     public String getDbTableName() {
-        return MTable.getDbTableName(Env.getCtx(), getAD_Table_ID());
+        return MTable.getDbTableName(Env.getCtx(), getRowTableId());
     } //	getTavleName
 
     /**

@@ -71,7 +71,7 @@ public class MColorSchema extends X_PA_ColorSchema {
             return retValue;
         }
         Integer key = PA_ColorSchema_ID;
-        MColorSchema retValue = (MColorSchema) s_cache.get(key);
+        MColorSchema retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MColorSchema(ctx, PA_ColorSchema_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -84,11 +84,11 @@ public class MColorSchema extends X_PA_ColorSchema {
     public void setDefault() {
         setName("Default");
         setMark1Percent(50);
-        setAD_PrintColor1_ID(102); // 	red
+        setPrintColor1Id(102); // 	red
         setMark2Percent(100);
-        setAD_PrintColor2_ID(113); // 	yellow
+        setPrintColor2Id(113); // 	yellow
         setMark3Percent(9999);
-        setAD_PrintColor3_ID(103); // 	green
+        setPrintColor3Id(103); // 	green
     } //	setDefault
 
     /**
@@ -116,16 +116,16 @@ public class MColorSchema extends X_PA_ColorSchema {
     public Color getColor(int percent) {
         int AD_PrintColor_ID = 0;
         if (percent <= getMark1Percent() || getMark2Percent() == 0)
-            AD_PrintColor_ID = getAD_PrintColor1_ID();
+            AD_PrintColor_ID = getPrintColor1Id();
         else if (percent <= getMark2Percent() || getMark3Percent() == 0)
-            AD_PrintColor_ID = getAD_PrintColor2_ID();
+            AD_PrintColor_ID = getPrintColor2Id();
         else if (percent <= getMark3Percent() || getMark4Percent() == 0)
-            AD_PrintColor_ID = getAD_PrintColor3_ID();
-        else AD_PrintColor_ID = getAD_PrintColor4_ID();
+            AD_PrintColor_ID = getPrintColor3Id();
+        else AD_PrintColor_ID = getPrintColor4Id();
         if (AD_PrintColor_ID == 0) {
-            if (getAD_PrintColor3_ID() != 0) AD_PrintColor_ID = getAD_PrintColor3_ID();
-            else if (getAD_PrintColor2_ID() != 0) AD_PrintColor_ID = getAD_PrintColor2_ID();
-            else if (getAD_PrintColor1_ID() != 0) AD_PrintColor_ID = getAD_PrintColor1_ID();
+            if (getPrintColor3Id() != 0) AD_PrintColor_ID = getPrintColor3Id();
+            else if (getPrintColor2Id() != 0) AD_PrintColor_ID = getPrintColor2Id();
+            else if (getPrintColor1Id() != 0) AD_PrintColor_ID = getPrintColor1Id();
         }
         if (AD_PrintColor_ID == 0) return Color.black;
         //

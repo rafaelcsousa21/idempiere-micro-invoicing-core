@@ -70,7 +70,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
     public MBankStatementLine(MBankStatement statement) {
         this(statement.getCtx(), 0);
         setClientOrg(statement);
-        setC_BankStatement_ID(statement.getC_BankStatement_ID());
+        setBankStatementId(statement.getBankStatementId());
         setStatementLineDate(statement.getStatementDate());
     } //	MBankStatementLine
 
@@ -160,7 +160,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
         if (getLine() == 0) {
             String sql =
                     "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM C_BankStatementLine WHERE C_BankStatement_ID=?";
-            int ii = getSQLValue(sql, getC_BankStatement_ID());
+            int ii = getSQLValue(sql, getBankStatementId());
             setLine(ii);
         }
 
@@ -185,7 +185,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
      */
     public MBankStatement getParent() {
         if (m_parent == null)
-            m_parent = new MBankStatement(getCtx(), getC_BankStatement_ID());
+            m_parent = new MBankStatement(getCtx(), getBankStatementId());
         return m_parent;
     } //	getParent
 
@@ -222,7 +222,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
                                 " SET StatementDifference=(SELECT COALESCE(SUM(StmtAmt),0) FROM C_BankStatementLine bsl ")
                         .append("WHERE bsl.C_BankStatement_ID=bs.C_BankStatement_ID AND bsl.IsActive='Y') ")
                         .append("WHERE C_BankStatement_ID=")
-                        .append(getC_BankStatement_ID());
+                        .append(getBankStatementId());
         int no = executeUpdate(sql.toString());
         if (no != 1) {
             log.warning("StatementDifference #" + no);
@@ -232,7 +232,7 @@ public class MBankStatementLine extends X_C_BankStatementLine implements IPODoc 
                 new StringBuilder("UPDATE C_BankStatement bs")
                         .append(" SET EndingBalance=BeginningBalance+StatementDifference ")
                         .append("WHERE C_BankStatement_ID=")
-                        .append(getC_BankStatement_ID());
+                        .append(getBankStatementId());
         no = executeUpdate(sql.toString());
         if (no != 1) {
             log.warning("Balance #" + no);

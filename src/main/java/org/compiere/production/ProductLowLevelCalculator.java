@@ -52,7 +52,7 @@ class ProductLowLevelCalculator {
 
         DefaultMutableTreeNode parent =
                 new DefaultMutableTreeNode(
-                        Integer.toString(M_Product_ID) + "|" + Integer.toString(PP_Product_BOM_ID));
+                        M_Product_ID + "|" + PP_Product_BOM_ID);
 
         String sql =
                 "SELECT PP_Product_BOMLine_ID FROM PP_Product_BOMLine"
@@ -126,7 +126,7 @@ class ProductLowLevelCalculator {
                                     + " - Component: "
                                     + product.getValue()
                                     + "("
-                                    + product.getM_Product_ID()
+                                    + product.getProductId()
                                     + ")");
                 }
             }

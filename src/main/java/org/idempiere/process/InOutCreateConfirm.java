@@ -34,7 +34,7 @@ public class InOutCreateConfirm extends SvrProcess {
             else if (name.equals("ConfirmType")) p_ConfirmType = (String) para[i].getParameter();
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        p_M_InOut_ID = getRecord_ID();
+        p_M_InOut_ID = getRecordId();
     } //	prepare
 
     /**
@@ -56,12 +56,12 @@ public class InOutCreateConfirm extends SvrProcess {
         //
 
         addLog(
-                confirm.getM_InOutConfirm_ID(),
+                confirm.getInOutConfirmId(),
                 null,
                 null,
                 confirm.getDocumentNo(),
                 confirm.getTableId(),
-                confirm.getM_InOutConfirm_ID());
+                confirm.getInOutConfirmId());
 
         return confirm.getDocumentNo();
     } //	doIt

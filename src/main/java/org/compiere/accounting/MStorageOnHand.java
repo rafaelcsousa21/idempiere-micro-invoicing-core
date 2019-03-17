@@ -81,9 +81,9 @@ public class MStorageOnHand extends X_M_StorageOnHand {
             MLocator locator, int M_Product_ID, int M_AttributeSetInstance_ID, Timestamp dateMPolicy) {
         this(locator.getCtx(), 0);
         setClientOrg(locator);
-        setM_Locator_ID(locator.getM_Locator_ID());
-        setM_Product_ID(M_Product_ID);
-        setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
+        setLocatorId(locator.getLocatorId());
+        setProductId(M_Product_ID);
+        setAttributeSetInstanceId(M_AttributeSetInstance_ID);
         dateMPolicy = Util.removeTime(dateMPolicy);
         setDateMaterialPolicy(dateMPolicy);
     } //	MStorageOnHand
@@ -369,8 +369,8 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 FiFo,
                 positiveOnly,
                 M_Locator_ID,
-                forUpdate,
-                timeout);
+                forUpdate
+        );
     } //	getWarehouse
 
     /**
@@ -440,8 +440,8 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 minGuaranteeDate,
                 FiFo,
                 M_Locator_ID,
-                forUpdate,
-                timeout);
+                forUpdate
+        );
     } //	getWarehouse
 
     /**
@@ -614,9 +614,9 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                         true,
                         120);
         //	Verify
-        if (storage.getM_Locator_ID() != M_Locator_ID
-                && storage.getM_Product_ID() != M_Product_ID
-                && storage.getMAttributeSetInstance_ID() != M_AttributeSetInstance_ID) {
+        if (storage.getLocatorId() != M_Locator_ID
+                && storage.getProductId() != M_Product_ID
+                && storage.getAttributeSetInstanceId() != M_AttributeSetInstance_ID) {
             s_log.severe(
                     "No Storage found - M_Locator_ID="
                             + M_Locator_ID
@@ -650,7 +650,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      * @param trxName                   transaction
      * @return id
      */
-    public static int getM_Locator_ID(
+    public static int getLocatorId(
             int M_Warehouse_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
@@ -695,7 +695,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         }
         if (M_Locator_ID != 0) return M_Locator_ID;
         return firstM_Locator_ID;
-    } //	getM_Locator_ID
+    } //	getLocatorId
 
     /**
      * Get Quantity On Hand of Warehouse Available for Reservation
@@ -822,9 +822,9 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 new Object[]{
                         addition,
                         Env.getUserId(Env.getCtx()),
-                        getM_Product_ID(),
-                        getM_Locator_ID(),
-                        getMAttributeSetInstance_ID(),
+                        getProductId(),
+                        getLocatorId(),
+                        getAttributeSetInstanceId(),
                         getDateMaterialPolicy()
                 }
         );
@@ -835,9 +835,9 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                 throw new NegativeInventoryDisallowedException(
                         getCtx(),
                         getWarehouseId(),
-                        getM_Product_ID(),
-                        getMAttributeSetInstance_ID(),
-                        getM_Locator_ID(),
+                        getProductId(),
+                        getAttributeSetInstanceId(),
+                        getLocatorId(),
                         getQtyOnHand().subtract(addition),
                         addition.negate());
             }
@@ -851,7 +851,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      */
     public int getWarehouseId() {
         if (m_M_Warehouse_ID == 0) {
-            MLocator loc = MLocator.get(getCtx(), getM_Locator_ID());
+            MLocator loc = MLocator.get(getCtx(), getLocatorId());
             m_M_Warehouse_ID = loc.getWarehouseId();
         }
         return m_M_Warehouse_ID;
@@ -867,7 +867,7 @@ public class MStorageOnHand extends X_M_StorageOnHand {
     @Override
     protected boolean beforeSave(boolean newRecord) {
         //	Negative Inventory check
-        if (newRecord || is_ValueChanged("QtyOnHand")) {
+        if (newRecord || isValueChanged("QtyOnHand")) {
             MWarehouse wh = new MWarehouse(getCtx(), getWarehouseId());
             if (wh.isDisallowNegativeInv()) {
                 String sql =
@@ -882,10 +882,10 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                         getSQLValueBDEx(
                                 sql,
                                 new Object[]{
-                                        getM_Product_ID(),
+                                        getProductId(),
                                         getWarehouseId(),
-                                        getM_Locator_ID(),
-                                        getMAttributeSetInstance_ID()
+                                        getLocatorId(),
+                                        getAttributeSetInstanceId()
                                 });
                 if (QtyOnHand == null) QtyOnHand = Env.ZERO;
 
@@ -898,23 +898,23 @@ public class MStorageOnHand extends X_M_StorageOnHand {
                             new NegativeInventoryDisallowedException(
                                     getCtx(),
                                     getWarehouseId(),
-                                    getM_Product_ID(),
-                                    getMAttributeSetInstance_ID(),
-                                    getM_Locator_ID(),
+                                    getProductId(),
+                                    getAttributeSetInstanceId(),
+                                    getLocatorId(),
                                     QtyOnHand.subtract(getQtyOnHand()),
                                     getQtyOnHand().negate()));
                     return false;
                 }
 
-                if (getMAttributeSetInstance_ID() > 0 && getQtyOnHand().signum() < 0) {
+                if (getAttributeSetInstanceId() > 0 && getQtyOnHand().signum() < 0) {
                     log.saveError(
                             "Error",
                             new NegativeInventoryDisallowedException(
                                     getCtx(),
                                     getWarehouseId(),
-                                    getM_Product_ID(),
-                                    getMAttributeSetInstance_ID(),
-                                    getM_Locator_ID(),
+                                    getProductId(),
+                                    getAttributeSetInstanceId(),
+                                    getLocatorId(),
                                     QtyOnHand.subtract(getQtyOnHand()),
                                     getQtyOnHand().negate()));
                     return false;
@@ -934,11 +934,11 @@ public class MStorageOnHand extends X_M_StorageOnHand {
         StringBuffer sb =
                 new StringBuffer("MStorageOnHand[")
                         .append("M_Locator_ID=")
-                        .append(getM_Locator_ID())
+                        .append(getLocatorId())
                         .append(",M_Product_ID=")
-                        .append(getM_Product_ID())
+                        .append(getProductId())
                         .append(",M_AttributeSetInstance_ID=")
-                        .append(getMAttributeSetInstance_ID())
+                        .append(getAttributeSetInstanceId())
                         .append(",DateMaterialPolicy=")
                         .append(getDateMaterialPolicy())
                         .append(": OnHand=")

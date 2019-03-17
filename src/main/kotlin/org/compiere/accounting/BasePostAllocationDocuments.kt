@@ -11,7 +11,7 @@ import java.util.Properties
  * Tax1 $15 + Tax2 $5 = Total $120 Payment: $115 (i.e. $5 underpayment) Tax Adjustment = Tax1 =
  * 0.63 (15/120*5) Tax2 = 0.21 (5/120/5)
  *
- * @param as accounting schema
+ * @param `as` accounting schema
  * @param fact fact
  * @param line Allocation line
  * @param DiscountAccount discount acct
@@ -23,9 +23,6 @@ fun createTaxCorrection(
     `as`: MAcctSchema,
     fact: Fact,
     line: DocLine_Allocation,
-    DiscountAccount: MAccount?,
-    WriteOffAccoint: MAccount?,
-    isSOTrx: Boolean,
     tax: DocAllocationTax
 ): Boolean {
     // 	Get Source Amounts with account

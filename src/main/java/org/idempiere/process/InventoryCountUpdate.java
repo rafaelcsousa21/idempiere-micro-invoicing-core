@@ -52,7 +52,7 @@ public class InventoryCountUpdate extends SvrProcess {
                 p_InventoryCountSetZero = "Z".equals(para[i].getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_M_Inventory_ID = getRecord_ID();
+        p_M_Inventory_ID = getRecordId();
     } //	prepare
 
     /**

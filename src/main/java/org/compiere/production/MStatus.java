@@ -4,16 +4,8 @@ import kotliquery.Row;
 import org.compiere.model.I_R_Status;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
-import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Request Status Model
@@ -79,7 +71,7 @@ public class MStatus extends X_R_Status {
     public static MStatus get(Properties ctx, int R_Status_ID) {
         if (R_Status_ID == 0) return null;
         Integer key = R_Status_ID;
-        MStatus retValue = (MStatus) s_cache.get(key);
+        MStatus retValue = s_cache.get(key);
         if (retValue == null) {
             retValue = new MStatus(ctx, R_Status_ID);
             s_cache.put(key, retValue);
@@ -96,7 +88,7 @@ public class MStatus extends X_R_Status {
      */
     public static MStatus getDefault(Properties ctx, int R_RequestType_ID) {
         Integer key = R_RequestType_ID;
-        MStatus retValue = (MStatus) s_cacheDefault.get(key);
+        MStatus retValue = s_cacheDefault.get(key);
         if (retValue != null) return retValue;
         retValue = MBaseStatusKt.getDefaultRequestStatus(ctx, R_RequestType_ID);
         if (retValue != null) s_cacheDefault.put(key, retValue);
@@ -123,8 +115,8 @@ public class MStatus extends X_R_Status {
         if (isOpen() && isClosed()) setIsClosed(false);
         if (isFinalClose() && !isClosed()) setIsFinalClose(false);
         //
-        if (!isWebCanUpdate() && getUpdate_Status_ID() != 0) setUpdate_Status_ID(0);
-        if (getTimeoutDays() == 0 && getNext_Status_ID() != 0) setNext_Status_ID(0);
+        if (!isWebCanUpdate() && getUpdateStatusId() != 0) setUpdateStatusId(0);
+        if (getTimeoutDays() == 0 && getNextStatusId() != 0) setNextStatusId(0);
         //
         return true;
     } //	beforeSave

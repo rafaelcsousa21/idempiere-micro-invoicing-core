@@ -92,14 +92,14 @@ public class ProductUOMConvert extends SvrProcess {
                             + p_Qty);
 
         MUOMConversion[] conversions =
-                MUOMConversion.getProductConversions(getCtx(), product.getM_Product_ID());
+                MUOMConversion.getProductConversions(getCtx(), product.getProductId());
         MUOMConversion conversion = null;
         for (int i = 0; i < conversions.length; i++) {
-            if (conversions[i].getC_UOM_To_ID() == productTo.getC_UOM_ID()) conversion = conversions[i];
+            if (conversions[i].getTargetUOMId() == productTo.getUOMId()) conversion = conversions[i];
         }
         if (conversion == null) throw new AdempiereUserError("@NotFound@: @C_UOM_Conversion_ID@");
 
-        MUOM uomTo = MUOM.get(getCtx(), productTo.getC_UOM_ID());
+        MUOM uomTo = MUOM.get(getCtx(), productTo.getUOMId());
         BigDecimal qtyTo =
                 p_Qty.divide(conversion.getDivideRate(), uomTo.getStdPrecision(), BigDecimal.ROUND_HALF_UP);
         BigDecimal qtyTo6 = p_Qty.divide(conversion.getDivideRate(), 6, BigDecimal.ROUND_HALF_UP);

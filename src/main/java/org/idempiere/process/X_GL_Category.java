@@ -82,7 +82,7 @@ public class X_GL_Category extends BasePOName implements I_GL_Category {
      *
      * @return General Ledger Category
      */
-    public int getGL_Category_ID() {
+    public int getGLCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Category_ID);
         if (ii == null) return 0;
         return ii;

@@ -122,7 +122,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return 1099 Box
      */
-    public int getC_1099Box_ID() {
+    public int get1099BoxId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_1099Box_ID);
         if (ii == null) return 0;
         return ii;
@@ -240,7 +240,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValue(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValue(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -322,7 +322,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Tax identifier
      */
-    public int getC_Tax_ID() {
+    public int getTaxId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Tax_ID);
         if (ii == null) return 0;
         return ii;
@@ -333,7 +333,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @param C_Tax_ID Tax identifier
      */
-    public void setC_Tax_ID(int C_Tax_ID) {
+    public void setTaxId(int C_Tax_ID) {
         if (C_Tax_ID < 1) setValue(COLUMNNAME_C_Tax_ID, null);
         else setValue(COLUMNNAME_C_Tax_ID, Integer.valueOf(C_Tax_ID));
     }
@@ -388,7 +388,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @param I_IsImported Has this import been processed
      */
-    public void setI_IsImported(boolean I_IsImported) {
+    public void setIsImported(boolean I_IsImported) {
         setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
@@ -431,7 +431,7 @@ public class X_I_Invoice extends BasePOName implements I_I_Invoice {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;

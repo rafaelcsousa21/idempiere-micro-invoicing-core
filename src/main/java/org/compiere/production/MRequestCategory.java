@@ -51,7 +51,7 @@ public class MRequestCategory extends X_R_Category {
      */
     public static MRequestCategory get(Properties ctx, int R_Category_ID) {
         Integer key = R_Category_ID;
-        MRequestCategory retValue = (MRequestCategory) s_cache.get(key);
+        MRequestCategory retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MRequestCategory(ctx, R_Category_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);

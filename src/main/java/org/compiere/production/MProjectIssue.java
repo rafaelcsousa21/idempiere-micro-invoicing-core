@@ -46,8 +46,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
         if (C_ProjectIssue_ID == 0) {
             //	setProjectId (0);
             //	setLine (0);
-            //	setM_Locator_ID (0);
-            //	setM_Product_ID (0);
+            //	setLocatorId (0);
+            //	setProductId (0);
             //	setMovementDate (new Timestamp(System.currentTimeMillis()));
             setMovementQty(Env.ZERO);
             setPosted(false);
@@ -78,8 +78,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
         setLine(getNextLine());
         m_parent = project;
         //
-        //	setM_Locator_ID (0);
-        //	setM_Product_ID (0);
+        //	setLocatorId (0);
+        //	setProductId (0);
         //
         setMovementDate(new Timestamp(System.currentTimeMillis()));
         setMovementQty(Env.ZERO);
@@ -106,8 +106,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
      * @param MovementQty  qty
      */
     public void setMandatory(int M_Locator_ID, int M_Product_ID, BigDecimal MovementQty) {
-        setM_Locator_ID(M_Locator_ID);
-        setM_Product_ID(M_Product_ID);
+        setLocatorId(M_Locator_ID);
+        setProductId(M_Product_ID);
         setMovementQty(MovementQty);
     } //	setMandatory
 
@@ -118,12 +118,12 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
      */
     public boolean process() {
         if (!save()) return false;
-        if (getM_Product_ID() == 0) {
+        if (getProductId() == 0) {
             log.log(Level.SEVERE, "No Product");
             return false;
         }
 
-        MProduct product = MProduct.get(getCtx(), getM_Product_ID());
+        MProduct product = MProduct.get(getCtx(), getProductId());
 
         //	If not a stocked Item nothing to do
         if (!product.isStocked()) {
@@ -139,22 +139,22 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                         getCtx(),
                         getOrgId(),
                         MTransaction.MOVEMENTTYPE_WorkOrderPlus,
-                        getM_Locator_ID(),
-                        getM_Product_ID(),
-                        getMAttributeSetInstance_ID(),
+                        getLocatorId(),
+                        getProductId(),
+                        getAttributeSetInstanceId(),
                         getMovementQty().negate(),
                         getMovementDate(),
                         null);
-        mTrx.setC_ProjectIssue_ID(getC_ProjectIssue_ID());
+        mTrx.setProjectIssueId(getProjectIssueId());
         //
-        MLocator loc = MLocator.get(getCtx(), getM_Locator_ID());
+        MLocator loc = MLocator.get(getCtx(), getLocatorId());
 
         Timestamp dateMPolicy = getMovementDate();
 
-        if (getMAttributeSetInstance_ID() > 0) {
+        if (getAttributeSetInstanceId() > 0) {
             Timestamp t =
                     MStorageOnHand.getDateMaterialPolicy(
-                            getM_Product_ID(), getMAttributeSetInstance_ID());
+                            getProductId(), getAttributeSetInstanceId());
             if (t != null) dateMPolicy = t;
         }
 
@@ -164,19 +164,19 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                 String MMPolicy = product.getMMPolicy();
                 Timestamp minGuaranteeDate = getMovementDate();
                 int M_Warehouse_ID =
-                        getM_Locator_ID() > 0
-                                ? getM_Locator().getWarehouseId()
-                                : getC_Project().getWarehouseId();
+                        getLocatorId() > 0
+                                ? getLocator().getWarehouseId()
+                                : getProject().getWarehouseId();
                 MStorageOnHand[] storages =
                         MStorageOnHand.getWarehouse(
                                 getCtx(),
                                 M_Warehouse_ID,
-                                getM_Product_ID(),
-                                getMAttributeSetInstance_ID(),
+                                getProductId(),
+                                getAttributeSetInstanceId(),
                                 minGuaranteeDate,
                                 MClient.MMPOLICY_FiFo.equals(MMPolicy),
                                 true,
-                                getM_Locator_ID(),
+                                getLocatorId(),
                                 null,
                                 true);
                 BigDecimal qtyToIssue = getMovementQty();
@@ -196,9 +196,9 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                             MStorageOnHand.add(
                                     getCtx(),
                                     loc.getWarehouseId(),
-                                    getM_Locator_ID(),
-                                    getM_Product_ID(),
-                                    getMAttributeSetInstance_ID(),
+                                    getLocatorId(),
+                                    getProductId(),
+                                    getAttributeSetInstanceId(),
                                     qtyToIssue.negate(),
                                     dateMPolicy,
                                     null);
@@ -208,9 +208,9 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                         MStorageOnHand.add(
                                 getCtx(),
                                 loc.getWarehouseId(),
-                                getM_Locator_ID(),
-                                getM_Product_ID(),
-                                getMAttributeSetInstance_ID(),
+                                getLocatorId(),
+                                getProductId(),
+                                getAttributeSetInstanceId(),
                                 getMovementQty().negate(),
                                 dateMPolicy,
                                 null);

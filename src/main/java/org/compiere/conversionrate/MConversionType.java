@@ -59,7 +59,7 @@ public class MConversionType extends X_C_ConversionType {
     public static int getDefault(int AD_Client_ID) {
         //	Try Cache
         Integer key = AD_Client_ID;
-        Integer ii = (Integer) s_cache.get(key);
+        Integer ii = s_cache.get(key);
         if (ii != null) return ii;
 
         //	Get from DB

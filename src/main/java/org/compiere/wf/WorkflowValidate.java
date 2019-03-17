@@ -19,7 +19,7 @@ public class WorkflowValidate extends SvrProcess {
      * Prepare
      */
     protected void prepare() {
-        p_AD_Worlflow_ID = getRecord_ID();
+        p_AD_Worlflow_ID = getRecordId();
     } //	prepare
 
     /**

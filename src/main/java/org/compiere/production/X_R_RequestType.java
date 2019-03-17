@@ -32,7 +32,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
          * if (R_RequestType_ID == 0) { setConfidentialType (null); // C setDueDateTolerance (0); // 7
          * setIsAutoChangeRequest (false); setIsConfidentialInfo (false); // N setIsDefault (false); //
          * N setIsEMailWhenDue (false); setIsEMailWhenOverdue (false); setIsIndexed (false);
-         * setIsSelfService (true); // Y setName (null); setR_RequestType_ID (0); setR_StatusCategory_ID
+         * setIsSelfService (true); // Y setName (null); setRequestTypeId (0); setStatusCategoryId
          * (0); }
          */
     }
@@ -224,7 +224,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      *
      * @return Type of request (e.g. Inquiry, Complaint, ..)
      */
-    public int getR_RequestType_ID() {
+    public int getRequestTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_RequestType_ID);
         if (ii == null) return 0;
         return ii;
@@ -235,7 +235,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      *
      * @return Request Status Category
      */
-    public int getR_StatusCategory_ID() {
+    public int getStatusCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_R_StatusCategory_ID);
         if (ii == null) return 0;
         return ii;
@@ -246,7 +246,7 @@ public class X_R_RequestType extends BasePOName implements I_R_RequestType {
      *
      * @param R_StatusCategory_ID Request Status Category
      */
-    public void setR_StatusCategory_ID(int R_StatusCategory_ID) {
+    public void setStatusCategoryId(int R_StatusCategory_ID) {
         if (R_StatusCategory_ID < 1) setValue(COLUMNNAME_R_StatusCategory_ID, null);
         else setValue(COLUMNNAME_R_StatusCategory_ID, Integer.valueOf(R_StatusCategory_ID));
     }

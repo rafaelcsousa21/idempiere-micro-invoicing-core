@@ -51,7 +51,7 @@ public class X_M_CostType extends BasePOName implements I_M_CostType {
      *
      * @return Type of Cost (e.g. Current, Plan, Future)
      */
-    public int getM_CostType_ID() {
+    public int getCostTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_CostType_ID);
         if (ii == null) return 0;
         return ii;

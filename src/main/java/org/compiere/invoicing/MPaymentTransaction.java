@@ -58,8 +58,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         if (C_PaymentTransaction_ID == 0) {
             setTrxType(X_C_PaymentTransaction.TRXTYPE_Sales);
             //
-            setR_AvsAddr(X_C_PaymentTransaction.R_AVSZIP_Unavailable);
-            setR_AvsZip(X_C_PaymentTransaction.R_AVSZIP_Unavailable);
+            setAddressVerified(X_C_PaymentTransaction.R_AVSZIP_Unavailable);
+            setVerifiedZip(X_C_PaymentTransaction.R_AVSZIP_Unavailable);
             //
             setIsReceipt(true);
             setIsApproved(false);
@@ -85,7 +85,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         if (s_log.isLoggable(Level.FINE)) s_log.fine("create for " + mbap);
 
         MPaymentProcessor mpp =
-                new MPaymentProcessor(mbap.getCtx(), mbap.getC_PaymentProcessor_ID());
+                new MPaymentProcessor(mbap.getCtx(), mbap.getPaymentProcessorId());
         String className = mpp.getPayProcessorClass();
         if (className == null || className.length() == 0) {
             s_log.log(Level.SEVERE, "No PaymentProcessor class name in " + mbap);
@@ -115,27 +115,27 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         PO.copyValues(from, to, from.getClientId(), from.getOrgId());
         to.setValueNoCheck(I_C_PaymentTransaction.COLUMNNAME_C_PaymentTransaction_ID, I_ZERO);
         //
-        to.setA_City(from.getA_City());
-        to.setA_Country(from.getA_Country());
-        to.setA_EMail(from.getA_EMail());
-        to.setA_Ident_DL(from.getA_Ident_DL());
-        to.setA_Ident_SSN(from.getA_Ident_SSN());
-        to.setA_Name(from.getA_Name());
-        to.setA_State(from.getA_State());
-        to.setA_Street(from.getA_Street());
-        to.setA_Zip(from.getA_Zip());
+        to.setAccountCity(from.getAccountCity());
+        to.setAccountCountry(from.getAccountCountry());
+        to.setAccountEMail(from.getAccountEMail());
+        to.setPaymentIdentificationDriverLicence(from.getPaymentIdentificationDriverLicence());
+        to.setSocialSecurityNoPaymentIdentification(from.getSocialSecurityNoPaymentIdentification());
+        to.setAccountName(from.getAccountName());
+        to.setAccountState(from.getAccountState());
+        to.setAccountStreet(from.getAccountStreet());
+        to.setAccountZip(from.getAccountZip());
         to.setAccountNo(from.getAccountNo());
         to.setIBAN(from.getIBAN());
         to.setOrgId(from.getOrgId());
-        to.setC_BankAccount_ID(from.getC_BankAccount_ID());
-        to.setC_BP_BankAccount_ID(from.getC_BP_BankAccount_ID());
+        to.setBankAccountId(from.getBankAccountId());
+        to.setBusinessPartnerBankAccountId(from.getBusinessPartnerBankAccountId());
         to.setBusinessPartnerId(from.getBusinessPartnerId());
         to.setConversionTypeId(from.getConversionTypeId());
         to.setCurrencyId(from.getCurrencyId());
         to.setInvoiceId(from.getInvoiceId());
         to.setOrderId(from.getOrderId());
-        to.setC_PaymentProcessor_ID(from.getC_PaymentProcessor_ID());
-        to.setC_POSTenderType_ID(from.getC_POSTenderType_ID());
+        to.setPaymentProcessorId(from.getPaymentProcessorId());
+        to.setPOSTenderTypeId(from.getPOSTenderTypeId());
         to.setCheckNo(from.getCheckNo());
         to.setCreditCardExpMM(from.getCreditCardExpMM());
         to.setCreditCardExpYY(from.getCreditCardExpYY());
@@ -155,19 +155,19 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         to.setIsSelfService(from.isSelfService());
         to.setIsVoided(false);
         to.setMicr(from.getMicr());
-        to.setOrig_TrxID(orig_TrxID);
+        to.setOriginalTransactionId(orig_TrxID);
         to.setPayAmt(from.getPayAmt());
         to.setPONum(from.getPONum());
         to.setProcessed(false);
-        to.setR_AuthCode(null);
-        to.setR_AvsAddr(null);
-        to.setR_AvsZip(null);
-        to.setR_CVV2Match(false);
-        to.setR_Info(null);
-        to.setR_PnRef(null);
-        to.setR_RespMsg(null);
-        to.setR_Result(null);
-        to.setR_VoidMsg(null);
+        to.setAuthorizationCode(null);
+        to.setAddressVerified(null);
+        to.setVerifiedZip(null);
+        to.setCVV2Match(false);
+        to.setResponseInfo(null);
+        to.setPaymentReference(null);
+        to.setResponseMessage(null);
+        to.setTransmissionResult(null);
+        to.setVoidMessage(null);
         to.setRoutingNo(from.getRoutingNo());
         to.setSwiftCode(from.getSwiftCode());
         to.setTaxAmt(from.getTaxAmt());
@@ -238,7 +238,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
     }
 
     public boolean setPaymentProcessor() {
-        return setPaymentProcessor(getTenderType(), getCreditCardType(), getC_PaymentProcessor_ID());
+        return setPaymentProcessor(getTenderType(), getCreditCardType(), getPaymentProcessorId());
     }
 
     public boolean setPaymentProcessor(String tender, String CCType, int C_PaymentProcessor_ID) {
@@ -272,15 +272,15 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             MBankAccountProcessor bankAccountProcessor = m_mBankAccountProcessors[i];
             if (bankAccountProcessor.accepts(tender, CCType)) {
                 if (C_PaymentProcessor_ID == 0
-                        || bankAccountProcessor.getC_PaymentProcessor_ID() == C_PaymentProcessor_ID) {
+                        || bankAccountProcessor.getPaymentProcessorId() == C_PaymentProcessor_ID) {
                     m_mBankAccountProcessor = m_mBankAccountProcessors[i];
                     break;
                 }
             }
         }
         if (m_mBankAccountProcessor != null) {
-            setC_BankAccount_ID(m_mBankAccountProcessor.getC_BankAccount_ID());
-            setC_PaymentProcessor_ID(m_mBankAccountProcessor.getC_PaymentProcessor_ID());
+            setBankAccountId(m_mBankAccountProcessor.getBankAccountId());
+            setPaymentProcessorId(m_mBankAccountProcessor.getPaymentProcessorId());
         }
         //
         return m_mBankAccountProcessor != null;
@@ -301,21 +301,21 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 || getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_CreditPayment)) {
             if (isVoided()) {
                 if (log.isLoggable(Level.INFO))
-                    log.info("Already voided - " + getR_Result() + " - " + getR_RespMsg());
+                    log.info("Already voided - " + getTransmissionResult() + " - " + getResponseMessage());
                 setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentTransactionAlreadyVoided"));
                 return true;
             }
         } else if (getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_DelayedCapture)) {
             if (isDelayedCapture()) {
                 if (log.isLoggable(Level.INFO))
-                    log.info("Already delayed capture - " + getR_Result() + " - " + getR_RespMsg());
+                    log.info("Already delayed capture - " + getTransmissionResult() + " - " + getResponseMessage());
                 setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentTransactionAlreadyDelayedCapture"));
                 return true;
             }
         } else {
             if (isApproved()) {
                 if (log.isLoggable(Level.INFO))
-                    log.info("Already processed - " + getR_Result() + " - " + getR_RespMsg());
+                    log.info("Already processed - " + getTransmissionResult() + " - " + getResponseMessage());
                 setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentTransactionAlreadyProcessed"));
                 return true;
             }
@@ -323,9 +323,9 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
 
         if (m_mBankAccountProcessor == null) setPaymentProcessor();
         if (m_mBankAccountProcessor == null) {
-            if (getC_PaymentProcessor_ID() > 0) {
+            if (getPaymentProcessorId() > 0) {
                 MPaymentProcessor pp =
-                        new MPaymentProcessor(getCtx(), getC_PaymentProcessor_ID());
+                        new MPaymentProcessor(getCtx(), getPaymentProcessorId());
                 log.log(Level.WARNING, "No Payment Processor Model " + pp.toString());
                 setErrorMessage(Msg.getMsg(Env.getCtx(), "PaymentNoProcessorModel") + ": " + pp.toString());
             } else {
@@ -375,8 +375,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 } else {
                     if (getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_Void)
                             || getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_CreditPayment))
-                        setErrorMessage("From " + getCreditCardName() + ": " + getR_VoidMsg());
-                    else setErrorMessage("From " + getCreditCardName() + ": " + getR_RespMsg());
+                        setErrorMessage("From " + getCreditCardName() + ": " + getVoidMessage());
+                    else setErrorMessage("From " + getCreditCardName() + ": " + getResponseMessage());
                 }
                 //				}
             }
@@ -394,8 +394,8 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
             setIsDelayedCapture(approved);
 
         MOnlineTrxHistory history = new MOnlineTrxHistory(getCtx(), 0);
-        history.setAD_Table_ID(MPaymentTransaction.Table_ID);
-        history.setRecord_ID(getC_PaymentTransaction_ID());
+        history.setRowTableId(MPaymentTransaction.Table_ID);
+        history.setRecordId(getPaymentTransactionId());
         history.setIsError(!(approved && processed));
         history.setProcessed(approved && processed);
 
@@ -403,12 +403,12 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         if (approved) {
             if (getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_Void)
                     || getTrxType().equals(X_C_PaymentTransaction.TRXTYPE_CreditPayment))
-                msg.append(getR_VoidMsg() + "\n");
+                msg.append(getVoidMessage() + "\n");
             else {
-                msg.append("Result: " + getR_Result() + "\n");
-                msg.append("Response Message: " + getR_RespMsg() + "\n");
-                msg.append("Reference: " + getR_PnRef() + "\n");
-                msg.append("Authorization Code: " + getR_AuthCode() + "\n");
+                msg.append("Result: " + getTransmissionResult() + "\n");
+                msg.append("Response Message: " + getResponseMessage() + "\n");
+                msg.append("Reference: " + getPaymentReference() + "\n");
+                msg.append("Authorization Code: " + getAuthorizationCode() + "\n");
             }
         } else msg.append("ERROR: " + getErrorMessage() + "\n");
         msg.append("Transaction Type: " + getTrxType());
@@ -432,19 +432,19 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                                 this,
                                 new Timestamp(System.currentTimeMillis()),
                                 X_C_PaymentTransaction.TRXTYPE_Void,
-                                getR_PnRef(),
+                                getPaymentReference(),
                                 null);
                 m_mPaymentTransaction.setIsApproved(false);
                 m_mPaymentTransaction.setIsVoided(false);
                 m_mPaymentTransaction.setIsDelayedCapture(false);
                 ok = m_mPaymentTransaction.processOnline();
-                m_mPaymentTransaction.setRef_PaymentTransaction_ID(getC_PaymentTransaction_ID());
+                m_mPaymentTransaction.setReferencedPaymentTransactionId(getPaymentTransactionId());
                 m_mPaymentTransaction.saveEx();
 
                 if (ok) {
                     setIsVoided(true);
-                    setR_VoidMsg(m_mPaymentTransaction.getR_VoidMsg());
-                    setRef_PaymentTransaction_ID(m_mPaymentTransaction.getC_PaymentTransaction_ID());
+                    setVoidMessage(m_mPaymentTransaction.getVoidMessage());
+                    setReferencedPaymentTransactionId(m_mPaymentTransaction.getPaymentTransactionId());
                 } else setErrorMessage(m_mPaymentTransaction.getErrorMessage());
             } catch (Exception e) {
                 log.log(Level.SEVERE, "voidOnlineAuthorizationPaymentTransaction", e);
@@ -470,7 +470,7 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                                 this,
                                 new Timestamp(System.currentTimeMillis()),
                                 X_C_PaymentTransaction.TRXTYPE_DelayedCapture,
-                                getR_PnRef(),
+                                getPaymentReference(),
                                 null);
                 m_mPaymentTransaction.setIsApproved(false);
                 m_mPaymentTransaction.setIsVoided(false);
@@ -479,13 +479,13 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
                 if (C_Invoice_ID != 0) m_mPaymentTransaction.setInvoiceId(C_Invoice_ID);
 
                 ok = m_mPaymentTransaction.processOnline();
-                m_mPaymentTransaction.setRef_PaymentTransaction_ID(getC_PaymentTransaction_ID());
+                m_mPaymentTransaction.setReferencedPaymentTransactionId(getPaymentTransactionId());
                 m_mPaymentTransaction.saveEx();
 
                 if (ok) {
                     if (C_Invoice_ID != 0) setInvoiceId(C_Invoice_ID);
                     setIsDelayedCapture(true);
-                    setRef_PaymentTransaction_ID(m_mPaymentTransaction.getC_PaymentTransaction_ID());
+                    setReferencedPaymentTransactionId(m_mPaymentTransaction.getPaymentTransactionId());
                 } else setErrorMessage(m_mPaymentTransaction.getErrorMessage());
             } catch (Exception e) {
                 log.log(Level.SEVERE, "delayCaptureOnlineAuthorizationPaymentTransaction", e);
@@ -527,27 +527,27 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
 
     public MPayment createPayment(String trxName) {
         MPayment payment = new MPayment(getCtx(), 0);
-        payment.setA_City(getA_City());
-        payment.setA_Country(getA_Country());
-        payment.setA_EMail(getA_EMail());
-        payment.setA_Ident_DL(getA_Ident_DL());
-        payment.setA_Ident_SSN(getA_Ident_SSN());
-        payment.setA_Name(getA_Name());
-        payment.setA_State(getA_State());
-        payment.setA_Street(getA_Street());
-        payment.setA_Zip(getA_Zip());
+        payment.setAccountCity(getAccountCity());
+        payment.setAccountCountry(getAccountCountry());
+        payment.setAccountEMail(getAccountEMail());
+        payment.setPaymentIdentificationDriverLicence(getPaymentIdentificationDriverLicence());
+        payment.setSocialSecurityNoPaymentIdentification(getSocialSecurityNoPaymentIdentification());
+        payment.setAccountName(getAccountName());
+        payment.setAccountState(getAccountState());
+        payment.setAccountStreet(getAccountStreet());
+        payment.setAccountZip(getAccountZip());
         payment.setAccountNo(getAccountNo());
         payment.setIBAN(getIBAN());
         payment.setOrgId(getOrgId());
-        payment.setC_BankAccount_ID(getC_BankAccount_ID());
-        payment.setC_BP_BankAccount_ID(getC_BP_BankAccount_ID());
+        payment.setBankAccountId(getBankAccountId());
+        payment.setBusinessPartnerBankAccountId(getBusinessPartnerBankAccountId());
         payment.setBusinessPartnerId(getBusinessPartnerId());
         payment.setConversionTypeId(getConversionTypeId());
         payment.setCurrencyId(getCurrencyId());
         payment.setInvoiceId(getInvoiceId());
         payment.setOrderId(getOrderId());
-        payment.setC_PaymentProcessor_ID(getC_PaymentProcessor_ID());
-        payment.setC_POSTenderType_ID(getC_POSTenderType_ID());
+        payment.setPaymentProcessorId(getPaymentProcessorId());
+        payment.setPOSTenderTypeId(getPOSTenderTypeId());
         payment.setCheckNo(getCheckNo());
         payment.setCreditCardExpMM(getCreditCardExpMM());
         payment.setCreditCardExpYY(getCreditCardExpYY());
@@ -567,19 +567,19 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
         payment.setIsSelfService(isSelfService());
         payment.setIsVoided(isVoided());
         payment.setMicr(getMicr());
-        payment.setOrig_TrxID(getOrig_TrxID());
+        payment.setOriginalTransactionId(getOriginalTransactionId());
         payment.setPayAmt(getPayAmt());
         payment.setPONum(getPONum());
         payment.setProcessed(isProcessed());
-        payment.setR_AuthCode(getR_AuthCode());
-        payment.setR_AvsAddr(getR_AvsAddr());
-        payment.setR_AvsZip(getR_AvsZip());
-        payment.setR_CVV2Match(isR_CVV2Match());
-        payment.setR_Info(getR_Info());
-        payment.setR_PnRef(getR_PnRef());
-        payment.setR_RespMsg(getR_RespMsg());
-        payment.setR_Result(getR_Result());
-        payment.setR_VoidMsg(getR_VoidMsg());
+        payment.setAuthorizationCode(getAuthorizationCode());
+        payment.setAddressVerified(getAddressVerified());
+        payment.setVerifiedZip(getVerifiedZip());
+        payment.setCVV2Match(isCVV2Match());
+        payment.setResponseInfo(getResponseInfo());
+        payment.setPaymentReference(getPaymentReference());
+        payment.setResponseMessage(getResponseMessage());
+        payment.setTransmissionResult(getTransmissionResult());
+        payment.setVoidMessage(getVoidMessage());
         payment.setRoutingNo(getRoutingNo());
         payment.setSwiftCode(getSwiftCode());
         payment.setTaxAmt(getTaxAmt());
@@ -603,11 +603,11 @@ public class MPaymentTransaction extends X_C_PaymentTransaction
      */
     @Override
     public boolean startProcess(Properties ctx, IProcessInfo pi) {
-        if (log.isLoggable(Level.INFO)) log.info("startProcess - " + pi.getRecord_ID());
+        if (log.isLoggable(Level.INFO)) log.info("startProcess - " + pi.getRecordId());
         boolean retValue = false;
         //
-        if (pi.getRecord_ID() != getId()) {
-            log.log(Level.SEVERE, "startProcess - Not same Payment - " + pi.getRecord_ID());
+        if (pi.getRecordId() != getId()) {
+            log.log(Level.SEVERE, "startProcess - Not same Payment - " + pi.getRecordId());
             return false;
         }
         //  Process it

@@ -106,10 +106,10 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
         setValue(COLUMNNAME_CopyFrom, CopyFrom);
     }
 
-    public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException {
+    public org.compiere.model.I_C_UOM getUOM() throws RuntimeException {
         return (org.compiere.model.I_C_UOM)
                 MTable.get(getCtx(), org.compiere.model.I_C_UOM.Table_Name)
-                        .getPO(getC_UOM_ID());
+                        .getPO(getUOMId());
     }
 
     /**
@@ -117,7 +117,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @return Unit of Measure
      */
-    public int getC_UOM_ID() {
+    public int getUOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -128,7 +128,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @param C_UOM_ID Unit of Measure
      */
-    public void setC_UOM_ID(int C_UOM_ID) {
+    public void setUOMId(int C_UOM_ID) {
         if (C_UOM_ID < 1) setValue(COLUMNNAME_C_UOM_ID, null);
         else setValue(COLUMNNAME_C_UOM_ID, C_UOM_ID);
     }
@@ -190,18 +190,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
     public I_M_AttributeSetInstance getMAttributeSetInstance() throws RuntimeException {
         return (I_M_AttributeSetInstance)
                 MTable.get(getCtx(), I_M_AttributeSetInstance.Table_Name)
-                        .getPO(getMAttributeSetInstance_ID());
-    }
-
-    /**
-     * Set Attribute Set Instance.
-     *
-     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-     */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
-        else
-            setValue(COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
+                        .getPO(getAttributeSetInstanceId());
     }
 
     /**
@@ -209,16 +198,27 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @return Product Attribute Set Instance
      */
-    public int getMAttributeSetInstance_ID() {
+    public int getAttributeSetInstanceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_M_ChangeNotice getM_ChangeNotice() throws RuntimeException {
+    /**
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
+    }
+
+    public org.compiere.model.I_M_ChangeNotice getChangeNotice() throws RuntimeException {
         return (org.compiere.model.I_M_ChangeNotice)
                 MTable.get(getCtx(), org.compiere.model.I_M_ChangeNotice.Table_Name)
-                        .getPO(getM_ChangeNotice_ID());
+                        .getPO(getChangeNoticeId());
     }
 
     /**
@@ -226,7 +226,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @return Bill of Materials (Engineering) Change Notice (Version)
      */
-    public int getM_ChangeNotice_ID() {
+    public int getChangeNoticeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ChangeNotice_ID);
         if (ii == null) return 0;
         return ii;
@@ -237,15 +237,15 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @param M_ChangeNotice_ID Bill of Materials (Engineering) Change Notice (Version)
      */
-    public void setM_ChangeNotice_ID(int M_ChangeNotice_ID) {
+    public void setChangeNoticeId(int M_ChangeNotice_ID) {
         if (M_ChangeNotice_ID < 1) setValue(COLUMNNAME_M_ChangeNotice_ID, null);
         else setValue(COLUMNNAME_M_ChangeNotice_ID, M_ChangeNotice_ID);
     }
 
-    public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
+    public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
                 MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-                        .getPO(getM_Product_ID());
+                        .getPO(getProductId());
     }
 
     /**
@@ -253,7 +253,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -264,7 +264,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
@@ -292,7 +292,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @return BOM & Formula
      */
-    public int getPP_Product_BOM_ID() {
+    public int getPP_Product_BOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -303,7 +303,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @param PP_Product_BOM_ID BOM & Formula
      */
-    public void setPP_Product_BOM_ID(int PP_Product_BOM_ID) {
+    public void setPP_Product_BOMId(int PP_Product_BOM_ID) {
         if (PP_Product_BOM_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
         else setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
     }

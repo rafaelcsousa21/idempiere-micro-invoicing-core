@@ -57,13 +57,13 @@ public class MDDOrderLine extends X_DD_OrderLine {
             //	setCurrencyId (0);	// @C_Currency_ID@
             //	setDateOrdered (new Timestamp(System.currentTimeMillis()));	// @DateOrdered@
             //
-            //	setC_Tax_ID (0);
-            //	setC_UOM_ID (0);
+            //	setTaxId (0);
+            //	setUOMId (0);
             //
             setFreightAmt(Env.ZERO);
             setLineNetAmt(Env.ZERO);
             //
-            setM_AttributeSetInstance_ID(0);
+            setAttributeSetInstanceId(0);
             //
             setQtyEntered(Env.ZERO);
             setQtyInTransit(Env.ZERO);
@@ -84,7 +84,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
     // private Integer			m_precision = null;
 
     /**
-     * Parent Constructor. ol.setM_Product_ID(wbl.getM_Product_ID());
+     * Parent Constructor. ol.setProductId(wbl.getProductId());
      * ol.setQtyOrdered(wbl.getQuantity()); ol.setPrice(); ol.setPriceActual(wbl.getPrice());
      * ol.setTax(); ol.saveEx();
      *
@@ -93,7 +93,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
     public MDDOrderLine(MDDOrder order) {
         this(order.getCtx(), 0);
         if (order.getId() == 0) throw new IllegalArgumentException("Header not saved");
-        setDD_Order_ID(order.getDD_Order_ID()); // 	parent
+        setDD_OrderId(order.getDD_OrderId()); // 	parent
         setOrder(order);
     } //	MDDOrderLine
 
@@ -136,7 +136,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      * @return parent
      */
     public MDDOrder getParent() {
-        if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDD_Order_ID());
+        if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDD_OrderId());
         return m_parent;
     } //	getParent
 
@@ -146,8 +146,8 @@ public class MDDOrderLine extends X_DD_OrderLine {
      * @return product or null
      */
     public I_M_Product getProduct() {
-        if (m_product == null && getM_Product_ID() != 0)
-            m_product = MProduct.get(getCtx(), getM_Product_ID());
+        if (m_product == null && getProductId() != 0)
+            m_product = MProduct.get(getCtx(), getProductId());
         return m_product;
     } //	getProduct
 
@@ -156,11 +156,11 @@ public class MDDOrderLine extends X_DD_OrderLine {
      *
      * @param M_AttributeSetInstance_ID id
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID == 0) // 	 0 is valid ID
             setValue("M_AttributeSetInstance_ID", new Integer(0));
-        else super.setM_AttributeSetInstance_ID(M_AttributeSetInstance_ID);
-    } //	setM_AttributeSetInstance_ID
+        else super.setAttributeSetInstanceId(M_AttributeSetInstance_ID);
+    } //	setAttributeSetInstanceId
 
     /**
      * Set Warehouse
@@ -321,8 +321,8 @@ public class MDDOrderLine extends X_DD_OrderLine {
      * @param QtyEntered
      */
     public void setQtyEntered(BigDecimal QtyEntered) {
-        if (QtyEntered != null && getC_UOM_ID() != 0) {
-            int precision = MUOM.getPrecision(getCtx(), getC_UOM_ID());
+        if (QtyEntered != null && getUOMId() != 0) {
+            int precision = MUOM.getPrecision(getCtx(), getUOMId());
             QtyEntered = QtyEntered.setScale(precision, BigDecimal.ROUND_HALF_UP);
         }
         super.setQtyEntered(QtyEntered);
@@ -361,37 +361,37 @@ public class MDDOrderLine extends X_DD_OrderLine {
 
         //	R/O Check - Product/Warehouse Change
         if (!newRecord
-                && (is_ValueChanged("M_Product_ID")
-                || is_ValueChanged("M_Locator_ID")
-                || is_ValueChanged("M_LocatorTo_ID"))) {
+                && (isValueChanged("M_Product_ID")
+                || isValueChanged("M_Locator_ID")
+                || isValueChanged("M_LocatorTo_ID"))) {
             if (!canChangeWarehouse()) return false;
         } //	Product Changed
 
         //	Charge
-        if (getChargeId() != 0 && getM_Product_ID() != 0) setM_Product_ID(0);
+        if (getChargeId() != 0 && getProductId() != 0) setProductId(0);
         //	No Product
-        if (getM_Product_ID() == 0) setM_AttributeSetInstance_ID(0);
+        if (getProductId() == 0) setAttributeSetInstanceId(0);
         //	Product
 
         //	UOM
-        if (getC_UOM_ID() == 0 && (getM_Product_ID() != 0 || getChargeId() != 0)) {
-            int C_UOM_ID = MUOM.getDefault_UOM_ID(getCtx());
-            if (C_UOM_ID > 0) setC_UOM_ID(C_UOM_ID);
+        if (getUOMId() == 0 && (getProductId() != 0 || getChargeId() != 0)) {
+            int C_UOM_ID = MUOM.getDefault_UOMId(getCtx());
+            if (C_UOM_ID > 0) setUOMId(C_UOM_ID);
         }
         //	Qty Precision
-        if (newRecord || is_ValueChanged("QtyEntered")) setQtyEntered(getQtyEntered());
-        if (newRecord || is_ValueChanged("QtyOrdered")) setQtyOrdered(getQtyOrdered());
+        if (newRecord || isValueChanged("QtyEntered")) setQtyEntered(getQtyEntered());
+        if (newRecord || isValueChanged("QtyOrdered")) setQtyOrdered(getQtyOrdered());
 
         //	Qty on instance ASI for SO
         if (m_IsSOTrx
-                && getMAttributeSetInstance_ID() != 0
+                && getAttributeSetInstanceId() != 0
                 && (newRecord
-                || is_ValueChanged("M_Product_ID")
-                || is_ValueChanged("M_AttributeSetInstance_ID")
-                || is_ValueChanged("M_Warehouse_ID"))) {
+                || isValueChanged("M_Product_ID")
+                || isValueChanged("M_AttributeSetInstance_ID")
+                || isValueChanged("M_Warehouse_ID"))) {
             I_M_Product product = getProduct();
             if (product.isStocked()) {
-                int M_AttributeSet_ID = product.getMAttributeSet_ID();
+                int M_AttributeSet_ID = product.getAttributeSetId();
                 boolean isInstance = M_AttributeSet_ID != 0;
                 if (isInstance) {
                     MAttributeSet mas = MAttributeSet.get(getCtx(), M_AttributeSet_ID);
@@ -399,13 +399,13 @@ public class MDDOrderLine extends X_DD_OrderLine {
                 }
                 //	Max
                 if (isInstance) {
-                    MLocator locator_from = MLocator.get(getCtx(), getM_Locator_ID());
+                    MLocator locator_from = MLocator.get(getCtx(), getLocatorId());
                     MStorageOnHand[] storages =
                             MStorageOnHand.getWarehouse(
                                     getCtx(),
                                     locator_from.getWarehouseId(),
-                                    getM_Product_ID(),
-                                    getMAttributeSetInstance_ID(),
+                                    getProductId(),
+                                    getAttributeSetInstanceId(),
                                     null,
                                     true,
                                     false,
@@ -413,7 +413,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
                                     null);
                     BigDecimal qty = Env.ZERO;
                     for (int i = 0; i < storages.length; i++) {
-                        if (storages[i].getMAttributeSetInstance_ID() == getMAttributeSetInstance_ID())
+                        if (storages[i].getAttributeSetInstanceId() == getAttributeSetInstanceId())
                             qty = qty.add(storages[i].getQtyOnHand());
                     }
                     if (getQtyOrdered().compareTo(qty) > 0) {
@@ -431,7 +431,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
         //	Get Line No
         if (getLine() == 0) {
             String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_OrderLine WHERE C_Order_ID=?";
-            int ii = getSQLValue(sql, getDD_Order_ID());
+            int ii = getSQLValue(sql, getDD_OrderId());
             setLine(ii);
         }
 

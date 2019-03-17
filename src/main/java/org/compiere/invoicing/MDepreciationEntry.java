@@ -79,7 +79,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
     }
 
     protected boolean beforeSave(boolean newRecord) {
-        setC_Period_ID();
+        setPeriodId();
         return true;
     }
 
@@ -88,7 +88,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
             return false;
         }
         if (!isProcessed()
-                && (newRecord || is_ValueChanged(I_A_Depreciation_Entry.COLUMNNAME_DateAcct))) {
+                && (newRecord || isValueChanged(I_A_Depreciation_Entry.COLUMNNAME_DateAcct))) {
             selectLines();
         }
         return true;
@@ -103,7 +103,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         return true;
     }
 
-    public void setC_Period_ID() {
+    public void setPeriodId() {
         MPeriod period = MPeriod.get(getCtx(), getDateAcct(), getOrgId());
         if (period == null) {
             throw new AdempiereException("@NotFound@ @C_Period_ID@");
@@ -321,7 +321,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         return m_processMsg;
     }
 
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getCreatedBy();
     }
 

@@ -121,14 +121,14 @@ public class MElementValue extends X_C_ElementValue {
         setAccountSign(imp.getAccountSign());
         setIsSummary(imp.isSummary());
         setIsDocControlled(imp.isDocControlled());
-        setElementId(imp.getC_Element_ID());
+        setElementId(imp.getElementId());
         //
         setPostActual(imp.isPostActual());
         setPostBudget(imp.isPostBudget());
         setPostEncumbrance(imp.isPostEncumbrance());
         setPostStatistical(imp.isPostStatistical());
         //
-        //	setC_BankAccount_ID(imp.getC_BankAccount_ID());
+        //	setBankAccountId(imp.getBankAccountId());
         //	setIsForeignCurrency(imp.isForeignCurrency());
         //	setCurrencyId(imp.getCurrencyId());
         //	setIsBankAccount(imp.isIsBankAccount());
@@ -152,7 +152,7 @@ public class MElementValue extends X_C_ElementValue {
         if (getOrgId() != 0) setOrgId(0);
         //
         // Transform to summary level account
-        if (!newRecord && isSummary() && is_ValueChanged(I_C_ElementValue.COLUMNNAME_IsSummary)) {
+        if (!newRecord && isSummary() && isValueChanged(I_C_ElementValue.COLUMNNAME_IsSummary)) {
             //
             // Check if we have accounting facts
             boolean match =
@@ -183,7 +183,7 @@ public class MElementValue extends X_C_ElementValue {
     @Override
     protected boolean afterSave(boolean newRecord, boolean success) {
         if (!success) return success;
-        if (newRecord || is_ValueChanged(I_C_ElementValue.COLUMNNAME_Value)) {
+        if (newRecord || isValueChanged(I_C_ElementValue.COLUMNNAME_Value)) {
             // afalcone [Bugs #1837219]
             int ad_Tree_ID = (new MElement(getCtx(), getElementId())).getTreeId();
             String treeType = (new MTree(getCtx(), ad_Tree_ID)).getTreeType();
@@ -195,8 +195,8 @@ public class MElementValue extends X_C_ElementValue {
 
         //	Value/Name change
         if (!newRecord
-                && (is_ValueChanged(I_C_ElementValue.COLUMNNAME_Value)
-                || is_ValueChanged(HasName.Companion.getCOLUMNNAME_Name()))) {
+                && (isValueChanged(I_C_ElementValue.COLUMNNAME_Value)
+                || isValueChanged(HasName.Companion.getCOLUMNNAME_Name()))) {
             MAccount.updateValueDescription(
                     getCtx(), "Account_ID=" + getElementValueId());
             if ("Y".equals(Env.getContext(getCtx(), "$Element_U1")))

@@ -87,7 +87,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
          * setDateAcct (new Timestamp( System.currentTimeMillis() )); // @DateAcct@ setDateDoc (new
          * Timestamp( System.currentTimeMillis() )); // @DateDoc@ setDescription (null); setDocAction
          * (null); // CO setDocStatus (null); // DR setDocumentNo (null); setGLCategoryId (0);
-         * // @GL_Category_ID@ setGL_Journal_ID (0); setIsApproved (true); // Y setIsPrinted (false); //
+         * // @GL_Category_ID@ setGLJournal_ID (0); setIsApproved (true); // Y setIsPrinted (false); //
          * N setPosted (false); // N setPostingType (null); // @PostingType@ setTotalCr (Env.ZERO); // 0
          * setTotalDr (Env.ZERO); // 0 }
          */
@@ -114,10 +114,10 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
         return sb.toString();
     }
 
-    public org.compiere.model.I_C_AcctSchema getC_AcctSchema() throws RuntimeException {
+    public org.compiere.model.I_C_AcctSchema getAccountingSchema() throws RuntimeException {
         return (org.compiere.model.I_C_AcctSchema)
                 MTable.get(getCtx(), org.compiere.model.I_C_AcctSchema.Table_Name)
-                        .getPO(getC_AcctSchema_ID());
+                        .getPO(getAccountingSchemaId());
     }
 
     /**
@@ -125,7 +125,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @return Rules for accounting
      */
-    public int getC_AcctSchema_ID() {
+    public int getAccountingSchemaId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
@@ -136,7 +136,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @param C_AcctSchema_ID Rules for accounting
      */
-    public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
+    public void setAccountingSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
         else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
     }
@@ -224,10 +224,10 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
         setValue(COLUMNNAME_ControlAmt, ControlAmt);
     }
 
-    public org.compiere.model.I_C_Period getC_Period() throws RuntimeException {
+    public org.compiere.model.I_C_Period getPeriod() throws RuntimeException {
         return (org.compiere.model.I_C_Period)
                 MTable.get(getCtx(), org.compiere.model.I_C_Period.Table_Name)
-                        .getPO(getC_Period_ID());
+                        .getPO(getPeriodId());
     }
 
     /**
@@ -235,7 +235,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @return Period of the Calendar
      */
-    public int getC_Period_ID() {
+    public int getPeriodId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
@@ -246,7 +246,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @param C_Period_ID Period of the Calendar
      */
-    public void setC_Period_ID(int C_Period_ID) {
+    public void setPeriodId(int C_Period_ID) {
         if (C_Period_ID < 1) setValue(COLUMNNAME_C_Period_ID, null);
         else setValue(COLUMNNAME_C_Period_ID, C_Period_ID);
     }
@@ -386,7 +386,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @return General Ledger Budget
      */
-    public int getGL_Budget_ID() {
+    public int getGLBudgetId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Budget_ID);
         if (ii == null) return 0;
         return ii;
@@ -397,7 +397,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @param GL_Budget_ID General Ledger Budget
      */
-    public void setGL_Budget_ID(int GL_Budget_ID) {
+    public void setGLBudgetId(int GL_Budget_ID) {
         if (GL_Budget_ID < 1) setValue(COLUMNNAME_GL_Budget_ID, null);
         else setValue(COLUMNNAME_GL_Budget_ID, GL_Budget_ID);
     }
@@ -407,7 +407,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @return General Ledger Category
      */
-    public int getGL_Category_ID() {
+    public int getGLCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Category_ID);
         if (ii == null) return 0;
         return ii;
@@ -418,7 +418,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @param GL_Category_ID General Ledger Category
      */
-    public void setGL_Category_ID(int GL_Category_ID) {
+    public void setGLCategoryId(int GL_Category_ID) {
         if (GL_Category_ID < 1) setValue(COLUMNNAME_GL_Category_ID, null);
         else setValue(COLUMNNAME_GL_Category_ID, GL_Category_ID);
     }
@@ -428,7 +428,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @return General Ledger Journal Batch
      */
-    public int getGL_JournalBatch_ID() {
+    public int getGLJournalBatchId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_JournalBatch_ID);
         if (ii == null) return 0;
         return ii;
@@ -439,7 +439,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @param GL_JournalBatch_ID General Ledger Journal Batch
      */
-    public void setGL_JournalBatch_ID(int GL_JournalBatch_ID) {
+    public void setGLJournalBatchId(int GL_JournalBatch_ID) {
         if (GL_JournalBatch_ID < 1) setValueNoCheck(COLUMNNAME_GL_JournalBatch_ID, null);
         else setValueNoCheck(COLUMNNAME_GL_JournalBatch_ID, Integer.valueOf(GL_JournalBatch_ID));
     }
@@ -449,7 +449,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @return General Ledger Journal
      */
-    public int getGL_Journal_ID() {
+    public int getGLJournalId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Journal_ID);
         if (ii == null) return 0;
         return ii;
@@ -563,7 +563,7 @@ public class X_GL_Journal extends PO implements I_GL_Journal {
      *
      * @param Reversal_ID ID of document reversal
      */
-    public void setReversal_ID(int Reversal_ID) {
+    public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
         else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }

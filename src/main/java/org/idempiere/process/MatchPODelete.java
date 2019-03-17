@@ -39,7 +39,7 @@ public class MatchPODelete extends SvrProcess {
      * Prepare
      */
     protected void prepare() {
-        p_M_MatchPO_ID = getRecord_ID();
+        p_M_MatchPO_ID = getRecordId();
     } //	prepare
 
     /**
@@ -55,9 +55,9 @@ public class MatchPODelete extends SvrProcess {
             throw new AdempiereUserError("@NotFound@ @M_MatchPO_ID@ " + p_M_MatchPO_ID);
         //
         MOrderLine orderLine = null;
-        boolean isMatchReceipt = (po.getM_InOutLine_ID() != 0);
+        boolean isMatchReceipt = (po.getInOutLineId() != 0);
         if (isMatchReceipt) {
-            orderLine = new MOrderLine(getCtx(), po.getC_OrderLine_ID());
+            orderLine = new MOrderLine(getCtx(), po.getOrderLineId());
             orderLine.setQtyReserved(orderLine.getQtyReserved().add(po.getQty()));
         }
         //

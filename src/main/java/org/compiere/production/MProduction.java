@@ -97,12 +97,12 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         MLocator M_Locator = null;
         int M_Locator_ID = 0;
 
-        M_Locator_ID = wh.getDefaultLocator().getM_Locator_ID();
+        M_Locator_ID = wh.getDefaultLocator().getLocatorId();
         setADClientID(line.getClientId());
         setOrgId(line.getOrgId());
-        setM_Product_ID(line.getM_Product_ID());
+        setProductId(line.getProductId());
         setProductionQty(line.getPlannedQty());
-        setM_Locator_ID(M_Locator_ID);
+        setLocatorId(M_Locator_ID);
         setDescription(
                 project.getSearchKey() + "_" + project.getName() + " Line: " + line.getLine() + " (project)");
         setProjectId(line.getProjectId());
@@ -110,8 +110,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         setCampaignId(project.getCampaignId());
         setTransactionOrganizationId(project.getTransactionOrganizationId());
         setBusinessActivityId(project.getBusinessActivityId());
-        setC_ProjectPhase_ID(line.getC_ProjectPhase_ID());
-        setC_ProjectTask_ID(line.getC_ProjectTask_ID());
+        setProjectPhaseId(line.getProjectPhaseId());
+        setProjectTaskId(line.getProjectTaskId());
         setMovementDate(Env.getContextAsDate(getCtx(), "#Date"));
     }
 
@@ -153,7 +153,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                             I_M_ProductionPlan.Table_Name,
                             "M_ProductionPlan.M_Production_ID=?"
                     );
-            List<MProductionPlan> plans = planQuery.setParameters(getM_Production_ID()).list();
+            List<MProductionPlan> plans = planQuery.setParameters(getProductionId()).list();
             for (MProductionPlan plan : plans) {
                 MProductionLine[] lines = plan.getLines();
 
@@ -257,12 +257,12 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         count = 0;
 
         // product to be produced
-        MProduct finishedProduct = new MProduct(getCtx(), getM_Product_ID());
+        MProduct finishedProduct = new MProduct(getCtx(), getProductId());
 
         MProductionLine line = new MProductionLine(this);
         line.setLine(lineno);
-        line.setM_Product_ID(finishedProduct.getId());
-        line.setM_Locator_ID(getM_Locator_ID());
+        line.setProductId(finishedProduct.getId());
+        line.setLocatorId(getLocatorId());
         line.setMovementQty(getProductionQty());
         line.setPlannedQty(getProductionQty());
 
@@ -278,7 +278,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
         int defaultLocator = 0;
 
-        MLocator finishedLocator = MLocator.get(getCtx(), getM_Locator_ID());
+        MLocator finishedLocator = MLocator.get(getCtx(), getLocatorId());
 
         int M_Warehouse_ID = finishedLocator.getWarehouseId();
 
@@ -289,7 +289,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 "SELECT M_ProductBom_ID, BOMQty"
                         + " FROM M_Product_BOM"
                         + " WHERE M_Product_ID="
-                        + finishedProduct.getM_Product_ID()
+                        + finishedProduct.getProductId()
                         + " ORDER BY Line";
 
         PreparedStatement pstmt = null;
@@ -312,15 +312,15 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                     createLines(mustBeStocked, bomproduct, BOMMovementQty);
                 } else {
 
-                    defaultLocator = bomproduct.getM_Locator_ID();
-                    if (defaultLocator == 0) defaultLocator = getM_Locator_ID();
+                    defaultLocator = bomproduct.getLocatorId();
+                    if (defaultLocator == 0) defaultLocator = getLocatorId();
 
                     if (!bomproduct.isStocked()) {
                         MProductionLine BOMLine = null;
                         BOMLine = new MProductionLine(this);
                         BOMLine.setLine(lineno);
-                        BOMLine.setM_Product_ID(BOMProduct_ID);
-                        BOMLine.setM_Locator_ID(defaultLocator);
+                        BOMLine.setProductId(BOMProduct_ID);
+                        BOMLine.setLocatorId(defaultLocator);
                         BOMLine.setQtyUsed(BOMMovementQty);
                         BOMLine.setPlannedQty(BOMMovementQty);
                         BOMLine.saveEx();
@@ -331,8 +331,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                         MProductionLine BOMLine = null;
                         BOMLine = new MProductionLine(this);
                         BOMLine.setLine(lineno);
-                        BOMLine.setM_Product_ID(BOMProduct_ID);
-                        BOMLine.setM_Locator_ID(defaultLocator);
+                        BOMLine.setProductId(BOMProduct_ID);
+                        BOMLine.setLocatorId(defaultLocator);
                         BOMLine.setQtyUsed(BOMMovementQty);
                         BOMLine.setPlannedQty(BOMMovementQty);
                         BOMLine.saveEx();
@@ -344,13 +344,13 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                         // BOM stock info
                         MStorageOnHand[] storages = null;
                         MProduct usedProduct = MProduct.get(getCtx(), BOMProduct_ID);
-                        defaultLocator = usedProduct.getM_Locator_ID();
-                        if (defaultLocator == 0) defaultLocator = getM_Locator_ID();
+                        defaultLocator = usedProduct.getLocatorId();
+                        if (defaultLocator == 0) defaultLocator = getLocatorId();
                         if (usedProduct == null || usedProduct.getId() == 0) return 0;
 
                         MClient client = MClient.get(getCtx());
                         MProductCategory pc =
-                                MProductCategory.get(getCtx(), usedProduct.getM_Product_Category_ID());
+                                MProductCategory.get(getCtx(), usedProduct.getProductCategoryId());
                         String MMPolicy = pc.getMMPolicy();
                         if (MMPolicy == null || MMPolicy.length() == 0) {
                             MMPolicy = client.getMMPolicy();
@@ -378,10 +378,10 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                             if (lineQty.signum() != 0) {
                                 if (lineQty.compareTo(BOMMovementQty) > 0) lineQty = BOMMovementQty;
 
-                                int loc = storages[sl].getM_Locator_ID();
-                                int slASI = storages[sl].getMAttributeSetInstance_ID();
+                                int loc = storages[sl].getLocatorId();
+                                int slASI = storages[sl].getAttributeSetInstanceId();
                                 int locAttribSet =
-                                        new MAttributeSetInstance(getCtx(), asi).getMAttributeSet_ID();
+                                        new MAttributeSetInstance(getCtx(), asi).getAttributeSetId();
 
                                 // roll up costing attributes if in the same locator
                                 if (locAttribSet == 0 && previousAttribSet == 0 && prevLoc == loc) {
@@ -394,12 +394,12 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                                 else {
                                     BOMLine = new MProductionLine(this);
                                     BOMLine.setLine(lineno);
-                                    BOMLine.setM_Product_ID(BOMProduct_ID);
-                                    BOMLine.setM_Locator_ID(loc);
+                                    BOMLine.setProductId(BOMProduct_ID);
+                                    BOMLine.setLocatorId(loc);
                                     BOMLine.setQtyUsed(lineQty);
                                     BOMLine.setPlannedQty(lineQty);
                                     if (slASI != 0 && locAttribSet != 0) // ie non costing attribute
-                                        BOMLine.setM_AttributeSetInstance_ID(slASI);
+                                        BOMLine.setAttributeSetInstanceId(slASI);
                                     BOMLine.saveEx();
 
                                     lineno = lineno + 10;
@@ -429,8 +429,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
                                     BOMLine = new MProductionLine(this);
                                     BOMLine.setLine(lineno);
-                                    BOMLine.setM_Product_ID(BOMProduct_ID);
-                                    BOMLine.setM_Locator_ID(defaultLocator);
+                                    BOMLine.setProductId(BOMProduct_ID);
+                                    BOMLine.setLocatorId(defaultLocator);
                                     BOMLine.setQtyUsed(BOMMovementQty);
                                     BOMLine.setPlannedQty(BOMMovementQty);
                                     BOMLine.saveEx();
@@ -499,7 +499,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         }
 
         if (!isUseProductionPlan()) {
-            m_processMsg = validateEndProduct(getM_Product_ID());
+            m_processMsg = validateEndProduct(getProductId());
             if (!Util.isEmpty(m_processMsg)) {
                 return DocAction.Companion.getSTATUS_Invalid();
             }
@@ -510,9 +510,9 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                             I_M_ProductionPlan.Table_Name,
                             "M_ProductionPlan.M_Production_ID=?"
                     );
-            List<MProductionPlan> plans = planQuery.setParameters(getM_Production_ID()).list();
+            List<MProductionPlan> plans = planQuery.setParameters(getProductionId()).list();
             for (MProductionPlan plan : plans) {
-                m_processMsg = validateEndProduct(plan.getM_Product_ID());
+                m_processMsg = validateEndProduct(plan.getProductId());
                 if (!Util.isEmpty(m_processMsg)) {
                     return DocAction.Companion.getSTATUS_Invalid();
                 }
@@ -594,9 +594,8 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 }
             }
 
-            if ((costPercentageDiff.compareTo(new BigDecimal("0.005"))) < 0) return true;
+            return (costPercentageDiff.compareTo(new BigDecimal("0.005"))) < 0;
 
-            return false;
         }
         return true;
     }
@@ -644,7 +643,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                                 I_M_ProductionPlan.Table_Name,
                                 "M_ProductionPlan.M_Production_ID=?"
                         );
-                List<MProductionPlan> plans = planQuery.setParameters(getM_Production_ID()).list();
+                List<MProductionPlan> plans = planQuery.setParameters(getProductionId()).list();
                 for (MProductionPlan plan : plans) {
                     plan.deleteLines(null);
                     plan.setProductionQty(BigDecimal.ZERO);
@@ -690,8 +689,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-        return true;
+        return m_processMsg == null;
     }
 
     @Override
@@ -729,7 +727,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
         StringBuilder msgadd = new StringBuilder("{->").append(getDocumentNo()).append(")");
         reversal.addDescription(msgadd.toString());
-        reversal.setReversal_ID(getM_Production_ID());
+        reversal.setReversalId(getProductionId());
         reversal.saveEx();
 
         // Reverse Line Qty
@@ -737,13 +735,13 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         MProductionLine[] tLines = reversal.getLines();
         for (int i = 0; i < sLines.length; i++) {
             //	We need to copy MA
-            if (sLines[i].getMAttributeSetInstance_ID() == 0) {
-                MProductionLineMA mas[] = MProductionLineMA.get(getCtx(), sLines[i].getId());
+            if (sLines[i].getAttributeSetInstanceId() == 0) {
+                MProductionLineMA[] mas = MProductionLineMA.get(getCtx(), sLines[i].getId());
                 for (int j = 0; j < mas.length; j++) {
                     MProductionLineMA ma =
                             new MProductionLineMA(
                                     tLines[i],
-                                    mas[j].getMAttributeSetInstance_ID(),
+                                    mas[j].getAttributeSetInstanceId(),
                                     mas[j].getMovementQty().negate(),
                                     mas[j].getDateMaterialPolicy());
                     ma.saveEx();
@@ -766,7 +764,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         addDescription(msgadd.toString());
 
         setProcessed(true);
-        setReversal_ID(reversal.getM_Production_ID());
+        setReversalId(reversal.getProductionId());
         setDocStatus(X_M_Production.DOCSTATUS_Reversed); // 	may come from void
         setDocAction(X_M_Production.DOCACTION_None);
 
@@ -795,11 +793,11 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                             I_M_ProductionPlan.Table_Name,
                             "M_ProductionPlan.M_Production_ID=?"
                     );
-            List<MProductionPlan> fplans = planQuery.setParameters(getM_Production_ID()).list();
+            List<MProductionPlan> fplans = planQuery.setParameters(getProductionId()).list();
             for (MProductionPlan fplan : fplans) {
                 MProductionPlan tplan = new MProductionPlan(getCtx(), 0);
                 PO.copyValues(fplan, tplan, getClientId(), getOrgId());
-                tplan.setM_Production_ID(to.getM_Production_ID());
+                tplan.setProductionId(to.getProductionId());
                 tplan.setProductionQty(fplan.getProductionQty().negate());
                 tplan.setProcessed(false);
                 tplan.saveEx();
@@ -808,7 +806,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
                 for (MProductionLine fline : flines) {
                     MProductionLine tline = new MProductionLine(tplan);
                     PO.copyValues(fline, tline, getClientId(), getOrgId());
-                    tline.setM_ProductionPlan_ID(tplan.getM_ProductionPlan_ID());
+                    tline.setProductionPlanId(tplan.getProductionPlanId());
                     tline.setMovementQty(fline.getMovementQty().negate());
                     tline.setPlannedQty(fline.getPlannedQty().negate());
                     tline.setQtyUsed(fline.getQtyUsed().negate());
@@ -822,7 +820,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             for (MProductionLine fline : flines) {
                 MProductionLine tline = new MProductionLine(to);
                 PO.copyValues(fline, tline, getClientId(), getOrgId());
-                tline.setM_Production_ID(to.getM_Production_ID());
+                tline.setProductionId(to.getProductionId());
                 tline.setMovementQty(fline.getMovementQty().negate());
                 tline.setPlannedQty(fline.getPlannedQty().negate());
                 tline.setQtyUsed(fline.getQtyUsed().negate());
@@ -901,7 +899,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     }
 
     @Override
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getCreatedBy();
     }
 
@@ -917,7 +915,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
 
     @Override
     protected boolean beforeSave(boolean newRecord) {
-        if (getM_Product_ID() > 0) {
+        if (getProductId() > 0) {
             if (isUseProductionPlan()) {
                 setIsUseProductionPlan(false);
             }

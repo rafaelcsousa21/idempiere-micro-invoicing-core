@@ -85,16 +85,16 @@ public class X_C_OrderLandedCostAllocation extends PO
      *
      * @return Estimated Landed Cost Allocation
      */
-    public int getC_OrderLandedCostAllocation_ID() {
+    public int getOrderLandedCostAllocationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLandedCostAllocation_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_C_OrderLandedCost getC_OrderLandedCost() throws RuntimeException {
+    public org.compiere.model.I_C_OrderLandedCost getOrderLandedCost() throws RuntimeException {
         return (org.compiere.model.I_C_OrderLandedCost)
                 MTable.get(getCtx(), org.compiere.model.I_C_OrderLandedCost.Table_Name)
-                        .getPO(getC_OrderLandedCost_ID());
+                        .getPO(getOrderLandedCostId());
     }
 
     /**
@@ -102,7 +102,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      *
      * @return Estimated Landed Cost
      */
-    public int getC_OrderLandedCost_ID() {
+    public int getOrderLandedCostId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLandedCost_ID);
         if (ii == null) return 0;
         return ii;
@@ -113,15 +113,15 @@ public class X_C_OrderLandedCostAllocation extends PO
      *
      * @param C_OrderLandedCost_ID Estimated Landed Cost
      */
-    public void setC_OrderLandedCost_ID(int C_OrderLandedCost_ID) {
+    public void setOrderLandedCostId(int C_OrderLandedCost_ID) {
         if (C_OrderLandedCost_ID < 1) setValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, null);
         else setValueNoCheck(COLUMNNAME_C_OrderLandedCost_ID, C_OrderLandedCost_ID);
     }
 
-    public org.compiere.model.I_C_OrderLine getC_OrderLine() throws RuntimeException {
+    public org.compiere.model.I_C_OrderLine getOrderLine() throws RuntimeException {
         return (org.compiere.model.I_C_OrderLine)
                 MTable.get(getCtx(), org.compiere.model.I_C_OrderLine.Table_Name)
-                        .getPO(getC_OrderLine_ID());
+                        .getPO(getOrderLineId());
     }
 
     /**
@@ -129,7 +129,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      *
      * @return Sales Order Line
      */
-    public int getC_OrderLine_ID() {
+    public int getOrderLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -140,7 +140,7 @@ public class X_C_OrderLandedCostAllocation extends PO
      *
      * @param C_OrderLine_ID Sales Order Line
      */
-    public void setC_OrderLine_ID(int C_OrderLine_ID) {
+    public void setOrderLineId(int C_OrderLine_ID) {
         if (C_OrderLine_ID < 1) setValueNoCheck(COLUMNNAME_C_OrderLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_OrderLine_ID, C_OrderLine_ID);
     }

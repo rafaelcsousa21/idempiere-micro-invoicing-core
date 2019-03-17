@@ -280,7 +280,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      *
      * @return client of PO
      */
-    public int getPO_AD_Client_ID() {
+    public int getPO_AD_ClientId() {
         if (m_po == null) getPO();
         if (m_po != null) return m_po.getClientId();
         return 0;
@@ -416,7 +416,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      */
     private void setResponsible(MWFProcess process) {
         //	Responsible
-        int AD_WF_Responsible_ID = getNode().getAD_WF_Responsible_ID();
+        int AD_WF_Responsible_ID = getNode().getAD_WF_ResponsibleId();
         if (AD_WF_Responsible_ID == 0) // 	not defined on Node Level
             AD_WF_Responsible_ID = process.getWorkFlowResponsibleId();
         setWorkflowResponsibleId(AD_WF_Responsible_ID);
@@ -535,8 +535,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
 
             //	**** Find next User
             //	Get Supervisor
-            if (user.getSupervisor_ID() != 0) {
-                user = MUser.get(getCtx(), user.getSupervisor_ID());
+            if (user.getSupervisorId() != 0) {
+                user = MUser.get(getCtx(), user.getSupervisorId());
                 if (log.isLoggable(Level.FINE)) log.fine("Supervisor: " + user.getName());
             } else {
                 log.fine("No Supervisor");
@@ -827,7 +827,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             pi.setADClientID(getClientId());
             MPInstance pInstance = new MPInstance(process, getRecordId());
             fillParameter(pInstance);
-            pi.setAD_PInstance_ID(pInstance.getPInstanceId());
+            pi.setAD_PInstanceId(pInstance.getPInstanceId());
             File report = null;
             //	Notice
             int AD_Message_ID = SystemIDs.MESSAGE_WORKFLOWRESULT; // 	HARDCODED WorkflowResult
@@ -859,7 +859,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                             m_node.getName(true), m_node.getProcessId(), getDBTableId(), getRecordId());
             pi.setUserId(getUserId());
             pi.setADClientID(getClientId());
-            pi.setAD_PInstance_ID(pInstance.getPInstanceId());
+            pi.setAD_PInstanceId(pInstance.getPInstanceId());
             return process.processItWithoutTrxClose(pi);
         }
 
@@ -870,7 +870,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
     /*
     else if (MWFNode.ACTION_AppsTask.equals(action))
     {
-    	log.warning ("Task:AD_Task_ID=" + m_node.getAD_Task_ID());
+    	log.warning ("Task:AD_Task_ID=" + m_node.getAD_TaskId());
     	log.warning("Start Task is not implemented yet");
     }
     */
@@ -892,7 +892,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 setTextMsg(m_emails.toString());
             } else {
                 MClient client = MClient.get(getCtx(), getClientId());
-                MMailText mailtext = new MMailText(getCtx(), getNode().getR_MailText_ID());
+                MMailText mailtext = new MMailText(getCtx(), getNode().getMailTemplateId());
                 mailtext.setPO(m_po, false);
 
                 String subject = getNode().getDescription() + ": " + mailtext.getMailHeader();
@@ -933,14 +933,14 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 if (isInvoker()) {
                     //	Set Approver
                     int startAD_User_ID = Env.getUserId(getCtx());
-                    if (startAD_User_ID == 0) startAD_User_ID = doc.getDoc_User_ID();
+                    if (startAD_User_ID == 0) startAD_User_ID = doc.getDoc_UserId();
                     int nextAD_User_ID =
                             getApprovalUser(
                                     startAD_User_ID,
                                     doc.getCurrencyId(),
                                     doc.getApprovalAmt(),
                                     doc.getOrgId(),
-                                    startAD_User_ID == doc.getDoc_User_ID()); // 	own doc
+                                    startAD_User_ID == doc.getDoc_UserId()); // 	own doc
                     if (nextAD_User_ID <= 0) {
                         m_docStatus = DocAction.Companion.getSTATUS_Invalid();
                         throw new AdempiereException(Msg.getMsg(getCtx(), "NoApprover"));
@@ -980,8 +980,8 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                     }
                     // end MZ
                 }
-                if (autoApproval && doc.processIt(DocAction.Companion.getACTION_Approve()) && doc.save())
-                    return true; //	done
+                //	done
+                return autoApproval && doc.processIt(DocAction.Companion.getACTION_Approve()) && doc.save();
             } //	approval
             return false; //	wait for user
         }
@@ -1209,7 +1209,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      */
     private void sendEMail() {
         DocAction doc = (DocAction) m_po;
-        MMailText text = new MMailText(getCtx(), m_node.getR_MailText_ID());
+        MMailText text = new MMailText(getCtx(), m_node.getMailTemplateId());
         text.setPO(m_po, true);
         //
         String subject = doc.getDocumentInfo() + ": " + text.getMailHeader();
@@ -1225,7 +1225,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         String recipient = m_node.getEMailRecipient();
         //	email to document user
         if (recipient == null || recipient.length() == 0)
-            sendEMail(client, doc.getDoc_User_ID(), null, subject, message, pdf, text.isHtml());
+            sendEMail(client, doc.getDoc_UserId(), null, subject, message, pdf, text.isHtml());
         else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentBusinessPartner)) {
             int index = m_po.getColumnIndex("AD_User_ID");
             if (index > 0) {
@@ -1238,11 +1238,11 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 } else log.fine("Empty User in Document");
             } else log.fine("No User Field in Document");
         } else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentOwner))
-            sendEMail(client, doc.getDoc_User_ID(), null, subject, message, pdf, text.isHtml());
+            sendEMail(client, doc.getDoc_UserId(), null, subject, message, pdf, text.isHtml());
         else if (recipient.equals(MWFNode.EMAILRECIPIENT_WFResponsible)) {
             MWFResponsible resp = getResponsible();
             if (resp.isInvoker())
-                sendEMail(client, doc.getDoc_User_ID(), null, subject, message, pdf, text.isHtml());
+                sendEMail(client, doc.getDoc_UserId(), null, subject, message, pdf, text.isHtml());
             else if (resp.isHuman())
                 sendEMail(client, resp.getUserId(), null, subject, message, pdf, text.isHtml());
             else if (resp.isRole()) {

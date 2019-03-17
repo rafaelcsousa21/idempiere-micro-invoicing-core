@@ -27,7 +27,7 @@ public class X_C_InvoiceTax extends PO {
     public X_C_InvoiceTax(Properties ctx, int C_InvoiceTax_ID) {
         super(ctx, C_InvoiceTax_ID);
         /**
-         * if (C_InvoiceTax_ID == 0) { setInvoiceId (0); setC_Tax_ID (0); setIsTaxIncluded (false);
+         * if (C_InvoiceTax_ID == 0) { setInvoiceId (0); setTaxId (0); setIsTaxIncluded (false);
          * setProcessed (false); setTaxAmt (Env.ZERO); setTaxBaseAmt (Env.ZERO); }
          */
     }
@@ -79,7 +79,7 @@ public class X_C_InvoiceTax extends PO {
      *
      * @return Tax identifier
      */
-    public int getC_Tax_ID() {
+    public int getTaxId() {
         Integer ii = (Integer) getValue(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID);
         if (ii == null) return 0;
         return ii;
@@ -90,7 +90,7 @@ public class X_C_InvoiceTax extends PO {
      *
      * @param C_Tax_ID Tax identifier
      */
-    public void setC_Tax_ID(int C_Tax_ID) {
+    public void setTaxId(int C_Tax_ID) {
         if (C_Tax_ID < 1) setValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID, null);
         else setValueNoCheck(I_C_InvoiceTax.COLUMNNAME_C_Tax_ID, Integer.valueOf(C_Tax_ID));
     }

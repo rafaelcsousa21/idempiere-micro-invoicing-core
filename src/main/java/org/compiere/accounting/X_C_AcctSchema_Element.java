@@ -116,7 +116,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Column in the table
      */
-    public int getAD_Column_ID() {
+    public int getTableColumnId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_Column_ID);
         if (ii == null) return 0;
         return ii;
@@ -127,7 +127,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Rules for accounting
      */
-    public int getC_AcctSchema_ID() {
+    public int getAccountingSchemaId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
@@ -138,7 +138,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @param C_AcctSchema_ID Rules for accounting
      */
-    public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
+    public void setAccountingSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
         else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
@@ -181,7 +181,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Accounting Element
      */
-    public int getC_Element_ID() {
+    public int getElementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Element_ID);
         if (ii == null) return 0;
         return ii;
@@ -192,7 +192,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Account Element
      */
-    public int getC_ElementValue_ID() {
+    public int getElementValueId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ElementValue_ID);
         if (ii == null) return 0;
         return ii;
@@ -225,7 +225,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Sales coverage region
      */
-    public int getC_SalesRegion_ID() {
+    public int getSalesRegionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
@@ -291,7 +291,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -302,7 +302,7 @@ public class X_C_AcctSchema_Element extends BasePOName
      *
      * @return Organizational entity within client
      */
-    public int getOrg_ID() {
+    public int getOrgId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Org_ID);
         if (ii == null) return 0;
         return ii;

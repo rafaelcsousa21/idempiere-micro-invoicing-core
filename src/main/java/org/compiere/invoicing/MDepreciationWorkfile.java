@@ -100,7 +100,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         // Copy UseLife values from asset group to workfile
         if (assetgrpacct == null) {
             assetgrpacct =
-                    MAssetGroupAcct.forA_Asset_Group_ID(
+                    MAssetGroupAcct.forA_Asset_GroupId(
                             asset.getCtx(), asset.getAssetGroupId(), postingType);
         }
         UseLifeImpl.copyValues(this, assetgrpacct);
@@ -117,21 +117,21 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         if (asset.getUseLifeMonths() > 0) {
             UseLifeImpl.get(this, false).setUseLifeMonths(asset.getUseLifeMonths());
         }
-        if (asset.getUseLifeMonths_F() > 0) {
-            UseLifeImpl.get(this, true).setUseLifeMonths(asset.getUseLifeMonths_F());
+        if (asset.getUseLifeMonthsFiscal() > 0) {
+            UseLifeImpl.get(this, true).setUseLifeMonths(asset.getUseLifeMonthsFiscal());
         }
         //
         dump();
     }
 
-    public static Collection<MDepreciationWorkfile> forA_Asset_ID(
+    public static Collection<MDepreciationWorkfile> forA_AssetId(
             Properties ctx, int asset_id) {
         return new Query(
                 ctx,
                 I_A_Depreciation_Workfile.Table_Name,
                 I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_ID + "=?"
         )
-                .setParameters(new Object[]{asset_id})
+                .setParameters(asset_id)
                 .list();
     }
 
@@ -168,7 +168,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
                         + "=? ";
         wk =
                 new Query(ctx, I_A_Depreciation_Workfile.Table_Name, whereClause)
-                        .setParameters(new Object[]{A_Asset_ID, postingType})
+                        .setParameters(A_Asset_ID, postingType)
                         .firstOnly();
 
         if (wk != null) {
@@ -274,13 +274,13 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * @return asset class id
      */
   /* commented out by @win
-  public int getA_Asset_Class_ID()
+  public int getA_Asset_ClassId()
   {
   	MAsset asset = getAsset();
   	if (asset == null) {
   		return 0;
   	}
-  	return asset.getA_Asset_Class_ID();
+  	return asset.getA_Asset_ClassId();
   }
   */
     // end comment by @win
@@ -291,7 +291,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         if (newRecord) { // @win: should only update only if newrecord
             setLifePeriod(getUseLifeMonths());
             setAssetLifeYears(getUseLifeYears());
-            setLifePeriodFiscal(getUseLifeMonths_F());
+            setLifePeriodFiscal(getUseLifeMonthsFiscal());
             setAssetLifeYearsFiscal(getUseLifeYearsFiscal());
         }
 
@@ -303,7 +303,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         }
 
         // Fix DateAcct
-        if (is_ValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_DateAcct)) {
+        if (isValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_DateAcct)) {
             setDateAcct(TimeUtil.getMonthLastDay(getDateAcct()));
         }
 
@@ -317,11 +317,11 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         // Financing
         {
             String mainColumnName = null;
-            if (newRecord || is_ValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_Cost)) {
+            if (newRecord || isValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_Cost)) {
                 mainColumnName = I_A_Depreciation_Workfile.COLUMNNAME_A_Asset_Cost;
-            } else if (is_ValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare)) {
+            } else if (isValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare)) {
                 mainColumnName = I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Cofinantare;
-            } else if (is_ValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert)) {
+            } else if (isValueChanged(I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert)) {
                 mainColumnName = I_A_Depreciation_Workfile.COLUMNNAME_A_Valoare_Tert;
             }
             updateFinantare(this, mainColumnName);
@@ -352,11 +352,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         BigDecimal remainingAmt_F = getRemainingCost(null, true);
         if (remainingAmt_C.signum() == 0 && remainingAmt_F.signum() == 0) {
             // if A_Asset_Cost is 0 have a voided addition, in this case asset is not full depreciated
-            if (getAssetCost().signum() == 0) {
-                return false;
-            }
-            //
-            return true;
+            return getAssetCost().signum() != 0;//
         }
 
         return false;
@@ -368,7 +364,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * @return asset accounting model
      */
     public MAssetAcct getA_AssetAcct(Timestamp dateAcct) {
-        return MAssetAcct.forA_Asset_ID(getCtx(), getAssetId(), getPostingType(), dateAcct);
+        return MAssetAcct.forA_AssetId(getCtx(), getAssetId(), getPostingType(), dateAcct);
     }
 
     /**
@@ -412,7 +408,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      *
      */
     public int getUseLifeMonths(boolean fiscal) {
-        return fiscal ? getUseLifeMonths_F() : getUseLifeMonths();
+        return fiscal ? getUseLifeMonthsFiscal() : getUseLifeMonths();
     }
 
     /**
@@ -515,7 +511,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         //
         MDepreciationExp depexp =
                 new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
-                        .setParameters(new Object[]{getAssetId(), getPostingType(), true, true})
+                        .setParameters(getAssetId(), getPostingType(), true, true)
                         .setOrderBy(
                                 MDepreciationExp.COLUMNNAME_A_Period
                                         + " DESC"
@@ -574,7 +570,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     public boolean isAttrValueChanged(String ColumnName) {
         int index = getColumnIndex(ColumnName);
         if (index < 0) return false;
-        return is_ValueChanged(index);
+        return isValueChanged(index);
     }
 
 } //	MDepreciationWorkfile

@@ -54,11 +54,11 @@ public class MAssetAcct extends X_A_Asset_Acct {
 
         SetGetUtil.copyValues(this, assetgrpacct, null, null);
         setAssetId(asset.getAssetId());
-        if (asset.getA_Depreciation_ID() > 0) {
-            setDepreciationId(asset.getA_Depreciation_ID());
+        if (asset.getA_DepreciationId() > 0) {
+            setDepreciationId(asset.getA_DepreciationId());
         }
-        if (asset.getA_Depreciation_F_ID() > 0) {
-            setDepreciationFiscalId(asset.getA_Depreciation_F_ID());
+        if (asset.getA_Depreciation_FId() > 0) {
+            setDepreciationFiscalId(asset.getA_Depreciation_FId());
         }
         setPeriodStart(1);
         setPeriodEnd(asset.getUseLifeMonths());
@@ -75,7 +75,7 @@ public class MAssetAcct extends X_A_Asset_Acct {
      * @param dateAcct    check ValidFrom
      * @return asset accounting for the given asset
      */
-    public static MAssetAcct forA_Asset_ID(
+    public static MAssetAcct forA_AssetId(
             Properties ctx, int A_Asset_ID, String postingType, Timestamp dateAcct) {
         //
         ArrayList<Object> params = new ArrayList<Object>();

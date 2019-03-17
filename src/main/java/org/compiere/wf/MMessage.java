@@ -57,7 +57,7 @@ public class MMessage extends X_AD_Message {
      */
     public static MMessage get(Properties ctx, String Value) {
         if (Value == null || Value.length() == 0) return null;
-        MMessage retValue = (MMessage) s_cache.get(Value);
+        MMessage retValue = s_cache.get(Value);
         //
         if (retValue == null) {
             retValue = MBaseMessageKt.getMessage(ctx, Value);
@@ -75,7 +75,7 @@ public class MMessage extends X_AD_Message {
      */
     public static MMessage get(Properties ctx, int AD_Message_ID) {
         String key = String.valueOf(AD_Message_ID);
-        MMessage retValue = (MMessage) s_cache.get(key);
+        MMessage retValue = s_cache.get(key);
         if (retValue == null) {
             retValue = new MMessage(ctx, AD_Message_ID);
             s_cache.put(key, retValue);
@@ -90,7 +90,7 @@ public class MMessage extends X_AD_Message {
      * @param Value message value
      * @return AD_Message_ID
      */
-    public static int getAD_Message_ID(Properties ctx, String Value) {
+    public static int getAD_MessageId(Properties ctx, String Value) {
         MMessage msg = get(ctx, Value);
         if (msg == null) return 0;
         return msg.getMessageId();

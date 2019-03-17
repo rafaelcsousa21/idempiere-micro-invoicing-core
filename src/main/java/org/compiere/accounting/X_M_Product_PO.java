@@ -28,7 +28,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
         super(ctx, M_Product_PO_ID);
         /*
          * if (M_Product_PO_ID == 0) { setBusinessPartnerId (0); setIsCurrentVendor (true); // Y
-         * setM_Product_ID (0); // @M_Product_ID@ setVendorProductNo (null); // @Value@ }
+         * setProductId (0); // @M_Product_ID@ setVendorProductNo (null); // @Value@ }
          */
     }
 
@@ -79,7 +79,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
      *
      * @return Unit of Measure
      */
-    public int getC_UOM_ID() {
+    public int getUOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_UOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -113,7 +113,7 @@ public class X_M_Product_PO extends PO implements I_M_Product_PO {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;

@@ -76,7 +76,7 @@ public class X_C_InvoiceBatch extends PO implements I_C_InvoiceBatch {
      *
      * @return Expense Invoice Batch Header
      */
-    public int getC_InvoiceBatch_ID() {
+    public int getInvoiceBatchId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceBatch_ID);
         if (ii == null) return 0;
         return ii;

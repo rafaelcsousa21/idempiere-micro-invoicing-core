@@ -229,7 +229,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         if (m_lines != null && m_lines.length != 0 && !requery) {
             return m_lines;
         }
-        m_lines = MBaseAllocationHdrKt.getAllocationLines(getCtx(), getC_AllocationHdr_ID(), this);
+        m_lines = MBaseAllocationHdrKt.getAllocationLines(getCtx(), getPaymentAllocationHeaderId(), this);
         return m_lines;
     } //	getLines
 
@@ -245,7 +245,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                 new StringBuilder("UPDATE C_AllocationHdr SET Processed='")
                         .append((processed ? "Y" : "N"))
                         .append("' WHERE C_AllocationHdr_ID=")
-                        .append(getC_AllocationHdr_ID());
+                        .append(getPaymentAllocationHeaderId());
         int no = executeUpdate(sql.toString());
         m_lines = null;
         if (log.isLoggable(Level.FINE)) log.fine(processed + " - #" + no);
@@ -259,7 +259,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      */
     protected boolean beforeSave(boolean newRecord) {
         //	Changed from Not to Active
-        if (!newRecord && is_ValueChanged("IsActive") && isActive()) {
+        if (!newRecord && isValueChanged("IsActive") && isActive()) {
             log.severe("Cannot Re-Activate deactivated Allocations");
             return false;
         }
@@ -373,7 +373,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                                     .append(" NOT IN (?,?)");
                     boolean InvoiceIsPaid =
                             new Query(getCtx(), I_C_Invoice.Table_Name, whereClause.toString())
-                                    .setClient_ID()
+                                    .setClientId()
                                     .setParameters(
                                             line.getInvoiceId(),
                                             "Y",
@@ -399,13 +399,13 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
 
             // IDEMPIERE-1850 - validate date against related docs
             if (line.getInvoiceId() > 0) {
-                if (line.getC_Invoice().getDateAcct().after(getDateAcct())) {
+                if (line.getInvoice().getDateAcct().after(getDateAcct())) {
                     m_processMsg = "Wrong allocation date";
                     return DocAction.Companion.getSTATUS_Invalid();
                 }
             }
             if (line.getPaymentId() > 0) {
-                if (line.getC_Payment().getDateAcct().after(getDateAcct())) {
+                if (line.getPayment().getDateAcct().after(getDateAcct())) {
                     m_processMsg = "Wrong allocation date";
                     return DocAction.Companion.getSTATUS_Invalid();
                 }
@@ -578,9 +578,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -714,7 +712,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 
@@ -763,7 +761,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
                 m_processMsg = "Could not create Payment Allocation Reversal";
                 return false;
             }
-            reversal.setReversal_ID(getC_AllocationHdr_ID());
+            reversal.setReversalId(getPaymentAllocationHeaderId());
 
             //	Reverse Line Amt
             MAllocationLine[] rLines = reversal.getLines(false);
@@ -803,7 +801,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
             if (!save() || isActive()) throw new IllegalStateException("Cannot de-activate allocation");
 
             //	Delete Posting
-            MFactAcct.deleteEx(MAllocationHdr.Table_ID, getC_AllocationHdr_ID());
+            MFactAcct.deleteEx(MAllocationHdr.Table_ID, getPaymentAllocationHeaderId());
 
             //	Unlink Invoices
             getLines(true);
@@ -1157,7 +1155,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         for (MAllocationLine fromLine : fromLines) {
             MAllocationLine line = new MAllocationLine(getCtx(), 0);
             PO.copyValues(fromLine, line, fromLine.getClientId(), fromLine.getOrgId());
-            line.setC_AllocationHdr_ID(getC_AllocationHdr_ID());
+            line.setPaymentAllocationHeaderId(getPaymentAllocationHeaderId());
             line.setParent(this);
             line.setValueNoCheck("C_AllocationLine_ID", I_ZERO); // new
 

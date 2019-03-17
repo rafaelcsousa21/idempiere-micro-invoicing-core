@@ -27,7 +27,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
     public X_GL_DistributionLine(Properties ctx, int GL_DistributionLine_ID) {
         super(ctx, GL_DistributionLine_ID);
         /**
-         * if (GL_DistributionLine_ID == 0) { setGL_Distribution_ID (0); setGL_DistributionLine_ID (0);
+         * if (GL_DistributionLine_ID == 0) { setGLDistributionId (0); setGLDistributionLine_ID (0);
          * setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM GL_DistributionLine
          * WHERE GL_Distribution_ID=@GL_Distribution_ID@ setOverwriteAcct (false); setOverwriteActivity
          * (false); setOverwriteBPartner (false); setOverwriteCampaign (false); setOverwriteLocFrom
@@ -63,7 +63,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Account used
      */
-    public int getAccount_ID() {
+    public int getAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Account_ID);
         if (ii == null) return 0;
         return ii;
@@ -74,7 +74,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param Account_ID Account used
      */
-    public void setAccount_ID(int Account_ID) {
+    public void setAccountId(int Account_ID) {
         if (Account_ID < 1) setValue(COLUMNNAME_Account_ID, null);
         else setValue(COLUMNNAME_Account_ID, Integer.valueOf(Account_ID));
     }
@@ -168,7 +168,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Location that inventory was moved from
      */
-    public int getC_LocFrom_ID() {
+    public int getLocationFromId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_LocFrom_ID);
         if (ii == null) return 0;
         return ii;
@@ -179,7 +179,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param C_LocFrom_ID Location that inventory was moved from
      */
-    public void setC_LocFrom_ID(int C_LocFrom_ID) {
+    public void setLocationFromId(int C_LocFrom_ID) {
         if (C_LocFrom_ID < 1) setValue(COLUMNNAME_C_LocFrom_ID, null);
         else setValue(COLUMNNAME_C_LocFrom_ID, Integer.valueOf(C_LocFrom_ID));
     }
@@ -189,7 +189,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Location that inventory was moved to
      */
-    public int getC_LocTo_ID() {
+    public int getLocationToId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_LocTo_ID);
         if (ii == null) return 0;
         return ii;
@@ -200,7 +200,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param C_LocTo_ID Location that inventory was moved to
      */
-    public void setC_LocTo_ID(int C_LocTo_ID) {
+    public void setLocationToId(int C_LocTo_ID) {
         if (C_LocTo_ID < 1) setValue(COLUMNNAME_C_LocTo_ID, null);
         else setValue(COLUMNNAME_C_LocTo_ID, Integer.valueOf(C_LocTo_ID));
     }
@@ -231,7 +231,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Sales coverage region
      */
-    public int getC_SalesRegion_ID() {
+    public int getSalesRegionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
@@ -242,7 +242,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param C_SalesRegion_ID Sales coverage region
      */
-    public void setC_SalesRegion_ID(int C_SalesRegion_ID) {
+    public void setSalesRegionId(int C_SalesRegion_ID) {
         if (C_SalesRegion_ID < 1) setValue(COLUMNNAME_C_SalesRegion_ID, null);
         else setValue(COLUMNNAME_C_SalesRegion_ID, Integer.valueOf(C_SalesRegion_ID));
     }
@@ -261,7 +261,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return General Ledger Distribution
      */
-    public int getGL_Distribution_ID() {
+    public int getGLDistributionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Distribution_ID);
         if (ii == null) return 0;
         return ii;
@@ -292,7 +292,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -303,7 +303,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
@@ -313,7 +313,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @return Organizational entity within client
      */
-    public int getOrg_ID() {
+    public int getOrgId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Org_ID);
         if (ii == null) return 0;
         return ii;
@@ -324,7 +324,7 @@ public class X_GL_DistributionLine extends PO implements I_GL_DistributionLine {
      *
      * @param Org_ID Organizational entity within client
      */
-    public void setOrg_ID(int Org_ID) {
+    public void setOrgId(int Org_ID) {
         if (Org_ID < 1) setValue(COLUMNNAME_Org_ID, null);
         else setValue(COLUMNNAME_Org_ID, Integer.valueOf(Org_ID));
     }

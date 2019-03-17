@@ -49,7 +49,7 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
      */
     public static MInvoiceSchedule get(Properties ctx, int C_InvoiceSchedule_ID) {
         Integer key = C_InvoiceSchedule_ID;
-        MInvoiceSchedule retValue = (MInvoiceSchedule) s_cache.get(key);
+        MInvoiceSchedule retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MInvoiceSchedule(ctx, C_InvoiceSchedule_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -117,8 +117,7 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
                                 + invoiceDate
                                 + " - "
                                 + xDate.after(invoiceDate));
-            if (xDate.after(invoiceDate)) return false;
-            return true;
+            return !xDate.after(invoiceDate);
         }
 
         //	Monthly
@@ -151,8 +150,7 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
                                 + invoiceDate
                                 + " - "
                                 + xDate.after(invoiceDate));
-            if (xDate.after(invoiceDate)) return false;
-            return true;
+            return !xDate.after(invoiceDate);
         }
 
         //	Bi-Monthly (+15)
@@ -168,8 +166,7 @@ public class MInvoiceSchedule extends X_C_InvoiceSchedule {
             invoice.set(Calendar.DAY_OF_MONTH, getInvoiceDay() + 15);
             if (invoice.after(today)) invoice.add(Calendar.MONTH, -1);
             Timestamp invoiceDate = new Timestamp(invoice.getTimeInMillis());
-            if (xDate.after(invoiceDate)) return false;
-            return true;
+            return !xDate.after(invoiceDate);
         }
         return false;
     } //	canInvoice

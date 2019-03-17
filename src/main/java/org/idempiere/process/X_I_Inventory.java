@@ -97,7 +97,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @param I_ErrorMsg Messages generated from import process
      */
-    public void setI_ErrorMsg(String I_ErrorMsg) {
+    public void setImportErrorMsg(String I_ErrorMsg) {
         setValue(COLUMNNAME_I_ErrorMsg, I_ErrorMsg);
     }
 
@@ -106,7 +106,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @param I_IsImported Has this import been processed
      */
-    public void setI_IsImported(boolean I_IsImported) {
+    public void setIsImported(boolean I_IsImported) {
         setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
@@ -124,7 +124,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @param M_CostingLine_ID Unique line in an Inventory cost adjustment document
      */
-    public void setM_CostingLine_ID(int M_CostingLine_ID) {
+    public void setCostingLineId(int M_CostingLine_ID) {
         if (M_CostingLine_ID < 1) setValue(COLUMNNAME_M_CostingLine_ID, null);
         else setValue(COLUMNNAME_M_CostingLine_ID, Integer.valueOf(M_CostingLine_ID));
     }
@@ -134,7 +134,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @param M_Inventory_ID Parameters for a Physical Inventory
      */
-    public void setM_Inventory_ID(int M_Inventory_ID) {
+    public void setInventoryId(int M_Inventory_ID) {
         if (M_Inventory_ID < 1) setValue(COLUMNNAME_M_Inventory_ID, null);
         else setValue(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
     }
@@ -144,7 +144,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
-    public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
+    public void setInventoryLineId(int M_InventoryLine_ID) {
         if (M_InventoryLine_ID < 1) setValue(COLUMNNAME_M_InventoryLine_ID, null);
         else setValue(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
     }
@@ -154,7 +154,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @return Warehouse Locator
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
@@ -174,7 +174,7 @@ public class X_I_Inventory extends PO implements I_I_Inventory {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;

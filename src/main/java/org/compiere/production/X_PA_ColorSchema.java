@@ -51,7 +51,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      *
      * @return First color used
      */
-    public int getAD_PrintColor1_ID() {
+    public int getPrintColor1Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_PrintColor1_ID);
         if (ii == null) return 0;
         return ii;
@@ -62,7 +62,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      *
      * @param AD_PrintColor1_ID First color used
      */
-    public void setAD_PrintColor1_ID(int AD_PrintColor1_ID) {
+    public void setPrintColor1Id(int AD_PrintColor1_ID) {
         if (AD_PrintColor1_ID < 1) setValue(COLUMNNAME_AD_PrintColor1_ID, null);
         else setValue(COLUMNNAME_AD_PrintColor1_ID, Integer.valueOf(AD_PrintColor1_ID));
     }
@@ -72,7 +72,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      *
      * @return Second color used
      */
-    public int getAD_PrintColor2_ID() {
+    public int getPrintColor2Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_PrintColor2_ID);
         if (ii == null) return 0;
         return ii;
@@ -83,7 +83,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      *
      * @param AD_PrintColor2_ID Second color used
      */
-    public void setAD_PrintColor2_ID(int AD_PrintColor2_ID) {
+    public void setPrintColor2Id(int AD_PrintColor2_ID) {
         if (AD_PrintColor2_ID < 1) setValue(COLUMNNAME_AD_PrintColor2_ID, null);
         else setValue(COLUMNNAME_AD_PrintColor2_ID, Integer.valueOf(AD_PrintColor2_ID));
     }
@@ -93,7 +93,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      *
      * @return Third color used
      */
-    public int getAD_PrintColor3_ID() {
+    public int getPrintColor3Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_PrintColor3_ID);
         if (ii == null) return 0;
         return ii;
@@ -104,7 +104,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      *
      * @param AD_PrintColor3_ID Third color used
      */
-    public void setAD_PrintColor3_ID(int AD_PrintColor3_ID) {
+    public void setPrintColor3Id(int AD_PrintColor3_ID) {
         if (AD_PrintColor3_ID < 1) setValue(COLUMNNAME_AD_PrintColor3_ID, null);
         else setValue(COLUMNNAME_AD_PrintColor3_ID, Integer.valueOf(AD_PrintColor3_ID));
     }
@@ -114,7 +114,7 @@ public class X_PA_ColorSchema extends BasePOName implements I_PA_ColorSchema {
      *
      * @return Forth color used
      */
-    public int getAD_PrintColor4_ID() {
+    public int getPrintColor4Id() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_PrintColor4_ID);
         if (ii == null) return 0;
         return ii;

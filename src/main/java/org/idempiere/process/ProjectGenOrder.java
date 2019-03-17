@@ -35,7 +35,7 @@ public class ProjectGenOrder extends SvrProcess {
         MProject fromProject = new MProject(ctx, C_Project_ID);
         if (fromProject.getProjectId() == 0)
             throw new IllegalArgumentException("Project not found C_Project_ID=" + C_Project_ID);
-        if (fromProject.getM_PriceList_Version_ID() == 0)
+        if (fromProject.getPriceListVersionId() == 0)
             throw new IllegalArgumentException("Project has no Price List");
         if (fromProject.getWarehouseId() == 0)
             throw new IllegalArgumentException("Project has no Warehouse");
@@ -54,7 +54,7 @@ public class ProjectGenOrder extends SvrProcess {
             if (para[i].getParameter() == null) ;
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        m_C_Project_ID = getRecord_ID();
+        m_C_Project_ID = getRecordId();
     } //	prepare
 
     /**
@@ -89,7 +89,7 @@ public class ProjectGenOrder extends SvrProcess {
                 ol.setLine(lines[i].getLine());
                 ol.setDescription(lines[i].getDescription());
                 //
-                ol.setM_Product_ID(lines[i].getM_Product_ID(), true);
+                ol.setProductId(lines[i].getProductId(), true);
                 ol.setQty(lines[i].getPlannedQty().subtract(lines[i].getInvoicedQty()));
                 ol.setPrice();
                 if (lines[i].getPlannedPrice() != null

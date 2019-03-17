@@ -116,8 +116,8 @@ public final class Fact implements IFact {
                 new FactLine(
                         m_doc.getCtx(),
                         m_doc.getTableId(),
-                        m_doc.get_ID(),
-                        docLine == null ? 0 : docLine.get_ID());
+                        m_doc.getId(),
+                        docLine == null ? 0 : docLine.getId());
         //  Set Info & Account
         line.setDocumentInfo(m_doc, docLine);
         line.setPostingType(m_postingType);
@@ -213,7 +213,7 @@ public final class Fact implements IFact {
         // If there is more than 1 currency in fact lines, it is a multi currency doc
         ArrayList<Integer> list = new ArrayList<Integer>();
         for (int i = 0; i < m_lines.size(); i++) {
-            FactLine line = (FactLine) m_lines.get(i);
+            FactLine line = m_lines.get(i);
             if (line.getCurrencyId() > 0 && !list.contains(line.getCurrencyId()))
                 list.add(line.getCurrencyId());
         }
@@ -237,7 +237,7 @@ public final class Fact implements IFact {
     public BigDecimal getSourceBalance() {
         BigDecimal result = Env.ZERO;
         for (int i = 0; i < m_lines.size(); i++) {
-            FactLine line = (FactLine) m_lines.get(i);
+            FactLine line = m_lines.get(i);
             result = result.add(line.getSourceBalance());
         }
         //	log.fine("getSourceBalance - " + result.toString());
@@ -258,7 +258,7 @@ public final class Fact implements IFact {
 
         //  new line
         FactLine line =
-                new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0);
+                new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.getId(), 0);
         line.setDocumentInfo(m_doc, null);
         line.setPostingType(m_postingType);
 
@@ -294,7 +294,7 @@ public final class Fact implements IFact {
         // If there is more than 1 currency in fact lines, it is a multi currency doc
         ArrayList<Integer> list = new ArrayList<Integer>();
         for (int i = 0; i < m_lines.size(); i++) {
-            FactLine line = (FactLine) m_lines.get(i);
+            FactLine line = m_lines.get(i);
             if (line.getCurrencyId() > 0 && !list.contains(line.getCurrencyId()))
                 list.add(line.getCurrencyId());
         }
@@ -321,10 +321,10 @@ public final class Fact implements IFact {
             HashMap<Integer, BigDecimal> map = new HashMap<Integer, BigDecimal>();
             //  Add up values by key
             for (int i = 0; i < m_lines.size(); i++) {
-                FactLine line = (FactLine) m_lines.get(i);
+                FactLine line = m_lines.get(i);
                 Integer key = new Integer(line.getOrgId());
                 BigDecimal bal = line.getSourceBalance();
-                BigDecimal oldBal = (BigDecimal) map.get(key);
+                BigDecimal oldBal = map.get(key);
                 if (oldBal != null) bal = bal.add(oldBal);
                 map.put(key, bal);
                 //	System.out.println("Add Key=" + key + ", Bal=" + bal + " <- " + line);
@@ -377,10 +377,10 @@ public final class Fact implements IFact {
             HashMap<Integer, Balance> map = new HashMap<Integer, Balance>();
             //  Add up values by key
             for (int i = 0; i < m_lines.size(); i++) {
-                FactLine line = (FactLine) m_lines.get(i);
+                FactLine line = m_lines.get(i);
                 Integer key = new Integer(line.getOrgId());
                 //	BigDecimal balance = line.getSourceBalance();
-                Balance oldBalance = (Balance) map.get(key);
+                Balance oldBalance = map.get(key);
                 if (oldBalance == null) {
                     oldBalance = new Balance(line.getAmtSourceDr(), line.getAmtSourceCr());
                     map.put(key, oldBalance);
@@ -398,7 +398,7 @@ public final class Fact implements IFact {
                 if (!difference.isZeroBalance()) {
                     //  Create Balancing Entry
                     FactLine line =
-                            new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0);
+                            new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.getId(), 0);
                     line.setDocumentInfo(m_doc, null);
                     line.setPostingType(m_postingType);
                     //  Amount & Account
@@ -457,7 +457,7 @@ public final class Fact implements IFact {
     protected BigDecimal getAcctBalance() {
         BigDecimal result = Env.ZERO;
         for (int i = 0; i < m_lines.size(); i++) {
-            FactLine line = (FactLine) m_lines.get(i);
+            FactLine line = m_lines.get(i);
             result = result.add(line.getAcctBalance());
         }
         //	log.fine(result.toString());
@@ -491,7 +491,7 @@ public final class Fact implements IFact {
 
         //  Find line biggest BalanceSheet or P&L line
         for (int i = 0; i < m_lines.size(); i++) {
-            FactLine l = (FactLine) m_lines.get(i);
+            FactLine l = m_lines.get(i);
             BigDecimal amt = l.getAcctBalance().abs();
             if (l.isBalanceSheet() && amt.compareTo(BSamount) > 0) {
                 BSamount = amt;
@@ -504,10 +504,10 @@ public final class Fact implements IFact {
 
         //  Create Currency Balancing Entry
         if (m_acctSchema.isCurrencyBalancing()) {
-            line = new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.get_ID(), 0);
+            line = new FactLine(m_doc.getCtx(), m_doc.getTableId(), m_doc.getId(), 0);
             line.setDocumentInfo(m_doc, null);
             line.setPostingType(m_postingType);
-            line.setAccount(m_acctSchema, m_acctSchema.getCurrencyBalancing_Acct());
+            line.setAccount(m_acctSchema, m_acctSchema.getCurrencyBalancingAccount());
 
             //  Amount
             line.setAmtSource(m_doc.getCurrencyId(), Env.ZERO, Env.ZERO);
@@ -558,7 +558,7 @@ public final class Fact implements IFact {
 
         //	For all fact lines
         for (int i = 0; i < m_lines.size(); i++) {
-            FactLine line = (FactLine) m_lines.get(i);
+            FactLine line = m_lines.get(i);
             MAccount account = line.getAccount();
             if (account == null) {
                 log.warning("No Account for " + line);
@@ -597,7 +597,7 @@ public final class Fact implements IFact {
         ArrayList<FactLine> newLines = new ArrayList<FactLine>();
         //	For all fact lines
         for (int i = 0; i < m_lines.size(); i++) {
-            FactLine dLine = (FactLine) m_lines.get(i);
+            FactLine dLine = m_lines.get(i);
             MDistribution[] distributions =
                     MDistribution.get(dLine.getAccount(), m_postingType, m_doc.getDocumentTypeId());
             //	No Distribution for this line
@@ -612,20 +612,20 @@ public final class Fact implements IFact {
                 distributions =
                         MDistribution.get(
                                 dLine.getCtx(),
-                                dLine.getC_AcctSchema_ID(),
+                                dLine.getAccountingSchemaId(),
                                 m_postingType,
                                 m_doc.getDocumentTypeId(),
                                 dLine.getOrgId(),
-                                dLine.getAccount_ID(),
-                                dLine.getM_Product_ID(),
+                                dLine.getAccountId(),
+                                dLine.getProductId(),
                                 dLine.getBusinessPartnerId(),
                                 dLine.getProjectId(),
                                 dLine.getCampaignId(),
                                 dLine.getBusinessActivityId(),
                                 dLine.getTransactionOrganizationId(),
-                                dLine.getC_SalesRegion_ID(),
-                                dLine.getC_LocTo_ID(),
-                                dLine.getC_LocFrom_ID(),
+                                dLine.getSalesRegionId(),
+                                dLine.getLocationToId(),
+                                dLine.getLocationFromId(),
                                 dLine.getUser1Id(),
                                 dLine.getUser2Id());
                 if (distributions == null || distributions.length == 0) continue;
@@ -659,25 +659,25 @@ public final class Fact implements IFact {
                         new FactLine(
                                 m_doc.getCtx(),
                                 m_doc.getTableId(),
-                                m_doc.get_ID(),
-                                dLine.getLine_ID());
+                                m_doc.getId(),
+                                dLine.getLineId());
                 //  Set Info & Account
                 factLine.setDocumentInfo(m_doc, dLine.getDocLine());
                 factLine.setAccount(m_acctSchema, dl.getAccount());
                 factLine.setPostingType(m_postingType);
                 if (dl.isOverwriteOrg()) // 	set Org explicitly
-                    factLine.setOrgId(dl.getOrg_ID());
+                    factLine.setOrgId(dl.getOrgId());
                 // Silvano - freepath - F3P - Bug#2904994 Fact distribtution only overwriting Org
-                if (dl.isOverwriteAcct()) factLine.setAccount_ID(dl.getAccount_ID());
+                if (dl.isOverwriteAcct()) factLine.setAccountId(dl.getAccountId());
                 if (dl.isOverwriteActivity()) factLine.setBusinessActivityId(dl.getBusinessActivityId());
                 if (dl.isOverwriteBPartner()) factLine.setBusinessPartnerId(dl.getBusinessPartnerId());
                 if (dl.isOverwriteCampaign()) factLine.setCampaignId(dl.getCampaignId());
-                if (dl.isOverwriteLocFrom()) factLine.setC_LocFrom_ID(dl.getC_LocFrom_ID());
-                if (dl.isOverwriteLocTo()) factLine.setC_LocTo_ID(dl.getC_LocTo_ID());
+                if (dl.isOverwriteLocFrom()) factLine.setLocationFromId(dl.getLocationFromId());
+                if (dl.isOverwriteLocTo()) factLine.setLocationToId(dl.getLocationToId());
                 if (dl.isOverwriteOrgTrx()) factLine.setTransactionOrganizationId(dl.getTransactionOrganizationId());
-                if (dl.isOverwriteProduct()) factLine.setM_Product_ID(dl.getM_Product_ID());
+                if (dl.isOverwriteProduct()) factLine.setProductId(dl.getProductId());
                 if (dl.isOverwriteProject()) factLine.setProjectId(dl.getProjectId());
-                if (dl.isOverwriteSalesRegion()) factLine.setC_SalesRegion_ID(dl.getC_SalesRegion_ID());
+                if (dl.isOverwriteSalesRegion()) factLine.setSalesRegionId(dl.getSalesRegionId());
                 if (dl.isOverwriteUser1()) factLine.setUser1Id(dl.getUser1Id());
                 if (dl.isOverwriteUser2()) factLine.setUser2Id(dl.getUser2Id());
                 // F3P end
@@ -738,7 +738,7 @@ public final class Fact implements IFact {
     public boolean save() {
         //  save Lines
         for (int i = 0; i < m_lines.size(); i++) {
-            FactLine fl = (FactLine) m_lines.get(i);
+            FactLine fl = m_lines.get(i);
             //	log.fine("save - " + fl);
             if (!fl.save()) //  abort on first error
                 return false;

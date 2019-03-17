@@ -3,7 +3,6 @@ package org.compiere.accounting
 import org.compiere.model.I_M_Movement
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.math.BigDecimal
 import java.util.Properties
 
 /**
@@ -21,7 +20,6 @@ fun updateReverseLineGetData(
     AD_Table_ID: Int,
     Record_ID: Int,
     Line_ID: Int,
-    multiplier: BigDecimal,
     C_AcctSchema_ID: Int,
     Account_ID: Int,
     M_Locator_ID: Int,

@@ -26,10 +26,10 @@ public class X_M_Product_Category_Acct extends PO
     public X_M_Product_Category_Acct(Properties ctx, int M_Product_Category_Acct_ID) {
         super(ctx, M_Product_Category_Acct_ID);
         /*
-         * if (M_Product_Category_Acct_ID == 0) { setAccountingSchemaId (0); setM_Product_Category_ID (0);
-         * setP_Asset_Acct (0); setP_COGS_Acct (0); setP_CostAdjustment_Acct (0); setP_Expense_Acct (0);
-         * setP_InventoryClearing_Acct (0); setP_InvoicePriceVariance_Acct (0);
-         * setP_PurchasePriceVariance_Acct (0); setP_RateVariance_Acct (0); setP_Revenue_Acct (0);
+         * if (M_Product_Category_Acct_ID == 0) { setAccountingSchemaId (0); setProductCategoryId (0);
+         * setP_Asset_Acct (0); setP_COGS_Acct (0); setP_CostAdjustment_Acct (0); setProductExpenseAccount (0);
+         * setInventoryClearingAccount (0); setInvoicePriceVarianceAccount (0);
+         * setP_PurchasePriceVariance_Acct (0); setP_RateVariance_Acct (0); setRevenueAccount (0);
          * setP_TradeDiscountGrant_Acct (0); setP_TradeDiscountRec_Acct (0); }
          */
     }
@@ -59,7 +59,7 @@ public class X_M_Product_Category_Acct extends PO
      *
      * @return Rules for accounting
      */
-    public int getC_AcctSchema_ID() {
+    public int getAccountingSchemaId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
@@ -88,7 +88,7 @@ public class X_M_Product_Category_Acct extends PO
      *
      * @return Category of a Product
      */
-    public int getM_Product_Category_ID() {
+    public int getProductCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_Category_ID);
         if (ii == null) return 0;
         return ii;

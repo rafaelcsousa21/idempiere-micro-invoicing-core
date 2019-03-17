@@ -47,7 +47,7 @@ public class InOutCreateInvoice extends SvrProcess {
                 p_InvoiceDocumentNo = (String) para[i].getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_M_InOut_ID = getRecord_ID();
+        p_M_InOut_ID = getRecordId();
     } //	prepare
 
     /**
@@ -74,7 +74,7 @@ public class InOutCreateInvoice extends SvrProcess {
 
         MInvoice invoice = new MInvoice(ship, null);
         // Should not override pricelist for RMA
-        if (p_M_PriceList_ID != 0 && ship.getM_RMA_ID() == 0)
+        if (p_M_PriceList_ID != 0 && ship.getRMAId() == 0)
             invoice.setPriceListId(p_M_PriceList_ID);
         if (p_InvoiceDocumentNo != null && p_InvoiceDocumentNo.length() > 0)
             invoice.setDocumentNo(p_InvoiceDocumentNo);

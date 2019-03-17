@@ -59,7 +59,7 @@ public class X_C_RevenueRecognition_Plan extends PO
      *
      * @param C_AcctSchema_ID Rules for accounting
      */
-    public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
+    public void setAccountingSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
         else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
@@ -79,7 +79,7 @@ public class X_C_RevenueRecognition_Plan extends PO
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -89,7 +89,7 @@ public class X_C_RevenueRecognition_Plan extends PO
      *
      * @param C_RevenueRecognition_ID Method for recording revenue
      */
-    public void setC_RevenueRecognition_ID(int C_RevenueRecognition_ID) {
+    public void setRevenueRecognitionId(int C_RevenueRecognition_ID) {
         if (C_RevenueRecognition_ID < 1) setValueNoCheck(COLUMNNAME_C_RevenueRecognition_ID, null);
         else
             setValueNoCheck(
@@ -101,7 +101,7 @@ public class X_C_RevenueRecognition_Plan extends PO
      *
      * @param P_Revenue_Acct Account for Product Revenue (Sales Account)
      */
-    public void setP_Revenue_Acct(int P_Revenue_Acct) {
+    public void setRevenueAccount(int P_Revenue_Acct) {
         setValueNoCheck(COLUMNNAME_P_Revenue_Acct, Integer.valueOf(P_Revenue_Acct));
     }
 
@@ -128,7 +128,7 @@ public class X_C_RevenueRecognition_Plan extends PO
      *
      * @param UnEarnedRevenue_Acct Account for unearned revenue
      */
-    public void setUnEarnedRevenue_Acct(int UnEarnedRevenue_Acct) {
+    public void setUnEarnedRevenueAccount(int UnEarnedRevenue_Acct) {
         setValueNoCheck(COLUMNNAME_UnEarnedRevenue_Acct, Integer.valueOf(UnEarnedRevenue_Acct));
     }
 }

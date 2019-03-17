@@ -69,7 +69,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
     public MMovementConfirm(Properties ctx, int M_MovementConfirm_ID) {
         super(ctx, M_MovementConfirm_ID);
         if (M_MovementConfirm_ID == 0) {
-            //	setM_Movement_ID (0);
+            //	setMovementId (0);
             setDocAction(DOCACTION_Complete);
             setDocStatus(DOCSTATUS_Drafted);
             setIsApproved(false); // N
@@ -94,7 +94,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
     public MMovementConfirm(MMovement move) {
         this(move.getCtx(), 0);
         setClientOrg(move);
-        setM_Movement_ID(move.getM_Movement_ID());
+        setMovementId(move.getMovementId());
     } //	MInOutConfirm
 
     /**
@@ -134,7 +134,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         if (m_lines != null && !requery) {
             return m_lines;
         }
-        m_lines = MBaseMovementLineConfirmKt.getMovementLineConfirmLines(getCtx(), getM_MovementConfirm_ID());
+        m_lines = MBaseMovementLineConfirmKt.getMovementLineConfirmLines(getCtx(), getMovementConfirmId());
         return m_lines;
     } //	getLines
 
@@ -297,7 +297,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         if (log.isLoggable(Level.INFO)) log.info("completeIt - " + toString());
         //
         m_inventoryDoc = new ArrayList<MInventory>();
-        MMovement move = new MMovement(getCtx(), getM_Movement_ID());
+        MMovement move = new MMovement(getCtx(), getMovementId());
         MMovementLineConfirm[] lines = getLines(false);
         for (int i = 0; i < lines.length; i++) {
             MMovementLineConfirm confirm = lines[i];
@@ -383,7 +383,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         //	Difference - Create Inventory Difference for Source Location
         if (Env.ZERO.compareTo(confirm.getDifferenceQty()) != 0) {
             //	Get Warehouse for Source
-            MLocator loc = MLocator.get(getCtx(), mLine.getM_Locator_ID());
+            MLocator loc = MLocator.get(getCtx(), mLine.getLocatorId());
             if (m_inventoryFrom != null && m_inventoryFrom.getWarehouseId() != loc.getWarehouseId())
                 m_inventoryFrom = null;
 
@@ -398,8 +398,8 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                     return false;
                 }
                 //	First Inventory
-                if (getM_Inventory_ID() == 0) {
-                    setM_Inventory_ID(m_inventoryFrom.getM_Inventory_ID());
+                if (getInventoryId() == 0) {
+                    setInventoryId(m_inventoryFrom.getInventoryId());
                     m_inventoryInfo = m_inventoryFrom.getDocumentNo();
                 } else m_inventoryInfo += "," + m_inventoryFrom.getDocumentNo();
                 m_inventoryDoc.add(m_inventoryFrom);
@@ -410,9 +410,9 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
             MInventoryLine line =
                     new MInventoryLine(
                             m_inventoryFrom,
-                            mLine.getM_Locator_ID(),
-                            mLine.getM_Product_ID(),
-                            mLine.getMAttributeSetInstance_ID(),
+                            mLine.getLocatorId(),
+                            mLine.getProductId(),
+                            mLine.getAttributeSetInstanceId(),
                             confirm.getDifferenceQty(),
                             Env.ZERO);
             line.setDescription(Msg.translate(getCtx(), "DifferenceQty"));
@@ -420,13 +420,13 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                 updateProcessMsg("Inventory Line not created");
                 return false;
             }
-            confirm.setM_InventoryLine_ID(line.getM_InventoryLine_ID());
+            confirm.setInventoryLineId(line.getInventoryLineId());
         } //	Difference
 
         //	Scrapped - Create Inventory Difference for Target Location
         if (Env.ZERO.compareTo(confirm.getScrappedQty()) != 0) {
             //	Get Warehouse for Target
-            MLocator loc = MLocator.get(getCtx(), mLine.getM_LocatorTo_ID());
+            MLocator loc = MLocator.get(getCtx(), mLine.getLocatorToId());
             if (m_inventoryTo != null && m_inventoryTo.getWarehouseId() != loc.getWarehouseId())
                 m_inventoryTo = null;
 
@@ -441,8 +441,8 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                     return false;
                 }
                 //	First Inventory
-                if (getM_Inventory_ID() == 0) {
-                    setM_Inventory_ID(m_inventoryTo.getM_Inventory_ID());
+                if (getInventoryId() == 0) {
+                    setInventoryId(m_inventoryTo.getInventoryId());
                     m_inventoryInfo = m_inventoryTo.getDocumentNo();
                 } else m_inventoryInfo += "," + m_inventoryTo.getDocumentNo();
                 m_inventoryDoc.add(m_inventoryTo);
@@ -453,9 +453,9 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
             MInventoryLine line =
                     new MInventoryLine(
                             m_inventoryTo,
-                            mLine.getM_LocatorTo_ID(),
-                            mLine.getM_Product_ID(),
-                            mLine.getMAttributeSetInstance_ID(),
+                            mLine.getLocatorToId(),
+                            mLine.getProductId(),
+                            mLine.getAttributeSetInstanceId(),
                             confirm.getScrappedQty(),
                             Env.ZERO);
             line.setDescription(Msg.translate(getCtx(), "ScrappedQty"));
@@ -463,7 +463,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
                 updateProcessMsg("Inventory Line not created");
                 return false;
             }
-            confirm.setM_InventoryLine_ID(line.getM_InventoryLine_ID());
+            confirm.setInventoryLineId(line.getInventoryLineId());
         } //	Scrapped
 
         return true;
@@ -532,8 +532,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -636,7 +635,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getUpdatedBy();
     } //	getDoc_User_ID
 

@@ -31,8 +31,8 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
         /*
          * if (M_ProductionLine_ID == 0) { setLine (0); // @SQL=SELECT NVL(MAX(Line),0)+10 AS
          * DefaultValue FROM M_ProductionLine WHERE M_Production_ID=@M_Production_ID@
-         * setM_AttributeSetInstance_ID (0); setM_Locator_ID (0); // @M_Locator_ID@ setMovementQty
-         * (Env.ZERO); setM_Product_ID (0); setM_ProductionLine_ID (0); setProcessed (false); }
+         * setAttributeSetInstanceId (0); setLocatorId (0); // @M_Locator_ID@ setMovementQty
+         * (Env.ZERO); setProductId (0); setProductionLineId (0); setProcessed (false); }
          */
     }
 
@@ -109,11 +109,22 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
     }
 
     /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getAttributeSetInstanceId() {
+        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
      * Set Attribute Set Instance.
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0)
             setValue(I_M_ProductionLine.COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
@@ -123,22 +134,11 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
     }
 
     /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Locator.
      *
      * @return Warehouse Locator
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
@@ -149,7 +149,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @param M_Locator_ID Warehouse Locator
      */
-    public void setM_Locator_ID(int M_Locator_ID) {
+    public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 1) setValue(I_M_ProductionLine.COLUMNNAME_M_Locator_ID, null);
         else setValue(I_M_ProductionLine.COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
@@ -174,10 +174,10 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
         setValue(I_M_ProductionLine.COLUMNNAME_MovementQty, MovementQty);
     }
 
-    public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
+    public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
                 MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-                        .getPO(getM_Product_ID());
+                        .getPO(getProductId());
     }
 
     /**
@@ -185,7 +185,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -196,15 +196,15 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(I_M_ProductionLine.COLUMNNAME_M_Product_ID, null);
         else setValue(I_M_ProductionLine.COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
-    public org.compiere.model.I_M_Production getM_Production() throws RuntimeException {
+    public org.compiere.model.I_M_Production getProduction() throws RuntimeException {
         return (org.compiere.model.I_M_Production)
                 MTable.get(getCtx(), org.compiere.model.I_M_Production.Table_Name)
-                        .getPO(getM_Production_ID());
+                        .getPO(getProductionId());
     }
 
     /**
@@ -212,7 +212,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @return Plan for producing a product
      */
-    public int getM_Production_ID() {
+    public int getProductionId() {
         Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_Production_ID);
         if (ii == null) return 0;
         return ii;
@@ -223,7 +223,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @param M_Production_ID Plan for producing a product
      */
-    public void setM_Production_ID(int M_Production_ID) {
+    public void setProductionId(int M_Production_ID) {
         if (M_Production_ID < 1) setValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_Production_ID, null);
         else
             setValueNoCheck(
@@ -235,7 +235,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @return Document Line representing a production
      */
-    public int getM_ProductionLine_ID() {
+    public int getProductionLineId() {
         Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_ProductionLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -246,7 +246,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @param M_ProductionLine_ID Document Line representing a production
      */
-    public void setM_ProductionLine_ID(int M_ProductionLine_ID) {
+    public void setProductionLineId(int M_ProductionLine_ID) {
         if (M_ProductionLine_ID < 1)
             setValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_ProductionLine_ID, null);
         else
@@ -254,10 +254,10 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
                     I_M_ProductionLine.COLUMNNAME_M_ProductionLine_ID, Integer.valueOf(M_ProductionLine_ID));
     }
 
-    public org.compiere.model.I_M_ProductionPlan getM_ProductionPlan() throws RuntimeException {
+    public org.compiere.model.I_M_ProductionPlan getProductionPlan() throws RuntimeException {
         return (org.compiere.model.I_M_ProductionPlan)
                 MTable.get(getCtx(), org.compiere.model.I_M_ProductionPlan.Table_Name)
-                        .getPO(getM_ProductionPlan_ID());
+                        .getPO(getProductionPlanId());
     }
 
     /**
@@ -265,7 +265,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @return Plan for how a product is produced
      */
-    public int getM_ProductionPlan_ID() {
+    public int getProductionPlanId() {
         Integer ii = (Integer) getValue(I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID);
         if (ii == null) return 0;
         return ii;
@@ -276,7 +276,7 @@ public class X_M_ProductionLine extends PO implements I_M_ProductionLine, IDocLi
      *
      * @param M_ProductionPlan_ID Plan for how a product is produced
      */
-    public void setM_ProductionPlan_ID(int M_ProductionPlan_ID) {
+    public void setProductionPlanId(int M_ProductionPlan_ID) {
         if (M_ProductionPlan_ID < 1)
             setValueNoCheck(I_M_ProductionLine.COLUMNNAME_M_ProductionPlan_ID, null);
         else

@@ -31,7 +31,7 @@ fun getCreateCostQueueRecord(
     val parameters = listOf(
         product.clientId,
         AD_Org_ID,
-        product.m_Product_ID,
+        product.productId,
         M_AttributeSetInstance_ID,
         `as`.costTypeId,
         `as`.accountingSchemaId,
@@ -73,10 +73,10 @@ fun getCostQueueRecordsInLifoFifoOrder(
     val parameters = listOf(
         product.clientId,
         Org_ID,
-        product.m_Product_ID,
+        product.productId,
         `as`.costTypeId,
         `as`.accountingSchemaId,
-        ce.m_CostElement_ID
+        ce.costElementId
     ) + (if (M_ASI_ID != 0) listOf(M_ASI_ID) else emptyList())
 
     val query = queryOf(sql.toString(), parameters).map { row -> MCostQueue(product.ctx, row) }.asList

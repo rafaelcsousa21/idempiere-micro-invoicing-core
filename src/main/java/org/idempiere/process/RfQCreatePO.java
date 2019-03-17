@@ -48,7 +48,7 @@ public class RfQCreatePO extends SvrProcess {
             else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_C_RfQ_ID = getRecord_ID();
+        p_C_RfQ_ID = getRecordId();
     } //	prepare
 
     /**
@@ -114,8 +114,8 @@ public class RfQCreatePO extends SvrProcess {
     			if (qty.getRfQLineQty().isActive() && qty.getRfQLineQty().isPurchaseQty())
     			{
     				MOrderLine ol = new MOrderLine (order);
-    				ol.setM_Product_ID(line.getRfQLine().getM_Product_ID(),
-    					qty.getRfQLineQty().getC_UOM_ID());
+    				ol.setProductId(line.getRfQLine().getProductId(),
+    					qty.getRfQLineQty().getUOMId());
     				ol.setDescription(line.getDescription());
     				ol.setQty(qty.getRfQLineQty().getQty());
     				BigDecimal price = qty.getNetAmt();
@@ -173,8 +173,8 @@ public class RfQCreatePO extends SvrProcess {
     			if (qty.getRfQLineQty().isActive() && qty.getRfQLineQty().isPurchaseQty())
     			{
     				MOrderLine ol = new MOrderLine (order);
-    				ol.setM_Product_ID(line.getRfQLine().getM_Product_ID(),
-    					qty.getRfQLineQty().getC_UOM_ID());
+    				ol.setProductId(line.getRfQLine().getProductId(),
+    					qty.getRfQLineQty().getUOMId());
     				ol.setDescription(line.getDescription());
     				ol.setQty(qty.getRfQLineQty().getQty());
     				BigDecimal price = qty.getNetAmt();

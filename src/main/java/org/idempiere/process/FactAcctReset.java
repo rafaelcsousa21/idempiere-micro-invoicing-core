@@ -43,7 +43,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
+import static software.hsharp.core.util.DBKt.convertDate;
 import static software.hsharp.core.util.DBKt.executeUpdate;
 import static software.hsharp.core.util.DBKt.prepareStatement;
 
@@ -79,7 +79,7 @@ public class FactAcctReset extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
             else if (name.equals("AD_Client_ID"))
                 p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
             else if (name.equals("AD_Table_ID"))
@@ -87,7 +87,7 @@ public class FactAcctReset extends SvrProcess {
             else if (name.equals("DeletePosting")) p_DeletePosting = "Y".equals(para[i].getParameter());
             else if (name.equals("DateAcct")) {
                 p_DateAcct_From = (Timestamp) para[i].getParameter();
-                p_DateAcct_To = (Timestamp) para[i].getParameter_To();
+                p_DateAcct_To = (Timestamp) para[i].getParameterTo();
             } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare
@@ -292,8 +292,8 @@ public class FactAcctReset extends SvrProcess {
                         + "_ID";
         if (!autoPeriod) sql1 += " AND pc.PeriodStatus = 'O'" + docBaseType;
         if (p_DateAcct_From != null)
-            sql1 += " AND TRUNC(fact.DateAcct) >= " + TO_DATE(p_DateAcct_From);
-        if (p_DateAcct_To != null) sql1 += " AND TRUNC(fact.DateAcct) <= " + TO_DATE(p_DateAcct_To);
+            sql1 += " AND TRUNC(fact.DateAcct) >= " + convertDate(p_DateAcct_From);
+        if (p_DateAcct_To != null) sql1 += " AND TRUNC(fact.DateAcct) <= " + convertDate(p_DateAcct_To);
         sql1 += ")";
 
         if (log.isLoggable(Level.FINE)) log.log(Level.FINE, sql1);
@@ -317,9 +317,9 @@ public class FactAcctReset extends SvrProcess {
                     " AND EXISTS (SELECT 1 FROM C_PeriodControl pc "
                             + "WHERE Fact_Acct.C_Period_ID=pc.C_Period_ID)";
         if (p_DateAcct_From != null)
-            sql2 += " AND TRUNC(Fact_Acct.DateAcct) >= " + TO_DATE(p_DateAcct_From);
+            sql2 += " AND TRUNC(Fact_Acct.DateAcct) >= " + convertDate(p_DateAcct_From);
         if (p_DateAcct_To != null)
-            sql2 += " AND TRUNC(Fact_Acct.DateAcct) <= " + TO_DATE(p_DateAcct_To);
+            sql2 += " AND TRUNC(Fact_Acct.DateAcct) <= " + convertDate(p_DateAcct_To);
 
         if (log.isLoggable(Level.FINE)) log.log(Level.FINE, sql2);
 

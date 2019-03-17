@@ -20,7 +20,7 @@ fun findByCalendar(ctx: Properties, DateAcct: Timestamp, calendarId: Int): MPeri
     val it = periodCache.values.iterator()
     while (it.hasNext()) {
         val period = it.next() as MPeriod
-        if (period.c_Calendar_ID == calendarId &&
+        if (period.calendarId == calendarId &&
             period.isStandardPeriod &&
             period.isInPeriod(DateAcct) &&
             period.clientId == AD_Client_ID
@@ -45,7 +45,7 @@ fun findByCalendar(ctx: Properties, DateAcct: Timestamp, calendarId: Int): MPeri
     var retValue: MPeriod? = null
 
     for (period in items) {
-        val key = period.getC_Period_ID()
+        val key = period.getPeriodId()
         periodCache[key] = period
         if (period.isStandardPeriod()) retValue = period
     }
@@ -62,7 +62,7 @@ fun findByCalendar(ctx: Properties, DateAcct: Timestamp, calendarId: Int): MPeri
  * @return active first Period
  */
 fun getFirstPeriodInYear(ctx: Properties, DateAcct: Timestamp, AD_Org_ID: Int): MPeriod? {
-    val C_Calendar_ID = MPeriod.get(ctx, DateAcct, AD_Org_ID).c_Calendar_ID
+    val C_Calendar_ID = MPeriod.get(ctx, DateAcct, AD_Org_ID).calendarId
 
     val sql = ("SELECT * " +
             "FROM C_Period " +

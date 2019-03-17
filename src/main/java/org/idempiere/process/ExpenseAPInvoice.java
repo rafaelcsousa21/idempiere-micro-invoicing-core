@@ -35,11 +35,11 @@ public class ExpenseAPInvoice extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
             else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
             else if (name.equals("DateReport")) {
                 m_DateFrom = (Timestamp) para[i].getParameter();
-                m_DateTo = (Timestamp) para[i].getParameter_To();
+                m_DateTo = (Timestamp) para[i].getParameterTo();
             } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare
@@ -99,7 +99,7 @@ public class ExpenseAPInvoice extends SvrProcess {
                     break;
                 }
                 invoice.setPriceListId(te.getPriceListId());
-                invoice.setSalesRepresentativeId(te.getDoc_User_ID());
+                invoice.setSalesRepresentativeId(te.getDoc_UserId());
                 StringBuilder descr =
                         new StringBuilder()
                                 .append(Msg.translate(getCtx(), "S_TimeExpense_ID"))
@@ -116,7 +116,7 @@ public class ExpenseAPInvoice extends SvrProcess {
                 MTimeExpenseLine line = tel[i];
 
                 //	Already Invoiced or nothing to be reimbursed
-                if (line.getC_InvoiceLine_ID() != 0
+                if (line.getInvoiceLineId() != 0
                         || Env.ZERO.compareTo(line.getQtyReimbursed()) == 0
                         || Env.ZERO.compareTo(line.getPriceReimbursed()) == 0) continue;
 
@@ -132,13 +132,13 @@ public class ExpenseAPInvoice extends SvrProcess {
                 //	Create OrderLine
                 MInvoiceLine il = new MInvoiceLine(invoice);
                 //
-                if (line.getM_Product_ID() != 0) il.setM_Product_ID(line.getM_Product_ID(), true);
+                if (line.getProductId() != 0) il.setProductId(line.getProductId(), true);
                 il.setQty(line.getQtyReimbursed()); // 	Entered/Invoiced
                 il.setDescription(line.getDescription());
                 //
                 il.setProjectId(line.getProjectId());
-                il.setC_ProjectPhase_ID(line.getC_ProjectPhase_ID());
-                il.setC_ProjectTask_ID(line.getC_ProjectTask_ID());
+                il.setProjectPhaseId(line.getProjectPhaseId());
+                il.setProjectTaskId(line.getProjectTaskId());
                 il.setBusinessActivityId(line.getBusinessActivityId());
                 il.setCampaignId(line.getCampaignId());
                 //
@@ -147,7 +147,7 @@ public class ExpenseAPInvoice extends SvrProcess {
                 il.setTax();
                 if (!il.save()) throw new IllegalStateException("Cannot save Invoice Line");
                 //	Update TEL
-                line.setC_InvoiceLine_ID(il.getC_InvoiceLine_ID());
+                line.setInvoiceLineId(il.getInvoiceLineId());
                 line.saveEx();
             } //	for all expense lines
         } //	********* Expense Line Loop

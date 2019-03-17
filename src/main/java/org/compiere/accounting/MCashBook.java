@@ -60,7 +60,7 @@ public class MCashBook extends X_C_CashBook {
      */
     public static MCashBook get(Properties ctx, int C_CashBook_ID) {
         Integer key = C_CashBook_ID;
-        MCashBook retValue = (MCashBook) s_cache.get(key);
+        MCashBook retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MCashBook(ctx, C_CashBook_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -79,7 +79,7 @@ public class MCashBook extends X_C_CashBook {
         //	Try from cache
         Iterator<MCashBook> it = s_cache.values().iterator();
         while (it.hasNext()) {
-            MCashBook cb = (MCashBook) it.next();
+            MCashBook cb = it.next();
             if (cb.getOrgId() == AD_Org_ID && cb.getCurrencyId() == C_Currency_ID) return cb;
         }
 
@@ -95,7 +95,7 @@ public class MCashBook extends X_C_CashBook {
                         .setOrderBy("IsDefault DESC")
                         .first();
         if (retValue != null) {
-            Integer key = new Integer(retValue.getC_CashBook_ID());
+            Integer key = new Integer(retValue.getCashBookId());
             s_cache.put(key, retValue);
         }
         return retValue;

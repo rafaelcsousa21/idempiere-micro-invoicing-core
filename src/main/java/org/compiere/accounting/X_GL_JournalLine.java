@@ -54,7 +54,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return Account used
      */
-    public int getAccount_ID() {
+    public int getAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Account_ID);
         if (ii == null) return 0;
         return ii;
@@ -65,7 +65,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param Account_ID Account used
      */
-    public void setAccount_ID(int Account_ID) {
+    public void setAccountId(int Account_ID) {
         if (Account_ID < 1) setValue(COLUMNNAME_Account_ID, null);
         else setValue(COLUMNNAME_Account_ID, Integer.valueOf(Account_ID));
     }
@@ -96,7 +96,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param Alias_ValidCombination_ID Valid Account Alias List
      */
-    public void setAlias_ValidCombination_ID(int Alias_ValidCombination_ID) {
+    public void setValidAccountAliasId(int Alias_ValidCombination_ID) {
         if (Alias_ValidCombination_ID < 1) setValue(COLUMNNAME_Alias_ValidCombination_ID, null);
         else
             setValue(COLUMNNAME_Alias_ValidCombination_ID, Integer.valueOf(Alias_ValidCombination_ID));
@@ -270,7 +270,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return Location that inventory was moved from
      */
-    public int getC_LocFrom_ID() {
+    public int getLocationFromId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_LocFrom_ID);
         if (ii == null) return 0;
         return ii;
@@ -281,7 +281,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param C_LocFrom_ID Location that inventory was moved from
      */
-    public void setC_LocFrom_ID(int C_LocFrom_ID) {
+    public void setLocationFromId(int C_LocFrom_ID) {
         if (C_LocFrom_ID < 1) setValue(COLUMNNAME_C_LocFrom_ID, null);
         else setValue(COLUMNNAME_C_LocFrom_ID, Integer.valueOf(C_LocFrom_ID));
     }
@@ -291,7 +291,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return Location that inventory was moved to
      */
-    public int getC_LocTo_ID() {
+    public int getLocationToId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_LocTo_ID);
         if (ii == null) return 0;
         return ii;
@@ -302,7 +302,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param C_LocTo_ID Location that inventory was moved to
      */
-    public void setC_LocTo_ID(int C_LocTo_ID) {
+    public void setLocationToId(int C_LocTo_ID) {
         if (C_LocTo_ID < 1) setValue(COLUMNNAME_C_LocTo_ID, null);
         else setValue(COLUMNNAME_C_LocTo_ID, Integer.valueOf(C_LocTo_ID));
     }
@@ -333,7 +333,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return Sales coverage region
      */
-    public int getC_SalesRegion_ID() {
+    public int getSalesRegionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
@@ -344,7 +344,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param C_SalesRegion_ID Sales coverage region
      */
-    public void setC_SalesRegion_ID(int C_SalesRegion_ID) {
+    public void setSalesRegionId(int C_SalesRegion_ID) {
         if (C_SalesRegion_ID < 1) setValue(COLUMNNAME_C_SalesRegion_ID, null);
         else setValue(COLUMNNAME_C_SalesRegion_ID, Integer.valueOf(C_SalesRegion_ID));
     }
@@ -354,7 +354,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return Sub account for Element Value
      */
-    public int getC_SubAcct_ID() {
+    public int getSubAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_SubAcct_ID);
         if (ii == null) return 0;
         return ii;
@@ -365,7 +365,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param C_SubAcct_ID Sub account for Element Value
      */
-    public void setC_SubAcct_ID(int C_SubAcct_ID) {
+    public void setSubAccountId(int C_SubAcct_ID) {
         if (C_SubAcct_ID < 1) setValue(COLUMNNAME_C_SubAcct_ID, null);
         else setValue(COLUMNNAME_C_SubAcct_ID, Integer.valueOf(C_SubAcct_ID));
     }
@@ -375,7 +375,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param C_UOM_ID Unit of Measure
      */
-    public void setC_UOM_ID(int C_UOM_ID) {
+    public void setUOMId(int C_UOM_ID) {
         if (C_UOM_ID < 1) setValue(COLUMNNAME_C_UOM_ID, null);
         else setValue(COLUMNNAME_C_UOM_ID, Integer.valueOf(C_UOM_ID));
     }
@@ -405,7 +405,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return Valid Account Combination
      */
-    public int getC_ValidCombination_ID() {
+    public int getValidAccountCombinationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ValidCombination_ID);
         if (ii == null) return 0;
         return ii;
@@ -416,7 +416,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param C_ValidCombination_ID Valid Account Combination
      */
-    public void setC_ValidCombination_ID(int C_ValidCombination_ID) {
+    public void setValidAccountCombinationId(int C_ValidCombination_ID) {
         if (C_ValidCombination_ID < 1) setValue(COLUMNNAME_C_ValidCombination_ID, null);
         else setValue(COLUMNNAME_C_ValidCombination_ID, Integer.valueOf(C_ValidCombination_ID));
     }
@@ -444,7 +444,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return General Ledger Journal
      */
-    public int getGL_Journal_ID() {
+    public int getGLJournalId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_Journal_ID);
         if (ii == null) return 0;
         return ii;
@@ -455,7 +455,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param GL_Journal_ID General Ledger Journal
      */
-    public void setGL_Journal_ID(int GL_Journal_ID) {
+    public void setGLJournalId(int GL_Journal_ID) {
         if (GL_Journal_ID < 1) setValueNoCheck(COLUMNNAME_GL_Journal_ID, null);
         else setValueNoCheck(COLUMNNAME_GL_Journal_ID, Integer.valueOf(GL_Journal_ID));
     }
@@ -465,7 +465,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return General Ledger Journal Line
      */
-    public int getGL_JournalLine_ID() {
+    public int getGLJournalLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_GL_JournalLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -505,7 +505,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -516,7 +516,7 @@ public class X_GL_JournalLine extends PO implements I_GL_JournalLine {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }

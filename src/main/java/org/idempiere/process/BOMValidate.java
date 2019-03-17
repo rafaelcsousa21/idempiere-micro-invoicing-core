@@ -55,7 +55,7 @@ public class BOMValidate extends SvrProcess {
             else if (name.equals("IsReValidate")) p_IsReValidate = "Y".equals(para[i].getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_M_Product_ID = getRecord_ID();
+        p_M_Product_ID = getRecordId();
     } //	prepare
 
     /**
@@ -158,7 +158,7 @@ public class BOMValidate extends SvrProcess {
         MProductBOM[] productsBOMs = MProductBOM.getBOMLines(product);
         for (int i = 0; i < productsBOMs.length; i++) {
             MProductBOM productsBOM = productsBOMs[i];
-            MProduct pp = new MProduct(getCtx(), productsBOM.getM_ProductBOM_ID());
+            MProduct pp = new MProduct(getCtx(), productsBOM.getBOMProductId());
             if (!pp.isBOM()) {
                 if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
             } else if (!validateOldProduct(pp)) {
@@ -178,7 +178,7 @@ public class BOMValidate extends SvrProcess {
         MBOMProduct[] BOMproducts = MBOMProduct.getOfBOM(bom);
         for (int i = 0; i < BOMproducts.length; i++) {
             MBOMProduct BOMproduct = BOMproducts[i];
-            MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID());
+            MProduct pp = new MProduct(getCtx(), BOMproduct.getBOMProductId());
             if (pp.isBOM()) return validateProduct(pp, bom.getBOMType(), bom.getBOMUse());
         }
         return true;
@@ -212,7 +212,7 @@ public class BOMValidate extends SvrProcess {
         MBOMProduct[] BOMproducts = MBOMProduct.getOfBOM(bom);
         for (int i = 0; i < BOMproducts.length; i++) {
             MBOMProduct BOMproduct = BOMproducts[i];
-            MProduct pp = new MProduct(getCtx(), BOMproduct.getM_BOMProduct_ID());
+            MProduct pp = new MProduct(getCtx(), BOMproduct.getBOMProductId());
             if (pp.isBOM()) return validateProduct(pp, bom.getBOMType(), bom.getBOMUse());
         }
         return true;

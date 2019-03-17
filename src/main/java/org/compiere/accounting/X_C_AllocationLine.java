@@ -28,8 +28,8 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
     public X_C_AllocationLine(Properties ctx, int C_AllocationLine_ID) {
         super(ctx, C_AllocationLine_ID);
         /**
-         * if (C_AllocationLine_ID == 0) { setAmount (Env.ZERO); setC_AllocationHdr_ID (0);
-         * setC_AllocationLine_ID (0); setDiscountAmt (Env.ZERO); setWriteOffAmt (Env.ZERO); }
+         * if (C_AllocationLine_ID == 0) { setAmount (Env.ZERO); setPaymentAllocationHeaderId (0);
+         * setAllocationLineId (0); setDiscountAmt (Env.ZERO); setWriteOffAmt (Env.ZERO); }
          */
     }
 
@@ -79,7 +79,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @return Payment allocation
      */
-    public int getC_AllocationHdr_ID() {
+    public int getPaymentAllocationHeaderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AllocationHdr_ID);
         if (ii == null) return 0;
         return ii;
@@ -90,7 +90,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @param C_AllocationHdr_ID Payment allocation
      */
-    public void setC_AllocationHdr_ID(int C_AllocationHdr_ID) {
+    public void setPaymentAllocationHeaderId(int C_AllocationHdr_ID) {
         if (C_AllocationHdr_ID < 1) setValueNoCheck(COLUMNNAME_C_AllocationHdr_ID, null);
         else setValueNoCheck(COLUMNNAME_C_AllocationHdr_ID, Integer.valueOf(C_AllocationHdr_ID));
     }
@@ -100,7 +100,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @return Allocation Line
      */
-    public int getC_AllocationLine_ID() {
+    public int getAllocationLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AllocationLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -132,7 +132,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @return Cash Journal Line
      */
-    public int getC_CashLine_ID() {
+    public int getCashLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_CashLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -143,12 +143,12 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
      *
      * @param C_CashLine_ID Cash Journal Line
      */
-    public void setC_CashLine_ID(int C_CashLine_ID) {
+    public void setCashLineId(int C_CashLine_ID) {
         if (C_CashLine_ID < 1) setValueNoCheck(COLUMNNAME_C_CashLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_CashLine_ID, Integer.valueOf(C_CashLine_ID));
     }
 
-    public org.compiere.model.I_C_Invoice getC_Invoice() throws RuntimeException {
+    public org.compiere.model.I_C_Invoice getInvoice() throws RuntimeException {
         return (org.compiere.model.I_C_Invoice)
                 MTable.get(getCtx(), org.compiere.model.I_C_Invoice.Table_Name)
                         .getPO(getInvoiceId());
@@ -196,7 +196,7 @@ public class X_C_AllocationLine extends PO implements I_C_AllocationLine {
         else setValueNoCheck(COLUMNNAME_C_Order_ID, Integer.valueOf(C_Order_ID));
     }
 
-    public org.compiere.model.I_C_Payment getC_Payment() throws RuntimeException {
+    public org.compiere.model.I_C_Payment getPayment() throws RuntimeException {
         return (org.compiere.model.I_C_Payment)
                 MTable.get(getCtx(), org.compiere.model.I_C_Payment.Table_Name)
                         .getPO(getPaymentId());

@@ -156,7 +156,7 @@ public class X_M_CostElement extends BasePOName implements I_M_CostElement {
      *
      * @return Product Cost Element
      */
-    public int getM_CostElement_ID() {
+    public int getCostElementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;

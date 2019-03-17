@@ -247,9 +247,9 @@ public class DocumentEngine implements DocAction {
         if (m_document instanceof PO) {
             PO docPO = (PO) m_document;
             if (docPO.getId() > 0
-                    && docPO.get_ValueOld("DocStatus") != null) {
+                    && docPO.getValueOld("DocStatus") != null) {
                 forUpdate(docPO);
-                String docStatusOriginal = (String) docPO.get_ValueOld("DocStatus");
+                String docStatusOriginal = (String) docPO.getValueOld("DocStatus");
                 String statusSql =
                         "SELECT DocStatus FROM "
                                 + docPO.getTableName()
@@ -755,7 +755,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return throw exception
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         throw new IllegalStateException(EXCEPTION_MSG);
     }
 

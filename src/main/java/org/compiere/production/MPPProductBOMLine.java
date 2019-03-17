@@ -17,7 +17,7 @@ import static software.hsharp.core.util.DBKt.getSQLValueEx;
 /**
  * PP Product BOM Line Model. <code>
  * MPPProductBOMLine l = new MPPProductBOMLine(bom);
- * l.setM_Product_ID(wbl.getM_Product_ID());
+ * l.setProductId(wbl.getProductId());
  * l.setQty(wbl.getQuantity());
  * l.saveEx();
  * </code>
@@ -51,7 +51,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
     public MPPProductBOMLine(MPPProductBOM bom) {
         super(bom.getCtx(), 0);
         if (bom.getId() <= 0) throw new IllegalArgumentException("Header not saved");
-        setPP_Product_BOM_ID(bom.getPP_Product_BOM_ID()); // 	parent
+        setPP_Product_BOMId(bom.getPP_Product_BOMId()); // 	parent
     }
 
     /**
@@ -71,7 +71,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
      * @return int low level
      */
     public int getLowLevel() {
-        return new ProductLowLevelCalculator(getCtx()).getLowLevel(getM_Product_ID());
+        return new ProductLowLevelCalculator(getCtx()).getLowLevel(getProductId());
     }
 
     @Override
@@ -92,7 +92,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
                             + " WHERE "
                             + I_PP_Product_BOMLine.COLUMNNAME_PP_Product_BOM_ID
                             + "=?";
-            int line = getSQLValueEx(sql, getPP_Product_BOM_ID());
+            int line = getSQLValueEx(sql, getPP_Product_BOMId());
             setLine(line);
         }
 
@@ -104,7 +104,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
         if (!success) return false;
 
         int lowlevel = getLowLevel();
-        MProduct product = new MProduct(getCtx(), getM_Product_ID());
+        MProduct product = new MProduct(getCtx(), getProductId());
         product.setLowLevel(lowlevel); // update lowlevel
         product.saveEx();
 
@@ -116,8 +116,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
         Timestamp validTo = getValidTo();
 
         if (validFrom != null && date.before(validFrom)) return false;
-        if (validTo != null && date.after(validTo)) return false;
-        return true;
+        return validTo == null || !date.after(validTo);
     }
 
     public boolean isCoProduct() {
@@ -158,7 +157,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
      * @return UOM precision
      */
     public int getPrecision() {
-        return MUOM.getPrecision(getCtx(), getC_UOM_ID());
+        return MUOM.getPrecision(getCtx(), getUOMId());
     }
 
 }

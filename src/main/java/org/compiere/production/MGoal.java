@@ -108,7 +108,7 @@ public class MGoal extends X_PA_Goal {
      */
     public MGoalRestriction[] getRestrictions(boolean reload) {
         if (m_restrictions != null && !reload) return m_restrictions;
-        m_restrictions = MBaseGoalKt.getRestrictions(getCtx(), getPA_Goal_ID());
+        m_restrictions = MBaseGoalKt.getRestrictions(getCtx(), getGoalId());
         return m_restrictions;
     } //	getRestrictions
 
@@ -121,7 +121,7 @@ public class MGoal extends X_PA_Goal {
      */
     public boolean updateGoal(boolean force) {
         if (log.isLoggable(Level.CONFIG)) log.config("Force=" + force);
-        MMeasure measure = MMeasure.get(getCtx(), getPA_Measure_ID());
+        MMeasure measure = MMeasure.get(getCtx(), getMeasureId());
 
         boolean isUpdateByInterfal = false;
         if (getDateLastRun() != null) {
@@ -212,23 +212,23 @@ public class MGoal extends X_PA_Goal {
         //		setMeasureDisplay(getMeasureScope());
 
         //	Measure required if nor Summary
-        if (!isSummary() && getPA_Measure_ID() == 0) {
+        if (!isSummary() && getMeasureId() == 0) {
             log.saveError("FillMandatory", Msg.getElement(getCtx(), "PA_Measure_ID"));
             return false;
         }
-        if (isSummary() && getPA_Measure_ID() != 0) setPA_Measure_ID(0);
+        if (isSummary() && getMeasureId() != 0) setMeasureId(0);
 
         //	User/Role Check
-        if ((newRecord || is_ValueChanged("AD_User_ID") || is_ValueChanged("AD_Role_ID"))
+        if ((newRecord || isValueChanged("AD_User_ID") || isValueChanged("AD_Role_ID"))
                 && getUserId() != 0) {
             MUser user = MUser.get(getCtx(), getUserId());
             MRole[] roles = user.getRoles(getOrgId());
             if (roles.length == 0) // 	No Role
-                setAD_Role_ID(0);
+                setRoleId(0);
             else if (roles.length == 1) // 	One
-                setAD_Role_ID(roles[0].getRoleId());
+                setRoleId(roles[0].getRoleId());
             else {
-                int AD_Role_ID = getAD_Role_ID();
+                int AD_Role_ID = getRoleId();
                 if (AD_Role_ID != 0) // 	validate
                 {
                     boolean found = false;
@@ -241,7 +241,7 @@ public class MGoal extends X_PA_Goal {
                     if (!found) AD_Role_ID = 0;
                 }
                 if (AD_Role_ID == 0) // 	set to first one
-                    setAD_Role_ID(roles[0].getRoleId());
+                    setRoleId(roles[0].getRoleId());
             } //	multiple roles
         } //	user check
 
@@ -259,7 +259,7 @@ public class MGoal extends X_PA_Goal {
         if (!success) return success;
 
         //	Update Goal if Target / Scope Changed
-        if (newRecord || is_ValueChanged("MeasureTarget") || is_ValueChanged("MeasureScope"))
+        if (newRecord || isValueChanged("MeasureTarget") || isValueChanged("MeasureScope"))
             updateGoal(true);
 
         return success;

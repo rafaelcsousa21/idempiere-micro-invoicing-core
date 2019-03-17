@@ -41,7 +41,8 @@ import org.compiere.orm.MOrg
 import org.compiere.orm.Query
 import org.compiere.orm.IModelFactory
 import org.compiere.orm.DefaultModelFactory
-import java.util.*
+import java.util.Random
+import java.util.Properties
 
 internal val sessionUrl =
     System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
@@ -70,10 +71,10 @@ abstract class BaseComponentTest {
 
     protected fun loginClient(idClient: Int) {
         val ctx = Env.getCtx()
-        val AD_CLIENT_ID = idClient
-        val AD_CLIENT_ID_s = AD_CLIENT_ID.toString()
-        ctx.setProperty(Env.AD_CLIENT_ID, AD_CLIENT_ID_s)
-        Env.setContext(ctx, Env.AD_CLIENT_ID, AD_CLIENT_ID_s)
+        val clientId = idClient
+        val clientIdS = clientId.toString()
+        ctx.setProperty(Env.AD_CLIENT_ID, clientIdS)
+        Env.setContext(ctx, Env.AD_CLIENT_ID, clientIdS)
     }
 
     private var _taxCategory: I_C_TaxCategory? = null
@@ -158,7 +159,7 @@ abstract class BaseComponentTest {
         return obj
     }
 
-    val ctx get() = Env.getCtx()
+    val ctx: Properties get() = Env.getCtx()
     val AD_CLIENT_ID get() = ctx.getProperty(Env.AD_CLIENT_ID).toInt()
 
     protected fun getProductById(product_id: Int): I_M_Product {
@@ -192,9 +193,9 @@ abstract class BaseComponentTest {
         val product = MProduct(ctx, 0)
         product.name = name
         product.value = name
-        product.c_UOM_ID = MUOM.getDefault_UOM_ID(ctx)
-        product.m_Product_Category_ID = standardProduct.m_Product_Category_ID
-        product.c_TaxCategory_ID = taxCategory.c_TaxCategory_ID
+        product.uomId = MUOM.getDefault_UOMId(ctx)
+        product.productCategoryId = standardProduct.productCategoryId
+        product.taxCategoryId = taxCategory.taxCategoryId
         product.productType = productType // I_M_Product.PRODUCTTYPE_Service
         product.save()
 

@@ -44,7 +44,7 @@ public class MRequestAction extends X_R_RequestAction {
     public MRequestAction(MRequest request, boolean newRecord) {
         this(request.getCtx(), 0);
         setClientOrg(request);
-        setR_Request_ID(request.getR_Request_ID());
+        setRequestId(request.getRequestId());
     } //	MRequestAction
 
     /**

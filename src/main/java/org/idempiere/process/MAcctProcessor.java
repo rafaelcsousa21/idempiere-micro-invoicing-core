@@ -72,7 +72,7 @@ public class MAcctProcessor extends X_C_AcctProcessor
      */
     @Override
     protected boolean beforeSave(boolean newRecord) {
-        if (newRecord || is_ValueChanged("AD_Schedule_ID")) {
+        if (newRecord || isValueChanged("AD_Schedule_ID")) {
             long nextWork =
                     MSchedule.getNextRunMS(
                             System.currentTimeMillis(),

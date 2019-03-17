@@ -29,7 +29,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.convertString;
 import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
@@ -128,7 +128,7 @@ public class TranslationDocSync extends SvrProcess {
                                 .append("_ID) WHERE AD_Client_ID=")
                                 .append(getClientId())
                                 .append(" AND AD_Language=")
-                                .append(TO_STRING(client.getADLanguage()));
+                                .append(convertString(client.getADLanguage()));
 
                 int no = executeUpdate(sql.toString());
                 addLog(0, null, new BigDecimal(no), baseTable);

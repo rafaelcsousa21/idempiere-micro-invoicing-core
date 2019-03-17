@@ -25,7 +25,7 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch {
     public X_C_PaymentBatch(Properties ctx, int C_PaymentBatch_ID) {
         super(ctx, C_PaymentBatch_ID);
         /**
-         * if (C_PaymentBatch_ID == 0) { setC_PaymentBatch_ID (0); setC_PaymentProcessor_ID (0); setName
+         * if (C_PaymentBatch_ID == 0) { setPaymentBatchId (0); setPaymentProcessor_ID (0); setName
          * (null); setProcessed (false); setProcessing (false); }
          */
     }
@@ -56,7 +56,7 @@ public class X_C_PaymentBatch extends BasePOName implements I_C_PaymentBatch {
      *
      * @return Payment batch for EFT
      */
-    public int getC_PaymentBatch_ID() {
+    public int getPaymentBatchId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_PaymentBatch_ID);
         if (ii == null) return 0;
         return ii;

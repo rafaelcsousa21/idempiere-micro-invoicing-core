@@ -42,8 +42,8 @@ public class BankStatementPayment extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        int Table_ID = getTable_ID();
-        int Record_ID = getRecord_ID();
+        int Table_ID = getTableId();
+        int Record_ID = getRecordId();
         if (log.isLoggable(Level.INFO)) log.info("Table_ID=" + Table_ID + ", Record_ID=" + Record_ID);
 
         if (Table_ID == X_I_BankStatement.Table_ID)
@@ -66,7 +66,7 @@ public class BankStatementPayment extends SvrProcess {
         if (log.isLoggable(Level.FINE)) log.fine(ibs.toString());
         if (ibs.getInvoiceId() == 0 && ibs.getBusinessPartnerId() == 0)
             throw new AdempiereUserError("@NotFound@ @C_Invoice_ID@ / @C_BPartner_ID@");
-        if (ibs.getC_BankAccount_ID() == 0)
+        if (ibs.getBankAccountId() == 0)
             throw new AdempiereUserError("@NotFound@ @C_BankAccount_ID@");
         //
         MPayment payment =
@@ -76,7 +76,7 @@ public class BankStatementPayment extends SvrProcess {
                         ibs.getCurrencyId(),
                         ibs.getStmtAmt(),
                         ibs.getTrxAmt(),
-                        ibs.getC_BankAccount_ID(),
+                        ibs.getBankAccountId(),
                         ibs.getStatementLineDate() == null
                                 ? ibs.getStatementDate()
                                 : ibs.getStatementLineDate(),
@@ -110,7 +110,7 @@ public class BankStatementPayment extends SvrProcess {
         if (bsl.getInvoiceId() == 0 && bsl.getBusinessPartnerId() == 0)
             throw new AdempiereUserError("@NotFound@ @C_Invoice_ID@ / @C_BPartner_ID@");
         //
-        MBankStatement bs = new MBankStatement(getCtx(), bsl.getC_BankStatement_ID());
+        MBankStatement bs = new MBankStatement(getCtx(), bsl.getBankStatementId());
         //
         MPayment payment =
                 createPayment(
@@ -119,7 +119,7 @@ public class BankStatementPayment extends SvrProcess {
                         bsl.getCurrencyId(),
                         bsl.getStmtAmt(),
                         bsl.getTrxAmt(),
-                        bs.getC_BankAccount_ID(),
+                        bs.getBankAccountId(),
                         bsl.getStatementLineDate(),
                         bsl.getDateAcct(),
                         bsl.getDescription(),
@@ -171,7 +171,7 @@ public class BankStatementPayment extends SvrProcess {
         //
         MPayment payment = new MPayment(getCtx(), 0);
         payment.setOrgId(AD_Org_ID);
-        payment.setC_BankAccount_ID(C_BankAccount_ID);
+        payment.setBankAccountId(C_BankAccount_ID);
         payment.setTenderType(MPayment.TENDERTYPE_Check);
         if (DateTrx != null) payment.setDateTrx(DateTrx);
         else if (DateAcct != null) payment.setDateTrx(DateAcct);

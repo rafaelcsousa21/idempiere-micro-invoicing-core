@@ -40,7 +40,7 @@ public class CopyFromOrder extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        int To_C_Order_ID = getRecord_ID();
+        int To_C_Order_ID = getRecordId();
         if (log.isLoggable(Level.INFO))
             log.info("From C_Order_ID=" + p_C_Order_ID + " to " + To_C_Order_ID);
         if (To_C_Order_ID == 0) throw new IllegalArgumentException("Target C_Order_ID == 0");

@@ -50,7 +50,7 @@ public class HouseKeeping extends SvrProcess {
                 p_AD_HouseKeeping_ID = parameter[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        if (p_AD_HouseKeeping_ID == 0) p_AD_HouseKeeping_ID = getRecord_ID();
+        if (p_AD_HouseKeeping_ID == 0) p_AD_HouseKeeping_ID = getRecordId();
     } // prepare
 
     protected String doIt() throws Exception {

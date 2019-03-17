@@ -70,7 +70,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
     public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
         return (org.compiere.model.I_AD_Workflow)
                 MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-                        .getPO(getAD_Workflow_ID());
+                        .getPO(getAD_WorkflowId());
     }
 
     /**
@@ -78,7 +78,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Workflow or combination of tasks
      */
-    public int getAD_Workflow_ID() {
+    public int getAD_WorkflowId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_Workflow_ID);
         if (ii == null) return 0;
         return ii;
@@ -89,7 +89,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param AD_Workflow_ID Workflow or combination of tasks
      */
-    public void setAD_Workflow_ID(int AD_Workflow_ID) {
+    public void setAD_WorkflowId(int AD_Workflow_ID) {
         if (AD_Workflow_ID < 1) setValue(COLUMNNAME_AD_Workflow_ID, null);
         else setValue(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
     }
@@ -98,7 +98,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
             throws RuntimeException {
         return (org.eevolution.model.I_DD_NetworkDistribution)
                 MTable.get(getCtx(), org.eevolution.model.I_DD_NetworkDistribution.Table_Name)
-                        .getPO(getDD_NetworkDistribution_ID());
+                        .getPO(getDD_NetworkDistributionId());
     }
 
     /**
@@ -106,7 +106,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Network Distribution
      */
-    public int getDD_NetworkDistribution_ID() {
+    public int getDD_NetworkDistributionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_DD_NetworkDistribution_ID);
         if (ii == null) return 0;
         return ii;
@@ -117,7 +117,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param DD_NetworkDistribution_ID Network Distribution
      */
-    public void setDD_NetworkDistribution_ID(int DD_NetworkDistribution_ID) {
+    public void setDD_NetworkDistributionId(int DD_NetworkDistribution_ID) {
         if (DD_NetworkDistribution_ID < 1) setValue(COLUMNNAME_DD_NetworkDistribution_ID, null);
         else
             setValue(COLUMNNAME_DD_NetworkDistribution_ID, Integer.valueOf(DD_NetworkDistribution_ID));
@@ -258,10 +258,10 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
         return false;
     }
 
-    public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
+    public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
                 MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-                        .getPO(getM_Product_ID());
+                        .getPO(getProductId());
     }
 
     /**
@@ -269,7 +269,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -280,12 +280,12 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
-    public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException {
+    public org.compiere.model.I_M_Warehouse getWarehouse() throws RuntimeException {
         return (org.compiere.model.I_M_Warehouse)
                 MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
                         .getPO(getWarehouseId());
@@ -434,7 +434,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
     public org.compiere.model.I_AD_User getPlanner() throws RuntimeException {
         return (org.compiere.model.I_AD_User)
                 MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
-                        .getPO(getPlanner_ID());
+                        .getPO(getPlannerId());
     }
 
     /**
@@ -442,7 +442,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Planner
      */
-    public int getPlanner_ID() {
+    public int getPlannerId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Planner_ID);
         if (ii == null) return 0;
         return ii;
@@ -453,7 +453,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param Planner_ID Planner
      */
-    public void setPlanner_ID(int Planner_ID) {
+    public void setPlannerId(int Planner_ID) {
         if (Planner_ID < 1) setValue(COLUMNNAME_Planner_ID, null);
         else setValue(COLUMNNAME_Planner_ID, Integer.valueOf(Planner_ID));
     }
@@ -461,7 +461,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
     public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
         return (org.eevolution.model.I_PP_Product_BOM)
                 MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-                        .getPO(getPP_Product_BOM_ID());
+                        .getPO(getPP_Product_BOMId());
     }
 
     /**
@@ -469,7 +469,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return BOM & Formula
      */
-    public int getPP_Product_BOM_ID() {
+    public int getPP_Product_BOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -480,7 +480,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param PP_Product_BOM_ID BOM & Formula
      */
-    public void setPP_Product_BOM_ID(int PP_Product_BOM_ID) {
+    public void setPP_Product_BOMId(int PP_Product_BOM_ID) {
         if (PP_Product_BOM_ID < 1) setValue(COLUMNNAME_PP_Product_BOM_ID, null);
         else setValue(COLUMNNAME_PP_Product_BOM_ID, Integer.valueOf(PP_Product_BOM_ID));
     }
@@ -490,7 +490,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Product Planning
      */
-    public int getPP_Product_Planning_ID() {
+    public int getPP_Product_PlanningId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_Planning_ID);
         if (ii == null) return 0;
         return ii;
@@ -501,7 +501,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param PP_Product_Planning_ID Product Planning
      */
-    public void setPP_Product_Planning_ID(int PP_Product_Planning_ID) {
+    public void setPP_Product_PlanningId(int PP_Product_Planning_ID) {
         if (PP_Product_Planning_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_Planning_ID, null);
         else
             setValueNoCheck(COLUMNNAME_PP_Product_Planning_ID, Integer.valueOf(PP_Product_Planning_ID));
@@ -550,7 +550,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
     public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException {
         return (org.compiere.model.I_S_Resource)
                 MTable.get(getCtx(), org.compiere.model.I_S_Resource.Table_Name)
-                        .getPO(getS_Resource_ID());
+                        .getPO(getResourceID());
     }
 
     /**
@@ -558,7 +558,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Resource
      */
-    public int getS_Resource_ID() {
+    public int getResourceID() {
         Integer ii = (Integer) getValue(COLUMNNAME_S_Resource_ID);
         if (ii == null) return 0;
         return ii;
@@ -569,7 +569,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param S_Resource_ID Resource
      */
-    public void setS_Resource_ID(int S_Resource_ID) {
+    public void setResourceID(int S_Resource_ID) {
         if (S_Resource_ID < 1) setValueNoCheck(COLUMNNAME_S_Resource_ID, null);
         else setValueNoCheck(COLUMNNAME_S_Resource_ID, S_Resource_ID);
     }

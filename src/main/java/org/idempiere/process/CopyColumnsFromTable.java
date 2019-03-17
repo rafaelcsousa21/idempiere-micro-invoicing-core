@@ -44,7 +44,7 @@ public class CopyColumnsFromTable extends SvrProcess {
             else if (name.equals("AD_Table_ID")) p_source_AD_Table_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
-        p_target_AD_Table_ID = getRecord_ID();
+        p_target_AD_Table_ID = getRecordId();
     } //	prepare
 
     /**
@@ -80,7 +80,7 @@ public class CopyColumnsFromTable extends SvrProcess {
             colTarget.setEntityType(targetTable.getEntityType());
             // special case the key -> sourceTable_ID
             if (sourceColumns[i].getColumnName().equals(sourceTable.getDbTableName() + "_ID")) {
-                String targetColumnName = new String(targetTable.getDbTableName() + "_ID");
+                String targetColumnName = targetTable.getDbTableName() + "_ID";
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
                 M_Element element = M_Element.get(getCtx(), targetColumnName);
@@ -101,7 +101,7 @@ public class CopyColumnsFromTable extends SvrProcess {
             }
             // special case the UUID column -> sourceTable_UU
             if (sourceColumns[i].getColumnName().equals(sourceTable.getDbTableName() + "_UU")) {
-                String targetColumnName = new String(targetTable.getDbTableName() + "_UU");
+                String targetColumnName = targetTable.getDbTableName() + "_UU";
                 colTarget.setColumnName(targetColumnName);
                 // if the element doesn't exist, create it
                 M_Element element = M_Element.get(getCtx(), targetColumnName);

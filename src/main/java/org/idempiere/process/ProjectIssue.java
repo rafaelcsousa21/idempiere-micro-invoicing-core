@@ -164,17 +164,17 @@ public class ProjectIssue extends SvrProcess {
         int counter = 0;
         for (int i = 0; i < inOutLines.length; i++) {
             //	Need to have a Product
-            if (inOutLines[i].getM_Product_ID() == 0) continue;
+            if (inOutLines[i].getProductId() == 0) continue;
             //	Need to have Quantity
             if (inOutLines[i].getMovementQty() == null || inOutLines[i].getMovementQty().signum() == 0)
                 continue;
             //	not issued yet
-            if (projectIssueHasReceipt(inOutLines[i].getM_InOutLine_ID())) continue;
+            if (projectIssueHasReceipt(inOutLines[i].getInOutLineId())) continue;
             //	Create Issue
             MProjectIssue pi = new MProjectIssue(m_project);
             pi.setMandatory(
-                    inOutLines[i].getM_Locator_ID(),
-                    inOutLines[i].getM_Product_ID(),
+                    inOutLines[i].getLocatorId(),
+                    inOutLines[i].getProductId(),
                     inOutLines[i].getMovementQty());
             if (m_MovementDate != null) // 	default today
                 pi.setMovementDate(m_MovementDate);
@@ -182,7 +182,7 @@ public class ProjectIssue extends SvrProcess {
             else if (inOutLines[i].getDescription() != null)
                 pi.setDescription(inOutLines[i].getDescription());
             else if (inOut.getDescription() != null) pi.setDescription(inOut.getDescription());
-            pi.setM_InOutLine_ID(inOutLines[i].getM_InOutLine_ID());
+            pi.setInOutLineId(inOutLines[i].getInOutLineId());
             pi.process();
 
             //	Find/Create Project Line
@@ -190,9 +190,9 @@ public class ProjectIssue extends SvrProcess {
             MProjectLine[] pls = m_project.getLines();
             for (int ii = 0; ii < pls.length; ii++) {
                 //	The Order we generated is the same as the Order of the receipt
-                if (pls[ii].getC_OrderPO_ID() == inOut.getOrderId()
-                        && pls[ii].getM_Product_ID() == inOutLines[i].getM_Product_ID()
-                        && pls[ii].getC_ProjectIssue_ID() == 0) // 	not issued
+                if (pls[ii].getOrderPOId() == inOut.getOrderId()
+                        && pls[ii].getProductId() == inOutLines[i].getProductId()
+                        && pls[ii].getProjectIssueId() == 0) // 	not issued
                 {
                     pl = pls[ii];
                     break;
@@ -224,37 +224,37 @@ public class ProjectIssue extends SvrProcess {
         int counter = 0;
         for (int i = 0; i < expenseLines.length; i++) {
             //	Need to have a Product
-            if (expenseLines[i].getM_Product_ID() == 0) continue;
+            if (expenseLines[i].getProductId() == 0) continue;
             //	Need to have Quantity
             if (expenseLines[i].getQty() == null || expenseLines[i].getQty().signum() == 0) continue;
             //	Need to the same project
             if (expenseLines[i].getProjectId() != m_project.getProjectId()) continue;
             //	not issued yet
-            if (projectIssueHasExpense(expenseLines[i].getS_TimeExpenseLine_ID())) continue;
+            if (projectIssueHasExpense(expenseLines[i].getTimeExpenseLineId())) continue;
 
             //	Find Location
             int M_Locator_ID = 0;
-            //	MProduct product = new MProduct (getCtx(), expenseLines[i].getM_Product_ID());
+            //	MProduct product = new MProduct (getCtx(), expenseLines[i].getProductId());
             //	if (product.isStocked())
             M_Locator_ID =
-                    MStorageOnHand.getM_Locator_ID(
+                    MStorageOnHand.getLocatorId(
                             expense.getWarehouseId(),
-                            expenseLines[i].getM_Product_ID(),
+                            expenseLines[i].getProductId(),
                             0, //	no ASI
                             expenseLines[i].getQty(),
                             null);
             if (M_Locator_ID == 0) // 	Service/Expense - get default (and fallback)
-                M_Locator_ID = expense.getM_Locator_ID();
+                M_Locator_ID = expense.getLocatorId();
 
             //	Create Issue
             MProjectIssue pi = new MProjectIssue(m_project);
-            pi.setMandatory(M_Locator_ID, expenseLines[i].getM_Product_ID(), expenseLines[i].getQty());
+            pi.setMandatory(M_Locator_ID, expenseLines[i].getProductId(), expenseLines[i].getQty());
             if (m_MovementDate != null) // 	default today
                 pi.setMovementDate(m_MovementDate);
             if (m_Description != null && m_Description.length() > 0) pi.setDescription(m_Description);
             else if (expenseLines[i].getDescription() != null)
                 pi.setDescription(expenseLines[i].getDescription());
-            pi.setS_TimeExpenseLine_ID(expenseLines[i].getS_TimeExpenseLine_ID());
+            pi.setTimeExpenseLineId(expenseLines[i].getTimeExpenseLineId());
             pi.process();
             //	Find/Create Project Line
             MProjectLine pl = new MProjectLine(m_project);
@@ -275,15 +275,15 @@ public class ProjectIssue extends SvrProcess {
      */
     private String issueProjectLine() {
         MProjectLine pl = new MProjectLine(getCtx(), m_C_ProjectLine_ID);
-        if (pl.getM_Product_ID() == 0) throw new IllegalArgumentException("Projet Line has no Product");
-        if (pl.getC_ProjectIssue_ID() != 0)
+        if (pl.getProductId() == 0) throw new IllegalArgumentException("Projet Line has no Product");
+        if (pl.getProjectIssueId() != 0)
             throw new IllegalArgumentException("Projet Line already been issued");
         if (m_M_Locator_ID == 0) throw new IllegalArgumentException("No Locator");
         //	Set to Qty 1
         if (pl.getPlannedQty() == null || pl.getPlannedQty().signum() == 0) pl.setPlannedQty(Env.ONE);
         //
         MProjectIssue pi = new MProjectIssue(m_project);
-        pi.setMandatory(m_M_Locator_ID, pl.getM_Product_ID(), pl.getPlannedQty());
+        pi.setMandatory(m_M_Locator_ID, pl.getProductId(), pl.getPlannedQty());
         if (m_MovementDate != null) // 	default today
             pi.setMovementDate(m_MovementDate);
         if (m_Description != null && m_Description.length() > 0) pi.setDescription(m_Description);
@@ -332,7 +332,7 @@ public class ProjectIssue extends SvrProcess {
     private boolean projectIssueHasExpense(int S_TimeExpenseLine_ID) {
         if (m_projectIssues == null) m_projectIssues = m_project.getIssues();
         for (int i = 0; i < m_projectIssues.length; i++) {
-            if (m_projectIssues[i].getS_TimeExpenseLine_ID() == S_TimeExpenseLine_ID) return true;
+            if (m_projectIssues[i].getTimeExpenseLineId() == S_TimeExpenseLine_ID) return true;
         }
         return false;
     } //	projectIssueHasExpense
@@ -346,7 +346,7 @@ public class ProjectIssue extends SvrProcess {
     private boolean projectIssueHasReceipt(int M_InOutLine_ID) {
         if (m_projectIssues == null) m_projectIssues = m_project.getIssues();
         for (int i = 0; i < m_projectIssues.length; i++) {
-            if (m_projectIssues[i].getM_InOutLine_ID() == M_InOutLine_ID) return true;
+            if (m_projectIssues[i].getInOutLineId() == M_InOutLine_ID) return true;
         }
         return false;
     } //	projectIssueHasReceipt

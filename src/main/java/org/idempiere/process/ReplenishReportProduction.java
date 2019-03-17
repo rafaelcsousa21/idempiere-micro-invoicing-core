@@ -24,14 +24,10 @@ import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.executeUpdate;
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Replenishment Report
@@ -206,7 +202,7 @@ public class ReplenishReportProduction extends SvrProcess {
 
         //	Just to be sure
         sql =
-                new StringBuilder("DELETE T_Replenish WHERE AD_PInstance_ID=").append(getAD_PInstance_ID());
+                new StringBuilder("DELETE T_Replenish WHERE AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Delete Existing Temp=" + no);
     } //	prepareTable
@@ -221,7 +217,7 @@ public class ReplenishReportProduction extends SvrProcess {
         sql.append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, AD_Client_ID, AD_Org_ID,");
         sql.append(" ReplenishType, Level_Min, Level_Max,");
         sql.append(" C_BPartner_ID, Order_Min, Order_Pack, QtyToOrder, ReplenishmentCreate) ");
-        sql.append("SELECT ").append(getAD_PInstance_ID());
+        sql.append("SELECT ").append(getAD_PInstanceId());
         sql.append(", r.M_Warehouse_ID, r.M_Product_ID, r.AD_Client_ID, r.AD_Org_ID,");
         sql.append(" r.ReplenishType, r.Level_Min, r.Level_Max,");
         sql.append(" po.C_BPartner_ID, po.Order_Min, po.Order_Pack, 0, ");
@@ -247,7 +243,7 @@ public class ReplenishReportProduction extends SvrProcess {
             sql.append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, AD_Client_ID, AD_Org_ID,");
             sql.append(" ReplenishType, Level_Min, Level_Max,");
             sql.append(" C_BPartner_ID, Order_Min, Order_Pack, QtyToOrder, ReplenishmentCreate) ");
-            sql.append("SELECT ").append(getAD_PInstance_ID());
+            sql.append("SELECT ").append(getAD_PInstanceId());
             sql.append(", r.M_Warehouse_ID, r.M_Product_ID, r.AD_Client_ID, r.AD_Org_ID,");
             sql.append(" r.ReplenishType, r.Level_Min, r.Level_Max,");
             sql.append(" 0, 1, 1, 0, ");
@@ -259,7 +255,7 @@ public class ReplenishReportProduction extends SvrProcess {
             sql.append(" AND r.M_Warehouse_ID=").append(p_M_Warehouse_ID);
             sql.append(" AND NOT EXISTS (SELECT * FROM T_Replenish t ");
             sql.append("WHERE r.M_Product_ID=t.M_Product_ID");
-            sql.append(" AND AD_PInstance_ID=").append(getAD_PInstance_ID()).append(")");
+            sql.append(" AND AD_PInstance_ID=").append(getAD_PInstanceId()).append(")");
             if (p_M_Product_Category_ID != 0)
                 sql.append(" AND p.M_Product_Category_ID=").append(p_M_Product_Category_ID);
             if (isKanban != null) sql.append(" AND p.IsKanban = '").append(isKanban).append("' ");
@@ -278,7 +274,7 @@ public class ReplenishReportProduction extends SvrProcess {
                 "QtyOrdered = (SELECT COALESCE(SUM(Qty),0) FROM M_StorageReservation s WHERE t.M_Product_ID=s.M_Product_ID");
         sql.append(" AND t.M_Warehouse_ID=s.M_Warehouse_ID AND s.IsSOTrx='N')");
         if (p_C_DocType_ID != 0) sql.append(", C_DocType_ID=").append(p_C_DocType_ID);
-        sql.append(" WHERE AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" WHERE AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Update #" + no);
 
@@ -293,7 +289,7 @@ public class ReplenishReportProduction extends SvrProcess {
         sql.append(
                 " AND l.M_Locator_ID=p.M_Locator_ID AND l.M_Warehouse_ID=t.M_Warehouse_ID AND MovementQty > 0 AND p.Processed = 'N'),0)");
         if (p_C_DocType_ID != 0) sql.append(", C_DocType_ID=").append(p_C_DocType_ID);
-        sql.append(" WHERE AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" WHERE AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Update #" + no);
 
@@ -304,7 +300,7 @@ public class ReplenishReportProduction extends SvrProcess {
         sql.append(" OR EXISTS (SELECT * FROM M_Replenish rr ");
         sql.append(" WHERE rr.M_Product_ID=r.M_Product_ID AND rr.IsActive='N'");
         sql.append(" AND rr.M_Warehouse_ID=").append(p_M_Warehouse_ID).append(" ))");
-        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Delete Inactive=" + no);
 
@@ -323,7 +319,7 @@ public class ReplenishReportProduction extends SvrProcess {
         sql.append(" THEN Level_Max - QtyOnHand + QtyReserved - QtyOrdered ");
         sql.append(" ELSE 0 END ");
         sql.append("WHERE ReplenishType='1'");
-        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Update Type-1=" + no);
         //
@@ -331,7 +327,7 @@ public class ReplenishReportProduction extends SvrProcess {
         sql = new StringBuilder("UPDATE T_Replenish");
         sql.append(" SET QtyToOrder = Level_Max - QtyOnHand + QtyReserved - QtyOrdered ");
         sql.append("WHERE ReplenishType='2'");
-        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Update Type-2=" + no);
 
@@ -340,7 +336,7 @@ public class ReplenishReportProduction extends SvrProcess {
         sql.append(" SET QtyToOrder = Order_Min ");
         sql.append("WHERE QtyToOrder < Order_Min");
         sql.append(" AND QtyToOrder > 0");
-        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set MinOrderQty=" + no);
 
@@ -349,15 +345,15 @@ public class ReplenishReportProduction extends SvrProcess {
         sql.append(" SET QtyToOrder = QtyToOrder - MOD(QtyToOrder, Order_Pack) + Order_Pack ");
         sql.append("WHERE MOD(QtyToOrder, Order_Pack) <> 0");
         sql.append(" AND QtyToOrder > 0");
-        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set OrderPackQty=" + no);
 
         //	Source from other warehouse
-        if (wh.getM_WarehouseSource_ID() != 0) {
+        if (wh.getWarehouseSourceId() != 0) {
             sql = new StringBuilder("UPDATE T_Replenish");
-            sql.append(" SET M_WarehouseSource_ID=").append(wh.getM_WarehouseSource_ID());
-            sql.append(" WHERE AD_PInstance_ID=").append(getAD_PInstance_ID());
+            sql.append(" SET M_WarehouseSource_ID=").append(wh.getWarehouseSourceId());
+            sql.append(" WHERE AD_PInstance_ID=").append(getAD_PInstanceId());
             no = executeUpdate(sql.toString());
             if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set Source Warehouse=" + no);
         }
@@ -365,7 +361,7 @@ public class ReplenishReportProduction extends SvrProcess {
         sql = new StringBuilder("UPDATE T_Replenish");
         sql.append(" SET M_WarehouseSource_ID = NULL ");
         sql.append("WHERE M_Warehouse_ID=M_WarehouseSource_ID");
-        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Set same Source Warehouse=" + no);
 
@@ -405,7 +401,7 @@ public class ReplenishReportProduction extends SvrProcess {
         //	Delete rows where nothing to order
         sql = new StringBuilder("DELETE T_Replenish ");
         sql.append("WHERE QtyToOrder < 1");
-        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstance_ID());
+        sql.append(" AND AD_PInstance_ID=").append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no != 0) if (log.isLoggable(Level.FINE)) log.fine("Delete No QtyToOrder=" + no);
     } //	fillTable
@@ -452,7 +448,7 @@ public class ReplenishReportProduction extends SvrProcess {
                 info.append(order.getDocumentNo());
             }
             MOrderLine line = new MOrderLine(order);
-            line.setM_Product_ID(replenish.getM_Product_ID());
+            line.setProductId(replenish.getProductId());
             line.setQty(replenish.getQtyToOrder());
             line.setPrice();
             line.saveEx();
@@ -486,12 +482,12 @@ public class ReplenishReportProduction extends SvrProcess {
                 requisition.setWarehouseId(wh.getWarehouseId());
                 if (!requisition.save()) return;
                 addBufferLog(
-                        requisition.getM_Requisition_ID(),
+                        requisition.getRequisitionId(),
                         requisition.getDateDoc(),
                         null,
                         Msg.parseTranslation(getCtx(), "@M_Requisition_ID@ @Created@"),
                         MRequisition.Table_ID,
-                        requisition.getM_Requisition_ID());
+                        requisition.getRequisitionId());
                 if (log.isLoggable(Level.FINE)) log.fine(requisition.toString());
                 noReqs++;
                 info.append(" - ");
@@ -499,7 +495,7 @@ public class ReplenishReportProduction extends SvrProcess {
             }
             //
             MRequisitionLine line = new MRequisitionLine(requisition);
-            line.setM_Product_ID(replenish.getM_Product_ID());
+            line.setProductId(replenish.getProductId());
             line.setBusinessPartnerId(replenish.getBusinessPartnerId());
             line.setQty(replenish.getQtyToOrder());
             line.setPrice();
@@ -527,17 +523,17 @@ public class ReplenishReportProduction extends SvrProcess {
         for (int i = 0; i < replenishs.length; i++) {
             X_T_Replenish replenish = replenishs[i];
             if (whSource == null
-                    || whSource.getM_WarehouseSource_ID() != replenish.getM_WarehouseSource_ID())
-                whSource = MWarehouse.get(getCtx(), replenish.getM_WarehouseSource_ID());
+                    || whSource.getWarehouseSourceId() != replenish.getWarehouseSourceId())
+                whSource = MWarehouse.get(getCtx(), replenish.getWarehouseSourceId());
             if (wh == null || wh.getWarehouseId() != replenish.getWarehouseId())
                 wh = MWarehouse.get(getCtx(), replenish.getWarehouseId());
             if (client == null || client.getClientId() != whSource.getClientId())
                 client = MClient.get(getCtx(), whSource.getClientId());
             //
             if (move == null
-                    || M_WarehouseSource_ID != replenish.getM_WarehouseSource_ID()
+                    || M_WarehouseSource_ID != replenish.getWarehouseSourceId()
                     || M_Warehouse_ID != replenish.getWarehouseId()) {
-                M_WarehouseSource_ID = replenish.getM_WarehouseSource_ID();
+                M_WarehouseSource_ID = replenish.getWarehouseSourceId();
                 M_Warehouse_ID = replenish.getWarehouseId();
 
                 move = new MMovement(getCtx(), 0);
@@ -553,26 +549,26 @@ public class ReplenishReportProduction extends SvrProcess {
                 move.setOrgId(whSource.getOrgId());
                 if (!move.save()) return;
                 addBufferLog(
-                        move.getM_Movement_ID(),
+                        move.getMovementId(),
                         move.getMovementDate(),
                         null,
                         Msg.parseTranslation(getCtx(), "@M_Movement_ID@ @Created@"),
                         MMovement.Table_ID,
-                        move.getM_Movement_ID());
+                        move.getMovementId());
                 if (log.isLoggable(Level.FINE)) log.fine(move.toString());
                 noMoves++;
                 info.append(" - ").append(move.getDocumentNo());
             }
             //	To
-            int M_LocatorTo_ID = wh.getDefaultLocator().getM_Locator_ID();
+            int M_LocatorTo_ID = wh.getDefaultLocator().getLocatorId();
             //	From: Look-up Storage
-            MProduct product = MProduct.get(getCtx(), replenish.getM_Product_ID());
+            MProduct product = MProduct.get(getCtx(), replenish.getProductId());
             String MMPolicy = product.getMMPolicy();
             MStorageOnHand[] storages =
                     MStorageOnHand.getWarehouse(
                             getCtx(),
                             whSource.getWarehouseId(),
-                            replenish.getM_Product_ID(),
+                            replenish.getProductId(),
                             0,
                             null,
                             MClient.MMPOLICY_FiFo.equals(MMPolicy),
@@ -586,24 +582,24 @@ public class ReplenishReportProduction extends SvrProcess {
                 if (storage.getQtyOnHand().signum() <= 0) continue;
 
                 /* IDEMPIERE-2668 - filter just locators enabled for replenishment */
-                MLocator loc = MLocator.get(getCtx(), storage.getM_Locator_ID());
+                MLocator loc = MLocator.get(getCtx(), storage.getLocatorId());
                 MLocatorType lt = null;
-                if (loc.getM_LocatorType_ID() > 0)
-                    lt = MLocatorType.get(getCtx(), loc.getM_LocatorType_ID());
+                if (loc.getLocatorTypeId() > 0)
+                    lt = MLocatorType.get(getCtx(), loc.getLocatorTypeId());
                 if (lt != null && !lt.isAvailableForReplenishment()) continue;
 
                 BigDecimal moveQty = target;
                 if (storage.getQtyOnHand().compareTo(moveQty) < 0) moveQty = storage.getQtyOnHand();
                 //
                 MMovementLine line = new MMovementLine(move);
-                line.setM_Product_ID(replenish.getM_Product_ID());
+                line.setProductId(replenish.getProductId());
                 line.setMovementQty(moveQty);
                 if (replenish.getQtyToOrder().compareTo(moveQty) != 0)
                     line.setDescription("Total: " + replenish.getQtyToOrder());
-                line.setM_Locator_ID(storage.getM_Locator_ID()); // 	from
-                line.setM_AttributeSetInstance_ID(storage.getMAttributeSetInstance_ID());
-                line.setM_LocatorTo_ID(M_LocatorTo_ID); // 	to
-                line.setM_AttributeSetInstanceTo_ID(storage.getMAttributeSetInstance_ID());
+                line.setLocatorId(storage.getLocatorId()); // 	from
+                line.setAttributeSetInstanceId(storage.getAttributeSetInstanceId());
+                line.setLocatorToId(M_LocatorTo_ID); // 	to
+                line.setAttributeSetInstanceToId(storage.getAttributeSetInstanceId());
                 line.saveEx();
                 //
                 target = target.subtract(moveQty);
@@ -635,17 +631,17 @@ public class ReplenishReportProduction extends SvrProcess {
         X_T_Replenish[] replenishs = getReplenish("M_WarehouseSource_ID IS NOT NULL");
         for (X_T_Replenish replenish : replenishs) {
             if (whSource == null
-                    || whSource.getM_WarehouseSource_ID() != replenish.getM_WarehouseSource_ID())
-                whSource = MWarehouse.get(getCtx(), replenish.getM_WarehouseSource_ID());
+                    || whSource.getWarehouseSourceId() != replenish.getWarehouseSourceId())
+                whSource = MWarehouse.get(getCtx(), replenish.getWarehouseSourceId());
             if (wh == null || wh.getWarehouseId() != replenish.getWarehouseId())
                 wh = MWarehouse.get(getCtx(), replenish.getWarehouseId());
             if (client == null || client.getClientId() != whSource.getClientId())
                 client = MClient.get(getCtx(), whSource.getClientId());
             //
             if (order == null
-                    || M_WarehouseSource_ID != replenish.getM_WarehouseSource_ID()
+                    || M_WarehouseSource_ID != replenish.getWarehouseSourceId()
                     || M_Warehouse_ID != replenish.getWarehouseId()) {
-                M_WarehouseSource_ID = replenish.getM_WarehouseSource_ID();
+                M_WarehouseSource_ID = replenish.getWarehouseSourceId();
                 M_Warehouse_ID = replenish.getWarehouseId();
 
                 order = new MDDOrder(getCtx(), 0);
@@ -662,7 +658,7 @@ public class ReplenishReportProduction extends SvrProcess {
                 // Set Org Trx
                 MOrg orgTrx = MOrg.get(getCtx(), wh.getOrgId());
                 order.setTransactionOrganizationId(orgTrx.getOrgId());
-                int C_BPartner_ID = orgTrx.getLinkedC_BPartner_ID(null);
+                int C_BPartner_ID = orgTrx.getLinkedC_BPartnerId(null);
                 if (C_BPartner_ID == 0)
                     throw new AdempiereUserError(
                             Msg.translate(getCtx(), "C_BPartner_ID") + " @FillMandatory@ ");
@@ -692,32 +688,32 @@ public class ReplenishReportProduction extends SvrProcess {
 
                 if (!order.save()) return;
                 addBufferLog(
-                        order.getDD_Order_ID(),
+                        order.getDD_OrderId(),
                         order.getDateOrdered(),
                         null,
                         Msg.parseTranslation(getCtx(), "@DD_Order_ID@ @Created@"),
                         MDDOrder.Table_ID,
-                        order.getDD_Order_ID());
+                        order.getDD_OrderId());
                 if (log.isLoggable(Level.FINE)) log.fine(order.toString());
                 noMoves++;
                 info.append(" - ").append(order.getDocumentNo());
             }
 
             //	To
-            int M_LocatorTo_ID = wh.getDefaultLocator().getM_Locator_ID();
-            int M_Locator_ID = whSource.getDefaultLocator().getM_Locator_ID();
+            int M_LocatorTo_ID = wh.getDefaultLocator().getLocatorId();
+            int M_Locator_ID = whSource.getDefaultLocator().getLocatorId();
             if (M_LocatorTo_ID == 0 || M_Locator_ID == 0)
                 throw new AdempiereUserError(Msg.translate(getCtx(), "M_Locator_ID") + " @FillMandatory@ ");
 
             //	From: Look-up Storage
-      /*MProduct product = MProduct.get(getCtx(), replenish.getM_Product_ID());
-      MProductCategory pc = MProductCategory.get(getCtx(), product.getM_Product_Category_ID());
+      /*MProduct product = MProduct.get(getCtx(), replenish.getProductId());
+      MProductCategory pc = MProductCategory.get(getCtx(), product.getProductCategoryId());
       String MMPolicy = pc.getMMPolicy();
       if (MMPolicy == null || MMPolicy.length() == 0)
       	MMPolicy = client.getMMPolicy();
       //
       MStorage[] storages = MStorage.getWarehouse(getCtx(),
-      	whSource.getWarehouseId(), replenish.getM_Product_ID(), 0, 0,
+      	whSource.getWarehouseId(), replenish.getProductId(), 0, 0,
       	true, null,
       	MClient.MMPOLICY_FiFo.equals(MMPolicy), null);
 
@@ -733,14 +729,14 @@ public class ReplenishReportProduction extends SvrProcess {
       		moveQty = storage.getQtyOnHand();
       	//
       	MDDOrderLine line = new MDDOrderLine(order);
-      	line.setM_Product_ID(replenish.getM_Product_ID());
+      	line.setProductId(replenish.getProductId());
       	line.setQtyEntered(moveQty);
       	if (replenish.getQtyToOrder().compareTo(moveQty) != 0)
       		line.setDescription("Total: " + replenish.getQtyToOrder());
-      	line.setM_Locator_ID(storage.getM_Locator_ID());		//	from
-      	line.setM_AttributeSetInstance_ID(storage.getMAttributeSetInstance_ID());
-      	line.setM_LocatorTo_ID(M_LocatorTo_ID);					//	to
-      	line.setM_AttributeSetInstanceTo_ID(storage.getMAttributeSetInstance_ID());
+      	line.setLocatorId(storage.getLocatorId());		//	from
+      	line.setAttributeSetInstanceId(storage.getAttributeSetInstanceId());
+      	line.setLocatorToId(M_LocatorTo_ID);					//	to
+      	line.setAttributeSetInstanceToId(storage.getAttributeSetInstanceId());
       	line.setIsInvoiced(false);
       	line.saveEx();
       	//
@@ -750,14 +746,14 @@ public class ReplenishReportProduction extends SvrProcess {
       }*/
 
             MDDOrderLine line = new MDDOrderLine(order);
-            line.setM_Product_ID(replenish.getM_Product_ID());
+            line.setProductId(replenish.getProductId());
             line.setQty(replenish.getQtyToOrder());
             if (replenish.getQtyToOrder().compareTo(replenish.getQtyToOrder()) != 0)
                 line.setDescription("Total: " + replenish.getQtyToOrder());
-            line.setM_Locator_ID(M_Locator_ID); // 	from
-            line.setM_AttributeSetInstance_ID(0);
-            line.setM_LocatorTo_ID(M_LocatorTo_ID); // 	to
-            line.setM_AttributeSetInstanceTo_ID(0);
+            line.setLocatorId(M_Locator_ID); // 	from
+            line.setAttributeSetInstanceId(0);
+            line.setLocatorToId(M_LocatorTo_ID); // 	to
+            line.setAttributeSetInstanceToId(0);
             line.setIsInvoiced(false);
             line.saveEx();
         }
@@ -792,7 +788,7 @@ public class ReplenishReportProduction extends SvrProcess {
             BigDecimal batchQty = null;
 
             for (MReplenish rep :
-                    MReplenish.getForProduct(getCtx(), replenish.getM_Product_ID())) {
+                    MReplenish.getForProduct(getCtx(), replenish.getProductId())) {
                 if (rep.getWarehouseId() == replenish.getWarehouseId())
                     batchQty = rep.getQtyBatchSize();
             }
@@ -813,8 +809,8 @@ public class ReplenishReportProduction extends SvrProcess {
                 production.setDescription(Msg.getMsg(getCtx(), "Replenishment"));
                 //	Set Org/WH
                 production.setOrgId(wh.getOrgId());
-                production.setM_Locator_ID(wh.getDefaultLocator().getId());
-                production.setM_Product_ID(replenish.getM_Product_ID());
+                production.setLocatorId(wh.getDefaultLocator().getId());
+                production.setProductId(replenish.getProductId());
                 production.setProductionQty(qty);
                 production.setMovementDate(Env.getContextAsDate(getCtx(), "#Date"));
                 production.saveEx();
@@ -824,12 +820,12 @@ public class ReplenishReportProduction extends SvrProcess {
                 production.setIsCreated("Y");
                 production.saveEx();
                 addBufferLog(
-                        production.getM_Production_ID(),
+                        production.getProductionId(),
                         production.getMovementDate(),
                         null,
                         Msg.parseTranslation(getCtx(), "@M_Production_ID@ @Created@"),
                         MProduction.Table_ID,
-                        production.getM_Production_ID());
+                        production.getProductionId());
                 if (log.isLoggable(Level.FINE)) log.fine(production.toString());
                 noProds++;
                 info.append(" - ");
@@ -846,6 +842,6 @@ public class ReplenishReportProduction extends SvrProcess {
      * @return replenish
      */
     private X_T_Replenish[] getReplenish(String where) {
-        return BaseReplenishReportProductionKt.getReplenish(getCtx(), where, getAD_PInstance_ID());
+        return BaseReplenishReportProductionKt.getReplenish(getCtx(), where, getAD_PInstanceId());
     } //	getReplenish
 } //	Replenish

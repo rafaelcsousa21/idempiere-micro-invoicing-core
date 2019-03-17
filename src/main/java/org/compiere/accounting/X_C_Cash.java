@@ -110,7 +110,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      *
      * @return Cash Book for recording petty cash transactions
      */
-    public int getC_CashBook_ID() {
+    public int getCashBookId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_CashBook_ID);
         if (ii == null) return 0;
         return ii;
@@ -121,7 +121,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      *
      * @param C_CashBook_ID Cash Book for recording petty cash transactions
      */
-    public void setC_CashBook_ID(int C_CashBook_ID) {
+    public void setCashBookId(int C_CashBook_ID) {
         if (C_CashBook_ID < 1) setValueNoCheck(COLUMNNAME_C_CashBook_ID, null);
         else setValueNoCheck(COLUMNNAME_C_CashBook_ID, Integer.valueOf(C_CashBook_ID));
     }
@@ -131,7 +131,7 @@ public class X_C_Cash extends BasePOName implements I_C_Cash {
      *
      * @return Cash Journal
      */
-    public int getC_Cash_ID() {
+    public int getCashId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Cash_ID);
         if (ii == null) return 0;
         return ii;

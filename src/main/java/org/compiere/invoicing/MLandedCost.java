@@ -32,8 +32,8 @@ public class MLandedCost extends X_C_LandedCost {
     public MLandedCost(Properties ctx, int C_LandedCost_ID) {
         super(ctx, C_LandedCost_ID);
         if (C_LandedCost_ID == 0) {
-            //	setC_InvoiceLine_ID (0);
-            //	setM_CostElement_ID (0);
+            //	setInvoiceLineId (0);
+            //	setCostElementId (0);
             setLandedCostDistribution(X_C_LandedCost.LANDEDCOSTDISTRIBUTION_Quantity); // Q
         }
     } //	MLandedCost
@@ -65,7 +65,7 @@ public class MLandedCost extends X_C_LandedCost {
      */
     protected boolean beforeSave(boolean newRecord) {
         //	One Reference
-        if (getM_Product_ID() == 0 && getM_InOut_ID() == 0 && getM_InOutLine_ID() == 0) {
+        if (getProductId() == 0 && getInOutId() == 0 && getInOutLineId() == 0) {
             log.saveError(
                     "Error",
                     Msg.parseTranslation(
@@ -73,7 +73,7 @@ public class MLandedCost extends X_C_LandedCost {
             return false;
         }
         //	No Product if Line entered
-        if (getM_InOutLine_ID() != 0 && getM_Product_ID() != 0) setM_Product_ID(0);
+        if (getInOutLineId() != 0 && getProductId() != 0) setProductId(0);
 
         return true;
     } //	beforeSave
@@ -84,7 +84,7 @@ public class MLandedCost extends X_C_LandedCost {
      * @return error message or ""
      */
     public String allocateCosts() {
-        MInvoiceLine il = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID());
+        MInvoiceLine il = new MInvoiceLine(getCtx(), getInvoiceLineId());
         return il.allocateLandedCosts();
     } //	allocateCosts
 
@@ -99,10 +99,10 @@ public class MLandedCost extends X_C_LandedCost {
                 .append(",CostDistribution=")
                 .append(getLandedCostDistribution())
                 .append(",M_CostElement_ID=")
-                .append(getM_CostElement_ID());
-        if (getM_InOut_ID() != 0) sb.append(",M_InOut_ID=").append(getM_InOut_ID());
-        if (getM_InOutLine_ID() != 0) sb.append(",M_InOutLine_ID=").append(getM_InOutLine_ID());
-        if (getM_Product_ID() != 0) sb.append(",M_Product_ID=").append(getM_Product_ID());
+                .append(getCostElementId());
+        if (getInOutId() != 0) sb.append(",M_InOut_ID=").append(getInOutId());
+        if (getInOutLineId() != 0) sb.append(",M_InOutLine_ID=").append(getInOutLineId());
+        if (getProductId() != 0) sb.append(",M_Product_ID=").append(getProductId());
         sb.append("]");
         return sb.toString();
     } //	toString

@@ -155,7 +155,7 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
                 for (int j = 0; j < urs.length; j++) {
                     MUserRoles ur = urs[j];
                     if (!ur.isActive()) continue;
-                    if (!list.contains(ur.getUserId())) list.add(ur.getUserId());
+                    list.add(ur.getUserId());
                 }
             }
         }
@@ -200,14 +200,14 @@ public class MScheduler extends X_AD_Scheduler implements AdempiereProcessor, Ad
             }
             // Validate the record must exists on the same client of the scheduler
             MTable table = MTable.get(getCtx(), getDBTableId());
-            IPO po = (IPO) table.getPO(getRecordId());
+            IPO po = table.getPO(getRecordId());
             if (po == null || po.getId() <= 0 || po.getClientId() != getClientId()) {
                 log.saveError("Error", Msg.getMsg(getCtx(), "NoRecordID"));
                 return false;
             }
         }
 
-        if (newRecord || is_ValueChanged("AD_Schedule_ID")) {
+        if (newRecord || isValueChanged("AD_Schedule_ID")) {
             long nextWork =
                     MSchedule.getNextRunMS(
                             System.currentTimeMillis(),

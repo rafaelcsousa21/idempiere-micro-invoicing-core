@@ -42,7 +42,7 @@ public class CopyFromBankStmt extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        int To_C_BankStatement_ID = getRecord_ID();
+        int To_C_BankStatement_ID = getRecordId();
         if (log.isLoggable(Level.INFO))
             log.info("From C_BankStatement_ID=" + m_C_BankStatement_ID + " to " + To_C_BankStatement_ID);
         if (To_C_BankStatement_ID == 0)

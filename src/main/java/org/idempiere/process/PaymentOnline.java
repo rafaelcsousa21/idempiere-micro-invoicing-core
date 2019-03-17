@@ -34,9 +34,9 @@ public class PaymentOnline extends SvrProcess {
      * @throws Exception
      */
     protected String doIt() throws Exception {
-        if (log.isLoggable(Level.INFO)) log.info("Record_ID=" + getRecord_ID());
+        if (log.isLoggable(Level.INFO)) log.info("Record_ID=" + getRecordId());
         //	get Payment
-        MPayment pp = new MPayment(getCtx(), getRecord_ID());
+        MPayment pp = new MPayment(getCtx(), getRecordId());
 
         //  Process it
         boolean ok = pp.processOnline();

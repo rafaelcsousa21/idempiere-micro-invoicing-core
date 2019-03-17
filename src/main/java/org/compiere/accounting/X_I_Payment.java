@@ -57,7 +57,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return City or the Credit Card or Account Holder
      */
-    public String getA_City() {
+    public String getAccountCity() {
         return (String) getValue(COLUMNNAME_A_City);
     }
 
@@ -66,7 +66,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Country
      */
-    public String getA_Country() {
+    public String getAccountCountry() {
         return (String) getValue(COLUMNNAME_A_Country);
     }
 
@@ -75,7 +75,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Email Address
      */
-    public String getA_EMail() {
+    public String getAccountEMail() {
         return (String) getValue(COLUMNNAME_A_EMail);
     }
 
@@ -84,7 +84,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Payment Identification - Driver License
      */
-    public String getA_Ident_DL() {
+    public String getPaymentIdentificationDriverLicence() {
         return (String) getValue(COLUMNNAME_A_Ident_DL);
     }
 
@@ -93,7 +93,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Payment Identification - Social Security No
      */
-    public String getA_Ident_SSN() {
+    public String getSocialSecurityNoPaymentIdentification() {
         return (String) getValue(COLUMNNAME_A_Ident_SSN);
     }
 
@@ -102,7 +102,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Name on Credit Card or Account holder
      */
-    public String getA_Name() {
+    public String getAccountName() {
         return (String) getValue(COLUMNNAME_A_Name);
     }
 
@@ -111,7 +111,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return State of the Credit Card or Account holder
      */
-    public String getA_State() {
+    public String getAccountState() {
         return (String) getValue(COLUMNNAME_A_State);
     }
 
@@ -120,7 +120,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Street address of the Credit Card or Account holder
      */
-    public String getA_Street() {
+    public String getAccountStreet() {
         return (String) getValue(COLUMNNAME_A_Street);
     }
 
@@ -129,7 +129,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Zip Code of the Credit Card or Account Holder
      */
-    public String getA_Zip() {
+    public String getAccountZip() {
         return (String) getValue(COLUMNNAME_A_Zip);
     }
 
@@ -138,7 +138,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Account at the Bank
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -321,7 +321,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @param I_IsImported Has this import been processed
      */
-    public void setI_IsImported(boolean I_IsImported) {
+    public void setIsImported(boolean I_IsImported) {
         setValue(COLUMNNAME_I_IsImported, Boolean.valueOf(I_IsImported));
     }
 
@@ -339,7 +339,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Original Transaction ID
      */
-    public String getOrig_TrxID() {
+    public String getOriginalTransactionId() {
         return (String) getValue(COLUMNNAME_Orig_TrxID);
     }
 
@@ -377,7 +377,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Authorization Code returned
      */
-    public String getR_AuthCode() {
+    public String getAuthorizationCode() {
         return (String) getValue(COLUMNNAME_R_AuthCode);
     }
 
@@ -386,7 +386,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Response info
      */
-    public String getR_Info() {
+    public String getResponseInfo() {
         return (String) getValue(COLUMNNAME_R_Info);
     }
 
@@ -404,7 +404,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Payment reference
      */
-    public String getR_PnRef() {
+    public String getPaymentReference() {
         return (String) getValue(COLUMNNAME_R_PnRef);
     }
 
@@ -413,7 +413,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Response message
      */
-    public String getR_RespMsg() {
+    public String getResponseMessage() {
         return (String) getValue(COLUMNNAME_R_RespMsg);
     }
 
@@ -422,7 +422,7 @@ public class X_I_Payment extends PO implements I_I_Payment {
      *
      * @return Result of transmission
      */
-    public String getR_Result() {
+    public String getTransmissionResult() {
         return (String) getValue(COLUMNNAME_R_Result);
     }
 

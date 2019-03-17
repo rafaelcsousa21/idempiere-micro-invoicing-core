@@ -29,7 +29,7 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA {
     public X_M_InOutLineMA(Properties ctx, int M_InOutLineMA_ID) {
         super(ctx, M_InOutLineMA_ID);
         /**
-         * if (M_InOutLineMA_ID == 0) { setM_AttributeSetInstance_ID (0); setM_InOutLine_ID (0);
+         * if (M_InOutLineMA_ID == 0) { setAttributeSetInstanceId (0); setInOutLineId (0);
          * setMovementQty (Env.ZERO); // 1 }
          */
     }
@@ -83,32 +83,32 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA {
     }
 
     /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getAttributeSetInstanceId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
      * Set Attribute Set Instance.
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
                     COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
-    /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    public org.compiere.model.I_M_InOutLine getM_InOutLine() throws RuntimeException {
+    public org.compiere.model.I_M_InOutLine getInOutLine() throws RuntimeException {
         return (org.compiere.model.I_M_InOutLine)
                 MTable.get(getCtx(), org.compiere.model.I_M_InOutLine.Table_Name)
-                        .getPO(getM_InOutLine_ID());
+                        .getPO(getInOutLineId());
     }
 
     /**
@@ -116,7 +116,7 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA {
      *
      * @return Line on Shipment or Receipt document
      */
-    public int getM_InOutLine_ID() {
+    public int getInOutLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -127,7 +127,7 @@ public class X_M_InOutLineMA extends PO implements I_M_InOutLineMA {
      *
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
-    public void setM_InOutLine_ID(int M_InOutLine_ID) {
+    public void setInOutLineId(int M_InOutLine_ID) {
         if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
         else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, M_InOutLine_ID);
     }

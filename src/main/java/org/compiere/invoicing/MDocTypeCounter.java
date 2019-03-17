@@ -6,12 +6,8 @@ import org.compiere.orm.MDocType;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Properties;
 import java.util.logging.Level;
-
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 
 /**
@@ -66,12 +62,12 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      * @param C_DocType_ID base document
      * @return counter document C_DocType_ID or 0 or -1 if no counter doc
      */
-    public static int getCounterDocType_ID(Properties ctx, int C_DocType_ID) {
+    public static int getCounterDocTypeId(Properties ctx, int C_DocType_ID) {
         //	Direct Relationship
         MDocTypeCounter dtCounter = getCounterDocType(ctx, C_DocType_ID);
         if (dtCounter != null) {
             if (!dtCounter.isCreateCounter() || !dtCounter.isValid()) return -1;
-            return dtCounter.getCounter_C_DocType_ID();
+            return dtCounter.getCounterDocTypeId();
         }
 
         //	Indirect Relationship
@@ -163,10 +159,10 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      *
      * @param Counter_C_DocType_ID id
      */
-    public void setCounter_C_DocType_ID(int Counter_C_DocType_ID) {
-        super.setCounter_C_DocType_ID(Counter_C_DocType_ID);
+    public void setCounterDocTypeId(int Counter_C_DocType_ID) {
+        super.setCounterDocTypeId(Counter_C_DocType_ID);
         if (isValid()) setIsValid(false);
-    } //	setCounter_C_DocType_ID
+    } //	setCounterDocTypeId
 
     /**
      * Get Doc Type
@@ -189,8 +185,8 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
      */
     public MDocType getCounterDocType() {
         MDocType dt = null;
-        if (getCounter_C_DocType_ID() > 0) {
-            dt = MDocType.get(getCtx(), getCounter_C_DocType_ID());
+        if (getCounterDocTypeId() > 0) {
+            dt = MDocType.get(getCtx(), getCounterDocTypeId());
             if (dt.getId() == 0) dt = null;
         }
         return dt;
@@ -211,7 +207,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
         }
         MDocType c_dt = getCounterDocType();
         if (c_dt == null) {
-            log.log(Level.SEVERE, "No Counter DocType=" + getCounter_C_DocType_ID());
+            log.log(Level.SEVERE, "No Counter DocType=" + getCounterDocTypeId());
             setIsValid(false);
             return "No Counter Document Type";
         }
@@ -269,7 +265,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
                 .append(",C_DocType_ID=")
                 .append(getDocumentTypeId())
                 .append(",Counter=")
-                .append(getCounter_C_DocType_ID())
+                .append(getCounterDocTypeId())
                 .append(",DocAction=")
                 .append(getDocAction())
                 .append("]");
@@ -285,7 +281,7 @@ public class MDocTypeCounter extends X_C_DocTypeCounter {
     protected boolean beforeSave(boolean newRecord) {
         if (getOrgId() != 0) setOrgId(0);
 
-        if (!newRecord && (is_ValueChanged("C_DocType_ID") || is_ValueChanged("Counter_C_DocType_ID")))
+        if (!newRecord && (isValueChanged("C_DocType_ID") || isValueChanged("Counter_C_DocType_ID")))
             setIsValid(false);
 
         //	try to validate

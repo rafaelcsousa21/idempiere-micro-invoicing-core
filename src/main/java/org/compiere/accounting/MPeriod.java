@@ -58,7 +58,7 @@ public class MPeriod extends X_C_Period {
         super(ctx, C_Period_ID);
         if (C_Period_ID == 0) {
             //	setPeriodId (0);		//	PK
-            //  setC_Year_ID (0);		//	Parent
+            //  setYearId (0);		//	Parent
             //  setName (null);
             //  setPeriodNo (0);
             //  setStartDate (new Timestamp(System.currentTimeMillis()));
@@ -82,7 +82,7 @@ public class MPeriod extends X_C_Period {
     public MPeriod(MYear year, int PeriodNo, String name, Timestamp startDate, Timestamp endDate) {
         this(year.getCtx(), 0);
         setClientOrg(year);
-        setC_Year_ID(year.getC_Year_ID());
+        setYearId(year.getYearId());
         setPeriodNo(PeriodNo);
         setName(name);
         setStartDate(startDate);
@@ -101,7 +101,7 @@ public class MPeriod extends X_C_Period {
         //
         Integer key = new Integer(C_Period_ID);
         CCache<Integer, MPeriod> s_cache = MBasePeriodKt.getPeriodCache();
-        MPeriod retValue = (MPeriod) s_cache.get(key);
+        MPeriod retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         //
         retValue = new MPeriod(ctx, C_Period_ID);
@@ -133,7 +133,7 @@ public class MPeriod extends X_C_Period {
 
         if (DateAcct == null) return null;
 
-        int C_Calendar_ID = getC_Calendar_ID(ctx, AD_Org_ID);
+        int C_Calendar_ID = getCalendarId(ctx, AD_Org_ID);
 
         return findByCalendar(ctx, DateAcct, C_Calendar_ID);
     } //	get
@@ -157,11 +157,11 @@ public class MPeriod extends X_C_Period {
      * @return C_Period_ID or 0
      * @deprecated
      */
-    public static int getC_Period_ID(Properties ctx, Timestamp DateAcct) {
+    public static int getPeriodId(Properties ctx, Timestamp DateAcct) {
         MPeriod period = get(ctx, DateAcct);
         if (period == null) return 0;
-        return period.getC_Period_ID();
-    } //	getC_Period_ID
+        return period.getPeriodId();
+    } //	getPeriodId
 
     /**
      * Find valid standard Period of DateAcct based on Client Calendar
@@ -171,11 +171,11 @@ public class MPeriod extends X_C_Period {
      * @param AD_Org_ID Organization
      * @return C_Period_ID or 0
      */
-    public static int getC_Period_ID(Properties ctx, Timestamp DateAcct, int AD_Org_ID) {
+    public static int getPeriodId(Properties ctx, Timestamp DateAcct, int AD_Org_ID) {
         MPeriod period = get(ctx, DateAcct, AD_Org_ID);
         if (period == null) return 0;
-        return period.getC_Period_ID();
-    } //	getC_Period_ID
+        return period.getPeriodId();
+    } //	getPeriodId
 
     /**
      * Is standard Period Open for Document Base Type
@@ -319,7 +319,7 @@ public class MPeriod extends X_C_Period {
      * @param AD_Org_ID Organization
      * @return
      */
-    public static int getC_Calendar_ID(Properties ctx, int AD_Org_ID) {
+    public static int getCalendarId(Properties ctx, int AD_Org_ID) {
         int C_Calendar_ID = 0;
         if (AD_Org_ID != 0) {
             MOrgInfo info = MOrgInfo.get(ctx, AD_Org_ID);
@@ -342,7 +342,7 @@ public class MPeriod extends X_C_Period {
      */
     public MPeriodControl[] getPeriodControls(boolean requery) {
         if (m_controls != null && !requery) return m_controls;
-        m_controls = MBasePeriodKt.getPeriodControls(getCtx(), getC_Period_ID());
+        m_controls = MBasePeriodKt.getPeriodControls(getCtx(), getPeriodId());
         return m_controls;
     } //	getPeriodControls
 
@@ -374,8 +374,7 @@ public class MPeriod extends X_C_Period {
         Timestamp from = TimeUtil.getDay(getStartDate());
         if (dateOnly.before(from)) return false;
         Timestamp to = TimeUtil.getDay(getEndDate());
-        if (dateOnly.after(to)) return false;
-        return true;
+        return !dateOnly.after(to);
     } //	isInPeriod
 
     /**
@@ -431,7 +430,7 @@ public class MPeriod extends X_C_Period {
             }
             //	We are OK
             if (isInPeriod(today)) {
-                as.setPeriodId(getC_Period_ID());
+                as.setPeriodId(getPeriodId());
                 as.saveEx();
             }
             return true;
@@ -482,7 +481,7 @@ public class MPeriod extends X_C_Period {
             return false;
         }
 
-        MYear year = new MYear(getCtx(), getC_Year_ID());
+        MYear year = new MYear(getCtx(), getYearId());
 
         Query query =
                 MTable.get(getCtx(), "C_Period")
@@ -492,12 +491,12 @@ public class MPeriod extends X_C_Period {
                                         + " AND (? BETWEEN StartDate AND EndDate"
                                         + " OR ? BETWEEN StartDate AND EndDate)"
                                         + " AND PeriodType=?");
-        query.setParameters(year.getC_Calendar_ID(), getStartDate(), getEndDate(), getPeriodType());
+        query.setParameters(year.getCalendarId(), getStartDate(), getEndDate(), getPeriodType());
 
         List<MPeriod> periods = query.list();
 
         for (int i = 0; i < periods.size(); i++) {
-            if (periods.get(i).getC_Period_ID() != getC_Period_ID()) {
+            if (periods.get(i).getPeriodId() != getPeriodId()) {
                 log.saveError("Error", "Period overlaps with: " + periods.get(i).getName());
                 return false;
             }
@@ -557,11 +556,11 @@ public class MPeriod extends X_C_Period {
      *
      * @return calendar
      */
-    public int getC_Calendar_ID() {
+    public int getCalendarId() {
         if (m_C_Calendar_ID == 0) {
-            MYear year = (MYear) getC_Year();
-            if (year != null) m_C_Calendar_ID = year.getC_Calendar_ID();
-            else log.severe("@NotFound@ C_Year_ID=" + getC_Year_ID());
+            MYear year = (MYear) getYear();
+            if (year != null) m_C_Calendar_ID = year.getCalendarId();
+            else log.severe("@NotFound@ C_Year_ID=" + getYearId());
         }
         return m_C_Calendar_ID;
     } //  getCalendarId

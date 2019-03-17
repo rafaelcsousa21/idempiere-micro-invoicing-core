@@ -80,7 +80,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Rules for accounting
      */
-    public int getC_AcctSchema_ID() {
+    public int getAccountingSchemaId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
@@ -91,7 +91,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @param C_AcctSchema_ID Rules for accounting
      */
-    public void setC_AcctSchema_ID(int C_AcctSchema_ID) {
+    public void setAccountingSchemaId(int C_AcctSchema_ID) {
         if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
         else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
     }
@@ -101,7 +101,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Invoice Detail Line
      */
-    public int getC_InvoiceLine_ID() {
+    public int getInvoiceLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -112,7 +112,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -122,7 +122,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Sales Order Line
      */
-    public int getC_OrderLine_ID() {
+    public int getOrderLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_OrderLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -133,7 +133,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Project Issues (Material, Labor)
      */
-    public int getC_ProjectIssue_ID() {
+    public int getProjectIssueId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_ProjectIssue_ID);
         if (ii == null) return 0;
         return ii;
@@ -248,11 +248,22 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
     }
 
     /**
+     * Get Attribute Set Instance.
+     *
+     * @return Product Attribute Set Instance
+     */
+    public int getAttributeSetInstanceId() {
+        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
+        if (ii == null) return 0;
+        return ii;
+    }
+
+    /**
      * Set Attribute Set Instance.
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
@@ -260,22 +271,11 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
     }
 
     /**
-     * Get Attribute Set Instance.
-     *
-     * @return Product Attribute Set Instance
-     */
-    public int getMAttributeSetInstance_ID() {
-        Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
-        if (ii == null) return 0;
-        return ii;
-    }
-
-    /**
      * Get Cost Detail.
      *
      * @return Cost Detail Information
      */
-    public int getM_CostDetail_ID() {
+    public int getCostDetailId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_CostDetail_ID);
         if (ii == null) return 0;
         return ii;
@@ -286,7 +286,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Product Cost Element
      */
-    public int getM_CostElement_ID() {
+    public int getCostElementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_CostElement_ID);
         if (ii == null) return 0;
         return ii;
@@ -297,7 +297,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @param M_CostElement_ID Product Cost Element
      */
-    public void setM_CostElement_ID(int M_CostElement_ID) {
+    public void setCostElementId(int M_CostElement_ID) {
         if (M_CostElement_ID < 1) setValueNoCheck(COLUMNNAME_M_CostElement_ID, null);
         else setValueNoCheck(COLUMNNAME_M_CostElement_ID, Integer.valueOf(M_CostElement_ID));
     }
@@ -307,7 +307,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Line on Shipment or Receipt document
      */
-    public int getM_InOutLine_ID() {
+    public int getInOutLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InOutLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -318,15 +318,15 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @param M_InOutLine_ID Line on Shipment or Receipt document
      */
-    public void setM_InOutLine_ID(int M_InOutLine_ID) {
+    public void setInOutLineId(int M_InOutLine_ID) {
         if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
         else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
     }
 
-    public org.compiere.model.I_M_InventoryLine getM_InventoryLine() throws RuntimeException {
+    public org.compiere.model.I_M_InventoryLine getInventoryLine() throws RuntimeException {
         return (org.compiere.model.I_M_InventoryLine)
                 MTable.get(getCtx(), org.compiere.model.I_M_InventoryLine.Table_Name)
-                        .getPO(getM_InventoryLine_ID());
+                        .getPO(getInventoryLineId());
     }
 
     /**
@@ -334,7 +334,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Unique line in an Inventory document
      */
-    public int getM_InventoryLine_ID() {
+    public int getInventoryLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InventoryLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -345,7 +345,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @param M_InventoryLine_ID Unique line in an Inventory document
      */
-    public void setM_InventoryLine_ID(int M_InventoryLine_ID) {
+    public void setInventoryLineId(int M_InventoryLine_ID) {
         if (M_InventoryLine_ID < 1) setValue(COLUMNNAME_M_InventoryLine_ID, null);
         else setValue(COLUMNNAME_M_InventoryLine_ID, M_InventoryLine_ID);
     }
@@ -355,7 +355,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Match Shipment/Receipt to Invoice
      */
-    public int getM_MatchInv_ID() {
+    public int getMatchInvoiceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_MatchInv_ID);
         if (ii == null) return 0;
         return ii;
@@ -366,7 +366,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Inventory Move document Line
      */
-    public int getM_MovementLine_ID() {
+    public int getMovementLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_MovementLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -377,7 +377,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -388,7 +388,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
@@ -398,7 +398,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Document Line representing a production
      */
-    public int getM_ProductionLine_ID() {
+    public int getProductionLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ProductionLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -409,7 +409,7 @@ public class X_M_CostDetail extends PO implements I_M_CostDetail {
      *
      * @return Manufacturing Cost Collector
      */
-    public int getPP_Cost_Collector_ID() {
+    public int getManufacturingCostCollectorId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Cost_Collector_ID);
         if (ii == null) return 0;
         return ii;

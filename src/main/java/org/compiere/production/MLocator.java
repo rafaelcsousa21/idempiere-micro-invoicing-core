@@ -44,7 +44,7 @@ public class MLocator extends X_M_Locator {
     public MLocator(Properties ctx, int M_Locator_ID) {
         super(ctx, M_Locator_ID);
         if (M_Locator_ID == 0) {
-            //	setM_Locator_ID (0);		//	PK
+            //	setLocatorId (0);		//	PK
             //	setWarehouseId (0);		//	Parent
             setIsDefault(false);
             setPriorityNo(50);
@@ -97,7 +97,7 @@ public class MLocator extends X_M_Locator {
     public static MLocator get(Properties ctx, int M_Locator_ID) {
         if (s_cache == null) s_cache = new CCache<Integer, MLocator>(I_M_Locator.Table_Name, 20);
         Integer key = M_Locator_ID;
-        MLocator retValue = (MLocator) s_cache.get(key);
+        MLocator retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MLocator(ctx, M_Locator_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);

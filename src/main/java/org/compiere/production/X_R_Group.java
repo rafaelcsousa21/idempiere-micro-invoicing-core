@@ -51,7 +51,7 @@ public class X_R_Group extends BasePOName implements I_R_Group {
      *
      * @return Bill of Materials (Engineering) Change Notice (Version)
      */
-    public int getM_ChangeNotice_ID() {
+    public int getChangeNoticeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ChangeNotice_ID);
         if (ii == null) return 0;
         return ii;
@@ -62,7 +62,7 @@ public class X_R_Group extends BasePOName implements I_R_Group {
      *
      * @return BOM & Formula
      */
-    public int getPP_Product_BOM_ID() {
+    public int getPPProductBOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;

@@ -45,7 +45,7 @@ public class ProjectSetType extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        m_C_Project_ID = getRecord_ID();
+        m_C_Project_ID = getRecordId();
         if (log.isLoggable(Level.INFO))
             log.info(
                     "doIt - C_Project_ID=" + m_C_Project_ID + ", C_ProjectType_ID=" + m_C_ProjectType_ID);
@@ -53,12 +53,12 @@ public class ProjectSetType extends SvrProcess {
         MProject project = new MProject(getCtx(), m_C_Project_ID);
         if (project.getProjectId() == 0 || project.getProjectId() != m_C_Project_ID)
             throw new IllegalArgumentException("Project not found C_Project_ID=" + m_C_Project_ID);
-        if (project.getC_ProjectType_ID_Int() > 0)
+        if (project.getProjectTypeId_Int() > 0)
             throw new IllegalArgumentException(
-                    "Project already has Type (Cannot overwrite) " + project.getC_ProjectType_ID());
+                    "Project already has Type (Cannot overwrite) " + project.getProjectTypeId());
         //
         MProjectType type = new MProjectType(getCtx(), m_C_ProjectType_ID);
-        if (type.getC_ProjectType_ID() == 0 || type.getC_ProjectType_ID() != m_C_ProjectType_ID)
+        if (type.getProjectTypeId() == 0 || type.getProjectTypeId() != m_C_ProjectType_ID)
             throw new IllegalArgumentException(
                     "Project Type not found C_ProjectType_ID=" + m_C_ProjectType_ID);
 

@@ -36,8 +36,8 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
     public X_M_InventoryLine(Properties ctx, int M_InventoryLine_ID) {
         super(ctx, M_InventoryLine_ID);
         /**
-         * if (M_InventoryLine_ID == 0) { setInventoryType (null); // D setM_AttributeSetInstance_ID
-         * (0); setM_Inventory_ID (0); setM_InventoryLine_ID (0); setM_Product_ID (0); setProcessed
+         * if (M_InventoryLine_ID == 0) { setInventoryType (null); // D setAttributeSetInstanceId
+         * (0); setInventoryId (0); setInventoryLineId (0); setProductId (0); setProcessed
          * (false); setQtyBook (Env.ZERO); setQtyCount (Env.ZERO); setQtyCsv (Env.ZERO); }
          */
     }
@@ -162,31 +162,31 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
     }
 
     /**
-     * Set Attribute Set Instance.
-     *
-     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-     */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
-        else
-            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-    }
-
-    /**
      * Get Attribute Set Instance.
      *
      * @return Product Attribute Set Instance
      */
-    public int getMAttributeSetInstance_ID() {
+    public int getAttributeSetInstanceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
     }
 
-    public org.compiere.model.I_M_Inventory getM_Inventory() throws RuntimeException {
+    /**
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+    }
+
+    public org.compiere.model.I_M_Inventory getInventory() throws RuntimeException {
         return (org.compiere.model.I_M_Inventory)
                 MTable.get(getCtx(), org.compiere.model.I_M_Inventory.Table_Name)
-                        .getPO(getM_Inventory_ID());
+                        .getPO(getInventoryId());
     }
 
     /**
@@ -194,7 +194,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @return Parameters for a Physical Inventory
      */
-    public int getM_Inventory_ID() {
+    public int getInventoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Inventory_ID);
         if (ii == null) return 0;
         return ii;
@@ -205,7 +205,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @param M_Inventory_ID Parameters for a Physical Inventory
      */
-    public void setM_Inventory_ID(int M_Inventory_ID) {
+    public void setInventoryId(int M_Inventory_ID) {
         if (M_Inventory_ID < 1) setValueNoCheck(COLUMNNAME_M_Inventory_ID, null);
         else setValueNoCheck(COLUMNNAME_M_Inventory_ID, Integer.valueOf(M_Inventory_ID));
     }
@@ -215,7 +215,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @return Unique line in an Inventory document
      */
-    public int getM_InventoryLine_ID() {
+    public int getInventoryLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_InventoryLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -226,7 +226,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @return Warehouse Locator
      */
-    public int getM_Locator_ID() {
+    public int getLocatorId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Locator_ID);
         if (ii == null) return 0;
         return ii;
@@ -237,15 +237,15 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @param M_Locator_ID Warehouse Locator
      */
-    public void setM_Locator_ID(int M_Locator_ID) {
+    public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 1) setValue(COLUMNNAME_M_Locator_ID, null);
         else setValue(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
     }
 
-    public org.compiere.model.I_M_Product getM_Product() throws RuntimeException {
+    public org.compiere.model.I_M_Product getProduct() throws RuntimeException {
         return (org.compiere.model.I_M_Product)
                 MTable.get(getCtx(), org.compiere.model.I_M_Product.Table_Name)
-                        .getPO(getM_Product_ID());
+                        .getPO(getProductId());
     }
 
     /**
@@ -253,7 +253,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -264,7 +264,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @param M_Product_ID Product, Service, Item
      */
-    public void setM_Product_ID(int M_Product_ID) {
+    public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValue(COLUMNNAME_M_Product_ID, null);
         else setValue(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
@@ -363,7 +363,7 @@ public class X_M_InventoryLine extends PO implements I_M_InventoryLine {
      *
      * @param ReversalLine_ID Use to keep the reversal line ID for reversing costing purpose
      */
-    public void setReversalLine_ID(int ReversalLine_ID) {
+    public void setReversalLineId(int ReversalLine_ID) {
         if (ReversalLine_ID < 1) setValue(COLUMNNAME_ReversalLine_ID, null);
         else setValue(COLUMNNAME_ReversalLine_ID, Integer.valueOf(ReversalLine_ID));
     }

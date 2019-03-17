@@ -26,7 +26,7 @@ public class CostAdjustmentLineRefreshCost extends SvrProcess {
      */
     @Override
     protected String doIt() throws Exception {
-        MInventoryLine line = new MInventoryLine(getCtx(), getRecord_ID());
+        MInventoryLine line = new MInventoryLine(getCtx(), getRecordId());
         MProduct product = line.getProduct();
         MClient client = MClient.get(getCtx(), line.getClientId());
         MAcctSchema as = client.getAcctSchema();
@@ -34,8 +34,8 @@ public class CostAdjustmentLineRefreshCost extends SvrProcess {
                 product.getCostingRecord(
                         as,
                         line.getOrgId(),
-                        line.getMAttributeSetInstance_ID(),
-                        line.getM_Inventory().getCostingMethod());
+                        line.getAttributeSetInstanceId(),
+                        line.getInventory().getCostingMethod());
         if (cost != null) {
             line.setCurrentCostPrice(cost.getCurrentCostPrice());
             line.setNewCostPrice(cost.getCurrentCostPrice());

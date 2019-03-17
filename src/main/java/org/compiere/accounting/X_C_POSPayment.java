@@ -68,7 +68,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment {
      *
      * @return Name on Credit Card or Account holder
      */
-    public String getA_Name() {
+    public String getAccountName() {
         return (String) getValue(COLUMNNAME_A_Name);
     }
 
@@ -96,7 +96,7 @@ public class X_C_POSPayment extends PO implements I_C_POSPayment {
      *
      * @return POS Tender Type
      */
-    public int getC_POSTenderType_ID() {
+    public int getPOSTenderTypeId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_POSTenderType_ID);
         if (ii == null) return 0;
         return ii;

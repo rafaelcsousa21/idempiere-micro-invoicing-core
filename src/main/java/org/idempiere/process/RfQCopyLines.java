@@ -48,7 +48,7 @@ public class RfQCopyLines extends SvrProcess {
                 p_From_RfQ_ID = ((BigDecimal) para[i].getParameter()).intValue();
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
-        p_To_RfQ_ID = getRecord_ID();
+        p_To_RfQ_ID = getRecordId();
     } //	prepare
 
     /**
@@ -81,8 +81,8 @@ public class RfQCopyLines extends SvrProcess {
     	newLine.setLine(lines[i].getLine());
     	newLine.setDescription(lines[i].getDescription());
     	newLine.setHelp(lines[i].getHelp());
-    	newLine.setM_Product_ID(lines[i].getM_Product_ID());
-    	newLine.setM_AttributeSetInstance_ID(lines[i].getMAttributeSetInstance_ID());
+    	newLine.setProductId(lines[i].getProductId());
+    	newLine.setAttributeSetInstanceId(lines[i].getAttributeSetInstanceId());
     //	newLine.setDateWorkStart();
     //	newLine.setDateWorkComplete();
     	newLine.setDeliveryDays(lines[i].getDeliveryDays());
@@ -92,7 +92,7 @@ public class RfQCopyLines extends SvrProcess {
     	for (int j = 0; j < qtys.length; j++)
     	{
     		MRfQLineQty newQty = new MRfQLineQty (newLine);
-    		newQty.setC_UOM_ID(qtys[j].getC_UOM_ID());
+    		newQty.setUOMId(qtys[j].getUOMId());
     		newQty.setQty(qtys[j].getQty());
     		newQty.setIsOfferQty(qtys[j].isOfferQty());
     		newQty.setIsPurchaseQty(qtys[j].isPurchaseQty());

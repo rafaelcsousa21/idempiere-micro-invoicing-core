@@ -19,7 +19,7 @@ public class X_C_AcctProcessorLog extends PO implements I_C_AcctProcessorLog {
     public X_C_AcctProcessorLog(Properties ctx, int C_AcctProcessorLog_ID) {
         super(ctx, C_AcctProcessorLog_ID);
         /**
-         * if (C_AcctProcessorLog_ID == 0) { setAccountingProcessorId (0); setC_AcctProcessorLog_ID (0);
+         * if (C_AcctProcessorLog_ID == 0) { setAccountingProcessorId (0); setAcctProcessorLog_ID (0);
          * setIsError (false); }
          */
     }

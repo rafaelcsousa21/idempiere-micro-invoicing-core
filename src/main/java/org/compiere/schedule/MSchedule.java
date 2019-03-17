@@ -42,7 +42,7 @@ public class MSchedule extends X_AD_Schedule {
 
     public static MSchedule get(Properties ctx, int AD_Schedule_ID) {
         Integer key = AD_Schedule_ID;
-        MSchedule retValue = (MSchedule) s_cache.get(key);
+        MSchedule retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MSchedule(ctx, AD_Schedule_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -146,9 +146,9 @@ public class MSchedule extends X_AD_Schedule {
                     if (!inetAddress.isLoopbackAddress()
                             && !inetAddress.isLinkLocalAddress()
                             && inetAddress.isSiteLocalAddress()) {
-                        String retVal = inetAddress.getHostAddress().toString();
+                        String retVal = inetAddress.getHostAddress();
                         if (chekIPFormat(ipOnly)) {
-                            retVal = inetAddress.getHostAddress().toString();
+                            retVal = inetAddress.getHostAddress();
                         } else {
                             retVal = inetAddress.getHostName();
                         }
@@ -179,11 +179,7 @@ public class MSchedule extends X_AD_Schedule {
                 IsIp = true;
             } else {
                 Matcher m2 = VALID_IPV6_PATTERN.matcher(ipOnly);
-                if (m2.matches()) {
-                    IsIp = true;
-                } else {
-                    IsIp = false;
-                }
+                IsIp = m2.matches();
             }
         } catch (PatternSyntaxException e) {
             // TODO: handle exception

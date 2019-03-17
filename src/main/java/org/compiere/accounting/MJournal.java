@@ -65,7 +65,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     public MJournal(Properties ctx, int GL_Journal_ID) {
         super(ctx, GL_Journal_ID);
         if (GL_Journal_ID == 0) {
-            //	setGL_Journal_ID (0);		//	PK
+            //	setGLJournal_ID (0);		//	PK
             //	setAccountingSchemaId (0);
             //	setCurrencyId (0);
             //	setDocumentTypeId (0);
@@ -107,12 +107,12 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     public MJournal(MJournalBatch parent) {
         this(parent.getCtx(), 0);
         setClientOrg(parent);
-        setGL_JournalBatch_ID(parent.getGL_JournalBatch_ID());
+        setGLJournalBatchId(parent.getGLJournalBatchId());
         setDocumentTypeId(parent.getDocumentTypeId());
         setPostingType(parent.getPostingType());
         //
         setDateDoc(parent.getDateDoc());
-        setC_Period_ID(parent.getC_Period_ID());
+        setPeriodId(parent.getPeriodId());
         setDateAcct(parent.getDateAcct());
         setCurrencyId(parent.getCurrencyId());
     } //	MJournal
@@ -125,11 +125,11 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     public MJournal(MJournal original) {
         this(original.getCtx(), 0);
         setClientOrg(original);
-        setGL_JournalBatch_ID(original.getGL_JournalBatch_ID());
+        setGLJournalBatchId(original.getGLJournalBatchId());
         //
-        setC_AcctSchema_ID(original.getC_AcctSchema_ID());
-        setGL_Budget_ID(original.getGL_Budget_ID());
-        setGL_Category_ID(original.getGL_Category_ID());
+        setAccountingSchemaId(original.getAccountingSchemaId());
+        setGLBudgetId(original.getGLBudgetId());
+        setGLCategoryId(original.getGLCategoryId());
         setPostingType(original.getPostingType());
         setDescription(original.getDescription());
         setDocumentTypeId(original.getDocumentTypeId());
@@ -141,7 +141,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
 
         //	setDateDoc(original.getDateDoc());
         //	setDateAcct(original.getDateAcct());
-        //	setPeriodId(original.getC_Period_ID());
+        //	setPeriodId(original.getPeriodId());
     } //	MJournal
 
     /**
@@ -162,10 +162,10 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
     public void setDateAcct(Timestamp DateAcct) {
         super.setDateAcct(DateAcct);
         if (DateAcct == null) return;
-        if (getC_Period_ID() != 0) return;
-        int C_Period_ID = MPeriod.getC_Period_ID(getCtx(), DateAcct, getOrgId());
+        if (getPeriodId() != 0) return;
+        int C_Period_ID = MPeriod.getPeriodId(getCtx(), DateAcct, getOrgId());
         if (C_Period_ID == 0) log.warning("setDateAcct - Period not found");
-        else setC_Period_ID(C_Period_ID);
+        else setPeriodId(C_Period_ID);
     } //	setDateAcct
 
     /**
@@ -208,7 +208,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         final String whereClause = "GL_Journal_ID=?";
         List<MJournalLine> list =
                 new Query(getCtx(), I_GL_JournalLine.Table_Name, whereClause)
-                        .setParameters(getGL_Journal_ID())
+                        .setParameters(getGLJournalId())
                         .setOrderBy("Line")
                         .list();
         //
@@ -232,7 +232,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         for (int i = 0; i < fromLines.length; i++) {
             MJournalLine toLine = new MJournalLine(getCtx(), 0);
             PO.copyValues(fromLines[i], toLine, getClientId(), getOrgId());
-            toLine.setGL_Journal_ID(getGL_Journal_ID());
+            toLine.setGLJournalId(getGLJournalId());
             //
             if (dateAcct != null) toLine.setDateAcct(dateAcct);
             //	Amounts
@@ -269,7 +269,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
                 new StringBuilder("UPDATE GL_JournalLine SET Processed='")
                         .append((processed ? "Y" : "N"))
                         .append("' WHERE GL_Journal_ID=")
-                        .append(getGL_Journal_ID());
+                        .append(getGLJournalId());
         int noLine = executeUpdate(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
     } //	setProcessed
@@ -293,17 +293,17 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         // C_DocTypeTarget_ID or C_DocType_ID if they were already processed and
         // isOverwriteSeqOnComplete
         // neither change the Date if isOverwriteDateOnComplete
-        BigDecimal previousProcessedOn = (BigDecimal) get_ValueOld(I_GL_Journal.COLUMNNAME_ProcessedOn);
+        BigDecimal previousProcessedOn = (BigDecimal) getValueOld(I_GL_Journal.COLUMNNAME_ProcessedOn);
         if (!newRecord && previousProcessedOn != null && previousProcessedOn.signum() > 0) {
-            int previousDocTypeID = (Integer) get_ValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
+            int previousDocTypeID = (Integer) getValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
             MDocType previousdt = MDocType.get(getCtx(), previousDocTypeID);
-            if (is_ValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID)) {
+            if (isValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID)) {
                 if (previousdt.isOverwriteSeqOnComplete()) {
                     log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDocType"));
                     return false;
                 }
             }
-            if (is_ValueChanged(I_GL_Journal.COLUMNNAME_DateDoc)) {
+            if (isValueChanged(I_GL_Journal.COLUMNNAME_DateDoc)) {
                 if (previousdt.isOverwriteDateOnComplete()) {
                     log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDate"));
                     return false;
@@ -312,13 +312,13 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         }
 
         // Update DateAcct on lines - teo_sarca BF [ 1775358 ]
-        if (is_ValueChanged(I_GL_Journal.COLUMNNAME_DateAcct)) {
+        if (isValueChanged(I_GL_Journal.COLUMNNAME_DateAcct)) {
             int no =
                     executeUpdate(
                             "UPDATE GL_JournalLine SET "
                                     + MJournalLine.COLUMNNAME_DateAcct
                                     + "=? WHERE GL_Journal_ID=?",
-                            new Object[]{getDateAcct(), getGL_Journal_ID()}
+                            new Object[]{getDateAcct(), getGLJournalId()}
                     );
             if (log.isLoggable(Level.FINEST)) log.finest("Updated GL_JournalLine.DateAcct #" + no);
         }
@@ -354,7 +354,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * @return true if ok
      */
     private boolean updateBatch() {
-        if (getGL_JournalBatch_ID() != 0) { // idempiere 344 - nmicoud
+        if (getGLJournalBatchId() != 0) { // idempiere 344 - nmicoud
             StringBuilder sql =
                     new StringBuilder("UPDATE GL_JournalBatch jb")
                             .append(
@@ -362,7 +362,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
                             .append(
                                     " FROM GL_Journal j WHERE j.IsActive='Y' AND jb.GL_JournalBatch_ID=j.GL_JournalBatch_ID) ")
                             .append("WHERE GL_JournalBatch_ID=")
-                            .append(getGL_JournalBatch_ID());
+                            .append(getGLJournalBatchId());
             int no = executeUpdate(sql.toString());
             if (no != 1) log.warning("afterSave - Update Batch #" + no);
             return no == 1;
@@ -416,7 +416,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
 
         // Get Period
-        MPeriod period = (MPeriod) getC_Period();
+        MPeriod period = (MPeriod) getPeriod();
         if (!period.isInPeriod(getDateAcct())) {
             period = MPeriod.get(getCtx(), getDateAcct(), getOrgId());
             if (period == null) {
@@ -425,7 +425,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
                 return DocAction.Companion.getSTATUS_Invalid();
             }
             //	Standard Period
-            if (period.getC_Period_ID() != getC_Period_ID() && period.isStandardPeriod()) {
+            if (period.getPeriodId() != getPeriodId() && period.isStandardPeriod()) {
                 m_processMsg = "@PeriodNotValid@";
                 return DocAction.Companion.getSTATUS_Invalid();
             }
@@ -520,7 +520,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
 
         //	Unbalanced Jornal & Not Suspense
         if (AmtSourceDr.compareTo(AmtSourceCr) != 0) {
-            MAcctSchemaGL gl = MAcctSchemaGL.get(getCtx(), getC_AcctSchema_ID());
+            MAcctSchemaGL gl = MAcctSchemaGL.get(getCtx(), getAccountingSchemaId());
             if (gl == null || !gl.isUseSuspenseBalancing()) {
                 m_processMsg = "@UnbalancedJornal@";
                 return DocAction.Companion.getSTATUS_Invalid();
@@ -705,7 +705,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
                         .fireDocValidate(this, ModelValidator.TIMING_BEFORE_REVERSECORRECT);
         if (m_processMsg != null) return false;
 
-        boolean ok_correct = (reverseCorrectIt(getGL_JournalBatch_ID()) != null);
+        boolean ok_correct = (reverseCorrectIt(getGLJournalBatchId()) != null);
 
         if (!ok_correct) return false;
 
@@ -728,16 +728,16 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         //	Journal
         MJournal reverse = new MJournal(this);
-        reverse.setGL_JournalBatch_ID(GL_JournalBatch_ID);
+        reverse.setGLJournalBatchId(GL_JournalBatch_ID);
         reverse.setDateDoc(getDateDoc());
-        reverse.setC_Period_ID(getC_Period_ID());
+        reverse.setPeriodId(getPeriodId());
         reverse.setDateAcct(getDateAcct());
         //	Reverse indicator
         StringBuilder msgd = new StringBuilder("(->").append(getDocumentNo()).append(")");
         reverse.addDescription(msgd.toString());
         reverse.setControlAmt(getControlAmt().negate());
         // FR [ 1948157  ]
-        reverse.setReversal_ID(getGL_Journal_ID());
+        reverse.setReversalId(getGLJournalId());
         if (!reverse.save()) return null;
 
         //	Lines
@@ -759,7 +759,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         //
         setProcessed(true);
         // FR [ 1948157  ]
-        setReversal_ID(reverse.getGL_Journal_ID());
+        setReversalId(reverse.getGLJournalId());
         setDocStatus(X_GL_Journal.DOCSTATUS_Reversed);
         setDocAction(X_GL_Journal.DOCACTION_None);
         return reverse;
@@ -777,7 +777,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
                         .fireDocValidate(this, ModelValidator.TIMING_BEFORE_REVERSEACCRUAL);
         if (m_processMsg != null) return false;
 
-        boolean ok_reverse = (reverseAccrualIt(getGL_JournalBatch_ID()) != null);
+        boolean ok_reverse = (reverseAccrualIt(getGLJournalBatchId()) != null);
 
         if (!ok_reverse) return false;
 
@@ -800,7 +800,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         //	Journal
         MJournal reverse = new MJournal(this);
-        reverse.setGL_JournalBatch_ID(GL_JournalBatch_ID);
+        reverse.setGLJournalBatchId(GL_JournalBatch_ID);
         Timestamp reversalDate = Env.getContextAsDate(getCtx(), "#Date");
         if (reversalDate == null) {
             reversalDate = new Timestamp(System.currentTimeMillis());
@@ -811,7 +811,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         //	Reverse indicator
         StringBuilder msgd = new StringBuilder("(->").append(getDocumentNo()).append(")");
         reverse.addDescription(msgd.toString());
-        reverse.setReversal_ID(getGL_Journal_ID());
+        reverse.setReversalId(getGLJournalId());
         if (!reverse.save()) return null;
         //	Lines
         reverse.copyLinesFrom(this, reverse.getDateAcct(), 'R');
@@ -830,7 +830,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         addDescription(msgd.toString());
 
         setProcessed(true);
-        setReversal_ID(reverse.getGL_Journal_ID());
+        setReversalId(reverse.getGLJournalId());
         setDocStatus(X_GL_Journal.DOCSTATUS_Reversed);
         setDocAction(X_GL_Journal.DOCACTION_None);
         return reverse;
@@ -858,9 +858,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         // After reActivate
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_REACTIVATE);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	reActivateIt
 
     /**
@@ -933,7 +931,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @return AD_User_ID (Created)
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

@@ -197,9 +197,9 @@ public class CostUpdate extends SvrProcess {
         int counter = 0;
 
         MProduct[] items =
-                BaseCostUpdateKt.getProductsToCreateNewStandardCosts(getCtx(), as, p_M_Product_Category_ID, m_ce.getM_CostElement_ID());
+                BaseCostUpdateKt.getProductsToCreateNewStandardCosts(getCtx(), as, p_M_Product_Category_ID, m_ce.getCostElementId());
 
-        for(MProduct product : items) {
+        for (MProduct product : items) {
             if (createNew(product, as)) counter++;
         }
 
@@ -215,7 +215,7 @@ public class CostUpdate extends SvrProcess {
      * @return true if created
      */
     private boolean createNew(MProduct product, MAcctSchema as) {
-        MCost cost = MCost.get(product, 0, as, 0, m_ce.getM_CostElement_ID());
+        MCost cost = MCost.get(product, 0, as, 0, m_ce.getCostElementId());
         if (cost.isNew()) return cost.save();
         return false;
     } //	createNew
@@ -237,13 +237,13 @@ public class CostUpdate extends SvrProcess {
         MAcctSchema primarySchema = client.getAcctSchema();
         MInventory inventoryDoc = null;
 
-        MCost[] items = BaseCostUpdateKt.getCostsToUpdate(getCtx(), sql, m_ce.getM_CostElement_ID(), p_M_Product_Category_ID);
+        MCost[] items = BaseCostUpdateKt.getCostsToUpdate(getCtx(), sql, m_ce.getCostElementId(), p_M_Product_Category_ID);
 
         for (MCost cost : items) {
             for (int i = 0; i < m_ass.length; i++) {
                 //	Update Costs only for default Cost Type
-                if (m_ass[i].getAccountingSchemaId() == cost.getC_AcctSchema_ID()
-                        && m_ass[i].getCostTypeId() == cost.getM_CostType_ID()) {
+                if (m_ass[i].getAccountingSchemaId() == cost.getAccountingSchemaId()
+                        && m_ass[i].getCostTypeId() == cost.getCostTypeId()) {
                     if (m_ass[i].getAccountingSchemaId() == primarySchema.getAccountingSchemaId()) {
                         if (update(cost, lines)) counter++;
                     } else {
@@ -260,7 +260,7 @@ public class CostUpdate extends SvrProcess {
             inventoryDoc.saveEx();
 
             for (MInventoryLine line : lines) {
-                line.setM_Inventory_ID(inventoryDoc.getM_Inventory_ID());
+                line.setInventoryId(inventoryDoc.getInventoryId());
                 line.saveEx();
             }
 
@@ -280,12 +280,12 @@ public class CostUpdate extends SvrProcess {
                             .append(" ")
                             .append(inventoryDoc.getDocumentNo());
                 addBufferLog(
-                        getAD_PInstance_ID(),
+                        getAD_PInstanceId(),
                         null,
                         null,
                         msg.toString(),
                         I_M_Inventory.Table_ID,
-                        inventoryDoc.getM_Inventory_ID());
+                        inventoryDoc.getInventoryId());
             }
         }
 
@@ -297,7 +297,7 @@ public class CostUpdate extends SvrProcess {
     /**
      * Update Cost Records
      *
-     * @param cost         cost
+     * @param cost cost
      * @return true if updated
      * @throws Exception
      */
@@ -313,10 +313,10 @@ public class CostUpdate extends SvrProcess {
                     BigDecimal currentCost = cost.getCurrentCostPrice();
                     if (currentCost == null || currentCost.compareTo(costs) != 0) {
                         MInventoryLine line = new MInventoryLine(getCtx(), 0);
-                        line.setM_Product_ID(cost.getM_Product_ID());
+                        line.setProductId(cost.getProductId());
                         line.setCurrentCostPrice(cost.getCurrentCostPrice());
                         line.setNewCostPrice(costs);
-                        line.setM_Locator_ID(0);
+                        line.setLocatorId(0);
                         lines.add(line);
                     }
                 }
@@ -329,10 +329,10 @@ public class CostUpdate extends SvrProcess {
                         BigDecimal currentCost = cost.getCurrentCostPrice();
                         if (currentCost == null || currentCost.compareTo(costs) != 0) {
                             MInventoryLine line = new MInventoryLine(getCtx(), 0);
-                            line.setM_Product_ID(cost.getM_Product_ID());
+                            line.setProductId(cost.getProductId());
                             line.setCurrentCostPrice(cost.getCurrentCostPrice());
                             line.setNewCostPrice(costs);
-                            line.setM_Locator_ID(0);
+                            line.setLocatorId(0);
                             lines.add(line);
                             updated = true;
                         }
@@ -371,11 +371,11 @@ public class CostUpdate extends SvrProcess {
                             getCtx(),
                             cost.getClientId(),
                             cost.getOrgId(),
-                            cost.getM_Product_ID(),
-                            cost.getM_CostType_ID(),
-                            cost.getC_AcctSchema_ID(),
-                            ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID()
+                            cost.getProductId(),
+                            cost.getCostTypeId(),
+                            cost.getAccountingSchemaId(),
+                            ce.getCostElementId(),
+                            cost.getAttributeSetInstanceId()
                     );
             if (xCost != null) retValue = xCost.getCurrentCostPrice();
         }
@@ -388,11 +388,11 @@ public class CostUpdate extends SvrProcess {
                             getCtx(),
                             cost.getClientId(),
                             cost.getOrgId(),
-                            cost.getM_Product_ID(),
-                            cost.getM_CostType_ID(),
-                            cost.getC_AcctSchema_ID(),
-                            ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID()
+                            cost.getProductId(),
+                            cost.getCostTypeId(),
+                            cost.getAccountingSchemaId(),
+                            ce.getCostElementId(),
+                            cost.getAttributeSetInstanceId()
                     );
             if (xCost != null) retValue = xCost.getHistoryAverage();
         }
@@ -406,11 +406,11 @@ public class CostUpdate extends SvrProcess {
                             getCtx(),
                             cost.getClientId(),
                             cost.getOrgId(),
-                            cost.getM_Product_ID(),
-                            cost.getM_CostType_ID(),
-                            cost.getC_AcctSchema_ID(),
-                            ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID()
+                            cost.getProductId(),
+                            cost.getCostTypeId(),
+                            cost.getAccountingSchemaId(),
+                            ce.getCostElementId(),
+                            cost.getAttributeSetInstanceId()
                     );
             if (xCost != null) retValue = xCost.getCurrentCostPrice();
         }
@@ -423,11 +423,11 @@ public class CostUpdate extends SvrProcess {
                             getCtx(),
                             cost.getClientId(),
                             cost.getOrgId(),
-                            cost.getM_Product_ID(),
-                            cost.getM_CostType_ID(),
-                            cost.getC_AcctSchema_ID(),
-                            ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID()
+                            cost.getProductId(),
+                            cost.getCostTypeId(),
+                            cost.getAccountingSchemaId(),
+                            ce.getCostElementId(),
+                            cost.getAttributeSetInstanceId()
                     );
             if (xCost != null) retValue = xCost.getHistoryAverage();
         }
@@ -441,11 +441,11 @@ public class CostUpdate extends SvrProcess {
                             getCtx(),
                             cost.getClientId(),
                             cost.getOrgId(),
-                            cost.getM_Product_ID(),
-                            cost.getM_CostType_ID(),
-                            cost.getC_AcctSchema_ID(),
-                            ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID()
+                            cost.getProductId(),
+                            cost.getCostTypeId(),
+                            cost.getAccountingSchemaId(),
+                            ce.getCostElementId(),
+                            cost.getAttributeSetInstanceId()
                     );
             if (xCost != null) retValue = xCost.getCurrentCostPrice();
         }
@@ -462,21 +462,21 @@ public class CostUpdate extends SvrProcess {
                                 getCtx(),
                                 cost.getClientId(),
                                 cost.getOrgId(),
-                                cost.getM_Product_ID(),
-                                cost.getM_CostType_ID(),
-                                cost.getC_AcctSchema_ID(),
-                                ce.getM_CostElement_ID(),
-                                cost.getMAttributeSetInstance_ID()
+                                cost.getProductId(),
+                                cost.getCostTypeId(),
+                                cost.getAccountingSchemaId(),
+                                ce.getCostElementId(),
+                                cost.getAttributeSetInstanceId()
                         );
                 if (xCost != null) retValue = xCost.getCurrentCostPrice();
             }
             if (retValue == null) {
-                MProduct product = new MProduct(getCtx(), cost.getM_Product_ID());
-                MAcctSchema as = MAcctSchema.get(getCtx(), cost.getC_AcctSchema_ID());
+                MProduct product = new MProduct(getCtx(), cost.getProductId());
+                MAcctSchema as = MAcctSchema.get(getCtx(), cost.getAccountingSchemaId());
                 retValue =
                         MCost.getLastInvoicePrice(
                                 product,
-                                cost.getMAttributeSetInstance_ID(),
+                                cost.getAttributeSetInstanceId(),
                                 cost.getOrgId(),
                                 as.getCurrencyId());
             }
@@ -491,21 +491,21 @@ public class CostUpdate extends SvrProcess {
                                 getCtx(),
                                 cost.getClientId(),
                                 cost.getOrgId(),
-                                cost.getM_Product_ID(),
-                                cost.getM_CostType_ID(),
-                                cost.getC_AcctSchema_ID(),
-                                ce.getM_CostElement_ID(),
-                                cost.getMAttributeSetInstance_ID()
+                                cost.getProductId(),
+                                cost.getCostTypeId(),
+                                cost.getAccountingSchemaId(),
+                                ce.getCostElementId(),
+                                cost.getAttributeSetInstanceId()
                         );
                 if (xCost != null) retValue = xCost.getCurrentCostPrice();
             }
             if (retValue == null) {
-                MProduct product = new MProduct(getCtx(), cost.getM_Product_ID());
-                MAcctSchema as = MAcctSchema.get(getCtx(), cost.getC_AcctSchema_ID());
+                MProduct product = new MProduct(getCtx(), cost.getProductId());
+                MAcctSchema as = MAcctSchema.get(getCtx(), cost.getAccountingSchemaId());
                 retValue =
                         MCost.getLastPOPrice(
                                 product,
-                                cost.getMAttributeSetInstance_ID(),
+                                cost.getAttributeSetInstanceId(),
                                 cost.getOrgId(),
                                 as.getCurrencyId());
             }
@@ -520,11 +520,11 @@ public class CostUpdate extends SvrProcess {
                             getCtx(),
                             cost.getClientId(),
                             cost.getOrgId(),
-                            cost.getM_Product_ID(),
-                            cost.getM_CostType_ID(),
-                            cost.getC_AcctSchema_ID(),
-                            ce.getM_CostElement_ID(),
-                            cost.getMAttributeSetInstance_ID()
+                            cost.getProductId(),
+                            cost.getCostTypeId(),
+                            cost.getAccountingSchemaId(),
+                            ce.getCostElementId(),
+                            cost.getAttributeSetInstanceId()
                     );
             if (xCost != null) retValue = xCost.getCurrentCostPrice();
         }
@@ -569,7 +569,7 @@ public class CostUpdate extends SvrProcess {
         ResultSet rs = null;
         try {
             pstmt = prepareStatement(sql);
-            pstmt.setInt(1, cost.getM_Product_ID());
+            pstmt.setInt(1, cost.getProductId());
             pstmt.setInt(2, p_M_PriceList_Version_ID);
             rs = pstmt.executeQuery();
             if (rs.next()) {

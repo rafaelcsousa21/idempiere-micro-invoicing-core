@@ -56,7 +56,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     public MJournalBatch(Properties ctx, int GL_JournalBatch_ID) {
         super(ctx, GL_JournalBatch_ID);
         if (GL_JournalBatch_ID == 0) {
-            //	setGL_JournalBatch_ID (0);	PK
+            //	setGLJournalBatch_ID (0);	PK
             //	setDescription (null);
             //	setDocumentNo (null);
             //	setDocumentTypeId (0);
@@ -89,7 +89,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         this(original.getCtx(), 0);
         setClientOrg(original);
         //
-        setGL_Category_ID(original.getGL_Category_ID());
+        setGLCategoryId(original.getGLCategoryId());
         setPostingType(original.getPostingType());
         setDescription(original.getDescription());
         setDocumentTypeId(original.getDocumentTypeId());
@@ -116,10 +116,10 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
     public void setDateAcct(Timestamp DateAcct) {
         super.setDateAcct(DateAcct);
         if (DateAcct == null) return;
-        if (getC_Period_ID() != 0) return;
-        int C_Period_ID = MPeriod.getC_Period_ID(getCtx(), DateAcct, getOrgId());
+        if (getPeriodId() != 0) return;
+        int C_Period_ID = MPeriod.getPeriodId(getCtx(), DateAcct, getOrgId());
         if (C_Period_ID == 0) log.warning("Period not found");
-        else setC_Period_ID(C_Period_ID);
+        else setPeriodId(C_Period_ID);
     } //	setDateAcct
 
     /**
@@ -129,7 +129,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * @return Array of lines
      */
     public MJournal[] getJournals(boolean requery) {
-        return MBaseJournalBatchKt.getJournalLines(getCtx(), getGL_JournalBatch_ID());
+        return MBaseJournalBatchKt.getJournalLines(getCtx(), getGLJournalBatchId());
     } //	getJournals
 
     /**
@@ -146,7 +146,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         for (int i = 0; i < fromJournals.length; i++) {
             MJournal toJournal = new MJournal(getCtx(), 0);
             PO.copyValues(fromJournals[i], toJournal, getClientId(), getOrgId());
-            toJournal.setGL_JournalBatch_ID(getGL_JournalBatch_ID());
+            toJournal.setGLJournalBatchId(getGLJournalBatchId());
             toJournal.setValueNoCheck("DocumentNo", null); // 	create new
             toJournal.setValueNoCheck("C_Period_ID", null);
             toJournal.setDateDoc(getDateDoc()); // 	dates from this Batch
@@ -471,9 +471,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -505,21 +503,21 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         //	Reverse it
         MJournalBatch reverse = new MJournalBatch(this);
         reverse.setDateDoc(getDateDoc());
-        reverse.setC_Period_ID(getC_Period_ID());
+        reverse.setPeriodId(getPeriodId());
         reverse.setDateAcct(getDateAcct());
         //	Reverse indicator
         StringBuilder msgd = new StringBuilder("(->").append(getDocumentNo()).append(")");
         reverse.addDescription(msgd.toString());
         reverse.setControlAmt(getControlAmt().negate());
         // [ 1948157  ]
-        reverse.setReversal_ID(getGL_JournalBatch_ID());
+        reverse.setReversalId(getGLJournalBatchId());
         reverse.saveEx();
 
         //	Reverse Journals
         for (int i = 0; i < journals.length; i++) {
             MJournal journal = journals[i];
             if (!journal.isActive()) continue;
-            if (journal.reverseCorrectIt(reverse.getGL_JournalBatch_ID()) == null) {
+            if (journal.reverseCorrectIt(reverse.getGLJournalBatchId()) == null) {
                 m_processMsg = "Could not reverse " + journal;
                 return false;
             }
@@ -541,7 +539,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
 
         setProcessed(true);
         // [ 1948157  ]
-        setReversal_ID(reverse.getGL_JournalBatch_ID());
+        setReversalId(reverse.getGLJournalBatchId());
         setDocStatus(X_GL_JournalBatch.DOCSTATUS_Reversed);
         setDocAction(X_GL_JournalBatch.DOCACTION_None);
         saveEx();
@@ -549,9 +547,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         m_processMsg =
                 ModelValidationEngine.get()
                         .fireDocValidate(this, ModelValidator.TIMING_AFTER_REVERSECORRECT);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	reverseCorrectionIt
 
     /**
@@ -581,7 +577,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         }
         //	Reverse it
         MJournalBatch reverse = new MJournalBatch(this);
-        reverse.setC_Period_ID(0);
+        reverse.setPeriodId(0);
         Timestamp reversalDate = Env.getContextAsDate(getCtx(), "#Date");
         if (reversalDate == null) {
             reversalDate = new Timestamp(System.currentTimeMillis());
@@ -591,14 +587,14 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         //	Reverse indicator
         StringBuilder msgd = new StringBuilder("(->").append(getDocumentNo()).append(")");
         reverse.addDescription(msgd.toString());
-        reverse.setReversal_ID(getGL_JournalBatch_ID());
+        reverse.setReversalId(getGLJournalBatchId());
         reverse.saveEx();
 
         //	Reverse Journals
         for (int i = 0; i < journals.length; i++) {
             MJournal journal = journals[i];
             if (!journal.isActive()) continue;
-            if (journal.reverseAccrualIt(reverse.getGL_JournalBatch_ID()) == null) {
+            if (journal.reverseAccrualIt(reverse.getGLJournalBatchId()) == null) {
                 m_processMsg = "Could not reverse " + journal;
                 return false;
             }
@@ -619,7 +615,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         addDescription(msgd.toString());
 
         setProcessed(true);
-        setReversal_ID(reverse.getGL_JournalBatch_ID());
+        setReversalId(reverse.getGLJournalBatchId());
         setDocStatus(X_GL_JournalBatch.DOCSTATUS_Reversed);
         setDocAction(X_GL_JournalBatch.DOCACTION_None);
         saveEx();
@@ -627,9 +623,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         m_processMsg =
                 ModelValidationEngine.get()
                         .fireDocValidate(this, ModelValidator.TIMING_AFTER_REVERSEACCRUAL);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	reverseAccrualIt
 
     /**
@@ -660,9 +654,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         // After reActivate
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_REACTIVATE);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	reActivateIt
 
     /**
@@ -735,7 +727,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @return AD_User_ID (Created By)
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

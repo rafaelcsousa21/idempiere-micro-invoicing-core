@@ -12,7 +12,6 @@ abstract class BaseDefaultDocumentFactory : IDocFactory {
     override fun getDocument(`as`: I_C_AcctSchema?, AD_Table_ID: Int, Record_ID: Int): IDoc? {
         val tableName = MTable.getDbTableName(Env.getCtx(), AD_Table_ID)
         //
-        var doc: Doc? = null
         val sql = StringBuffer("SELECT * FROM ")
             .append(tableName)
             .append(" WHERE ")

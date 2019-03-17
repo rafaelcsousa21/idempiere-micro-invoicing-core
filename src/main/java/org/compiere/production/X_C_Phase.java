@@ -54,7 +54,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase {
      *
      * @return Standard Phase of the Project Type
      */
-    public int getC_Phase_ID() {
+    public int getPhaseId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Phase_ID);
         if (ii == null) return 0;
         return ii;
@@ -83,7 +83,7 @@ public class X_C_Phase extends BasePOName implements I_C_Phase {
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;

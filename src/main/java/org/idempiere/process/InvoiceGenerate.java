@@ -25,15 +25,12 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Language;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Savepoint;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 
 import static org.compiere.crm.MBaseLocationKt.getBPLocation;
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Generate Invoices
@@ -192,7 +189,7 @@ public class InvoiceGenerate extends SvrProcess {
      * @return info
      */
     private String generate(String sql) {
-        MOrder[] orders = BaseInvoiceGenerateKt.getOrdersForInvoiceGeneration(getCtx(), sql, getAD_PInstance_ID(),
+        MOrder[] orders = BaseInvoiceGenerateKt.getOrdersForInvoiceGeneration(getCtx(), sql, getAD_PInstanceId(),
                 p_Selection, p_AD_Org_ID, p_C_BPartner_ID, p_C_Order_ID);
 
         for (MOrder order : orders) {
@@ -214,14 +211,14 @@ public class InvoiceGenerate extends SvrProcess {
             //	Schedule After Delivery
             boolean doInvoice = false;
             if (MOrder.INVOICERULE_CustomerScheduleAfterDelivery.equals(order.getInvoiceRule())) {
-                m_bp = new MBPartner(getCtx(), order.getBill_BPartner_ID());
-                if (m_bp.getC_InvoiceSchedule_ID() == 0) {
+                m_bp = new MBPartner(getCtx(), order.getBill_BPartnerId());
+                if (m_bp.getInvoiceScheduleId() == 0) {
                     log.warning("BPartner has no Schedule - set to After Delivery");
                     order.setInvoiceRule(MOrder.INVOICERULE_AfterDelivery);
                     order.saveEx();
                 } else {
                     MInvoiceSchedule is =
-                            MInvoiceSchedule.get(getCtx(), m_bp.getC_InvoiceSchedule_ID());
+                            MInvoiceSchedule.get(getCtx(), m_bp.getInvoiceScheduleId());
                     if (is.canInvoice(order.getDateOrdered())) {
                         if (is.isAmount() && is.getAmt() != null) p_MinimumAmtInvSched = is.getAmt();
                         doInvoice = true;
@@ -241,7 +238,7 @@ public class InvoiceGenerate extends SvrProcess {
                     MInOutLine[] shipLines = ship.getLines(false);
                     for (int j = 0; j < shipLines.length; j++) {
                         MInOutLine shipLine = shipLines[j];
-                        if (!order.isOrderLine(shipLine.getC_OrderLine_ID())) continue;
+                        if (!order.isOrderLine(shipLine.getOrderLineId())) continue;
                         if (!shipLine.isInvoiced()) createLine(order, ship, shipLine);
                     }
                     m_line += 1000;
@@ -253,7 +250,7 @@ public class InvoiceGenerate extends SvrProcess {
                 for (int i = 0; i < oLines.length; i++) {
                     MOrderLine oLine = oLines[i];
                     BigDecimal toInvoice = oLine.getQtyOrdered().subtract(oLine.getQtyInvoiced());
-                    if (toInvoice.compareTo(Env.ZERO) == 0 && oLine.getM_Product_ID() != 0) continue;
+                    if (toInvoice.compareTo(Env.ZERO) == 0 && oLine.getProductId() != 0) continue;
                     @SuppressWarnings("unused")
                     BigDecimal notInvoicedShipment =
                             oLine.getQtyDelivered().subtract(oLine.getQtyInvoiced());
@@ -269,7 +266,7 @@ public class InvoiceGenerate extends SvrProcess {
                                 null,
                                 "Failed CompleteOrder - " + oLine,
                                 oLine.getTableId(),
-                                oLine.getC_OrderLine_ID()); // Elaine 2008/11/25
+                                oLine.getOrderLineId()); // Elaine 2008/11/25
                         completeOrder = false;
                         break;
                     }
@@ -300,7 +297,7 @@ public class InvoiceGenerate extends SvrProcess {
                                 null,
                                 "Failed: " + order.getInvoiceRule() + " - ToInvoice=" + toInvoice + " - " + oLine,
                                 oLine.getTableId(),
-                                oLine.getC_OrderLine_ID());
+                                oLine.getOrderLineId());
                     }
                 } //	for all order lines
                 if (MOrder.INVOICERULE_Immediate.equals(order.getInvoiceRule())) m_line += 1000;
@@ -317,7 +314,7 @@ public class InvoiceGenerate extends SvrProcess {
                     MInOutLine[] shipLines = ship.getLines(false);
                     for (int j = 0; j < shipLines.length; j++) {
                         MInOutLine shipLine = shipLines[j];
-                        if (!order.isOrderLine(shipLine.getC_OrderLine_ID())) continue;
+                        if (!order.isOrderLine(shipLine.getOrderLineId())) continue;
                         if (!shipLine.isInvoiced()) createLine(order, ship, shipLine);
                     }
                     m_line += 1000;
@@ -368,7 +365,7 @@ public class InvoiceGenerate extends SvrProcess {
             if (!m_invoice.save()) throw new IllegalStateException("Could not create Invoice (s)");
         }
         //	Create Shipment Comment Line
-        if (m_ship == null || m_ship.getM_InOut_ID() != ship.getM_InOut_ID()) {
+        if (m_ship == null || m_ship.getInOutId() != ship.getInOutId()) {
             MDocType dt = MDocType.get(getCtx(), ship.getDocumentTypeId());
             if (m_bp == null || m_bp.getBusinessPartnerId() != ship.getBusinessPartnerId())
                 m_bp = new MBPartner(getCtx(), ship.getBusinessPartnerId());
@@ -479,7 +476,7 @@ public class InvoiceGenerate extends SvrProcess {
                 String amt = format.format(m_invoice.getGrandTotal().doubleValue());
                 String message =
                         Msg.parseTranslation(
-                                getCtx(), "@NotInvoicedAmt@ " + amt + " - " + m_invoice.getC_BPartner().getName());
+                                getCtx(), "@NotInvoicedAmt@ " + amt + " - " + m_invoice.getBPartner().getName());
                 addLog(message);
                 throw new AdempiereException("No savepoint");
 

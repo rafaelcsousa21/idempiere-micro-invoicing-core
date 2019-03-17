@@ -10,7 +10,7 @@ public interface BankStatementMatcherInterface {
      * @param bsl bank statement line
      * @return found matches or null
      */
-    public BankStatementMatchInfo findMatch(MBankStatementLine bsl);
+    BankStatementMatchInfo findMatch(MBankStatementLine bsl);
 
     /**
      * Match Bank Statement Import Line
@@ -18,5 +18,5 @@ public interface BankStatementMatcherInterface {
      * @param ibs bank statement import line
      * @return found matches or null
      */
-    public BankStatementMatchInfo findMatch(X_I_BankStatement ibs);
+    BankStatementMatchInfo findMatch(X_I_BankStatement ibs);
 } //	BankStatementMatcherInterface

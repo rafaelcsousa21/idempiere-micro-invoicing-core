@@ -45,7 +45,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     public MPaySelectionCheck(Properties ctx, int C_PaySelectionCheck_ID) {
         super(ctx, C_PaySelectionCheck_ID);
         if (C_PaySelectionCheck_ID == 0) {
-            //	setC_PaySelection_ID (0);
+            //	setPaySelectionId (0);
             //	setBusinessPartnerId (0);
             //	setPaymentRule (null);
             setPayAmt(Env.ZERO);
@@ -75,7 +75,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     public MPaySelectionCheck(MPaySelectionLine line, String PaymentRule) {
         this(line.getCtx(), 0);
         setClientOrg(line);
-        setC_PaySelection_ID(line.getC_PaySelection_ID());
+        setPaySelectionId(line.getPaySelectionId());
         int C_BPartner_ID = line.getInvoice().getBusinessPartnerId();
         setBusinessPartnerId(C_BPartner_ID);
         //
@@ -84,7 +84,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
             for (int i = 0; i < bas.length; i++) {
                 MBPBankAccount account = bas[i];
                 if (account.isDirectDebit()) {
-                    setC_BP_BankAccount_ID(account.getC_BP_BankAccount_ID());
+                    setBusinessPartnerBankAccountId(account.getBusinessPartnerBankAccountId());
                     break;
                 }
             }
@@ -93,7 +93,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
             for (int i = 0; i < bas.length; i++) {
                 MBPBankAccount account = bas[i];
                 if (account.isDirectDeposit()) {
-                    setC_BP_BankAccount_ID(account.getC_BP_BankAccount_ID());
+                    setBusinessPartnerBankAccountId(account.getBusinessPartnerBankAccountId());
                     break;
                 }
             }
@@ -116,7 +116,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     public MPaySelectionCheck(MPaySelection ps, String PaymentRule) {
         this(ps.getCtx(), 0);
         setClientOrg(ps);
-        setC_PaySelection_ID(ps.getC_PaySelection_ID());
+        setPaySelectionId(ps.getPaySelectionId());
         setPaymentRule(PaymentRule);
     } //	MPaySelectionCheck
 
@@ -157,7 +157,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
                 //
                 if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_Check))
                     payment.setBankCheck(
-                            check.getParent().getC_BankAccount_ID(), false, check.getDocumentNo());
+                            check.getParent().getBankAccountId(), false, check.getDocumentNo());
                 else if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_CreditCard))
                     payment.setTenderType(X_C_Payment.TENDERTYPE_CreditCard);
                 else if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_DirectDeposit)
@@ -176,8 +176,8 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
                 payment.setBusinessPartnerId(check.getBusinessPartnerId());
                 //	Link to Batch
                 if (batch != null) {
-                    if (batch.getC_PaymentBatch_ID() == 0) batch.saveEx(); // 	new
-                    payment.setC_PaymentBatch_ID(batch.getC_PaymentBatch_ID());
+                    if (batch.getPaymentBatchId() == 0) batch.saveEx(); // 	new
+                    payment.setPaymentBatchId(batch.getPaymentBatchId());
                 }
                 //	Link to Invoice
                 MPaySelectionLine[] psls = check.getPaySelectionLines(true);
@@ -237,7 +237,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         MPaySelectionCheck mpsc = MPaySelectionCheck.getOfPayment(ctx, C_Payment_ID);
 
         if (mpsc != null && mpsc.isGeneratedDraft()) {
-            MPaySelection mps = new MPaySelection(ctx, mpsc.getC_PaySelection_ID());
+            MPaySelection mps = new MPaySelection(ctx, mpsc.getPaySelectionId());
             MPaySelectionLine[] mpsl = mps.getLines(true);
 
             // Delete Pay Selection lines
@@ -248,7 +248,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
             if (!mpsc.delete(true)) return false;
 
             // Delete Pay Selection
-            if (!mps.delete(true)) return false;
+            return mps.delete(true);
         }
         return true;
     }
@@ -281,7 +281,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      */
     public MPaySelection getParent() {
         if (m_parent == null)
-            m_parent = new MPaySelection(getCtx(), getC_PaySelection_ID());
+            m_parent = new MPaySelection(getCtx(), getPaySelectionId());
         return m_parent;
     } //	getParent
 
@@ -291,7 +291,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      * @return true if valid
      */
     public boolean isValid() {
-        if (getC_BP_BankAccount_ID() != 0) return true;
+        if (getBusinessPartnerBankAccountId() != 0) return true;
         return !isDirect();
     } //	isValid
 
@@ -334,7 +334,7 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
         if (m_lines != null && !requery) {
             return m_lines;
         }
-        m_lines = MBasePaySelectionCheckKt.getPaySelectionLines(getCtx(), getC_PaySelectionCheck_ID());
+        m_lines = MBasePaySelectionCheckKt.getPaySelectionLines(getCtx(), getPaySelectionCheckId());
         return m_lines;
     } //	getPaySelectionLines
 } //  MPaySelectionCheck

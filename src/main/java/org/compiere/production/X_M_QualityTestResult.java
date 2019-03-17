@@ -60,7 +60,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      *
      * @param M_AttributeSetInstance_ID Product Attribute Set Instance
      */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
@@ -72,7 +72,7 @@ public class X_M_QualityTestResult extends PO implements I_M_QualityTestResult {
      *
      * @param M_QualityTest_ID Quality Test
      */
-    public void setM_QualityTest_ID(int M_QualityTest_ID) {
+    public void setQualityTestId(int M_QualityTest_ID) {
         if (M_QualityTest_ID < 1) setValueNoCheck(COLUMNNAME_M_QualityTest_ID, null);
         else setValueNoCheck(COLUMNNAME_M_QualityTest_ID, Integer.valueOf(M_QualityTest_ID));
     }

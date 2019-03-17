@@ -35,7 +35,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
     public MTimeExpenseLine(Properties ctx, int S_TimeExpenseLine_ID) {
         super(ctx, S_TimeExpenseLine_ID);
         if (S_TimeExpenseLine_ID == 0) {
-            //	setS_TimeExpenseLine_ID (0);		//	PK
+            //	setTimeExpenseLineId (0);		//	PK
             //	setS_TimeExpense_ID (0);			//	Parent
             setQty(Env.ONE);
             setQtyInvoiced(Env.ZERO);
@@ -73,7 +73,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
      */
     public MTimeExpense getParent() {
         if (m_parent == null)
-            m_parent = new MTimeExpense(getCtx(), getS_TimeExpense_ID());
+            m_parent = new MTimeExpense(getCtx(), getTimeExpenseId());
         return m_parent;
     } //	getParent
 
@@ -135,22 +135,22 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
      *
      * @return currency
      */
-    public int getC_Currency_Report_ID() {
+    public int getCurrency_ReportId() {
         if (m_C_Currency_Report_ID != 0) return m_C_Currency_Report_ID;
         //	Get it from header
-        MTimeExpense te = new MTimeExpense(getCtx(), getS_TimeExpense_ID());
+        MTimeExpense te = new MTimeExpense(getCtx(), getTimeExpenseId());
         m_C_Currency_Report_ID = te.getCurrencyId();
         return m_C_Currency_Report_ID;
-    } //	getC_Currency_Report_ID
+    } //	getCurrency_Report_ID
 
     /**
      * Set C_Currency_ID of Report (Price List)
      *
      * @param C_Currency_ID currency
      */
-    protected void setC_Currency_Report_ID(int C_Currency_ID) {
+    protected void setCurrency_ReportId(int C_Currency_ID) {
         m_C_Currency_Report_ID = C_Currency_ID;
-    } //	getC_Currency_Report_ID
+    } //	getCurrency_Report_ID
 
     /**
      * Before Save. Calculate converted amt
@@ -164,15 +164,15 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
             return false;
         }
         //	Calculate Converted Amount
-        if (newRecord || is_ValueChanged("ExpenseAmt") || is_ValueChanged("C_Currency_ID")) {
-            if (getCurrencyId() == getC_Currency_Report_ID()) setConvertedAmt(getExpenseAmt());
+        if (newRecord || isValueChanged("ExpenseAmt") || isValueChanged("C_Currency_ID")) {
+            if (getCurrencyId() == getCurrency_ReportId()) setConvertedAmt(getExpenseAmt());
             else {
                 setConvertedAmt(
                         MConversionRate.convert(
                                 getCtx(),
                                 getExpenseAmt(),
                                 getCurrencyId(),
-                                getC_Currency_Report_ID(),
+                                getCurrency_ReportId(),
                                 getDateExpense(),
                                 0,
                                 getClientId(),
@@ -196,11 +196,11 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
     protected boolean afterSave(boolean newRecord, boolean success) {
         if (success) {
             updateHeader();
-            if (newRecord || is_ValueChanged("S_ResourceAssignment_ID")) {
-                int S_ResourceAssignment_ID = getS_ResourceAssignment_ID();
+            if (newRecord || isValueChanged("S_ResourceAssignment_ID")) {
+                int S_ResourceAssignment_ID = getResourceAssignmentId();
                 int old_S_ResourceAssignment_ID = 0;
                 if (!newRecord) {
-                    Object ii = get_ValueOld("S_ResourceAssignment_ID");
+                    Object ii = getValueOld("S_ResourceAssignment_ID");
                     if (ii instanceof Integer) {
                         old_S_ResourceAssignment_ID = ((Integer) ii).intValue();
                         //	Changed Assignment
@@ -238,7 +238,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
         if (success) {
             updateHeader();
             //
-            Object ii = get_ValueOld("S_ResourceAssignment_ID");
+            Object ii = getValueOld("S_ResourceAssignment_ID");
             if (ii instanceof Integer) {
                 int old_S_ResourceAssignment_ID = ((Integer) ii).intValue();
                 //	Deleted Assignment
@@ -262,7 +262,7 @@ public class MTimeExpenseLine extends X_S_TimeExpenseLine {
                         + "(SELECT SUM(Qty*ConvertedAmt) FROM S_TimeExpenseLine tel "
                         + "WHERE te.S_TimeExpense_ID=tel.S_TimeExpense_ID) "
                         + "WHERE S_TimeExpense_ID="
-                        + getS_TimeExpense_ID();
+                        + getTimeExpenseId();
         @SuppressWarnings("unused")
         int no = executeUpdate(sql);
     } //	updateHeader

@@ -43,7 +43,7 @@ public class MReplenish extends X_M_Replenish {
         final String whereClause = "M_Product_ID=? AND orgId IN (0, ?) ";
         return new Query(ctx, I_M_Replenish.Table_Name, whereClause)
                 .setParameters(M_ProductID, Env.getOrgId(ctx))
-                .setClient_ID()
+                .setClientId()
                 .setOrderBy("AD_Org_ID")
                 .setOnlyActiveRecords(true)
                 .list();

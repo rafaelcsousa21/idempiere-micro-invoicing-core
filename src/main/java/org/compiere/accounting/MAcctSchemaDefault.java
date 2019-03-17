@@ -85,13 +85,13 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
 
     //  IDEMPIERE-362 Hide things that don't work on iDempiere
 
-    //	public int getRealizedLoss_Acct (int C_Currency_ID)
+    //	public int getRealizedLossAccount (int C_Currency_ID)
     //	{
     //		MCurrencyAcct acct = MCurrencyAcct.get (this, C_Currency_ID);
     //		if (acct != null)
-    //			return acct.getRealizedLoss_Acct();
-    //		return super.getRealizedLoss_Acct();
-    //	}	//	getRealizedLoss_Acct
+    //			return acct.getRealizedLossAccount();
+    //		return super.getRealizedLossAccount();
+    //	}	//	getRealizedLossAccount
 
     /**
      * Get Acct Info list

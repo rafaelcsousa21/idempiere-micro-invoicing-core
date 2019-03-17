@@ -6,7 +6,6 @@ import org.compiere.model.IFact;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -54,7 +53,7 @@ public class Doc_BankStatement extends Doc {
         setDateDoc(bs.getStatementDate());
         setDateAcct(bs.getDateAcct());
 
-        m_C_BankAccount_ID = bs.getC_BankAccount_ID();
+        m_C_BankAccount_ID = bs.getBankAccountId();
         //	Amounts
         setAmount(AMTTYPE_Gross, bs.getStatementDifference());
 
@@ -137,7 +136,7 @@ public class Doc_BankStatement extends Doc {
         //  Header -- there may be different currency amounts
 
         FactLine fl = null;
-        int AD_Org_ID = getBank_Org_ID(); // 	Bank Account Org
+        int AD_Org_ID = getBank_OrgId(); // 	Bank Account Org
         //  Lines
         for (int i = 0; i < p_lines.length; i++) {
             DocLine_Bank line = (DocLine_Bank) p_lines[i];
@@ -256,7 +255,7 @@ public class Doc_BankStatement extends Doc {
      *     null || !elementorg.isBalanced()) { // no org element or not need to be balanced return
      *     false; }
      *     <p>if (p_lines.length <= 0) { // no lines return false; }
-     *     <p>int startorg = getBank_Org_ID(); if (startorg == 0) startorg =
+     *     <p>int startorg = getBank_OrgId(); if (startorg == 0) startorg =
      *     p_lines[0]. getOrgId(); // validate if the allocation involves more than one org for
      *     (int i = 0; i < p_lines.length; i++) { if (p_lines[i]. getOrgId() != startorg) return
      *     true; }
@@ -268,7 +267,7 @@ public class Doc_BankStatement extends Doc {
      *
      * @return orgId or 0
      */
-    protected int getBank_Org_ID() {
+    protected int getBank_OrgId() {
         if (m_C_BankAccount_ID == 0) return 0;
         //
         MBankAccount ba = MBankAccount.get(getCtx(), m_C_BankAccount_ID);

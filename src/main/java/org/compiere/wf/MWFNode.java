@@ -150,7 +150,7 @@ public class MWFNode extends X_AD_WF_Node {
      */
     public static MWFNode get(Properties ctx, int AD_WF_Node_ID) {
         String key = Env.getADLanguage(ctx) + "_" + AD_WF_Node_ID;
-        MWFNode retValue = (MWFNode) s_cache.get(key);
+        MWFNode retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MWFNode(ctx, AD_WF_Node_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);
@@ -173,7 +173,7 @@ public class MWFNode extends X_AD_WF_Node {
     private void loadNext() {
         m_next =
                 new Query(getCtx(), MWFNodeNext.Table_Name, "AD_WF_Node_ID=?")
-                        .setParameters(new Object[]{getId()})
+                        .setParameters(getId())
                         .setOnlyActiveRecords(true)
                         .setOrderBy(MWFNodeNext.COLUMNNAME_SeqNo)
                         .list();
@@ -361,11 +361,10 @@ public class MWFNode extends X_AD_WF_Node {
      * @return true if Window/Form/Workbench
      */
     public boolean isUserManual() {
-        if (X_AD_WF_Node.ACTION_UserForm.equals(getAction())
+        /*|| ACTION_UserWorkbench.equals(getAction())*/
+        return X_AD_WF_Node.ACTION_UserForm.equals(getAction())
                 || X_AD_WF_Node.ACTION_UserWindow.equals(getAction())
-                || X_AD_WF_Node.ACTION_UserInfo.equals(getAction())
-            /*|| ACTION_UserWorkbench.equals(getAction())*/) return true;
-        return false;
+                || X_AD_WF_Node.ACTION_UserInfo.equals(getAction());
     } //	isUserManual
 
     /**
@@ -450,7 +449,7 @@ public class MWFNode extends X_AD_WF_Node {
                 return false;
             }
         } else if (action.equals(X_AD_WF_Node.ACTION_EMail)) {
-            if (getR_MailText_ID() == 0) {
+            if (getMailTemplateId() == 0) {
                 log.saveError("FillMandatory", Msg.getElement(getCtx(), "R_MailText_ID"));
                 return false;
             }
@@ -497,7 +496,7 @@ public class MWFNode extends X_AD_WF_Node {
         }
         //		else if (action.equals(ACTION_UserWorkbench))
         //		{
-        //		&& getAD_Workbench_ID() == 0)
+        //		&& getAD_WorkbenchId() == 0)
         //			log.saveError("FillMandatory", Msg.getElement(getCtx(), "AD_Workbench_ID"));
         //			return false;
         //		}

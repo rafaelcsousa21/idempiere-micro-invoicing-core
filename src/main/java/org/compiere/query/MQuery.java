@@ -5,13 +5,13 @@ import org.compiere.orm.MTable;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.KeyNamePair;
 import org.idempiere.common.util.ValueNamePair;
+import software.hsharp.core.util.DBKt;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
-import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.convertString;
 
 /**
  * Query Descriptor. Maintains restrictions (WHERE clause)
@@ -230,7 +230,7 @@ public class MQuery implements Serializable {
 
         sb.append('(');
         for (int i = 0; i < m_list.size(); i++) {
-            Restriction r = (Restriction) m_list.get(i);
+            Restriction r = m_list.get(i);
             if (i != 0) sb.append(r.andCondition ? " AND " : " OR ");
             for (; currentDepth < r.joinDepth; currentDepth++) {
                 sb.append('(');
@@ -450,10 +450,10 @@ class Restriction implements Serializable {
             if (pos != -1
                     && end != -1
                     && !(pos - 1 == ColumnName.indexOf('(') && ColumnName.trim().startsWith("(")))
-                sb.append(ColumnName.substring(0, pos))
+                sb.append(ColumnName, 0, pos)
                         .append(tableName)
                         .append(".")
-                        .append(ColumnName.substring(pos, end))
+                        .append(ColumnName, pos, end)
                         .append(ColumnName.substring(end));
             else {
                 int selectIndex = ColumnName.toLowerCase().indexOf("select ");
@@ -468,16 +468,16 @@ class Restriction implements Serializable {
 
         sb.append(Operator);
         if (!(Operator.equals(MQuery.NULL) || Operator.equals(MQuery.NOT_NULL))) {
-            if (Code instanceof String) sb.append(TO_STRING(Code.toString()));
-            else if (Code instanceof Timestamp) sb.append(TO_DATE((Timestamp) Code, false));
+            if (Code instanceof String) sb.append(convertString(Code.toString()));
+            else if (Code instanceof Timestamp) sb.append(DBKt.convertDate((Timestamp) Code, false));
             else sb.append(Code);
 
             //	Between
             //	if (Code_to != null && InfoDisplay_to != null)
             if (MQuery.BETWEEN.equals(Operator)) {
                 sb.append(" AND ");
-                if (Code_to instanceof String) sb.append(TO_STRING(Code_to.toString()));
-                else if (Code_to instanceof Timestamp) sb.append(TO_DATE((Timestamp) Code_to, false));
+                if (Code_to instanceof String) sb.append(convertString(Code_to.toString()));
+                else if (Code_to instanceof Timestamp) sb.append(DBKt.convertDate((Timestamp) Code_to, false));
                 else sb.append(Code_to);
             }
         }

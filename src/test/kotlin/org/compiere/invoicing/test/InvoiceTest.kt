@@ -108,7 +108,7 @@ class InvoiceTest : BaseComponentTest() {
                 val priceListVersion = MPriceListVersion(salesPriceList)
                 priceListVersion.name = salesPriceList.name
                 priceListVersion.validFrom = always
-                priceListVersion.setM_DiscountSchema_ID(MDiscountSchema(ctx, 1000000).id)
+                priceListVersion.setDiscountSchemaId(MDiscountSchema(ctx, 1000000).id)
                 priceListVersion.save()
 
                 val check2: MPriceListVersion = getById(priceListVersion.id, I_M_PriceList_Version.Table_Name)
@@ -144,7 +144,7 @@ class InvoiceTest : BaseComponentTest() {
             receiptLine.setOrgId(org.orgId)
             receiptLine.product = product
             receiptLine.movementQty = 1000000.toBigDecimal()
-            receiptLine.m_Locator_ID = MLocator(ctx, MLocator(ctx, 1000000).id).id
+            receiptLine.locatorId = MLocator(ctx, MLocator(ctx, 1000000).id).id
             receiptLine.save()
             val line = getById<MInOutLine>(receiptLine.id, I_M_InOutLine.Table_Name)
             assertNotNull(line)
@@ -213,7 +213,7 @@ class InvoiceTest : BaseComponentTest() {
 
         val orderLine = MOrderLine(order)
         orderLine.product = product
-        orderLine.c_Tax_ID = tax.c_Tax_ID
+        orderLine.taxId = tax.taxId
         val qty = QTY
         orderLine.setQty(qty.toBigDecimal())
         orderLine.save()
@@ -228,7 +228,7 @@ class InvoiceTest : BaseComponentTest() {
                 val payment = MPayment(ctx, 0)
                 payment.businessPartnerId = it.businessPartnerId
                 payment.setOrgId(org.orgId)
-                payment.c_BankAccount_ID = bankAccount.id
+                payment.bankAccountId = bankAccount.id
                 payment.setCurrencyId(EUR) // EUR
                 payment.payAmt = 1.10.toBigDecimal()
                 payment.save()
@@ -264,7 +264,7 @@ class InvoiceTest : BaseComponentTest() {
         val lines = invoice.getLines(false)
         assertEquals(1, lines.count())
         val line = lines.first()
-        assertEquals(product_id, line.m_Product_ID)
+        assertEquals(product_id, line.productId)
         assertEquals(QTY.toBigDecimal(), line.qtyInvoiced)
 
         val modelFactory: IModelFactory = DefaultModelFactory()
@@ -321,8 +321,8 @@ class InvoiceTest : BaseComponentTest() {
             bomProduct.save()
             val innerProduct = MProductBOM(ctx, 0)
             innerProduct.bomQty = 10.toBigDecimal()
-            innerProduct.m_ProductBOM_ID = testProduct.id
-            innerProduct.m_Product_ID = bomProduct.id
+            innerProduct.bomProductId = testProduct.id
+            innerProduct.productId = bomProduct.id
             innerProduct.line = 10
             innerProduct.save()
 
@@ -332,15 +332,15 @@ class InvoiceTest : BaseComponentTest() {
             val productPrice = MProductPrice(currentPriceListVersion, bomProduct.id, price, price, price)
             productPrice.save()
 
-            createInvoiceFromOrder(1000033, bomProduct.m_Product_ID, BigDecimal("12.10")) {
+            createInvoiceFromOrder(1000033, bomProduct.productId, BigDecimal("12.10")) {
                 val orderLine = it.lines.first()
                 val production = MProduction(orderLine)
                 production.setOrgId(1000000)
-                production.m_Product_ID =
-                    orderLine.m_Product_ID // TODO: Why? Should not this be done automatically in the constructor?
+                production.productId =
+                    orderLine.productId // TODO: Why? Should not this be done automatically in the constructor?
                 production.productionQty =
                     orderLine.qtyOrdered // TODO: Why? Should not this be done automatically in the constructor?
-                production.m_Locator_ID = 1000000
+                production.locatorId = 1000000
                 production.save()
 
                 val productionCreate = ProductionCreate(m_production = production)

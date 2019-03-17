@@ -8,7 +8,6 @@ import software.hsharp.core.util.forUpdate
 import software.hsharp.core.util.queryOf
 import java.sql.Timestamp
 import java.util.Properties
-import kotlin.collections.ArrayList
 import kotlin.collections.emptyList
 import kotlin.collections.listOf
 import kotlin.collections.plus
@@ -38,8 +37,7 @@ fun getStorageInfoForWarehouseOrLocator(
     FiFo: Boolean,
     positiveOnly: Boolean,
     M_Locator_ID: Int,
-    lockForUpdate: Boolean,
-    timeout: Int
+    lockForUpdate: Boolean
 ): Array<MStorageOnHand> {
     if (M_Warehouse_ID == 0 && M_Locator_ID == 0 || M_Product_ID == 0)
         return emptyArray()
@@ -47,7 +45,6 @@ fun getStorageInfoForWarehouseOrLocator(
     var allAttributeInstances = false
     if (M_AttributeSetInstance_ID == 0) allAttributeInstances = true
 
-    val list = ArrayList<MStorageOnHand>()
     // 	Specific Attribute Set Instance
     var sql = ("SELECT s.M_Product_ID,s.M_Locator_ID,s.M_AttributeSetInstance_ID," +
             "s.AD_Client_ID,s.AD_Org_ID,s.IsActive,s.Created,s.CreatedBy,s.Updated,s.UpdatedBy," +
@@ -153,13 +150,11 @@ fun getStorageInfoForWarehouseOrLocatorNegative(
     minGuaranteeDate: Timestamp?,
     FiFo: Boolean,
     M_Locator_ID: Int,
-    lockForUpdate: Boolean,
-    timeout: Int
+    lockForUpdate: Boolean
 ): Array<MStorageOnHand> {
     if (M_Warehouse_ID == 0 && M_Locator_ID == 0 || M_Product_ID == 0)
         return emptyArray()
 
-    val list = ArrayList<MStorageOnHand>()
     var sql = ("SELECT s.M_Product_ID,s.M_Locator_ID,s.M_AttributeSetInstance_ID," +
             "s.AD_Client_ID,s.AD_Org_ID,s.IsActive,s.Created,s.CreatedBy,s.Updated,s.UpdatedBy," +
             "s.QtyOnHand,s.DateLastInventory,s.M_StorageOnHand_UU,s.DateMaterialPolicy " +

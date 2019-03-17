@@ -34,8 +34,8 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
     public MInOutLineConfirm(Properties ctx, int M_InOutLineConfirm_ID) {
         super(ctx, M_InOutLineConfirm_ID);
         if (M_InOutLineConfirm_ID == 0) {
-            //	setM_InOutConfirm_ID (0);
-            //	setM_InOutLine_ID (0);
+            //	setInOutConfirmId (0);
+            //	setInOutLineId (0);
             //	setTargetQty (Env.ZERO);
             //	setConfirmedQty (Env.ZERO);
             setDifferenceQty(Env.ZERO);
@@ -63,7 +63,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
     public MInOutLineConfirm(MInOutConfirm header) {
         this(header.getCtx(), 0);
         setClientOrg(header);
-        setM_InOutConfirm_ID(header.getM_InOutConfirm_ID());
+        setInOutConfirmId(header.getInOutConfirmId());
     } //	MInOutLineConfirm
 
     /**
@@ -72,7 +72,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      * @param line shipment line
      */
     public void setInOutLine(MInOutLine line) {
-        setM_InOutLine_ID(line.getM_InOutLine_ID());
+        setInOutLineId(line.getInOutLineId());
         setTargetQty(line.getMovementQty()); // 	Confirmations in Storage UOM
         setConfirmedQty(getTargetQty()); // 	suggestion
         m_line = line;
@@ -84,7 +84,7 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
      * @return line
      */
     public MInOutLine getLine() {
-        if (m_line == null) m_line = new MInOutLine(getCtx(), getM_InOutLine_ID());
+        if (m_line == null) m_line = new MInOutLine(getCtx(), getInOutLineId());
         return m_line;
     } //	getLine
 

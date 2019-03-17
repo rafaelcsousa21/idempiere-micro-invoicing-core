@@ -52,7 +52,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
      *
      * @return Deposit Batch
      */
-    public int getC_DepositBatch_ID() {
+    public int getDepositBatchId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DepositBatch_ID);
         if (ii == null) return 0;
         return ii;
@@ -63,7 +63,7 @@ public class X_C_DepositBatchLine extends PO implements I_C_DepositBatchLine {
      *
      * @param C_DepositBatch_ID Deposit Batch
      */
-    public void setC_DepositBatch_ID(int C_DepositBatch_ID) {
+    public void setDepositBatchId(int C_DepositBatch_ID) {
         if (C_DepositBatch_ID < 1) setValueNoCheck(COLUMNNAME_C_DepositBatch_ID, null);
         else setValueNoCheck(COLUMNNAME_C_DepositBatch_ID, Integer.valueOf(C_DepositBatch_ID));
     }

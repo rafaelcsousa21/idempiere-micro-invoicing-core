@@ -135,9 +135,9 @@ public final class DocTax {
      *
      * @return tax id
      */
-    public int getC_Tax_ID() {
+    public int getTaxId() {
         return m_C_Tax_ID;
-    } //	getC_Tax_ID
+    } //	getTaxId
 
     /**
      * Add to Included Tax

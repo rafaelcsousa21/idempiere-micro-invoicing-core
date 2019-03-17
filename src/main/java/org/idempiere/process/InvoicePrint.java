@@ -19,12 +19,12 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
 import org.compiere.wf.MMailText;
 import org.idempiere.common.util.AdempiereUserError;
+import software.hsharp.core.util.DBKt;
 
 import java.sql.Timestamp;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
-import static software.hsharp.core.util.DBKt.TO_STRING;
+import static software.hsharp.core.util.DBKt.convertString;
 
 /**
  * Print Invoices on Paper or send PDFs
@@ -56,17 +56,17 @@ public class InvoicePrint extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameter_To() == null) ;
+            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
             else if (name.equals("DateInvoiced")) {
                 m_dateInvoiced_From = ((Timestamp) para[i].getParameter());
-                m_dateInvoiced_To = ((Timestamp) para[i].getParameter_To());
+                m_dateInvoiced_To = ((Timestamp) para[i].getParameterTo());
             } else if (name.equals("EMailPDF")) p_EMailPDF = "Y".equals(para[i].getParameter());
             else if (name.equals("R_MailText_ID")) p_R_MailText_ID = para[i].getParameterAsInt();
             else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
             else if (name.equals("C_Invoice_ID")) m_C_Invoice_ID = para[i].getParameterAsInt();
             else if (name.equals("DocumentNo")) {
                 m_DocumentNo_From = (String) para[i].getParameter();
-                m_DocumentNo_To = (String) para[i].getParameter_To();
+                m_DocumentNo_To = (String) para[i].getParameterTo();
             } else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
         if (m_DocumentNo_From != null && m_DocumentNo_From.length() == 0) m_DocumentNo_From = null;
@@ -146,29 +146,29 @@ public class InvoicePrint extends SvrProcess {
             if (m_dateInvoiced_From != null && m_dateInvoiced_To != null) {
                 if (needAnd) sql.append(" AND ");
                 sql.append("TRUNC(i.DateInvoiced) BETWEEN ")
-                        .append(TO_DATE(m_dateInvoiced_From, true))
+                        .append(DBKt.convertDate(m_dateInvoiced_From, true))
                         .append(" AND ")
-                        .append(TO_DATE(m_dateInvoiced_To, true));
+                        .append(DBKt.convertDate(m_dateInvoiced_To, true));
                 needAnd = true;
             } else if (m_dateInvoiced_From != null) {
                 if (needAnd) sql.append(" AND ");
-                sql.append("TRUNC(i.DateInvoiced) >= ").append(TO_DATE(m_dateInvoiced_From, true));
+                sql.append("TRUNC(i.DateInvoiced) >= ").append(DBKt.convertDate(m_dateInvoiced_From, true));
                 needAnd = true;
             } else if (m_dateInvoiced_To != null) {
                 if (needAnd) sql.append(" AND ");
-                sql.append("TRUNC(i.DateInvoiced) <= ").append(TO_DATE(m_dateInvoiced_To, true));
+                sql.append("TRUNC(i.DateInvoiced) <= ").append(DBKt.convertDate(m_dateInvoiced_To, true));
                 needAnd = true;
             } else if (m_DocumentNo_From != null && m_DocumentNo_To != null) {
                 if (needAnd) sql.append(" AND ");
                 sql.append("i.DocumentNo BETWEEN ")
-                        .append(TO_STRING(m_DocumentNo_From))
+                        .append(convertString(m_DocumentNo_From))
                         .append(" AND ")
-                        .append(TO_STRING(m_DocumentNo_To));
+                        .append(convertString(m_DocumentNo_To));
             } else if (m_DocumentNo_From != null) {
                 if (needAnd) sql.append(" AND ");
                 if (m_DocumentNo_From.indexOf('%') == -1)
-                    sql.append("i.DocumentNo >= ").append(TO_STRING(m_DocumentNo_From));
-                else sql.append("i.DocumentNo LIKE ").append(TO_STRING(m_DocumentNo_From));
+                    sql.append("i.DocumentNo >= ").append(convertString(m_DocumentNo_From));
+                else sql.append("i.DocumentNo LIKE ").append(convertString(m_DocumentNo_From));
             }
 
             if (p_EMailPDF) {

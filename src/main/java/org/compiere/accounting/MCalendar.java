@@ -68,7 +68,7 @@ public class MCalendar extends X_C_Calendar {
      */
     public static MCalendar get(Properties ctx, int C_Calendar_ID) {
         Integer key = C_Calendar_ID;
-        MCalendar retValue = (MCalendar) s_cache.get(key);
+        MCalendar retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MCalendar(ctx, C_Calendar_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);

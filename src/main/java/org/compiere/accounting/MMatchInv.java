@@ -58,10 +58,10 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
         super(ctx, M_MatchInv_ID);
         if (M_MatchInv_ID == 0) {
             //	setDateTrx (new Timestamp(System.currentTimeMillis()));
-            //	setC_InvoiceLine_ID (0);
-            //	setM_InOutLine_ID (0);
-            //	setM_Product_ID (0);
-            setM_AttributeSetInstance_ID(0);
+            //	setInvoiceLineId (0);
+            //	setInOutLineId (0);
+            //	setProductId (0);
+            setAttributeSetInstanceId(0);
             //	setQty (Env.ZERO);
             setPosted(false);
             setProcessed(false);
@@ -89,11 +89,11 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     public MMatchInv(I_C_InvoiceLine iLine, Timestamp dateTrx, BigDecimal qty) {
         this(iLine.getCtx(), 0);
         setClientOrg(iLine);
-        setC_InvoiceLine_ID(iLine.getC_InvoiceLine_ID());
-        setM_InOutLine_ID(iLine.getM_InOutLine_ID());
+        setInvoiceLineId(iLine.getInvoiceLineId());
+        setInOutLineId(iLine.getInOutLineId());
         if (dateTrx != null) setDateTrx(dateTrx);
-        setM_Product_ID(iLine.getM_Product_ID());
-        setM_AttributeSetInstance_ID(iLine.getMAttributeSetInstance_ID());
+        setProductId(iLine.getProductId());
+        setAttributeSetInstanceId(iLine.getAttributeSetInstanceId());
         setQty(qty);
         setProcessed(true); // 	auto
     } //	MMatchInv
@@ -216,9 +216,9 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
             if (ts == null) ts = getDateTrx();
             setDateAcct(ts);
         }
-        if (getMAttributeSetInstance_ID() == 0 && getM_InOutLine_ID() != 0) {
-            MInOutLine iol = new MInOutLine(getCtx(), getM_InOutLine_ID());
-            setM_AttributeSetInstance_ID(iol.getMAttributeSetInstance_ID());
+        if (getAttributeSetInstanceId() == 0 && getInOutLineId() != 0) {
+            MInOutLine iol = new MInOutLine(getCtx(), getInOutLineId());
+            setAttributeSetInstanceId(iol.getAttributeSetInstanceId());
         }
         return true;
     } //	beforeSave
@@ -227,12 +227,12 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
     protected boolean afterSave(boolean newRecord, boolean success) {
         if (!success) return false;
 
-        if (getM_InOutLine_ID() > 0) {
-            MInOutLine line = new MInOutLine(getCtx(), getM_InOutLine_ID());
+        if (getInOutLineId() > 0) {
+            MInOutLine line = new MInOutLine(getCtx(), getInOutLineId());
             BigDecimal matchedQty =
                     getSQLValueBD(
                             "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE M_InOutLine_ID=?",
-                            getM_InOutLine_ID());
+                            getInOutLineId());
             if (matchedQty != null && matchedQty.compareTo(line.getMovementQty()) > 0) {
                 throw new IllegalStateException(
                         "Total matched qty > movement qty. MatchedQty="
@@ -244,12 +244,12 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
             }
         }
 
-        if (getC_InvoiceLine_ID() > 0) {
-            MInvoiceLine line = new MInvoiceLine(getCtx(), getC_InvoiceLine_ID());
+        if (getInvoiceLineId() > 0) {
+            MInvoiceLine line = new MInvoiceLine(getCtx(), getInvoiceLineId());
             BigDecimal matchedQty =
                     getSQLValueBD(
                             "SELECT Coalesce(SUM(Qty),0) FROM M_MatchInv WHERE C_InvoiceLine_ID=?",
-                            getC_InvoiceLine_ID());
+                            getInvoiceLineId());
             if (matchedQty != null && matchedQty.compareTo(line.getQtyInvoiced()) > 0) {
                 throw new IllegalStateException(
                         "Total matched qty > invoiced qty. MatchedQty="
@@ -274,14 +274,14 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
                         + "FROM C_InvoiceLine il"
                         + " INNER JOIN C_Invoice i ON (i.C_Invoice_ID=il.C_Invoice_ID) "
                         + "WHERE C_InvoiceLine_ID=?";
-        Timestamp invoiceDate = getSQLValueTS(sql, getC_InvoiceLine_ID());
+        Timestamp invoiceDate = getSQLValueTS(sql, getInvoiceLineId());
         //
         sql =
                 "SELECT io.DateAcct "
                         + "FROM M_InOutLine iol"
                         + " INNER JOIN M_InOut io ON (io.M_InOut_ID=iol.M_InOut_ID) "
                         + "WHERE iol.M_InOutLine_ID=?";
-        Timestamp shipDate = getSQLValueTS(sql, getM_InOutLine_ID());
+        Timestamp shipDate = getSQLValueTS(sql, getInOutLineId());
         //
         if (invoiceDate == null) return shipDate;
         if (shipDate == null) return invoiceDate;
@@ -333,8 +333,8 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
                     MCostDetail.get(
                             getCtx(),
                             "M_MatchInv_ID=?",
-                            getM_MatchInv_ID(),
-                            getMAttributeSetInstance_ID(),
+                            getMatchInvoiceId(),
+                            getAttributeSetInstanceId(),
                             as.getAccountingSchemaId());
             if (cd != null) {
                 cd.deleteEx(true);
@@ -353,7 +353,7 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
      * @throws Exception
      */
     public boolean reverse(Timestamp reversalDate) {
-        if (this.isProcessed() && this.getReversal_ID() == 0) {
+        if (this.isProcessed() && this.getReversalId() == 0) {
             MMatchInv reversal = new MMatchInv(getCtx(), 0);
             PO.copyValues(this, reversal);
             reversal.setOrgId(this.getOrgId());
@@ -363,10 +363,10 @@ public class MMatchInv extends X_M_MatchInv implements IPODoc {
             reversal.setDateTrx(reversalDate);
             reversal.setValueNoCheck("DocumentNo", null);
             reversal.setPosted(false);
-            reversal.setReversal_ID(getM_MatchInv_ID());
+            reversal.setReversalId(getMatchInvoiceId());
             reversal.saveEx();
             this.setDescription("(" + reversal.getDocumentNo() + "<-)");
-            this.setReversal_ID(reversal.getM_MatchInv_ID());
+            this.setReversalId(reversal.getMatchInvoiceId());
             this.saveEx();
             return true;
         }

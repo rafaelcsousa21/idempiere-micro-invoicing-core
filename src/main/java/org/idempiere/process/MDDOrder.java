@@ -247,7 +247,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         //
         List<MDDOrderLine> list =
                 new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClauseFinal.toString())
-                        .setParameters(getDD_Order_ID())
+                        .setParameters(getDD_OrderId())
                         .setOrderBy(orderClause)
                         .list();
         return list.toArray(new MDDOrderLine[list.size()]);
@@ -299,7 +299,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         super.setProcessed(processed);
         if (getId() == 0) return;
         String set =
-                "SET Processed='" + (processed ? "Y" : "N") + "' WHERE DD_Order_ID=" + getDD_Order_ID();
+                "SET Processed='" + (processed ? "Y" : "N") + "' WHERE DD_Order_ID=" + getDD_OrderId();
         int noLine = executeUpdate("UPDATE DD_OrderLine " + set);
         m_lines = null;
         if (log.isLoggable(Level.FINE)) log.fine("setProcessed - " + processed + " - Lines=" + noLine);
@@ -338,7 +338,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
             }
         }
         //	Reservations in Warehouse
-        if (!newRecord && is_ValueChanged("M_Warehouse_ID")) {
+        if (!newRecord && isValueChanged("M_Warehouse_ID")) {
             MDDOrderLine[] lines = getLines(false, null);
             for (int i = 0; i < lines.length; i++) {
                 if (!lines[i].canChangeWarehouse()) return false;
@@ -370,14 +370,14 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         if (!success || newRecord) return success;
 
         //	Propagate Description changes
-        if (is_ValueChanged("Description") || is_ValueChanged("POReference")) {
+        if (isValueChanged("Description") || isValueChanged("POReference")) {
             String sql =
                     "UPDATE M_Movement i"
                             + " SET (Description,POReference)="
                             + "(SELECT Description,POReference "
                             + "FROM DD_Order o WHERE i.DD_Order_ID=o.DD_Order_ID) "
                             + "WHERE DocStatus NOT IN ('RE','CL') AND DD_Order_ID="
-                            + getDD_Order_ID();
+                            + getDD_OrderId();
             int no = executeUpdate(sql);
             if (log.isLoggable(Level.FINE)) log.fine("Description -> #" + no);
         }
@@ -394,11 +394,11 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
     } //	afterSave
 
     private void afterSaveSync(String columnName) {
-        if (is_ValueChanged(columnName)) {
+        if (isValueChanged(columnName)) {
             final String whereClause = I_DD_Order.COLUMNNAME_DD_Order_ID + "=?";
             List<MDDOrderLine> lines =
                     new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClause)
-                            .setParameters(getDD_Order_ID())
+                            .setParameters(getDD_OrderId())
                             .list();
 
             for (MDDOrderLine line : lines) {
@@ -518,7 +518,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                         + mandatoryType
                         + " AND ol.M_AttributeSetInstance_ID IS NULL"
                         + " AND ol.DD_Order_ID=?";
-        int no = getSQLValue(sql, getDD_Order_ID());
+        int no = getSQLValue(sql, getDD_OrderId());
         if (no != 0) {
             m_processMsg = "@LinesWithoutProductAttribute@ (" + no + ")";
             return DocAction.Companion.getSTATUS_Invalid();
@@ -547,8 +547,8 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         StringBuilder errors = new StringBuilder();
         //	Always check and (un) Reserve Inventory
         for (MDDOrderLine line : lines) {
-            MLocator locator_from = MLocator.get(getCtx(), line.getM_Locator_ID());
-            MLocator locator_to = MLocator.get(getCtx(), line.getM_LocatorTo_ID());
+            MLocator locator_from = MLocator.get(getCtx(), line.getLocatorId());
+            MLocator locator_to = MLocator.get(getCtx(), line.getLocatorToId());
             BigDecimal reserved_ordered =
                     line.getQtyOrdered().subtract(line.getQtyReserved()).subtract(line.getQtyDelivered());
             if (reserved_ordered.signum() == 0) {
@@ -580,9 +580,9 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                         if (!MStorageOnHand.add(
                                 getCtx(),
                                 locator_to.getWarehouseId(),
-                                locator_to.getM_Locator_ID(),
-                                line.getM_Product_ID(),
-                                line.getMAttributeSetInstance_ID(),
+                                locator_to.getLocatorId(),
+                                line.getProductId(),
+                                line.getAttributeSetInstanceId(),
                                 Env.ZERO,
                                 null,
                                 null)) {
@@ -592,9 +592,9 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                         if (!MStorageOnHand.add(
                                 getCtx(),
                                 locator_from.getWarehouseId(),
-                                locator_from.getM_Locator_ID(),
-                                line.getM_Product_ID(),
-                                line.getMAttributeSetInstanceTo_ID(),
+                                locator_from.getLocatorId(),
+                                line.getProductId(),
+                                line.getMAttributeSetInstanceToId(),
                                 Env.ZERO,
                                 null,
                                 null)) {
@@ -848,8 +848,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -947,7 +946,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getSalesRepresentativeId();
     } //	getDoc_User_ID
 

@@ -52,7 +52,7 @@ public class MRequestUpdate extends X_R_RequestUpdate {
     public MRequestUpdate(MRequest parent) {
         super(parent.getCtx(), 0);
         setClientOrg(parent);
-        setR_Request_ID(parent.getR_Request_ID());
+        setRequestId(parent.getRequestId());
         //
         for (final MColumn col : MTable.get(getCtx(), I_R_RequestUpdate.Table_ID).getColumns(false)) {
             if (col.isStandardColumn()

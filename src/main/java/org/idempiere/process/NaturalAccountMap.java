@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -56,7 +57,7 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
         try {
             //  see FileImport
             BufferedReader in =
-                    new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"), 10240);
+                    new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8), 10240);
             //	not safe see p108 Network pgm
             String errMsg = "";
 
@@ -185,7 +186,7 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
 
         try {
             //	Try to find - allows to use same natural account for multiple default accounts
-            MElementValue na = (MElementValue) m_valueMap.get(Value);
+            MElementValue na = m_valueMap.get(Value);
             if (na == null) {
                 //  Create Account - save later
                 na =
@@ -239,7 +240,7 @@ public final class NaturalAccountMap<K, V> extends CCache<K, V> {
      * @param key key
      * @return 0 if error
      */
-    public int getC_ElementValue_ID(String key) {
+    public int getElementValueId(String key) {
         MElementValue na = (MElementValue) this.get(key);
         if (na == null) return 0;
         return na.getElementValueId();

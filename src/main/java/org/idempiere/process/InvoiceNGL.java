@@ -14,13 +14,13 @@ import org.compiere.orm.Query;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
+import software.hsharp.core.util.DBKt;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 
-import static software.hsharp.core.util.DBKt.TO_DATE;
 import static software.hsharp.core.util.DBKt.executeUpdate;
 
 /**
@@ -76,7 +76,7 @@ public class InvoiceNGL extends SvrProcess {
             else if (name.equals("DateReval")) p_DateReval = (Timestamp) para[i].getParameter();
             else if (name.equals("APAR")) p_APAR = (String) para[i].getParameter();
             else if (name.equals("IsAllCurrencies"))
-                p_IsAllCurrencies = "Y".equals((String) para[i].getParameter());
+                p_IsAllCurrencies = "Y".equals(para[i].getParameter());
             else if (name.equals("C_Currency_ID")) p_C_Currency_ID = para[i].getParameterAsInt();
             else if (name.equals("C_DocTypeReval_ID")) p_C_DocTypeReval_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
@@ -113,12 +113,12 @@ public class InvoiceNGL extends SvrProcess {
 
         //	Delete - just to be sure
         StringBuilder sql =
-                new StringBuilder("DELETE T_InvoiceGL WHERE AD_PInstance_ID=").append(getAD_PInstance_ID());
+                new StringBuilder("DELETE T_InvoiceGL WHERE AD_PInstance_ID=").append(getAD_PInstanceId());
         int no = executeUpdate(sql.toString());
         if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Deleted #" + no);
 
         //	Insert Trx
-        String dateStr = TO_DATE(p_DateReval, true);
+        String dateStr = DBKt.convertDate(p_DateReval, true);
         sql =
                 new StringBuilder(
                         "INSERT INTO T_InvoiceGL (AD_Client_ID, AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
@@ -129,7 +129,7 @@ public class InvoiceNGL extends SvrProcess {
                         //	--
                         .append(
                                 "SELECT i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.Created,i.CreatedBy, i.Updated,i.UpdatedBy,")
-                        .append(getAD_PInstance_ID())
+                        .append(getAD_PInstanceId())
                         .append(", i.C_Invoice_ID, i.GrandTotal, invoiceOpen(i.C_Invoice_ID, 0), ")
                         .append(" fa.Fact_Acct_ID, fa.AmtSourceDr-fa.AmtSourceCr, fa.AmtAcctDr-fa.AmtAcctCr, ")
                         //	AmtRevalDr, AmtRevalCr,
@@ -187,7 +187,7 @@ public class InvoiceNGL extends SvrProcess {
                         .append("FROM Fact_Acct fa ")
                         .append("WHERE gl.Fact_Acct_ID=fa.Fact_Acct_ID) ")
                         .append("WHERE AD_PInstance_ID=")
-                        .append(getAD_PInstance_ID());
+                        .append(getAD_PInstanceId());
         int noT = executeUpdate(sql.toString());
         if (noT > 0) if (log.isLoggable(Level.CONFIG)) log.config("Difference #" + noT);
 
@@ -195,14 +195,14 @@ public class InvoiceNGL extends SvrProcess {
         sql =
                 new StringBuilder("UPDATE T_InvoiceGL SET Percent = 100 ")
                         .append("WHERE GrandTotal=OpenAmt AND AD_PInstance_ID=")
-                        .append(getAD_PInstance_ID());
+                        .append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Not Paid #" + no);
 
         sql =
                 new StringBuilder("UPDATE T_InvoiceGL SET Percent = ROUND(OpenAmt*100/GrandTotal,6) ")
                         .append("WHERE GrandTotal<>OpenAmt AND GrandTotal <> 0 AND AD_PInstance_ID=")
-                        .append(getAD_PInstance_ID());
+                        .append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Partial Paid #" + no);
 
@@ -212,7 +212,7 @@ public class InvoiceNGL extends SvrProcess {
                         .append(" AmtRevalDrDiff = AmtRevalDrDiff * Percent/100,")
                         .append(" AmtRevalCrDiff = AmtRevalCrDiff * Percent/100 ")
                         .append("WHERE Percent <> 100 AND AD_PInstance_ID=")
-                        .append(getAD_PInstance_ID());
+                        .append(getAD_PInstanceId());
         no = executeUpdate(sql.toString());
         if (no > 0) if (log.isLoggable(Level.CONFIG)) log.config("Partial Calc #" + no);
 
@@ -236,7 +236,7 @@ public class InvoiceNGL extends SvrProcess {
         final String whereClause = "AD_PInstance_ID=?";
         List<X_T_InvoiceGL> list =
                 new Query(getCtx(), X_T_InvoiceGL.Table_Name, whereClause)
-                        .setParameters(getAD_PInstance_ID())
+                        .setParameters(getAD_PInstanceId())
                         .setOrderBy("AD_Org_ID")
                         .list();
         // FR: [ 2214883 ] Remove SQL code and Replace for Query
@@ -258,9 +258,9 @@ public class InvoiceNGL extends SvrProcess {
         journal.setDateDoc(p_DateReval);
         journal.setDateAcct(p_DateReval); // sets the period too
         journal.setCurrencyId(as.getCurrencyId());
-        journal.setC_AcctSchema_ID(as.getAccountingSchemaId());
+        journal.setAccountingSchemaId(as.getAccountingSchemaId());
         journal.setConversionTypeId(p_C_ConversionTypeReval_ID);
-        journal.setGL_Category_ID(cat.getGL_Category_ID());
+        journal.setGLCategoryId(cat.getGLCategoryId());
         journal.setDescription(getName()); // updated below
         if (!journal.save()) return " - Could not create Journal";
         //
@@ -296,9 +296,9 @@ public class InvoiceNGL extends SvrProcess {
             line.setLine((i + 1) * 10);
             line.setDescription(invoice.getSummary());
             //
-            MFactAcct fa = new MFactAcct(getCtx(), gl.getFact_Acct_ID());
+            MFactAcct fa = new MFactAcct(getCtx(), gl.getFactAcctId());
             MAccount acct = MAccount.get(fa);
-            line.setC_ValidCombination_ID(acct);
+            line.setValidCombinationId(acct);
             BigDecimal dr = gl.getAmtRevalDrDiff();
             BigDecimal cr = gl.getAmtRevalCrDiff();
             // Check if acct.IsActiva to differentiate gain and loss ->
@@ -342,12 +342,12 @@ public class InvoiceNGL extends SvrProcess {
         StringBuilder msgreturn =
                 new StringBuilder(" - ").append(journal.getDocumentNo()).append(" #").append(list.size());
         addLog(
-                journal.getGL_Journal_ID(),
+                journal.getGLJournalId(),
                 null,
                 null,
                 msgreturn.toString(),
                 MJournal.Table_ID,
-                journal.getGL_Journal_ID());
+                journal.getGLJournalId());
         return "OK";
     } //	createGLJournal
 
@@ -373,31 +373,31 @@ public class InvoiceNGL extends SvrProcess {
         if (gainTotal.signum() != 0) {
             MJournalLine line = new MJournalLine(journal);
             line.setLine(lineNo + 1);
-            MAccount base = MAccount.get(getCtx(), asDefaultAccts.getUnrealizedGain_Acct());
+            MAccount base = MAccount.get(getCtx(), asDefaultAccts.getUnrealizedGainAccount());
             MAccount acct =
                     MAccount.get(
                             getCtx(),
                             asDefaultAccts.getClientId(),
                             AD_Org_ID,
                             asDefaultAccts.getAccountingSchemaId(),
-                            base.getAccount_ID(),
-                            base.getC_SubAcct_ID(),
-                            base.getM_Product_ID(),
+                            base.getAccountId(),
+                            base.getSubAccountId(),
+                            base.getProductId(),
                             base.getBusinessPartnerId(),
                             base.getTransactionOrganizationId(),
-                            base.getC_LocFrom_ID(),
-                            base.getC_LocTo_ID(),
-                            base.getC_SalesRegion_ID(),
+                            base.getLocationFromId(),
+                            base.getLocationToId(),
+                            base.getSalesRegionId(),
                             base.getProjectId(),
                             base.getCampaignId(),
                             base.getBusinessActivityId(),
                             base.getUser1Id(),
                             base.getUser2Id(),
-                            base.getUserElement1_ID(),
-                            base.getUserElement2_ID(),
+                            base.getUserElement1Id(),
+                            base.getUserElement2Id(),
                             null);
             line.setDescription(Msg.getElement(getCtx(), "UnrealizedGain_Acct"));
-            line.setC_ValidCombination_ID(acct.getC_ValidCombination_ID());
+            line.setValidAccountCombinationId(acct.getValidAccountCombinationId());
             line.setAmtSourceCr(gainTotal);
             line.setAmtAcctCr(gainTotal);
             line.saveEx();
@@ -406,31 +406,31 @@ public class InvoiceNGL extends SvrProcess {
         if (lossTotal.signum() != 0) {
             MJournalLine line = new MJournalLine(journal);
             line.setLine(lineNo + 2);
-            MAccount base = MAccount.get(getCtx(), asDefaultAccts.getUnrealizedLoss_Acct());
+            MAccount base = MAccount.get(getCtx(), asDefaultAccts.getUnrealizedLossAccount());
             MAccount acct =
                     MAccount.get(
                             getCtx(),
                             asDefaultAccts.getClientId(),
                             AD_Org_ID,
                             asDefaultAccts.getAccountingSchemaId(),
-                            base.getAccount_ID(),
-                            base.getC_SubAcct_ID(),
-                            base.getM_Product_ID(),
+                            base.getAccountId(),
+                            base.getSubAccountId(),
+                            base.getProductId(),
                             base.getBusinessPartnerId(),
                             base.getTransactionOrganizationId(),
-                            base.getC_LocFrom_ID(),
-                            base.getC_LocTo_ID(),
-                            base.getC_SalesRegion_ID(),
+                            base.getLocationFromId(),
+                            base.getLocationToId(),
+                            base.getSalesRegionId(),
                             base.getProjectId(),
                             base.getCampaignId(),
                             base.getBusinessActivityId(),
                             base.getUser1Id(),
                             base.getUser2Id(),
-                            base.getUserElement1_ID(),
-                            base.getUserElement2_ID(),
+                            base.getUserElement1Id(),
+                            base.getUserElement2Id(),
                             null);
             line.setDescription(Msg.getElement(getCtx(), "UnrealizedLoss_Acct"));
-            line.setC_ValidCombination_ID(acct.getC_ValidCombination_ID());
+            line.setValidAccountCombinationId(acct.getValidAccountCombinationId());
             line.setAmtSourceDr(lossTotal);
             line.setAmtAcctDr(lossTotal);
             line.saveEx();

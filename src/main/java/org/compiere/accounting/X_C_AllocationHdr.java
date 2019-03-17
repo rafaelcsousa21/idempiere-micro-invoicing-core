@@ -80,7 +80,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
     public X_C_AllocationHdr(Properties ctx, int C_AllocationHdr_ID) {
         super(ctx, C_AllocationHdr_ID);
         /**
-         * if (C_AllocationHdr_ID == 0) { setApprovalAmt (Env.ZERO); setC_AllocationHdr_ID (0);
+         * if (C_AllocationHdr_ID == 0) { setApprovalAmt (Env.ZERO); setPaymentAllocationHeaderId (0);
          * setCurrencyId (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); setDateTrx
          * (new Timestamp( System.currentTimeMillis() )); setDocAction (null); // CO setDocStatus
          * (null); // DR setDocumentNo (null); setIsApproved (false); setIsManual (false); setPosted
@@ -134,7 +134,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      *
      * @return Payment allocation
      */
-    public int getC_AllocationHdr_ID() {
+    public int getPaymentAllocationHeaderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_AllocationHdr_ID);
         if (ii == null) return 0;
         return ii;
@@ -373,7 +373,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      *
      * @param Reversal_ID ID of document reversal
      */
-    public void setReversal_ID(int Reversal_ID) {
+    public void setReversalId(int Reversal_ID) {
         if (Reversal_ID < 1) setValue(COLUMNNAME_Reversal_ID, null);
         else setValue(COLUMNNAME_Reversal_ID, Integer.valueOf(Reversal_ID));
     }

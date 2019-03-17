@@ -54,7 +54,7 @@ public class ProjectPhaseGenOrder extends SvrProcess {
      * @throws Exception if not successful
      */
     protected String doIt() throws Exception {
-        m_C_ProjectPhase_ID = getRecord_ID();
+        m_C_ProjectPhase_ID = getRecordId();
         if (log.isLoggable(Level.INFO)) log.info("doIt - C_ProjectPhase_ID=" + m_C_ProjectPhase_ID);
         if (m_C_ProjectPhase_ID == 0) throw new IllegalArgumentException("C_ProjectPhase_ID == 0");
         MProjectPhase fromPhase = new MProjectPhase(getCtx(), m_C_ProjectPhase_ID);
@@ -65,7 +65,7 @@ public class ProjectPhaseGenOrder extends SvrProcess {
         if (!order.save()) throw new Exception("Could not create Order");
 
         //	Create an order on Phase Level
-        if (fromPhase.getM_Product_ID() != 0) {
+        if (fromPhase.getProductId() != 0) {
             MOrderLine ol = new MOrderLine(order);
             ol.setLine(fromPhase.getSeqNo());
             StringBuilder sb = new StringBuilder().append(fromPhase.getName());
@@ -73,7 +73,7 @@ public class ProjectPhaseGenOrder extends SvrProcess {
                 sb.append(" - ").append(fromPhase.getDescription());
             ol.setDescription(sb.toString());
             //
-            ol.setM_Product_ID(fromPhase.getM_Product_ID(), true);
+            ol.setProductId(fromPhase.getProductId(), true);
             ol.setQty(fromPhase.getQty());
             ol.setPrice();
             if (fromPhase.getPriceActual() != null && fromPhase.getPriceActual().compareTo(Env.ZERO) != 0)
@@ -93,7 +93,7 @@ public class ProjectPhaseGenOrder extends SvrProcess {
             ol.setLine(lines[i].getLine());
             ol.setDescription(lines[i].getDescription());
             //
-            ol.setM_Product_ID(lines[i].getM_Product_ID(), true);
+            ol.setProductId(lines[i].getProductId(), true);
             ol.setQty(lines[i].getPlannedQty().subtract(lines[i].getInvoicedQty()));
             ol.setPrice();
             if (lines[i].getPlannedPrice() != null && lines[i].getPlannedPrice().compareTo(Env.ZERO) != 0)
@@ -116,7 +116,7 @@ public class ProjectPhaseGenOrder extends SvrProcess {
                 sb.append(" - ").append(tasks[i].getDescription());
             ol.setDescription(sb.toString());
             //
-            ol.setM_Product_ID(tasks[i].getM_Product_ID(), true);
+            ol.setProductId(tasks[i].getProductId(), true);
             ol.setQty(tasks[i].getQty());
             ol.setPrice();
             ol.setTax();

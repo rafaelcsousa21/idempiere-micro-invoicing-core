@@ -85,12 +85,12 @@ public class MProductionPlan extends X_M_ProductionPlan {
         int count = 0;
 
         // product to be produced
-        MProduct finishedProduct = new MProduct(getCtx(), getM_Product_ID());
+        MProduct finishedProduct = new MProduct(getCtx(), getProductId());
 
         MProductionLine line = new MProductionLine(this);
         line.setLine(lineno);
-        line.setM_Product_ID(finishedProduct.getId());
-        line.setM_Locator_ID(getM_Locator_ID());
+        line.setProductId(finishedProduct.getId());
+        line.setLocatorId(getLocatorId());
         line.setMovementQty(getProductionQty());
         line.setPlannedQty(getProductionQty());
 
@@ -108,7 +108,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
         int count = 0;
         int defaultLocator = 0;
 
-        MLocator finishedLocator = MLocator.get(getCtx(), getM_Locator_ID());
+        MLocator finishedLocator = MLocator.get(getCtx(), getLocatorId());
 
         int M_Warehouse_ID = finishedLocator.getWarehouseId();
 
@@ -119,7 +119,7 @@ public class MProductionPlan extends X_M_ProductionPlan {
                 "SELECT M_ProductBom_ID, BOMQty"
                         + " FROM M_Product_BOM"
                         + " WHERE M_Product_ID="
-                        + finishedProduct.getM_Product_ID()
+                        + finishedProduct.getProductId()
                         + " ORDER BY Line";
 
         PreparedStatement pstmt = null;
@@ -142,15 +142,15 @@ public class MProductionPlan extends X_M_ProductionPlan {
                     count = count + createLines(mustBeStocked, bomproduct, BOMMovementQty, lineno);
                 } else {
 
-                    defaultLocator = bomproduct.getM_Locator_ID();
-                    if (defaultLocator == 0) defaultLocator = getM_Locator_ID();
+                    defaultLocator = bomproduct.getLocatorId();
+                    if (defaultLocator == 0) defaultLocator = getLocatorId();
 
                     if (!bomproduct.isStocked()) {
                         MProductionLine BOMLine = null;
                         BOMLine = new MProductionLine(this);
                         BOMLine.setLine(lineno);
-                        BOMLine.setM_Product_ID(BOMProduct_ID);
-                        BOMLine.setM_Locator_ID(defaultLocator);
+                        BOMLine.setProductId(BOMProduct_ID);
+                        BOMLine.setLocatorId(defaultLocator);
                         BOMLine.setQtyUsed(BOMMovementQty);
                         BOMLine.setPlannedQty(BOMMovementQty);
                         BOMLine.saveEx();
@@ -161,8 +161,8 @@ public class MProductionPlan extends X_M_ProductionPlan {
                         MProductionLine BOMLine = null;
                         BOMLine = new MProductionLine(this);
                         BOMLine.setLine(lineno);
-                        BOMLine.setM_Product_ID(BOMProduct_ID);
-                        BOMLine.setM_Locator_ID(defaultLocator);
+                        BOMLine.setProductId(BOMProduct_ID);
+                        BOMLine.setLocatorId(defaultLocator);
                         BOMLine.setQtyUsed(BOMMovementQty);
                         BOMLine.setPlannedQty(BOMMovementQty);
                         BOMLine.saveEx();
@@ -174,13 +174,13 @@ public class MProductionPlan extends X_M_ProductionPlan {
                         // BOM stock info
                         MStorageOnHand[] storages = null;
                         MProduct usedProduct = MProduct.get(getCtx(), BOMProduct_ID);
-                        defaultLocator = usedProduct.getM_Locator_ID();
-                        if (defaultLocator == 0) defaultLocator = getM_Locator_ID();
+                        defaultLocator = usedProduct.getLocatorId();
+                        if (defaultLocator == 0) defaultLocator = getLocatorId();
                         if (usedProduct == null || usedProduct.getId() == 0) return 0;
 
                         MClient client = MClient.get(getCtx());
                         MProductCategory pc =
-                                MProductCategory.get(getCtx(), usedProduct.getM_Product_Category_ID());
+                                MProductCategory.get(getCtx(), usedProduct.getProductCategoryId());
                         String MMPolicy = pc.getMMPolicy();
                         if (MMPolicy == null || MMPolicy.length() == 0) {
                             MMPolicy = client.getMMPolicy();
@@ -208,10 +208,10 @@ public class MProductionPlan extends X_M_ProductionPlan {
                             if (lineQty.signum() != 0) {
                                 if (lineQty.compareTo(BOMMovementQty) > 0) lineQty = BOMMovementQty;
 
-                                int loc = storages[sl].getM_Locator_ID();
-                                int slASI = storages[sl].getMAttributeSetInstance_ID();
+                                int loc = storages[sl].getLocatorId();
+                                int slASI = storages[sl].getAttributeSetInstanceId();
                                 int locAttribSet =
-                                        new MAttributeSetInstance(getCtx(), asi).getMAttributeSet_ID();
+                                        new MAttributeSetInstance(getCtx(), asi).getAttributeSetId();
 
                                 // roll up costing attributes if in the same locator
                                 if (locAttribSet == 0 && previousAttribSet == 0 && prevLoc == loc) {
@@ -224,12 +224,12 @@ public class MProductionPlan extends X_M_ProductionPlan {
                                 else {
                                     BOMLine = new MProductionLine(this);
                                     BOMLine.setLine(lineno);
-                                    BOMLine.setM_Product_ID(BOMProduct_ID);
-                                    BOMLine.setM_Locator_ID(loc);
+                                    BOMLine.setProductId(BOMProduct_ID);
+                                    BOMLine.setLocatorId(loc);
                                     BOMLine.setQtyUsed(lineQty);
                                     BOMLine.setPlannedQty(lineQty);
                                     if (slASI != 0 && locAttribSet != 0) // ie non costing attribute
-                                        BOMLine.setM_AttributeSetInstance_ID(slASI);
+                                        BOMLine.setAttributeSetInstanceId(slASI);
                                     BOMLine.saveEx();
 
                                     lineno = lineno + 10;
@@ -259,8 +259,8 @@ public class MProductionPlan extends X_M_ProductionPlan {
 
                                     BOMLine = new MProductionLine(this);
                                     BOMLine.setLine(lineno);
-                                    BOMLine.setM_Product_ID(BOMProduct_ID);
-                                    BOMLine.setM_Locator_ID(defaultLocator);
+                                    BOMLine.setProductId(BOMProduct_ID);
+                                    BOMLine.setLocatorId(defaultLocator);
                                     BOMLine.setQtyUsed(BOMMovementQty);
                                     BOMLine.setPlannedQty(BOMMovementQty);
                                     BOMLine.saveEx();

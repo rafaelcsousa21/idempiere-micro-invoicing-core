@@ -32,7 +32,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
     public X_C_DepositBatch(Properties ctx, int C_DepositBatch_ID) {
         super(ctx, C_DepositBatch_ID);
         /*
-         * if (C_DepositBatch_ID == 0) { setC_BankAccount_ID (0); setC_DepositBatch_ID (0);
+         * if (C_DepositBatch_ID == 0) { setBankAccountId (0); setDepositBatchId (0);
          * setDocumentTypeId (0); setDateDeposit (new Timestamp( System.currentTimeMillis() )); // @#Date@
          * setDateDoc (new Timestamp( System.currentTimeMillis() )); // @#Date@ setDepositAmt
          * (Env.ZERO); setDocStatus (null); // DR setDocumentNo (null); setProcessed (false); }
@@ -64,7 +64,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      *
      * @return Deposit Batch
      */
-    public int getC_DepositBatch_ID() {
+    public int getDepositBatchId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_DepositBatch_ID);
         if (ii == null) return 0;
         return ii;
@@ -75,7 +75,7 @@ public class X_C_DepositBatch extends PO implements I_C_DepositBatch {
      *
      * @param C_DepositBatch_ID Deposit Batch
      */
-    public void setC_DepositBatch_ID(int C_DepositBatch_ID) {
+    public void setDepositBatchId(int C_DepositBatch_ID) {
         if (C_DepositBatch_ID < 1) setValueNoCheck(COLUMNNAME_C_DepositBatch_ID, null);
         else setValueNoCheck(COLUMNNAME_C_DepositBatch_ID, Integer.valueOf(C_DepositBatch_ID));
     }

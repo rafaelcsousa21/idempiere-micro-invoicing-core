@@ -347,9 +347,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         // After Void
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_VOID);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	voidIt
 
     /**
@@ -370,9 +368,9 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         for (int i = 0; i < lines.length; i++) {
             MRequisitionLine line = lines[i];
             BigDecimal finalQty = line.getQty();
-            if (line.getC_OrderLine_ID() == 0) finalQty = Env.ZERO;
+            if (line.getOrderLineId() == 0) finalQty = Env.ZERO;
             else {
-                MOrderLine ol = new MOrderLine(getCtx(), line.getC_OrderLine_ID());
+                MOrderLine ol = new MOrderLine(getCtx(), line.getOrderLineId());
                 finalQty = ol.getQtyOrdered();
             }
             //	final qty is not line qty
@@ -394,9 +392,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         // After Close
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_CLOSE);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	closeIt
 
     /**
@@ -461,9 +457,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
         // After reActivate
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_REACTIVATE);
-        if (m_processMsg != null) return false;
-
-        return true;
+        return m_processMsg == null;
     } //	reActivateIt
 
     /**
@@ -504,7 +498,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_User_ID() {
+    public int getDoc_UserId() {
         return getUserId();
     }
 

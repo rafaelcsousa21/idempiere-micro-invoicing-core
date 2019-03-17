@@ -141,25 +141,25 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
     }
 
     /**
-     * Set Attribute Set Instance.
-     *
-     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
-     */
-    public void setM_AttributeSetInstance_ID(int M_AttributeSetInstance_ID) {
-        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
-        else
-            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
-    }
-
-    /**
      * Get Attribute Set Instance.
      *
      * @return Product Attribute Set Instance
      */
-    public int getMAttributeSetInstance_ID() {
+    public int getAttributeSetInstanceId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_AttributeSetInstance_ID);
         if (ii == null) return 0;
         return ii;
+    }
+
+    /**
+     * Set Attribute Set Instance.
+     *
+     * @param M_AttributeSetInstance_ID Product Attribute Set Instance
+     */
+    public void setAttributeSetInstanceId(int M_AttributeSetInstance_ID) {
+        if (M_AttributeSetInstance_ID < 0) setValue(COLUMNNAME_M_AttributeSetInstance_ID, null);
+        else
+            setValue(COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
     }
 
     /**
@@ -167,7 +167,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      *
      * @return Product BOM Alternative Group
      */
-    public int getM_BOMAlternative_ID() {
+    public int getBOMAlternativeGroupId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_BOMAlternative_ID);
         if (ii == null) return 0;
         return ii;
@@ -178,7 +178,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      *
      * @return Bill of Material
      */
-    public int getM_BOM_ID() {
+    public int getBOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_BOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -189,7 +189,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      *
      * @return Bill of Material Component (Product)
      */
-    public int getM_BOMProduct_ID() {
+    public int getBOMProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_BOMProduct_ID);
         if (ii == null) return 0;
         return ii;
@@ -200,7 +200,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      *
      * @return Bill of Material Component Product
      */
-    public int getM_ProductBOM_ID() {
+    public int getProductBOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ProductBOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -211,7 +211,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      *
      * @param M_ProductBOM_ID Bill of Material Component Product
      */
-    public void setM_ProductBOM_ID(int M_ProductBOM_ID) {
+    public void setProductBOMId(int M_ProductBOM_ID) {
         if (M_ProductBOM_ID < 1) setValue(COLUMNNAME_M_ProductBOM_ID, null);
         else setValue(COLUMNNAME_M_ProductBOM_ID, Integer.valueOf(M_ProductBOM_ID));
     }
@@ -221,7 +221,7 @@ public class X_M_BOMProduct extends PO implements I_M_BOMProduct {
      *
      * @return Product Manufacturing Operation
      */
-    public int getM_ProductOperation_ID() {
+    public int getProductOperationId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_ProductOperation_ID);
         if (ii == null) return 0;
         return ii;

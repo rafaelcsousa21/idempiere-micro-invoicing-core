@@ -80,7 +80,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
     public X_C_BankStatement(Properties ctx, int C_BankStatement_ID) {
         super(ctx, C_BankStatement_ID);
         /**
-         * if (C_BankStatement_ID == 0) { setC_BankAccount_ID (0); setC_BankStatement_ID (0);
+         * if (C_BankStatement_ID == 0) { setBankAccountId (0); setBankStatementId (0);
          * setDateAcct (new Timestamp( System.currentTimeMillis() )); setDocAction (null); // CO
          * setDocStatus (null); // DR setEndingBalance (Env.ZERO); setIsApproved (false); // N
          * setIsManual (true); // Y setName (null); // @#Date@ setPosted (false); // N setProcessed
@@ -134,7 +134,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      *
      * @return Account at the Bank
      */
-    public int getC_BankAccount_ID() {
+    public int getBankAccountId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankAccount_ID);
         if (ii == null) return 0;
         return ii;
@@ -145,7 +145,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      *
      * @param C_BankAccount_ID Account at the Bank
      */
-    public void setC_BankAccount_ID(int C_BankAccount_ID) {
+    public void setBankAccountId(int C_BankAccount_ID) {
         if (C_BankAccount_ID < 1) setValue(COLUMNNAME_C_BankAccount_ID, null);
         else setValue(COLUMNNAME_C_BankAccount_ID, Integer.valueOf(C_BankAccount_ID));
     }
@@ -155,7 +155,7 @@ public class X_C_BankStatement extends BasePOName implements I_C_BankStatement {
      *
      * @return Bank Statement of account
      */
-    public int getC_BankStatement_ID() {
+    public int getBankStatementId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BankStatement_ID);
         if (ii == null) return 0;
         return ii;

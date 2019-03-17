@@ -112,7 +112,7 @@ public class X_PA_Achievement extends BasePOName implements I_PA_Achievement {
      *
      * @return Concrete Performance Measurement
      */
-    public int getPA_Measure_ID() {
+    public int getMeasureId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PA_Measure_ID);
         if (ii == null) return 0;
         return ii;

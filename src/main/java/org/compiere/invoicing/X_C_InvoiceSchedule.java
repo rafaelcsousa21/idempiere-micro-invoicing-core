@@ -61,7 +61,7 @@ public class X_C_InvoiceSchedule extends PO implements I_C_InvoiceSchedule {
     public X_C_InvoiceSchedule(Properties ctx, int C_InvoiceSchedule_ID) {
         super(ctx, C_InvoiceSchedule_ID);
         /*
-         * if (C_InvoiceSchedule_ID == 0) { setAmt (Env.ZERO); setC_InvoiceSchedule_ID (0);
+         * if (C_InvoiceSchedule_ID == 0) { setAmt (Env.ZERO); setInvoiceSchedule_ID (0);
          * setInvoiceDay (0); // 1 setInvoiceFrequency (null); setInvoiceWeekDay (null); setIsAmount
          * (false); setIsDefault (false); setName (null); }
          */

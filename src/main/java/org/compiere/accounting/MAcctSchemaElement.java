@@ -57,14 +57,14 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     public MAcctSchemaElement(Properties ctx, int C_AcctSchema_Element_ID) {
         super(ctx, C_AcctSchema_Element_ID);
         if (C_AcctSchema_Element_ID == 0) {
-            //	setC_AcctSchema_Element_ID (0);
+            //	setAccountingSchema_Element_ID (0);
             //	setAccountingSchemaId (0);
             //	setElementId (0);
             //	setElementType (null);
             setIsBalanced(false);
             setIsMandatory(false);
             //	setName (null);
-            //	setOrg_ID (0);
+            //	setOrgId (0);
             //	setSeqNo (0);
         }
     } //	MAcctSchemaElement
@@ -88,7 +88,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     public MAcctSchemaElement(MAcctSchema as) {
         this(as.getCtx(), 0);
         setClientOrg(as);
-        setC_AcctSchema_ID(as.getAccountingSchemaId());
+        setAccountingSchemaId(as.getAccountingSchemaId());
 
         //	setElementId (0);
         //	setElementType (null);
@@ -105,7 +105,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
      */
     public static MAcctSchemaElement[] getAcctSchemaElements(MAcctSchema as) {
         Integer key = new Integer(as.getAccountingSchemaId());
-        MAcctSchemaElement[] retValue = (MAcctSchemaElement[]) s_cache.get(key);
+        MAcctSchemaElement[] retValue = s_cache.get(key);
         if (retValue != null) return retValue;
 
         if (s_log.isLoggable(Level.FINE)) s_log.fine("C_AcctSchema_ID=" + as.getAccountingSchemaId());
@@ -180,13 +180,13 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         String elementType = getElementType();
         int defaultValue = 0;
         if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Organization))
-            defaultValue = getOrg_ID();
+            defaultValue = getOrgId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Account))
-            defaultValue = getC_ElementValue_ID();
+            defaultValue = getElementValueId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_BPartner))
             defaultValue = getBusinessPartnerId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Product))
-            defaultValue = getM_Product_ID();
+            defaultValue = getProductId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Activity))
             defaultValue = getBusinessActivityId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_LocationFrom))
@@ -196,15 +196,15 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Campaign))
             defaultValue = getCampaignId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx))
-            defaultValue = getOrg_ID();
+            defaultValue = getOrgId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_Project))
             defaultValue = getProjectId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_SalesRegion))
-            defaultValue = getC_SalesRegion_ID();
+            defaultValue = getSalesRegionId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList1))
-            defaultValue = getC_ElementValue_ID();
+            defaultValue = getElementValueId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserElementList2))
-            defaultValue = getC_ElementValue_ID();
+            defaultValue = getElementValueId();
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn1)) defaultValue = 0;
         else if (elementType.equals(X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn2)) defaultValue = 0;
         return defaultValue;
@@ -219,7 +219,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         String et = getElementType();
         if (X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn1.equals(et)
                 || X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn2.equals(et)) {
-            if (m_ColumnName == null) m_ColumnName = MColumn.getColumnName(getCtx(), getAD_Column_ID());
+            if (m_ColumnName == null) m_ColumnName = MColumn.getColumnName(getCtx(), getTableColumnId());
             return m_ColumnName;
         }
         return getColumnName(et);
@@ -270,7 +270,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         //
         else if (isMandatory()) {
             String errorField = null;
-            if (X_C_AcctSchema_Element.ELEMENTTYPE_Account.equals(et) && getC_ElementValue_ID() == 0)
+            if (X_C_AcctSchema_Element.ELEMENTTYPE_Account.equals(et) && getElementValueId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_ElementValue_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Activity.equals(et) && getBusinessActivityId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Activity_ID;
@@ -282,16 +282,16 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
                     && getLocationId() == 0) errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Location_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_LocationTo.equals(et) && getLocationId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Location_ID;
-            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Organization.equals(et) && getOrg_ID() == 0)
+            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Organization.equals(et) && getOrgId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_Org_ID;
-            else if (X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx.equals(et) && getOrg_ID() == 0)
+            else if (X_C_AcctSchema_Element.ELEMENTTYPE_OrgTrx.equals(et) && getOrgId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_Org_ID;
-            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Product.equals(et) && getM_Product_ID() == 0)
+            else if (X_C_AcctSchema_Element.ELEMENTTYPE_Product.equals(et) && getProductId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_M_Product_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Project.equals(et) && getProjectId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_Project_ID;
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_SalesRegion.equals(et)
-                    && getC_SalesRegion_ID() == 0)
+                    && getSalesRegionId() == 0)
                 errorField = I_C_AcctSchema_Element.COLUMNNAME_C_SalesRegion_ID;
             if (errorField != null) {
                 log.saveError(
@@ -300,7 +300,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
             }
         }
         //
-        if (getAD_Column_ID() == 0
+        if (getTableColumnId() == 0
                 && (X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn1.equals(et)
                 || X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn2.equals(et))) {
             log.saveError("Error", Msg.parseTranslation(getCtx(), "@IsMandatory@: @AD_Column_ID@"));
@@ -320,13 +320,13 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
     protected boolean afterSave(boolean newRecord, boolean success) {
         if (!success) return success;
         //	Default Value
-        if (isMandatory() && is_ValueChanged(I_C_AcctSchema_Element.COLUMNNAME_IsMandatory)) {
+        if (isMandatory() && isValueChanged(I_C_AcctSchema_Element.COLUMNNAME_IsMandatory)) {
             if (X_C_AcctSchema_Element.ELEMENTTYPE_Activity.equals(getElementType()))
                 updateData(I_C_AcctSchema_Element.COLUMNNAME_C_Activity_ID, getBusinessActivityId());
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_BPartner.equals(getElementType()))
                 updateData(I_C_AcctSchema_Element.COLUMNNAME_C_BPartner_ID, getBusinessPartnerId());
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Product.equals(getElementType()))
-                updateData(I_C_AcctSchema_Element.COLUMNNAME_M_Product_ID, getM_Product_ID());
+                updateData(I_C_AcctSchema_Element.COLUMNNAME_M_Product_ID, getProductId());
             else if (X_C_AcctSchema_Element.ELEMENTTYPE_Project.equals(getElementType()))
                 updateData(I_C_AcctSchema_Element.COLUMNNAME_C_Project_ID, getProjectId());
         }
@@ -335,7 +335,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
         s_cache.clear();
 
         //	Resequence
-        if (newRecord || is_ValueChanged(I_C_AcctSchema_Element.COLUMNNAME_SeqNo)) {
+        if (newRecord || isValueChanged(I_C_AcctSchema_Element.COLUMNNAME_SeqNo)) {
             StringBuilder msguvd = new StringBuilder("AD_Client_ID=").append(getClientId());
             MAccount.updateValueDescription(getCtx(), msguvd.toString());
         }
@@ -371,7 +371,7 @@ public class MAcctSchemaElement extends X_C_AcctSchema_Element {
                         .append(" WHERE ")
                         .append(element)
                         .append(" IS NULL AND C_AcctSchema_ID=")
-                        .append(getC_AcctSchema_ID());
+                        .append(getAccountingSchemaId());
         int noF = executeUpdate(sql.toString());
         //
         if (log.isLoggable(Level.FINE)) log.fine("ValidCombination=" + noC + ", Fact=" + noF);

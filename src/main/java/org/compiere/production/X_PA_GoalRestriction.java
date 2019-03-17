@@ -83,7 +83,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      *
      * @return Business Partner Group
      */
-    public int getC_BP_Group_ID() {
+    public int getBPGroupId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_BP_Group_ID);
         if (ii == null) return 0;
         return ii;
@@ -103,7 +103,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      *
      * @return Category of a Product
      */
-    public int getM_Product_Category_ID() {
+    public int getProductCategoryId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_Category_ID);
         if (ii == null) return 0;
         return ii;
@@ -114,7 +114,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      *
      * @return Product, Service, Item
      */
-    public int getM_Product_ID() {
+    public int getProductId() {
         Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
@@ -125,7 +125,7 @@ public class X_PA_GoalRestriction extends BasePOName implements I_PA_GoalRestric
      *
      * @return Organizational entity within client
      */
-    public int getOrg_ID() {
+    public int getOrgId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Org_ID);
         if (ii == null) return 0;
         return ii;

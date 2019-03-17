@@ -131,7 +131,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Expense Invoice Batch Header
      */
-    public int getC_InvoiceBatch_ID() {
+    public int getInvoiceBatchId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceBatch_ID);
         if (ii == null) return 0;
         return ii;
@@ -163,7 +163,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Invoice Detail Line
      */
-    public int getC_InvoiceLine_ID() {
+    public int getInvoiceLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_InvoiceLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -174,7 +174,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @param C_InvoiceLine_ID Invoice Detail Line
      */
-    public void setC_InvoiceLine_ID(int C_InvoiceLine_ID) {
+    public void setInvoiceLineId(int C_InvoiceLine_ID) {
         if (C_InvoiceLine_ID < 1) setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, null);
         else setValueNoCheck(COLUMNNAME_C_InvoiceLine_ID, Integer.valueOf(C_InvoiceLine_ID));
     }
@@ -195,7 +195,7 @@ public class X_C_InvoiceBatchLine extends PO implements I_C_InvoiceBatchLine {
      *
      * @return Tax identifier
      */
-    public int getC_Tax_ID() {
+    public int getTaxId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Tax_ID);
         if (ii == null) return 0;
         return ii;

@@ -345,7 +345,7 @@ public class ModelValidationEngine {
                 validator = list.get(i);
                 if (validator.getClientId() == po.getClientId()
                         || (validator instanceof ModelValidator
-                        && m_globalValidators.contains((ModelValidator) validator))) {
+                        && m_globalValidators.contains(validator))) {
                     String error = validator.factsValidate(schema, facts, po);
                     if (error != null && error.length() > 0) {
                         if (log.isLoggable(Level.FINE)) {

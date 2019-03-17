@@ -169,7 +169,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
     public X_C_PeriodControl(Properties ctx, int C_PeriodControl_ID) {
         super(ctx, C_PeriodControl_ID);
         /**
-         * if (C_PeriodControl_ID == 0) { setC_PeriodControl_ID (0); setPeriodId (0); setDocBaseType
+         * if (C_PeriodControl_ID == 0) { setPeriodControl_ID (0); setPeriodId (0); setDocBaseType
          * (null); setPeriodAction (null); // N }
          */
     }
@@ -199,7 +199,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
      *
      * @return Period of the Calendar
      */
-    public int getC_Period_ID() {
+    public int getPeriodId() {
         Integer ii = (Integer) getValue(COLUMNNAME_C_Period_ID);
         if (ii == null) return 0;
         return ii;
@@ -210,7 +210,7 @@ public class X_C_PeriodControl extends PO implements I_C_PeriodControl {
      *
      * @param C_Period_ID Period of the Calendar
      */
-    public void setC_Period_ID(int C_Period_ID) {
+    public void setPeriodId(int C_Period_ID) {
         if (C_Period_ID < 1) setValueNoCheck(COLUMNNAME_C_Period_ID, null);
         else setValueNoCheck(COLUMNNAME_C_Period_ID, Integer.valueOf(C_Period_ID));
     }

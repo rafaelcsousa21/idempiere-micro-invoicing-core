@@ -54,7 +54,7 @@ public class MGroup extends X_R_Group {
      */
     public static MGroup get(Properties ctx, int R_Group_ID) {
         Integer key = R_Group_ID;
-        MGroup retValue = (MGroup) s_cache.get(key);
+        MGroup retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MGroup(ctx, R_Group_ID);
         if (retValue.getId() != 0) s_cache.put(key, retValue);

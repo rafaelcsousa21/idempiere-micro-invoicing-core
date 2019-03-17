@@ -14,7 +14,7 @@ import org.idempiere.icommon.model.IPO;
 public interface ModelValidator {
 
     // Correlation between constant events and list of event script model validators
-    public static String[] tableEventValidators =
+    String[] tableEventValidators =
             new String[]{
                     "", // 0
                     X_AD_Table_ScriptValidator.EVENTMODELVALIDATOR_TableBeforeNew, // TYPE_BEFORE_NEW = 1
@@ -34,72 +34,72 @@ public interface ModelValidator {
     /**
      * Called before document is prepared
      */
-    public static final int TIMING_BEFORE_PREPARE = 1;
+    int TIMING_BEFORE_PREPARE = 1;
 
     /**
      * Called before document is void
      */
-    public static final int TIMING_BEFORE_VOID = 2;
+    int TIMING_BEFORE_VOID = 2;
     /**
      * Called before document is close
      */
-    public static final int TIMING_BEFORE_CLOSE = 3;
+    int TIMING_BEFORE_CLOSE = 3;
     /**
      * Called before document is reactivate
      */
-    public static final int TIMING_BEFORE_REACTIVATE = 4;
+    int TIMING_BEFORE_REACTIVATE = 4;
     /**
      * Called before document is reversecorrect
      */
-    public static final int TIMING_BEFORE_REVERSECORRECT = 5;
+    int TIMING_BEFORE_REVERSECORRECT = 5;
     /**
      * Called before document is reverseaccrual
      */
-    public static final int TIMING_BEFORE_REVERSEACCRUAL = 6;
+    int TIMING_BEFORE_REVERSEACCRUAL = 6;
     /**
      * Called before document is completed
      */
-    public static final int TIMING_BEFORE_COMPLETE = 7;
+    int TIMING_BEFORE_COMPLETE = 7;
     /**
      * Called after document is prepared
      */
-    public static final int TIMING_AFTER_PREPARE = 8;
+    int TIMING_AFTER_PREPARE = 8;
     /**
      * Called after document is completed
      */
-    public static final int TIMING_AFTER_COMPLETE = 9;
+    int TIMING_AFTER_COMPLETE = 9;
 
     /**
      * Called after document is void
      */
-    public static final int TIMING_AFTER_VOID = 10;
+    int TIMING_AFTER_VOID = 10;
     /**
      * Called after document is closed
      */
-    public static final int TIMING_AFTER_CLOSE = 11;
+    int TIMING_AFTER_CLOSE = 11;
     /**
      * Called after document is reactivated
      */
-    public static final int TIMING_AFTER_REACTIVATE = 12;
+    int TIMING_AFTER_REACTIVATE = 12;
     /**
      * Called after document is reversecorrect
      */
-    public static final int TIMING_AFTER_REVERSECORRECT = 13;
+    int TIMING_AFTER_REVERSECORRECT = 13;
     /**
      * Called after document is reverseaccrual
      */
-    public static final int TIMING_AFTER_REVERSEACCRUAL = 14;
+    int TIMING_AFTER_REVERSEACCRUAL = 14;
     /**
      * Called before document is posted
      */
-    public static final int TIMING_BEFORE_POST = 15;
+    int TIMING_BEFORE_POST = 15;
     /**
      * Called after document is posted
      */
-    public static final int TIMING_AFTER_POST = 16;
+    int TIMING_AFTER_POST = 16;
 
     // Correlation between constant events and list of event script model validators
-    public static String[] documentEventValidators =
+    String[] documentEventValidators =
             new String[]{
                     "", // 0
                     X_AD_Table_ScriptValidator
@@ -139,14 +139,14 @@ public interface ModelValidator {
      * @param engine validation engine
      * @param client client
      */
-    public void initialize(ModelValidationEngine engine, I_AD_Client client);
+    void initialize(ModelValidationEngine engine, I_AD_Client client);
 
     /**
      * Get Client to be monitored
      *
      * @return clientId
      */
-    public int getClientId();
+    int getClientId();
 
     /**
      * User logged in Called before preferences are set
@@ -156,7 +156,7 @@ public interface ModelValidator {
      * @param AD_User_ID user
      * @return error message or null
      */
-    public String login(int AD_Org_ID, int AD_Role_ID, int AD_User_ID);
+    String login(int AD_Org_ID, int AD_Role_ID, int AD_User_ID);
 
     /**
      * Model Change of a monitored Table. Called after PO.beforeSave/PO.beforeDelete when you called
@@ -167,7 +167,7 @@ public interface ModelValidator {
      * @return error message or null
      * @throws Exception if the recipient wishes the change to be not accept.
      */
-    public String modelChange(IPO po, int type) throws Exception;
+    String modelChange(IPO po, int type) throws Exception;
 
     /**
      * Validate Document. Called as first step of DocAction.prepareIt or at the end of
@@ -178,5 +178,5 @@ public interface ModelValidator {
      * @param timing see TIMING_ constants
      * @return error message or null - if not null, the document will be marked as Invalid.
      */
-    public String docValidate(IPO po, int timing);
+    String docValidate(IPO po, int timing);
 } //	ModelValidator

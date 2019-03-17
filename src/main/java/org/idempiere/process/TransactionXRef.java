@@ -121,7 +121,7 @@ public class TransactionXRef extends SvrProcess {
                         .append(" Search_Order_ID, Search_Invoice_ID, Search_InOut_ID) ")
                         //	Data
                         .append("SELECT ")
-                        .append(getAD_PInstance_ID())
+                        .append(getAD_PInstanceId())
                         .append(", M_Transaction_ID,")
                         .append(" AD_Client_ID, AD_Org_ID, IsActive, Created,CreatedBy, Updated,UpdatedBy,")
                         .append(" MovementType, M_Locator_ID, M_Product_ID, M_AttributeSetInstance_ID,")

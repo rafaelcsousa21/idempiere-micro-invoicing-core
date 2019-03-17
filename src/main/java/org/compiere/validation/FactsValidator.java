@@ -13,12 +13,12 @@ public interface FactsValidator {
      *
      * @return clientId
      */
-    public int getClientId();
+    int getClientId();
 
     /**
      * @param facts
      * @param po
      * @return error message or null - if not null, the pocument will be marked as Invalid.
      */
-    public String factsValidate(I_C_AcctSchema schema, List<IFact> facts, IPO po);
+    String factsValidate(I_C_AcctSchema schema, List<IFact> facts, IPO po);
 }

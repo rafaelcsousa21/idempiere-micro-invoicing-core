@@ -115,7 +115,7 @@ public class MAchievement extends X_PA_Achievement {
      * Update Goals with Achievement
      */
     private void updateAchievementGoals() {
-        MMeasure measure = MMeasure.get(getCtx(), getPA_Measure_ID());
+        MMeasure measure = MMeasure.get(getCtx(), getMeasureId());
         measure.updateGoals();
     } //	updateAchievementGoals
 } //	MAchievement

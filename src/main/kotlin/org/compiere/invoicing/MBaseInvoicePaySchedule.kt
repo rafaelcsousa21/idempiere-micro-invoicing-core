@@ -2,7 +2,7 @@ package org.compiere.invoicing
 
 import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
-import java.util.*
+import java.util.Properties
 
 /**
  * Get Payment Schedule of the invoice
