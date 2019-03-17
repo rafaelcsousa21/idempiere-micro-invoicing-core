@@ -128,7 +128,7 @@ public class MStatusCategory extends X_R_StatusCategory {
      *
      * @return id or 0
      */
-    public int getDefaultR_StatusId() {
+    public int getDefaultStatusId() {
         if (m_status == null) getStatus(false);
         for (int i = 0; i < m_status.length; i++) {
             if (m_status[i].isDefault() && m_status[i].isActive()) return m_status[i].getStatusId();

@@ -99,7 +99,7 @@ public class ExpenseAPInvoice extends SvrProcess {
                     break;
                 }
                 invoice.setPriceListId(te.getPriceListId());
-                invoice.setSalesRepresentativeId(te.getDoc_UserId());
+                invoice.setSalesRepresentativeId(te.getDocumentUserId());
                 StringBuilder descr =
                         new StringBuilder()
                                 .append(Msg.translate(getCtx(), "S_TimeExpense_ID"))

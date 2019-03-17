@@ -899,7 +899,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     }
 
     @Override
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getCreatedBy();
     }
 

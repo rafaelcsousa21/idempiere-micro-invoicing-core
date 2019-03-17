@@ -1681,7 +1681,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getSalesRepresentativeId();
     } //	getDoc_User_ID
 

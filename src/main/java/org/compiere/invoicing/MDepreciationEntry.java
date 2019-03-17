@@ -321,7 +321,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         return m_processMsg;
     }
 
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getCreatedBy();
     }
 

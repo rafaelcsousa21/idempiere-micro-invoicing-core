@@ -755,7 +755,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return throw exception
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         throw new IllegalStateException(EXCEPTION_MSG);
     }
 

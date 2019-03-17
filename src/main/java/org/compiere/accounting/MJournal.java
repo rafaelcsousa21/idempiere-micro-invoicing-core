@@ -931,7 +931,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @return AD_User_ID (Created)
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

@@ -774,7 +774,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

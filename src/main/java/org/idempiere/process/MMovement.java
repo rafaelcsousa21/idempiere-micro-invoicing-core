@@ -978,7 +978,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

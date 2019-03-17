@@ -433,7 +433,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         if (m_AD_User_ID != 0) return m_AD_User_ID;
         if (getBusinessPartnerId() != 0) {
             MUser[] users = MUser.getOfBPartner(getCtx(), getBusinessPartnerId());

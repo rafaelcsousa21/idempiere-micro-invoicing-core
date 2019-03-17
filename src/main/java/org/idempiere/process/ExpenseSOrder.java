@@ -82,7 +82,7 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
                 if (project.getPriceListId() != 0)
                     m_order.setPriceListId(project.getPriceListId());
             }
-            m_order.setSalesRepresentativeId(te.getDoc_UserId());
+            m_order.setSalesRepresentativeId(te.getDocumentUserId());
             //
             if (!m_order.save()) {
                 throw new IllegalStateException("Cannot save Order");

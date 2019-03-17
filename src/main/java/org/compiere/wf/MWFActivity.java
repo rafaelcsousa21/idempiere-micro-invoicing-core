@@ -933,14 +933,14 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 if (isInvoker()) {
                     //	Set Approver
                     int startAD_User_ID = Env.getUserId(getCtx());
-                    if (startAD_User_ID == 0) startAD_User_ID = doc.getDoc_UserId();
+                    if (startAD_User_ID == 0) startAD_User_ID = doc.getDocumentUserId();
                     int nextAD_User_ID =
                             getApprovalUser(
                                     startAD_User_ID,
                                     doc.getCurrencyId(),
                                     doc.getApprovalAmt(),
                                     doc.getOrgId(),
-                                    startAD_User_ID == doc.getDoc_UserId()); // 	own doc
+                                    startAD_User_ID == doc.getDocumentUserId()); // 	own doc
                     if (nextAD_User_ID <= 0) {
                         m_docStatus = DocAction.Companion.getSTATUS_Invalid();
                         throw new AdempiereException(Msg.getMsg(getCtx(), "NoApprover"));
@@ -1225,7 +1225,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
         String recipient = m_node.getEMailRecipient();
         //	email to document user
         if (recipient == null || recipient.length() == 0)
-            sendEMail(client, doc.getDoc_UserId(), null, subject, message, pdf, text.isHtml());
+            sendEMail(client, doc.getDocumentUserId(), null, subject, message, pdf, text.isHtml());
         else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentBusinessPartner)) {
             int index = m_po.getColumnIndex("AD_User_ID");
             if (index > 0) {
@@ -1238,11 +1238,11 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                 } else log.fine("Empty User in Document");
             } else log.fine("No User Field in Document");
         } else if (recipient.equals(MWFNode.EMAILRECIPIENT_DocumentOwner))
-            sendEMail(client, doc.getDoc_UserId(), null, subject, message, pdf, text.isHtml());
+            sendEMail(client, doc.getDocumentUserId(), null, subject, message, pdf, text.isHtml());
         else if (recipient.equals(MWFNode.EMAILRECIPIENT_WFResponsible)) {
             MWFResponsible resp = getResponsible();
             if (resp.isInvoker())
-                sendEMail(client, doc.getDoc_UserId(), null, subject, message, pdf, text.isHtml());
+                sendEMail(client, doc.getDocumentUserId(), null, subject, message, pdf, text.isHtml());
             else if (resp.isHuman())
                 sendEMail(client, resp.getUserId(), null, subject, message, pdf, text.isHtml());
             else if (resp.isRole()) {

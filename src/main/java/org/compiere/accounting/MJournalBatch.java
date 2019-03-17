@@ -727,7 +727,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @return AD_User_ID (Created By)
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

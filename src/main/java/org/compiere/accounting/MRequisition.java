@@ -498,7 +498,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getUserId();
     }
 

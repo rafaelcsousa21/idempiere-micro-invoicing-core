@@ -1113,7 +1113,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getUpdatedBy();
     } //	getDoc_User_ID
 

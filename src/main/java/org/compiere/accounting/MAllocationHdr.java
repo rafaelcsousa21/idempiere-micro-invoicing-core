@@ -712,7 +712,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

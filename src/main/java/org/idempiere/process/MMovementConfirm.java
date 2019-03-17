@@ -635,7 +635,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getUpdatedBy();
     } //	getDoc_User_ID
 

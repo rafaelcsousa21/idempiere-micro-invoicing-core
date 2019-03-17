@@ -496,7 +496,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getSalesRepresentativeId();
     } //	getDoc_User_ID
 

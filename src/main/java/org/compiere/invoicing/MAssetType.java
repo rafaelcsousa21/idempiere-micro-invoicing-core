@@ -91,7 +91,7 @@ public class MAssetType extends X_A_Asset_Type {
         /**
          * Get Asset Type
          */
-        int getA_Asset_TypeId();
+        int getAssetTypeId();
 
         /**
          * Get In Possession. The asset is in the possession of the organization

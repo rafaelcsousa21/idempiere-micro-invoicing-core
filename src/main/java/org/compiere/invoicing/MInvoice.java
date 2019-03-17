@@ -2478,7 +2478,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getSalesRepresentativeId();
     } //	getDoc_User_ID
 

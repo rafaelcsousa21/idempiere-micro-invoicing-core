@@ -2332,7 +2332,7 @@ public class MPayment extends X_C_Payment
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getCreatedBy();
     } //	getDoc_User_ID
 

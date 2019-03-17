@@ -589,7 +589,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return AD_User_ID
      */
-    public int getDoc_UserId() {
+    public int getDocumentUserId() {
         return getUpdatedBy();
     } //	getDoc_User_ID
 

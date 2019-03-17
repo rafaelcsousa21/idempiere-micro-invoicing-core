@@ -333,7 +333,7 @@ public class MWFProcess extends X_AD_WF_Process {
             //	(2) Doc Owner
             if (m_po != null && m_po instanceof DocAction) {
                 DocAction da = (DocAction) m_po;
-                AD_User_ID = da.getDoc_UserId();
+                AD_User_ID = da.getDocumentUserId();
             }
             //	(2) Sales Rep
             if (AD_User_ID == 0 && m_po != null && m_po.getColumnIndex("SalesRep_ID") != -1) {
