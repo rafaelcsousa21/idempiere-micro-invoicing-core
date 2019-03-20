@@ -424,10 +424,10 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
         else setValue(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
     }
 
-    public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
+    public org.eevolution.model.I_PP_Product_BOM getProductBOM() throws RuntimeException {
         return (org.eevolution.model.I_PP_Product_BOM)
                 MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-                        .getPO(getPP_Product_BOMId());
+                        .getPO(getProductBOMId());
     }
 
     /**
@@ -435,7 +435,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      *
      * @return BOM & Formula
      */
-    public int getPP_Product_BOMId() {
+    public int getProductBOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -446,7 +446,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      *
      * @param PP_Product_BOM_ID BOM & Formula
      */
-    public void setPP_Product_BOMId(int PP_Product_BOM_ID) {
+    public void setProductBOMId(int PP_Product_BOM_ID) {
         if (PP_Product_BOM_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
         else setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
     }
@@ -456,7 +456,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      *
      * @return BOM Line
      */
-    public int getPP_Product_BOMLineId() {
+    public int getProductBOMLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOMLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -467,7 +467,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      *
      * @param PP_Product_BOMLine_ID BOM Line
      */
-    public void setPP_Product_BOMLineId(int PP_Product_BOMLine_ID) {
+    public void setProductBOMLineId(int PP_Product_BOMLine_ID) {
         if (PP_Product_BOMLine_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, null);
         else setValueNoCheck(COLUMNNAME_PP_Product_BOMLine_ID, PP_Product_BOMLine_ID);
     }
@@ -477,7 +477,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      *
      * @return PP_Product_BOMLine_UU
      */
-    public String getPP_Product_BOMLine_UU() {
+    public String getProductBOMLine_UU() {
         return (String) getValue(COLUMNNAME_PP_Product_BOMLine_UU);
     }
 
@@ -486,7 +486,7 @@ public class X_PP_Product_BOMLine extends PO implements I_PP_Product_BOMLine {
      *
      * @param PP_Product_BOMLine_UU PP_Product_BOMLine_UU
      */
-    public void setPP_Product_BOMLine_UU(String PP_Product_BOMLine_UU) {
+    public void setProduct_BOMLine_UU(String PP_Product_BOMLine_UU) {
         setValue(COLUMNNAME_PP_Product_BOMLine_UU, PP_Product_BOMLine_UU);
     }
 

@@ -405,7 +405,7 @@ public class MWorkflow extends X_AD_Workflow {
                 || isValueChanged(HasName.Companion.getCOLUMNNAME_Name())
                 || isValueChanged(I_AD_Workflow.COLUMNNAME_Description)) {
       /* TODO Add DAP
-      MMenu[] menues = MMenu.get(getCtx(), "AD_Workflow_ID=" + getAD_WorkflowId(), null);
+      MMenu[] menues = MMenu.get(getCtx(), "AD_Workflow_ID=" + getWorkflowId(), null);
       for (int i = 0; i < menues.length; i++)
       {
       	menues[i].setIsActive(isActive());

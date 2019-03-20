@@ -135,7 +135,7 @@ public class Scheduler extends AdempiereServer {
                 new ProcessInfo(process.getName(), process.getProcessId(), AD_Table_ID, Record_ID);
         pi.setUserId(getUserId());
         pi.setADClientID(m_model.getClientId());
-        pi.setAD_PInstanceId(pInstance.getPInstanceId());
+        pi.setProcessInstanceId(pInstance.getPInstanceId());
         pi.setIsBatch(true);
         pi.setPrintPreview(true);
         MUser from = new MUser(getCtx(), pi.getUserId());

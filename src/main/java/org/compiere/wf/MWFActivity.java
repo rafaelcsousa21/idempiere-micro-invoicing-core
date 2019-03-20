@@ -416,7 +416,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
      */
     private void setResponsible(MWFProcess process) {
         //	Responsible
-        int AD_WF_Responsible_ID = getNode().getAD_WF_ResponsibleId();
+        int AD_WF_Responsible_ID = getNode().getWorkflowResponsibleId();
         if (AD_WF_Responsible_ID == 0) // 	not defined on Node Level
             AD_WF_Responsible_ID = process.getWorkFlowResponsibleId();
         setWorkflowResponsibleId(AD_WF_Responsible_ID);
@@ -827,7 +827,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
             pi.setADClientID(getClientId());
             MPInstance pInstance = new MPInstance(process, getRecordId());
             fillParameter(pInstance);
-            pi.setAD_PInstanceId(pInstance.getPInstanceId());
+            pi.setProcessInstanceId(pInstance.getPInstanceId());
             File report = null;
             //	Notice
             int AD_Message_ID = SystemIDs.MESSAGE_WORKFLOWRESULT; // 	HARDCODED WorkflowResult
@@ -859,7 +859,7 @@ public class MWFActivity extends X_AD_WF_Activity implements Runnable {
                             m_node.getName(true), m_node.getProcessId(), getDBTableId(), getRecordId());
             pi.setUserId(getUserId());
             pi.setADClientID(getClientId());
-            pi.setAD_PInstanceId(pInstance.getPInstanceId());
+            pi.setProcessInstanceId(pInstance.getPInstanceId());
             return process.processItWithoutTrxClose(pi);
         }
 

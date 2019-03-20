@@ -113,7 +113,7 @@ public class InvoiceNGL extends SvrProcess {
 
         //	Delete - just to be sure
         StringBuilder sql =
-                new StringBuilder("DELETE T_InvoiceGL WHERE AD_PInstance_ID=").append(getAD_PInstanceId());
+                new StringBuilder("DELETE T_InvoiceGL WHERE AD_PInstance_ID=").append(getProcessInstanceId());
         int no = executeUpdate(sql.toString());
         if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Deleted #" + no);
 
@@ -129,7 +129,7 @@ public class InvoiceNGL extends SvrProcess {
                         //	--
                         .append(
                                 "SELECT i.AD_Client_ID, i.AD_Org_ID, i.IsActive, i.Created,i.CreatedBy, i.Updated,i.UpdatedBy,")
-                        .append(getAD_PInstanceId())
+                        .append(getProcessInstanceId())
                         .append(", i.C_Invoice_ID, i.GrandTotal, invoiceOpen(i.C_Invoice_ID, 0), ")
                         .append(" fa.Fact_Acct_ID, fa.AmtSourceDr-fa.AmtSourceCr, fa.AmtAcctDr-fa.AmtAcctCr, ")
                         //	AmtRevalDr, AmtRevalCr,
@@ -187,7 +187,7 @@ public class InvoiceNGL extends SvrProcess {
                         .append("FROM Fact_Acct fa ")
                         .append("WHERE gl.Fact_Acct_ID=fa.Fact_Acct_ID) ")
                         .append("WHERE AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
         int noT = executeUpdate(sql.toString());
         if (noT > 0) if (log.isLoggable(Level.CONFIG)) log.config("Difference #" + noT);
 
@@ -195,14 +195,14 @@ public class InvoiceNGL extends SvrProcess {
         sql =
                 new StringBuilder("UPDATE T_InvoiceGL SET Percent = 100 ")
                         .append("WHERE GrandTotal=OpenAmt AND AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
         no = executeUpdate(sql.toString());
         if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Not Paid #" + no);
 
         sql =
                 new StringBuilder("UPDATE T_InvoiceGL SET Percent = ROUND(OpenAmt*100/GrandTotal,6) ")
                         .append("WHERE GrandTotal<>OpenAmt AND GrandTotal <> 0 AND AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
         no = executeUpdate(sql.toString());
         if (no > 0) if (log.isLoggable(Level.INFO)) log.info("Partial Paid #" + no);
 
@@ -212,7 +212,7 @@ public class InvoiceNGL extends SvrProcess {
                         .append(" AmtRevalDrDiff = AmtRevalDrDiff * Percent/100,")
                         .append(" AmtRevalCrDiff = AmtRevalCrDiff * Percent/100 ")
                         .append("WHERE Percent <> 100 AND AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
         no = executeUpdate(sql.toString());
         if (no > 0) if (log.isLoggable(Level.CONFIG)) log.config("Partial Calc #" + no);
 
@@ -236,7 +236,7 @@ public class InvoiceNGL extends SvrProcess {
         final String whereClause = "AD_PInstance_ID=?";
         List<X_T_InvoiceGL> list =
                 new Query(getCtx(), X_T_InvoiceGL.Table_Name, whereClause)
-                        .setParameters(getAD_PInstanceId())
+                        .setParameters(getProcessInstanceId())
                         .setOrderBy("AD_Org_ID")
                         .list();
         // FR: [ 2214883 ] Remove SQL code and Replace for Query

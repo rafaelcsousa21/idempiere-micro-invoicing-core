@@ -167,7 +167,7 @@ public class Aging extends SvrProcess {
     MAging aging = null;
     int counter = 0;
     int rows = 0;
-    int AD_PInstance_ID = getAD_PInstanceId();
+    int AD_PInstance_ID = getProcessInstanceId();
     //
     try
     {
@@ -201,7 +201,7 @@ public class Aging extends SvrProcess {
     		rows++;
     		//	New Aging Row
     		if (aging == null 		//	Key
-    			|| AD_PInstance_ID != aging.getAD_PInstanceId()
+    			|| AD_PInstance_ID != aging.getProcessInstanceId()
     			|| C_BPartner_ID != aging.getBusinessPartnerId()
     			|| C_Currency_ID != aging.getCurrencyId()
     			|| C_Invoice_ID != aging.getInvoiceId()

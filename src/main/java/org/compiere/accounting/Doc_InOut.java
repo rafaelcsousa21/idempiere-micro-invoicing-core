@@ -97,7 +97,7 @@ public class Doc_InOut extends Doc {
                     "SELECT PP_Cost_Collector_ID  FROM C_OrderLine WHERE C_OrderLine_ID=? AND PP_Cost_Collector_ID IS NOT NULL";
             int PP_Cost_Collector_ID =
                     getSQLValueEx(sql, line.getOrderLineId());
-            docLine.setPP_Cost_CollectorId(PP_Cost_Collector_ID);
+            docLine.setCostCollectorId(PP_Cost_Collector_ID);
             //
             if (log.isLoggable(Level.FINE)) log.fine(docLine.toString());
             list.add(docLine);
@@ -222,7 +222,7 @@ public class Doc_InOut extends Doc {
                 dr.setLocatorId(line.getLocatorId());
                 dr.setLocationFromLocator(line.getLocatorId(), true); //  from Loc
                 dr.setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
-                dr.setOrgId(line.getOrder_OrgId()); // 	Revenue X-Org
+                dr.setOrgId(line.getOrderOrgId()); // 	Revenue X-Org
                 dr.setQty(line.getQty().negate());
 
                 if (isReversal(line)) {
@@ -493,7 +493,7 @@ public class Doc_InOut extends Doc {
                 cr.setLocatorId(line.getLocatorId());
                 cr.setLocationFromLocator(line.getLocatorId(), true); //  from Loc
                 cr.setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
-                cr.setOrgId(line.getOrder_OrgId()); // 	Revenue X-Org
+                cr.setOrgId(line.getOrderOrgId()); // 	Revenue X-Org
                 cr.setQty(line.getQty().negate());
                 if (isReversal(line)) {
                     //	Set AmtAcctCr from Original Shipment/Receipt
@@ -589,7 +589,7 @@ public class Doc_InOut extends Doc {
                 MAccount assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
                 if (product.isService()) {
                     // if the line is a Outside Processing then DR WIP
-                    if (line.getPP_Cost_CollectorId() > 0)
+                    if (line.getCostCollectorId() > 0)
                         assets = line.getAccount(ProductCost.ACCTTYPE_P_WorkInProcess, as);
                     else assets = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                 }

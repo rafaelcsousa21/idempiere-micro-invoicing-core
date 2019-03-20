@@ -249,7 +249,7 @@ public class InvoiceWriteOff extends SvrProcess {
                             true,
                             p_DateAcct,
                             C_Currency_ID,
-                            getProcessInfo().getTitle() + " #" + getAD_PInstanceId(),
+                            getProcessInfo().getTitle() + " #" + getProcessInstanceId(),
                             null);
             m_alloc.setOrgId(invoice.getOrgId());
             if (!m_alloc.save()) {
@@ -269,7 +269,7 @@ public class InvoiceWriteOff extends SvrProcess {
             m_payment.setTenderType(MPayment.TENDERTYPE_Check);
             m_payment.setDateTrx(p_DateAcct);
             m_payment.setDateAcct(p_DateAcct);
-            m_payment.setDescription(getProcessInfo().getTitle() + " #" + getAD_PInstanceId());
+            m_payment.setDescription(getProcessInfo().getTitle() + " #" + getProcessInstanceId());
             m_payment.setBusinessPartnerId(invoice.getBusinessPartnerId());
             m_payment.setIsReceipt(true); // 	payments are negative
             m_payment.setCurrencyId(C_Currency_ID);

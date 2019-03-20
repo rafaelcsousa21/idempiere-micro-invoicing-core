@@ -263,7 +263,7 @@ public final class Fact implements IFact {
         line.setPostingType(m_postingType);
 
         //	Account
-        line.setAccount(m_acctSchema, m_acctSchema.getSuspenseBalancing_Acct());
+        line.setAccount(m_acctSchema, m_acctSchema.getSuspenseBalancingAccount());
 
         //  Amount
         if (diff.signum() < 0) //  negative balance => DR
@@ -404,18 +404,18 @@ public final class Fact implements IFact {
                     //  Amount & Account
                     if (difference.getBalance().signum() < 0) {
                         if (difference.isReversal()) {
-                            line.setAccount(m_acctSchema, m_acctSchema.getDueTo_Acct(elementType));
+                            line.setAccount(m_acctSchema, m_acctSchema.getDueToAccount(elementType));
                             line.setAmtSource(m_doc.getCurrencyId(), Env.ZERO, difference.getPostBalance());
                         } else {
-                            line.setAccount(m_acctSchema, m_acctSchema.getDueFrom_Acct(elementType));
+                            line.setAccount(m_acctSchema, m_acctSchema.getDueFromAccount(elementType));
                             line.setAmtSource(m_doc.getCurrencyId(), difference.getPostBalance(), Env.ZERO);
                         }
                     } else {
                         if (difference.isReversal()) {
-                            line.setAccount(m_acctSchema, m_acctSchema.getDueFrom_Acct(elementType));
+                            line.setAccount(m_acctSchema, m_acctSchema.getDueFromAccount(elementType));
                             line.setAmtSource(m_doc.getCurrencyId(), difference.getPostBalance(), Env.ZERO);
                         } else {
-                            line.setAccount(m_acctSchema, m_acctSchema.getDueTo_Acct(elementType));
+                            line.setAccount(m_acctSchema, m_acctSchema.getDueToAccount(elementType));
                             line.setAmtSource(m_doc.getCurrencyId(), Env.ZERO, difference.getPostBalance());
                         }
                     }

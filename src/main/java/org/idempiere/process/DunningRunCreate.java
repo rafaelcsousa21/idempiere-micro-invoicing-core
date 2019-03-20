@@ -278,7 +278,7 @@ public class DunningRunCreate extends SvrProcess {
   	catch (Exception e)
   	{
   		log.log(Level.SEVERE, "addInvoices", e);
-  		getProcessInfo().addLog(getProcessInfo().getAD_PInstanceId(), null, null, e.getLocalizedMessage());
+  		getProcessInfo().addLog(getProcessInfo().getProcessInstanceId(), null, null, e.getLocalizedMessage());
   	}
   	finally
   	{
@@ -332,7 +332,7 @@ public class DunningRunCreate extends SvrProcess {
     		msg.append(", @C_BPartner_ID@ ");
     		msg.append(MBPartner.get(getCtx(), C_BPartner_ID).getName().toString());
     		msg.append(" @No@ @IsActive@ @C_BPartner_Location_ID@");
-    	getProcessInfo().addLog(getProcessInfo().getAD_PInstanceId(), null, null, msg.toString());
+    	getProcessInfo().addLog(getProcessInfo().getProcessInstanceId(), null, null, msg.toString());
     	return false;
     }
 
@@ -430,7 +430,7 @@ public class DunningRunCreate extends SvrProcess {
   	catch (Exception e)
   	{
   		log.log(Level.SEVERE, sql.toString(), e);
-  		getProcessInfo().addLog(getProcessInfo().getAD_PInstanceId(), null, null, e.getLocalizedMessage());
+  		getProcessInfo().addLog(getProcessInfo().getProcessInstanceId(), null, null, e.getLocalizedMessage());
   	}
   	finally
   	{
@@ -473,7 +473,7 @@ public class DunningRunCreate extends SvrProcess {
     		msg.append(", @C_BPartner_ID@ ");
     		msg.append(MBPartner.get(getCtx(), C_BPartner_ID).getName().toString());
     		msg.append(" @No@ @IsActive@ @C_BPartner_Location_ID@");
-    	getProcessInfo().addLog(getProcessInfo().getAD_PInstanceId(), null, null, msg.toString());
+    	getProcessInfo().addLog(getProcessInfo().getProcessInstanceId(), null, null, msg.toString());
     	return false;
     }
     if (entry.getId() == 0)

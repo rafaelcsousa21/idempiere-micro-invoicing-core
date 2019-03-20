@@ -280,7 +280,7 @@ public class CostUpdate extends SvrProcess {
                             .append(" ")
                             .append(inventoryDoc.getDocumentNo());
                 addBufferLog(
-                        getAD_PInstanceId(),
+                        getProcessInstanceId(),
                         null,
                         null,
                         msg.toString(),

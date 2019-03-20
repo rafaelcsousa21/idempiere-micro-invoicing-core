@@ -58,7 +58,7 @@ public class M_PriceList_Create extends SvrProcess {
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_PriceList_Version_ID = getRecordId();
-        m_AD_PInstance_ID = getAD_PInstanceId();
+        m_AD_PInstance_ID = getProcessInstanceId();
     } // *prepare*/
 
     /**

@@ -292,7 +292,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @return BOM & Formula
      */
-    public int getPP_Product_BOMId() {
+    public int getProductBOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -303,7 +303,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @param PP_Product_BOM_ID BOM & Formula
      */
-    public void setPP_Product_BOMId(int PP_Product_BOM_ID) {
+    public void setProductBOMId(int PP_Product_BOM_ID) {
         if (PP_Product_BOM_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, null);
         else setValueNoCheck(COLUMNNAME_PP_Product_BOM_ID, PP_Product_BOM_ID);
     }
@@ -313,7 +313,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @return PP_Product_BOM_UU
      */
-    public String getPP_Product_BOM_UU() {
+    public String getProductBOM_UU() {
         return (String) getValue(COLUMNNAME_PP_Product_BOM_UU);
     }
 
@@ -322,7 +322,7 @@ public class X_PP_Product_BOM extends PO implements I_PP_Product_BOM {
      *
      * @param PP_Product_BOM_UU PP_Product_BOM_UU
      */
-    public void setPP_Product_BOM_UU(String PP_Product_BOM_UU) {
+    public void setProduct_BOM_UU(String PP_Product_BOM_UU) {
         setValue(COLUMNNAME_PP_Product_BOM_UU, PP_Product_BOM_UU);
     }
 

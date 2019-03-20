@@ -77,7 +77,7 @@ public class IndentedBOM extends SvrProcess {
 
         tboml.setOrgId(p_AD_Org_ID);
         tboml.setAcctSchemaId(p_C_AcctSchema_ID);
-        tboml.setPInstanceId(getAD_PInstanceId());
+        tboml.setPInstanceId(getProcessInstanceId());
         tboml.setCostElementId(p_M_CostElement_ID);
         tboml.setSelectedProductId(product.getId());
         tboml.setProductId(p_M_Product_ID);

@@ -79,7 +79,7 @@ public class MProject extends X_C_Project {
      *
      * @return C_ProjectType_ID id
      */
-    public int getProjectTypeId_Int() {
+    public int getProjectTypeIdAsInt() {
         String pj = super.getProjectTypeId();
         if (pj == null) return 0;
         int C_ProjectType_ID = 0;
@@ -107,15 +107,14 @@ public class MProject extends X_C_Project {
      * @return info
      */
     public String toString() {
-        StringBuffer sb =
-                new StringBuffer("MProject[")
-                        .append(getId())
-                        .append("-")
-                        .append(getSearchKey())
-                        .append(",ProjectCategory=")
-                        .append(getProjectCategory())
-                        .append("]");
-        return sb.toString();
+        String sb = "MProject[" +
+                getId() +
+                "-" +
+                getSearchKey() +
+                ",ProjectCategory=" +
+                getProjectCategory() +
+                "]";
+        return sb;
     } //	toString
 
     /**

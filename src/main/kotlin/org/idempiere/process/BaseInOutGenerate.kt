@@ -373,7 +373,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
 
         val parameters =
             if (p_Selection) {
-                listOf(Env.getClientId(ctx), aD_PInstanceId)
+                listOf(Env.getClientId(ctx), processInstanceId)
             } else {
                 listOf(p_M_Warehouse_ID) +
                         (if (p_DatePromised != null) listOf(p_DatePromised) else emptyList()) +

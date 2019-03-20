@@ -101,7 +101,7 @@ public class InOutGenerateRMA extends SvrProcess {
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, Env.getClientId(getCtx()));
-            pstmt.setInt(2, getAD_PInstanceId());
+            pstmt.setInt(2, getProcessInstanceId());
             rs = pstmt.executeQuery();
 
             while (rs.next()) {

@@ -189,7 +189,7 @@ public class InvoiceGenerate extends SvrProcess {
      * @return info
      */
     private String generate(String sql) {
-        MOrder[] orders = BaseInvoiceGenerateKt.getOrdersForInvoiceGeneration(getCtx(), sql, getAD_PInstanceId(),
+        MOrder[] orders = BaseInvoiceGenerateKt.getOrdersForInvoiceGeneration(getCtx(), sql, getProcessInstanceId(),
                 p_Selection, p_AD_Org_ID, p_C_BPartner_ID, p_C_Order_ID);
 
         for (MOrder order : orders) {
