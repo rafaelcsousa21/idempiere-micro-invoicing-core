@@ -569,7 +569,6 @@ public class M_PriceList_Create extends SvrProcess {
                                 }
                             } catch (Exception e) {
                                 throw e;
-                            } finally {
                             }
                         } else {
                             //

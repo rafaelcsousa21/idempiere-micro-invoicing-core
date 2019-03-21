@@ -77,7 +77,6 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @param ctx       context
      * @param C_Cash_ID id
-     * @param trxName   transaction
      */
     public MCash(Properties ctx, int C_Cash_ID) {
         super(ctx, C_Cash_ID);
@@ -93,11 +92,12 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             setStatementDate(today); // @#Date@
             setDateAcct(today); // @#Date@
 
-            StringBuilder name =
-                    new StringBuilder(DisplayType.getDateFormat(DisplayType.Date).format(today))
-                            .append(" ")
-                            .append(MOrg.get(ctx, getOrgId()).getSearchKey());
-            setName(name.toString());
+            MOrg org = MOrg.get(ctx, getOrgId());
+            String orgSearchKey = org.isSearchKeyNotNull() ? org.getSearchKey() : "unknown";
+
+            String name = DisplayType.getDateFormat(DisplayType.Date).format(today) +
+                    " " + orgSearchKey;
+            setName(name);
             setIsApproved(false);
             setPosted(false); // N
             setProcessed(false);
@@ -108,8 +108,6 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * Load Constructor
      *
      * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MCash(Properties ctx, Row row) {
         super(ctx, row);

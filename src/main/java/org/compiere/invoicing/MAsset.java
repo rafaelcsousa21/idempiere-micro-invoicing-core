@@ -56,8 +56,8 @@ public class MAsset extends org.compiere.product.MAsset {
 
         // Asset Group:
         int A_Asset_Group_ID = invoiceLine.getAssetGroupId();
-        org.compiere.accounting.MProduct product =
-                org.compiere.accounting.MProduct.get(getCtx(), invoiceLine.getProductId());
+        MProduct product =
+                MProduct.get(getCtx(), invoiceLine.getProductId());
         if (A_Asset_Group_ID <= 0) {
             A_Asset_Group_ID = product.getAssetGroupId();
         }
@@ -85,7 +85,6 @@ public class MAsset extends org.compiere.product.MAsset {
     /**
      * Construct from MIFixedAsset (import)
      *
-     * @param match match invoice
      */
     public MAsset(MIFixedAsset ifa) {
         this(ifa.getCtx(), 0);
@@ -101,12 +100,7 @@ public class MAsset extends org.compiere.product.MAsset {
             setValue(inventoryNo);
         }
         setAssetCreateDate(ifa.getAssetServiceDate());
-        // setAssetServiceDate(ifa.getAssetServiceDate()); //commented by @win
-    /* commented by @win
-    setA_Asset_ClassId(ifa.getA_Asset_ClassId());
-    */
-        // commented by @win
-        org.compiere.accounting.MProduct product = ifa.getProduct();
+        MProduct product = ifa.getProduct();
         if (product != null) {
             setProductId(product.getProductId());
             setAssetGroupId(ifa.getAssetGroupId());
@@ -137,7 +131,7 @@ public class MAsset extends org.compiere.product.MAsset {
         setDescription(project.getDescription());
     }
 
-    public MAsset(MInOut mInOut, MInOutLine sLine, int deliveryCount) {
+    public MAsset(MInOut mInOut, MInOutLine sLine) {
         this(mInOut.getCtx(), 0);
         setIsOwned(false);
         setIsInPosession(false);
@@ -156,14 +150,13 @@ public class MAsset extends org.compiere.product.MAsset {
      *
      * @param inventory     inventory
      * @param invLine       inventory line
-     * @param deliveryCount 0 or number of delivery
      * @return A_Asset_ID
      */
-    public MAsset(MInventory inventory, MInventoryLine invLine, BigDecimal qty, BigDecimal costs) {
+    public MAsset(MInventory inventory, MInventoryLine invLine, BigDecimal qty) {
         super(invLine.getCtx(), 0);
         setClientOrg(invLine);
 
-        org.compiere.accounting.MProduct product = MProduct.get(getCtx(), invLine.getProductId());
+        MProduct product = MProduct.get(getCtx(), invLine.getProductId());
         // Defaults from group:
         MAssetGroup assetGroup =
                 MAssetGroup.get(
@@ -194,14 +187,6 @@ public class MAsset extends org.compiere.product.MAsset {
         // setSerNo(invLine.getSerNo());
         setQty(qty);
 
-        // Costs:
-        // setA_Asset_Cost(costs);  //commented by @win, set at asset addition
-
-        // Activity
-    /*
-    if (invLine.getBusinessActivityId() > 0)
-    	setBusinessActivityId(invLine.getBusinessActivityId());
-    */
         if (inventory.getBusinessActivityId() > 0) setActivityId(inventory.getBusinessActivityId());
 
         //
@@ -217,11 +202,6 @@ public class MAsset extends org.compiere.product.MAsset {
         setAssetStatus(X_A_Asset.A_ASSET_STATUS_New);
         // end added by @win
 
-    }
-
-    public static MAsset getFromShipment(Properties ctx, int i) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     public static MAsset get(Properties ctx, int A_Asset_ID) {

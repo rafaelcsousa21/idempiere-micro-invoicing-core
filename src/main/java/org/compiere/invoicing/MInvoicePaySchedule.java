@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.bo.MCurrency;
 import org.compiere.order.MPaySchedule;
 import org.compiere.orm.TimeUtil;
-import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -22,10 +21,6 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
      *
      */
     private static final long serialVersionUID = 4613382619117842586L;
-    /**
-     * Static Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MInvoicePaySchedule.class);
     /**
      * Parent
      */
@@ -127,18 +122,16 @@ public class MInvoicePaySchedule extends X_C_InvoicePaySchedule {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MInvoicePaySchedule[");
-        sb.append(getId())
-                .append("-Due=")
-                .append(getDueDate())
-                .append("/")
-                .append(getDueAmt())
-                .append(";Discount=")
-                .append(getDiscountDate())
-                .append("/")
-                .append(getDiscountAmt())
-                .append("]");
-        return sb.toString();
+        return "MInvoicePaySchedule[" + getId() +
+                "-Due=" +
+                getDueDate() +
+                "/" +
+                getDueAmt() +
+                ";Discount=" +
+                getDiscountDate() +
+                "/" +
+                getDiscountAmt() +
+                "]";
     } //	toString
 
     /**

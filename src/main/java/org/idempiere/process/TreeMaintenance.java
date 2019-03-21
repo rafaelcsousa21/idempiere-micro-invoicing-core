@@ -184,8 +184,6 @@ public class TreeMaintenance extends SvrProcess {
                 }
             } catch (Exception e) {
                 log.log(Level.SEVERE, "verifyTree", e);
-            } finally {
-
             }
         }
 

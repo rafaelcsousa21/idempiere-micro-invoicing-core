@@ -135,8 +135,6 @@ public class ClientAcctProcessor extends SvrProcess {
                 }
             } catch (Exception e) {
                 log.log(Level.SEVERE, sql.toString(), e);
-            } finally {
-
             }
         }
 

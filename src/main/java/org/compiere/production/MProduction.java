@@ -450,8 +450,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             } // for all bom products
         } catch (Exception e) {
             throw new AdempiereException("Failed to create production lines", e);
-        } finally {
-
         }
 
         return count;

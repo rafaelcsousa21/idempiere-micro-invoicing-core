@@ -760,7 +760,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                         if (i > 0) info.append(" - ");
                         int deliveryCount = i + 1;
                         if (!product.isOneAssetPerUOM()) deliveryCount = 0;
-                        MAsset asset = new MAsset(this, sLine, deliveryCount);
+                        MAsset asset = new MAsset(this, sLine);
                         if (!asset.save()) {
                             m_processMsg = "Could not create Asset";
                             return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -1069,19 +1069,6 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                     true);
                     ma.saveEx();
                 }
-            }
-            //	De-Activate Asset
-            MAsset asset = MAsset.getFromShipment(getCtx(), sLines[i].getInOutLineId());
-            if (asset != null) {
-                asset.setIsActive(false);
-                asset.setDescription(
-                        asset.getDescription()
-                                + " ("
-                                + reversal.getDocumentNo()
-                                + " #"
-                                + rLine.getLine()
-                                + "<-)");
-                asset.saveEx();
             }
         }
         reversal.setOrderId(getOrderId());

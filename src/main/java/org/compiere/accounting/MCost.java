@@ -251,9 +251,7 @@ public class MCost extends X_M_Cost {
             }
         } catch (SQLException e) {
             throw new DBException(e, sql);
-        } finally {
         }
-
         if (count > 1) // 	Print summary
             if (s_log.isLoggable(Level.FINEST))
                 s_log.finest(
@@ -480,7 +478,6 @@ public class MCost extends X_M_Cost {
             }
         } catch (SQLException e) {
             throw new DBException(e, sql);
-        } finally {
         }
         return BigDecimal.ZERO;
     }
@@ -521,7 +518,6 @@ public class MCost extends X_M_Cost {
             if (rs.next()) retValue = rs.getBigDecimal(1);
         } catch (Exception e) {
             s_log.log(Level.SEVERE, sql.toString(), e);
-        } finally {
         }
 
         if (retValue != null) {
@@ -573,7 +569,6 @@ public class MCost extends X_M_Cost {
             }
         } catch (SQLException e) {
             throw new DBException(e, sql.toString());
-        } finally {
         }
 
         if (retValue != null) {
@@ -616,7 +611,6 @@ public class MCost extends X_M_Cost {
             }
         } catch (Exception e) {
             s_log.log(Level.SEVERE, sql, e);
-        } finally {
         }
 
         if (retValue != null) {

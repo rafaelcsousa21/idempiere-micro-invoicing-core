@@ -698,7 +698,7 @@ public class DistributionRun extends SvrProcess {
             pstmt.setInt(3, M_Product_ID);
 
             rs = pstmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 return rs.getBigDecimal(1);
             }
         } catch (Exception e) {
