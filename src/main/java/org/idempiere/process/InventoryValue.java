@@ -59,15 +59,15 @@ public class InventoryValue extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_PriceList_Version_ID"))
-                p_M_PriceList_Version_ID = para[i].getParameterAsInt();
-            else if (name.equals("DateValue")) p_DateValue = (Timestamp) para[i].getParameter();
-            else if (name.equals("M_Warehouse_ID")) p_M_Warehouse_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_Currency_ID")) p_C_Currency_ID = para[i].getParameterAsInt();
-            else if (name.equals("M_CostElement_ID")) p_M_CostElement_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("M_PriceList_Version_ID"))
+                p_M_PriceList_Version_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("DateValue")) p_DateValue = (Timestamp) iProcessInfoParameter.getParameter();
+            else if (name.equals("M_Warehouse_ID")) p_M_Warehouse_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("C_Currency_ID")) p_C_Currency_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("M_CostElement_ID")) p_M_CostElement_ID = iProcessInfoParameter.getParameterAsInt();
         }
         if (p_DateValue == null) p_DateValue = new Timestamp(System.currentTimeMillis());
     } //  prepare

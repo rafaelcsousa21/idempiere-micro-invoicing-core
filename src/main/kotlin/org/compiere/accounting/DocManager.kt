@@ -2,6 +2,7 @@ package org.compiere.accounting
 
 import kotliquery.Row
 import org.compiere.model.IDoc
+import org.compiere.model.I_C_AcctSchema
 import org.compiere.orm.MTable
 import org.idempiere.common.exceptions.DBException
 import org.idempiere.common.util.AdempiereUserError
@@ -81,7 +82,7 @@ object DocManager {
      * @param trxName transaction name
      * @return Document or null
      */
-    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, Record_ID: Int): IDoc? {
+    fun getDocument(`as`: I_C_AcctSchema, AD_Table_ID: Int, Record_ID: Int): IDoc? {
         var TableName: String? = null
         for (i in 0 until DocManager.getDocumentsTableID()!!.size) {
             if (DocManager.getDocumentsTableID()!![i] == AD_Table_ID) {
@@ -111,7 +112,7 @@ object DocManager {
      * @return Document
      * @throws AdempiereUserError
      */
-    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: Row): IDoc? {
+    fun getDocument(`as`: I_C_AcctSchema, AD_Table_ID: Int, rs: Row): IDoc? {
         val factory = DefaultDocumentFactory()
         val doc = factory.getDocument(`as`, AD_Table_ID, rs)
         if (doc != null)

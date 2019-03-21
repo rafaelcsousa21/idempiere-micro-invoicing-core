@@ -761,7 +761,7 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
                 if (enforce && MRole.getDefault().isOverwritePriceLimit()) enforce = false;
                 //	Check Price Limit?
                 if (enforce
-                        && getPriceLimit() != Env.ZERO
+                        && !getPriceLimit().equals(Env.ZERO)
                         && getPriceActual().compareTo(getPriceLimit()) < 0) {
                     log.saveError(
                             "UnderLimitPrice",

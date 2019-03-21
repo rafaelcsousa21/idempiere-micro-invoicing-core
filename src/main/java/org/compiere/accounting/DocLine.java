@@ -1,6 +1,8 @@
 package org.compiere.accounting;
 
 import org.compiere.model.IDocLine;
+import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_ValidCombination;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -408,12 +410,12 @@ public class DocLine {
      * @param as       Accounting schema
      * @return Requested Product Account
      */
-    public MAccount getAccount(int AcctType, MAcctSchema as) {
+    public I_C_ValidCombination getAccount(int AcctType, I_C_AcctSchema as) {
         //	Charge Account
         if (getProductId() == 0 && getChargeId() != 0) {
             BigDecimal amt = new BigDecimal(-1); // 	Revenue (-)
             if (!m_doc.isSOTrx()) amt = new BigDecimal(+1); // 	Expense (+)
-            MAccount acct = getChargeAccount(as, amt);
+            I_C_ValidCombination acct = getChargeAccount(as, amt);
             if (acct != null) return acct;
         }
         //	Product Account
@@ -445,7 +447,7 @@ public class DocLine {
      * @param amount amount for expense(+)/revenue(-)
      * @return Charge Account or null
      */
-    public MAccount getChargeAccount(MAcctSchema as, BigDecimal amount) {
+    public I_C_ValidCombination getChargeAccount(I_C_AcctSchema as, BigDecimal amount) {
         int C_Charge_ID = getChargeId();
         if (C_Charge_ID == 0) return null;
         return MCharge.getAccount(C_Charge_ID, as);
@@ -626,7 +628,7 @@ public class DocLine {
      * @return costs
      */
     public BigDecimal getProductCosts(
-            MAcctSchema as, int AD_Org_ID, boolean zeroCostsOK, String whereClause) {
+            I_C_AcctSchema as, int AD_Org_ID, boolean zeroCostsOK, String whereClause) {
         if (whereClause != null
                 && !as.getCostingMethod().equals(MAcctSchema.COSTINGMETHOD_StandardCosting)) {
             MCostDetail cd =
@@ -649,7 +651,7 @@ public class DocLine {
      * @param zeroCostsOK zero/no costs are OK
      * @return costs
      */
-    public BigDecimal getProductCosts(MAcctSchema as, int AD_Org_ID, boolean zeroCostsOK) {
+    public BigDecimal getProductCosts(I_C_AcctSchema as, int AD_Org_ID, boolean zeroCostsOK) {
         ProductCost pc = getProductCost();
         int C_OrderLine_ID = getOrderLineId();
         String costingMethod = null;

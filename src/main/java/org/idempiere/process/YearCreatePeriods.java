@@ -39,11 +39,11 @@ public class YearCreatePeriods extends SvrProcess {
     protected void prepare() {
 
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("StartDate")) p_StartDate = (Timestamp) para[i].getParameter();
-            else if (name.equals("DateFormat")) p_DateFormat = (String) para[i].getParameter();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("StartDate")) p_StartDate = (Timestamp) iProcessInfoParameter.getParameter();
+            else if (name.equals("DateFormat")) p_DateFormat = (String) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_C_Year_ID = getRecordId();

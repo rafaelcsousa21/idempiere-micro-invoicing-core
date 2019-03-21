@@ -26,6 +26,7 @@ import org.eevolution.model.I_DD_OrderLine;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -227,6 +228,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         return dt.getNameTrl() + " " + getDocumentNo();
@@ -442,7 +444,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -475,6 +477,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -652,6 +655,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         @SuppressWarnings("unused")
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
@@ -921,6 +925,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -937,6 +942,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -950,6 +956,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         return getSalesRepresentativeId();
     } //	getDoc_User_ID
 
+    @NotNull
     public BigDecimal getApprovalAmt() {
         // TODO Auto-generated method stub
         return null;

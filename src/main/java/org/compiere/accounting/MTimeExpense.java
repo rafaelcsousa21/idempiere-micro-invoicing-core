@@ -13,6 +13,7 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -147,6 +148,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return document info
      */
+    @NotNull
     public String getDocumentInfo() {
         return Msg.getElement(getCtx(), "S_TimeExpense_ID") + " " + getDocumentNo();
     } //	getDocumentInfo
@@ -157,7 +159,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -190,6 +192,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -261,6 +264,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -402,6 +406,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -424,6 +429,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -480,7 +486,7 @@ public class MTimeExpense extends X_S_TimeExpense implements DocAction, IPODoc {
      *
      * @param DocStatus The current status of the document
      */
-    public void setDocStatus(String DocStatus) {
+    public void setDocStatus(@NotNull String DocStatus) {
 
         setValue(COLUMNNAME_DocStatus, DocStatus);
     }

@@ -192,11 +192,12 @@ public class MInvoiceTax extends X_C_InvoiceTax implements I_C_InvoiceTax {
                 //
                 // phib [ 1702807 ]: manual tax should never be amended
                 // on line level taxes
-                if (!documentLevel && amt.signum() != 0 && !isSOTrx) // 	manually entered
-                    ;
-                else if (documentLevel || baseAmt.signum() == 0) amt = Env.ZERO;
-                else // calculate line tax
-                    amt = tax.calculateTax(baseAmt, isTaxIncluded(), getPrecision());
+                if (documentLevel || amt.signum() == 0 || isSOTrx) // 	manually entered
+                {
+                    if (documentLevel || baseAmt.signum() == 0) amt = Env.ZERO;
+                    else // calculate line tax
+                        amt = tax.calculateTax(baseAmt, isTaxIncluded(), getPrecision());
+                }
                 //
                 taxAmt = taxAmt.add(amt);
             }

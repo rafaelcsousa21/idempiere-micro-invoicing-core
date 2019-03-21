@@ -272,12 +272,10 @@ public class MWFProcess extends X_AD_WF_Process {
         if (transitions == null || transitions.length == 0) return false; // 	done
 
         //	We need to wait for last activity
-        if (MWFNode.JOINELEMENT_AND.equals(last.getNode().getJoinElement())) {
-            //	get previous nodes
-            //	check if all have closed activities
-            //	return false for all but the last
-        }
-        //	eliminate from active processed
+        last.getNode().getJoinElement();//	get previous nodes
+//	check if all have closed activities
+//	return false for all but the last
+//	eliminate from active processed
         last.setProcessed(true);
         last.saveEx();
 

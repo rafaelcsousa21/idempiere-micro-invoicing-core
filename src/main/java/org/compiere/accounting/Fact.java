@@ -1,6 +1,10 @@
 package org.compiere.accounting;
 
 import org.compiere.model.IFact;
+import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_AcctSchema_Element;
+import org.compiere.model.I_C_ElementValue;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_Fact_Acct;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -42,7 +46,7 @@ public final class Fact implements IFact {
     /**
      * Accounting Schema
      */
-    private MAcctSchema m_acctSchema = null;
+    private I_C_AcctSchema m_acctSchema = null;
     /**
      * Transaction
      */
@@ -63,7 +67,7 @@ public final class Fact implements IFact {
      * @param acctSchema         Account Schema to create accounts
      * @param defaultPostingType the default Posting type (actual,..) for this posting
      */
-    public Fact(Doc document, MAcctSchema acctSchema, String defaultPostingType) {
+    public Fact(Doc document, I_C_AcctSchema acctSchema, String defaultPostingType) {
         m_doc = document;
         m_acctSchema = acctSchema;
         m_postingType = defaultPostingType;
@@ -91,7 +95,7 @@ public final class Fact implements IFact {
      */
     public FactLine createLine(
             DocLine docLine,
-            MAccount account,
+            I_C_ValidCombination account,
             int C_Currency_ID,
             BigDecimal debitAmt,
             BigDecimal creditAmt) {
@@ -193,7 +197,7 @@ public final class Fact implements IFact {
      * @param Amt           if negative Cr else Dr
      * @return FactLine
      */
-    public FactLine createLine(DocLine docLine, MAccount account, int C_Currency_ID, BigDecimal Amt) {
+    public FactLine createLine(DocLine docLine, I_C_ValidCombination account, int C_Currency_ID, BigDecimal Amt) {
         if (Amt.signum() < 0) return createLine(docLine, account, C_Currency_ID, null, Amt.abs());
         else return createLine(docLine, account, C_Currency_ID, Amt, null);
     } //  createLine
@@ -300,10 +304,9 @@ public final class Fact implements IFact {
         }
         if (list.size() > 1) return true;
 
-        MAcctSchemaElement[] elements = m_acctSchema.getAcctSchemaElements();
+        I_C_AcctSchema_Element[] elements = m_acctSchema.getAcctSchemaElements();
         //  check all balancing segments
-        for (int i = 0; i < elements.length; i++) {
-            MAcctSchemaElement ase = elements[i];
+        for (I_C_AcctSchema_Element ase : elements) {
             if (ase.isBalanced() && !isSegmentBalanced(ase.getElementType())) return false;
         }
         return true;
@@ -353,10 +356,9 @@ public final class Fact implements IFact {
      * create dueTo/dueFrom line overwriting the segment value
      */
     public void balanceSegments() {
-        MAcctSchemaElement[] elements = m_acctSchema.getAcctSchemaElements();
+        I_C_AcctSchema_Element[] elements = m_acctSchema.getAcctSchemaElements();
         //  check all balancing segments
-        for (int i = 0; i < elements.length; i++) {
-            MAcctSchemaElement ase = elements[i];
+        for (I_C_AcctSchema_Element ase : elements) {
             if (ase.isBalanced()) balanceSegment(ase.getElementType());
         }
     } //  balanceSegments
@@ -559,12 +561,12 @@ public final class Fact implements IFact {
         //	For all fact lines
         for (int i = 0; i < m_lines.size(); i++) {
             FactLine line = m_lines.get(i);
-            MAccount account = line.getAccount();
+            I_C_ValidCombination account = line.getAccount();
             if (account == null) {
                 log.warning("No Account for " + line);
                 return false;
             }
-            MElementValue ev = account.getAccount();
+            I_C_ElementValue ev = account.getAccount();
             if (ev == null) {
                 log.warning("No Element Value for " + account + ": " + line);
                 m_doc.p_Error = account.toString();

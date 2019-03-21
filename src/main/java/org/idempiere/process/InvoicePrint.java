@@ -54,20 +54,21 @@ public class InvoicePrint extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
-            else if (name.equals("DateInvoiced")) {
-                m_dateInvoiced_From = ((Timestamp) para[i].getParameter());
-                m_dateInvoiced_To = ((Timestamp) para[i].getParameterTo());
-            } else if (name.equals("EMailPDF")) p_EMailPDF = "Y".equals(para[i].getParameter());
-            else if (name.equals("R_MailText_ID")) p_R_MailText_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_Invoice_ID")) m_C_Invoice_ID = para[i].getParameterAsInt();
-            else if (name.equals("DocumentNo")) {
-                m_DocumentNo_From = (String) para[i].getParameter();
-                m_DocumentNo_To = (String) para[i].getParameterTo();
-            } else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameterTo() != null) {
+                if (name.equals("DateInvoiced")) {
+                    m_dateInvoiced_From = ((Timestamp) iProcessInfoParameter.getParameter());
+                    m_dateInvoiced_To = ((Timestamp) iProcessInfoParameter.getParameterTo());
+                } else if (name.equals("EMailPDF")) p_EMailPDF = "Y".equals(iProcessInfoParameter.getParameter());
+                else if (name.equals("R_MailText_ID")) p_R_MailText_ID = iProcessInfoParameter.getParameterAsInt();
+                else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                else if (name.equals("C_Invoice_ID")) m_C_Invoice_ID = iProcessInfoParameter.getParameterAsInt();
+                else if (name.equals("DocumentNo")) {
+                    m_DocumentNo_From = (String) iProcessInfoParameter.getParameter();
+                    m_DocumentNo_To = (String) iProcessInfoParameter.getParameterTo();
+                } else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+            }
         }
         if (m_DocumentNo_From != null && m_DocumentNo_From.length() == 0) m_DocumentNo_From = null;
         if (m_DocumentNo_To != null && m_DocumentNo_To.length() == 0) m_DocumentNo_To = null;

@@ -7,6 +7,8 @@ import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
 import org.compiere.invoicing.MInOutLineMA;
 import org.compiere.model.IFact;
+import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_RMALine;
 import org.compiere.tax.MTax;
@@ -45,7 +47,6 @@ public class Doc_InOut extends Doc {
      *
      * @param as      accounting schema
      * @param rs      record
-     * @param trxName trx
      */
     public Doc_InOut(MAcctSchema as, Row rs) {
         super(as, MInOut.class, rs, null);
@@ -137,7 +138,7 @@ public class Doc_InOut extends Doc {
      * @param as accounting schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(MAcctSchema as) {
+    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
         //
         ArrayList<IFact> facts = new ArrayList<IFact>();
         //  create Fact Header
@@ -586,7 +587,7 @@ public class Doc_InOut extends Doc {
                 }
 
                 //  Inventory/Asset			DR
-                MAccount assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
+                I_C_ValidCombination assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
                 if (product.isService()) {
                     // if the line is a Outside Processing then DR WIP
                     if (line.getCostCollectorId() > 0)
@@ -794,7 +795,7 @@ public class Doc_InOut extends Doc {
                 }
 
                 //  Inventory/Asset			CR
-                MAccount assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
+                I_C_ValidCombination assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
                 if (product.isService()) assets = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                 // Elaine 2008/06/26
         /*cr = fact.createLine(line, assets,
@@ -840,7 +841,7 @@ public class Doc_InOut extends Doc {
         return m_Reversal_ID != 0 && line.getReversalLineId() != 0;
     }
 
-    private String createVendorRMACostDetail(MAcctSchema as, DocLine line, BigDecimal costs) {
+    private String createVendorRMACostDetail(I_C_AcctSchema as, DocLine line, BigDecimal costs) {
         BigDecimal tQty = line.getQty();
         BigDecimal tAmt = costs;
         if (tAmt.signum() != tQty.signum()) {

@@ -41,8 +41,6 @@ public class RfQClose extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
         p_C_RfQ_ID = getRecordId();
     } //	prepare
@@ -55,27 +53,5 @@ public class RfQClose extends SvrProcess {
      */
     protected String doIt() throws Exception {
         throw new NotImplementedException();
-
-    /*
-    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
-    if (rfq.getId() == 0)
-    	throw new IllegalArgumentException("No RfQ found");
-    if (log.isLoggable(Level.INFO)) log.info("doIt - " + rfq);
-    //
-    rfq.setProcessed(true);
-    rfq.saveEx();
-    //
-    int counter = 0;
-    MRfQResponse[] responses = rfq.getResponses (false, false);
-    for (int i = 0; i < responses.length; i++)
-    {
-    	responses[i].setProcessed(true);
-    	responses[i].saveEx();
-    	counter++;
-    }
-    //
-    StringBuilder msgreturn = new StringBuilder("# ").append(counter);
-    return msgreturn.toString();
-    */
     } //	doIt
 } //	RfQClose

@@ -16,6 +16,7 @@ import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -130,6 +131,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return document status
      */
+    @NotNull
     public String getDocStatus() {
         return m_status;
     } //	getDocStatus
@@ -140,7 +142,7 @@ public class DocumentEngine implements DocAction {
      * @param ignored Status is not set directly
      * @see DocAction#setDocStatus(String)
      */
-    public void setDocStatus(String ignored) {
+    public void setDocStatus(@NotNull String ignored) {
     } // 	setDocStatus
 
     /**
@@ -312,7 +314,7 @@ public class DocumentEngine implements DocAction {
      * @param action document action
      * @return true if performed
      */
-    public boolean processIt(String action) {
+    public boolean processIt(@NotNull String action) {
         m_message = null;
         m_action = action;
         //
@@ -435,6 +437,7 @@ public class DocumentEngine implements DocAction {
      * @return new status (In Progress or Invalid)
      * @see DocAction#prepareIt()
      */
+    @NotNull
     public String prepareIt() {
         if (!isValidAction(DocAction.Companion.getACTION_Prepare())) return m_status;
         if (m_document != null) {
@@ -490,6 +493,7 @@ public class DocumentEngine implements DocAction {
      * @return new document status (Complete, In Progress, Invalid, Waiting ..)
      * @see DocAction#completeIt()
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         if (!isValidAction(DocAction.Companion.getACTION_Complete()))
             return new CompleteActionResult(m_status);
@@ -553,9 +557,10 @@ public class DocumentEngine implements DocAction {
      * @see DocAction#closeIt()
      */
     public boolean closeIt() {
-        if (m_document != null // 	orders can be closed any time
-                && m_document.getTableId() == I_C_Order.Table_ID) ;
-        else if (!isValidAction(DocAction.Companion.getACTION_Close())) return false;
+        if (m_document == null // 	orders can be closed any time
+                || m_document.getTableId() != I_C_Order.Table_ID) {
+            if (!isValidAction(DocAction.Companion.getACTION_Close())) return false;
+        }
         if (m_document != null) {
             if (m_document.closeIt()) {
                 m_status = DocAction.Companion.getSTATUS_Closed();
@@ -719,6 +724,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_message;
     } //	getProcessMsg
@@ -728,6 +734,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return throw exception
      */
+    @NotNull
     public String getSummary() {
         throw new IllegalStateException(EXCEPTION_MSG);
     }
@@ -737,6 +744,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return throw exception
      */
+    @NotNull
     public String getDocumentNo() {
         throw new IllegalStateException(EXCEPTION_MSG);
     }
@@ -746,6 +754,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return throw exception
      */
+    @NotNull
     public String getDocumentInfo() {
         throw new IllegalStateException(EXCEPTION_MSG);
     }
@@ -773,6 +782,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return throw exception
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         throw new IllegalStateException(EXCEPTION_MSG);
     }
@@ -800,6 +810,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return Document Action
      */
+    @NotNull
     public String getDocAction() {
         return m_action;
     }
@@ -827,6 +838,7 @@ public class DocumentEngine implements DocAction {
      *
      * @return context
      */
+    @NotNull
     public Properties getCtx() {
         if (m_document != null) return m_document.getCtx();
         throw new IllegalStateException(EXCEPTION_MSG);

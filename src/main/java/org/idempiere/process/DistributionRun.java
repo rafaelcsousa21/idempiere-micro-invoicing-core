@@ -101,29 +101,29 @@ public class DistributionRun extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
             //	log.fine("prepare - " + para[i]);
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_DocType_ID")) {
-                p_C_DocType_ID = ((BigDecimal) para[i].getParameter()).intValue();
+
+            if (name.equals("C_DocType_ID")) {
+                p_C_DocType_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
                 m_docType = new MDocType(getCtx(), p_C_DocType_ID);
             } else if (name.equals("DatePromised")) {
-                p_DatePromised = (Timestamp) para[i].getParameter();
+                p_DatePromised = (Timestamp) iProcessInfoParameter.getParameter();
                 // p_DatePromised_To = (Timestamp)para[i].getParameterTo();
-            } else if (name.equals("IsTest")) p_IsTest = "Y".equals(para[i].getParameter());
+            } else if (name.equals("IsTest")) p_IsTest = "Y".equals(iProcessInfoParameter.getParameter());
             else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
                     && name.equals("M_Warehouse_ID"))
-                p_M_Warehouse_ID = ((BigDecimal) para[i].getParameter()).intValue();
+                p_M_Warehouse_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
             else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
                     && name.equals("ConsolidateDocument"))
-                p_ConsolidateDocument = "Y".equals(para[i].getParameter());
+                p_ConsolidateDocument = "Y".equals(iProcessInfoParameter.getParameter());
             else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
                     && name.equals("M_DistributionList_ID"))
-                p_M_DistributionList_ID = para[i].getParameterAsInt();
+                p_M_DistributionList_ID = iProcessInfoParameter.getParameterAsInt();
             else if (m_docType.getDocBaseType().equals(MDocType.DOCBASETYPE_DistributionOrder)
                     && name.equals("IsRequiredDRP"))
-                p_BasedInDamnd = "Y".equals(para[i].getParameter());
+                p_BasedInDamnd = "Y".equals(iProcessInfoParameter.getParameter());
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
         p_M_DistributionRun_ID = getRecordId();

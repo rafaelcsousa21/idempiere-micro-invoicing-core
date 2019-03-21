@@ -38,16 +38,16 @@ public class CopyOrder extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_Order_ID"))
-                p_C_Order_ID = ((BigDecimal) para[i].getParameter()).intValue();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("C_Order_ID"))
+                p_C_Order_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
             else if (name.equals("C_DocType_ID"))
-                p_C_DocType_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("DateDoc")) p_DateDoc = (Timestamp) para[i].getParameter();
+                p_C_DocType_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+            else if (name.equals("DateDoc")) p_DateDoc = (Timestamp) iProcessInfoParameter.getParameter();
             else if (name.equals("IsCloseDocument"))
-                p_IsCloseDocument = "Y".equals(para[i].getParameter());
+                p_IsCloseDocument = "Y".equals(iProcessInfoParameter.getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare

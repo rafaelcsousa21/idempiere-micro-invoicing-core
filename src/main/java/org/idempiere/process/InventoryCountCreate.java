@@ -91,19 +91,35 @@ public class InventoryCountCreate extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_Locator_ID")) p_M_Locator_ID = para[i].getParameterAsInt();
-            else if (name.equals("LocatorValue")) p_LocatorValue = (String) para[i].getParameter();
-            else if (name.equals("ProductValue")) p_ProductValue = (String) para[i].getParameter();
-            else if (name.equals("M_Product_Category_ID"))
-                p_M_Product_Category_ID = para[i].getParameterAsInt();
-            else if (name.equals("QtyRange")) p_QtyRange = (String) para[i].getParameter();
-            else if (name.equals("InventoryCountSet"))
-                p_InventoryCountSetZero = "Z".equals(para[i].getParameter());
-            else if (name.equals("DeleteOld")) p_DeleteOld = "Y".equals(para[i].getParameter());
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "M_Locator_ID":
+                    p_M_Locator_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "LocatorValue":
+                    p_LocatorValue = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "ProductValue":
+                    p_ProductValue = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "M_Product_Category_ID":
+                    p_M_Product_Category_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "QtyRange":
+                    p_QtyRange = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "InventoryCountSet":
+                    p_InventoryCountSetZero = "Z".equals(iProcessInfoParameter.getParameter());
+                    break;
+                case "DeleteOld":
+                    p_DeleteOld = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
         p_M_Inventory_ID = getRecordId();
     } //	prepare

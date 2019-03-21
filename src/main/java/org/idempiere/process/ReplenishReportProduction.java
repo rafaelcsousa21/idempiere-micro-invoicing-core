@@ -89,18 +89,32 @@ public class ReplenishReportProduction extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_Warehouse_ID")) p_M_Warehouse_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("M_Product_Category_ID"))
-                p_M_Product_Category_ID = para[i].getParameterAsInt();
-            else if (name.equals("IsKanban")) isKanban = (String) para[i].getParameter();
-            else if (name.equals("ReplenishmentCreate"))
-                p_ReplenishmentCreate = (String) para[i].getParameter();
-            else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "M_Warehouse_ID":
+                    p_M_Warehouse_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "C_BPartner_ID":
+                    p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "M_Product_Category_ID":
+                    p_M_Product_Category_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "IsKanban":
+                    isKanban = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "ReplenishmentCreate":
+                    p_ReplenishmentCreate = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "C_DocType_ID":
+                    p_C_DocType_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 

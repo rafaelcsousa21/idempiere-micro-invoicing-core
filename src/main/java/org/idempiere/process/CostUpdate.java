@@ -86,19 +86,30 @@ public class CostUpdate extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
             //	log.fine("prepare - " + para[i]);
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_Product_Category_ID"))
-                p_M_Product_Category_ID = para[i].getParameterAsInt();
-            else if (name.equals("SetFutureCostTo")) p_SetFutureCostTo = (String) para[i].getParameter();
-            else if (name.equals("SetStandardCostTo"))
-                p_SetStandardCostTo = (String) para[i].getParameter();
-            else if (name.equals("M_PriceList_Version_ID"))
-                p_M_PriceList_Version_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+
+            switch (name) {
+                case "M_Product_Category_ID":
+                    p_M_Product_Category_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "SetFutureCostTo":
+                    p_SetFutureCostTo = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "SetStandardCostTo":
+                    p_SetStandardCostTo = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "M_PriceList_Version_ID":
+                    p_M_PriceList_Version_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "C_DocType_ID":
+                    p_C_DocType_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 

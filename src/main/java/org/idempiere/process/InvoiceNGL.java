@@ -67,19 +67,35 @@ public class InvoiceNGL extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_AcctSchema_ID")) p_C_AcctSchema_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_ConversionTypeReval_ID"))
-                p_C_ConversionTypeReval_ID = para[i].getParameterAsInt();
-            else if (name.equals("DateReval")) p_DateReval = (Timestamp) para[i].getParameter();
-            else if (name.equals("APAR")) p_APAR = (String) para[i].getParameter();
-            else if (name.equals("IsAllCurrencies"))
-                p_IsAllCurrencies = "Y".equals(para[i].getParameter());
-            else if (name.equals("C_Currency_ID")) p_C_Currency_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_DocTypeReval_ID")) p_C_DocTypeReval_ID = para[i].getParameterAsInt();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "C_AcctSchema_ID":
+                    p_C_AcctSchema_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "C_ConversionTypeReval_ID":
+                    p_C_ConversionTypeReval_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "DateReval":
+                    p_DateReval = (Timestamp) iProcessInfoParameter.getParameter();
+                    break;
+                case "APAR":
+                    p_APAR = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "IsAllCurrencies":
+                    p_IsAllCurrencies = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                case "C_Currency_ID":
+                    p_C_Currency_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "C_DocTypeReval_ID":
+                    p_C_DocTypeReval_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 

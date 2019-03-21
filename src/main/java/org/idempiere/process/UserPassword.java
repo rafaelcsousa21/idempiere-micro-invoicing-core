@@ -43,19 +43,38 @@ public class UserPassword extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("AD_User_ID")) p_AD_User_ID = para[i].getParameterAsInt();
-            else if (name.equals("OldPassword")) p_OldPassword = (String) para[i].getParameter();
-            else if (name.equals("NewPassword")) p_NewPassword = (String) para[i].getParameter();
-            else if (name.equals("NewEMail")) p_NewEMail = (String) para[i].getParameter();
-            else if (name.equals("NewEMailUser")) p_NewEMailUser = (String) para[i].getParameter();
-            else if (name.equals("NewEMailUserPW")) p_NewEMailUserPW = (String) para[i].getParameter();
-            else if (name.equals("NewPasswordConfirm"))
-                p_NewPasswordConfirm = (String) para[i].getParameter();
-            else if (name.equals("NewEMailConfirm")) p_NewEMailConfirm = (String) para[i].getParameter();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "AD_User_ID":
+                    p_AD_User_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "OldPassword":
+                    p_OldPassword = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "NewPassword":
+                    p_NewPassword = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "NewEMail":
+                    p_NewEMail = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "NewEMailUser":
+                    p_NewEMailUser = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "NewEMailUserPW":
+                    p_NewEMailUserPW = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "NewPasswordConfirm":
+                    p_NewPasswordConfirm = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "NewEMailConfirm":
+                    p_NewEMailConfirm = (String) iProcessInfoParameter.getParameter();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 

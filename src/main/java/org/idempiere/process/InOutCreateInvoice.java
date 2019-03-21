@@ -39,12 +39,12 @@ public class InOutCreateInvoice extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_PriceList_ID")) p_M_PriceList_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("M_PriceList_ID")) p_M_PriceList_ID = iProcessInfoParameter.getParameterAsInt();
             else if (name.equals("InvoiceDocumentNo"))
-                p_InvoiceDocumentNo = (String) para[i].getParameter();
+                p_InvoiceDocumentNo = (String) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_M_InOut_ID = getRecordId();
@@ -80,8 +80,7 @@ public class InOutCreateInvoice extends SvrProcess {
             invoice.setDocumentNo(p_InvoiceDocumentNo);
         if (!invoice.save()) throw new IllegalArgumentException("Cannot save Invoice");
         MInOutLine[] shipLines = ship.getLines(false);
-        for (int i = 0; i < shipLines.length; i++) {
-            MInOutLine sLine = shipLines[i];
+        for (MInOutLine sLine : shipLines) {
             MInvoiceLine line = new MInvoiceLine(invoice);
             line.setShipLine(sLine);
             if (sLine.sameOrderLineUOM()) line.setQtyEntered(sLine.getQtyEntered());
@@ -113,7 +112,7 @@ public class InOutCreateInvoice extends SvrProcess {
                 for (MOrderPaySchedule ops : opss) {
                     MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0);
                     PO.copyValues(ops, ips);
-                    if (percent != Env.ONE) {
+                    if (!percent.equals(Env.ONE)) {
                         BigDecimal propDueAmt = ops.getDueAmt().multiply(percent);
                         if (propDueAmt.scale() > scale)
                             propDueAmt = propDueAmt.setScale(scale, BigDecimal.ROUND_HALF_UP);

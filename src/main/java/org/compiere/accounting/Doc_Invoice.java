@@ -7,6 +7,8 @@ import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.invoicing.MLandedCostAllocation;
 import org.compiere.model.IFact;
+import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.tax.MTax;
 import org.idempiere.common.exceptions.AdempiereException;
@@ -62,7 +64,6 @@ public class Doc_Invoice extends Doc {
      *
      * @param as      accounting schemata
      * @param rs      record
-     * @param trxName trx
      */
     public Doc_Invoice(MAcctSchema as, Row rs) {
         super(as, MInvoice.class, rs, null);
@@ -323,7 +324,7 @@ public class Doc_Invoice extends Doc {
      * @param as accounting schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(MAcctSchema as) {
+    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
         //
         ArrayList<IFact> facts = new ArrayList<IFact>();
         //  create Fact Header
@@ -519,8 +520,7 @@ public class Doc_Invoice extends Doc {
                 if (tl != null) tl.setTaxId(m_taxes[i].getTaxId());
             }
             //  Expense         DR
-            for (int i = 0; i < p_lines.length; i++) {
-                DocLine line = p_lines[i];
+            for (DocLine line : p_lines) {
                 boolean landedCost = landedCost(as, fact, line, true);
                 if (landedCost && as.isExplicitCostAdjustment()) {
                     fact.createLine(
@@ -543,7 +543,7 @@ public class Doc_Invoice extends Doc {
                     fl.setDescription(desc);
                 }
                 if (!landedCost) {
-                    MAccount expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
+                    I_C_ValidCombination expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                     if (line.isItem())
                         expense = line.getAccount(ProductCost.ACCTTYPE_P_InventoryClearing, as);
                     BigDecimal amt = line.getAmtSource();
@@ -553,7 +553,7 @@ public class Doc_Invoice extends Doc {
                         if (discount != null && discount.signum() != 0) {
                             amt = amt.add(discount);
                             dAmt = discount;
-                            MAccount tradeDiscountReceived =
+                            I_C_ValidCombination tradeDiscountReceived =
                                     line.getAccount(ProductCost.ACCTTYPE_P_TDiscountRec, as);
                             fact.createLine(line, tradeDiscountReceived, getCurrencyId(), null, dAmt);
                         }
@@ -657,7 +657,7 @@ public class Doc_Invoice extends Doc {
                     fl.setDescription(desc);
                 }
                 if (!landedCost) {
-                    MAccount expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
+                    I_C_ValidCombination expense = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                     if (line.isItem())
                         expense = line.getAccount(ProductCost.ACCTTYPE_P_InventoryClearing, as);
                     BigDecimal amt = line.getAmtSource();
@@ -667,7 +667,7 @@ public class Doc_Invoice extends Doc {
                         if (discount != null && discount.signum() != 0) {
                             amt = amt.add(discount);
                             dAmt = discount;
-                            MAccount tradeDiscountReceived =
+                            I_C_ValidCombination tradeDiscountReceived =
                                     line.getAccount(ProductCost.ACCTTYPE_P_TDiscountRec, as);
                             fact.createLine(line, tradeDiscountReceived, getCurrencyId(), dAmt, null);
                         }
@@ -738,7 +738,7 @@ public class Doc_Invoice extends Doc {
      * @param multiplier source amount multiplier
      * @return accounted amount
      */
-    public BigDecimal createFactCash(MAcctSchema as, Fact fact, BigDecimal multiplier) {
+    public BigDecimal createFactCash(I_C_AcctSchema as, Fact fact, BigDecimal multiplier) {
         boolean creditMemo =
                 getDocumentType().equals(DOCTYPE_ARCredit) || getDocumentType().equals(DOCTYPE_APCredit);
         boolean payables =
@@ -771,7 +771,7 @@ public class Doc_Invoice extends Doc {
                 fl.setDescription(desc);
             }
             if (!landedCost) {
-                MAccount acct =
+                I_C_ValidCombination acct =
                         line.getAccount(
                                 payables ? ProductCost.ACCTTYPE_P_Expense : ProductCost.ACCTTYPE_P_Revenue, as);
                 if (payables) {
@@ -792,8 +792,8 @@ public class Doc_Invoice extends Doc {
             }
         }
         //  Tax
-        for (int i = 0; i < m_taxes.length; i++) {
-            BigDecimal amt = m_taxes[i].getAmount();
+        for (DocTax m_tax : m_taxes) {
+            BigDecimal amt = m_tax.getAmount();
             BigDecimal amt2 = null;
             if (creditMemo) {
                 amt2 = amt;
@@ -804,7 +804,7 @@ public class Doc_Invoice extends Doc {
                 tl =
                         fact.createLine(
                                 null,
-                                m_taxes[i].getAccount(m_taxes[i].getAPTaxType(), as),
+                                m_tax.getAccount(m_tax.getAPTaxType(), as),
                                 getCurrencyId(),
                                 amt,
                                 amt2);
@@ -812,11 +812,11 @@ public class Doc_Invoice extends Doc {
                 tl =
                         fact.createLine(
                                 null,
-                                m_taxes[i].getAccount(DocTax.ACCTTYPE_TaxDue, as),
+                                m_tax.getAccount(DocTax.ACCTTYPE_TaxDue, as),
                                 getCurrencyId(),
                                 amt2,
                                 amt);
-            if (tl != null) tl.setTaxId(m_taxes[i].getTaxId());
+            if (tl != null) tl.setTaxId(m_tax.getTaxId());
         }
         //  Set Locations
         FactLine[] fLines = fact.getLines();
@@ -843,7 +843,7 @@ public class Doc_Invoice extends Doc {
      * @param dr   DR entry (normal api)
      * @return true if landed costs were created
      */
-    protected boolean landedCost(MAcctSchema as, Fact fact, DocLine line, boolean dr) {
+    protected boolean landedCost(I_C_AcctSchema as, Fact fact, DocLine line, boolean dr) {
         int C_InvoiceLine_ID = line.getId();
         MLandedCostAllocation[] lcas =
                 MLandedCostAllocation.getOfInvoiceLine(getCtx(), C_InvoiceLine_ID);
@@ -1096,7 +1096,7 @@ public class Doc_Invoice extends Doc {
      *
      * @param as accounting schema
      */
-    protected void updateProductPO(MAcctSchema as) {
+    protected void updateProductPO(I_C_AcctSchema as) {
         MClientInfo ci = MClientInfo.get(getCtx(), as.getClientId());
         if (ci.getAcctSchema1Id() != as.getAccountingSchemaId()) return;
 

@@ -3,6 +3,7 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.crm.MLocation;
 import org.compiere.crm.X_C_BPartner;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.Query;
 import org.compiere.product.X_M_Product;
@@ -25,7 +26,7 @@ import java.util.logging.Level;
  * <li>FR [ 2694043 ] Query. first/firstOnly usage best practice
  * @version $Id: MAccount.java,v 1.4 2006/07/30 00:58:04 jjanke Exp $
  */
-public class MAccount extends X_C_ValidCombination {
+public class MAccount extends X_C_ValidCombination implements I_C_ValidCombination {
     /**
      *
      */
@@ -659,11 +660,9 @@ public class MAccount extends X_C_ValidCombination {
                     descrStr = ev.getName();
                 }
             } else if (MAcctSchemaElement.ELEMENTTYPE_UserColumn1.equals(element.getElementType())) {
-                if (getUserElement1Id() != 0) {
-                }
+                getUserElement1Id();
             } else if (MAcctSchemaElement.ELEMENTTYPE_UserColumn2.equals(element.getElementType())) {
-                if (getUserElement2Id() != 0) {
-                }
+                getUserElement2Id();
             }
             combi.append(combiStr);
             descr.append(descrStr);

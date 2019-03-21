@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.invoicing.MConversionRate;
+import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_M_Cost;
 import org.compiere.orm.MOrg;
 import org.compiere.orm.Query;
@@ -94,7 +95,7 @@ public class MCost extends X_M_Cost {
     public MCost(
             MProduct product,
             int M_AttributeSetInstance_ID,
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int AD_Org_ID,
             int M_CostElement_ID) {
         this(product.getCtx(), 0);
@@ -124,7 +125,7 @@ public class MCost extends X_M_Cost {
     public static BigDecimal getCurrentCost(
             MProduct product,
             int M_AttributeSetInstance_ID,
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int AD_Org_ID,
             String costingMethod,
             BigDecimal qty,
@@ -177,7 +178,7 @@ public class MCost extends X_M_Cost {
     private static BigDecimal getCurrentCost(
             MProduct product,
             int M_ASI_ID,
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int Org_ID,
             int M_CostType_ID,
             String costingMethod,
@@ -320,7 +321,7 @@ public class MCost extends X_M_Cost {
     public static BigDecimal getSeedCosts(
             MProduct product,
             int M_ASI_ID,
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int Org_ID,
             String costingMethod,
             int C_OrderLine_ID) {
@@ -337,9 +338,9 @@ public class MCost extends X_M_Cost {
                 retValue = getPOPrice(product, C_OrderLine_ID, as.getCurrencyId());
             if (retValue == null || retValue.signum() == 0)
                 retValue = getLastPOPrice(product, M_ASI_ID, Org_ID, as.getCurrencyId());
-        } else if (MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod)) ;
-        else if (MCostElement.COSTINGMETHOD_UserDefined.equals(costingMethod)) ;
-        else throw new IllegalArgumentException("Unknown Costing Method = " + costingMethod);
+        } else if (!MCostElement.COSTINGMETHOD_StandardCosting.equals(costingMethod) && !MCostElement.COSTINGMETHOD_UserDefined.equals(costingMethod)) {
+            throw new IllegalArgumentException("Unknown Costing Method = " + costingMethod);
+        }
         if (retValue != null && retValue.signum() > 0) {
             if (s_log.isLoggable(Level.FINE))
                 s_log.fine(product.getName() + ", CostingMethod=" + costingMethod + " - " + retValue);
@@ -456,7 +457,7 @@ public class MCost extends X_M_Cost {
         return retValue;
     } //	getSeedCosts
 
-    private static BigDecimal getSeedCostFromPriceList(MProduct product, MAcctSchema as, int orgID) {
+    private static BigDecimal getSeedCostFromPriceList(MProduct product, I_C_AcctSchema as, int orgID) {
         String sql =
                 "SELECT pp.PriceList, pp.PriceStd FROM M_ProductPrice pp"
                         + " INNER JOIN M_PriceList_Version plv ON (pp.M_PriceList_Version_ID = plv.M_PriceList_Version_ID AND plv.ValidFrom <= trunc(sysdate))"
@@ -800,7 +801,7 @@ public class MCost extends X_M_Cost {
     public static MCost get(
             MProduct product,
             int M_AttributeSetInstance_ID,
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int AD_Org_ID,
             int M_CostElement_ID) {
         MCost cost;

@@ -53,8 +53,8 @@ public class M_PriceList_Create extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("DeleteOld")) p_DeleteOld = (String) para[i].getParameter();
+
+            if (name.equals("DeleteOld")) p_DeleteOld = (String) para[i].getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_PriceList_Version_ID = getRecordId();
@@ -426,229 +426,232 @@ public class M_PriceList_Create extends SvrProcess {
                     v_temp = rsCurgen.getInt("M_PriceList_Version_Base_ID");
                     int seqproductpriceid = MSequence.get(getCtx(), "M_ProductPrice").getId();
                     int currentUserID = Env.getUserId(getCtx());
-                    if (v_temp == p_PriceList_Version_ID)
-                        //
-                        // We have Prices already
-                        //
-                        ;
-                    else if (rsCurgen.wasNull())
+                    if (v_temp != p_PriceList_Version_ID)
                     //
-                    // Copy and Convert from Product_PO
+                    // We have Prices already
                     //
                     {
-                        sqlins = new StringBuilder("INSERT INTO M_ProductPrice ");
-                        sqlins.append("(M_ProductPrice_ID");
-                        sqlins.append(" ,M_ProductPrice_UU");
-                        sqlins.append(" ,M_PriceList_Version_ID");
-                        sqlins.append(" ,M_Product_ID ");
-                        sqlins.append(" ,clientId");
-                        sqlins.append(" , orgId");
-                        sqlins.append(" , IsActive");
-                        sqlins.append(" , Created");
-                        sqlins.append(" , CreatedBy");
-                        sqlins.append(" , Updated");
-                        sqlins.append(" , UpdatedBy");
-                        sqlins.append(" , PriceList");
-                        sqlins.append(" , PriceStd");
-                        sqlins.append(" , PriceLimit) ");
-                        sqlins.append("SELECT ");
-                        sqlins.append("      nextIdFunc(").append(seqproductpriceid).append(",'N')");
-                        sqlins.append("      , generate_uuid(),");
-                        sqlins.append(p_PriceList_Version_ID);
-                        sqlins.append("      ,po.M_Product_ID ");
-                        sqlins.append("      ,");
-                        sqlins.append(rsCurgen.getInt("AD_Client_ID"));
-                        sqlins.append("      ,");
-                        sqlins.append(rsCurgen.getInt("AD_Org_ID"));
-                        sqlins.append("      ,'Y'");
-                        sqlins.append("      ,SysDate,");
-                        sqlins.append(currentUserID);
-                        sqlins.append("      ,SysDate,");
-                        sqlins.append(currentUserID);
+                        if (rsCurgen.wasNull())
                         //
-                        // Price List
+                        // Copy and Convert from Product_PO
                         //
-                        sqlins.append(" ,COALESCE(currencyConvert(po.PriceList, po.C_Currency_ID, ");
-                        sqlins.append(rsCurgen.getInt("C_Currency_ID"));
-                        sqlins.append(",  ? , ");
-                        sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Client_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Org_ID"));
-                        sqlins.append("),0)");
+                        {
+                            sqlins = new StringBuilder("INSERT INTO M_ProductPrice ");
+                            sqlins.append("(M_ProductPrice_ID");
+                            sqlins.append(" ,M_ProductPrice_UU");
+                            sqlins.append(" ,M_PriceList_Version_ID");
+                            sqlins.append(" ,M_Product_ID ");
+                            sqlins.append(" ,clientId");
+                            sqlins.append(" , orgId");
+                            sqlins.append(" , IsActive");
+                            sqlins.append(" , Created");
+                            sqlins.append(" , CreatedBy");
+                            sqlins.append(" , Updated");
+                            sqlins.append(" , UpdatedBy");
+                            sqlins.append(" , PriceList");
+                            sqlins.append(" , PriceStd");
+                            sqlins.append(" , PriceLimit) ");
+                            sqlins.append("SELECT ");
+                            sqlins.append("      nextIdFunc(").append(seqproductpriceid).append(",'N')");
+                            sqlins.append("      , generate_uuid(),");
+                            sqlins.append(p_PriceList_Version_ID);
+                            sqlins.append("      ,po.M_Product_ID ");
+                            sqlins.append("      ,");
+                            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+                            sqlins.append("      ,");
+                            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+                            sqlins.append("      ,'Y'");
+                            sqlins.append("      ,SysDate,");
+                            sqlins.append(currentUserID);
+                            sqlins.append("      ,SysDate,");
+                            sqlins.append(currentUserID);
+                            //
+                            // Price List
+                            //
+                            sqlins.append(" ,COALESCE(currencyConvert(po.PriceList, po.C_Currency_ID, ");
+                            sqlins.append(rsCurgen.getInt("C_Currency_ID"));
+                            sqlins.append(",  ? , ");
+                            sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+                            sqlins.append("),0)");
 
-                        //	Price Std
-                        sqlins.append(" ,COALESCE(currencyConvert(po.PriceList, po.C_Currency_ID, ");
-                        sqlins.append(rsCurgen.getInt("C_Currency_ID"));
-                        sqlins.append(", ? , ");
-                        sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Client_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Org_ID"));
-                        sqlins.append("),0)");
+                            //	Price Std
+                            sqlins.append(" ,COALESCE(currencyConvert(po.PriceList, po.C_Currency_ID, ");
+                            sqlins.append(rsCurgen.getInt("C_Currency_ID"));
+                            sqlins.append(", ? , ");
+                            sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+                            sqlins.append("),0)");
 
-                        //	Price Limit
-                        sqlins.append(" ,COALESCE(currencyConvert(po.PricePO ,po.C_Currency_ID, ");
-                        sqlins.append(rsCurgen.getInt("C_Currency_ID"));
-                        sqlins.append(",? , ");
-                        sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Client_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Org_ID"));
-                        sqlins.append("),0)");
-                        sqlins.append(" FROM	M_Product_PO po ");
-                        sqlins.append(
-                                " WHERE EXISTS (SELECT * FROM T_Selection s WHERE po.M_Product_ID=s.T_Selection_ID");
-                        sqlins.append(" AND s.AD_PInstance_ID=").append(m_AD_PInstance_ID).append(") ");
-                        sqlins.append(" AND	po.IsCurrentVendor='Y' AND po.IsActive='Y'");
+                            //	Price Limit
+                            sqlins.append(" ,COALESCE(currencyConvert(po.PricePO ,po.C_Currency_ID, ");
+                            sqlins.append(rsCurgen.getInt("C_Currency_ID"));
+                            sqlins.append(",? , ");
+                            sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+                            sqlins.append("),0)");
+                            sqlins.append(" FROM	M_Product_PO po ");
+                            sqlins.append(
+                                    " WHERE EXISTS (SELECT * FROM T_Selection s WHERE po.M_Product_ID=s.T_Selection_ID");
+                            sqlins.append(" AND s.AD_PInstance_ID=").append(m_AD_PInstance_ID).append(") ");
+                            sqlins.append(" AND	po.IsCurrentVendor='Y' AND po.IsActive='Y'");
 
-                        pstmt =
-                                prepareStatement(
-                                        sqlins.toString()
-                                );
-                        pstmt.setTimestamp(1, rsDiscountLine.getTimestamp("ConversionDate"));
-                        pstmt.setTimestamp(2, rsDiscountLine.getTimestamp("ConversionDate"));
-                        pstmt.setTimestamp(3, rsDiscountLine.getTimestamp("ConversionDate"));
+                            pstmt =
+                                    prepareStatement(
+                                            sqlins.toString()
+                                    );
+                            pstmt.setTimestamp(1, rsDiscountLine.getTimestamp("ConversionDate"));
+                            pstmt.setTimestamp(2, rsDiscountLine.getTimestamp("ConversionDate"));
+                            pstmt.setTimestamp(3, rsDiscountLine.getTimestamp("ConversionDate"));
 
-                        cnti = pstmt.executeUpdate();
-                        if (cnti == -1)
-                            raiseError(" INSERT INTO T_Selection from existing PriceList", sqlins.toString());
-                        toti += cnti;
-                        if (log.isLoggable(Level.FINE)) log.fine("Inserted " + cnti);
+                            cnti = pstmt.executeUpdate();
+                            if (cnti == -1)
+                                raiseError(" INSERT INTO T_Selection from existing PriceList", sqlins.toString());
+                            toti += cnti;
+                            if (log.isLoggable(Level.FINE)) log.fine("Inserted " + cnti);
 
-                        String sqlconversion =
-                                "SELECT p.M_Product_ID,po.C_Uom_ID,pp.PriceList"
-                                        + " FROM M_Product p"
-                                        + " INNER JOIN M_ProductPrice pp on (p.M_Product_ID=pp.M_Product_ID)"
-                                        + " INNER JOIN M_Product_PO po on (po.M_Product_ID=p.M_Product_ID)"
-                                        + " INNER JOIN C_Uom_Conversion uc on (p.M_Product_ID=uc.M_Product_ID)"
-                                        + " INNER JOIN T_Selection s on (s.T_Selection_ID=po.M_Product_ID)"
-                                        + " WHERE pp.M_PriceList_Version_ID=?"
-                                        + " AND po.C_Uom_ID<> p.C_Uom_ID"
-                                        + " AND s.AD_PInstance_ID=?";
-                        PreparedStatement pstmtconversion = null;
-                        ResultSet rsconversion = null;
-                        BigDecimal price = Env.ZERO;
-                        int product_id = 0;
-                        MUOMConversion conversion = null;
-                        try {
-                            pstmtconversion = prepareStatement(sqlconversion);
-                            pstmtconversion.setInt(1, p_PriceList_Version_ID);
-                            pstmtconversion.setInt(2, m_AD_PInstance_ID);
+                            String sqlconversion =
+                                    "SELECT p.M_Product_ID,po.C_Uom_ID,pp.PriceList"
+                                            + " FROM M_Product p"
+                                            + " INNER JOIN M_ProductPrice pp on (p.M_Product_ID=pp.M_Product_ID)"
+                                            + " INNER JOIN M_Product_PO po on (po.M_Product_ID=p.M_Product_ID)"
+                                            + " INNER JOIN C_Uom_Conversion uc on (p.M_Product_ID=uc.M_Product_ID)"
+                                            + " INNER JOIN T_Selection s on (s.T_Selection_ID=po.M_Product_ID)"
+                                            + " WHERE pp.M_PriceList_Version_ID=?"
+                                            + " AND po.C_Uom_ID<> p.C_Uom_ID"
+                                            + " AND s.AD_PInstance_ID=?";
+                            PreparedStatement pstmtconversion = null;
+                            ResultSet rsconversion = null;
+                            BigDecimal price = Env.ZERO;
+                            int product_id = 0;
+                            MUOMConversion conversion = null;
+                            try {
+                                pstmtconversion = prepareStatement(sqlconversion);
+                                pstmtconversion.setInt(1, p_PriceList_Version_ID);
+                                pstmtconversion.setInt(2, m_AD_PInstance_ID);
 
-                            rsconversion = pstmtconversion.executeQuery();
-                            while (rsconversion != null && rsconversion.next()) {
-                                product_id = rsconversion.getInt(1);
-                                MUOMConversion[] conversions =
-                                        MUOMConversion.getProductConversions(getCtx(), product_id);
-                                for (int i = 0; i < conversions.length; i++) {
-                                    if (conversions[i].getTargetUOMId() == rsconversion.getInt(2)) {
-                                        conversion = conversions[i];
-                                        price = rsconversion.getBigDecimal(3);
+                                rsconversion = pstmtconversion.executeQuery();
+                                while (rsconversion != null && rsconversion.next()) {
+                                    product_id = rsconversion.getInt(1);
+                                    MUOMConversion[] conversions =
+                                            MUOMConversion.getProductConversions(getCtx(), product_id);
+                                    for (int i = 0; i < conversions.length; i++) {
+                                        if (conversions[i].getTargetUOMId() == rsconversion.getInt(2)) {
+                                            conversion = conversions[i];
+                                            price = rsconversion.getBigDecimal(3);
+                                        }
                                     }
                                 }
-                            }
-                            if (conversion != null) {
-                                price =
-                                        price.divide(conversion.getDivideRate(), precision, BigDecimal.ROUND_HALF_DOWN);
-                                StringBuilder sqlupdate = new StringBuilder();
-                                sqlupdate
-                                        .append("UPDATE M_ProductPrice SET PriceList=")
-                                        .append(price)
-                                        .append(" WHERE M_PriceList_Version_ID=")
-                                        .append(p_PriceList_Version_ID)
-                                        .append(" AND M_Product_ID= ")
-                                        .append(product_id);
-                                int count = executeUpdate(sqlupdate.toString());
-                                if (count == -1) {
-                                    raiseError(" UPDATE M_ProductPrice set PriceList=? ", sqlupdate.toString());
+                                if (conversion != null) {
+                                    price =
+                                            price.divide(conversion.getDivideRate(), precision, BigDecimal.ROUND_HALF_DOWN);
+                                    StringBuilder sqlupdate = new StringBuilder();
+                                    sqlupdate
+                                            .append("UPDATE M_ProductPrice SET PriceList=")
+                                            .append(price)
+                                            .append(" WHERE M_PriceList_Version_ID=")
+                                            .append(p_PriceList_Version_ID)
+                                            .append(" AND M_Product_ID= ")
+                                            .append(product_id);
+                                    int count = executeUpdate(sqlupdate.toString());
+                                    if (count == -1) {
+                                        raiseError(" UPDATE M_ProductPrice set PriceList=? ", sqlupdate.toString());
+                                    }
                                 }
+                            } catch (Exception e) {
+                                throw e;
+                            } finally {
                             }
-                        } catch (Exception e) {
-                            throw e;
-                        } finally {
+                        } else {
+                            //
+                            // Copy and Convert from other PriceList_Version
+                            //
+                            sqlins = new StringBuilder("INSERT INTO M_ProductPrice ");
+                            sqlins.append(
+                                    " (M_ProductPrice_ID, M_ProductPrice_UU, M_PriceList_Version_ID, M_Product_ID,");
+                            sqlins.append(
+                                    " AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
+                            sqlins.append(" PriceList, PriceStd, PriceLimit)");
+                            sqlins.append(" SELECT ");
+                            sqlins.append("nextIdFunc(").append(seqproductpriceid).append(",'N')");
+                            sqlins.append(", generate_uuid(),");
+                            sqlins.append(p_PriceList_Version_ID);
+                            sqlins.append(", pp.M_Product_ID,");
+                            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+                            sqlins.append(", 'Y', SysDate,  ");
+                            sqlins.append(currentUserID);
+                            sqlins.append(", SysDate, ");
+                            sqlins.append(currentUserID);
+                            sqlins.append(" ,");
+                            // Price List
+                            sqlins.append("COALESCE(currencyConvert(pp.PriceList, pl.C_Currency_ID, ");
+                            sqlins.append(rsCurgen.getInt("C_Currency_ID"));
+                            sqlins.append(", ?, ");
+                            sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+                            sqlins.append("),0),");
+                            // Price Std
+                            sqlins.append("COALESCE(currencyConvert(pp.PriceStd,pl.C_Currency_ID, ");
+                            sqlins.append(rsCurgen.getInt("C_Currency_ID"));
+                            sqlins.append(" , ? ,  ");
+                            sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+                            sqlins.append("),0),");
+                            // Price Limit
+                            sqlins.append(" COALESCE(currencyConvert(pp.PriceLimit,pl.C_Currency_ID, ");
+                            sqlins.append(rsCurgen.getInt("C_Currency_ID"));
+                            sqlins.append(" , ? , ");
+                            sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Client_ID"));
+                            sqlins.append(", ");
+                            sqlins.append(rsCurgen.getInt("AD_Org_ID"));
+                            sqlins.append("),0)");
+                            sqlins.append(" FROM M_ProductPrice pp");
+                            sqlins.append(
+                                    " INNER JOIN M_PriceList_Version plv ON (pp.M_PriceList_Version_ID=plv.M_PriceList_Version_ID)");
+                            sqlins.append(" INNER JOIN M_PriceList pl ON (plv.M_PriceList_ID=pl.M_PriceList_ID)");
+                            sqlins.append(" WHERE	pp.M_PriceList_Version_ID=");
+                            sqlins.append(rsCurgen.getInt("M_PriceList_Version_Base_ID"));
+                            sqlins.append(
+                                    " AND EXISTS (SELECT * FROM T_Selection s WHERE pp.M_Product_ID=s.T_Selection_ID");
+                            sqlins.append(" AND s.AD_PInstance_ID=").append(m_AD_PInstance_ID).append(")");
+                            sqlins.append(" AND	pp.IsActive='Y'");
+
+                            pstmt =
+                                    prepareStatement(
+                                            sqlins.toString()
+                                    );
+                            pstmt.setTimestamp(1, rsDiscountLine.getTimestamp("ConversionDate"));
+                            pstmt.setTimestamp(2, rsDiscountLine.getTimestamp("ConversionDate"));
+                            pstmt.setTimestamp(3, rsDiscountLine.getTimestamp("ConversionDate"));
+
+                            cnti = pstmt.executeUpdate();
+
+                            if (cnti == -1)
+                                raiseError(" INSERT INTO T_Selection from existing PriceList", sqlins.toString());
+                            toti += cnti;
+                            if (log.isLoggable(Level.FINE)) log.fine("Inserted " + cnti);
                         }
                     } else {
-                        //
-                        // Copy and Convert from other PriceList_Version
-                        //
-                        sqlins = new StringBuilder("INSERT INTO M_ProductPrice ");
-                        sqlins.append(
-                                " (M_ProductPrice_ID, M_ProductPrice_UU, M_PriceList_Version_ID, M_Product_ID,");
-                        sqlins.append(
-                                " AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, Updated, UpdatedBy,");
-                        sqlins.append(" PriceList, PriceStd, PriceLimit)");
-                        sqlins.append(" SELECT ");
-                        sqlins.append("nextIdFunc(").append(seqproductpriceid).append(",'N')");
-                        sqlins.append(", generate_uuid(),");
-                        sqlins.append(p_PriceList_Version_ID);
-                        sqlins.append(", pp.M_Product_ID,");
-                        sqlins.append(rsCurgen.getInt("AD_Client_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Org_ID"));
-                        sqlins.append(", 'Y', SysDate,  ");
-                        sqlins.append(currentUserID);
-                        sqlins.append(", SysDate, ");
-                        sqlins.append(currentUserID);
-                        sqlins.append(" ,");
-                        // Price List
-                        sqlins.append("COALESCE(currencyConvert(pp.PriceList, pl.C_Currency_ID, ");
-                        sqlins.append(rsCurgen.getInt("C_Currency_ID"));
-                        sqlins.append(", ?, ");
-                        sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Client_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Org_ID"));
-                        sqlins.append("),0),");
-                        // Price Std
-                        sqlins.append("COALESCE(currencyConvert(pp.PriceStd,pl.C_Currency_ID, ");
-                        sqlins.append(rsCurgen.getInt("C_Currency_ID"));
-                        sqlins.append(" , ? ,  ");
-                        sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Client_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Org_ID"));
-                        sqlins.append("),0),");
-                        // Price Limit
-                        sqlins.append(" COALESCE(currencyConvert(pp.PriceLimit,pl.C_Currency_ID, ");
-                        sqlins.append(rsCurgen.getInt("C_Currency_ID"));
-                        sqlins.append(" , ? , ");
-                        sqlins.append(rsDiscountLine.getInt("C_ConversionType_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Client_ID"));
-                        sqlins.append(", ");
-                        sqlins.append(rsCurgen.getInt("AD_Org_ID"));
-                        sqlins.append("),0)");
-                        sqlins.append(" FROM M_ProductPrice pp");
-                        sqlins.append(
-                                " INNER JOIN M_PriceList_Version plv ON (pp.M_PriceList_Version_ID=plv.M_PriceList_Version_ID)");
-                        sqlins.append(" INNER JOIN M_PriceList pl ON (plv.M_PriceList_ID=pl.M_PriceList_ID)");
-                        sqlins.append(" WHERE	pp.M_PriceList_Version_ID=");
-                        sqlins.append(rsCurgen.getInt("M_PriceList_Version_Base_ID"));
-                        sqlins.append(
-                                " AND EXISTS (SELECT * FROM T_Selection s WHERE pp.M_Product_ID=s.T_Selection_ID");
-                        sqlins.append(" AND s.AD_PInstance_ID=").append(m_AD_PInstance_ID).append(")");
-                        sqlins.append(" AND	pp.IsActive='Y'");
-
-                        pstmt =
-                                prepareStatement(
-                                        sqlins.toString()
-                                );
-                        pstmt.setTimestamp(1, rsDiscountLine.getTimestamp("ConversionDate"));
-                        pstmt.setTimestamp(2, rsDiscountLine.getTimestamp("ConversionDate"));
-                        pstmt.setTimestamp(3, rsDiscountLine.getTimestamp("ConversionDate"));
-
-                        cnti = pstmt.executeUpdate();
-
-                        if (cnti == -1)
-                            raiseError(" INSERT INTO T_Selection from existing PriceList", sqlins.toString());
-                        toti += cnti;
-                        if (log.isLoggable(Level.FINE)) log.fine("Inserted " + cnti);
+                        ;
                     }
                     message.append(", @Inserted@=").append(cnti);
                     //

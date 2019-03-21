@@ -11,6 +11,7 @@ import org.compiere.process.DocAction;
 import org.compiere.production.MLocator;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -63,20 +64,38 @@ public class InOutGenerate extends BaseInOutGenerate {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_Warehouse_ID")) setP_M_Warehouse_ID(para[i].getParameterAsInt());
-            else if (name.equals("C_BPartner_ID")) setP_C_BPartner_ID(para[i].getParameterAsInt());
-            else if (name.equals("DatePromised")) setP_DatePromised((Timestamp) para[i].getParameter());
-            else if (name.equals("Selection")) setP_Selection("Y".equals(para[i].getParameter()));
-            else if (name.equals("IsUnconfirmedInOut"))
-                setP_IsUnconfirmedInOut("Y".equals(para[i].getParameter()));
-            else if (name.equals("ConsolidateDocument"))
-                setP_ConsolidateDocument("Y".equals(para[i].getParameter()));
-            else if (name.equals("DocAction")) p_docAction = (String) para[i].getParameter();
-            else if (name.equals("MovementDate")) p_DateShipped = (Timestamp) para[i].getParameter();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "M_Warehouse_ID":
+                    setP_M_Warehouse_ID(iProcessInfoParameter.getParameterAsInt());
+                    break;
+                case "C_BPartner_ID":
+                    setP_C_BPartner_ID(iProcessInfoParameter.getParameterAsInt());
+                    break;
+                case "DatePromised":
+                    setP_DatePromised((Timestamp) iProcessInfoParameter.getParameter());
+                    break;
+                case "Selection":
+                    setP_Selection("Y".equals(iProcessInfoParameter.getParameter()));
+                    break;
+                case "IsUnconfirmedInOut":
+                    setP_IsUnconfirmedInOut("Y".equals(iProcessInfoParameter.getParameter()));
+                    break;
+                case "ConsolidateDocument":
+                    setP_ConsolidateDocument("Y".equals(iProcessInfoParameter.getParameter()));
+                    break;
+                case "DocAction":
+                    p_docAction = (String) iProcessInfoParameter.getParameter();
+                    break;
+                case "MovementDate":
+                    p_DateShipped = (Timestamp) iProcessInfoParameter.getParameter();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
 
             //  juddm - added ability to specify a shipment date from Generate Shipments
             if (p_DateShipped == null) {
@@ -97,9 +116,9 @@ public class InOutGenerate extends BaseInOutGenerate {
      * @param force     force delivery
      */
     protected void createLine(
-            MOrder order,
-            MOrderLine orderLine,
-            BigDecimal qty,
+            @NotNull MOrder order,
+            @NotNull MOrderLine orderLine,
+            @NotNull BigDecimal qty,
             MStorageOnHand[] storages,
             boolean force) {
         //	Complete last Shipment - can have multiple shipments
@@ -215,6 +234,7 @@ public class InOutGenerate extends BaseInOutGenerate {
      * @param FiFo
      * @return storages
      */
+    @NotNull
     protected MStorageOnHand[] getStorages(
             int M_Warehouse_ID,
             int M_Product_ID,
@@ -354,7 +374,7 @@ public class InOutGenerate extends BaseInOutGenerate {
          * @return true if equal
          */
         public boolean equals(Object obj) {
-            if (obj != null && obj instanceof SParameter) {
+            if (obj instanceof SParameter) {
                 SParameter cmp = (SParameter) obj;
                 boolean eq =
                         cmp.M_Warehouse_ID == M_Warehouse_ID
@@ -364,11 +384,11 @@ public class InOutGenerate extends BaseInOutGenerate {
                                 && cmp.allAttributeInstances == allAttributeInstances
                                 && cmp.FiFo == FiFo;
                 if (eq) {
-                    if (cmp.minGuaranteeDate == null && minGuaranteeDate == null) ;
-                    else if (cmp.minGuaranteeDate != null
-                            && minGuaranteeDate != null
-                            && cmp.minGuaranteeDate.equals(minGuaranteeDate)) ;
-                    else eq = false;
+                    if ((cmp.minGuaranteeDate != null || minGuaranteeDate != null) && (cmp.minGuaranteeDate == null
+                            || minGuaranteeDate == null
+                            || !cmp.minGuaranteeDate.equals(minGuaranteeDate))) {
+                        eq = false;
+                    }
                 }
                 return eq;
             }

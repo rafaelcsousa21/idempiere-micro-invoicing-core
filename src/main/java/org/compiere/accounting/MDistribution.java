@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.bo.MCurrency;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_GL_Distribution;
 import org.compiere.model.I_GL_DistributionLine;
 import org.compiere.orm.Query;
@@ -94,7 +95,7 @@ public class MDistribution extends X_GL_Distribution {
      * @param C_DocType_ID only document type
      * @return array of distributions
      */
-    public static MDistribution[] get(MAccount acct, String PostingType, int C_DocType_ID) {
+    public static MDistribution[] get(I_C_ValidCombination acct, String PostingType, int C_DocType_ID) {
         return get(
                 acct.getCtx(),
                 acct.getAccountingSchemaId(),
@@ -312,7 +313,7 @@ public class MDistribution extends X_GL_Distribution {
      * @param Qty
      * @param C_Currency_ID currency
      */
-    public void distribute(MAccount acct, BigDecimal Amt, BigDecimal Qty, int C_Currency_ID) {
+    public void distribute(I_C_ValidCombination acct, BigDecimal Amt, BigDecimal Qty, int C_Currency_ID) {
         if (log.isLoggable(Level.INFO))
             log.info("distribute - Amt=" + Amt + " - Qty=" + Qty + " - " + acct);
         getLines(false);

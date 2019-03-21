@@ -55,21 +55,21 @@ public class Aging extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("StatementDate")) p_StatementDate = (Timestamp) para[i].getParameter();
-            else if (name.equals("DateAcct")) p_DateAcct = "Y".equals(para[i].getParameter());
-            else if (name.equals("IsSOTrx")) p_IsSOTrx = "Y".equals(para[i].getParameter());
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("StatementDate")) p_StatementDate = (Timestamp) iProcessInfoParameter.getParameter();
+            else if (name.equals("DateAcct")) p_DateAcct = "Y".equals(iProcessInfoParameter.getParameter());
+            else if (name.equals("IsSOTrx")) p_IsSOTrx = "Y".equals(iProcessInfoParameter.getParameter());
             else if (name.equals("C_Currency_ID"))
-                p_C_Currency_ID = ((BigDecimal) para[i].getParameter()).intValue();
+                p_C_Currency_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
             else if (name.equals("AD_Org_ID"))
-                p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
+                p_AD_Org_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
             else if (name.equals("C_BP_Group_ID"))
-                p_C_BP_Group_ID = ((BigDecimal) para[i].getParameter()).intValue();
+                p_C_BP_Group_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
             else if (name.equals("C_BPartner_ID"))
-                p_C_BPartner_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("IsListInvoices")) p_IsListInvoices = "Y".equals(para[i].getParameter());
+                p_C_BPartner_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+            else if (name.equals("IsListInvoices")) p_IsListInvoices = "Y".equals(iProcessInfoParameter.getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         if (p_StatementDate == null) p_StatementDate = new Timestamp(System.currentTimeMillis());

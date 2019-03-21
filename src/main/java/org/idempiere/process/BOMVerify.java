@@ -64,13 +64,13 @@ public class BOMVerify extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_Product_ID")) p_M_Product_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("M_Product_ID")) p_M_Product_ID = iProcessInfoParameter.getParameterAsInt();
             else if (name.equals("M_Product_Category_ID"))
-                p_M_Product_Category_ID = para[i].getParameterAsInt();
-            else if (name.equals("IsReValidate")) p_IsReValidate = "Y".equals(para[i].getParameter());
+                p_M_Product_Category_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("IsReValidate")) p_IsReValidate = "Y".equals(iProcessInfoParameter.getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         if (p_M_Product_ID == 0) p_M_Product_ID = getRecordId();
@@ -153,9 +153,7 @@ public class BOMVerify extends SvrProcess {
             if (!pp.isBOM()) {
                 if (log.isLoggable(Level.FINER)) log.finer(pp.getName());
             } else {
-                if (validproducts.contains(pp)) {
-                    // Do nothing, no need to recheck
-                }
+                // Do nothing, no need to recheck
                 if (invalidproducts.contains(pp)) {
                     containsinvalid = true;
                 } else if (foundproducts.contains(pp)) {

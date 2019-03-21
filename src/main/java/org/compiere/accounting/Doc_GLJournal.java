@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.IFact;
+import org.compiere.model.I_C_AcctSchema;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -114,7 +115,7 @@ public class Doc_GLJournal extends Doc {
      * @param as acct schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(MAcctSchema as) {
+    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
         ArrayList<IFact> facts = new ArrayList<IFact>();
         //	Other Acct Schema
         if (as.getAccountingSchemaId() != m_C_AcctSchema_ID) return facts;

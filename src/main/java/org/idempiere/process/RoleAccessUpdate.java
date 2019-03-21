@@ -57,12 +57,12 @@ public class RoleAccessUpdate extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("AD_Role_ID")) p_AD_Role_ID = para[i].getParameterAsInt();
-            else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
-            else if (name.equals("ResetAccess")) p_IsReset = "Y".equals(para[i].getParameter());
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("AD_Role_ID")) p_AD_Role_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("AD_Client_ID")) p_AD_Client_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("ResetAccess")) p_IsReset = "Y".equals(iProcessInfoParameter.getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare

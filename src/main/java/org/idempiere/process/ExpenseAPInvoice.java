@@ -33,14 +33,15 @@ public class ExpenseAPInvoice extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
-            else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("DateReport")) {
-                m_DateFrom = (Timestamp) para[i].getParameter();
-                m_DateTo = (Timestamp) para[i].getParameterTo();
-            } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameterTo() != null) {
+                if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                else if (name.equals("DateReport")) {
+                    m_DateFrom = (Timestamp) iProcessInfoParameter.getParameter();
+                    m_DateTo = (Timestamp) iProcessInfoParameter.getParameterTo();
+                } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+            }
         }
     } //	prepare
 

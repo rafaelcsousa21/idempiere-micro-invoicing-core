@@ -52,17 +52,17 @@ public class AssetDelivery extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("A_Asset_Group_ID")) m_A_Asset_Group_ID = para[i].getParameterAsInt();
-            else if (name.equals("M_Product_ID")) m_M_Product_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("A_Asset_ID")) m_A_Asset_ID = para[i].getParameterAsInt();
-            else if (name.equals("GuaranteeDate")) m_GuaranteeDate = (Timestamp) para[i].getParameter();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("A_Asset_Group_ID")) m_A_Asset_Group_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("M_Product_ID")) m_M_Product_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("A_Asset_ID")) m_A_Asset_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("GuaranteeDate")) m_GuaranteeDate = (Timestamp) iProcessInfoParameter.getParameter();
             else if (name.equals("NoGuarantee_MailText_ID"))
-                m_NoGuarantee_MailText_ID = para[i].getParameterAsInt();
-            else if (name.equals("AttachAsset")) m_AttachAsset = "Y".equals(para[i].getParameter());
+                m_NoGuarantee_MailText_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("AttachAsset")) m_AttachAsset = "Y".equals(iProcessInfoParameter.getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         if (m_GuaranteeDate == null) m_GuaranteeDate = new Timestamp(System.currentTimeMillis());

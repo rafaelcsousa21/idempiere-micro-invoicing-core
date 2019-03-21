@@ -51,12 +51,6 @@ public class TreeMaintenance extends SvrProcess {
      * Prepare - e.g., get Parameters.
      */
     protected void prepare() {
-        IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-        }
         m_AD_Tree_ID = getRecordId(); // 	from Window
     } //	prepare
 

@@ -42,10 +42,10 @@ public class RfQCreatePO extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_DocType_ID")) p_C_DocType_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("C_DocType_ID")) p_C_DocType_ID = iProcessInfoParameter.getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_C_RfQ_ID = getRecordId();
@@ -61,137 +61,5 @@ public class RfQCreatePO extends SvrProcess {
      */
     protected String doIt() throws Exception {
         throw new NotImplementedException();
-
-    /*
-    MRfQ rfq = new MRfQ (getCtx(), p_C_RfQ_ID, null);
-    if (rfq.getId() == 0)
-    	throw new IllegalArgumentException("No RfQ found");
-    if (log.isLoggable(Level.INFO)) log.info(rfq.toString());
-
-    //	Complete
-    MRfQResponse[] responses = rfq.getResponses(true, true);
-    if (log.isLoggable(Level.CONFIG)) log.config("#Responses=" + responses.length);
-    if (responses.length == 0)
-    	throw new IllegalArgumentException("No completed RfQ Responses found");
-
-    //	Winner for entire RfQ
-    for (int i = 0; i < responses.length; i++)
-    {
-    	MRfQResponse response = responses[i];
-    	if (!response.isSelectedWinner())
-    		continue;
-    	//
-    	MBPartner bp = new MBPartner(getCtx(), response.getBusinessPartnerId(), null);
-    	if (log.isLoggable(Level.CONFIG)) log.config("Winner=" + bp);
-    	MOrder order = new MOrder (getCtx(), 0, null);
-    	order.setIsSOTrx(false);
-    	if (p_C_DocType_ID != 0)
-    		order.setTargetDocumentTypeId(p_C_DocType_ID);
-    	else
-    		order.setTargetDocumentTypeId();
-    	order.setBPartner(bp);
-    	order.setBusinessPartnerLocationId(response.getBusinessPartnerLocationId());
-    	order.setSalesRepresentativeId(rfq.getSalesRepresentativeId());
-    	if (response.getDateWorkComplete() != null)
-    		order.setDatePromised(response.getDateWorkComplete());
-    	else if (rfq.getDateWorkComplete() != null)
-    		order.setDatePromised(rfq.getDateWorkComplete());
-    	order.saveEx();
-    	//
-    	MRfQResponseLine[] lines = response.getLines(false);
-    	for (int j = 0; j < lines.length; j++)
-    	{
-    		//	Respones Line
-    		MRfQResponseLine line = lines[j];
-    		if (!line.isActive())
-    			continue;
-    		MRfQResponseLineQty[] qtys = line.getQtys(false);
-    		//	Response Line Qty
-    		for (int k = 0; k < qtys.length; k++)
-    		{
-    			MRfQResponseLineQty qty = qtys[k];
-    			//	Create PO Lline for all Purchase Line Qtys
-    			if (qty.getRfQLineQty().isActive() && qty.getRfQLineQty().isPurchaseQty())
-    			{
-    				MOrderLine ol = new MOrderLine (order);
-    				ol.setProductId(line.getRfQLine().getProductId(),
-    					qty.getRfQLineQty().getUOMId());
-    				ol.setDescription(line.getDescription());
-    				ol.setQty(qty.getRfQLineQty().getQty());
-    				BigDecimal price = qty.getNetAmt();
-    				ol.setPrice();
-    				ol.setPrice(price);
-    				ol.saveEx();
-    			}
-    		}
-    	}
-    	response.setOrderId(order.getOrderId());
-    	response.saveEx();
-    	return order.getDocumentNo();
     }
-
-
-    //	Selected Winner on Line Level
-    int noOrders = 0;
-    for (int i = 0; i < responses.length; i++)
-    {
-    	MRfQResponse response = responses[i];
-    	MBPartner bp = null;
-    	MOrder order = null;
-    	//	For all Response Lines
-    	MRfQResponseLine[] lines = response.getLines(false);
-    	for (int j = 0; j < lines.length; j++)
-    	{
-    		MRfQResponseLine line = lines[j];
-    		if (!line.isActive() || !line.isSelectedWinner())
-    			continue;
-    		//	New/different BP
-    		if (bp == null || bp.getBusinessPartnerId() != response.getBusinessPartnerId())
-    		{
-    			bp = new MBPartner(getCtx(), response.getBusinessPartnerId(), null);
-    			order = null;
-    		}
-    		if (log.isLoggable(Level.CONFIG)) log.config("Line=" + line + ", Winner=" + bp);
-    		//	New Order
-    		if (order == null)
-    		{
-    			order = new MOrder (getCtx(), 0, null);
-    			order.setIsSOTrx(false);
-    			order.setTargetDocumentTypeId();
-    			order.setBPartner(bp);
-    			order.setBusinessPartnerLocationId(response.getBusinessPartnerLocationId());
-    			order.setSalesRepresentativeId(rfq.getSalesRepresentativeId());
-    			order.saveEx();
-    			noOrders++;
-    			addBufferLog(0, null, null, order.getDocumentNo(), order.getTableId(), order.getOrderId());
-    		}
-    		//	For all Qtys
-    		MRfQResponseLineQty[] qtys = line.getQtys(false);
-    		for (int k = 0; k < qtys.length; k++)
-    		{
-    			MRfQResponseLineQty qty = qtys[k];
-    			if (qty.getRfQLineQty().isActive() && qty.getRfQLineQty().isPurchaseQty())
-    			{
-    				MOrderLine ol = new MOrderLine (order);
-    				ol.setProductId(line.getRfQLine().getProductId(),
-    					qty.getRfQLineQty().getUOMId());
-    				ol.setDescription(line.getDescription());
-    				ol.setQty(qty.getRfQLineQty().getQty());
-    				BigDecimal price = qty.getNetAmt();
-    				ol.setPrice();
-    				ol.setPrice(price);
-    				ol.saveEx();
-    			}
-    		}	//	for all Qtys
-    	}	//	for all Response Lines
-    	if (order != null)
-    	{
-    		response.setOrderId(order.getOrderId());
-    		response.saveEx();
-    	}
-    }
-    StringBuilder msgreturn = new StringBuilder("#").append(noOrders);
-    return msgreturn.toString();
-    */
-    } //	doIt
 } //	RfQCreatePO

@@ -12,7 +12,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_AcctSchema extends BasePOName implements I_C_AcctSchema {
+public class X_C_AcctSchema extends BasePOName {
 
     /**
      * PO Commitment only = C

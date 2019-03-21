@@ -45,8 +45,8 @@ public class AcctSchemaCopyAcct extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_AcctSchema_ID")) p_SourceAcctSchema_ID = para[i].getParameterAsInt();
+
+            if (name.equals("C_AcctSchema_ID")) p_SourceAcctSchema_ID = para[i].getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_TargetAcctSchema_ID = getRecordId();

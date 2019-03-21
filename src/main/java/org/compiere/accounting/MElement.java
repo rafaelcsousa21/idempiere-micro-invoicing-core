@@ -94,8 +94,7 @@ public class MElement extends X_C_Element {
         if (tree == null) return false;
         String treeType = tree.getTreeType();
         if (X_C_Element.ELEMENTTYPE_UserDefined.equals(elementType)) {
-            if (X_AD_Tree.TREETYPE_User1.equals(treeType) || X_AD_Tree.TREETYPE_User2.equals(treeType)) ;
-            else {
+            if (!X_AD_Tree.TREETYPE_User1.equals(treeType) && !X_AD_Tree.TREETYPE_User2.equals(treeType)) {
                 log.saveError(
                         "Error", Msg.parseTranslation(getCtx(), "@TreeType@ <> @ElementType@ (U)"), false);
                 return false;

@@ -40,10 +40,10 @@ public class CommissionCopy extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_Commission_ID")) p_C_Commission_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("C_Commission_ID")) p_C_Commission_ID = iProcessInfoParameter.getParameterAsInt();
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
         p_C_CommissionTo_ID = getRecordId();

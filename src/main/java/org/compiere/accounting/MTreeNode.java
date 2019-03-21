@@ -162,8 +162,8 @@ public class MTreeNode extends DefaultMutableTreeNode {
             imageIndex = TYPE_USERCHOICE;
         else if (imageIndicator.equals(MWFNode.ACTION_DocumentAction)) // 	Document Action
             imageIndex = TYPE_DOCACTION;
-        else if (imageIndicator.equals(MWFNode.ACTION_WaitSleep)) // 	Sleep
-            ;
+            // 	Sleep
+
         return imageIndex;
     } //  getImageIndex
 

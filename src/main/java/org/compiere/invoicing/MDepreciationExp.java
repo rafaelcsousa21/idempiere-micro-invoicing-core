@@ -197,9 +197,8 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             //
             setDateAcct(assetwk.getDateAcct());
             assetwk.adjustAccumulatedDepreciation(getExpense(), getFiscalExpense(), false);
-        } else {
-            // nothing to do for other entry types
-        }
+        }  // nothing to do for other entry types
+
         //
         setProcessed(true);
         updateFrom(assetwk);

@@ -120,8 +120,7 @@ public class MBOMProduct extends X_M_BOMProduct {
         //	Product Attribute Instance
         if (getAttributeSetInstanceId() != 0) {
             getBOM();
-            if (m_bom != null && MBOM.BOMTYPE_Make_To_Order.equals(m_bom.getBOMType())) ;
-            else {
+            if (m_bom == null || !MBOM.BOMTYPE_Make_To_Order.equals(m_bom.getBOMType())) {
                 log.saveError(
                         "Error",
                         Msg.parseTranslation(getCtx(), "Reset @M_AttributeSetInstance_ID@: Not Make-to-Order"));

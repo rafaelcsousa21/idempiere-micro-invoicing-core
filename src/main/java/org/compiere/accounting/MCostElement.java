@@ -81,7 +81,7 @@ public class MCostElement extends X_M_CostElement {
      * @param CostingMethod method
      * @return cost element
      */
-    public static MCostElement getMaterialCostElement(org.compiere.orm.PO po, String CostingMethod) {
+    public static MCostElement getMaterialCostElement(IPO po, String CostingMethod) {
         if (CostingMethod == null || CostingMethod.length() == 0) {
             s_log.severe("No CostingMethod");
             return null;

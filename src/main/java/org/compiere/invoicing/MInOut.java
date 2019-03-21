@@ -37,6 +37,7 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -243,7 +244,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -276,6 +277,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -298,44 +300,42 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
         //	Credit Check
         if (isSOTrx() && !isReversal()) {
             I_C_Order order = getOrder();
-            if (order != null
-                    && MDocType.DOCSUBTYPESO_PrepayOrder.equals(order.getDocumentType().getDocSubTypeSO())
-                    && !MSysConfig.getBooleanValue(
+            if (order == null
+                    || !MDocType.DOCSUBTYPESO_PrepayOrder.equals(order.getDocumentType().getDocSubTypeSO())
+                    || MSysConfig.getBooleanValue(
                     MSysConfig.CHECK_CREDIT_ON_PREPAY_ORDER, true, getClientId(), getOrgId())) {
-                // ignore -- don't validate Prepay Orders depending on sysconfig parameter
-            } else {
-                MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());
-                if (MBPartner.SOCREDITSTATUS_CreditStop.equals(bp.getSOCreditStatus())) {
-                    m_processMsg =
-                            "@BPartnerCreditStop@ - @TotalOpenBalance@="
-                                    + bp.getTotalOpenBalance()
-                                    + ", @SO_CreditLimit@="
-                                    + bp.getSalesOrderCreditLimit();
-                    return DocAction.Companion.getSTATUS_Invalid();
-                }
-                if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus())) {
-                    m_processMsg =
-                            "@BPartnerCreditHold@ - @TotalOpenBalance@="
-                                    + bp.getTotalOpenBalance()
-                                    + ", @SO_CreditLimit@="
-                                    + bp.getSalesOrderCreditLimit();
-                    return DocAction.Companion.getSTATUS_Invalid();
-                }
-                if (!MBPartner.SOCREDITSTATUS_NoCreditCheck.equals(bp.getSOCreditStatus())
-                        && Env.ZERO.compareTo(bp.getSalesOrderCreditLimit()) != 0) {
-                    BigDecimal notInvoicedAmt = MBPartner.getNotInvoicedAmt(getBusinessPartnerId());
-                    if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus(notInvoicedAmt))) {
-                        m_processMsg =
-                                "@BPartnerOverSCreditHold@ - @TotalOpenBalance@="
-                                        + bp.getTotalOpenBalance()
-                                        + ", @NotInvoicedAmt@="
-                                        + notInvoicedAmt
-                                        + ", @SO_CreditLimit@="
-                                        + bp.getSalesOrderCreditLimit();
-                        return DocAction.Companion.getSTATUS_Invalid();
+                        MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());
+                        if (MBPartner.SOCREDITSTATUS_CreditStop.equals(bp.getSOCreditStatus())) {
+                            m_processMsg =
+                                    "@BPartnerCreditStop@ - @TotalOpenBalance@="
+                                            + bp.getTotalOpenBalance()
+                                            + ", @SO_CreditLimit@="
+                                            + bp.getSalesOrderCreditLimit();
+                            return DocAction.Companion.getSTATUS_Invalid();
+                        }
+                        if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus())) {
+                            m_processMsg =
+                                    "@BPartnerCreditHold@ - @TotalOpenBalance@="
+                                            + bp.getTotalOpenBalance()
+                                            + ", @SO_CreditLimit@="
+                                            + bp.getSalesOrderCreditLimit();
+                            return DocAction.Companion.getSTATUS_Invalid();
+                        }
+                        if (!MBPartner.SOCREDITSTATUS_NoCreditCheck.equals(bp.getSOCreditStatus())
+                                && Env.ZERO.compareTo(bp.getSalesOrderCreditLimit()) != 0) {
+                            BigDecimal notInvoicedAmt = MBPartner.getNotInvoicedAmt(getBusinessPartnerId());
+                            if (MBPartner.SOCREDITSTATUS_CreditHold.equals(bp.getSOCreditStatus(notInvoicedAmt))) {
+                                m_processMsg =
+                                        "@BPartnerOverSCreditHold@ - @TotalOpenBalance@="
+                                                + bp.getTotalOpenBalance()
+                                                + ", @NotInvoicedAmt@="
+                                                + notInvoicedAmt
+                                                + ", @SO_CreditLimit@="
+                                                + bp.getSalesOrderCreditLimit();
+                                return DocAction.Companion.getSTATUS_Invalid();
+                            }
+                        }
                     }
-                }
-            }
         }
 
         //	Lines
@@ -433,6 +433,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -1640,6 +1641,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      *
      * @return amount
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return Env.ZERO;
     } //	getApprovalAmt
@@ -1649,6 +1651,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -1669,6 +1672,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         StringBuilder msgreturn =

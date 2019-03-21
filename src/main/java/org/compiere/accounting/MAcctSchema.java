@@ -25,7 +25,7 @@ import java.util.logging.Level;
  * http://sourceforge.net/tracker/index.php?func=detail&aid=2214883&group_id=176962&atid=879335
  * @version $Id: MAcctSchema.java,v 1.4 2006/07/30 00:58:04 jjanke Exp $
  */
-public class MAcctSchema extends X_C_AcctSchema {
+public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      *
      */

@@ -57,11 +57,11 @@ public class ProductionProcess extends SvrProcess {
     protected void prepare() {
 
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
             //	log.fine("prepare - " + para[i]);
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("MovementDate")) p_MovementDate = (Timestamp) para[i].getParameter();
+
+            if (name.equals("MovementDate")) p_MovementDate = (Timestamp) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 

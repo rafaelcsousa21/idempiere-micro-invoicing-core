@@ -1,5 +1,7 @@
 package org.compiere.accounting;
 
+import org.compiere.model.I_C_AcctSchema;
+
 import java.math.BigDecimal;
 import java.util.Properties;
 
@@ -39,7 +41,7 @@ public class MCharge extends org.compiere.order.MCharge {
      * @param as          account schema
      * @return Charge Account or null
      */
-    public static MAccount getAccount(int C_Charge_ID, MAcctSchema as) {
+    public static MAccount getAccount(int C_Charge_ID, I_C_AcctSchema as) {
         if (C_Charge_ID == 0 || as == null) return null;
 
         String sql =

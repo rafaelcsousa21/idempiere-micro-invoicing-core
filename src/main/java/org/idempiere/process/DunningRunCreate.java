@@ -48,20 +48,38 @@ public class DunningRunCreate extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("IncludeInDispute"))
-                p_IncludeInDispute = "Y".equals(para[i].getParameter());
-            else if (name.equals("OnlySOTrx")) p_OnlySOTrx = "Y".equals(para[i].getParameter());
-            else if (name.equals("IsAllCurrencies"))
-                p_IsAllCurrencies = "Y".equals(para[i].getParameter());
-            else if (name.equals("SalesRep_ID")) p_SalesRep_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_Currency_ID")) p_C_Currency_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
-            else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "IncludeInDispute":
+                    p_IncludeInDispute = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                case "OnlySOTrx":
+                    p_OnlySOTrx = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                case "IsAllCurrencies":
+                    p_IsAllCurrencies = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                case "SalesRep_ID":
+                    p_SalesRep_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "C_Currency_ID":
+                    p_C_Currency_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "C_BPartner_ID":
+                    p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "C_BP_Group_ID":
+                    p_C_BP_Group_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "AD_Org_ID":
+                    p_AD_Org_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
         p_C_DunningRun_ID = getRecordId();
     } //	prepare
