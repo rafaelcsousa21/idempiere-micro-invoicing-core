@@ -159,8 +159,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
      * Get Lines
      */
     public List<MDepreciationExp> getLinesIterator(boolean onlyNotProcessed) {
-        final String trxName = null;
-        final List<Object> params = new ArrayList<Object>();
+        final List<Object> params = new ArrayList<>();
         String whereClause = MDepreciationExp.COLUMNNAME_A_Depreciation_Entry_ID + "=?";
         params.add(getId());
 
@@ -179,12 +178,10 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
                         + ","
                         + MDepreciationExp.COLUMNNAME_A_Entry_Type;
 
-        List<MDepreciationExp> it =
-                new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
-                        .setOrderBy(orderBy)
-                        .setParameters(params)
-                        .list();
-        return it;
+        return new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
+                .setOrderBy(orderBy)
+                .setParameters(params)
+                .list();
     }
 
     public boolean processIt(@NotNull String processAction) {
@@ -254,7 +251,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
 
         final MPeriod period = MPeriod.get(getCtx(), getPeriodId());
 
-        final ArrayList<Exception> errors = new ArrayList<Exception>();
+        final ArrayList<Exception> errors = new ArrayList<>();
         final List<MDepreciationExp> it = getLinesIterator(true);
         //
         for (MDepreciationExp depexp : it) {

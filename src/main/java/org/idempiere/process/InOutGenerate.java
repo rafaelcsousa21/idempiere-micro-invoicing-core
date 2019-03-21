@@ -378,12 +378,10 @@ public class InOutGenerate extends BaseInOutGenerate {
                                 && cmp.M_AttributeSet_ID == M_AttributeSet_ID
                                 && cmp.allAttributeInstances == allAttributeInstances
                                 && cmp.FiFo == FiFo;
-                if (eq) {
-                    if ((cmp.minGuaranteeDate != null || minGuaranteeDate != null) && (cmp.minGuaranteeDate == null
-                            || minGuaranteeDate == null
-                            || !cmp.minGuaranteeDate.equals(minGuaranteeDate))) {
-                        eq = false;
-                    }
+                if (eq && (cmp.minGuaranteeDate != null || minGuaranteeDate != null) && (cmp.minGuaranteeDate == null
+                        || minGuaranteeDate == null
+                        || !cmp.minGuaranteeDate.equals(minGuaranteeDate))) {
+                    eq = false;
                 }
                 return eq;
             }

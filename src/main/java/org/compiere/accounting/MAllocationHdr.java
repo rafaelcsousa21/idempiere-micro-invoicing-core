@@ -269,8 +269,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      * @return true if acct was deleted
      */
     protected boolean beforeDelete() {
-        String trxName = null;
-        if (trxName == null || trxName.length() == 0) log.warning("No transaction");
+
         if (isPosted()) {
             MPeriod.testPeriodOpen(
                     getCtx(), getDateTrx(), MDocType.DOCBASETYPE_PaymentAllocation, getOrgId());
@@ -285,8 +284,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         getLines(true);
         if (!updateBP(true)) return false;
 
-        for (int i = 0; i < m_lines.length; i++) {
-            MAllocationLine line = m_lines[i];
+        for (MAllocationLine line : m_lines) {
             line.deleteEx(true);
         }
         return true;

@@ -527,7 +527,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * Truncate not processed depreciation entries. IS NOT modifying workfile.
      */
     public void truncDepreciation() {
-        String trxName = null;
+
 
         int A_Current_Period = getCurrentPeriod();
         final String sql =

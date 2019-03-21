@@ -618,16 +618,14 @@ public abstract class Doc implements IDoc {
      * @return null if posted error otherwise
      */
     public final String post(boolean force, boolean repost) {
-        if (m_DocStatus != null) {
-            if (!m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Completed())
-                    && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Closed())
-                    && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Voided())
-                    && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Reversed())) {
-                        return "Invalid DocStatus='" +
-                                m_DocStatus +
-                                "' for DocumentNo=" +
-                                getDocumentNo();
-                    }
+        if (m_DocStatus != null && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Completed())
+                && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Closed())
+                && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Voided())
+                && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Reversed())) {
+            return "Invalid DocStatus='" +
+                    m_DocStatus +
+                    "' for DocumentNo=" +
+                    getDocumentNo();
         }
 
         //
@@ -642,7 +640,7 @@ public abstract class Doc implements IDoc {
         }
 
         //  Lock Record ----
-        String trxName = null; // 	outside trx if on server
+         // 	outside trx if on server
         StringBuilder sql = new StringBuilder("UPDATE ");
         sql.append(get_TableName())
                 .append(" SET Processing='Y' WHERE ")
@@ -892,12 +890,10 @@ public abstract class Doc implements IDoc {
             //  Commit Facts
             if (status.equals(STATUS_Posted)) {
                 for (IFact fact : m_fact) {
-                    if (fact != null) {
-                        if (!fact.save()) {
-                            log.log(Level.SEVERE, "(fact not saved) ... rolling back");
-                            unlock();
-                            throw new AdempiereException("(fact not saved) ... rolling back");
-                        }
+                    if (fact != null && !fact.save()) {
+                        log.log(Level.SEVERE, "(fact not saved) ... rolling back");
+                        unlock();
+                        throw new AdempiereException("(fact not saved) ... rolling back");
                     }
                 }
             }
@@ -919,7 +915,7 @@ public abstract class Doc implements IDoc {
      * Unlock Document
      */
     private void unlock() {
-        String trxName = null; // 	outside trx if on server
+         // 	outside trx if on server
         StringBuilder sql = new StringBuilder("UPDATE ");
         sql.append(get_TableName())
                 .append(" SET Processing='N' WHERE ")

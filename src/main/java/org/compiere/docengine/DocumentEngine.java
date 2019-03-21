@@ -143,6 +143,7 @@ public class DocumentEngine implements DocAction {
      * @see DocAction#setDocStatus(String)
      */
     public void setDocStatus(@NotNull String ignored) {
+        // nothing to be done here
     } // 	setDocStatus
 
     /**
@@ -557,10 +558,9 @@ public class DocumentEngine implements DocAction {
      * @see DocAction#closeIt()
      */
     public boolean closeIt() {
-        if (m_document == null // 	orders can be closed any time
-                || m_document.getTableId() != I_C_Order.Table_ID) {
-            if (!isValidAction(DocAction.Companion.getACTION_Close())) return false;
-        }
+        if ((m_document == null // 	orders can be closed any time
+                || m_document.getTableId() != I_C_Order.Table_ID) && !isValidAction(DocAction.Companion.getACTION_Close()))
+            return false;
         if (m_document != null) {
             if (m_document.closeIt()) {
                 m_status = DocAction.Companion.getSTATUS_Closed();

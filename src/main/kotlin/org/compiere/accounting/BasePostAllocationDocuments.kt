@@ -34,7 +34,7 @@ fun createTaxCorrection(
             " AND C_AcctSchema_ID=?" +
             " AND Line_ID IS NULL") // 	header lines like tax or total
 
-    val query = queryOf(sql, listOf(line.getInvoiceId(), `as`.getAccountingSchemaId())).map {
+    val query = queryOf(sql, listOf(line.invoiceId, `as`.accountingSchemaId)).map {
         tax.addInvoiceFact(
             MFactAcct(
                 ctx,

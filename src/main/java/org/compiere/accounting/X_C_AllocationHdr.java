@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -80,13 +79,6 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
      */
     public X_C_AllocationHdr(Properties ctx, int C_AllocationHdr_ID) {
         super(ctx, C_AllocationHdr_ID);
-        /**
-         * if (C_AllocationHdr_ID == 0) { setApprovalAmt (Env.ZERO); setPaymentAllocationHeaderId (0);
-         * setCurrencyId (0); setDateAcct (new Timestamp( System.currentTimeMillis() )); setDateTrx
-         * (new Timestamp( System.currentTimeMillis() )); setDocAction (null); // CO setDocStatus
-         * (null); // DR setDocumentNo (null); setIsApproved (false); setIsManual (false); setPosted
-         * (false); setProcessed (false); }
-         */
     }
 
     /**
@@ -106,8 +98,7 @@ public class X_C_AllocationHdr extends PO implements I_C_AllocationHdr {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_C_AllocationHdr[").append(getId()).append("]");
-        return sb.toString();
+        return "X_C_AllocationHdr[" + getId() + "]";
     }
 
     /**
