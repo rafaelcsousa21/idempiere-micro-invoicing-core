@@ -33,11 +33,6 @@ public class MInOutLineMA extends X_M_InOutLineMA {
     private static final long serialVersionUID = -2610075295914545809L;
 
     /**
-     * Log
-     */
-    private static CLogger s_log = CLogger.getCLogger(MInOutLineMA.class);
-
-    /**
      * ************************************************************************ Standard Constructor
      *
      * @param ctx              context

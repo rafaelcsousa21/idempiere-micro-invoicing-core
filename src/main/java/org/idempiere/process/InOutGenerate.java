@@ -42,11 +42,6 @@ public class InOutGenerate extends BaseInOutGenerate {
     private int m_lastC_BPartner_Location_ID = -1;
 
     /**
-     * The Query sql
-     */
-    private StringBuffer m_sql = null;
-
-    /**
      * Storages temp space
      */
     private HashMap<SParameter, MStorageOnHand[]> m_map = new HashMap<SParameter, MStorageOnHand[]>();

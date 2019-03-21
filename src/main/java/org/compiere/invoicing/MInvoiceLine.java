@@ -77,10 +77,6 @@ public class MInvoiceLine extends X_C_InvoiceLine implements I_C_InvoiceLine, ID
      */
     private MCharge m_charge = null;
     /**
-     * Cached Name of the line
-     */
-    private String m_name = null;
-    /**
      * Cached Precision
      */
     private Integer m_precision = null;

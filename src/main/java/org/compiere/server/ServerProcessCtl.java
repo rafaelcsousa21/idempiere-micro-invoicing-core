@@ -33,8 +33,6 @@ public class ServerProcessCtl implements Runnable {
      */
     private static CLogger log = CLogger.getCLogger(ServerProcessCtl.class);
 
-    private static Server m_server;
-
     /**
      * Process Info
      */

@@ -28,10 +28,6 @@ public class MInventoryLineMA extends X_M_InventoryLineMA {
      *
      */
     private static final long serialVersionUID = -5654504108476140057L;
-    /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MInventoryLineMA.class);
 
     /**
      * ************************************************************************ Standard Constructor

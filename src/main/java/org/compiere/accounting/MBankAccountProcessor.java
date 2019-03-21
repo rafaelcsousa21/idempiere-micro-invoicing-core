@@ -22,11 +22,6 @@ public class MBankAccountProcessor extends X_C_BankAccount_Processor {
      */
     private static final long serialVersionUID = -9082774421123292838L;
 
-    /**
-     * Static Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MBankAccountProcessor.class);
-
     public MBankAccountProcessor(Properties ctx, int ignored) {
         super(ctx, 0);
         if (ignored != 0) throw new IllegalArgumentException("Multi-Key");

@@ -58,18 +58,6 @@ public class MWorkflow extends X_AD_Workflow {
      */
     private List<MWFNode> m_nodes = new ArrayList<MWFNode>();
     /**
-     * Translated Name
-     */
-    private String m_name_trl = null;
-    /**
-     * Translated Description
-     */
-    private String m_description_trl = null;
-    /**
-     * Translated Help
-     */
-    private String m_help_trl = null;
-    /**
      * Translation Flag
      */
     private boolean m_translated = false;
@@ -205,9 +193,6 @@ public class MWorkflow extends X_AD_Workflow {
             pstmt.setString(2, Env.getADLanguage(getCtx()));
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                m_name_trl = rs.getString(1);
-                m_description_trl = rs.getString(2);
-                m_help_trl = rs.getString(3);
                 m_translated = true;
             }
         } catch (SQLException e) {

@@ -28,21 +28,9 @@ public class MRequest extends X_R_Request {
     private static final long serialVersionUID = -6049674214655497548L;
 
     /**
-     * Request Tag Start
-     */
-    private static final String TAG_START = "[Req#";
-    /**
-     * Request Tag End
-     */
-    private static final String TAG_END = "#ID]";
-    /**
      * Request Type
      */
     private MRequestType m_requestType = null;
-    /**
-     * Changed
-     */
-    private boolean m_changed = false;
     /**
      * BPartner
      */

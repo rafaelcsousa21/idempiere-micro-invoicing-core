@@ -48,10 +48,6 @@ public final class Fact implements IFact {
      */
     private I_C_AcctSchema m_acctSchema = null;
     /**
-     * Transaction
-     */
-    private String m_trxName;
-    /**
      * Posting Type
      */
     private String m_postingType = null;

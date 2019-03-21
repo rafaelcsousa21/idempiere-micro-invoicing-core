@@ -96,10 +96,6 @@ public class InvoiceGenerate extends SvrProcess {
      * Minimum Amount to Invoice according to Invoice Schedule
      */
     private BigDecimal p_MinimumAmtInvSched = null;
-    /**
-     * Per Invoice Savepoint
-     */
-    private Savepoint m_savepoint = null;
 
     /**
      * Prepare - e.g., get Parameters.

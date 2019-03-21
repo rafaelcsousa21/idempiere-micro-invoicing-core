@@ -44,17 +44,9 @@ public final class DocTax {
      */
     private BigDecimal m_amount = null;
     /**
-     * Tax Rate
-     */
-    private BigDecimal m_rate = null;
-    /**
      * Name
      */
     private String m_name = null;
-    /**
-     * Base Tax Amt
-     */
-    private BigDecimal m_taxBaseAmt = null;
     /**
      * Included Tax
      */
@@ -83,8 +75,6 @@ public final class DocTax {
             boolean salesTax) {
         m_C_Tax_ID = C_Tax_ID;
         m_name = name;
-        m_rate = rate;
-        m_taxBaseAmt = taxBaseAmt; // IDEMPIERE-2160 Add by Hideaki Hagiwara
         m_amount = amount;
         m_salesTax = salesTax;
     } //	DocTax

@@ -50,10 +50,6 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      *
      */
     private boolean m_isFiscal = false;
-    /**
-     * Build depreciation flag - if true, the depreciation should be built after save
-     */
-    private boolean m_buildDepreciation = false;
 
     /**
      * Default Constructor

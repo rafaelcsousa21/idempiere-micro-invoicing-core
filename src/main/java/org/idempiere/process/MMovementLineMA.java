@@ -22,10 +22,6 @@ public class MMovementLineMA extends X_M_MovementLineMA {
      *
      */
     private static final long serialVersionUID = -155379485409000271L;
-    /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MMovementLineMA.class);
 
     /**
      * ************************************************************************ Standard Constructor

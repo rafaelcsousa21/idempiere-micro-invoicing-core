@@ -51,10 +51,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
      *
      */
     private static final long serialVersionUID = -3669451656879485463L;
-    /**
-     * Static Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MMatchPO.class);
     private MMatchInv m_matchInv;
     /**
      * Invoice Changed

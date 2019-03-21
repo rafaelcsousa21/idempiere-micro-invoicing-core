@@ -58,10 +58,6 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      */
     private static final BigDecimal TOLERANCE = BigDecimal.valueOf(0.02);
     /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MAllocationHdr.class);
-    /**
      * Lines
      */
     private MAllocationLine[] m_lines = null;

@@ -50,10 +50,6 @@ public class MTreeNode extends DefaultMutableTreeNode {
      */
     private int m_node_ID;
     /**
-     * SeqNo
-     */
-    private int m_seqNo;
-    /**
      * Name
      */
     private String m_name;
@@ -75,18 +71,6 @@ public class MTreeNode extends DefaultMutableTreeNode {
      * Image Indicator
      */
     private String m_imageIndicator;
-    /**
-     * Index to Icon
-     */
-    private int m_imageIndex = 0;
-    /**
-     * On Bar
-     */
-    private boolean m_onBar;
-    /**
-     * Color
-     */
-    private Color m_color;
     /**
      * Last found ID
      */
@@ -122,15 +106,12 @@ public class MTreeNode extends DefaultMutableTreeNode {
         super();
         //	log.fine( "MTreeNode Node_ID=" + node_ID + ", Parent_ID=" + parent_ID + " - " + name);
         m_node_ID = node_ID;
-        m_seqNo = seqNo;
         m_name = name;
         m_description = description;
         if (m_description == null) m_description = "";
         m_parent_ID = parent_ID;
         setSummary(isSummary);
         setImageIndicator(imageIndicator);
-        m_onBar = onBar;
-        m_color = color;
     } //  MTreeNode
 
     /**
@@ -244,7 +225,6 @@ public class MTreeNode extends DefaultMutableTreeNode {
     public void setImageIndicator(String imageIndicator) {
         if (imageIndicator != null) {
             m_imageIndicator = imageIndicator;
-            m_imageIndex = getImageIndex(m_imageIndicator);
         }
     } //  setImageIndicator
 

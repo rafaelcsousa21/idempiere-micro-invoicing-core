@@ -8,14 +8,10 @@ import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import static software.hsharp.core.util.DBKt.convertDate;
-import static software.hsharp.core.util.DBKt.prepareStatement;
 
 /**
  * Request Type Model
@@ -40,14 +36,6 @@ public class MRequestType extends X_R_RequestType {
      */
     private static CCache<Integer, MRequestType> s_cache =
             new CCache<Integer, MRequestType>(I_R_RequestType.Table_Name, 10);
-    /**
-     * Next time stats to be created
-     */
-    private long m_nextStats = 0;
-    private int m_openNo = 0;
-    private int m_totalNo = 0;
-    private int m_new30No = 0;
-    private int m_closed30No = 0;
 
     /**
      * ************************************************************************ Standard Constructor
@@ -123,49 +111,6 @@ public class MRequestType extends X_R_RequestType {
 
         return retValue;
     } //	get
-
-    /**
-     * Update Statistics
-     */
-    private synchronized void updateStatistics() {
-        if (System.currentTimeMillis() < m_nextStats) return;
-
-        String sql =
-                "SELECT "
-                        + "(SELECT COUNT(*) FROM R_Request r"
-                        + " INNER JOIN R_Status s ON (r.R_Status_ID=s.R_Status_ID AND s.IsOpen='Y') "
-                        + "WHERE r.R_RequestType_ID=x.R_RequestType_ID) AS OpenNo, "
-                        + "(SELECT COUNT(*) FROM R_Request r "
-                        + "WHERE r.R_RequestType_ID=x.R_RequestType_ID) AS TotalNo, "
-                        + "(SELECT COUNT(*) FROM R_Request r "
-                        + "WHERE r.R_RequestType_ID=x.R_RequestType_ID AND Created>addDays(SysDate,-30)) AS New30No, "
-                        + "(SELECT COUNT(*) FROM R_Request r"
-                        + " INNER JOIN R_Status s ON (r.R_Status_ID=s.R_Status_ID AND s.IsClosed='Y') "
-                        + "WHERE r.R_RequestType_ID=x.R_RequestType_ID AND r.Updated>addDays(SysDate,-30)) AS Closed30No "
-                        //
-                        + "FROM R_RequestType x WHERE R_RequestType_ID=?";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = prepareStatement(sql);
-            pstmt.setInt(1, getRequestTypeId());
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                m_openNo = rs.getInt(1);
-                m_totalNo = rs.getInt(2);
-                m_new30No = rs.getInt(3);
-                m_closed30No = rs.getInt(4);
-            }
-        } catch (Exception e) {
-            log.log(Level.SEVERE, sql, e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
-        }
-
-        m_nextStats = System.currentTimeMillis() + 3600000; // 	every hour
-    } //	updateStatistics
 
     /**
      * Before Save

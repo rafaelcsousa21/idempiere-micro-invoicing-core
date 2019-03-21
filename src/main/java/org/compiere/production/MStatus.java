@@ -19,10 +19,6 @@ public class MStatus extends X_R_Status {
      */
     private static final long serialVersionUID = -4549127671165860354L;
     /**
-     * Static Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MStatus.class);
-    /**
      * Cache
      */
     private static CCache<Integer, MStatus> s_cache =

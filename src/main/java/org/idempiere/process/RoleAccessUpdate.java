@@ -34,10 +34,6 @@ import java.util.logging.Level;
  * @version $Id: RoleAccessUpdate.java,v 1.3 2006/07/30 00:51:02 jjanke Exp $
  */
 public class RoleAccessUpdate extends SvrProcess {
-    /**
-     * Static Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(RoleAccessUpdate.class);
 
     /**
      * Update Role

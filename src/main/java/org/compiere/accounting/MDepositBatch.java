@@ -35,10 +35,6 @@ public class MDepositBatch extends X_C_DepositBatch implements IPODoc {
      *
      */
     private static final long serialVersionUID = -977397802747749777L;
-    /**
-     * Process Message
-     */
-    private String m_processMsg = null;
 
     /**
      * Create & Load existing Persistent Object

@@ -807,16 +807,6 @@ public class MPayment extends X_C_Payment
     } //  setPaymentProcessor
 
     /**
-     * Get Type and name pair
-     *
-     * @param CreditCardType credit card Type
-     * @return pair
-     */
-    private ValueNamePair getCreditCardPair(String CreditCardType) {
-        return new ValueNamePair(CreditCardType, getCreditCardName(CreditCardType));
-    } //	getCreditCardPair
-
-    /**
      * ************************************************************************ Credit Card Number
      *
      * @param CreditCardNumber CreditCard Number

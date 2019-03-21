@@ -22,10 +22,6 @@ public class MClientInfo extends org.compiere.orm.MClientInfo {
     protected static CCache<Integer, MClientInfo> s_cache =
             new CCache<Integer, MClientInfo>(Table_Name, 2);
     /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MClientInfo.class);
-    /**
      * Account Schema
      */
     private MAcctSchema m_acctSchema = null;

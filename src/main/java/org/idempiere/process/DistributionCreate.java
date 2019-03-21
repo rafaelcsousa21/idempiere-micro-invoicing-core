@@ -65,18 +65,6 @@ public class DistributionCreate extends SvrProcess {
     /** Distribution List */
   /* throw new NotImplementedException();
   private MDistributionList m_dl;*/
-    /**
-     * Single Order
-     */
-    private MOrder m_singleOrder = null;
-    /**
-     * Product
-     */
-    private MProduct m_product = null;
-    /**
-     * Total Quantity
-     */
-    private BigDecimal m_totalQty = Env.ZERO;
 
     /**
      * Prepare - e.g., get Parameters.

@@ -73,10 +73,6 @@ public class DocLine {
      */
     private ProductCost m_productCost = null;
     /**
-     * Production indicator
-     */
-    private boolean m_productionBOM = false;
-    /**
      * Outside Processing
      */
     private int m_PP_Cost_Collector_ID = 0;
