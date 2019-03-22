@@ -61,7 +61,6 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @param ctx           context
      * @param GL_Journal_ID id
-     * @param trxName       transaction
      */
     public MJournal(Properties ctx, int GL_Journal_ID) {
         super(ctx, GL_Journal_ID);
@@ -296,7 +295,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         // neither change the Date if isOverwriteDateOnComplete
         BigDecimal previousProcessedOn = (BigDecimal) getValueOld(I_GL_Journal.COLUMNNAME_ProcessedOn);
         if (!newRecord && previousProcessedOn != null && previousProcessedOn.signum() > 0) {
-            int previousDocTypeID = (Integer) getValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
+            int previousDocTypeID = (int) getValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
             MDocType previousdt = MDocType.get(getCtx(), previousDocTypeID);
             if (isValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID) && previousdt.isOverwriteSeqOnComplete()) {
                 log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDocType"));
