@@ -60,15 +60,15 @@ class InitialClientSetup(
             val name = para[i].parameterName
             if (para[i].parameter == null)
             else if (name == "ClientName")
-                p_ClientName = para[i].parameter as String
+                p_ClientName = para[i].parameterAsString
             else if (name == "OrgValue")
-                p_OrgValue = para[i].parameter as String
+                p_OrgValue = para[i].parameterAsString
             else if (name == "OrgName")
-                p_OrgName = para[i].parameter as String
+                p_OrgName = para[i].parameterAsString
             else if (name == "AdminUserName")
-                p_AdminUserName = para[i].parameter as String
+                p_AdminUserName = para[i].parameterAsString
             else if (name == "NormalUserName")
-                p_NormalUserName = para[i].parameter as String
+                p_NormalUserName = para[i].parameterAsString
             else if (name == "IsSetInitialPassword")
                 p_IsSetInitialPassword = para[i].parameterAsBoolean
             else if (name == "C_Currency_ID")
@@ -78,13 +78,13 @@ class InitialClientSetup(
             else if (name == "C_Region_ID")
                 p_C_Region_ID = para[i].parameterAsInt
             else if (name == "CityName")
-                p_CityName = para[i].parameter as String
+                p_CityName = para[i].parameterAsString
             else if (name == "C_City_ID")
                 p_C_City_ID = para[i].parameterAsInt
             else if (name == "Postal")
-                p_Postal = para[i].parameter as String
+                p_Postal = para[i].parameterAsString
             else if (name == "Address1")
-                p_Address1 = para[i].parameter as String
+                p_Address1 = para[i].parameterAsString
             else if (name == "IsUseBPDimension")
                 p_IsUseBPDimension = para[i].parameterAsBoolean
             else if (name == "IsUseProductDimension")
@@ -100,23 +100,23 @@ class InitialClientSetup(
             else if (name == "UseDefaultCoA")
                 p_UseDefaultCoA = para[i].parameterAsBoolean
             else if (name == "CoAFile")
-                p_CoAFile = para[i].parameter as String
+                p_CoAFile = para[i].parameterAsString
             else if (name == "InactivateDefaults")
                 p_InactivateDefaults = para[i].parameterAsBoolean
             else if (name == "Phone")
-                p_Phone = para[i].parameter as String
+                p_Phone = para[i].parameterAsString
             else if (name == "Phone2")
-                p_Phone2 = para[i].parameter as String
+                p_Phone2 = para[i].parameterAsString
             else if (name == "Fax")
-                p_Fax = para[i].parameter as String
+                p_Fax = para[i].parameterAsString
             else if (name == "EMail")
-                p_EMail = para[i].parameter as String
+                p_EMail = para[i].parameterAsString
             else if (name == "TaxID")
-                p_TaxID = para[i].parameter as String
+                p_TaxID = para[i].parameterAsString
             else if (name == "AdminUserEmail")
-                p_AdminUserEmail = para[i].parameter as String
+                p_AdminUserEmail = para[i].parameterAsString
             else if (name == "NormalUserEmail")
-                p_NormalUserEmail = para[i].parameter as String
+                p_NormalUserEmail = para[i].parameterAsString
             else
                 log.log(Level.SEVERE, "Unknown Parameter: $name")
         }

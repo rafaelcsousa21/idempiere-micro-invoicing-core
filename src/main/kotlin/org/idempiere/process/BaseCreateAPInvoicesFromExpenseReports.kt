@@ -6,6 +6,10 @@ import software.hsharp.core.util.queryOf
 import java.sql.Timestamp
 import java.util.Properties
 
+/**
+ *  get Expense Reports to Create AP Invoices from
+ *  see [ExpenseAPInvoice]
+ */
 fun getExpensesToBeInvoices(
     ctx: Properties,
     sql: String,
