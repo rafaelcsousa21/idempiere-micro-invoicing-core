@@ -51,10 +51,6 @@ public abstract class AdempiereServer implements Runnable {
      */
     protected CLogger log = CLogger.getCLogger(getClass());
     /**
-     * Initial nap is seconds
-     */
-    private int m_initialNap = 0;
-    /**
      * Sleeping
      */
     private volatile boolean m_sleeping = true;

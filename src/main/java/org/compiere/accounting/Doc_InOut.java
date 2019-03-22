@@ -7,6 +7,8 @@ import org.compiere.invoicing.MInOut;
 import org.compiere.invoicing.MInOutLine;
 import org.compiere.invoicing.MInOutLineMA;
 import org.compiere.model.IFact;
+import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.model.I_M_InOutLine;
 import org.compiere.model.I_M_RMALine;
 import org.compiere.tax.MTax;
@@ -45,7 +47,6 @@ public class Doc_InOut extends Doc {
      *
      * @param as      accounting schema
      * @param rs      record
-     * @param trxName trx
      */
     public Doc_InOut(MAcctSchema as, Row rs) {
         super(as, MInOut.class, rs, null);
@@ -97,7 +98,7 @@ public class Doc_InOut extends Doc {
                     "SELECT PP_Cost_Collector_ID  FROM C_OrderLine WHERE C_OrderLine_ID=? AND PP_Cost_Collector_ID IS NOT NULL";
             int PP_Cost_Collector_ID =
                     getSQLValueEx(sql, line.getOrderLineId());
-            docLine.setPP_Cost_CollectorId(PP_Cost_Collector_ID);
+            docLine.setCostCollectorId(PP_Cost_Collector_ID);
             //
             if (log.isLoggable(Level.FINE)) log.fine(docLine.toString());
             list.add(docLine);
@@ -137,7 +138,7 @@ public class Doc_InOut extends Doc {
      * @param as accounting schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(MAcctSchema as) {
+    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
         //
         ArrayList<IFact> facts = new ArrayList<IFact>();
         //  create Fact Header
@@ -222,7 +223,7 @@ public class Doc_InOut extends Doc {
                 dr.setLocatorId(line.getLocatorId());
                 dr.setLocationFromLocator(line.getLocatorId(), true); //  from Loc
                 dr.setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
-                dr.setOrgId(line.getOrder_OrgId()); // 	Revenue X-Org
+                dr.setOrgId(line.getOrderOrgId()); // 	Revenue X-Org
                 dr.setQty(line.getQty().negate());
 
                 if (isReversal(line)) {
@@ -493,7 +494,7 @@ public class Doc_InOut extends Doc {
                 cr.setLocatorId(line.getLocatorId());
                 cr.setLocationFromLocator(line.getLocatorId(), true); //  from Loc
                 cr.setLocationFromBPartner(getBusinessPartnerLocationId(), false); //  to Loc
-                cr.setOrgId(line.getOrder_OrgId()); // 	Revenue X-Org
+                cr.setOrgId(line.getOrderOrgId()); // 	Revenue X-Org
                 cr.setQty(line.getQty().negate());
                 if (isReversal(line)) {
                     //	Set AmtAcctCr from Original Shipment/Receipt
@@ -586,10 +587,10 @@ public class Doc_InOut extends Doc {
                 }
 
                 //  Inventory/Asset			DR
-                MAccount assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
+                I_C_ValidCombination assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
                 if (product.isService()) {
                     // if the line is a Outside Processing then DR WIP
-                    if (line.getPP_Cost_CollectorId() > 0)
+                    if (line.getCostCollectorId() > 0)
                         assets = line.getAccount(ProductCost.ACCTTYPE_P_WorkInProcess, as);
                     else assets = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                 }
@@ -794,7 +795,7 @@ public class Doc_InOut extends Doc {
                 }
 
                 //  Inventory/Asset			CR
-                MAccount assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
+                I_C_ValidCombination assets = line.getAccount(ProductCost.ACCTTYPE_P_Asset, as);
                 if (product.isService()) assets = line.getAccount(ProductCost.ACCTTYPE_P_Expense, as);
                 // Elaine 2008/06/26
         /*cr = fact.createLine(line, assets,
@@ -840,7 +841,7 @@ public class Doc_InOut extends Doc {
         return m_Reversal_ID != 0 && line.getReversalLineId() != 0;
     }
 
-    private String createVendorRMACostDetail(MAcctSchema as, DocLine line, BigDecimal costs) {
+    private String createVendorRMACostDetail(I_C_AcctSchema as, DocLine line, BigDecimal costs) {
         BigDecimal tQty = line.getQty();
         BigDecimal tAmt = costs;
         if (tAmt.signum() != tQty.signum()) {

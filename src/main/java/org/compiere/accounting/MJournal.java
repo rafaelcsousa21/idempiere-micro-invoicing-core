@@ -16,6 +16,7 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -60,7 +61,6 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @param ctx           context
      * @param GL_Journal_ID id
-     * @param trxName       transaction
      */
     public MJournal(Properties ctx, int GL_Journal_ID) {
         super(ctx, GL_Journal_ID);
@@ -295,13 +295,11 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         // neither change the Date if isOverwriteDateOnComplete
         BigDecimal previousProcessedOn = (BigDecimal) getValueOld(I_GL_Journal.COLUMNNAME_ProcessedOn);
         if (!newRecord && previousProcessedOn != null && previousProcessedOn.signum() > 0) {
-            int previousDocTypeID = (Integer) getValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
+            int previousDocTypeID = (int) getValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
             MDocType previousdt = MDocType.get(getCtx(), previousDocTypeID);
-            if (isValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID)) {
-                if (previousdt.isOverwriteSeqOnComplete()) {
-                    log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDocType"));
-                    return false;
-                }
+            if (isValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID) && previousdt.isOverwriteSeqOnComplete()) {
+                log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDocType"));
+                return false;
             }
             if (isValueChanged(I_GL_Journal.COLUMNNAME_DateDoc)) {
                 if (previousdt.isOverwriteDateOnComplete()) {
@@ -376,7 +374,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -408,6 +406,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -565,6 +564,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -866,6 +866,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -910,6 +911,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         StringBuilder msgreturn =
@@ -922,6 +924,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -940,6 +943,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
      *
      * @return DR amount
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return getTotalDr();
     } //	getApprovalAmt

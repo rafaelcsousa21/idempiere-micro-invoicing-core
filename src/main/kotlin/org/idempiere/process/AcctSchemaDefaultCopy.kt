@@ -241,8 +241,8 @@ class AcctSchemaDefaultCopy(
     if (p_CopyOverwriteAcct)
     {
     	sql = new StringBuilder("UPDATE C_BP_Employee_Acct a ")
-    		.append("SET E_Expense_Acct=").append(acct.getE_Expense_Acct())
-    		.append(", E_Prepayment_Acct=").append(acct.getE_Prepayment_Acct())
+    		.append("SET E_Expense_Acct=").append(acct.getE_ExpenseAccount())
+    		.append(", E_Prepayment_Acct=").append(acct.getE_PrepaymentAccount())
     		.append(", Updated=SysDate, UpdatedBy=0 ")
     		.append("WHERE a.C_AcctSchema_ID=").append(p_C_AcctSchema_ID)
     		.append(" AND EXISTS (SELECT * FROM C_BP_Employee_Acct x ")
@@ -474,7 +474,7 @@ class AcctSchemaDefaultCopy(
     if (p_CopyOverwriteAcct)
     {
     	sql = new StringBuilder("UPDATE C_Withholding_Acct a ")
-    		.append("SET Withholding_Acct=").append(acct.getWithholding_Acct())
+    		.append("SET Withholding_Acct=").append(acct.getWithholdingAccount())
     		.append(", Updated=SysDate, UpdatedBy=0 ")
     		.append("WHERE a.C_AcctSchema_ID=").append(p_C_AcctSchema_ID)
     		.append(" AND EXISTS (SELECT * FROM C_Withholding_Acct x ")

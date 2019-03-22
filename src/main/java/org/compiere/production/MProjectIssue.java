@@ -29,10 +29,6 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
      *
      */
     private static final long serialVersionUID = 4714411434615096132L;
-    /**
-     * Parent
-     */
-    private MProject m_parent = null;
 
     /**
      * Standard Constructor
@@ -76,7 +72,6 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
         setClientOrg(project.getClientId(), project.getOrgId());
         setProjectId(project.getProjectId()); // 	Parent
         setLine(getNextLine());
-        m_parent = project;
         //
         //	setLocatorId (0);
         //	setProductId (0);

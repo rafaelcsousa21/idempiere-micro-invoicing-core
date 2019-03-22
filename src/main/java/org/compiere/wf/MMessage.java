@@ -24,10 +24,6 @@ public class MMessage extends X_AD_Message {
      */
     private static CCache<String, MMessage> s_cache =
             new CCache<String, MMessage>(I_AD_Message.Table_Name, 100);
-    /**
-     * Static Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MMessage.class);
 
     /**
      * ************************************************************************ Standard Constructor

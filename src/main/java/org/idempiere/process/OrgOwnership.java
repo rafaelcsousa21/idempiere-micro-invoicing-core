@@ -48,22 +48,32 @@ public class OrgOwnership extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("AD_Org_ID"))
-                p_AD_Org_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("M_Warehouse_ID"))
-                p_M_Warehouse_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("M_Product_Category_ID"))
-                p_M_Product_Category_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("M_Product_ID"))
-                p_M_Product_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("C_BP_Group_ID"))
-                p_C_BP_Group_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("C_BPartner_ID"))
-                p_C_BPartner_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "AD_Org_ID":
+                    p_AD_Org_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "M_Warehouse_ID":
+                    p_M_Warehouse_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "M_Product_Category_ID":
+                    p_M_Product_Category_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "M_Product_ID":
+                    p_M_Product_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "C_BP_Group_ID":
+                    p_C_BP_Group_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "C_BPartner_ID":
+                    p_C_BPartner_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 

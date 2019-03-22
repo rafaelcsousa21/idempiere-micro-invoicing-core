@@ -53,7 +53,7 @@ public class ProjectSetType extends SvrProcess {
         MProject project = new MProject(getCtx(), m_C_Project_ID);
         if (project.getProjectId() == 0 || project.getProjectId() != m_C_Project_ID)
             throw new IllegalArgumentException("Project not found C_Project_ID=" + m_C_Project_ID);
-        if (project.getProjectTypeId_Int() > 0)
+        if (project.getProjectTypeIdAsInt() > 0)
             throw new IllegalArgumentException(
                     "Project already has Type (Cannot overwrite) " + project.getProjectTypeId());
         //

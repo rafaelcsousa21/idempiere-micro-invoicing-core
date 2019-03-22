@@ -37,15 +37,16 @@ public class IndentedBOM extends SvrProcess {
     protected void prepare() {
         for (IProcessInfoParameter para : getParameter()) {
             String name = para.getParameterName();
-            if (para.getParameter() == null) ;
-            else if (name.equals(MCost.COLUMNNAME_C_AcctSchema_ID)) {
-                p_C_AcctSchema_ID = para.getParameterAsInt();
-                m_as = MAcctSchema.get(getCtx(), p_C_AcctSchema_ID);
-            } else if (name.equals(MCost.COLUMNNAME_M_CostElement_ID)) {
-                p_M_CostElement_ID = para.getParameterAsInt();
-            } else if (name.equals(MCost.COLUMNNAME_M_Product_ID))
-                p_M_Product_ID = para.getParameterAsInt();
-            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+            if (para.getParameter() != null) {
+                if (name.equals(MCost.COLUMNNAME_C_AcctSchema_ID)) {
+                    p_C_AcctSchema_ID = para.getParameterAsInt();
+                    m_as = MAcctSchema.get(getCtx(), p_C_AcctSchema_ID);
+                } else if (name.equals(MCost.COLUMNNAME_M_CostElement_ID)) {
+                    p_M_CostElement_ID = para.getParameterAsInt();
+                } else if (name.equals(MCost.COLUMNNAME_M_Product_ID))
+                    p_M_Product_ID = para.getParameterAsInt();
+                else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+            }
         }
     } // prepare
 
@@ -77,7 +78,7 @@ public class IndentedBOM extends SvrProcess {
 
         tboml.setOrgId(p_AD_Org_ID);
         tboml.setAcctSchemaId(p_C_AcctSchema_ID);
-        tboml.setPInstanceId(getAD_PInstanceId());
+        tboml.setPInstanceId(getProcessInstanceId());
         tboml.setCostElementId(p_M_CostElement_ID);
         tboml.setSelectedProductId(product.getId());
         tboml.setProductId(p_M_Product_ID);

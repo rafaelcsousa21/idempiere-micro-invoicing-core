@@ -50,16 +50,11 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      *
      */
     private boolean m_isFiscal = false;
-    /**
-     * Build depreciation flag - if true, the depreciation should be built after save
-     */
-    private boolean m_buildDepreciation = false;
 
     /**
      * Default Constructor
      *
      * @param ctx                context
-     * @param M_InventoryLine_ID line
      */
     public MDepreciationWorkfile(Properties ctx, int A_Depreciation_Workfile_ID) {
         super(ctx, A_Depreciation_Workfile_ID);
@@ -363,7 +358,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      *
      * @return asset accounting model
      */
-    public MAssetAcct getA_AssetAcct(Timestamp dateAcct) {
+    public MAssetAcct getAssetAccounting(Timestamp dateAcct) {
         return MAssetAcct.forA_AssetId(getCtx(), getAssetId(), getPostingType(), dateAcct);
     }
 
@@ -392,7 +387,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * @param reset
      * @return
      */
-    public boolean adjustAccumulatedDepr(BigDecimal amt, BigDecimal amt_F, boolean reset) {
+    public boolean adjustAccumulatedDepreciation(BigDecimal amt, BigDecimal amt_F, boolean reset) {
         if (amt == null) {
             amt = Env.ZERO;
         }
@@ -414,7 +409,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     /**
      *
      */
-    public BigDecimal getA_Accumulated_Depr(boolean fiscal) {
+    public BigDecimal getAccumulatedDepreciation(boolean fiscal) {
         return fiscal ? getAccumulatedDepreciationFiscal() : getAccumulatedDepreciation();
     }
 
@@ -424,7 +419,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     public BigDecimal getRemainingCost(BigDecimal accumAmt, boolean fiscal) {
         BigDecimal cost = getActualCost();
         if (accumAmt == null) {
-            accumAmt = getA_Accumulated_Depr(fiscal);
+            accumAmt = getAccumulatedDepreciation(fiscal);
         }
         return cost.subtract(accumAmt);
     }
@@ -474,7 +469,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     /**
      * Increment the current period (A_Current_Period) 1, and a month DateAcct
      */
-    public void incA_Current_Period() {
+    public void incrementCurrentPeriod() {
         int old_period = getCurrentPeriod();
         Timestamp old_date = getDateAcct();
         int new_period = old_period + 1;
@@ -498,7 +493,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
     /**
      * Set A Current Period (and Data Act) processed just after the last expense. Do not save.
      */
-    public void setA_Current_Period() {
+    public void setCurrentPeriod() {
         String whereClause =
                 MDepreciationExp.COLUMNNAME_A_Asset_ID
                         + "=?"
@@ -522,7 +517,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
         if (depexp != null) {
             setCurrentPeriod(depexp.getPeriod());
             setDateAcct(depexp.getDateAcct());
-            incA_Current_Period();
+            incrementCurrentPeriod();
         } else {
             log.info("There are no records from which to infer its");
         }
@@ -532,7 +527,7 @@ public class MDepreciationWorkfile extends X_A_Depreciation_Workfile implements 
      * Truncate not processed depreciation entries. IS NOT modifying workfile.
      */
     public void truncDepreciation() {
-        String trxName = null;
+
 
         int A_Current_Period = getCurrentPeriod();
         final String sql =

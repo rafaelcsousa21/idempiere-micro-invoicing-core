@@ -234,7 +234,7 @@ public class X_AD_WF_Node extends BasePONameValue implements I_AD_WF_Node {
      *
      * @return Responsible for Workflow Execution
      */
-    public int getAD_WF_ResponsibleId() {
+    public int getWorkflowResponsibleId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_WF_Responsible_ID);
         if (ii == null) return 0;
         return ii;

@@ -24,11 +24,11 @@ public class CopyFromOrder extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_Order_ID"))
-                p_C_Order_ID = ((BigDecimal) para[i].getParameter()).intValue();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("C_Order_ID"))
+                p_C_Order_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare

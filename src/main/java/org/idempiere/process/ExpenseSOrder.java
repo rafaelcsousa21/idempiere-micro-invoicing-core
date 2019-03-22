@@ -10,6 +10,7 @@ import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.DocAction;
 import org.compiere.production.MProject;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -51,7 +52,7 @@ public class ExpenseSOrder extends BaseExpenseSOrder {
      * @param tel line
      * @param bp  bp
      */
-    protected void processLine(MTimeExpense te, MTimeExpenseLine tel, MBPartner bp) {
+    protected void processLine(MTimeExpense te, @NotNull MTimeExpenseLine tel, MBPartner bp) {
         if (m_order == null) {
             if (log.isLoggable(Level.INFO))
                 log.info("New Order for " + bp + ", Project=" + tel.getProjectId());

@@ -12,10 +12,6 @@ public class MGLCategory extends X_GL_Category {
      */
     private static final long serialVersionUID = -272365151811522531L;
     /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MGLCategory.class);
-    /**
      * Cache
      */
     private static CCache<Integer, MGLCategory> s_cache =

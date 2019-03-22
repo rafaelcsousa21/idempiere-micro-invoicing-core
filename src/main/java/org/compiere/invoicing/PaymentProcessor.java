@@ -41,8 +41,6 @@ public abstract class PaymentProcessor {
      * Encode Parameters
      */
     private boolean m_encoded = false;
-    //
-    private int m_timeout = 30;
 
     /** ********************************************************************** */
 

@@ -35,13 +35,13 @@ public class WFActivityManage extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("IsAbort")) p_IsAbort = "Y".equals(para[i].getParameter());
-            else if (name.equals("AD_User_ID")) p_AD_User_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("IsAbort")) p_IsAbort = "Y".equals(iProcessInfoParameter.getParameter());
+            else if (name.equals("AD_User_ID")) p_AD_User_ID = iProcessInfoParameter.getParameterAsInt();
             else if (name.equals("AD_WF_Responsible_ID"))
-                p_AD_WF_Responsible_ID = para[i].getParameterAsInt();
+                p_AD_WF_Responsible_ID = iProcessInfoParameter.getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_AD_WF_Activity_ID = getRecordId();

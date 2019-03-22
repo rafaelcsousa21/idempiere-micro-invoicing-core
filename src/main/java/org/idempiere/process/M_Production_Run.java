@@ -65,11 +65,11 @@ public class M_Production_Run extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("MustBeStocked"))
-                mustBeStocked = para[i].getParameter().equals("Y");
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("MustBeStocked"))
+                mustBeStocked = iProcessInfoParameter.getParameter().equals("Y");
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_Record_ID = getRecordId();

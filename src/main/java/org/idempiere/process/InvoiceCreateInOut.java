@@ -58,9 +58,10 @@ public class InvoiceCreateInOut extends SvrProcess {
     protected void prepare() {
         for (IProcessInfoParameter para : getParameter()) {
             String name = para.getParameterName();
-            if (para.getParameter() == null) ;
-            else if (name.equals(PARAM_M_Warehouse_ID)) p_M_Warehouse_ID = para.getParameterAsInt();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+            if (para.getParameter() != null) {
+                if (name.equals(PARAM_M_Warehouse_ID)) p_M_Warehouse_ID = para.getParameterAsInt();
+                else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+            }
         }
         p_C_Invoice_ID = getRecordId();
     } //	prepare

@@ -79,19 +79,19 @@ public class PaySelectionCreateFrom extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("OnlyDiscount")) p_OnlyDiscount = "Y".equals(para[i].getParameter());
-            else if (name.equals("OnlyDue")) p_OnlyDue = "Y".equals(para[i].getParameter());
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("OnlyDiscount")) p_OnlyDiscount = "Y".equals(iProcessInfoParameter.getParameter());
+            else if (name.equals("OnlyDue")) p_OnlyDue = "Y".equals(iProcessInfoParameter.getParameter());
             else if (name.equals("IncludeInDispute"))
-                p_IncludeInDispute = "Y".equals(para[i].getParameter());
+                p_IncludeInDispute = "Y".equals(iProcessInfoParameter.getParameter());
             else if (name.equals("MatchRequirement"))
-                p_MatchRequirement = (String) para[i].getParameter();
-            else if (name.equals("PaymentRule")) p_PaymentRule = (String) para[i].getParameter();
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
-            else if (name.equals("DueDate")) p_DueDate = (Timestamp) para[i].getParameter();
+                p_MatchRequirement = (String) iProcessInfoParameter.getParameter();
+            else if (name.equals("PaymentRule")) p_PaymentRule = (String) iProcessInfoParameter.getParameter();
+            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("DueDate")) p_DueDate = (Timestamp) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_C_PaySelection_ID = getRecordId();

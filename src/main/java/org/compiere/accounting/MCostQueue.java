@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.I_C_AcctSchema;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -111,7 +112,7 @@ public class MCostQueue extends X_M_CostQueue {
      * @return cost queue or null
      */
     public static MCostQueue[] getQueue(
-            MProduct product, int M_ASI_ID, MAcctSchema as, int Org_ID, MCostElement ce) {
+            MProduct product, int M_ASI_ID, I_C_AcctSchema as, int Org_ID, MCostElement ce) {
         return MBaseCostQueueKt.getCostQueueRecordsInLifoFifoOrder(product, M_ASI_ID, as, Org_ID, ce);
     } //	getQueue
 
@@ -205,7 +206,7 @@ public class MCostQueue extends X_M_CostQueue {
     public static BigDecimal getCosts(
             MProduct product,
             int M_ASI_ID,
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int Org_ID,
             MCostElement ce,
             BigDecimal Qty) {

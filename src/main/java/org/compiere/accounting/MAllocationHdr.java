@@ -23,6 +23,7 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -56,10 +57,6 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      * Tolerance Gain and Loss
      */
     private static final BigDecimal TOLERANCE = BigDecimal.valueOf(0.02);
-    /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MAllocationHdr.class);
     /**
      * Lines
      */
@@ -272,8 +269,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      * @return true if acct was deleted
      */
     protected boolean beforeDelete() {
-        String trxName = null;
-        if (trxName == null || trxName.length() == 0) log.warning("No transaction");
+
         if (isPosted()) {
             MPeriod.testPeriodOpen(
                     getCtx(), getDateTrx(), MDocType.DOCBASETYPE_PaymentAllocation, getOrgId());
@@ -288,8 +284,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
         getLines(true);
         if (!updateBP(true)) return false;
 
-        for (int i = 0; i < m_lines.length; i++) {
-            MAllocationLine line = m_lines[i];
+        for (MAllocationLine line : m_lines) {
             line.deleteEx(true);
         }
         return true;
@@ -312,7 +307,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -345,6 +340,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -451,6 +447,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -667,6 +664,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         StringBuilder msgreturn =
                 new StringBuilder()
@@ -681,6 +679,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -703,6 +702,7 @@ public class MAllocationHdr extends X_C_AllocationHdr implements DocAction, IPOD
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg

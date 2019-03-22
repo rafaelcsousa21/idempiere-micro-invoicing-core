@@ -93,7 +93,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
     public MDDOrderLine(MDDOrder order) {
         this(order.getCtx(), 0);
         if (order.getId() == 0) throw new IllegalArgumentException("Header not saved");
-        setDD_OrderId(order.getDD_OrderId()); // 	parent
+        setDistributionOrderId(order.getDistributionOrderId()); // 	parent
         setOrder(order);
     } //	MDDOrderLine
 
@@ -136,7 +136,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
      * @return parent
      */
     public MDDOrder getParent() {
-        if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDD_OrderId());
+        if (m_parent == null) m_parent = new MDDOrder(getCtx(), getDistributionOrderId());
         return m_parent;
     } //	getParent
 
@@ -431,7 +431,7 @@ public class MDDOrderLine extends X_DD_OrderLine {
         //	Get Line No
         if (getLine() == 0) {
             String sql = "SELECT COALESCE(MAX(Line),0)+10 FROM C_OrderLine WHERE C_Order_ID=?";
-            int ii = getSQLValue(sql, getDD_OrderId());
+            int ii = getSQLValue(sql, getDistributionOrderId());
             setLine(ii);
         }
 

@@ -6,6 +6,9 @@ import software.hsharp.core.util.queryOf
 import java.sql.Timestamp
 import java.util.Properties
 
+/**
+ * get Sales Order to Generate PO from
+ */
 fun getOrdersForPO(
     ctx: Properties,
     sql: String,

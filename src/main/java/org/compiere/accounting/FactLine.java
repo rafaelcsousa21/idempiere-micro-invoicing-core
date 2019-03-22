@@ -2,6 +2,9 @@ package org.compiere.accounting;
 
 import org.compiere.bo.MCurrency;
 import org.compiere.conversionrate.MConversionRate;
+import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_AcctSchema_Element;
+import org.compiere.model.I_C_ValidCombination;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -36,11 +39,11 @@ public final class FactLine extends X_Fact_Acct {
     /**
      * Account
      */
-    private MAccount m_acct = null;
+    private I_C_ValidCombination m_acct = null;
     /**
      * Accounting Schema
      */
-    private MAcctSchema m_acctSchema = null;
+    private I_C_AcctSchema m_acctSchema = null;
     /**
      * Document Header
      */
@@ -114,7 +117,7 @@ public final class FactLine extends X_Fact_Acct {
      * @param acctSchema account schema
      * @param acct       account
      */
-    public void setAccount(MAcctSchema acctSchema, MAccount acct) {
+    public void setAccount(I_C_AcctSchema acctSchema, I_C_ValidCombination acct) {
         m_acctSchema = acctSchema;
         setAccountingSchemaId(acctSchema.getAccountingSchemaId());
         //
@@ -124,7 +127,7 @@ public final class FactLine extends X_Fact_Acct {
         setSubAccountId(m_acct.getSubAccountId());
 
         //	User Defined References
-        MAcctSchemaElement ud1 =
+        I_C_AcctSchema_Element ud1 =
                 m_acctSchema.getAcctSchemaElement(X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn1);
         if (ud1 != null) {
             String ColumnName1 = ud1.getDisplayColumnName();
@@ -138,7 +141,7 @@ public final class FactLine extends X_Fact_Acct {
                 if (ID1 != 0) setUserElement1Id(ID1);
             }
         }
-        MAcctSchemaElement ud2 =
+        I_C_AcctSchema_Element ud2 =
                 m_acctSchema.getAcctSchemaElement(X_C_AcctSchema_Element.ELEMENTTYPE_UserColumn2);
         if (ud2 != null) {
             String ColumnName2 = ud2.getDisplayColumnName();
@@ -632,7 +635,7 @@ public final class FactLine extends X_Fact_Acct {
      *
      * @return account
      */
-    public MAccount getAccount() {
+    public I_C_ValidCombination getAccount() {
         return m_acct;
     } //	getAccount
 
@@ -747,12 +750,12 @@ public final class FactLine extends X_Fact_Acct {
         if (m_docLine != null) setSalesRegionId(m_docLine.getSalesRegionId());
         if (m_doc != null) {
             if (super.getSalesRegionId() == 0) setSalesRegionId(m_doc.getSalesRegionId());
-            if (super.getSalesRegionId() == 0 && m_doc.getBP_C_SalesRegionId() > 0)
-                setSalesRegionId(m_doc.getBP_C_SalesRegionId());
+            if (super.getSalesRegionId() == 0 && m_doc.getBusinessPartnerSalesRegionId() > 0)
+                setSalesRegionId(m_doc.getBusinessPartnerSalesRegionId());
             //	derive SalesRegion if AcctSegment
             if (super.getSalesRegionId() == 0
                     && m_doc.getBusinessPartnerLocationId() != 0
-                    && m_doc.getBP_C_SalesRegionId() == -1) // 	never tried
+                    && m_doc.getBusinessPartnerSalesRegionId() == -1) // 	never tried
             //	&& m_acctSchema.isAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_SalesRegion))
             {
                 String sql =

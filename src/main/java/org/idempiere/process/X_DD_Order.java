@@ -126,7 +126,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
-    public org.compiere.model.I_AD_User getAD_User() throws RuntimeException {
+    public org.compiere.model.I_AD_User getUser() throws RuntimeException {
         return (org.compiere.model.I_AD_User)
                 MTable.get(getCtx(), org.compiere.model.I_AD_User.Table_Name)
                         .getPO(getUserId());
@@ -207,7 +207,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
         else setValue(COLUMNNAME_C_BPartner_ID, C_BPartner_ID);
     }
 
-    public org.compiere.model.I_C_BPartner_Location getBPartner_Location() throws RuntimeException {
+    public org.compiere.model.I_C_BPartner_Location getBPartnerLocation() throws RuntimeException {
         return (org.compiere.model.I_C_BPartner_Location)
                 MTable.get(getCtx(), org.compiere.model.I_C_BPartner_Location.Table_Name)
                         .getPO(getBusinessPartnerLocationId());
@@ -548,7 +548,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @return Distribution Order
      */
-    public int getDD_OrderId() {
+    public int getDistributionOrderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_DD_Order_ID);
         if (ii == null) return 0;
         return ii;
@@ -559,7 +559,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @param DD_Order_ID Distribution Order
      */
-    public void setDD_OrderId(int DD_Order_ID) {
+    public void setDistributionOrderId(int DD_Order_ID) {
         if (DD_Order_ID < 1) setValueNoCheck(COLUMNNAME_DD_Order_ID, null);
         else setValueNoCheck(COLUMNNAME_DD_Order_ID, Integer.valueOf(DD_Order_ID));
     }
@@ -569,7 +569,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @return DD_Order_UU
      */
-    public String getDD_Order_UU() {
+    public String getOrder_UU() {
         return (String) getValue(COLUMNNAME_DD_Order_UU);
     }
 
@@ -578,7 +578,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @param DD_Order_UU DD_Order_UU
      */
-    public void setDD_Order_UU(String DD_Order_UU) {
+    public void setOrder_UU(String DD_Order_UU) {
         setValue(COLUMNNAME_DD_Order_UU, DD_Order_UU);
     }
 
@@ -1155,10 +1155,10 @@ public class X_DD_Order extends PO implements I_DD_Order {
         setValue(COLUMNNAME_Processing, Boolean.valueOf(Processing));
     }
 
-    public org.compiere.model.I_C_Order getRef_Order() throws RuntimeException {
+    public org.compiere.model.I_C_Order getReferencedOrder() throws RuntimeException {
         return (org.compiere.model.I_C_Order)
                 MTable.get(getCtx(), org.compiere.model.I_C_Order.Table_Name)
-                        .getPO(getRef_OrderId());
+                        .getPO(getReferencedOrderId());
     }
 
     /**
@@ -1166,7 +1166,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @return Reference to corresponding Sales/Purchase Order
      */
-    public int getRef_OrderId() {
+    public int getReferencedOrderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_Ref_Order_ID);
         if (ii == null) return 0;
         return ii;
@@ -1177,7 +1177,7 @@ public class X_DD_Order extends PO implements I_DD_Order {
      *
      * @param Ref_Order_ID Reference to corresponding Sales/Purchase Order
      */
-    public void setRef_OrderId(int Ref_Order_ID) {
+    public void setReferencedOrderId(int Ref_Order_ID) {
         if (Ref_Order_ID < 1) setValue(COLUMNNAME_Ref_Order_ID, null);
         else setValue(COLUMNNAME_Ref_Order_ID, Integer.valueOf(Ref_Order_ID));
     }

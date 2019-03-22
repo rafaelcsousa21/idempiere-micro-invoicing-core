@@ -1,5 +1,6 @@
 package org.compiere.accounting;
 
+import org.compiere.model.I_C_AcctSchema;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -43,17 +44,9 @@ public final class DocTax {
      */
     private BigDecimal m_amount = null;
     /**
-     * Tax Rate
-     */
-    private BigDecimal m_rate = null;
-    /**
      * Name
      */
     private String m_name = null;
-    /**
-     * Base Tax Amt
-     */
-    private BigDecimal m_taxBaseAmt = null;
     /**
      * Included Tax
      */
@@ -82,8 +75,6 @@ public final class DocTax {
             boolean salesTax) {
         m_C_Tax_ID = C_Tax_ID;
         m_name = name;
-        m_rate = rate;
-        m_taxBaseAmt = taxBaseAmt; // IDEMPIERE-2160 Add by Hideaki Hagiwara
         m_amount = amount;
         m_salesTax = salesTax;
     } //	DocTax
@@ -95,7 +86,7 @@ public final class DocTax {
      * @param as       account schema
      * @return Account
      */
-    public MAccount getAccount(int AcctType, MAcctSchema as) {
+    public MAccount getAccount(int AcctType, I_C_AcctSchema as) {
         if (AcctType < ACCTTYPE_TaxDue || AcctType > ACCTTYPE_TaxExpense) return null;
         //
         String sql =

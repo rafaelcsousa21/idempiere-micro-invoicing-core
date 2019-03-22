@@ -15,6 +15,7 @@ import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -184,6 +185,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return name
      */
+    @NotNull
     public String getDocumentNo() {
         return getName();
     } //	getDocumentNo
@@ -193,6 +195,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         StringBuilder msgreturn =
                 new StringBuilder().append(getBankAccount().getName()).append(" ").append(getDocumentNo());
@@ -221,7 +224,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -254,6 +257,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -321,6 +325,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -390,17 +395,16 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
         }
 
         //	Not Processed
-        if (X_C_BankStatement.DOCSTATUS_Drafted.equals(getDocStatus())
-                || X_C_BankStatement.DOCSTATUS_Invalid.equals(getDocStatus())
-                || X_C_BankStatement.DOCSTATUS_InProgress.equals(getDocStatus())
-                || X_C_BankStatement.DOCSTATUS_Approved.equals(getDocStatus())
-                || X_C_BankStatement.DOCSTATUS_NotApproved.equals(getDocStatus())) ;
-            //	Std Period open?
-        else {
-            MPeriod.testPeriodOpen(
-                    getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getOrgId());
-            MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getBankStatementId());
-        }
+        if (!X_C_BankStatement.DOCSTATUS_Drafted.equals(getDocStatus())
+                && !X_C_BankStatement.DOCSTATUS_Invalid.equals(getDocStatus())
+                && !X_C_BankStatement.DOCSTATUS_InProgress.equals(getDocStatus())
+                && !X_C_BankStatement.DOCSTATUS_Approved.equals(getDocStatus())
+                && !X_C_BankStatement.DOCSTATUS_NotApproved.equals(getDocStatus())) {
+                    MPeriod.testPeriodOpen(
+                            getCtx(), getStatementDate(), MDocType.DOCBASETYPE_BankStatement, getOrgId());
+                    MFactAcct.deleteEx(I_C_BankStatement.Table_ID, getBankStatementId());
+                }
+        //	Std Period open?
 
         if (isProcessed()) {
             // Added Lines by AZ Goodwill
@@ -558,6 +562,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getName());
@@ -580,6 +585,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -598,6 +604,7 @@ public class MBankStatement extends X_C_BankStatement implements DocAction, IPOD
      *
      * @return amount
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return getStatementDifference();
     } //	getApprovalAmt

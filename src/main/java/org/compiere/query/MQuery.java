@@ -98,24 +98,9 @@ public class MQuery implements Serializable {
      */
     private String m_TableName = "";
     /**
-     * PInstance
-     */
-    private int m_AD_PInstance_ID = 0;
-    /**
      * List of Restrictions
      */
     private ArrayList<Restriction> m_list = new ArrayList<Restriction>();
-    /**
-     * Record Count
-     */
-    private int m_recordCount = 999999;
-    /**
-     * New Record Query
-     */
-    private boolean m_newRecord = false;
-    private String m_zoomTable;
-    private String m_zoomColumn;
-    private Object m_zoomValue;
 
     /**
      * ************************************************************************ Constructor w/o table
@@ -163,7 +148,6 @@ public class MQuery implements Serializable {
      * @param count count
      */
     public void setRecordCount(int count) {
-        m_recordCount = count;
     } //	setRecordCount
 
     /**
@@ -211,7 +195,6 @@ public class MQuery implements Serializable {
         if (whereClause == null || whereClause.trim().length() == 0) return;
         Restriction r = new Restriction(whereClause, true, 0);
         m_list.add(r);
-        m_newRecord = whereClause.equals(NEWRECORD);
     } //	addRestriction
 
     /**

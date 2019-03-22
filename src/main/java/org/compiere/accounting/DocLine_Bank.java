@@ -14,10 +14,6 @@ import static software.hsharp.core.util.DBKt.getSQLValue;
  */
 public class DocLine_Bank extends DocLine {
     /**
-     * Reversal Flag
-     */
-    private boolean m_IsReversal = false;
-    /**
      * Payment
      */
     private int m_C_Payment_ID = 0;
@@ -34,7 +30,6 @@ public class DocLine_Bank extends DocLine {
     public DocLine_Bank(MBankStatementLine line, Doc_BankStatement doc) {
         super(line, doc);
         m_C_Payment_ID = line.getPaymentId();
-        m_IsReversal = line.isReversal();
         //
         m_StmtAmt = line.getStmtAmt();
         m_InterestAmt = line.getInterestAmt();

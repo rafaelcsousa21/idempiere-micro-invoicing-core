@@ -13,7 +13,7 @@ import java.util.Properties;
  * @author iDempiere (generated)
  * @version Release 5.1 - $Id$
  */
-public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
+public class X_C_ValidCombination extends PO  {
 
     /**
      *
@@ -44,7 +44,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return 2 - Client
      */
     protected int getAccessLevel() {
-        return accessLevel.intValue();
+        return I_C_ValidCombination.accessLevel.intValue();
     }
 
     public String toString() {
@@ -64,7 +64,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Account used
      */
     public int getAccountId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_Account_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_Account_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -75,8 +75,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param Account_ID Account used
      */
     public void setAccountId(int Account_ID) {
-        if (Account_ID < 1) setValueNoCheck(COLUMNNAME_Account_ID, null);
-        else setValueNoCheck(COLUMNNAME_Account_ID, Account_ID);
+        if (Account_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_Account_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_Account_ID, Account_ID);
     }
 
     /**
@@ -85,7 +85,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Performing or initiating organization
      */
     public int getTransactionOrganizationId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_AD_OrgTrx_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_AD_OrgTrx_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -96,8 +96,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param AD_OrgTrx_ID Performing or initiating organization
      */
     public void setTransactionOrganizationId(int AD_OrgTrx_ID) {
-        if (AD_OrgTrx_ID < 1) setValueNoCheck(COLUMNNAME_AD_OrgTrx_ID, null);
-        else setValueNoCheck(COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
+        if (AD_OrgTrx_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_AD_OrgTrx_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_AD_OrgTrx_ID, Integer.valueOf(AD_OrgTrx_ID));
     }
 
     /**
@@ -106,7 +106,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Defines an alternate method of indicating an account combination.
      */
     public String getAlias() {
-        return (String) getValue(COLUMNNAME_Alias);
+        return (String) getValue(I_C_ValidCombination.COLUMNNAME_Alias);
     }
 
     /**
@@ -115,7 +115,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param Alias Defines an alternate method of indicating an account combination.
      */
     public void setAlias(String Alias) {
-        setValue(COLUMNNAME_Alias, Alias);
+        setValue(I_C_ValidCombination.COLUMNNAME_Alias, Alias);
     }
 
     /**
@@ -124,7 +124,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Rules for accounting
      */
     public int getAccountingSchemaId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_AcctSchema_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_AcctSchema_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -135,8 +135,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_AcctSchema_ID Rules for accounting
      */
     public void setAccountingSchemaId(int C_AcctSchema_ID) {
-        if (C_AcctSchema_ID < 1) setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_AcctSchema_ID, Integer.valueOf(C_AcctSchema_ID));
+        if (C_AcctSchema_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_AcctSchema_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_AcctSchema_ID, C_AcctSchema_ID);
     }
 
     /**
@@ -145,7 +145,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Business Activity
      */
     public int getBusinessActivityId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_Activity_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_Activity_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -156,8 +156,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_Activity_ID Business Activity
      */
     public void setBusinessActivityId(int C_Activity_ID) {
-        if (C_Activity_ID < 1) setValueNoCheck(COLUMNNAME_C_Activity_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+        if (C_Activity_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_Activity_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_Activity_ID, C_Activity_ID);
     }
 
     /**
@@ -166,7 +166,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Identifies a Business Partner
      */
     public int getBusinessPartnerId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_BPartner_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_BPartner_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -177,8 +177,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_BPartner_ID Identifies a Business Partner
      */
     public void setBusinessPartnerId(int C_BPartner_ID) {
-        if (C_BPartner_ID < 1) setValueNoCheck(COLUMNNAME_C_BPartner_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_BPartner_ID, Integer.valueOf(C_BPartner_ID));
+        if (C_BPartner_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_BPartner_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_BPartner_ID, C_BPartner_ID);
     }
 
     /**
@@ -187,7 +187,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Marketing Campaign
      */
     public int getCampaignId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_Campaign_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_Campaign_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -198,8 +198,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_Campaign_ID Marketing Campaign
      */
     public void setCampaignId(int C_Campaign_ID) {
-        if (C_Campaign_ID < 1) setValueNoCheck(COLUMNNAME_C_Campaign_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_Campaign_ID, Integer.valueOf(C_Campaign_ID));
+        if (C_Campaign_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_Campaign_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_Campaign_ID, C_Campaign_ID);
     }
 
     /**
@@ -208,7 +208,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Location that inventory was moved from
      */
     public int getLocationFromId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_LocFrom_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_LocFrom_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -219,8 +219,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_LocFrom_ID Location that inventory was moved from
      */
     public void setLocationFromId(int C_LocFrom_ID) {
-        if (C_LocFrom_ID < 1) setValueNoCheck(COLUMNNAME_C_LocFrom_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_LocFrom_ID, Integer.valueOf(C_LocFrom_ID));
+        if (C_LocFrom_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_LocFrom_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_LocFrom_ID, C_LocFrom_ID);
     }
 
     /**
@@ -229,7 +229,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Location that inventory was moved to
      */
     public int getLocationToId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_LocTo_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_LocTo_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -240,8 +240,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_LocTo_ID Location that inventory was moved to
      */
     public void setLocationToId(int C_LocTo_ID) {
-        if (C_LocTo_ID < 1) setValueNoCheck(COLUMNNAME_C_LocTo_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_LocTo_ID, Integer.valueOf(C_LocTo_ID));
+        if (C_LocTo_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_LocTo_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_LocTo_ID, C_LocTo_ID);
     }
 
     /**
@@ -250,7 +250,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Unique combination of account elements
      */
     public String getCombination() {
-        return (String) getValue(COLUMNNAME_Combination);
+        return (String) getValue(I_C_ValidCombination.COLUMNNAME_Combination);
     }
 
     /**
@@ -259,7 +259,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param Combination Unique combination of account elements
      */
     public void setCombination(String Combination) {
-        setValueNoCheck(COLUMNNAME_Combination, Combination);
+        setValueNoCheck(I_C_ValidCombination.COLUMNNAME_Combination, Combination);
     }
 
     /**
@@ -268,7 +268,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Financial Project
      */
     public int getProjectId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_Project_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_Project_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -279,8 +279,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_Project_ID Financial Project
      */
     public void setProjectId(int C_Project_ID) {
-        if (C_Project_ID < 1) setValueNoCheck(COLUMNNAME_C_Project_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_Project_ID, Integer.valueOf(C_Project_ID));
+        if (C_Project_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_Project_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_Project_ID, C_Project_ID);
     }
 
     /**
@@ -289,7 +289,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Sales coverage region
      */
     public int getSalesRegionId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_SalesRegion_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_SalesRegion_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -300,8 +300,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_SalesRegion_ID Sales coverage region
      */
     public void setSalesRegionId(int C_SalesRegion_ID) {
-        if (C_SalesRegion_ID < 1) setValueNoCheck(COLUMNNAME_C_SalesRegion_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_SalesRegion_ID, Integer.valueOf(C_SalesRegion_ID));
+        if (C_SalesRegion_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_SalesRegion_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_SalesRegion_ID, C_SalesRegion_ID);
     }
 
     /**
@@ -310,7 +310,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Sub account for Element Value
      */
     public int getSubAccountId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_SubAcct_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_SubAcct_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -321,8 +321,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param C_SubAcct_ID Sub account for Element Value
      */
     public void setSubAccountId(int C_SubAcct_ID) {
-        if (C_SubAcct_ID < 1) setValueNoCheck(COLUMNNAME_C_SubAcct_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_SubAcct_ID, Integer.valueOf(C_SubAcct_ID));
+        if (C_SubAcct_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_SubAcct_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_C_SubAcct_ID, C_SubAcct_ID);
     }
 
     /**
@@ -331,7 +331,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Valid Account Combination
      */
     public int getValidAccountCombinationId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_C_ValidCombination_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_C_ValidCombination_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -342,7 +342,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Optional short description of the record
      */
     public String getDescription() {
-        return (String) getValue(COLUMNNAME_Description);
+        return (String) getValue(I_C_ValidCombination.COLUMNNAME_Description);
     }
 
     /**
@@ -351,7 +351,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param Description Optional short description of the record
      */
     public void setDescription(String Description) {
-        setValueNoCheck(COLUMNNAME_Description, Description);
+        setValueNoCheck(I_C_ValidCombination.COLUMNNAME_Description, Description);
     }
 
     /**
@@ -360,7 +360,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param IsFullyQualified This account is fully qualified
      */
     public void setIsFullyQualified(boolean IsFullyQualified) {
-        setValueNoCheck(COLUMNNAME_IsFullyQualified, Boolean.valueOf(IsFullyQualified));
+        setValueNoCheck(I_C_ValidCombination.COLUMNNAME_IsFullyQualified, IsFullyQualified);
     }
 
     /**
@@ -369,9 +369,9 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return This account is fully qualified
      */
     public boolean isFullyQualified() {
-        Object oo = getValue(COLUMNNAME_IsFullyQualified);
+        Object oo = getValue(I_C_ValidCombination.COLUMNNAME_IsFullyQualified);
         if (oo != null) {
-            if (oo instanceof Boolean) return ((Boolean) oo).booleanValue();
+            if (oo instanceof Boolean) return (Boolean) oo;
             return "Y".equals(oo);
         }
         return false;
@@ -383,7 +383,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return Product, Service, Item
      */
     public int getProductId() {
-        Integer ii = (Integer) getValue(COLUMNNAME_M_Product_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_M_Product_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -394,8 +394,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param M_Product_ID Product, Service, Item
      */
     public void setProductId(int M_Product_ID) {
-        if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        if (M_Product_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_M_Product_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -404,7 +404,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return User defined list element #1
      */
     public int getUser1Id() {
-        Integer ii = (Integer) getValue(COLUMNNAME_User1_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_User1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -415,8 +415,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param User1_ID User defined list element #1
      */
     public void setUser1Id(int User1_ID) {
-        if (User1_ID < 1) setValueNoCheck(COLUMNNAME_User1_ID, null);
-        else setValueNoCheck(COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
+        if (User1_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_User1_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_User1_ID, User1_ID);
     }
 
     /**
@@ -425,7 +425,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return User defined list element #2
      */
     public int getUser2Id() {
-        Integer ii = (Integer) getValue(COLUMNNAME_User2_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_User2_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -436,8 +436,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param User2_ID User defined list element #2
      */
     public void setUser2Id(int User2_ID) {
-        if (User2_ID < 1) setValueNoCheck(COLUMNNAME_User2_ID, null);
-        else setValueNoCheck(COLUMNNAME_User2_ID, Integer.valueOf(User2_ID));
+        if (User2_ID < 1) setValueNoCheck(I_C_ValidCombination.COLUMNNAME_User2_ID, null);
+        else setValueNoCheck(I_C_ValidCombination.COLUMNNAME_User2_ID, User2_ID);
     }
 
     /**
@@ -446,7 +446,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return User defined accounting Element
      */
     public int getUserElement1Id() {
-        Integer ii = (Integer) getValue(COLUMNNAME_UserElement1_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_UserElement1_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -457,8 +457,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param UserElement1_ID User defined accounting Element
      */
     public void setUserElement1Id(int UserElement1_ID) {
-        if (UserElement1_ID < 1) setValue(COLUMNNAME_UserElement1_ID, null);
-        else setValue(COLUMNNAME_UserElement1_ID, Integer.valueOf(UserElement1_ID));
+        if (UserElement1_ID < 1) setValue(I_C_ValidCombination.COLUMNNAME_UserElement1_ID, null);
+        else setValue(I_C_ValidCombination.COLUMNNAME_UserElement1_ID, UserElement1_ID);
     }
 
     /**
@@ -467,7 +467,7 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @return User defined accounting Element
      */
     public int getUserElement2Id() {
-        Integer ii = (Integer) getValue(COLUMNNAME_UserElement2_ID);
+        Integer ii = (Integer) getValue(I_C_ValidCombination.COLUMNNAME_UserElement2_ID);
         if (ii == null) return 0;
         return ii;
     }
@@ -478,8 +478,8 @@ public class X_C_ValidCombination extends PO implements I_C_ValidCombination {
      * @param UserElement2_ID User defined accounting Element
      */
     public void setUserElement2Id(int UserElement2_ID) {
-        if (UserElement2_ID < 1) setValue(COLUMNNAME_UserElement2_ID, null);
-        else setValue(COLUMNNAME_UserElement2_ID, Integer.valueOf(UserElement2_ID));
+        if (UserElement2_ID < 1) setValue(I_C_ValidCombination.COLUMNNAME_UserElement2_ID, null);
+        else setValue(I_C_ValidCombination.COLUMNNAME_UserElement2_ID, UserElement2_ID);
     }
 
     @Override

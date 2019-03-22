@@ -19,6 +19,7 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -130,7 +131,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -141,6 +142,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -181,6 +183,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -434,6 +437,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -505,6 +509,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      *
      * @return amount
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return getAmt();
     } //	getApprovalAmt

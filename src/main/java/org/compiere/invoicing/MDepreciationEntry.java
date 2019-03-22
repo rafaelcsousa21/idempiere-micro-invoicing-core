@@ -15,6 +15,7 @@ import org.compiere.process.DocAction;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -158,8 +159,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
      * Get Lines
      */
     public List<MDepreciationExp> getLinesIterator(boolean onlyNotProcessed) {
-        final String trxName = null;
-        final List<Object> params = new ArrayList<Object>();
+        final List<Object> params = new ArrayList<>();
         String whereClause = MDepreciationExp.COLUMNNAME_A_Depreciation_Entry_ID + "=?";
         params.add(getId());
 
@@ -178,15 +178,13 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
                         + ","
                         + MDepreciationExp.COLUMNNAME_A_Entry_Type;
 
-        List<MDepreciationExp> it =
-                new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
-                        .setOrderBy(orderBy)
-                        .setParameters(params)
-                        .list();
-        return it;
+        return new Query(getCtx(), MDepreciationExp.Table_Name, whereClause)
+                .setOrderBy(orderBy)
+                .setParameters(params)
+                .list();
     }
 
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -202,6 +200,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         return false;
     }
 
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -236,6 +235,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         return true;
     } //	rejectIt
 
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -251,7 +251,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
 
         final MPeriod period = MPeriod.get(getCtx(), getPeriodId());
 
-        final ArrayList<Exception> errors = new ArrayList<Exception>();
+        final ArrayList<Exception> errors = new ArrayList<>();
         final List<MDepreciationExp> it = getLinesIterator(true);
         //
         for (MDepreciationExp depexp : it) {
@@ -313,10 +313,12 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         return false;
     } //	reActivateIt
 
+    @NotNull
     public String getSummary() {
         return toString();
     }
 
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     }
@@ -325,10 +327,12 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
         return getCreatedBy();
     }
 
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return null;
     }
 
+    @NotNull
     public String getDocumentInfo() {
         return getDocumentNo();
     }
@@ -346,7 +350,7 @@ public class MDepreciationEntry extends X_A_Depreciation_Entry implements DocAct
      *
      * @param DocStatus The current status of the document
      */
-    public void setDocStatus(String DocStatus) {
+    public void setDocStatus(@NotNull String DocStatus) {
 
         setValue(COLUMNNAME_DocStatus, DocStatus);
     }

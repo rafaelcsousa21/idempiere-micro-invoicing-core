@@ -56,16 +56,16 @@ public class DunningPrint extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("EMailPDF")) p_EMailPDF = "Y".equals(para[i].getParameter());
-            else if (name.equals("R_MailText_ID")) p_R_MailText_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_DunningRun_ID")) p_C_DunningRun_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("EMailPDF")) p_EMailPDF = "Y".equals(iProcessInfoParameter.getParameter());
+            else if (name.equals("R_MailText_ID")) p_R_MailText_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("C_DunningRun_ID")) p_C_DunningRun_ID = iProcessInfoParameter.getParameterAsInt();
             else if (name.equals("IsOnlyIfBPBalance"))
-                p_IsOnlyIfBPBalance = "Y".equals(para[i].getParameter());
+                p_IsOnlyIfBPBalance = "Y".equals(iProcessInfoParameter.getParameter());
             else if (name.equals("PrintUnprocessedOnly"))
-                p_PrintUnprocessedOnly = "Y".equals(para[i].getParameter());
+                p_PrintUnprocessedOnly = "Y".equals(iProcessInfoParameter.getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare

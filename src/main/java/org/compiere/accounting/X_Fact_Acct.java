@@ -43,13 +43,6 @@ public class X_Fact_Acct extends PO implements I_Fact_Acct {
      */
     public X_Fact_Acct(Properties ctx, int Fact_Acct_ID) {
         super(ctx, Fact_Acct_ID);
-        /**
-         * if (Fact_Acct_ID == 0) { setAccountId (0); setColumnTableId (0); setAmtAcctCr (Env.ZERO);
-         * setAmtAcctDr (Env.ZERO); setAmtSourceCr (Env.ZERO); setAmtSourceDr (Env.ZERO);
-         * setAccountingSchemaId (0); setCurrencyId (0); setPeriodId (0); setDateAcct (new Timestamp(
-         * System.currentTimeMillis() )); setDateTrx (new Timestamp( System.currentTimeMillis() ));
-         * setFact_Acct_ID (0); setGLCategoryId (0); setPostingType (null); setRecordId (0); }
-         */
     }
 
     /**

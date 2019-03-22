@@ -36,8 +36,8 @@ public class SequenceCheck extends SvrProcess {
     public static void validate(Properties ctx) {
         try {
             checkTableSequences(ctx, null);
-            checkTableID(ctx, null);
-            checkClientSequences(ctx, null);
+            checkTableID(ctx);
+            checkClientSequences(ctx);
         } catch (Exception e) {
             s_log.log(Level.SEVERE, "validate", e);
             throw new AdempiereException(e);
@@ -52,16 +52,15 @@ public class SequenceCheck extends SvrProcess {
      * @param sp  server process or null
      */
     private static void checkTableSequences(Properties ctx, SvrProcess sp) {
-        String trxName = null;
-        if (sp != null) trxName = null;
+
         String sql =
                 "SELECT TableName "
                         + "FROM AD_Table t "
                         + "WHERE IsActive='Y' AND IsView='N'"
                         + " AND NOT EXISTS (SELECT * FROM AD_Sequence s "
                         + "WHERE UPPER(s.Name)=UPPER(t.TableName) AND s.IsTableID='Y')";
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt = prepareStatement(sql);
             rs = pstmt.executeQuery();
@@ -77,10 +76,6 @@ public class SequenceCheck extends SvrProcess {
         } catch (Exception e) {
             s_log.log(Level.SEVERE, sql, e);
             throw new AdempiereException(e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
 
         //	Sync Table Name case
@@ -101,7 +96,7 @@ public class SequenceCheck extends SvrProcess {
         }
         if (no >= 0) return;
 
-        /** Find Duplicates */
+        /* Find Duplicates */
         sql =
                 "SELECT TableName, s.Name "
                         + "FROM AD_Table t, AD_Sequence s "
@@ -124,30 +119,24 @@ public class SequenceCheck extends SvrProcess {
         } catch (Exception e) {
             s_log.log(Level.SEVERE, sql, e);
             throw new AdempiereException(e);
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
     } //	checkTableSequences
 
     /**
      * Check Table Sequence ID values
+     *  @param ctx context
      *
-     * @param ctx context
-     * @param sp  server process or null
      */
-    private static void checkTableID(Properties ctx, SvrProcess sp) {
+    private static void checkTableID(Properties ctx) {
         MBaseSequenceCheckKt.checkTableID(ctx);
     } //	checkTableID
 
     /**
      * Check/Initialize DocumentNo/Value Sequences for all Clients
+     *  @param ctx context
      *
-     * @param ctx context
-     * @param sp  server process or null
      */
-    private static void checkClientSequences(Properties ctx, SvrProcess sp) {
+    private static void checkClientSequences(Properties ctx) {
         //	Sequence for DocumentNo/Value
         MClient[] clients = MClient.getAll(ctx);
         for (MClient client : clients) {
@@ -172,8 +161,8 @@ public class SequenceCheck extends SvrProcess {
         log.info("");
         //
         checkTableSequences(Env.getCtx(), this);
-        checkTableID(Env.getCtx(), this);
-        checkClientSequences(Env.getCtx(), this);
+        checkTableID(Env.getCtx());
+        checkClientSequences(Env.getCtx());
         return "Sequence Check";
     } //	doIt
 } //	SequenceCheck

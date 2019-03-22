@@ -51,6 +51,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 import kotlin.test.fail
+import org.idempiere.common.util.AdempiereSystemError
 
 data class InvoiceImportantTestAttributes(
     val grandTotal: BigDecimal,
@@ -76,11 +77,11 @@ class InvoiceTest : BaseComponentTest() {
     }
 
     private var _testProduct: I_M_Product? = null
-    private val testProduct get() = _testProduct!!
+    private val testProduct get() = _testProduct ?: throw AdempiereSystemError("test product is null")
     private var _salesPriceList: I_M_PriceList? = null
-    private val salesPriceList get() = _salesPriceList!!
+    private val salesPriceList get() = _salesPriceList  ?: throw AdempiereSystemError("sales price list")
     private var _now: Timestamp? = null
-    private val now get() = _now!!
+    private val now get() = _now ?: throw AdempiereSystemError("time does not exist")
 
     @Before
     fun createProdAndReceipt() {
@@ -327,7 +328,7 @@ class InvoiceTest : BaseComponentTest() {
             innerProduct.save()
 
             // put the product on the price list
-            val currentPriceListVersion = salesPriceList.getPriceListVersion(now)!!
+            val currentPriceListVersion = salesPriceList.getPriceListVersion(now) ?: throw AdempiereSystemError("current price list does not exist")
             val price = 11.0.toBigDecimal()
             val productPrice = MProductPrice(currentPriceListVersion, bomProduct.id, price, price, price)
             productPrice.save()
@@ -376,7 +377,7 @@ class InvoiceTest : BaseComponentTest() {
         DB.run {
             val product = createAProduct("Other 1-" + randomString(5), I_M_Product.PRODUCTTYPE_Item)
             val pl = MPriceList(ctx, 1000000)
-            val plv = pl.getPriceListVersion(Timestamp.from(Instant.now()))!!
+            val plv = pl.getPriceListVersion(Timestamp.from(Instant.now())) ?: throw AdempiereSystemError("current price list does not exist")
             val price = 10.toBigDecimal()
             val pp = MProductPrice(ctx, plv.id, product.id, price, price, price, null)
             pp.save()

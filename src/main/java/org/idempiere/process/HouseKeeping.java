@@ -43,12 +43,13 @@ public class HouseKeeping extends SvrProcess {
 
     protected void prepare() {
         IProcessInfoParameter[] parameter = getParameter();
-        for (int i = 0; i < parameter.length; i++) {
-            String name = parameter[i].getParameterName();
-            if (parameter[i].getParameter() == null) ;
-            else if (name.equals("AD_HouseKeeping_ID"))
-                p_AD_HouseKeeping_ID = parameter[i].getParameterAsInt();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : parameter) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null) {
+                if (name.equals("AD_HouseKeeping_ID"))
+                    p_AD_HouseKeeping_ID = iProcessInfoParameter.getParameterAsInt();
+                else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+            }
         }
         if (p_AD_HouseKeeping_ID == 0) p_AD_HouseKeeping_ID = getRecordId();
     } // prepare

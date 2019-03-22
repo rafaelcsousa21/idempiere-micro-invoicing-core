@@ -46,10 +46,10 @@ public class PeriodStatus extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("PeriodAction")) p_PeriodAction = (String) para[i].getParameter();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("PeriodAction")) p_PeriodAction = (String) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_C_Period_ID = getRecordId();

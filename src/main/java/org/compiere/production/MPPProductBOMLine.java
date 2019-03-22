@@ -51,7 +51,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
     public MPPProductBOMLine(MPPProductBOM bom) {
         super(bom.getCtx(), 0);
         if (bom.getId() <= 0) throw new IllegalArgumentException("Header not saved");
-        setPP_Product_BOMId(bom.getPP_Product_BOMId()); // 	parent
+        setProductBOMId(bom.getProductBOMId()); // 	parent
     }
 
     /**
@@ -92,7 +92,7 @@ public class MPPProductBOMLine extends X_PP_Product_BOMLine {
                             + " WHERE "
                             + I_PP_Product_BOMLine.COLUMNNAME_PP_Product_BOM_ID
                             + "=?";
-            int line = getSQLValueEx(sql, getPP_Product_BOMId());
+            int line = getSQLValueEx(sql, getProductBOMId());
             setLine(line);
         }
 

@@ -6,6 +6,7 @@ import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
 import org.compiere.model.IFact;
 import org.compiere.model.IPODoc;
+import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_C_AllocationHdr;
 import org.compiere.model.I_C_BankStatement;
 import org.compiere.model.I_C_Cash;
@@ -374,7 +375,7 @@ public abstract class Doc implements IDoc {
     /**
      * Accounting Schema
      */
-    private MAcctSchema m_as = null;
+    private I_C_AcctSchema m_as = null;
     /**
      * Properties
      */
@@ -459,7 +460,6 @@ public abstract class Doc implements IDoc {
      */
     private ArrayList<IFact> m_fact = null;
 
-    /** ********************************************************************** */
     /**
      * Source Amounts (may not all be used)
      */
@@ -478,7 +478,7 @@ public abstract class Doc implements IDoc {
      * @param defaultDocumentType default document type or null
      */
     public Doc(
-            MAcctSchema as, Class<?> clazz, Row rs, String defaultDocumentType) {
+            I_C_AcctSchema as, Class<?> clazz, Row rs, String defaultDocumentType) {
         p_Status = STATUS_Error;
         m_as = as;
         m_ctx = new Properties(m_as.getCtx());
@@ -519,7 +519,7 @@ public abstract class Doc implements IDoc {
      * @param Record_ID   record ID to load
      * @return Document or null
      */
-    public static IDoc get(MAcctSchema as, int AD_Table_ID, int Record_ID) {
+    public static IDoc get(I_C_AcctSchema as, int AD_Table_ID, int Record_ID) {
         return DocManager.INSTANCE.getDocument(as, AD_Table_ID, Record_ID);
     } //	get
 
@@ -532,7 +532,7 @@ public abstract class Doc implements IDoc {
      * @return Document
      * @throws AdempiereUserError
      */
-    public static IDoc get(MAcctSchema as, int AD_Table_ID, Row rs) {
+    public static IDoc get(I_C_AcctSchema as, int AD_Table_ID, Row rs) {
         return DocManager.INSTANCE.getDocument(as, AD_Table_ID, rs);
     } //  get
 
@@ -568,7 +568,7 @@ public abstract class Doc implements IDoc {
      *
      * @return table name
      */
-    public String get_TableName() {
+    public String getTableName() {
         return p_po.getTableName();
     } //	getTableName
 
@@ -617,19 +617,16 @@ public abstract class Doc implements IDoc {
      * @return null if posted error otherwise
      */
     public final String post(boolean force, boolean repost) {
-        if (m_DocStatus == null) ; // 	return "No DocStatus for DocumentNo=" + getDocumentNo();
-        else if (m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Completed())
-                || m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Closed())
-                || m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Voided())
-                || m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Reversed())) ;
-        else {
-            StringBuilder msgreturn =
-                    new StringBuilder("Invalid DocStatus='")
-                            .append(m_DocStatus)
-                            .append("' for DocumentNo=")
-                            .append(getDocumentNo());
-            return msgreturn.toString();
+        if (m_DocStatus != null && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Completed())
+                && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Closed())
+                && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Voided())
+                && !m_DocStatus.equals(DocumentEngine.Companion.getSTATUS_Reversed())) {
+            return "Invalid DocStatus='" +
+                    m_DocStatus +
+                    "' for DocumentNo=" +
+                    getDocumentNo();
         }
+
         //
         if (p_po.getClientId() != m_as.getClientId()) {
             StringBuilder error =
@@ -642,23 +639,23 @@ public abstract class Doc implements IDoc {
         }
 
         //  Lock Record ----
-        String trxName = null; // 	outside trx if on server
+         // 	outside trx if on server
         StringBuilder sql = new StringBuilder("UPDATE ");
-        sql.append(get_TableName())
+        sql.append(getTableName())
                 .append(" SET Processing='Y' WHERE ")
-                .append(get_TableName())
+                .append(getTableName())
                 .append("_ID=")
                 .append(getId())
                 .append(" AND Processed='Y' AND IsActive='Y'");
         if (!force) sql.append(" AND (Processing='N' OR Processing IS NULL)");
         if (!repost) sql.append(" AND Posted='N'");
         if (executeUpdate(sql.toString()) == 1) {
-            if (log.isLoggable(Level.INFO)) log.info("Locked: " + get_TableName() + "_ID=" + getId());
+            if (log.isLoggable(Level.INFO)) log.info("Locked: " + getTableName() + "_ID=" + getId());
         } else {
             log.log(
                     Level.SEVERE,
                     "Resubmit - Cannot lock "
-                            + get_TableName()
+                            + getTableName()
                             + "_ID="
                             + getId()
                             + ", Force="
@@ -891,11 +888,8 @@ public abstract class Doc implements IDoc {
             //  *** Transaction Start       ***
             //  Commit Facts
             if (status.equals(STATUS_Posted)) {
-                for (int i = 0; i < m_fact.size(); i++) {
-                    IFact fact = m_fact.get(i);
-                    if (fact == null) ;
-                    else if (fact.save()) ;
-                    else {
+                for (IFact fact : m_fact) {
+                    if (fact != null && !fact.save()) {
                         log.log(Level.SEVERE, "(fact not saved) ... rolling back");
                         unlock();
                         throw new AdempiereException("(fact not saved) ... rolling back");
@@ -920,11 +914,11 @@ public abstract class Doc implements IDoc {
      * Unlock Document
      */
     private void unlock() {
-        String trxName = null; // 	outside trx if on server
+         // 	outside trx if on server
         StringBuilder sql = new StringBuilder("UPDATE ");
-        sql.append(get_TableName())
+        sql.append(getTableName())
                 .append(" SET Processing='N' WHERE ")
-                .append(get_TableName())
+                .append(getTableName())
                 .append("_ID=")
                 .append(p_po.getId());
         executeUpdate(sql.toString());
@@ -1049,7 +1043,7 @@ public abstract class Doc implements IDoc {
      * @param acctSchema accounting schema
      * @return true, if convertible to accounting currency
      */
-    public boolean isConvertible(MAcctSchema acctSchema) {
+    public boolean isConvertible(I_C_AcctSchema acctSchema) {
         //  No Currency in document
         if (getCurrencyId() == NO_CURRENCY) {
             if (log.isLoggable(Level.FINE)) log.fine("(none) - " + toString());
@@ -1215,7 +1209,7 @@ public abstract class Doc implements IDoc {
      * @param as       accounting schema
      * @return C_ValidCombination_ID
      */
-    public int getValidCombinationId(int AcctType, MAcctSchema as) {
+    public int getValidCombinationId(int AcctType, I_C_AcctSchema as) {
         int para_1 = 0; //  first parameter (second is always AcctSchema)
         String sql = null;
 
@@ -1404,7 +1398,7 @@ public abstract class Doc implements IDoc {
      * @param as       accounting schema
      * @return Account
      */
-    public final MAccount getAccount(int AcctType, MAcctSchema as) {
+    public final MAccount getAccount(int AcctType, I_C_AcctSchema as) {
         int C_ValidCombination_ID = getValidCombinationId(AcctType, as);
         if (C_ValidCombination_ID == 0) return null;
         //	Return Account
@@ -1907,7 +1901,7 @@ public abstract class Doc implements IDoc {
      *
      * @return Sales Region
      */
-    public int getBP_C_SalesRegionId() {
+    public int getBusinessPartnerSalesRegionId() {
         if (m_BP_C_SalesRegion_ID == -1) {
             int index = p_po.getColumnIndex("C_SalesRegion_ID");
             if (index != -1) {
@@ -2067,7 +2061,7 @@ public abstract class Doc implements IDoc {
      * @param as accounting schema
      * @return Facts
      */
-    public abstract ArrayList<IFact> createFacts(MAcctSchema as);
+    public abstract ArrayList<IFact> createFacts(I_C_AcctSchema as);
 
     /**
      * Return document whether need to defer posting or not

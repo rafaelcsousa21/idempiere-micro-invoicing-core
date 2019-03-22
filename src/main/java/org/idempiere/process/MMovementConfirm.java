@@ -22,6 +22,7 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.ValueNamePair;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -174,6 +175,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         return Msg.getElement(getCtx(), "M_MovementConfirm_ID") + " " + getDocumentNo();
     } //	getDocumentInfo
@@ -184,7 +186,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -217,6 +219,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -278,6 +281,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -604,6 +608,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -626,6 +631,7 @@ public class MMovementConfirm extends X_M_MovementConfirm implements DocAction, 
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg

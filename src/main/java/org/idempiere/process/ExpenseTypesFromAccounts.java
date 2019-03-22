@@ -61,30 +61,41 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
 
         // Get parameters
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) {
-                // nothing
-            } else if (name.equals("M_Product_Category_ID")) {
-                m_productCategoryId = para[i].getParameterAsInt();
-            } else if (name.equals("C_AcctSchema_ID")) {
-                m_acctSchemaId = para[i].getParameterAsInt();
-            } else if (name.equals("M_PriceList_ID")) {
-                m_priceListId = para[i].getParameterAsInt();
-            } else if (name.equals("C_UOM_ID")) {
-                m_uomId = para[i].getParameterAsInt();
-            } else if (name.equals("C_TaxCategory_ID")) {
-                m_taxCategoryId = para[i].getParameterAsInt();
-            } else if (name.equals("ProductValuePrefix")) {
-                m_productValuePrefix = para[i].getParameter().toString();
-            } else if (name.equals("ProductValueSuffix")) {
-                m_productValueSuffix = para[i].getParameter().toString();
-            } else if (name.equals("StartElement")) {
-                m_startElement = para[i].getParameter().toString();
-            } else if (name.equals("EndElement")) {
-                m_endElement = para[i].getParameter().toString();
-            } else {
-                log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null) {
+                switch (name) {
+                    case "M_Product_Category_ID":
+                        m_productCategoryId = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "C_AcctSchema_ID":
+                        m_acctSchemaId = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "M_PriceList_ID":
+                        m_priceListId = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "C_UOM_ID":
+                        m_uomId = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "C_TaxCategory_ID":
+                        m_taxCategoryId = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "ProductValuePrefix":
+                        m_productValuePrefix = iProcessInfoParameter.getParameter().toString();
+                        break;
+                    case "ProductValueSuffix":
+                        m_productValueSuffix = iProcessInfoParameter.getParameter().toString();
+                        break;
+                    case "StartElement":
+                        m_startElement = iProcessInfoParameter.getParameter().toString();
+                        break;
+                    case "EndElement":
+                        m_endElement = iProcessInfoParameter.getParameter().toString();
+                        break;
+                    default:
+                        log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                        break;
+                }
             }
         }
     }

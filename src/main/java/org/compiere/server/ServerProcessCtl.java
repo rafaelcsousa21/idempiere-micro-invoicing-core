@@ -33,8 +33,6 @@ public class ServerProcessCtl implements Runnable {
      */
     private static CLogger log = CLogger.getCLogger(ServerProcessCtl.class);
 
-    private static Server m_server;
-
     /**
      * Process Info
      */
@@ -88,7 +86,7 @@ public class ServerProcessCtl implements Runnable {
                 pi.setError(true);
                 return null;
             }
-            pi.setAD_PInstanceId(instance.getPInstanceId());
+            pi.setProcessInstanceId(instance.getPInstanceId());
         } else {
             instance = new MPInstance(Env.getCtx(), pi.getPInstanceId(), null);
         }

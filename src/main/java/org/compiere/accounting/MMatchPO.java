@@ -51,10 +51,6 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
      *
      */
     private static final long serialVersionUID = -3669451656879485463L;
-    /**
-     * Static Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MMatchPO.class);
     private MMatchInv m_matchInv;
     /**
      * Invoice Changed
@@ -194,16 +190,14 @@ public class MMatchPO extends X_M_MatchPO implements IPODoc {
      */
     public static MMatchPO create(
             I_C_InvoiceLine iLine, MInOutLine sLine, Timestamp dateTrx, BigDecimal qty) {
-        String trxName = null;
+
         Properties ctx = null;
         int C_OrderLine_ID = 0;
         if (iLine != null) {
-            trxName = null;
             ctx = iLine.getCtx();
             C_OrderLine_ID = iLine.getOrderLineId();
         }
         if (sLine != null) {
-            trxName = null;
             ctx = sLine.getCtx();
             C_OrderLine_ID = sLine.getOrderLineId();
         }

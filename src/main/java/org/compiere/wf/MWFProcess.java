@@ -106,7 +106,7 @@ public class MWFProcess extends X_AD_WF_Process {
             super.setWorkflowState(X_AD_WF_Process.WFSTATE_Terminated);
         } else setTextMsg(getPO());
         //	Responsible/User
-        if (wf.getWorkflowResponsibleId() == 0) setAD_WF_ResponsibleId();
+        if (wf.getWorkflowResponsibleId() == 0) setWorkflowResponsibleId();
         else setWorkFlowResponsibleId(wf.getWorkflowResponsibleId());
         setUserId(pi.getUserId()); // 	user starting
         //
@@ -272,12 +272,10 @@ public class MWFProcess extends X_AD_WF_Process {
         if (transitions == null || transitions.length == 0) return false; // 	done
 
         //	We need to wait for last activity
-        if (MWFNode.JOINELEMENT_AND.equals(last.getNode().getJoinElement())) {
-            //	get previous nodes
-            //	check if all have closed activities
-            //	return false for all but the last
-        }
-        //	eliminate from active processed
+        last.getNode().getJoinElement();//	get previous nodes
+//	check if all have closed activities
+//	return false for all but the last
+//	eliminate from active processed
         last.setProcessed(true);
         last.saveEx();
 
@@ -301,7 +299,7 @@ public class MWFProcess extends X_AD_WF_Process {
      * ************************************************************************ Set Workflow
      * Responsible. Searches for a Invoker.
      */
-    public void setAD_WF_ResponsibleId() {
+    public void setWorkflowResponsibleId() {
         int AD_WF_Responsible_ID =
                 getSQLValueEx(
                         MRole.getDefault(getCtx(), false)
@@ -382,7 +380,7 @@ public class MWFProcess extends X_AD_WF_Process {
             MWFActivity activity = new MWFActivity(this, AD_WF_Node_ID);
             //
             // Thread workerWF = new Thread(activity);
-            // workerWF.setName(activity.getAD_Workflow().getName() + " "
+            // workerWF.setName(activity.getWorkflow().getName() + " "
             //		+ activity.getColumnTable().getName() + " "
             //		+ activity.getRecordId());
             // workerWF.start();

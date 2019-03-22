@@ -26,6 +26,7 @@ import org.eevolution.model.I_DD_OrderLine;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -227,6 +228,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         return dt.getNameTrl() + " " + getDocumentNo();
@@ -247,7 +249,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         //
         List<MDDOrderLine> list =
                 new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClauseFinal.toString())
-                        .setParameters(getDD_OrderId())
+                        .setParameters(getDistributionOrderId())
                         .setOrderBy(orderClause)
                         .list();
         return list.toArray(new MDDOrderLine[list.size()]);
@@ -299,7 +301,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         super.setProcessed(processed);
         if (getId() == 0) return;
         String set =
-                "SET Processed='" + (processed ? "Y" : "N") + "' WHERE DD_Order_ID=" + getDD_OrderId();
+                "SET Processed='" + (processed ? "Y" : "N") + "' WHERE DD_Order_ID=" + getDistributionOrderId();
         int noLine = executeUpdate("UPDATE DD_OrderLine " + set);
         m_lines = null;
         if (log.isLoggable(Level.FINE)) log.fine("setProcessed - " + processed + " - Lines=" + noLine);
@@ -377,7 +379,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                             + "(SELECT Description,POReference "
                             + "FROM DD_Order o WHERE i.DD_Order_ID=o.DD_Order_ID) "
                             + "WHERE DocStatus NOT IN ('RE','CL') AND DD_Order_ID="
-                            + getDD_OrderId();
+                            + getDistributionOrderId();
             int no = executeUpdate(sql);
             if (log.isLoggable(Level.FINE)) log.fine("Description -> #" + no);
         }
@@ -398,7 +400,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
             final String whereClause = I_DD_Order.COLUMNNAME_DD_Order_ID + "=?";
             List<MDDOrderLine> lines =
                     new Query(getCtx(), I_DD_OrderLine.Table_Name, whereClause)
-                            .setParameters(getDD_OrderId())
+                            .setParameters(getDistributionOrderId())
                             .list();
 
             for (MDDOrderLine line : lines) {
@@ -442,7 +444,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -475,6 +477,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -518,7 +521,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                         + mandatoryType
                         + " AND ol.M_AttributeSetInstance_ID IS NULL"
                         + " AND ol.DD_Order_ID=?";
-        int no = getSQLValue(sql, getDD_OrderId());
+        int no = getSQLValue(sql, getDistributionOrderId());
         if (no != 0) {
             m_processMsg = "@LinesWithoutProductAttribute@ (" + no + ")";
             return DocAction.Companion.getSTATUS_Invalid();
@@ -652,6 +655,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         @SuppressWarnings("unused")
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
@@ -921,6 +925,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -937,6 +942,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -950,6 +956,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
         return getSalesRepresentativeId();
     } //	getDoc_User_ID
 
+    @NotNull
     public BigDecimal getApprovalAmt() {
         // TODO Auto-generated method stub
         return null;

@@ -30,10 +30,6 @@ import static software.hsharp.core.util.DBKt.prepareStatement;
  * @author Marek Mosiewicz http://www.jotel.com.pl
  */
 public class SynchronizeTerminology extends SvrProcess {
-    /**
-     * Static Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(SynchronizeTerminology.class);
 
     /**
      * Prepare - e.g., get Parameters.

@@ -281,10 +281,10 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
         setValue(COLUMNNAME_DatePromised, DatePromised);
     }
 
-    public org.eevolution.model.I_DD_Order getDD_Order() throws RuntimeException {
+    public org.eevolution.model.I_DD_Order getDistributionOrder() throws RuntimeException {
         return (org.eevolution.model.I_DD_Order)
                 MTable.get(getCtx(), org.eevolution.model.I_DD_Order.Table_Name)
-                        .getPO(getDD_OrderId());
+                        .getPO(getDistributionOrderId());
     }
 
     /**
@@ -292,7 +292,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Distribution Order
      */
-    public int getDD_OrderId() {
+    public int getDistributionOrderId() {
         Integer ii = (Integer) getValue(COLUMNNAME_DD_Order_ID);
         if (ii == null) return 0;
         return ii;
@@ -303,7 +303,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param DD_Order_ID Distribution Order
      */
-    public void setDD_OrderId(int DD_Order_ID) {
+    public void setDistributionOrderId(int DD_Order_ID) {
         if (DD_Order_ID < 1) setValueNoCheck(COLUMNNAME_DD_Order_ID, null);
         else setValueNoCheck(COLUMNNAME_DD_Order_ID, Integer.valueOf(DD_Order_ID));
     }
@@ -313,7 +313,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return Distribution Order Line
      */
-    public int getDD_OrderLineId() {
+    public int getDistributionOrderLineId() {
         Integer ii = (Integer) getValue(COLUMNNAME_DD_OrderLine_ID);
         if (ii == null) return 0;
         return ii;
@@ -324,7 +324,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param DD_OrderLine_ID Distribution Order Line
      */
-    public void setDD_OrderLineId(int DD_OrderLine_ID) {
+    public void setDistributionOrderLineId(int DD_OrderLine_ID) {
         if (DD_OrderLine_ID < 1) setValueNoCheck(COLUMNNAME_DD_OrderLine_ID, null);
         else setValueNoCheck(COLUMNNAME_DD_OrderLine_ID, Integer.valueOf(DD_OrderLine_ID));
     }
@@ -334,7 +334,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @return DD_OrderLine_UU
      */
-    public String getDD_OrderLine_UU() {
+    public String getOrderLine_UU() {
         return (String) getValue(COLUMNNAME_DD_OrderLine_UU);
     }
 
@@ -343,7 +343,7 @@ public class X_DD_OrderLine extends PO implements I_DD_OrderLine {
      *
      * @param DD_OrderLine_UU DD_OrderLine_UU
      */
-    public void setDD_OrderLine_UU(String DD_OrderLine_UU) {
+    public void setOrderLine_UU(String DD_OrderLine_UU) {
         setValue(COLUMNNAME_DD_OrderLine_UU, DD_OrderLine_UU);
     }
 

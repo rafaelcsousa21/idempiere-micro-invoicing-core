@@ -97,7 +97,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             String trxName) {
         ArrayList<MDepreciationExp> list = new ArrayList<MDepreciationExp>();
         Properties ctx = assetwk.getCtx();
-        MAssetAcct assetAcct = assetwk.getA_AssetAcct(dateAcct);
+        MAssetAcct assetAcct = assetwk.getAssetAccounting(dateAcct);
         MDepreciationExp depexp = null;
 
         depexp =
@@ -196,10 +196,9 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
             }
             //
             setDateAcct(assetwk.getDateAcct());
-            assetwk.adjustAccumulatedDepr(getExpense(), getFiscalExpense(), false);
-        } else {
-            // nothing to do for other entry types
-        }
+            assetwk.adjustAccumulatedDepreciation(getExpense(), getFiscalExpense(), false);
+        }  // nothing to do for other entry types
+
         //
         setProcessed(true);
         updateFrom(assetwk);
@@ -207,7 +206,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
 
         //
         // Update workfile
-        assetwk.setA_Current_Period();
+        assetwk.setCurrentPeriod();
         assetwk.saveEx();
     }
 
@@ -215,7 +214,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         if (isProcessed()) {
             // TODO : check if we can reverse it (check period, check dateacct etc)
             MDepreciationWorkfile assetwk = getA_Depreciation_Workfile();
-            assetwk.adjustAccumulatedDepr(
+            assetwk.adjustAccumulatedDepreciation(
                     getAccumulatedDepreciation().negate(), getAccumulatedDepreciationFiscal().negate(), false);
             assetwk.saveEx();
         }
@@ -236,7 +235,7 @@ public class MDepreciationExp extends X_A_Depreciation_Exp implements IDocLine {
         // If it was processed, we need to update workfile's current period
         if (isProcessed()) {
             MDepreciationWorkfile wk = getA_Depreciation_Workfile();
-            wk.setA_Current_Period();
+            wk.setCurrentPeriod();
             wk.saveEx();
         }
         //

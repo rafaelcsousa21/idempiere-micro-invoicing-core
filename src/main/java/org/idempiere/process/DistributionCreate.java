@@ -65,36 +65,39 @@ public class DistributionCreate extends SvrProcess {
     /** Distribution List */
   /* throw new NotImplementedException();
   private MDistributionList m_dl;*/
-    /**
-     * Single Order
-     */
-    private MOrder m_singleOrder = null;
-    /**
-     * Product
-     */
-    private MProduct m_product = null;
-    /**
-     * Total Quantity
-     */
-    private BigDecimal m_totalQty = Env.ZERO;
 
     /**
      * Prepare - e.g., get Parameters.
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
             //	log.fine("prepare - " + para[i]);
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_Product_ID")) p_M_Product_ID = para[i].getParameterAsInt();
-            else if (name.equals("Qty")) p_Qty = (BigDecimal) para[i].getParameter();
-            else if (name.equals("IsCreateSingleOrder"))
-                p_IsCreateSingleOrder = "Y".equals(para[i].getParameter());
-            else if (name.equals("Bill_BPartner_ID")) p_Bill_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("p_Bill_Location_ID")) p_Bill_Location_ID = para[i].getParameterAsInt();
-            else if (name.equals("IsTest")) p_IsTest = "Y".equals(para[i].getParameter());
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+
+            switch (name) {
+                case "M_Product_ID":
+                    p_M_Product_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "Qty":
+                    p_Qty = (BigDecimal) iProcessInfoParameter.getParameter();
+                    break;
+                case "IsCreateSingleOrder":
+                    p_IsCreateSingleOrder = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                case "Bill_BPartner_ID":
+                    p_Bill_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "p_Bill_Location_ID":
+                    p_Bill_Location_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "IsTest":
+                    p_IsTest = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
         p_M_DistributionList_ID = getRecordId();
     } //	prepare

@@ -20,13 +20,6 @@ public class NegativeInventoryDisallowedException extends AdempiereException {
      */
     private static final long serialVersionUID = 253224414462489886L;
 
-    private int M_Warehouse_ID;
-    private int M_Product_ID;
-    private int M_AttributeSetInstance_ID;
-    private int M_Locator_ID;
-    private BigDecimal QtyOnHand;
-    private BigDecimal MovementQty;
-
     public NegativeInventoryDisallowedException(
             Properties ctx,
             int M_Warehouse_ID,
@@ -53,12 +46,6 @@ public class NegativeInventoryDisallowedException extends AdempiereException {
                                 MovementQty.subtract(QtyOnHand)
                         }));
 
-        this.M_Warehouse_ID = M_Warehouse_ID;
-        this.M_Product_ID = M_Product_ID;
-        this.M_AttributeSetInstance_ID = M_AttributeSetInstance_ID;
-        this.M_Locator_ID = M_Locator_ID;
-        this.QtyOnHand = QtyOnHand;
-        this.MovementQty = MovementQty;
     }
 
 }

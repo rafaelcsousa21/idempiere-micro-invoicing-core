@@ -304,11 +304,7 @@ public class MDepreciation extends X_A_Depreciation {
             assetExp = amt.multiply(varPercent);
         }
         // Periods of the first year (without first)
-        else if (A_Current_Period < 12) {
-            // do nothing;
-        }
-        // Following periods
-        else {
+        else if (A_Current_Period >= 12) {
             BigDecimal remainingAmt = wk.getRemainingCost(Accum_Dep);
             BigDecimal remainingPeriods = new BigDecimal(wk.getRemainingPeriods(A_Current_Period));
             assetExp = remainingAmt.divide(remainingPeriods, getPrecision(), RoundingMode.HALF_UP);

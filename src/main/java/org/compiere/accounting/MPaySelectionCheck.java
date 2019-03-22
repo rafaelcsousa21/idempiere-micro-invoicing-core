@@ -3,14 +3,9 @@ package org.compiere.accounting;
 import kotliquery.Row;
 import org.compiere.invoicing.MBPBankAccount;
 import org.compiere.order.X_C_Order;
-import org.compiere.process.DocAction;
-import org.idempiere.common.exceptions.AdempiereException;
-import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.math.BigDecimal;
 import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  * Payment Print/Export model.
@@ -23,10 +18,6 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
      *
      */
     private static final long serialVersionUID = 2130445794890189020L;
-    /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MPaySelectionCheck.class);
     /**
      * Parent
      */
@@ -130,100 +121,6 @@ public class MPaySelectionCheck extends X_C_PaySelectionCheck {
     public static MPaySelectionCheck getOfPayment(Properties ctx, int C_Payment_ID) {
         return MBasePaySelectionCheckKt.getCheckforPayment(ctx, C_Payment_ID);
     } //	getOfPayment
-
-    /**
-     * ************************************************************************ Confirm Print for a
-     * payment selection check Create Payment the first time
-     *
-     * @param check check
-     * @param batch batch
-     */
-    public static void confirmPrint(MPaySelectionCheck check, MPaymentBatch batch) {
-        boolean localTrx = false;
-        String trxName = null;
-        try {
-            MPayment payment = new MPayment(check.getCtx(), check.getPaymentId());
-            //	Existing Payment
-            if (check.getPaymentId() != 0) {
-                //	Update check number
-                if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_Check)) {
-                    payment.setCheckNo(check.getDocumentNo());
-                    payment.saveEx();
-                }
-            } else //	New Payment
-            {
-                payment = new MPayment(check.getCtx(), 0);
-                payment.setOrgId(check.getOrgId());
-                //
-                if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_Check))
-                    payment.setBankCheck(
-                            check.getParent().getBankAccountId(), false, check.getDocumentNo());
-                else if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_CreditCard))
-                    payment.setTenderType(X_C_Payment.TENDERTYPE_CreditCard);
-                else if (check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_DirectDeposit)
-                        || check.getPaymentRule().equals(X_C_PaySelectionCheck.PAYMENTRULE_DirectDebit))
-                    payment.setBankACH(check);
-                else {
-                    s_log.log(Level.SEVERE, "Unsupported Payment Rule=" + check.getPaymentRule());
-                    return;
-                }
-                payment.setTrxType(X_C_Payment.TRXTYPE_CreditPayment);
-                payment.setAmount(check.getParent().getCurrencyId(), check.getPayAmt());
-                payment.setDiscountAmt(check.getDiscountAmt());
-                payment.setWriteOffAmt(check.getWriteOffAmt());
-                payment.setDateTrx(check.getParent().getPayDate());
-                payment.setDateAcct(payment.getDateTrx()); // globalqss [ 2030685 ]
-                payment.setBusinessPartnerId(check.getBusinessPartnerId());
-                //	Link to Batch
-                if (batch != null) {
-                    if (batch.getPaymentBatchId() == 0) batch.saveEx(); // 	new
-                    payment.setPaymentBatchId(batch.getPaymentBatchId());
-                }
-                //	Link to Invoice
-                MPaySelectionLine[] psls = check.getPaySelectionLines(true);
-                if (s_log.isLoggable(Level.FINE))
-                    s_log.fine("confirmPrint - " + check + " (#SelectionLines=" + psls.length + ")");
-                if (check.getQty() == 1 && psls != null && psls.length == 1) {
-                    MPaySelectionLine psl = psls[0];
-                    if (s_log.isLoggable(Level.FINE)) s_log.fine("Map to Invoice " + psl);
-                    //
-                    payment.setInvoiceId(psl.getInvoiceId());
-                    payment.setDiscountAmt(psl.getDiscountAmt());
-                    payment.setWriteOffAmt(psl.getWriteOffAmt());
-                    BigDecimal overUnder =
-                            psl.getOpenAmt()
-                                    .subtract(psl.getPayAmt())
-                                    .subtract(psl.getDiscountAmt())
-                                    .subtract(psl.getWriteOffAmt())
-                                    .subtract(psl.getDifferenceAmt());
-                    payment.setOverUnderAmt(overUnder);
-                } else {
-                    payment.setWriteOffAmt(Env.ZERO);
-                    payment.setDiscountAmt(Env.ZERO);
-                }
-                payment.saveEx();
-                //
-                int C_Payment_ID = payment.getId();
-                if (C_Payment_ID < 1) s_log.log(Level.SEVERE, "Payment not created=" + check);
-                else {
-                    check.setPaymentId(C_Payment_ID);
-                    check.saveEx(); // 	Payment process needs it
-                    // added AdempiereException by zuhri
-                    if (!payment.processIt(DocAction.Companion.getACTION_Complete()))
-                        throw new AdempiereException(
-                                "Failed when processing document - " + payment.getProcessMsg());
-                    // end added
-                    payment.saveEx();
-                }
-            } //	new Payment
-
-            check.setIsPrinted(true);
-            check.setProcessed(true);
-            check.saveEx();
-        } catch (Exception e) {
-            throw new AdempiereException(e);
-        }
-    } //	confirmPrint
 
     /**
      * Delete Payment Selection when generated as Draft (Print Preview)

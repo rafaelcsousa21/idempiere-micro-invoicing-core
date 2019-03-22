@@ -1,6 +1,8 @@
 package org.compiere.accounting;
 
 import org.compiere.model.IDocLine;
+import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_ValidCombination;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
@@ -70,10 +72,6 @@ public class DocLine {
      * Product Costs
      */
     private ProductCost m_productCost = null;
-    /**
-     * Production indicator
-     */
-    private boolean m_productionBOM = false;
     /**
      * Outside Processing
      */
@@ -148,10 +146,7 @@ public class DocLine {
     public int getCurrencyId() {
         if (m_C_Currency_ID == -1) {
             int index = p_po.getColumnIndex("C_Currency_ID");
-            if (index != -1) {
-                Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_C_Currency_ID = ii.intValue();
-            }
+            m_C_Currency_ID = getIntValueIfColumnExists(index);
             if (m_C_Currency_ID <= 0) m_C_Currency_ID = m_doc.getCurrencyId();
         }
         return m_C_Currency_ID;
@@ -165,10 +160,7 @@ public class DocLine {
     public int getConversionTypeId() {
         if (m_C_ConversionType_ID == -1) {
             int index = p_po.getColumnIndex("C_ConversionType_ID");
-            if (index != -1) {
-                Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_C_ConversionType_ID = ii.intValue();
-            }
+            m_C_ConversionType_ID = getIntValueIfColumnExists(index);
             if (m_C_ConversionType_ID <= 0) m_C_ConversionType_ID = m_doc.getConversionTypeId();
         }
         return m_C_ConversionType_ID;
@@ -414,12 +406,12 @@ public class DocLine {
      * @param as       Accounting schema
      * @return Requested Product Account
      */
-    public MAccount getAccount(int AcctType, MAcctSchema as) {
+    public I_C_ValidCombination getAccount(int AcctType, I_C_AcctSchema as) {
         //	Charge Account
         if (getProductId() == 0 && getChargeId() != 0) {
             BigDecimal amt = new BigDecimal(-1); // 	Revenue (-)
             if (!m_doc.isSOTrx()) amt = new BigDecimal(+1); // 	Expense (+)
-            MAccount acct = getChargeAccount(as, amt);
+            I_C_ValidCombination acct = getChargeAccount(as, amt);
             if (acct != null) return acct;
         }
         //	Product Account
@@ -433,12 +425,16 @@ public class DocLine {
      */
     public int getChargeId() {
         int index = p_po.getColumnIndex("C_Charge_ID");
+        return getIntValueIfColumnExists(index);
+    } //	getChargeId
+
+    private int getIntValueIfColumnExists(int index) {
         if (index != -1) {
             Integer ii = (Integer) p_po.getValue(index);
             if (ii != null) return ii;
         }
         return 0;
-    } //	getChargeId
+    }
 
     /**
      * Get Charge Account
@@ -447,7 +443,7 @@ public class DocLine {
      * @param amount amount for expense(+)/revenue(-)
      * @return Charge Account or null
      */
-    public MAccount getChargeAccount(MAcctSchema as, BigDecimal amount) {
+    public I_C_ValidCombination getChargeAccount(I_C_AcctSchema as, BigDecimal amount) {
         int C_Charge_ID = getChargeId();
         if (C_Charge_ID == 0) return null;
         return MCharge.getAccount(C_Charge_ID, as);
@@ -461,10 +457,7 @@ public class DocLine {
     protected int getPeriodId() {
         if (m_C_Period_ID == -1) {
             int index = p_po.getColumnIndex("C_Period_ID");
-            if (index != -1) {
-                Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_C_Period_ID = ii.intValue();
-            }
+            m_C_Period_ID = getIntValueIfColumnExists(index);
             if (m_C_Period_ID == -1) m_C_Period_ID = 0;
         }
         return m_C_Period_ID;
@@ -503,7 +496,7 @@ public class DocLine {
      *
      * @return order org if defined
      */
-    public int getOrder_OrgId() {
+    public int getOrderOrgId() {
         int C_OrderLine_ID = getOrderLineId();
         if (C_OrderLine_ID != 0) {
             String sql = "SELECT ad_org_id FROM C_OrderLine WHERE C_OrderLine_ID=?";
@@ -511,7 +504,7 @@ public class DocLine {
             if (AD_Org_ID > 0) return AD_Org_ID;
         }
         return getOrgId();
-    } //	getOrder_Org_ID
+    } //	getOrderOrg_ID
 
     /**
      * Product
@@ -520,11 +513,7 @@ public class DocLine {
      */
     public int getProductId() {
         int index = p_po.getColumnIndex("M_Product_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getProductId
 
     /**
@@ -550,11 +539,7 @@ public class DocLine {
      */
     public int getAttributeSetInstanceId() {
         int index = p_po.getColumnIndex("M_AttributeSetInstance_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getAttributeSetInstanceId
 
     /**
@@ -564,11 +549,7 @@ public class DocLine {
      */
     public int getLocatorId() {
         int index = p_po.getColumnIndex("M_Locator_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getLocatorId
 
     /**
@@ -578,11 +559,7 @@ public class DocLine {
      */
     public int getOrderLineId() {
         int index = p_po.getColumnIndex("C_OrderLine_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getOrderLineId
 
     /**
@@ -599,7 +576,7 @@ public class DocLine {
      *
      * @return Cost Collector ID
      */
-    public int getPP_Cost_CollectorId() {
+    public int getCostCollectorId() {
         return m_PP_Cost_Collector_ID;
     } //	getLocationFromId
 
@@ -608,8 +585,8 @@ public class DocLine {
      *
      * @return Cost Collector ID
      */
-    public int setPP_Cost_CollectorId(int PP_Cost_Collector_ID) {
-        return m_PP_Cost_Collector_ID;
+    public void setCostCollectorId(int PP_Cost_Collector_ID) {
+        m_PP_Cost_Collector_ID = PP_Cost_Collector_ID;
     } //	getLocationFromId
 
     /**
@@ -647,7 +624,7 @@ public class DocLine {
      * @return costs
      */
     public BigDecimal getProductCosts(
-            MAcctSchema as, int AD_Org_ID, boolean zeroCostsOK, String whereClause) {
+            I_C_AcctSchema as, int AD_Org_ID, boolean zeroCostsOK, String whereClause) {
         if (whereClause != null
                 && !as.getCostingMethod().equals(MAcctSchema.COSTINGMETHOD_StandardCosting)) {
             MCostDetail cd =
@@ -670,7 +647,7 @@ public class DocLine {
      * @param zeroCostsOK zero/no costs are OK
      * @return costs
      */
-    public BigDecimal getProductCosts(MAcctSchema as, int AD_Org_ID, boolean zeroCostsOK) {
+    public BigDecimal getProductCosts(I_C_AcctSchema as, int AD_Org_ID, boolean zeroCostsOK) {
         ProductCost pc = getProductCost();
         int C_OrderLine_ID = getOrderLineId();
         String costingMethod = null;
@@ -763,11 +740,7 @@ public class DocLine {
      */
     public int getTaxId() {
         int index = p_po.getColumnIndex("C_Tax_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //	getTaxId
 
     /**
@@ -777,11 +750,7 @@ public class DocLine {
      */
     public int getLine() {
         int index = p_po.getColumnIndex("Line");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getLine
 
     /**
@@ -792,10 +761,7 @@ public class DocLine {
     public int getBusinessPartnerId() {
         if (m_C_BPartner_ID == -1) {
             int index = p_po.getColumnIndex("C_BPartner_ID");
-            if (index != -1) {
-                Integer ii = (Integer) p_po.getValue(index);
-                if (ii != null) m_C_BPartner_ID = ii.intValue();
-            }
+            m_C_BPartner_ID = getIntValueIfColumnExists(index);
             if (m_C_BPartner_ID <= 0) m_C_BPartner_ID = m_doc.getBusinessPartnerId();
         }
         return m_C_BPartner_ID;
@@ -831,11 +797,7 @@ public class DocLine {
      */
     public int getTransactionOrganizationId() {
         int index = p_po.getColumnIndex("AD_OrgTrx_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getTransactionOrganizationId
 
     /**
@@ -869,11 +831,7 @@ public class DocLine {
      */
     public int getProjectId() {
         int index = p_po.getColumnIndex("C_Project_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getProjectId
 
     /**
@@ -883,11 +841,7 @@ public class DocLine {
      */
     public int getProjectPhaseId() {
         int index = p_po.getColumnIndex("C_ProjectPhase_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getProjectPhaseId
 
     /**
@@ -897,11 +851,7 @@ public class DocLine {
      */
     public int getProjectTaskId() {
         int index = p_po.getColumnIndex("C_ProjectTask_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getProjectTaskId
 
     /**
@@ -911,11 +861,7 @@ public class DocLine {
      */
     public int getCampaignId() {
         int index = p_po.getColumnIndex("C_Campaign_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getCampaignId
 
     /**
@@ -925,11 +871,7 @@ public class DocLine {
      */
     public int getBusinessActivityId() {
         int index = p_po.getColumnIndex("C_Activity_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getBusinessActivityId
 
     /**
@@ -939,11 +881,7 @@ public class DocLine {
      */
     public int getUser1Id() {
         int index = p_po.getColumnIndex("User1_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getUser1Id
 
     /**
@@ -953,11 +891,7 @@ public class DocLine {
      */
     public int getUser2Id() {
         int index = p_po.getColumnIndex("User2_ID");
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getUser2Id
 
     /**
@@ -968,11 +902,7 @@ public class DocLine {
      */
     public int getValue(String ColumnName) {
         int index = p_po.getColumnIndex(ColumnName);
-        if (index != -1) {
-            Integer ii = (Integer) p_po.getValue(index);
-            if (ii != null) return ii;
-        }
-        return 0;
+        return getIntValueIfColumnExists(index);
     } //  getValue
 
     /**

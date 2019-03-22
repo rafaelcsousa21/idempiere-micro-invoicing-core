@@ -67,10 +67,10 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
         return "X_PP_Product_Planning[" + getId() + "]";
     }
 
-    public org.compiere.model.I_AD_Workflow getAD_Workflow() throws RuntimeException {
+    public org.compiere.model.I_AD_Workflow getWorkflow() throws RuntimeException {
         return (org.compiere.model.I_AD_Workflow)
                 MTable.get(getCtx(), org.compiere.model.I_AD_Workflow.Table_Name)
-                        .getPO(getAD_WorkflowId());
+                        .getPO(getWorkflowId());
     }
 
     /**
@@ -78,7 +78,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Workflow or combination of tasks
      */
-    public int getAD_WorkflowId() {
+    public int getWorkflowId() {
         Integer ii = (Integer) getValue(COLUMNNAME_AD_Workflow_ID);
         if (ii == null) return 0;
         return ii;
@@ -89,16 +89,16 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param AD_Workflow_ID Workflow or combination of tasks
      */
-    public void setAD_WorkflowId(int AD_Workflow_ID) {
+    public void setWorkflowId(int AD_Workflow_ID) {
         if (AD_Workflow_ID < 1) setValue(COLUMNNAME_AD_Workflow_ID, null);
         else setValue(COLUMNNAME_AD_Workflow_ID, Integer.valueOf(AD_Workflow_ID));
     }
 
-    public org.eevolution.model.I_DD_NetworkDistribution getDD_NetworkDistribution()
+    public org.eevolution.model.I_DD_NetworkDistribution getNetworkDistribution()
             throws RuntimeException {
         return (org.eevolution.model.I_DD_NetworkDistribution)
                 MTable.get(getCtx(), org.eevolution.model.I_DD_NetworkDistribution.Table_Name)
-                        .getPO(getDD_NetworkDistributionId());
+                        .getPO(getNetworkDistributionId());
     }
 
     /**
@@ -106,7 +106,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Network Distribution
      */
-    public int getDD_NetworkDistributionId() {
+    public int getNetworkDistributionId() {
         Integer ii = (Integer) getValue(COLUMNNAME_DD_NetworkDistribution_ID);
         if (ii == null) return 0;
         return ii;
@@ -117,7 +117,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param DD_NetworkDistribution_ID Network Distribution
      */
-    public void setDD_NetworkDistributionId(int DD_NetworkDistribution_ID) {
+    public void setNetworkDistributionId(int DD_NetworkDistribution_ID) {
         if (DD_NetworkDistribution_ID < 1) setValue(COLUMNNAME_DD_NetworkDistribution_ID, null);
         else
             setValue(COLUMNNAME_DD_NetworkDistribution_ID, Integer.valueOf(DD_NetworkDistribution_ID));
@@ -128,7 +128,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Promised days between order and delivery
      */
-    public BigDecimal getDeliveryTime_Promised() {
+    public BigDecimal getDeliveryTimePromised() {
         BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_DeliveryTime_Promised);
         if (bd == null) return Env.ZERO;
         return bd;
@@ -139,7 +139,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param DeliveryTime_Promised Promised days between order and delivery
      */
-    public void setDeliveryTime_Promised(BigDecimal DeliveryTime_Promised) {
+    public void setDeliveryTimePromised(BigDecimal DeliveryTime_Promised) {
         setValue(COLUMNNAME_DeliveryTime_Promised, DeliveryTime_Promised);
     }
 
@@ -317,7 +317,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Maximum order quantity in UOM
      */
-    public BigDecimal getOrder_Max() {
+    public BigDecimal getOrderMax() {
         BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Order_Max);
         if (bd == null) return Env.ZERO;
         return bd;
@@ -328,7 +328,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param Order_Max Maximum order quantity in UOM
      */
-    public void setOrder_Max(BigDecimal Order_Max) {
+    public void setOrderMax(BigDecimal Order_Max) {
         setValue(COLUMNNAME_Order_Max, Order_Max);
     }
 
@@ -337,7 +337,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Minimum order quantity in UOM
      */
-    public BigDecimal getOrder_Min() {
+    public BigDecimal getOrderMin() {
         BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Order_Min);
         if (bd == null) return Env.ZERO;
         return bd;
@@ -348,7 +348,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param Order_Min Minimum order quantity in UOM
      */
-    public void setOrder_Min(BigDecimal Order_Min) {
+    public void setOrderMin(BigDecimal Order_Min) {
         setValue(COLUMNNAME_Order_Min, Order_Min);
     }
 
@@ -357,7 +357,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Package order size in UOM (e.g. order set of 5 units)
      */
-    public BigDecimal getOrder_Pack() {
+    public BigDecimal getOrderPack() {
         BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Order_Pack);
         if (bd == null) return Env.ZERO;
         return bd;
@@ -368,7 +368,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param Order_Pack Package order size in UOM (e.g. order set of 5 units)
      */
-    public void setOrder_Pack(BigDecimal Order_Pack) {
+    public void setOrderPack(BigDecimal Order_Pack) {
         setValue(COLUMNNAME_Order_Pack, Order_Pack);
     }
 
@@ -377,7 +377,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Order Period
      */
-    public BigDecimal getOrder_Period() {
+    public BigDecimal getOrderPeriod() {
         BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Order_Period);
         if (bd == null) return Env.ZERO;
         return bd;
@@ -388,7 +388,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param Order_Period Order Period
      */
-    public void setOrder_Period(BigDecimal Order_Period) {
+    public void setOrderPeriod(BigDecimal Order_Period) {
         setValue(COLUMNNAME_Order_Period, Order_Period);
     }
 
@@ -397,7 +397,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Order Policy
      */
-    public String getOrder_Policy() {
+    public String getOrderPolicy() {
         return (String) getValue(COLUMNNAME_Order_Policy);
     }
 
@@ -406,7 +406,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param Order_Policy Order Policy
      */
-    public void setOrder_Policy(String Order_Policy) {
+    public void setOrderPolicy(String Order_Policy) {
 
         setValue(COLUMNNAME_Order_Policy, Order_Policy);
     }
@@ -416,7 +416,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Order Qty
      */
-    public BigDecimal getOrder_Qty() {
+    public BigDecimal getOrderQty() {
         BigDecimal bd = (BigDecimal) getValue(COLUMNNAME_Order_Qty);
         if (bd == null) return Env.ZERO;
         return bd;
@@ -427,7 +427,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param Order_Qty Order Qty
      */
-    public void setOrder_Qty(BigDecimal Order_Qty) {
+    public void setOrderQty(BigDecimal Order_Qty) {
         setValue(COLUMNNAME_Order_Qty, Order_Qty);
     }
 
@@ -458,10 +458,10 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
         else setValue(COLUMNNAME_Planner_ID, Integer.valueOf(Planner_ID));
     }
 
-    public org.eevolution.model.I_PP_Product_BOM getPP_Product_BOM() throws RuntimeException {
+    public org.eevolution.model.I_PP_Product_BOM getProductBOM() throws RuntimeException {
         return (org.eevolution.model.I_PP_Product_BOM)
                 MTable.get(getCtx(), org.eevolution.model.I_PP_Product_BOM.Table_Name)
-                        .getPO(getPP_Product_BOMId());
+                        .getPO(getProductBOMId());
     }
 
     /**
@@ -469,7 +469,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return BOM & Formula
      */
-    public int getPP_Product_BOMId() {
+    public int getProductBOMId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_BOM_ID);
         if (ii == null) return 0;
         return ii;
@@ -480,7 +480,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param PP_Product_BOM_ID BOM & Formula
      */
-    public void setPP_Product_BOMId(int PP_Product_BOM_ID) {
+    public void setProductBOMId(int PP_Product_BOM_ID) {
         if (PP_Product_BOM_ID < 1) setValue(COLUMNNAME_PP_Product_BOM_ID, null);
         else setValue(COLUMNNAME_PP_Product_BOM_ID, Integer.valueOf(PP_Product_BOM_ID));
     }
@@ -490,7 +490,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return Product Planning
      */
-    public int getPP_Product_PlanningId() {
+    public int getProductPlanningId() {
         Integer ii = (Integer) getValue(COLUMNNAME_PP_Product_Planning_ID);
         if (ii == null) return 0;
         return ii;
@@ -501,7 +501,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param PP_Product_Planning_ID Product Planning
      */
-    public void setPP_Product_PlanningId(int PP_Product_Planning_ID) {
+    public void setProductPlanningId(int PP_Product_Planning_ID) {
         if (PP_Product_Planning_ID < 1) setValueNoCheck(COLUMNNAME_PP_Product_Planning_ID, null);
         else
             setValueNoCheck(COLUMNNAME_PP_Product_Planning_ID, Integer.valueOf(PP_Product_Planning_ID));
@@ -512,7 +512,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @return PP_Product_Planning_UU
      */
-    public String getPP_Product_Planning_UU() {
+    public String getProduct_Planning_UU() {
         return (String) getValue(COLUMNNAME_PP_Product_Planning_UU);
     }
 
@@ -521,7 +521,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
      *
      * @param PP_Product_Planning_UU PP_Product_Planning_UU
      */
-    public void setPP_Product_Planning_UU(String PP_Product_Planning_UU) {
+    public void setProduct_Planning_UU(String PP_Product_Planning_UU) {
         setValue(COLUMNNAME_PP_Product_Planning_UU, PP_Product_Planning_UU);
     }
 
@@ -547,7 +547,7 @@ public class X_PP_Product_Planning extends PO implements I_PP_Product_Planning {
         setValue(COLUMNNAME_SafetyStock, SafetyStock);
     }
 
-    public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException {
+    public org.compiere.model.I_S_Resource getResource() throws RuntimeException {
         return (org.compiere.model.I_S_Resource)
                 MTable.get(getCtx(), org.compiere.model.I_S_Resource.Table_Name)
                         .getPO(getResourceID());

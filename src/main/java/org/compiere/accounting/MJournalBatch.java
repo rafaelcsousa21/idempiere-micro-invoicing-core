@@ -14,6 +14,7 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -177,7 +178,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -209,6 +210,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -231,25 +233,23 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
 
         BigDecimal TotalDr = Env.ZERO;
         BigDecimal TotalCr = Env.ZERO;
-        for (int i = 0; i < journals.length; i++) {
-            MJournal journal = journals[i];
+        for (MJournal journal : journals) {
             if (!journal.isActive()) continue;
             //	Prepare if not closed
-            if (X_GL_JournalBatch.DOCSTATUS_Closed.equals(journal.getDocStatus())
-                    || X_GL_JournalBatch.DOCSTATUS_Voided.equals(journal.getDocStatus())
-                    || X_GL_JournalBatch.DOCSTATUS_Reversed.equals(journal.getDocStatus())
-                    || X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) ;
-            else {
-                String status = journal.prepareIt();
-                if (!DocAction.Companion.getSTATUS_InProgress().equals(status)) {
-                    journal.setDocStatus(status);
-                    journal.saveEx();
-                    m_processMsg = journal.getProcessMsg();
-                    return status;
-                }
-                journal.setDocStatus(X_GL_JournalBatch.DOCSTATUS_InProgress);
-                journal.saveEx();
-            }
+            if (!X_GL_JournalBatch.DOCSTATUS_Closed.equals(journal.getDocStatus())
+                    && !X_GL_JournalBatch.DOCSTATUS_Voided.equals(journal.getDocStatus())
+                    && !X_GL_JournalBatch.DOCSTATUS_Reversed.equals(journal.getDocStatus())
+                    && !X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) {
+                        String status = journal.prepareIt();
+                        if (!DocAction.Companion.getSTATUS_InProgress().equals(status)) {
+                            journal.setDocStatus(status);
+                            journal.saveEx();
+                            m_processMsg = journal.getProcessMsg();
+                            return status;
+                        }
+                        journal.setDocStatus(X_GL_JournalBatch.DOCSTATUS_InProgress);
+                        journal.saveEx();
+                    }
             //
             TotalDr = TotalDr.add(journal.getTotalDr());
             TotalCr = TotalCr.add(journal.getTotalCr());
@@ -319,6 +319,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         if (log.isLoggable(Level.INFO)) log.info("completeIt - " + toString());
         //	Re-Check
@@ -344,8 +345,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
         MJournal[] journals = getJournals(true);
         BigDecimal TotalDr = Env.ZERO;
         BigDecimal TotalCr = Env.ZERO;
-        for (int i = 0; i < journals.length; i++) {
-            MJournal journal = journals[i];
+        for (MJournal journal : journals) {
             if (!journal.isActive()) {
                 journal.setProcessed(true);
                 journal.setDocStatus(X_GL_JournalBatch.DOCSTATUS_Voided);
@@ -354,11 +354,10 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
                 continue;
             }
             //	Complete if not closed
-            if (X_GL_JournalBatch.DOCSTATUS_Closed.equals(journal.getDocStatus())
-                    || X_GL_JournalBatch.DOCSTATUS_Voided.equals(journal.getDocStatus())
-                    || X_GL_JournalBatch.DOCSTATUS_Reversed.equals(journal.getDocStatus())
-                    || X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) ;
-            else {
+            if (!X_GL_JournalBatch.DOCSTATUS_Closed.equals(journal.getDocStatus())
+                    && !X_GL_JournalBatch.DOCSTATUS_Voided.equals(journal.getDocStatus())
+                    && !X_GL_JournalBatch.DOCSTATUS_Reversed.equals(journal.getDocStatus())
+                    && !X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) {
                 // added AdempiereException by zuhri
                 if (!journal.processIt(DocAction.Companion.getACTION_Complete()))
                     throw new AdempiereException(
@@ -457,16 +456,15 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
             }
 
             //	Close if not closed
-            if (X_GL_JournalBatch.DOCSTATUS_Closed.equals(journal.getDocStatus())
-                    || X_GL_JournalBatch.DOCSTATUS_Voided.equals(journal.getDocStatus())
-                    || X_GL_JournalBatch.DOCSTATUS_Reversed.equals(journal.getDocStatus())) ;
-            else {
-                if (!journal.closeIt()) {
-                    m_processMsg = "Cannot close: " + journal.getSummary();
-                    return false;
-                }
-                journal.saveEx();
-            }
+            if (!X_GL_JournalBatch.DOCSTATUS_Closed.equals(journal.getDocStatus())
+                    && !X_GL_JournalBatch.DOCSTATUS_Voided.equals(journal.getDocStatus())
+                    && !X_GL_JournalBatch.DOCSTATUS_Reversed.equals(journal.getDocStatus())) {
+                        if (!journal.closeIt()) {
+                            m_processMsg = "Cannot close: " + journal.getSummary();
+                            return false;
+                        }
+                        journal.saveEx();
+                    }
         }
         // After Close
         m_processMsg =
@@ -489,12 +487,10 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
 
         MJournal[] journals = getJournals(true);
         //	check prerequisites
-        for (int i = 0; i < journals.length; i++) {
-            MJournal journal = journals[i];
+        for (MJournal journal : journals) {
             if (!journal.isActive()) continue;
             //	All need to be closed/Completed
-            if (X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) ;
-            else {
+            if (!X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) {
                 m_processMsg = "All Journals need to be Completed: " + journal.getSummary();
                 return false;
             }
@@ -565,12 +561,10 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
 
         MJournal[] journals = getJournals(true);
         //	check prerequisites
-        for (int i = 0; i < journals.length; i++) {
-            MJournal journal = journals[i];
+        for (MJournal journal : journals) {
             if (!journal.isActive()) continue;
             //	All need to be closed/Completed
-            if (X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) ;
-            else {
+            if (!X_GL_JournalBatch.DOCSTATUS_Completed.equals(journal.getDocStatus())) {
                 m_processMsg = "All Journals need to be Completed: " + journal.getSummary();
                 return false;
             }
@@ -662,6 +656,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -706,6 +701,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         StringBuilder msgreturn =
@@ -718,6 +714,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -736,6 +733,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
      *
      * @return DR amount
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return getTotalDr();
     } //	getApprovalAmt

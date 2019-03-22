@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_Product;
 import org.compiere.model.I_M_Transaction;
@@ -263,7 +264,7 @@ public class MProduct extends org.compiere.product.MProduct {
      * @param as accounting schema
      * @return product costing level
      */
-    public String getCostingLevel(MAcctSchema as) {
+    public String getCostingLevel(I_C_AcctSchema as) {
         String costingLevel = null;
         MProductCategoryAcct pca =
                 MProductCategoryAcct.get(getCtx(), getProductCategoryId(), as.getId());
@@ -282,7 +283,7 @@ public class MProduct extends org.compiere.product.MProduct {
      * @param C_AcctSchema_ID accounting schema ID
      * @return product costing method
      */
-    public String getCostingMethod(MAcctSchema as) {
+    public String getCostingMethod(I_C_AcctSchema as) {
         String costingMethod = null;
         MProductCategoryAcct pca =
                 MProductCategoryAcct.get(getCtx(), getProductCategoryId(), as.getId());

@@ -36,8 +36,6 @@ public class MCity extends X_C_City implements Comparator<Object>, Serializable 
      */
     public MCity(Properties ctx, int C_City_ID) {
         super(ctx, C_City_ID);
-        if (C_City_ID == 0) {
-        }
     } //  MCity
 
     /**

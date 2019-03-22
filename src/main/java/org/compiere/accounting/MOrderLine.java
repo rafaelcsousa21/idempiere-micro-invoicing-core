@@ -124,7 +124,7 @@ public class MOrderLine extends org.compiere.order.MOrderLine implements IPODoc 
             if (enforce && MRole.getDefault().isOverwritePriceLimit()) enforce = false;
             //	Check Price Limit?
             if (enforce
-                    && getPriceLimit() != Env.ZERO
+                    && !getPriceLimit().equals(Env.ZERO)
                     && getPriceActual().compareTo(getPriceLimit()) < 0) {
                 log.saveError(
                         "UnderLimitPrice",

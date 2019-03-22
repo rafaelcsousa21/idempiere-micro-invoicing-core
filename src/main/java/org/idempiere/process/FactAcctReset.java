@@ -77,18 +77,20 @@ public class FactAcctReset extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
-            else if (name.equals("AD_Client_ID"))
-                p_AD_Client_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("AD_Table_ID"))
-                p_AD_Table_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("DeletePosting")) p_DeletePosting = "Y".equals(para[i].getParameter());
-            else if (name.equals("DateAcct")) {
-                p_DateAcct_From = (Timestamp) para[i].getParameter();
-                p_DateAcct_To = (Timestamp) para[i].getParameterTo();
-            } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameterTo() != null) {
+                if (name.equals("AD_Client_ID"))
+                    p_AD_Client_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                else if (name.equals("AD_Table_ID"))
+                    p_AD_Table_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                else if (name.equals("DeletePosting"))
+                    p_DeletePosting = "Y".equals(iProcessInfoParameter.getParameter());
+                else if (name.equals("DateAcct")) {
+                    p_DateAcct_From = (Timestamp) iProcessInfoParameter.getParameter();
+                    p_DateAcct_To = (Timestamp) iProcessInfoParameter.getParameterTo();
+                } else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+            }
         }
     } //	prepare
 

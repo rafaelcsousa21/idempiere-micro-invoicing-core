@@ -47,12 +47,12 @@ public class BOMValidate extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_Product_Category_ID"))
-                p_M_Product_Category_ID = para[i].getParameterAsInt();
-            else if (name.equals("IsReValidate")) p_IsReValidate = "Y".equals(para[i].getParameter());
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("M_Product_Category_ID"))
+                p_M_Product_Category_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("IsReValidate")) p_IsReValidate = "Y".equals(iProcessInfoParameter.getParameter());
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
         p_M_Product_ID = getRecordId();

@@ -72,8 +72,8 @@ public class MAcctSchemaDefault extends X_C_AcctSchema_Default {
     //	{
     //		MCurrencyAcct acct = MCurrencyAcct.get (this, C_Currency_ID);
     //		if (acct != null)
-    //			return acct.getRealizedGain_Acct();
-    //		return super.getRealizedGain_Acct();
+    //			return acct.getRealizedGainAccount();
+    //		return super.getRealizedGainAccount();
     //	}	//	getRealizedGain_Acct
 
     /**

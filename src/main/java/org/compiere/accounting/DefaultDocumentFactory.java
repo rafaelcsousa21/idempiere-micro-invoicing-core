@@ -18,7 +18,7 @@ public class DefaultDocumentFactory extends BaseDefaultDocumentFactory {
     private static final CLogger s_log = CLogger.getCLogger(DefaultDocumentFactory.class);
 
     @Override
-    public Doc getDocument(I_C_AcctSchema as, int AD_Table_ID, Row rs) {
+    public Doc getDocument(I_C_AcctSchema accountingSchema, int tableId, Row row) {
         Doc doc = null;
 
     /* Classname of the Doc class follows this convention:
@@ -64,7 +64,7 @@ public class DefaultDocumentFactory extends BaseDefaultDocumentFactory {
     * 53092	HR_Process			Doc_HRProcess
     */
 
-        String tableName = MTable.getDbTableName(Env.getCtx(), AD_Table_ID);
+        String tableName = MTable.getDbTableName(Env.getCtx(), tableId);
         String packageName = "org.compiere.accounting";
         String className = null;
 
@@ -77,14 +77,14 @@ public class DefaultDocumentFactory extends BaseDefaultDocumentFactory {
             Class<?> cClass = Class.forName(className);
             Constructor<?> cnstr =
                     cClass.getConstructor(MAcctSchema.class, Row.class);
-            doc = (Doc) cnstr.newInstance(as, rs);
+            doc = (Doc) cnstr.newInstance(accountingSchema, row);
         } catch (Exception e) {
             s_log.log(Level.SEVERE, "Doc Class invalid: " + className + " (" + e.toString() + ")");
             throw new AdempiereUserError(
                     "Doc Class invalid: " + className + " (" + e.toString() + ")", e);
         }
 
-        if (doc == null) s_log.log(Level.SEVERE, "Unknown AD_Table_ID=" + AD_Table_ID);
+        if (doc == null) s_log.log(Level.SEVERE, "Unknown AD_Table_ID=" + tableId);
         return doc;
     }
 }

@@ -104,33 +104,33 @@ public class MInOutLineConfirm extends X_M_InOutLineConfirm {
         }
 
         //	Drop Ship
-        else if (MInOutConfirm.CONFIRMTYPE_DropShipConfirm.equals(confirmType)) {
+        else if (!MInOutConfirm.CONFIRMTYPE_DropShipConfirm.equals(confirmType)) {
+            if (MInOutConfirm.CONFIRMTYPE_PickQAConfirm.equals(confirmType)) {
+                line.setTargetQty(getTargetQty());
+                line.setMovementQty(getConfirmedQty()); // 	Entered NOT changed
+                line.setPickedQty(getConfirmedQty());
+                //
+                line.setScrappedQty(getScrappedQty());
+            }
 
+            //	Ship or Receipt
+            else if (MInOutConfirm.CONFIRMTYPE_ShipReceiptConfirm.equals(confirmType)) {
+                line.setTargetQty(getTargetQty());
+                BigDecimal qty = getConfirmedQty();
+                if (!isSOTrx) //	In PO, we have the responsibility for scapped
+                    qty = qty.add(getScrappedQty());
+                line.setMovementQty(qty); // 	Entered NOT changed
+                //
+                line.setScrappedQty(getScrappedQty());
+            }
+            //	Vendor
+            else if (MInOutConfirm.CONFIRMTYPE_VendorConfirmation.equals(confirmType)) {
+                line.setConfirmedQty(getConfirmedQty());
+            }
         }
 
         //	Pick or QA
-        else if (MInOutConfirm.CONFIRMTYPE_PickQAConfirm.equals(confirmType)) {
-            line.setTargetQty(getTargetQty());
-            line.setMovementQty(getConfirmedQty()); // 	Entered NOT changed
-            line.setPickedQty(getConfirmedQty());
-            //
-            line.setScrappedQty(getScrappedQty());
-        }
 
-        //	Ship or Receipt
-        else if (MInOutConfirm.CONFIRMTYPE_ShipReceiptConfirm.equals(confirmType)) {
-            line.setTargetQty(getTargetQty());
-            BigDecimal qty = getConfirmedQty();
-            if (!isSOTrx) //	In PO, we have the responsibility for scapped
-                qty = qty.add(getScrappedQty());
-            line.setMovementQty(qty); // 	Entered NOT changed
-            //
-            line.setScrappedQty(getScrappedQty());
-        }
-        //	Vendor
-        else if (MInOutConfirm.CONFIRMTYPE_VendorConfirmation.equals(confirmType)) {
-            line.setConfirmedQty(getConfirmedQty());
-        }
 
         return line.save();
     } //	processConfirmation
