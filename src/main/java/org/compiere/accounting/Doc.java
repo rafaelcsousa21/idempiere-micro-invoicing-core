@@ -460,7 +460,6 @@ public abstract class Doc implements IDoc {
      */
     private ArrayList<IFact> m_fact = null;
 
-    /** ********************************************************************** */
     /**
      * Source Amounts (may not all be used)
      */
@@ -569,7 +568,7 @@ public abstract class Doc implements IDoc {
      *
      * @return table name
      */
-    public String get_TableName() {
+    public String getTableName() {
         return p_po.getTableName();
     } //	getTableName
 
@@ -642,21 +641,21 @@ public abstract class Doc implements IDoc {
         //  Lock Record ----
          // 	outside trx if on server
         StringBuilder sql = new StringBuilder("UPDATE ");
-        sql.append(get_TableName())
+        sql.append(getTableName())
                 .append(" SET Processing='Y' WHERE ")
-                .append(get_TableName())
+                .append(getTableName())
                 .append("_ID=")
                 .append(getId())
                 .append(" AND Processed='Y' AND IsActive='Y'");
         if (!force) sql.append(" AND (Processing='N' OR Processing IS NULL)");
         if (!repost) sql.append(" AND Posted='N'");
         if (executeUpdate(sql.toString()) == 1) {
-            if (log.isLoggable(Level.INFO)) log.info("Locked: " + get_TableName() + "_ID=" + getId());
+            if (log.isLoggable(Level.INFO)) log.info("Locked: " + getTableName() + "_ID=" + getId());
         } else {
             log.log(
                     Level.SEVERE,
                     "Resubmit - Cannot lock "
-                            + get_TableName()
+                            + getTableName()
                             + "_ID="
                             + getId()
                             + ", Force="
@@ -917,9 +916,9 @@ public abstract class Doc implements IDoc {
     private void unlock() {
          // 	outside trx if on server
         StringBuilder sql = new StringBuilder("UPDATE ");
-        sql.append(get_TableName())
+        sql.append(getTableName())
                 .append(" SET Processing='N' WHERE ")
-                .append(get_TableName())
+                .append(getTableName())
                 .append("_ID=")
                 .append(p_po.getId());
         executeUpdate(sql.toString());
@@ -1902,7 +1901,7 @@ public abstract class Doc implements IDoc {
      *
      * @return Sales Region
      */
-    public int getBP_C_SalesRegionId() {
+    public int getBusinessPartnerSalesRegionId() {
         if (m_BP_C_SalesRegion_ID == -1) {
             int index = p_po.getColumnIndex("C_SalesRegion_ID");
             if (index != -1) {

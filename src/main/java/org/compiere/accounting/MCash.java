@@ -698,7 +698,6 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
         // After reActivate
         m_processMsg =
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_REACTIVATE);
-        if (m_processMsg != null) return false;
         return false;
     } //	reActivateIt
 
@@ -709,12 +708,11 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      */
     public void setProcessed(boolean processed) {
         super.setProcessed(processed);
-        StringBuilder sql =
-                new StringBuilder("UPDATE C_CashLine SET Processed='")
-                        .append((processed ? "Y" : "N"))
-                        .append("' WHERE C_Cash_ID=")
-                        .append(getCashId());
-        int noLine = executeUpdate(sql.toString());
+        String sql = "UPDATE C_CashLine SET Processed='" +
+                (processed ? "Y" : "N") +
+                "' WHERE C_Cash_ID=" +
+                getCashId();
+        int noLine = executeUpdate(sql);
         m_lines = null;
         if (log.isLoggable(Level.FINE)) log.fine(processed + " - Lines=" + noLine);
     } //	setProcessed
@@ -725,16 +723,15 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MCash[");
-        sb.append(getId())
-                .append("-")
-                .append(getName())
-                .append(", Balance=")
-                .append(getBeginningBalance())
-                .append("->")
-                .append(getEndingBalance())
-                .append("]");
-        return sb.toString();
+        String sb = "MCash[" + getId() +
+                "-" +
+                getName() +
+                ", Balance=" +
+                getBeginningBalance() +
+                "->" +
+                getEndingBalance() +
+                "]";
+        return sb;
     } //	toString
 
     /**

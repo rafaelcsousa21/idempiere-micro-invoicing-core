@@ -750,12 +750,12 @@ public final class FactLine extends X_Fact_Acct {
         if (m_docLine != null) setSalesRegionId(m_docLine.getSalesRegionId());
         if (m_doc != null) {
             if (super.getSalesRegionId() == 0) setSalesRegionId(m_doc.getSalesRegionId());
-            if (super.getSalesRegionId() == 0 && m_doc.getBP_C_SalesRegionId() > 0)
-                setSalesRegionId(m_doc.getBP_C_SalesRegionId());
+            if (super.getSalesRegionId() == 0 && m_doc.getBusinessPartnerSalesRegionId() > 0)
+                setSalesRegionId(m_doc.getBusinessPartnerSalesRegionId());
             //	derive SalesRegion if AcctSegment
             if (super.getSalesRegionId() == 0
                     && m_doc.getBusinessPartnerLocationId() != 0
-                    && m_doc.getBP_C_SalesRegionId() == -1) // 	never tried
+                    && m_doc.getBusinessPartnerSalesRegionId() == -1) // 	never tried
             //	&& m_acctSchema.isAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_SalesRegion))
             {
                 String sql =
