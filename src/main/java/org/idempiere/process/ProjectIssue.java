@@ -93,27 +93,44 @@ public class ProjectIssue extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_Project_ID"))
-                m_C_Project_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("M_InOut_ID"))
-                m_M_InOut_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("S_TimeExpense_ID"))
-                m_S_TimeExpense_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("M_Locator_ID"))
-                m_M_Locator_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("C_ProjectLine_ID"))
-                m_C_ProjectLine_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("M_Product_ID"))
-                m_M_Product_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("M_AttributeSetInstance_ID"))
-                m_M_AttributeSetInstance_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("MovementQty")) m_MovementQty = (BigDecimal) para[i].getParameter();
-            else if (name.equals("MovementDate")) m_MovementDate = (Timestamp) para[i].getParameter();
-            else if (name.equals("Description")) m_Description = (String) para[i].getParameter();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "C_Project_ID":
+                    m_C_Project_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "M_InOut_ID":
+                    m_M_InOut_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "S_TimeExpense_ID":
+                    m_S_TimeExpense_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "M_Locator_ID":
+                    m_M_Locator_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "C_ProjectLine_ID":
+                    m_C_ProjectLine_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "M_Product_ID":
+                    m_M_Product_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "M_AttributeSetInstance_ID":
+                    m_M_AttributeSetInstance_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "MovementQty":
+                    m_MovementQty = (BigDecimal) iProcessInfoParameter.getParameter();
+                    break;
+                case "MovementDate":
+                    m_MovementDate = (Timestamp) iProcessInfoParameter.getParameter();
+                    break;
+                case "Description":
+                    m_Description = (String) iProcessInfoParameter.getParameter();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 

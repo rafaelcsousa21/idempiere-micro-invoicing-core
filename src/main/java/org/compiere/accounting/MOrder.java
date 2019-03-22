@@ -39,6 +39,7 @@ import org.idempiere.common.exceptions.FillMandatoryException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -416,7 +417,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -480,6 +481,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -781,6 +783,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         String DocSubTypeSO = dt.getDocSubTypeSO();
@@ -1574,6 +1577,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -1603,6 +1607,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
      *
      * @return amount
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return getGrandTotal();
     } //	getApprovalAmt

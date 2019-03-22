@@ -9,7 +9,7 @@ import org.idempiere.common.util.CLogMgt;
 import org.idempiere.common.util.Env;
 
 import javax.sql.RowSet;
-import java.awt.*;
+import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +45,7 @@ public class MTree extends MTree_Base {
     /**
      * Buffer while loading tree
      */
-    private ArrayList<MTreeNode> m_buffer = new ArrayList<MTreeNode>();
+    private ArrayList<MTreeNode> m_buffer = new ArrayList<>();
     /**
      * Prepared Statement for Node Details
      */
@@ -61,7 +61,6 @@ public class MTree extends MTree_Base {
      *
      * @param ctx        context for security
      * @param AD_Tree_ID The tree to build
-     * @param trxName    transaction
      */
     public MTree(Properties ctx, int AD_Tree_ID) {
         super(ctx, AD_Tree_ID);
@@ -74,7 +73,6 @@ public class MTree extends MTree_Base {
      * @param editable   True, if tree can be modified - includes inactive and empty summary nodes
      * @param ctx        context for security
      * @param clientTree the tree is displayed on the java client (not on web)
-     * @param trxName    transaction
      */
     public MTree(
             Properties ctx, int AD_Tree_ID, boolean editable, boolean clientTree) {
@@ -170,8 +168,8 @@ public class MTree extends MTree_Base {
         }
         if (log.isLoggable(Level.FINEST)) log.finest(sql.toString());
         //  The Node Loop
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             // load Node details - addToTree -> getNodeDetail
             getNodeDetails();
@@ -190,8 +188,9 @@ public class MTree extends MTree_Base {
                 int seqNo = rs.getInt(3);
                 boolean onBar = (rs.getString(4) != null);
                 //
-                if (node_ID == 0 && parent_ID == 0) ;
-                else addToTree(node_ID, parent_ID, seqNo, onBar); // 	calls getNodeDetail
+                if (node_ID != 0 || parent_ID != 0) {
+                    addToTree(node_ID, parent_ID, seqNo, onBar); // 	calls getNodeDetail
+                }
             }
             //
             // closing the rowset will also close connection for oracle rowset implementation
@@ -202,10 +201,6 @@ public class MTree extends MTree_Base {
             log.log(Level.SEVERE, sql.toString(), e);
             m_nodeRowSet = null;
             m_nodeIdMap = null;
-        } finally {
-
-            rs = null;
-            pstmt = null;
         }
 
         //  Done with loading - add remainder from buffer
@@ -392,17 +387,16 @@ public class MTree extends MTree_Base {
                             .addAccessSQL(sql, sourceTable, MRole.SQL_FULLYQUALIFIED, m_editable);
         log.fine(sql);
         m_nodeRowSet = getRowSet(sql);
-        m_nodeIdMap = new HashMap<Integer, ArrayList<Integer>>(50);
+        m_nodeIdMap = new HashMap<>(50);
         try {
             m_nodeRowSet.beforeFirst();
             int i = 0;
             while (m_nodeRowSet.next()) {
                 i++;
-                int node = m_nodeRowSet.getInt(1);
-                Integer nodeId = node;
+                Integer nodeId = m_nodeRowSet.getInt(1);
                 ArrayList<Integer> list = m_nodeIdMap.get(nodeId);
                 if (list == null) {
-                    list = new ArrayList<Integer>(5);
+                    list = new ArrayList<>(5);
                     m_nodeIdMap.put(nodeId, list);
                 }
                 list.add(i);
@@ -444,14 +438,7 @@ public class MTree extends MTree_Base {
                 String actionColor = m_nodeRowSet.getString(index++);
                 //	Menu only
                 if (getTreeType().equals(TREETYPE_Menu) && !isSummary) {
-                    int AD_Window_ID = m_nodeRowSet.getInt(index++);
-                    int AD_Process_ID = m_nodeRowSet.getInt(index++);
-                    int AD_Form_ID = m_nodeRowSet.getInt(index++);
-                    int AD_Workflow_ID = m_nodeRowSet.getInt(index++);
-                    int AD_Task_ID = m_nodeRowSet.getInt(index++);
-                    int AD_InfoWindow_ID = m_nodeRowSet.getInt(index++);
-                    //
-                    MRole role = MRole.getDefault(getCtx(), false);
+                    MRole.getDefault(getCtx(), false);
                     Boolean access = null;
                     //	log.fine("getNodeDetail - " + name + " - " + actionColor + " - " + access);
                     //

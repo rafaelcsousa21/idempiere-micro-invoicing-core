@@ -36,16 +36,23 @@ public class ProjectGenProduction extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_Project_ID"))
-                m_C_Project_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("C_ProjectPhase_ID"))
-                m_C_ProjectPhase_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else if (name.equals("C_ProjectLine_ID"))
-                m_C_ProjectLine_ID = ((BigDecimal) para[i].getParameter()).intValue();
-            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            switch (name) {
+                case "C_Project_ID":
+                    m_C_Project_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "C_ProjectPhase_ID":
+                    m_C_ProjectPhase_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                case "C_ProjectLine_ID":
+                    m_C_ProjectLine_ID = ((BigDecimal) iProcessInfoParameter.getParameter()).intValue();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 

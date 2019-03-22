@@ -90,7 +90,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
      */
     protected var m_created = 0
 
-    /**
+    /*
      * Generate Shipments
      *
      * @param pstmt Order Query
@@ -103,13 +103,13 @@ abstract class BaseInOutGenerate : SvrProcess() {
             val shipment = m_shipment
 
             // 	New Header different Shipper, Shipment Location
-            if (!p_ConsolidateDocument || shipment != null && (shipment.getBusinessPartnerLocationId() != order.getBusinessPartnerLocationId() || shipment.getShipperId() != order.getShipperId()))
+            if (!p_ConsolidateDocument || shipment != null && (shipment.businessPartnerLocationId != order.businessPartnerLocationId || shipment.shipperId != order.shipperId))
                 completeShipment()
             if (log.isLoggable(Level.FINE))
-                log.fine("check: " + order + " - DeliveryRule=" + order.getDeliveryRule())
+                log.fine("check: " + order + " - DeliveryRule=" + order.deliveryRule)
             //
             val minGuaranteeDate = m_movementDate
-            var completeOrder = MOrder.DELIVERYRULE_CompleteOrder == order.getDeliveryRule()
+            var completeOrder = MOrder.DELIVERYRULE_CompleteOrder == order.deliveryRule
             // 	OrderLine WHERE
             val where = StringBuilder(" AND M_Warehouse_ID=").append(p_M_Warehouse_ID)
             if (p_DatePromised != null)
@@ -118,7 +118,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                     .append(convertDate(p_DatePromised, true))
                     .append(" OR DatePromised IS NULL)")
             // 	Exclude Auto Delivery if not Force
-            if (MOrder.DELIVERYRULE_Force != order.getDeliveryRule())
+            if (MOrder.DELIVERYRULE_Force != order.deliveryRule)
                 where
                     .append(" AND (C_OrderLine.M_Product_ID IS NULL")
                     .append(" OR EXISTS (SELECT * FROM M_Product p ")
@@ -136,23 +136,23 @@ abstract class BaseInOutGenerate : SvrProcess() {
             val lines = order.getLines(where.toString(), "C_BPartner_Location_ID, M_Product_ID")
             for (i in lines.indices) {
                 val line = lines[i]
-                if (line.getWarehouseId() != p_M_Warehouse_ID) continue
+                if (line.warehouseId != p_M_Warehouse_ID) continue
                 if (log.isLoggable(Level.FINE)) log.fine("check: $line")
                 var onHand = Env.ZERO
-                var toDeliver = line.getQtyOrdered().subtract(line.getQtyDelivered())
-                val product = line.getProduct()
+                var toDeliver = line.qtyOrdered.subtract(line.qtyDelivered)
+                val product = line.product
                 // 	Nothing to Deliver
                 if (product != null && toDeliver.signum() == 0) continue
 
                 // or it's a charge - Bug#: 1603966
-                if (line.getChargeId() != 0 && toDeliver.signum() == 0) continue
+                if (line.chargeId != 0 && toDeliver.signum() == 0) continue
 
                 // 	Check / adjust for confirmations
                 var unconfirmedShippedQty = Env.ZERO
                 if (p_IsUnconfirmedInOut && product != null && toDeliver.signum() != 0) {
                     val where2 =
                         "EXISTS (SELECT * FROM M_InOut io WHERE io.M_InOut_ID=M_InOutLine.M_InOut_ID AND io.DocStatus IN ('DR','IN','IP','WC'))"
-                    val iols = MInOutLine.getOfOrderLine(ctx, line.getOrderLineId(), where2)
+                    val iols = MInOutLine.getOfOrderLine(ctx, line.orderLineId, where2)
                     for (j in iols.indices)
                         unconfirmedShippedQty = unconfirmedShippedQty.add(iols[j].movementQty)
                     val logInfo = StringBuilder("Unconfirmed Qty=")
@@ -177,14 +177,14 @@ abstract class BaseInOutGenerate : SvrProcess() {
                 )
                 // 	lines w/o product
                 {
-                    if (MOrder.DELIVERYRULE_CompleteOrder != order.getDeliveryRule())
+                    if (MOrder.DELIVERYRULE_CompleteOrder != order.deliveryRule)
                     // 	printed later
                         createLine(order, line, toDeliver, null, false)
                     continue
                 }
 
                 // 	Stored Product
-                val MMPolicy = product!!.mmPolicy
+                val MMPolicy = product.mmPolicy
 
                 val storages = getStorages(
                     line.warehouseId,
@@ -198,7 +198,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                     val storage = storages[j]
                     onHand = onHand.add(storage.qtyOnHand)
                 }
-                val fullLine = onHand.compareTo(toDeliver) >= 0 || toDeliver.signum() < 0
+                val fullLine = onHand >= toDeliver || toDeliver.signum() < 0
 
                 // 	Complete Order
                 if (completeOrder && !fullLine) {
@@ -215,7 +215,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                         )
                     completeOrder = false
                     break
-                } else if (fullLine && MOrder.DELIVERYRULE_CompleteLine == order.getDeliveryRule()) {
+                } else if (fullLine && MOrder.DELIVERYRULE_CompleteLine == order.deliveryRule) {
                     if (log.isLoggable(Level.FINE))
                         log.fine(
                             ("CompleteLine - OnHand=" +
@@ -229,9 +229,9 @@ abstract class BaseInOutGenerate : SvrProcess() {
                         )
                     //
                     createLine(order, line, toDeliver, storages, false)
-                } else if ((MOrder.DELIVERYRULE_Availability == order.getDeliveryRule() && (onHand.signum() > 0 || toDeliver.signum() < 0))) {
+                } else if ((MOrder.DELIVERYRULE_Availability == order.deliveryRule && (onHand.signum() > 0 || toDeliver.signum() < 0))) {
                     var deliver = toDeliver
-                    if (deliver.compareTo(onHand) > 0) deliver = onHand
+                    if (deliver > onHand) deliver = onHand
                     if (log.isLoggable(Level.FINE))
                         log.fine(
                             ("Available - OnHand=" +
@@ -247,7 +247,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                         )
                     //
                     createLine(order, line, deliver, storages, false)
-                } else if (MOrder.DELIVERYRULE_Force == order.getDeliveryRule()) {
+                } else if (MOrder.DELIVERYRULE_Force == order.deliveryRule) {
                     val deliver = toDeliver
                     if (log.isLoggable(Level.FINE))
                         log.fine(
@@ -264,7 +264,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                         )
                     //
                     createLine(order, line, deliver, storages, true)
-                } else if (MOrder.DELIVERYRULE_Manual == order.getDeliveryRule()) {
+                } else if (MOrder.DELIVERYRULE_Manual == order.deliveryRule) {
                     if (log.isLoggable(Level.FINE))
                         log.fine(
                             ("Manual - OnHand=" +
@@ -278,7 +278,7 @@ abstract class BaseInOutGenerate : SvrProcess() {
                     if (log.isLoggable(Level.FINE))
                         log.fine(
                             ("Failed: " +
-                                    order.getDeliveryRule() +
+                                    order.deliveryRule +
                                     " - OnHand=" +
                                     onHand +
                                     " (Unconfirmed=" +
@@ -295,20 +295,20 @@ abstract class BaseInOutGenerate : SvrProcess() {
             } // 	for all order lines
 
             // 	Complete Order successful
-            if (completeOrder && MOrder.DELIVERYRULE_CompleteOrder == order.getDeliveryRule()) {
+            if (completeOrder && MOrder.DELIVERYRULE_CompleteOrder == order.deliveryRule) {
                 for (i in lines.indices) {
                     val line = lines[i]
-                    if (line.getWarehouseId() != p_M_Warehouse_ID) continue
-                    val product = line.getProduct()
-                    val toDeliver = line.getQtyOrdered().subtract(line.getQtyDelivered())
+                    if (line.warehouseId != p_M_Warehouse_ID) continue
+                    val product = line.product
+                    val toDeliver = line.qtyOrdered.subtract(line.qtyDelivered)
                     //
                     var storages: Array<MStorageOnHand>? = null
-                    if (product != null && product.isStocked()) {
-                        val MMPolicy = product.getMMPolicy()
+                    if (product != null && product.isStocked) {
+                        val MMPolicy = product.mmPolicy
                         storages = getStorages(
-                            line.getWarehouseId(),
-                            line.getProductId(),
-                            line.getAttributeSetInstanceId(),
+                            line.warehouseId,
+                            line.productId,
+                            line.attributeSetInstanceId,
                             minGuaranteeDate,
                             MClient.MMPOLICY_FiFo == MMPolicy
                         )
@@ -338,19 +338,19 @@ abstract class BaseInOutGenerate : SvrProcess() {
      */
     override fun doIt(): String {
         if (p_M_Warehouse_ID == 0) throw AdempiereUserError("@NotFound@ @M_Warehouse_ID@")
-        val m_sql: StringBuffer
+        val sql: StringBuffer
 
         if (p_Selection)
         // 	VInOutGen
         {
-            m_sql = StringBuffer("SELECT C_Order.* FROM C_Order, T_Selection ")
+            sql = StringBuffer("SELECT C_Order.* FROM C_Order, T_Selection ")
                 .append(
                     "WHERE C_Order.DocStatus='CO' AND C_Order.IsSOTrx='Y' AND C_Order.AD_Client_ID=? "
                 )
                 .append("AND C_Order.C_Order_ID = T_Selection.T_Selection_ID ")
                 .append("AND T_Selection.AD_PInstance_ID=? ")
         } else {
-            m_sql = StringBuffer("SELECT * FROM C_Order o ")
+            sql = StringBuffer("SELECT * FROM C_Order o ")
                 .append("WHERE DocStatus='CO' AND IsSOTrx='Y'")
                 // 	No Offer,POS
                 .append(" AND o.C_DocType_ID IN (SELECT C_DocType_ID FROM C_DocType ")
@@ -361,25 +361,25 @@ abstract class BaseInOutGenerate : SvrProcess() {
                 // 	Open Order Lines with Warehouse
                 .append(" AND EXISTS (SELECT * FROM C_OrderLine ol ")
                 .append("WHERE ol.M_Warehouse_ID=?") // 	#1
-            if (p_DatePromised != null) m_sql.append(" AND TRUNC(ol.DatePromised)<=?") // 	#2
-            m_sql.append(" AND o.C_Order_ID=ol.C_Order_ID AND ol.QtyOrdered<>ol.QtyDelivered)")
+            if (p_DatePromised != null) sql.append(" AND TRUNC(ol.DatePromised)<=?") // 	#2
+            sql.append(" AND o.C_Order_ID=ol.C_Order_ID AND ol.QtyOrdered<>ol.QtyDelivered)")
             //
-            if (p_C_BPartner_ID != 0) m_sql.append(" AND o.C_BPartner_ID=?") // 	#3
+            if (p_C_BPartner_ID != 0) sql.append(" AND o.C_BPartner_ID=?") // 	#3
         }
-        m_sql.append(
+        sql.append(
             " ORDER BY M_Warehouse_ID, PriorityRule, M_Shipper_ID, C_BPartner_ID, C_BPartner_Location_ID, C_Order_ID"
         )
         // 	m_sql += " FOR UPDATE";
 
         val parameters =
             if (p_Selection) {
-                listOf(Env.getClientId(ctx), aD_PInstanceId)
+                listOf(Env.getClientId(ctx), processInstanceId)
             } else {
                 listOf(p_M_Warehouse_ID) +
                         (if (p_DatePromised != null) listOf(p_DatePromised) else emptyList()) +
                         (if (p_C_BPartner_ID != 0) listOf(p_C_BPartner_ID) else emptyList())
             }
 
-        return generate(m_sql.toString(), parameters)
+        return generate(sql.toString(), parameters)
     } // 	doIt
 }

@@ -5,10 +5,8 @@ import org.compiere.crm.MUser;
 import org.compiere.orm.MRole;
 import org.compiere.orm.MSysConfig;
 import org.compiere.util.Msg;
-import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 
-import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Properties;
@@ -30,17 +28,9 @@ public class MGoal extends X_PA_Goal {
      */
     private static final long serialVersionUID = -4612113288233473730L;
     /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MGoal.class);
-    /**
      * Restrictions
      */
     private MGoalRestriction[] m_restrictions = null;
-    /**
-     * Performance Color
-     */
-    private Color m_color = null;
 
     /**
      * ************************************************************************ Standard Constructor
@@ -166,7 +156,6 @@ public class MGoal extends X_PA_Goal {
         if (MeasureTarget.signum() != 0)
             GoalPerformance = MeasureActual.divide(MeasureTarget, 6, BigDecimal.ROUND_HALF_UP);
         super.setGoalPerformance(GoalPerformance);
-        m_color = null;
     } //	setGoalPerformance
 
     /**

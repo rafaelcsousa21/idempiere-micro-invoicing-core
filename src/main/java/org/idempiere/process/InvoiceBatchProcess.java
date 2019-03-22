@@ -68,10 +68,10 @@ public class InvoiceBatchProcess extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("DocAction")) p_DocAction = (String) para[i].getParameter();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("DocAction")) p_DocAction = (String) iProcessInfoParameter.getParameter();
         }
         p_C_InvoiceBatch_ID = getRecordId();
     } //  prepare

@@ -2,9 +2,10 @@ package org.compiere.accounting
 
 import kotliquery.Row
 import org.compiere.model.IDoc
+import org.compiere.model.I_C_AcctSchema
 import org.compiere.orm.MTable
+import org.idempiere.common.exceptions.AdempiereException
 import org.idempiere.common.exceptions.DBException
-import org.idempiere.common.util.AdempiereUserError
 import org.idempiere.common.util.CLogger
 import org.idempiere.common.util.Env
 import software.hsharp.core.util.DB
@@ -33,14 +34,14 @@ object DocManager {
     /*
 	 * Array of tables with Post column
 	 */
-    fun getDocumentsTableID(): IntArray? {
+    fun getDocumentsTableID(): IntArray {
         fillDocumentsTableArrays()
-        return documentsTableID
+        return documentsTableID ?: throw AdempiereException( "loading documents failed" )
     }
 
-    fun getDocumentsTableName(): Array<String>? {
+    fun getDocumentsTableName(): Array<String> {
         fillDocumentsTableArrays()
-        return documentsTableName
+        return documentsTableName ?: throw AdempiereException( "loading documents failed" )
     }
 
     @Synchronized
@@ -54,14 +55,14 @@ object DocManager {
                     "ORDER BY t.AD_Table_ID"
             val tableIDs: MutableList<Int> = mutableListOf()
             val tableNames: MutableList<String> = mutableListOf()
-            var pstmt: PreparedStatement?
-            var rs: ResultSet?
+            val preparedStatement: PreparedStatement?
+            val resultSet: ResultSet?
             try {
-                pstmt = prepareStatement(sql)
-                rs = pstmt!!.executeQuery()
-                while (rs!!.next()) {
-                    tableIDs.add(rs.getInt(1))
-                    tableNames.add(rs.getString(2))
+                preparedStatement = prepareStatement(sql)
+                resultSet = preparedStatement!!.executeQuery()
+                while (resultSet!!.next()) {
+                    tableIDs.add(resultSet.getInt(1))
+                    tableNames.add(resultSet.getString(2))
                 }
             } catch (e: SQLException) {
                 throw DBException(e, sql)
@@ -78,18 +79,19 @@ object DocManager {
      * @param as accounting schema
      * @param AD_Table_ID Table ID of Documents
      * @param Record_ID record ID to load
-     * @param trxName transaction name
      * @return Document or null
      */
-    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, Record_ID: Int): IDoc? {
-        var TableName: String? = null
-        for (i in 0 until DocManager.getDocumentsTableID()!!.size) {
-            if (DocManager.getDocumentsTableID()!![i] == AD_Table_ID) {
-                TableName = DocManager.getDocumentsTableName()!![i]
+    fun getDocument(`as`: I_C_AcctSchema, AD_Table_ID: Int, Record_ID: Int): IDoc? {
+        var tableName: String? = null
+        val documentsTableId = getDocumentsTableID()
+        val documentsTableName = DocManager.getDocumentsTableName()
+        for (i in 0 until documentsTableId.size) {
+            if (documentsTableId[i] == AD_Table_ID) {
+                tableName = documentsTableName[i]
                 break
             }
         }
-        if (TableName == null) {
+        if (tableName == null) {
             s_log.severe("Not found AD_Table_ID=$AD_Table_ID")
             return null
         }
@@ -107,11 +109,9 @@ object DocManager {
      * @param as accounting schema
      * @param AD_Table_ID Table ID of Documents
      * @param rs ResultSet
-     * @param trxName transaction name
      * @return Document
-     * @throws AdempiereUserError
      */
-    fun getDocument(`as`: MAcctSchema, AD_Table_ID: Int, rs: Row): IDoc? {
+    fun getDocument(`as`: I_C_AcctSchema, AD_Table_ID: Int, rs: Row): IDoc? {
         val factory = DefaultDocumentFactory()
         val doc = factory.getDocument(`as`, AD_Table_ID, rs)
         if (doc != null)
@@ -127,7 +127,6 @@ object DocManager {
      * @param Record_ID Record ID of this document
      * @param force force posting
      * @param repost Repost document
-     * @param trxName transaction
      * @return null if the document was posted or error message
      */
     fun postDocument(
@@ -139,16 +138,19 @@ object DocManager {
     ): String? {
 
         var tableName: String? = null
-        for (i in 0 until getDocumentsTableID()!!.size) {
-            if (getDocumentsTableID()!![i] == AD_Table_ID) {
-                tableName = getDocumentsTableName()!![i]
+        val documentsTableId = getDocumentsTableID()
+        val documentsTableName = DocManager.getDocumentsTableName()
+
+        for (i in 0 until documentsTableId.size) {
+            if (documentsTableId[i] == AD_Table_ID) {
+                tableName = documentsTableName[i]
                 break
             }
         }
         if (tableName == null) {
             s_log.severe("Table not a financial document. AD_Table_ID=$AD_Table_ID")
-            val msgreturn = StringBuilder("Table not a financial document. AD_Table_ID=").append(AD_Table_ID)
-            return msgreturn.toString()
+            val returnMessage = StringBuilder("Table not a financial document. AD_Table_ID=").append(AD_Table_ID)
+            return returnMessage.toString()
         }
 
         val sql = StringBuilder("SELECT * FROM ")
@@ -168,7 +170,6 @@ object DocManager {
      * @param rs Result set
      * @param force force posting
      * @param repost Repost document
-     * @param trxName transaction
      * @return null if the document was posted or error message
      */
     fun postDocument(
@@ -185,7 +186,7 @@ object DocManager {
             if (doc != null) {
                 error = doc.post(force, repost) // 	repost
                 status = doc.postStatus
-                if (error != null && error.trim { it <= ' ' }.length > 0) {
+                if (error != null && error.trim { it <= ' ' }.isNotEmpty()) {
                     s_log.info("Error Posting $doc to $`as` Error: $error")
                     throw Error("Error Posting $doc to $`as` Error: $error")
                 }
@@ -196,22 +197,21 @@ object DocManager {
         }
 
         val table = MTable.get(Env.getCtx(), AD_Table_ID)
-        val Record_ID = rs.int(table.tableKeyColumns[0])
+        val recordId = rs.int(table.tableKeyColumns[0])
         //  Commit Doc
-        if (!save(AD_Table_ID, Record_ID, status)) {
+        if (!save(AD_Table_ID, recordId, status)) {
             val dbError = CLogger.retrieveError()
             // log.log(Level.SEVERE, "(doc not saved) ... rolling back");
-            if (dbError != null)
-                error = dbError.value
+            error = if (dbError != null)
+                dbError.value
             else
-                error = "SaveError"
+                "SaveError"
         }
         return error
     }
 
     /**************************************************************************
      * Save to Disk - set posted flag
-     * @param trxName transaction name
      * @return true if saved
      */
     private fun save(AD_Table_ID: Int, Record_ID: Int, status: String): Boolean {

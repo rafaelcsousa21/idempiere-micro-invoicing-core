@@ -28,10 +28,10 @@ public class InOutCreateConfirm extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("ConfirmType")) p_ConfirmType = (String) para[i].getParameter();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("ConfirmType")) p_ConfirmType = (String) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
         p_M_InOut_ID = getRecordId();

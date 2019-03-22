@@ -30,6 +30,7 @@ import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -115,6 +116,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         setMovementDate(Env.getContextAsDate(getCtx(), "#Date"));
     }
 
+    @NotNull
     @Override
     public CompleteActionResult completeIt() {
         // Re-Check
@@ -448,8 +450,6 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
             } // for all bom products
         } catch (Exception e) {
             throw new AdempiereException("Failed to create production lines", e);
-        } finally {
-
         }
 
         return count;
@@ -462,7 +462,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
     }
 
     @Override
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -482,6 +482,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         return true;
     }
 
+    @NotNull
     @Override
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
@@ -883,16 +884,19 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         return false;
     }
 
+    @NotNull
     @Override
     public String getSummary() {
         return getDocumentNo();
     }
 
+    @NotNull
     @Override
     public String getDocumentInfo() {
         return getDocumentNo();
     }
 
+    @NotNull
     @Override
     public String getProcessMsg() {
         return m_processMsg;
@@ -908,6 +912,7 @@ public class MProduction extends X_M_Production implements I_M_Production, DocAc
         return MClient.get(getCtx()).getCurrencyId();
     }
 
+    @NotNull
     @Override
     public BigDecimal getApprovalAmt() {
         return BigDecimal.ZERO;

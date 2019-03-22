@@ -18,10 +18,6 @@ public class MLandedCost extends X_C_LandedCost {
      *
      */
     private static final long serialVersionUID = -5645509613930428050L;
-    /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MLandedCost.class);
 
     /**
      * ************************************************************************* Standard Constructor

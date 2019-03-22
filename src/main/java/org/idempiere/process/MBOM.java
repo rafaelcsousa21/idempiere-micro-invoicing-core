@@ -107,30 +107,28 @@ public class MBOM extends X_M_BOM {
                                 .append(getBOMUse())
                                 .append("' AND IsActive='Y'");
                 MBOM[] boms = getOfProduct(getCtx(), getProductId(), null, msgofp.toString());
-                if (boms.length == 0 // 	only one = this
-                        || (boms.length == 1 && boms[0].getBOMId() == getBOMId())) ;
-                else {
-                    log.saveError(
-                            "Error",
-                            Msg.parseTranslation(
-                                    getCtx(),
-                                    "Can only have one Current Active BOM for Product BOM Use ("
-                                            + getBOMType()
-                                            + ")"));
-                    return false;
-                }
+                if (boms.length != 0 // 	only one = this
+                        && (boms.length != 1 || boms[0].getBOMId() != getBOMId())) {
+                            log.saveError(
+                                    "Error",
+                                    Msg.parseTranslation(
+                                            getCtx(),
+                                            "Can only have one Current Active BOM for Product BOM Use ("
+                                                    + getBOMType()
+                                                    + ")"));
+                            return false;
+                        }
             }
             //	Only one MTO
             else if (getBOMType().equals(BOMTYPE_Make_To_Order)) {
                 MBOM[] boms = getOfProduct(getCtx(), getProductId(), null, "IsActive='Y'");
-                if (boms.length == 0 // 	only one = this
-                        || (boms.length == 1 && boms[0].getBOMId() == getBOMId())) ;
-                else {
-                    log.saveError(
-                            "Error",
-                            Msg.parseTranslation(getCtx(), "Can only have single Make-to-Order BOM for Product"));
-                    return false;
-                }
+                if (boms.length != 0 // 	only one = this
+                        && (boms.length != 1 || boms[0].getBOMId() != getBOMId())) {
+                            log.saveError(
+                                    "Error",
+                                    Msg.parseTranslation(getCtx(), "Can only have single Make-to-Order BOM for Product"));
+                            return false;
+                        }
             }
         } //	BOM Type
 

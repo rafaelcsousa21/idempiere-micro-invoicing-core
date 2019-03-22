@@ -39,16 +39,6 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     private BankStatementLoaderInterface m_loader = null;
 
     /**
-     * File name from process parameter
-     */
-    private String localFileName = null;
-
-    /**
-     * List of own bank accounts to lookup id
-     */
-    private List<X_C_BankAccount> bankAccountList;
-
-    /**
      * Map of currency ISO-Codes to lookup id
      */
     private HashMap<String, Integer> currencyMap;
@@ -112,7 +102,6 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
     }
 
     private void init(String fileName) {
-        localFileName = fileName;
         try {
             if (log.isLoggable(Level.INFO))
                 log.info("MBankStatementLoader Class Name=" + getStmtLoaderClass());
@@ -158,8 +147,7 @@ public class MBankStatementLoader extends X_C_BankStatementLoader {
         }
         // Initialize lookup lists
         MTable table = MTable.get(Env.getCtx(), X_C_BankAccount.Table_ID);
-        Query query = table.createQuery("IsActive='Y'");
-        bankAccountList = query.list();
+        Query query;
 
         table = MTable.get(Env.getCtx(), X_C_Currency.Table_ID);
         query = table.createQuery("IsActive='Y'");

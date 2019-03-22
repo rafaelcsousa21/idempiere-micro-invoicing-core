@@ -10,6 +10,9 @@ import software.hsharp.core.util.queryOf
 import java.util.Properties
 import java.util.logging.Level
 
+/**
+ * Basic client class that allows setting up a new client info
+ */
 open class MBaseClient : org.compiere.orm.MClient {
     constructor(ctx: Properties, ID: Int) : super(ctx, ID)
     constructor(ctx: Properties, rs: Row) : super(ctx, rs)
@@ -18,6 +21,9 @@ open class MBaseClient : org.compiere.orm.MClient {
     /** Client Info Setup Tree for Account  */
     private var m_AD_Tree_Account_ID: Int = 0
 
+    /**
+     * Setup a new [MClientInfo]
+     */
     fun setupClientInfo(language: String): Boolean {
         //  Tree IDs
         var AD_Tree_Org_ID = 0

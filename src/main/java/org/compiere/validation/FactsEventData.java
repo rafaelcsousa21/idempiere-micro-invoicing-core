@@ -10,8 +10,5 @@ import java.util.List;
  * @author hengsin
  */
 public class FactsEventData {
-    private I_C_AcctSchema acctSchema;
-    private List<IFact> facts;
-    private IPO po;
 
 }

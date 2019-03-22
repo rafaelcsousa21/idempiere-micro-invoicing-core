@@ -59,15 +59,15 @@ public class InventoryValue extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("M_PriceList_Version_ID"))
-                p_M_PriceList_Version_ID = para[i].getParameterAsInt();
-            else if (name.equals("DateValue")) p_DateValue = (Timestamp) para[i].getParameter();
-            else if (name.equals("M_Warehouse_ID")) p_M_Warehouse_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_Currency_ID")) p_C_Currency_ID = para[i].getParameterAsInt();
-            else if (name.equals("M_CostElement_ID")) p_M_CostElement_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("M_PriceList_Version_ID"))
+                p_M_PriceList_Version_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("DateValue")) p_DateValue = (Timestamp) iProcessInfoParameter.getParameter();
+            else if (name.equals("M_Warehouse_ID")) p_M_Warehouse_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("C_Currency_ID")) p_C_Currency_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("M_CostElement_ID")) p_M_CostElement_ID = iProcessInfoParameter.getParameterAsInt();
         }
         if (p_DateValue == null) p_DateValue = new Timestamp(System.currentTimeMillis());
     } //  prepare
@@ -103,7 +103,7 @@ public class InventoryValue extends SvrProcess {
 
         //  Delete (just to be sure)
         StringBuilder sql = new StringBuilder("DELETE T_InventoryValue WHERE AD_PInstance_ID=");
-        sql.append(getAD_PInstanceId());
+        sql.append(getProcessInstanceId());
         int no = executeUpdateEx(sql.toString());
 
         //	Insert Standard Costs
@@ -112,7 +112,7 @@ public class InventoryValue extends SvrProcess {
                         .append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID,")
                         .append(" AD_Client_ID, AD_Org_ID, CostStandard) ")
                         .append("SELECT ")
-                        .append(getAD_PInstanceId())
+                        .append(getProcessInstanceId())
                         .append(", w.M_Warehouse_ID, c.M_Product_ID, c.M_AttributeSetInstance_ID,")
                         .append(" w.AD_Client_ID, w.AD_Org_ID, c.CurrentCostPrice ")
                         .append("FROM M_Warehouse w")
@@ -138,7 +138,7 @@ public class InventoryValue extends SvrProcess {
                             .append("(AD_PInstance_ID, M_Warehouse_ID, M_Product_ID, M_AttributeSetInstance_ID,")
                             .append(" AD_Client_ID, AD_Org_ID, CostStandard, Cost, M_CostElement_ID) ")
                             .append("SELECT ")
-                            .append(getAD_PInstanceId())
+                            .append(getProcessInstanceId())
                             .append(", w.M_Warehouse_ID, c.M_Product_ID, c.M_AttributeSetInstance_ID,")
                             .append(" w.AD_Client_ID, w.AD_Org_ID, 0, c.CurrentCostPrice, c.M_CostElement_ID ")
                             .append("FROM M_Warehouse w")
@@ -152,7 +152,7 @@ public class InventoryValue extends SvrProcess {
                             .append(p_M_CostElement_ID)
                             .append(" AND NOT EXISTS (SELECT * FROM T_InventoryValue iv ")
                             .append("WHERE iv.AD_PInstance_ID=")
-                            .append(getAD_PInstanceId())
+                            .append(getProcessInstanceId())
                             .append(" AND iv.M_Warehouse_ID=w.M_Warehouse_ID")
                             .append(" AND iv.M_Product_ID=c.M_Product_ID")
                             .append(" AND iv.M_AttributeSetInstance_ID=c.M_AttributeSetInstance_ID)");
@@ -176,7 +176,7 @@ public class InventoryValue extends SvrProcess {
                             .append(" AND iv.M_AttributeSetInstance_ID=c.M_AttributeSetInstance_ID) ")
                             .append("WHERE EXISTS (SELECT * FROM T_InventoryValue ivv ")
                             .append("WHERE ivv.AD_PInstance_ID=")
-                            .append(getAD_PInstanceId())
+                            .append(getProcessInstanceId())
                             .append(" AND ivv.M_CostElement_ID IS NULL)");
             int noUpdatedCost = executeUpdateEx(sql.toString());
             if (log.isLoggable(Level.FINE)) log.fine("Updated Cost=" + noUpdatedCost);
@@ -197,7 +197,7 @@ public class InventoryValue extends SvrProcess {
                         .append("C_Currency_ID=")
                         .append(p_C_Currency_ID)
                         .append(" WHERE AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
         no = executeUpdateEx(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine("Constants=" + no);
 
@@ -210,7 +210,7 @@ public class InventoryValue extends SvrProcess {
                         .append(" AND iv.M_Warehouse_ID=l.M_Warehouse_ID")
                         .append(" AND iv.M_AttributeSetInstance_ID=s.M_AttributeSetInstance_ID) ")
                         .append("WHERE AD_PInstance_ID=")
-                        .append(getAD_PInstanceId())
+                        .append(getProcessInstanceId())
                         .append(" AND iv.M_AttributeSetInstance_ID<>0");
         no = executeUpdateEx(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine("QtHand with ASI=" + no);
@@ -222,7 +222,7 @@ public class InventoryValue extends SvrProcess {
                         .append("WHERE iv.M_Product_ID=s.M_Product_ID")
                         .append(" AND iv.M_Warehouse_ID=l.M_Warehouse_ID) ")
                         .append("WHERE iv.AD_PInstance_ID=")
-                        .append(getAD_PInstanceId())
+                        .append(getProcessInstanceId())
                         .append(" AND iv.M_AttributeSetInstance_ID=0");
         no = executeUpdateEx(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine("QtHand w/o ASI=" + no);
@@ -240,7 +240,7 @@ public class InventoryValue extends SvrProcess {
                         .append(" AND l.M_Warehouse_ID=iv.M_Warehouse_ID) ")
                         .append("WHERE iv.M_AttributeSetInstance_ID<>0")
                         .append(" AND iv.AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
         no = executeUpdateEx(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine("Update with ASI=" + no);
         //
@@ -255,7 +255,7 @@ public class InventoryValue extends SvrProcess {
                         .append(" AND l.M_Warehouse_ID=iv.M_Warehouse_ID) ")
                         .append("WHERE iv.M_AttributeSetInstance_ID=0 ")
                         .append("AND iv.AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
 
         no = executeUpdateEx(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine("Update w/o ASI=" + no);
@@ -264,7 +264,7 @@ public class InventoryValue extends SvrProcess {
         sql =
                 new StringBuilder("DELETE T_InventoryValue ")
                         .append("WHERE (QtyOnHand=0 OR QtyOnHand IS NULL) AND AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
         int noQty = executeUpdateEx(sql.toString());
         if (log.isLoggable(Level.FINE)) log.fine("NoQty Deleted=" + noQty);
 
@@ -301,7 +301,7 @@ public class InventoryValue extends SvrProcess {
                         .append(" AND pp.M_PriceList_Version_ID=plv.M_PriceList_Version_ID")
                         .append(" AND plv.M_PriceList_ID=pl.M_PriceList_ID)")
                         .append(" WHERE iv.AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
 
         no = executeUpdateEx(sql.toString());
         String msg = "";
@@ -324,7 +324,7 @@ public class InventoryValue extends SvrProcess {
                             .append(as.getAccountingSchemaId())
                             .append(") ")
                             .append("WHERE iv.AD_PInstance_ID=")
-                            .append(getAD_PInstanceId());
+                            .append(getProcessInstanceId());
             no = executeUpdateEx(sql.toString());
             if (log.isLoggable(Level.FINE)) log.fine("Converted=" + no);
         }
@@ -339,7 +339,7 @@ public class InventoryValue extends SvrProcess {
                         .append("CostStandardAmt = QtyOnHand * CostStandard, ")
                         .append("CostAmt = QtyOnHand * Cost ")
                         .append("WHERE AD_PInstance_ID=")
-                        .append(getAD_PInstanceId());
+                        .append(getProcessInstanceId());
         no = executeUpdateEx(dbeux.toString());
         if (log.isLoggable(Level.FINE)) log.fine("Calculation=" + no);
         //

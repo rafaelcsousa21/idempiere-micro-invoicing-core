@@ -65,11 +65,11 @@ public class InvoiceGenerateRMA extends SvrProcess {
     protected void prepare() {
 
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("Selection")) p_Selection = "Y".equals(para[i].getParameter());
-            else if (name.equals("DocAction")) p_docAction = (String) para[i].getParameter();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("Selection")) p_Selection = "Y".equals(iProcessInfoParameter.getParameter());
+            else if (name.equals("DocAction")) p_docAction = (String) iProcessInfoParameter.getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 
@@ -95,7 +95,7 @@ public class InvoiceGenerateRMA extends SvrProcess {
         try {
             pstmt = prepareStatement(sql);
             pstmt.setInt(1, Env.getClientId(getCtx()));
-            pstmt.setInt(2, getAD_PInstanceId());
+            pstmt.setInt(2, getProcessInstanceId());
             rs = pstmt.executeQuery();
 
             while (rs.next()) {

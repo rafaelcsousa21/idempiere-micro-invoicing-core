@@ -43,6 +43,7 @@ import org.compiere.orm.IModelFactory
 import org.compiere.orm.DefaultModelFactory
 import java.util.Random
 import java.util.Properties
+import org.idempiere.common.util.AdempiereSystemError
 
 internal val sessionUrl =
     System.getenv("SESSION_URL") ?: "jdbc:postgresql://localhost:5433/idempiere?autosave=conservative"
@@ -78,20 +79,20 @@ abstract class BaseComponentTest {
     }
 
     private var _taxCategory: I_C_TaxCategory? = null
-    protected val taxCategory: I_C_TaxCategory get() = _taxCategory!!
+    protected val taxCategory: I_C_TaxCategory get() = _taxCategory ?: throw AdempiereSystemError("tax category is null")
     private var _tax: I_C_Tax? = null
-    protected val tax: I_C_Tax get() = _tax!!
+    protected val tax: I_C_Tax get() = _tax ?: throw AdempiereSystemError("tax is null")
 
     protected val org: I_AD_Org
         get() = MOrg(ctx, 1000000)
     protected val warehouse: I_M_Warehouse
         get() = MWarehouse(ctx, 1000000)
     private var _paymentTerm: I_C_PaymentTerm? = null
-    protected val paymentTerm: I_C_PaymentTerm get() = _paymentTerm!!
+    protected val paymentTerm: I_C_PaymentTerm get() = _paymentTerm ?: throw AdempiereSystemError("payment term is null")
     private var _bankAccount: I_C_BankAccount? = null
-    protected val bankAccount get() = _bankAccount!!
+    protected val bankAccount get() = _bankAccount ?: throw AdempiereSystemError("bank account is null")
     private var _charge: I_C_Charge? = null
-    protected val charge get() = _charge!!
+    protected val charge get() = _charge ?: throw AdempiereSystemError("charge is null")
 
     @Before
     fun prepareEnv() {

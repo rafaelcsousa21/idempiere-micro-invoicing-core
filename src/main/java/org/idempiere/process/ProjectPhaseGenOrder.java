@@ -39,12 +39,6 @@ public class ProjectPhaseGenOrder extends SvrProcess {
      * Prepare - e.g., get Parameters.
      */
     protected void prepare() {
-        IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
-        }
     } //	prepare
 
     /**

@@ -16,9 +16,6 @@ internal fun getRequestsToBeInvoiced(
         .append(" INNER JOIN R_Status s ON (r.R_Status_ID=s.R_Status_ID) ")
         .append("WHERE s.IsClosed='Y'")
         .append(" AND r.R_RequestType_ID=?")
-    // globalqss -- avoid double invoicing
-    // + " AND EXISTS (SELECT 1 FROM R_RequestUpdate ru " +
-    // 		"WHERE ru.R_Request_ID=r.R_Request_ID AND NVL(C_InvoiceLine_ID,0)=0";
     if (p_R_Group_ID != 0) sql.append(" AND r.R_Group_ID=?")
     if (p_R_Category_ID != 0) sql.append(" AND r.R_Category_ID=?")
     if (p_C_BPartner_ID != 0) sql.append(" AND r.C_BPartner_ID=?")

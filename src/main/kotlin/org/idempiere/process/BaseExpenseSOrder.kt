@@ -9,6 +9,9 @@ import software.hsharp.core.util.DB
 import software.hsharp.core.util.queryOf
 import java.sql.Timestamp
 
+/**
+ * Database part of the Create Sales Orders from Expense Reports process
+ */
 abstract class BaseExpenseSOrder : SvrProcess() {
 
     /**

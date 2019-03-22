@@ -21,9 +21,6 @@ class WarehouseLocatorConflictException
             " @Line@: " + lineNo
 ) {
     companion object {
-        /**
-         *
-         */
-        private val serialVersionUID = 4812283712626432829L
+        private const val serialVersionUID = 4812283712626432829L
     }
 }

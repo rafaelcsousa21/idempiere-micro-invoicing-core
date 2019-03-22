@@ -96,28 +96,24 @@ public class InvoiceGenerate extends SvrProcess {
      * Minimum Amount to Invoice according to Invoice Schedule
      */
     private BigDecimal p_MinimumAmtInvSched = null;
-    /**
-     * Per Invoice Savepoint
-     */
-    private Savepoint m_savepoint = null;
 
     /**
      * Prepare - e.g., get Parameters.
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("Selection")) p_Selection = "Y".equals(para[i].getParameter());
-            else if (name.equals("DateInvoiced")) p_DateInvoiced = (Timestamp) para[i].getParameter();
-            else if (name.equals("AD_Org_ID")) p_AD_Org_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_Order_ID")) p_C_Order_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("Selection")) p_Selection = "Y".equals(iProcessInfoParameter.getParameter());
+            else if (name.equals("DateInvoiced")) p_DateInvoiced = (Timestamp) iProcessInfoParameter.getParameter();
+            else if (name.equals("AD_Org_ID")) p_AD_Org_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("C_Order_ID")) p_C_Order_ID = iProcessInfoParameter.getParameterAsInt();
             else if (name.equals("ConsolidateDocument"))
-                p_ConsolidateDocument = "Y".equals(para[i].getParameter());
-            else if (name.equals("DocAction")) p_docAction = (String) para[i].getParameter();
-            else if (name.equals("MinimumAmt")) p_MinimumAmt = para[i].getParameterAsBigDecimal();
+                p_ConsolidateDocument = "Y".equals(iProcessInfoParameter.getParameter());
+            else if (name.equals("DocAction")) p_docAction = (String) iProcessInfoParameter.getParameter();
+            else if (name.equals("MinimumAmt")) p_MinimumAmt = iProcessInfoParameter.getParameterAsBigDecimal();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
 
@@ -189,7 +185,7 @@ public class InvoiceGenerate extends SvrProcess {
      * @return info
      */
     private String generate(String sql) {
-        MOrder[] orders = BaseInvoiceGenerateKt.getOrdersForInvoiceGeneration(getCtx(), sql, getAD_PInstanceId(),
+        MOrder[] orders = BaseInvoiceGenerateKt.getOrdersForInvoiceGeneration(getCtx(), sql, getProcessInstanceId(),
                 p_Selection, p_AD_Org_ID, p_C_BPartner_ID, p_C_Order_ID);
 
         for (MOrder order : orders) {
@@ -448,7 +444,7 @@ public class InvoiceGenerate extends SvrProcess {
                     for (MOrderPaySchedule ops : opss) {
                         MInvoicePaySchedule ips = new MInvoicePaySchedule(getCtx(), 0);
                         PO.copyValues(ops, ips);
-                        if (percent != Env.ONE) {
+                        if (!percent.equals(Env.ONE)) {
                             BigDecimal propDueAmt = ops.getDueAmt().multiply(percent);
                             if (propDueAmt.scale() > scale)
                                 propDueAmt = propDueAmt.setScale(scale, BigDecimal.ROUND_HALF_UP);

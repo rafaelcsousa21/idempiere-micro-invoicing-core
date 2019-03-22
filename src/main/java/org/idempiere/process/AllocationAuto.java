@@ -64,12 +64,23 @@ public class AllocationAuto extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (IProcessInfoParameter iProcessInfoParameter : para) {
             String name = iProcessInfoParameter.getParameterName();
-            if (iProcessInfoParameter.getParameter() == null) ;
-            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = iProcessInfoParameter.getParameterAsInt();
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
-            else if (name.equals("AllocateOldest")) p_AllocateOldest = "Y".equals(iProcessInfoParameter.getParameter());
-            else if (name.equals("APAR")) p_APAR = (String) iProcessInfoParameter.getParameter();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+            switch (name) {
+                case "C_BP_Group_ID":
+                    p_C_BP_Group_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "C_BPartner_ID":
+                    p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                    break;
+                case "AllocateOldest":
+                    p_AllocateOldest = "Y".equals(iProcessInfoParameter.getParameter());
+                    break;
+                case "APAR":
+                    p_APAR = (String) iProcessInfoParameter.getParameter();
+                    break;
+                default:
+                    log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                    break;
+            }
         }
     } //	prepare
 
@@ -317,9 +328,8 @@ public class AllocationAuto extends SvrProcess {
                                 }
                                 break;
                             }
-                        } else //	Mixed Currency
-                        {
-                        }
+                        }  //	Mixed Currency
+
                     } //	invoice found
                 } //	for all invoices
             } //	payment has invoice
@@ -351,9 +361,8 @@ public class AllocationAuto extends SvrProcess {
                         if (!invoice.isSOTrx()) invoiceAmt = invoiceAmt.negate();
                         if (log.isLoggable(Level.FINE)) log.fine(invoice + ", Invoice=" + invoiceAmt);
                         totalInvoice = totalInvoice.add(invoiceAmt);
-                    } else //	Multi-Currency
-                    {
-                    }
+                    }  //	Multi-Currency
+
                 }
                 if (availableAmt.compareTo(totalInvoice) == 0) {
                     if (payment.allocateIt()) {
@@ -432,9 +441,8 @@ public class AllocationAuto extends SvrProcess {
                         payment = null;
                         break;
                     }
-                } else //	Multi-Currency
-                {
-                }
+                }  //	Multi-Currency
+
             } //	for all invoices
         } //	for all payments
         return count;

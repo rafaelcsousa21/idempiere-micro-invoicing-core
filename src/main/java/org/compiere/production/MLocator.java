@@ -29,10 +29,6 @@ public class MLocator extends X_M_Locator {
      * Cache
      */
     private static volatile CCache<Integer, MLocator> s_cache;
-    /**
-     * Logger
-     */
-    private static CLogger s_log = CLogger.getCLogger(MLocator.class);
 
     /**
      * ************************************************************************ Standard Locator

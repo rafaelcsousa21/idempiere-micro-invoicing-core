@@ -34,7 +34,7 @@ public class OrderLineCreateShipment extends SvrProcess {
         IProcessInfoParameter[] para = getParameter();
         for (int i = 0; i < para.length; i++) {
             String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
+            para[i].getParameter();
             if (name.equals("MovementDate")) p_MovementDate = (Timestamp) para[i].getParameter();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }

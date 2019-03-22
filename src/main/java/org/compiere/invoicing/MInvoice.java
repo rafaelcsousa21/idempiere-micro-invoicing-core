@@ -57,6 +57,7 @@ import org.idempiere.common.exceptions.DBException;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -1065,6 +1066,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         MDocType dt = MDocType.get(getCtx(), getDocumentTypeId());
         StringBuilder msgreturn =
@@ -1193,10 +1195,8 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         //
         if (m_openAmt == null) {
             m_openAmt = getGrandTotal();
-            if (paymentDate != null) {
-                //	Payment Discount
-                //	Payment Schedule
-            }
+            //	Payment Discount
+            //	Payment Schedule
             BigDecimal allocated = getAllocatedAmt();
             if (allocated != null) {
                 allocated = allocated.abs(); // 	is absolute
@@ -1224,7 +1224,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -1257,6 +1257,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -1507,6 +1508,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -2447,6 +2449,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -2469,6 +2472,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -2487,6 +2491,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
      *
      * @return amount
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return getGrandTotal();
     } //	getApprovalAmt

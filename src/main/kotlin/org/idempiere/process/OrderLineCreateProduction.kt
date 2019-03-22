@@ -105,7 +105,7 @@ class OrderLineCreateProduction(
 
         var locator = product.locatorId
         if (locator == 0)
-            locator = MWarehouse.get(ctx, line.warehouseId).defaultLocator!!.id
+            locator = MWarehouse.get(ctx, line.warehouseId).defaultLocator.id
         production.setLocatorId(locator)
 
         if (line.businessPartnerId > 0) {

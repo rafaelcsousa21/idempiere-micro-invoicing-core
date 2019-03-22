@@ -14,6 +14,9 @@ import java.util.Properties
  */
 val periodCache = CCache<Int, MPeriod>(I_C_Period.Table_Name, 10)
 
+/**
+ * Find a period by calendar
+ */
 fun findByCalendar(ctx: Properties, DateAcct: Timestamp, calendarId: Int): MPeriod? {
     val AD_Client_ID = Env.getClientId(ctx)
     // 	Search in Cache first

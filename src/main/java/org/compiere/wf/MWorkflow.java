@@ -58,18 +58,6 @@ public class MWorkflow extends X_AD_Workflow {
      */
     private List<MWFNode> m_nodes = new ArrayList<MWFNode>();
     /**
-     * Translated Name
-     */
-    private String m_name_trl = null;
-    /**
-     * Translated Description
-     */
-    private String m_description_trl = null;
-    /**
-     * Translated Help
-     */
-    private String m_help_trl = null;
-    /**
      * Translation Flag
      */
     private boolean m_translated = false;
@@ -205,9 +193,6 @@ public class MWorkflow extends X_AD_Workflow {
             pstmt.setString(2, Env.getADLanguage(getCtx()));
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                m_name_trl = rs.getString(1);
-                m_description_trl = rs.getString(2);
-                m_help_trl = rs.getString(3);
                 m_translated = true;
             }
         } catch (SQLException e) {
@@ -401,18 +386,10 @@ public class MWorkflow extends X_AD_Workflow {
             wa.saveEx();
         }
         //	Menu/Workflow
-        else if (isValueChanged("IsActive")
-                || isValueChanged(HasName.Companion.getCOLUMNNAME_Name())
-                || isValueChanged(I_AD_Workflow.COLUMNNAME_Description)) {
-      /* TODO Add DAP
-      MMenu[] menues = MMenu.get(getCtx(), "AD_Workflow_ID=" + getAD_WorkflowId(), null);
-      for (int i = 0; i < menues.length; i++)
-      {
-      	menues[i].setIsActive(isActive());
-      	menues[i].setName(getName());
-      	menues[i].setDescription(getDescription());
-      	menues[i].saveEx();
-      }*/
+        else {
+            if (!isValueChanged("IsActive") && !isValueChanged(HasName.Companion.getCOLUMNNAME_Name())) {
+                isValueChanged(I_AD_Workflow.COLUMNNAME_Description);
+            }
         }
 
         return success;

@@ -16,6 +16,7 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -120,7 +121,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -131,6 +132,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -173,6 +175,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -587,6 +590,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getDocumentNo());
@@ -609,6 +613,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -648,6 +653,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         StringBuilder msgreturn =
                 new StringBuilder()

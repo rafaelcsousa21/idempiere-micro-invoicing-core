@@ -30,11 +30,11 @@ public class WorkflowMoveToClient extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("AD_Client_ID")) p_AD_Client_ID = para[i].getParameterAsInt();
-            else if (name.equals("AD_Workflow_ID")) p_AD_Workflow_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("AD_Client_ID")) p_AD_Client_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("AD_Workflow_ID")) p_AD_Workflow_ID = iProcessInfoParameter.getParameterAsInt();
             else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
         }
     } //	prepare

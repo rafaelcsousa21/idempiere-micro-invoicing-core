@@ -51,11 +51,11 @@ public class ClientAcctProcessor extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null) ;
-            else if (name.equals("C_AcctSchema_ID")) p_C_AcctSchema_ID = para[i].getParameterAsInt();
-            else if (name.equals("AD_Table_ID")) p_AD_Table_ID = para[i].getParameterAsInt();
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+
+            if (name.equals("C_AcctSchema_ID")) p_C_AcctSchema_ID = iProcessInfoParameter.getParameterAsInt();
+            else if (name.equals("AD_Table_ID")) p_AD_Table_ID = iProcessInfoParameter.getParameterAsInt();
             else log.log(Level.SEVERE, "Unknown Parameter: " + name);
         }
     } //	prepare
@@ -135,8 +135,6 @@ public class ClientAcctProcessor extends SvrProcess {
                 }
             } catch (Exception e) {
                 log.log(Level.SEVERE, sql.toString(), e);
-            } finally {
-
             }
         }
 

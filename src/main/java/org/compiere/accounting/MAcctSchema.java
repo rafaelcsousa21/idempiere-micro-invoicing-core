@@ -25,7 +25,7 @@ import java.util.logging.Level;
  * http://sourceforge.net/tracker/index.php?func=detail&aid=2214883&group_id=176962&atid=879335
  * @version $Id: MAcctSchema.java,v 1.4 2006/07/30 00:58:04 jjanke Exp $
  */
-public class MAcctSchema extends X_C_AcctSchema {
+public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
     /**
      *
      */
@@ -280,7 +280,7 @@ public class MAcctSchema extends X_C_AcctSchema {
      *
      * @return suspense error account
      */
-    public MAccount getSuspenseBalancing_Acct() {
+    public MAccount getSuspenseBalancingAccount() {
         if (m_SuspenseError_Acct != null) return m_SuspenseError_Acct;
         if (m_gl == null) getAcctSchemaGL();
         int C_ValidCombination_ID = m_gl.getSuspenseBalancingAccount();
@@ -317,7 +317,7 @@ public class MAcctSchema extends X_C_AcctSchema {
      * @param segment ignored
      * @return Account
      */
-    public MAccount getDueTo_Acct(String segment) {
+    public MAccount getDueToAccount(String segment) {
         if (m_DueTo_Acct != null) return m_DueTo_Acct;
         if (m_gl == null) getAcctSchemaGL();
         int C_ValidCombination_ID = m_gl.getIntercompanyDueToAccount();
@@ -331,7 +331,7 @@ public class MAcctSchema extends X_C_AcctSchema {
      * @param segment ignored
      * @return Account
      */
-    public MAccount getDueFrom_Acct(String segment) {
+    public MAccount getDueFromAccount(String segment) {
         if (m_DueFrom_Acct != null) return m_DueFrom_Acct;
         if (m_gl == null) getAcctSchemaGL();
         int C_ValidCombination_ID = m_gl.getIntercompanyDueFromAccount();

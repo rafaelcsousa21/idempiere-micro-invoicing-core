@@ -101,27 +101,50 @@ public class InvoiceWriteOff extends SvrProcess {
      */
     protected void prepare() {
         IProcessInfoParameter[] para = getParameter();
-        for (int i = 0; i < para.length; i++) {
-            String name = para[i].getParameterName();
-            if (para[i].getParameter() == null && para[i].getParameterTo() == null) ;
-            else if (name.equals("C_BPartner_ID")) p_C_BPartner_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_BP_Group_ID")) p_C_BP_Group_ID = para[i].getParameterAsInt();
-            else if (name.equals("C_Invoice_ID")) p_C_Invoice_ID = para[i].getParameterAsInt();
-                //
-            else if (name.equals("MaxInvWriteOffAmt"))
-                p_MaxInvWriteOffAmt = (BigDecimal) para[i].getParameter();
-            else if (name.equals("APAR")) p_APAR = (String) para[i].getParameter();
-                //
-            else if (name.equals("DateInvoiced")) {
-                p_DateInvoiced_From = (Timestamp) para[i].getParameter();
-                p_DateInvoiced_To = (Timestamp) para[i].getParameterTo();
-            } else if (name.equals("DateAcct")) p_DateAcct = (Timestamp) para[i].getParameter();
-                //
-            else if (name.equals("CreatePayment")) p_CreatePayment = "Y".equals(para[i].getParameter());
-            else if (name.equals("C_BankAccount_ID")) p_C_BankAccount_ID = para[i].getParameterAsInt();
-                //
-            else if (name.equals("IsSimulation")) p_IsSimulation = "Y".equals(para[i].getParameter());
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
+        for (IProcessInfoParameter iProcessInfoParameter : para) {
+            String name = iProcessInfoParameter.getParameterName();
+            if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameterTo() != null) {
+                switch (name) {
+                    case "C_BPartner_ID":
+                        p_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "C_BP_Group_ID":
+                        p_C_BP_Group_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    case "C_Invoice_ID":
+                        p_C_Invoice_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    //
+                    case "MaxInvWriteOffAmt":
+                        p_MaxInvWriteOffAmt = (BigDecimal) iProcessInfoParameter.getParameter();
+                        break;
+                    case "APAR":
+                        p_APAR = (String) iProcessInfoParameter.getParameter();
+                        break;
+                    //
+                    case "DateInvoiced":
+                        p_DateInvoiced_From = (Timestamp) iProcessInfoParameter.getParameter();
+                        p_DateInvoiced_To = (Timestamp) iProcessInfoParameter.getParameterTo();
+                        break;
+                    case "DateAcct":
+                        p_DateAcct = (Timestamp) iProcessInfoParameter.getParameter();
+                        break;
+                    //
+                    case "CreatePayment":
+                        p_CreatePayment = "Y".equals(iProcessInfoParameter.getParameter());
+                        break;
+                    case "C_BankAccount_ID":
+                        p_C_BankAccount_ID = iProcessInfoParameter.getParameterAsInt();
+                        break;
+                    //
+                    case "IsSimulation":
+                        p_IsSimulation = "Y".equals(iProcessInfoParameter.getParameter());
+                        break;
+                    default:
+                        log.log(Level.SEVERE, "Unknown Parameter: " + name);
+                        break;
+                }
+            }
         }
     } //	prepare
 
@@ -249,7 +272,7 @@ public class InvoiceWriteOff extends SvrProcess {
                             true,
                             p_DateAcct,
                             C_Currency_ID,
-                            getProcessInfo().getTitle() + " #" + getAD_PInstanceId(),
+                            getProcessInfo().getTitle() + " #" + getProcessInstanceId(),
                             null);
             m_alloc.setOrgId(invoice.getOrgId());
             if (!m_alloc.save()) {
@@ -269,7 +292,7 @@ public class InvoiceWriteOff extends SvrProcess {
             m_payment.setTenderType(MPayment.TENDERTYPE_Check);
             m_payment.setDateTrx(p_DateAcct);
             m_payment.setDateAcct(p_DateAcct);
-            m_payment.setDescription(getProcessInfo().getTitle() + " #" + getAD_PInstanceId());
+            m_payment.setDescription(getProcessInfo().getTitle() + " #" + getProcessInstanceId());
             m_payment.setBusinessPartnerId(invoice.getBusinessPartnerId());
             m_payment.setIsReceipt(true); // 	payments are negative
             m_payment.setCurrencyId(C_Currency_ID);

@@ -25,51 +25,44 @@ public class NoCurrencyConversionException extends AdempiereException {
     private static final long serialVersionUID = 1593966161685137709L;
 
     /**
-     * @param C_Currency_ID
-     * @param C_Currency_ID_To
-     * @param ConvDate
-     * @param C_ConversionType_ID
-     * @param AD_Client_ID
-     * @param AD_Org_ID
+     * @param currencyId
+     * @param currencyToId
+     * @param conversionDate
+     * @param conversionTypeId
      */
     public NoCurrencyConversionException(
-            int C_Currency_ID,
-            int C_Currency_ID_To,
-            Timestamp ConvDate,
-            int C_ConversionType_ID,
-            int AD_Client_ID,
-            int AD_Org_ID) {
+            int currencyId,
+            int currencyToId,
+            Timestamp conversionDate,
+            int conversionTypeId) {
         super(
                 buildMessage(
-                        C_Currency_ID,
-                        C_Currency_ID_To,
-                        ConvDate,
-                        C_ConversionType_ID,
-                        AD_Client_ID,
-                        AD_Org_ID));
+                        currencyId,
+                        currencyToId,
+                        conversionDate,
+                        conversionTypeId
+                ));
     }
 
-    private static final String buildMessage(
-            int C_Currency_ID,
-            int C_Currency_ID_To,
-            Timestamp ConvDate,
-            int C_ConversionType_ID,
-            int AD_Client_ID,
-            int AD_Org_ID) {
+    private static String buildMessage(
+            int currencyId,
+            int currencyToId,
+            Timestamp conversionDate,
+            int conversionTypeId) {
         DateFormat df = DisplayType.getDateFormat(DisplayType.Date);
 
         StringBuffer sb =
                 new StringBuffer("@NoCurrencyConversion@ ")
-                        .append(MCurrency.getISOCode(Env.getCtx(), C_Currency_ID))
+                        .append(MCurrency.getISOCode(Env.getCtx(), currencyId))
                         .append("->")
-                        .append(MCurrency.getISOCode(Env.getCtx(), C_Currency_ID_To));
+                        .append(MCurrency.getISOCode(Env.getCtx(), currencyToId));
         //
         sb.append(", @Date@: ");
-        if (ConvDate != null) sb.append(df.format(ConvDate));
+        if (conversionDate != null) sb.append(df.format(conversionDate));
         else sb.append("*");
         //
         sb.append(", @C_ConversionType_ID@: ");
-        if (C_ConversionType_ID > 0) {
+        if (conversionTypeId > 0) {
             final String sql =
                     "SELECT "
                             + HasName.Companion.getCOLUMNNAME_Name()
@@ -78,7 +71,7 @@ public class NoCurrencyConversionException extends AdempiereException {
                             + " WHERE "
                             + MConversionType.COLUMNNAME_C_ConversionType_ID
                             + "=?";
-            String name = getSQLValueString(sql, C_ConversionType_ID);
+            String name = getSQLValueString(sql, conversionTypeId);
             sb.append(name);
         } else {
             sb.append("*");

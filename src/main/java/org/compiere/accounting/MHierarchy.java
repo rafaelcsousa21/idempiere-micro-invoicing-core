@@ -28,7 +28,6 @@ public class MHierarchy extends X_PA_Hierarchy {
      *
      * @param ctx             context
      * @param PA_Hierarchy_ID id
-     * @param trxName         trx
      */
     public MHierarchy(Properties ctx, int PA_Hierarchy_ID) {
         super(ctx, PA_Hierarchy_ID);
@@ -38,8 +37,6 @@ public class MHierarchy extends X_PA_Hierarchy {
      * Load Constructor
      *
      * @param ctx     context
-     * @param rs      result set
-     * @param trxName trx
      */
     public MHierarchy(Properties ctx, Row row) {
         super(ctx, row);
@@ -53,7 +50,7 @@ public class MHierarchy extends X_PA_Hierarchy {
      * @return MHierarchy
      */
     public static MHierarchy get(Properties ctx, int PA_Hierarchy_ID) {
-        Integer key = new Integer(PA_Hierarchy_ID);
+        Integer key = PA_Hierarchy_ID;
         MHierarchy retValue = s_cache.get(key);
         if (retValue != null) return retValue;
         retValue = new MHierarchy(ctx, PA_Hierarchy_ID);

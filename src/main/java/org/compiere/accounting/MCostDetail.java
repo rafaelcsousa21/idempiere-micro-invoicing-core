@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_Product;
 import org.compiere.orm.Query;
@@ -94,7 +95,7 @@ public class MCostDetail extends X_M_CostDetail {
      * @param Description               optional description
      */
     public MCostDetail(
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int AD_Org_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
@@ -131,7 +132,7 @@ public class MCostDetail extends X_M_CostDetail {
      * @return true if created
      */
     public static boolean createInvoice(
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int AD_Org_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
@@ -208,7 +209,7 @@ public class MCostDetail extends X_M_CostDetail {
      * @return true if no error
      */
     public static boolean createShipment(
-            MAcctSchema as,
+            I_C_AcctSchema as,
             int AD_Org_ID,
             int M_Product_ID,
             int M_AttributeSetInstance_ID,

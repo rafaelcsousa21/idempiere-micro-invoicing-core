@@ -5,8 +5,11 @@ import org.compiere.invoicing.MConversionRate;
 import org.compiere.invoicing.MInvoice;
 import org.compiere.invoicing.MInvoiceLine;
 import org.compiere.model.IFact;
+import org.compiere.model.I_C_AcctSchema;
+import org.compiere.model.I_C_AcctSchema_Element;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -49,7 +52,7 @@ public class Doc_AllocationHdr extends Doc {
      * @param as accounting schema
      * @param rs record
      */
-    public Doc_AllocationHdr(MAcctSchema as, Row rs) {
+    public Doc_AllocationHdr(I_C_AcctSchema as, Row rs) {
         super(as, MAllocationHdr.class, rs, DOCTYPE_Allocation);
     } //  Doc_Allocation
 
@@ -142,7 +145,7 @@ public class Doc_AllocationHdr extends Doc {
      * @param as accounting schema
      * @return Fact
      */
-    public ArrayList<IFact> createFacts(MAcctSchema as) {
+    public ArrayList<IFact> createFacts(I_C_AcctSchema as) {
         m_facts = new ArrayList<IFact>();
 
         //  create Fact Header
@@ -489,8 +492,8 @@ public class Doc_AllocationHdr extends Doc {
      *
      * @return true if there are more than one org involved on the posting
      */
-    private boolean isInterOrg(MAcctSchema as) {
-        MAcctSchemaElement elementorg =
+    private boolean isInterOrg(I_C_AcctSchema as) {
+        I_C_AcctSchema_Element elementorg =
                 as.getAcctSchemaElement(MAcctSchemaElement.ELEMENTTYPE_Organization);
         if (elementorg == null || !elementorg.isBalanced()) {
             // no org element or not need to be balanced
@@ -589,7 +592,7 @@ public class Doc_AllocationHdr extends Doc {
      * @return Accounted Amt
      */
     private BigDecimal createCashBasedAcct(
-            MAcctSchema as, Fact fact, MInvoice invoice, BigDecimal allocationSource) {
+            I_C_AcctSchema as, Fact fact, MInvoice invoice, BigDecimal allocationSource) {
         BigDecimal allocationAccounted = Env.ZERO;
         //	Multiplier
         double percent = invoice.getGrandTotal().doubleValue() / allocationSource.doubleValue();
@@ -636,7 +639,7 @@ public class Doc_AllocationHdr extends Doc {
      * @param C_Payment_ID payment
      * @return acct
      */
-    private MAccount getPaymentAcct(MAcctSchema as, int C_Payment_ID) {
+    private MAccount getPaymentAcct(I_C_AcctSchema as, int C_Payment_ID) {
         setBankAccountId(0);
         //	Doc.ACCTTYPE_UnallocatedCash (AR) or C_Prepayment
         //	or Doc.ACCTTYPE_PaymentSelect (AP) or V_Prepayment
@@ -686,7 +689,7 @@ public class Doc_AllocationHdr extends Doc {
      * @param C_CashLine_ID
      * @return acct
      */
-    private MAccount getCashAcct(MAcctSchema as, int C_CashLine_ID) {
+    private MAccount getCashAcct(I_C_AcctSchema as, int C_CashLine_ID) {
         String sql =
                 "SELECT c.C_CashBook_ID "
                         + "FROM C_Cash c, C_CashLine cl "
@@ -714,7 +717,7 @@ public class Doc_AllocationHdr extends Doc {
      */
     private String createRealizedGainLoss(
             DocLine line,
-            MAcctSchema as,
+            I_C_AcctSchema as,
             Fact fact,
             MAccount acct,
             MInvoice invoice,
@@ -864,7 +867,7 @@ public class Doc_AllocationHdr extends Doc {
      * @return true if created
      */
     private boolean createTaxCorrection(
-            MAcctSchema as,
+            I_C_AcctSchema as,
             Fact fact,
             DocLine_Allocation line,
             MAccount DiscountAccount,
@@ -930,7 +933,7 @@ class Doc_AllocationTax implements DocAllocationTax {
      *
      * @param fact fact line
      */
-    public void addInvoiceFact(MFactAcct fact) {
+    public void addInvoiceFact(@NotNull MFactAcct fact) {
         m_facts.add(fact);
     } //	addInvoiceLine
 
@@ -951,7 +954,7 @@ class Doc_AllocationTax implements DocAllocationTax {
      * @param line line
      * @return true if created
      */
-    public boolean createEntries(MAcctSchema as, Fact fact, DocLine line) {
+    public boolean createEntries(@NotNull I_C_AcctSchema as, @NotNull Fact fact, @NotNull DocLine line) {
         //	get total index (the Receivables/Liabilities line)
         BigDecimal total = Env.ZERO;
         for (int i = 0; i < m_facts.size(); i++) {

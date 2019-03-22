@@ -18,18 +18,6 @@ public class MIFixedAsset extends X_I_FixedAsset {
      */
     private static final long serialVersionUID = -6394518107160329652L;
     /**
-     * Default depreciation method
-     */
-    private static final String s_defaultDepreciationType = "SL";
-    /**
-     *
-     */
-    private int m_M_Product_Category_ID = 0;
-    /**
-     *
-     */
-    private int m_A_Asset_Group_ID = 0;
-    /**
      * Product
      */
     private MProduct m_product = null;
@@ -45,7 +33,6 @@ public class MIFixedAsset extends X_I_FixedAsset {
      * Load Constructor
      *
      * @param ctx context
-     * @param rs  result set record
      */
     public MIFixedAsset(Properties ctx, Row row) {
         super(ctx, row);

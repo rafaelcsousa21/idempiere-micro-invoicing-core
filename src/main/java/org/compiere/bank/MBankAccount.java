@@ -6,6 +6,7 @@ import org.compiere.orm.MSysConfig;
 import org.idempiere.common.util.CCache;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Properties;
 
@@ -99,6 +100,7 @@ public class MBankAccount extends X_C_BankAccount {
      *
      * @return Bank/Account
      */
+    @NotNull
     public String getName() {
         StringBuilder msgreturn =
                 new StringBuilder().append(getBank().getName()).append(" ").append(getAccountNo());

@@ -1,6 +1,7 @@
 package org.compiere.accounting;
 
 import kotliquery.Row;
+import org.compiere.model.I_C_ValidCombination;
 import org.compiere.util.Msg;
 import org.idempiere.common.util.Env;
 
@@ -35,7 +36,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
     /**
      * The Base Account
      */
-    private MAccount m_account = null;
+    private I_C_ValidCombination m_account = null;
 
     /**
      * Standard Constructor
@@ -136,7 +137,7 @@ public class MDistributionLine extends X_GL_DistributionLine {
      *
      * @param acct account
      */
-    public void setAccount(MAccount acct) {
+    public void setAccount(I_C_ValidCombination acct) {
         m_account = acct;
     } //	setAccount
 

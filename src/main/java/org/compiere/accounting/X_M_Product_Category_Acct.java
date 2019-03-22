@@ -25,13 +25,6 @@ public class X_M_Product_Category_Acct extends PO
      */
     public X_M_Product_Category_Acct(Properties ctx, int M_Product_Category_Acct_ID) {
         super(ctx, M_Product_Category_Acct_ID);
-        /*
-         * if (M_Product_Category_Acct_ID == 0) { setAccountingSchemaId (0); setProductCategoryId (0);
-         * setP_Asset_Acct (0); setP_COGS_Acct (0); setP_CostAdjustment_Acct (0); setProductExpenseAccount (0);
-         * setInventoryClearingAccount (0); setInvoicePriceVarianceAccount (0);
-         * setP_PurchasePriceVariance_Acct (0); setP_RateVariance_Acct (0); setRevenueAccount (0);
-         * setP_TradeDiscountGrant_Acct (0); setP_TradeDiscountRec_Acct (0); }
-         */
     }
 
     /**

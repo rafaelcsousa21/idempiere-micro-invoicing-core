@@ -278,8 +278,6 @@ public class MProductionPlan extends X_M_ProductionPlan {
             } // for all bom products
         } catch (Exception e) {
             throw new AdempiereException("Failed to create production lines", e);
-        } finally {
-
         }
 
         return count;

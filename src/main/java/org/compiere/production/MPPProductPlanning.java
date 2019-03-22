@@ -161,26 +161,26 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     protected boolean beforeSave(boolean newRecord) {
         //
         // Set default : Order_Policy
-        if (getOrder_Policy() == null) {
-            setOrder_Policy(X_PP_Product_Planning.ORDER_POLICY_Lot_For_Lot);
+        if (getOrderPolicy() == null) {
+            setOrderPolicy(X_PP_Product_Planning.ORDER_POLICY_Lot_For_Lot);
         }
         //
         // Check Order_Min < Order_Max
-        if (getOrder_Min().signum() > 0
-                && getOrder_Max().signum() > 0
-                && getOrder_Min().compareTo(getOrder_Max()) > 0) {
+        if (getOrderMin().signum() > 0
+                && getOrderMax().signum() > 0
+                && getOrderMin().compareTo(getOrderMax()) > 0) {
             throw new AdempiereException("@Order_Min@ > @Order_Max@");
         }
         //
         // Check Order_Period
-        if (X_PP_Product_Planning.ORDER_POLICY_PeriodOrderQuantity.equals(getOrder_Policy())
-                && getOrder_Period().signum() <= 0) {
+        if (X_PP_Product_Planning.ORDER_POLICY_PeriodOrderQuantity.equals(getOrderPolicy())
+                && getOrderPeriod().signum() <= 0) {
             throw new AdempiereException("@Order_Period@ <= 0");
         }
         //
         // Check Order_Qty
-        if (X_PP_Product_Planning.ORDER_POLICY_FixedOrderQuantity.equals(getOrder_Policy())
-                && getOrder_Qty().signum() <= 0) {
+        if (X_PP_Product_Planning.ORDER_POLICY_FixedOrderQuantity.equals(getOrderPolicy())
+                && getOrderQty().signum() <= 0) {
             throw new AdempiereException("@Order_Qty@ <= 0");
         }
         //
@@ -188,17 +188,17 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     }
 
     @Override
-    public MPPProductBOM getPP_Product_BOM() {
-        return MPPProductBOM.get(getCtx(), getPP_Product_BOMId());
+    public MPPProductBOM getProductBOM() {
+        return MPPProductBOM.get(getCtx(), getProductBOMId());
     }
 
     @Override
-    public MWorkflow getAD_Workflow() {
-        return MWorkflow.get(getCtx(), getAD_WorkflowId());
+    public MWorkflow getWorkflow() {
+        return MWorkflow.get(getCtx(), getWorkflowId());
     }
 
     @Override
-    public MResource getS_Resource() {
+    public MResource getResource() {
         return MResource.get(getCtx(), getResourceID());
     }
 
@@ -215,16 +215,16 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
         log.info("           Create Plan: " + isCreatePlan());
         log.info("              Resource: " + getResourceID());
         log.info("          M_Product_ID: " + getProductId());
-        log.info("                   BOM: " + getPP_Product_BOMId());
-        log.info("              Workflow: " + getAD_WorkflowId());
-        log.info("  Network Distribution: " + getDD_NetworkDistributionId());
-        log.info("Delivery Time Promised: " + getDeliveryTime_Promised());
+        log.info("                   BOM: " + getProductBOMId());
+        log.info("              Workflow: " + getWorkflowId());
+        log.info("  Network Distribution: " + getNetworkDistributionId());
+        log.info("Delivery Time Promised: " + getDeliveryTimePromised());
         log.info("         TransfertTime: " + getTransfertTime());
-        log.info("         Order Min/Max: " + getOrder_Min() + " / " + getOrder_Max());
-        log.info("            Order Pack: " + getOrder_Pack());
+        log.info("         Order Min/Max: " + getOrderMin() + " / " + getOrderMax());
+        log.info("            Order Pack: " + getOrderPack());
         log.info("          Safety Stock: " + getSafetyStock());
-        log.info("          Order Period: " + getOrder_Period());
-        log.info("          Order Policy: " + getOrder_Policy());
+        log.info("          Order Period: " + getOrderPeriod());
+        log.info("          Order Policy: " + getOrderPolicy());
         log.info("             Warehouse: " + getWarehouseId());
         log.info("               Planner: " + getPlannerId());
         log.info("              Supplier: " + getBusinessPartnerId());

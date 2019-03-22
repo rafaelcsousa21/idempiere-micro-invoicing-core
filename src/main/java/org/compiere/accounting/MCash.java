@@ -20,6 +20,7 @@ import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -76,7 +77,6 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @param ctx       context
      * @param C_Cash_ID id
-     * @param trxName   transaction
      */
     public MCash(Properties ctx, int C_Cash_ID) {
         super(ctx, C_Cash_ID);
@@ -92,11 +92,12 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
             setStatementDate(today); // @#Date@
             setDateAcct(today); // @#Date@
 
-            StringBuilder name =
-                    new StringBuilder(DisplayType.getDateFormat(DisplayType.Date).format(today))
-                            .append(" ")
-                            .append(MOrg.get(ctx, getOrgId()).getSearchKey());
-            setName(name.toString());
+            MOrg org = MOrg.get(ctx, getOrgId());
+            String orgSearchKey = org.isSearchKeyNotNull() ? org.getSearchKey() : "unknown";
+
+            String name = DisplayType.getDateFormat(DisplayType.Date).format(today) +
+                    " " + orgSearchKey;
+            setName(name);
             setIsApproved(false);
             setPosted(false); // N
             setProcessed(false);
@@ -107,8 +108,6 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * Load Constructor
      *
      * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MCash(Properties ctx, Row row) {
         super(ctx, row);
@@ -213,6 +212,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return name
      */
+    @NotNull
     public String getDocumentNo() {
         return getName();
     } //	getDocumentNo
@@ -222,6 +222,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return document info (untranslated)
      */
+    @NotNull
     public String getDocumentInfo() {
         StringBuilder msgreturn =
                 new StringBuilder()
@@ -254,7 +255,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      * @param processAction document action
      * @return true if performed
      */
-    public boolean processIt(String processAction) {
+    public boolean processIt(@NotNull String processAction) {
         m_processMsg = null;
         DocumentEngine engine = new DocumentEngine(this, getDocStatus());
         return engine.processIt(processAction, getDocAction());
@@ -287,6 +288,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return new status (In Progress or Invalid)
      */
+    @NotNull
     public String prepareIt() {
         if (log.isLoggable(Level.INFO)) log.info(toString());
         m_processMsg =
@@ -369,6 +371,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return new status (Complete, In Progress, Invalid, Waiting ..)
      */
+    @NotNull
     public CompleteActionResult completeIt() {
         //	Re-Check
         if (!m_justPrepared) {
@@ -739,6 +742,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return Summary of Document
      */
+    @NotNull
     public String getSummary() {
         StringBuilder sb = new StringBuilder();
         sb.append(getName());
@@ -765,6 +769,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return clear text error message
      */
+    @NotNull
     public String getProcessMsg() {
         return m_processMsg;
     } //	getProcessMsg
@@ -783,6 +788,7 @@ public class MCash extends X_C_Cash implements DocAction, IPODoc {
      *
      * @return amount difference
      */
+    @NotNull
     public BigDecimal getApprovalAmt() {
         return getStatementDifference();
     } //	getApprovalAmt
