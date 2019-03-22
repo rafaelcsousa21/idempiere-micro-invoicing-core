@@ -298,11 +298,9 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         if (!newRecord && previousProcessedOn != null && previousProcessedOn.signum() > 0) {
             int previousDocTypeID = (Integer) getValueOld(I_GL_Journal.COLUMNNAME_C_DocType_ID);
             MDocType previousdt = MDocType.get(getCtx(), previousDocTypeID);
-            if (isValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID)) {
-                if (previousdt.isOverwriteSeqOnComplete()) {
-                    log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDocType"));
-                    return false;
-                }
+            if (isValueChanged(I_GL_Journal.COLUMNNAME_C_DocType_ID) && previousdt.isOverwriteSeqOnComplete()) {
+                log.saveError("Error", Msg.getMsg(getCtx(), "CannotChangeProcessedDocType"));
+                return false;
             }
             if (isValueChanged(I_GL_Journal.COLUMNNAME_DateDoc)) {
                 if (previousdt.isOverwriteDateOnComplete()) {
