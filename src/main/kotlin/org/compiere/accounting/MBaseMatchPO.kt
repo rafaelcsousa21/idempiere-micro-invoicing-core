@@ -11,6 +11,8 @@ import java.math.BigDecimal
 import java.sql.Timestamp
 import java.util.Properties
 
+private const val FAILED_PO_UPDATE = "Failed to update match po."
+
 /**
  * Get PO Match of Receipt Line
  *
@@ -163,7 +165,7 @@ internal fun create(
                 }
 
                 if (!mpo.save()) {
-                    var msg = "Failed to update match po."
+                    var msg = FAILED_PO_UPDATE
                     val error = CLogger.retrieveError()
                     if (error != null) {
                         msg = msg + " " + error.name
@@ -206,7 +208,7 @@ internal fun create(
                 retValue.orderLineId = C_OrderLine_ID
                 if (iLine != null) retValue.setInvoiceLineId(iLine)
                 if (!retValue.save()) {
-                    var msg = "Failed to update match po."
+                    var msg = FAILED_PO_UPDATE
                     val error = CLogger.retrieveError()
                     if (error != null) {
                         msg = msg + " " + error.name
@@ -219,7 +221,7 @@ internal fun create(
                 retValue = MMatchPO(iLine, dateTrx, qty)
                 retValue.orderLineId = C_OrderLine_ID
                 if (!retValue.save()) {
-                    var msg = "Failed to update match po."
+                    var msg = FAILED_PO_UPDATE
                     val error = CLogger.retrieveError()
                     if (error != null) {
                         msg = msg + " " + error.name
