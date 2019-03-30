@@ -2,6 +2,7 @@ package org.compiere.accounting;
 
 import kotliquery.Row;
 import org.compiere.model.I_M_AttributeSetInstance;
+import org.compiere.model.I_M_StorageOnHand;
 import org.compiere.orm.Query;
 import org.compiere.product.MProduct;
 import org.compiere.production.MLocator;
@@ -207,17 +208,12 @@ public class MStorageOnHand extends X_M_StorageOnHand {
      * @param M_Product_ID product
      * @return existing or null
      */
-    public static MStorageOnHand[] getOfProduct(Properties ctx, int M_Product_ID) {
+    public static List<I_M_StorageOnHand> getOfProduct(Properties ctx, int M_Product_ID) {
         String sqlWhere = "M_Product_ID=?";
 
-        List<MStorageOnHand> list =
-                new Query(ctx, MStorageOnHand.Table_Name, sqlWhere)
-                        .setParameters(M_Product_ID)
-                        .list();
-
-        MStorageOnHand[] retValue = new MStorageOnHand[list.size()];
-        list.toArray(retValue);
-        return retValue;
+        return new Query(ctx, MStorageOnHand.Table_Name, sqlWhere)
+                .setParameters(M_Product_ID)
+                .list();
     } //	getOfProduct
 
     /**

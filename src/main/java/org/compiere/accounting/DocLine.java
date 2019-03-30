@@ -411,7 +411,7 @@ public class DocLine {
         if (getProductId() == 0 && getChargeId() != 0) {
             BigDecimal amt = new BigDecimal(-1); // 	Revenue (-)
             if (!m_doc.isSOTrx()) amt = new BigDecimal(+1); // 	Expense (+)
-            I_C_ValidCombination acct = getChargeAccount(as, amt);
+            I_C_ValidCombination acct = getChargeAccount(as);
             if (acct != null) return acct;
         }
         //	Product Account
@@ -443,7 +443,7 @@ public class DocLine {
      * @param amount amount for expense(+)/revenue(-)
      * @return Charge Account or null
      */
-    public I_C_ValidCombination getChargeAccount(I_C_AcctSchema as, BigDecimal amount) {
+    public I_C_ValidCombination getChargeAccount(I_C_AcctSchema as) {
         int C_Charge_ID = getChargeId();
         if (C_Charge_ID == 0) return null;
         return MCharge.getAccount(C_Charge_ID, as);

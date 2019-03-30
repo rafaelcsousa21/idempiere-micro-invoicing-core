@@ -144,7 +144,7 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      */
     public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        else setValueNoCheck(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -165,5 +165,11 @@ public class X_M_StorageOnHand extends PO implements I_M_StorageOnHand {
      */
     public void setQtyOnHand(BigDecimal QtyOnHand) {
         setValueNoCheck(COLUMNNAME_QtyOnHand, QtyOnHand);
+    }
+
+    @Override
+    public String getDateUpdatedISOFormat() {
+        Timestamp updated = getUpdated();
+        return updated == null ? null : updated.toInstant().toString();
     }
 }

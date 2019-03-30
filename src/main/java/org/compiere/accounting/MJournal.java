@@ -615,7 +615,7 @@ public class MJournal extends X_GL_Journal implements DocAction, IPODoc {
         }
         if (dt.isOverwriteSeqOnComplete()) {
             if (this.getProcessedOn().signum() == 0) {
-                String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+                String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
                 if (value != null) setDocumentNo(value);
             }
         }

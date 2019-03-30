@@ -110,7 +110,7 @@ public class BPartnerOrgLink extends SvrProcess {
             if (!org.save()) throw new Exception("Organization not saved");
         } else //	check if linked to already
         {
-            int C_BPartner_ID = org.getLinkedC_BPartnerId(null);
+            int C_BPartner_ID = org.getLinkedC_BPartnerId();
             if (C_BPartner_ID > 0)
                 throw new IllegalArgumentException(
                         "Organization '"

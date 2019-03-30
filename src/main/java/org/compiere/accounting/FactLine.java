@@ -825,7 +825,6 @@ public final class FactLine extends X_Fact_Acct {
                                 m_docLine.getId(),
                                 getClientId(),
                                 getOrgId(),
-                                AD_User_ID,
                                 getAccountId(),
                                 getSubAccountId(),
                                 getProductId(),
@@ -857,7 +856,6 @@ public final class FactLine extends X_Fact_Acct {
      * @param C_InvoiceLine_ID        invoice line
      * @param AD_Client_ID            client
      * @param AD_Org_ID               org
-     * @param AD_User_ID              user
      * @param Account_ID              of Revenue Account
      * @param C_SubAcct_ID            sub account
      * @param M_Product_ID            product
@@ -880,7 +878,6 @@ public final class FactLine extends X_Fact_Acct {
             int C_InvoiceLine_ID,
             int AD_Client_ID,
             int AD_Org_ID,
-            int AD_User_ID,
             int Account_ID,
             int C_SubAcct_ID,
             int M_Product_ID,
@@ -918,8 +915,8 @@ public final class FactLine extends X_Fact_Acct {
                         User1_ID,
                         User2_ID,
                         UserElement1_ID,
-                        UserElement2_ID,
-                        null);
+                        UserElement2_ID
+                );
         if (revenue != null && revenue.getId() == 0) revenue.saveEx();
         if (revenue == null || revenue.getId() == 0) {
             log.severe("Revenue_Acct not found");

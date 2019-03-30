@@ -199,7 +199,7 @@ public class Doc_AllocationHdr extends Doc {
                     fl =
                             fact.createLine(
                                     line,
-                                    line.getChargeAccount(as, line.getAmtSource()),
+                                    line.getChargeAccount(as),
                                     getCurrencyId(),
                                     line.getAmtSource());
                 }

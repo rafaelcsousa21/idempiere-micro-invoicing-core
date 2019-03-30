@@ -410,8 +410,8 @@ public class InvoiceNGL extends SvrProcess {
                             base.getUser1Id(),
                             base.getUser2Id(),
                             base.getUserElement1Id(),
-                            base.getUserElement2Id(),
-                            null);
+                            base.getUserElement2Id()
+                    );
             line.setDescription(Msg.getElement(getCtx(), "UnrealizedGain_Acct"));
             line.setValidAccountCombinationId(acct.getValidAccountCombinationId());
             line.setAmtSourceCr(gainTotal);
@@ -443,8 +443,8 @@ public class InvoiceNGL extends SvrProcess {
                             base.getUser1Id(),
                             base.getUser2Id(),
                             base.getUserElement1Id(),
-                            base.getUserElement2Id(),
-                            null);
+                            base.getUserElement2Id()
+                    );
             line.setDescription(Msg.getElement(getCtx(), "UnrealizedLoss_Acct"));
             line.setValidAccountCombinationId(acct.getValidAccountCombinationId());
             line.setAmtSourceDr(lossTotal);

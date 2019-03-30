@@ -504,7 +504,7 @@ public class MDDOrder extends X_DD_Order implements DocAction, IPODoc {
                 MDDOrderLine line = lines[i];
                 I_M_Product product = line.getProduct();
                 if (product != null && product.isExcludeAutoDelivery()) {
-                    m_processMsg = "@M_Product_ID@ " + product.getValue() + " @IsExcludeAutoDelivery@";
+                    m_processMsg = "@M_Product_ID@ " + product.getSearchKey() + " @IsExcludeAutoDelivery@";
                     return DocAction.Companion.getSTATUS_Invalid();
                 }
             }

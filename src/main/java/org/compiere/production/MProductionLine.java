@@ -137,8 +137,8 @@ public class MProductionLine extends X_M_ProductionLine {
                             getProductId(),
                             asi.getId(),
                             getMovementQty(),
-                            date,
-                            null);
+                            date
+                    );
             matTrx.setProductionLineId(getId());
             if (!matTrx.save()) {
                 log.log(Level.SEVERE, "Could not save transaction for " + toString());
@@ -211,8 +211,8 @@ public class MProductionLine extends X_M_ProductionLine {
                                         getProductId(),
                                         lineMA.getAttributeSetInstanceId(),
                                         lineQty.negate(),
-                                        date,
-                                        null);
+                                        date
+                                );
                         matTrx.setProductionLineId(getId());
                         if (!matTrx.save()) {
                             log.log(Level.SEVERE, "Could not save transaction for " + toString());
@@ -336,8 +336,8 @@ public class MProductionLine extends X_M_ProductionLine {
                                     getProductId(),
                                     asi.getId(),
                                     lineQty.negate(),
-                                    date,
-                                    null);
+                                    date
+                            );
                     matTrx.setProductionLineId(getId());
                     if (!matTrx.save()) {
                         log.log(Level.SEVERE, "Could not save transaction for " + toString());
@@ -391,7 +391,7 @@ public class MProductionLine extends X_M_ProductionLine {
                 + " -- "
                 + getMovementQty()
                 + " of "
-                + product.getValue());
+                + product.getSearchKey());
     }
 
     @Override

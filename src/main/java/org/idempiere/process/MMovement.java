@@ -452,8 +452,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                                             line.getProductId(),
                                             ma.getAttributeSetInstanceId(),
                                             ma.getMovementQty().negate(),
-                                            getMovementDate(),
-                                            null);
+                                            getMovementDate()
+                                    );
                             trxFrom.setMovementLineId(line.getMovementLineId());
                             if (!trxFrom.save()) {
                                 m_processMsg = "Transaction From not inserted (MA)";
@@ -469,8 +469,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                                             line.getProductId(),
                                             M_AttributeSetInstanceTo_ID,
                                             ma.getMovementQty(),
-                                            getMovementDate(),
-                                            null);
+                                            getMovementDate()
+                                    );
                             trxTo.setMovementLineId(line.getMovementLineId());
                             if (!trxTo.save()) {
                                 m_processMsg = "Transaction To not inserted (MA)";
@@ -567,8 +567,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                                         line.getProductId(),
                                         line.getAttributeSetInstanceId(),
                                         line.getMovementQty().negate(),
-                                        getMovementDate(),
-                                        null);
+                                        getMovementDate()
+                                );
                         trxFrom.setMovementLineId(line.getMovementLineId());
                         if (!trxFrom.save()) {
                             m_processMsg = "Transaction From not inserted";
@@ -584,8 +584,8 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
                                         line.getProductId(),
                                         line.getMAttributeSetInstanceToId(),
                                         line.getMovementQty(),
-                                        getMovementDate(),
-                                        null);
+                                        getMovementDate()
+                                );
                         trxTo.setMovementLineId(line.getMovementLineId());
                         if (!trxTo.save()) {
                             m_processMsg = "Transaction To not inserted";
@@ -633,7 +633,7 @@ public class MMovement extends X_M_Movement implements DocAction, IPODoc {
             MPeriod.testPeriodOpen(getCtx(), getMovementDate(), getDocumentTypeId(), getOrgId());
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
             if (value != null) setDocumentNo(value);
         }
     }

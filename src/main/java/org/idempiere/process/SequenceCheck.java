@@ -29,22 +29,6 @@ public class SequenceCheck extends SvrProcess {
     private static CLogger s_log = CLogger.getCLogger(SequenceCheck.class);
 
     /**
-     * Validate Sequences
-     *
-     * @param ctx context
-     */
-    public static void validate(Properties ctx) {
-        try {
-            checkTableSequences(ctx, null);
-            checkTableID(ctx);
-            checkClientSequences(ctx);
-        } catch (Exception e) {
-            s_log.log(Level.SEVERE, "validate", e);
-            throw new AdempiereException(e);
-        }
-    } //	validate
-
-    /**
      * ************************************************************************ Check existence of
      * Table Sequences.
      *

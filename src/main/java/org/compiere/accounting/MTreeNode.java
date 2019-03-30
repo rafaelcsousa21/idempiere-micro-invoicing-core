@@ -1,7 +1,5 @@
 package org.compiere.accounting;
 
-import org.compiere.wf.MWFNode;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.util.Enumeration;
@@ -68,10 +66,6 @@ public class MTreeNode extends DefaultMutableTreeNode {
      */
     private boolean m_isSummary;
     /**
-     * Image Indicator
-     */
-    private String m_imageIndicator;
-    /**
      * Last found ID
      */
     private int m_lastID = -1;
@@ -113,40 +107,6 @@ public class MTreeNode extends DefaultMutableTreeNode {
         setSummary(isSummary);
         setImageIndicator(imageIndicator);
     } //  MTreeNode
-
-    /**
-     * ************************************************************************ Get Image
-     * Indicator/Index
-     *
-     * @param imageIndicator image indicator (W/X/R/P/F/T/B) MWFNode.ACTION_
-     * @return index of image
-     */
-    public static int getImageIndex(String imageIndicator) {
-        int imageIndex = 0;
-        if (imageIndicator == null) ;
-        else if (imageIndicator.equals(MWFNode.ACTION_UserWindow) // 	Window
-                || imageIndicator.equals(MWFNode.ACTION_UserForm)
-                || imageIndicator.equals(MWFNode.ACTION_UserInfo)) imageIndex = TYPE_WINDOW;
-        else if (imageIndicator.equals(MWFNode.ACTION_AppsReport)) // 	Report
-            imageIndex = TYPE_REPORT;
-        else if (imageIndicator.equals(MWFNode.ACTION_AppsProcess) // 	Process
-                || imageIndicator.equals(MWFNode.ACTION_AppsTask)) imageIndex = TYPE_PROCESS;
-        else if (imageIndicator.equals(MWFNode.ACTION_SubWorkflow)) // 	WorkFlow
-            imageIndex = TYPE_WORKFLOW;
-    /*
-    else if (imageIndicator.equals(MWFNode.ACTION_UserWorkbench))	//	Workbench
-    	imageIndex = TYPE_WORKBENCH;
-    */
-        else if (imageIndicator.equals(MWFNode.ACTION_SetVariable)) // 	Set Variable
-            imageIndex = TYPE_SETVARIABLE;
-        else if (imageIndicator.equals(MWFNode.ACTION_UserChoice)) // 	User Choice
-            imageIndex = TYPE_USERCHOICE;
-        else if (imageIndicator.equals(MWFNode.ACTION_DocumentAction)) // 	Document Action
-            imageIndex = TYPE_DOCACTION;
-            // 	Sleep
-
-        return imageIndex;
-    } //  getImageIndex
 
     /**
      * ************************************************************************ Get Node ID
@@ -224,7 +184,6 @@ public class MTreeNode extends DefaultMutableTreeNode {
      */
     public void setImageIndicator(String imageIndicator) {
         if (imageIndicator != null) {
-            m_imageIndicator = imageIndicator;
         }
     } //  setImageIndicator
 

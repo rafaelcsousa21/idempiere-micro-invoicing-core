@@ -162,50 +162,6 @@ public class UseLifeImpl implements UseLife {
     }
 
     /**
-     * Adjust use life years
-     *
-     * @param deltaUseLifeYears
-     * @param reset
-     */
-    public void adjustUseLifeYears(int deltaUseLifeYears, boolean reset) {
-        int uselife = (reset ? 0 : getUseLifeYears());
-        int new_uselife = uselife + deltaUseLifeYears;
-        setUseLifeYears(new_uselife);
-        if (log.isLoggable(Level.FINE))
-            log.fine(
-                    "UseLifeYears="
-                            + uselife
-                            + ", delta="
-                            + deltaUseLifeYears
-                            + " => new UseLifeYears="
-                            + new_uselife
-                            + " (isFiscal="
-                            + isFiscal()
-                            + ")");
-    }
-
-    /** @return asset class ID */
-  /* commented out by @win
-  public int getA_Asset_ClassId()
-  {
-  	if (m_obj instanceof UseLife)
-  	{
-  		return ((UseLife)m_obj).getA_Asset_ClassId();
-  	}
-  	else
-  	{
-  		Object obj = m_obj.getAttrValue("A_Asset_Class_ID");
-  		if (obj != null && obj instanceof Number)
-  		{
-  			return ((Number)obj).intValue();
-  		}
-  	}
-  	return 0;
-  }
-  */
-    // end comment by @win
-
-    /**
      * @return Asset Service Date (PIF)
      */
     public Timestamp getAssetServiceDate() {
@@ -251,26 +207,9 @@ public class UseLifeImpl implements UseLife {
         if (useLifeYears == 0) {
             useLifeYears = useLifeMonths / 12;
         }
-    /* commented out by @win
-    int A_Asset_Class_ID = getA_Asset_ClassId();
-    if (A_Asset_Class_ID > 0 && (useLifeMonths == 0 || useLifeYears == 0)) {
-    	if(saveError) log.saveError("Error", "@Invalid@ @UseLifeMonths@=" + useLifeMonths + ", @UseLifeYears@=" + useLifeYears);
-    	return false;
-    }
-    */
-        // commented out by @win
 
         setUseLifeMonths(useLifeMonths);
         setUseLifeYears(useLifeYears);
-
-    /* commented by @win
-    MAssetClass assetClass = MAssetClass.get(getCtx(), A_Asset_Class_ID);
-    if (assetClass != null && !assetClass.validate(this)) {
-    	if (log.isLoggable(Level.FINE)) log.fine("Leaving [RETURN FALSE]");
-    	return false;
-    }
-    */
-        // end comment by @win
 
         if (log.isLoggable(Level.FINE)) log.fine("Leaving [RETURN TRUE]");
         return true;

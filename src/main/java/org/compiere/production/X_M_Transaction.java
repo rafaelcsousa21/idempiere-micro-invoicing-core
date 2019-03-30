@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.compiere.model.I_M_Transaction;
 import org.compiere.orm.PO;
 import org.idempiere.common.util.Env;
@@ -54,11 +55,9 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public X_M_Transaction(Properties ctx, int M_Transaction_ID) {
         super(ctx, M_Transaction_ID);
-        /**
-         * if (M_Transaction_ID == 0) { setAttributeSetInstanceId (0); setLocatorId (0);
-         * setMovementDate (new Timestamp( System.currentTimeMillis() )); setMovementQty (Env.ZERO);
-         * setMovementType (null); setProductId (0); setTransaction_ID (0); }
-         */
+    }
+    public X_M_Transaction(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -71,8 +70,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer("X_M_Transaction[").append(getId()).append("]");
-        return sb.toString();
+        return "X_M_Transaction[" + getId() + "]";
     }
 
     /**
@@ -82,7 +80,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public void setProjectIssueId(int C_ProjectIssue_ID) {
         if (C_ProjectIssue_ID < 1) setValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, null);
-        else setValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, Integer.valueOf(C_ProjectIssue_ID));
+        else setValueNoCheck(COLUMNNAME_C_ProjectIssue_ID, C_ProjectIssue_ID);
     }
 
     /**
@@ -105,7 +103,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
         if (M_AttributeSetInstance_ID < 0) setValueNoCheck(COLUMNNAME_M_AttributeSetInstance_ID, null);
         else
             setValueNoCheck(
-                    COLUMNNAME_M_AttributeSetInstance_ID, Integer.valueOf(M_AttributeSetInstance_ID));
+                    COLUMNNAME_M_AttributeSetInstance_ID, M_AttributeSetInstance_ID);
     }
 
     /**
@@ -115,7 +113,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public void setInOutLineId(int M_InOutLine_ID) {
         if (M_InOutLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InOutLine_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, Integer.valueOf(M_InOutLine_ID));
+        else setValueNoCheck(COLUMNNAME_M_InOutLine_ID, M_InOutLine_ID);
     }
 
     /**
@@ -125,7 +123,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public void setInventoryLineId(int M_InventoryLine_ID) {
         if (M_InventoryLine_ID < 1) setValueNoCheck(COLUMNNAME_M_InventoryLine_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_InventoryLine_ID, Integer.valueOf(M_InventoryLine_ID));
+        else setValueNoCheck(COLUMNNAME_M_InventoryLine_ID, M_InventoryLine_ID);
     }
 
     /**
@@ -135,7 +133,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public void setLocatorId(int M_Locator_ID) {
         if (M_Locator_ID < 1) setValueNoCheck(COLUMNNAME_M_Locator_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_Locator_ID, Integer.valueOf(M_Locator_ID));
+        else setValueNoCheck(COLUMNNAME_M_Locator_ID, M_Locator_ID);
     }
 
     /**
@@ -145,7 +143,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public void setMovementLineId(int M_MovementLine_ID) {
         if (M_MovementLine_ID < 1) setValueNoCheck(COLUMNNAME_M_MovementLine_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_MovementLine_ID, Integer.valueOf(M_MovementLine_ID));
+        else setValueNoCheck(COLUMNNAME_M_MovementLine_ID, M_MovementLine_ID);
     }
 
     /**
@@ -214,7 +212,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public void setProductId(int M_Product_ID) {
         if (M_Product_ID < 1) setValueNoCheck(COLUMNNAME_M_Product_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_Product_ID, Integer.valueOf(M_Product_ID));
+        else setValueNoCheck(COLUMNNAME_M_Product_ID, M_Product_ID);
     }
 
     /**
@@ -224,7 +222,7 @@ public class X_M_Transaction extends PO implements I_M_Transaction {
      */
     public void setProductionLineId(int M_ProductionLine_ID) {
         if (M_ProductionLine_ID < 1) setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, null);
-        else setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, Integer.valueOf(M_ProductionLine_ID));
+        else setValueNoCheck(COLUMNNAME_M_ProductionLine_ID, M_ProductionLine_ID);
     }
 
     @Override

@@ -18,7 +18,6 @@ import org.compiere.orm.MDocType;
 import org.compiere.util.Msg;
 import org.compiere.validation.ModelValidationEngine;
 import org.compiere.validation.ModelValidator;
-import org.compiere.wf.MNote;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.CLogger;
@@ -750,12 +749,6 @@ public abstract class Doc implements IDoc {
         if (!p_Status.equals(STATUS_Posted)) {
             //  Insert Note
             String AD_MessageValue = "PostingError-" + p_Status;
-            int AD_User_ID = p_po.getUpdatedBy();
-            MNote note =
-                    new MNote(getCtx(), AD_MessageValue, AD_User_ID, getClientId(), getOrgId(), null);
-            note.setRecord(p_po.getTableId(), p_po.getId());
-            //  Reference
-            note.setReference(toString()); // 	Document
             //	Text
             StringBuilder Text = new StringBuilder(Msg.getMsg(Env.getCtx(), AD_MessageValue));
             if (p_Error != null) Text.append(" (").append(p_Error).append(")");
@@ -778,14 +771,11 @@ public abstract class Doc implements IDoc {
                     .append(isBalanced())
                     .append(", Schema=")
                     .append(m_as.getName());
-            note.setTextMsg(Text.toString());
-            note.saveEx();
             p_Error = Text.toString();
         }
 
         //  dispose facts
-        for (int i = 0; i < m_fact.size(); i++) {
-            IFact fact = m_fact.get(i);
+        for (IFact fact : m_fact) {
             if (fact != null) fact.dispose();
         }
         p_lines = null;

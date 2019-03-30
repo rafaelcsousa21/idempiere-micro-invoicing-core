@@ -235,7 +235,7 @@ public class AcctSchemaCopyAcct extends SvrProcess {
                 User1_ID,
                 User2_ID,
                 UserElement1_ID,
-                UserElement2_ID,
-                null);
+                UserElement2_ID
+        );
     } //	createAccount
 } //	AcctSchemaCopyAcct

@@ -123,8 +123,6 @@ public class MStatus extends X_R_Status {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MStatus[");
-        sb.append(getId()).append("-").append(getName()).append("]");
-        return sb.toString();
+        return "MStatus[" + getId() + "-" + getName() + "]";
     } //	toString
 } //	MStatus

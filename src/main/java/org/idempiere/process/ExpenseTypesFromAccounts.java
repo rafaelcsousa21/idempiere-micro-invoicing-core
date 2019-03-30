@@ -125,7 +125,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
         Map<String, MProduct> productMap = new TreeMap<String, MProduct>();
         for (Iterator<MProduct> it = products.iterator(); it.hasNext(); ) {
             product = it.next();
-            productMap.put(product.getValue(), product);
+            productMap.put(product.getSearchKey(), product);
         }
 
         // Read all existing valid combinations comparison
@@ -173,7 +173,7 @@ public class ExpenseTypesFromAccounts extends SvrProcess {
                 // Create a new product from the account element
                 product = new MProduct(getCtx(), 0);
                 product.set_ValueOfColumn("AD_Client_ID", Integer.valueOf(m_clientId));
-                product.setValue(expenseItemValue);
+                product.setSearchKey(expenseItemValue);
                 product.setName(elem.getName());
                 product.setDescription(elem.getDescription());
                 product.setIsActive(true);

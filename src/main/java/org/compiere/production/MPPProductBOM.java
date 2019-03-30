@@ -76,7 +76,7 @@ public class MPPProductBOM extends X_PP_Product_BOM {
                         I_PP_Product_BOM.Table_Name,
                         "M_Product_ID=? AND Value=?"
                 )
-                        .setParameters(product.getProductId(), product.getValue())
+                        .setParameters(product.getProductId(), product.getSearchKey())
                         .setClientId()
                         .firstOnly();
         // If outside trx, then cache it

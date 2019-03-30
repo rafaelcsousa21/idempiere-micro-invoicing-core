@@ -138,8 +138,8 @@ public class MProjectIssue extends X_C_ProjectIssue implements IDocLine {
                         getProductId(),
                         getAttributeSetInstanceId(),
                         getMovementQty().negate(),
-                        getMovementDate(),
-                        null);
+                        getMovementDate()
+                );
         mTrx.setProjectIssueId(getProjectIssueId());
         //
         MLocator loc = MLocator.get(getCtx(), getLocatorId());

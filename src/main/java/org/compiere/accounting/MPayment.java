@@ -40,7 +40,6 @@ import org.compiere.validation.ModelValidator;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
-import org.idempiere.common.util.ValueNamePair;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -1599,7 +1598,7 @@ public class MPayment extends X_C_Payment
             }
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
             if (value != null) setDocumentNo(value);
         }
     }
@@ -1615,7 +1614,7 @@ public class MPayment extends X_C_Payment
 
         //	Org Must be linked to BPartner
         MOrg org = MOrg.get(getCtx(), getOrgId());
-        int counterC_BPartner_ID = org.getLinkedC_BPartnerId(null);
+        int counterC_BPartner_ID = org.getLinkedC_BPartnerId();
         if (counterC_BPartner_ID == 0) return null;
         //	Business Partner needs to be linked to Org
         MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());

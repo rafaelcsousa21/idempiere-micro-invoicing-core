@@ -509,8 +509,8 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                                             line.getProductId(),
                                             ma.getAttributeSetInstanceId(),
                                             QtyMA.negate(),
-                                            getMovementDate(),
-                                            null);
+                                            getMovementDate()
+                                    );
 
                             mtrx.setInventoryLineId(line.getInventoryLineId());
                             if (!mtrx.save()) {
@@ -581,8 +581,8 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                                         line.getProductId(),
                                         line.getAttributeSetInstanceId(),
                                         qtyDiff,
-                                        getMovementDate(),
-                                        null);
+                                        getMovementDate()
+                                );
                         mtrx.setInventoryLineId(line.getInventoryLineId());
                         if (!mtrx.save()) {
                             m_processMsg = "Transaction not inserted(2)";
@@ -634,7 +634,7 @@ public class MInventory extends X_M_Inventory implements DocAction, IPODoc {
                     getOrgId());
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
             if (value != null) setDocumentNo(value);
         }
     }

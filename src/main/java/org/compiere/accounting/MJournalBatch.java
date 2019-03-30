@@ -402,7 +402,7 @@ public class MJournalBatch extends X_GL_JournalBatch implements DocAction, IPODo
             }
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
             if (value != null) setDocumentNo(value);
         }
     }

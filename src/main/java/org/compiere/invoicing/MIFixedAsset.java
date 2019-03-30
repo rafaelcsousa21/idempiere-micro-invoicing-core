@@ -48,7 +48,7 @@ public class MIFixedAsset extends X_I_FixedAsset {
     public void setProduct(MProduct product) {
         m_product = product;
         setProductId(product.getId());
-        setProductValue(product.getValue());
+        setProductValue(product.getSearchKey());
         if (Util.isEmpty(getName())) setName(product.getName());
     }
 

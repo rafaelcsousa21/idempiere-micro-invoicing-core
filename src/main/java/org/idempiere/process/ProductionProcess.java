@@ -12,7 +12,6 @@ import org.compiere.server.ServerProcessCtl;
 import org.idempiere.common.util.AdempiereUserError;
 import org.idempiere.common.util.Env;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -24,11 +23,10 @@ import java.util.logging.Level;
 public class ProductionProcess extends SvrProcess {
 
     private int p_M_Production_ID = 0;
-    private Timestamp p_MovementDate = null;
     private MProduction m_production = null;
 
     public static int procesProduction(
-            MProduction production, Timestamp movementDate, boolean mustBeStocked) {
+            MProduction production) {
         ProcessInfo pi = ServerProcessCtl.runDocumentActionWorkflow(production, "CO");
         if (pi.isError()) {
             throw new RuntimeException(pi.getSummary());
@@ -55,16 +53,6 @@ public class ProductionProcess extends SvrProcess {
     }
 
     protected void prepare() {
-
-        IProcessInfoParameter[] para = getParameter();
-        for (IProcessInfoParameter iProcessInfoParameter : para) {
-            String name = iProcessInfoParameter.getParameterName();
-            //	log.fine("prepare - " + para[i]);
-
-            if (name.equals("MovementDate")) p_MovementDate = (Timestamp) iProcessInfoParameter.getParameter();
-            else log.log(Level.SEVERE, "Unknown Parameter: " + name);
-        }
-
         p_M_Production_ID = getRecordId();
         if (p_M_Production_ID > 0)
             m_production = new MProduction(getCtx(), p_M_Production_ID);
@@ -76,9 +64,8 @@ public class ProductionProcess extends SvrProcess {
             throw new AdempiereUserError("Could not load production header");
 
         try {
-            int processed = ProductionProcess.procesProduction(m_production, p_MovementDate, false);
-            StringBuilder msgreturn = new StringBuilder("@Processed@ #").append(processed);
-            return msgreturn.toString();
+            int processed = ProductionProcess.procesProduction(m_production);
+            return "@Processed@ #" + processed;
         } catch (Exception e) {
             log.log(Level.SEVERE, e.getLocalizedMessage(), e);
             return e.getMessage();

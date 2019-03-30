@@ -129,8 +129,8 @@ public class MFactAcct extends X_Fact_Acct {
                         getUser1Id(),
                         getUser2Id(),
                         getUserElement1Id(),
-                        getUserElement2Id(),
-                        null);
+                        getUserElement2Id()
+                );
         if (acct != null && acct.getId() == 0) acct.saveEx();
         return acct;
     } //	getMAccount

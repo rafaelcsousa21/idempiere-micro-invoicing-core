@@ -127,8 +127,8 @@ public class MDistributionLine extends X_GL_DistributionLine {
                         isOverwriteUser1() ? getUser1Id() : m_account.getUser1Id(),
                         isOverwriteUser2() ? getUser2Id() : m_account.getUser2Id(),
                         m_account.getUserElement1Id(),
-                        m_account.getUserElement2Id(),
-                        null);
+                        m_account.getUserElement2Id()
+                );
         return acct;
     } //	setAccount
 

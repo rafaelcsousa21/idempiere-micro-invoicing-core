@@ -205,7 +205,7 @@ public class Doc_BankStatement extends Doc {
                 fl =
                         fact.createLine(
                                 line,
-                                line.getChargeAccount(as, line.getChargeAmt().negate()),
+                                line.getChargeAccount(as),
                                 line.getCurrencyId(),
                                 null,
                                 line.getChargeAmt());
@@ -213,7 +213,7 @@ public class Doc_BankStatement extends Doc {
                 fl =
                         fact.createLine(
                                 line,
-                                line.getChargeAccount(as, line.getChargeAmt().negate()),
+                                line.getChargeAccount(as),
                                 line.getCurrencyId(),
                                 line.getChargeAmt().negate(),
                                 null);

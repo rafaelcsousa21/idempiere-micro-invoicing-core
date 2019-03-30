@@ -111,9 +111,6 @@ public class ModelValidationEngine {
             if (classNames == null || classNames.length() == 0) continue;
             loadValidatorClasses(clients[i], classNames);
         }
-        // logging to db will try to init ModelValidationEngine again!
-        // log.config(toString());
-        // System.out.println(toString());
     } //	ModelValidatorEngine
 
     /**

@@ -271,7 +271,6 @@ public class InventoryCountCreate extends SvrProcess {
                                     M_Product_ID,
                                     M_AttributeSetInstance_ID,
                                     QtyOnHand,
-                                    M_AttributeSet_ID,
                                     dateMpolicy);
                 }
             }
@@ -302,11 +301,10 @@ public class InventoryCountCreate extends SvrProcess {
     /**
      * Create/Add to Inventory Line
      *
-     * @param M_Product_ID              product
      * @param M_Locator_ID              locator
+     * @param M_Product_ID              product
      * @param M_AttributeSetInstance_ID asi
      * @param QtyOnHand                 qty
-     * @param M_AttributeSet_ID         as
      * @return lines added
      */
     private int createInventoryLine(
@@ -314,7 +312,6 @@ public class InventoryCountCreate extends SvrProcess {
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
             BigDecimal QtyOnHand,
-            int M_AttributeSet_ID,
             Timestamp dateMPolicy) {
         if (QtyOnHand.signum() == 0) M_AttributeSetInstance_ID = 0;
 

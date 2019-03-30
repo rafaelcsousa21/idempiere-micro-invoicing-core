@@ -16,7 +16,6 @@ package org.idempiere.process;
 
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.wf.MMailText;
 import org.idempiere.common.util.AdempiereUserError;
 
 import java.util.logging.Level;
@@ -93,28 +92,8 @@ public class DunningPrint extends SvrProcess {
         //	Need to have Template
         if (p_EMailPDF && p_R_MailText_ID == 0)
             throw new AdempiereUserError("@NotFound@: @R_MailText_ID@");
-        //		String subject = "";
-        MMailText mText = null;
-        if (p_EMailPDF) {
-            mText = new MMailText(getCtx(), p_R_MailText_ID);
-            if (p_EMailPDF && mText.getId() == 0)
-                throw new AdempiereUserError("@NotFound@: @R_MailText_ID@ - " + p_R_MailText_ID);
-            //			subject = mText.getMailHeader();
-        }
-        //
 
         throw new NotImplementedException();
 
-    /*
-    MDunningRun run = new MDunningRun (getCtx(), p_C_DunningRun_ID, null);
-    if (run.getId() == 0)
-    	throw new AdempiereUserError ("@NotFound@: @C_DunningRun_ID@ - " + p_C_DunningRun_ID);
-    MClient client = MClient.get(getCtx());
-
-    int count = 0;
-    int errors = 0;
-    MDunningRunEntry[] entries = run.getEntries(false);
-    return null;
-    */
     } //	doIt
 } //	DunningPrint

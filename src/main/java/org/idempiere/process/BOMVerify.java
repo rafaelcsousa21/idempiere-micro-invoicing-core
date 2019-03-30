@@ -159,13 +159,13 @@ public class BOMVerify extends SvrProcess {
                 } else if (foundproducts.contains(pp)) {
                     invalid = true;
                     if (p_fromButton)
-                        addLog(0, null, null, product.getValue() + " recursively contains " + pp.getValue());
+                        addLog(0, null, null, product.getSearchKey() + " recursively contains " + pp.getSearchKey());
                     else
                         addBufferLog(
                                 0,
                                 null,
                                 null,
-                                product.getValue() + " recursively contains " + pp.getValue(),
+                                product.getSearchKey() + " recursively contains " + pp.getSearchKey(),
                                 MProduct.Table_ID,
                                 product.getProductId());
                 } else {
@@ -178,13 +178,13 @@ public class BOMVerify extends SvrProcess {
 
         if (lines == 0) {
             invalid = true;
-            if (p_fromButton) addLog(0, null, null, product.getValue() + " does not have lines");
+            if (p_fromButton) addLog(0, null, null, product.getSearchKey() + " does not have lines");
             else
                 addBufferLog(
                         0,
                         null,
                         null,
-                        product.getValue() + " does not have lines",
+                        product.getSearchKey() + " does not have lines",
                         MProduct.Table_ID,
                         product.getProductId());
         }

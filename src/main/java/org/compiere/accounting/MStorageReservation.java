@@ -161,7 +161,6 @@ public class MStorageReservation extends X_M_StorageReservation {
      * @param M_AttributeSetInstance_ID
      * @param diffQty
      * @param isSOTrx
-     * @param trxName
      * @return
      */
     public static boolean add(
@@ -170,8 +169,7 @@ public class MStorageReservation extends X_M_StorageReservation {
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
             BigDecimal diffQty,
-            boolean isSOTrx,
-            String trxName) {
+            boolean isSOTrx) {
 
         if (diffQty == null || diffQty.signum() == 0) return true;
 
@@ -239,8 +237,8 @@ public class MStorageReservation extends X_M_StorageReservation {
                 M_Product_ID,
                 reservationAttributeSetInstance_ID,
                 diffQty,
-                isSOTrx,
-                trxName);
+                isSOTrx
+        );
     } //	add
 
     /**

@@ -423,8 +423,8 @@ public class MJournalLine extends X_GL_JournalLine implements IPODoc {
                             getUser1Id(),
                             getUser2Id(),
                             0,
-                            0,
-                            null);
+                            0
+                    );
 
             if (acct != null) {
                 acct.saveEx(); // get ID from transaction

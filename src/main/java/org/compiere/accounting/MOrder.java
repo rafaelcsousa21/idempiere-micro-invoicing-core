@@ -517,7 +517,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                 org.compiere.order.MOrderLine line = lines[i];
                 org.compiere.product.MProduct product = line.getProduct();
                 if (product != null && product.isExcludeAutoDelivery()) {
-                    m_processMsg = "@M_Product_ID@ " + product.getValue() + " @IsExcludeAutoDelivery@";
+                    m_processMsg = "@M_Product_ID@ " + product.getSearchKey() + " @IsExcludeAutoDelivery@";
                     return DocAction.Companion.getSTATUS_Invalid();
                 }
             }
@@ -563,7 +563,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                 MProduct product = line.getProduct();
                 if (product.isASIMandatory(isSOTrx())) {
                     if (product.getAttributeSet() == null) {
-                        m_processMsg = "@NoAttributeSet@=" + product.getValue();
+                        m_processMsg = "@NoAttributeSet@=" + product.getSearchKey();
                         return DocAction.Companion.getSTATUS_Invalid();
                     }
                     if (!product.getAttributeSet().excludeTableEntry(MOrderLine.Table_ID, isSOTrx())) {
@@ -571,7 +571,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                                 new StringBuilder("@M_AttributeSet_ID@ @IsMandatory@ (@Line@ #")
                                         .append(line.getLine())
                                         .append(", @M_Product_ID@=")
-                                        .append(product.getValue())
+                                        .append(product.getSearchKey())
                                         .append(")");
                         m_processMsg = msg.toString();
                         return DocAction.Companion.getSTATUS_Invalid();
@@ -761,8 +761,8 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
                             line.getProductId(),
                             line.getAttributeSetInstanceId(),
                             difference,
-                            isSOTrx,
-                            null)) return false;
+                            isSOTrx
+                    )) return false;
                 } //	stocked
                 //	update line
                 line.setQtyReserved(line.getQtyReserved().add(difference));
@@ -1049,7 +1049,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
         if (dt.isOverwriteSeqOnComplete()) {
             /* a42niem - BF IDEMPIERE-63 - check if document has been completed before */
             if (this.getProcessedOn().signum() == 0) {
-                String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+                String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
                 if (value != null) setDocumentNo(value);
             }
         }
@@ -1126,7 +1126,7 @@ public class MOrder extends org.compiere.order.MOrder implements DocAction, IPOD
 
         //	Org Must be linked to BPartner
         org.compiere.orm.MOrg org = MOrg.get(getCtx(), getOrgId());
-        int counterC_BPartner_ID = org.getLinkedC_BPartnerId(null);
+        int counterC_BPartner_ID = org.getLinkedC_BPartnerId();
         if (counterC_BPartner_ID == 0) return null;
         //	Business Partner needs to be linked to Org
         MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());

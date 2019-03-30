@@ -1,8 +1,8 @@
 package org.compiere.accounting;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
 
-import java.math.BigDecimal;
 import java.util.Properties;
 
 import static software.hsharp.core.util.DBKt.getSQLValueEx;
@@ -15,24 +15,13 @@ public class MCharge extends org.compiere.order.MCharge {
      *
      * @param ctx         context
      * @param C_Charge_ID id
-     * @param trxName     transaction
      */
     public MCharge(Properties ctx, int C_Charge_ID) {
         super(ctx, C_Charge_ID);
     }
-
-    /**
-     * Get Charge Account
-     *
-     * @param C_Charge_ID charge
-     * @param as          account schema
-     * @param amount      amount NOT USED
-     * @return Charge Account or null
-     * @deprecated use getAccount(Charge, as) instead
-     */
-    public static MAccount getAccount(int C_Charge_ID, MAcctSchema as, BigDecimal amount) {
-        return getAccount(C_Charge_ID, as);
-    } //  getAccount
+    public MCharge(Properties ctx, Row row) {
+        super(ctx, row);
+    }
 
     /**
      * Get Charge Account
@@ -54,7 +43,6 @@ public class MCharge extends org.compiere.order.MCharge {
         }
 
         //	Return Account
-        MAccount acct = MAccount.get(as.getCtx(), Account_ID);
-        return acct;
+        return MAccount.get(as.getCtx(), Account_ID);
     } //  getAccount
 }

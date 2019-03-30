@@ -4,6 +4,7 @@ import kotliquery.Row;
 import org.compiere.model.I_C_AcctSchema;
 import org.compiere.model.I_M_CostDetail;
 import org.compiere.model.I_M_Product;
+import org.compiere.model.I_M_StorageOnHand;
 import org.compiere.model.I_M_Transaction;
 import org.compiere.orm.MTree_Base;
 import org.compiere.orm.Query;
@@ -18,6 +19,7 @@ import org.idempiere.common.util.Env;
 import org.idempiere.common.util.Util;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -30,7 +32,7 @@ public class MProduct extends org.compiere.product.MProduct {
      * Cache
      */
     private static CCache<Integer, org.compiere.product.MProduct> s_cache =
-            new CCache<Integer, org.compiere.product.MProduct>(
+            new CCache<>(
                     I_M_Product.Table_Name, 40, 5); // 	5 minutes
 
     /**
@@ -47,7 +49,6 @@ public class MProduct extends org.compiere.product.MProduct {
      *
      * @param ctx          context
      * @param M_Product_ID id
-     * @param trxName      transaction
      */
     public MProduct(Properties ctx, int M_Product_ID) {
         super(ctx, M_Product_ID);
@@ -57,8 +58,6 @@ public class MProduct extends org.compiere.product.MProduct {
      * Load constructor
      *
      * @param ctx     context
-     * @param rs      result set
-     * @param trxName transaction
      */
     public MProduct(Properties ctx, Row row) {
         super(ctx, row);
@@ -91,7 +90,7 @@ public class MProduct extends org.compiere.product.MProduct {
         BigDecimal qtyOnHand = Env.ZERO;
         BigDecimal qtyOrdered = Env.ZERO;
         BigDecimal qtyReserved = Env.ZERO;
-        for (MStorageOnHand ohs : MStorageOnHand.getOfProduct(getCtx(), getId())) {
+        for (I_M_StorageOnHand ohs : MStorageOnHand.getOfProduct(getCtx(), getId())) {
             qtyOnHand = qtyOnHand.add(ohs.getQtyOnHand());
         }
         for (MStorageReservation rs :
@@ -128,16 +127,14 @@ public class MProduct extends org.compiere.product.MProduct {
         }
 
         // check if it has cost
-        boolean hasCosts =
-                new Query(
-                        getCtx(),
-                        I_M_CostDetail.Table_Name,
-                        I_M_CostDetail.COLUMNNAME_M_Product_ID + "=?"
-                )
-                        .setOnlyActiveRecords(true)
-                        .setParameters(getId())
-                        .match();
-        return hasCosts;
+        return new Query(
+                getCtx(),
+                I_M_CostDetail.Table_Name,
+                I_M_CostDetail.COLUMNNAME_M_Product_ID + "=?"
+        )
+                .setOnlyActiveRecords(true)
+                .setParameters(getId())
+                .match();
 
     }
 
@@ -280,7 +277,6 @@ public class MProduct extends org.compiere.product.MProduct {
     /**
      * Get Product Costing Method
      *
-     * @param C_AcctSchema_ID accounting schema ID
      * @return product costing method
      */
     public String getCostingMethod(I_C_AcctSchema as) {
@@ -378,4 +374,10 @@ public class MProduct extends org.compiere.product.MProduct {
 
         return true;
     } //	beforeSave
+
+    @Override
+    public List<I_M_StorageOnHand> getStorageOnHand() {
+        return MStorageOnHand.getOfProduct(getCtx(), getId());
+    }
+
 }

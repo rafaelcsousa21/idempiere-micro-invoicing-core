@@ -124,7 +124,7 @@ class ProductLowLevelCalculator {
                                     + rs.getString(3)
                                     + ")"
                                     + " - Component: "
-                                    + product.getValue()
+                                    + product.getSearchKey()
                                     + "("
                                     + product.getProductId()
                                     + ")");

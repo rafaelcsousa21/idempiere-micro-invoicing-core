@@ -193,7 +193,7 @@ abstract class BaseComponentTest {
         val ctx = Env.getCtx()
         val product = MProduct(ctx, 0)
         product.name = name
-        product.value = name
+        product.searchKey = name
         product.uomId = MUOM.getDefault_UOMId(ctx)
         product.productCategoryId = standardProduct.productCategoryId
         product.taxCategoryId = taxCategory.taxCategoryId

@@ -601,7 +601,7 @@ public class ReplenishReport extends SvrProcess {
                 // Set Org Trx
                 MOrg orgTrx = MOrg.get(getCtx(), wh.getOrgId());
                 order.setTransactionOrganizationId(orgTrx.getOrgId());
-                int C_BPartner_ID = orgTrx.getLinkedC_BPartnerId(null);
+                int C_BPartner_ID = orgTrx.getLinkedC_BPartnerId();
                 if (C_BPartner_ID == 0)
                     throw new AdempiereUserError(
                             Msg.translate(getCtx(), "C_BPartner_ID") + " @FillMandatory@ ");

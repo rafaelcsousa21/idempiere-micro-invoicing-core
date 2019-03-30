@@ -533,8 +533,8 @@ public class MAcctSchema extends X_C_AcctSchema implements I_C_AcctSchema {
         if (onlyOrgs == null) {
             return false;
         }
-        for (int i = 0; i < onlyOrgs.length; i++) {
-            if (AD_Org_ID == onlyOrgs[i].intValue()) return false;
+        for (Integer onlyOrg : onlyOrgs) {
+            if (AD_Org_ID == onlyOrg) return false;
         }
         return true;
     } //	isSkipOrg

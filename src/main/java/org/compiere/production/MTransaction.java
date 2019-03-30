@@ -1,5 +1,6 @@
 package org.compiere.production;
 
+import kotliquery.Row;
 import org.idempiere.common.util.Env;
 
 import java.math.BigDecimal;
@@ -23,24 +24,21 @@ public class MTransaction extends X_M_Transaction {
      *
      * @param ctx              context
      * @param M_Transaction_ID id
-     * @param trxName          transaction
      */
     public MTransaction(Properties ctx, int M_Transaction_ID) {
         super(ctx, M_Transaction_ID);
         if (M_Transaction_ID == 0) {
-            //	setTransaction_ID (0);		//	PK
-            //	setLocatorId (0);
-            //	setProductId (0);
             setMovementDate(new Timestamp(System.currentTimeMillis()));
             setMovementQty(Env.ZERO);
-            //	setMovementType (MOVEMENTTYPE_CustomerShipment);
         }
     } //	MTransaction
+    public MTransaction(Properties ctx, Row row) {
+        super(ctx, row);
+    }
 
     /**
      * Detail Constructor
-     *
-     * @param ctx                       context
+     *  @param ctx                       context
      * @param AD_Org_ID                 org
      * @param MovementType              movement type
      * @param M_Locator_ID              locator
@@ -48,7 +46,6 @@ public class MTransaction extends X_M_Transaction {
      * @param M_AttributeSetInstance_ID attribute
      * @param MovementQty               qty
      * @param MovementDate              optional date
-     * @param trxName                   transaction
      */
     public MTransaction(
             Properties ctx,
@@ -58,8 +55,7 @@ public class MTransaction extends X_M_Transaction {
             int M_Product_ID,
             int M_AttributeSetInstance_ID,
             BigDecimal MovementQty,
-            Timestamp MovementDate,
-            String trxName) {
+            Timestamp MovementDate) {
         super(ctx, 0);
         setOrgId(AD_Org_ID);
         setMovementType(MovementType);
@@ -81,17 +77,15 @@ public class MTransaction extends X_M_Transaction {
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MTransaction[");
-        sb.append(getId())
-                .append(",")
-                .append(getMovementType())
-                .append(",Qty=")
-                .append(getMovementQty())
-                .append(",M_Product_ID=")
-                .append(getProductId())
-                .append(",ASI=")
-                .append(getAttributeSetInstanceId())
-                .append("]");
-        return sb.toString();
+        return "MTransaction[" + getId() +
+                "," +
+                getMovementType() +
+                ",Qty=" +
+                getMovementQty() +
+                ",M_Product_ID=" +
+                getProductId() +
+                ",ASI=" +
+                getAttributeSetInstanceId() +
+                "]";
     } //	toString
 } //	MTransaction

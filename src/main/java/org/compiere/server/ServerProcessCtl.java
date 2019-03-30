@@ -11,8 +11,6 @@ import org.compiere.process.ProcessInfo;
 import org.compiere.process.ProcessUtil;
 import org.compiere.rule.MRule;
 import org.compiere.util.Msg;
-import org.compiere.wf.MWFProcess;
-import org.compiere.wf.MWorkflow;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogger;
 import org.idempiere.common.util.Env;
@@ -44,7 +42,6 @@ public class ServerProcessCtl implements Runnable {
      * ************************************************************************ Constructor
      *
      * @param pi  Process info
-     * @param trx Transaction
      */
     public ServerProcessCtl(ProcessInfo pi) {
         m_pi = pi;
@@ -60,7 +57,6 @@ public class ServerProcessCtl implements Runnable {
      * Called from APanel.cmd_print, APanel.actionButton and VPaySelect.cmd_generate
      *
      * @param pi  ProcessInfo process info
-     * @param trx Transaction
      * @return worker started ProcessCtl instance or null for workflow
      */
     public static ServerProcessCtl process(ProcessInfo pi) {
@@ -106,13 +102,6 @@ public class ServerProcessCtl implements Runnable {
     public static Server getServer() {
         return new ServerBean();
     } //	getServer
-
-    public static MWFProcess startWorkFlow(Properties ctx, IProcessInfo pi, int AD_Workflow_ID) {
-        MWorkflow wf = MWorkflow.get(ctx, AD_Workflow_ID);
-        MWFProcess wfProcess = wf.start(pi);
-        if (log.isLoggable(Level.FINE)) log.fine(pi.toString());
-        return wfProcess;
-    }
 
     /**
      * @param po
@@ -187,8 +176,8 @@ public class ServerProcessCtl implements Runnable {
                             + "WHERE p.IsActive='Y'"
                             + " AND i.AD_PInstance_ID=?";
         //
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
         try {
             pstmt =
                     prepareStatement(sql);
@@ -227,7 +216,7 @@ public class ServerProcessCtl implements Runnable {
         //  No PL/SQL Procedure
         if (ProcedureName == null) ProcedureName = "";
 
-        /** ******************************************************************** Workflow */
+        /* ******************************************************************** Workflow */
         if (AD_Workflow_ID > 0) {
             //startWorkflow(AD_Workflow_ID);
             throw new AdempiereException("Not implemented");
@@ -242,7 +231,7 @@ public class ServerProcessCtl implements Runnable {
             }
         }
 
-        /** ******************************************************************** Start Optional Class */
+        /* ******************************************************************** Start Optional Class */
         if (m_pi.getClassName() != null) {
             if (isJasper) {
                 m_pi.setReportingProcess(true);

@@ -4,7 +4,6 @@ import kotliquery.Row;
 import org.compiere.orm.MOrgInfo;
 import org.compiere.orm.Query;
 import org.compiere.product.MResource;
-import org.compiere.wf.MWorkflow;
 import org.eevolution.model.I_PP_Product_Planning;
 import org.idempiere.common.exceptions.AdempiereException;
 import org.idempiere.common.util.CLogMgt;
@@ -79,12 +78,7 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
      * Get Data Product Planning
      *
      * @param ctx            Context
-     * @param AD_Client_ID   ID Organization
-     * @param AD_Org_ID      ID Organization
-     * @param M_Warehouse_ID Warehouse
-     * @param S_Resource_ID  Resource type Plant
-     * @param M_Product_ID   ID Product
-     * @param trxname        Trx Name
+     *                       *
      * @return MPPProductPlanning
      */
     public static MPPProductPlanning get(
@@ -190,11 +184,6 @@ public class MPPProductPlanning extends X_PP_Product_Planning {
     @Override
     public MPPProductBOM getProductBOM() {
         return MPPProductBOM.get(getCtx(), getProductBOMId());
-    }
-
-    @Override
-    public MWorkflow getWorkflow() {
-        return MWorkflow.get(getCtx(), getWorkflowId());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.crm.MBPartner;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
@@ -39,10 +40,12 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      *
      * @param ctx      context
      * @param M_RMA_ID id
-     * @param trxName  transaction
      */
     public MRMA(Properties ctx, int M_RMA_ID) {
         super(ctx, M_RMA_ID);
+    }
+    public MRMA(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -52,7 +55,6 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
      * @param C_DocType_ID doc type
      * @param isSOTrx      sales order
      * @param counter      create counter links
-     * @param trxName      trx
      * @return MRMA
      */
     public static MRMA copyFrom(
@@ -72,7 +74,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
             return null;
         }
 
-        int invId = 0;
+        int invId;
 
         if (shipment.getInvoiceId() != 0) {
             invId = shipment.getInvoiceId();
@@ -244,7 +246,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
 
         //	Org Must be linked to BPartner
         org.compiere.orm.MOrg org = MOrg.get(getCtx(), getOrgId());
-        int counterC_BPartner_ID = org.getLinkedC_BPartnerId(null);
+        int counterC_BPartner_ID = org.getLinkedC_BPartnerId();
         if (counterC_BPartner_ID == 0) return null;
         //	Business Partner needs to be linked to Org
         org.compiere.crm.MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());
@@ -252,7 +254,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
         if (counterAD_Org_ID == 0) return null;
 
         //	Document Type
-        int C_DocTypeTarget_ID = 0;
+        int C_DocTypeTarget_ID;
         MDocTypeCounter counterDT = MDocTypeCounter.getCounterDocType(getCtx(), getDocumentTypeId());
         if (counterDT != null) {
             if (log.isLoggable(Level.FINE)) log.fine(counterDT.toString());
@@ -275,8 +277,7 @@ public class MRMA extends org.compiere.order.MRMA implements DocAction, IPODoc {
 
         //	Update copied lines
         MRMALine[] counterLines = counter.getLines(true);
-        for (int i = 0; i < counterLines.length; i++) {
-            MRMALine counterLine = counterLines[i];
+        for (MRMALine counterLine : counterLines) {
             counterLine.setClientOrg(counter);
             //
             counterLine.saveEx();

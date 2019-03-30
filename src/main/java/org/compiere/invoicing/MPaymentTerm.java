@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.model.I_C_Invoice;
 import org.compiere.model.I_C_InvoicePaySchedule;
 import org.compiere.order.MPaySchedule;
@@ -14,6 +15,9 @@ import java.util.logging.Level;
 public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
     public MPaymentTerm(Properties ctx, int C_PaymentTerm_ID) {
         super(ctx, C_PaymentTerm_ID);
+    }
+    public MPaymentTerm(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -54,8 +58,8 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
         MInvoicePaySchedule ips = null;
         BigDecimal remainder = invoice.getGrandTotal();
         MPaySchedule[] m_schedule = getSchedule(false);
-        for (int i = 0; i < m_schedule.length; i++) {
-            ips = new MInvoicePaySchedule(invoice, m_schedule[i]);
+        for (MPaySchedule mPaySchedule : m_schedule) {
+            ips = new MInvoicePaySchedule(invoice, mPaySchedule);
             ips.saveEx();
             if (log.isLoggable(Level.FINE)) log.fine(ips.toString());
             remainder = remainder.subtract(ips.getDueAmt());
@@ -92,7 +96,6 @@ public class MPaymentTerm extends org.compiere.order.MPaymentTerm {
      * Delete existing Invoice Payment Schedule
      *
      * @param C_Invoice_ID id
-     * @param trxName      transaction
      */
     private void deleteInvoicePaySchedule(int C_Invoice_ID) {
         Query query =

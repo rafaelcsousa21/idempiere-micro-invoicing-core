@@ -90,7 +90,6 @@ public class DocumentEngine implements DocAction {
      * @param AD_Table_ID  Table ID of Document
      * @param Record_ID    Record ID of this document
      * @param force        force posting
-     * @param trxName      ignore, retained for backward compatibility
      * @return null, if success or error message
      */
     public static String postImmediate(
@@ -98,8 +97,7 @@ public class DocumentEngine implements DocAction {
             int AD_Client_ID,
             int AD_Table_ID,
             int Record_ID,
-            boolean force,
-            String trxName) {
+            boolean force) {
         // Ensure the table has Posted column / i.e. GL_JournalBatch can be completed but not posted
         if (getColumnId(MTable.getDbTableName(ctx, AD_Table_ID), "Posted") <= 0) return null;
 
@@ -374,8 +372,8 @@ public class DocumentEngine implements DocAction {
                                             docafter.getClientId(),
                                             docafter.getTableId(),
                                             docafter.getId(),
-                                            true,
-                                            null);
+                                            true
+                                    );
                         }
                     }
                 }
@@ -519,8 +517,8 @@ public class DocumentEngine implements DocAction {
                         m_document.getClientId(),
                         m_document.getTableId(),
                         m_document.getId(),
-                        true,
-                        null);
+                        true
+                );
         if (DocAction.Companion.getACTION_Post().equals(m_action)) {
             // forced post via process - throw exception to inform the caller about the error
             if (!Util.isEmpty(error)) {

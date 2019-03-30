@@ -1,23 +1,7 @@
-/**
- * **************************************************************************** Product: Adempiere
- * ERP & CRM Smart Business Solution * Copyright (C) 1999-2006 ComPiere, Inc. All Rights Reserved. *
- * This program is free software; you can redistribute it and/or modify it * under the terms version
- * 2 of the GNU General Public License as published * by the Free Software Foundation. This program
- * is distributed in the hope * that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. * See the GNU General
- * Public License for more details. * You should have received a copy of the GNU General Public
- * License along * with this program; if not, write to the Free Software Foundation, Inc., * 59
- * Temple Place, Suite 330, Boston, MA 02111-1307 USA. * For the text or an alternative of this
- * public license, you may reach us * ComPiere, Inc., 2620 Augustine Dr. #245, Santa Clara, CA
- * 95054, USA * or via info@compiere.org or http://www.compiere.org/license.html *
- * ***************************************************************************
- */
 package org.idempiere.process;
 
-import org.compiere.accounting.MClient;
 import org.compiere.model.IProcessInfoParameter;
 import org.compiere.process.SvrProcess;
-import org.compiere.wf.MMailText;
 import org.idempiere.common.util.AdempiereUserError;
 import software.hsharp.core.util.DBKt;
 
@@ -57,17 +41,32 @@ public class InvoicePrint extends SvrProcess {
         for (IProcessInfoParameter iProcessInfoParameter : para) {
             String name = iProcessInfoParameter.getParameterName();
             if (iProcessInfoParameter.getParameter() != null || iProcessInfoParameter.getParameterTo() != null) {
-                if (name.equals("DateInvoiced")) {
+                if (!name.equals("DateInvoiced")) {
+                    switch (name) {
+                        case "EMailPDF":
+                            p_EMailPDF = "Y".equals(iProcessInfoParameter.getParameter());
+                            break;
+                        case "R_MailText_ID":
+                            p_R_MailText_ID = iProcessInfoParameter.getParameterAsInt();
+                            break;
+                        case "C_BPartner_ID":
+                            m_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
+                            break;
+                        case "C_Invoice_ID":
+                            m_C_Invoice_ID = iProcessInfoParameter.getParameterAsInt();
+                            break;
+                        case "DocumentNo":
+                            m_DocumentNo_From = (String) iProcessInfoParameter.getParameter();
+                            m_DocumentNo_To = (String) iProcessInfoParameter.getParameterTo();
+                            break;
+                        default:
+                            log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+                            break;
+                    }
+                } else {
                     m_dateInvoiced_From = ((Timestamp) iProcessInfoParameter.getParameter());
                     m_dateInvoiced_To = ((Timestamp) iProcessInfoParameter.getParameterTo());
-                } else if (name.equals("EMailPDF")) p_EMailPDF = "Y".equals(iProcessInfoParameter.getParameter());
-                else if (name.equals("R_MailText_ID")) p_R_MailText_ID = iProcessInfoParameter.getParameterAsInt();
-                else if (name.equals("C_BPartner_ID")) m_C_BPartner_ID = iProcessInfoParameter.getParameterAsInt();
-                else if (name.equals("C_Invoice_ID")) m_C_Invoice_ID = iProcessInfoParameter.getParameterAsInt();
-                else if (name.equals("DocumentNo")) {
-                    m_DocumentNo_From = (String) iProcessInfoParameter.getParameter();
-                    m_DocumentNo_To = (String) iProcessInfoParameter.getParameterTo();
-                } else log.log(Level.SEVERE, "prepare - Unknown Parameter: " + name);
+                }
             }
         }
         if (m_DocumentNo_From != null && m_DocumentNo_From.length() == 0) m_DocumentNo_From = null;
@@ -103,13 +102,6 @@ public class InvoicePrint extends SvrProcess {
                             + "-"
                             + m_DocumentNo_To);
 
-        MMailText mText = null;
-        if (p_R_MailText_ID != 0) {
-            mText = new MMailText(getCtx(), p_R_MailText_ID);
-            if (mText.getId() != p_R_MailText_ID)
-                throw new AdempiereUserError("@NotFound@: @R_MailText_ID@ - " + p_R_MailText_ID);
-        }
-
         //	Too broad selection
         if (m_C_BPartner_ID == 0
                 && m_C_Invoice_ID == 0
@@ -117,8 +109,6 @@ public class InvoicePrint extends SvrProcess {
                 && m_dateInvoiced_To == null
                 && m_DocumentNo_From == null
                 && m_DocumentNo_To == null) throw new AdempiereUserError("@RestrictSelection@");
-
-        MClient client = MClient.get(getCtx());
 
         //	Get Info
         StringBuilder sql =

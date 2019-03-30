@@ -1,5 +1,6 @@
 package org.compiere.invoicing;
 
+import kotliquery.Row;
 import org.compiere.accounting.MWarehouse;
 import org.compiere.docengine.DocumentEngine;
 import org.compiere.model.IDoc;
@@ -46,10 +47,12 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      *
      * @param ctx               context
      * @param M_InOutConfirm_ID id
-     * @param trxName           transaction
      */
     public MInOutConfirm(Properties ctx, int M_InOutConfirm_ID) {
         super(ctx, M_InOutConfirm_ID);
+    }
+    public MInOutConfirm(Properties ctx, Row row) {
+        super(ctx, row);
     }
 
     /**
@@ -73,8 +76,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
     public static MInOutConfirm create(MInOut ship, String confirmType, boolean checkExisting) {
         if (checkExisting) {
             MInOutConfirm[] confirmations = ship.getConfirmations(false);
-            for (int i = 0; i < confirmations.length; i++) {
-                MInOutConfirm confirm = confirmations[i];
+            for (MInOutConfirm confirm : confirmations) {
                 if (confirm.getConfirmType().equals(confirmType)) {
                     if (s_log.isLoggable(Level.INFO)) s_log.info("create - existing: " + confirm);
                     return confirm;
@@ -85,8 +87,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         MInOutConfirm confirm = new MInOutConfirm(ship, confirmType);
         confirm.saveEx();
         MInOutLine[] shipLines = ship.getLines(false);
-        for (int i = 0; i < shipLines.length; i++) {
-            MInOutLine sLine = shipLines[i];
+        for (MInOutLine sLine : shipLines) {
             MInOutLineConfirm cLine = new MInOutLineConfirm(confirm);
             cLine.setInOutLine(sLine);
             cLine.saveEx();
@@ -139,12 +140,6 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
                 ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
         if (m_processMsg != null) return DocAction.Companion.getSTATUS_Invalid();
 
-        /**
-         * MDocType dt = MDocType.get(getCtx(), getTargetDocumentTypeId());
-         *
-         * <p>// Std Period open? if (!MPeriod.isOpen(getCtx(), getDateAcct(), dt.getDocBaseType())) {
-         * m_processMsg = "@PeriodClosed@"; return DocAction.STATUS_Invalid; }
-         */
         MInOutLineConfirm[] lines = getLines(true);
         if (lines.length == 0) {
             m_processMsg = "@NoLines@";
@@ -152,8 +147,8 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         }
         //	Set dispute if not fully confirmed
         boolean difference = false;
-        for (int i = 0; i < lines.length; i++) {
-            if (!lines[i].isFullyConfirmed()) {
+        for (MInOutLineConfirm line : lines) {
+            if (!line.isFullyConfirmed()) {
                 difference = true;
                 break;
             }
@@ -211,8 +206,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
         }
 
         //	All lines
-        for (int i = 0; i < lines.length; i++) {
-            MInOutLineConfirm confirmLine = lines[i];
+        for (MInOutLineConfirm confirmLine : lines) {
             if (!confirmLine.processLine(inout.isSOTrx(), getConfirmType())) {
                 m_processMsg = "ShipLine not saved - " + confirmLine;
                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -266,8 +260,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
     private void splitInOut(MInOut original, int C_DocType_ID, MInOutLineConfirm[] confirmLines) {
         MInOut split = null;
         //	Go through confirmations
-        for (int i = 0; i < confirmLines.length; i++) {
-            MInOutLineConfirm confirmLine = confirmLines[i];
+        for (MInOutLineConfirm confirmLine : confirmLines) {
             BigDecimal differenceQty = confirmLine.getDifferenceQty();
             if (differenceQty.compareTo(Env.ZERO) == 0) continue;
             //
@@ -345,8 +338,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             m_processMsg += splitConfirms[index].getDocumentNo();
             //	Set Lines to unconfirmed
             MInOutLineConfirm[] splitConfirmLines = splitConfirms[index].getLines(false);
-            for (int i = 0; i < splitConfirmLines.length; i++) {
-                MInOutLineConfirm splitConfirmLine = splitConfirmLines[i];
+            for (MInOutLineConfirm splitConfirmLine : splitConfirmLines) {
                 splitConfirmLine.setScrappedQty(Env.ZERO);
                 splitConfirmLine.setConfirmedQty(Env.ZERO);
                 splitConfirmLine.saveEx();
@@ -371,12 +363,10 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             if (log.isLoggable(Level.INFO)) log.info("Difference=" + confirm.getDifferenceQty());
             if (m_creditMemo == null) {
                 m_creditMemo = new MInvoice(inout, null);
-                StringBuilder msgd =
-                        new StringBuilder()
-                                .append(Msg.translate(getCtx(), "M_InOutConfirm_ID"))
-                                .append(" ")
-                                .append(getDocumentNo());
-                m_creditMemo.setDescription(msgd.toString());
+                String msgd = Msg.translate(getCtx(), "M_InOutConfirm_ID") +
+                        " " +
+                        getDocumentNo();
+                m_creditMemo.setDescription(msgd);
                 m_creditMemo.setTargetDocumentTypeId(MDocType.DOCBASETYPE_APCreditMemo);
                 m_creditMemo.saveEx();
                 setInvoiceId(m_creditMemo.getInvoiceId());
@@ -399,12 +389,10 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
             if (m_inventory == null) {
                 MWarehouse wh = MWarehouse.get(getCtx(), inout.getWarehouseId());
                 m_inventory = new MInventory(wh);
-                StringBuilder msgd =
-                        new StringBuilder()
-                                .append(Msg.translate(getCtx(), "M_InOutConfirm_ID"))
-                                .append(" ")
-                                .append(getDocumentNo());
-                m_inventory.setDescription(msgd.toString());
+                String msgd = Msg.translate(getCtx(), "M_InOutConfirm_ID") +
+                        " " +
+                        getDocumentNo();
+                m_inventory.setDescription(msgd);
                 setInventoryDocType(m_inventory);
                 m_inventory.saveEx();
                 setInventoryId(m_inventory.getInventoryId());
@@ -624,9 +612,7 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      * @return info
      */
     public String toString() {
-        StringBuilder sb = new StringBuilder("MInOutConfirm[");
-        sb.append(getId()).append("-").append(getSummary()).append("]");
-        return sb.toString();
+        return "MInOutConfirm[" + getId() + "-" + getSummary() + "]";
     } //	toString
 
     @Override
@@ -655,12 +641,9 @@ public class MInOutConfirm extends org.compiere.order.MInOutConfirm implements D
      */
     @NotNull
     public String getDocumentInfo() {
-        StringBuilder msgreturn =
-                new StringBuilder()
-                        .append(Msg.getElement(getCtx(), "M_InOutConfirm_ID"))
-                        .append(" ")
-                        .append(getDocumentNo());
-        return msgreturn.toString();
+        return Msg.getElement(getCtx(), "M_InOutConfirm_ID") +
+                " " +
+                getDocumentNo();
     } //	getDocumentInfo
 
     /**

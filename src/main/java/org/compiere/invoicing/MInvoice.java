@@ -380,7 +380,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
         if (counter) {
             to.setRef_InvoiceId(from.getInvoiceId());
             MOrg org = MOrg.get(from.getCtx(), from.getOrgId());
-            int counterC_BPartner_ID = org.getLinkedC_BPartnerId(trxName);
+            int counterC_BPartner_ID = org.getLinkedC_BPartnerId();
             if (counterC_BPartner_ID == 0) return null;
             to.setBPartner(MBPartner.get(from.getCtx(), counterC_BPartner_ID));
             //	Try to find Order link
@@ -1988,7 +1988,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
             }
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
             if (value != null) setDocumentNo(value);
         }
     }
@@ -2004,7 +2004,7 @@ public class MInvoice extends X_C_Invoice implements DocAction, I_C_Invoice, IPO
 
         //	Org Must be linked to BPartner
         MOrg org = MOrg.get(getCtx(), getOrgId());
-        int counterC_BPartner_ID = org.getLinkedC_BPartnerId(null);
+        int counterC_BPartner_ID = org.getLinkedC_BPartnerId();
         if (counterC_BPartner_ID == 0) return null;
         //	Business Partner needs to be linked to Org
         MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());

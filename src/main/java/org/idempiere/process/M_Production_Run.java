@@ -182,8 +182,8 @@ public class M_Production_Run extends SvrProcess {
                                     pline.getProductId(),
                                     pline.getAttributeSetInstanceId(),
                                     MovementQty,
-                                    production.getMovementDate(),
-                                    null);
+                                    production.getMovementDate()
+                            );
                     mtrx.setProductionLineId(pline.getProductionLineId());
                     mtrx.saveEx();
 
@@ -212,8 +212,8 @@ public class M_Production_Run extends SvrProcess {
                                 getClientId(),
                                 production.getTableId(),
                                 production.getId(),
-                                true,
-                                null);
+                                true
+                        );
             }
         }
 
@@ -234,7 +234,7 @@ public class M_Production_Run extends SvrProcess {
         if (bom == null) {
             raiseError(
                     "Do not exist default BOM for this product :"
-                            + product.getValue()
+                            + product.getSearchKey()
                             + "-"
                             + product.getName(),
                     "");

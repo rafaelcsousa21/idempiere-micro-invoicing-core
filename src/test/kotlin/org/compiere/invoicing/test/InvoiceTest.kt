@@ -155,6 +155,9 @@ class InvoiceTest : BaseComponentTest() {
             vendorShipment.completeIt()
             val storageOnHand = MStorageOnHand.getOfProduct(ctx, product.id).first()
             assertEquals(0.0.toBigDecimal(), receiptLine.movementQty - storageOnHand.qtyOnHand)
+            val productStorage = MProduct(ctx, product.id)
+            val productStorageOnHand = productStorage.storageOnHand.map { it.qtyOnHand }.sumByDouble { it.toDouble() }
+            assertEquals(0.0, storageOnHand.qtyOnHand.toDouble() - productStorageOnHand)
         }
     }
 

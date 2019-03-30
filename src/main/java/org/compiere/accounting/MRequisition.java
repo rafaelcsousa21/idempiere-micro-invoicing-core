@@ -329,7 +329,7 @@ public class MRequisition extends X_M_Requisition implements DocAction, IPODoc {
                     getCtx(), getDateDoc(), MDocType.DOCBASETYPE_PurchaseRequisition, getOrgId());
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
             if (value != null) setDocumentNo(value);
         }
     }

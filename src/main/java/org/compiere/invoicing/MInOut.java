@@ -364,7 +364,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                             "@M_AttributeSet_ID@ @IsMandatory@ (@Line@ #"
                                     + lines[i].getLine()
                                     + ", @M_Product_ID@="
-                                    + product.getValue()
+                                    + product.getSearchKey()
                                     + ")";
                     return DocAction.Companion.getSTATUS_Invalid();
                 }
@@ -574,7 +574,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                 String lastError = CLogger.retrieveErrorString("");
                                 m_processMsg =
                                         "Cannot correct Inventory OnHand (MA) ["
-                                                + product.getValue()
+                                                + product.getSearchKey()
                                                 + "] - "
                                                 + lastError;
                                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -590,12 +590,12 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                             sLine.getProductId(),
                                             ma.getAttributeSetInstanceId(),
                                             QtyMA,
-                                            getMovementDate(),
-                                            null);
+                                            getMovementDate()
+                                    );
                             mtrx.setInOutLineId(sLine.getInOutLineId());
                             if (!mtrx.save()) {
                                 m_processMsg =
-                                        "Could not create Material Transaction (MA) [" + product.getValue() + "]";
+                                        "Could not create Material Transaction (MA) [" + product.getSearchKey() + "]";
                                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
                             }
                         }
@@ -608,14 +608,14 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                         sLine.getProductId(),
                                         oLine.getAttributeSetInstanceId(),
                                         orderedQtyToUpdate.negate(),
-                                        isSOTrx(),
-                                        null)) {
+                                        isSOTrx()
+                                )) {
                                     String lastError = CLogger.retrieveErrorString("");
                                     m_processMsg =
                                             "Cannot correct Inventory "
                                                     + (isSOTrx() ? "Reserved" : "Ordered")
                                                     + " (MA) - ["
-                                                    + product.getValue()
+                                                    + product.getSearchKey()
                                                     + "] - "
                                                     + lastError;
                                     return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
@@ -661,7 +661,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                 null)) {
                             String lastError = CLogger.retrieveErrorString("");
                             m_processMsg =
-                                    "Cannot correct Inventory OnHand [" + product.getValue() + "] - " + lastError;
+                                    "Cannot correct Inventory OnHand [" + product.getSearchKey() + "] - " + lastError;
                             return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
                         }
                         if (oLine != null && oLine.getQtyOrdered().signum() > 0) {
@@ -671,12 +671,12 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                     sLine.getProductId(),
                                     oLine.getAttributeSetInstanceId(),
                                     orderedQtyToUpdate.negate(),
-                                    isSOTrx(),
-                                    null)) {
+                                    isSOTrx()
+                            )) {
                                 m_processMsg =
                                         "Cannot correct Inventory Reserved "
                                                 + (isSOTrx() ? "Reserved [" : "Ordered [")
-                                                + product.getValue()
+                                                + product.getSearchKey()
                                                 + "]";
                                 return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
                             }
@@ -692,13 +692,13 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
                                         sLine.getProductId(),
                                         sLine.getAttributeSetInstanceId(),
                                         Qty,
-                                        getMovementDate(),
-                                        null);
+                                        getMovementDate()
+                                );
                         mtrx.setInOutLineId(sLine.getInOutLineId());
                         if (!mtrx.save()) {
                             m_processMsg =
                                     CLogger.retrieveErrorString(
-                                            "Could not create Material Transaction [" + product.getValue() + "]");
+                                            "Could not create Material Transaction [" + product.getSearchKey() + "]");
                             return new CompleteActionResult(DocAction.Companion.getSTATUS_Invalid());
                         }
                     }
@@ -1269,7 +1269,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
             }
         }
         if (dt.isOverwriteSeqOnComplete()) {
-            String value = MSequence.getDocumentNo(getDocumentTypeId(), null, true, this);
+            String value = MSequence.getDocumentNo(getDocumentTypeId(), true, this);
             if (value != null) setDocumentNo(value);
         }
     }
@@ -1425,7 +1425,7 @@ public class MInOut extends org.compiere.order.MInOut implements DocAction, IPOD
 
         //	Org Must be linked to BPartner
         MOrg org = MOrg.get(getCtx(), getOrgId());
-        int counterC_BPartner_ID = org.getLinkedC_BPartnerId(null);
+        int counterC_BPartner_ID = org.getLinkedC_BPartnerId();
         if (counterC_BPartner_ID == 0) return null;
         //	Business Partner needs to be linked to Org
         MBPartner bp = new MBPartner(getCtx(), getBusinessPartnerId());

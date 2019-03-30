@@ -1240,7 +1240,7 @@ class MSetup
 
         //	Create Product
         val product = MProduct(m_ctx, 0)
-        product.value = defaultName
+        product.searchKey = defaultName
         product.name = defaultName
         product.uomId = C_UOM_ID
         product.productCategoryId = pc.productCategoryId
